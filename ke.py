@@ -1,9 +1,8 @@
 import nltk
 import re
-import networkx
+import networkx as nx
 import matplotlib
-import re
-from nltk.stem import SnowballStemmer as stemmer
+from nltk.stem import SnowballStemmer
 # Install the following packages. This may take a few seconds if you haven't had them installed.
 # packages = (
 #     "stopwords",  # for stopwords definition
@@ -16,6 +15,8 @@ from nltk.stem import SnowballStemmer as stemmer
 
 with open('test_text.txt', 'r') as inFile:
     text = inFile.read()
+
+# print(type(text))
 
 # print(text)
 tokens = nltk.word_tokenize(text)
@@ -44,25 +45,33 @@ def normalized_token(token):
     """
     Use stemmer to normalize the token.
     """
+    stemmer = SnowballStemmer("english") 
     return stemmer.stem(token.lower())
     
 # Now let's build the graph.
-graph = networkx.Graph()
+graph = nx.Graph()
 
 # Here, bigrams are "tagged bigrams".
 bigrams = nltk.ngrams(tagged_tokens, 2)
 for bg in bigrams:
-    # print(t[0].lower() for t in bg)
+    # for t in bg:
+    #     normalized = []
+    #     print(stemmer.stem('runs'))
+        # graph.add_edge(*normalized)
     if all(is_good_token(t) for t in bg):
         normalized = [normalized_token(t[0]) for t in bg]
-        graph.add_edge(*normalized)
+        graph.add_edge(normalized[0], normalized[1])
 # We can visualize it with matplotlib.
 # %matplotlib inline
+print("***********test*************")
+print(graph)
+print("***********test*************")
+
 matplotlib.rcParams['figure.figsize'] = (20.0, 16.0)
-networkx.draw_networkx(graph)
+nx.draw_networkx(graph)
 
 # Let's do the PageRank.
-pagerank = networkx.pagerank(graph)
+pagerank = nx.pagerank(graph)
 # Then sort the nodes according to the rank.
 ranked = sorted(pagerank.items(), key=lambda ns_pair: ns_pair[1], reverse=True)
 # We only keep 20% of the top-ranking nodes.
@@ -72,7 +81,7 @@ remove_n = int(len(ranked) * selectivity)
 for node, _ in ranked[remove_n:]:
     graph.remove_node(node)
 # Let's visualize it again.
-networkx.draw_networkx(graph)
+nx.draw_networkx(graph)
 
 # Now let's recover the key phrases.
 edges = graph.edge
@@ -99,3 +108,6 @@ for n in range(2, 5):
 sorted_phrases = sorted(phrases, key=str.lower)
 for p in sorted_phrases:
     print(p)
+    
+print(graph)
+print('the end')
