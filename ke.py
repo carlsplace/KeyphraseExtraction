@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 import nltk
 import re
 import networkx as nx
 import matplotlib
+import matplotlib.pyplot as plt
 from nltk.stem import SnowballStemmer
 # Install the following packages. This may take a few seconds if you haven't had them installed.
 # packages = (
@@ -12,15 +14,6 @@ from nltk.stem import SnowballStemmer
 
 # for package in packages:
 #     nltk.download(package)
-
-with open('test_text.txt', 'r') as inFile:
-    text = inFile.read()
-
-# print(type(text))
-
-# print(text)
-tokens = nltk.word_tokenize(text)
-tagged_tokens = nltk.pos_tag(tokens)
 
 # Before we build the graph, we need some helper functions.
 def is_word(token):
@@ -48,10 +41,20 @@ def normalized_token(token):
     stemmer = SnowballStemmer("english") 
     return stemmer.stem(token.lower())
     
+    
+with open('test.txt', 'r') as inFile:
+    text = inFile.read()
+
+# print(type(text))
+
+# print(text)
+tokens = nltk.word_tokenize(text)
+tagged_tokens = nltk.pos_tag(tokens)
+
 # Now let's build the graph.
 graph = nx.Graph()
-
 # Here, bigrams are "tagged bigrams".
+# 此处有疑问，与textrank论文中的图不同
 bigrams = nltk.ngrams(tagged_tokens, 2)
 for bg in bigrams:
     # for t in bg:
@@ -60,29 +63,37 @@ for bg in bigrams:
         # graph.add_edge(*normalized)
     if all(is_good_token(t) for t in bg):
         normalized = [normalized_token(t[0]) for t in bg]
-        graph.add_edge(normalized[0], normalized[1])
+        graph.add_edge(*normalized)
+        
 # We can visualize it with matplotlib.
 # %matplotlib inline
-print("***********test*************")
-print(graph)
-print("***********test*************")
-
 matplotlib.rcParams['figure.figsize'] = (20.0, 16.0)
 nx.draw_networkx(graph)
+
+plt.axis('off')
+plt.savefig("1graph.png") # save as png
+# plt.show() # display
 
 # Let's do the PageRank.
 pagerank = nx.pagerank(graph)
 # Then sort the nodes according to the rank.
 ranked = sorted(pagerank.items(), key=lambda ns_pair: ns_pair[1], reverse=True)
+print(len(ranked))
+######################################################################
 # We only keep 20% of the top-ranking nodes.
-selectivity = 0.20
+selectivity = 0.2
 remove_n = int(len(ranked) * selectivity)
+######################################################################
+
 # Now remove the nodes we don't need.
 for node, _ in ranked[remove_n:]:
     graph.remove_node(node)
 # Let's visualize it again.
 nx.draw_networkx(graph)
-
+plt.axis('off')
+plt.savefig("2reduced_graph.png") # save as png
+# plt.show() # display
+print(len(graph))
 # Now let's recover the key phrases.
 edges = graph.edge
 phrases = set()
@@ -108,6 +119,3 @@ for n in range(2, 5):
 sorted_phrases = sorted(phrases, key=str.lower)
 for p in sorted_phrases:
     print(p)
-    
-print(graph)
-print('the end')
