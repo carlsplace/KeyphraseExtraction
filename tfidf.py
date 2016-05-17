@@ -23,4 +23,11 @@ for file_name in filelist:
         
 counts = vectorizer.fit_transform(file_content)
 tfidf = transformer.fit_transform(counts)
+# print(tfidf.toarray())
+
+file_content = ["Life is short, use Python.",
+                "Life is short, use Python.",
+                "Life is short, use Python."]
+counts = vectorizer.fit_transform(file_content)
+tfidf = transformer.fit_transform(counts)
 print(tfidf.toarray())
