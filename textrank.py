@@ -93,7 +93,7 @@ nx.draw_networkx(graph)
 plt.axis('off')
 plt.savefig("2reduced_graph.png") # save as png
 # plt.show() # display
-print(len(graph))
+
 # Now let's recover the key phrases.
 edges = graph.edge
 phrases = set()
