@@ -42,7 +42,7 @@ def normalized_token(token):
     return stemmer.stem(token.lower())
     
     
-with open('test.txt', 'r') as inFile:
+with open('reference&practice/test.txt', 'r') as inFile:
     text = inFile.read()
 
 # print(type(text))
