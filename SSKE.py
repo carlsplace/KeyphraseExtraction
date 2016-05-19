@@ -58,20 +58,24 @@ def get_candidate(files_text, accepted_tags):
         single_file_candidate = []
     return candidate
     
-def get_tfidf(filtered_files):
+def get_tfidf(candidate):
     """计算候选关键词的tfidf值，作为点特征之一"""
     pass
     
-def get_first_position(filtered_files):
+def get_first_position(candidate):
     """计算first positon属性，作为点特征之一"""
+    pass
     
-def get_reappear_times(filtered_files):
+def get_reappear_times(candidate):
     """计算边的重复出现次数，作为边的特征之一"""
+    pass
     
 def build_graph(word_pairs):
     """建图"""
+    pass
     
 def use_pagerank(graph, pvector):
     """使用pagerank函数，计算节点重要性。"""
-
+    pass
+    
 data_path = "/home/cal/workspace/python/KeyphraseExtraction/testdata"
