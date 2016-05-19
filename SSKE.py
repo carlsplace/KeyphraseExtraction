@@ -6,10 +6,10 @@ import string
 import nltk
 import re
 import networkx as nx
-import matplotlib
+# import matplotlib
 import matplotlib.pyplot as plt
-from nltk.stem import SnowballStemmer
-from sklearn import feature_extraction
+# from nltk.stem import SnowballStemmer
+# from sklearn import feature_extraction
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import CountVectorizer
 
@@ -29,17 +29,17 @@ def read_files(data_path):
             files_text.append(f.read())
     return files_text
     
-def get_candidate(files_text, accepted_tags):
+def get_candidate_p(files_text, accepted_tags):
     """过滤掉无用词汇，留下候选关键词，选择保留名词和形容词
     files_text格式：[["cat_NN dog_NN"], ["desk_NN tiger_NN"]]
     accepted_tags控制保留关键词的词性, 例如 accepted_tags = {'NN'}
-    return candidate: [['cat', 'dog'], ['desk', 'tiger']]
+    return candidate: [' cat dog', ' desk tiger']
     """
     texts_splited = []
     word_splited = []
     text_all_splited = []
     texts_all_splited = []
-    single_file_candidate = []
+    single_file_candidate = ''
     candidate = []
     for f in files_text:
         texts_splited.append(f.split())
@@ -53,14 +53,15 @@ def get_candidate(files_text, accepted_tags):
     for text in texts_all_splited:
         for word in text:
             if word[1] in accepted_tags:
-                single_file_candidate.append(word[0])
+                single_file_candidate = single_file_candidate + ' ' + word[0]
         candidate.append(single_file_candidate)
-        single_file_candidate = []
+        single_file_candidate = ''
     return candidate
     
 def get_tfidf(candidate):
     """计算候选关键词的tfidf值，作为点特征之一"""
-    pass
+    counts = vectorizer.fit_transform(candidate)
+    tfidf = transformer.fit_transform(counts)
     
 def get_first_position(candidate):
     """计算first positon属性，作为点特征之一"""
