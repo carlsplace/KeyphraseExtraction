@@ -57,7 +57,7 @@ def get_candidate_p(files_text, accepted_tags):
     
 def get_tfidf(candidate):
     """计算候选关键词的tfidf值，作为点特征之一
-    输入候选关键词，如：[' cat dog', ' desk tiger']
+    输入候选关键词，candidate：[' cat dog', ' desk tiger']
     输出tfidf值部位0的候选关键词及其tfidf值，用字典存储
     """
     vectorizer = CountVectorizer()    
@@ -75,18 +75,35 @@ def get_tfidf(candidate):
                 text_tfidf[word[j]] = weight[i][j]
         texts_tfidf.append(text_tfidf)
     return texts_tfidf
-        
+    
 def get_first_position(candidate):
     """计算first positon属性，作为点特征之一"""
     pass
+    
+def get_word_pairs(candidate):
+    word_pairs = []
+    for i in range(len(candidate)):
+        words = candidate[i].split()
+        word_pair = []
+        for j in range(len(words)-1):
+            word_pair.append((words[j], words[j+1]))
+        word_pairs.append(word_pair)
+    return word_pairs
     
 def get_reappear_times(candidate):
     """计算边的重复出现次数，作为边的特征之一"""
     pass
     
 def build_graph(word_pairs):
-    """建图"""
-    pass
+    """建图
+    返回一个list，list中每个元素为一个图
+    """
+    G = []
+    for docs_pair in word_pairs:
+        g = nx.Graph()
+        g.add_edges_from(docs_pair)
+        G.append(g)
+    return G
     
 def use_pagerank(graph, pvector):
     """使用pagerank函数，计算节点重要性。"""
@@ -97,4 +114,5 @@ files_text = read_files(data_path)
 accepted_tags = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']
 candidate = get_candidate_p(files_text, accepted_tags)
 texts_tfidf = get_tfidf(candidate)
-print(candidate[0])
+word_pairs = get_word_pairs(candidate)
+G = build_graph(word_pairs)
