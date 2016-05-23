@@ -56,24 +56,25 @@ def get_candidate_p(files_text, accepted_tags):
     return candidate
     
 def get_tfidf(candidate):
-    """计算候选关键词的tfidf值，作为点特征之一"""
+    """计算候选关键词的tfidf值，作为点特征之一
+    输入候选关键词，如：[' cat dog', ' desk tiger']
+    输出tfidf值部位0的候选关键词及其tfidf值，用字典存储
+    """
     vectorizer = CountVectorizer()    
     transformer = TfidfTransformer()
     counts = vectorizer.fit_transform(candidate)
     tfidf = transformer.fit_transform(counts)
     word = vectorizer.get_feature_names()
     weight = tfidf.toarray()
-    # print(word)
-    # 这里将每份文档词语的TF-IDF写入tfidffile文件夹中保存
-    sFilePath = './tfidffile'
-    if not os.path.exists(sFilePath) : 
-        os.mkdir(sFilePath)
+    # print(len(weight[0]))
+    texts_tfidf = []
     for i in range(len(weight)) :
-        # print(u"--------Writing all the tf-idf in the",i,u" file into ",sFilePath+'/'+string.zfill(i,5)+'.txt',"--------")
-        f = open(sFilePath+'/'+string.zfill(i,5)+'.txt','w+')
+        text_tfidf = {}
         for j in range(len(word)) :
-            f.write(word[j]+"    "+str(weight[i][j])+"\n")
-        f.close()
+            if weight[i][j] > 0:
+                text_tfidf[word[j]] = weight[i][j]
+        texts_tfidf.append(text_tfidf)
+    return texts_tfidf
         
 def get_first_position(candidate):
     """计算first positon属性，作为点特征之一"""
@@ -91,8 +92,9 @@ def use_pagerank(graph, pvector):
     """使用pagerank函数，计算节点重要性。"""
     pass
     
-data_path = "/home/cal/workspace/python/KeyphraseExtraction/testdata"
+data_path = "./testdata"
 files_text = read_files(data_path)
 accepted_tags = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']
 candidate = get_candidate_p(files_text, accepted_tags)
-get_tfidf(candidate)
+texts_tfidf = get_tfidf(candidate)
+print(candidate[0])
