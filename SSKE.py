@@ -13,16 +13,12 @@ import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import CountVectorizer
 
-vectorizer = CountVectorizer()
-transformer = TfidfTransformer()
-
 def read_files(data_path):
     """依次读取文件，保存在列表filelist中。"""
     filelist = []
     files = os.listdir(data_path)
     for f in files:
         filelist.append(f)
-    filelist = getFilelist(data_path)
     files_text = []
     for file_name in filelist:
         with open(data_path+'/'+file_name, 'r') as f:
@@ -52,17 +48,33 @@ def get_candidate_p(files_text, accepted_tags):
         text_all_splited = []
     for text in texts_all_splited:
         for word in text:
-            if word[1] in accepted_tags:
-                single_file_candidate = single_file_candidate + ' ' + word[0]
+            # print(word)
+            if word[0][1] in accepted_tags:
+                single_file_candidate = single_file_candidate + ' ' + word[0][0]
         candidate.append(single_file_candidate)
         single_file_candidate = ''
     return candidate
     
 def get_tfidf(candidate):
     """计算候选关键词的tfidf值，作为点特征之一"""
+    vectorizer = CountVectorizer()    
+    transformer = TfidfTransformer()
     counts = vectorizer.fit_transform(candidate)
     tfidf = transformer.fit_transform(counts)
-    
+    word = vectorizer.get_feature_names()
+    weight = tfidf.toarray()
+    # print(word)
+    # 这里将每份文档词语的TF-IDF写入tfidffile文件夹中保存
+    sFilePath = './tfidffile'
+    if not os.path.exists(sFilePath) : 
+        os.mkdir(sFilePath)
+    for i in range(len(weight)) :
+        # print(u"--------Writing all the tf-idf in the",i,u" file into ",sFilePath+'/'+string.zfill(i,5)+'.txt',"--------")
+        f = open(sFilePath+'/'+string.zfill(i,5)+'.txt','w+')
+        for j in range(len(word)) :
+            f.write(word[j]+"    "+str(weight[i][j])+"\n")
+        f.close()
+        
 def get_first_position(candidate):
     """计算first positon属性，作为点特征之一"""
     pass
@@ -80,3 +92,7 @@ def use_pagerank(graph, pvector):
     pass
     
 data_path = "/home/cal/workspace/python/KeyphraseExtraction/testdata"
+files_text = read_files(data_path)
+accepted_tags = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']
+candidate = get_candidate_p(files_text, accepted_tags)
+get_tfidf(candidate)

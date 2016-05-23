@@ -71,7 +71,7 @@ def Tfidf(filelist) :
 
     # 这里将每份文档词语的TF-IDF写入tfidffile文件夹中保存
     for i in range(len(weight)) :
-　　　　 print u"--------Writing all the tf-idf in the",i,u" file into ",sFilePath+'/'+string.zfill(i,5)+'.txt',"--------"
+        print u"--------Writing all the tf-idf in the",i,u" file into ",sFilePath+'/'+string.zfill(i,5)+'.txt',"--------"
         f = open(sFilePath+'/'+string.zfill(i,5)+'.txt','w+')
         for j in range(len(word)) :
             f.write(word[j]+"    "+str(weight[i][j])+"\n")
