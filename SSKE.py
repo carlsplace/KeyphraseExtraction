@@ -8,22 +8,35 @@ import re
 import networkx as nx
 # import matplotlib
 import matplotlib.pyplot as plt
-# from nltk.stem import SnowballStemmer
-# from sklearn import feature_extraction
+from nltk.stem import SnowballStemmer
+from sklearn import feature_extraction
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import CountVectorizer
 
 def read_files(data_path):
-    """依次读取文件，保存在列表filelist中。"""
-    filelist = []
+    """依次读取文件，保存在列表file_list中。"""
+    file_list = []
     files = os.listdir(data_path)
     for f in files:
-        filelist.append(f)
+        file_list.append(f)
     files_text = []
-    for file_name in filelist:
+    for file_name in file_list:
         with open(data_path+'/'+file_name, 'r') as f:
             files_text.append(f.read())
-    return files_text
+    return files_text, file_list
+    
+def rm_tags(files_text):
+    """处理输入文本，将已经标注好的POS tag去掉，以便使用nltk包处理。"""
+    texts_splited = []
+    texts_notag = []
+    for f in files_text:
+        texts_splited.append(f.split())
+    for text in texts_splited:
+        text_notag = ''
+        for t in text:
+            text_notag = text_notag + ' ' + t[:t.find('_')]
+        texts_notag.append(text_notag)
+    return texts_notag
     
 def get_candidate_p(files_text, accepted_tags):
     """过滤掉无用词汇，留下候选关键词，选择保留名词和形容词
@@ -105,14 +118,21 @@ def build_graph(word_pairs):
         G.append(g)
     return G
     
-def use_pagerank(graph, pvector):
+def use_pagerank(G, pvector=0):
     """使用pagerank函数，计算节点重要性。"""
-    pass
+    pageranks = []
+    for graph in G:
+        pageranks.append(nx.pagerank(graph))
+    return pageranks
     
 data_path = "./testdata"
-files_text = read_files(data_path)
+files_text, file_list = read_files(data_path)
 accepted_tags = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']
 candidate = get_candidate_p(files_text, accepted_tags)
 texts_tfidf = get_tfidf(candidate)
 word_pairs = get_word_pairs(candidate)
 G = build_graph(word_pairs)
+pageranks = use_pagerank(G)
+
+texts_notag = rm_tags(files_text)
+print(texts_notag)
