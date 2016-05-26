@@ -57,11 +57,9 @@ graph = nx.Graph()
 # 此处有疑问，与textrank论文中的图不同
 bigrams = nltk.ngrams(tagged_tokens, 2)
 for bg in bigrams:
-    # for t in bg:
-    #     normalized = []
-    #     print(stemmer.stem('runs'))
-        # graph.add_edge(*normalized)
+    print(bg)
     if all(is_good_token(t) for t in bg):
+        # print("is_good_token", bg)
         normalized = [normalized_token(t[0]) for t in bg]
         graph.add_edge(*normalized)
         
@@ -119,3 +117,4 @@ for n in range(2, 5):
 sorted_phrases = sorted(phrases, key=str.lower)
 for p in sorted_phrases:
     print(p)
+
