@@ -80,16 +80,17 @@ def get_filtered_text(tagged_tokens, ACCEPTED_TAGS):
 #     return corpus
 
 def add_node_features(node_features, node_feature):
-#需要修改，将特征写到Graph里面去。查文档。
+    # 目前看来，没必要将点特征存储在Graph中，边的具体特征也没必要，边只需要添加一个weight权重属性。P使用google_matrix函数来生成，alpha=1
     """
     该函数用来维护点的特征字典
-    第一次调用前，node_features需要先初始化为{}，node_features为字典{node:[]}
+    第一次调用前，node_features需要先初始化为{}，node_features为字典{node1:[1,2,3], node2:[]}
     """
     for node in node_feature:
         node_features[node].append(node_feature[node])
     return node_features
 
 def get_tfidf(corpus, file_list):
+    # 需要修改
     """计算候选关键词的tfidf值，作为点特征之一
     输入候选关键词，candidates：[' cat dog', ' desk tiger']
     输出tfidf值部位0的候选关键词及其tfidf值，用字典存储
@@ -116,36 +117,37 @@ def get_first_position(candidates):
 def get_reappear_times(candidates):
     """计算边的重复出现次数，作为边的特征之一"""
     pass
+
+def calc_edge_weight(edge_features, omega):
+    """
+    注意edge_features的格式，字典，如'a'到'b'的一条边，特征为[1,2,3]，{'a b':[1,2,3], 'a c':[2,3,4]}
+    返回[['a','b',weight], ['a','c',weight]]
+    """
+    # edge_weight = []
+    for edge in edge_features:
+        edge_and_weight = edge.split().append(np.asarray(edge_features[edge]) * omega)
+    return edge_and_weight
     
-def build_graph(tagged_tokens):
-    """建图
+def build_graph(edge_and_weight):
+    #需要修改
+    """
+    建图，无向还是又向？
     返回一个list，list中每个元素为一个图
     """
-    Graphs = []
-    for per_tagged_tokens in tagged_tokens:
-        graph = nx.Graph()
-        bigrams = nltk.ngrams(per_tagged_tokens, 2)
-        for bg in bigrams:
-            # print(bg)
-            if all(is_good_token(t) for t in bg):
-                normalized = [normalized_token(t[0]) for t in bg]
-                graph.add_edge(*normalized)
-        Graphs.append(graph)
-    return Graphs
+    graph = nx.DiGraph()
+    graph.add_weighted_edges_from(edge_and_weight)
+    return graph
     
-def add_edge_weight(Graphs, reappear_times):
-    pass
-    
-def use_pagerank(Graphs, candidates_tfidf):
-    """使用pagerank函数，计算节点重要性。"""
-    pageranks = []
-    for i in range(len(Graphs)):
-        # tfidf值作为personalization向量，报错，提示有节点缺少值
-        pageranks.append(nx.pagerank(Graphs[i]))
-        # pageranks.append(nx.pagerank(Graphs[i], personalization=candidates_tfidf[i]))
-    # for graph in G:
-    #     pageranks.append(nx.pagerank(graph))
-    return pageranks
+# def use_pagerank(Graphs, candidates_tfidf):
+#     """使用pagerank函数，计算节点重要性。"""
+#     pageranks = []
+#     for i in range(len(Graphs)):
+#         # tfidf值作为personalization向量，报错，提示有节点缺少值
+#         pageranks.append(nx.pagerank(Graphs[i]))
+#         # pageranks.append(nx.pagerank(Graphs[i], personalization=candidates_tfidf[i]))
+#     # for graph in G:
+#     #     pageranks.append(nx.pagerank(graph))
+#     return pageranks
     
 data_path = "./testdata"
 ACCEPTED_TAGS = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']

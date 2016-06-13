@@ -10,9 +10,9 @@ def createDirectedGraph(edge, omega):
     return DG
 
 def getTransMatrix(DG):
-    P = nx.to_numpy_matrix(DG)
+    P = nx.google_matrix(DG, alpha=1)
     # not good enough, have to handle dangling nodes
-    # P /= P.sum(axis=1)
+    P /= P.sum(axis=1)
     P = np.array(P)
     return P
 
