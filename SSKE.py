@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 import os
 import sys
@@ -6,38 +6,38 @@ import string
 import nltk
 import re
 import networkx as nx
-# import matplotlib
 import matplotlib.pyplot as plt
 from nltk.stem import SnowballStemmer
 from sklearn import feature_extraction
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import CountVectorizer
-
-def read_files(data_path):
-    """依次读取文件，保存在列表file_list中。"""
+    
+def get_filelist(file_path):
     file_list = []
-    files = os.listdir(data_path)
+    files = os.listdir(file_path)
     for f in files:
         file_list.append(f)
-    files_text = []
-    for file_name in file_list:
-        with open(data_path+'/'+file_name, 'r') as f:
-            files_text.append(f.read())
-    return files_text, file_list
-    
-def rm_tags(files_text):
+    return file_list
+
+def readfile(file_path, file_name):
+    with open(file_path+'/'+file_name, 'r') as f:
+        file_text = f.read()
+    return file_text
+
+def write_file(text, file_path, file_name):
+    if not os.path.exists(file_path) : 
+        os.mkdir(file_path)
+    with open(file_path+'/'+file_name, 'w') as f:
+        f.write(text)
+
+def rm_tags(file_text):
     """处理输入文本，将已经标注好的POS tag去掉，以便使用nltk包处理。"""
-    texts_splited = []
-    texts_notag = []
-    for f in files_text:
-        texts_splited.append(f.split())
-    for text in texts_splited:
-        text_notag = ''
-        for t in text:
-            text_notag = text_notag + ' ' + t[:t.find('_')]
-        texts_notag.append(text_notag)
-    return texts_notag
-    
+    file_splited = file_text.split()
+    text_notag = ''
+    for t in file_splited:
+        text_notag = text_notag + ' ' + t[:t.find('_')]
+    return text_notag
+
 ###################################################################
 def is_word(token):
     """
@@ -61,85 +61,42 @@ def normalized_token(token):
     stemmer = SnowballStemmer("english") 
     return stemmer.stem(token.lower())
 #####################################################################
-# 弃用
-def get_candidates_p(files_text, ACCEPTED_TAGS):
-    """过滤掉无用词汇，留下候选关键词，选择保留名词和形容词
-    files_text格式：[["cat_NN dog_NN"], ["desk_NN tiger_NN"]]
-    ACCEPTED_TAGS控制保留关键词的词性, 例如 ACCEPTED_TAGS = {'NN'}
-    return candidates: [' cat dog', ' desk tiger']
-    """
-    # 功能冗余
-    texts_splited = []
-    word_splited = []
-    text_all_splited = []
-    texts_all_splited = []
-    single_file_candidates = ''
-    candidates = []
-    for f in files_text:
-        texts_splited.append(f.split())
-    for text_splited in texts_splited:
-        for word_pos in text_splited:
-            word_splited.append(word_pos.split('_'))
-            text_all_splited.append(word_splited)
-            word_splited = []
-        texts_all_splited.append(text_all_splited)
-        text_all_splited = []
-    for text in texts_all_splited:
-        for word in text:
-            # print(word)
-            if word[0][1] in ACCEPTED_TAGS:
-                single_file_candidates = single_file_candidates + ' ' + word[0][0]
-        candidates.append(single_file_candidates)
-        single_file_candidates = ''
-    return candidates
-# 弃用
-def get_word_pairs(candidates):
-    word_pairs = []
-    for i in range(len(candidates)):
-        words = candidates[i].split()
-        word_pair = []
-        for j in range(len(words)-1):
-            word_pair.append((words[j], words[j+1]))
-        word_pairs.append(word_pair)
-    return word_pairs
+# tokens = nltk.word_tokenize(text)
+# tagged_tokens = nltk.pos_tag(tokens)
     
-def get_2tokens(texts_notag):
-    """tokens, tagged_tokens是list of lists
-    tokens: [['cat', 'dog'], ['desk', 'tiger']]
-    tagged_tokens: [[("cat","NN"), ("dog", "NN")], [("desk", "NN"), ("tiger", "NN")]]
+def get_filtered_text(tagged_tokens, ACCEPTED_TAGS):
+    """过滤掉无用词汇，留下候选关键词，选择保留名词和形容词，并且恢复词形stem
+       使用filtered_text的时候要注意：filtered_text中的单词是可能会重复出现的。
     """
-    tokens = []
-    tagged_tokens = []
-    for text in texts_notag:
-        per_tokens = nltk.word_tokenize(text)
-        per_tagged_tokens = nltk.pos_tag(per_tokens)
-        tokens.append(per_tokens)
-        tagged_tokens.append(per_tagged_tokens)
-    return tokens, tagged_tokens
+    filtered_text = ''
+    for tagged_token in tagged_tokens:
+        if is_good_token(tagged_token):
+            filtered_text = filtered_text + ' '+ normalized_token(tagged_token[0])
+    return filtered_text
     
-def get_candidates(tagged_tokens, ACCEPTED_TAGS):
-    """过滤掉无用词汇，留下候选关键词，选择保留名词和形容词
-    files_text格式：[[("cats","NNS"), ("dog", "NN")], [("desk", "NN"), ("tiger", "NN")]]
-    ACCEPTED_TAGS控制保留关键词的词性, 例如 ACCEPTED_TAGS = {'NN'}
-    return candidates: [' cat dog', ' desk tiger']
+# def get_corpus(corpus, filtered_text):
+#     """返回一个list，每项为每个文本的内容，排列顺序按照file_list
+#        第一次调用之前，要先初始化corpus = []"""
+#     return corpus
+
+def add_node_features(node_features, node_feature):
+#需要修改，将特征写到Graph里面去。查文档。
     """
-    candidates = []
-    for per_tagged_tokens in tagged_tokens:
-        normalized = ''
-        for tagged_token in per_tagged_tokens:
-            if is_good_token(tagged_token):
-                normalized = normalized + ' '+ normalized_token(tagged_token[0])
-        candidates.append(normalized)
-    return candidates
-    
-def get_tfidf(candidates):
+    该函数用来维护点的特征字典
+    第一次调用前，node_features需要先初始化为{}，node_features为字典{node:[]}
+    """
+    for node in node_feature:
+        node_features[node].append(node_feature[node])
+    return node_features
+
+def get_tfidf(corpus, file_list):
     """计算候选关键词的tfidf值，作为点特征之一
     输入候选关键词，candidates：[' cat dog', ' desk tiger']
     输出tfidf值部位0的候选关键词及其tfidf值，用字典存储
     """
     vectorizer = CountVectorizer()    
     transformer = TfidfTransformer()
-    counts = vectorizer.fit_transform(candidates)
+    counts = vectorizer.fit_transform(corpus)
     tfidf = transformer.fit_transform(counts)
     word = vectorizer.get_feature_names()
     weight = tfidf.toarray()
