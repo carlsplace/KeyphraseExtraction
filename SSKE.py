@@ -3,6 +3,7 @@
 import os
 import sys
 import string
+import itertools
 import nltk
 import re
 import networkx as nx
@@ -66,7 +67,7 @@ def normalized_token(token):
     
 def get_filtered_text(tagged_tokens, ACCEPTED_TAGS):
     """过滤掉无用词汇，留下候选关键词，选择保留名词和形容词，并且恢复词形stem
-       使用filtered_text的时候要注意：filtered_text中的单词是可能会重复出现的。
+       使用filtered_text的时候要注意：filtered_text是一串文本，其中的单词是可能会重复出现的。
     """
     filtered_text = ''
     for tagged_token in tagged_tokens:
@@ -118,23 +119,43 @@ def get_reappear_times(candidates):
     """计算边的重复出现次数，作为边的特征之一"""
     pass
 
+def get_edge_count(filtered_text, window = 2):
+    """
+    输出边
+    顺便统计便的共现次数
+    输出格式：{'a b':[2], 'b c':[3]}
+    """
+    edges = []
+    edge_and_count = {}
+    tokens = filtered_text.split()
+    for i in range(0, len(tokens) - window + 1):
+        edges = edges + list(itertools.combinations(tokens[i:i+window],2))
+    for i in range(len(edges)):
+        for edge in edges:
+            if edges[i][0] == edge[1] and edges[i][1] == edge[0]:
+                edges[i] = edge
+                # 此处处理之后，在继续输入其他特征时，需要先判断下边的表示顺序是否一致
+    for edge in edges:
+        edge_and_count[tuple(edge)] = [edges.count(edge), ]
+    return edge_and_count
+
 def calc_edge_weight(edge_features, omega):
     """
-    注意edge_features的格式，字典，如'a'到'b'的一条边，特征为[1,2,3]，{'a b':[1,2,3], 'a c':[2,3,4]}
+    注意edge_features的格式，字典，如'a'到'b'的一条边，特征为[1,2,3]，{('a','b'):[1,2,3], ('a','c'):[2,3,4]}
     返回[['a','b',weight], ['a','c',weight]]
     """
     # edge_weight = []
     for edge in edge_features:
-        edge_and_weight = edge.split().append(np.asarray(edge_features[edge]) * omega)
+        edge_and_weight = list(edge).append(np.asarray(edge_features[edge]) * omega)
     return edge_and_weight
     
 def build_graph(edge_and_weight):
     #需要修改
     """
-    建图，无向还是又向？
+    建图，无向
     返回一个list，list中每个元素为一个图
     """
-    graph = nx.DiGraph()
+    graph = nx.Graph()
     graph.add_weighted_edges_from(edge_and_weight)
     return graph
     
@@ -149,17 +170,31 @@ def build_graph(edge_and_weight):
 #     #     pageranks.append(nx.pagerank(graph))
 #     return pageranks
     
-data_path = "./testdata"
 ACCEPTED_TAGS = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']
-files_text, file_list = read_files(data_path)
+
+test_text = """
+            I live to create a better version of me
+            I live to keep up with my kids
+            I live to look good and feel even better
+            I live in the moment
+            I live because some I love needs me
+            """
+test_text2 = 'a b a b a b a b a b a'
+edge_count = get_edge_count(test_text)
+edge_count2 = get_edge_count(test_text2)
+print(edge_count2)
+# files_text, file_list = read_files(data_path
 # candidates = get_candidates_p(files_text, ACCEPTED_TAGS)
 # candidates_tfidf = get_tfidf(candidates)
 # word_pairs = get_word_pairs(candidates)
 # G = build_graph(word_pairs)
 # pageranks = use_pagerank(G)
-texts_notag = rm_tags(files_text)
-tokens, tagged_tokens = get_2tokens(texts_notag)
-candidates = get_candidates(tagged_tokens, ACCEPTED_TAGS)
-candidates_tfidf = get_tfidf(candidates)
-Graphs = build_graph(tagged_tokens)
-pageranks = use_pagerank(Graphs, candidates_tfidf)
+# texts_notag = rm_tags(files_text)
+# tokens, tagged_tokens = get_2tokens(texts_notag)
+# candidates = get_candidates(tagged_tokens, ACCEPTED_TAGS)
+# candidates_tfidf = get_tfidf(candidates)
+# Graphs = build_graph(tagged_tokens)
+# pageranks = use_pagerank(Graphs, candidates_tfidf)
+
+
+#edge_features这个量最重要
