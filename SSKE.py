@@ -90,39 +90,31 @@ def add_node_features(node_features, node_feature):
         node_features[node].append(node_feature[node])
     return node_features
 
-def get_tfidf(corpus, file_list):
-    # 需要修改
-    """计算候选关键词的tfidf值，作为点特征之一
-    输入候选关键词，candidates：[' cat dog', ' desk tiger']
-    输出tfidf值部位0的候选关键词及其tfidf值，用字典存储
-    """
-    vectorizer = CountVectorizer()    
-    transformer = TfidfTransformer()
-    counts = vectorizer.fit_transform(corpus)
-    tfidf = transformer.fit_transform(counts)
-    word = vectorizer.get_feature_names()
-    weight = tfidf.toarray()
-    candidates_tfidf = []
-    for i in range(len(weight)) :
-        text_tfidf = {}
-        for j in range(len(word)) :
-            if weight[i][j] > 0:
-                text_tfidf[word[j]] = weight[i][j]
-        candidates_tfidf.append(text_tfidf)
-    return candidates_tfidf
+# def get_tfidf(corpus, file_list):
+#     # 需要修改
+#     """计算候选关键词的tfidf值，作为点特征之一
+#     输入候选关键词，candidates：[' cat dog', ' desk tiger']
+#     输出tfidf值部位0的候选关键词及其tfidf值，用字典存储
+#     """
+#     vectorizer = CountVectorizer()    
+#     transformer = TfidfTransformer()
+#     counts = vectorizer.fit_transform(corpus)
+#     tfidf = transformer.fit_transform(counts)
+#     word = vectorizer.get_feature_names()
+#     weight = tfidf.toarray()
+#     candidates_tfidf = []
+#     for i in range(len(weight)) :
+#         text_tfidf = {}
+#         for j in range(len(word)) :
+#             if weight[i][j] > 0:
+#                 text_tfidf[word[j]] = weight[i][j]
+#         candidates_tfidf.append(text_tfidf)
+#     return candidates_tfidf
     
-def get_first_position(candidates):
-    """计算first positon属性，作为点特征之一"""
-    pass
-    
-def get_reappear_times(candidates):
-    """计算边的重复出现次数，作为边的特征之一"""
-    pass
-
 def get_edge_count(filtered_text, window = 2):
     """
     输出边
-    顺便统计便的共现次数
+    顺便统计边的共现次数
     输出格式：{'a b':[2], 'b c':[3]}
     """
     edges = []
