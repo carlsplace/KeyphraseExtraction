@@ -7,6 +7,8 @@ import itertools
 import nltk
 import re
 import networkx as nx
+import numpy as np
+import math
 import matplotlib.pyplot as plt
 from nltk.stem import SnowballStemmer
 from sklearn import feature_extraction
@@ -90,35 +92,20 @@ def add_node_features(node_features, node_feature):
         node_features[node].append(node_feature[node])
     return node_features
 
-# def get_tfidf(corpus, file_list):
-#     # 需要修改
-#     """计算候选关键词的tfidf值，作为点特征之一
-#     输入候选关键词，candidates：[' cat dog', ' desk tiger']
-#     输出tfidf值部位0的候选关键词及其tfidf值，用字典存储
-#     """
-#     vectorizer = CountVectorizer()    
-#     transformer = TfidfTransformer()
-#     counts = vectorizer.fit_transform(corpus)
-#     tfidf = transformer.fit_transform(counts)
-#     word = vectorizer.get_feature_names()
-#     weight = tfidf.toarray()
-#     candidates_tfidf = []
-#     for i in range(len(weight)) :
-#         text_tfidf = {}
-#         for j in range(len(word)) :
-#             if weight[i][j] > 0:
-#                 text_tfidf[word[j]] = weight[i][j]
-#         candidates_tfidf.append(text_tfidf)
-#     return candidates_tfidf
+def calc_node_weight(node_features, phi):
+    node_weight = {}
+    for node in node_features:
+        node_weight[node] = int(node_features[node] * phi)
+    return node_weight
     
-def get_edge_count(filtered_text, window = 2):
+def get_edge_freq(filtered_text, window = 2):
     """
     输出边
     顺便统计边的共现次数
     输出格式：{'a b':[2], 'b c':[3]}
     """
     edges = []
-    edge_and_count = {}
+    edge_and_freq = {}
     tokens = filtered_text.split()
     for i in range(0, len(tokens) - window + 1):
         edges = edges + list(itertools.combinations(tokens[i:i+window],2))
@@ -128,65 +115,145 @@ def get_edge_count(filtered_text, window = 2):
                 edges[i] = edge
                 # 此处处理之后，在继续输入其他特征时，需要先判断下边的表示顺序是否一致
     for edge in edges:
-        edge_and_count[tuple(edge)] = [edges.count(edge), ]
-    return edge_and_count
+        edge_and_freq[tuple(edge)] = [2 * edges.count(edge) / (tokens.count(edge[0]) + tokens.count(edge[1]))]
+    return edge_and_freq
+
+def lDistance(firstString, secondString):
+    "Function to find the Levenshtein distance between two words/sentences - gotten from http://rosettacode.org/wiki/Levenshtein_distance#Python"
+    if len(firstString) > len(secondString):
+        firstString, secondString = secondString, firstString
+    distances = range(len(firstString) + 1)
+    for index2, char2 in enumerate(secondString):
+        newDistances = [index2 + 1]
+        for index1, char1 in enumerate(firstString):
+            if char1 == char2:
+                newDistances.append(distances[index1])
+            else:
+                newDistances.append(1 + min((distances[index1], distances[index1+1], newDistances[-1])))
+        distances = newDistances
+    return distances[-1]
+
+def add_lev_distance(edge_and_freq):
+    for edge in edge_and_freq:
+        edge_and_freq[edge].append(lDistance(edge.split()))
+    return edge_freq_lev
+
+def add_word_distance(parameter_list):
+    """
+    候选关键词之间词的个数，待思量，
+    """
+    pass
 
 def calc_edge_weight(edge_features, omega):
     """
     注意edge_features的格式，字典，如'a'到'b'的一条边，特征为[1,2,3]，{('a','b'):[1,2,3], ('a','c'):[2,3,4]}
     返回[['a','b',weight], ['a','c',weight]]
     """
-    # edge_weight = []
+    edge_weight = []
     for edge in edge_features:
-        edge_and_weight = list(edge).append(np.asarray(edge_features[edge]) * omega)
-    return edge_and_weight
+        edge_weight_tmp = list(edge).append(int(edge_features[edge] * omega))
+        edge_weight.append(edge_weight_tmp)
+    return edge_weight
     
-def build_graph(edge_and_weight):
-    #需要修改
+def build_graph(edge_weight):
     """
     建图，无向
     返回一个list，list中每个元素为一个图
     """
     graph = nx.Graph()
-    graph.add_weighted_edges_from(edge_and_weight)
+    graph.add_weighted_edges_from(edge_weight)
     return graph
     
-# def use_pagerank(Graphs, candidates_tfidf):
-#     """使用pagerank函数，计算节点重要性。"""
-#     pageranks = []
-#     for i in range(len(Graphs)):
-#         # tfidf值作为personalization向量，报错，提示有节点缺少值
-#         pageranks.append(nx.pagerank(Graphs[i]))
-#         # pageranks.append(nx.pagerank(Graphs[i], personalization=candidates_tfidf[i]))
-#     # for graph in G:
-#     #     pageranks.append(nx.pagerank(graph))
-#     return pageranks
-    
+def getTransMatrix(graph):
+    P = nx.google_matrix(graph, alpha=1)
+    # P /= P.sum(axis=1)
+    P = P.T
+    return P
+
+def calcPi3(node_weight, graph, pi, P, d=0.85):
+    # r is the reset probability vector, pi3 is an important vertor for later use
+    r = []
+    for node in graph.node:
+        r.append(node_weight[node])
+    r = np.matrix(r)
+    r = r.T
+    r = r / r.sum()
+    pi3 = d * P.T * pi - pi + (1 - d) * r
+    return pi3
+
+def calcGradientPi(pi3, P, B, mu, d=0.85):
+    P1 = d * P - np.identity(len(P))
+    g_pi = (1 - alpha) * P1 * pi3 - alpha/2 * B.T * mu
+    return g_pi
+
+#以下函数需要修改
+def get_W(i, j, k, sumj, sumk, sumjk):
+    ij = 10 * (i + 1) + j + 1
+    if ij in edge:
+        result = (edge[ij][k] * sumjk[i] - sumk[ij] * sumj[i][k]) / (sumjk[i] * sumjk[i])
+    else:
+        result = 0
+    return result
+
+def calcGradientOmega(edge, omega):
+    # complicated, be careful
+    sumjk = []
+    for i in range(1, nv+1):
+        sumjk_temp = 0
+        for key in edge:
+            if key/10 == i:
+                sumjk_temp += np.dot(edge[key], omega.T)
+        sumjk.append(sumjk_temp)
+
+    sumk = {}
+    for key in edge:
+        sumk[key] = np.dot(edge[key], omega.T)
+
+    sumj = [([0] * nef) for i in range(nv)]
+    sumj_temp = 0
+    for k in range(0, nef):
+        for i in range(1, nv+1):
+            sumj_temp = 0
+            for key in edge:
+                if key/10 == i:
+                    sumj_temp += edge[key][k]
+                    sumj[i-1][k] = sumj_temp
+
+    W_temp = [([0] * nef) for i in range(nv * nv)]
+    for i in range(nv * nv):
+        for j in range(nef):
+            W_temp[i][j] = get_W(i%10, i/10, j, sumj, sumk, sumjk)
+
+    W = np.array(W_temp) # W is partial derivatives
+    g_omega = (1 - alpha) * np.dot((np.kron(pi3, pi)), W)
+    return g_omega
+
+def calcGradientPhi(pi3, node):
+    R_temp = []
+    for key in node:
+        R_temp.append(node[key])
+    R = np.array(R_temp)
+    g_phi = (1 - alpha) * (1 - d) * np.dot(pi3, R)
+    return g_phi
+
+def calcG(pi3, B, mu):
+    b = B.shape[0] # supervised information
+    s = np.dot(mu, (np.ones(b) - np.dot(B, pi.T)).T)
+    G = alpha * np.dot(pi3, pi3.T) + (1 - alpha) * s
+    return G
+
+def updateVar(var, g_var, step_size):
+    var = var - step_size * g_var
+    var /= var.sum()
+    return var
+
+
+
+
+
+
+
+
+
 ACCEPTED_TAGS = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']
-
-test_text = """
-            I live to create a better version of me
-            I live to keep up with my kids
-            I live to look good and feel even better
-            I live in the moment
-            I live because some I love needs me
-            """
-test_text2 = 'a b a b a b a b a b a'
-edge_count = get_edge_count(test_text)
-edge_count2 = get_edge_count(test_text2)
-print(edge_count2)
-# files_text, file_list = read_files(data_path
-# candidates = get_candidates_p(files_text, ACCEPTED_TAGS)
-# candidates_tfidf = get_tfidf(candidates)
-# word_pairs = get_word_pairs(candidates)
-# G = build_graph(word_pairs)
-# pageranks = use_pagerank(G)
-# texts_notag = rm_tags(files_text)
-# tokens, tagged_tokens = get_2tokens(texts_notag)
-# candidates = get_candidates(tagged_tokens, ACCEPTED_TAGS)
-# candidates_tfidf = get_tfidf(candidates)
-# Graphs = build_graph(tagged_tokens)
-# pageranks = use_pagerank(Graphs, candidates_tfidf)
-
-
 #edge_features这个量最重要
