@@ -63,7 +63,7 @@ def normalized_token(token):
     """
     stemmer = SnowballStemmer("english") 
     return stemmer.stem(token.lower())
-#####################################################################
+###################################################################
 # tokens = nltk.word_tokenize(text)
 # tagged_tokens = nltk.pos_tag(tokens)
     
@@ -95,27 +95,27 @@ def add_node_features(node_features, node_feature):
 def calc_node_weight(node_features, phi):
     node_weight = {}
     for node in node_features:
-        node_weight[node] = int(node_features[node] * phi)
+        node_weight[node] = float(node_features[node] * phi)
     return node_weight
     
 def get_edge_freq(filtered_text, window = 2):
     """
     输出边
     顺便统计边的共现次数
-    输出格式：{'a b':[2], 'b c':[3]}
+    输出格式：{('a', 'b'):[2], ('b', 'c'):[3]}
     """
     edges = []
     edge_and_freq = {}
     tokens = filtered_text.split()
     for i in range(0, len(tokens) - window + 1):
-        edges = edges + list(itertools.combinations(tokens[i:i+window],2))
+        edges.append(itertools.combinations(tokens[i:i+window],2))
     for i in range(len(edges)):
         for edge in edges:
             if edges[i][0] == edge[1] and edges[i][1] == edge[0]:
                 edges[i] = edge
                 # 此处处理之后，在继续输入其他特征时，需要先判断下边的表示顺序是否一致
     for edge in edges:
-        edge_and_freq[tuple(edge)] = [2 * edges.count(edge) / (tokens.count(edge[0]) + tokens.count(edge[1]))]
+        edge_and_freq[edge] = [2 * edges.count(edge) / (tokens.count(edge[0]) + tokens.count(edge[1]))]
     return edge_and_freq
 
 def lDistance(firstString, secondString):
@@ -151,7 +151,7 @@ def calc_edge_weight(edge_features, omega):
     """
     edge_weight = []
     for edge in edge_features:
-        edge_weight_tmp = list(edge).append(int(edge_features[edge] * omega))
+        edge_weight_tmp = list(edge).append(float(edge_features[edge] * omega))
         edge_weight.append(edge_weight_tmp)
     return edge_weight
     
@@ -170,10 +170,13 @@ def getTransMatrix(graph):
     P = P.T
     return P
 
-def calcPi3(node_weight, graph, pi, P, d=0.85):
-    # r is the reset probability vector, pi3 is an important vertor for later use
+def calcPi3(node_weight, node_list, pi, P, d=0.85):
+    """
+    r is the reset probability vector, pi3 is an important vertor for later use
+    node_list = list(graph.node)
+    """
     r = []
-    for node in graph.node:
+    for node in node_list:
         r.append(node_weight[node])
     r = np.matrix(r)
     r = r.T
@@ -187,59 +190,58 @@ def calcGradientPi(pi3, P, B, mu, d=0.85):
     return g_pi
 
 #以下函数需要修改
-def get_W(i, j, k, sumj, sumk, sumjk):
-    ij = 10 * (i + 1) + j + 1
-    if ij in edge:
-        result = (edge[ij][k] * sumjk[i] - sumk[ij] * sumj[i][k]) / (sumjk[i] * sumjk[i])
-    else:
-        result = 0
-    return result
+def get_xijk(i, j, k, edge_features, node_list):
+    return edge_features[(node_list[i], node_list[j])][k]
 
-def calcGradientOmega(edge, omega):
-    # complicated, be careful
-    sumjk = []
-    for i in range(1, nv+1):
-        sumjk_temp = 0
-        for key in edge:
-            if key/10 == i:
-                sumjk_temp += np.dot(edge[key], omega.T)
-        sumjk.append(sumjk_temp)
+def get_omegak(k, omega):
+    return float(omega[k-1])
 
-    sumk = {}
-    for key in edge:
-        sumk[key] = np.dot(edge[key], omega.T)
+def calc_pij_omegak(i, j, k, edge_features, node_list, omega):
+    n = len(node_list)
+    l = len(omega)
+    s1 = 0
+    for j2 in range(n):
+        for k2 in range(l):
+            s1 += get_omegak(k2, omega) * get_xijk(i,j2,k2,edge_features,node_list)
+    s2 = 0
+    for k2 in range(l):
+        s2 += get_omegak(k2, omega) * get_xijk(i,j,k2,edge_features,node_list)
+    s3 = 0
+    for j2 in range(n):
+        s3 += get_xijk(i,j2,k,edge_features,node_list)
+    result = (get_xijk(i,j,k,edge_features,node_list) * s1 - s2 * s3)/(s1 * s1)
+    return float(result)
 
-    sumj = [([0] * nef) for i in range(nv)]
-    sumj_temp = 0
-    for k in range(0, nef):
-        for i in range(1, nv+1):
-            sumj_temp = 0
-            for key in edge:
-                if key/10 == i:
-                    sumj_temp += edge[key][k]
-                    sumj[i-1][k] = sumj_temp
+def calc_deriv_vP_omega(edge_features, node_list, omega):
+    n = len(node_list)
+    l = len(omega)
+    #p_ij的顺序？
+    m = []
+    for i in range(n):
+        for j in range(n):
+            rowij = []
+            for k in range(l):
+                rowij.append(calc_pij_omegak(i, j, k, edge_features, node_list, omega))
+            m.append(rowij)
+    return np.matrix(m)
 
-    W_temp = [([0] * nef) for i in range(nv * nv)]
-    for i in range(nv * nv):
-        for j in range(nef):
-            W_temp[i][j] = get_W(i%10, i/10, j, sumj, sumk, sumjk)
-
-    W = np.array(W_temp) # W is partial derivatives
-    g_omega = (1 - alpha) * np.dot((np.kron(pi3, pi)), W)
+def calcGradientOmega(edge_features, omega, pi3, pi, alpha=0.5, d=0.85):
+    g_omega = (1 - alpha) * d * np.kron(pi3, pi).T * calc_deriv_vP_omega(edge_features, node_list, omega)
     return g_omega
 
-def calcGradientPhi(pi3, node):
+def calcGradientPhi(pi3, node_features, node_list, alpha=0.5, d=0.85):
+    #此处R有疑问
     R_temp = []
-    for key in node:
-        R_temp.append(node[key])
-    R = np.array(R_temp)
-    g_phi = (1 - alpha) * (1 - d) * np.dot(pi3, R)
+    for key in node_list:
+        R_temp.append(node_features[key])
+    R = np.matrix(R_temp)
+    g_phi = (1 - alpha) * (1 - d) * pi3 * R
     return g_phi
 
-def calcG(pi3, B, mu):
-    b = B.shape[0] # supervised information
-    s = np.dot(mu, (np.ones(b) - np.dot(B, pi.T)).T)
-    G = alpha * np.dot(pi3, pi3.T) + (1 - alpha) * s
+def calcG(pi3, B, mu, alpha=0.5, d=0.85):
+    #done
+    s = mu * (np.matrix(np.ones(B.shape[0])).T - B * pi)
+    G = alpha * pi3 * pi3.T + (1 - alpha) * s
     return G
 
 def updateVar(var, g_var, step_size):
@@ -254,6 +256,6 @@ def updateVar(var, g_var, step_size):
 
 
 
-
+# node_list = list(graph.node)
 ACCEPTED_TAGS = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']
-#edge_features这个量最重要
+#edge_features这个量最重要, 向量存储成列matrix
