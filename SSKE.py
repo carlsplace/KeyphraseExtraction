@@ -41,6 +41,13 @@ def rm_tags(file_text):
         text_notag = text_notag + ' ' + t[:t.find('_')]
     return text_notag
 
+def get_tagged_tokens(file_text):
+    file_splited = file_text.split()
+    tagged_tokens = []
+    for token in file_splited:
+        tagged_tokens.append(tuple(token.split('_')))
+    return tagged_tokens
+
 ###################################################################
 def is_word(token):
     """
@@ -60,12 +67,11 @@ def is_good_token(tagged_token):
 def normalized_token(token):
     """
     Use stemmer to normalize the token.
+    建图时调用该函数，而不是在file_text改变词形的存储
     """
     stemmer = SnowballStemmer("english") 
     return stemmer.stem(token.lower())
 ###################################################################
-# tokens = nltk.word_tokenize(text)
-# tagged_tokens = nltk.pos_tag(tokens)
     
 def get_filtered_text(tagged_tokens, ACCEPTED_TAGS):
     """过滤掉无用词汇，留下候选关键词，选择保留名词和形容词，并且恢复词形stem
@@ -82,15 +88,8 @@ def get_filtered_text(tagged_tokens, ACCEPTED_TAGS):
 #        第一次调用之前，要先初始化corpus = []"""
 #     return corpus
 
-def add_node_features(node_features, node_feature):
-    # 目前看来，没必要将点特征存储在Graph中，边的具体特征也没必要，边只需要添加一个weight权重属性。P使用google_matrix函数来生成，alpha=1
-    """
-    该函数用来维护点的特征字典
-    第一次调用前，node_features需要先初始化为{}，node_features为字典{node1:[1,2,3], node2:[]}
-    """
-    for node in node_feature:
-        node_features[node].append(node_feature[node])
-    return node_features
+def read_node_features(node_list, raw_node_features, file_name):
+    pass
 
 def calc_node_weight(node_features, phi):
     node_weight = {}
@@ -255,7 +254,9 @@ def updateVar(var, g_var, step_size):
 
 
 
-
+# tokens = nltk.word_tokenize(text)
+# tagged_tokens = nltk.pos_tag(tokens)
+# tagged_tokens = get_tagged_tokens(file_text)
 # node_list = list(graph.node)
 ACCEPTED_TAGS = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']
 #edge_features这个量最重要, 向量存储成列matrix
