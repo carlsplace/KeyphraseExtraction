@@ -126,7 +126,7 @@ def get_edge_freq(filtered_text, window=2):
     edge_and_freq = {}
     tokens = filtered_text.split()
     for i in range(0, len(tokens) - window + 1):
-        edges.append(itertools.combinations(tokens[i:i+window],2))
+        edges += list(itertools.combinations(tokens[i:i+window],2))
     for i in range(len(edges)):
         for edge in edges:
             if edges[i][0] == edge[1] and edges[i][1] == edge[0]:
@@ -153,7 +153,9 @@ def lDistance(firstString, secondString):
 
 def add_lev_distance(edge_and_freq):
     for edge in edge_and_freq:
-        edge_and_freq[edge].append(lDistance(edge.split()))
+        # print(edge_and_freq[edge])
+        edge_and_freq[edge].append(lDistance(edge[0], edge[1]))
+    edge_freq_lev = edge_and_freq
     return edge_freq_lev
 
 def add_word_distance(parameter_list):
@@ -165,12 +167,14 @@ def add_word_distance(parameter_list):
 def calc_edge_weight(edge_features, omega):
     """
     注意edge_features的格式，字典，如'a'到'b'的一条边，特征为[1,2,3]，{('a','b'):[1,2,3], ('a','c'):[2,3,4]}
+    ('analysi', 'lsa'): [0.2857142857142857, 5], ('languag', 'such'): [0.16666666666666666, 6]
     返回[['a','b',weight], ['a','c',weight]]
     """
     edge_weight = []
     for edge in edge_features:
-        edge_weight_tmp = list(edge).append(float(edge_features[edge] * omega))
-        edge_weight.append(edge_weight_tmp)
+        edge_weight_tmp = list(edge)
+        edge_weight_tmp.append(float(edge_features[edge] * omega))
+        edge_weight.append(tuple(edge_weight_tmp))
     return edge_weight
     
 def build_graph(edge_weight):
@@ -202,7 +206,7 @@ def calcPi3(node_weight, node_list, pi, P, d):
     pi3 = d * P.T * pi - pi + (1 - d) * r
     return pi3
 
-def calcGradientPi(pi3, P, B, mu, d):
+def calcGradientPi(pi3, P, B, mu, alpha, d):
     P1 = d * P - np.identity(len(P))
     g_pi = (1 - alpha) * P1 * pi3 - alpha/2 * B.T * mu
     return g_pi
@@ -255,10 +259,9 @@ def calcGradientPhi(pi3, node_features, node_list, alpha, d):
     g_phi = (1 - alpha) * (1 - d) * pi3 * R
     return g_phi
 
-def calcG(pi3, B, mu, alpha, d):
-    #done
-    s = mu * (np.matrix(np.ones(B.shape[0])).T - B * pi)
-    G = alpha * pi3 * pi3.T + (1 - alpha) * s
+def calcG(pi, pi3, B, mu, alpha, d):
+    one = np.matrix(np.ones(B.shape[0])).T
+    G = alpha * pi3 * pi3.T + (1 - alpha) * mu.T * (one - B * pi)
     return G
 
 def updateVar(var, g_var, step_size):
@@ -273,19 +276,25 @@ def init_value(n):
 
 def create_B(node_list, gold):
     keyphrases = gold.split()
-    for i in len(keyphrases):
+    for i in range(len(keyphrases)):
         keyphrases[i] = normalized_token(keyphrases[i])
     n = len(node_list)
-    for keyphrase in gold:
+
+    for g in keyphrases:
+        if g not in node_list:
+            keyphrases.pop(keyphrases.index(g))
+
+    for keyphrase in keyphrases:
         prefer = node_list.index(keyphrase)
         b = [0] * n
         b[prefer] = 1
         B = []
         for node in node_list:
-            if node not in gold:
+            if node not in keyphrases:
                 neg = node_list.index(node)
                 b[neg] = -1
-                B.append(b)
+                c = b[:]
+                B.append(c)
                 b[neg] = 0
     return np.matrix(B)
 
@@ -298,6 +307,7 @@ def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon = 0
     len_omega = len(list(edge_features.values())[0])
     omega = init_value(len_omega)
     edge_weight = calc_edge_weight(edge_features, omega)
+    # print(edge_features)
     graph = build_graph(edge_weight)
 
     node_list = list(graph.node)
@@ -317,8 +327,8 @@ def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon = 0
     pi = init_value(len(node_list))
     P = getTransMatrix(graph)
     pi3 = calcPi3(node_weight, node_list, pi, P, d)
-    G0 = calcG(pi3, B, mu, alpha, d)
-    g_pi = calcGradientPi(pi3, P, B, mu, d)
+    G0 = calcG(pi, pi3, B, mu, alpha, d)
+    g_pi = calcGradientPi(pi3, P, B, mu, alpha, d)
     g_omega = calcGradientOmega(edge_features, node_list, omega, pi3, pi, alpha, d)
     g_phi = calcGradientPhi(pi3, node_features, node_list, alpha, d)
 
