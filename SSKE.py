@@ -212,10 +212,15 @@ def calcGradientPi(pi3, P, B, mu, alpha, d):
     return g_pi
 
 def get_xijk(i, j, k, edge_features, node_list):
-    return edge_features[(node_list[i], node_list[j])][k]
+    x = edge_features.get((node_list[i], node_list[j]), 0)
+    if x == 0:
+        return 0
+    else:
+        return x[k]
+    # return edge_features[(node_list[i], node_list[j])][k]
 
 def get_omegak(k, omega):
-    return float(omega[k-1])
+    return float(omega[k])
 
 def calc_pij_omegak(i, j, k, edge_features, node_list, omega):
     n = len(node_list)
@@ -248,15 +253,16 @@ def calc_deriv_vP_omega(edge_features, node_list, omega):
 
 def calcGradientOmega(edge_features, node_list, omega, pi3, pi, alpha, d):
     g_omega = (1 - alpha) * d * np.kron(pi3, pi).T * calc_deriv_vP_omega(edge_features, node_list, omega)
-    return g_omega
+    # g_omega算出来是行向量？
+    return g_omega.T
 
 def calcGradientPhi(pi3, node_features, node_list, alpha, d):
-    #此处R有疑问
+    #此处R有疑问, g_phi值有问题
     R_temp = []
     for key in node_list:
         R_temp.append(node_features[key])
     R = np.matrix(R_temp)
-    g_phi = (1 - alpha) * (1 - d) * pi3 * R
+    g_phi = (1 - alpha) * (1 - d) * pi3.T * R
     return g_phi
 
 def calcG(pi, pi3, B, mu, alpha, d):
@@ -331,16 +337,20 @@ def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon = 0
     g_pi = calcGradientPi(pi3, P, B, mu, alpha, d)
     g_omega = calcGradientOmega(edge_features, node_list, omega, pi3, pi, alpha, d)
     g_phi = calcGradientPhi(pi3, node_features, node_list, alpha, d)
+    
+    print(g_phi)
 
     e = 1
     iteration = 0
     while  e > epsilon and iteration < max_iter:
-        g_pi = calcGradientPi(pi3, P, B, mu, d)
-        g_omega = calcGradientOmega(edge_features, node_list, omega, pi3, pi, alpha, d)
-        g_phi = calcGradientPhi(pi3, node_features, node_list, alpha, d)
         pi = updateVar(pi, g_pi, step_size)
         omega = updateVar(omega, g_omega, step_size)
         phi = updateVar(phi, g_phi, step_size)
+
+        g_pi = calcGradientPi(pi3, P, B, mu, alpha, d)
+        g_omega = calcGradientOmega(edge_features, node_list, omega, pi3, pi, alpha, d)
+        g_phi = calcGradientPhi(pi3, node_features, node_list, alpha, d)
+
         edge_weight = calc_edge_weight(edge_features, omega)
         graph = build_graph(edge_weight)
         P = getTransMatrix(graph)
