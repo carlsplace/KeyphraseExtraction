@@ -89,15 +89,34 @@ def get_filtered_text(tagged_tokens, ACCEPTED_TAGS):
 #     return corpus
 
 def read_node_features(node_list, raw_node_features, file_name):
-    pass
+    file = re.findall(file_name+'.*', raw_node_features)
+    tmp1 = []
+    for t in file:
+        tmp1.append(t.split(':'))
+    tmp2 = {}
+    for t in tmp1:
+        features_t = re.search('\d.*', t[1]).group().split(',')
+        feature_num = len(features_t)
+        for i in range(feature_num):
+            features_t[i] = float(features_t[i])
+        tmp2[re.search('[a-zA-Z].*' ,t[0]).group()] = features_t
+    zero_feature = []
+    for i in range(feature_num):
+        zero_feature.append(0)
+    node_features = {}
+    for node in node_list:
+        node_features[node] = tmp2.get(node, zero_feature)
+    return node_features
 
 def calc_node_weight(node_features, phi):
+    """字典，{node: weight, node2: weight2}
+    """
     node_weight = {}
     for node in node_features:
         node_weight[node] = float(node_features[node] * phi)
     return node_weight
     
-def get_edge_freq(filtered_text, window = 2):
+def get_edge_freq(filtered_text, window=2):
     """
     输出边
     顺便统计边的共现次数
@@ -169,7 +188,7 @@ def getTransMatrix(graph):
     P = P.T
     return P
 
-def calcPi3(node_weight, node_list, pi, P, d=0.85):
+def calcPi3(node_weight, node_list, pi, P, d):
     """
     r is the reset probability vector, pi3 is an important vertor for later use
     node_list = list(graph.node)
@@ -183,12 +202,11 @@ def calcPi3(node_weight, node_list, pi, P, d=0.85):
     pi3 = d * P.T * pi - pi + (1 - d) * r
     return pi3
 
-def calcGradientPi(pi3, P, B, mu, d=0.85):
+def calcGradientPi(pi3, P, B, mu, d):
     P1 = d * P - np.identity(len(P))
     g_pi = (1 - alpha) * P1 * pi3 - alpha/2 * B.T * mu
     return g_pi
 
-#以下函数需要修改
 def get_xijk(i, j, k, edge_features, node_list):
     return edge_features[(node_list[i], node_list[j])][k]
 
@@ -224,11 +242,11 @@ def calc_deriv_vP_omega(edge_features, node_list, omega):
             m.append(rowij)
     return np.matrix(m)
 
-def calcGradientOmega(edge_features, omega, pi3, pi, alpha=0.5, d=0.85):
+def calcGradientOmega(edge_features, node_list, omega, pi3, pi, alpha, d):
     g_omega = (1 - alpha) * d * np.kron(pi3, pi).T * calc_deriv_vP_omega(edge_features, node_list, omega)
     return g_omega
 
-def calcGradientPhi(pi3, node_features, node_list, alpha=0.5, d=0.85):
+def calcGradientPhi(pi3, node_features, node_list, alpha, d):
     #此处R有疑问
     R_temp = []
     for key in node_list:
@@ -237,7 +255,7 @@ def calcGradientPhi(pi3, node_features, node_list, alpha=0.5, d=0.85):
     g_phi = (1 - alpha) * (1 - d) * pi3 * R
     return g_phi
 
-def calcG(pi3, B, mu, alpha=0.5, d=0.85):
+def calcG(pi3, B, mu, alpha, d):
     #done
     s = mu * (np.matrix(np.ones(B.shape[0])).T - B * pi)
     G = alpha * pi3 * pi3.T + (1 - alpha) * s
@@ -248,15 +266,90 @@ def updateVar(var, g_var, step_size):
     var /= var.sum()
     return var
 
+def init_value(n):
+    value = np.ones(n)
+    value /= value.sum()
+    return np.asmatrix(value).T
+
+def create_B(node_list, gold):
+    keyphrases = gold.split()
+    for i in len(keyphrases):
+        keyphrases[i] = normalized_token(keyphrases[i])
+    n = len(node_list)
+    for keyphrase in gold:
+        prefer = node_list.index(keyphrase)
+        b = [0] * n
+        b[prefer] = 1
+        B = []
+        for node in node_list:
+            if node not in gold:
+                neg = node_list.index(node)
+                b[neg] = -1
+                B.append(b)
+                b[neg] = 0
+    return np.matrix(B)
+
+def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon = 0.00001, max_iter = 1000):
+    file_text = readfile(file_path, file_name)
+    tagged_tokens = get_tagged_tokens(file_text)
+    filtered_text = get_filtered_text(tagged_tokens, ACCEPTED_TAGS)
+    edge_and_freq = get_edge_freq(filtered_text)
+    edge_features = add_lev_distance(edge_and_freq)#edge_freq_lev
+    len_omega = len(list(edge_features.values())[0])
+    omega = init_value(len_omega)
+    edge_weight = calc_edge_weight(edge_features, omega)
+    graph = build_graph(edge_weight)
+
+    node_list = list(graph.node)
+    if 'KDD' in file_path:
+        raw_node_features = readfile('./data', 'KDD_node_features')
+    else:
+        raw_node_features = readfile('./data', 'WWW_node_features')
+    node_features = read_node_features(node_list, raw_node_features, file_name)
+    len_phi = len(list(node_features.values())[0])
+    phi = init_value(len_phi)
+    node_weight = calc_node_weight(node_features, phi)
+
+    gold = readfile(file_path+'/../gold', file_name)
+    B = create_B(node_list, gold)
+    mu = init_value(len(B))
+
+    pi = init_value(len(node_list))
+    P = getTransMatrix(graph)
+    pi3 = calcPi3(node_weight, node_list, pi, P, d)
+    G0 = calcG(pi3, B, mu, alpha, d)
+    g_pi = calcGradientPi(pi3, P, B, mu, d)
+    g_omega = calcGradientOmega(edge_features, node_list, omega, pi3, pi, alpha, d)
+    g_phi = calcGradientPhi(pi3, node_features, node_list, alpha, d)
+
+    e = 1
+    iteration = 0
+    while  e > epsilon and iteration < max_iter:
+        g_pi = calcGradientPi(pi3, P, B, mu, d)
+        g_omega = calcGradientOmega(edge_features, node_list, omega, pi3, pi, alpha, d)
+        g_phi = calcGradientPhi(pi3, node_features, node_list, alpha, d)
+        pi = updateVar(pi, g_pi, step_size)
+        omega = updateVar(omega, g_omega, step_size)
+        phi = updateVar(phi, g_phi, step_size)
+        edge_weight = calc_edge_weight(edge_features, omega)
+        graph = build_graph(edge_weight)
+        P = getTransMatrix(graph)
+        pi3 = calcPi3(node_weight, node_list, pi, P, d)
+        G1 = calcG(pi3, B, mu, alpha, d)
+        e = abs(G1 - G0)
+        G0 = G1
+        iteration += 1
+    if iteration > max_iter:
+        print("Over Max Iteration, iteration =", iteration)
+    return pi, omega, phi, iteration
 
 
 
-
+ACCEPTED_TAGS = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']
+pi, omega, phi, iteration = rank_doc('./data/KDD/abstracts','679710')
 
 
 # tokens = nltk.word_tokenize(text)
 # tagged_tokens = nltk.pos_tag(tokens)
 # tagged_tokens = get_tagged_tokens(file_text)
-# node_list = list(graph.node)
-ACCEPTED_TAGS = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']
 #edge_features这个量最重要, 向量存储成列matrix
