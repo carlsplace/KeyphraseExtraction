@@ -14,13 +14,6 @@ from nltk.stem import SnowballStemmer
 from sklearn import feature_extraction
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import CountVectorizer
-    
-def get_filelist(file_path):
-    file_list = []
-    files = os.listdir(file_path)
-    for f in files:
-        file_list.append(f)
-    return file_list
 
 def readfile(file_path, file_name):
     with open(file_path+'/'+file_name, 'r') as f:
@@ -32,9 +25,10 @@ def write_file(text, file_path, file_name):
         os.mkdir(file_path)
     with open(file_path+'/'+file_name, 'w') as f:
         f.write(text)
+    return 0
 
 def rm_tags(file_text):
-    """处理输入文本，将已经标注好的POS tag去掉，以便使用nltk包处理。"""
+    """处理输入文本，将已经标注好的POS tagomega去掉，以便使用nltk包处理。"""
     file_splited = file_text.split()
     text_notag = ''
     for t in file_splited:
@@ -73,7 +67,7 @@ def normalized_token(token):
     return stemmer.stem(token.lower())
 ###################################################################
     
-def get_filtered_text(tagged_tokens, ACCEPTED_TAGS):
+def get_filtered_text(tagged_tokens):
     """过滤掉无用词汇，留下候选关键词，选择保留名词和形容词，并且恢复词形stem
        使用filtered_text的时候要注意：filtered_text是一串文本，其中的单词是可能会重复出现的。
     """
@@ -304,10 +298,10 @@ def create_B(node_list, gold):
                 b[neg] = 0
     return np.matrix(B)
 
-def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.00001, max_iter=2):
+def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.00001, max_iter=100):
     file_text = readfile(file_path, file_name)
     tagged_tokens = get_tagged_tokens(file_text)
-    filtered_text = get_filtered_text(tagged_tokens, ACCEPTED_TAGS)
+    filtered_text = get_filtered_text(tagged_tokens)
     edge_and_freq = get_edge_freq(filtered_text)
     edge_features = add_lev_distance(edge_and_freq)#edge_freq_lev
     len_omega = len(list(edge_features.values())[0])
@@ -363,20 +357,32 @@ def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.0
         # print(e)
         G0 = G1
         iteration += 1
-        print(iteration)
+        # print(iteration)
     if iteration > max_iter:
         print("Over Max Iteration, iteration =", iteration)
     return pi, omega, phi, node_list
 
-
+# def get_keywords(pi, node_list):
+#     pi = pi.T.tolist()[0]
+#     pi_sort = sorted(pi, reverse=True)
+#     pi_sort = pi_sort[:len(pi_sort)//5]
+#     keywords = []
+#     for score in pi_sort:
+#         keywords.append(node_list[pi.index(score)])
+#     return keywords
 
 ACCEPTED_TAGS = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']
-pi, omega, phi, node_list = rank_doc('./data/KDD/abstracts','679710')
-print("pi:", pi.T)
-print("omega:", omega.T)
-print("phi:", phi.T)
-
-print(node_list)
+file_path = './data/KDD/abstracts'
+out_path = './data/KDD/omega_phi'
+file_name_list = os.listdir(file_path)
+for file_name in file_name_list[:len(file_name_list)//3]:
+    pi, omega, phi, node_list = rank_doc(file_path, file_name)
+    to_file = 'omega:' + str(omega.T.tolist()[0]) + '\n' + 'phi:' + str(phi.T.tolist()[0])
+    write_file(to_file, out_path, file_name)
+# pi, omega, phi, node_list = rank_doc('./data/KDD/abstracts','679710')
+# print("pi:", pi.T)
+# print("omega:", omega.T)
+# print("phi:", phi.T)
 
 
 # tokens = nltk.word_tokenize(text)
