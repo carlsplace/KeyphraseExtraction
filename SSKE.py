@@ -263,11 +263,11 @@ def calcGradientPhi(pi3, node_features, node_list, alpha, d):
         R_temp.append(node_features[key])
     R = np.matrix(R_temp)
     g_phi = (1 - alpha) * (1 - d) * pi3.T * R
-    return g_phi
+    return g_phi.T
 
 def calcG(pi, pi3, B, mu, alpha, d):
     one = np.matrix(np.ones(B.shape[0])).T
-    G = alpha * pi3 * pi3.T + (1 - alpha) * mu.T * (one - B * pi)
+    G = alpha * pi3.T * pi3 + (1 - alpha) * mu.T * (one - B * pi)
     return G
 
 def updateVar(var, g_var, step_size):
@@ -304,7 +304,7 @@ def create_B(node_list, gold):
                 b[neg] = 0
     return np.matrix(B)
 
-def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon = 0.00001, max_iter = 1000):
+def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.00001, max_iter=2):
     file_text = readfile(file_path, file_name)
     tagged_tokens = get_tagged_tokens(file_text)
     filtered_text = get_filtered_text(tagged_tokens, ACCEPTED_TAGS)
@@ -334,11 +334,14 @@ def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon = 0
     P = getTransMatrix(graph)
     pi3 = calcPi3(node_weight, node_list, pi, P, d)
     G0 = calcG(pi, pi3, B, mu, alpha, d)
+    # print(pi3)
     g_pi = calcGradientPi(pi3, P, B, mu, alpha, d)
     g_omega = calcGradientOmega(edge_features, node_list, omega, pi3, pi, alpha, d)
     g_phi = calcGradientPhi(pi3, node_features, node_list, alpha, d)
     
-    print(g_phi)
+    # print(g_pi)
+    # print(g_omega)
+    # print(g_phi)
 
     e = 1
     iteration = 0
@@ -355,21 +358,28 @@ def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon = 0
         graph = build_graph(edge_weight)
         P = getTransMatrix(graph)
         pi3 = calcPi3(node_weight, node_list, pi, P, d)
-        G1 = calcG(pi3, B, mu, alpha, d)
+        G1 = calcG(pi, pi3, B, mu, alpha, d)
         e = abs(G1 - G0)
+        # print(e)
         G0 = G1
         iteration += 1
+        print(iteration)
     if iteration > max_iter:
         print("Over Max Iteration, iteration =", iteration)
-    return pi, omega, phi, iteration
+    return pi, omega, phi, node_list
 
 
 
 ACCEPTED_TAGS = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']
-pi, omega, phi, iteration = rank_doc('./data/KDD/abstracts','679710')
+pi, omega, phi, node_list = rank_doc('./data/KDD/abstracts','679710')
+print("pi:", pi.T)
+print("omega:", omega.T)
+print("phi:", phi.T)
+
+print(node_list)
 
 
 # tokens = nltk.word_tokenize(text)
 # tagged_tokens = nltk.pos_tag(tokens)
 # tagged_tokens = get_tagged_tokens(file_text)
-#edge_features这个量最重要, 向量存储成列matrix
+# edge_features这个量最重要, 向量存储成列matrix
