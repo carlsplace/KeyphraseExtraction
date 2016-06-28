@@ -83,13 +83,15 @@ def get_filtered_text(tagged_tokens):
 #     return corpus
 
 def read_node_features(node_list, raw_node_features, file_name):
+    # 0 2 3 4 7
+    """node_list:{node1:[1,2,3], node2:[2,3,4]}"""
     file = re.findall(file_name+'.*', raw_node_features)
     tmp1 = []
     for t in file:
         tmp1.append(t.split(':'))
     tmp2 = {}
     for t in tmp1:
-        features_t = re.search('\d.*', t[1]).group().split(',')
+        features_t = re.search(r'\d.*', t[1]).group().split(',')
         feature_num = len(features_t)
         for i in range(feature_num):
             features_t[i] = float(features_t[i])
@@ -99,7 +101,8 @@ def read_node_features(node_list, raw_node_features, file_name):
         zero_feature.append(0)
     node_features = {}
     for node in node_list:
-        node_features[node] = tmp2.get(node, zero_feature)
+        f = tmp2.get(node, zero_feature)
+        node_features[node] = [f[0], f[2], f[3], f[4], f[7]]
     return node_features
 
 def calc_node_weight(node_features, phi):
@@ -298,7 +301,7 @@ def create_B(node_list, gold):
                 b[neg] = 0
     return np.matrix(B)
 
-def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.00001, max_iter=100):
+def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.001, max_iter=100):
     file_text = readfile(file_path, file_name)
     tagged_tokens = get_tagged_tokens(file_text)
     filtered_text = get_filtered_text(tagged_tokens)
@@ -357,11 +360,17 @@ def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.0
         # print(e)
         G0 = G1
         iteration += 1
-        # print(iteration)
+        print(iteration)
     if iteration > max_iter:
         print("Over Max Iteration, iteration =", iteration)
-    return pi, omega, phi, node_list
+    return pi.T.tolist()[0], omega.T.tolist()[0], phi.T.tolist()[0], node_list, graph, node_weight
 
+def top_n_words(pi, node_list, n):
+    sort = sorted(pi, reverse=True)
+    top_n = []
+    for rank in sort[:n]:
+        top_n.append(node_list[pi.index(rank)])
+    return top_n
 # def get_keywords(pi, node_list):
 #     pi = pi.T.tolist()[0]
 #     pi_sort = sorted(pi, reverse=True)
@@ -372,18 +381,20 @@ def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.0
 #     return keywords
 
 ACCEPTED_TAGS = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']
-file_path = './data/KDD/abstracts'
-out_path = './data/KDD/omega_phi'
-file_name_list = os.listdir(file_path)
-for file_name in file_name_list[:len(file_name_list)//3]:
-    pi, omega, phi, node_list = rank_doc(file_path, file_name)
-    to_file = 'omega:' + str(omega.T.tolist()[0]) + '\n' + 'phi:' + str(phi.T.tolist()[0])
-    write_file(to_file, out_path, file_name)
-# pi, omega, phi, node_list = rank_doc('./data/KDD/abstracts','679710')
-# print("pi:", pi.T)
-# print("omega:", omega.T)
-# print("phi:", phi.T)
-
+# file_path = './data/KDD/abstracts'
+# out_path = './data/KDD/omega_phi'
+# file_name_list = os.listdir(file_path)
+# for file_name in file_name_list:
+#     print((file_name))
+#     pi, omega, phi, node_list = rank_doc(file_path, file_name)
+#     to_file = 'omega:' + str(omega) + '\n' + 'phi:' + str(phi)
+#     write_file(to_file, out_path, file_name)
+paper_name = '10351682'
+pi, omega, phi, node_list, graph, node_weight = rank_doc('./data/KDD/abstracts',paper_name)
+# print("pi:", pi)
+# print("omega:", omega)
+# print("phi:", phi)
+# print(node_list)
 
 # tokens = nltk.word_tokenize(text)
 # tagged_tokens = nltk.pos_tag(tokens)
