@@ -391,10 +391,10 @@ ACCEPTED_TAGS = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']
 #     write_file(to_file, out_path, file_name)
 paper_name = '10351682'
 pi, omega, phi, node_list, graph, node_weight = rank_doc('./data/KDD/abstracts',paper_name)
-# print("pi:", pi)
-# print("omega:", omega)
-# print("phi:", phi)
-# print(node_list)
+print("pi:", pi)
+print("omega:", omega)
+print("phi:", phi)
+print(node_list)
 
 # tokens = nltk.word_tokenize(text)
 # tagged_tokens = nltk.pos_tag(tokens)
