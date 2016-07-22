@@ -301,7 +301,7 @@ def create_B(node_list, gold):
                 b[neg] = 0
     return np.matrix(B)
 
-def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.001, max_iter=100):
+def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.001, max_iter=1000):
     file_text = readfile(file_path, file_name)
     tagged_tokens = get_tagged_tokens(file_text)
     filtered_text = get_filtered_text(tagged_tokens)
@@ -329,6 +329,7 @@ def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.0
 
     pi = init_value(len(node_list))
     P = getTransMatrix(graph)
+    P0 = P
     pi3 = calcPi3(node_weight, node_list, pi, P, d)
     G0 = calcG(pi, pi3, B, mu, alpha, d)
     # print(pi3)
@@ -363,7 +364,7 @@ def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.0
         print(iteration)
     if iteration > max_iter:
         print("Over Max Iteration, iteration =", iteration)
-    return pi.T.tolist()[0], omega.T.tolist()[0], phi.T.tolist()[0], node_list, graph, node_weight
+    return pi.T.tolist()[0], omega.T.tolist()[0], phi.T.tolist()[0], node_list, graph, filtered_text, P0, P
 
 def top_n_words(pi, node_list, n):
     sort = sorted(pi, reverse=True)
@@ -381,16 +382,25 @@ def top_n_words(pi, node_list, n):
 #     return keywords
 
 ACCEPTED_TAGS = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']
-# file_path = './data/KDD/abstracts'
-# out_path = './data/KDD/omega_phi'
-# file_name_list = os.listdir(file_path)
-# for file_name in file_name_list:
-#     print((file_name))
-#     pi, omega, phi, node_list = rank_doc(file_path, file_name)
-#     to_file = 'omega:' + str(omega) + '\n' + 'phi:' + str(phi)
-#     write_file(to_file, out_path, file_name)
-paper_name = '10351682'
-pi, omega, phi, node_list, graph, node_weight = rank_doc('./data/KDD/abstracts',paper_name)
+file_path = './data/KDD/abstracts'
+out_path = './data/KDD/omega_phi'
+raw_node_f = readfile('./data', 'KDD_node_features')
+# file_name_list = re.findall(r'\d{7,8}')
+file_name_list = os.listdir(file_path)
+to_file = ''
+for file_name in file_name_list:
+    if file_name in raw_node_f:
+        print((file_name))
+        pi, omega, phi, node_list = rank_doc(file_path, file_name)
+        to_file = to_file + file_name + ':\n' + 'omega:' + str(omega) + '\n' + 'phi:' + str(phi)
+write_file(to_file, out_path, 'file_name')
+
+# paper_name = '10351682'
+# pi, omega, phi, node_list, graph, filtered_text, P0, P = rank_doc('./data/KDD/abstracts',paper_name)
+# top_n = top_n_words(pi, node_list, 10)
+# out_text = 'pi:\n' + str(pi) + '\nphi:\n' + str(phi) + '\nomega\n' + str(omega) + '\n first P\n' + str(P0) + '\n last P\n' + str(P) + '\n filtered text\n' + filtered_text + '\n top 10 words: \n' + str(top_n)
+# write_file(out_text, '/home/cal', 'output.txt')
+
 # print("pi:", pi)
 # print("omega:", omega)
 # print("phi:", phi)
