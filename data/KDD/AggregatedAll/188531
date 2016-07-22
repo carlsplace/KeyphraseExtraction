@@ -1,0 +1,89 @@
+Detecting_VBG graph-based_JJ spatial_JJ outliers_NNS :_: algorithms_NNS and_CC applications_NNS -LRB-_-LRB- a_DT summary_NN of_IN results_NNS -RRB-_-RRB-
+Identification_NN of_IN outliers_NNS can_MD lead_VB to_TO the_DT discovery_NN of_IN unexpected_JJ ,_, interesting_JJ ,_, and_CC useful_JJ knowledge_NN ._.
+Existing_VBG methods_NNS are_VBP designed_VBN for_IN detecting_VBG spatial_JJ outliers_NNS in_IN multidimensional_JJ geometric_JJ data_NN sets_NNS ,_, where_WRB a_DT distance_NN metric_NN is_VBZ available_JJ ._.
+In_IN this_DT paper_NN ,_, we_PRP focus_VBP on_IN detecting_VBG spatial_JJ outliers_NNS in_IN graph_NN structured_JJ data_NN sets_NNS ._.
+We_PRP define_VBP statistical_JJ tests_NNS ,_, analyze_VBP the_DT statistical_JJ foundation_NN underlying_VBG our_PRP$ approach_NN ,_, design_NN several_JJ fast_JJ algorithms_NNS to_TO detect_VB spatial_JJ outliers_NNS ,_, and_CC provide_VBP a_DT cost_NN model_NN for_IN outlier_NN detection_NN procedures_NNS ._.
+In_IN addition_NN ,_, we_PRP provide_VBP experimental_JJ results_NNS from_IN the_DT application_NN of_IN our_PRP$ algorithms_NNS on_IN a_DT Minneapolis-St_NN ._.
+Paul_NNP -LRB-_-LRB- Twin_NNP Cities_NNPS -RRB-_-RRB- traffic_NN dataset_NN to_TO show_VB their_PRP$ effectiveness_NN and_CC usefulness_NN ._.
+o_NN -RRB-_-RRB- is_VBZ the_DT spatial_JJ neighborhood_NN of_IN o._NNP Now_NNP ,_, a_DT Chebyshev_NNP inequality_NN like_IN approach_NN ,_, can_MD be_VB undertaken_VBN in_IN order_NN to_TO identify_VB those_DT points_NNS o_NN which_WDT are_VBP candidate_NN outliers_NNS ._.
+Indeed_RB this_DT is_VBZ the_DT state_NN of_IN the_DT art_NN =_JJ -_: =[_NN 9_CD ,_, 8_CD ,_, 4_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB the_DT approach_NN of_IN using_VBG a_DT statistical_JJ test_NN is_VBZ useful_JJ for_IN discovering_VBG global_JJ outliers_NNS but_CC may_MD not_RB be_VB able_JJ to_TO discover_VB local_JJ outliers_NNS which_WDT are_VBP likely_JJ to_TO be_VB of_IN more_JJR interest_NN ._.
+For_IN example_NN ,_, again_RB
+INTRODUCTION_NN PATIAL_NN outliers_NNS in_IN remotely_RB sensed_VBN imageries_NNS represent_VBP S_NN pixel_NN values_NNS that_WDT are_VBP significantly_RB different_JJ from_IN their_PRP$ neighborhoods_NNS even_RB though_IN it_PRP is_VBZ not_RB a_DT case_NN in_IN entire_JJ imagery_NN scale_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Up_IN to_TO now_RB ,_, numerous_JJ kinds_NNS of_IN spatial_JJ outlier_NN detection_NN algorithms_NNS have_VBP been_VBN developed_VBN in_IN the_DT fields_NNS of_IN statistics_NNS and_CC data_NNS mining_NN ._.
+A_DT graph-based_JJ analysis_NN is_VBZ one_CD of_IN typical_JJ methods_NNS to_TO define_VB spa_NN
+d_NN fraud_NN detection_NN -LRB-_-LRB- Aleskerov_NNP et_FW al._FW ,_, 1997_CD -RRB-_-RRB- ,_, insider_NN trading_NN detection_NN -LRB-_-LRB- Donoho_NNP ,_, 2004_CD -RRB-_-RRB- ,_, image_NN processing_NN -LRB-_-LRB- Chen_NNP et_FW al._FW ,_, 2005_CD ,_, Theiler_NNP and_CC Cai_NNP ,_, 2003_CD ,_, Augusteijn_NNP and_CC Folkert_NNP ,_, 2002_CD -RRB-_-RRB- and_CC traffic_NN monitoring_NN -LRB-_-LRB- =_JJ -_: =_JJ Shekhar_NNP et_FW al._FW ,_, 2001_CD -_: =-]_CD ._.
+An_DT important_JJ challenge_NN in_IN anomaly_JJ detection_NN is_VBZ the_DT difficulty_NN to_TO obtain_VB enough_RB labeled_VBN data_NNS to_TO characterize_VB anomalies_NNS ._.
+Hence_RB ,_, in_IN most_JJS cases_NNS we_PRP need_VBP to_TO operate_VB in_IN an_DT unsupervised_JJ setting_NN ,_, where_WRB only_RB
+ect_VB interesting_JJ outliers_NNS or_CC anomalies_NNS which_WDT can_MD not_RB be_VB found_VBN by_IN existing_VBG outlier_JJR detection_NN algorithms_NNS from_IN a_DT global_JJ view_NN ._.
+Specifically_RB ,_, the_DT pre-defined_JJ contextual_JJ attributes_NNS include_VBP spatial_JJ attributes_NNS =_JJ -_: =[_NN 23_CD ,_, 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, neighborhoods_NNS in_IN graphs_NNS -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, and_CC some_DT contextual_JJ attributes_NNS -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+When_WRB there_EX is_VBZ no_DT a_FW priori_FW contextual_JJ information_NN available_JJ ,_, Wang_NNP et_FW al._FW propose_VBP to_TO simultaneously_RB explore_VB contexts_NNS and_CC contextual_JJ o_NN
+ering_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+As_IN for_IN multi-source_JJ anomaly_JJ detection_NN ,_, the_DT studies_NNS focus_VBP on_IN how_WRB to_TO identify_VB anomalies_NNS within_IN a_DT specific_JJ context_NN where_WRB the_DT pre-defined_JJ contextual_JJ attributes_NNS include_VBP spatial_JJ attributes_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, neighborhoods_NNS in_IN graphs_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, social_JJ communities_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, and_CC contextual_JJ attributes_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+Although_IN these_DT studies_NNS take_VBP two_CD types_NNS of_IN attributes_NNS -LRB-_-LRB- behavioral_JJ and_CC contextual_JJ -LRB-_-LRB- 4_CD -RRB-_-RRB- -RRB-_-RRB- into_IN consideration_NN ,_, th_DT
+taking_VBG pictures_NNS of_IN it_PRP ._.
+This_DT motivates_VBZ our_PRP$ definition_NN of_IN relevance_NN weights_NNS ._.
+To_TO define_VB outliers_NNS ,_, we_PRP borrow_VBP a_DT terminology_NN from_IN the_DT data_NNS mining_NN community_NN ,_, called_VBN spatial_JJ outliers_NNS ._.
+Due_JJ to_TO Shenkhar_NNP et_FW al._FW =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT spatial_JJ outlier_NN is_VBZ a_DT spatially_RB referenced_VBN object_NN whose_WP$ non-spatial_JJ attribute_NN values_NNS are_VBP significantly_RB different_JJ from_IN those_DT of_IN other_JJ spatially_RB referenced_VBN objects_NNS in_IN its_PRP$ spatial_JJ neighborhood_NN ._.
+Corres_NNS
+utliers_NNS ._.
+As_IN a_DT matter_NN of_IN fact_NN ,_, without_IN imposing_VBG normality_NN ,_, there_EX is_VBZ almost_RB no_DT way_NN to_TO detect_VB outliers_NNS in_IN higher_JJR dimensional_JJ data_NNS -LRB-_-LRB- only_RB exception_NN is_VBZ outlier_NN detection_NN in_IN bivariate_NN samples_NNS -RRB-_-RRB- ._.
+Shekhar_NN -LRB-_-LRB- 2001_CD =_SYM -_: =[_NN 206_CD -RRB-_-RRB- -_: =--RRB-_NN delivered_VBD the_DT idea_NN that_IN methods_NNS for_IN detecting_VBG outliers_NNS in_IN multi-dimensional_JJ Euclidean_JJ space_NN have_VBP a_DT few_JJ limitations_NNS :_: First_JJ ,_, multi-dimensional_JJ approaches_NNS assume_VBP that_IN the_DT data_NNS items_NNS are_VBP embedded_VBN in_IN an_DT
+the_DT multi-relational_JJ NLD_NN problem_NN ._.
+The_DT area_NN of_IN outlier_NN detection_NN in_IN data_NNS mining_NN and_CC statistics_NNS aims_NNS at_IN detecting_VBG points_NNS that_WDT are_VBP considerably_RB dissimilar_JJ or_CC inconsistent_JJ with_IN the_DT remainder_NN of_IN the_DT data_NN =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 7_CD ,_, 14_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT is_VBZ conceptually_RB related_JJ to_TO our_PRP$ use_NN of_IN rarity_NN analysis_NN to_TO solve_VB the_DT NLD_NNP problem_NN ._.
+Current_JJ research_NN on_IN outlier_NN detection_NN ,_, however_RB ,_, analyzes_VBZ primarily_RB numerical_JJ entity-attribute_JJ data_NNS instead_RB of_IN mul_NN
+tting_VBG these_DT data_NNS ._.
+If_IN an_DT outlier_NN is_VBZ a_DT long_JJ segmental_JJ outlier_NN ,_, we_PRP can_MD detect_VB it_PRP by_IN comparing_VBG its_PRP$ similarity_NN with_IN the_DT neighboring_JJ nodes_NNS ,_, given_VBN the_DT nature_NN that_IN environmental_JJ data_NNS are_VBP spatially_RB correlated_VBN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Similarity_NN is_VBZ measured_VBN by_IN Dynamic_NNP Time_NNP Warping_NNP -LRB-_-LRB- DTW_NNP -RRB-_-RRB- distance_NN ,_, which_WDT can_MD capture_VB the_DT shape_NN similarity_NN in_IN the_DT elastic_JJ shifting_VBG sensing_VBG series_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+The_DT sensing_VBG series_NN are_VBP routed_VBN as_RB before_RB to_TO the_DT sink_NN ,_,
+ounded_VBN on_IN clustering_NN techniques_NNS ,_, where_WRB a_DT cluster_NN of_IN small_JJ sizes_NNS can_MD be_VB considered_VBN as_IN clustered_VBN outliers_NNS -LRB-_-LRB- Kaufman_NNP and_CC Rousseeuw_NNP ,_, 1990_CD ,_, Ng_NN and_CC Han_NN ,_, 1994_CD ,_, Ramaswamy_NNP et_FW al._FW ,_, 2000_CD ,_, Barbara_NNP and_CC Chen_NNP ,_, 2000_CD ,_, =_JJ -_: =_JJ Shekhar_NNP et_FW al._FW ,_, 2001_CD -_: =_JJ -_: ,_, 2002_CD ,_, Acuna_NNP and_CC Rodriguez_NNP ,_, 2004_CD -RRB-_-RRB- ._.
+Hu_NNP and_CC Sung_NNP -LRB-_-LRB- 2003_CD -RRB-_-RRB- ,_, whom_WP proposed_VBD a_DT method_NN to_TO identify_VB both_CC high_JJ and_CC low_JJ density_NN pattern_NN clustering_NN ,_, further_JJ partition_NN this_DT class_NN to_TO hard_JJ classifiers_NNS and_CC soft_JJ class_NN
+tial_JJ relationships_NNS such_JJ as_IN distance_NN or_CC adjacency_NN ._.
+Comparisons_NNS between_IN spatially_RB referenced_VBN objects_NNS are_VBP based_VBN on_IN non-spatial_JJ attributes_NNS ._.
+Some_DT spatial_JJ outlier_NN detection_NN algorithms_NNS have_VBP been_VBN proposed_VBN in_IN =_JJ -_: =[_NN 55_CD ,_, 56_CD ,_, 40_CD ,_, 41_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT algorithms_NNS can_MD be_VB generalised_VBN as_IN following_VBG :_: Let_VB O_NN =_JJ -LCB-_-LRB- o1_NN ,_, o2_NN ,_, ..._: ,_, oN_NN -RCB-_-RRB- represent_VBP a_DT set_NN of_IN spatial_JJ objects_NNS that_WDT have_VBP d_NN non-spatial_JJ attributes_NNS ,_, then_RB object_NN oi_NN can_MD be_VB denoted_VBN by_IN an_DT attribute_NN vecto_NN
+a_DT serious_JJ challenge_NN to_TO the_DT area_NN of_IN visualization_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+To_TO face_VB this_DT challenge_NN ,_, recent_JJ studies_NNS have_VBP proposed_VBN a_DT tighter_JJR coupling_NN between_IN visual_JJ and_CC non-visual_JJ methods_NNS for_IN data_NN analysis_NN and_CC exploration_NN =_JJ -_: =[_NN 25_CD ,_, 33_CD ,_, 34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN particular_JJ ,_, incorporating_VBG data_NNS summarization_NN techniques_NNS within_IN visualization_NN systems_NNS may_MD enhance_VB our_PRP$ ability_NN to_TO manage_VB and_CC visualize_VB very_RB large_JJ datasets_NNS of_IN high_JJ dimensionality_NN ._.
+Data_NN summarization_NN
+algorithms_NNS that_WDT assess_VBP specific_JJ properties_NNS of_IN graph_NN structures_NNS ,_, including_VBG subgraph_JJ analyses_NNS -LRB-_-LRB- e.g._FW -LRB-_-LRB- 13_CD --_: 17_CD -RRB-_-RRB- -RRB-_-RRB- ,_, connectivity_NN and_CC flow_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, graph_NN simplification_NN -LRB-_-LRB- 5_CD ,_, 18_CD -RRB-_-RRB- ,_, clustering_NN ,_, and_CC outlier_NN detection_NN =_JJ -_: =[_NN 19_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Many_JJ of_IN the_DT properties_NNS assessed_VBN by_IN these_DT tools_NNS have_VBP interpretations_NNS in_IN terms_NNS of_IN real-world_JJ phenomena_NNS -LRB-_-LRB- e.g._FW -LRB-_-LRB- 21_CD --_: 23_CD -RRB-_-RRB- -RRB-_-RRB- that_WDT are_VBP not_RB easily_RB assessed_VBN from_IN non-graph_JJ representations_NNS of_IN the_DT data_NNS ._.
+These_DT pro_NN
+Thus_RB ,_, many_JJ outlier_NN detection_NN algorithms_NNS are_VBP designed_VBN to_TO accommodate_VB the_DT special_JJ property_NN of_IN the_DT given_VBN spatial_JJ data_NNS ._.
+Shekhar_NNP et_FW al._FW introduced_VBD a_DT method_NN for_IN detecting_VBG spatial_JJ outliers_NNS in_IN graph_NN data_NNS set_VBD =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Zhao_NNP et_FW al._FW proposed_VBD a_DT wavelet-based_JJ approach_NN to_TO detect_VB region_NN outliers_NNS -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+Cheng_NNP and_CC Li_NNP developed_VBD a_DT multi-scale_JJ approach_NN to_TO detect_VB spatial-temporal_JJ outliers_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Adam_NNP et_FW al._FW proposed_VBD an_DT algorithm_NN
+t_NN ,_, outliers_NNS and_CC non-outliers_NNS ._.
+Because_IN we_PRP discuss_VBP outlier_NN factor_NN in_IN this_DT paper_NN ,_, we_PRP only_RB concentrate_VBP on_IN the_DT latter_JJ ._.
+Spatial_JJ statistic_NN -LRB-_-LRB- SS_NN -RRB-_-RRB- and_CC scatter_NN plot_NN -LRB-_-LRB- SP_NN -RRB-_-RRB- are_VBP two_CD commonly_RB used_VBN quantitative_JJ tests_NNS =_JJ -_: =[_NN 5_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT original_JJ forms_NNS of_IN these_DT two_CD tests_NNS assign_VBP each_DT site_NN to_TO one_CD of_IN two_CD sets_NNS ,_, outliers_NNS and_CC non-outliers_NNS ,_, with_IN a_DT threshold_NN determined_VBN by_IN the_DT user_NN ._.
+In_IN a_DT straightforward_JJ way_NN ,_, we_PRP generalize_VBP them_PRP to_TO output_NN
+everal_JJ approaches_NNS have_VBP also_RB been_VBN proposed_VBN for_IN mining_NN spatial_JJ data_NNS -LRB-_-LRB- see_VB -LRB-_-LRB- 35_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 48_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 46_CD -RRB-_-RRB- for_IN reviews_NNS of_IN recent_JJ results_NNS -RRB-_-RRB- :_: spatial_JJ trend_NN detection_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, clustering_NN -LRB-_-LRB- 22_CD ,_, 44_CD ,_, 4_CD ,_, 24_CD ,_, 57_CD -RRB-_-RRB- ,_, outlier_NN detection_NN =_JJ -_: =[_NN 37_CD ,_, 47_CD -RRB-_-RRB- -_: =_JJ -_: ,_, association\/co-location_NN rules_NNS -LRB-_-LRB- 30_CD ,_, 45_CD -RRB-_-RRB- and_CC classification_NN -LRB-_-LRB- 29_CD ,_, 12_CD ,_, 31_CD -RRB-_-RRB- ._.
+In_IN the_DT context_NN of_IN spatio-temporal_JJ data_NNS minig_NN ,_, where_WRB the_DT spatial_JJ and_CC temporal_JJ component_NN are_VBP expected_VBN to_TO be_VB used_VBN together_RB ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- s_NN
+can_MD be_VB cast_VBN as_IN an_DT outlier_NN detection_NN problem_NN ._.
+The_DT distinguishing_JJ characteristics_NNS of_IN spatial_JJ data_NNS is_VBZ the_DT presence_NN of_IN ``_`` spatial_JJ attributes_NNS ''_'' and_CC the_DT neighborhood_NN relationship_NN ._.
+Definition_NN 7_CD -LRB-_-LRB- Shekhar_NNP et_NNP ._.
+al._FW =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =--RRB-_NN A_NN spatial_JJ outlier_NN is_VBZ a_DT spatial_JJ referenced_JJ object_NN whose_WP$ non-spatial_JJ attribute_NN values_NNS are_VBP significantly_RB different_JJ from_IN those_DT of_IN other_JJ spatially_RB referenced_VBN objects_NNS in_IN its_PRP$ spatial_JJ neighborhood_NN ._.
+Pakdd_NN 20_CD
+INTRODUCTION_NN PATIAL_NN outliers_NNS in_IN remotely_RB sensed_VBN imageries_NNS represent_VBP S_NN pixel_NN values_NNS that_WDT are_VBP significantly_RB different_JJ from_IN their_PRP$ neighborhoods_NNS even_RB though_IN it_PRP is_VBZ not_RB a_DT case_NN in_IN entire_JJ imagery_NN scale_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Up_IN to_TO now_RB ,_, numerous_JJ kinds_NNS of_IN spatial_JJ outlier_NN detection_NN algorithms_NNS have_VBP been_VBN developed_VBN in_IN the_DT fields_NNS of_IN statistics_NNS and_CC data_NNS mining_NN ._.
+A_DT graph-based_JJ analysis_NN is_VBZ one_CD of_IN typical_JJ methods_NNS to_TO define_VB spa_NN
+where_WRB ¡_JJ neighborhood_NN of_IN ._.
+Now_RB ,_, a_DT Chebyshev_NNP inequality_NN like_IN approach_NN ,_, can_MD be_VB undertaken_VBN in_IN order_NN to_TO identify_VB those_DT points_NNS which_WDT are_VBP candidate_NN outliers_NNS ._.
+Indeed_RB this_DT is_VBZ the_DT state_NN of_IN the_DT art_NN =_JJ -_: =[_NN 9_CD ,_, 8_CD ,_, 4_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB the_DT approach_NN of_IN using_VBG a_DT statistical_JJ test_NN is_VBZ useful_JJ for_IN discovering_VBG global_JJ outliers_NNS but_CC may_MD not_RB be_VB able_JJ to_TO discover_VB local_JJ outliers_NNS which_WDT are_VBP likely_JJ to_TO be_VB of_IN more_JJR interest_NN ._.
+For_IN example_NN ,_, again_RB
+thods_NNS ,_, so_IN that_IN they_PRP are_VBP only_JJ by-products_NNS which_WDT are_VBP not_RB cared_VBN about_IN ._.
+In_IN recent_JJ years_NNS ,_, outliers_NNS themselves_PRP draw_VBP much_JJ attention_NN ,_, and_CC outlier_NN detection_NN is_VBZ studied_VBN intensively_RB by_IN the_DT data_NNS mining_NN community_NN =_JJ -_: =[_NN 18_CD ,_, 19_CD ,_, 8_CD ,_, 23_CD ,_, 9_CD ,_, 16_CD ,_, 26_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Distance-based_JJ outlier_NN detection_NN is_VBZ to_TO find_VB data_NNS that_WDT are_VBP sparse_JJ within_IN the_DT hyper-sphere_JJ having_VBG given_VBN radius_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Researchers_NNP also_RB developed_VBD efficient_JJ algorithms_NNS for_IN mining_NN distance-based_JJ outliers_NNS ,_,
+o_NN -RRB-_-RRB- is_VBZ the_DT spatial_JJ neighborhood_NN of_IN o._NNP Now_NNP ,_, a_DT Chebyshev_NNP inequality_NN like_IN approach_NN ,_, can_MD be_VB undertaken_VBN in_IN order_NN to_TO identify_VB those_DT points_NNS o_NN which_WDT are_VBP candidate_NN outliers_NNS ._.
+Indeed_RB this_DT is_VBZ the_DT state_NN of_IN the_DT art_NN =_JJ -_: =[_NN 9_CD ,_, 8_CD ,_, 4_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB the_DT approach_NN of_IN using_VBG a_DT statistical_JJ test_NN is_VBZ useful_JJ for_IN discovering_VBG global_JJ outliers_NNS but_CC may_MD not_RB be_VB able_JJ to_TO discover_VB local_JJ outliers_NNS which_WDT are_VBP likely_JJ to_TO be_VB of_IN more_JJR interest_NN ._.
+For_IN example_NN ,_, again_RB
+it_PRP receives_VBZ from_IN the_DT merging_JJ ._.
+Further_JJ implementation_NN details_NNS are_VBP discussed_VBN in_IN section_NN 3.1_CD 2.5_CD Outlier_NNP detection_NN As_IN we_PRP discussed_VBD earlier_JJR several_JJ techniques_NNS have_VBP addressed_VBN for_IN spatial_JJ outlier_NN detection_NN =_JJ -_: =[_NN 5,11,13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT case_NN of_IN graph_NN based_VBN spatial_JJ outlier_NN detection_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, emphasis_NN has_VBZ clearly_RB been_VBN given_VBN to_TO the_DT identification_NN of_IN the_DT neighborhood_NN ._.
+This_DT neighborhood_NN ,_, however_RB ,_, considers_VBZ the_DT linkage_NN between_IN spatia_NN

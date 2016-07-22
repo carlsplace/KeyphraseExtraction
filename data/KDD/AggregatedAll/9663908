@@ -1,0 +1,111 @@
+Large-scale_JJ sparse_JJ logistic_JJ regression_NN
+Logistic_JJ Regression_NN is_VBZ a_DT well-known_JJ classification_NN method_NN that_WDT has_VBZ been_VBN used_VBN widely_RB in_IN many_JJ applications_NNS of_IN data_NNS mining_NN ,_, machine_NN learning_NN ,_, computer_NN vision_NN ,_, and_CC bioinformatics_NNS ._.
+Sparse_JJ logistic_JJ regression_NN embeds_VBZ feature_NN selection_NN in_IN the_DT classification_NN framework_NN using_VBG the_DT l1-norm_NN regularization_NN ,_, and_CC is_VBZ attractive_JJ in_IN many_JJ applications_NNS involving_VBG high-dimensional_JJ data_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP Lassplore_NNP for_IN solving_VBG large-scale_JJ sparse_JJ logistic_JJ regression_NN ._.
+Specifically_RB ,_, we_PRP formulate_VBP the_DT problem_NN as_IN the_DT l1-ball_NN constrained_VBD smooth_JJ convex_NN optimization_NN ,_, and_CC propose_VBP to_TO solve_VB the_DT problem_NN using_VBG the_DT Nesterov_NNP 's_POS method_NN ,_, an_DT optimal_JJ first-order_JJ black-box_JJ method_NN for_IN smooth_JJ convex_NN optimization_NN ._.
+One_CD of_IN the_DT critical_JJ issues_NNS in_IN the_DT use_NN of_IN the_DT Nesterov_NNP 's_POS method_NN is_VBZ the_DT estimation_NN of_IN the_DT step_NN size_NN at_IN each_DT of_IN the_DT optimization_NN iterations_NNS ._.
+Previous_JJ approaches_NNS either_CC applies_VBZ the_DT constant_JJ step_NN size_NN which_WDT assumes_VBZ that_IN the_DT Lipschitz_NNP gradient_NN is_VBZ known_VBN in_IN advance_NN ,_, or_CC requires_VBZ a_DT sequence_NN of_IN decreasing_VBG step_NN size_NN which_WDT leads_VBZ to_TO slow_VB convergence_NN in_IN practice_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP an_DT adaptive_JJ line_NN search_NN scheme_NN which_WDT allows_VBZ to_TO tune_VB the_DT step_NN size_NN adaptively_RB and_CC meanwhile_RB guarantees_VBZ the_DT optimal_JJ convergence_NN rate_NN ._.
+Empirical_JJ comparisons_NNS with_IN several_JJ state-of-the-art_JJ algorithms_NNS demonstrate_VBP the_DT efficiency_NN of_IN the_DT proposed_VBN Lassplore_NN algorithm_NN for_IN large-scale_JJ problems_NNS ._.
+-LRB-_-LRB- 63_CD -RRB-_-RRB- ,_, principle_NN component_NN analysis_NN -LRB-_-LRB- 75_CD -RRB-_-RRB- ,_, linear_JJ discriminant_JJ analysis_NN -LRB-_-LRB- 70_CD -RRB-_-RRB- ,_, canonical_JJ correlation_NN analysis_NN -LRB-_-LRB- 59_CD ,_, 69_CD -RRB-_-RRB- ,_, partial_JJ least_JJS squares_NNS -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, support_NN vector_NN machines_NNS -LRB-_-LRB- 74_CD -RRB-_-RRB- ,_, and_CC logistic_JJ regression_NN =_JJ -_: =[_NN 25_CD ,_, 32_CD ,_, 58_CD ,_, 62_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+ℓ1_NN \/_: ℓq-Norm_JJ Regularization_NN Recent_JJ studies_NNS in_IN areas_NNS such_JJ as_IN machine_NN learning_NN and_CC statistics_NNS have_VBP also_RB witnessed_VBN growing_VBG interests_NNS in_IN extending_VBG the_DT ℓ1-regularization_NN to_TO the_DT ℓ1_NN \/_: ℓq-regularization_NN -LRB-_-LRB- 2_CD ,_, 3_CD ,_,
+to_TO evaluate_VB the_DT scalability_NN of_IN the_DT proposed_VBN algorithm_NN using_VBG the_DT following_JJ six_CD data_NNS sets_NNS :_: colon-cancer_NN -LRB-_-LRB- colon_NN -RRB-_-RRB- -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, leukemia_NN -LRB-_-LRB- leu_NN -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, duke_NN breast-cancer_NN -LRB-_-LRB- duke_NN -RRB-_-RRB- -LRB-_-LRB- 33_CD -RRB-_-RRB- ,_, rcv1_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, real-sim_NN ,_, and_CC news20_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT statistics_NNS of_IN the_DT test_NN data_NN sets_NNS are_VBP given_VBN in_IN Table_NNP 1_CD -LRB-_-LRB- for_IN rcv1_NN ,_, real-sim_NN ,_, and_CC news20_NN ,_, we_PRP use_VBP a_DT total_NN of_IN 2,000_CD samples_NNS in_IN the_DT following_JJ experiments_NNS -RRB-_-RRB- ._.
+All_DT experiments_NNS were_VBD carried_VBN out_RP on_IN an_DT Intel_NNP
+ormed_VBN experimental_JJ studies_NNS to_TO evaluate_VB the_DT scalability_NN of_IN the_DT proposed_VBN algorithm_NN using_VBG the_DT following_JJ six_CD data_NNS sets_NNS :_: colon-cancer_NN -LRB-_-LRB- colon_NN -RRB-_-RRB- -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, leukemia_NN -LRB-_-LRB- leu_NN -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, duke_NN breast-cancer_NN -LRB-_-LRB- duke_NN -RRB-_-RRB- -LRB-_-LRB- 33_CD -RRB-_-RRB- ,_, rcv1_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, real-sim_NN ,_, and_CC news20_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+The_DT statistics_NNS of_IN the_DT test_NN data_NN sets_NNS are_VBP given_VBN in_IN Table_NNP 1_CD -LRB-_-LRB- for_IN rcv1_NN ,_, real-sim_NN ,_, and_CC news20_NN ,_, we_PRP use_VBP a_DT total_NN of_IN 2,000_CD samples_NNS in_IN the_DT following_JJ experiments_NNS -RRB-_-RRB- ._.
+All_DT experiments_NNS w_SYM
+used_VBN extensively_RB in_IN the_DT LR_NNP model_NN ,_, leading_VBG to_TO a_DT smooth_JJ -LRB-_-LRB- differentiable_JJ -RRB-_-RRB- unconstrained_JJ convex_NN optimization_NN problem_NN ._.
+Standard_JJ optimization_NN algorithms_NNS such_JJ as_IN Newton_NNP method_NN and_CC conjugate_NN gradient_NN method_NN =_JJ -_: =[_NN 3_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: can_MD be_VB applied_VBN for_IN solving_VBG such_PDT a_DT formulation_NN ._.
+Recently_RB ,_, there_EX is_VBZ a_DT growing_VBG interest_NN in_IN applying_VBG the_DT ℓ1-norm_JJ regularization_NN in_IN the_DT LR_NNP model_NN ._.
+The_DT use_NN of_IN the_DT ℓ1-norm_NN regularization_NN has_VBZ long_RB been_VBN recogn_NN
+loss_NN function_NN ,_, which_WDT was_VBD subsequently_RB solved_VBN by_IN the_DT LARS_NN method_NN -LRB-_-LRB- 7_CD ,_, 18_CD -RRB-_-RRB- ._.
+The_DT Bayesian_JJ logistic_JJ regression_NN -LRB-_-LRB- BBR_NN -RRB-_-RRB- algorithm_NN used_VBD a_DT cyclic_JJ coordinate_JJ descent_NN method_NN for_IN the_DT Bayesian_JJ logistic_JJ regression_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Glmpath_NNP is_VBZ a_DT general_JJ solver_NN for_IN the_DT ℓ1_NN regularized_VBD generalized_JJ linear_NN models_NNS using_VBG path_NN following_VBG methods_NNS -LRB-_-LRB- 27_CD -RRB-_-RRB- ;_: it_PRP can_MD solve_VB the_DT ℓ1_NN regularized_VBD logistic_JJ regression_NN ._.
+SMLR_NN is_VBZ another_DT general_JJ solver_NN fo_NN
+tain_VB a_DT sparse_JJ model_NN ._.
+The_DT ℓ1-norm_NN regularized_VBD sparse_JJ LR_NN model_NN is_VBZ attractive_JJ in_IN many_JJ applications_NNS involving_VBG high-dimensional_JJ data_NNS in_IN that_IN it_PRP performs_VBZ feature_NN selection_NN and_CC classification_NN simultaneously_RB =_JJ -_: =[_NN 6_CD ,_, 10_CD ,_, 11_CD ,_, 16_CD ,_, 18_CD ,_, 26_CD ,_, 28_CD ,_, 30_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Solving_VBG the_DT ℓ1_NN regularized_VBD logistic_JJ regression_NN is_VBZ ,_, however_RB ,_, more_RBR challenging_JJ than_IN solving_VBG the_DT ℓ2_NN regularized_VBD counterpart_NN ,_, since_IN the_DT regularization_NN term_NN is_VBZ non-differentiable_JJ ._.
+Many_JJ algorithms_NNS have_VBP be_VB
+eratively_RB reweighted_VBN least_JJS squares_NNS least_JJS angle_NN regression_NN algorithm_NN -LRB-_-LRB- IRLS-LARS_NN -RRB-_-RRB- used_VBD a_DT quadratic_JJ approximation_NN for_IN the_DT average_JJ logistic_JJ loss_NN function_NN ,_, which_WDT was_VBD subsequently_RB solved_VBN by_IN the_DT LARS_NN method_NN =_JJ -_: =[_NN 7_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT Bayesian_JJ logistic_JJ regression_NN -LRB-_-LRB- BBR_NN -RRB-_-RRB- algorithm_NN used_VBD a_DT cyclic_JJ coordinate_JJ descent_NN method_NN for_IN the_DT Bayesian_JJ logistic_JJ regression_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Glmpath_NNP is_VBZ a_DT general_JJ solver_NN for_IN the_DT ℓ1_NN regularized_VBD generalized_JJ line_NN
+requires_VBZ prior_RB specific_JJ permission_NN and\/or_CC a_DT fee_NN ._.
+KDD_NNP '_POS 09_CD ,_, June_NNP 28_CD --_: July_NNP 1_CD ,_, 2009_CD ,_, Paris_NNP ,_, France_NNP ._.
+Copyright_NN 2009_CD ACM_NNP 978-1-60558-495-9_CD \/_: 09\/06_CD ..._: $_$ 5.00_CD ._.
+ing_NN document_NN classification_NN -LRB-_-LRB- 4_CD ,_, 5_CD -RRB-_-RRB- ,_, computer_NN vision_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, natural_JJ language_NN processing_NN -LRB-_-LRB- 14_CD ,_, 22_CD -RRB-_-RRB- ,_, and_CC bioinformatics_NNS -LRB-_-LRB- 2_CD ,_, 20_CD ,_, 29_CD ,_, 34_CD ,_, 35_CD -RRB-_-RRB- ._.
+For_IN applications_NNS with_IN many_JJ features_NNS but_CC limited_JJ training_NN samples_NNS ,_, LR_NNP is_VBZ prone_JJ to_TO overfitting_NN ._.
+Regularization_NN is_VBZ commonly_RB
+on_IN and\/or_CC a_DT fee_NN ._.
+KDD_NNP '_POS 09_CD ,_, June_NNP 28_CD --_: July_NNP 1_CD ,_, 2009_CD ,_, Paris_NNP ,_, France_NNP ._.
+Copyright_NN 2009_CD ACM_NNP 978-1-60558-495-9_CD \/_: 09\/06_CD ..._: $_$ 5.00_CD ._.
+ing_NN document_NN classification_NN -LRB-_-LRB- 4_CD ,_, 5_CD -RRB-_-RRB- ,_, computer_NN vision_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, natural_JJ language_NN processing_NN =_JJ -_: =[_NN 14_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC bioinformatics_NNS -LRB-_-LRB- 2_CD ,_, 20_CD ,_, 29_CD ,_, 34_CD ,_, 35_CD -RRB-_-RRB- ._.
+For_IN applications_NNS with_IN many_JJ features_NNS but_CC limited_JJ training_NN samples_NNS ,_, LR_NNP is_VBZ prone_JJ to_TO overfitting_NN ._.
+Regularization_NN is_VBZ commonly_RB applied_VBN to_TO reduce_VB overfitting_NN and_CC obt_NN
+tain_VB a_DT sparse_JJ model_NN ._.
+The_DT ℓ1-norm_NN regularized_VBD sparse_JJ LR_NN model_NN is_VBZ attractive_JJ in_IN many_JJ applications_NNS involving_VBG high-dimensional_JJ data_NNS in_IN that_IN it_PRP performs_VBZ feature_NN selection_NN and_CC classification_NN simultaneously_RB =_JJ -_: =[_NN 6_CD ,_, 10_CD ,_, 11_CD ,_, 16_CD ,_, 18_CD ,_, 26_CD ,_, 28_CD ,_, 30_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Solving_VBG the_DT ℓ1_NN regularized_VBD logistic_JJ regression_NN is_VBZ ,_, however_RB ,_, more_RBR challenging_JJ than_IN solving_VBG the_DT ℓ2_NN regularized_VBD counterpart_NN ,_, since_IN the_DT regularization_NN term_NN is_VBZ non-differentiable_JJ ._.
+Many_JJ algorithms_NNS have_VBP be_VB
+Applications_NNS -_: Data_NNP Mining_NNP General_NNP Terms_NNS Algorithms_NNPS Keywords_NNPS Logistic_JJ regression_NN ,_, sparse_JJ learning_NN ,_, ℓ1-ball_NN constraint_NN ,_, Nesterov_NNP 's_POS method_NN ,_, adaptive_JJ line_NN search_NN 1_CD ._.
+INTRODUCTION_NN Logistic_JJ Regression_NN -LRB-_-LRB- LR_NN -RRB-_-RRB- =_JJ -_: =[_NN 18_CD ,_, 23_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT classical_JJ classification_NN method_NN that_WDT has_VBZ been_VBN used_VBN widely_RB in_IN many_JJ applications_NNS includPermission_NN to_TO make_VB digital_JJ or_CC hard_JJ copies_NNS of_IN all_DT or_CC part_NN of_IN this_DT work_NN for_IN personal_JJ or_CC classroom_NN use_NN is_VBZ grante_NN
+7,916_CD 6_CD ._.
+EMPIRICAL_JJ EVALUATIONS_NNS We_PRP have_VBP performed_VBN experimental_JJ studies_NNS to_TO evaluate_VB the_DT scalability_NN of_IN the_DT proposed_VBN algorithm_NN using_VBG the_DT following_JJ six_CD data_NNS sets_NNS :_: colon-cancer_NN -LRB-_-LRB- colon_NN -RRB-_-RRB- -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, leukemia_NN -LRB-_-LRB- leu_NN -RRB-_-RRB- =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, duke_NN breast-cancer_NN -LRB-_-LRB- duke_NN -RRB-_-RRB- -LRB-_-LRB- 33_CD -RRB-_-RRB- ,_, rcv1_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, real-sim_NN ,_, and_CC news20_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+The_DT statistics_NNS of_IN the_DT test_NN data_NN sets_NNS are_VBP given_VBN in_IN Table_NNP 1_CD -LRB-_-LRB- for_IN rcv1_NN ,_, real-sim_NN ,_, and_CC news20_NN ,_, we_PRP use_VBP a_DT total_NN of_IN 2,000_CD samples_NNS in_IN th_DT
+e_LS sparse_JJ logistic_JJ regression_NN ._.
+In_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, an_DT interior-point_JJ method_NN was_VBD proposed_VBN for_IN solving_VBG the_DT ℓ1_NN regularized_VBD logistic_JJ regression_NN ._.
+Recently_RB ,_, an_DT algorithm_NN based_VBN on_IN the_DT fixed_JJ point_NN continuation_NN algorithm_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: was_VBD proposed_VBN to_TO solve_VB the_DT ℓ1_NN regularized_VBD logistic_JJ regression_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+An_DT extensive_JJ comparison_NN among_IN twelve_CD sparse_JJ logistic_JJ regression_NN algorithms_NNS was_VBD given_VBN in_IN -LRB-_-LRB- 30_CD -RRB-_-RRB- ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP the_DT Lassplor_NN
+9,996_CD 1,355,191_CD 9,097,916_CD 6_CD ._.
+EMPIRICAL_JJ EVALUATIONS_NNS We_PRP have_VBP performed_VBN experimental_JJ studies_NNS to_TO evaluate_VB the_DT scalability_NN of_IN the_DT proposed_VBN algorithm_NN using_VBG the_DT following_JJ six_CD data_NNS sets_NNS :_: colon-cancer_NN -LRB-_-LRB- colon_NN -RRB-_-RRB- =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, leukemia_NN -LRB-_-LRB- leu_NN -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, duke_NN breast-cancer_NN -LRB-_-LRB- duke_NN -RRB-_-RRB- -LRB-_-LRB- 33_CD -RRB-_-RRB- ,_, rcv1_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, real-sim_NN ,_, and_CC news20_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+The_DT statistics_NNS of_IN the_DT test_NN data_NN sets_NNS are_VBP given_VBN in_IN Table_NNP 1_CD -LRB-_-LRB- for_IN rcv1_NN ,_, real-sim_NN ,_, and_CC news20_NN ,_, we_PRP use_VBP a_DT total_JJ o_NN
+tain_VB a_DT sparse_JJ model_NN ._.
+The_DT ℓ1-norm_NN regularized_VBD sparse_JJ LR_NN model_NN is_VBZ attractive_JJ in_IN many_JJ applications_NNS involving_VBG high-dimensional_JJ data_NNS in_IN that_IN it_PRP performs_VBZ feature_NN selection_NN and_CC classification_NN simultaneously_RB =_JJ -_: =[_NN 6_CD ,_, 10_CD ,_, 11_CD ,_, 16_CD ,_, 18_CD ,_, 26_CD ,_, 28_CD ,_, 30_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Solving_VBG the_DT ℓ1_NN regularized_VBD logistic_JJ regression_NN is_VBZ ,_, however_RB ,_, more_RBR challenging_JJ than_IN solving_VBG the_DT ℓ2_NN regularized_VBD counterpart_NN ,_, since_IN the_DT regularization_NN term_NN is_VBZ non-differentiable_JJ ._.
+Many_JJ algorithms_NNS have_VBP be_VB
+on_IN and\/or_CC a_DT fee_NN ._.
+KDD_NNP '_POS 09_CD ,_, June_NNP 28_CD --_: July_NNP 1_CD ,_, 2009_CD ,_, Paris_NNP ,_, France_NNP ._.
+Copyright_NN 2009_CD ACM_NNP 978-1-60558-495-9_CD \/_: 09\/06_CD ..._: $_$ 5.00_CD ._.
+ing_NN document_NN classification_NN -LRB-_-LRB- 4_CD ,_, 5_CD -RRB-_-RRB- ,_, computer_NN vision_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, natural_JJ language_NN processing_NN =_JJ -_: =[_NN 14_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC bioinformatics_NNS -LRB-_-LRB- 2_CD ,_, 20_CD ,_, 29_CD ,_, 34_CD ,_, 35_CD -RRB-_-RRB- ._.
+For_IN applications_NNS with_IN many_JJ features_NNS but_CC limited_JJ training_NN samples_NNS ,_, LR_NNP is_VBZ prone_JJ to_TO overfitting_NN ._.
+Regularization_NN is_VBZ commonly_RB applied_VBN to_TO reduce_VB overfitting_NN and_CC obt_NN
+tain_VB a_DT sparse_JJ model_NN ._.
+The_DT ℓ1-norm_NN regularized_VBD sparse_JJ LR_NN model_NN is_VBZ attractive_JJ in_IN many_JJ applications_NNS involving_VBG high-dimensional_JJ data_NNS in_IN that_IN it_PRP performs_VBZ feature_NN selection_NN and_CC classification_NN simultaneously_RB =_JJ -_: =[_NN 6_CD ,_, 10_CD ,_, 11_CD ,_, 16_CD ,_, 18_CD ,_, 26_CD ,_, 28_CD ,_, 30_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Solving_VBG the_DT ℓ1_NN regularized_VBD logistic_JJ regression_NN is_VBZ ,_, however_RB ,_, more_RBR challenging_JJ than_IN solving_VBG the_DT ℓ2_NN regularized_VBD counterpart_NN ,_, since_IN the_DT regularization_NN term_NN is_VBZ non-differentiable_JJ ._.
+Many_JJ algorithms_NNS have_VBP be_VB
+ccess_NN -LRB-_-LRB- 11_CD ,_, 16_CD ,_, 18_CD ,_, 28_CD ,_, 30_CD ,_, 31_CD -RRB-_-RRB- ._.
+There_EX are_VBP several_JJ strategies_NNS for_IN solving_VBG -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+The_DT first_JJ strategy_NN is_VBZ to_TO treat_VB -LRB-_-LRB- 4_CD -RRB-_-RRB- as_IN a_DT nonsmooth_JJ optimization_NN problem_NN ,_, and_CC then_RB solve_VB it_PRP by_IN subgradient-based_JJ algorithms_NNS =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, e.g._FW ,_, Gauss-Seidel_NNP -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, grafting_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, shooting_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, BBR_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+The_DT second_JJ strategy_NN is_VBZ to_TO apply_VB some_DT smooth_JJ approximation_NN to_TO the_DT ℓ1-norm_NN ,_, so_IN that_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- can_MD be_VB approximated_VBN by_IN a_DT smooth_JJ function_NN ,_, which_WDT
+1_CD is_VBZ computed_VBN by_IN the_DT Euclidean_JJ projection_NN πG_NN -LRB-_-LRB- ._. -RRB-_-RRB- ._.
+In_IN our_PRP$ problem_NN ,_, G_NN =_JJ -LCB-_-LRB- x_NN ∈_NN R_NN n_NN |_NN ‖_CD x_CC ‖_CD 1_CD ≤_CD z_SYM -RCB-_-RRB- is_VBZ the_DT ℓ1-ball_NN ,_, and_CC thus_RB πG_NN -LRB-_-LRB- ._. -RRB-_-RRB-
+is_VBZ the_DT Euclidean_JJ projection_NN onto_IN the_DT ℓ1-ball_NN ._.
+We_PRP make_VBP use_NN of_IN method_NN proposed_VBN in_IN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: for_IN computing_VBG the_DT projection_NN ._.
+Second_RB ,_, the_DT condition_NN in_IN Step_NN 6_CD is_VBZ replaced_VBN with_IN g_NN -LRB-_-LRB- xk_NN +1_CD -RRB-_-RRB- ≤_CD g_NN -LRB-_-LRB- sk_NN -RRB-_-RRB- +_CC 〈_CD g_NN ′_NN -LRB-_-LRB- sk_NN -RRB-_-RRB- ,_, xk_FW +1_FW −_FW sk_FW 〉_FW +_CC Lk_NN 2_CD |_FW |_FW xk_FW +1_FW −_FW sk_FW |_FW |_NN 2_CD ._.
+When_WRB this_DT condition_NN holds_VBZ ,_, we_PRP say_VBP that_IN Lk_NN is_VBZ ``_`` appropriat_NN
+28_CD --_: July_NNP 1_CD ,_, 2009_CD ,_, Paris_NNP ,_, France_NNP ._.
+Copyright_NN 2009_CD ACM_NNP 978-1-60558-495-9_CD \/_: 09\/06_CD ..._: $_$ 5.00_CD ._.
+ing_NN document_NN classification_NN -LRB-_-LRB- 4_CD ,_, 5_CD -RRB-_-RRB- ,_, computer_NN vision_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, natural_JJ language_NN processing_NN -LRB-_-LRB- 14_CD ,_, 22_CD -RRB-_-RRB- ,_, and_CC bioinformatics_NN =_JJ -_: =[_NN 2_CD ,_, 20_CD ,_, 29_CD ,_, 34_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN applications_NNS with_IN many_JJ features_NNS but_CC limited_JJ training_NN samples_NNS ,_, LR_NNP is_VBZ prone_JJ to_TO overfitting_NN ._.
+Regularization_NN is_VBZ commonly_RB applied_VBN to_TO reduce_VB overfitting_NN and_CC obtain_VB a_DT robust_JJ classifier_NN ._.
+The_DT ℓ2-norm_JJ reg_NN
+o_NN redistribute_VB to_TO lists_NNS ,_, requires_VBZ prior_JJ specific_JJ permission_NN and\/or_CC a_DT fee_NN ._.
+KDD_NNP '_POS 09_CD ,_, June_NNP 28_CD --_: July_NNP 1_CD ,_, 2009_CD ,_, Paris_NNP ,_, France_NNP ._.
+Copyright_NN 2009_CD ACM_NNP 978-1-60558-495-9_CD \/_: 09\/06_CD ..._: $_$ 5.00_CD ._.
+ing_NN document_NN classification_NN =_JJ -_: =[_NN 4_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, computer_NN vision_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, natural_JJ language_NN processing_NN -LRB-_-LRB- 14_CD ,_, 22_CD -RRB-_-RRB- ,_, and_CC bioinformatics_NNS -LRB-_-LRB- 2_CD ,_, 20_CD ,_, 29_CD ,_, 34_CD ,_, 35_CD -RRB-_-RRB- ._.
+For_IN applications_NNS with_IN many_JJ features_NNS but_CC limited_JJ training_NN samples_NNS ,_, LR_NNP is_VBZ prone_JJ to_TO overfitting_NN ._.
+Regul_NN
+o_NN redistribute_VB to_TO lists_NNS ,_, requires_VBZ prior_JJ specific_JJ permission_NN and\/or_CC a_DT fee_NN ._.
+KDD_NNP '_POS 09_CD ,_, June_NNP 28_CD --_: July_NNP 1_CD ,_, 2009_CD ,_, Paris_NNP ,_, France_NNP ._.
+Copyright_NN 2009_CD ACM_NNP 978-1-60558-495-9_CD \/_: 09\/06_CD ..._: $_$ 5.00_CD ._.
+ing_NN document_NN classification_NN =_JJ -_: =[_NN 4_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, computer_NN vision_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, natural_JJ language_NN processing_NN -LRB-_-LRB- 14_CD ,_, 22_CD -RRB-_-RRB- ,_, and_CC bioinformatics_NNS -LRB-_-LRB- 2_CD ,_, 20_CD ,_, 29_CD ,_, 34_CD ,_, 35_CD -RRB-_-RRB- ._.
+For_IN applications_NNS with_IN many_JJ features_NNS but_CC limited_JJ training_NN samples_NNS ,_, LR_NNP is_VBZ prone_JJ to_TO overfitting_NN ._.
+Regul_NN
+Applications_NNS -_: Data_NNP Mining_NNP General_NNP Terms_NNS Algorithms_NNPS Keywords_NNPS Logistic_JJ regression_NN ,_, sparse_JJ learning_NN ,_, ℓ1-ball_NN constraint_NN ,_, Nesterov_NNP 's_POS method_NN ,_, adaptive_JJ line_NN search_NN 1_CD ._.
+INTRODUCTION_NN Logistic_JJ Regression_NN -LRB-_-LRB- LR_NN -RRB-_-RRB- =_JJ -_: =[_NN 18_CD ,_, 23_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT classical_JJ classification_NN method_NN that_WDT has_VBZ been_VBN used_VBN widely_RB in_IN many_JJ applications_NNS includPermission_NN to_TO make_VB digital_JJ or_CC hard_JJ copies_NNS of_IN all_DT or_CC part_NN of_IN this_DT work_NN for_IN personal_JJ or_CC classroom_NN use_NN is_VBZ grante_NN
+28_CD --_: July_NNP 1_CD ,_, 2009_CD ,_, Paris_NNP ,_, France_NNP ._.
+Copyright_NN 2009_CD ACM_NNP 978-1-60558-495-9_CD \/_: 09\/06_CD ..._: $_$ 5.00_CD ._.
+ing_NN document_NN classification_NN -LRB-_-LRB- 4_CD ,_, 5_CD -RRB-_-RRB- ,_, computer_NN vision_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, natural_JJ language_NN processing_NN -LRB-_-LRB- 14_CD ,_, 22_CD -RRB-_-RRB- ,_, and_CC bioinformatics_NN =_JJ -_: =[_NN 2_CD ,_, 20_CD ,_, 29_CD ,_, 34_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN applications_NNS with_IN many_JJ features_NNS but_CC limited_JJ training_NN samples_NNS ,_, LR_NNP is_VBZ prone_JJ to_TO overfitting_NN ._.
+Regularization_NN is_VBZ commonly_RB applied_VBN to_TO reduce_VB overfitting_NN and_CC obtain_VB a_DT robust_JJ classifier_NN ._.
+The_DT ℓ2-norm_JJ reg_NN

@@ -1,0 +1,125 @@
+Enhanced_VBN word_NN clustering_NN for_IN hierarchical_JJ text_NN classification_NN
+In_IN this_DT paper_NN we_PRP propose_VBP a_DT new_JJ information-theoretic_JJ divisive_JJ algorithm_NN for_IN word_NN clustering_NN applied_VBN to_TO text_NN classification_NN ._.
+In_IN previous_JJ work_NN ,_, such_JJ ``_`` distributional_JJ clustering_NN ''_'' of_IN features_NNS has_VBZ been_VBN found_VBN to_TO achieve_VB improvements_NNS over_IN feature_NN selection_NN in_IN terms_NNS of_IN classification_NN accuracy_NN ,_, especially_RB at_IN lower_JJR number_NN of_IN features_NNS -LRB-_-LRB- 2_CD ,_, 28_CD -RRB-_-RRB- ._.
+However_RB the_DT existing_VBG clustering_NN techniques_NNS are_VBP agglomerative_JJ in_IN nature_NN and_CC result_NN in_IN -LRB-_-LRB- i_LS -RRB-_-RRB- sub-optimal_JJ word_NN clusters_NNS and_CC -LRB-_-LRB- ii_LS -RRB-_-RRB- high_JJ computational_JJ cost_NN ._.
+In_IN order_NN to_TO explicitly_RB capture_VB the_DT optimality_NN of_IN word_NN clusters_NNS in_IN an_DT information_NN theoretic_JJ framework_NN ,_, we_PRP first_RB derive_VBP a_DT global_JJ criterion_NN for_IN feature_NN clustering_NN ._.
+We_PRP then_RB present_VBP a_DT fast_JJ ,_, divisive_JJ algorithm_NN that_WDT monotonically_RB decreases_VBZ this_DT objective_JJ function_NN value_NN ,_, thus_RB converging_VBG to_TO a_DT local_JJ minimum_NN ._.
+We_PRP show_VBP that_IN our_PRP$ algorithm_NN minimizes_VBZ the_DT ``_`` within-cluster_JJ Jensen-Shannon_NN divergence_NN ''_'' while_IN simultaneously_RB maximizing_VBG the_DT ``_`` between-cluster_JJ Jensen-Shannon_NN divergence_NN ''_'' ._.
+In_IN comparison_NN to_TO the_DT previously_RB proposed_VBN agglomerative_JJ strategies_NNS our_PRP$ divisive_JJ algorithm_NN achieves_VBZ higher_JJR classification_NN accuracy_NN especially_RB at_IN lower_JJR number_NN of_IN features_NNS ._.
+We_PRP further_RB show_VBP that_IN feature_NN clustering_NN is_VBZ an_DT effective_JJ technique_NN for_IN building_VBG smaller_JJR class_NN models_NNS in_IN hierarchical_JJ classification_NN ._.
+We_PRP present_VBP detailed_JJ experimental_JJ results_NNS using_VBG Naive_JJ Bayes_NNS and_CC Support_NN Vector_NNP Machines_NNP on_IN the_DT 20_CD Newsgroups_NNS data_NNS set_NN and_CC a_DT 3-level_JJ hierarchy_NN of_IN HTML_NNP documents_NNS collected_VBN from_IN Dmoz_NNP Open_NNP Directory_NNP ._.
+t_NN much_JJ loss_NN in_IN classification_NN accuracy_NN using_VBG Naive_JJ Bayes_NNS ._.
+Similar_JJ results_NNS have_VBP been_VBN reported_VBN for_IN SVMs_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Two_CD other_JJ dimensionality\/feature_JJ reduction_NN schemes_NNS are_VBP used_VBN in_IN latent_JJ semantic_JJ indexing_NN -LRB-_-LRB- LSI_NNP -RRB-_-RRB- =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: and_CC its_PRP$ probabilistic_JJ version_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+Typically_RB these_DT methods_NNS have_VBP been_VBN applied_VBN in_IN the_DT unsupervised_JJ setting_NN and_CC as_IN shown_VBN in_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, LSI_NNP results_VBZ in_IN lower_JJR classification_NN accuracies_NNS than_IN feature_NN clustering_NN ._.
+hed_VBN ._.
+This_DT way_NN of_IN classification_NN has_VBZ been_VBN shown_VBN to_TO be_VB equivalent_JJ to_TO the_DT standard_JJ non-hierarchical_JJ classification_NN over_IN a_DT flat_JJ set_NN of_IN leaf_NN classes_NNS if_IN maximum_JJ likelihood_NN estimates_NNS of_IN all_DT features_NNS are_VBP used_VBN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, hierarchical_JJ classification_NN along_IN with_IN feature_NN selection_NN has_VBZ been_VBN shown_VBN to_TO achieve_VB better_JJR classification_NN results_VBZ than_IN a_DT flat_JJ classifier_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+This_DT is_VBZ because_IN each_DT classifier_NN can_MD now_RB utilize_VB
+our_PRP$ algorithm_NN decreases_VBZ the_DT objective_JJ function_NN value_NN at_IN every_DT step_NN and_CC thus_RB is_VBZ guaranteed_VBN to_TO converge_VB to_TO a_DT local_JJ minimum_NN in_IN a_DT finite_JJ number_NN of_IN steps_NNS -LRB-_-LRB- note_NN that_IN finding_VBG the_DT global_JJ minimum_NN is_VBZ NPcomplete_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Also_RB ,_, by_IN Theorem_NNP 1_CD and_CC -LRB-_-LRB- 13_CD -RRB-_-RRB- we_PRP see_VBP that_IN our_PRP$ algorithm_NN minimizes_VBZ the_DT ``_`` within-cluster_NN ''_'' Jensen-Shannon_NNP divergence_NN ._.
+It_PRP turns_VBZ out_RP that_IN -LRB-_-LRB- see_VB Theorem_NNP 4_CD -RRB-_-RRB- that_IN our_PRP$ algorithm_NN simultaneously_RB maximizes_VBZ the_DT ``_`` be_VB
+s_NN to_TO better_JJR results_NNS ._.
+For_IN hierarchical_JJ text_NN data_NNS ,_, such_JJ as_IN the_DT topic_NN hierarchies_NNS of_IN Yahoo_NNP !_.
+-LRB-_-LRB- www.yahoo.com_NN -RRB-_-RRB- and_CC the_DT Open_NNP Directory_NNP Project_NNP -LRB-_-LRB- www.dmoz.org_NN -RRB-_-RRB- ,_, hierarchical_JJ classification_NN has_VBZ been_VBN studied_VBN in_IN =_JJ -_: =[_NN 18_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN more_JJR details_NNS ,_, see_VBP Section_NNP 4_CD ._.
+To_TO counter_VB high-dimensionality_JJ various_JJ methods_NNS of_IN feature_NN selection_NN have_VBP been_VBN proposed_VBN in_IN -LRB-_-LRB- 30_CD ,_, 18_CD ,_, 5_CD -RRB-_-RRB- ._.
+Distributional_JJ clustering_NN of_IN words_NNS was_VBD first_RB proposed_VBN by_IN Perei_NN
+rion_NN that_WDT captures_VBZ the_DT optimality_NN of_IN word_NN clustering_NN in_IN an_DT informationtheoretic_JJ framework_NN ._.
+This_DT leads_VBZ to_TO an_DT objective_JJ function_NN for_IN clustering_NN that_WDT is_VBZ based_VBN on_IN the_DT generalized_VBN Jensen-Shannon_NN divergence_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: among_IN an_DT arbitrary_JJ number_NN of_IN probability_NN distributions_NNS ._.
+In_IN order_NN to_TO find_VB the_DT best_JJS word_NN clustering_NN ,_, i.e._FW ,_, the_DT clustering_NN that_WDT minimizes_VBZ this_DT objective_JJ function_NN ,_, we_PRP present_VBP a_DT new_JJ divisive_JJ algorithm_NN for_IN
+es_NNS -LRB-_-LRB- 24_CD ,_, 10_CD ,_, 29_CD -RRB-_-RRB- ._.
+A_DT common_JJ ,_, and_CC often_RB overwhelming_JJ ,_, characteristic_JJ of_IN text_NN data_NNS is_VBZ its_PRP$ extremely_RB high_JJ dimensionality_NN ._.
+Typically_RB the_DT document_NN vectors_NNS are_VBP formed_VBN using_VBG a_DT vector-space_JJ or_CC bag-ofwords_JJ model_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Even_RB a_DT moderately_RB sized_VBN document_NN collecPermission_NN to_TO make_VB digital_JJ or_CC hard_JJ copies_NNS of_IN all_DT or_CC part_NN of_IN this_DT work_NN for_IN personal_JJ or_CC classroom_NN use_NN is_VBZ granted_VBN without_IN fee_NN provided_VBN that_IN copies_NNS are_VBP not_RB made_VBN or_CC
+ery_NN agglomeration_NN ,_, and_CC show_VBP that_IN feature_NN size_NN can_MD be_VB aggressively_RB reduced_VBN by_IN such_JJ clustering_NN without_IN much_JJ loss_NN in_IN classification_NN accuracy_NN using_VBG Naive_JJ Bayes_NNS ._.
+Similar_JJ results_NNS have_VBP been_VBN reported_VBN for_IN SVMs_NNS =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Two_CD other_JJ dimensionality\/feature_JJ reduction_NN schemes_NNS are_VBP used_VBN in_IN latent_JJ semantic_JJ indexing_NN -LRB-_-LRB- LSI_NNP -RRB-_-RRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC its_PRP$ probabilistic_JJ version_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+Typically_RB these_DT methods_NNS have_VBP been_VBN applied_VBN in_IN the_DT unsupervised_JJ se_FW
+s_NN using_VBG -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Figure_NN 1_CD describes_VBZ the_DT algorithm_NN in_IN detail_NN ._.
+Note_VB that_IN this_DT divisive_JJ algorithm_NN bears_VBZ some_DT resemblance_NN to_TO the_DT k-means_NN or_CC Lloyd-Max_NN algorithm_NN ,_, which_WDT usually_RB uses_VBZ squared_VBN Euclidean_JJ distances_NNS =_JJ -_: =[_NN 11_CD ,_, 10_CD ,_, 15_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Note_VB that_DT our_PRP$ initialization_NN strategy_NN is_VBZ crucial_JJ to_TO our_PRP$ algorithm_NN ,_, see_VB step_NN 1_CD in_IN Figure_NN 1_CD -LRB-_-LRB- also_RB see_VB -LRB-_-LRB- 8_CD ,_, Section_NNP 5.1_CD -RRB-_-RRB- -RRB-_-RRB- since_IN it_PRP guarantees_VBZ absolute_JJ continuity_NN of_IN each_DT p_NN -LRB-_-LRB- C_NN |_CD wt_JJ -RRB-_-RRB- with_IN at_IN least_JJS one_CD cluste_NN
+n_NN previous_JJ work_NN ,_, such_JJ ``_`` distributional_JJ clustering_NN ''_'' of_IN features_NNS has_VBZ been_VBN found_VBN to_TO achieve_VB improvements_NNS over_IN feature_NN selection_NN in_IN terms_NNS of_IN classification_NN accuracy_NN ,_, especially_RB at_IN lower_JJR number_NN of_IN features_NNS =_JJ -_: =[_NN 2_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB the_DT existing_VBG clustering_NN techniques_NNS are_VBP agglomerative_JJ in_IN nature_NN and_CC result_NN in_IN -LRB-_-LRB- i_LS -RRB-_-RRB- sub-optimal_JJ word_NN clusters_NNS and_CC -LRB-_-LRB- ii_LS -RRB-_-RRB- high_JJ computational_JJ cost_NN ._.
+In_IN order_NN to_TO explicitly_RB capture_VB the_DT optimality_NN of_IN
+racy_JJ using_VBG Naive_JJ Bayes_NNS ._.
+Similar_JJ results_NNS have_VBP been_VBN reported_VBN for_IN SVMs_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Two_CD other_JJ dimensionality\/feature_JJ reduction_NN schemes_NNS are_VBP used_VBN in_IN latent_JJ semantic_JJ indexing_NN -LRB-_-LRB- LSI_NNP -RRB-_-RRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC its_PRP$ probabilistic_JJ version_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Typically_RB these_DT methods_NNS have_VBP been_VBN applied_VBN in_IN the_DT unsupervised_JJ setting_NN and_CC as_IN shown_VBN in_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, LSI_NNP results_VBZ in_IN lower_JJR classification_NN accuracies_NNS than_IN feature_NN clustering_NN ._.
+We_PRP now_RB list_VBP the_DT main_JJ contributions_NNS
+e_LS the_DT authoritative_JJ treatment_NN in_IN the_DT book_NN by_IN Cover_NNP &_CC Thomas_NNP -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Let_VB X_NN be_VB a_DT discrete_JJ random_JJ variable_NN that_WDT takes_VBZ on_IN values_NNS from_IN the_DT set_NN X_NN with_IN probability_NN distribution_NN p_NN -LRB-_-LRB- x_NN -RRB-_-RRB- ._.
+The_DT -LRB-_-LRB- Shannon_NNP -RRB-_-RRB- entropy_NN of_IN X_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ defined_VBN as_IN H_NN -LRB-_-LRB- p_NN -RRB-_-RRB- =_JJ −_CD X_NN p_NN -LRB-_-LRB- x_NN -RRB-_-RRB- log_NN p_NN -LRB-_-LRB- x_NN -RRB-_-RRB- ._.
+x_NN ∈_CD X_NN The_DT relative_JJ entropy_NN or_CC Kullback-Leibler_NN -LRB-_-LRB- KL_NN -RRB-_-RRB- divergence_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- between_IN two_CD distributions_NNS p1_NN -LRB-_-LRB- x_NN -RRB-_-RRB- and_CC p2_NN -LRB-_-LRB- x_NN -RRB-_-RRB- is_VBZ defined_VBN as_IN KL_NN -LRB-_-LRB- p1_NN ,_, p2_NN -RRB-_-RRB- =_JJ X_NN x_NN ∈_NN X_NN p1_NN -LRB-_-LRB- x_NN -RRB-_-RRB- log_NN p1_NN -LRB-_-LRB- x_NN -RRB-_-RRB- p2_NN -LRB-_-LRB-
+s_NN using_VBG -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Figure_NN 1_CD describes_VBZ the_DT algorithm_NN in_IN detail_NN ._.
+Note_VB that_IN this_DT divisive_JJ algorithm_NN bears_VBZ some_DT resemblance_NN to_TO the_DT k-means_NN or_CC Lloyd-Max_NN algorithm_NN ,_, which_WDT usually_RB uses_VBZ squared_VBN Euclidean_JJ distances_NNS =_JJ -_: =[_NN 11_CD ,_, 10_CD ,_, 15_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Note_VB that_DT our_PRP$ initialization_NN strategy_NN is_VBZ crucial_JJ to_TO our_PRP$ algorithm_NN ,_, see_VB step_NN 1_CD in_IN Figure_NN 1_CD -LRB-_-LRB- also_RB see_VB -LRB-_-LRB- 8_CD ,_, Section_NNP 5.1_CD -RRB-_-RRB- -RRB-_-RRB- since_IN it_PRP guarantees_VBZ absolute_JJ continuity_NN of_IN each_DT p_NN -LRB-_-LRB- C_NN |_CD wt_JJ -RRB-_-RRB- with_IN at_IN least_JJS one_CD cluste_NN
+ngly_RB good_JJ classification_NN performance_NN ,_, especially_RB on_IN text_NN data_NNS ._.
+Plausible_JJ reasons_NNS for_IN the_DT success_NN of_IN Naive_JJ Bayes_NNS have_VBP been_VBN explored_VBN in_IN -LRB-_-LRB- 9_CD ,_, 12_CD -RRB-_-RRB- ._.
+4.2_CD Support_NN Vector_NNP Machines_NNP Support_NN Vector_NNP Machines_NNP -LRB-_-LRB- SVMs_NNS -RRB-_-RRB- =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP inductive_JJ learning_VBG schemes_NNS for_IN solving_VBG the_DT two_CD class_NN pattern_NN recognition_NN problem_NN ._.
+Recently_RB SVMs_NNS have_VBP been_VBN shown_VBN to_TO give_VB good_JJ results_NNS for_IN text_NN categorization_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+The_DT method_NN is_VBZ defined_VBN over_IN a_DT vec_NN
+ndependence_NN of_IN words_NNS ,_, Naive_JJ Bayes_NNP has_VBZ been_VBN found_VBN to_TO yield_VB surprisingly_RB good_JJ classification_NN performance_NN ,_, especially_RB on_IN text_NN data_NNS ._.
+Plausible_JJ reasons_NNS for_IN the_DT success_NN of_IN Naive_JJ Bayes_NNS have_VBP been_VBN explored_VBN in_IN =_JJ -_: =[_NN 9_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4.2_CD Support_NN Vector_NNP Machines_NNP Support_NN Vector_NNP Machines_NNP -LRB-_-LRB- SVMs_NNS -RRB-_-RRB- -LRB-_-LRB- 29_CD -RRB-_-RRB- are_VBP inductive_JJ learning_VBG schemes_NNS for_IN solving_VBG the_DT two_CD class_NN pattern_NN recognition_NN problem_NN ._.
+Recently_RB SVMs_NNS have_VBP been_VBN shown_VBN to_TO give_VB good_JJ results_NNS
+document_NN d._NN There_EX exist_VBP a_DT wide_JJ variety_NN of_IN algorithms_NNS for_IN text_NN classification_NN ,_, ranging_VBG from_IN the_DT simple_JJ but_CC effective_JJ Naive_JJ Bayes_NNS algorithm_NN to_TO the_DT more_RBR computationally_RB demanding_VBG Support_NN Vector_NNP Machines_NNP =_SYM -_: =[_NN 24_CD ,_, 10_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT common_JJ ,_, and_CC often_RB overwhelming_JJ ,_, characteristic_JJ of_IN text_NN data_NNS is_VBZ its_PRP$ extremely_RB high_JJ dimensionality_NN ._.
+Typically_RB the_DT document_NN vectors_NNS are_VBP formed_VBN using_VBG a_DT vector-space_JJ or_CC bag-ofwords_JJ model_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+Even_RB a_DT mo_NN
+ines_NNS Support_NN Vector_NNP Machines_NNP -LRB-_-LRB- SVMs_NNS -RRB-_-RRB- -LRB-_-LRB- 29_CD -RRB-_-RRB- are_VBP inductive_JJ learning_VBG schemes_NNS for_IN solving_VBG the_DT two_CD class_NN pattern_NN recognition_NN problem_NN ._.
+Recently_RB SVMs_NNS have_VBP been_VBN shown_VBN to_TO give_VB good_JJ results_NNS for_IN text_NN categorization_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT method_NN is_VBZ defined_VBN over_IN a_DT vector_NN space_NN where_WRB the_DT classification_NN problem_NN is_VBZ to_TO find_VB the_DT decision_NN surface_NN that_IN ``_`` best_JJS ''_'' separates_VBZ the_DT data_NN points_NNS of_IN the_DT two_CD classes_NNS ._.
+In_IN the_DT case_NN of_IN linearly_RB separable_JJ
+he_PRP bag-of-words_VBZ model_NN for_IN text_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+A_DT simple_JJ but_CC effective_JJ algorithm_NN is_VBZ the_DT Naive_JJ Bayes_NN method_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+For_IN text_NN classification_NN ,_, different_JJ variants_NNS of_IN Naive_JJ Bayes_NNS have_VBP been_VBN used_VBN ,_, but_CC McCallum_NNP and_CC Nigam_NNP =_SYM -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: showed_VBD that_IN the_DT variant_NN based_VBN on_IN the_DT multinomial_JJ model_NN leads_VBZ to_TO better_JJR results_NNS ._.
+For_IN hierarchical_JJ text_NN data_NNS ,_, such_JJ as_IN the_DT topic_NN hierarchies_NNS of_IN Yahoo_NNP !_.
+-LRB-_-LRB- www.yahoo.com_NN -RRB-_-RRB- and_CC the_DT Open_NNP Directory_NNP Project_NNP -LRB-_-LRB- www_NN
+lustering_VBG that_DT minimizes_VBZ this_DT objective_JJ function_NN ,_, we_PRP present_VBP a_DT new_JJ divisive_JJ algorithm_NN for_IN clustering_NN words_NNS ._.
+This_DT algorithm_NN is_VBZ reminiscent_JJ of_IN the_DT k-means_NN algorithm_NN but_CC uses_VBZ Kullback_NNP Leibler_NNP divergences_NNS =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: instead_RB of_IN squared_VBN Euclidean_JJ distances_NNS ._.
+We_PRP prove_VBP that_IN our_PRP$ divisive_JJ algorithm_NN monotonically_RB decreases_VBZ the_DT objective_JJ function_NN value_NN ,_, thus_RB converging_VBG to_TO a_DT local_JJ minimum_NN ._.
+We_PRP also_RB show_VBP that_IN our_PRP$ algorithm_NN
+ndependence_NN of_IN words_NNS ,_, Naive_JJ Bayes_NNP has_VBZ been_VBN found_VBN to_TO yield_VB surprisingly_RB good_JJ classification_NN performance_NN ,_, especially_RB on_IN text_NN data_NNS ._.
+Plausible_JJ reasons_NNS for_IN the_DT success_NN of_IN Naive_JJ Bayes_NNS have_VBP been_VBN explored_VBN in_IN =_JJ -_: =[_NN 9_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4.2_CD Support_NN Vector_NNP Machines_NNP Support_NN Vector_NNP Machines_NNP -LRB-_-LRB- SVMs_NNS -RRB-_-RRB- -LRB-_-LRB- 29_CD -RRB-_-RRB- are_VBP inductive_JJ learning_VBG schemes_NNS for_IN solving_VBG the_DT two_CD class_NN pattern_NN recognition_NN problem_NN ._.
+Recently_RB SVMs_NNS have_VBP been_VBN shown_VBN to_TO give_VB good_JJ results_NNS
+nts_NNS are_VBP arranged_VBN in_IN a_DT hierarchy_NN of_IN classes_NNS and_CC a_DT full-feature_JJ classifier_NN is_VBZ applied_VBN at_IN each_DT node_NN of_IN the_DT hierarchy_NN ._.
+A_DT way_NN to_TO reduce_VB dimensionality_NN is_VBZ by_IN the_DT distributional_JJ clustering_NN of_IN words\/features_NNS =_JJ -_: =[_NN 25_CD ,_, 2_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Each_DT word_NN cluster_NN can_MD then_RB be_VB treated_VBN as_IN a_DT single_JJ feature_NN and_CC thus_RB dimensionality_NN can_MD be_VB drastically_RB reduced_VBN ._.
+As_IN shown_VBN by_IN -LRB-_-LRB- 2_CD ,_, 28_CD -RRB-_-RRB- ,_, such_JJ feature_NN clustering_NN is_VBZ more_RBR effective_JJ than_IN feature_NN selection_NN -LRB-_-LRB- 30_CD
+s_NN to_TO better_JJR results_NNS ._.
+For_IN hierarchical_JJ text_NN data_NNS ,_, such_JJ as_IN the_DT topic_NN hierarchies_NNS of_IN Yahoo_NNP !_.
+-LRB-_-LRB- www.yahoo.com_NN -RRB-_-RRB- and_CC the_DT Open_NNP Directory_NNP Project_NNP -LRB-_-LRB- www.dmoz.org_NN -RRB-_-RRB- ,_, hierarchical_JJ classification_NN has_VBZ been_VBN studied_VBN in_IN =_JJ -_: =[_NN 18_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN more_JJR details_NNS ,_, see_VBP Section_NNP 4_CD ._.
+To_TO counter_VB high-dimensionality_JJ various_JJ methods_NNS of_IN feature_NN selection_NN have_VBP been_VBN proposed_VBN in_IN -LRB-_-LRB- 30_CD ,_, 18_CD ,_, 5_CD -RRB-_-RRB- ._.
+Distributional_JJ clustering_NN of_IN words_NNS was_VBD first_RB proposed_VBN by_IN Perei_NN
+moz_NN ._.
+txt_NN ._.
+While_IN indexing_NN we_PRP skipped_VBD text_NN between_IN html_NN tags_NNS ,_, pruned_VBN words_NNS occurring_VBG in_IN less_JJR than_IN five_CD documents_NNS ,_, used_VBD a_DT stop_NN list_NN but_CC did_VBD not_RB use_VB stemming_VBG ._.
+The_DT resulting_VBG vocabulary_NN had_VBD 14,538_CD words_NNS ._.
+Bow_NN =_SYM -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT library_NN of_IN C_NN code_NN useful_JJ for_IN writing_VBG text_NN analysis_NN ,_, language_NN modeling_NN and_CC information_NN retrieval_NN programs_NNS ._.
+We_PRP extended_VBD Bow_NN to_TO index_NN BdB_NN -LRB-_-LRB- www.sleepycat.com_NN -RRB-_-RRB- flat_JJ file_NN databases_NNS where_WRB we_PRP stored_VBD the_DT
+not_RB lead_VB to_TO any_DT difficulty_NN -LRB-_-LRB- indeed_RB in_IN an_DT implementation_NN we_PRP can_MD handle_VB such_JJ ``_`` infinity_NN problems_NNS ''_'' without_IN an_DT extra_JJ ``_`` if_IN ''_'' condition_NN thanks_NNS to_TO the_DT handling_NN of_IN ``_`` infinity_NN ''_'' in_IN the_DT IEEE_NN floating_VBG point_NN standard_NN =_JJ -_: =[_NN 14_CD ,_, 1_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+We_PRP now_RB discuss_VBP the_DT computational_JJ complexity_NN of_IN our_PRP$ algorithm_NN ._.
+Step_NN 3_CD of_IN each_DT iteration_NN requires_VBZ the_DT KL-divergence_NN to_TO be_VB computed_VBN for_IN every_DT pair_NN ,_, p_NN -LRB-_-LRB- C_NN |_CD wt_JJ -RRB-_-RRB- and_CC p_NN -LRB-_-LRB- C_NN |_NN W_NN j_NN -RRB-_-RRB- ._.
+This_DT is_VBZ the_DT most_RBS computational_JJ
+quickly_RB review_VB some_DT concepts_NNS from_IN information_NN theory_NN which_WDT will_MD be_VB used_VBN heavily_RB in_IN this_DT paper_NN ._.
+For_IN more_JJR details_NNS on_IN some_DT of_IN this_DT material_NN see_VBP the_DT authoritative_JJ treatment_NN in_IN the_DT book_NN by_IN Cover_NNP &_CC Thomas_NNP =_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Let_VB X_NN be_VB a_DT discrete_JJ random_JJ variable_NN that_WDT takes_VBZ on_IN values_NNS from_IN the_DT set_NN X_NN with_IN probability_NN distribution_NN p_NN -LRB-_-LRB- x_NN -RRB-_-RRB- ._.
+The_DT -LRB-_-LRB- Shannon_NNP -RRB-_-RRB- entropy_NN of_IN X_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- is_VBZ defined_VBN as_IN H_NN -LRB-_-LRB- p_NN -RRB-_-RRB- =_JJ −_CD X_NN p_NN -LRB-_-LRB- x_NN -RRB-_-RRB- log_NN p_NN -LRB-_-LRB- x_NN -RRB-_-RRB- ._.
+x_NN ∈_CD X_NN The_DT relative_JJ e_SYM
+n_NN previous_JJ work_NN ,_, such_JJ ``_`` distributional_JJ clustering_NN ''_'' of_IN features_NNS has_VBZ been_VBN found_VBN to_TO achieve_VB improvements_NNS over_IN feature_NN selection_NN in_IN terms_NNS of_IN classification_NN accuracy_NN ,_, especially_RB at_IN lower_JJR number_NN of_IN features_NNS =_JJ -_: =[_NN 2_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB the_DT existing_VBG clustering_NN techniques_NNS are_VBP agglomerative_JJ in_IN nature_NN and_CC result_NN in_IN -LRB-_-LRB- i_LS -RRB-_-RRB- sub-optimal_JJ word_NN clusters_NNS and_CC -LRB-_-LRB- ii_LS -RRB-_-RRB- high_JJ computational_JJ cost_NN ._.
+In_IN order_NN to_TO explicitly_RB capture_VB the_DT optimality_NN of_IN
+28_CD -RRB-_-RRB- ._.
+Each_DT word_NN cluster_NN can_MD then_RB be_VB treated_VBN as_IN a_DT single_JJ feature_NN and_CC thus_RB dimensionality_NN can_MD be_VB drastically_RB reduced_VBN ._.
+As_IN shown_VBN by_IN -LRB-_-LRB- 2_CD ,_, 28_CD -RRB-_-RRB- ,_, such_JJ feature_NN clustering_NN is_VBZ more_RBR effective_JJ than_IN feature_NN selection_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_JJ -_: ,_, especially_RB at_IN lower_JJR number_NN of_IN features_NNS ._.
+Also_RB ,_, feature_NN clustering_NN appears_VBZ to_TO preserve_VB classification_NN accuracy_NN as_IN compared_VBN to_TO a_DT full-feature_JJ classifier_NN ._.
+Indeed_RB in_IN some_DT cases_NNS of_IN small_JJ training_NN sets_NNS and_CC
+not_RB lead_VB to_TO any_DT difficulty_NN -LRB-_-LRB- indeed_RB in_IN an_DT implementation_NN we_PRP can_MD handle_VB such_JJ ``_`` infinity_NN problems_NNS ''_'' without_IN an_DT extra_JJ ``_`` if_IN ''_'' condition_NN thanks_NNS to_TO the_DT handling_NN of_IN ``_`` infinity_NN ''_'' in_IN the_DT IEEE_NN floating_VBG point_NN standard_NN =_JJ -_: =[_NN 14_CD ,_, 1_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+We_PRP now_RB discuss_VBP the_DT computational_JJ complexity_NN of_IN our_PRP$ algorithm_NN ._.
+Step_NN 3_CD of_IN each_DT iteration_NN requires_VBZ the_DT KL-divergence_NN to_TO be_VB computed_VBN for_IN every_DT pair_NN ,_, p_NN -LRB-_-LRB- C_NN |_CD wt_JJ -RRB-_-RRB- and_CC p_NN -LRB-_-LRB- C_NN |_NN W_NN j_NN -RRB-_-RRB- ._.
+This_DT is_VBZ the_DT most_RBS computational_JJ

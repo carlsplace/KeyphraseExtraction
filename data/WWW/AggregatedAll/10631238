@@ -1,0 +1,225 @@
+Detection_NN and_CC analysis_NN of_IN drive-by-download_NN attacks_NNS and_CC malicious_JJ JavaScript_NN code_NN
+JavaScript_NNP is_VBZ a_DT browser_NN scripting_VBG language_NN that_WDT allows_VBZ developers_NNS to_TO create_VB sophisticated_JJ client-side_JJ interfaces_NNS for_IN web_NN applications_NNS ._.
+However_RB ,_, JavaScript_NN code_NN is_VBZ also_RB used_VBN to_TO carry_VB out_RP attacks_NNS against_IN the_DT user_NN 's_POS browser_NN and_CC its_PRP$ extensions_NNS ._.
+These_DT attacks_NNS usually_RB result_VBP in_IN the_DT download_NN of_IN additional_JJ malware_NN that_WDT takes_VBZ complete_JJ control_NN of_IN the_DT victim_NN 's_POS platform_NN ,_, and_CC are_VBP ,_, therefore_RB ,_, called_VBN ``_`` drive-by_JJ downloads_NNS ._. ''_''
+Unfortunately_RB ,_, the_DT dynamic_JJ nature_NN of_IN the_DT JavaScript_NNP language_NN and_CC its_PRP$ tight_JJ integration_NN with_IN the_DT browser_NN make_VBP it_PRP difficult_JJ to_TO detect_VB and_CC block_VB malicious_JJ JavaScript_NNP code_NN ._.
+This_DT paper_NN presents_VBZ a_DT novel_JJ approach_NN to_TO the_DT detection_NN and_CC analysis_NN of_IN malicious_JJ JavaScript_NNP code_NN ._.
+Our_PRP$ approach_NN combines_VBZ anomaly_RB detection_NN with_IN emulation_NN to_TO automatically_RB identify_VB malicious_JJ JavaScript_NNP code_NN and_CC to_TO support_VB its_PRP$ analysis_NN ._.
+We_PRP developed_VBD a_DT system_NN that_WDT uses_VBZ a_DT number_NN of_IN features_NNS and_CC machine-learning_JJ techniques_NNS to_TO establish_VB the_DT characteristics_NNS of_IN normal_JJ JavaScript_NNP code_NN ._.
+Then_RB ,_, during_IN detection_NN ,_, the_DT system_NN is_VBZ able_JJ to_TO identify_VB anomalous_JJ JavaScript_NNP code_NN by_IN emulating_VBG its_PRP$ behavior_NN and_CC comparing_VBG it_PRP to_TO the_DT established_JJ profiles_NNS ._.
+In_IN addition_NN to_TO identifying_VBG malicious_JJ code_NN ,_, the_DT system_NN is_VBZ able_JJ to_TO support_VB the_DT analysis_NN of_IN obfuscated_VBN code_NN and_CC to_TO generate_VB detection_NN signatures_NNS for_IN signature-based_JJ systems_NNS ._.
+The_DT system_NN has_VBZ been_VBN made_VBN publicly_RB available_JJ and_CC has_VBZ been_VBN used_VBN by_IN thousands_NNS of_IN analysts_NNS ._.
+threats_NNS for_IN which_WDT publishers_NNS can_MD readily_RB deploy_VB strong_JJ protection_NN -LRB-_-LRB- e.g._FW ,_, cross-site_JJ request_NN forgeries_NNS -RRB-_-RRB- ._.
+1_CD ._.
+Browser_NN security_NN bugs_NNS ._.
+We_PRP do_VBP not_RB address_VB browser_NN vulnerabilities_NNS such_JJ as_IN drive-by-downloads_NN =_JJ -_: =[_NN 49_CD ,_, 36_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, attacks_NNS launched_VBN through_IN plug-ins_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, vulnerabilities_NNS in_IN image_NN rendering_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- and_CC so_RB on_RB ._.
+32_CD ._.
+Opaque_JJ content_NN ._.
+Our_PRP$ approach_NN leverages_VBZ web_NN content_NN introspection_NN capabilities_NNS of_IN JavaScript_NNP ,_, and_CC is_VBZ th_DT
+it_PRP detection_NN and_CC mitigation_NN -LRB-_-LRB- 15_CD ,_, 7_CD ,_, 6_CD -RRB-_-RRB- ._.
+However_RB ,_, all_PDT this_DT related_JJ work_NN focus_NN on_IN techniques_NNS to_TO detect_VB the_DT operating_NN system_NN level_NN ._.
+Additionally_RB ,_, some_DT work_NN that_WDT tries_VBZ to_TO detect_VB drive-by-download_NN attacks_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: uses_VBZ anomaly_RB detection_NN with_IN emulation_NN to_TO automatically_RB identify_VB malicious_JJ JavaScript_NNP code_NN ._.
+Virtual_JJ Container_NNP Wine_NNP Internet_NNP Explorer_NNP Custom_NNP Wine_NNP memory_NN allocator_NN NOP_NNP Sled_NNP Detector_NNP Scan_VB memory_NN with_IN :_: No_DT
+tinfected_JJ sites_NNS ._.
+We_PRP found_VBD no_DT site_NN from_IN these_DT sources_NNS that_WDT was_VBD not_RB also_RB present_JJ in_IN the_DT data_NNS we_PRP collected_VBD ._.
+We_PRP also_RB removed_VBD invalid_JJ URLs_NNS and_CC used_VBD Wepawet_NNP ,_, our_PRP$ tool_NN to_TO detect_VB and_CC analyze_VB webbased_JJ malware_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, to_TO discard_VB URLs_NNS that_WDT were_VBD not_RB infected_JJ ._.
+Prevalence_NN and_CC Distribution_NN of_IN Infected_JJ Sites_NNS ._.
+In_IN total_NN ,_, we_PRP received_VBD 381,768_CD requests_NNS that_WDT were_VBD Mebroot-compatible_JJ and_CC that_WDT specified_VBD a_DT referring_VBG page_NN -LRB-_-LRB- contai_NN
+y_NN unseen_JJ attacks_NNS ,_, or_CC those_DT that_WDT do_VBP not_RB involve_VB ActiveX_NN components_NNS ,_, which_WDT ZOZZLE_NNP is_VBZ able_JJ to_TO detect_VB ._.
+Cova_NNP et_FW al._FW present_VBP a_DT system_NN JSAND_NN that_WDT conducts_VBZ classification_NN based_VBN on_IN static_JJ and_CC dynamic_JJ features_NNS =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT system_NN ,_, potentially_RB malicious_JJ JavaScript_NNP is_VBZ emulated_VBN to_TO determine_VB runtime_NN characteristics_NNS around_IN deobfuscation_NN ,_, environment_NN preparation_NN ,_, and_CC exploitation_NN ,_, such_JJ as_IN the_DT number_NN of_IN bytes_NNS allocat_NN
+utes_NNS ._.
+In_IN addition_NN to_TO high-interaction_JJ honeyclients_NNS ,_, researchers_NNS have_VBP proposed_VBN alternative_JJ detection_NN approaches_NNS for_IN malicious_JJ web_NN pages_NNS ._.
+In_IN particular_JJ ,_, a_DT number_NN of_IN tools_NNS were_VBD proposed_VBN -LRB-_-LRB- such_JJ as_IN Wepawet_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, PhoneyC_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, JSUnpack_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- -RRB-_-RRB- that_WDT rely_VBP on_IN instrumented_JJ JavaScript_NNP run-time_NN environments_NNS to_TO detect_VB the_DT execution_NN of_IN malicious_JJ scripts_NNS ,_, or_CC only_RB a_DT certain_JJ kind_NN of_IN attacks_NNS -LRB-_-LRB- such_JJ as_IN NOZZLE_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, a_DT tool_NN f_SYM
+if_IN desired_VBN ._.
+The_DT implementation_NN of_IN the_DT avatar_NN provides_VBZ the_DT additional_JJ benefit_NN of_IN being_VBG a_DT funnel_VB for_IN SPAM_NNP ,_, Data_NNP Loss_NN and_CC Antivirus_NN protection_NN and_CC can_MD act_VB as_IN a_DT sensor_NN for_IN new_JJ JavaScript_NNP malware_NN analysis_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A._FW Overview_FW The_DT privacy_NN avatar_NN is_VBZ implemented_VBN as_IN a_DT C_NN #_# ,_, ._.
+NET_NN multi-threaded_JJ transparent_JJ proxy_NN ,_, which_WDT provides_VBZ the_DT ability_NN to_TO intercept_VB ,_, inspect_VB and_CC impersonate_VB social_JJ network_NN communication_NN ._.
+This_DT over_IN
+bution_NN network_NN -LRB-_-LRB- MDN_NN -RRB-_-RRB- ._.
+In_IN this_DT paper_NN ,_, we_PRP define_VBP a_DT MDN_NN to_TO be_VB a_DT collection_NN of_IN drive-by_JJ downloads_NNS that_WDT serve_VBP the_DT same_JJ malicious_JJ objective_NN such_JJ as_IN distributing_VBG related_JJ malware_NN executables_NNS ._.
+Several_JJ methods_NNS =_JJ -_: =[_NN 2_CD ,_, 6_CD ,_, 8_CD ,_, 9_CD ,_, 10_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN proposed_VBN to_TO detect_VB drive-by_JJ download_NN attacks_NNS and_CC are_VBP described_VBN in_IN detail_NN in_IN Section_NN 2_CD ._.
+Most_JJS of_IN these_DT methods_NNS -LRB-_-LRB- 2_CD ,_, 6_CD ,_, 9_CD ,_, 10_CD ,_, 20_CD -RRB-_-RRB- depend_VBP on_IN the_DT malicious_JJ webpage_NN content_NN returned_VBN by_IN servers_NNS us_PRP
+has_VBZ never_RB been_VBN studied_VBN before_RB ._.
+Techniques_NNS to_TO identify_VB drive-by-download_NN attacks_NNS have_VBP been_VBN proposed_VBN that_WDT analyze_VBP web_NN sites_NNS for_IN malicious_JJ content_NN in_IN a_DT virtual_JJ or_CC emulated_VBN environment_NN to_TO detect_VB exploits_NNS =_JJ -_: =[_NN 5_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT prevalence_NN of_IN malicious_JJ web_NN sites_NNS hasbeen_VBP examined_VBN through_IN crawler-based_JJ approaches_NNS that_WDT analyzed_VBD billions_NNS of_IN web_NN pages_NNS -LRB-_-LRB- 28_CD ,_, 29_CD -RRB-_-RRB- ._.
+Another_DT study_NN analyzed_VBD drive-by_JJ attacks_NNS via_IN infiltration_NN and_CC pr_NN
+es_NNS analyzed_VBN by_IN Sophos_NNP Labs_NNPS every_DT day_NN in_IN 2010_CD ,_, about_IN 95,000_CD samples_NNS ,_, nearly_RB doubled_VBD from_IN 2009_CD -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+While_IN static_JJ and_CC runtime_JJ methods_NNS for_IN malware_NN detection_NN have_VBP been_VBN proposed_VBN in_IN the_DT research_NN literature_NN =_JJ -_: =[_NN 11_CD ,_, 12_CD ,_, 26_CD -RRB-_-RRB- -_: =_JJ -_: ,_, both_DT on_IN the_DT client_NN side_NN ,_, for_IN just-in-time_JJ in-browser_JJ detection_NN ,_, as_RB well_RB as_IN offline_JJ ,_, crawler-based_JJ malware_NN discovery_NN ,_, these_DT approaches_NNS encounter_VBP the_DT same_JJ fundamental_JJ limitation_NN ._.
+Web-based_JJ malware_NN ten_CD
+ns_NNS of_IN web_NN pages_NNS today_NN contain_VBP malicious_JJ JavaScript_NNP that_WDT attempts_VBZ to_TO take_VB over_RP a_DT victim_NN 's_POS web_NN browser_NN ._.
+An_DT active_JJ research_NN literature_NN has_VBZ proposed_VBN static_JJ and_CC dynamic_JJ methods_NNS for_IN detecting_VBG these_DT attacks_NNS =_JJ -_: =[_NN 40_CD ,_, 13_CD ,_, 11_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT key_JJ finding_NN of_IN this_DT work_NN is_VBZ that_IN malware_NN authors_NNS use_VBP fingerprinting_VBG techniques_NNS -LRB-_-LRB- 35_CD ,_, 16_CD -RRB-_-RRB- to_TO decide_VB which_WDT malware_NN to_TO deliver_VB to_TO the_DT victim_NN user_NN ._.
+Figure_NN 9_CD shows_VBZ an_DT example_NN of_IN client-side_JJ browser_NN fin1_NN
+Millions_NNS of_IN web_NN pages_NNS today_NN contain_VBP malicious_JJ JavaScript_NNP that_WDT attempts_VBZ to_TO take_VB over_RP a_DT victim_NN 's_POS web_NN browser_NN ._.
+An_DT active_JJ researchliteraturehasproposedstatic_JJ anddynamicmethods_NNS for_IN detecting_VBG these_DT attacks_NNS =_JJ -_: =[_NN 9_CD ,_, 11_CD ,_, 13_CD ,_, 41_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT key_JJ finding_NN of_IN this_DT work_NN is_VBZ that_IN malware_NN authors_NNS use_VBP fingerprinting_VBG techniques_NNS -LRB-_-LRB- 17_CD ,_, 36_CD -RRB-_-RRB- to_TO decide_VB which_WDT malware_NN to_TO deliver_VB to_TO the_DT victim_NN user_NN ._.
+Figure_NN 9_CD shows_VBZ an_DT example_NN of_IN client-side_JJ browser_NN fing_NN
+ause_VB they_PRP are_VBP designed_VBN for_IN server-exploiting_JJ malware_NN ._.
+Al-though_JJ client-side_JJ honeypot_NN techniques_NNS such_JJ as_IN CaptureHPC_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- and_CC HoneyMonkey_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, and_CC suspicious_JJ web_NN content_NN analysis_NN service_NN such_JJ as_IN Wepawet_NN =_JJ -_: =[_NN 6_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP proposed_VBN ,_, their_PRP$ main_JJ purpose_NN is_VBZ to_TO detect_VB whether_IN a_DT given_VBN URL\/Flash_NN file_NN is_VBZ malicious_JJ or_CC not_RB ,_, instead_RB of_IN to_TO collect_VB the_DT complete_JJ malicious_JJ logic_NN and_CC infection_NN trails_VBZ in_IN web-based_JJ malware_NN ._.
+Current_NNP
+lutions_NNS relying_VBG on_IN exposing_VBG sandboxed_JJ browsers_NNS to_TO potentially_RB malicious_JJ content_NN -LRB-_-LRB- 54_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 55_CD -RRB-_-RRB- ._.
+An_DT exception_NN is_VBZ Wepawet_NNP ,_, which_WDT relies_VBZ on_IN detecting_VBG anomalous_JJ arguments_NNS passed_VBN to_TO plugins_NNS to_TO prevent_VB attacks_NN =_JJ -_: =[_NN 56_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ own_JJ system_NN generalizes_VBZ to_TO all_DT forms_NNS of_IN scams_NNS ,_, phishing_NN ,_, and_CC malware_NN and_CC allows_VBZ for_IN real-time_JJ URL_NN submission_NN by_IN web_NN services_NNS ._.
+Of_IN the_DT closest_JJS works_NNS to_TO our_PRP$ own_JJ ,_, Ma_NNP et_FW al._FW show_VBP that_IN one_PRP can_MD classify_VB
+runtime_NN heuristics_NNS ._.
+Besides_IN the_DT detection_NN of_IN code_NN injection_NN attacks_NNS at_IN the_DT network_NN level_NN -LRB-_-LRB- 13_CD --_: 15_CD ,_, 18_CD ,_, 25_CD -RRB-_-RRB- ,_, shellcode_NN identification_NN has_VBZ been_VBN used_VBN for_IN in-browser_JJ detection_NN of_IN drive-by_JJ download_NN attacks_NN =_JJ -_: =[_NN 8,9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, as_RB well_RB as_IN malicious_JJ document_NN scanning_NN -LRB-_-LRB- 18_CD ,_, 22_CD -RRB-_-RRB- ._.
+In_IN a_DT ROP_NN exploit_VB ,_, however_RB ,_, in_IN place_NN of_IN the_DT shellcode_NN ,_, the_DT attack_NN vector_NN contains_VBZ just_RB a_DT chunk_NN of_IN data_NNS --_: to_TO which_WDT we_PRP refer_VBP as_IN the_DT ROP_NNP payload_NN --_: comprising_VBG
+less_JJR of_IN the_DT AVs_NNS ,_, while_IN 24_CD samples_NNS were_VBD detected_VBN by_IN 20_CD %_NN or_CC less_JJR ._.
+Even_RB for_IN the_DT most_JJS detectablesamples_NNS ,_, therewereabout20_CD %_NN ormoreoftheAVs_NN that_WDT did_VBD not_RB detect_VB them_PRP ._.
+We_PRP also_RB submitted_VBD all_DT samples_NNS to_TO Wepawet_NNP =_SYM -_: =[_NN 11,15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT reported_VBD 119_CD files_NNS as_IN malicious_JJ ,_, 16_CD as_IN suspicious_JJ ,_, 58_CD as_IN benign_JJ ,_, while_IN four_CD resulted_VBD to_TO error_NN ._.
+Cumulative_JJ fraction_NN of_IN PDF_NN files_NNS 1_CD 0.8_CD 0.6_CD 0.4_CD 0.2_CD 0_CD Benign_JJ Malicious_JJ 0_CD 5_CD 10_CD 15_CD 20_CD 25_CD Processing_NN
+e_LS 's_POS window_NN ._.
+location_NN property_NN makes_VBZ the_DT frame_NN navigate_VB to_TO a_DT new_JJ site_NN ._.
+If_IN a_DT frame_NN loads_NNS a_DT malicious_JJ third_JJ party_NN script_NN ,_, the_DT script_NN can_MD manipulate_VB window_NN ._.
+location_NN to_TO trick_NN users_NNS into_IN downloading_VBG malware_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO prevent_VB this_DT ,_, we_PRP place_VBP a_DT setter_NN on_IN window_NN ._.
+location_NN that_WDT either_RB prevents_VBZ all_DT assignments_NNS ,_, or_CC only_RB allows_VBZ assignments_NNS if_IN the_DT target_NN URL_NN is_VBZ in_IN a_DT whitelist_NN ._.
+Implementing_VBG these_DT extensions_NNS on_IN Atlantis_NNP
+ther_JJ hand_NN ,_, is_VBZ designed_VBN to_TO work_VB with_IN general_JJ code_NN mashup_NN applications_NNS ._.
+Finally_RB ,_, it_PRP should_MD be_VB noted_VBN that_IN in_IN the_DT realm_NN of_IN web_NN security_NN much_JJ work_NN has_VBZ been_VBN done_VBN to_TO understand_VB the_DT Web-based_JJ malware_NN problem_NN =_JJ -_: =[_NN 3_CD ,_, 18_CD ,_, 19_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, these_DT address_NN issues_NNS orthogonal_JJ to_TO our_PRP$ work_NN on_IN mashups_NNS ,_, where_WRB the_DT focus_NN is_VBZ on_IN protecting_VBG against_IN the_DT trust_NN issues_NNS that_IN this_DT programming_NN paradigm_NN might_MD introduce_VB ._.
+6_CD ._.
+CONCLUSION_NN In_IN this_DT paper_NN
+features_NNS of_IN the_DT JavaScriptAST_NN -LRB-_-LRB- abstract_JJ syntax_NN tree_NN -RRB-_-RRB- ._.
+We_PRP train_VBP the_DT classifier_NN with_IN a_DT collection_NN of_IN labeled_JJ malware_NN samples_NNS collected_VBN with_IN the_DT NOZZLE_NN dynamic_JJ heap-spraying_JJ detector_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Related_JJ work_NN =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 14_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: also_RB classifies_VBZ JavaScript_NNP malware_NN using_VBG a_DT combination_NN of_IN static_JJ and_CC dynamic_JJ features_NNS ,_, but_CC relies_VBZ on_IN emulation_NN to_TO deobfuscate_VB the_DT code_NN and_CC to_TO observe_VB dynamic_JJ features_NNS ._.
+Because_IN we_PRP avoid_VBP emulation_NN ,_, our_PRP$
+e._VBN However_RB ,_, the_DT expressiveness_NN of_IN JavaScript_NNP is_VBZ often_RB misused_VBN by_IN attackers_NNS to_TO create_VB obfuscated_VBN malware_NN ,_, which_WDT has_VBZ led_VBN to_TO research_NN in_IN trying_VBG to_TO detect_VB malware_NN using_VBG both_CC static_JJ and_CC runtime_NN techniques_NNS =_JJ -_: =[_NN 1_CD ,_, 3_CD ,_, 5_CD ,_, 8_CD ,_, 10_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Of_IN course_NN ,_, there_EX is_VBZ plenty_NN of_IN benign_JJ code_NN that_WDT has_VBZ been_VBN obfuscated_VBN ,_, often_RB as_IN a_DT light_JJ form_NN of_IN intellectual_JJ property_NN protection_NN ,_, by_IN toolkits_NNS such_JJ as_IN JavaScript_NNP Obfuscator_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+In_IN many_JJ contexts_NNS ,_, it_PRP is_VBZ
+ttacks_NNS have_VBP not_RB received_VBN significant_JJ attention_NN in_IN the_DT research_NN community_NN so_RB far_RB ._.
+Previous_JJ work_NN in_IN this_DT field_NN has_VBZ mostly_RB focused_VBN on_IN dynamic_JJ analysis_NN techniques_NNS ._.
+For_IN example_NN ,_, well-known_JJ sandboxes_NNS JSand_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: and_CC CWSandbox_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- have_VBP been_VBN adapted_VBN to_TO the_DT analysis_NN of_IN malicious_JJ PDF_NN documents_NNS ._.
+Due_JJ to_TO their_PRP$ heavy_JJ instrumentation_NN and_CC security_NN risks_NNS associated_VBN with_IN dynamic_JJ analysis_NN ,_, the_DT practical_JJ applicability_NN of_IN
+-RRB-_-RRB- ,_, and_CC vulnerable_JJ web_NN clients_NNS are_VBP commonly_RB used_VBN -LRB-_-LRB- about_RB 45_CD %_NN of_IN Internet_NNP users_NNS use_VBP an_DT outdated_JJ browser_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Second_JJ ,_, attack_NN techniques_NNS to_TO reliably_RB exploit_VB web_NN client_NN vulnerabilities_NNS are_VBP well-documented_JJ =_JJ -_: =[_NN 4_CD ,_, 33_CD ,_, 34_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Third_JJ ,_, sophisticated_JJ tools_NNS for_IN automating_VBG the_DT process_NN of_IN fingerprinting_VBG the_DT user_NN 's_POS browser_NN ,_, obfuscating_VBG the_DT exploit_VBP code_NN ,_, and_CC delivering_VBG it_PRP to_TO the_DT victim_NN ,_, are_VBP easily_RB obtainable_JJ -LRB-_-LRB- e.g._FW ,_, NeoSploit_NNP ,_, and_CC
+established_JJ models_NNS are_VBP used_VBN to_TO determine_VB an_DT anomaly_JJ score_NN for_IN each_DT observed_VBN feature_NN value_NN ._.
+For_IN our_PRP$ system_NN ,_, we_PRP use_VBP several_JJ models_NNS provided_VBN by_IN libAnomaly_NN ,_, a_DT library_NN to_TO develop_VB anomaly_JJ detection_NN systems_NNS =_JJ -_: =[_NN 16,17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Here_RB ,_, we_PRP only_RB briefly_RB describe_VBP these_DT models_NNS and_CC refer_VB the_DT interested_JJ reader_NN to_TO the_DT original_JJ references_NNS for_IN further_JJ information_NN ._.
+Token_NNP Finder_NNP ._.
+The_DT Token_NNP Finder_NNP model_NN determines_VBZ if_IN the_DT values_NNS of_IN a_DT cer_NN
+ve-by_JJ campaigns_NNS -RRB-_-RRB- ._.
+Our_PRP$ tool_NN was_VBD able_JJ to_TO classify_VB the_DT exploits_NNS used_VBN in_IN 1,545_CD of_IN the_DT malicious_JJ samples_NNS ._.
+The_DT reports_NNS generated_VBN by_IN JSAND_NN are_VBP routinely_RB used_VBN to_TO investigate_VB incidents_NNS and_CC new_JJ exploits_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, as_IN supportive_JJ evidence_NN in_IN take-down_JJ requests_NNS ,_, and_CC to_TO complement_VB existing_VBG blacklists_NNS -LRB-_-LRB- e.g._FW ,_, in_IN October_NNP 2009_CD alone_RB ,_, it_PRP detected_VBD drive-by_JJ downloads_NNS on_IN 409_CD domains_NNS that_IN at_IN the_DT moment_NN of_IN the_DT analysis_NN we_PRP
+pt_JJ interpreter_NN to_TO identify_VB any_DT differences_NNS ._.
+This_DT is_VBZ an_DT issue_NN that_WDT is_VBZ common_JJ to_TO any_DT emulated_VBN environment_NN and_CC that_DT affects_VBZ ,_, to_TO a_DT certain_JJ degree_NN ,_, even_RB highinteraction_NN honeyclients_NNS using_VBG virtual_JJ machines_NNS =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP have_VBP two_CD ways_NNS of_IN counteracting_VBG this_DT technique_NN ._.
+First_RB ,_, we_PRP can_MD set_VB up_RP our_PRP$ environment_NN so_IN that_IN it_PRP behaves_VBZ as_RB accurately_RB as_IN possible_JJ as_IN the_DT browser_NN we_PRP want_VBP to_TO impersonate_VB ._.
+This_DT clearly_RB becomes_VBZ an_DT arm_NN
+ave_NN shown_VBN that_IN JSAND_NN can_MD automatically_RB generate_VB signatures_NNS for_IN signature-based_JJ systems_NNS ._.
+Anomaly_NNP detection_NN ._.
+Caffeine_NNP Monkey_NNP is_VBZ a_DT tool_NN to_TO collect_VB events_NNS associated_VBN with_IN the_DT execution_NN of_IN JavaScript_NNP code_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT authors_NNS propose_VBP to_TO use_VB the_DT distribution_NN of_IN function_NN calls_NNS in_IN a_DT JavaScript_NNP program_NN to_TO differentiate_VB between_IN malicious_JJ and_CC benign_JJ pages_NNS ._.
+However_RB ,_, their_PRP$ detection_NN technique_NN is_VBZ based_VBN on_IN the_DT manual_NN a_DT
+and_CC on_IN legitimate_JJ web_NN sites_NNS ,_, that_WDT have_VBP been_VBN compromised_VBN or_CC modified_VBN to_TO serve_VB the_DT malicious_JJ content_NN -LRB-_-LRB- high-profile_JJ examples_NNS include_VBP the_DT Department_NNP of_IN Homeland_NNP Security_NNP and_CC the_DT BusinessWeek_NNP news_NN outlet_NN =_JJ -_: =[_NN 10_CD ,_, 11_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+A_DT number_NN of_IN approaches_NNS have_VBP been_VBN proposed_VBN to_TO detect_VB malicious_JJ web_NN pages_NNS ._.
+Traditional_JJ anti-virus_JJ tools_NNS use_VBP static_JJ signatures_NNS to_TO match_VB patterns_NNS that_WDT are_VBP commonly_RB found_VBN in_IN malicious_JJ scripts_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Unfor_NNP
+SAND_NN is_VBZ capable_JJ of_IN detecting_VBG previously-unseen_JJ attacks_NNS ,_, when_WRB these_DT attacks_NNS manifest_VBP in_IN anomalous_JJ features_NNS ._.
+For_IN example_NN ,_, JSAND_NNP correctly_RB flagged_VBD as_IN malicious_JJ scripts_NNS used_VBN in_IN the_DT recent_JJ ``_`` Aurora_NNP ''_'' attack_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Even_RB if_IN the_DT exploits_NNS target_VBP a_DT vulnerability_NN -LRB-_-LRB- CVE-20100249_NN -RRB-_-RRB- in_IN a_DT component_NN of_IN Internet_NNP Explorer_NNP -LRB-_-LRB- the_DT memory_NN manager_NN -RRB-_-RRB- that_WDT is_VBZ not_RB characterized_VBN by_IN a_DT specific_JJ feature_NN ,_, the_DT anomaly_JJ scores_NNS associated_VBN wit_NN
+ular_JJ web_NN sites_NNS ,_, as_IN determined_VBN by_IN Alexa_NNP ._.
+This_DT allowed_VBD us_PRP to_TO obtain_VB pages_NNS representative_NN of_IN today_NN 's_POS use_NN of_IN JavaScript_NNP ._.
+Furthermore_RB ,_, we_PRP used_VBD the_DT Google_NNP Safe_NNP Browsing_NNP API_NNP to_TO discard_VB known_JJ dangerous_JJ pages_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT known-bad_JJ datasets_NNS contain_VBP pages_NNS and_CC scripts_NNS that_WDT are_VBP known_VBN to_TO be_VB malicious_JJ ._.
+We_PRP use_VBP these_DT datasets_NNS to_TO evaluate_VB the_DT detection_NN capabilities_NNS of_IN our_PRP$ tool_NN and_CC compute_VB false_JJ negatives_NNS ._.
+In_IN total_NN ,_, they_PRP
+behavior_NN ,_, rather_RB than_IN the_DT syntactic_JJ features_NNS ,_, of_IN malicious_JJ scripts_NNS -LRB-_-LRB- for_IN example_NN ,_, invoking_VBG a_DT method_NN of_IN an_DT ActiveX_NN control_NN vulnerable_JJ to_TO buffer_VB overflows_NNS with_IN a_DT parameter_NN longer_RBR than_IN a_DT certain_JJ length_NN -RRB-_-RRB- =_JJ -_: =[_NN 14_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT problem_NN with_IN low-interaction_JJ honeyclients_NNS is_VBZ that_IN they_PRP are_VBP limited_VBN by_IN the_DT coverage_NN of_IN their_PRP$ specification_NN database_NN ;_: that_DT is_VBZ ,_, attacks_NNS for_IN which_WDT a_DT specification_NN is_VBZ not_RB available_JJ can_MD not_RB be_VB detected_VBN ._.
+s_NN considered_VBD the_DT manifestation_NN of_IN an_DT attack_NN launched_VBN by_IN the_DT page_NN ._.
+We_PRP used_VBD the_DT default_NN configuration_NN of_IN Capture-HPC_JJ and_CC installed_JJ Windows_NNP XP_NN SP2_NN and_CC Internet_NNP Explorer_NNP -LRB-_-LRB- a_DT setup_NN used_VBN in_IN previous_JJ studies_NNS =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+In_IN addition_NN ,_, we_PRP installed_VBD the_DT five_CD plugins_NNS most_JJS tarDataset_NN Samples_NNP JSAND_NNP ClamAV_NNP PhoneyC_NNP Capture-HPC_NNP -LRB-_-LRB- #_# -RRB-_-RRB- FN_NN FN_NN FN_NN FN_NN Spam_NN Trap_NN 257_CD 1_CD -LRB-_-LRB- 0.3_CD %_NN -RRB-_-RRB- 243_CD -LRB-_-LRB- 94.5_CD %_NN -RRB-_-RRB- 225_CD -LRB-_-LRB- 87.5_CD %_NN -RRB-_-RRB- 0_CD -LRB-_-LRB- 0.0_CD %_NN -RRB-_-RRB- SQL_NN Injection_NN 23_CD 0_CD -LRB-_-LRB- 0.0_CD %_NN
+-LRB-_-LRB- -RRB-_-RRB- function_NN in_IN Firefox_NNP and_CC the_DT attachEvent_NN -LRB-_-LRB- -RRB-_-RRB- function_NN in_IN Internet_NNP Explorer_NNP -RRB-_-RRB- ._.
+While_IN some_DT of_IN these_DT differences_NNS could_MD be_VB handled_VBN by_IN existing_VBG browser_NN 's_POS extensions_NNS -LRB-_-LRB- e.g._FW ,_, the_DT User_NN Agent_NNP plugin_NN for_IN Firefox_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, others_NNS would_MD require_VB more_RBR substantial_JJ changes_NNS to_TO the_DT browser_NN itself_PRP ._.
+Second_JJ ,_, in_IN HtmlUnit_NNP ,_, it_PRP is_VBZ possible_JJ to_TO simulate_VB an_DT arbitrary_JJ system_NN environment_NN and_CC configuration_NN ._.
+In_IN fact_NN ,_, we_PRP have_VBP modified_VBN Htm_NN
+ist_NN of_IN full-featured_JJ web_NN browsers_NNS typically_RB running_VBG in_IN a_DT virtual_JJ machine_NN ._.
+They_PRP work_VBP by_IN monitoring_VBG all_DT modifications_NNS to_TO the_DT system_NN environment_NN ,_, such_JJ as_IN files_NNS created_VBN or_CC deleted_VBN ,_, and_CC processes_NNS launched_VBD =_JJ -_: =[_NN 21_CD ,_, 28_CD ,_, 37_CD ,_, 39_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+If_IN any_DT unexpected_JJ modification_NN occurs_VBZ ,_, this_DT is_VBZ considered_VBN as_IN the_DT manifestation_NN of_IN an_DT attack_NN ,_, and_CC the_DT corresponding_JJ page_NN is_VBZ flagged_VBN as_IN malicious_JJ ._.
+Unfortunately_RB ,_, also_RB high-interaction_JJ honeyclients_NNS hav_VBP
+veral_JJ kilobytes_NNS long_RB ._.
+An_DT attacker_NN could_MD evade_VB these_DT features_NNS by_IN not_RB using_VBG obfuscation_NN or_CC by_IN devising_VBG obfuscation_NN techniques_NNS that_IN ``_`` blend_VB ''_'' with_IN the_DT behavior_NN of_IN normal_JJ pages_NNS ,_, in_IN a_DT form_NN of_IN mimicry_NN attack_NN =_JJ -_: =[_NN 38_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT would_MD leave_VB the_DT malicious_JJ code_NN in_IN the_DT clear_JJ ,_, or_CC would_MD significantly_RB constrain_VB the_DT techniques_NNS usable_JJ for_IN obfuscation_NN ._.
+In_IN both_DT cases_NNS ,_, the_DT malicious_JJ code_NN would_MD be_VB exposed_VBN to_TO simple_NN ,_, signature-base_NN
+used_VBN in_IN these_DT approaches_NNS as_IN an_DT additional_JJ detector_NN ._.
+Malicious_JJ code_NN signatures_NNS ._.
+Signatures_NNS -LRB-_-LRB- i.e._FW ,_, patterns_NNS that_WDT characterize_VBP malicious_JJ code_NN -RRB-_-RRB- can_MD be_VB matched_VBN at_IN the_DT network_NN level_NN -LRB-_-LRB- e.g._FW ,_, in_IN the_DT Snort_NNP IDS_NNP =_SYM -_: =[_NN 31_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, or_CC at_IN the_DT application_NN level_NN -LRB-_-LRB- as_IN in_IN PhoneyC_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+JSAND_NN does_VBZ not_RB rely_VB on_IN predetermined_JJ signatures_NNS ,_, and_CC ,_, thus_RB ,_, can_MD potentially_RB detect_VB novel_JJ attacks_NNS ._.
+Furthermore_RB ,_, we_PRP have_VBP shown_VBN that_IN JSAND_NN can_MD automat_VB
+the_DT web_NN ._.
+We_PRP will_MD now_RB briefly_RB present_JJ the_DT most_RBS relevant_JJ ones_NNS and_CC compare_VB them_PRP with_IN our_PRP$ approach_NN ._.
+System_NN state_NN change_NN ._.
+A_DT number_NN of_IN approaches_NNS -LRB-_-LRB- e.g._FW ,_, HoneyMonkey_NN -LRB-_-LRB- 39_CD -RRB-_-RRB- ,_, Capture-HPC_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, Moshchuk_NNP et_FW al._FW =_SYM -_: =[_NN 21_CD ,_, 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC Provos_NNP et_FW al._FW -LRB-_-LRB- 28_CD -RRB-_-RRB- -RRB-_-RRB- use_VBP high-interaction_JJ honeyclients_NNS to_TO visit_VB potentiallymalicious_JJ web_NN sites_NNS and_CC monitor_NN changes_NNS in_IN the_DT underlying_JJ operating_NN system_NN that_WDT may_MD be_VB caused_VBN by_IN malicious_JJ web_NN pages_NNS ._.
+Th_NN
+established_JJ models_NNS are_VBP used_VBN to_TO determine_VB an_DT anomaly_JJ score_NN for_IN each_DT observed_VBN feature_NN value_NN ._.
+For_IN our_PRP$ system_NN ,_, we_PRP use_VBP several_JJ models_NNS provided_VBN by_IN libAnomaly_NN ,_, a_DT library_NN to_TO develop_VB anomaly_JJ detection_NN systems_NNS =_JJ -_: =[_NN 16,17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Here_RB ,_, we_PRP only_RB briefly_RB describe_VBP these_DT models_NNS and_CC refer_VB the_DT interested_JJ reader_NN to_TO the_DT original_JJ references_NNS for_IN further_JJ information_NN ._.
+Token_NNP Finder_NNP ._.
+The_DT Token_NNP Finder_NNP model_NN determines_VBZ if_IN the_DT values_NNS of_IN a_DT cer_NN
+ramework_NN for_IN testing_VBG web-based_JJ applications_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+HtmlUnit_NN models_NNS HTML_NNP documents_NNS and_CC provides_VBZ an_DT API_NN to_TO interact_VB with_IN these_DT documents_NNS ._.
+It_PRP supports_VBZ JavaScript_NNP by_IN integrating_VBG Mozilla_NNP 's_POS Rhino_NNP interpreter_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+HtmlUnit_NNP implements_VBZ the_DT standard_JJ functionality_NN provided_VBN by_IN regular_JJ browsers_NNS ,_, except_IN visual_JJ page_NN rendering_NN ._.
+We_PRP have_VBP instrumented_VBN HtmlUnit_NNP and_CC Rhino_NNP to_TO extract_VB the_DT features_NNS used_VBN to_TO detect_VB and_CC analyze_VB
+come_VB the_DT primary_JJ instrument_NN used_VBN by_IN miscreants_NNS to_TO perform_VB their_PRP$ attacks_NNS on_IN the_DT Internet_NN ._.
+In_IN particular_JJ ,_, attacks_NNS that_WDT target_VBP web_NN clients_NNS ,_, as_IN opposed_VBN to_TO infrastructure_NN components_NNS ,_, have_VBP become_VBN pervasive_JJ =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Drive-by_JJ downloads_NNS are_VBP a_DT particularly_RB common_JJ and_CC insidious_JJ form_NN of_IN such_JJ attacks_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+In_IN a_DT drive-by_JJ download_NN ,_, a_DT victim_NN is_VBZ lured_VBN to_TO a_DT malicious_JJ web_NN page_NN ._.
+The_DT page_NN contains_VBZ code_NN ,_, typically_RB written_VBN in_IN
+oach_NN relies_VBZ on_IN comprehensive_JJ dynamic_NN analysis_NN and_CC anomaly_NN detection_NN ._.
+3.1_CD Features_NNP Anomaly_NNP detection_NN is_VBZ based_VBN on_IN the_DT hypothesis_NN that_IN malicious_JJ activity_NN manifests_VBZ itself_PRP through_IN anomalous_JJ system_NN events_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Anomaly_JJ detection_NN systems_NNS monitor_VBP events_NNS occurring_VBG in_IN the_DT system_NN under_IN analysis_NN ._.
+For_IN each_DT event_NN ,_, a_DT number_NN of_IN features_NNS are_VBP extracted_VBN ._.
+During_IN a_DT learning_NN phase_NN ,_, ``_`` normal_JJ ''_'' feature_NN values_NNS are_VBP learned_VBN ,_, usi_NN
+ist_NN of_IN full-featured_JJ web_NN browsers_NNS typically_RB running_VBG in_IN a_DT virtual_JJ machine_NN ._.
+They_PRP work_VBP by_IN monitoring_VBG all_DT modifications_NNS to_TO the_DT system_NN environment_NN ,_, such_JJ as_IN files_NNS created_VBN or_CC deleted_VBN ,_, and_CC processes_NNS launched_VBD =_JJ -_: =[_NN 21_CD ,_, 28_CD ,_, 37_CD ,_, 39_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+If_IN any_DT unexpected_JJ modification_NN occurs_VBZ ,_, this_DT is_VBZ considered_VBN as_IN the_DT manifestation_NN of_IN an_DT attack_NN ,_, and_CC the_DT corresponding_JJ page_NN is_VBZ flagged_VBN as_IN malicious_JJ ._.
+Unfortunately_RB ,_, also_RB high-interaction_JJ honeyclients_NNS hav_VBP
+functions_NNS that_WDT have_VBP not_RB been_VBN invoked_VBN ,_, simply_RB by_IN calling_VBG them_PRP ._.
+While_IN less_RBR sophisticated_JJ than_IN other_JJ approaches_NNS with_IN similar_JJ goals_NNS -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, this_DT technique_NN resembles_VBZ the_DT forced-execution_JJ model_NN presented_VBN in_IN =_JJ -_: =[_NN 40_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP found_VBD that_IN this_DT simple_JJ technique_NN worked_VBD well_RB in_IN practice_NN ._.
+4_LS ._.
+ANALYSIS_NN We_PRP implemented_VBD our_PRP$ proposed_VBN approach_NN in_IN a_DT system_NN ,_, which_WDT we_PRP call_VBP JSAND_NNP ,_, and_CC we_PRP used_VBD it_PRP to_TO detect_VB and_CC analyze_VB malicious_JJ web_NN con_NN
+igh-interaction_JJ honeyclient_NN ,_, says_VBZ ,_, ``_`` high-interaction_JJ client_NN honeypots_NNS have_VBP a_DT tendency_NN to_TO fail_VB at_IN identifying_VBG malicious_JJ web_NN pages_NNS ,_, producing_VBG false_JJ negatives_NNS that_WDT are_VBP rooted_VBN in_IN the_DT detection_NN mechanism_NN ''_'' =_SYM -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: ._. -RRB-_-RRB-
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT novel_JJ approach_NN to_TO the_DT automatic_JJ detection_NN and_CC analysis_NN of_IN malicious_JJ web_NN pages_NNS ._.
+For_IN this_DT ,_, we_PRP visit_VBP web_NN pages_NNS with_IN an_DT instrumented_JJ browser_NN and_CC record_NN events_NNS that_WDT occur_VBP dur_NN
+sful_NNS exploit_VBP ,_, the_DT injected_VBN shellcode_NN is_VBZ executed_VBN ._.
+The_DT shellcode_NN usually_RB downloads_NNS malware_VBP from_IN a_DT web_NN site_NN and_CC executes_VBZ it_PRP ._.
+As_IN a_DT consequence_NN ,_, the_DT compromised_VBN machine_NN typically_RB becomes_VBZ part_NN of_IN a_DT botnet_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Discussion_NN ._.
+It_PRP is_VBZ interesting_JJ to_TO observe_VB how_WRB the_DT techniques_NNS used_VBN by_IN current_JJ malicious_JJ JavaScript_NNP code_NN affect_VB the_DT applicability_NN and_CC effectiveness_NN of_IN different_JJ approaches_NNS to_TO its_PRP$ detection_NN and_CC analysis_NN
+-RRB-_-RRB- ,_, and_CC vulnerable_JJ web_NN clients_NNS are_VBP commonly_RB used_VBN -LRB-_-LRB- about_RB 45_CD %_NN of_IN Internet_NNP users_NNS use_VBP an_DT outdated_JJ browser_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Second_JJ ,_, attack_NN techniques_NNS to_TO reliably_RB exploit_VB web_NN client_NN vulnerabilities_NNS are_VBP well-documented_JJ =_JJ -_: =[_NN 4_CD ,_, 33_CD ,_, 34_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Third_JJ ,_, sophisticated_JJ tools_NNS for_IN automating_VBG the_DT process_NN of_IN fingerprinting_VBG the_DT user_NN 's_POS browser_NN ,_, obfuscating_VBG the_DT exploit_VBP code_NN ,_, and_CC delivering_VBG it_PRP to_TO the_DT victim_NN ,_, are_VBP easily_RB obtainable_JJ -LRB-_-LRB- e.g._FW ,_, NeoSploit_NNP ,_, and_CC
+more_RBR comprehensive_JJ features_NNS ,_, is_VBZ automatic_JJ ,_, and_CC has_VBZ been_VBN extensively_RB validated_VBN ._.
+Shellcode_NN detection_NN ._.
+A_DT number_NN of_IN recent_JJ approaches_NNS are_VBP based_VBN on_IN the_DT detection_NN of_IN the_DT shellcode_NN used_VBN in_IN an_DT attack_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 6_CD ,_, 30_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Two_CD of_IN JSAND_NNP 's_POS features_NNS are_VBP designed_VBN for_IN the_DT same_JJ purpose_NN ._.
+Furthermore_RB ,_, the_DT richer_JJR feature_NN set_NN of_IN JSAND_NN allows_VBZ it_PRP to_TO detect_VB attacks_NN thatdo_NN not_RB rely_VB on_IN shellcode_NN injection_NN ,_, which_WDT would_MD necessarily_RB
+-RRB-_-RRB- ,_, and_CC vulnerable_JJ web_NN clients_NNS are_VBP commonly_RB used_VBN -LRB-_-LRB- about_RB 45_CD %_NN of_IN Internet_NNP users_NNS use_VBP an_DT outdated_JJ browser_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Second_JJ ,_, attack_NN techniques_NNS to_TO reliably_RB exploit_VB web_NN client_NN vulnerabilities_NNS are_VBP well-documented_JJ =_JJ -_: =[_NN 4_CD ,_, 33_CD ,_, 34_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Third_JJ ,_, sophisticated_JJ tools_NNS for_IN automating_VBG the_DT process_NN of_IN fingerprinting_VBG the_DT user_NN 's_POS browser_NN ,_, obfuscating_VBG the_DT exploit_VBP code_NN ,_, and_CC delivering_VBG it_PRP to_TO the_DT victim_NN ,_, are_VBP easily_RB obtainable_JJ -LRB-_-LRB- e.g._FW ,_, NeoSploit_NNP ,_, and_CC
+gular_JJ execution_NN of_IN the_DT script_NN finishes_NNS ,_, we_PRP force_VBP the_DT execution_NN of_IN those_DT functions_NNS that_WDT have_VBP not_RB been_VBN invoked_VBN ,_, simply_RB by_IN calling_VBG them_PRP ._.
+While_IN less_RBR sophisticated_JJ than_IN other_JJ approaches_NNS with_IN similar_JJ goals_NNS =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, this_DT technique_NN resembles_VBZ the_DT forced-execution_JJ model_NN presented_VBN in_IN -LRB-_-LRB- 40_CD -RRB-_-RRB- ._.
+We_PRP found_VBD that_IN this_DT simple_JJ technique_NN worked_VBD well_RB in_IN practice_NN ._.
+4_LS ._.
+ANALYSIS_NN We_PRP implemented_VBD our_PRP$ proposed_VBN approach_NN in_IN a_DT system_NN ,_, whic_JJ
+behavior_NN ,_, rather_RB than_IN the_DT syntactic_JJ features_NNS ,_, of_IN malicious_JJ scripts_NNS -LRB-_-LRB- for_IN example_NN ,_, invoking_VBG a_DT method_NN of_IN an_DT ActiveX_NN control_NN vulnerable_JJ to_TO buffer_VB overflows_NNS with_IN a_DT parameter_NN longer_RBR than_IN a_DT certain_JJ length_NN -RRB-_-RRB- =_JJ -_: =[_NN 14_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT problem_NN with_IN low-interaction_JJ honeyclients_NNS is_VBZ that_IN they_PRP are_VBP limited_VBN by_IN the_DT coverage_NN of_IN their_PRP$ specification_NN database_NN ;_: that_DT is_VBZ ,_, attacks_NNS for_IN which_WDT a_DT specification_NN is_VBZ not_RB available_JJ can_MD not_RB be_VB detected_VBN ._.
+and_CC on_IN legitimate_JJ web_NN sites_NNS ,_, that_WDT have_VBP been_VBN compromised_VBN or_CC modified_VBN to_TO serve_VB the_DT malicious_JJ content_NN -LRB-_-LRB- high-profile_JJ examples_NNS include_VBP the_DT Department_NNP of_IN Homeland_NNP Security_NNP and_CC the_DT BusinessWeek_NNP news_NN outlet_NN =_JJ -_: =[_NN 10_CD ,_, 11_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+A_DT number_NN of_IN approaches_NNS have_VBP been_VBN proposed_VBN to_TO detect_VB malicious_JJ web_NN pages_NNS ._.
+Traditional_JJ anti-virus_JJ tools_NNS use_VBP static_JJ signatures_NNS to_TO match_VB patterns_NNS that_WDT are_VBP commonly_RB found_VBN in_IN malicious_JJ scripts_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Unfor_NNP
+-RRB-_-RRB- ,_, and_CC vulnerable_JJ web_NN clients_NNS are_VBP commonly_RB used_VBN -LRB-_-LRB- about_RB 45_CD %_NN of_IN Internet_NNP users_NNS use_VBP an_DT outdated_JJ browser_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Second_JJ ,_, attack_NN techniques_NNS to_TO reliably_RB exploit_VB web_NN client_NN vulnerabilities_NNS are_VBP well-documented_JJ =_JJ -_: =[_NN 4_CD ,_, 33_CD ,_, 34_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Third_JJ ,_, sophisticated_JJ tools_NNS for_IN automating_VBG the_DT process_NN of_IN fingerprinting_VBG the_DT user_NN 's_POS browser_NN ,_, obfuscating_VBG the_DT exploit_VBP code_NN ,_, and_CC delivering_VBG it_PRP to_TO the_DT victim_NN ,_, are_VBP easily_RB obtainable_JJ -LRB-_-LRB- e.g._FW ,_, NeoSploit_NNP ,_, and_CC
+more_RBR comprehensive_JJ features_NNS ,_, is_VBZ automatic_JJ ,_, and_CC has_VBZ been_VBN extensively_RB validated_VBN ._.
+Shellcode_NN detection_NN ._.
+A_DT number_NN of_IN recent_JJ approaches_NNS are_VBP based_VBN on_IN the_DT detection_NN of_IN the_DT shellcode_NN used_VBN in_IN an_DT attack_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 6_CD ,_, 30_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Two_CD of_IN JSAND_NNP 's_POS features_NNS are_VBP designed_VBN for_IN the_DT same_JJ purpose_NN ._.
+Furthermore_RB ,_, the_DT richer_JJR feature_NN set_NN of_IN JSAND_NN allows_VBZ it_PRP to_TO detect_VB attacks_NN thatdo_NN not_RB rely_VB on_IN shellcode_NN injection_NN ,_, which_WDT would_MD necessarily_RB
+ead_NN -LRB-_-LRB- in_IN 2008_CD ,_, such_JJ vulnerabilities_NNS constituted_VBD almost_RB 15_CD %_NN of_IN the_DT reports_NNS in_IN the_DT CVE_NN repository_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- -RRB-_-RRB- ,_, and_CC vulnerable_JJ web_NN clients_NNS are_VBP commonly_RB used_VBN -LRB-_-LRB- about_RB 45_CD %_NN of_IN Internet_NNP users_NNS use_VBP an_DT outdated_JJ browser_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Second_JJ ,_, attack_NN techniques_NNS to_TO reliably_RB exploit_VB web_NN client_NN vulnerabilities_NNS are_VBP well-documented_JJ -LRB-_-LRB- 4_CD ,_, 33_CD ,_, 34_CD ,_, 35_CD -RRB-_-RRB- ._.
+Third_JJ ,_, sophisticated_JJ tools_NNS for_IN automating_VBG the_DT process_NN of_IN fingerprinting_VBG the_DT user_NN 's_POS brow_NN

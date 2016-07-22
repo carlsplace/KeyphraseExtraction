@@ -1,0 +1,153 @@
+Decentralized_JJ orchestration_NN of_IN composite_JJ web_NN services_NNS
+Web_NN services_NNS make_VBP information_NN and_CC software_NN available_JJ programmatically_RB via_IN the_DT Internet_NN and_CC may_MD be_VB used_VBN as_IN building_NN blocks_NNS for_IN applications_NNS ._.
+A_DT composite_JJ web_NN service_NN is_VBZ one_CD that_WDT is_VBZ built_VBN using_VBG multiple_JJ component_NN web_NN services_NNS and_CC is_VBZ typically_RB specified_VBN using_VBG a_DT language_NN such_JJ as_IN BPEL4WS_NN or_CC WSIPL_NN ._.
+Once_RB its_PRP$ specification_NN has_VBZ been_VBN developed_VBN ,_, the_DT composite_JJ service_NN may_MD be_VB orchestrated_VBN either_CC in_IN a_DT centralized_VBN or_CC in_IN a_DT decentralized_JJ fashion_NN ._.
+Decentralized_JJ orchestration_NN offers_VBZ performance_NN improvements_NNS in_IN terms_NNS of_IN increased_VBN throughput_NN and_CC scalability_NN and_CC lower_JJR response_NN time_NN ._.
+However_RB ,_, decentralized_JJ orchestration_NN also_RB brings_VBZ additional_JJ complexity_NN to_TO the_DT system_NN in_IN terms_NNS of_IN error_NN recovery_NN and_CC fault_NN handling_NN ._.
+Further_RB ,_, incorrect_JJ design_NN of_IN a_DT decentralized_JJ system_NN can_MD lead_VB to_TO potential_JJ deadlock_NN or_CC non-optimal_JJ usage_NN of_IN system_NN resources_NNS ._.
+This_DT paper_NN investigates_VBZ build_VB time_NN and_CC runtime_NN issues_NNS related_VBN to_TO decentralized_VBN orchestration_NN of_IN composite_JJ web_NN services_NNS ._.
+We_PRP support_VBP our_PRP$ design_NN decisions_NNS with_IN performance_NN results_NNS obtained_VBN on_IN a_DT decentralized_VBN setup_NN using_VBG BPEL4WS_NN to_TO describe_VB the_DT composite_JJ web_NN services_NNS and_CC BPWS4J_NN as_IN the_DT underlying_VBG runtime_NN environment_NN to_TO orchestrate_VB them_PRP ._.
+sers_NNS in_IN dynamic_JJ environments_NNS ,_, where_WRB executions_NNS are_VBP initiated_VBN and_CC followed_VBN up_RP by_IN a_DT possibly_RB mobile_JJ client_NN ._.
+In_IN addition_NN ,_, centralized_JJ execution_NN models_NNS suffer_VBP of_IN the_DT availability_NN and_CC scalability_NN problems_NNS =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Accordingly_RB ,_, to_TO achieve_VB adaptive_JJ and_CC scalable_JJ execution_NN of_IN composite_JJ services_NNS in_IN dynamic_JJ environments_NNS ,_, the_DT participating_VBG services_NNS should_MD be_VB selfmanaged_VBN :_: they_PRP should_MD be_VB capable_JJ of_IN coordinating_VBG their_PRP$
+ese_NN tasks_NNS could_MD be_VB deployed_VBN as_IN an_DT individual_JJ web_NN service_NN ._.
+A_DT mechanism_NN to_TO integrate_VB them_PRP is_VBZ necessary_JJ to_TO complete_VB the_DT business_NN process_NN ._.
+There_EX are_VBP many_JJ research_NN efforts_NNS on_IN web-based_JJ service_NN integration_NN =_JJ -_: =[_NN 12_CD ,_, 15_CD ,_, 26_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT deal_VBP with_IN the_DT mechanisms_NNS to_TO invoke_VB ,_, terminate_VB and_CC orchestrate_VB web_NN services_NNS ._.
+4_LS ._.
+SC_NNP Collaborator_NNP Framework_NNP SC_NNP Collaborator_NNP -LRB-_-LRB- Supply_NNP Chain_NNP Collaborator_NNP -RRB-_-RRB- is_VBZ a_DT prototype_NN system_NN developed_VBD for_IN support_NN
+tion_NN are_VBP being_VBG presented_VBN in_IN order_NN to_TO support_VB the_DT development_NN of_IN reliable_JJ composite_JJ Web_NN Services_NNP ;_: e.g._FW ,_, see_VB WS-Transaction_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC OASIS_NN BTP_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+Moreover_RB ,_, in_IN some_DT decentralized_VBN approaches_NNS ,_, e.g._FW ,_, in_IN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, local_JJ and_CC global_JJ monitoring_NN agents_NNS are_VBP employed_VBN to_TO control_VB the_DT execution_NN of_IN composite_JJ services_NNS ._.
+However_RB ,_, such_JJ works_NNS support_VBP only_RB basic_JJ error_NN detection_NN ,_, without_IN reasoning_NN about_IN exceptions_NNS ._.
+Moreover_RB ,_,
+support_NN to_TO the_DT decentralisation_NN of_IN services_NNS ,_, which_WDT has_VBZ been_VBN studied_VBN in_IN several_JJ projects_NNS in_IN order_NN to_TO address_VB the_DT overhead_NN of_IN a_DT centralised_JJ coordination_NN based_VBN on_IN complex_JJ orchestration_NN logic_NN -LRB-_-LRB- e.g._FW ,_, see_VBP =_JJ -_: =_JJ Chafle_FW et_FW al._FW ,_, 2004_CD -_: =_JJ -_: ;_: Zirpins_NNP et_FW al._FW ,_, 2004_CD -RRB-_-RRB- ._.
+Our_PRP$ event-based_JJ coordination_NN model_NN is_VBZ similar_JJ to_TO the_DT approach_NN adopted_VBN in_IN Monsieur_NNP et_FW al._FW -LRB-_-LRB- 2007_CD -RRB-_-RRB- and_CC Snoeck_NNP et_FW al._FW -LRB-_-LRB- 2004_CD -RRB-_-RRB- ._.
+However_RB ,_, we_PRP relax_VBP the_DT condition_NN that_WDT enables_VBZ the_DT inte_NN
+e_LS and_CC novelty_NN of_IN the_DT contribution_NN lies_VBZ in_IN the_DT fact_NN that_IN most_JJS existing_VBG systems_NNS tackle_VBP the_DT scalability_NN problem_NN by_IN statically_RB and_CC manually_RB partitioning_VBG the_DT business_NN process_NN across_IN different_JJ sites_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Instead_RB ,_, our_PRP$ approach_NN uses_VBZ the_DT current_JJ workload_NN to_TO dynamically_RB and_CC autonomously_RB determine_VB the_DT optimal_JJ configuration_NN of_IN the_DT system_NN at_IN run-time_NN ._.
+To_TO demonstrate_VB the_DT validity_NN of_IN these_DT ideas_NNS ,_, as_IN part_NN of_IN
+sed_VBN by_IN inadequate_JJ adoption_NN of_IN centralised_JJ models_NNS ._.
+There_EX are_VBP some_DT projects_NNS aiming_VBG to_TO address_VB these_DT drawbacks_NNS from_IN a_DT system_NN architectural_JJ point_NN of_IN view_NN ,_, and_CC as_IN a_DT result_NN ,_, various_JJ decentralised_JJ solutions_NNS =_JJ -_: =[_NN 2_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN proposed_VBN ._.
+However_RB ,_, generating_VBG decentralised_VBN Web_NN service_NN business_NN processes_NNS is_VBZ still_RB a_DT new_JJ research_NN topic_NN ,_, and_CC a_DT lot_NN of_IN issues_NNS are_VBP not_RB yet_RB well_RB understood_VBN ._.
+The_DT focus_NN of_IN this_DT paper_NN is_VBZ to_TO disc_NN
+istributed_VBN data-flow_JJ architecture_NN for_IN composing_VBG software_NN services_NNS ._.
+FICAS_NN is_VBZ intrusive_JJ to_TO the_DT application_NN code_NN as_IN each_DT application_NN that_WDT is_VBZ to_TO be_VB deployed_VBN needs_VBZ to_TO be_VB wrapped_VBN with_IN a_DT FICAS_NNP interface_NN ._.
+In_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, an_DT architecture_NN for_IN decentralised_JJ orchestration_NN of_IN composite_JJ Web_NN services_NNS defined_VBN in_IN BPEL_NN is_VBZ proposed_VBN ._.
+Our_PRP$ research_NN deals_NNS with_IN a_DT set_NN of_IN challenges_NNS not_RB addressed_VBN by_IN 3_CD http:\/\/sourceforge.net\/projects\/_NN
+stributed_VBN data-flow_JJ architecture_NN for_IN composing_VBG software_NN services_NNS ._.
+FICAS_NN is_VBZ intrusive_JJ to_TO the_DT application_NN code_NN as_IN each_DT application_NN that_WDT is_VBZ to_TO be_VB deployed_VBN needs_VBZ to_TO be_VB wrapped_VBN with_IN a_DT FICAS_NNP interface_NN ._.
+In_IN -LRB-_-LRB- =_JJ -_: =_JJ Chafle_FW et_FW al._FW ,_, 2004_CD -_: =--RRB-_NN ,_, an_DT architecture_NN for_IN decentralised_JJ orchestration_NN of_IN composite_JJ Web_NN services_NNS defined_VBN in_IN BPEL_NN is_VBZ proposed_VBN ._.
+Our_PRP$ research_NN deals_NNS with_IN a_DT set_NN of_IN challenges_NNS not_RB addressed_VBN by_IN this_DT architecture_NN :_: how_WRB to_TO optimis_VB
+ion_NN of_IN parts_NNS of_IN the_DT workflow_NN ._.
+However_RB ,_, this_DT is_VBZ a_DT general_JJ problem_NN of_IN centralized_JJ workflows_NNS and_CC has_VBZ already_RB been_VBN in_IN the_DT focus_NN of_IN other_JJ research_NN ._.
+To_TO increase_VB performance_NN in_IN such_JJ cases_NNS ,_, several_JJ proposals_NNS =_JJ -_: =[_NN 11_CD ,_, 5_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN made_VBN ._.
+Asanexample_NNP ,_, Chafleetal_NNP ._.
+-LRB-_-LRB- 5_LS -RRB-_-RRB- havedevelopedamethod_NN to_TO automatically_RB decompose_VB a_DT centralized_JJ workflow_NN into_IN sub-workflowswhilemaintainingsemantics_NNS ,_, errorpropagation_NN and_CC synchronization_NN ._.
+In_IN t_NN
+le_FW ,_, given_VBN the_DT observations_NNS on_IN BPEL_NNP above_IN ._.
+As_IN such_JJ ,_, it_PRP can_MD not_RB offer_VB the_DT same_JJ level_NN of_IN flexibility_NN in_IN deployment_NN scenarios_NNS ,_, dependability_NN and_CC scalability_NN that_IN DECS_NN intends_VBZ to_TO provide_VB ._.
+Work_NN described_VBN in_IN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ managed_VBN to_TO partition_NN and_CC distribute_VB fragments_NNS of_IN a_DT BPEL_NN specification_NN ._.
+However_RB ,_, each_DT fragment_NN becomes_VBZ a_DT complete_JJ workflow_NN itself_PRP ,_, giving_VBG a_DT hierarchical_JJ structure_NN which_WDT is_VBZ not_RB as_RB flexible_JJ as_IN the_DT a_DT
+le_FW ,_, given_VBN the_DT observations_NNS on_IN BPEL_NNP above_IN ._.
+As_IN such_JJ ,_, it_PRP can_MD not_RB offer_VB the_DT same_JJ level_NN of_IN flexibility_NN in_IN deployment_NN scenarios_NNS ,_, dependability_NN and_CC scalability_NN that_IN DECS_NN intends_VBZ to_TO provide_VB ._.
+Work_NN described_VBN in_IN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ managed_VBN to_TO partition_NN and_CC distribute_VB fragments_NNS of_IN a_DT BPEL_NN specification_NN ._.
+However_RB ,_, each_DT fragment_NN becomes_VBZ a_DT complete_JJ workflow_NN itself_PRP ,_, giving_VBG a_DT hierarchical_JJ structure_NN which_WDT is_VBZ not_RB as_RB flexible_JJ as_IN the_DT a_DT
+s_NN term_NN later_RB in_IN this_DT thesis_NN when_WRB discussing_VBG distribution_NN schemes_NNS ._.
+The_DT advantages_NNS of_IN asynchronous_JJ messaging_NN ,_, used_VBN in_IN decentralised_JJ distribution_NN schemes_NNS ,_, is_VBZ further_RB explored_VBN by_IN the_DT IBM_NNP Symphony_NNP project_NN =_JJ -_: =[_NN 44_CD ,_, 126_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Here_RB the_DT authors_NNS look_VBP at_IN composition_NN of_IN web_NN services_NNS and_CC propose_VBP a_DT decentralised_JJ scheme_NN rather_RB than_IN the_DT more_RBR traditional_JJ centralised_JJ scheme_NN ._.
+As_IN already_RB noted_VBN different_JJ schemes_NNS realize_VBP different_JJ non_JJ -_:
+on_IN based_VBN on_IN the_DT current_JJ workload_NN ._.
+This_DT is_VBZ an_DT important_JJ contribution_NN as_IN most_JJS existing_JJ systems_NNS tackle_VBP the_DT scalability_NN problem_NN by_IN statically_RB and_CC manually_RB partitioning_VBG the_DT workload_NN across_IN different_JJ sites_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN part_NN of_IN the_DT JOpera_NN project_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, we_PRP have_VBP designed_VBN and_CC implemented_VBN a_DT flexible_JJ platform_NN for_IN process_NN execution_NN that_WDT achieves_VBZ scalability_NN by_IN replicating_VBG its_PRP$ key_JJ components_NNS across_IN a_DT cluster_NN of_IN compute_VB
+le_DT retaining_VBG the_DT original_JJ flow_NN semantics_NNS ._.
+This_DT ,_, in_IN conjunction_NN with_IN the_DT added_VBN concurrency_NN ,_, results_VBZ in_IN better_JJR scalability_NN and_CC performance_NN ._.
+For_IN more_JJR details_NNS on_IN our_PRP$ Execution_NNP Environment_NNP please_VB refer_VBP to_TO =_JJ -_: =[_NN 5_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP will_MD focus_VB on_IN the_DT Logical_JJ and_CC Physical_JJ composition_NN stages_NNS ._.
+4_LS ._.
+LOGICAL_JJ COMPOSITION_NN Figure_NN 4_CD depicts_VBZ our_PRP$ system_NN for_IN implementing_VBG the_DT four_CD steps_NNS of_IN composition_NN during_IN Logical_JJ Composit_NN
+ching_VBG distribution_NN patterns_NNS ,_, in_IN existing_VBG network_NN based_VBN systems_NNS ._.
+Many_JJ of_IN the_DT patterns_NNS discussed_VBN here_RB are_VBP identified_VBN by_IN Ding_NNP et_FW al._FW -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, whilst_IN the_DT QoS_NN attributes_NNS of_IN the_DT core_NN patterns_NNS are_VBP documented_VBN by_IN =_JJ -_: =[_NN 5_CD ,_, 8_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, their_PRP$ description_NN in_IN an_DT MDA_NNP based_VBN Web_NN service_NN context_NN is_VBZ novel_JJ ._.
+There_EX are_VBP three_CD pattern_NN categories_NNS ,_, as_IN follows_VBZ ._.
+•_NNP Core_NNP patterns_NNS --_: Centralised_NNP Dedicated-Hub_NNP --_: Centralised_NNP Shared-Hub_NNP --_: Decent_JJ
+es_NNS propose_VBP a_DT framework_NN where_WRB Local_JJ Monitoring_NN Agents_NNS check_VBP the_DT state_NN of_IN the_DT orchestrated_VBN Web_NN Services_NNPS and_CC interact_VBP with_IN a_DT Status_NNP Monitor_NNP that_WDT maintains_VBZ a_DT view_NN on_IN the_DT progress_NN of_IN the_DT composite_JJ service_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN there_EX is_VBZ a_DT direct_JJ correspondence_NN with_IN our_PRP$ Local_NNP and_CC Global_NNP Diagnoser_NNP services_NNS ,_, the_DT authors_NNS apply_VBP traditional_JJ error_NN detection_NN and_CC are_VBP therefore_RB subject_JJ to_TO the_DT limitations_NNS we_PRP discussed_VBD ._.
+Moreo_NN
+approaches_NNS for_IN decentralized_VBN management_NN of_IN web_NN service_NN compositions_NNS have_VBP been_VBN put_VBN forward_RB ,_, in_IN particular_JJ ,_, to_TO avoid_VB performance_NN bottlenecks_NNS arising_VBG from_IN centralized_VBN web_NN service_NN composition_NN -LRB-_-LRB- see_VB ,_, e.g._FW ,_, =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, the_DT handling_NN of_IN crosscutting_VBG concerns_NNS in_IN such_JJ decentralized_JJ web_NN service_NN management_NN systems_NNS is_VBZ an_DT open_JJ issue_NN ._.
+In_IN this_DT paper_NN we_PRP investigate_VBP the_DT modularization_NN of_IN crosscutting_VBG concerns_NNS of_IN dis_NN
+es_NNS ._.
+Then_RB ,_, we_PRP specify_VBP various_JJ Web_NN Services_NNP that_WDT constitute_VBP the_DT WebMail_NNP family_NN ._.
+Finally_RB ,_, we_PRP specify_VBP various_JJ orchestrations_NNS of_IN the_DT WebMail_NNP family_NN using_VBG abbreviated_JJ BPEL_NN process_NN specifications_NNS as_IN done_VBN in_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4.1_CD Message_NN Types_VBZ Message_NN types_NNS define_VBP the_DT protocol_NN used_VBN for_IN communication_NN ,_, i.e._FW ,_, service_NN interfaces_NNS are_VBP understood_VBN in_IN terms_NNS of_IN their_PRP$ input_NN and_CC output_NN messages_NNS ._.
+Here_RB ,_, we_PRP limit_VBP the_DT types_NNS of_IN transport_NN
+essage_NN transmission_NN This_DT use_NN case_NN is_VBZ supported_VBN through_IN invocations_NNS of_IN the_DT SenderPasswdCallbackPT_NN and_CC SESPAuthPT_NN services_NNS ._.
+Due_JJ to_TO space_NN limitations_NNS ,_, we_PRP follow_VBP the_DT abbreviated_JJ BPEL_NN syntax_NN borrowed_VBN from_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+SESP_NN process_NN modification_NN Begin_NN Sequence_NN Receive_JJ Message_NN M_NN Invoke_FW SenderPasswdCallbackPT_FW Switch_VB Case_NNP :_: Password_NN is_VBZ correct_JJ ..._: \/_: \/_: proceed_VB to_TO other_JJ delivery_NN tasks_NNS Otherwise_RB Throw_VB -LRB-_-LRB- Failure_NN Fault_NNP ,_, message_NN
+ight_RB not_RB be_VB optimal_JJ performance-wise_NN ._.
+A_DT centralized_JJ composition_NN engine_NN can_MD not_RB always_RB take_VB full_JJ advantage_NN of_IN the_DT parallelism_NN in_IN its_PRP$ message_NN exchanges_NNS and_CC the_DT engine_NN can_MD become_VB a_DT performance_NN bottleneck_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Fig_NN 1_CD ._.
+b_NN illustrates_VBZ a_DT decentralized_JJ solution_NN to_TO the_DT same_JJ composition_NN ._.
+In_IN this_DT case_NN ,_, the_DT client_NN entity_NN needs_VBZ to_TO distribute_VB knowledge_NN about_IN the_DT composition_NN process_NN over_IN the_DT domains_NNS ._.
+The_DT control_NN flow_NN o_NN
+tion_NN of_IN process_NN specification_NN at_IN design-time_NN ._.
+During_IN the_DT run-time_NN each_DT local_JJ engine_NN only_RB obtains_VBZ the_DT partial_JJ copy_NN of_IN the_DT whole_JJ process_NN ,_, and_CC executes_VBZ it_PRP at_IN local_JJ site_NN where_WRB the_DT invoked_JJ service_NN resides_VBZ =_JJ -_: =[_NN 19_CD ,_, 20_CD ,_, 21_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Nevertheless_RB ,_, in_IN mobile_JJ code_NN style_NN ,_, the_DT process_NN specification_NN does_VBZ not_RB specify_VB the_DT concrete_JJ service_NN ,_, leaving_VBG it_PRP determined_VBD at_IN runtime_NN ._.
+Both_CC process_NN schema_NN and_CC instance_NN are_VBP dynamically_RB delivered_VBN to_TO t_NN
+s_NN such_JJ static_JJ partition_NN to_TO distribute_VB web_NN services_NNS processes_NNS ._.
+Authors_NNS in_IN -LRB-_-LRB- 34_CD -RRB-_-RRB- present_VBP an_DT algorithm_NN to_TO partition_NN a_DT single_JJ BPEL_NN process_NN into_IN an_DT equivalent_JJ set_NN of_IN decentralized_JJ processes_NNS ._.
+Based_VBN on_IN -LRB-_-LRB- 34_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT decentralized_JJ BPEL_NN composite_JJ scheme_NN which_WDT contains_VBZ multiple_JJ engines_NNS ,_, with_IN each_DT executing_VBG composite_JJ web_NN service_NN specification_NN at_IN distributed_VBN locations_NNS ._.
+Figure_NN 5_CD illustrates_VBZ such_JJ static_JJ comp_NN
+Work_NN Decentralization_NN of_IN workflow_NN process_NN execution_NN is_VBZ an_DT important_JJ area_NN of_IN research_NN ._.
+Typically_RB this_DT is_VBZ done_VBN to_TO support_VB business_NN processes_NNS across_IN companies_NNS without_IN having_VBG to_TO use_VB a_DT centralized_JJ entity_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT type_NN of_IN process_NN decentralization_NN can_MD lead_VB to_TO higher_JJR scalability_NN but_CC it_PRP also_RB introduces_VBZ several_JJ problems_NNS on_IN its_PRP$ own_JJ such_JJ as_IN the_DT lack_NN of_IN a_DT global_JJ view_NN over_IN the_DT process_NN ._.
+It_PRP also_RB does_VBZ not_RB address_VB t_NN
+While_IN safety_NN is_VBZ a_DT concern_NN that_WDT can_MD not_RB be_VB ignored_VBN ,_, today_NN 's_POS service_NN composition_NN approaches_NNS enforce_VBP unnecessary_JJ constraints_NNS on_IN the_DT process_NN logic_NN ._.
+Processes_NNS are_VBP made_VBN more_RBR sequential_JJ then_RB they_PRP need_VBP to_TO be_VB =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT major_JJ challenge_NN to_TO service_NN composition_NN is_VBZ enabling_VBG truly_RB peer-to-peer_JJ crossdomain_NN service_NN collaborations_NNS ,_, and_CC deploying_VBG them_PRP in_IN a_DT competitive_JJ time_NN frame_NN ,_, while_IN ensuring_VBG the_DT safety_NN of_IN the_DT participa_NN
+oftware_NN engineering_NN -LRB-_-LRB- Alo04_NN ,_, Pap05_NN ,_, Wee05_NN -RRB-_-RRB- ._.
+These_DT software_NN services_NNS will_MD be_VB running_VBG on_IN heterogeneous_JJ platforms_NNS and_CC distributed_VBN information_NN networks_NNS ,_, providing_VBG services_NNS to_TO other_JJ entities_NNS in_IN the_DT network_NN =_JJ -_: =_JJ -LRB-_-LRB- Gir04_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+Web_NN service_NN -LRB-_-LRB- WS_NN -RRB-_-RRB- infrastructure_NN is_VBZ arguably_RB the_DT most_RBS important_JJ realization_NN of_IN the_DT SOC_NN architecture_NN -LRB-_-LRB- Wee05_NN -RRB-_-RRB- ._.
+Web_NN service_NN is_VBZ defined_VBN as_IN a_DT ``_`` self-contained_JJ modular_JJ application_NN that_WDT can_MD be_VB described_VBN ,_, pub_NN
+overlay_NN computer_NN ,_, it_PRP is_VBZ not_RB 5sfeasible_JJ to_TO design_VB the_DT AEOLUS_NNP workflow_NN engine_NN to_TO use_VB a_DT centralized_JJ architecture_NN ._.
+In_IN the_DT past_NN ,_, there_EX have_VBP been_VBN many_JJ attempts_NNS to_TO build_VB distributed_VBN workflow_NN engines_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 59_CD ,_, 65_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT have_VBP been_VBN motivated_VBN by_IN the_DT need_NN for_IN supporting_VBG workflow_NN execution_NN across_IN different_JJ organizations_NNS -LRB-_-LRB- 134_CD -RRB-_-RRB- ,_, where_WRB no_DT central_JJ location_NN is_VBZ available_JJ to_TO control_VB the_DT execution_NN of_IN the_DT workflow_NN ._.
+Thus_RB ,_, i_FW
+the_DT specific_JJ business_NN process_NN and_CC application_NN domain_NN ._.
+Many_JJ of_IN the_DT cited_VBN approaches_NNS do_VBP not_RB consider_VB web_NN services_NNS as_IN available_JJ instruments_NNS for_IN decentralising_VBG business_NN processes_NNS ._.
+An_DT exception_NN is_VBZ made_VBN by_IN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT presents_VBZ an_DT approach_NN very_RB similar_JJ to_TO ours_PRP ._.
+The_DT authors_NNS use_VBP BPEL_NN as_IN workflow_NN model_NN and_CC use_VB the_DT term_NN Composite_NNP Web_NN Service_NNP to_TO refer_VB to_TO a_DT standard_JJ workflow_NN ._.
+However_RB ,_, they_PRP focus_VBP on_IN the_DT problem_NN of_IN
+act_VB with_IN each_DT other_JJ ._.
+We_PRP intend_VBP to_TO explore_VB both_DT modes_NNS of_IN execution_NN in_IN our_PRP$ engine_NN ._.
+Other_JJ work_NN done_VBN in_IN this_DT area_NN suggests_VBZ that_IN decentralised_VBN orchestration_NN tends_VBZ to_TO yield_VB significantly_RB higher_JJR scalability_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Figure_NN 1_CD shows_VBZ an_DT example_NN of_IN how_WRB a_DT dataflow_NN graph_NN would_MD be_VB executed_VBN in_IN a_DT distributed_VBN setting_NN ._.
+Three_CD execution_NN hosts_NNS each_DT have_VBP portions_NNS of_IN the_DT graph_NN assigned_VBN to_TO them_PRP ;_: the_DT flow_NN of_IN values_NNS between_IN nodes_NNS
+haracteristics_NNS ._.
+For_IN example_NN centralised_JJ patterns_NNS express_VBP high_JJ maintainability_NN ,_, but_CC exhibit_VBP poor_JJ performance_NN and_CC scalability_NN when_WRB compared_VBN to_TO peer-to-peer_JJ patterns_NNS ,_, due_JJ to_TO a_DT central_JJ message_NN bottleneck_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP base_VBP our_PRP$ development_NN approach_NN on_IN the_DT OMG_NNP 's_POS Model_NNP Driven_NNP Architecture_NNP -LRB-_-LRB- MDA_NNP -RRB-_-RRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+MDA_NNP considers_VBZ models_NNS as_IN formal_JJ specifications_NNS of_IN the_DT structure_NN or_CC function_NN of_IN a_DT system_NN where_WRB the_DT modeling_NN language_NN
+tle_NN work_NN has_VBZ been_VBN done_VBN in_IN what_WP concerns_VBZ the_DT distribution_NN of_IN control_NN and_CC data-flow_NN in_IN the_DT composition_NN of_IN Web_NN services_NNS ._.
+In_IN this_DT section_NN we_PRP present_VBP the_DT results_NNS we_PRP have_VBP found_VBN on_IN this_DT aspect_NN ._.
+Chafle_FW et_FW al_FW =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Nanda_NNP et_FW al_FW -LRB-_-LRB- 6_CD ,_, 8_CD -RRB-_-RRB- present_VBP a_DT method_NN for_IN decentralizing_VBG the_DT execution_NN of_IN composite_JJ Web_NN services_NNS ,_, along_IN with_IN related_JJ issues_NNS ._.
+In_IN -LRB-_-LRB- 6_CD -RRB-_-RRB- the_DT authors_NNS propose_VBP an_DT algorithm_NN for_IN partitioning_VBG centralized_JJ BPE_NN
+central_JJ node_NN becomes_VBZ unavailable_JJ ,_, the_DT composition_NN breaks_VBZ down_RP -RRB-_-RRB- and_CC imply_VBP heavy_JJ network_NN traffic_NN and_CC poor_JJ performance_NN ._.
+These_DT last_JJ two_CD shortcomings_NNS have_VBP already_RB been_VBN the_DT subject_NN of_IN study_NN :_: Chafle_FW et_FW al._FW =_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT technique_NN for_IN partitioning_VBG a_DT composite_JJ web_NN service_NN specified_VBN as_IN a_DT single_JJ BPEL_NN process_NN into_IN an_DT equivalent_JJ set_NN of_IN decentralized_JJ processes_NNS ._.
+Their_PRP$ partitioning_VBG algorithm_NN aims_NNS at_IN minimizing_VBG the_DT
+mation_NN ._.
+Examples_NNS include_VBP general_JJ software_NN construction_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, enterprise-wise_JJ and_CC inter-enterprise_JJ application_NN integration_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, grid_NN computing_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, e-commerce_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, and_CC Web_NN service_NN composition_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Basically_RB ,_, a_DT workflow_NN ,_, corresponding_VBG traditionally_RB to_TO a_DT business_NN process_NN ,_, consists_VBZ of_IN a_DT number_NN of_IN loosely_RB dependent_JJ activities_NNS and_CC the_DT control_NN flows_VBZ among_IN them_PRP ._.
+Workflows_NNP ,_, therefore_RB ,_, constitute_VBP the_DT
+r_NN ,_, a_DT central_JJ engine_NN can_MD become_VB a_DT potential_JJ processing_NN and_CC communication_NN bottleneck_NN as_RB well_RB as_IN a_DT central_JJ point_NN of_IN failure_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Several_JJ decentralized_JJ or_CC peer-to-peer_JJ approaches_NNS have_VBP been_VBN proposed_VBN -LRB-_-LRB- 2_CD -RRB-_-RRB- -LRB-_-LRB- 3_LS -RRB-_-RRB- =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =-[_CD 5_CD -RRB-_-RRB- -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+Common_JJ to_TO most_JJS of_IN these_DT ,_, a_DT process_NN is_VBZ instantiated_VBN prior_RB to_TO its_PRP$ execution_NN ._.
+During_IN instantiation_NN ,_, proper_JJ resources_NNS and_CC control_NN are_VBP pre-allocated_JJ in_IN the_DT distributed_VBN environment_NN ._.
+These_DT appr_NN
+oaches_NNS consider_VBP the_DT case_NN in_IN which_WDT the_DT synthesized_VBN orchestrator_NN is_VBZ centralized_VBN ._.
+On_IN the_DT other_JJ side_NN ,_, the_DT issue_NN of_IN distributed_VBN orchestration_NN has_VBZ been_VBN considered_VBN in_IN the_DT context_NN of_IN Web_NN service_NN technologies_NNS =_JJ -_: =[_NN 1_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC with_IN emphasis_NN on_IN the_DT needed_VBN run-time_NN architectures_NNS ._.
+Our_PRP$ work_NN can_MD exploit_VB such_JJ results_NNS ,_, even_RB if_IN they_PRP need_VBP to_TO be_VB casted_VBN into_IN the_DT mobile_JJ scenario_NN -LRB-_-LRB- in_IN which_WDT service_NN -LRB-_-LRB- http:\/\/www.eu-orchestra.org_NN -RRB-_-RRB- ,_, -LRB-_-LRB- h_NN
+er_RB ,_, it_PRP has_VBZ been_VBN recognized_VBN that_IN ,_, even_RB in_IN Enterprise_NNP Application_NN Integration_NN scenarios_NNS ,_, the_DT management_NN of_IN a_DT non_JJ trivial_JJ supply_NN chain_NN often_RB imposes_VBZ the_DT decentralized_JJ management_NN of_IN the_DT composite_JJ service_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, e.g._FW ,_, in_IN order_NN to_TO deal_VB with_IN the_DT business_NN requirements_NNS of_IN suppliers_NNS which_WDT serve_VBP multiple_JJ consumers_NNS ._.
+In_IN such_JJ situations_NNS ,_, the_DT cooperating_VBG Web_NN Services_NNPS have_VBP partial_JJ views_NNS of_IN the_DT overall_JJ service_NN and_CC they_PRP
+into_IN parts_NNS and_CC deploying_VBG the_DT parts_NNS in_IN decentralized_JJ locations_NNS ._.
+This_DT is_VBZ similar_JJ to_TO what_WP is_VBZ provided_VBN by_IN the_DT Executable_NNP Process_VB Model_NNP Generator_NNP and_CC can_MD be_VB considered_VBN an_DT example_NN implementation_NN of_IN it_PRP ._.
+In_IN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: the_DT authors_NNS further_RB talk_VBP about_IN design-time_NN and_CC runtime_NN issues_NNS of_IN decentralized_VBN process_NN execution_NN ._.
+The_DT approach_NN does_VBZ not_RB take_VB into_IN account_NN a_DT changing_JJ and_CC unreliable_JJ service_NN set_VBN as_IN it_PRP is_VBZ offered_VBN by_IN a_DT s_NN

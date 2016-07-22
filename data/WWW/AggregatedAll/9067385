@@ -1,0 +1,81 @@
+Parallel_JJ crawlers_NNS
+In_IN this_DT paper_NN we_PRP study_VBD how_WRB we_PRP can_MD design_VB an_DT effective_JJ parallel_JJ crawler_NN ._.
+As_IN the_DT size_NN of_IN the_DT Web_NN grows_VBZ ,_, it_PRP becomes_VBZ imperative_JJ to_TO parallelize_VB a_DT crawling_VBG process_NN ,_, in_IN order_NN to_TO finish_VB downloading_VBG pages_NNS in_IN a_DT reasonable_JJ amount_NN of_IN time_NN ._.
+We_PRP first_RB propose_VBP multiple_JJ architectures_NNS for_IN a_DT parallel_JJ crawler_NN and_CC identify_VB fundamental_JJ issues_NNS related_VBN to_TO parallel_VB crawling_VBG ._.
+Based_VBN on_IN this_DT understanding_NN ,_, we_PRP then_RB propose_VBP metrics_NNS to_TO evaluate_VB a_DT parallel_JJ crawler_NN ,_, and_CC compare_VB the_DT proposed_VBN architectures_NNS using_VBG 40_CD million_CD pages_NNS collected_VBN from_IN the_DT Web_NN ._.
+Our_PRP$ results_NNS clarify_VBP the_DT relative_JJ merits_NNS of_IN each_DT architecture_NN and_CC provide_VBP a_DT good_JJ guideline_NN on_IN when_WRB to_TO adopt_VB which_WDT architecture_NN ._.
+are_VBP expected_VBN to_TO point_VB to_TO pages_NNS in_IN the_DT same_JJ site_NN ._.
+An_DT excellent_JJ discussion_NN on_IN parallel_JJ asynchronous_JJ crawlers_NNS can_MD be_VB found_VBN in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC in_IN the_DT references_NNS there_RB mentioned_VBN ._.
+More_RBR recent_JJ work_NN can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 8_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT paper_NN focuses_VBZ on_IN an_DT entirely_RB different_JJ problem_NN whose_WP$ efficient_JJ solution_NN -LRB-_-LRB- to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN -RRB-_-RRB- has_VBZ not_RB been_VBN investigated_VBN so_RB far_RB -LRB-_-LRB- or_CC at_IN least_JJS no_DT much_JJ technical_JJ details_NNS have_VBP been_VBN revealed_VBN
+the_DT first_JJ element_NN at_IN the_DT right_NN of_IN pivot_JJ S_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- to_TO the_DT free_JJ place_NN left_VBN by_IN pivot_JJ S_NN -LRB-_-LRB- 0_CD -RRB-_-RRB- ,_, and_CC move_VB the_DT pivot_JJ S_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- one_CD place_NN to_TO the_DT right_NN ,_, updating_VBG its_PRP$ position_NN in_IN S._NNP We_PRP repeat_VBP the_DT process_NN with_IN the_DT pivot_JJ at_IN S_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC so_RB on_IN until_IN we_PRP find_VBP the_DT place_NN where_WRB x_NN has_VBZ to_TO be_VB inserted_VBN ,_, or_CC we_PRP reach_VBP the_DT first_JJ chunk_NN ._.
+Figure_NN 4_CD shows_VBZ the_DT algorithm_NN ._.
+In_IN order_NN to_TO cope_VB with_IN the_DT crawling_VBG application_NN ,_, we_PRP modified_VBD the_DT extract-min_JJ o_NN
+together_RB into_IN a_DT single_JJ message_NN for_IN each_DT processor_NN and_CC sent_VBN to_TO their_PRP$ respective_JJ destinations_NNS ._.
+The_DT processes_NNS executing_VBG the_DT synchronous_JJ machine_NN are_VBP treated_VBN as_IN a_DT bulk-synchronous_JJ parallel_NN -LRB-_-LRB- BSP_NN -RRB-_-RRB- computer_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN BSP_NNP the_DT parallel_JJ computation_NN is_VBZ organized_VBN as_IN a_DT sequence_NN of_IN supersteps_NNS ._.
+During_IN a_DT superstep_NN ,_, the_DT processors_NNS may_MD perform_VB computations_NNS on_IN local_JJ data_NNS and\/or_CC send_VB messages_NNS to_TO other_JJ processors_NNS ._.
+The_DT mess_NN
+._.
+This_DT reduces_VBZ communication_NN significantly_RB as_IN most_JJS web_NN pages_NNS of_IN a_DT given_VBN site_NN are_VBP expected_VBN to_TO point_VB to_TO pages_NNS in_IN the_DT same_JJ site_NN ._.
+An_DT excellent_JJ discussion_NN on_IN parallel_JJ asynchronous_JJ crawlers_NNS can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: and_CC in_IN the_DT references_NNS there_RB mentioned_VBN ._.
+More_RBR recent_JJ work_NN can_MD be_VB found_VBN in_IN -LRB-_-LRB- 4_CD ,_, 6_CD ,_, 8_CD ,_, 10_CD -RRB-_-RRB- ._.
+This_DT paper_NN focuses_VBZ on_IN an_DT entirely_RB different_JJ problem_NN whose_WP$ efficient_JJ solution_NN -LRB-_-LRB- to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN -RRB-_-RRB- has_VBZ
+h_NN multiply_VB each_DT priority_NN value_NN by_IN -1_CD ._.
+So_RB ,_, when_WRB extracting_VBG ,_, we_PRP multiply_VBP again_RB by_IN -1_CD in_IN order_NN to_TO restore_VB the_DT priority_NN -LRB-_-LRB- if_IN it_PRP is_VBZ necessary_JJ -RRB-_-RRB- ._.
+To_TO output_NN the_DT k_NN smallest_JJS elements_NNS ,_, IQS_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- calls_VBZ Quickselect_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: to_TO find_VB the_DT smallest_JJS element_NN of_IN arrays_NNS A_NN -LRB-_-LRB- 0_CD ,_, m_NN −_NN 1_CD -RRB-_-RRB- ,_, A_NN -LRB-_-LRB- 1_CD ,_, m_NN −_NN 1_CD -RRB-_-RRB- ,_, ..._: ,_, A_NN -LRB-_-LRB- k_NN −_NN 1_CD ,_, m_NN −_NN 1_CD -RRB-_-RRB- ._.
+This_DT leaves_VBZ the_DT k_NN smallest_JJS elements_NNS sorted_VBN in_IN A_NN -LRB-_-LRB- 0_CD ,_, k_NN −_NN 1_CD -RRB-_-RRB- ._.
+IQS_NN avoids_VBZ the_DT O_NN -LRB-_-LRB- kn_NN -RRB-_-RRB- complexity_NN by_IN reusing_VBG the_DT work_NN
+refix_VB of_IN heap_NN -LRB-_-LRB- idx_NN ,_, N_NN -RRB-_-RRB- ._.
+4_LS ._.
+EXPERIMENTAL_JJ RESULTS_NNS We_PRP worked_VBD with_IN two_CD datasets_NNS that_WDT correspond_VBP to_TO pages_NNS under_IN the_DT ._.
+cl_NN -LRB-_-LRB- Chile_NNP -RRB-_-RRB- and_CC ._.
+gr_NN -LRB-_-LRB- Greek_JJ -RRB-_-RRB- top-level_JJ domains_NNS ._.
+We_PRP downloaded_VBD pages_NNS using_VBG the_DT WIRE_NN crawler_NN =_JJ -_: =[_NN 2_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: in_IN breadthfirst_NN mode_NN ,_, including_VBG both_CC static_JJ and_CC dynamic_JJ pages_NNS ._.
+While_IN following_VBG links_NNS ,_, we_PRP stopped_VBD at_IN depth_NN 5_CD for_IN dynamic_JJ pages_NNS and_CC 15_CD for_IN static_JJ pages_NNS ,_, and_CC we_PRP downloaded_VBD up_IN to_TO 25,000_CD pages_NNS from_IN each_DT W_NN
+the_DT same_JJ Web_NN as_IN follows_VBZ ._.
+The_DT downloaded_VBN sample_NN can_MD be_VB represented_VBN as_IN a_DT graph_NN where_WRB nodes_NNS are_VBP web_NN pages_NNS and_CC arcs_NNS links_NNS ._.
+For_IN nodes_NNS we_PRP determine_VBP the_DT pageRank_NN value_NN using_VBG the_DT standard_JJ iterative_JJ algorithm_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT priority_NN queue_NN Qx_NN is_VBZ created_VBN using_VBG the_DT pageRank_NN values_NNS of_IN the_DT nodes_NNS as_IN priority_NN values_NNS ._.
+The_DT algorithm_NN that_IN we_PRP propose_VBP for_IN this_DT task_NN performs_VBZ the_DT following_JJ steps_NNS :_: 1_CD ._.
+Set_VB the_DT superstep_JJ counter_NN S_NN =_JJ 0_CD ,_,
+with_IN algorithm_NN IQS_NNS ._.
+We_PRP call_VBP this_DT IQS-based_JJ priority_NN queue_NN Quickheap_NN -LRB-_-LRB- QH_NN -RRB-_-RRB- ._.
+From_IN now_RB on_IN we_PRP briefly_RB explain_VBP how_WRB to_TO obtain_VB a_DT min-order_JJ quickheap_NN ._.
+For_IN further_JJ details_NNS ,_, please_VBP refer_VB to_TO Paredes_NNP 's_POS PhD_NN thesis_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO implement_VB a_DT quickheap_NN we_PRP need_VBP the_DT following_JJ structures_NNS :_: 1_CD ._.
+An_DT array_NN heap_NN ,_, which_WDT we_PRP use_VBP to_TO store_VB the_DT elements_NNS ._.
+2_CD ._.
+A_DT stack_VBP S_NN to_TO store_VB the_DT positions_NNS of_IN pivots_NNS partitioning_VBG heap_NN ._.
+Recall_VB that_IN the_DT bott_NN
+eness_NN of_IN this_DT variant_NN is_VBZ out_IN of_IN scope_NN in_IN this_DT paper_NN ._.
+3_LS ._.
+PRIORITY_NN QUEUES_NNS 3.1_CD A_DT logarithmic_JJ worst_JJS case_NN approach_NN Our_PRP$ first_JJ PQ_NNP is_VBZ based_VBN on_IN the_DT idea_NN of_IN binary_JJ tournaments_NNS upon_IN a_DT Complete_JJ Binary_JJ Tree_NN -LRB-_-LRB- CBT_NN -RRB-_-RRB- =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Each_DT item_NN stored_VBN in_IN the_DT PQ_NNP consists_VBZ of_IN a_DT priority_NN value_NN and_CC an_DT identifier_NN ._.
+We_PRP associate_VBP each_DT leaf_NN of_IN the_DT CBT_NNP with_IN one_CD item_NN ,_, and_CC use_VBP the_DT internal_JJ nodes_NNS to_TO maintain_VB a_DT continuous_JJ binary_JJ tournament_NN amon_NN
+intains_NNS a_DT priority_NN queue_NN storing_VBG the_DT URLs_NNS of_IN the_DT web-sites_NNS assigned_VBN to_TO the_DT respective_JJ processor_NN ._.
+Each_DT URL_NN is_VBZ assigned_VBN a_DT priority_NN value_NN which_WDT depends_VBZ of_IN the_DT application_NN -LRB-_-LRB- in_IN our_PRP$ experiments_NNS we_PRP use_VBP OPIC_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Each_DT processor_NN maintains_VBZ a_DT scheduler_NN and_CC r_NN robots_NNS ._.
+The_DT asynchronous_JJ component_NN of_IN the_DT crawler_NN is_VBZ composed_VBN of_IN a_DT set_NN of_IN Possix_NNP threads_NNS ._.
+The_DT main_JJ one_CD of_IN these_DT threads_NNS in_IN each_DT processor_NN executes_VBZ the_DT tas_NN
+d_NN out_IN to_TO all_DT descendant_NN documents_NNS ._.
+A_DT given_VBN document_NN can_MD receive_VB OPIC_NNP contributions_NNS from_IN several_JJ pages_NNS which_WDT can_MD belong_VB to_TO many_JJ other_JJ sites_NNS located_JJ in_IN different_JJ processors_NNS ._.
+4.1_CD Previous_JJ experiments_NNS In_IN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: we_PRP have_VBP verified_VBN that_IN the_DT site_NN distribution_NN approach_NN is_VBZ very_RB effective_JJ in_IN reducing_VBG the_DT total_JJ amount_NN of_IN communication_NN among_IN processors_NNS ._.
+In_IN particular_JJ we_PRP have_VBP found_VBN that_IN even_RB in_IN small_JJ Web_NN samples_NNS as_IN th_DT
+are_VBP expected_VBN to_TO point_VB to_TO pages_NNS in_IN the_DT same_JJ site_NN ._.
+An_DT excellent_JJ discussion_NN on_IN parallel_JJ asynchronous_JJ crawlers_NNS can_MD be_VB found_VBN in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC in_IN the_DT references_NNS there_RB mentioned_VBN ._.
+More_RBR recent_JJ work_NN can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 8_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT paper_NN focuses_VBZ on_IN an_DT entirely_RB different_JJ problem_NN whose_WP$ efficient_JJ solution_NN -LRB-_-LRB- to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN -RRB-_-RRB- has_VBZ not_RB been_VBN investigated_VBN so_RB far_RB -LRB-_-LRB- or_CC at_IN least_JJS no_DT much_JJ technical_JJ details_NNS have_VBP been_VBN revealed_VBN
+are_VBP expected_VBN to_TO point_VB to_TO pages_NNS in_IN the_DT same_JJ site_NN ._.
+An_DT excellent_JJ discussion_NN on_IN parallel_JJ asynchronous_JJ crawlers_NNS can_MD be_VB found_VBN in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC in_IN the_DT references_NNS there_RB mentioned_VBN ._.
+More_RBR recent_JJ work_NN can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 8_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT paper_NN focuses_VBZ on_IN an_DT entirely_RB different_JJ problem_NN whose_WP$ efficient_JJ solution_NN -LRB-_-LRB- to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN -RRB-_-RRB- has_VBZ not_RB been_VBN investigated_VBN so_RB far_RB -LRB-_-LRB- or_CC at_IN least_JJS no_DT much_JJ technical_JJ details_NNS have_VBP been_VBN revealed_VBN
+order_NN it_PRP is_VBZ enough_RB with_IN multiply_VB each_DT priority_NN value_NN by_IN -1_CD ._.
+So_RB ,_, when_WRB extracting_VBG ,_, we_PRP multiply_VBP again_RB by_IN -1_CD in_IN order_NN to_TO restore_VB the_DT priority_NN -LRB-_-LRB- if_IN it_PRP is_VBZ necessary_JJ -RRB-_-RRB- ._.
+To_TO output_NN the_DT k_NN smallest_JJS elements_NNS ,_, IQS_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: calls_VBZ Quickselect_NNP -LRB-_-LRB- 9_CD -RRB-_-RRB- to_TO find_VB the_DT smallest_JJS element_NN of_IN arrays_NNS A_NN -LRB-_-LRB- 0_CD ,_, m_NN −_NN 1_CD -RRB-_-RRB- ,_, A_NN -LRB-_-LRB- 1_CD ,_, m_NN −_NN 1_CD -RRB-_-RRB- ,_, ..._: ,_, A_NN -LRB-_-LRB- k_NN −_NN 1_CD ,_, m_NN −_NN 1_CD -RRB-_-RRB- ._.
+This_DT leaves_VBZ the_DT k_NN smallest_JJS elements_NNS sorted_VBN in_IN A_NN -LRB-_-LRB- 0_CD ,_, k_NN −_NN 1_CD -RRB-_-RRB- ._.
+IQS_NN avoids_VBZ the_DT O_NN -LRB-_-LRB- kn_NN -RRB-_-RRB- complexi_NNS
+are_VBP expected_VBN to_TO point_VB to_TO pages_NNS in_IN the_DT same_JJ site_NN ._.
+An_DT excellent_JJ discussion_NN on_IN parallel_JJ asynchronous_JJ crawlers_NNS can_MD be_VB found_VBN in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC in_IN the_DT references_NNS there_RB mentioned_VBN ._.
+More_RBR recent_JJ work_NN can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 8_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT paper_NN focuses_VBZ on_IN an_DT entirely_RB different_JJ problem_NN whose_WP$ efficient_JJ solution_NN -LRB-_-LRB- to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN -RRB-_-RRB- has_VBZ not_RB been_VBN investigated_VBN so_RB far_RB -LRB-_-LRB- or_CC at_IN least_JJS no_DT much_JJ technical_JJ details_NNS have_VBP been_VBN revealed_VBN

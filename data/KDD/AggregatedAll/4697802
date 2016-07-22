@@ -1,0 +1,115 @@
+Spatial_JJ scan_VBP statistics_NNS :_: approximations_NNS and_CC performance_NN study_NN
+Spatial_JJ scan_VBP statistics_NNS are_VBP used_VBN to_TO determine_VB hotspots_NNS in_IN spatial_JJ data_NNS ,_, and_CC are_VBP widely_RB used_VBN in_IN epidemiology_NN and_CC biosurveillance_NN ._.
+In_IN recent_JJ years_NNS ,_, there_EX has_VBZ been_VBN much_JJ effort_NN invested_VBN in_IN designing_VBG efficient_JJ algorithms_NNS for_IN finding_VBG such_JJ ``_`` high_JJ discrepancy_NN ''_'' regions_NNS ,_, with_IN methods_NNS ranging_VBG from_IN fast_JJ heuristics_NNS for_IN special_JJ cases_NNS ,_, to_TO general_JJ grid-based_JJ methods_NNS ,_, and_CC to_TO efficient_JJ approximation_NN algorithms_NNS with_IN provable_JJ guarantees_NNS on_IN performance_NN and_CC quality_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP make_VBP a_DT number_NN of_IN contributions_NNS to_TO the_DT computational_JJ study_NN of_IN spatial_JJ scan_VBP statistics_NNS ._.
+First_RB ,_, we_PRP describe_VBP a_DT simple_JJ exact_JJ algorithm_NN for_IN finding_VBG the_DT largest_JJS discrepancy_NN region_NN in_IN a_DT domain_NN ._.
+Second_RB ,_, we_PRP propose_VBP a_DT new_JJ approximation_NN algorithm_NN for_IN a_DT large_JJ class_NN of_IN discrepancy_NN functions_NNS -LRB-_-LRB- including_VBG the_DT Kulldorff_NNP scan_VB statistic_NN -RRB-_-RRB- that_WDT improves_VBZ the_DT approximation_NN versus_CC run_NN time_NN trade-off_NN of_IN prior_JJ methods_NNS ._.
+Third_RB ,_, we_PRP extend_VBP our_PRP$ simple_JJ exact_NN and_CC our_PRP$ approximation_NN algorithms_NNS to_TO data_NNS sets_NNS which_WDT lie_VBP naturally_RB on_IN a_DT grid_NN or_CC are_VBP accumulated_VBN onto_IN a_DT grid_NN ._.
+Fourth_RB ,_, we_PRP conduct_VBP a_DT detailed_JJ experimental_JJ comparison_NN of_IN these_DT methods_NNS with_IN a_DT number_NN of_IN known_JJ methods_NNS ,_, demonstrating_VBG that_IN our_PRP$ approximation_NN algorithm_NN has_VBZ far_RB superior_JJ performance_NN in_IN practice_NN to_TO prior_JJ methods_NNS ,_, and_CC exhibits_VBZ a_DT good_JJ performance-accuracy_NN trade-off_NN ._.
+All_DT extant_JJ methods_NNS -LRB-_-LRB- including_VBG those_DT in_IN this_DT paper_NN -RRB-_-RRB- are_VBP suitable_JJ for_IN data_NNS sets_NNS that_WDT are_VBP modestly_RB sized_VBN ;_: if_IN data_NNS sets_NNS are_VBP of_IN the_DT order_NN of_IN millions_NNS of_IN data_NNS points_NNS ,_, none_NN of_IN these_DT methods_NNS scale_VBP well_RB ._.
+For_IN such_JJ massive_JJ data_NNS settings_NNS ,_, it_PRP is_VBZ natural_JJ to_TO examine_VB whether_IN small-space_JJ streaming_NN algorithms_NNS might_MD yield_VB accurate_JJ answers_NNS ._.
+Here_RB ,_, we_PRP provide_VBP some_DT negative_JJ results_NNS ,_, showing_VBG that_IN any_DT streaming_NN algorithms_NNS that_WDT even_RB provide_VBP approximately_RB optimal_JJ answers_NNS to_TO the_DT discrepancy_NN maximization_NN problem_NN must_MD use_VB space_NN linear_NN in_IN the_DT input_NN ._.
+ail_VB Record_NNP -LRB-_-LRB- CDR_NNP -RRB-_-RRB- dataset_NN ,_, and_CC then_RB validate_VB it_PRP with_IN a_DT study_NN of_IN the_DT social_JJ dynamics_NNS in_IN a_DT urban_JJ environment_NN ._.
+Note_VB that_IN the_DT focus_NN of_IN this_DT paper_NN is_VBZ on_IN the_DT detection_NN and_CC study_NN of_IN dense_JJ areas_NNS ,_, not_RB hotspots_VBZ =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Hotspots_NNS ,_, as_IN defined_VBN by_IN scan_VB statistics_NNS ,_, are_VBP the_DT largest_JJS discrepancy_NN areas_NNS in_IN which_WDT an_DT independent_JJ variable_NN has_VBZ statistically_RB different_JJ count_NN values_NNS from_IN the_DT rest_NN of_IN the_DT geographical_JJ areas_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+Con_NN
+Monte-Carlo_NN method_NN based_VBN on_IN the_DT assumption_NN that_IN the_DT points_NNS are_VBP generated_VBN by_IN either_CC an_DT non-homogeneous_JJ Poisson_NN process_NN or_CC a_DT Bernoulli_NNP process_NN ._.
+Several_JJ research_NN groups_NNS have_VBP looked_VBN at_IN speeding_VBG this_DT test_NN =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Though_NNP Kulldorff_NNP 's_POS test_NN does_VBZ check_VB for_IN a_DT change_NN of_IN distribution_NN ,_, it_PRP looks_VBZ for_IN a_DT very_RB specific_JJ distributional_JJ change_NN ._.
+As_IN such_JJ ,_, Kulldorff_NNP 's_POS test_NN is_VBZ not_RB really_RB suitable_JJ for_IN generalpurpose_NN change_NN detect_VB
+re_VB each_DT cell_NN of_IN the_DT grid_NN has_VBZ a_DT count_NN Ci_NN and_CC a_DT baseline_NN Bi_NN ,_, they_PRP aim_VBP to_TO find_VB spatial_JJ regions_NNS -LRB-_-LRB- d-dimensional_JJ rectangles_NNS -RRB-_-RRB- where_WRB the_DT Ci_NN are_VBP significantly_RB higher_JJR than_IN expected_VBN given_VBN Bi_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Agarwal_NNP et_FW al._FW =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: sstudied_VBD the_DT problem_NN of_IN largest_JJS discrepancy_NN region_NN in_IN a_DT domain_NN ,_, and_CC present_VB a_DT new_JJ exact_JJ algorithm_NN ,_, which_WDT has_VBZ the_DT same_JJ asymptotic_JJ running_VBG time_NN as_IN the_DT algorithm_NN of_IN Neill_NNP and_CC Moore_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, but_CC with_IN much_JJ si_NN
+ameter_JJR exponential_JJ families_NNS ,_, and_CC Kulldorff_NNP has_VBZ studied_VBN various_JJ -LRB-_-LRB- see_VB -LRB-_-LRB- 26_CD -RRB-_-RRB- -RRB-_-RRB- other_JJ forms_NNS of_IN this_DT statistic_NN ._.
+Many_JJ techniques_NNS exist_VBP for_IN computing_VBG the_DT statistic_NN quickly_RB for_IN anomaly_JJ detection_NN for_IN point_NN sets_VBZ =_JJ -_: =[_NN 30_CD ,_, 25_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+1.2_CD Previous_JJ Algorithmic_JJ Work_NN ._.
+Clustering_NN is_VBZ well-established_JJ as_IN an_DT important_JJ method_NN of_IN informationsextraction_NN from_IN large_JJ data_NNS sets_NNS ._.
+Hard_JJ clustering_NN divides_VBZ data_NNS into_IN disjoint_NN clusters_NNS while_IN soft_JJ cl_NN
+pling_NN produces_VBZ an_DT ε-approximation_NN of_IN size_NN O_NN -LRB-_-LRB- 1_CD ε_NN 2_CD log_NN 1_CD ε_NN -RRB-_-RRB- ._.
+ε_FW ε_FW Deterministic_JJ construction_NN of_IN ε-approximations_NNS ._.
+There_EX exist_VBP deterministic_JJ constructions_NNS for_IN ε-approximations_NNS ._.
+When_WRB D_NN is_VBZ the_DT unit_NN cube_NN =_JJ -_: =[_NN 0_CD ,_, 1_CD -RRB-_-RRB- -_: =_JJ -_: d_NN there_EX are_VBP 1_CD constructions_NNS which_WDT can_MD be_VB interpreted_VBN as_IN ε-approximations_NNS of_IN size_NN O_NN -LRB-_-LRB- ε2d_NN \/_: -LRB-_-LRB- d_NN +1_CD -RRB-_-RRB- -RRB-_-RRB- 1_CD for_IN half_NN spaces_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- and_CC O_NN -LRB-_-LRB- ε2d_NN \/_: -LRB-_-LRB- d_NN +1_NN -RRB-_-RRB- d_NN \/_: -LRB-_-LRB- d_NN +1_NN -RRB-_-RRB- 1_CD 1_CD log_NN ε_NN polylog_NN -LRB-_-LRB- log_NN ε_NN -RRB-_-RRB- -RRB-_-RRB- for_IN balls_NNS in_IN d1_NN dimensions_NNS -LRB-_-LRB-
+ms_IN We_PRP now_RB present_VBP an_DT algorithm_NN that_WDT finds_VBZ an_DT additive_JJ ǫ_NN approximation_NN to_TO the_DT maximum_NN linear_JJ discrepancy_NN ._.
+It_PRP is_VBZ based_VBN upon_IN a_DT sampling_NN approach_NN related_JJ to_TO the_DT construction_NN of_IN ǫnets_NNS and_CC ǫ-approximations_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Theorem_NNP 6.5_CD ._.
+Consider_VB a_DT set_NN of_IN points_NNS S_NN in_IN the_DT plane_NN ._.
+Let_NNP R_NNP be_VB a_DT set_NN of_IN axis-aligned_JJ rectangles_NNS ._.
+An_DT ǫ-approximation_NN is_VBZ a_DT subset_NN A_NN of_IN S_NN such_JJ that_IN ,_, for_IN any_DT R_NNP ∈_NNP R_NNP ,_, ˛_NNP |_NNP S_NNP ∩_NNP R_NNP |_NNP |_NNP S_NNP |_NNP −_NNP |_NNP A_NNP ∩_NNP R_NNP |_NNP |_NNP A_NNP |_FW ˛_FW -LRB-_-LRB- ǫ_NN ._.
+W_NN
+screpancy_NN 1_CD ._.
+INTRODUCTION_NN With_IN the_DT availability_NN of_IN massive_JJ data_NNS and_CC cheap_JJ computing_NN power_NN ,_, the_DT problem_NN of_IN detecting_VBG ``_`` hotspots_NNS ''_'' has_VBZ become_VBN ubiquitous_JJ and_CC has_VBZ received_VBN a_DT lot_NN of_IN attention_NN in_IN data_NNS mining_NN =_JJ -_: =[_NN 7_CD ,_, 15_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN particular_JJ ,_, the_DT special_JJ case_NN of_IN detecting_VBG ``_`` bumps_NNS ''_'' or_CC local_JJ clusters_NNS in_IN spatial_JJ data_NNS has_VBZ found_VBN numerous_JJ applications_NNS in_IN epidemiology_NN ,_, bio-surveillance_NN ,_, astronomy_NN etc._NN ._.
+While_IN a_DT wide_JJ range_NN of_IN methods_NNS
+un_NN in_IN O_NN -LRB-_-LRB- 1_CD ǫ_NN g3_NN log_NN g_NN -RRB-_-RRB- ._.
+We_PRP use_VBP the_DT former_JJ version_NN because_IN it_PRP is_VBZ more_RBR efficient_JJ as_IN is_VBZ demonstrated_VBN in_IN Section_NN 7_CD 6_CD ._.
+STREAMING_NN ALGORITHMS_NNS In_IN this_DT section_NN we_PRP consider_VBP algorithms_NNS for_IN the_DT data_NNS stream_NN model_NN =_JJ -_: =[_NN 9_CD ,_, 6_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Here_RB the_DT data_NN points_NNS arrive_VBP in_IN some_DT ,_, possiblyadversarial_JJ ,_, order_NN ._.
+An_DT algorithm_NN in_IN the_DT streaming_NN model_NN has_VBZ limited_VBN space_NN ,_, S_NN ,_, to_TO catalog_NN all_PDT the_DT points_NNS in_IN the_DT stream_NN ._.
+Unfortunately_RB most_JJS of_IN our_PRP$ results_NNS
+un_NN in_IN O_NN -LRB-_-LRB- 1_CD ǫ_NN g3_NN log_NN g_NN -RRB-_-RRB- ._.
+We_PRP use_VBP the_DT former_JJ version_NN because_IN it_PRP is_VBZ more_RBR efficient_JJ as_IN is_VBZ demonstrated_VBN in_IN Section_NN 7_CD 6_CD ._.
+STREAMING_NN ALGORITHMS_NNS In_IN this_DT section_NN we_PRP consider_VBP algorithms_NNS for_IN the_DT data_NNS stream_NN model_NN =_JJ -_: =[_NN 9_CD ,_, 6_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Here_RB the_DT data_NN points_NNS arrive_VBP in_IN some_DT ,_, possiblyadversarial_JJ ,_, order_NN ._.
+An_DT algorithm_NN in_IN the_DT streaming_NN model_NN has_VBZ limited_VBN space_NN ,_, S_NN ,_, to_TO catalog_NN all_PDT the_DT points_NNS in_IN the_DT stream_NN ._.
+Unfortunately_RB most_JJS of_IN our_PRP$ results_NNS
+i_LS =_JJ 1_CD xij_NN ._.
+W_NN n_NN j_NN =_JJ 1_CD Theorem_NNP 6.1_CD ._.
+For_IN any_DT 0_CD -LRB-_-LRB- δ_NN -LRB-_-LRB- 1\/4_CD ,_, C_NN 1-way_JJ δ_NN -LRB-_-LRB- indexn_NN -RRB-_-RRB- =_JJ Ω_NN -LRB-_-LRB- n_NN -RRB-_-RRB- ._.
+The_DT result_NN remains_VBZ true_JJ for_IN instances_NNS -LRB-_-LRB- x_NN ,_, j_NN -RRB-_-RRB- where_WRB x_NN has_VBZ exactly_RB n\/2_JJ entries_NNS which_WDT are_VBP 1_CD ._.
+Theorem_NN 6.2_CD -LRB-_-LRB- Chakrabarti_NNP et_FW al._FW =_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+For_IN any_DT 0_CD -LRB-_-LRB- δ_NN -LRB-_-LRB- 1\/4_CD ,_, „_CD ``_`` n_NN Cδ_NN -LRB-_-LRB- disjn_NN ,_, t_NN -RRB-_-RRB- =_JJ Ω_NN ._.
+tlog_JJ t_NN This_DT result_NN remains_VBZ true_JJ for_IN the_DT following_VBG family_NN F_NN of_IN instances_NNS -LRB-_-LRB- x_NN 1_CD ,_, ..._: x_NN t_NN -RRB-_-RRB- satisfying_JJ |_NN -LCB-_-LRB- j_NN :_: x_NN i_FW j_FW =_JJ 1_CD -RCB-_-RRB- |_NN =_JJ n\/2t_FW ∀_FW i_FW ∈_NN -LRB-_-LRB- t_NN -RRB-_-RRB- -LRB-_-LRB- 6.1_CD -RRB-_-RRB- |_CD -LCB-_-LRB- i_LS :_: x_NN i_LS
+ndex_FW j_FW ∈_NN -LRB-_-LRB- n_NN -RRB-_-RRB- ._.
+The_DT indexing_NN function_NN returns_NNS index_NN -LRB-_-LRB- x_NN ,_, j_NN -RRB-_-RRB- =_JJ xj_NN ._.
+Definition_NN 2_CD -LRB-_-LRB- Multi-Party_JJ Set_NN Disjointness_NN -RRB-_-RRB- ._.
+There_EX are_VBP t_NN players_NNS P1_NN ,_, ..._: ,_, Pt_NN ._.
+Pi_NN has_VBZ an_DT n_NN bit_NN string_NN x_NN i_LS ._.
+The_DT tparty_NN set_VBD disjointness_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: function_NN returns_NNS disjn_NN ,_, t_NN -LRB-_-LRB- x_NN 1_CD ,_, ..._: ,_, x_NN t_NN V_NN -RRB-_-RRB- =_JJ t_NN i_FW =_JJ 1_CD xij_NN ._.
+W_NN n_NN j_NN =_JJ 1_CD Theorem_NNP 6.1_CD ._.
+For_IN any_DT 0_CD -LRB-_-LRB- δ_NN -LRB-_-LRB- 1\/4_CD ,_, C_NN 1-way_JJ δ_NN -LRB-_-LRB- indexn_NN -RRB-_-RRB- =_JJ Ω_NN -LRB-_-LRB- n_NN -RRB-_-RRB- ._.
+The_DT result_NN remains_VBZ true_JJ for_IN instances_NNS -LRB-_-LRB- x_NN ,_, j_NN -RRB-_-RRB- where_WRB x_NN has_VBZ exactly_RB n\/2_JJ e_SYM
+un_NN in_IN O_NN -LRB-_-LRB- 1_CD ǫ_NN g3_NN log_NN g_NN -RRB-_-RRB- ._.
+We_PRP use_VBP the_DT former_JJ version_NN because_IN it_PRP is_VBZ more_RBR efficient_JJ as_IN is_VBZ demonstrated_VBN in_IN Section_NN 7_CD 6_CD ._.
+STREAMING_NN ALGORITHMS_NNS In_IN this_DT section_NN we_PRP consider_VBP algorithms_NNS for_IN the_DT data_NNS stream_NN model_NN =_JJ -_: =[_NN 9_CD ,_, 6_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Here_RB the_DT data_NN points_NNS arrive_VBP in_IN some_DT ,_, possiblyadversarial_JJ ,_, order_NN ._.
+An_DT algorithm_NN in_IN the_DT streaming_NN model_NN has_VBZ limited_VBN space_NN ,_, S_NN ,_, to_TO catalog_NN all_PDT the_DT points_NNS in_IN the_DT stream_NN ._.
+Unfortunately_RB most_JJS of_IN our_PRP$ results_NNS
+screpancy_NN 1_CD ._.
+INTRODUCTION_NN With_IN the_DT availability_NN of_IN massive_JJ data_NNS and_CC cheap_JJ computing_NN power_NN ,_, the_DT problem_NN of_IN detecting_VBG ``_`` hotspots_NNS ''_'' has_VBZ become_VBN ubiquitous_JJ and_CC has_VBZ received_VBN a_DT lot_NN of_IN attention_NN in_IN data_NNS mining_NN =_JJ -_: =[_NN 7_CD ,_, 15_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN particular_JJ ,_, the_DT special_JJ case_NN of_IN detecting_VBG ``_`` bumps_NNS ''_'' or_CC local_JJ clusters_NNS in_IN spatial_JJ data_NNS has_VBZ found_VBN numerous_JJ applications_NNS in_IN epidemiology_NN ,_, bio-surveillance_NN ,_, astronomy_NN etc._NN ._.
+While_IN a_DT wide_JJ range_NN of_IN methods_NNS
+or_CC surveillance_NN of_IN massive_JJ geographic_JJ databases_NNS leading_VBG to_TO growing_VBG interest_NN in_IN computationally_RB efficient_JJ algorithms_NNS ._.
+Recently_RB ,_, the_DT scan_VBP statistic_NN has_VBZ also_RB been_VBN used_VBN in_IN other_JJ areas_NNS like_IN bioinformatics_NNS =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: and_CC for_IN detecting_VBG chatter_NN in_IN massive_JJ social_JJ networks_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Friedman_NNP and_CC Fisher_NNP -LRB-_-LRB- 7_CD -RRB-_-RRB- introduced_VBD an_DT alternative_JJ approach_NN which_WDT greedily_RB computes_VBZ a_DT high_JJ discrepancy_NN rectangle_NN ,_, but_CC has_VBZ no_DT guarantees_NNS as_IN to_TO
+growing_VBG interest_NN in_IN computationally_RB efficient_JJ algorithms_NNS ._.
+Recently_RB ,_, the_DT scan_VBP statistic_NN has_VBZ also_RB been_VBN used_VBN in_IN other_JJ areas_NNS like_IN bioinformatics_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC for_IN detecting_VBG chatter_NN in_IN massive_JJ social_JJ networks_NNS =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Friedman_NNP and_CC Fisher_NNP -LRB-_-LRB- 7_CD -RRB-_-RRB- introduced_VBD an_DT alternative_JJ approach_NN which_WDT greedily_RB computes_VBZ a_DT high_JJ discrepancy_NN rectangle_NN ,_, but_CC has_VBZ no_DT guarantees_NNS as_IN to_TO how_WRB it_PRP compares_VBZ to_TO the_DT optimal_JJ ._.
+Their_PRP$ approach_NN is_VBZ quite_RB g_NN
+stream_NN ._.
+Unfortunately_RB most_JJS of_IN our_PRP$ results_NNS will_MD be_VB lower_JJR bounds_NNS ._.
+As_IN is_VBZ typical_JJ for_IN lower_JJR bounds_NNS in_IN the_DT stream_NN model_NN ,_, our_PRP$ lower_JJR bounds_NNS are_VBP proved_VBN using_VBG reductions_NNS from_IN communication_NN complexity_NN problems_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP denote_VBP Cδ_NN -LRB-_-LRB- f_LS -RRB-_-RRB- as_IN the_DT δ-error_NN randomized_VBD communication_NN complexity_NN of_IN function_NN f._NN Also_RB ,_, let_VB C_NN 1-way_JJ δ_NN -LRB-_-LRB- f_LS -RRB-_-RRB- be_VB the_DT one-way_JJ δ-error_NN randomized_VBD communication_NN complexity_NN of_IN function_NN f._NN Definition_NN 1_CD -LRB-_-LRB- Inde_NN
+ompares_NNS to_TO the_DT optimal_JJ ._.
+Their_PRP$ approach_NN is_VBZ quite_RB general_JJ ,_, and_CC works_VBZ in_IN arbitrary_JJ dimensional_JJ spaces_NNS ,_, but_CC is_VBZ not_RB conservative_JJ :_: many_JJ regions_NNS will_MD remain_VB unexplored_JJ ._.
+A_DT series_NN of_IN papers_NNS by_IN Neill_NNP and_CC Moore_NNP =_SYM -_: =[_NN 17_CD ,_, 16_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: developed_VBD a_DT grid-based_JJ heuristic_NN that_WDT uses_VBZ pruning_NN strategies_NNS to_TO avoid_VB enumerating_VBG all_DT `_`` ´_CD n_NN rectan4_NN gular_JJ ranges_NNS ;_: similar_JJ ideas_NNS work_VBP for_IN square_JJ ranges_NNS as_RB well_RB ._.
+Most_RBS recently_RB ,_, Agarwal_NNP et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- pres_NNS
+elated_VBN algorithm_NN can_MD be_VB used_VBN for_IN numerical_JJ discrepancy_NN or_CC when_WRB the_DT data_NN is_VBZ known_VBN to_TO lie_VB on_IN a_DT grid_NN ._.
+Further_RB ,_, observe_VBP that_IN this_DT algorithm_NN -LRB-_-LRB- when_WRB used_VBN in_IN conjunction_NN with_IN the_DT reservoir_NN sampling_NN technique_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =--RRB-_NN can_MD be_VB viewed_VBN as_IN a_DT streaming_NN algorithm_NN that_WDT uses_VBZ space_NN ._.
+„``_FW τ_FW O_NN ǫ_NN ''_'' 2_CD log_NN ``_`` τ_FW δǫ_FW ''_'' ``_`` 7_CD ._.
+EXPERIMENTS_NNS We_PRP now_RB present_VBP a_DT performance_NN study_NN of_IN the_DT schemes_NNS described_VBN in_IN this_DT paper_NN ,_, and_CC compare_VB them_PRP to_TO prior_RB
+have_VBP been_VBN proposed_VBN to_TO test_VB for_IN spatial_JJ clustering_NN -LRB-_-LRB- after_IN adjusting_VBG for_IN an_DT inhomogeneous_JJ background_NN population_NN -RRB-_-RRB- ,_, the_DT spatial_JJ scan_VBP statistic_NN is_VBZ by_IN far_RB the_DT most_RBS popular_JJ ._.
+The_DT original_JJ method_NN proposed_VBN by_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: computes_VBZ the_DT maximum_NN discrepancy_NN region_NN obtained_VBN by_IN scanning_VBG the_DT spatial_JJ region_NN under_IN study_NN with_IN a_DT set_NN of_IN circular_JJ regions_NNS of_IN various_JJ radii_NNS ._.
+The_DT discrepancy_NN score_NN for_IN each_DT region_NN is_VBZ based_VBN on_IN a_DT likeli_NN
+o_NN two_CD algorithms_NNS from_IN prior_JJ work_NN ;_: the_DT grid_NN algorithm_NN NM-Grid_NN of_IN Neill_NNP and_CC Moore_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, and_CC the_DT approximation_NN algorithm_NN Approx-Linear_NNP of_IN Agarwal_NNP et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+Code_NNP for_IN NM-Grid_NN was_VBD provided_VBN by_IN the_DT authors_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Their_PRP$ code_NN is_VBZ a_DT black_JJ box_NN that_WDT solves_VBZ the_DT maximum_NN discrepancy_NN problem_NN and_CC then_RB runs_VBZ N_NN randomization_NN tests_NNS ._.
+It_PRP only_RB returns_VBZ a_DT range_NN if_IN it_PRP is_VBZ statistically_RB significant_JJ ._.
+In_IN order_NN to_TO compare_VB their_PRP$ algor_NN
+14_CD ,_, 16_CD -RRB-_-RRB- developed_VBD a_DT grid-based_JJ heuristic_NN that_WDT uses_VBZ pruning_NN strategies_NNS to_TO avoid_VB enumerating_VBG all_DT `_`` ´_CD n_NN rectan4_NN gular_JJ ranges_NNS ;_: similar_JJ ideas_NNS work_VBP for_IN square_JJ ranges_NNS as_RB well_RB ._.
+Most_RBS recently_RB ,_, Agarwal_NNP et_FW al._FW =_SYM -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: presented_VBN approximation_NN algorithms_NNS that_WDT run_VBP in_IN time_NN O_NN -LRB-_-LRB- 1_CD ǫ_NN n2_NN log_NN 2_CD n_NN -RRB-_-RRB- while_IN guaranteeing_VBG a_DT solution_NN that_WDT is_VBZ at_IN most_JJS ǫ_NN less_JJR than_IN the_DT optimal_JJ solution_NN ._.
+Their_PRP$ algorithm_NN extends_VBZ to_TO any_DT convex_NN discrepanc_NN
+e_LS to_TO the_DT dependencies_NNS introduced_VBN by_IN considering_VBG overlapping_VBG regions_NNS ,_, the_DT analytical_JJ distribution_NN of_IN the_DT spatial_JJ scan_VBP statistic_NN is_VBZ often_RB intractable_JJ and_CC hence_RB one_CD takes_VBZ recourse_NN to_TO randomization_NN tests_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Such_JJ a_DT test_NN computes_VBZ the_DT distribution_NN of_IN the_DT scan_VBP statistic_NN by_IN simulating_VBG data_NNS under_IN the_DT null_JJ hypothesis_NN -LRB-_-LRB- no_DT clustering_NN -RRB-_-RRB- and_CC callibrating_VBG the_DT observed_VBN value_NN relative_JJ to_TO this_DT distribution_NN -LRB-_-LRB- using_VBG a_DT p_NN -_:
+screpancy_NN 1_CD ._.
+INTRODUCTION_NN With_IN the_DT availability_NN of_IN massive_JJ data_NNS and_CC cheap_JJ computing_NN power_NN ,_, the_DT problem_NN of_IN detecting_VBG ``_`` hotspots_NNS ''_'' has_VBZ become_VBN ubiquitous_JJ and_CC has_VBZ received_VBN a_DT lot_NN of_IN attention_NN in_IN data_NNS mining_NN =_JJ -_: =[_NN 7_CD ,_, 15_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN particular_JJ ,_, the_DT special_JJ case_NN of_IN detecting_VBG ``_`` bumps_NNS ''_'' or_CC local_JJ clusters_NNS in_IN spatial_JJ data_NNS has_VBZ found_VBN numerous_JJ applications_NNS in_IN epidemiology_NN ,_, bio-surveillance_NN ,_, astronomy_NN etc._NN ._.
+While_IN a_DT wide_JJ range_NN of_IN methods_NNS

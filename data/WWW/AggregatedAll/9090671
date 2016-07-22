@@ -1,0 +1,81 @@
+Querying_VBG for_IN meta_NN knowledge_NN
+The_DT Semantic_JJ Web_NN is_VBZ based_VBN on_IN accessing_VBG and_CC reusing_VBG RDF_NNP data_NNS from_IN many_JJ different_JJ sources_NNS ,_, which_WDT one_PRP may_MD assign_VB different_JJ levels_NNS of_IN authority_NN and_CC credibility_NN ._.
+Existing_VBG Semantic_JJ Web_NN query_NN languages_NNS ,_, like_IN SPARQL_NNP ,_, have_VBP targeted_VBN the_DT retrieval_NN ,_, combination_NN and_CC reuse_NN of_IN facts_NNS ,_, but_CC have_VBP so_RB far_RB ignored_VBN all_DT aspects_NNS of_IN meta_NN knowledge_NN ,_, such_JJ as_IN origins_NNS ,_, authorship_NN ,_, recency_NN or_CC certainty_NN of_IN data_NNS ,_, to_TO name_VB but_CC a_DT few_JJ ._.
+In_IN this_DT paper_NN ,_, we_PRP present_VBP an_DT original_JJ ,_, generic_JJ ,_, formalized_VBN and_CC implemented_VBN approach_NN for_IN managing_VBG many_JJ dimensions_NNS of_IN meta_NN knowledge_NN ,_, like_IN source_NN ,_, authorship_NN ,_, certainty_NN and_CC others_NNS ._.
+The_DT approach_NN re-uses_NNS existing_VBG RDF_NNP modeling_NN possibilities_NNS in_IN order_NN to_TO represent_VB meta_NN knowledge_NN ._.
+Then_RB ,_, it_PRP extends_VBZ SPARQL_FW query_FW processing_NN in_IN such_PDT a_DT way_NN that_IN given_VBN a_DT SPARQL_NN query_NN for_IN data_NNS ,_, one_PRP may_MD request_VB meta_NN knowledge_NN without_IN modifying_VBG the_DT original_JJ query_NN ._.
+Thus_RB ,_, our_PRP$ approach_NN achieves_VBZ highly_RB flexible_JJ and_CC automatically_RB coordinated_VBN querying_VBG for_IN data_NNS and_CC meta_NN knowledge_NN ,_, while_IN completely_RB separating_VBG the_DT two_CD areas_NNS of_IN concern_NN ._.
+atement_NN -LRB-_-LRB- i.e._FW ,_, whether_IN it_PRP was_VBD inferred_VBN or_CC directly_RB extracted_VBN from_IN the_DT input_NN ,_, respectively_RB -RRB-_-RRB- ._.
+Representation_NN of_IN such_JJ meta-knowledge_NN in_IN generic_JJ RDF_NNP stores_NNS is_VBZ rather_RB awkward_JJ and_CC may_MD be_VB highly_RB inefficient_JJ =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_JJ -_: ,_, too_RB ._.
+Therefore_RB we_PRP extend_VBP the_DT database_NN schema_NN for_IN triple_JJ statements_NNS described_VBN in_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- as_IN follows_VBZ :_: CREATE_VB TABLE_NN statements_NNS -LRB-_-LRB- -_: -RRB-_-RRB- subj_JJ INTEGER_NN NOT_NNP NULL_NNP ,_, -_: -RRB-_-RRB- pred_JJ INTEGER_NN NOT_NNP NULL_NNP ,_, -_: -RRB-_-RRB- obj_JJ INTEGER_NN NOT_NNP NULL_NNP
+Email_NN addresses_NNS :_: dividino@uni-koblenz.de_NN -LRB-_-LRB- Renata_NNP Dividino_NNP -RRB-_-RRB- ,_, sizov@uni-koblenz.de_NN -LRB-_-LRB- Sergej_NNP Sizov_NNP -RRB-_-RRB- ,_, staab@uni-koblenz.de_NN -LRB-_-LRB- Steffen_NNP Staab_NNP -RRB-_-RRB- ._.
+1_CD This_DT proposal_NN is_VBZ a_DT completely_RB revised_VBN and_CC extended_VBN version_NN of_IN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Major_JJ changes_NNS include_VBP proofs_NNS showing_VBG that_IN the_DT meta_NN knowledge_NN evaluation_NN of_IN SPARQL_NN queries_NNS is_VBZ equivalent_JJ to_TO the_DT standard_JJ SPARQL_NN evaluation_NN ,_, a_DT discussion_NN of_IN soundness_NN and_CC completeness_NN ,_, as_RB well_RB as_IN an_DT e_SYM
+little_JJ technical_JJ expertise_NN ._.
+The_DT query_NN evaluation_NN should_MD also_RB be_VB approximate_JJ in_IN order_NN to_TO provide_VB useful_JJ answers_NNS even_RB for_IN queries_NNS partially_RB evaluated_VBN on_IN a_DT lot_NN of_IN potentially_RB noisy_JJ data_NNS ._.
+Approaches_NNS like_IN =_JJ -_: =[_NN 13_CD ,_, 11_CD ,_, 4_CD ,_, 7_CD ,_, 8_CD ,_, 15_CD ,_, 1_CD ,_, 12_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: provide_VBP particular_JJ solutions_NNS apt_JJ for_IN coping_VBG with_IN the_DT challenges_NNS separately_RB ,_, however_RB ,_, to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN there_EX is_VBZ no_DT off-the-shelf_JJ framework_NN tackling_VBG all_DT of_IN them_PRP at_IN once_RB on_IN a_DT well-founded_JJ ba_NN
+tailored_VBN to_TO specific_JJ meta_NN knowledge_NN such_JJ as_IN trust_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Second_JJ ,_, for_IN systems_NNS allowing_VBG for_IN algebraic_JJ query_NN evaluation_NN -LRB-_-LRB- such_JJ as_IN relational_JJ databases_NNS and_CC SPARQL_NN engines_NNS -RRB-_-RRB- ,_, more_RBR flexible_JJ mechanisms_NNS such_JJ as_IN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 6_CD -RRB-_-RRB- have_VBP been_VBN proposed_VBN ,_, which_WDT allow_VBP for_IN many_JJ kinds_NNS of_IN meta_NN knowledge_NN ,_, but_CC are_VBP limited_VBN to_TO lower_JJR expressiveness_NN of_IN the_DT underlying_VBG logical_JJ formalism_NN ._.
+Third_RB ,_, the_DT expressive_JJ system_NN proposed_VBN by_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- has_VBZ
+levant_JJ facts_NNS that_WDT may_MD have_VB been_VBN obtained_VBN from_IN departments_NNS of_IN different_JJ universities_NNS ._.
+For_IN better_JJR readability_NN ,_, we_PRP use_VBP for_IN our_PRP$ examples_NNS in_IN this_DT paper_NN the_DT RDF_NNP triple_JJ language_NN Turtle_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- with_IN Named_VBN Graphs_NNS =_JJ -_: =[_NN 1_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: in_IN a_DT simplified_VBN form_NN that_IN abstracts_NNS from_IN default_NN namespaces_NNS ._.
+Example_NN 2.1_CD ._.
+Extracted_VBN Knowledge_NN and_CC SPARQL_NN query_NN G1_NN -LCB-_-LRB- JamesHendler_NNP researchTopic_NNP SemanticWeb_NNP ._.
+JamesHendler_NNP affiliatedWith_NNP RensselaerPI_NNP -RCB-_-RRB-
+ance_NN of_IN better_RB understanding_VBG the_DT ways_NNS by_IN which_WDT the_DT result_NN came_VBD about_RB is_VBZ fundamental_JJ to_TO many_JJ Semantic_JJ Web_NN applications_NNS and_CC scenarios_NNS ._.
+The_DT specification_NN of_IN the_DT Semantic_JJ Web_NN proof_NN layer_NN was_VBD discussed_VBN in_IN =_JJ -_: =[_NN 10_CD ,_, 14_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ approach_NN is_VBZ focused_VBN on_IN a_DT different_JJ language_NN model_NN -LRB-_-LRB- RDF_NN -RRB-_-RRB- and_CC provides_VBZ fine-grained_JJ meta_NN knowledge_NN management_NN for_IN retrieval_NN queries_NNS with_IN SPARQL_NN that_WDT is_VBZ not_RB directly_RB comparable_JJ with_IN proof_NN traces_NNS fo_VBP
+sing_VB an_DT extension_NN of_IN the_DT relational_JJ data_NNS model_NN ,_, coined_VBN annotated_JJ relations_NNS ._.
+Its_PRP$ purpose_NN is_VBZ primarily_RB the_DT description_NN of_IN data_NNS origins_NNS -LRB-_-LRB- provenance_NN -RRB-_-RRB- and_CC the_DT process_NN by_IN which_WDT it_PRP arrived_VBD as_IN a_DT query_JJ answer_NN =_JJ -_: =[_NN 5_CD ,_, 2_CD ,_, 3_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Basically_RB ,_, our_PRP$ methodology_NN follows_VBZ the_DT same_JJ idea_NN ._.
+However_RB ,_, our_PRP$ approach_NN is_VBZ specially_RB designed_VBN for_IN RDF_NNP graph_NN models_NNS and_CC not_RB directly_RB comparable_JJ to_TO metadata_VB models_NNS for_IN relational_JJ database_NN systems_NNS ._.
+The_DT
+sing_VB an_DT extension_NN of_IN the_DT relational_JJ data_NNS model_NN ,_, coined_VBN annotated_JJ relations_NNS ._.
+Its_PRP$ purpose_NN is_VBZ primarily_RB the_DT description_NN of_IN data_NNS origins_NNS -LRB-_-LRB- provenance_NN -RRB-_-RRB- and_CC the_DT process_NN by_IN which_WDT it_PRP arrived_VBD as_IN a_DT query_JJ answer_NN =_JJ -_: =[_NN 5_CD ,_, 2_CD ,_, 3_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Basically_RB ,_, our_PRP$ methodology_NN follows_VBZ the_DT same_JJ idea_NN ._.
+However_RB ,_, our_PRP$ approach_NN is_VBZ specially_RB designed_VBN for_IN RDF_NNP graph_NN models_NNS and_CC not_RB directly_RB comparable_JJ to_TO metadata_VB models_NNS for_IN relational_JJ database_NN systems_NNS ._.
+The_DT
+ance_NN of_IN better_RB understanding_VBG the_DT ways_NNS by_IN which_WDT the_DT result_NN came_VBD about_RB is_VBZ fundamental_JJ to_TO many_JJ Semantic_JJ Web_NN applications_NNS and_CC scenarios_NNS ._.
+The_DT specification_NN of_IN the_DT Semantic_JJ Web_NN proof_NN layer_NN was_VBD discussed_VBN in_IN =_JJ -_: =[_NN 10_CD ,_, 14_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ approach_NN is_VBZ focused_VBN on_IN a_DT different_JJ language_NN model_NN -LRB-_-LRB- RDF_NN -RRB-_-RRB- and_CC provides_VBZ fine-grained_JJ meta_NN knowledge_NN management_NN for_IN retrieval_NN queries_NNS with_IN SPARQL_NN that_WDT is_VBZ not_RB directly_RB comparable_JJ with_IN proof_NN traces_NNS fo_VBP
+s_NN of_IN SPARQL_NN queries_NNS evaluated_VBN on_IN an_DT RDF_NN +_CC theory_NN ._.
+For_IN our_PRP$ definitions_NNS we_PRP use_VBP two_CD building_NN blocks_NNS :_: algebraic_JJ semantics_NNS of_IN SPARQL_NN -LRB-_-LRB- 11_CD ,_, 13_CD -RRB-_-RRB- and_CC the_DT how-provenance_NN calculated_VBN via_IN annotated_JJ relations_NNS -LRB-_-LRB- cf._VBP =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+The_DT algebraic_JJ semantics_NNS of_IN SPARQL_NN queries_NNS are_VBP given_VBN based_VBN on_IN set-theoretic_JJ operations_NNS for_IN sets_NNS of_IN variable_JJ assignments_NNS -LRB-_-LRB- cf._VBP -LRB-_-LRB- 11_CD ,_, 13_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Thereby_RB ,_, a_DT variable_JJ assignment_NN is_VBZ a_DT partial_JJ function_NN µ_NN :_: V_NN →_NN U_NN
+sing_VB an_DT extension_NN of_IN the_DT relational_JJ data_NNS model_NN ,_, coined_VBN annotated_JJ relations_NNS ._.
+Its_PRP$ purpose_NN is_VBZ primarily_RB the_DT description_NN of_IN data_NNS origins_NNS -LRB-_-LRB- provenance_NN -RRB-_-RRB- and_CC the_DT process_NN by_IN which_WDT it_PRP arrived_VBD as_IN a_DT query_JJ answer_NN =_JJ -_: =[_NN 5_CD ,_, 2_CD ,_, 3_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Basically_RB ,_, our_PRP$ methodology_NN follows_VBZ the_DT same_JJ idea_NN ._.
+However_RB ,_, our_PRP$ approach_NN is_VBZ specially_RB designed_VBN for_IN RDF_NNP graph_NN models_NNS and_CC not_RB directly_RB comparable_JJ to_TO metadata_VB models_NNS for_IN relational_JJ database_NN systems_NNS ._.
+The_DT
+levant_JJ facts_NNS that_WDT may_MD have_VB been_VBN obtained_VBN from_IN departments_NNS of_IN different_JJ universities_NNS ._.
+For_IN better_JJR readability_NN ,_, we_PRP use_VBP for_IN our_PRP$ examples_NNS in_IN this_DT paper_NN the_DT RDF_NNP triple_JJ language_NN Turtle_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- with_IN Named_VBN Graphs_NNS =_JJ -_: =[_NN 1_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: in_IN a_DT simplified_VBN form_NN that_IN abstracts_NNS from_IN default_NN namespaces_NNS ._.
+Example_NN 2.1_CD ._.
+Extracted_VBN Knowledge_NN and_CC SPARQL_NN query_NN G1_NN -LCB-_-LRB- JamesHendler_NNP researchTopic_NNP SemanticWeb_NNP ._.
+JamesHendler_NNP affiliatedWith_NNP RensselaerPI_NNP -RCB-_-RRB-
+5.2_CD SPARQL_NNP Semantics_NNPS Revisited_NNP In_IN this_DT subsection_NN we_PRP define_VBP the_DT semantics_NNS of_IN SPARQL_NN queries_NNS evaluated_VBN on_IN an_DT RDF_NN +_CC theory_NN ._.
+For_IN our_PRP$ definitions_NNS we_PRP use_VBP two_CD building_NN blocks_NNS :_: algebraic_JJ semantics_NNS of_IN SPARQL_NN =_JJ -_: =[_NN 11_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC the_DT how-provenance_NN calculated_VBN via_IN annotated_JJ relations_NNS -LRB-_-LRB- cf._VBP -LRB-_-LRB- 7_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+The_DT algebraic_JJ semantics_NNS of_IN SPARQL_NN queries_NNS are_VBP given_VBN based_VBN on_IN set-theoretic_JJ operations_NNS for_IN sets_NNS of_IN variable_JJ assignments_NNS -LRB-_-LRB- cf._VBP -LRB-_-LRB- 11_CD ,_, 1_CD
+Example_NN 2.1_CD shows_VBZ the_DT relevant_JJ facts_NNS that_WDT may_MD have_VB been_VBN obtained_VBN from_IN departments_NNS of_IN different_JJ universities_NNS ._.
+For_IN better_JJR readability_NN ,_, we_PRP use_VBP for_IN our_PRP$ examples_NNS in_IN this_DT paper_NN the_DT RDF_NNP triple_JJ language_NN TriG_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: with_IN Named_VBN Graphs_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- in_IN a_DT simplified_VBN form_NN that_IN abstracts_NNS from_IN default_NN namespaces_NNS ._.
+Example_NN 2.1_CD ._.
+Extracted_VBN Knowledge_NN and_CC SPARQL_NN query_NN G1_NN -LCB-_-LRB- JamesHendler_NNP researchTopic_NNP SemanticWeb_NNP ._.
+JamesHendler_FW affilia_FW
+5.2_CD SPARQL_NNP Semantics_NNPS Revisited_NNP In_IN this_DT subsection_NN we_PRP define_VBP the_DT semantics_NNS of_IN SPARQL_NN queries_NNS evaluated_VBN on_IN an_DT RDF_NN +_CC theory_NN ._.
+For_IN our_PRP$ definitions_NNS we_PRP use_VBP two_CD building_NN blocks_NNS :_: algebraic_JJ semantics_NNS of_IN SPARQL_NN =_JJ -_: =[_NN 11_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC the_DT how-provenance_NN calculated_VBN via_IN annotated_JJ relations_NNS -LRB-_-LRB- cf._VBP -LRB-_-LRB- 7_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+The_DT algebraic_JJ semantics_NNS of_IN SPARQL_NN queries_NNS are_VBP given_VBN based_VBN on_IN set-theoretic_JJ operations_NNS for_IN sets_NNS of_IN variable_JJ assignments_NNS -LRB-_-LRB- cf._VBP -LRB-_-LRB- 11_CD ,_, 1_CD
+ance_NN of_IN better_RB understanding_VBG the_DT ways_NNS by_IN which_WDT the_DT result_NN came_VBD about_RB is_VBZ fundamental_JJ to_TO many_JJ Semantic_JJ Web_NN applications_NNS and_CC scenarios_NNS ._.
+The_DT specification_NN of_IN the_DT Semantic_JJ Web_NN proof_NN layer_NN was_VBD discussed_VBN in_IN =_JJ -_: =[_NN 10_CD ,_, 14_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ approach_NN is_VBZ focused_VBN on_IN a_DT different_JJ language_NN model_NN -LRB-_-LRB- RDF_NN -RRB-_-RRB- and_CC provides_VBZ fine-grained_JJ meta_NN knowledge_NN management_NN for_IN retrieval_NN queries_NNS with_IN SPARQL_NN that_WDT is_VBZ not_RB directly_RB comparable_JJ with_IN proof_NN traces_NNS fo_VBP
+scenario_NN ,_, we_PRP assume_VBP that_IN the_DT user_NN utilizes_VBZ knowledge_NN which_WDT has_VBZ been_VBN initially_RB extracted_VBN from_IN Web_NN pages_NNS of_IN Computer_NNP Science_NNP departments_NNS and_CC stored_VBN in_IN form_NN of_IN RDF_NNP triples_NNS in_IN his_PRP$ personal_JJ ``_`` active_JJ space_NN ''_'' =_SYM -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, backed_VBN by_IN a_DT local_JJ RDF_NNP repository_NN ._.
+Example_NN 2.1_CD shows_VBZ the_DT relevant_JJ facts_NNS that_WDT may_MD have_VB been_VBN obtained_VBN from_IN departments_NNS of_IN different_JJ universities_NNS ._.
+For_IN better_JJR readability_NN ,_, we_PRP use_VBP for_IN our_PRP$ examples_NNS in_IN this_DT
+n_NN 7_CD reports_NNS on_IN initial_JJ graceful_JJ results_NNS for_IN meta_NN knowledge_NN processing_NN from_IN a_DT theoretic_JJ point_NN of_IN view_NN and_CC Section_NN 8_CD provides_VBZ pointers_NNS to_TO 1_CD This_DT proposal_NN is_VBZ a_DT completely_RB revised_VBN and_CC extended_VBN version_NN of_IN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Major_JJ revisions_NNS include_VBP a_DT novel_JJ formal_JJ model_NN ,_, discussion_NN of_IN the_DT design_NN space_NN ,_, complexity_NN analysis_NN ,_, and_CC prototype_NN implementation_NN ._.
+sthe_JJ prototype_NN implementation_NN of_IN the_DT system_NN ._.
+2_CD ._.
+Scenario_NN In_IN our_PRP$ sample_NN
+sing_VB an_DT extension_NN of_IN the_DT relational_JJ data_NNS model_NN ,_, coined_VBN annotated_JJ relations_NNS ._.
+Its_PRP$ purpose_NN is_VBZ primarily_RB the_DT description_NN of_IN data_NNS origins_NNS -LRB-_-LRB- provenance_NN -RRB-_-RRB- and_CC the_DT process_NN by_IN which_WDT it_PRP arrived_VBD as_IN a_DT query_JJ answer_NN =_JJ -_: =[_NN 5_CD ,_, 2_CD ,_, 3_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Basically_RB ,_, our_PRP$ methodology_NN follows_VBZ the_DT same_JJ idea_NN ._.
+However_RB ,_, our_PRP$ approach_NN is_VBZ specially_RB designed_VBN for_IN RDF_NNP graph_NN models_NNS and_CC not_RB directly_RB comparable_JJ to_TO metadata_VB models_NNS for_IN relational_JJ database_NN systems_NNS ._.
+The_DT

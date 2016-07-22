@@ -1,0 +1,127 @@
+Partitioned_VBN logistic_JJ regression_NN for_IN spam_NN filtering_VBG
+Naive_JJ Bayes_NNS and_CC logistic_JJ regression_NN perform_VB well_RB in_IN different_JJ regimes_NNS ._.
+While_IN the_DT former_JJ is_VBZ a_DT very_RB simple_JJ generative_JJ model_NN which_WDT is_VBZ efficient_JJ to_TO train_NN and_CC performs_VBZ well_RB empirically_RB in_IN many_JJ applications_NNS ,_, the_DT latter_JJ is_VBZ a_DT discriminative_JJ model_NN which_WDT often_RB achieves_VBZ better_JJR accuracy_NN and_CC can_MD be_VB shown_VBN to_TO outperform_VB naive_JJ Bayes_NNS asymptotically_RB ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT novel_JJ hybrid_NN model_NN ,_, partitioned_VBN logistic_JJ regression_NN ,_, which_WDT has_VBZ several_JJ advantages_NNS over_IN both_CC naive_JJ Bayes_NNS and_CC logistic_JJ regression_NN ._.
+This_DT model_NN separates_VBZ the_DT original_JJ feature_NN space_NN into_IN several_JJ disjoint_JJ feature_NN groups_NNS ._.
+Individual_JJ models_NNS on_IN these_DT groups_NNS of_IN features_NNS are_VBP learned_VBN using_VBG logistic_JJ regression_NN and_CC their_PRP$ predictions_NNS are_VBP combined_VBN using_VBG the_DT naive_JJ Bayes_NNP principle_NN to_TO produce_VB a_DT robust_JJ final_JJ estimation_NN ._.
+We_PRP show_VBP that_IN our_PRP$ model_NN is_VBZ better_JJR both_DT theoretically_RB and_CC empirically_RB ._.
+In_IN addition_NN ,_, when_WRB applying_VBG it_PRP in_IN a_DT practical_JJ application_NN ,_, email_NN spam_NN filtering_VBG ,_, it_PRP improves_VBZ the_DT normalized_VBN AUC_NN score_NN at_IN 10_CD %_NN false-positive_JJ rate_NN by_IN 28.8_CD %_NN and_CC 23.6_CD %_NN compared_VBN to_TO naive_JJ Bayes_NNS and_CC logistic_JJ regression_NN ,_, when_WRB using_VBG the_DT exact_JJ same_JJ training_NN examples_NNS ._.
+sts_NNS beyond_IN a_DT standard_JJ global_JJ filtering_VBG system_NN ,_, and_CC -LRB-_-LRB- 3_LS -RRB-_-RRB- do_VBP not_RB require_VB complete_JJ feedback_NN from_IN each_DT user_NN ._.
+To_TO satisfy_VB these_DT requirements_NNS we_PRP propose_VBP using_VBG the_DT partitioned_VBN logistic_JJ regression_NN -LRB-_-LRB- PLR_NN -RRB-_-RRB- model_NN -LRB-_-LRB- =_JJ -_: =_JJ Chang_NNP et_FW al._FW ,_, 2008_CD -_: =--RRB-_NN that_WDT learns_VBZ content_NN and_CC user_NN models_NNS separately_RB ._.
+While_IN users_NNS share_VBP the_DT same_JJ content_NN model_NN trained_VBN on_IN all_DT mail_NN ,_, the_DT user_NN model_NN can_MD be_VB built_VBN ef-ficiently_RB using_VBG only_RB a_DT few_JJ statistics_NNS of_IN the_DT messages_NNS re_VBP
+n_NN three_CD email_NN datasets_NNS for_IN spam_NN filtering_VBG ._.
+The_DT first_JJ one_CD is_VBZ a_DT non-public_JJ Hotmail_NN dataset_NN that_WDT has_VBZ been_VBN used_VBN previously_RB -LRB-_-LRB- 33_CD ,_, 19_CD -RRB-_-RRB- ._.
+The_DT other_JJ two_CD are_VBP the_DT 2005_CD and_CC 2006_CD TREC_NNP Spam_NNP Filtering_NNP Track_NNP datasets_VBZ =_JJ -_: =[_NN 6_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT have_VBP also_RB been_VBN used_VBN in_IN previous_JJ works_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 19_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+The_DT Hotmail_NNP corpus_NN is_VBZ collected_VBN by_IN polling_NN Hotmail_NN volunteers_NNS daily_RB ._.
+The_DT system_NN randomly_RB picks_VBZ messages_NNS sent_VBN to_TO voluntary_JJ users_NNS and_CC asks_VBZ the_DT
+iltering_NN has_VBZ typically_RB been_VBN viewed_VBN as_IN training_VBG a_DT model_NN that_WDT fits_VBZ better_RBR individual_JJ user_NN 's_POS mail_NN distribution_NN ,_, instead_RB of_IN adjusting_VBG the_DT filter_NN to_TO learn_VB user_NN preference_NN ._.
+For_IN example_NN ,_, Bickel_NNP and_CC Scheffer_NNP =_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: use_VB a_DT Dirichlet_NNP process_NN model_NN to_TO re-sample_VB the_DT training_NN data_NNS for_IN each_DT user_NN and_CC to_TO make_VB the_DT distribution_NN of_IN this_DT new_JJ training_NN dataset_NN close_RB to_TO the_DT messages_NNS this_DT user_NN receives_VBZ ._.
+However_RB ,_, this_DT strategy_NN i_FW
+For_IN example_NN ,_, the_DT learning_NN procedure_NN is_VBZ usually_RB very_RB simple_JJ and_CC efficient_JJ and_CC several_JJ techniques_NNS can_MD improve_VB its_PRP$ performance_NN and_CC make_VB it_PRP very_RB competitive_JJ when_WRB compared_VBN with_IN logistic_JJ regression_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 27_CD ,_, 19_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+When_WRB the_DT size_NN of_IN the_DT training_NN data_NNS is_VBZ small_JJ ,_, naive_JJ Bayes_NNS can_MD even_RB outperform_VB logistic_JJ regression_NN ,_, regardless_RB of_IN whether_IN its_PRP$ strong_JJ conditional_JJ independence_NN assumption_NN holds_VBZ or_CC not_RB ._.
+This_DT is_VBZ due_JJ to_TO t_NN
+amples_NNS of_IN the_DT training_NN data_NNS and_CC the_DT final_JJ prediction_NN is_VBZ made_VBN by_IN the_DT combined_JJ results_NNS ._.
+There_EX exists_VBZ a_DT considerable_JJ amount_NN of_IN literature_NN on_IN this_DT topic_NN and_CC interested_JJ readers_NNS can_MD find_VB a_DT survey_NN in_IN ,_, e.g._FW ,_, =_JJ -_: =[_NN 18_CD ,_, 8_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT model_NN combination_NN paradigm_NN ,_, partitioned_VBN logistic_JJ regression_NN can_MD be_VB categorized_VBN as_IN a_DT model_NN of_IN logarithmic_JJ opinion_NN pools_NNS in_IN Hinton_NNP 's_POS products_NNS of_IN experts_NNS framework_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, where_WRB the_DT final_JJ predicti_NNS
+August_NNP 24_CD --_: 27_CD ,_, 2008_CD ,_, Las_NNP Vegas_NNP ,_, Nevada_NNP ,_, USA_NNP ._.
+Copyright_NN 2008_CD ACM_NNP 978-1-59593-609-7_CD \/_: 07\/0008_CD ..._: $_$ 5.00_CD ._.
+19_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+This_DT empirical_JJ result_NN is_VBZ also_RB supported_VBN from_IN the_DT perspective_NN of_IN computational_JJ learning_NN theory_NN =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Nevertheless_RB ,_, a_DT generatively_RB trained_JJ classifier_NN ,_, such_JJ as_IN naive_JJ Bayes_NNP ,_, still_RB enjoys_VBZ several_JJ advantages_NNS in_IN practice_NN ._.
+For_IN example_NN ,_, the_DT learning_NN procedure_NN is_VBZ usually_RB very_RB simple_JJ and_CC efficient_JJ and_CC severa_NN
+des_FW unsatisfactory_JJ results_NNS ._.
+This_DT is_VBZ mainly_RB due_JJ to_TO the_DT fact_NN that_IN spam_NN is_VBZ an_DT adversarial_JJ problem_NN and_CC spammers_NNS can_MD easily_RB manipulate_VB messages_NNS by_IN adding_VBG ``_`` good_JJ words_NNS ''_'' to_TO fool_VB the_DT content-based_JJ spam_NN filter_NN =_JJ -_: =[_NN 22_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP also_RB demonstrate_VBP how_WRB the_DT PLR_NNP model_NN can_MD easily_RB incorporate_VB information_NN such_JJ as_IN sender_NN reputation_NN and_CC user_NN preference_NN in_IN a_DT highly_RB scalable_JJ way_NN to_TO enhance_VB the_DT performance_NN of_IN a_DT spam_FW fi_FW
+sumption_NN holds_VBZ or_CC not_RB ._.
+This_DT is_VBZ due_JJ to_TO the_DT fact_NN that_IN naive_JJ Bayes_NNS can_MD converge_VB to_TO its_PRP$ asymptotic_JJ accuracy_NN -LRB-_-LRB- i.e._FW ,_, the_DT model_NN trained_VBN on_IN infinitely_RB number_NN of_IN examples_NNS -RRB-_-RRB- much_RB faster_RBR than_IN logistic_JJ regression_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP introduce_VBP a_DT novel_JJ learning_NN method_NN ,_, partitioned_VBN logistic_JJ regression_NN -LRB-_-LRB- PLR_NN -RRB-_-RRB- ,_, which_WDT is_VBZ a_DT hybrid_NN model_NN that_WDT can_MD be_VB viewed_VBN as_IN part_NN generative_NN and_CC part_NN discriminative_JJ ._.
+Given_VBN training_NN exam_NN
+ividual_JJ logistic_JJ regression_NN models_NNS ,_, the_DT performance_NN improvement_NN can_MD be_VB further_RB increased_VBN ._.
+3_LS ._.
+THEORETIC_JJ ANALYSIS_NN When_WRB the_DT conditional_JJ independence_NN assumption_NN holds_VBZ ,_, following_VBG the_DT same_JJ argument_NN used_VBN in_IN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, one_PRP can_MD show_VB that_IN asymptotically_RB -LRB-_-LRB- i.e._FW ,_, with_IN infinitely_RB many_JJ training_NN examples_NNS -RRB-_-RRB- the_DT PLR_NN model_NN performs_VBZ no_RB worse_JJR than_IN the_DT LR_NNP model_NN ._.
+However_RB ,_, when_WRB this_DT assumption_NN does_VBZ not_RB hold_VB ,_, a_DT discriminative_JJ class_NN
+a_DT survey_NN in_IN ,_, e.g._FW ,_, -LRB-_-LRB- 18_CD ,_, 8_CD ,_, 3_CD -RRB-_-RRB- ._.
+In_IN the_DT model_NN combination_NN paradigm_NN ,_, partitioned_VBN logistic_JJ regression_NN can_MD be_VB categorized_VBN as_IN a_DT model_NN of_IN logarithmic_JJ opinion_NN pools_NNS in_IN Hinton_NNP 's_POS products_NNS of_IN experts_NNS framework_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB the_DT final_JJ prediction_NN is_VBZ made_VBN by_IN averaging_VBG the_DT estimated_VBN log-odds_NNS of_IN individual_JJ classifiers_NNS -LRB-_-LRB- i.e._FW ,_, experts_NNS -RRB-_-RRB- ._.
+Following_VBG the_DT same_JJ naive_JJ Bayes_NNP assumption_NN ,_, Kahn_NNP proposed_VBD an_DT improved_VBN version_NN of_IN the_DT
+For_IN example_NN ,_, the_DT learning_NN procedure_NN is_VBZ usually_RB very_RB simple_JJ and_CC efficient_JJ and_CC several_JJ techniques_NNS can_MD improve_VB its_PRP$ performance_NN and_CC make_VB it_PRP very_RB competitive_JJ when_WRB compared_VBN with_IN logistic_JJ regression_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 27_CD ,_, 19_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+When_WRB the_DT size_NN of_IN the_DT training_NN data_NNS is_VBZ small_JJ ,_, naive_JJ Bayes_NNS can_MD even_RB outperform_VB logistic_JJ regression_NN ,_, regardless_RB of_IN whether_IN its_PRP$ strong_JJ conditional_JJ independence_NN assumption_NN holds_VBZ or_CC not_RB ._.
+This_DT is_VBZ due_JJ to_TO t_NN
+problem_NN ._.
+The_DT approach_NN of_IN building_VBG a_DT spam_NN filter_NN as_IN a_DT classifier_NN trained_VBN by_IN machine_NN learning_NN algorithms_NNS -LRB-_-LRB- e.g._FW ,_, naive_JJ Bayes_NNS -RRB-_-RRB- using_VBG words_NNS or_CC tokens_NNS in_IN email_NN as_IN features_NNS ,_, has_VBZ been_VBN advocated_VBN for_IN a_DT decade_NN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN various_JJ feature_NN engineering_NN and_CC sophisticated_JJ learning_NN algorithms_NNS have_VBP been_VBN proposed_VBN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 33_CD ,_, 19_CD ,_, 14_CD -RRB-_-RRB- -RRB-_-RRB- ,_, the_DT view_NN that_IN a_DT spam_NN filter_NN is_VBZ a_DT special_JJ text_NN classifier_NN has_VBZ not_RB been_VBN changed_VBN much_RB
+tures_NNS -LRB-_-LRB- PLR_NN +_CC -RRB-_-RRB- §_NN ._.
+For_IN naive_JJ Bayes_NNS ,_, we_PRP use_VBP the_DT regular_JJ multivariate_JJ Bernoulli_NNP model_NN with_IN Laplace_NN smoothing_NN -LRB-_-LRB- add-one_JJ smoothing_NN -RRB-_-RRB- ._.
+For_IN the_DT logistic_JJ regression_NN components_NNS in_IN LR_NN ,_, PLR_NN and_CC PLR_NN +_CC ,_, we_PRP used_VBD SCGIS_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: as_IN the_DT actual_JJ training_NN method_NN ._.
+However_RB ,_, because_IN the_DT solution_NN space_NN is_VBZ convex_NN and_CC has_VBZ a_DT global_JJ optimum_NN ,_, the_DT choice_NN of_IN training_NN algorithm_NN makes_VBZ relatively_RB little_JJ difference_NN ._.
+On_IN the_DT other_JJ hand_NN ,_, setting_VBG
+this_DT as-sumption_NN does_VBZ not_RB always_RB hold_VB ._.
+For_IN example_NN ,_, when_WRB receiving_VBG unsolicited_JJ commercial_JJ email_NN ,_, two-thirds_NNS of_IN users_NNS consider_VBP it_PRP as_IN a_DT good_JJ message_NN as_RB long_RB as_IN they_PRP have_VBP done_VBN business_NN with_IN the_DT sender_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Messages_NNS belonging_VBG to_TO this_DT category_NN are_VBP called_VBN ``_`` gray_JJ mail_NN ''_'' ,_, which_WDT could_MD reasonably_RB be_VB considered_VBN either_CC spam_NN or_CC good_JJ -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+The_DT label_NN of_IN this_DT type_NN of_IN mail_NN depends_VBZ on_IN the_DT individual_JJ user_NN preference_NN ._.
+A_DT
+des_FW unsatisfactory_JJ results_NNS ._.
+This_DT is_VBZ mainly_RB due_JJ to_TO the_DT fact_NN that_IN spam_NN is_VBZ an_DT adversarial_JJ problem_NN and_CC spammers_NNS can_MD easily_RB manipulate_VB messages_NNS by_IN adding_VBG ``_`` good_JJ words_NNS ''_'' to_TO fool_VB the_DT content-based_JJ spam_NN filter_NN =_JJ -_: =[_NN 22_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP also_RB demonstrate_VBP how_WRB the_DT PLR_NNP model_NN can_MD easily_RB incorporate_VB information_NN such_JJ as_IN sender_NN reputation_NN and_CC user_NN preference_NN in_IN a_DT highly_RB scalable_JJ way_NN to_TO enhance_VB the_DT performance_NN of_IN a_DT spam_FW fi_FW
+r_NN than_IN regular_JJ logistic_JJ regression_NN ,_, although_IN the_DT performance_NN could_MD be_VB suboptimal_JJ compared_VBN to_TO what_WP logistic_JJ regression_NN can_MD potentially_RB achieve_VB ._.
+An_DT alternative_JJ hybrid_NN model_NN was_VBD proposed_VBN by_IN Raina_NNP et_FW al._FW =_SYM -_: =[_NN 26_CD -RRB-_-RRB- -_: =_JJ -_: who_WP learn_VBP component_NN naive_JJ Bayes_NNP classifiers_NNS first_RB and_CC then_RB combine_VB them_PRP using_VBG the_DT weights_NNS learned_VBN by_IN logistic_JJ regression_NN with_IN leave-one-out_JJ estimate_NN ._.
+They_PRP demonstrated_VBD that_IN by_IN separating_VBG features_NNS tha_NN
+n_NN three_CD email_NN datasets_NNS for_IN spam_NN filtering_VBG ._.
+The_DT first_JJ one_CD is_VBZ a_DT non-public_JJ Hotmail_NN dataset_NN that_WDT has_VBZ been_VBN used_VBN previously_RB -LRB-_-LRB- 33_CD ,_, 19_CD -RRB-_-RRB- ._.
+The_DT other_JJ two_CD are_VBP the_DT 2005_CD and_CC 2006_CD TREC_NNP Spam_NNP Filtering_NNP Track_NNP datasets_VBZ =_JJ -_: =[_NN 6_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT have_VBP also_RB been_VBN used_VBN in_IN previous_JJ works_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 19_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+The_DT Hotmail_NNP corpus_NN is_VBZ collected_VBN by_IN polling_NN Hotmail_NN volunteers_NNS daily_RB ._.
+The_DT system_NN randomly_RB picks_VBZ messages_NNS sent_VBN to_TO voluntary_JJ users_NNS and_CC asks_VBZ the_DT
+._.
+As_IN for_IN the_DT application_NN of_IN spam_NN filtering_VBG ,_, statistical_JJ approaches_NNS have_VBP been_VBN claimed_VBN more_RBR effective_JJ than_IN rule-based_JJ systems_NNS and_CC have_VBP been_VBN used_VBN extensively_RB -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+Linear_JJ classifiers_NNS ,_, such_JJ as_IN naive_JJ Bayes_NNS =_JJ -_: =[_NN 28_CD ,_, 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, logistic_JJ regression_NN -LRB-_-LRB- 13_CD ,_, 33_CD -RRB-_-RRB- and_CC linear_JJ SVMs_NNS -LRB-_-LRB- 10_CD ,_, 30_CD -RRB-_-RRB- ,_, are_VBP especially_RB popular_JJ for_IN this_DT task_NN due_JJ to_TO their_PRP$ ability_NN to_TO handle_VB large_JJ feature_NN spaces_NNS efficiently_RB ._.
+Various_JJ model_NN combination_NN methods_NNS have_VBP al_FW
+g._RB ,_, naive_JJ Bayes_NNS -RRB-_-RRB- using_VBG words_NNS or_CC tokens_NNS in_IN email_NN as_IN features_NNS ,_, has_VBZ been_VBN advocated_VBN for_IN a_DT decade_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ._.
+Although_IN various_JJ feature_NN engineering_NN and_CC sophisticated_JJ learning_NN algorithms_NNS have_VBP been_VBN proposed_VBN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 33_CD ,_, 19_CD ,_, 14_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, the_DT view_NN that_IN a_DT spam_NN filter_NN is_VBZ a_DT special_JJ text_NN classifier_NN has_VBZ not_RB been_VBN changed_VBN much_RB ,_, and_CC a_DT content-based_JJ filter_NN is_VBZ still_RB the_DT core_NN component_NN in_IN many_JJ commercial_JJ email_NN spam_NN filtering_VBG systems_NNS ._.
+Unfortuna_NNP
+asure_NN is_VBZ the_DT true-positive_JJ rate_NN of_IN the_DT filter_NN at_IN a_DT specific_JJ false-positive_JJ rate_NN t_NN -LRB-_-LRB- denoted_VBN as_IN TPR@FPR=t_NN -RRB-_-RRB- ,_, which_WDT is_VBZ a_DT point_NN on_IN the_DT ROC_NNP curve_NN ._.
+When_WRB comparing_VBG methods_NNS on_IN TPR@FPR=t,_NN we_PRP use_VBP McNemar_NNP 's_POS test_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: on_IN the_DT classification_NN results_NNS of_IN two_CD compared_VBN methods_NNS at_IN their_PRP$ decision_NN thresholds_NNS that_WDT correspond_VBP to_TO the_DT false-positive_JJ rate_NN t._NNP The_NNP difference_NN between_IN two_CD methods_NNS is_VBZ considered_VBN statistically_RB signifi_NNS
+am_VB filtering_VBG ,_, statistical_JJ approaches_NNS have_VBP been_VBN claimed_VBN more_RBR effective_JJ than_IN rule-based_JJ systems_NNS and_CC have_VBP been_VBN used_VBN extensively_RB -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+Linear_JJ classifiers_NNS ,_, such_JJ as_IN naive_JJ Bayes_NNS -LRB-_-LRB- 28_CD ,_, 23_CD -RRB-_-RRB- ,_, logistic_JJ regression_NN =_JJ -_: =[_NN 13_CD ,_, 33_CD -RRB-_-RRB- -_: =_JJ -_: and_CC linear_JJ SVMs_NNS -LRB-_-LRB- 10_CD ,_, 30_CD -RRB-_-RRB- ,_, are_VBP especially_RB popular_JJ for_IN this_DT task_NN due_JJ to_TO their_PRP$ ability_NN to_TO handle_VB large_JJ feature_NN spaces_NNS efficiently_RB ._.
+Various_JJ model_NN combination_NN methods_NNS have_VBP also_RB been_VBN explored_VBN ._.
+For_IN example_NN ,_,
+approaches_NNS have_VBP been_VBN claimed_VBN more_RBR effective_JJ than_IN rule-based_JJ systems_NNS and_CC have_VBP been_VBN used_VBN extensively_RB -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+Linear_JJ classifiers_NNS ,_, such_JJ as_IN naive_JJ Bayes_NNS -LRB-_-LRB- 28_CD ,_, 23_CD -RRB-_-RRB- ,_, logistic_JJ regression_NN -LRB-_-LRB- 13_CD ,_, 33_CD -RRB-_-RRB- and_CC linear_JJ SVMs_NNS =_JJ -_: =[_NN 10_CD ,_, 30_CD -RRB-_-RRB- -_: =_JJ -_: ,_, are_VBP especially_RB popular_JJ for_IN this_DT task_NN due_JJ to_TO their_PRP$ ability_NN to_TO handle_VB large_JJ feature_NN spaces_NNS efficiently_RB ._.
+Various_JJ model_NN combination_NN methods_NNS have_VBP also_RB been_VBN explored_VBN ._.
+For_IN example_NN ,_, Hershkop_NNP and_CC Stolfo_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB-
+amples_NNS of_IN the_DT training_NN data_NNS and_CC the_DT final_JJ prediction_NN is_VBZ made_VBN by_IN the_DT combined_JJ results_NNS ._.
+There_EX exists_VBZ a_DT considerable_JJ amount_NN of_IN literature_NN on_IN this_DT topic_NN and_CC interested_JJ readers_NNS can_MD find_VB a_DT survey_NN in_IN ,_, e.g._FW ,_, =_JJ -_: =[_NN 18_CD ,_, 8_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT model_NN combination_NN paradigm_NN ,_, partitioned_VBN logistic_JJ regression_NN can_MD be_VB categorized_VBN as_IN a_DT model_NN of_IN logarithmic_JJ opinion_NN pools_NNS in_IN Hinton_NNP 's_POS products_NNS of_IN experts_NNS framework_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, where_WRB the_DT final_JJ predicti_NNS
+amples_NNS of_IN the_DT training_NN data_NNS and_CC the_DT final_JJ prediction_NN is_VBZ made_VBN by_IN the_DT combined_JJ results_NNS ._.
+There_EX exists_VBZ a_DT considerable_JJ amount_NN of_IN literature_NN on_IN this_DT topic_NN and_CC interested_JJ readers_NNS can_MD find_VB a_DT survey_NN in_IN ,_, e.g._FW ,_, =_JJ -_: =[_NN 18_CD ,_, 8_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT model_NN combination_NN paradigm_NN ,_, partitioned_VBN logistic_JJ regression_NN can_MD be_VB categorized_VBN as_IN a_DT model_NN of_IN logarithmic_JJ opinion_NN pools_NNS in_IN Hinton_NNP 's_POS products_NNS of_IN experts_NNS framework_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, where_WRB the_DT final_JJ predicti_NNS
+g._RB ,_, naive_JJ Bayes_NNS -RRB-_-RRB- using_VBG words_NNS or_CC tokens_NNS in_IN email_NN as_IN features_NNS ,_, has_VBZ been_VBN advocated_VBN for_IN a_DT decade_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ._.
+Although_IN various_JJ feature_NN engineering_NN and_CC sophisticated_JJ learning_NN algorithms_NNS have_VBP been_VBN proposed_VBN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 33_CD ,_, 19_CD ,_, 14_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, the_DT view_NN that_IN a_DT spam_NN filter_NN is_VBZ a_DT special_JJ text_NN classifier_NN has_VBZ not_RB been_VBN changed_VBN much_RB ,_, and_CC a_DT content-based_JJ filter_NN is_VBZ still_RB the_DT core_NN component_NN in_IN many_JJ commercial_JJ email_NN spam_NN filtering_VBG systems_NNS ._.
+Unfortuna_NNP
+Bayes_NNP assumption_NN ,_, Kahn_NNP proposed_VBD an_DT improved_VBN version_NN of_IN the_DT logarithmic_JJ opinion_NN pools_NNS by_IN calibrating_VBG the_DT probability_NN estimation_NN of_IN the_DT experts_NNS and_CC also_RB learning_VBG the_DT combining_VBG weights_NNS discriminatively_RB =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Compared_VBN to_TO the_DT general_JJ model_NN combination_NN framework_NN ,_, the_DT main_JJ difference_NN in_IN partitioned_VBN logistic_JJ regression_NN is_VBZ that_IN the_DT individual_JJ models_NNS or_CC experts_NNS are_VBP learned_VBN specifically_RB on_IN disjoint_NN feature_NN spac_NN
+way_NN to_TO improve_VB naive_JJ Bayes_NNS by_IN slightly_RB relaxing_VBG the_DT conditional_JJ independence_NN assumption_NN ,_, which_WDT can_MD be_VB analogous_JJ to_TO several_JJ previous_JJ efforts_NNS on_IN enhancing_VBG the_DT prediction_NN accuracy_NN of_IN naive_JJ Bayes_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 2_CD ,_, 27_CD ,_, 19_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+In_IN contrast_NN ,_, our_PRP$ PLR_NNP model_NN applies_VBZ the_DT naive_JJ Bayes_NNP assumption_NN to_TO combine_VB multiple_JJ logistic_JJ regression_NN models_NNS ._.
+It_PRP is_VBZ not_RB only_RB better_JJR than_IN naive_JJ Bayes_NNS ,_, but_CC also_RB somewhat_RB unexpectedly_RB outperforms_VBZ logi_NNS
+treats_VBZ it_PRP as_IN a_DT regular_JJ text_NN classification_NN problem_NN ._.
+The_DT use_NN of_IN non-content_JJ information_NN has_VBZ been_VBN less_RBR studied_VBN ._.
+Using_VBG the_DT sender_NN information_NN -LRB-_-LRB- i.e._FW ,_, the_DT IP_NNP address_NN sending_VBG the_DT mail_NN -RRB-_-RRB- is_VBZ first_RB studied_VBN in_IN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT analyzes_VBZ the_DT whole_JJ SMTP_NN path_NN and_CC uses_VBZ it_PRP to_TO enhance_VB the_DT filter_NN ._.
+Personalized_VBN email_NN spam_NN filtering_VBG has_VBZ typically_RB been_VBN viewed_VBN as_IN training_VBG a_DT model_NN that_WDT fits_VBZ better_RBR individual_JJ user_NN 's_POS mail_NN distribu_NN
+near_IN classifier_NN has_VBZ been_VBN implemented_VBN and_CC used_VBN ._.
+As_IN for_IN the_DT application_NN of_IN spam_NN filtering_VBG ,_, statistical_JJ approaches_NNS have_VBP been_VBN claimed_VBN more_RBR effective_JJ than_IN rule-based_JJ systems_NNS and_CC have_VBP been_VBN used_VBN extensively_RB =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Linear_JJ classifiers_NNS ,_, such_JJ as_IN naive_JJ Bayes_NNS -LRB-_-LRB- 28_CD ,_, 23_CD -RRB-_-RRB- ,_, logistic_JJ regression_NN -LRB-_-LRB- 13_CD ,_, 33_CD -RRB-_-RRB- and_CC linear_JJ SVMs_NNS -LRB-_-LRB- 10_CD ,_, 30_CD -RRB-_-RRB- ,_, are_VBP especially_RB popular_JJ for_IN this_DT task_NN due_JJ to_TO their_PRP$ ability_NN to_TO handle_VB large_JJ feature_NN spaces_NNS effi_VBP
+approaches_NNS have_VBP been_VBN claimed_VBN more_RBR effective_JJ than_IN rule-based_JJ systems_NNS and_CC have_VBP been_VBN used_VBN extensively_RB -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+Linear_JJ classifiers_NNS ,_, such_JJ as_IN naive_JJ Bayes_NNS -LRB-_-LRB- 28_CD ,_, 23_CD -RRB-_-RRB- ,_, logistic_JJ regression_NN -LRB-_-LRB- 13_CD ,_, 33_CD -RRB-_-RRB- and_CC linear_JJ SVMs_NNS =_JJ -_: =[_NN 10_CD ,_, 30_CD -RRB-_-RRB- -_: =_JJ -_: ,_, are_VBP especially_RB popular_JJ for_IN this_DT task_NN due_JJ to_TO their_PRP$ ability_NN to_TO handle_VB large_JJ feature_NN spaces_NNS efficiently_RB ._.
+Various_JJ model_NN combination_NN methods_NNS have_VBP also_RB been_VBN explored_VBN ._.
+For_IN example_NN ,_, Hershkop_NNP and_CC Stolfo_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB-
+l_NN combination_NN strategies_NNS for_IN models_NNS trained_VBN using_VBG different_JJ algorithms_NNS and_CC on_IN different_JJ features_NNS ._.
+More_RBR traditional_JJ ensemble-like_JJ methods_NNS such_JJ as_IN a_DT cascade_NN of_IN classifiers_NNS -LRB-_-LRB- 33_CD -RRB-_-RRB- and_CC stacking_VBG classifiers_NNS =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP also_RB been_VBN applied_VBN to_TO spam_VB filtering_VBG ._.
+Most_JJS work_NN on_IN spam_NN filtering_VBG treats_VBZ it_PRP as_IN a_DT regular_JJ text_NN classification_NN problem_NN ._.
+The_DT use_NN of_IN non-content_JJ information_NN has_VBZ been_VBN less_RBR studied_VBN ._.
+Using_VBG the_DT sender_NN in_IN
+eives_NNS ._.
+However_RB ,_, this_DT strategy_NN is_VBZ quite_RB expensive_JJ in_IN computation_NN and_CC may_MD not_RB be_VB feasible_JJ for_IN a_DT Web_NN mail_NN system_NN that_WDT has_VBZ hundreds_NNS of_IN millions_NNS user_NN accounts_NNS ._.
+Instead_RB of_IN creating_VBG new_JJ training_NN data_NNS ,_, Segal_NN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT method_NN to_TO combine_VB a_DT globally_RB trained_JJ model_NN with_IN a_DT model_NN trained_VBN using_VBG only_JJ personal_JJ email_NN ._.
+While_IN the_DT globally_RB trained_JJ spam_NN filter_NN always_RB outperforms_VBZ the_DT locally_RB trained_JJ one_CD ,_, the_DT combined_VBN a_DT
+30_CD -RRB-_-RRB- ,_, are_VBP especially_RB popular_JJ for_IN this_DT task_NN due_JJ to_TO their_PRP$ ability_NN to_TO handle_VB large_JJ feature_NN spaces_NNS efficiently_RB ._.
+Various_JJ model_NN combination_NN methods_NNS have_VBP also_RB been_VBN explored_VBN ._.
+For_IN example_NN ,_, Hershkop_NN and_CC Stolfo_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: experimented_VBN with_IN different_JJ model_NN combination_NN strategies_NNS for_IN models_NNS trained_VBN using_VBG different_JJ algorithms_NNS and_CC on_IN different_JJ features_NNS ._.
+More_RBR traditional_JJ ensemble-like_JJ methods_NNS such_JJ as_IN a_DT cascade_NN of_IN classifie_NN

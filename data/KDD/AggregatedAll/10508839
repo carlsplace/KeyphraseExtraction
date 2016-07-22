@@ -1,0 +1,76 @@
+Maximum_NNP profit_NN mining_NN and_CC its_PRP$ application_NN in_IN software_NN development_NN
+While_IN most_JJS software_NN defects_NNS -LRB-_-LRB- i.e._FW ,_, bugs_NNS -RRB-_-RRB- are_VBP corrected_VBN and_CC tested_VBN as_IN part_NN of_IN the_DT lengthy_JJ software_NN development_NN cycle_NN ,_, enterprise_NN software_NN vendors_NNS often_RB have_VBP to_TO release_VB software_NN products_NNS before_IN all_DT reported_VBN defects_NNS are_VBP corrected_VBN ,_, due_JJ to_TO deadlines_NNS and_CC limited_JJ resources_NNS ._.
+A_DT small_JJ number_NN of_IN these_DT defects_NNS will_MD be_VB escalated_VBN by_IN customers_NNS and_CC they_PRP must_MD be_VB resolved_VBN immediately_RB by_IN the_DT software_NN vendors_NNS at_IN a_DT very_RB high_JJ cost_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP develop_VBP an_DT Escalation_NN Prediction_NN -LRB-_-LRB- EP_NN -RRB-_-RRB- system_NN that_IN mines_NNS historic_JJ defect_NN report_NN data_NNS and_CC predict_VBP the_DT escalation_NN risk_NN of_IN the_DT defects_NNS for_IN maximum_JJ net_JJ profit_NN ._.
+More_RBR specifically_RB ,_, we_PRP first_RB describe_VBP a_DT simple_JJ and_CC general_JJ framework_NN to_TO convert_VB the_DT maximum_JJ net_JJ profit_NN problem_NN to_TO cost-sensitive_JJ learning_NN ._.
+We_PRP then_RB apply_VB and_CC compare_VB several_JJ well-known_JJ cost-sensitive_JJ learning_NN approaches_NNS for_IN EP_NN ._.
+Our_PRP$ experiments_NNS suggest_VBP that_IN the_DT cost-sensitive_JJ decision_NN tree_NN is_VBZ the_DT best_JJS method_NN for_IN producing_VBG the_DT highest_JJS positive_JJ net_JJ profit_NN and_CC comprehensible_JJ results_NNS ._.
+The_DT EP_NN system_NN has_VBZ been_VBN deployed_VBN successfully_RB in_IN the_DT product_NN group_NN of_IN an_DT enterprise_NN software_NN vendor_NN ._.
+her_PRP ,_, unless_IN there_EX is_VBZ a_DT large_JJ gain_NN in_IN the_DT reduction_NN of_IN the_DT misclassification_NN cost_NN ._.
+Nevertheless_RB ,_, overfitting_NN could_MD still_RB happen_VB ,_, especially_RB when_WRB the_DT attribute_NN cost_NN is_VBZ small_JJ or_CC zero_NN -LRB-_-LRB- as_IN we_PRP study_VBP here_RB -RRB-_-RRB- ._.
+=_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: incorporates_VBZ postpruning_VBG in_IN cost-sensitive_JJ decision_NN trees.Cost-Sensitive_JJ Decision_NNP Trees_NNP with_IN Pre-pruning_NN 173_CD empirical_JJ study_NN in_IN section_NN 3_CD will_MD show_VB that_IN indeed_RB the_DT simple_JJ approach_NN works_VBZ quite_RB well_RB ._.
+ling_IN the_DT data_NNS sets_NNS ._.
+Previous_JJ work_NN -LRB-_-LRB- see_VB ,_, e.g._FW ,_, -LRB-_-LRB- 10_CD -RRB-_-RRB- -RRB-_-RRB- has_VBZ indicated_VBN that_IN over-sampling_VBG the_DT minority_NN class_NN can_MD cause_VB overfitting_NN ,_, and_CC may_MD not_RB be_VB helpful_JJ to_TO improve_VB predictive_JJ performance_NN ._.
+Other_JJ research_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: shows_VBZ that_IN keeping_VBG all_DT examples_NNS of_IN the_DT rare_JJ class_NN ,_, and_CC under-sampling_JJ the_DT majority_NN class_NN to_TO be_VB about_IN the_DT same_JJ as_IN the_DT rare_JJ class_NN performs_VBZ well_RB measured_VBN by_IN AUC_NN ._.
+Thus_RB ,_, we_PRP will_MD use_VB this_DT simple_JJ strategy_NN ._.
+training_NN examples_NNS ._.
+This_DT means_VBZ that_IN a_DT larger_JJR tree_NN -LRB-_-LRB- that_WDT fits_VBZ the_DT training_NN examples_NNS better_RBR -RRB-_-RRB- predicts_VBZ worse_JJR compared_VBN to_TO a_DT small_JJ tree_NN ._.
+We_PRP have_VBP implemented_VBN post_NN pruning_NN similar_JJ to_TO the_DT postpruning_NN in_IN C4_NN .5_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: in_IN our_PRP$ cost-sensitive_JJ decision_NN tree_NN -LRB-_-LRB- but_CC our_PRP$ post-pruning_JJ is_VBZ guided_VBN by_IN minimum_JJ total_JJ misclassification_NN cost_NN -RRB-_-RRB- ._.
+The_DT CSTree_NN has_VBZ two_CD distinctive_JJ advantages_NNS ._.
+The_DT first_JJ one_CD is_VBZ that_IN there_EX is_VBZ no_DT need_NN for_IN sam_NN
+data-mining_JJ measures_NNS such_JJ as_IN accuracy_NN ,_, AUC_NN -LRB-_-LRB- area_NN under_IN the_DT ROC_NN curve_NN -RRB-_-RRB- ,_, lift_NN ,_, or_CC recall_NN and_CC precision_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+However_RB ,_, the_DT net_JJ profit_NN is_VBZ not_RB equivalent_JJ to_TO any_DT of_IN these_DT standard_JJ machine_NN learning_NN measures_VBZ =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC we_PRP have_VBP found_VBN little_JJ previous_JJ work_NN that_WDT directly_RB optimizes_VBZ the_DT net_JJ profit_NN as_IN the_DT data_NNS mining_NN effort_NN ._.
+We_PRP first_RB set_VBD up_RP a_DT simple_JJ framework_NN in_IN which_WDT the_DT problem_NN of_IN maximum_JJ net_JJ profit_NN can_MD be_VB converte_NN
+ons_NNS -RRB-_-RRB- ._.
+Note_VB that_IN the_DT class_NN labels_NNS of_IN this_DT dataset_NN have_VBP all_DT been_VBN verified_VBN by_IN real_JJ escalations_NNS of_IN the_DT software_NN products_NNS ,_, thus_RB this_DT dataset_NN contains_VBZ much_RB less_JJR noise_NN than_IN the_DT one_CD used_VBN in_IN our_PRP$ previous_JJ work_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT total_JJ number_NN of_IN attributes_NNS is_VBZ 53_CD ,_, most_JJS of_IN which_WDT are_VBP numerical_JJ attributes_NNS -LRB-_-LRB- including_VBG dates_NNS -RRB-_-RRB- ,_, and_CC a_DT few_JJ are_VBP nominal_JJ -LRB-_-LRB- such_JJ as_IN product_NN name_NN -RRB-_-RRB- ._.
+The_DT system_NN uses_VBZ three_CD types_NNS of_IN inputs_NNS :_: 1_LS -RRB-_-RRB- raw_JJ inputs_NNS whi_VBP
+e_LS classes_NNS of_IN instances_NNS by_IN applying_VBG the_DT minimum_NN expected_VBD cost_NN criterion_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+MetaCost_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- belongs_VBZ to_TO this_DT approach_NN ._.
+MetaCost_NNP uses_VBZ bagging_VBG as_IN the_DT ensemble_NN method_NN ._.
+The_DT forth_RB approach_NN ,_, called_VBN ``_`` Weighting_NNP ''_'' =_SYM -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, induces_VBZ costsensitivity_NN by_IN integrating_VBG the_DT instances_NNS '_POS weights_NNS directly_RB into_IN the_DT classifier_NN building_NN process_NN ._.
+It_PRP works_VBZ when_WRB the_DT base_NN learners_NNS can_MD accept_VB weights_NNS directly_RB ._.
+This_DT method_NN does_VBZ not_RB rely_VB on_IN
+occupy_VB only_RB about_RB 1_CD %_NN of_IN the_DT original_JJ training_NN and_CC test_NN sets_NNS -LRB-_-LRB- see_VB Section_NNP 4_CD -RRB-_-RRB- ,_, the_DT balanced_JJ dataset_NN contains_VBZ only_RB about_RB 2_CD %_NN of_IN the_DT original_JJ training_NN set_NN ,_, which_WDT is_VBZ very_RB small_JJ ._.
+Therefore_RB ,_, we_PRP apply_VBP bagging_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: to_TO Undersampling_NNP ,_, as_IN bagging_NN has_VBZ been_VBN shown_VBN to_TO be_VB effective_JJ in_IN improving_VBG predictive_JJ accuracy_NN and_CC probability_NN estimation_NN measured_VBN by_IN AUC_NN ._.
+Bagging_NNP is_VBZ also_RB applied_VBN to_TO other_JJ methods_NNS -LRB-_-LRB- see_VB later_RB -RRB-_-RRB- ._.
+As_IN Under_IN
+ference_NN in_IN the_DT cost_NN before_IN and_CC after_IN introducing_VBG the_DT data_NNS mining_NN solution_NN ,_, as_IN opposed_VBN to_TO the_DT usual_JJ data-mining_JJ measures_NNS such_JJ as_IN accuracy_NN ,_, AUC_NN -LRB-_-LRB- area_NN under_IN the_DT ROC_NN curve_NN -RRB-_-RRB- ,_, lift_NN ,_, or_CC recall_NN and_CC precision_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, the_DT net_JJ profit_NN is_VBZ not_RB equivalent_JJ to_TO any_DT of_IN these_DT standard_JJ machine_NN learning_NN measures_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, and_CC we_PRP have_VBP found_VBN little_JJ previous_JJ work_NN that_WDT directly_RB optimizes_VBZ the_DT net_JJ profit_NN as_IN the_DT data_NNS mining_NN eff_NN
+o_NN any_DT cost-blind_JJ base_NN learning_VBG algorithms_NNS to_TO make_VB them_PRP cost-sensitive_JJ ._.
+We_PRP choose_VBP four_CD popular_JJ learning_NN algorithms_NNS ,_, naïve_JJ Bayes_NNP ,_, the_DT decision_NN tree_NN algorithm_NN C4_NN .5_CD -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, decision_NN stump_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, and_CC REPTree_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: as_IN their_PRP$ base_NN learners_NNS ,_, due_JJ to_TO their_PRP$ popularity_NN and_CC high_JJ efficiency_NN ._.
+The_DT fifth_JJ method_NN -LRB-_-LRB- CSTree_NN -RRB-_-RRB- is_VBZ also_RB a_DT decision_NN tree_NN but_CC it_PRP is_VBZ costsensitive_JJ in_IN nature_NN ._.
+It_PRP would_MD be_VB interesting_JJ to_TO compare_VB various_JJ wr_NN
+ensitive_JJ -LRB-_-LRB- or_CC cost-blind_JJ -RRB-_-RRB- base_NN learning_NN algorithms_NNS into_IN costsensitive_JJ ._.
+The_DT wrapper_NN method_NN is_VBZ also_RB called_VBN cost-sensitive_JJ metalearning_NN ._.
+The_DT other_JJ is_VBZ to_TO design_VB cost-sensitive_JJ learning_NN algorithms_NNS directly_RB =_JJ -_: =[_NN 19_CD ,_, 10_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT section_NN we_PRP will_MD discuss_VB briefly_RB several_JJ well-known_JJ cost-sensitive_JJ learning_NN approaches_NNS ,_, including_VBG a_DT method_NN of_IN our_PRP$ own_JJ -LRB-_-LRB- CSTree_NN ,_, described_VBN later_RB -RRB-_-RRB- and_CC several_JJ new_JJ improvements_NNS ._.
+Due_JJ to_TO space_NN limi_NN
+be_VB calculated_VBN and_CC obtained_VBN ._.
+The_DT second_JJ approach_NN ,_, called_VBN ``_`` Costing_NNP ''_'' ,_, is_VBZ an_DT advanced_JJ sampling_NN which_WDT weighs_VBZ examples_NNS according_VBG to_TO the_DT cost_NN ,_, producing_VBG costsensitivity_NN with_IN a_DT provable_JJ performance_NN guarantee_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT advanced_JJ sampling_NN used_VBN is_VBZ rejection_NN sampling_NN ,_, in_IN which_WDT each_DT example_NN in_IN the_DT original_JJ training_NN set_NN is_VBZ drawn_VBN once_RB ,_, and_CC is_VBZ accepted_VBN into_IN the_DT sample_NN with_IN the_DT probability_NN proportional_JJ to_TO its_PRP$ ``_`` importan_NN
+aper_NN ,_, we_PRP will_MD study_VB EP_NNP under_IN this_DT cost_NN metric_NN ._.
+Comparing_VBG the_DT two_CD cost_NN metrics_NNS in_IN Tables_NNS 1_CD and_CC 2_CD ,_, we_PRP can_MD see_VB that_IN one_PRP can_MD be_VB converted_VBN into_IN the_DT other_JJ when_WRB the_DT first_JJ row_NN is_VBZ subtracted_VBN to_TO the_DT second_JJ row_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, even_RB though_IN the_DT optimal_JJ prediction_NN for_IN minimal_JJ total_JJ cost_NN remains_VBZ the_DT same_JJ aftersuch_JJ conversions_NNS ,_, the_DT actual_JJ value_NN of_IN the_DT total_JJ cost_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- would_MD certainly_RB be_VB changed_VBN ._.
+That_DT is_VBZ ,_, the_DT software_NN v_LS
+ensitive_JJ -LRB-_-LRB- or_CC cost-blind_JJ -RRB-_-RRB- base_NN learning_NN algorithms_NNS into_IN costsensitive_JJ ._.
+The_DT wrapper_NN method_NN is_VBZ also_RB called_VBN cost-sensitive_JJ metalearning_NN ._.
+The_DT other_JJ is_VBZ to_TO design_VB cost-sensitive_JJ learning_NN algorithms_NNS directly_RB =_JJ -_: =[_NN 19_CD ,_, 10_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT section_NN we_PRP will_MD discuss_VB briefly_RB several_JJ well-known_JJ cost-sensitive_JJ learning_NN approaches_NNS ,_, including_VBG a_DT method_NN of_IN our_PRP$ own_JJ -LRB-_-LRB- CSTree_NN ,_, described_VBN later_RB -RRB-_-RRB- and_CC several_JJ new_JJ improvements_NNS ._.
+Due_JJ to_TO space_NN limi_NN
+s_NN ,_, as_IN they_PRP apply_VBP to_TO any_DT cost-blind_JJ base_NN learning_VBG algorithms_NNS to_TO make_VB them_PRP cost-sensitive_JJ ._.
+We_PRP choose_VBP four_CD popular_JJ learning_NN algorithms_NNS ,_, naïve_JJ Bayes_NNP ,_, the_DT decision_NN tree_NN algorithm_NN C4_NN .5_CD -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, decision_NN stump_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC REPTree_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- as_IN their_PRP$ base_NN learners_NNS ,_, due_JJ to_TO their_PRP$ popularity_NN and_CC high_JJ efficiency_NN ._.
+The_DT fifth_JJ method_NN -LRB-_-LRB- CSTree_NN -RRB-_-RRB- is_VBZ also_RB a_DT decision_NN tree_NN but_CC it_PRP is_VBZ costsensitive_JJ in_IN nature_NN ._.
+It_PRP would_MD be_VB interesting_JJ to_TO
+methods_NNS measured_VBN by_IN the_DT maximum_JJ total_JJ profit_NN in_IN two_CD realworld_NN datasets_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+The_DT third_JJ approach_NN ,_, called_VBN ``_`` Relabeling_NNP ''_'' ,_, relabels_VBZ the_DT classes_NNS of_IN instances_NNS by_IN applying_VBG the_DT minimum_NN expected_VBD cost_NN criterion_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+MetaCost_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- belongs_VBZ to_TO this_DT approach_NN ._.
+MetaCost_NNP uses_VBZ bagging_VBG as_IN the_DT ensemble_NN method_NN ._.
+The_DT forth_RB approach_NN ,_, called_VBN ``_`` Weighting_NNP ''_'' -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, induces_VBZ costsensitivity_NN by_IN integrating_VBG the_DT instances_NNS '_POS weights_NNS direct_VBP
+on_IN ,_, software_NN defect_NN escalations_NNS result_VBP in_IN loss_NN of_IN reputation_NN ,_, satisfaction_NN ,_, loyalty_NN and_CC repeat_NN revenue_NN of_IN customers_NNS ,_, incurring_VBG extremely_RB high_JJ costs_NNS in_IN the_DT long_JJ run_NN for_IN the_DT enterprise_NN software_NN vendors_NNS =_JJ -_: =[_NN 2_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Due_JJ to_TO time_NN -LRB-_-LRB- i.e._FW ,_, deadlines_NNS -RRB-_-RRB- and_CC resource_NN limitations_NNS ,_, enterprise_NN software_NN vendors_NNS can_MD only_RB fix_VB a_DT limited_JJ number_NN of_IN defects_NNS before_IN product_NN release_NN ._.
+Thus_RB ,_, they_PRP must_MD try_VB to_TO identify_VB which_WDT reported_VBD de_IN
+ions_NNS is_VBZ novel_JJ in_IN software_NN engineering_NN ._.
+More_RBR specifically_RB ,_, we_PRP build_VBP an_DT Escalation_NN Prediction_NN -LRB-_-LRB- EP_NN -RRB-_-RRB- system_NN that_WDT learns_VBZ from_IN history_NN defects_NNS data_NNS and_CC predicts_VBZ escalation_NN risk_NN using_VBG data_NNS mining_NN technology_NN =_JJ -_: =[_NN 1_CD ,_, 8_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+If_IN the_DT EP_NN system_NN can_MD accurately_RB predict_VB the_DT escalation_NN risk_NN of_IN known_JJ defect_NN reports_NNS ,_, then_RB many_JJ escalations_NNS will_MD be_VB prevented_VBN ._.
+This_DT would_MD save_VB a_DT huge_JJ amount_NN of_IN money_NN for_IN the_DT enterprise_NN software_NN vendo_NN

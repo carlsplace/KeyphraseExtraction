@@ -1,0 +1,281 @@
+RDFPeers_NNS :_: a_DT scalable_JJ distributed_VBN RDF_NN repository_NN based_VBN on_IN a_DT structured_JJ peer-to-peer_NN network_NN
+Centralized_NNP Resource_NNP Description_NN Framework_NN -LRB-_-LRB- RDF_NN -RRB-_-RRB- repositories_NNS have_VBP limitations_NNS both_CC in_IN their_PRP$ failure_NN tolerance_NN and_CC in_IN their_PRP$ scalability_NN ._.
+Existing_VBG Peer-to-Peer_NN -LRB-_-LRB- P2P_NN -RRB-_-RRB- RDF_NN repositories_NNS either_CC can_MD not_RB guarantee_VB to_TO find_VB query_JJ results_NNS ,_, even_RB if_IN these_DT results_NNS exist_VBP in_IN the_DT network_NN ,_, or_CC require_VB up-front_JJ definition_NN of_IN RDF_NN schemas_NNS and_CC designation_NN of_IN super_JJ peers_NNS ._.
+We_PRP present_VBP a_DT scalable_JJ distributed_VBN RDF_NN repository_NN -LRB-_-LRB- RDFPeers_NN -RRB-_-RRB- that_WDT stores_VBZ each_DT triple_JJ at_IN three_CD places_NNS in_IN a_DT multi-attribute_JJ addressable_JJ network_NN by_IN applying_VBG globally_RB known_VBN hash_JJ functions_NNS to_TO its_PRP$ subject_JJ predicate_NN and_CC object_NN ._.
+Thus_RB all_DT nodes_NNS know_VBP which_WDT node_NN is_VBZ responsible_JJ for_IN storing_VBG triple_JJ values_NNS they_PRP are_VBP looking_VBG for_IN and_CC both_CC exact-match_NN and_CC range_NN queries_NNS can_MD be_VB efficiently_RB routed_VBN to_TO those_DT nodes_NNS ._.
+RDFPeers_NNS has_VBZ no_DT single_JJ point_NN of_IN failure_NN nor_CC elevated_JJ peers_NNS and_CC does_VBZ not_RB require_VB the_DT prior_JJ definition_NN of_IN RDF_NN schemas_NNS ._.
+Queries_NNS are_VBP guaranteed_VBN to_TO find_VB matched_JJ triples_NNS in_IN the_DT network_NN if_IN the_DT triples_NNS exist_VBP ._.
+In_FW RDFPeers_FW both_CC the_DT number_NN of_IN neighbors_NNS per_IN node_NN and_CC the_DT number_NN of_IN routing_VBG hops_VBZ for_IN inserting_VBG RDF_NNP triples_NNS and_CC for_IN resolving_VBG most_JJS queries_NNS are_VBP logarithmic_JJ to_TO the_DT number_NN of_IN nodes_NNS in_IN the_DT network_NN ._.
+We_PRP further_RB performed_VBD experiments_NNS that_WDT show_VBP that_IN the_DT triple-storing_JJ load_NN in_FW RDFPeers_FW differs_VBZ by_IN less_JJR than_IN an_DT order_NN of_IN magnitude_NN between_IN the_DT most_JJS and_CC the_DT least_JJS loaded_JJ nodes_NNS for_IN real-world_JJ RDF_NNP data_NNS ._.
+es_NNS on_IN the_DT data_NNS but_CC performance_NN is_VBZ reported_VBN over_IN a_DT dataset_NN of_IN limited_JJ size_NN -LRB-_-LRB- 70,000_CD triples_NNS -RRB-_-RRB- ._.
+13Several_JJ proposed_VBN techniques_NNS are_VBP based_VBN on_IN deterministic_JJ rendezvous-peers_NNS on_IN top_NN of_IN distributed_VBN hashtables_NNS =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 4_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, because_IN of_IN load-balancing_JJ problems_NNS due_JJ to_TO the_DT data_NNS distributions_NNS ,_, these_DT approaches_NNS do_VBP not_RB scale_VB -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Some_DT Semantic_JJ Web_NN stores_NNS support_VBP reasoning_NN and_CC scale_NN to_TO tens_NNS of_IN billions_NNS of_IN triples_NNS 7_CD ._.
+ver_FW largescale_FW RDF_FW datasets_FW ._.
+Several_JJ approaches_NNS have_VBP been_VBN proposed_VBN for_IN distributed_VBN reasoning_NN ,_, based_VBN for_IN example_NN on_IN graph_NN partitioning_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, peer-to-peer_JJ networks_NNS such_JJ as_IN distributed_VBN hashtables_NNS -LRB-_-LRB- DHTs_NNS -RRB-_-RRB- =_JJ -_: =[_NN 2_CD ,_, 3_CD -RRB-_-RRB- -_: =_JJ -_: or_CC task-farming_JJ frameworks_NNS such_JJ as_IN MapReduce_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Copyright_NN is_VBZ held_VBN by_IN the_DT International_NNP World_NNP Wide_NN Web_NN Conference_NN Committee_NN -LRB-_-LRB- IW3C2_NN -RRB-_-RRB- ._.
+Distribution_NN of_IN these_DT papers_NNS is_VBZ limited_VBN to_TO classroom_NN use_NN ,_, and_CC pe_NN
+cusses_VBZ possible_JJ future_JJ work_NN in_IN extending_VBG our_PRP$ system_NN for_IN reasoning_NN and_CC support_NN for_IN more_RBR complex_JJ queries_NNS ._.
+2_CD Related_NNP Work_NNP Other_NNP works_VBZ on_IN parallel_NN and\/or_CC distributed_VBN RDF_NN query_NN processing_NN include_VBP RDFPeers_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Continuous_JJ RDF_NNP Query_NNP Processing_NNP over_IN DHTs_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, YARS2_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, Virtuoso_NN 5_CD -LRB-_-LRB- 5_CD ,_, 6_CD -RRB-_-RRB- ,_, GridVine_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, Clustered_VBN TDB_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, and_CC 4store_NN 6_CD ._.
+While_IN works_NNS like_IN Marvin_NNP -LRB-_-LRB- 9_CD ,_, 10_CD -RRB-_-RRB- ,_, parallel_JJ OWL_NN inferencing_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, and_CC paral_NN
+mplete_JJ description_NN of_IN the_DT algorithm_NN ._.
+Unlike_IN previous_JJ approaches_NNS ,_, which_WDT have_VBP explored_VBN P2P_NN interactions_NNS among_IN peers_NNS based_VBN on_IN distributed_VBN queries_NNS ,_, collecting_VBG and_CC returning_VBG results_NNS ,_, as_IN in_IN works_NNS like_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, RDFGrowth_NN operates_VBZ in_IN a_DT ``_`` greedy_JJ ''_'' and_CC uncommitted_JJ scenario_NN where_WRB cooperation_NN between_IN peers_NNS is_VBZ minimal_JJ ._.
+It_PRP operates_VBZ by_IN direct_JJ queries_NNS that_WDT are_VBP in_IN general_JJ of_IN fixed_JJ computational_JJ cost_NN ._.
+With_IN
+rver_NN is_VBZ considered_VBN as_IN a_DT peer_VBP with_IN its_PRP$ own_JJ local_JJ RDF_NNP database_NN ._.
+RDF_NN queries_NNS are_VBP broadcast_VBN to_TO each_DT peer_VB and_CC the_DT results_NNS are_VBP aggregated_VBN on_IN retrieval_NN ._.
+Systems_NNP like_IN Edutella_NNP -LRB-_-LRB- 33_CD -RRB-_-RRB- and_CC the_DT RDFPeers_NNS framework_NN =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_SYM -_: suffered_VBN from_IN scalability_NN issues_NNS because_IN of_IN the_DT computational_JJ burden_NN when_WRB many_JJ users_NNS are_VBP simultaneously_RB querying_VBG each_DT server_NN ._.
+However_RB ,_, there_EX are_VBP a_DT number_NN of_IN projects_NNS -LRB-_-LRB- 35,36_CD -RRB-_-RRB- that_WDT are_VBP investigating_VBG sp_NN
+ques_NNS Several_JJ research_NN works_VBZ on_IN PDBS_NN have_VBP adopted_VBN DHT-based_JJ and_CC structured_JJ P2P_NN techniques_NNS ,_, such_JJ as_IN Chord_NN -LRB-_-LRB- 132_CD -RRB-_-RRB- ,_, CAN_NN -LRB-_-LRB- 118_CD -RRB-_-RRB- and_CC Hypercube_NN -LRB-_-LRB- 125_CD -RRB-_-RRB- ,_, for_IN routing_VBG ._.
+A_DT number_NN of_IN these_DT proposals_NNS ,_, including_VBG -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 37_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 58_CD -RRB-_-RRB- ,_, rely_VBP on_IN Chord_NNP as_IN the_DT underlying_VBG P2P_NN substrate_NN ._.
+Hypercube_NN topology_NN has_VBZ been_VBN used_VBN in_IN -LRB-_-LRB- 111_CD -RRB-_-RRB- ._.
+XP2P_NN ,_, presented_VBN in_IN -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, uses_VBZ XML_NN data_NNS model_NN for_IN schema_NN representation_NN ,_, and_CC pro-Background_NN and_CC Rel_NN
+apable_NN of_IN storing_VBG millions_NNS of_IN RDF_NNP triples_NNS in_IN a_DT DB2_NN database_NN ._.
+Client_NN machines_NNS can_MD then_RB query_VB and_CC update_VB the_DT RDF_NNP on_IN the_DT server_NN from_IN across_IN the_DT web_NN using_VBG the_DT Boca_NNP client_NN stack_VB ._.
+3.2.8_CD RDF_NNP Peers_NNPS RDF_NNP Peers_NNPS =_SYM -_: =_JJ -LRB-_-LRB- Cai2004_NN -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT scalable_JJ distributed_VBN RDF_NN repository_NN based_VBN on_IN a_DT structured_JJ P2P_NN network_NN ._.
+It_PRP stores_VBZ each_DT triple_JJ at_IN three_CD places_NNS in_IN a_DT multi-attribute_JJ addressable_JJ network_NN by_IN applying_VBG globally_RB known_VBN hash_JJ functions_NNS to_TO
+ed_VBN on_IN the_DT Gnutella_NNP protocol_NN and_CC extends_VBZ it_PRP with_IN the_DT addition_NN of_IN supernodes_NNS to_TO utilize_VB the_DT heterogeneity_NN between_IN peers_NNS -LRB-_-LRB- computer_NN power_NN ,_, bandwidth_NN and_CC availability_NN -RRB-_-RRB- and_CC to_TO improve_VB scalability_NN ._.
+RDFPeers_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, CAN_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, Chord_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, Pastry_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, Tapestry_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- and_CC Mercury_NNP -LRB-_-LRB- 7_CD -RRB-_-RRB- use_VBP another_DT approach_NN to_TO the_DT routing_VBG and_CC topology_NN organization_NN of_IN P2P_NN networks_NNS ._.
+This_DT approach_NN employs_VBZ the_DT idea_NN of_IN distributed_VBN hash_NN tab_NN
+ation_NN -RRB-_-RRB- by_IN hashing_VBG ,_, intersecting_VBG posting_VBG lists_NNS consumes_VBZ lots_NNS of_IN bandwidth_NN ._.
+To_TO address_VB these_DT problems_NNS ,_, many_JJ techniques_NNS have_VBP been_VBN proposed_VBN -LRB-_-LRB- 36_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 38_CD -RRB-_-RRB- ._.
+Following_VBG the_DT framework_NN of_IN DII_NNP ,_, Cai_NNP and_CC Frank_NNP =_SYM -_: =[_NN 39_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Galanis_NNP et_FW al._FW -LRB-_-LRB- 40_CD -RRB-_-RRB- have_VBP also_RB studied_VBN RDF_NN and_CC XML_NN data_NNS indexing_NN over_IN DHTs_NNS ._.
+2.3_CD Overlay-Dependent_JJ Indexing_NN Paradigm_NN In_IN the_DT overlay-dependent_JJ indexing_NN paradigm_NN ,_, the_DT overlay_NN substrate_NN directly_RB bears_VBZ
+ing_JJ resources_NNS ._.
+P-Grid_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- provides_VBZ a_DT strong_JJ self-organization_NN service_NN in_IN a_DT high-decentralized_JJ system_NN ._.
+It_PRP is_VBZ based_VBN on_IN a_DT virtual_JJ distributed_VBN search_NN tree_NN ._.
+SWAP_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- combines_VBZ P2P_NN and_CC web_NN semantic_JJ ._.
+RDFPeer_NN =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: builds_VBZ the_DT MultiAttribute_NNP Addressable_NNP Network_NNP -LRB-_-LRB- MAAN_NNP -RRB-_-RRB- that_WDT extends_VBZ Chord_NNP ._.
+When_WRB analyzing_VBG the_DT P2P_NN systems_NNS ,_, one_CD remarks_NNS that_IN several_JJ architecture_NN and_CC technique_NN are_VBP proposed_VBN to_TO assure_VB the_DT lookup_NN service_NN
+hoc_FW group_NN formation_NN ;_: strongly_RB consistent_JJ ;_: and_CC usually_RB only_RB support_VBP a_DT flat_JJ ,_, unstructured_JJ data_NNS layout_NN ._.
+Considerable_JJ work_NN exists_VBZ in_IN merging_VBG the_DT semantic_JJ web_NN with_IN peer-to-peer_JJ technologies_NNS -LRB-_-LRB- 87_CD -RRB-_-RRB- ._.
+RDFPeers_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT peer-to-peer_NN system_NN where_WRB users_NNS subscribe_VBP to_TO RDF_NNP content_NN ._.
+It_PRP uses_VBZ a_DT DHT_NN -LRB-_-LRB- 88_CD -RRB-_-RRB- to_TO answer_VB attribute_NN and_CC range_NN queries_NNS over_IN this_DT RDF_NNP data_NNS ._.
+This_DT system_NN ,_, and_CC decentralized_VBD RDF_NNP storage_NN and_CC querying_VBG sys_NNS
+ud_IN Exchanges_NNP -LRB-_-LRB- DHT_NNP overlay_NN nodes_NNS -RRB-_-RRB- from_IN their_PRP$ affiliated_JJ Intercloud_JJ Roots_NNS using_VBG a_DT ``_`` Hash_NNP ''_'' function_NN ._.
+There_EX has_VBZ already_RB been_VBN lot_NN of_IN work_NN done_VBN on_IN Semantic_NNP Peer-to-Peer_NNP based_VBN systems_NNS --_: GridVine_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, RDFPeers_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Piazza_NNP -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, PIER_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, and_CC ``_`` Distributed_VBN Overlay_NNP for_IN Federation_NNP of_IN Enterprise_NNP Clouds_NNPS ''_'' -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+The_DT basic_JJ idea_NN of_IN DHT_NNP overlay_NN system_NN is_VBZ to_TO map_VB a_DT key_JJ space_NN to_TO a_DT set_NN of_IN peers_NNS such_JJ that_IN each_DT peer_VBP is_VBZ responsi_NN
+les_FW -LRB-_-LRB- DHTs_NNS -RRB-_-RRB- ,_, earlier_RB introduced_VBN in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- for_IN relieving_VBG hot_JJ spots_NNS in_IN the_DT Internet_NNP ,_, have_VBP become_VBN the_DT data_NNS distribution_NN method_NN of_IN choice_NN for_IN such_JJ distributed_VBN database_NN systems_NNS ._.
+Existing_VBG systems_NNS like_IN RDFPeers_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Atlas_NNP -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, and_CC BabelPeers_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 11_CD -RRB-_-RRB- use_VBP DHTs_NNS to_TO store_VB and_CC query_VB RDF_NNP triples_NNS in_IN a_DT distributed_VBN manner_NN ._.
+These_DT RDF_NNP database_NN systems_NNS store_VBP three_CD copies_NNS of_IN each_DT triple_RB indexed_VBN by_IN the_DT subject_NN ,_, p_NN
+by_IN one_CD scientist_NN is_VBZ used_VBN by_IN another_DT scientist_NN as_IN input_NN for_IN further_JJ data_NN analyses_NNS ._.
+In_IN such_PDT an_DT environment_NN ,_, data_NN provenance_NN -LRB-_-LRB- the_DT lineage_NN and_CC processing_NN history_NN of_IN data_NNS -RRB-_-RRB- can_MD help_VB to_TO ensure_VB data_NNS quality_NN =_JJ -_: =[_NN 3,4,5,6,7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP is_VBZ thus_RB desirable_JJ to_TO publish_VB data_NN products_NNS together_RB with_IN their_PRP$ provenance_NN ._.
+In_IN many_JJ cases_NNS ,_, however_RB ,_, provenance_NN data_NNS can_MD be_VB sensitive_JJ and_CC may_MD contain_VB private_JJ information_NN or_CC intellectual_JJ property_NN th_DT
+n_NN Target_NN Change_NNP Sync_NNP -LRB-_-LRB- TCS_NNP -RRB-_-RRB- the_DT target_NN becomes_VBZ equal_JJ to_TO the_DT source_NN ._.
+Figure_NN 1_CD shows_VBZ an_DT example_NN of_IN RDF_NN graph_NN synchronization_NN using_VBG RDFSync_NN ._.
+Fig._NNP 1_CD :_: RDF_NN synchronization_NN using_VBG RDFSync_NN RDFPeers_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT scalable_JJ distributed_VBN RDF_NN repository_NN ._.
+It_PRP is_VBZ based_VBN on_IN a_DT structured_JJ P2P_NN network_NN ._.
+To_TO enable_VB faults_NNS tolerance_NN ,_, RDFPeers_NN uses_VBZ partial_JJ replication_NN of_IN RDF_NNP data_NNS ._.
+Every_DT RDF_NNP triple_RB is_VBZ stored_VBN at_IN three_CD nodes_NNS
+piration_NN for_IN the_DT incorporation_NN of_IN actions_NNS into_IN NautiLOD_NN and_CC to_TO the_DT design_NN of_IN swget_NN ._.
+Distributed_VBN data_NNS management_NN has_VBZ been_VBN explored_VBN and_CC implemented_VBN by_IN P2P_NN and_CC similar_JJ approaches_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+For_IN RDF_NNP ,_, RDFPeers_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: and_CC YARS2_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- use_VBP P2P_NN to_TO answer_VB RDF_NNP queries_NNS while_IN systems_NNS like_IN DIASPORA_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- handle_VBP distributed_VBN query_NN processing_NN on_IN the_DT Web_NN ._.
+Our_PRP$ distributed_VBN version_NN of_IN swget_NN borrows_VBZ some_DT ideas_NNS from_IN these_DT approaches_NNS
+plication_NN in_IN P2P_NN wiki_NN systems_NNS allows_VBZ to_TO query_VB ,_, access_VB and_CC retrieve_VB data_NNS locally_RB from_IN any_DT peer_VB without_IN the_DT need_NN for_IN search_NN mechanisms_NNS nor_CC transfer_NN of_IN the_DT semantic_JJ data_NNS between_IN peers_NNS to_TO resolve_VB queries_NNS =_JJ -_: =[_NN 7_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Therefore_RB ,_, ''_'' querying_VBG the_DT network_NN ''_'' -LRB-_-LRB- 29_CD -RRB-_-RRB- becomes_VBZ querying_VBG any_DT peer_VBP ._.
+ˆ_NNP Total_NNP replication_NN enables_VBZ transactional_JJ changes_NNS i.e._FW atomic_JJ changes_NNS across_IN multiple_JJ pages_NNS ._.
+Supporting_VBG transactional_JJ changes_NNS is_VBZ a_DT v_LS
+ons_NNS ._.
+First_RB ,_, the_DT super-peer_JJ nodes_NNS are_VBP a_DT single_JJ point_NN of_IN failure_NN ._.
+Second_RB ,_, it_PRP uses_VBZ the_DT flooding-like_JJ search_NN mechanism_NN to_TO route_NN queries_NNS between_IN super-peers_NNS ._.
+By_IN using_VBG DHTs_NNS ,_, other_JJ systems_NNS ,_, such_JJ as_IN RDFPeers_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, address_VBP the_DT scalability_NN issue_NN in_IN the_DT previous_JJ approach_NN ._.
+RDFPeers_NN is_VBZ a_DT distributed_VBN repository_NN built_VBN on_IN top_NN of_IN MultiAttribute_NNP Addressable_NNP Network_NNP -LRB-_-LRB- MAAN_NNP -RRB-_-RRB- -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+Each_DT triple_JJ is_VBZ indexed_VBN three_CD times_NNS by_IN has_VBZ
+ing_JJ resources_NNS ._.
+P-Grid_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- provides_VBZ a_DT strong_JJ self-organization_NN service_NN in_IN a_DT high-decentralized_JJ system_NN ._.
+It_PRP is_VBZ based_VBN on_IN a_DT virtual_JJ distributed_VBN search_NN tree_NN ._.
+SWAP_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- combines_VBZ P2P_NN and_CC web_NN semantic_JJ ._.
+RDFPeer_NN =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: builds_VBZ the_DT MultiAttribute_NNP Addressable_NNP Network_NNP -LRB-_-LRB- MAAN_NNP -RRB-_-RRB- that_WDT extends_VBZ Chord_NNP ._.
+When_WRB analyzing_VBG the_DT P2P_NN systems_NNS ,_, one_CD remarks_NNS that_IN several_JJ architecture_NN and_CC technique_NN are_VBP proposed_VBN to_TO assure_VB the_DT lookup_NN service_NN
+ting_NN and_CC planning_NN phases_NNS for_IN Q_NNP are_VBP required_VBN ._.
+s16_NN George_NNP Kokkinidis_NNP ,_, Lefteris_NNP Sidirourgos_NNP and_CC Vassilis_NNP Christophides_NNP 3.2_CD Structured_VBN P2P_NN SONs_NNS Alternatively_RB ,_, we_PRP can_MD consider_VB a_DT structured_JJ P2P_NN architecture_NN =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 38_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Peers_NNS in_IN the_DT same_JJ SON_NN are_VBP organized_VBN according_VBG to_TO the_DT topology_NN imposed_VBN by_IN the_DT underline_VB structured_JJ P2P_NN architecture_NN ,_, e.g._FW ,_, based_VBN on_IN Distributed_VBN Hash_JJ Tables_NNS -LRB-_-LRB- DHTs_NNS -RRB-_-RRB- -LRB-_-LRB- 42_CD ,_, 20_CD -RRB-_-RRB- ._.
+In_IN DHT-based_JJ P2P_NN systems_NNS ,_,
+hema-independent_JJ query_NN formulation_NN ._.
+However_RB ,_, because_IN exploiting_VBG the_DT features_NNS of_IN a_DT DHT_NN for_IN fast_JJ lookups_NNS requires_VBZ to_TO index_NN all_DT attributes_NNS ,_, we_PRP store_VBP data_NNS vertically_RB ,_, similar_JJ to_TO the_DT idea_NN of_IN RDF_NNP ._.
+RDFPeers_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: exploits_VBZ a_DT similar_JJ data_NN organization_NN for_IN RDF_NNP data_NNS as_IN in_IN our_PRP$ work_NN ,_, but_CC does_VBZ not_RB address_VB ,_, for_IN instance_NN ,_, similarity-based_JJ queries_NNS ._.
+If_IN we_PRP assume_VBP relational_JJ data_NNS ,_, each_DT tuple_NN -LRB-_-LRB- OID_NN ,_, v1_NN ,_, ..._: ,_, vn_NN -RRB-_-RRB- of_IN a_DT giv_NN
+ord_NN search_NN algorithms_NNS are_VBP presented_VBN in_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+Extensions_NNS of_IN this_DT work_NN address_NN range_NN queries_NNS and_CC load_NN balancing_NN as_RB well_RB as_IN replication_NN using_VBG a_DT so-called_JJ multirotation_NN hashing_VBG ._.
+The_DT approach_NN presented_VBN in_IN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: exploits_VBZ a_DT similar_JJ data_NN organization_NN for_IN RDF_NNP data_NNS as_IN in_IN our_PRP$ work_NN ,_, but_CC does_VBZ not_RB address_VB similarity-based_JJ queries_NNS ._.
+Several_JJ other_JJ approaches_NNS considering_VBG range_NN queries_NNS already_RB as_IN similarity_NN queries_NNS exist_VBP
+h_NN attention_NN ,_, especially_RB in_IN the_DT database_NN community_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+-LRB-_-LRB- 13_CD -RRB-_-RRB- suggested_VBD to_TO add_VB metadata_JJ management_NN to_TO P2P_NN networks_NNS ._.
+This_DT idea_NN has_VBZ been_VBN taken_VBN up_RP by_IN approaches_NNS like_IN Edutella_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, RDFPeers_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, P-Grid_NN -LRB-_-LRB- 121_CD -RRB-_-RRB- and_CC other_JJ projects_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Initial_JJ ideas_NNS of_IN a_DT collaboration_NN infrastructure_NN based_VBN on_IN P2P_NN technology_NN has_VBZ been_VBN realized_VBN in_IN Groove_NNP which_WDT allows_VBZ small_JJ groups_NNS to_TO share_VB a_DT calendar_NN ,_, discussion_NN
+4.4_CD ._.
+7_CD Scalable_JJ Applications_NNS in_IN P2P_NN Grids_NNS and_CC P2P_NN Systems_NNP This_NNP section_NN presents_VBZ three_CD real-world_JJ DAT_NNP applications_NNS in_IN Grid_NNP resource_NN monitoring_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, P2P_NN reputation_NN system_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- -LRB-_-LRB- 35_CD -RRB-_-RRB- ,_, and_CC P2P_NN RDF_NN repository_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =-[_NN 21_CD -RRB-_-RRB- ._.
+We_PRP also_RB briefly_RB discuss_VB other_JJ DAT_NNP applications_NNS in_IN distributed_VBN worm_NN containment_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC wide-area_JJ network_NN monitoring_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+7.1_CD P2P_NN Grid_NNP Resource_NNP Monitoring_VBG Grid_NNP computing_NN on_IN a_DT large_JJ scale_NN requires_VBZ
+y_NN breakpoint_NN at_IN which_WDT full_JJ flooding_NN becomes_VBZ more_RBR efficient_JJ than_IN their_PRP$ scheme_NN ._.
+This_DT begs_VBZ for_IN a_DT query_NN resolution_NN algorithm_NN that_WDT adapts_VBZ to_TO the_DT profile_NN of_IN queries_NNS ._.
+Cai_NNP and_CC Frank_NNP followed_VBD up_RP with_IN RDFPeers_NN =_JJ -_: =[_NN 55_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP differentiate_VBP their_PRP$ work_NN from_IN other_JJ RDF_NNP proposals_NNS by_IN a_DT -RRB-_-RRB- guaranteeing_NN to_TO find_VB query_JJ results_NNS if_IN they_PRP exist_VBP and_CC b_NN -RRB-_-RRB- removing_VBG the_DT requirement_NN of_IN prior_JJ definition_NN of_IN a_DT fixed_JJ schema_NN ._.
+They_PRP hashed_VBD -LRB-_-LRB- subj_NN
+e_LS whole_JJ method_NN under_IN the_DT aspects_NNS of_IN robustness_NN and_CC self-organization_NN on_IN PlanetLab_NNP ._.
+7_CD Related_JJ Work_NN A_NN number_NN of_IN related_JJ works_NNS have_VBP already_RB been_VBN discussed_VBN briefly_NN in_IN Section_NN 1_CD ._.
+The_DT approach_NN presented_VBN in_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: exploits_VBZ a_DT similar_JJ data_NN organization_NN for_IN RDF_NNP data_NNS but_CC does_VBZ not_RB address_VB similarity-based_JJ queries_NNS ._.
+Several_JJ other_JJ approaches_NNS exist_VBP which_WDT consider_VBP range_NN queries_NNS already_RB as_IN similarity_NN queries_NNS ._.
+However_RB ,_, we_PRP
+buted_VBN RDF_NNP repository_JJ RDFPeers_NNS ,_, for_IN storing_VBG each_DT triple_JJ -LRB-_-LRB- Subject_NNP ,_, Predicate_NNP ,_, Object_NNP -RRB-_-RRB- ofRDF_NN documents_NNS at_IN three_CD places_NNS in_IN a_DT multi-attribute_JJ addressable_JJ network_NN by_IN applying_VBG globally_RB known_VBN hash_JJ functions_NNS -LRB-_-LRB- =_JJ -_: =_JJ Cai_NNP and_CC Frank_NNP ,_, 2004_CD -_: =--RRB-_NN ._.
+3_LS ._.
+General_JJ architecture_NN As_IN shown_VBN in_IN Fig._NNP 1_CD ,_, the_DT basic_JJ R-Chord_NN model_NN consists_VBZ of_IN the_DT RSM_NN or_CC the_DT SLN_NN above_IN the_DT unstructured_JJ or_CC structured_JJ P2P_NN networks_NNS ,_, while_IN the_DT extended_JJ model_NN is_VBZ the_DT combination_NN of_IN
+iscovery_NN that_WDT supports_VBZ the_DT features_NNS of_IN a_DT specialized_JJ information_NN service_NN such_JJ as_IN the_DT GT4_NN Index_NN service_NN and_CC is_VBZ also_RB highly_RB scalable_JJ ._.
+Our_PRP$ system_NN differs_VBZ from_IN other_JJ P2P-based_JJ resource_NN discovery_NN services_NNS =_JJ -_: =[_NN 2-4_CD ,_, 8_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: that_IN use_NN nodes_NNS in_IN the_DT overlay_NN network_NN to_TO store_VB and_CC replicate_VB resource_NN information_NN ._.
+We_PRP use_VBP the_DT P2P_NN network_NN only_RB for_IN selforganization_NN and_CC query_NN forwarding_NN among_IN P2P_NN indexes_NNS ,_, which_WDT are_VBP optimized_VBN to_TO stor_VB
+e_LS sense_NN that_IN it_PRP will_MD not_RB contain_VB any_DT holes_NNS and_CC thus_RB no_DT further_JJ broadcasting_NN and_CC processing_NN of_IN the_DT query_NN is_VBZ necessary_JJ ._.
+3.2_CD Ad-hoc_JJ P2P_NN SONs_NNS Alternatively_RB ,_, we_PRP can_MD consider_VB an_DT ad-hoc_JJ P2P_NN architecture_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT alternative_NN ,_, when_WRB a_DT peer_VBP first_RB joins_VBZ the_DT system_NN ,_, it_PRP becomes_VBZ aware_JJ only_RB of_IN its_PRP$ physically_RB close_JJ neighbors_NNS ._.
+The_DT peer_VBP should_MD identify_VB ,_, by_IN sending_VBG appropriate_JJ requests_NNS ,_, at_IN least_JJS one_CD other_JJ relate_VBP
+gy_NN implemented_VBN in_IN the_DT network_NN ._.
+Thus_RB ,_, the_DT owner_NN has_VBZ less_JJR control_NN ,_, but_CC the_DT network_NN becomes_VBZ more_RBR efficient_JJ ._.
+Both_DT strategies_NNS are_VBP employed_VBN in_IN current_JJ systems_NNS ._.
+DHT-based_JJ SPNs_NNS such_JJ as_IN PIER_NN -LRB-_-LRB- 75_CD -RRB-_-RRB- and_CC RDFPeers_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: distribute_VB data_NNS according_VBG to_TO its_PRP$ key_NN ,_, while_IN Piazza_NNP -LRB-_-LRB- 68_CD -RRB-_-RRB- ,_, Chatty_JJ Web_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC PeerDB_NN -LRB-_-LRB- 129_CD -RRB-_-RRB- keep_VB all_DT data_NNS at_IN the_DT owner_NN peer_VB -LRB-_-LRB- see_VB 3.4_CD for_IN a_DT detailed_JJ description_NN of_IN these_DT systems_NNS -RRB-_-RRB- ._.
+Gribble_NNP et_FW al._FW -LRB-_-LRB- 66_CD -RRB-_-RRB- see_VBP
+mplement_NN and_CC experiment_NN with_IN ._.
+2_CD ._.
+The_DT scenario_NN The_DT scenario_NN which_WDT DBin_NN attempt_NN to_TO address_NN is_VBZ new_JJ under_IN many_JJ aspects_NNS ._.
+Many_JJ of_IN the_DT P2P_NN approaches_NNS based_VBN on_IN Semantic_JJ Web_NN technologies_NNS proposed_VBN so_RB far_RB -LRB-_-LRB- 5_CD -RRB-_-RRB- -LRB-_-LRB- 6_CD -RRB-_-RRB- =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =-[_NN 8_CD -RRB-_-RRB- ,_, use_NN metadata_NN and_CC ontologies_NNS to_TO build_VB a_DT semantically_RB structured_JJ definition_NN of_IN the_DT resources_NNS a_DT user_NN is_VBZ searching_VBG for_IN and\/or_CC is_VBZ offering_VBG to_TO other_JJ participants_NNS in_IN the_DT network_NN ._.
+In_IN general_JJ these_DT system_NN
+etworked_VBN together_RB by_IN mappings_NNS ._.
+In_IN this_DT vision_NN ,_, the_DT Semantic_JJ Web_NN is_VBZ a_DT huge_JJ semantic_JJ peer_VBP data_NNS management_NN system_NN -LRB-_-LRB- PDMS_NN -RRB-_-RRB- ._.
+Some_DT PDMSs_NNS have_VBP been_VBN developped_VBN for_IN the_DT Semantic_JJ Web_NN like_IN Edutella_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, RDFPeers_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, GridVine_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- or_CC SomeOWL_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+Edutella_NNP ,_, RDFPeers_NNP and_CC GridVine_NNP use_VBP RDF_NN while_IN SomeOWL_NN uses_VBZ a_DT fragment_NN of_IN OWL_NN ._.
+Edutella_NNP is_VBZ made_VBN of_IN a_DT network_NN of_IN super-peers_NNS ,_, the_DT topology_NN of_IN which_WDT is_VBZ a_DT hypercube_NN ._.
+Super-p_NN
+Support_NN of_IN SQL_NN requires_VBZ many_JJ fundamental_JJ operations_NNS such_JJ as_IN aggregation_NN and_CC join_VB operations_NNS ._.
+Current_JJ research_NN on_IN supporting_VBG SQL_NNP in_IN a_DT P2P_NN environment_NN is_VBZ mostly_RB preliminary_JJ -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+For_IN example_NN ,_, RDFPeers_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: built_VBN on_IN the_DT Multi-Attribute_NNP Addressable_NNP Network_NNP -LRB-_-LRB- MAAN_NNP -RRB-_-RRB- which_WDT extended_VBD Chord_NNP to_TO answer_VB SQL-like_JJ queries_NNS over_IN RDF_NNP triplets_NNS presented_VBN as_IN -LRB-_-LRB- subject_NN ,_, predicate_NN ,_, object_NN -RRB-_-RRB- ._.
+Although_IN RDFPeers_NNS is_VBZ a_DT scalable_JJ
+hich_NN supports_VBZ distributed_VBN search_NN over_IN all_DT connected_JJ metadata_JJ repositories_NNS ._.
+In_IN this_DT scenario_NN service_NN providers_NNS can_MD be_VB removed_VBN from_IN this_DT network_NN and_CC make_VB the_DT data_NNS repositories_NNS more_RBR up-to-date_JJ ._.
+RDFPeers_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT very_RB interesting_JJ approach_NN by_IN extending_VBG DHT_NNP to_TO support_VB searches_NNS over_IN RDF_NNP triples_NNS ._.
+Basically_RB ,_, RDFPeers_NN becomes_VBZ a_DT scalable_JJ distributed_VBN RDF_NN repository_NN that_WDT stores_VBZ each_DT triple_JJ at_IN three_CD places_NNS in_IN a_DT mu_NN
+s_NNS based_VBN on_IN a_DT database_NN ,_, either_CC a_DT centralized_JJ one_CD such_JJ as_IN Intellidimention_NNP 's_POS RDFGateway_NN 13_CD ,_, Sesame_NNP -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, and_CC TAP_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, or_CC a_DT distributed_VBN peer-to-peer_NN federation_NN of_IN agents_NNS such_JJ as_IN Edutella_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, RDFPeers_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC SERSE_NNP -LRB-_-LRB- 30_CD -RRB-_-RRB- ._.
+Another_DT model_NN is_VBZ typified_VBN by_IN the_DT Schemaweb_NNP 14_CD and_CC DAML_FW ontology_FW library_NN ,_, which_WDT is_VBZ supported_VBN by_IN manual_JJ submissions_NNS ._.
+There_EX are_VBP also_RB ``_`` niche_NN ''_'' search_NN engines_NNS that_WDT focus_VBP on_IN a_DT particular_JJ ki_NN
+o_NN locate_VB the_DT entry_NN ._.
+The_DT hash_JJ placement_NN method_NN can_MD utilise_VB established_JJ distributed_VBN hash_NN table_NN substrates_NNS to_TO add_VB replication_NN and_CC fail_VB safety_NN ._.
+For_IN more_JJR on_IN how_WRB to_TO distribute_VB triples_NNS in_IN such_PDT a_DT network_NN see_VB =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP avoid_VBP complex_JJ algorithms_NNS to_TO facilitate_VB speed_NN optimisation_NN ._.
+The_DT peer_VBP to_TO which_WDT an_DT index_NN entry_NN -LRB-_-LRB- e.g._FW SPOC_FW ,_, POCS_NN -RRB-_-RRB- is_VBZ placed_VBN is_VBZ determined_VBN by_IN :_: peer_VB -LRB-_-LRB- entry_NN -RRB-_-RRB- =_JJ h_NN -LRB-_-LRB- entry_NN -LRB-_-LRB- 0_CD -RRB-_-RRB- -RRB-_-RRB- mod_NN m_NN where_WRB m_NN is_VBZ the_DT number_NN of_IN
+ions_NNS rules_NNS between_IN data_NNS items_NNS and_CC coordination_NN formulas_NNS define_VBP semantic_JJ define_VBP dependencies_NNS between_IN databases_NNS ._.
+There_EX has_VBZ also_RB been_VBN work_NN on_IN a_DT structured_JJ P2P_NN RDF_NN repository_NN based_VBN on_IN distributed_VBN hashing_VBG =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP propose_VBP a_DT structured_JJ peer_VBP topology_RB called_VBN multi-attribute_JJ addressable_JJ network_NN -LRB-_-LRB- MAAN_NN -RRB-_-RRB- which_WDT uses_VBZ a_DT one-dimensional_JJ modulo2_NN m_NN circular_JJ identifier_NN space_NN for_IN node_NN identifiers_NNS and_CC attribute_NN hash_VBP val_NN
+y._VB It_PRP claims_VBZ to_TO also_RB support_VB attribute_NN based_JJ query_NN using_VBG ``_`` dynamic_JJ view_NN materialisation_NN ''_'' that_WDT creates_VBZ a_DT new_JJ overlay_NN tree_NN hierarchy_NN ._.
+Related_VBN to_TO our_PRP$ design_NN is_VBZ the_DT area_NN of_IN distributed_VBN RDF_NN query_NN ._.
+RDFPeers_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: relies_VBZ on_IN an_DT enhanced_VBN Chord_NN overlay_NN to_TO store_VB RDF_NNP triples_NNS hashed_VBN by_IN subject_NN ,_, predicate_NN and_CC object_NN ._.
+However_RB ,_, it_PRP lacks_VBZ support_NN for_IN RDF_NNP 's_POS inference_NN capabilities_NNS ._.
+Gridvine_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- is_VBZ another_DT attempt_NN at_IN using_VBG
+ent_JJ example_NN is_VBZ the_DT work_NN of_IN Stuckenschmidt_FW et_FW ._.
+al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+They_PRP present_VBP an_DT architecture_NN for_IN optimizing_VBG querying_VBG in_IN distributed_VBN RDF_NN repositories_NNS by_IN extending_VBG an_DT existing_VBG RDF_NN store_NN -LRB-_-LRB- Sesame_NNP -RRB-_-RRB- ._.
+Cai_NNP and_CC Frank_NNP =_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: report_NN on_IN a_DT scalable_JJ distributed_VBN RDF_NN repository_NN based_VBN on_IN a_DT peer-to-peer_JJ network_NN --_: they_PRP propose_VBP RDFPeers_NNS that_IN stores_NNS each_DT triple_JJ at_IN three_CD places_NNS in_IN a_DT multi-attribute_JJ addressable_JJ network_NN by_IN applying_VBG glob_NN
+ting_JJ algorithms_NNS based_VBN on_IN the_DT information_NN maintained_VBN by_IN single_JJ peers_NNS has_VBZ also_RB been_VBN developed_VBN by_IN contributors_NNS to_TO Bibster_NNP -LRB-_-LRB- 11_CD -RRB-_-RRB- in_IN order_NN to_TO efficiently_RB distribute_VB queries_NNS within_IN the_DT P2P_NN network_NN ._.
+RDFPeers_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: establishes_VBZ a_DT distributed_VBN RDF_NN repository_NN ._.
+Based_VBN on_IN hashed_VBN RDF_NN data_NNS -LRB-_-LRB- subjects_NNS ,_, objects_NNS ,_, and_CC predicates_NNS -RRB-_-RRB- ,_, queries_NNS for_IN RDF_NN content_NN are_VBP efficiently_RB routed_VBN and_CC guaranteed_VBN to_TO return_VB complete_JJ results_NNS ._.
+SEA_NN a_DT
+having_VBG their_PRP$ own_JJ copy_NN of_IN the_DT repository_NN ._.
+We_PRP are_VBP also_RB considering_VBG both_CC a_DT centralised_JJ repository_NN and_CC a_DT locally_RB developed_JJ distributed_VBN repository_NN ,_, based_VBN on_IN distributed_VBN hash_NN tables_NNS ,_, inspired_VBN by_IN RDFPeers_NNS -LRB-_-LRB- =_JJ -_: =_JJ Cai_NNP and_CC Frank_NNP ,_, 2004_CD -_: =--RRB-_NN ._.
+The_DT middleware_JJ framework_NN should_MD allow_VB the_DT shared_JJ workspace_NN to_TO move_VB seamlessly_RB at_IN run-time_NN from_IN a_DT centralised_JJ implementation_NN of_IN the_DT RDF_NNP repository_NN to_TO a_DT distributed_VBN implementation_NN ._.
+4_LS ._.
+Related_NNP Work_NNP Ex_FW
+selection_NN improves_VBZ the_DT performance_NN of_IN peer_VB selection_NN significantly_RB ._.
+This_DT paper_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- also_RB describes_VBZ the_DT Bibster_NNP bibliographical_JJ system_NN ,_, focusing_VBG on_IN the_DT recommender_NN functionality_NN ._.
+2.6_CD RDFPeers_FW RDFPeers_FW =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: was_VBD one_CD of_IN the_DT first_JJ efforts_NNS at_IN building_VBG a_DT P2P_NN RDF_NN store_NN using_VBG structured_JJ overlays_NNS ._.
+The_DT key_JJ idea_NN was_VBD to_TO index_NN the_DT RDF_NNP triple_JJ three_CD times_NNS -_: one_CD each_DT for_IN subject_NN ,_, object_NN and_CC predicate_NN by_IN using_VBG globally_RB
+the_DT network_NN can_MD grow_VB on_IN demand_NN ._.
+We_PRP can_MD tap_VB into_IN the_DT vast_JJ resources_NNS offered_VBN by_IN p2p_NN systems_NNS to_TO develop_VB scalable_JJ infrastructures_NNS for_IN the_DT Semantic_JJ Web_NN ._.
+A_DT plethora_NN of_IN approaches_NNS has_VBZ already_RB been_VBN suggested_VBN =_JJ -_: =[_NN 5_CD ,_, 2_CD ,_, 20_CD ,_, 16_CD ,_, 14_CD ,_, 4_CD ,_, 19_CD ,_, 10_CD ,_, 17_CD ,_, 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, mainly_RB focusing_VBG how_WRB to_TO efficiently_RB distribute_VB large_JJ numbers_NNS of_IN triples_NNS among_IN peers_NNS in_IN the_DT network_NN ._.
+We_PRP argue_VBP against_IN this_DT approach_NN ,_, claiming_VBG that_IN although_IN it_PRP solves_VBZ scalability_NN issues_NNS concerning_VBG the_DT
+key_JJ ,_, ,_, ._.
+RDFPeers_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: RDF_NN subject_NN ,_, predicate_NN object_NN key_NN ,_, MAAN_NN -LRB-_-LRB- multi-attribute_JJ addressable_JJ network_NN -RRB-_-RRB- s_VBZ :P_NN 2P_NN 1725_CD ._.
+nding_VBG a_DT convergence_NN between_IN peer-to-peer_NN -LRB-_-LRB- i.e._FW ,_, DHT_NN -RRB-_-RRB- and_CC Semantic_JJ Web_NN researches_VBZ ._.
+In_IN particular_JJ it_PRP belongs_VBZ to_TO the_DT class_NN of_IN solutions_NNS which_WDT avoid_VBP flooding_NN approach_NN ,_, previously_RB investigated_VBN by_IN RDFPeers_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: and_CC GridVine_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+2_CD State-of-the-art_JJ Optimized_NNP RDF_NNP storing_VBG and_CC retrieval_NN ._.
+In_IN a_DT single_JJ RDF_NN statement_NN -LRB-_-LRB- also_RB called_VBN triple_JJ -RRB-_-RRB- -LRB-_-LRB- spc_NN -RRB-_-RRB- the_DT subject_NN s_NN can_MD be_VB either_CC an_DT URI_NNP reference_NN or_CC a_DT blank_JJ node_NN -LRB-_-LRB- that_DT is_VBZ an_DT
+mine_VB the_DT organization_NN of_IN peers_NNS in_IN the_DT graph_NN topology_NN ,_, allowing_VBG for_IN efficient_JJ concept-based_JJ search_NN ._.
+This_DT project_NN is_VBZ rather_RB suitable_JJ in_IN our_PRP$ scenario_NN in_IN selecting_VBG relevant_JJ peers_NNS ._.
+2.2.7_FW RDFPeers_FW RDFPeers_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT scalable_JJ distributed_VBN RDF_NN repository_NN that_WDT stores_VBZ each_DT triple_JJ at_IN three_CD places_NNS in_IN a_DT multi-attribute_JJ addressable_JJ network_NN by_IN applying_VBG globally_RB known_VBN hash_JJ functions_NNS to_TO its_PRP$ subject_NN ,_, predicate_NN ,_, and_CC obje_NN
+o_NN locate_VB the_DT entry_NN ._.
+The_DT hash_JJ placement_NN method_NN can_MD utilise_VB established_JJ distributed_VBN hash_NN table_NN substrates_NNS to_TO add_VB replication_NN and_CC fail_VB safety_NN ._.
+For_IN more_JJR on_IN how_WRB to_TO distribute_VB triples_NNS in_IN such_PDT a_DT network_NN see_VB =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN our_PRP$ local_JJ implementation_NN ,_, we_PRP do_VBP not_RB use_VB complex_JJ algorithms_NNS to_TO be_VB easier_JJR able_JJ to_TO optimise_VB for_IN speed_NN ._.
+We_PRP use_VBP the_DT Java_NNP String_NNP hash_JJ function_NN :_: h_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- =_JJ s_NN -LRB-_-LRB- 0_CD -RRB-_-RRB- ∗_NN 31_CD -LRB-_-LRB- n_NN −_NN 1_CD -RRB-_-RRB- +_CC s_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ∗_NN 31_CD -LRB-_-LRB- n_NN −_NN 2_CD -RRB-_-RRB- +_CC ..._: +_CC s_NN -LRB-_-LRB- n_NN −_NN 1_CD
+RDF_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+In_IN order_NN to_TO be_VB useful_JJ ,_, the_DT personal_JJ semantic_JJ resource_NN annotations_NNS generated_VBN by_IN the_DT SQAPS_NN system_NN ,_, need_VBP to_TO be_VB shared_VBN with_IN other_JJ SQAPS_NN users_NNS ._.
+In_IN order_NN to_TO do_VB so_RB ,_, and_CC following_VBG approaches_NNS as_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, we_PRP propose_VBP the_DT usage_NN of_IN a_DT P2P_NN network_NN ._.
+Having_VBG this_DT into_IN account_NN ,_, our_PRP$ SQAPS_NN system_NN could_MD be_VB defined_VBN as_IN an_DT ontology-based_JJ P2P_NN system_NN for_IN query-based_JJ semantic_JJ annotation_NN sharing_NN ._.
+The_DT rest_NN of_IN this_DT
+extual_JJ information_NN -LRB-_-LRB- e.g._FW ownership_NN -RRB-_-RRB- ._.
+In_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- a_DT mediator_NN layer_NN on_IN top_NN of_IN Sesame_NNP is_VBZ described_VBN ,_, that_WDT provides_VBZ clients_NNS with_IN a_DT global_JJ and_CC location-transparent_JJ view_NN of_IN RDF_NNP data_NNS in_IN multiple_JJ repositories_NNS ._.
+In_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 14_CD -RRB-_-RRB- the_DT data_NN structures_NNS and_CC protocols_NNS of_IN P2P_NN networks_NNS are_VBP used_VBN to_TO store_VB and_CC query_VB large_JJ amounts_NNS of_IN RDF_NNP data_NNS in_IN a_DT fault_NN tolerant_JJ manner_NN ._.
+The_DT storage_NN and_CC retrieval_NN of_IN social_JJ tags_NNS about_IN Web_NN resources_NNS
+fer_VB significant_JJ potential_NN for_IN scalability_NN and_CC performance_NN increases_NNS ._.
+The_DT creator_NN of_IN 3Store_NN believes_VBZ that_IN such_JJ work_NN might_MD enable_VB stores_NNS to_TO hold_VB up_IN to_TO 10_CD 9_CD triples_NNS effectively_RB ._.
+3.8_CD Peer_NNP to_TO Peer_NNP Systems_NNPS =_SYM -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: This_DT paper_NN highlights_VBZ work_NN into_IN creating_VBG peer_VB to_TO peer_VB RDF_NNP storage_NN systems_NNS ._.
+This_DT is_VBZ of_IN particular_JJ import_NN ,_, given_VBN that_IN the_DT vast_JJ majority_NN of_IN existing_VBG triple_JJ store_NN systems_NNS are_VBP self_NN contained_VBD ;_: a_DT single_JJ app_NN
+ng_NN improved_VBD performance_NN ._.
+3.2_CD Existing_VBG Triple_JJ Stores_NNP Current_NNP triple_JJ stores_NNS are_VBP developed_VBN in_IN a_DT variety_NN of_IN styles_NNS ._.
+There_EX are_VBP developments_NNS such_JJ as_IN widely_RB distributed_VBN peer-to-peer_NN stores_NNS such_JJ as_IN RDFPeers_NNS -LRB-_-LRB- =_JJ -_: =_JJ Cai_NNP and_CC Frank_NNP 2004_CD -_: =--RRB-_NN ,_, but_CC we_PRP largely_RB focus_VB on_IN the_DT most_RBS common_JJ kind_NN of_IN repository_NN :_: those_DT that_WDT are_VBP situated_VBN on_IN a_DT single_JJ computer_NN -LRB-_-LRB- or_CC as_IN a_DT cluster_NN -RRB-_-RRB- ,_, and_CC behave_VB much_RB like_IN the_DT conventional_JJ DBMSs_NNS of_IN today_NN ._.
+It_PRP is_VBZ notable_JJ ,_, in_FW f_FW
+to_TO a_DT query_NN peers_VBZ and_CC exhibits_VBZ more_JJR optimization_NN opportunities_NNS for_IN distributed_VBN query_NN plans_NNS ._.
+Other_JJ projects_NNS address_VBP mainly_RB query_JJ routing_VBG issues_NNS in_IN SONs_NNS ,_, such_JJ as_IN the_DT Edutella_NNP project_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, RDFPeers_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+Unlike_IN these_DT projects_NNS ,_, SQPeer_NN 's_POS query_NN routing_VBG and_CC processing_VBG algorithms_NNS considers_VBZ both_CC vertical_JJ and_CC horizontal_JJ distribution_NN ,_, while_IN exploiting_VBG the_DT full_JJ power_NN of_IN RDF\/S-based_JJ SONs_NNS and_CC in_FW partic_FW
+exible_JJ resource_NN management_NN is_VBZ a_DT key_JJ point_NN for_IN the_DT collaboration_NN between_IN partners_NNS ._.
+Traditional_JJ centralized_JJ resource_NN management_NN framework_NN have_VBP limitations_NNS both_CC in_IN their_PRP$ failure_NN tolerance_NN and_CC scalability_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recent_JJ years_NNS ,_, there_EX are_VBP more_JJR and_CC more_JJR attention_NN changed_VBN to_TO the_DT distributed_VBN framework_NN -LRB-_-LRB- 8_CD ,_, 9_CD -RRB-_-RRB- for_IN scalability_NN and_CC flexibility_NN ._.
+UDDI_FW v3_FW .0.2_NN released_VBN in_IN 2004_CD recognizes_VBZ the_DT needs_NNS for_IN multiple_JJ registries_NNS ,_,
+he_PRP knowledge_NN storage_NN service_NN in_IN a_DT local_JJ network_NN ,_, we_PRP call_VBP them_PRP storage_NN peers_NNS ._.
+Using_VBG a_DT peer_VBP to_TO peer_VB protocol_NN to_TO make_VB the_DT distributed_VBN servers_NNS in_IN a_DT local_JJ network_NN work_NN together_RB is_VBZ a_DT better_JJR choice_NN ,_, RDFPeers_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ an_DT excellent_JJ work_NN on_IN this_DT subject_NN ._.
+However_RB ,_, Distributed_VBN systems_NNS need_VBP caching_VBG to_TO provide_VB fast_JJ access_NN to_TO shared_JJ data_NNS ,_, and_CC replication_NN to_TO increase_VB fault_NN tolerance_NN ._.
+But_CC caching_NN and_CC replication_NN introdu_NN
+when_WRB compared_VBN against_IN content-based_JJ systems_NNS ._.
+Finally_RB ,_, recently_RB the_DT database_NN community_NN focused_VBD on_IN implementing_VBG distributed_VBN DBMSes_NNS in_IN a_DT peer-to-peer_JJ fashion_NN ,_, under_IN the_DT name_NN of_IN semantic_JJ overlay_NN networks_NNS =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Nevertheless_RB ,_, these_DT approaches_NNS suffer_VBP from_IN the_DT same_JJ issues_NNS evidenced_VBN above_IN for_IN peer-to-peer_NN and_CC publish-subscribe_NN systems_NNS ,_, since_IN they_PRP do_VBP not_RB support_VB the_DT full_JJ power_NN of_IN pattern-based_JJ search_NN -LRB-_-LRB- e.g_NN
+riple_VB Space_NNP is_VBZ based_VBN on_IN simple_JJ triple_JJ patterns_NNS ._.
+Matching_VBG approaches_NNS based_VBN on_IN triple_JJ patterns_NNS can_MD scalably_RB be_VB realized_VBN for_IN large_JJ scale_NN open_JJ systems_NNS like_IN various_JJ semantic_JJ P2P-implementations_NNS have_VBP shown_VBN =_JJ -_: =[_NN 1_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+2_CD The_DT target_NN applications_NNS of_IN Triple_JJ Space_NN demand_NN however_RB more_RBR complex_JJ 2_CD Simple_JJ triple_JJ patterns_NNS are_VBP resolved_VBN in_IN log_NN -LRB-_-LRB- N_NN -RRB-_-RRB- with_IN N_NN the_DT number_NN of_IN nodes_NNS ._.
+ssemantic_JJ query_NN languages_NNS ,_, or_CC even_RB rule-based_JJ query_NN r_NN
+h_NN attention_NN ,_, especially_RB in_IN the_DT database_NN community_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+-LRB-_-LRB- 13_CD -RRB-_-RRB- suggested_VBD to_TO add_VB metadata_JJ management_NN to_TO P2P_NN networks_NNS ._.
+This_DT idea_NN has_VBZ been_VBN taken_VBN up_RP by_IN approaches_NNS like_IN Edutella_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, RDFPeers_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, P-Grid_NN -LRB-_-LRB- 121_CD -RRB-_-RRB- and_CC other_JJ projects_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Initial_JJ ideas_NNS of_IN a_DT collaboration_NN infrastructure_NN based_VBN on_IN P2P_NN technology_NN has_VBZ been_VBN realized_VBN in_IN Groove_NNP which_WDT allows_VBZ small_JJ groups_NNS to_TO share_VB a_DT calendar_NN ,_, discussion_NN
+se_FW the_DT query_NN syntax_NN is_VBZ not_RB fixed_VBN a_DT priori_FW ,_, the_DT computational_JJ burden_NN issue_NN as_IN expressed_VBN in_IN section_NN fully_RB applies_VBZ ._.
+2.2.3_CD ._.
+P2P_NN RDF_NN storage_NN Distributed_VBD RDF_NN storage_NN is_VBZ considered_VBN in_IN the_DT RDFPeers_NN framework_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+By_IN making_VBG use_NN of_IN distributed_VBN indexes_NNS on_IN the_DT Subject_NNP ,_, Predicate_NNP and_CC Object_NNP of_IN each_DT stored_VBN RDF_NNP triple_JJ ,_, efficient_JJ retrieval_NN can_MD be_VB obtained_VBN ._.
+Simple_JJ queries_NNS ,_, e.g._FW in_IN the_DT form_NN of_IN selecting_VBG all_DT triples_NNS wi_IN
+3_LS -RRB-_-RRB- are_VBP based_VBN on_IN distributed_VBN hash_NN table_NN -LRB-_-LRB- DHT_NN -RRB-_-RRB- techniques_NNS ._.
+A_DT significant_JJ advantage_NN of_IN DHT-based_JJ structured_JJ P2P_NN systems_NNS is_VBZ that_IN they_PRP provide_VBP strong_JJ bounds_NNS on_IN query_NN and_CC update_VB performance_NN ._.
+Recent_JJ systems_NNS =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: also_RB allow_VBP attribute-based_JJ searches_NNS of_IN complex_JJ information_NN such_JJ as_IN RDF_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- using_VBG structured_JJ approaches_NNS ._.
+Cheema_NNP et_FW al._FW -LRB-_-LRB- 8_CD -RRB-_-RRB- developed_VBD a_DT strategy_NN for_IN searches_NNS on_IN multiple_JJ machine_NN attributes_NNS on_IN a_DT struct_NN
+mensional_JJ hash_NN indices_NNS to_TO provide_VB efficient_JJ query_NN processing_NN for_IN RDF_NNP triples_NNS ._.
+For_IN the_DT implementation_NN of_IN simple_JJ subscriptions_NNS ,_, peer-to-peer_NN and_CC distributed_VBN hash_NN table_NN based_VBN approaches_NNS such_JJ as_IN RDFPeers_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: and_CC MDV_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- promise_NN to_TO offer_VB query_JJ times_NNS that_WDT are_VBP logarithmic_JJ to_TO the_DT number_NN of_IN participating_VBG network_NN nodes_NNS ._.
+6_CD ._.
+CONCLUSION_NN In_IN this_DT paper_NN we_PRP presented_VBD SENS_NNP ,_, a_DT semantic_JJ event_NN notification_NN service_NN for_IN t_NN
+ple_NN to_TO a_DT cell_NN by_IN treating_VBG each_DT cell_NN as_IN a_DT hash_JJ bucket_NN containing_VBG multiple_JJ triples_NNS ._.
+It_PRP is_VBZ primarily_RB used_VBN to_TO reduce_VB the_DT network_NN traffic_NN for_IN processing_NN join_VB queries_NNS over_IN a_DT distributed_VBN RDF_NN store_NN -LRB-_-LRB- RDFPeers_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =--RRB-_NN by_IN narrowing_VBG down_RP the_DT candidate_NN triples_NNS ._.
+In_IN contrast_NN ,_, BitMat_NN structure_NN maintains_VBZ unique_JJ mapping_NN of_IN a_DT triple_JJ to_TO a_DT single_JJ bit_NN element_NN and_CC further_RB compresses_VBZ the_DT BitMat_NNP ._.
+Our_PRP$ goal_NN here_RB is_VBZ to_TO represent_VB l_NN
+ese_NN data_NNS and_CC a_DT synchronization_NN algorithm_NN integrates_VBZ concurrent_JJ updates_NNS while_IN maintaining_VBG consistency_NN of_IN these_DT data_NNS ._.
+Existing_VBG synchronization_NN algorithms_NNS of_IN RDF_NNP resources_NNS such_JJ RDFSync_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- and_CC RDFPeers_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP used_VBN in_IN the_DT sharing_NN context_NN ._.
+Hence_RB ,_, they_PRP are_VBP not_RB adapted_VBN for_IN P2P_NN semantic_JJ wikis_NN ._.
+In_IN summary_NN ,_, P2P_NN Semantic_JJ Web_NN researches_VBZ focus_NN on_IN knowledge_NN sharing_VBG and_CC querying_VBG ._.
+No_DT algorithm_NN has_VBZ been_VBN designed_VBN for_IN
+g_NN P2P_NN DHT_NN techniques_NNS to_TO the_DT retrieval_NN of_IN distributed_VBN ontology_NN encoded_VBD knowledge_NN information_NN ,_, e.g._FW in_IN RDF_NNP ,_, in_IN semantics6_NNP David_NNP Lewis_NNP ,_, John_NNP Keeney_NNP ,_, Declan_NNP O’Sullivan_NNP ,_, Song_NN Guo_NN overlay_NN networks_NNS -LRB-_-LRB- tempich_NN -RRB-_-RRB- =_JJ -_: =_JJ -LRB-_-LRB- cai_NN -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- loser_NN -RRB-_-RRB- ._.
+In_IN supporting_VBG an_DT ontology-driven_JJ DHT-based_JJ P2P_NN routing_VBG mechanism_NN for_IN the_DT KBN_NNP ,_, the_DT approach_NN outlined_VBN in_IN -LRB-_-LRB- loser_NN -RRB-_-RRB- seems_VBZ most_RBS promising_JJ due_JJ to_TO its_PRP$ support_NN for_IN peer_VB clustering_NN ._.
+Used_VBN in_IN this_DT way_NN ,_, p_NN
+ent_JJ structure_NN ._.
+Unlike_IN our_PRP$ approach_NN ,_, Piazza_NNP uses_VBZ central_JJ indexing_NN ._.
+An_DT extension_NN to_TO use_VB an_DT underlying_JJ DHT_NN only_RB seems_VBZ to_TO be_VB planned_VBN for_IN the_DT future_NN ,_, a_DT key_JJ requirement_NN for_IN Internet-scale_JJ systems_NNS ._.
+RDFPeers_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: presents_VBZ a_DT scalable_JJ and_CC distributed_VBN RDF_NNP triple_JJ repository_NN for_IN storing_VBG ,_, indexing_NN and_CC querying_VBG individual_JJ RDF_NNP statements_NNS ._.
+RDFPeers_FW self-organize_FW into_IN a_DT multiattribute_JJ addressable_JJ network_NN -LRB-_-LRB- MAAN_NN -RRB-_-RRB- ,_, which_WDT
+as_IN we_PRP do_VBP -LRB-_-LRB- see_VB Section_NNP 4_CD -RRB-_-RRB- ._.
+However_RB ,_, until_IN now_RB ,_, PIER_NN provides_VBZ no_DT mechanisms_NNS for_IN estimating_NN query_NN completeness_NN ,_, but_CC the_DT authors_NNS mention_VBP this_DT as_IN future_JJ work_NN ._.
+A_DT couple_NN of_IN distributed_VBN triple_JJ stores_NNS ,_, e.g._FW ,_, =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, are_VBP based_VBN on_IN a_DT similar_JJ data_NN model_NN ,_, preferably_RB used_VBN to_TO manage_VB and_CC query_VB RDF_NNP data_NNS ._.
+Despite_IN that_IN they_PRP provide_VBP sophisticated_JJ query_NN processing_NN capabilities_NNS as_RB well_RB ,_, query_NN processing_NN is_VBZ based_VBN on_IN a_DT rather_RB
+pproximates_VBZ the_DT mapping_NN of_IN a_DT triple_JJ to_TO a_DT cell_NN by_IN treating_VBG each_DT cell_NN as_IN a_DT hash_JJ bucket_NN containing_VBG multiple_JJ triples_NNS ._.
+They_PRP primarily_RB used_VBD this_DT as_IN a_DT distributed_VBN structure_NN in_IN a_DT peer-to-peer_JJ setup_NN -LRB-_-LRB- RDFPeers_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =--RRB-_NN to_TO reduce_VB the_DT network_NN traffic_NN for_IN processing_NN join_VBP queries_NNS in_IN a_DT conventional_JJ manner_NN ._.
+In_IN contrast_NN ,_, BitMat_NNP 's_POS compressed_VBN structure_NN maintains_VBZ unique_JJ mapping_NN of_IN a_DT triple_JJ to_TO a_DT single_JJ bit_NN ,_, and_CC also_RB employs_VBZ

@@ -1,0 +1,159 @@
+Deriving_VBG quantitative_JJ models_NNS for_IN correlation_NN clusters_NNS
+Correlation_NN clustering_NN aims_VBZ at_IN grouping_VBG the_DT data_NNS set_VBN into_IN correlation_NN clusters_NNS such_JJ that_IN the_DT objects_NNS in_IN the_DT same_JJ cluster_NN exhibit_VBP a_DT certain_JJ density_NN and_CC are_VBP all_DT associated_VBN to_TO a_DT common_JJ arbitrarily_RB oriented_JJ hyperplane_NN of_IN arbitrary_JJ dimensionality_NN ._.
+Several_JJ algorithms_NNS for_IN this_DT task_NN have_VBP been_VBN proposed_VBN recently_RB ._.
+However_RB ,_, all_DT algorithms_NNS only_RB compute_VBP the_DT partitioning_NN of_IN the_DT data_NNS into_IN clusters_NNS ._.
+This_DT is_VBZ only_RB a_DT first_JJ step_NN in_IN the_DT pipeline_NN of_IN advanced_JJ data_NNS analysis_NN and_CC system_NN modelling_NN ._.
+The_DT second_JJ -LRB-_-LRB- post-clustering_JJ -RRB-_-RRB- step_NN of_IN deriving_VBG a_DT quantitative_JJ model_NN for_IN each_DT correlation_NN cluster_NN has_VBZ not_RB been_VBN addressed_VBN so_RB far_RB ._.
+In_IN this_DT paper_NN ,_, we_PRP describe_VBP an_DT original_JJ approach_NN to_TO handle_VB this_DT second_JJ step_NN ._.
+We_PRP introduce_VBP a_DT general_JJ method_NN that_WDT can_MD extract_VB quantitative_JJ information_NN on_IN the_DT linear_JJ dependencies_NNS within_IN a_DT correlation_NN clustering_NN ._.
+Our_PRP$ concepts_NNS are_VBP independent_JJ of_IN the_DT clustering_NN model_NN and_CC can_MD thus_RB be_VB applied_VBN as_IN a_DT post-processing_JJ step_NN to_TO any_DT correlation_NN clustering_NN algorithm_NN ._.
+Furthermore_RB ,_, we_PRP show_VBP how_WRB these_DT quantitative_JJ models_NNS can_MD be_VB used_VBN to_TO predict_VB the_DT probability_NN distribution_NN that_IN an_DT object_NN is_VBZ created_VBN by_IN these_DT models_NNS ._.
+Our_PRP$ broad_JJ experimental_JJ evaluation_NN demonstrates_VBZ the_DT beneficial_JJ impact_NN of_IN our_PRP$ method_NN on_IN several_JJ applications_NNS of_IN significant_JJ practical_JJ importance_NN ._.
+d_NN have_VBP been_VBN published_VBN in_IN an_DT updated_VBN version_NN in_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+The_DT algorithms_NNS developed_VBD in_IN Parts_NNP III_NNP and_CC IV_NNP have_VBP also_RB been_VBN published_VBN in_IN -LRB-_-LRB- 9_CD ;_: 6_CD ;_: 7_CD ;_: 5_CD ;_: 10_CD ;_: 3_CD ;_: 2_CD -RRB-_-RRB- ._.
+The_DT major_JJ content_NN of_IN Part_NNP V_NNP has_VBZ been_VBN presented_VBN in_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT implementations_NNS of_IN all_DT algorithms_NNS are_VBP available_JJ in_IN the_DT framework_NN ELKI_NN -LRB-_-LRB- 8_CD ;_: 1_LS -RRB-_-RRB- 4_CD ._.
+ACKNOWLEDGEMENTS_NNS I_PRP wish_VBP to_TO express_VB my_PRP$ sincerest_JJS gratitude_NN to_TO my_PRP$ supervisor_NN ,_, Hans-Peter_NNP Kriegel_NNP ,_, and_CC to_TO Thomas_NNP Seid_NNP
+into_IN correlation_NN clusters_NNS such_JJ that_IN the_DT objects_NNS in_IN the_DT same_JJ cluster_NN exhibit_VBP a_DT certain_JJ density_NN and_CC objects_NNS are_VBP all_DT associated_VBN with_IN the_DT same_JJ arbitrarily_RB oriented_JJ hyperplane_NN of_IN arbitrary_JJ dimensionality_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT 4C_NN algorithm_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- combines_VBZ PCA_NNP and_CC DBSCAN_NNP in_IN order_NN to_TO identify_VB correlation_NN connected_JJ clusters_NNS that_WDT are_VBP subgroups_NNS of_IN data_NNS points_NNS exhibiting_VBG similar_JJ correlations_NNS ._.
+One_CD drawback_NN of_IN the_DT 4C_NN algorithm_NN i_FW
+ant_NN ._.
+For_IN example_NN ,_, a_DT Support_NN Vector_NNP Machine_NNP relies_VBZ on_IN such_JJ objects_NNS as_IN support_NN vectors_NNS ._.
+In_IN a_DT clustering_NN context_NN ,_, models_NNS are_VBP derived_VBN and_CC the_DT focus_NN is_VBZ on_IN typical_JJ objects_NNS ._.
+When_WRB learning_VBG correlation_NN models_NNS =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, such_JJ untypical_JJ objects_NNS can_MD significantly_RB reduce_VB model_NN quality_NN ._.
+An_DT example_NN of_IN treating_VBG class_NN outliers_NNS in_IN an_DT evaluation_NN different_JJ than_IN class_NN inliers_NNS is_VBZ -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+Multiple_JJ -LRB-_-LRB- Overlapping_JJ -RRB-_-RRB- Hidden_JJ Structures_NNS :_:
+rical_JJ attributes_NNS ._.
+Basically_RB ,_, continuous_JJ attributes_NNS are_VBP transformed_VBN to_TO ordinal_JJ attributes_NNS ,_, and_CC a_DT method_NN is_VBZ proposed_VBN to_TO find_VB sets_NNS of_IN numerical_JJ attributes_NNS with_IN high_JJ attribute_NN value_NN associations_NNS ._.
+Achtert_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Jaroszewicz_NNP -LRB-_-LRB- 16_CD -RRB-_-RRB- propose_VBP different_JJ methods_NNS for_IN deriving_VBG equations_NNS describing_VBG relationships_NNS between_IN continuous_JJ variables_NNS in_IN datasets_NNS ._.
+Contributions_NNS ._.
+1_CD ._.
+A_DT novel_JJ measure_NN of_IN interestingness_NN and_CC a_DT reg_NN
+data_NNS and_CC hence_RB does_VBZ not_RB separate_VB the_DT impact_NN of_IN any_DT original_JJ features_NNS nor_CC identify_VBP local_JJ latent_JJ patterns_NNS in_IN some_DT feature_NN subspaces_NNS ._.
+Recently_RB proposed_VBN projected_JJ clustering_NN methods_NNS ,_, such_JJ as_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, can_MD be_VB viewed_VBN as_IN combinations_NNS of_IN clustering_NN algorithms_NNS and_CC PCA_NNP ._.
+These_DT methods_NNS can_MD be_VB applied_VBN to_TO find_VB clusters_NNS of_IN data_NN points_NNS that_WDT may_MD not_RB exist_VB in_IN the_DT axis_NN parallel_JJ subspaces_NNS but_CC only_RB exist_VBP in_IN the_DT p_NN
+between_IN numerical_JJ attributes_NNS ._.
+Basically_RB ,_, continuous_JJ attributes_NNS are_VBP transformed_VBN to_TO ordinal_JJ attributes_NNS ,_, and_CC a_DT method_NN is_VBZ proposed_VBN to_TO find_VB sets_NNS of_IN numerical_JJ attributes_NNS with_IN high_JJ attribute_NN values_NNS ._.
+Achtert_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Jaroszewicz_NNP -LRB-_-LRB- 14_CD -RRB-_-RRB- propose_VBP different_JJ methods_NNS for_IN deriving_VBG equations_NNS describing_VBG relationships_NNS between_IN continuous_JJ variables_NNS in_IN datasets_NNS ._.
+Contributions_NNS ._.
+First_RB ,_, a_DT novel_JJ regional_JJ co-location_NN mining_NN fram_NN
+th_DT a_DT number_NN of_IN papers_NNS presenting_VBG extensions_NNS of_IN the_DT definition_NN of_IN support_NN not_RB requiring_VBG discretization_NN -LRB-_-LRB- 23_CD ,_, 14_CD ,_, 7_CD -RRB-_-RRB- ._.
+Other_JJ papers_NNS provide_VBP alternative_JJ approaches_NNS which_WDT also_RB do_VBP not_RB require_VB discretization_NN =_JJ -_: =[_NN 20_CD ,_, 12_CD ,_, 19_CD ,_, 1_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT work_NN extends_VBZ those_DT methods_NNS further_RBR ,_, allowing_VBG for_IN the_DT discovery_NN of_IN complex_JJ nonlinear_JJ relationships_NNS between_IN sets_NNS of_IN numerical_JJ attributes_NNS without_IN the_DT need_NN for_IN discretization_NN ._.
+The_DT work_NN is_VBZ set_VBN in_IN th_DT
+Representative_NNP Trajectory_NNP of_IN a_DT Cluster_NN The_DT representative_JJ trajectory_NN of_IN a_DT cluster_NN describes_VBZ the_DT overall_JJ movement_NN of_IN the_DT trajectory_JJ partitions_NNS that_WDT belong_VBP to_TO the_DT cluster_NN ._.
+It_PRP can_MD be_VB considered_VBN a_DT model_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: for_IN clusters_NNS ._.
+We_PRP need_VBP to_TO extract_VB quantitative_JJ information_NN on_IN the_DT movement_NN within_IN a_DT cluster_NN such_JJ that_IN domain_NN experts_NNS are_VBP able_JJ to_TO understand_VB the_DT movement_NN in_IN the_DT trajectories_NNS ._.
+Thus_RB ,_, in_IN order_NN to_TO gain_VB ful_NN
+rily_RB -RRB-_-RRB- oriented_JJ clustering_NN ''_'' ,_, ``_`` correlation_NN clustering_NN ''_'' -RRB-_-RRB- tackle_VBP this_DT infinite_JJ search_NN space_NN ._.
+Example_NN algorithms_NNS are_VBP described_VBN in_IN -LRB-_-LRB- 5_CD ,_, 9_CD ,_, 1_CD -RRB-_-RRB- ,_, the_DT general_JJ model_NN for_IN this_DT family_NN of_IN approaches_NNS is_VBZ described_VBN in_IN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Yet_RB most_JJS of_IN the_DT research_NN in_IN this_DT field_NN assumes_VBZ the_DT search_NN space_NN to_TO be_VB restricted_JJ to_TO axisparallel_NN subspaces_NNS ._.
+Since_IN the_DT search_NN space_NN of_IN all_DT possible_JJ axis-parallel_JJ subspaces_NNS of_IN a_DT d-dimensional_JJ data_NN spa_NN
+ring_NN ._.
+However_RB ,_, we_PRP focus_VBP on_IN linear_JJ correlations_NNS between_IN features_NNS ._.
+Thus_RB ,_, the_DT non-linear_JJ correlations_NNS uncovered_VBN by_IN CURLER_NN are_VBP orthogonal_JJ to_TO our_PRP$ approach_NN ._.
+Recently_RB ,_, several_JJ subspace_NN clustering_NN algorithms_VBZ =_JJ -_: =[_NN 4_CD ,_, 2_CD ,_, 14_CD ,_, 17_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: were_VBD proposed_VBN to_TO find_VB clusters_NNS in_IN axis-parallel_JJ projections_NNS of_IN the_DT data_NNS space_NN ._.
+These_DT algorithms_NNS are_VBP not_RB able_JJ to_TO capture_VB local_JJ data_NNS correlations_NNS and_CC find_VB clusters_NNS of_IN correlated_JJ objects_NNS since_IN the_DT princ_NN
+ring_NN ._.
+However_RB ,_, we_PRP focus_VBP on_IN linear_JJ correlations_NNS between_IN features_NNS ._.
+Thus_RB ,_, the_DT non-linear_JJ correlations_NNS uncovered_VBN by_IN CURLER_NN are_VBP orthogonal_JJ to_TO our_PRP$ approach_NN ._.
+Recently_RB ,_, several_JJ subspace_NN clustering_NN algorithms_VBZ =_JJ -_: =[_NN 4_CD ,_, 2_CD ,_, 14_CD ,_, 17_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: were_VBD proposed_VBN to_TO find_VB clusters_NNS in_IN axis-parallel_JJ projections_NNS of_IN the_DT data_NNS space_NN ._.
+These_DT algorithms_NNS are_VBP not_RB able_JJ to_TO capture_VB local_JJ data_NNS correlations_NNS and_CC find_VB clusters_NNS of_IN correlated_JJ objects_NNS since_IN the_DT princ_NN
+gorithms_NNS are_VBP not_RB able_JJ to_TO capture_VB local_JJ data_NNS correlations_NNS and_CC find_VB clusters_NNS of_IN correlated_JJ objects_NNS since_IN the_DT principal_JJ axes_NNS of_IN correlated_JJ data_NNS are_VBP arbitrarily_RB oriented_VBN ._.
+Pattern-based_JJ clustering_NN methods_NNS =_JJ -_: =[_NN 24_CD ,_, 21_CD ,_, 16_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: aim_NN at_IN finding_VBG groups_NNS of_IN objects_NNS that_WDT exhibit_VBP a_DT similar_JJ trend_NN in_IN a_DT subset_NN of_IN attributes_NNS ._.
+This_DT problem_NN is_VBZ also_RB known_VBN as_IN coclustering_NN or_CC biclustering_NN -LRB-_-LRB- 12_CD ,_, 7_CD -RRB-_-RRB- ._.
+In_IN contrast_NN to_TO correlation_NN clustering_NN ,_, pat_NN
+ter_NN analysis_NN also_RB require_VBP the_DT objects_NNS of_IN a_DT cluster_NN to_TO exhibit_VB a_DT certain_JJ density_NN ,_, i.e._FW feature_NN similarity_NN ._.
+Correlation_NN clustering_NN has_VBZ been_VBN successfully_RB applied_VBN to_TO several_JJ application_NN domains_NNS -LRB-_-LRB- see_VB e.g._FW =_SYM -_: =[_NN 3_CD ,_, 24_CD ,_, 6_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+For_IN example_NN ,_, costumer_NN recommendation_NN systems_NNS are_VBP important_JJ tools_NNS for_IN target_NN marketing_NN ._.
+For_IN the_DT purpose_NN of_IN data_NN analysis_NN for_IN recommendation_NN systems_NNS ,_, it_PRP is_VBZ important_JJ to_TO find_VB homogeneous_JJ groups_NNS of_IN use_NN
+gorithms_NNS are_VBP not_RB able_JJ to_TO capture_VB local_JJ data_NNS correlations_NNS and_CC find_VB clusters_NNS of_IN correlated_JJ objects_NNS since_IN the_DT principal_JJ axes_NNS of_IN correlated_JJ data_NNS are_VBP arbitrarily_RB oriented_VBN ._.
+Pattern-based_JJ clustering_NN methods_NNS =_JJ -_: =[_NN 24_CD ,_, 21_CD ,_, 16_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: aim_NN at_IN finding_VBG groups_NNS of_IN objects_NNS that_WDT exhibit_VBP a_DT similar_JJ trend_NN in_IN a_DT subset_NN of_IN attributes_NNS ._.
+This_DT problem_NN is_VBZ also_RB known_VBN as_IN coclustering_NN or_CC biclustering_NN -LRB-_-LRB- 12_CD ,_, 7_CD -RRB-_-RRB- ._.
+In_IN contrast_NN to_TO correlation_NN clustering_NN ,_, pat_NN
+ion_NN requiring_VBG discretization_NN of_IN attributes_NNS -LRB-_-LRB- e.g._FW -LRB-_-LRB- 19_CD -RRB-_-RRB- -RRB-_-RRB- or_CC representation_NN of_IN numerical_JJ values_NNS in_IN a_DT rule_NN 's_POS right-hand_JJ side_NN by_IN some_DT statistical_JJ characterizations_NNS ,_, e.g._FW the_DT mean_NN or_CC sum_NN of_IN the_DT values_NNS -LRB-_-LRB- cf._VBP =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Discretization_NN of_IN attributes_NNS ,_, moreover_RB ,_, does_VBZ not_RB overcome_VB the_DT restriction_NN to_TO axis_NN parallel_NN dependencies_NNS ._.
+Recently_RB ,_, Rückert_NNP et_FW al._FW -LRB-_-LRB- 18_CD -RRB-_-RRB- proposed_VBN to_TO base_VB quantitative_JJ association_NN rules_NNS on_IN half-space_NN
+itative_JJ relationships_NNS among_IN subsets_NNS of_IN attributes_NNS is_VBZ known_VBN as_IN quantitative_JJ association_NN rule_NN mining_NN ._.
+Some_DT earlier_JJR approaches_NNS to_TO this_DT task_NN loose_JJ information_NN requiring_VBG discretization_NN of_IN attributes_NNS -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =--RRB-_NN or_CC representation_NN of_IN numerical_JJ values_NNS in_IN a_DT rule_NN 's_POS right-hand_JJ side_NN by_IN some_DT statistical_JJ characterizations_NNS ,_, e.g._FW the_DT mean_NN or_CC sum_NN of_IN the_DT values_NNS -LRB-_-LRB- cf._VBP -LRB-_-LRB- 22_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Discretization_NN of_IN attributes_NNS ,_, moreover_RB ,_, does_VBZ
+ps_RB ,_, that_WDT make_VBP causalities_NNS circular_JJ ._.
+Nevertheless_RB ,_, modelling_VBG parts_NNS of_IN a_DT complex_JJ system_NN remains_VBZ useful_JJ even_RB under_IN restrictive_JJ constraints_NNS -LRB-_-LRB- as_IN shown_VBN e.g._FW for_IN genetic_JJ regulatory_JJ interaction_NN networks_NNS ,_, cf._VBP =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+3.4_CD Sample_NN Application_NN :_: Predictive_JJ Models_NNS Having_VBG derived_VBN a_DT descriptive_JJ model_NN ,_, it_PRP can_MD be_VB refined_VBN by_IN determining_VBG an_DT average_JJ distance_NN of_IN the_DT cluster_NN members_NNS from_IN the_DT correlation_NN hyperplane_NN ._.
+Such_JJ devia_NN
+eliminating_VBG redundant_JJ features_NNS ._.
+However_RB ,_, detection_NN of_IN correlated_JJ features_NNS may_MD also_RB help_VB to_TO reveal_VB hidden_JJ causalities_NNS that_WDT are_VBP of_IN great_JJ interest_NN to_TO the_DT domain_NN expert_NN ._.
+Recently_RB ,_, correlation_NN clustering_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ been_VBN introduced_VBN as_IN a_DT novel_JJ concept_NN of_IN knowledge_NN discovery_NN in_IN databases_NNS to_TO detect_VB dependencies_NNS among_IN features_NNS and_CC to_TO cluster_VB those_DT points_NNS that_WDT share_VBP a_DT common_JJ pattern_NN of_IN dependencies_NNS ._.
+It_PRP correspond_VBP
+ring_NN ._.
+However_RB ,_, we_PRP focus_VBP on_IN linear_JJ correlations_NNS between_IN features_NNS ._.
+Thus_RB ,_, the_DT non-linear_JJ correlations_NNS uncovered_VBN by_IN CURLER_NN are_VBP orthogonal_JJ to_TO our_PRP$ approach_NN ._.
+Recently_RB ,_, several_JJ subspace_NN clustering_NN algorithms_VBZ =_JJ -_: =[_NN 4_CD ,_, 2_CD ,_, 14_CD ,_, 17_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: were_VBD proposed_VBN to_TO find_VB clusters_NNS in_IN axis-parallel_JJ projections_NNS of_IN the_DT data_NNS space_NN ._.
+These_DT algorithms_NNS are_VBP not_RB able_JJ to_TO capture_VB local_JJ data_NNS correlations_NNS and_CC find_VB clusters_NNS of_IN correlated_JJ objects_NNS since_IN the_DT princ_NN
+ter_NN analysis_NN also_RB require_VBP the_DT objects_NNS of_IN a_DT cluster_NN to_TO exhibit_VB a_DT certain_JJ density_NN ,_, i.e._FW feature_NN similarity_NN ._.
+Correlation_NN clustering_NN has_VBZ been_VBN successfully_RB applied_VBN to_TO several_JJ application_NN domains_NNS -LRB-_-LRB- see_VB e.g._FW =_SYM -_: =[_NN 3_CD ,_, 24_CD ,_, 6_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+For_IN example_NN ,_, costumer_NN recommendation_NN systems_NNS are_VBP important_JJ tools_NNS for_IN target_NN marketing_NN ._.
+For_IN the_DT purpose_NN of_IN data_NN analysis_NN for_IN recommendation_NN systems_NNS ,_, it_PRP is_VBZ important_JJ to_TO find_VB homogeneous_JJ groups_NNS of_IN use_NN
+ring_NN ._.
+However_RB ,_, we_PRP focus_VBP on_IN linear_JJ correlations_NNS between_IN features_NNS ._.
+Thus_RB ,_, the_DT non-linear_JJ correlations_NNS uncovered_VBN by_IN CURLER_NN are_VBP orthogonal_JJ to_TO our_PRP$ approach_NN ._.
+Recently_RB ,_, several_JJ subspace_NN clustering_NN algorithms_VBZ =_JJ -_: =[_NN 4_CD ,_, 2_CD ,_, 14_CD ,_, 17_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: were_VBD proposed_VBN to_TO find_VB clusters_NNS in_IN axis-parallel_JJ projections_NNS of_IN the_DT data_NNS space_NN ._.
+These_DT algorithms_NNS are_VBP not_RB able_JJ to_TO capture_VB local_JJ data_NNS correlations_NNS and_CC find_VB clusters_NNS of_IN correlated_JJ objects_NNS since_IN the_DT princ_NN
+d_NN ,_, then_RB a_DT different_JJ weighted_JJ sum_NN of_IN variables_NNS is_VBZ with_IN high_JJ probability_NN greater_JJR than_IN a_DT second_JJ threshold_NN ''_'' ._.
+This_DT approach_NN has_VBZ been_VBN shown_VBN to_TO be_VB useful_JJ in_IN detecting_VBG some_DT rules_NNS of_IN gene-expression_NN data_NNS sets_VBZ =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, these_DT association_NN rules_NNS do_VBP not_RB yet_RB uncover_VB continuous_JJ linear_JJ dependencies_NNS ,_, but_CC stick_NN to_TO certain_JJ thresholds_NNS ,_, reflecting_VBG the_DT boundaries_NNS of_IN halfspaces_NNS ._.
+2.3_CD Regression_NN Analysis_NN A_NN task_NN very_RB simi_VBP
+al_FW characterizations_NNS ,_, e.g._FW the_DT mean_NN or_CC sum_NN of_IN the_DT values_NNS -LRB-_-LRB- cf._VBP -LRB-_-LRB- 22_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Discretization_NN of_IN attributes_NNS ,_, moreover_RB ,_, does_VBZ not_RB overcome_VB the_DT restriction_NN to_TO axis_NN parallel_NN dependencies_NNS ._.
+Recently_RB ,_, Rückert_NNP et_FW al._FW =_SYM -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBN to_TO base_VB quantitative_JJ association_NN rules_NNS on_IN half-spaces_NNS ,_, thus_RB allowing_VBG the_DT discovery_NN of_IN non-axis-parallel_JJ rules_NNS and_CC possibly_RB accounting_VBG for_IN cumulative_JJ effects_NNS of_IN several_JJ variables_NNS ._.
+The_DT rules_NNS d_NN
+relation_NN clusters_NNS ._.
+Let_VB us_PRP note_VB that_DT none_NN of_IN the_DT proposed_VBN approaches_NNS to_TO correlation_NN clustering_NN provides_VBZ a_DT cluster_NN model_NN including_VBG an_DT explicit_JJ description_NN of_IN the_DT correlations_NNS within_IN the_DT cluster_NN ._.
+CURLER_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: aims_NNS at_IN detecting_VBG arbitrary_JJ ,_, non-linear_JJ correlations_NNS ._.
+It_PRP uses_VBZ the_DT concept_NN of_IN micro-clusters_NNS that_WDT are_VBP generated_VBN using_VBG an_DT EM_NN variant_NN and_CC then_RB are_VBP merged_VBN to_TO uncover_VB correlation_NN clusters_NNS ._.
+The_DT correlations_NNS
+endencies_NNS ._.
+Basically_RB ,_, these_DT dependencies_NNS are_VBP revealed_VBN by_IN transforming_VBG the_DT equation_NN system_NN using_VBG Gauss-Jordan_JJ elimination_NN ._.
+The_DT thus_RB derived_VBN reduced_VBN row_NN echelon_NN form_NN of_IN the_DT matrix_NN is_VBZ known_VBN to_TO be_VB unique_JJ =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT unique_JJ form_NN does_VBZ ,_, of_IN course_NN ,_, not_RB provide_VB new_JJ information_NN ,_, but_CC it_PRP is_VBZ easily_RB comparable_JJ to_TO alternative_JJ solutions_NNS and_CC conveniently_RB interpretable_JJ by_IN inspecting_VBG experts_NNS ._.
+To_TO enhance_VB numerical_JJ stabilit_NN
+d_NN experimental_JJ evaluation_NN where_WRB we_PRP demonstrate_VBP the_DT practical_JJ importance_NN of_IN our_PRP$ approach_NN ._.
+The_DT paper_NN concludes_VBZ in_IN Section_NNP 5_CD ._.
+2_CD ._.
+RELATED_NNS WORK_VBP 2.1_CD Correlation_NN Clustering_VBG The_DT expectation_NN maximization_NN -LRB-_-LRB- EM_NN -RRB-_-RRB- =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ one_CD of_IN the_DT first_JJ clustering_NN algorithms_NNS that_WDT can_MD detect_VB correlation_NN clusters_NNS ._.
+The_DT EM_NNP algorithm_NN tries_VBZ to_TO model_VB the_DT data_NNS distribution_NN of_IN a_DT data_NN set_NN using_VBG a_DT mixture_NN of_IN non-axis_JJ parallel_JJ Gaussian_JJ distr_NN
+only_RB applied_VBN for_IN a_DT proof_NN of_IN principle_NN ._.
+We_PRP compared_VBD the_DT classification_NN accuracy_NN of_IN our_PRP$ sketched_VBN classifier_NN to_TO several_JJ other_JJ standard_JJ learning_NN approaches_NNS ._.
+For_IN this_DT comparison_NN we_PRP used_VBD the_DT WEKA_NNP framework_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: with_IN standard_JJ parameter_NN settings_NNS ,_, in_IN particular_JJ ,_, kNN_NN -LRB-_-LRB- IBk_NN -RRB-_-RRB- with_IN k_NN =_JJ 1_CD -LRB-_-LRB- best_JJS results_NNS reported_VBN -RRB-_-RRB- ,_, SVM_NN -LRB-_-LRB- SMO_NN -RRB-_-RRB- ,_, rule-based_JJ learner_NN -LRB-_-LRB- PART_NN -RRB-_-RRB- ,_, Naive_JJ Bayes_NNS ,_, decision_NN tree_NN -LRB-_-LRB- J48_NN -RRB-_-RRB- ,_, and_CC multinomialsTable_JJ 4_CD :_: Depende_NN
+ring_NN ._.
+However_RB ,_, we_PRP focus_VBP on_IN linear_JJ correlations_NNS between_IN features_NNS ._.
+Thus_RB ,_, the_DT non-linear_JJ correlations_NNS uncovered_VBN by_IN CURLER_NN are_VBP orthogonal_JJ to_TO our_PRP$ approach_NN ._.
+Recently_RB ,_, several_JJ subspace_NN clustering_NN algorithms_VBZ =_JJ -_: =[_NN 4_CD ,_, 2_CD ,_, 14_CD ,_, 17_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: were_VBD proposed_VBN to_TO find_VB clusters_NNS in_IN axis-parallel_JJ projections_NNS of_IN the_DT data_NNS space_NN ._.
+These_DT algorithms_NNS are_VBP not_RB able_JJ to_TO capture_VB local_JJ data_NNS correlations_NNS and_CC find_VB clusters_NNS of_IN correlated_JJ objects_NNS since_IN the_DT princ_NN
+ed_VBN by_IN a_DT set_NN of_IN Eigenvectors_NNS ._.
+The_DT number_NN of_IN clusters_NNS k_NN and_CC the_DT average_JJ dimensionality_NN l_NN of_IN the_DT correlation_NN clusters_NNS are_VBP the_DT input_NN parameters_NNS of_IN ORCLUS_NN ._.
+In_IN -LRB-_-LRB- 6_CD -RRB-_-RRB- the_DT algorithm_NN 4C_NN ,_, a_DT combination_NN of_IN DBSCAN_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: and_CC PCA_NNP ,_, is_VBZ presented_VBN to_TO find_VB correlation_NN clusters_NNS ._.
+The_DT user_NN must_MD specify_VB several_JJ parameters_NNS ,_, including_VBG :_: ε_NN and_CC μ_NN ,_, defining_VBG minimum_JJ density_NN of_IN a_DT cluster_NN ,_, a_DT threshold_JJ δ_NN to_TO decide_VB which_WDT principal_NN axes_VBZ o_NN
+stick_NN to_TO certain_JJ thresholds_NNS ,_, reflecting_VBG the_DT boundaries_NNS of_IN halfspaces_NNS ._.
+2.3_CD Regression_NN Analysis_NN A_NN task_NN very_RB similar_JJ to_TO the_DT one_NN tackled_VBN in_IN this_DT paper_NN is_VBZ linear_JJ and_CC multiple_JJ regression_NN analysis_NN -LRB-_-LRB- e.g._FW cf._VBP =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: for_IN an_DT overview_NN -RRB-_-RRB- ._.
+The_DT general_JJ purpose_NN of_IN linear_JJ regression_NN is_VBZ to_TO learn_VB a_DT linear_JJ relationship_NN between_IN a_DT ``_`` predictor_NN ''_'' variable_NN and_CC a_DT ``_`` response_NN ''_'' variable_NN ._.
+Multiple_JJ regression_NN extends_VBZ this_DT task_NN by_IN allowin_NN
+ithm_NN will_MD be_VB possible_JJ ._.
+The_DT decision_NN for_IN a_DT specific_JJ clustering_NN algorithm_NN will_MD also_RB determine_VB whether_IN or_CC not_RB a_DT data_NN object_NN may_MD belong_VB to_TO several_JJ clusters_NNS simultaneously_RB ._.
+In_IN our_PRP$ experiments_NNS we_PRP use_VBP COPAC_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT new_JJ correlation_NN clustering_NN algorithm_NN that_WDT is_VBZ shown_VBN to_TO improve_VB over_IN 4C_NN as_RB well_RB as_IN ORCLUS_FW w.r.t._FW efficiency_NN ,_, effectivity_NN ,_, and_CC robustness_NN ._.
+2_CD ._.
+For_IN each_DT correlation_NN cluster_NN Ci_NNP ⊂_NNP Dfound_NNP in_IN the_DT previous_JJ s_NN
+._.
+Pattern-based_JJ clustering_NN methods_NNS -LRB-_-LRB- 24_CD ,_, 21_CD ,_, 16_CD ,_, 15_CD -RRB-_-RRB- aim_NN at_IN finding_VBG groups_NNS of_IN objects_NNS that_WDT exhibit_VBP a_DT similar_JJ trend_NN in_IN a_DT subset_NN of_IN attributes_NNS ._.
+This_DT problem_NN is_VBZ also_RB known_VBN as_IN coclustering_NN or_CC biclustering_NN =_JJ -_: =[_NN 12_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN contrast_NN to_TO correlation_NN clustering_NN ,_, pattern-based_JJ clustering_NN limits_VBZ itself_PRP to_TO a_DT very_RB special_JJ form_NN of_IN correlation_NN where_WRB all_DT attributes_NNS are_VBP positively_RB correlated_VBN ._.
+It_PRP does_VBZ not_RB include_VB negative_JJ corre_NN
+._.
+Pattern-based_JJ clustering_NN methods_NNS -LRB-_-LRB- 24_CD ,_, 21_CD ,_, 16_CD ,_, 15_CD -RRB-_-RRB- aim_NN at_IN finding_VBG groups_NNS of_IN objects_NNS that_WDT exhibit_VBP a_DT similar_JJ trend_NN in_IN a_DT subset_NN of_IN attributes_NNS ._.
+This_DT problem_NN is_VBZ also_RB known_VBN as_IN coclustering_NN or_CC biclustering_NN =_JJ -_: =[_NN 12_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN contrast_NN to_TO correlation_NN clustering_NN ,_, pattern-based_JJ clustering_NN limits_VBZ itself_PRP to_TO a_DT very_RB special_JJ form_NN of_IN correlation_NN where_WRB all_DT attributes_NNS are_VBP positively_RB correlated_VBN ._.
+It_PRP does_VBZ not_RB include_VB negative_JJ corre_NN
+gorithms_NNS are_VBP not_RB able_JJ to_TO capture_VB local_JJ data_NNS correlations_NNS and_CC find_VB clusters_NNS of_IN correlated_JJ objects_NNS since_IN the_DT principal_JJ axes_NNS of_IN correlated_JJ data_NNS are_VBP arbitrarily_RB oriented_VBN ._.
+Pattern-based_JJ clustering_NN methods_NNS =_JJ -_: =[_NN 24_CD ,_, 21_CD ,_, 16_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: aim_NN at_IN finding_VBG groups_NNS of_IN objects_NNS that_WDT exhibit_VBP a_DT similar_JJ trend_NN in_IN a_DT subset_NN of_IN attributes_NNS ._.
+This_DT problem_NN is_VBZ also_RB known_VBN as_IN coclustering_NN or_CC biclustering_NN -LRB-_-LRB- 12_CD ,_, 7_CD -RRB-_-RRB- ._.
+In_IN contrast_NN to_TO correlation_NN clustering_NN ,_, pat_NN

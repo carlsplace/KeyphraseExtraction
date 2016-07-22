@@ -1,0 +1,115 @@
+Critical_JJ event_NN prediction_NN for_IN proactive_JJ management_NN in_IN large-scale_JJ computer_NN clusters_NNS
+As_IN the_DT complexity_NN of_IN distributed_VBN computing_NN systems_NNS increases_NNS ,_, systems_NNS management_NN tasks_NNS require_VBP significantly_RB higher_JJR levels_NNS of_IN automation_NN ;_: examples_NNS include_VBP diagnosis_NN and_CC prediction_NN based_VBN on_IN real-time_JJ streams_NNS of_IN computer_NN events_NNS ,_, setting_VBG alarms_NNS ,_, and_CC performing_VBG continuous_JJ monitoring_NN ._.
+The_DT core_NN of_IN autonomic_JJ computing_NN ,_, a_DT recently_RB proposed_VBN initiative_NN towards_IN next-generation_JJ IT-systems_NNS capable_JJ of_IN `_`` self-healing_NN '_'' ,_, is_VBZ the_DT ability_NN to_TO analyze_VB data_NNS in_IN real-time_JJ and_CC to_TO predict_VB potential_JJ problems_NNS ._.
+The_DT goal_NN is_VBZ to_TO avoid_VB catastrophic_JJ failures_NNS through_IN prompt_JJ execution_NN of_IN remedial_JJ actions_NNS ._.
+This_DT paper_NN describes_VBZ an_DT attempt_NN to_TO build_VB a_DT proactive_JJ prediction_NN and_CC control_NN system_NN for_IN large_JJ clusters_NNS ._.
+We_PRP collected_VBD event_NN logs_NNS containing_VBG various_JJ system_NN reliability_NN ,_, availability_NN and_CC serviceability_NN -LRB-_-LRB- RAS_NN -RRB-_-RRB- events_NNS ,_, and_CC system_NN activity_NN reports_NNS -LRB-_-LRB- SARs_NNS -RRB-_-RRB- from_IN a_DT 350-node_JJ cluster_NN system_NN for_IN a_DT period_NN of_IN one_CD year_NN ._.
+The_DT `_`` raw_JJ '_'' system_NN health_NN measurements_NNS contain_VBP a_DT great_JJ deal_NN of_IN redundant_JJ event_NN data_NNS ,_, which_WDT is_VBZ either_RB repetitive_JJ in_IN nature_NN or_CC misaligned_VBN with_IN respect_NN to_TO time_NN ._.
+We_PRP applied_VBD a_DT filtering_VBG technique_NN and_CC modeled_VBD the_DT data_NNS into_IN a_DT set_NN of_IN primary_JJ and_CC derived_VBN variables_NNS ._.
+These_DT variables_NNS used_VBD probabilistic_JJ networks_NNS for_IN establishing_VBG event_NN correlations_NNS through_IN prediction_NN algorithms_NNS ._.
+We_PRP also_RB evaluated_VBD the_DT role_NN of_IN time-series_JJ methods_NNS ,_, rule-based_JJ classification_NN algorithms_NNS and_CC Bayesian_JJ network_NN models_NNS in_IN event_NN prediction_NN ._.
+Based_VBN on_IN historical_JJ data_NNS ,_, our_PRP$ results_NNS suggest_VBP that_IN it_PRP is_VBZ feasible_JJ to_TO predict_VB system_NN performance_NN parameters_NNS -LRB-_-LRB- SARs_NNS -RRB-_-RRB- with_IN a_DT high_JJ degree_NN of_IN accuracy_NN using_VBG time-series_JJ models_NNS ._.
+Rule-based_JJ classification_NN techniques_NNS can_MD be_VB used_VBN to_TO extract_VB machine-event_JJ signatures_NNS to_TO predict_VB critical_JJ events_NNS with_IN up_RB to_TO 70_CD %_NN accuracy_NN ._.
+s_NNS are_VBP used_VBN to_TO decide_VB whether_IN the_DT observed_VBN behavior_NN is_VBZ ``_`` abnormal_JJ ''_'' or_CC not_RB ._.
+In_IN the_DT context_NN of_IN software_NN appliances_NNS and_CC computer_NN systems_NNS ,_, statistical_JJ evaluations_NNS of_IN variable_JJ distributions_NNS have_VBP been_VBN used_VBN ,_, =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+Most_JJS of_IN this_DT work_NN ,_, however_RB ,_, makes_VBZ use_NN of_IN static_JJ models_NNS rather_RB than_IN time_NN series_NN models_NNS ._.
+Among_IN the_DT few_JJ publications_NNS that_WDT consider_VBP time_NN series_NN models_NNS are_VBP Soule_NNP et_FW al._FW in_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, -LRB-_-LRB-
+while_IN retaining_VBG execution_NN of_IN the_DT application_NN as_IN a_DT whole_NN ._.
+A_DT migrationcan_NN be_VB triggered_VBN by_IN an_DT abnormal_JJ event_NN of_IN system_NN health_NN status_NN such_JJ as_IN reported_VBN by_IN IPMI_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- or_CC other_JJ failure_NN prediction_NN models_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ design_NN also_RB enables_VBZ direct_JJ user_NN intervention_NN to_TO trigger_VB a_DT migration_NN ,_, such_JJ as_IN for_IN loadbalancing_NN or_CC system_NN maintenance_NN purposes_NNS ._.
+Once_RB a_DT migration_NN is_VBZ triggered_VBN ,_, coordinated_VBN actions_NNS are_VBP taken_VBN by_IN all_DT
+quiring_VBG the_DT information_NN through_IN self-monitoring_NN ._.
+Distributed_VBN computing_NN systems_NNS are_VBP continuously_RB increasing_VBG in_IN complexity_NN ,_, and_CC system_NN management_NN tasks_NNS require_VBP significantly_RB higher_JJR levels_NNS of_IN automation_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Examples_NNS include_VBP diagnosis_NN and_CC prediction_NN approaches_NNS ,_, based_VBN on_IN real-time_JJ streams_NNS of_IN computer_NN events_NNS ,_, setting_VBG alarms_NNS ,_, system_NN faults_NNS ,_, and_CC performing_VBG continuous_JJ monitoring_NN ._.
+The_DT core_NN of_IN autonomic_JJ comput_NN
+1_CD The_DT feasibility_NN of_IN health_NN monitoring_NN at_IN various_JJ levels_NNS has_VBZ recently_RB been_VBN demonstrated_VBN for_IN temperature-aware_JJ monitoring_NN ,_, e.g._FW ,_, by_IN using_VBG ACPI_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, and_CC ,_, more_RBR generically_RB ,_, by_IN critical-event_JJ prediction_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Particularly_RB in_IN systems_NNS with_IN thousands_NNS of_IN processors_NNS ,_, fault_NN handling_NN becomes_VBZ imperative_JJ ,_, yet_RB approaches_VBZ range_NN from_IN application-level_NN and_CC runtime-level_NN to_TO the_DT level_NN of_IN OS_NN schedulers_NNS -LRB-_-LRB- 27_CD ,_, 28_CD ,_, 29_CD ,_, 30_CD -RRB-_-RRB- ._.
+is_VBZ provided_VBN at_IN the_DT process_NN level_NN ,_, thereby_RB encapsulating_VBG most_JJS of_IN the_DT process_NN context_NN ,_, including_VBG open_JJ file_NN descriptors_NNS ,_, which_WDT are_VBP beyond_IN the_DT MPI_NNP runtime_NN layer_NN ._.
+Proactive_NNP FT_NNP relies_VBZ on_IN failure_NN predictors_NNS =_JJ -_: =[_NN 29_CD ,_, 14_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, whose_WP$ accuracy_NN still_RB has_VBZ to_TO be_VB further_RB developed_VBN ._.
+Yet_RB ,_, reactive_JJ FT_NNP is_VBZ still_RB a_DT requirement_NN for_IN HPC_NN systems_NNS ,_, and_CC our_PRP$ solution_NN improves_VBZ reactive_JJ FT_NNP ,_, optionally_RB complemented_VBN by_IN proactive_JJ support_NN ,_, at_IN red_JJ
+es_NNS ._.
+The_DT feasibility_NN of_IN health_NN monitoring_NN at_IN various_JJ levels_NNS has_VBZ recently_RB been_VBN demonstrated_VBN for_IN temperatureaware_NN monitoring_NN ,_, e.g._FW ,_, by_IN using_VBG ACPI_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, and_CC ,_, more_RBR generically_RB ,_, by_IN critical-event_JJ prediction_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Particularly_RB in_IN systems_NNS with_IN thousands_NNS of_IN processors_NNS ,_, fault_NN handling_NN becomes_VBZ imperative_JJ ,_, yet_RB approaches_VBZ range_NN from_IN application-level_NN and_CC runtime-level_NN to_TO the_DT level_NN of_IN OS_NN schedulers_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_,
+t_NN tail_NN ._.
+For_IN most_JJS other_JJ kinds_NNS of_IN failures_NNS ,_, however_RB ,_, this_DT independence_NN is_VBZ not_RB an_DT appropriate_JJ assumption_NN ._.
+Failure_NN prediction_NN based_VBN on_IN time_NN interdependence_NN of_IN events_NNS has_VBZ been_VBN the_DT subject_NN of_IN much_JJ research_NN =_JJ -_: =[_NN 28_CD ,_, 30_CD ,_, 37_CD ,_, 54_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC it_PRP has_VBZ been_VBN shown_VBN that_IN such_JJ prediction_NN can_MD be_VB a_DT potent_JJ resource_NN for_IN improving_VBG job_NN scheduling_NN -LRB-_-LRB- 43_CD -RRB-_-RRB- ,_, quality_NN of_IN service_NN -LRB-_-LRB- 42_CD -RRB-_-RRB- ,_, and_CC checkpointing_NN -LRB-_-LRB- 40_CD ,_, 41_CD -RRB-_-RRB- ._.
+We_PRP expected_VBD CPU_NNP clocking_NN alerts_VBZ ,_, for_IN insta_NN
+addition_NN to_TO examining_VBG just_RB the_DT inter-failure_JJ times_NNS ,_, a_DT more_RBR careful_JJ examination_NN of_IN all_DT system_NN events_NNS can_MD provide_VB better_JJR insights\/predictions_NNS ._.
+Consequently_RB ,_, several_JJ studies_NNS -LRB-_-LRB- 6_CD ,_, 29_CD ,_, 28_CD -RRB-_-RRB- ,_, including_VBG ours_PRP =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, have_VBP examined_VBN system_NN logs_NNS either_CC in_IN an_DT online_JJ or_CC offline_JJ fashion_NN ,_, to_TO identify_VB causal_JJ events_NNS that_WDT lead_VBP to_TO failures_NNS ._.
+The_DT imposed_VBN workload_NN can_MD also_RB have_VB a_DT high_JJ correlation_NN on_IN the_DT failure_NN properties_NNS of_IN
+erformance_NN penalties_NNS ._.
+Unfortunately_RB ,_, the_DT probabilistic_JJ likelihood_NN of_IN job_NN failure_NN increases_NNS with_IN the_DT number_NN of_IN components_NNS on_IN which_WDT the_DT job_NN is_VBZ running_VBG ._.
+Indeed_RB ,_, it_PRP is_VBZ likely_JJ that_IN failures_NNS are_VBP correlated_VBN =_JJ -_: =[_NN 17_CD ,_, 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, hence_RB the_DT probability_NN of_IN failure_NN grows_VBZ superlinearly_RB with_IN the_DT number_NN of_IN nodes_NNS ._.
+Therefore_RB ,_, massively_RB parallel_JJ applications_NNS are_VBP expected_VBN to_TO fail_VB more_RBR frequently_RB than_IN single-processor_JJ jobs_NNS with_IN the_DT sam_NN
+ntly_RB ,_, there_EX has_VBZ been_VBN lots_NNS of_IN research_NN on_IN using_VBG data_NNS mining_NN and_CC machine_NN learning_NN techniques_NNS for_IN system_NN research_NN such_JJ as_IN software_NN bug_NN detection_NN ,_, mis-configuration_NN detection_NN ,_, Internet_NN service_NN management_NN =_JJ -_: =[_NN 1,2,5,6,8,29,30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Analysis_NN of_IN traffic_NN distribution_NN is_VBZ the_DT most_RBS effective_JJ way_NN to_TO detect_VB the_DT anomalies_NNS and_CC classifying_VBG the_DT network_NN anomalies_NNS -LRB-_-LRB- 12,20,22_CD -RRB-_-RRB- ._.
+The_DT intuition_NN behind_IN this_DT is_VBZ that_IN many_JJ important_JJ kinds_NNS of_IN traffic_NN
+Wayne_NNP State_NNP Grid_NNP ._.
+2.2.1_CD Temporal_JJ Clustering_NN Studies_NNS in_IN -LRB-_-LRB- 17_CD ,_, 15_CD ,_, 12_CD -RRB-_-RRB- found_VBD the_DT skewness_NN of_IN failure_NN distribution_NN in_IN time_NN domain_NN ._.
+Multiple_JJ failures_NNS may_MD occur_VB in_IN a_DT short_JJ time_NN period_NN ._.
+Liang_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- and_CC Sahoo_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: used_VBD a_DT fix_NN time_NN window_NN to_TO classify_VB failure_NN patterns_NNS for_IN all_DT types_NNS of_IN failures_NNS ._.
+In_IN reality_NN ,_, the_DT time-between-failure_JJ -LRB-_-LRB- tb_FW f_FW -RRB-_-RRB- may_MD follow_VB various_JJ distributions_NNS for_IN different_JJ types_NNS of_IN failures_NNS ._.
+We_PRP profil_VBP
+1_CD The_DT feasibility_NN of_IN health_NN monitoring_NN at_IN various_JJ levels_NNS has_VBZ recently_RB been_VBN demonstrated_VBN for_IN temperature-aware_JJ monitoring_NN ,_, e.g._FW ,_, by_IN using_VBG ACPI_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, and_CC ,_, more_RBR generically_RB ,_, by_IN critical-event_JJ prediction_NN =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Particularly_RB in_IN systems_NNS with_IN thousands_NNS of_IN processors_NNS ,_, such_JJ as_IN BG\/L_NN ,_, fault_NN handling_NN becomes_VBZ imperative_JJ ,_, yet_RB approaches_VBZ range_NN from_IN application-level_NN and_CC runtime-level_NN to_TO the_DT level_NN of_IN operating_NN system_NN
+tain_NN temperature_NN sensors_NNS ,_, which_WDT can_MD be_VB accessed_VBN via_IN interfaces_NNS like_IN ACPI_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Meanwhile_RB ,_, recent_JJ studies_NNS have_VBP demonstrated_VBN the_DT feasibility_NN of_IN predicting_VBG the_DT occurrence_NN of_IN faults_NNS in_IN large-scale_JJ systems_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: and_CC of_IN using_VBG these_DT predictions_NNS in_IN system_NN management_NN strategies_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+Hence_RB ,_, it_PRP is_VBZ possible_JJ ,_, under_IN current_JJ technology_NN ,_, to_TO act_VB appropriately_RB before_IN a_DT system_NN fault_NN becomes_VBZ catastrophic_JJ to_TO an_DT application_NN ._.
+imulator_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- there_EX are_VBP very_RB few_JJ research_NN efforts_NNS considering_VBG job_NN scheduling_NN in_IN presence_NN of_IN system_NN failures_NNS ._.
+Recently_RB ,_, a_DT number_NN of_IN statistical_JJ and_CC machine_NN learning_VBG based_VBN failure_NN prediction_NN techniques_NNS =_JJ -_: =[_NN 17_CD ,_, 18_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN proposed_VBN for_IN proactive_JJ system_NN management_NN ._.
+Since_IN job_NN scheduling_NN and_CC job_NN scheduling_NN algorithms_NNS play_VBP an_DT important_JJ role_NN in_IN evaluating_VBG the_DT system_NN performance_NN -LRB-_-LRB- 6_CD ,_, 22_CD -RRB-_-RRB- ,_, within_IN this_DT paper_NN we_PRP extend_VBP
+he_PRP same_JJ node_NN ID_NN or_CC same_JJ event_NN type_NN -RRB-_-RRB- ,_, are_VBP considered_VBN as_IN derived_VBN variables_NNS ._.
+More_JJR details_NNS of_IN the_DT data_NNS collection_NN and_CC filtering_VBG the_DT data_NNS to_TO establish_VB the_DT distinct_JJ series_NN of_IN events_NNS are_VBP discussed_VBN elsewhere_RB =_JJ -_: =[_NN 5_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+3_CD AI_NN Algorithms_NNS and_CC Cluster_NN System_NN RAS_NN A_NN number_NN of_IN time-series_NNS and_CC belief-network_JJ algorithms_NNS are_VBP available_JJ in_IN the_DT literature_NN applicable_JJ to_TO RAS_NN event_NN analysis_NN ._.
+We_PRP confine_VBP our_PRP$ analysis_NN to_TO three_CD types_NNS
+WORK_VB A_DT recent_JJ spate_NN of_IN promising_JJ initial_JJ results_NNS has_VBZ fuelled_VBN interest_NN in_IN applying_VBG data_NNS mining_NN and_CC machine_NN learning_NN methods_NNS to_TO forecast_VB ,_, identify_VB and_CC localize_VB system_NN failures_NNS and_CC performance_NN problems_NNS =_JJ -_: =[_NN 10_CD ,_, 21_CD ,_, 14_CD ,_, 2_CD ,_, 4_CD ,_, 1_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Probabilistic_JJ and_CC machine-learning-based_JJ models_NNS have_VBP been_VBN successfully_RB used_VBN in_IN diagnosis_NN and_CC planning_NN tasks_NNS ,_, such_JJ as_IN performance_NN debugging_NN -LRB-_-LRB- 2_CD ,_, 1_CD -RRB-_-RRB- ,_, capacity_NN planning_NN ,_, system_NN tuning_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, attributing_VBG
+tem_NN ._.
+Furthermore_RB ,_, the_DT present_JJ trends_NNS in_IN denser_JJR integration_NN of_IN semiconductor_NN circuits_NNS ,_, lower_JJR power_NN consumption_NN ,_, and_CC utilization_NN of_IN COTS_NNP components_NNS also_RB lead_VBP to_TO increasing_VBG occurrence_NN of_IN system_NN failures_NNS =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT meantime_NN ,_, many_JJ scientific_JJ applications_NNS are_VBP designed_VBN to_TO run_VB for_IN days_NNS ,_, weeks_NNS ,_, or_CC longer_RBR until_IN completion_NN ._.
+Therefore_RB ,_, it_PRP becomes_VBZ difficult_JJ or_CC impossible_JJ for_IN long-running_JJ simulations_NNS to_TO complete_VB
+1_CD The_DT feasibility_NN of_IN health_NN monitoring_NN at_IN various_JJ levels_NNS has_VBZ recently_RB been_VBN demonstrated_VBN for_IN temperature-aware_JJ monitoring_NN ,_, e.g._FW ,_, by_IN using_VBG ACPI_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, and_CC ,_, more_RBR generically_RB ,_, by_IN critical-event_JJ prediction_NN =_JJ -_: =[_NN 43_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Particularly_RB in_IN systems_NNS with_IN thousands_NNS of_IN processors_NNS ,_, such_JJ as_IN BG\/L_NN ,_, fault_NN handling_NN becomes_VBZ imperative_JJ ,_, yet_RB approaches_VBZ range_NN from_IN application-level_NN and_CC runtime-level_NN to_TO the_DT level_NN of_IN operating_NN system_NN
+modeling_NN ._.
+As_IN applications_NNS and_CC the_DT underlying_VBG platforms_NNS scale_NN to_TO this_DT level_NN ,_, failure_NN occurrences_NNS have_VBP become_VBN a_DT norm_NN ,_, rather_RB than_IN an_DT exception_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Failures_NNS can_MD be_VB broadly_RB categorized_VBN into_IN two_CD classes_NNS :_: software_NN failures_NNS and_CC hardware_NN failures_NNS ._.
+Software_NNP failures_NNS can_MD be_VB further_RB categorized_VBN into_IN application_NN software_NN failures_NNS such_JJ as_IN bugs_NNS in_IN applica_NN
+system_NN ._.
+Failures_NNS under_IN this_DT model_NN are_VBP unpredictable_JJ and_CC nodes_NNS are_VBP treated_VBN as_IN being_VBG equivalent_JJ ._.
+Recent_JJ studies_NNS of_IN large-scale_JJ systems_NNS ,_, however_RB ,_, have_VBP revealed_VBN that_IN these_DT assumptions_NNS may_MD not_RB be_VB correct_JJ =_JJ -_: =[_NN 26_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT studies_NNS harvested_VBD failures_NNS from_IN both_CC large-scale_JJ clusters_NNS of_IN commodity_NN machines_NNS ,_, as_RB well_RB as_IN from_IN a_DT BlueGene\/L_NN prototype_NN ._.
+Failures_NNS were_VBD found_VBN to_TO be_VB 1_CD ._.
+Not_RB independent_JJ ._.
+Failures_NNS are_VBP dependent_JJ on_IN
+verall_NN utilization_NN ._.
+Users_NNS see_VBP latency_NN ,_, not_RB throughput_NN ._.
+In_IN practice_NN ,_, deadlines_NNS are_VBP difficult_JJ to_TO meet_VB ,_, in_IN part_NN due_JJ to_TO the_DT presence_NN of_IN hardware_NN and_CC software_NN failures_NNS ._.
+Besides_IN the_DT obvious_JJ performance_NN hit_NN =_JJ -_: =[_NN 16_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, failures_NNS often_RB lead_VBP to_TO broken_JJ promises_NNS ._.
+Therefore_RB ,_, this_DT paper_NN pushes_VBZ the_DT following_JJ observation_NN :_: A_DT system_NN that_WDT makes_VBZ unqualified_JJ performance_NN guarantees_NNS is_VBZ lying_VBG ._.
+Any_DT QoS_NN promise_NN must_MD be_VB accompanied_VBN e_SYM
+luding_VBG measuring_VBG the_DT frequency_NN with_IN which_WDT set-points_NNS are_VBP exceeded_VBN ,_, etc._NN ._.
+In_IN more_RBR recent_JJ work_NN ,_, normalcy_NN is_VBZ defined_VBN via_IN the_DT use_NN of_IN statistics_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, principal_JJ component_NN analysis_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, and_CC time_NN series_NN analysis_NN =_JJ -_: =[_NN 2_CD ,_, 6_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN CfEnvD_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, the_DT experimental_JJ monitoring_NN environment_NN of_IN CFengine_NN -LRB-_-LRB- 3_CD ,_, 4_CD ,_, 5_CD ,_, 9_CD -RRB-_-RRB- ,_, normalcy_NN is_VBZ defined_VBN via_IN percentage_NN thresholds_NNS relative_JJ to_TO average_NN observed_VBD behavior_NN over_IN time_NN ._.
+These_DT are_VBP the_DT first_JJ step_NN
+d_NN performance_NN analysis_NN ._.
+124_CD types_NNS of_IN performance_NN metrics_NNS are_VBP measured_VBN on_IN a_DT sample_NN server_NN and_CC the_DT induced_VBN model_NN is_VBZ used_VBN for_IN prediction_NN of_IN Service_NNP Level_NNP Objective_NNP violation_NN ._.
+sResearchers_NNS at_IN IBM_NNP Research_NNP =_SYM -_: =[_NN 21_CD ,_, 22_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: apply_VB temporal_JJ data_NNS mining_NN and_CC time_NN series_NN analysis_NN to_TO predict_VB critical_JJ events_NNS in_IN computer_NN system_NN such_JJ as_IN high_JJ CPU_NNP utilization_NN or_CC imminent_JJ router_NN failure_NN ._.
+Liblit_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- proposes_VBZ a_DT sampling_NN infrastructu_NN
+exity_NN of_IN high_JJ performance_NN computing_NN -LRB-_-LRB- HPC_NN -RRB-_-RRB- systems_NNS continue_VBP to_TO grow_VB ,_, research_NN on_IN failure_NN management_NN has_VBZ recently_RB shifted_VBN onto_IN failure_NN prediction_NN and_CC related_JJ proactive_JJ autonomic_JJ management_NN technologies_NNS =_JJ -_: =[_NN 29_CD ,_, 23_CD ,_, 41_CD ,_, 25_CD ,_, 22_CD ,_, 27_CD ,_, 13_CD ,_, 11_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Failure_NN prediction_NN is_VBZ a_DT crucial_JJ technique_NN for_IN understanding_VBG emergent_JJ ,_, system-wide_JJ phenomena_NNS and_CC self-managing_JJ resource_NN burdens_NNS ._.
+Based_VBN on_IN the_DT analysis_NN of_IN failure_NN data_NNS in_IN a_DT system_NN ,_, a_DT failure_NN predictor_NN
+t_NN tail_NN ._.
+For_IN most_JJS other_JJ kinds_NNS of_IN failures_NNS ,_, however_RB ,_, this_DT independence_NN is_VBZ not_RB an_DT appropriate_JJ assumption_NN ._.
+Failure_NN prediction_NN based_VBN on_IN time_NN interdependence_NN of_IN events_NNS has_VBZ been_VBN the_DT subject_NN of_IN much_JJ research_NN =_JJ -_: =[_NN 9_CD ,_, 11_CD ,_, 13_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC it_PRP has_VBZ been_VBN shown_VBN that_IN such_JJ prediction_NN can_MD be_VB a_DT potent_JJ resource_NN for_IN improving_VBG job_NN scheduling_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, QoS_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, and_CC checkpointing_NN -LRB-_-LRB- 14_CD ,_, 15_CD -RRB-_-RRB- ._.
+We_PRP expected_VBD CPU_NNP clocking_NN alerts_VBZ ,_, for_IN instance_NN ,_, to_TO be_VB simi_VBN
+time_NN decisions_NNS about_IN whether_IN to_TO skip_VB or_CC grant_VB a_DT given_VBN checkpoint_NN ,_, the_DT system_NN must_MD have_VB a_DT mechanism_NN for_IN estimating_NN pf_NN ,_, the_DT probability_NN that_IN a_DT failure_NN occurs_VBZ before_IN fi_FW +1_FW ._.
+Such_JJ event_NN prediction_NN systems_NNS =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN demonstrated_VBN to_TO be_VB capable_JJ of_IN accuracies_NNS near_IN 70_CD %_NN ._.
+Even_RB without_IN statistical_JJ techniques_NNS ,_, event_NN prediction_NN can_MD be_VB achieved_VBN with_IN great_JJ accuracy_NN ._.
+For_IN example_NN ,_, scheduled_VBN maintenance_NN events_NNS can_MD b_SYM
+ging_NN ._.
+Another_DT important_JJ obstacle_NN is_VBZ the_DT lack_NN of_IN real-world_JJ data_NNS and_CC consequently_RB the_DT lack_NN of_IN the_DT thorough_JJ understanding_NN of_IN their_PRP$ properties_NNS ._.
+Despite_IN these_DT challenges_NNS ,_, there_EX have_VBP been_VBN several_JJ attempts_NNS =_JJ -_: =[_NN 11_CD ,_, 8_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: to_TO derive_VB realistic_JJ failure_NN prediction_NN models_NNS ._.
+While_IN these_DT studies_NNS have_VBP demonstrated_VBN reasonable_JJ prediction_NN accuracy_NN ,_, they_PRP failed_VBD to_TO prove_VB that_DT their_PRP$ prediction_NN methodology_NN is_VBZ of_IN much_JJ practical_JJ use_NN ._.
+F_NN
+1_CD The_DT feasibility_NN of_IN health_NN monitoring_NN at_IN various_JJ levels_NNS has_VBZ recently_RB been_VBN demonstrated_VBN for_IN temperature-aware_JJ monitoring_NN ,_, e.g._FW ,_, by_IN using_VBG ACPI_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, and_CC ,_, more_RBR generically_RB ,_, by_IN critical-event_JJ prediction_NN =_JJ -_: =[_NN 40_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Particularly_RB in_IN systems_NNS with_IN thousands_NNS of_IN processors_NNS ,_, fault_NN handling_NN becomes_VBZ imperative_JJ ,_, yet_RB approaches_VBZ range_NN from_IN application-level_NN and_CC runtime-level_NN to_TO the_DT level_NN of_IN OS_NN schedulers_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 3_CD

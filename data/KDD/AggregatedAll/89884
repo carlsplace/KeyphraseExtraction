@@ -1,0 +1,516 @@
+Efficiently_RB mining_NN frequent_JJ trees_NNS in_IN a_DT forest_NN
+Mining_NNP frequent_JJ trees_NNS is_VBZ very_RB useful_JJ in_IN domains_NNS like_IN bioinformatics_NNS ,_, web_NN mining_NN ,_, mining_NN semistructured_VBD data_NNS ,_, and_CC so_RB on_RB ._.
+We_PRP formulate_VBP the_DT problem_NN of_IN mining_NN -LRB-_-LRB- embedded_JJ -RRB-_-RRB- subtrees_NNS in_IN a_DT forest_NN of_IN rooted_JJ ,_, labeled_JJ ,_, and_CC ordered_VBN trees_NNS ._.
+We_PRP present_VBP TREEMINER_NNP ,_, a_DT novel_JJ algorithm_NN to_TO discover_VB all_DT frequent_JJ subtrees_NNS in_IN a_DT forest_NN ,_, using_VBG a_DT new_JJ data_NN structure_NN called_VBD scope-list_JJ ._.
+We_PRP contrast_VBP TREEMINER_NN with_IN a_DT pattern_NN matching_NN tree_NN mining_NN algorithm_NN -LRB-_-LRB- PATTERNMATCHER_NN -RRB-_-RRB- ._.
+We_PRP conduct_VBP detailed_JJ experiments_NNS to_TO test_VB the_DT performance_NN and_CC scalability_NN of_IN these_DT methods_NNS ._.
+We_PRP find_VBP that_IN TREEMINER_NN outperforms_VBZ the_DT pattern_NN matching_NN approach_NN by_IN a_DT factor_NN of_IN 4_CD to_TO 20_CD ,_, and_CC has_VBZ good_JJ scaleup_NN properties_NNS ._.
+We_PRP also_RB present_VBP an_DT application_NN of_IN tree_NN mining_NN to_TO analyze_VB real_JJ web_NN logs_NNS for_IN usage_NN patterns_NNS ._.
+epresentation_NN as_RB well_RB as_IN a_DT relevant_JJ support_NN for_IN data_NNS mining_NN ,_, as_IN some_DT properties_NNS can_MD be_VB used_VBN when_WRB generating_VBG candidates_NNS and_CC pruning_NN non_JJ frequent_JJ candidates_NNS ._.
+This_DT approach_NN is_VBZ compared_VBN to_TO existing_VBG works_NNS =_JJ -_: =[_NN 2_CD ,_, 7_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC we_PRP show_VBP its_PRP$ interest_NN through_IN experiments_NNS ._.
+This_DT paper_NN is_VBZ organized_VBN as_IN follows_VBZ ._.
+Section_NN 2_CD presents_VBZ related_JJ work_NN ._.
+Section_NN 3_CD presents_VBZ the_DT core_NN of_IN our_PRP$ proposition_NN defining_VBG a_DT new_JJ method_NN to_TO represent_VB tr_NN
+they_PRP can_MD be_VB used_VBN by_IN a_DT proxy_NN server_NN in_IN order_NN to_TO improve_VB access_NN to_TO pages_NNS ._.
+Recently_RB ,_, new_JJ approaches_NNS have_VBP been_VBN defined_VBN in_IN this_DT context_NN ._.
+Very_RB efficient_JJ approaches_NNS were_VBD proposed_VBN to_TO seek_VB such_JJ substructures_NNS =_JJ -_: =[_NN 4_CD ,_, 12_CD ,_, 18_CD ,_, 21_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Unfortunately_RB ,_, the_DT handled_VBN data_NNS are_VBP not_RB static_JJ because_IN new_JJ updates_NNS are_VBP constantly_RB carried_VBN out_RP ._.
+The_DT problem_NN of_IN keeping_VBG such_JJ substructures_NNS up_IN to_TO date_NN becomes_VBZ very_RB significant_JJ then_RB because_IN ,_, as_IN updates_NNS
+s_NN one_CD of_IN the_DT most_RBS promising_JJ approaches_NNS to_TO knowledge_NN discovery_NN from_IN such_JJ weakly_JJ structured_JJ datasets_NNS ._.
+The_DT following_JJ topics_NNS have_VBP been_VBN extensively_RB studied_VBN for_IN the_DT last_JJ few_JJ years_NNS :_: frequent_JJ subgraph_JJ mining_NN =_JJ -_: =[_NN 6_CD ,_, 12_CD ,_, 17_CD ,_, 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, maximal_JJ -LRB-_-LRB- closed_JJ -RRB-_-RRB- subgraph_JJ mining_NN -LRB-_-LRB- 3_CD ,_, 9_CD ,_, 20_CD ,_, 25_CD -RRB-_-RRB- and_CC combination_NN with_IN machine_NN learning_NN -LRB-_-LRB- 21_CD ,_, 28_CD -RRB-_-RRB- ._.
+See_VB surveys_NNS ,_, e.g._FW -LRB-_-LRB- 8_CD ,_, 24_CD -RRB-_-RRB- ,_, for_IN the_DT overviews_NNS ._.
+The_DT class_NN of_IN geometric_JJ graphs_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP address_VBP
+rd_NN and_CC the_DT other_JJ is_VBZ a_DT node_NN for_IN a_DT target_NN text_NN ._.
+This_DT pattern_NN DOM-tree_NN is_VBZ similar_JJ to_TO that_DT used_VBN by_IN TreeWrapper_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC Ltagpath_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, but_CC our_PRP$ pattern_NN matching_NN allows_VBZ elastic_JJ matching_NN as_IN considered_VBN by_IN Zaki_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: in_IN the_DT context_NN of_IN frequent-tree_JJ mining_NN ,_, that_DT is_VBZ ,_, two_CD nodes_NNS of_IN parent-child_JJ relation_NN in_IN a_DT pattern_NN tree_NN can_MD also_RB match_VB such_JJ two_CD nodes_NNS as_IN the_DT relation_NN between_IN them_PRP is_VBZ not_RB parentchild_JJ but_CC ancestor-descen_JJ
+ee_NN discovery_NN ._.
+Asai_NNP et_FW al._FW -LRB-_-LRB- 2_CD -RRB-_-RRB- proposed_VBD the_DT FREQT_NNP algorithm_NN to_TO find_VB all_DT frequent_JJ ordered_VBN subtrees_NNS by_IN incrementally_RB enumerating_VBG ordered_VBN trees_NNS and_CC computing_VBG their_PRP$ occurrences_NNS level_NN by_IN level_NN ._.
+Zaki_NNP et_FW al._FW =_SYM -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: independently_RB proposed_VBD a_DT similar_JJ algorithm_NN ,_, TREEMINER_NN ,_, with_IN a_DT key_JJ difference_NN that_IN Zaki_NNP 's_POS method_NN was_VBD designed_VBN to_TO find_VB all_DT frequent_JJ embedded_JJ ordered_VBN subtrees_NNS ,_, that_DT is_VBZ ,_, subtrees_NNS induced_VBD not_RB only_RB from_IN th_DT
+rees_NNS ._.
+One_CD pioneering_JJ work_NN is_VBZ Asai_NNP et_FW al._FW 's_POS Freqt_NN algorithm_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, which_WDT discovers_VBZ all_DT frequent_JJ subtrees_NNS with_IN the_DT preservation_NN of_IN the_DT order_NN of_IN the_DT siblings_NNS ._.
+The_DT other_JJ pioneering_JJ work_NN is_VBZ Zaki_NNP 's_POS TreeMiner_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT uses_VBZ a_DT more_RBR relaxed_VBN inclusion_NN definition_NN where_WRB the_DT order_NN still_RB has_VBZ to_TO be_VB preserved_VBN ,_, but_CC instead_RB of_IN the_DT parent_NN relationship_NN ,_, the_DT mapping_NN has_VBZ only_RB to_TO preserve_VB the_DT ancestor_NN relationship_NN ._.
+Both_DT of_IN
+tion_NN analysis_NN to_TO trees_NNS and_CC other_JJ graph-like_JJ structures_NNS ._.
+Such_JJ analysis_NN includes_VBZ the_DT work_NN by_IN Inokuchi_NNP et_FW al._FW -LRB-_-LRB- 38_CD -RRB-_-RRB- ,_, Kuramochi_NNP and_CC Karypis_NNP -LRB-_-LRB- 42_CD -RRB-_-RRB- ,_, Yan_NN and_CC Han_NN -LRB-_-LRB- 89_CD -RRB-_-RRB- ,_, Parthasarathy_NNP and_CC Coatney_NNP -LRB-_-LRB- 58_CD -RRB-_-RRB- ,_, and_CC Zaki_NN =_JJ -_: =[_NN 93_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX has_VBZ also_RB been_VBN substantial_JJ research_NN to_TO extend_VB the_DT classical_JJ association_NN rule_NN formulation_NN to_TO non-asymmetric_JJ binary_JJ data_NNS such_JJ as_IN nominal_NN -LRB-_-LRB- 73_CD -RRB-_-RRB- ,_, ordinal_JJ -LRB-_-LRB- 48_CD -RRB-_-RRB- ,_, interval_NN -LRB-_-LRB- 51_CD -RRB-_-RRB- ,_, and_CC ratio_NN -LRB-_-LRB- 73,25,27,97_CD ,_,
+raphs_NNS ._.
+Vanetik_NNP et_FW al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- proposed_VBD an_DT Apriori_NNP approach_NN using_VBG paths_NNS as_IN building_NN blocks_NNS ._.
+Their_PRP$ later_JJ work_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- addressed_VBD partially_RB labeled_VBN graph_NN patterns_NNS ._.
+In_IN the_DT area_NN of_IN mining_NN frequent_JJ subtrees_NNS ,_, Zaki_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: developed_VBD an_DT algorithm_NN to_TO find_VB frequent_JJ subtrees_NNS in_IN a_DT forest_NN ._.
+Chi_NNP et_FW al._FW -LRB-_-LRB- 18_CD -RRB-_-RRB- presented_VBD an_DT index_NN technique_NN for_IN free_JJ trees_NNS and_CC applied_VBD it_PRP to_TO frequent_JJ subtree_NN mining_NN ._.
+All_DT these_DT techniques_NNS focus_VBP on_RP find_VB
+en_IN by_IN graph-mining_NN ,_, tree-mining_NN ,_, and_CC sequence-mining_NN approaches_NNS ,_, which_WDT specialize_VBP more_RBR general_JJ first-order_JJ mining_NN systems_NNS to_TO increasingly_RB problem-specific_JJ and_CC efficient_JJ techniques_NNS -LRB-_-LRB- Yan_NNP and_CC Han_NNP ,_, 2002_CD ;_: =_JJ -_: =_JJ Zaki_NNP ,_, 2002_CD -_: =_JJ -_: ;_: Li_NNP et_FW al._FW ,_, 1998_CD -RRB-_-RRB- ._.
+This_DT is_VBZ a_DT worthwhile_JJ direction_NN because_IN graphs_NNS ,_, trees_NNS and_CC sequences_NNS are_VBP -LRB-_-LRB- nested_JJ -RRB-_-RRB- subclasses_NNS of_IN general_JJ first-order_JJ representations_NNS that_WDT occur_VBP in_IN many_JJ application_NN areas_NNS ._.
+9.2_CD Future_JJ W_NN
+rmation_NN retrieval_NN ,_, data_NNS mining_NN and_CC XML_NN that_WDT touched_VBD upon_IN the_DT challenges_NNS of_IN extracting_VBG content_NN or_CC analyzing_NN document_NN structure_NN -LRB-_-LRB- 1_CD ,_, 2_CD -RRB-_-RRB- ._.
+There_EX are_VBP approaches_NNS of_IN mining_NN hierarchical_JJ trees_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC subtrees_VBZ =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, we_PRP find_VBP these_DT approaches_NNS of_IN limited_JJ help_NN in_IN the_DT context_NN of_IN word_NN processing_NN XML_NN standards_NNS that_WDT encode_VBP common_JJ business_NN documents_NNS ._.
+More_JJR details_NNS on_IN the_DT above_JJ issues_NNS can_MD be_VB found_VBN in_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+6.1_CD Ack_NN
+page_NN ._.
+A_DT method_NN for_IN automatically_RB recognizing_VBG the_DT structures_NNS in_IN HTML_NNP pages_NNS is_VBZ needed_VBN in_IN that_DT case_NN -LRB-_-LRB- Cohen_NNP ,_, 2003b_CD -RRB-_-RRB- ._.
+In_IN this_DT case_NN ,_, tree_NN mining_NN alogorithms_NNS for_IN finding_VBG frequent_JJ subtrees_NNS such_JJ as_IN Treeminer_NN -LRB-_-LRB- =_JJ -_: =_JJ Zaki_NNP ,_, 2002_CD -_: =--RRB-_NN could_MD be_VB applied_VBN instead_RB of_IN the_DT general_JJ association_NN rule_NN mining_NN algorithms_NNS for_IN discovering_VBG frequent_JJ terms_NNS or_CC bags_NNS in_IN the_DT current_JJ implementation_NN of_IN DiscoTEX_NN ._.
+Changes_NNS to_TO the_DT system_NN should_MD be_VB relativel_NN
+as_IN considered_VBN as_IN a_DT fast_JJ miner_NN for_IN discovering_VBG connected_JJ sub-graphs_NNS by_IN extending_VBG the_DT notion_NN of_IN levelby-level_JJ expansion_NN of_IN -LRB-_-LRB- AS94_NN -RRB-_-RRB- ._.
+Motivated_VBN by_IN discovering_VBG user_NN navigation_NN patterns_NNS in_IN web_NN surfing_NN ,_, Zaki_NN =_JJ -_: =_JJ -LRB-_-LRB- Z02_NN -RRB-_-RRB- -_: =_SYM -_: proposed_VBN sub_NN tree_NN mining_NN algorithm_NN in_IN forest_NN ,_, which_WDT faced_VBD more_RBR complex_JJ data_NNS situation_NN ._.
+FREQT_NN -LRB-_-LRB- AAK_NN +_CC 02_CD -RRB-_-RRB- ,_, TreeFinder_NN -LRB-_-LRB- TRS02_NN -RRB-_-RRB- aimed_VBN at_IN finding_VBG frequent_JJ subtrees_NNS in_IN a_DT collection_NN of_IN semistructured_JJ docume_NN
+-LRB-_-LRB- 2_LS -RRB-_-RRB- miscellaneous_JJ 32,81_CD %_NN 4_CD -LRB-_-LRB- 6_CD -RRB-_-RRB- E\/department_NN 18,87_CD %_NN 5_CD -LRB-_-LRB- 11_CD -RRB-_-RRB- E\/course_NN 16,89_CD %_NN 6_CD -LRB-_-LRB- 13_CD -RRB-_-RRB- D\/person\/student_NN 16,54_CD %_NN 7_CD -LRB-_-LRB- 4_LS -RRB-_-RRB- E\/reference_NN 16,00_CD %_NN 8_CD -LRB-_-LRB- 18_CD -RRB-_-RRB- documents_NNS 15,56_CD %_NN 9_CD -LRB-_-LRB- 1_LS -RRB-_-RRB- photo_JJ 14,65_CD %_NN 10_CD -LRB-_-LRB- 7_CD -RRB-_-RRB- E\/project_NN 12,45_CD %_NN 11_CD =_JJ -_: =-LRB-_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: other_JJ documents_NNS 9,64_CD %_NN 12_CD -LRB-_-LRB- 3_LS -RRB-_-RRB- D\/department_NN 9,59_CD %_NN 13_CD -LRB-_-LRB- 12_CD -RRB-_-RRB- D\/course_NN 9,52_CD %_NN 14_CD -LRB-_-LRB- 9_CD -RRB-_-RRB- E\/person\/student_NN 9,51_CD %_NN Table_NNP 14_CD Item_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- shows_VBZ that_IN more_JJR than_IN half_NN of_IN the_DT sessions_NNS contain_VBP pages_NNS of_IN faculty_NN members_NNS -LRB-_-LRB- in_IN E_NN
+inherently_RB more_RBR costly_JJ ,_, and_CC there_EX is_VBZ no_DT prima_FW facie_FW evidence_NN that_IN it_PRP finds_VBZ more_JJR or_CC better_JJR clones_NNS ._.
+Finding_VBG clones_NNS in_IN an_DT AST_NNP might_MD appear_VB to_TO be_VB a_DT special_JJ case_NN of_IN the_DT problem_NN of_IN mining_NN frequent_JJ subtrees_NNS =_JJ -_: =[_NN 10_CD ,_, 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC closer_JJR examination_NN shows_VBZ that_IN the_DT two_CD problems_NNS operate_VBP at_IN two_CD ends_NNS of_IN a_DT spectrum_NN ._.
+Algorithms_NNS that_WDT mine_VBP frequent_JJ trees_NNS scan_VBP huge_JJ forests_NNS for_IN subtrees_NNS that_WDT appear_VBP under_IN many_JJ roots_NNS ._.
+The_DT size_NN and_CC ex_FW
+er_IN words_NNS used_VBN in_IN the_DT same_JJ subtrees_NNS as_IN the_DT verbs_NNS ._.
+To_TO do_VB this_DT we_PRP use_VBP FREQuent_JJ Tree_NN miner_NN ._.
+6_CD This_DT software_NN is_VBZ an_DT implementation_NN of_IN the_DT algorithm_NN presented_VBN by_IN -LRB-_-LRB- Abe_NNP ,_, Kawasoe_NNP ,_, Asai_NNP ,_, Arimura_NNP &_CC Arikawa_NNP 2002_CD ,_, =_JJ -_: =_JJ Zaki_NNP 2002_CD -_: =--RRB-_NN ,_, which_WDT extracts_VBZ frequent_JJ ordered_VBN subtrees_NNS from_IN a_DT set_NN of_IN ordered_VBN trees_NNS ._.
+Following_VBG -LRB-_-LRB- Sudo_NNP et_FW al._FW 2003_CD -RRB-_-RRB- we_PRP are_VBP interested_VBN only_RB in_IN the_DT words_NNS which_WDT are_VBP near_IN neighbors_NNS of_IN the_DT most_RBS frequent_JJ verbs_NNS ._.
+Thus_RB ,_, we_PRP
+t_NN sequential_JJ pattern_NN mining_NN algorithms_NNS are_VBP the_DT AprioriAll_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, GSP_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, SPIRIT_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, SPADE_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, FreeSpan_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, PrefixSapn_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC SPAM_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- algorithms_NNS ._.
+The_DT best-known_JJ tree_NN miner_NN algorithms_NNS are_VBP TreeMiner_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, FREQT_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC FreeTreeMiner_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+The_DT contribution_NN of_IN the_DT novel_JJ approach_NN proposed_VBN in_IN this_DT paper_NN is_VBZ to_TO use_VB automaton_NN theory_NN for_IN testing_VBG the_DT subpattern_JJ inclusion_NN ._.
+A._FW Subsequence_FW Inclusion_NN Test_NN For_IN tes_NNS
+growth_NN methods_NNS for_IN mining_NN frequent_JJ tree_NN patterns_NNS ._.
+Two_CD algorithms_NNS ,_, Chopper_NN and_CC XSpanner_NN ,_, are_VBP devised_VBN ._.
+An_DT extensive_JJ performance_NN study_NN shows_VBZ that_IN the_DT two_CD newly_RB developed_VBN algorithms_NNS outperform_VBP TreeMinerV_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, one_CD of_IN the_DT fastest_JJS methods_NNS proposed_VBN before_RB ,_, in_IN mining_NN large_JJ databases_NNS ._.
+Furthermore_RB ,_, algorithm_NN XSpanner_NN is_VBZ substantially_RB faster_RBR than_IN Chopper_NNP in_IN many_JJ cases_NNS ._.
+1_CD Introduction_NN Recently_RB ,_, many_JJ emerging_VBG appl_NN
+on_RB ,_, Asai_NNP et_FW al._FW -LRB-_-LRB- 2_CD -RRB-_-RRB- propose_VBP an_DT online_JJ algorithm_NN ,_, StreamT_NN ,_, to_TO continuously_RB discover_VB frequent_JJ subtrees_NNS on_IN data_NNS streams_NNS by_IN using_VBG a_DT subtree_JJ generation_NN scheme_NN like_IN the_DT rightmost_JJ expansion_NN techniques_NNS in_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP adopts_VBZ a_DT method_NN similar_JJ to_TO the_DT one_NN for_IN online_JJ association_NN rule_NN mining_NN in_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- to_TO store_VB all_DT candidate_NN subtrees_NNS ._.
+However_RB ,_, it_PRP neither_RB provides_VBZ any_DT accuracy_NN guarantee_NN on_IN the_DT result_NN set_NN nor_CC the_DT error_NN b_NN
+the_DT shortest_JJS dependency_NN path_NN from_IN the_DT Wikipedia_NNP sentence_NN with_IN the_DT pair_NN of_IN entity_NN words_NNS ,_, as_IN shown_VBN in_IN the_DT left_JJ side_NN of_IN Fig._NNP 1_CD ._.
+2_CD ._.
+Dependency_NN pattern_NN generation_NN ._.
+We_PRP use_VBP a_DT frequent_JJ tree-mining_JJ algorithm_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: to_TO generate_VB sub-paths_NNS as_IN dependency_NN patterns_NNS from_IN the_DT shortest_JJS dependency_NN path_NN ,_, as_IN shown_VBN in_IN the_DT right_JJ side_NN of_IN Fig._NNP 1_CD ._.
+3.3_CD Feature_NN Clustering_NN A_NN semantic_JJ relation_NN can_MD be_VB expressed_VBN using_VBG more_JJR than_IN one_CD p_NN
+g_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, the_DT video_NN content-based_JJ retrieval_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, the_DT scene_NN analysis_NN ,_, as_RB well_RB as_IN some_DT problems_NNS in_IN the_DT computational_JJ biology_NN -LRB-_-LRB- such_JJ as_IN RNA_NN structure_NN matching_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- -RRB-_-RRB- and_CC the_DT data_NNS mining_NN -LRB-_-LRB- such_JJ as_IN tree_NN mining_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, the_DT order_NN of_IN the_DT nodes_NNS is_VBZ significant_JJ ._.
+As_IN an_DT example_NN ,_, consider_VB querying_VBG grammatical_JJ structures_NNS as_IN shown_VBN in_IN Fig._NNP 2_CD ,_, which_WDT is_VBZ the_DT parse_JJ tree_NN of_IN a_DT natural_JJ language_NN sentence_NN ._.
+s_NN np_NN vp_NN det_NN n_NN vbz_FW np_FW ``_`` The_DT ''_''
+g_NN over_IN 100,000_CD graphs_NNS and_CC scales_NNS linearly_RB with_IN respect_NN to_TO the_DT size_NN of_IN the_DT database_NN ._.
+There_EX are_VBP other_JJ well-known_JJ subgraph_JJ discovery_NN systems_NNS like_IN DSPM_NNP -LRB-_-LRB- Diagonally_NNP Subgraph_NNP Pattern_NNP Mining_NNP -RRB-_-RRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, TreeMiner_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, GRAFIL_NNP -LRB-_-LRB- Graph_NNP Similarity_NNP Filtering_NNP -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, PIS_NN -LRB-_-LRB- Partition-based_JJ Graph_NNP Index_NNP and_CC Search_VB -RRB-_-RRB- -LRB-_-LRB- 11_CD -RRB-_-RRB- and_CC SUBDUE_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+APRIORI_NN paradigm_NN mines_NNS the_DT frequent_JJ items_NNS in_IN market_NN basket_NN databases_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, to_TO mine_VB the_DT fr_NN
+induced_VBN subtrees_NNS ,_, and_CC embedded_JJ subtrees_NNS ._.
+Bottom-up_JJ subtree_JJ mining_NN is_VBZ the_DT simplest_JJS subtree_NN mining_NN ._.
+Algorithms_NNS for_IN embedded_JJ labeled_JJ frequent_JJ trees_NNS are_VBP the_DT following_NN :_: --_: Rooted_NNP Ordered_NNP Trees_NNP --_: TreeMiner_NNP -LRB-_-LRB- =_JJ -_: =_JJ Zaki_NNP 2002_CD -_: =--RRB-_NN :_: This_DT algorithm_NN developed_VBN by_IN Zaki_NNP ,_, uses_VBZ vertical_JJ representations_NNS for_IN support_NN counting_NN ,_, and_CC follows_VBZ the_DT combined_JJ depth-first\/breadth_NN traversal_NN idea_NN to_TO discover_VB all_DT embedded_JJ ordered_VBN subtrees_NNS ._.
+--_: Rooted_VBN
+eature_JJ set_NN and_CC previous_JJ feature_NN sets_NNS ._.
+Our_PRP$ proposed_VBN feature_NN set_NN of_IN k-ee_NN can_MD be_VB considered_VBN as_IN a_DT variation_NN of_IN tree_NN patterns_NNS ._.
+In_IN data_NN mining_NN domain_NN ,_, there_EX have_VBP been_VBN several_JJ studies_NNS on_IN tree_NN pattern_NN mining_NN =_JJ -_: =[_NN 33_CD ,_, 9_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+TreeMiner_NN -LRB-_-LRB- 33_CD -RRB-_-RRB- is_VBZ one_CD of_IN the_DT pioneer_NN of_IN mining_NN frequent_JJ tree_NN patterns_NNS ._.
+CMTreeMiner_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- mined_VBD closed_JJ and_CC maximal_JJ frequent_JJ tree_NN patterns_NNS together_RB ._.
+For_IN tree_NN classification_NN ,_, rule-based_JJ classifiers_NNS -LRB-_-LRB- XRul_NN
+classification_NN problems_NNS ._.
+Our_PRP$ proposed_VBN k-ee_FW subtrees_FW feature_NN set_NN can_MD be_VB considered_VBN to_TO be_VB a_DT variation_NN of_IN tree_NN patterns_NNS ._.
+In_IN the_DT data_NNS mining_NN domain_NN ,_, there_EX have_VBP been_VBN several_JJ studies_NNS on_IN tree_NN pattern_NN mining_NN =_JJ -_: =[_NN 30_CD ,_, 31_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+TreeMiner_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- is_VBZ one_CD of_IN the_DT pioneering_JJ frequent_JJ tree_NN pattern_NN mining_NN algorithms_NNS ._.
+For_IN tree_NN classification_NN ,_, rulebased_JJ classifiers_NNS -LRB-_-LRB- XRules_NNS -LRB-_-LRB- 31_CD -RRB-_-RRB- -RRB-_-RRB- and_CC a_DT decision_NN tree_NN based_VBN classifier_NN -LRB-_-LRB- Tree_NN 2_CD -LRB-_-LRB- 4_CD -RRB-_-RRB- -RRB-_-RRB- were_VBD p_NN
+een_NN developed_VBD for_IN different_JJ classes_NNS of_IN patterns_NNS and_CC data_NNS collections_NNS ._.
+Almost_RB all_DT techniques_NNS ,_, however_RB ,_, work_NN on_IN so_RB called_VBN transaction_NN databases_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+Not_RB only_RB for_IN itemsets_NNS ,_, but_CC also_RB in_IN the_DT case_NN of_IN trees_NNS =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: and_CC graphs_NNS -LRB-_-LRB- 12_CD ,_, 15_CD ,_, 19_CD -RRB-_-RRB- ,_, the_DT database_NN consists_VBZ of_IN a_DT collection_NN of_IN transactions_NNS ,_, and_CC a_DT frequent_JJ pattern_NN is_VBZ discovered_VBN if_IN it_PRP occurs_VBZ in_IN enough_JJ such_JJ transactions_NNS ._.
+Even_RB in_IN the_DT multi-relational_JJ case_NN ,_, as_IN co_NN
+et_FW ._.
+Nonetheless_RB ,_, we_PRP take_VBP care_NN of_IN efficiency_NN issues_NNS while_IN performing_VBG the_DT mining_NN task_NN ._.
+Moreover_RB ,_, there_EX exist_VBP efficient_JJ algorithms_NNS designed_VBN for_IN mining_NN frequent_JJ substructures_NNS in_IN large_JJ graphs_NNS -LRB-_-LRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, which_WDT can_MD be_VB used_VBN to_TO extend_VB our_PRP$ model_NN to_TO process_VB larger_JJR data_NNS sets_NNS ._.
+5_CD ._.
+Results_NNS and_CC Discussion_NN In_IN this_DT section_NN we_PRP show_VBP how_WRB the_DT computational_JJ model_NN presented_VBN in_IN this_DT work_NN enables_VBZ us_PRP to_TO shed_VB light_NN on_IN t_NN
+erimentation_NN ._.
+Keywords_NNS :_: XML_NN ,_, data_NN mining_NN ._.
+1_CD ._.
+INTRODUCTION_NN Recently_RB ,_, there_EX has_VBZ been_VBN increasing_VBG research_NN efforts_NNS to_TO mine_VB XML_NN data_NNS ._.
+Existing_VBG work_NN on_IN mining_NN XML_NN data_NNS includes_VBZ frequent_JJ substructure_NN mining_NN =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, classification_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- and_CC association_NN rule_NN mining_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Among_IN these_DT ,_, the_DT frequent_JJ substructure_NN mining_NN is_VBZ the_DT most_RBS well_RB researched_VBN topic_NN ._.
+The_DT basic_JJ idea_NN is_VBZ to_TO extract_VB substructures_NNS -LRB-_-LRB- subtrees_NNS or_CC subgraph_NN
+namic_JJ structures_NNS efficiently_RB with_IN good_JJ scalability_NN ._.
+1_CD Introduction_NN Recently_RB ,_, with_IN the_DT increasing_VBG amount_NN of_IN XML_NN data_NNS available_JJ ,_, knowledge_NN engineering_NN from_IN XML_NN data_NNS becomes_VBZ an_DT issue_NN of_IN great_JJ importance_NN =_JJ -_: =[_NN 1_CD ,_, 5_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Existing_VBG work_NN on_IN mining_NN XML_NN data_NNS includes_VBZ frequent_JJ substructure_NN mining_NN -LRB-_-LRB- 4_CD ,_, 5_CD ,_, 8_CD ,_, 9_CD -RRB-_-RRB- ,_, classification_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC association_NN rule_NN mining_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Among_IN these_DT ,_, the_DT frequent_JJ substructure_NN mining_NN is_VBZ the_DT most_JJS we_PRP
+and_CC wrapping_VBG these_DT structures_NNS -LRB-_-LRB- 7_CD ,_, 8_CD -RRB-_-RRB- ._.
+Other_JJ related_JJ work_NN includes_VBZ schema_NN learning_NN -LRB-_-LRB- 9_CD --_: 11_CD -RRB-_-RRB- for_IN semi-structured_JJ data_NNS and_CC techniques_NNS for_IN finding_VBG frequent_JJ substructures_NNS from_IN hierarchical_JJ semistructured_JJ data_NN =_JJ -_: =[_NN 12_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT can_MD be_VB utilized_VBN to_TO train_VB structure_NN based_JJ classifiers_NNS to_TO help_VB merge_VB and_CC map_VB between_IN similar_JJ concepts_NNS of_IN the_DT bootstrapped_VBN ontologies_NNS and_CC better_RBR integrate_VB their_PRP$ instances_NNS ._.
+The_DT rest_NN of_IN the_DT paper_NN is_VBZ
+ning_JJ XML_NN data_NNS ._.
+Existing_VBG works_NNS on_IN mining_NN XML_NN data_NNS include_VBP frequent_JJ substructure_NN mining_NN Email_NN address_NN :_: assourav@ntu.edu.sg_NN -LRB-_-LRB- Sourav_NNP S._NNP Bhowmick_NNP -RRB-_-RRB- ._.
+Preprint_NNP submitted_VBD to_TO Elsevier_NNP Science_NNP 14_CD September_NNP 2005s_NNS =_SYM -_: =[_NN 18_CD ,_, 20_CD ,_, 37_CD ,_, 9_CD ,_, 35_CD ,_, 16_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, classification_NN -LRB-_-LRB- 38_CD ,_, 12_CD ,_, 17_CD -RRB-_-RRB- and_CC association_NN rule_NN mining_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, etc._NN ._.
+Among_IN these_DT ,_, the_DT frequent_JJ substructure_NN mining_NN is_VBZ one_CD of_IN the_DT most_RBS well-researched_JJ topics_NNS ._.
+The_DT basic_JJ idea_NN is_VBZ to_TO extract_VB substructures_NNS ,_,
+s_NN efficient_JJ with_IN good_JJ scalability_NN ._.
+We_PRP also_RB design_VBP a_DT declarative_JJ FASST_NN query_NN language_NN ,_, FASSTQUEL_NN ,_, to_TO make_VB the_DT FASST_NNP mining_NN process_NN interactive_JJ and_CC flexible_JJ ._.
+1_CD Introduction_NN Frequent_JJ substructure_NN mining_NN =_JJ -_: =[_NN 3_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ one_CD of_IN the_DT most_RBS well_RB researched_VBN topics_NNS in_IN the_DT area_NN of_IN XML_NN data_NNS mining_NN ._.
+Current_JJ research_NN on_IN frequent_JJ substructure_NN mining_NN is_VBZ to_TO extract_VB substructures_NNS that_WDT occur_VBP frequently_RB in_IN individual_JJ XML_NN document_NN
+thm_NN to_TO consider_VB prohibitively_RB many_JJ candidate_NN trees_NNS ._.
+Another_DT possibility_NN is_VBZ to_TO try_VB combining_VBG all_DT pairs_NNS of_IN trees_NNS ,_, which_WDT takes_VBZ quadratic_JJ time_NN in_IN the_DT number_NN of_IN trees_NNS ._.
+Instead_RB ,_, we_PRP use_VBP the_DT approach_NN of_IN Zaki_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Briefly_RB ,_, a_DT tree_NN is_VBZ represented_VBN as_IN a_DT string_NN by_IN traversing_VBG it_PRP depth-first_JJ in_IN preorder_NN ,_, recording_VBG the_DT attribute_NN in_IN each_DT node_NN ,_, and_CC −_NN 1_CD when_WRB backtracking_VBG ._.
+For_IN example_NN ,_, the_DT tree_NN in_IN Figure_NNP 1_CD would_MD be_VB encode_VB
+iverse_JJ areas_NNS as_IN biology_NN ,_, the_DT life_NN sciences_NNS ,_, the_DT World_NNP Wide_NN Web_NN ,_, or_CC social_JJ sciences_NNS ._.
+Past_JJ work_NN in_IN this_DT area_NN falls_VBZ in_IN two_CD major_JJ categories_NNS ,_, not_RB to_TO be_VB confused_VBN :_: 1_CD ._.
+In_IN the_DT ``_`` transactional_JJ ''_'' category_NN ,_, e.g._FW ,_, =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD ,_, 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT dataset_NN is_VBZ a_DT set_NN of_IN small_JJ graphs_NNS which_WDT we_PRP call_VBP transactions_NNS ,_, and_CC the_DT task_NN is_VBZ to_TO discover_VB patterns_NNS that_WDT occur_VBP at_IN least_JJS once_RB in_IN a_DT sufficient_JJ number_NN of_IN transactions_NNS or_CC examples_NNS ._.
+-LRB-_-LRB- Approaches_NNS from_IN ma_FW
+adopt_VB a_DT straight-forward_JJ generate-and-test_JJ strategy_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+TreeFinder_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- does_VBZ clustering_NN by_IN counting_VBG co-occurrences_NNS of_IN labeled_JJ pairs_NNS -LRB-_-LRB- in_IN an_DT Apriori_JJ manner_NN -RRB-_-RRB- ._.
+It_PRP computes_VBZ the_DT maximal_JJ trees_NNS ._.
+TreeMiner_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ based_VBN on_IN mining_NN frequent_JJ subtrees_NNS using_VBG the_DT ''_'' scope-list_JJ ''_'' data_NN structure_NN ._.
+4.4_CD Clustering_NN of_IN XML_NN Documents_NNS Grouping_VBG XML_NN documents_NNS in_IN different_JJ classes_NNS with_IN non_JJ supervised_JJ classification_NN method_NN is_VBZ ge_NN
+ed_VBN and_CC unlabeled_JJ data_NNS ._.
+-LRB-_-LRB- 23_CD -RRB-_-RRB- proposes_VBZ a_DT new_JJ lexicographic_JJ order_NN among_IN graphs_NNS and_CC uses_VBZ this_DT to_TO construct_VB a_DT novel_JJ algorithm_NN to_TO mine_VB frequently_RB connected_VBN sub-graphs_NNS efficiently_RB ._.
+TreeMinerH_NN and_CC TreeMinerV_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP algorithms_NNS for_IN efficiently_RB mining_VBG frequent_JJ trees_NNS in_IN a_DT forest_NN of_IN ordered_VBN ,_, rooted_JJ trees_NNS ._.
+TreeFinder_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, on_IN the_DT other_JJ hand_NN ,_, finds_VBZ approximate_JJ patterns_NNS from_IN both_CC ordered_VBN and_CC unordered_JJ trees_NNS ._.
+A_DT comm_NN
+2edge_FW RSTs_FW level-wise_NN ,_, from_IN which_WDT 3-edge_JJ RSTs_NNS are_VBP obtained_VBN ,_, and_CC so_RB on_RB ._.
+Figure_NN 8_CD -LRB-_-LRB- a_DT -RRB-_-RRB- shows_VBZ a_DT 2-edge_JJ RST_NN R_NN and_CC the_DT set_NN of_IN corresponding_VBG 3-edge_JJ RSTs_NNS obtained_VBN based_VBN on_IN the_DT G-QPT_NN in_IN Figure_NNP 7_CD ._.
+The_DT method_NN in_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: do_VBP not_RB use_VB schema_NN information_NN to_TO guide_VB the_DT generation_NN of_IN candidate_NN subtrees_NNS ._.
+As_IN a_DT result_NN ,_, a_DT large_JJ number_NN of_IN candidate_NN trees_NNS will_MD be_VB produced_VBN ,_, including_VBG unnecessary_JJ and_CC invalid_JJ trees_NNS ._.
+Figure_NN 8_CD -LRB-_-LRB- b_NN -RRB-_-RRB- show_VBP
+uctured_JJ relational_JJ datasets_NNS ,_, such_JJ as_IN :_: Itemsets_NNS or_CC co-occurrences_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- -LRB-_-LRB- transactional_JJ ,_, unordered_JJ data_NNS -RRB-_-RRB- ,_, Sequences_NNS -LRB-_-LRB- 2_CD ,_, 29_CD -RRB-_-RRB- -LRB-_-LRB- temporal_JJ or_CC positional_JJ data_NNS ,_, as_IN in_IN text_NN mining_NN ,_, bioinformatics_NNS -RRB-_-RRB- ,_, Tree_NN patterns_NNS =_JJ -_: =[_NN 30_CD ,_, 3_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- XML\/semistructured_JJ data_NNS -RRB-_-RRB- ,_, and_CC Graph_NN patterns_NNS -LRB-_-LRB- 12_CD ,_, 16_CD ,_, 26_CD ,_, 27_CD -RRB-_-RRB- -LRB-_-LRB- complex_JJ relational_JJ data_NNS ,_, bioinformatics_NNS -RRB-_-RRB- ._.
+Figure_NN 1_CD shows_VBZ examples_NNS of_IN these_DT different_JJ types_NNS of_IN patterns_NNS ;_: in_IN a_DT generic_JJ sense_NN a_DT pattern_NN de_IN
+periments_NNS on_IN a_DT workstation_NN with_IN Intel_NNP Pentium_NNP IV_NNP 2.4_CD GHz_NNP CPU_NNP and_CC 1GB_NNP of_IN RAM_NNP ._.
+We_PRP implemented_VBD our_PRP$ algorithms_NNS and_CC the_DT algorithms_NNS proposed_VBN in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- in_IN C_NN +_CC +_CC ._.
+The_DT synthetic_JJ data_NNS generator_NN is_VBZ similar_JJ to_TO that_DT of_IN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, except_IN that_IN we_PRP do_VBP not_RB need_VB to_TO simulate_VB website_NNS browsing_VBG behavior_NN ,_, but_CC instead_RB have_VBP to_TO control_VB the_DT data_NNS distance_NN ._.
+The_DT program_NN constructs_NNS a_DT set_NN of_IN trees_NNS based_VBN on_IN specific_JJ parameters_NNS ._.
+Four_CD groups_NNS of_IN pa_NN
+d1_NN d3_NN a6_NN b2_NN d_NN -LRB-_-LRB- b_NN -RRB-_-RRB- d_NN a_NN -RRB-_-RRB- b_NN 7_CD d1_NN d3_FW d4_FW b7_FW c8_FW a6_FW a9_FW d4_FW b7_FW \*_SYM a5_FW d_FW d_NN -LRB-_-LRB- d_NN -RRB-_-RRB- a_LS -RRB-_-RRB- b_NN c_NN -RRB-_-RRB- a_LS -RRB-_-RRB- d_NN a_DT -RRB-_-RRB- b_NN Figure_NN 2_CD :_: Example_NN of_IN the_DT string_NN encoding_VBG for_IN trees_NNS under_IN the_DT postorder_NN traversal_NN The_DT famous_JJ tree_NN mining_NN algorithm_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: can_MD not_RB be_VB simply_RB applied_VBN as_IN a_DT feature_NN selection_NN method_NN for_IN the_DT proposed_VBN tree_NN kernels_NNS ,_, because_IN this_DT tree_NN mining_NN executes_VBZ preorder_NN search_NN of_IN trees_NNS while_IN tree_NN kernels_NNS calculate_VBP the_DT kernel_NN in_IN postorder_NN ._.
+ork_NN Approaches_NNS to_TO graph_NN mining_NN ,_, especially_RB mining_NN for_IN frequent_JJ patterns_NNS or_CC association_NN rules_NNS ,_, can_MD be_VB divided_VBN in_IN two_CD major_JJ categories_NNS which_WDT are_VBP not_RB to_TO be_VB confused_VBN ._.
+In_IN transactional_JJ graph_NN mining_NN ,_, e.g._FW ,_, =_JJ -_: =[_NN 8_CD ,_, 14_CD ,_, 15_CD ,_, 16_CD ,_, 19_CD ,_, 30_CD ,_, 31_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT dataset_NN consists_VBZ of_IN many_JJ small_JJ graphs_NNS which_WDT we_PRP call_VBP transactions_NNS ,_, and_CC the_DT task_NN is_VBZ to_TO discover_VB patterns_NNS that_WDT occur_VBP at_IN least_JJS once_RB in_IN a_DT sufficient_JJ number_NN of_IN transactions_NNS ._.
+-LRB-_-LRB- Approaches_NNS from_IN machine_NN l_NN
+focused_VBN on_IN the_DT related_JJ but_CC different_JJ problem_NN of_IN mining_NN trees_NNS to_TO discover_VB frequently_RB occurring_VBG subtrees_NNS ._.
+In_IN particular_JJ ,_, two_CD similar_JJ algorithms_NNS have_VBP been_VBN recently_RB developed_VBN by_IN Asai_NNP et_FW al._FW -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC Zaki_NN =_JJ -_: =[_NN 48_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT operate_VBP on_IN rooted_JJ ordered_VBN trees_NNS and_CC find_VB all_DT frequent_JJ subtrees_NNS ._.
+A_DT rooted_JJ ordered_VBN tree_NN is_VBZ a_DT tree_NN in_IN which_WDT one_CD of_IN its_PRP$ vertices_NNS is_VBZ designated_VBN as_IN its_PRP$ root_NN and_CC the_DT order_NN of_IN branches_NNS from_IN every_DT vertex_NN
+code_NN was_VBD compiled_VBN using_VBG the_DT GNU_NN C_NN compiler_NN and_CC the_DT O3_NN compiler_NN option_NN ._.
+We_PRP used_VBD a_DT range_NN of_IN 6_CD different_JJ datasets_NNS :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- three_CD tree_NN datasets_NNS -LRB-_-LRB- A1_NN ,_, A3_NN ,_, A4_NN -RRB-_-RRB- were_VBD generated_VBN using_VBG Zaki_NNP 's_POS tree_NN dataset_NN generator_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A4_NN is_VBZ equal_JJ to_TO A1_NN ,_, except_IN for_IN the_DT node_NN labels_NNS ._.
+Most_JJS frequent_JJ trees_NNS in_IN dataset_NN A3_NN have_VBP diameter_NN 2_CD ,_, and_CC differ_VBP mainly_RB in_IN degree_NN of_IN the_DT nodes_NNS ;_: -LRB-_-LRB- 2_LS -RRB-_-RRB- two_CD molecular_JJ datasets_NNS ._.
+The_DT PTE_NNP dataset_NN was_VBD used_VBN in_IN -LRB-_-LRB- 1_CD
+ubsequence_NN matches_NNS ,_, M7_NN and_CC M8_NN ,_, can_MD be_VB shown_VBN to_TO be_VB actual_JJ twig_NN matches_NNS for_IN Q1_NN ._.
+As_IN noted_VBN earlier_RBR ,_, the_DT ancestor_NN check_NN in_IN line_NN 5_CD can_MD traverse_VB till_IN the_DT root_NN node_NN ,_, in_IN worst_JJS case_NN ._.
+Approaches_NNS such_JJ as_IN scoping_NN =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_JJ -_: and_CC range_NN encoding_NN -LRB-_-LRB- 23_CD ,_, 29_CD -RRB-_-RRB- are_VBP known_VBN for_IN making_VBG fast_JJ ancestor_NN checks_NNS ._.
+They_PRP take_VBP O_NN -LRB-_-LRB- 1_LS -RRB-_-RRB- time_NN as_IN we_PRP just_RB need_VBP to_TO check_VB if_IN pt_FW ∈_FW Scope_NN -LRB-_-LRB- mapping_NN -LRB-_-LRB- pq_NN -RRB-_-RRB- -RRB-_-RRB- or_CC not_RB ._.
+However_RB ,_, this_DT seemingly_RB accurate_JJ approach_NN can_MD not_RB
+equent_JJ graph_NN patterns_NNS ._.
+As_IN a_DT latest_JJS result_NN ,_, Yan_NNP et_FW al._FW -LRB-_-LRB- 10_CD -RRB-_-RRB- uses_VBZ frequent_JJ graph_NN patterns_NNS to_TO index_NN graphs_NNS ._.
+As_IN a_DT special_JJ case_NN of_IN graph_NN mining_NN ,_, tree_NN mining_NN also_RB receives_VBZ intensive_JJ research_NN recently_RB ._.
+Zaki_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: proposes_VBZ the_DT first_JJ algorithm_NN for_IN mining_NN frequent_JJ tree_NN patterns_NNS ._.
+Although_IN there_EX are_VBP quite_RB a_DT few_JJ studies_NNS on_IN the_DT efficient_JJ mining_NN of_IN frequent_JJ graph_NN patterns_NNS ,_, none_NN of_IN them_PRP addresses_VBZ the_DT problem_NN of_IN effect_NN
+ining_VBG algorithm_NN ._.
+Realistic_JJ program_NN traces_NNS are_VBP very_RB large_JJ ,_, which_WDT implies_VBZ a_DT large_JJ number_NN of_IN neighborhoods_NNS to_TO be_VB mined_VBN by_IN the_DT frequent_JJ pattern_NN mining_NN algorithm_NN ._.
+This_DT results_VBZ in_IN a_DT high_JJ memory_NN consumption_NN =_JJ -_: =[_NN 17_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO control_VB memory_NN consumption_NN in_IN our_PRP$ analysis_NN we_PRP restrict_VBP ourselves_PRP to_TO mining_NN neighborhoods_NNS of_IN a_DT particular_JJ size_NN l_NN ,_, i.e._FW ,_, neighborhoods_NNS that_WDT include_VBP no_DT more_RBR that_IN l_NN function_NN calls_NNS ._.
+Thus_RB the_DT equation_NN
+ion_NN of_IN the_DT final_JJ result_NN ._.
+It_PRP organizes_VBZ the_DT matchings_NNS as_IN a_DT tree_NN ,_, and_CC produces_VBZ the_DT string_NN representation_NN of_IN the_DT tree_NN as_IN illustrated_VBN in_IN Figure_NNP 8_CD ._.
+The_DT string_NN representation_NN can_MD uniquely_RB determine_VB the_DT tree_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN other_JJ words_NNS ,_, the_DT tree_NN can_MD be_VB uniquely_RB recovered_VBN by_IN scanning_VBG the_DT string_NN representation_NN once_RB ._.
+Specifically_RB ,_, it_PRP is_VBZ recovered_VBN in_IN a_DT way_NN of_IN preorder-traversal_JJ :_: at_IN first_JJ we_PRP only_RB have_VBP a_DT virtual_JJ root_NN node_NN
+ed_VBN using_VBG the_DT same_JJ sorting_NN technique_NN as_IN in_IN Theorem_NNP 18_CD ._.
+✷_NN 24_CD x0_FW x0_FW x0sWe_NN should_MD point_VB out_RP that_IN our_PRP$ complexity_NN results_NNS can_MD be_VB readily_RB extended_VBN to_TO the_DT problem_NN of_IN mining_NN maximal_JJ frequent_JJ embedded_JJ subtrees_NNS =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Given_VBN two_CD rooted_JJ labeled_JJ trees_NNS ,_, T1_NN and_CC T2_NN ,_, we_PRP will_MD say_VB that_DT T1_NN is_VBZ an_DT embedded_JJ subtree_NN of_IN T2_NN ,_, if_IN there_EX is_VBZ an_DT injective_JJ function_NN ρ_NN from_IN the_DT nodes_NNS of_IN T1_NN to_TO the_DT nodes_NNS of_IN T2_NN ,_, such_JJ that_IN ρ_NN preserves_VBZ the_DT la_FW
+aphs_NNS to_TO be_VB isomorphic_JJ ._.
+It_PRP removes_VBZ edges_NNS from_IN graphs_NNS that_WDT contradict_VBP this_DT assertion_NN until_IN it_PRP converges_VBZ to_TO maximal_JJ frequent_JJ subgraphs_NNS ._.
+Closely_RB related_JJ is_VBZ the_DT work_NN on_IN the_DT frequent_JJ subtree_JJ mining_NN problem_NN =_JJ -_: =[_NN 6_CD ,_, 5_CD ,_, 7_CD ,_, 34_CD -RRB-_-RRB- -_: =_JJ -_: ,_, frequent_JJ graphs_NNS with_IN geometric_JJ constraints_NNS -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, discovering_VBG typical_JJ patterns_NNS of_IN graph_NN data_NNS -LRB-_-LRB- 27_CD -RRB-_-RRB- and_CC graph_NN indexing_NN -LRB-_-LRB- 31_CD ,_, 18_CD -RRB-_-RRB- ._.
+The_DT frequent_JJ subtree_JJ mining_NN problem_NN addresses_VBZ the_DT subtree_JJ isomorphism_NN pr_NN
+nformation_NN implicit_JJ in_IN a_DT -LRB-_-LRB- large_JJ -RRB-_-RRB- dataset_NN ._.
+In_IN our_PRP$ case_NN ,_, the_DT dataset_NN would_MD consist_VB of_IN a_DT large_JJ set_NN -LRB-_-LRB- more_RBR precisely_RB ,_, bag_NN -RRB-_-RRB- of_IN trees_NNS ;_: algorithms_NNS for_IN mining_NN embedded_JJ labeled_JJ frequent_JJ trees_NNS include_VBP TreeMiner_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT finds_VBZ all_DT embedded_JJ ordered_VBN subtrees_NNS that_WDT appear_VBP with_IN a_DT ⋆_NN Partially_RB supported_VBN by_IN the_DT 6th_JJ Framework_NNP Program_NNP of_IN EU_NNP through_IN the_DT integrated_VBN project_NN DELIS_NNS -LRB-_-LRB- #_# 001907_CD -RRB-_-RRB- ,_, by_IN the_DT EU_NNP PASCAL_NNP Network_NNP of_IN Exce_NNP
+he_PRP main_JJ difference_NN with_IN our_PRP$ approach_NN is_VBZ that_IN CMTreeMiner_NN works_VBZ with_IN labeled_JJ nodes_NNS and_CC unrooted_JJ trees_NNS ,_, and_CC we_PRP deal_VBP with_IN unlabeled_JJ rooted_JJ trees_NNS ._.
+On_IN synthetic_JJ data_NNS ,_, we_PRP use_VBP the_DT same_JJ dataset_NN as_IN in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: for_IN rooted_JJ ordered_VBN trees_NNS restricting_VBG the_DT number_NN of_IN distinct_JJ node_NN labels_NNS to_TO one_CD ._.
+The_DT running_VBG times_NNS showed_VBD that_IN our_PRP$ algorithm_NN compares_VBZ well_RB to_TO CMTreeMiner_NN since_IN for_IN supports_NNS above_IN 2_CD %_NN our_PRP$ algorithm_NN is_VBZ s_NN
+ich_NN are_VBP just_RB induced_VBN subgraphs_NNS ,_, called_VBD induced_VBN subtrees_NNS ,_, and_CC subtrees_NNS where_WRB contraction_NN of_IN edges_NNS is_VBZ allowed_VBN ,_, called_VBN embedded_JJ subtrees_NNS ._.
+Algorithms_NNS for_IN embedded_JJ labeled_JJ frequent_JJ trees_NNS include_VBP TreeMiner_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT mines_NNS embedded_VBD ordered_VBN trees_NNS ,_, and_CC SLEUTH_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, for_IN unordered_JJ trees_NNS ._.
+Algorithms_NNS for_IN induced_VBN labeled_JJ frequent_JJ trees_NNS include_VBP FreqT_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, which_WDT mines_NNS ordered_VBD trees_NNS ,_, and_CC uFreqT_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, uNot_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, Hybri_NN
+s_NN on_IN our_PRP$ notion_NN of_IN intersection_NN ;_: these_DT were_VBD not_RB made_VBN up_RP for_IN the_DT example_NN ,_, but_CC were_VBD instead_RB obtained_VBN through_IN six_CD different_JJ -LRB-_-LRB- rather_RB arbitrary_JJ -RRB-_-RRB- random_JJ seeds_NNS of_IN the_DT synthetic_JJ tree_NN mining_NN generator_NN of_IN Zaki_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Fig._NNP 7_CD ._.
+Lattice_NN of_IN closed_JJ trees_NNS for_IN the_DT six_CD input_NN trees_NNS in_IN the_DT top_JJ rows12_NN José_NNP L._NNP Balcázar_NNP ,_, Albert_NNP Bifet_NNP and_CC Antoni_NNP Lozano_NNP The_DT figure_NN depicts_VBZ the_DT closed_JJ sets_NNS obtained_VBN ._.
+It_PRP is_VBZ interesting_JJ to_TO note_VB that_IN
+he_PRP main_JJ difference_NN with_IN our_PRP$ approach_NN is_VBZ that_IN CMTreeMiner_NN works_VBZ with_IN labeled_JJ nodes_NNS and_CC unrooted_JJ trees_NNS ,_, and_CC we_PRP deal_VBP with_IN unlabeled_JJ rooted_JJ trees_NNS ._.
+On_IN synthetic_JJ data_NNS ,_, we_PRP use_VBP the_DT same_JJ dataset_NN as_IN in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: for_IN rooted_JJ ordered_VBN trees_NNS restricting_VBG the_DT number_NN of_IN distinct_JJ node_NN labels_NNS to_TO one_CD ._.
+The_DT running_VBG times_NNS showed_VBD that_IN our_PRP$ algorithm_NN compares_VBZ well_RB to_TO CMTreeMiner_NN since_IN for_IN supports_NNS above_IN 2_CD %_NN our_PRP$ algorithm_NN is_VBZ s_NN
+om_IN the_DT peculiarities_NNS of_IN the_DT applicative_JJ context_NN ,_, thereby_RB extending_VBG previous_JJ proposals_NNS for_IN mining_NN frequent_JJ structures_NNS in_IN complex_JJ domains_NNS -LRB-_-LRB- such_JJ as_IN frequent_JJ sequences_NNS ,_, trees_NNS and_CC graphs_NNS --_: see_VB ,_, e.g._FW ,_, -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- -RRB-_-RRB- to_TO the_DT mining_NN of_IN workflow_NN executions_NNS ._.
+A._NNP Related_NNP Work_NNP The_DT paper_NN is_VBZ about_IN applying_VBG data_NNS mining_NN techniques_NNS to_TO the_DT area_NN of_IN workflows_NNS and_CC ,_, as_IN such_JJ ,_, it_PRP presents_VBZ a_DT quite_RB intu_NN
+structures_NNS ,_, and_CC so_RB on_RB ._.
+It_PRP is_VBZ important_JJ to_TO develop_VB scalable_JJ and_CC flexible_JJ methods_NNS for_IN mining_NN structured_JJ patterns_NNS in_IN such_JJ databases_NNS ._.
+There_EX have_VBP been_VBN some_DT recent_JJ work_NN on_IN mining_NN frequent_JJ subtrees_NNS ,_, such_JJ as_IN =_JJ -_: =[_NN 38_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC frequent_JJ subgraphs_NNS ,_, such_JJ as_IN -LRB-_-LRB- 18_CD ,_, 33_CD -RRB-_-RRB- in_IN structured_JJ databases_NNS ,_, where_WRB -LRB-_-LRB- 33_CD -RRB-_-RRB- shows_VBZ that_IN the_DT pattern_NN growth_NN approach_NN has_VBZ clear_JJ performance_NN edge_NN over_IN a_DT candidate_NN generation-and-test_JJ approach_NN ._.
+Furtherm_NN
+ere_RB ,_, we_PRP are_VBP concerned_VBN with_IN the_DT problem_NN of_IN nonredundant_JJ pattern_NN generation_NN ._.
+We_PRP describe_VBP our_PRP$ tree_NN representation_NN and_CC candidate_NN generation_NN procedure_NN below_IN ._.
+Representing_VBG Trees_NNP as_IN Strings_NNP ._.
+As_IN described_VBN in_IN =_JJ -_: =[_NN 40_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP represent_VBP a_DT tree_NN T_NN by_IN its_PRP$ string_NN encoding_NN ,_, denoted_VBN T_NN ,_, generated_VBN as_IN follows_VBZ :_: Add_VB vertex_NN labels_NNS to_TO T_NN in_IN a_DT depthfirst_JJ preorder_NN traversal_NN of_IN T_NN and_CC add_VB a_DT unique_JJ symbol_NN 1_CD =_JJ 2_CD L_NN whenever_WRB we_PRP backtrack_VBP fr_IN
+d_NN b_NN -RRB-_-RRB- b_NN d_NN -LRB-_-LRB- -LRB-_-LRB- d_NN a_NN -RRB-_-RRB- b_NN -RRB-_-RRB- a_LS -RRB-_-RRB- c_NN -RRB-_-RRB- d_FW 0a_FW 0b_NN -1_CD Figure_NNP 23_CD ._.
+Example_NN of_IN string_NN encoding_VBG for_IN trees_NNS under_IN the_DT postorder_NN traversal_NN 5.3.6_CD Tree_NNP Kernels_NNPS with_IN Statistical_NNP Feature_NNP Mining_NNP The_DT famous_JJ tree_NN mining_NN algorithm_NN =_JJ -_: =_JJ -LRB-_-LRB- Zaki02_NN -RRB-_-RRB- -_: =_SYM -_: can_MD not_RB be_VB applied_VBN as_IN a_DT feature_NN selection_NN method_NN for_IN tree_NN kernels_NNS ,_, because_IN the_DT tree_NN mining_NN algorithm_NN executes_VBZ a_DT preorder_NN search_NN of_IN trees_NNS while_IN tree_NN kernels_NNS calculate_VBP the_DT kernel_NN value_NN in_IN postorder_NN ._.
+Thu_NN
+ly_RB identify_VB all_DT infrequent_JJ structures_NNS by_IN constructing_VBG superstructures_NNS from_IN MIS_NNP ._.
+Several_JJ methods_NNS have_VBP been_VBN proposed_VBN for_IN the_DT problem_NN of_IN mining_NN frequent_JJ tree_NN structures_NNS in_IN semi-structure_JJ data_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS of_IN them_PRP are_VBP based_VBN on_IN the_DT classical_JJ Apriori_NN technique_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, however_RB ,_, these_DT methods_NNS are_VBP rather_RB slow_JJ when_WRB applying_VBG to_TO find_VB MIS_NNP -LRB-_-LRB- the_DT number_NN of_IN MIS_NNP is_VBZ rather_RB small_JJ ,_, whereas_IN the_DT number_NN of_IN frequent_JJ str_NN
+iving_VBG extensions_NNS of_IN them_PRP ,_, which_WDT are_VBP not_RB frequent_JJ ._.
+The_DT problem_NN of_IN mining_NN frequent_JJ tree_NN structures_NNS in_IN semistructured_JJ data_NNS has_VBZ been_VBN studied_VBN before_IN and_CC several_JJ methods_NNS have_VBP been_VBN proposed_VBN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS of_IN them_PRP are_VBP based_VBN on_IN the_DT classic_JJ Apriori_NN technique_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, which_WDT generates_VBZ candidate_NN frequent_JJ structures_NNS and_CC validates_VBZ them_PRP level_NN by_IN level_NN ._.
+However_RB ,_, because_IN these_DT methods_NNS are_VBP rather_RB slow_JJ when_WRB appl_NN
+we_PRP are_VBP interested_JJ in_IN finding_VBG all_DT frequent_JJ tree_NN patterns_NNS among_IN the_DT documents_NNS ._.
+SpringersMach_NNP Learn_NNP -LRB-_-LRB- 2006_CD -RRB-_-RRB- 62_CD :_: 137_CD --_: 170_CD 167_CD Tree_NN mining_NN has_VBZ attracted_VBN a_DT lot_NN of_IN attention_NN recently_RB ._.
+We_PRP developed_VBD TreeMiner_NNP -LRB-_-LRB- =_JJ -_: =_JJ Zaki_NNP ,_, 2002_CD -_: =--RRB-_NN to_TO mine_VB labeled_JJ ,_, embedded_JJ ,_, and_CC ordered_VBN subtrees_NNS ._.
+The_DT notions_NNS of_IN scope-lists_NNS and_CC rightmost_JJ extension_NN were_VBD introduced_VBN in_IN that_DT work_NN ._.
+-LRB-_-LRB- Asai_NNP et_FW al._FW -LRB-_-LRB- 2002_CD -RRB-_-RRB- presented_VBN FreqT_NN ,_, an_DT apriorilike_JJ algorithm_NN for_IN mi_FW
+method_NN can_MD efficiently_RB discover_VB the_DT patterns_NNS ,_, the_DT subgraphs_NNS to_TO be_VB searched_VBN are_VBP limited_VBN within_IN a_DT specific_JJ class_NN ._.
+For_IN example_NN ,_, MolFea_NNP efficiently_RB mines_NNS frequent_JJ paths_NNS from_IN labeled_JJ graphs_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+TreeMiner_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: and_CC FREQT_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- can_MD quickly_RB discover_VB all_DT frequent_JJ patterns_NNS from_IN ordered_VBN trees_NNS ._.
+However_RB ,_, they_PRP can_MD not_RB mine_VB more_RBR complex_JJ substructures_NNS such_JJ as_IN labeled_JJ subgraphs_NNS ._.
+On_IN the_DT other_JJ hand_NN ,_, the_DT AGM_NNP algorithm_NN -LRB-_-LRB- 10_CD ,_,
+core_NN trees_NNS and_CC transform_VB them_PRP to_TO the_DT uniform_JJ graph_NN formats_NNS ._.
+Therefore_RB ,_, it_PRP is_VBZ necessary_JJ to_TO generate_VB all_DT subtrees_NNS from_IN the_DT set_NN of_IN core_NN trees_NNS to_TO form_VB the_DT feature_NN space_NN ._.
+A_DT frequent_JJ tree-mining_JJ algorithm_NN -LRB-_-LRB- =_JJ -_: =_JJ Zaki_NNP 2002_CD -_: =--RRB-_NN is_VBZ used_VBN to_TO generate_VB subtrees_NNS from_IN a_DT set_NN of_IN core_NN trees_NNS ._.
+A_DT minimum_JJ support_NN parameter_NN is_VBZ used_VBN in_IN this_DT algorithm_NN to_TO allow_VB filtering_VBG :_: the_DT filter_NN yields_NNS only_RB those_DT subtrees_NNS that_WDT appear_VBP more_RBR frequently_RB tha_NN
+ncrease_NN in_IN interest_NN is_VBZ the_DT growing_VBG amount_NN of_IN semi-structured_JJ data_NNS -LRB-_-LRB- e.g._FW XML_NN databases_NNS -RRB-_-RRB- and_CC the_DT urge_NN to_TO exploit_VB and_CC mine_VB these_DT databases_NNS ._.
+Furthermore_RB ,_, the_DT availability_NN of_IN treemining_VBG algorithms_NNS such_JJ as_IN =_JJ -_: =[_NN 2_CD ,_, 13_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: to_TO exploit_VB these_DT databases_NNS ,_, without_IN losing_VBG information_NN on_IN the_DT structure_NN of_IN the_DT data_NNS ,_, has_VBZ increased_VBN the_DT interest_NN of_IN the_DT research_NN community_NN ._.
+Briefly_RB ,_, given_VBN a_DT set_NN of_IN tree_NN data_NNS ,_, the_DT problem_NN is_VBZ to_TO find_VB al_FW
+grown_VBN in_IN extending_VBG the_DT frequent_JJ item_NN set_NN paradigm_NN to_TO more_RBR expressive_JJ pattern_NN types_NNS such_JJ as_IN graphs_NNS ,_, trees_NNS and_CC sequences_NNS ._.
+Special_JJ attention_NN has_VBZ been_VBN devoted_VBN to_TO semi-structured_JJ and_CC tree-structured_JJ data_NN =_JJ -_: =[_NN 3_CD ,_, 5_CD ,_, 7_CD ,_, 2_CD ,_, 6_CD ,_, 1_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS of_IN these_DT approaches_NNS aim_VBP at_IN finding_VBG all_DT frequent_JJ trees_NNS in_IN a_DT forest_NN of_IN trees_NNS ._.
+They_PRP differ_VBP in_IN the_DT algorithms_NNS and_CC implementation_NN details_NNS ,_, and_CC more_RBR importantly_RB also_RB in_IN the_DT underlying_JJ notion_NN of_IN tree_NN
+ased_VBN on_IN a_DT generation_NN of_IN Adaboost_NNP -LRB-_-LRB- Schapire_NNP ,_, 1999_CD -RRB-_-RRB- in_IN which_WDT subtrees_NNS mined_VBN from_IN the_DT training_NN data_NNS are_VBP severed_VBN as_IN weak_JJ decision_NN stump_NN functions_NNS ._.
+The_DT technique_NN for_IN mining_NN these_DT subtrees_NNS is_VBZ presented_VBN in_IN -LRB-_-LRB- =_JJ -_: =_JJ Zaki_NNP ,_, 2002_CD -_: =--RRB-_NN which_WDT is_VBZ an_DT efficient_JJ method_NN for_IN mining_VBG a_DT large_JJ corpus_NN of_IN trees_NNS ._.
+Table_NNP 1_CD shows_VBZ an_DT example_NN of_IN mining_NN subtrees_NNS on_IN our_PRP$ corpus_NN ._.
+One_CD Table_NNP 1_CD :_: Subtrees_NNS mined_VBN from_IN the_DT corpus_JJ Frequency_NN Subtree_NN 20_CD -LRB-_-LRB- and_CC -LRB-_-LRB- bown_NN
+er_NN -LRB-_-LRB- C_NN ′_NN ,_, l_NN ′_NN ,_, L_NN ′_NN -RRB-_-RRB- Fig._NNP 3_CD ._.
+Depth-first_JJ graph_NN mining_NN algorithm_NN DFS_NN codes_NNS -LRB-_-LRB- in_IN gSpan_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- -RRB-_-RRB- ,_, adjacency_NN matrices_NNS -LRB-_-LRB- in_IN FFSM_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- -RRB-_-RRB- and_CC tree_NN codes_NNS with_IN backtrack_NN symbols_NNS -LRB-_-LRB- in_IN FreeTreeMiner_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC TreeMiner_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+In_IN order_NN to_TO make_VB sure_JJ that_IN no_DT two_CD isomorphic_JJ graphs_NNS are_VBP emitted_VBN by_IN the_DT algorithm_NN ,_, in_IN line_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- it_PRP is_VBZ determined_VBN whether_IN the_DT current_JJ code_NN C_NNP ′_NNP ,_, which_WDT corresponds_VBZ to_TO a_DT graph_NN G_NN ,_, is_VBZ the_DT lowest_JJS -LRB-_-LRB- or_CC highe_VB
+uentially_RB ,_, and_CC how_WRB easily_RB -LRB-_-LRB- or_CC often_RB -RRB-_-RRB- are_VBP pages_NNS within_IN the_DT site_NN accessed_VBN ._.
+Navigation_NNP graphs_NNS can_MD be_VB used_VBN to_TO categorize_VB Web_NN surfers_NNS and_CC can_MD ultimately_RB assist_VB in_IN organizing_VBG websites_NNS and_CC ranking_JJ Web_NN pages_NNS =_JJ -_: =[_NN 3_CD ,_, 31_CD ,_, 35_CD ,_, 45_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+1.3_CD BOOK_NN OVERVIEW_NN The_DT intention_NN of_IN this_DT book_NN is_VBZ to_TO provide_VB an_DT overview_NN of_IN the_DT state_NN of_IN the_DT art_NN in_IN mining_NN graph_NN data_NNS ._.
+To_TO this_DT end_NN ,_, we_PRP have_VBP gathered_VBN writings_NNS from_IN colleagues_NNS that_WDT contribute_VBP to_TO varied_JJ
+d_NN and_CC maintain_VB such_JJ statistics_NNS in_IN TreeLattice_NNP ._.
+s4_NNP .1_NNP Building_NNP the_DT Statistics_NNPS We_PRP rely_VBP on_IN the_DT lattice-based_JJ framework_NN for_IN enumerating_VBG all_DT occurred_VBD subtree_JJ patterns_NNS as_IN described_VBN in_IN Freqt_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC TreeMiner_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP build_VBP the_DT statistics_NNS in_IN a_DT level-wise_JJ fashion_NN ._.
+In_IN other_JJ words_NNS ,_, we_PRP collect_VBP the_DT occurrence_NN statistics_NNS of_IN -_: subtrees_NNS first_RB ,_, ©_NN thens-subtrees_NNS ,_, -_: subtrees_NNS ,_, and_CC so_RB on_RB ._.
+Since_IN the_DT number_NN of_IN all_DT possible_JJ s_NNS
+oitation_NN of_IN massive_JJ real-world_JJ data_NNS for_IN finding_VBG ``_`` valid_JJ ,_, new_JJ and_CC useful_JJ ''_'' regularities_NNS -LRB-_-LRB- 33_CD ,_, 49_CD ,_, 50_CD -RRB-_-RRB- ._.
+While_IN significant_JJ advances_NNS have_VBP been_VBN made_VBN for_IN specific_JJ DM_NN tasks_NNS ,_, e.g._FW identifying_VBG frequent_JJ item_NN sets_VBZ =_JJ -_: =[_NN 56_CD ,_, 139_CD ,_, 17_CD ,_, 128_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT DM_NN process_NN suffers_VBZ from_IN three_CD bottlenecks_NNS ._.
+Firstly_RB ,_, it_PRP is_VBZ widely_RB acknowledged_VBN that_IN 80_CD %_NN of_IN the_DT DM_NN effort_NN is_VBZ spent_VBN in_IN the_DT pre-processing_JJ step_NN -LRB-_-LRB- cleaning_NN ,_, selecting_NN ,_, merging_JJ ,_, etc_NN ,_, the_DT datasets_NNS -RRB-_-RRB- ._.
+Thi_NNP
+04-350_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 292-319_CD -RRB-_-RRB- -RCB-_-RRB- ,_, DivertPath_NN 2_CD -LRB-_-LRB- s_NNS -RRB-_-RRB- =_JJ -LCB-_-LRB- -LRB-_-LRB- 350-326-512_CD -RRB-_-RRB- -LRB-_-LRB- 350-517-286_CD -RRB-_-RRB- -RCB-_-RRB- ,_, DivertPath_NN 3_CD -LRB-_-LRB- s_NNS -RRB-_-RRB- =_JJ -LCB-_-LRB- -LRB-_-LRB- 512-510-513_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 512-515_CD -RRB-_-RRB- -RCB-_-RRB- ._.
+Tree_NN structure_NN behaviors_NNS can_MD help_VB to_TO mine_VB those_DT access_NN patterns_NNS with_IN tree_NN structure_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: and_CC to_TO mine_VB the_DT large_JJ reference_NN sequences_NNS from_IN maxim_NN forward_JJ references_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+4.3_CD Acyclic_NNP Routing_NNP behaviors_NNS recovery_NN ``_`` Acyclic_JJ routing_VBG behavior_NN ''_'' means_VBZ that_IN in_IN a_DT session_NN ,_, there_EX exist_VBP at_IN least_JJS two_CD diff_NN
+aint_RB ,_, that_DT is_VBZ ,_, all_DT subtrees_NNS that_WDT occur_VBP in_IN at_IN least_JJS n_NN %_NN of_IN the_DT data_NNS records_NNS ._.
+Due_JJ to_TO the_DT popularity_NN of_IN tree_NN mining_NN ,_, different_JJ approaches_NNS to_TO mine_VB labeled_JJ ordered_VBN trees_NNS have_VBP been_VBN proposed_VBN ,_, see_VBP for_IN example_NN =_JJ -_: =[_NN 2_CD ,_, 9_CD ,_, 12_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN ,_, these_DT methods_NNS share_VBP enumeration_NN strategy_NN and_CC pruning_NN techniques_NNS ,_, the_DT fundamental_JJ differences_NNS lie_VBP in_IN the_DT different_JJ notions_NNS of_IN when_WRB a_DT tree_NN matches_VBZ another_DT tree_NN and_CC how_WRB attributes_NNS are_VBP handled_VBN
+rease_NN in_IN interest_NN are_VBP the_DT growing_VBG amount_NN of_IN semi-structured_JJ data_NNS -LRB-_-LRB- e.g._FW XML_NN databases_NNS -RRB-_-RRB- and_CC the_DT urge_NN to_TO analyze_VB and_CC mine_VB these_DT databases_NNS ._.
+Furthermore_RB ,_, the_DT availability_NN of_IN tree_NN mining_NN algorithms_NNS such_JJ as_IN =_JJ -_: =[_NN 2_CD ,_, 13_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: to_TO exploit_VB these_DT databases_NNS ,_, without_IN losing_VBG information_NN on_IN the_DT structure_NN of_IN the_DT data_NNS ,_, has_VBZ increased_VBN the_DT interest_NN of_IN the_DT research_NN community_NN ._.
+Briefly_RB ,_, given_VBN a_DT set_NN of_IN tree_NN data_NNS ,_, the_DT problem_NN is_VBZ to_TO find_VB al_FW
+uctured_JJ objects_NNS include_VBP strings_NNS -LRB-_-LRB- DNA_NN -_: and_CC Protein-Sequences_NNP ,_, Documents_NNS ,_, User_NN -_: and_CC Customer-Transactions_NNS -RRB-_-RRB- -LRB-_-LRB- 41_CD ,_, 2_CD ,_, 178_CD ,_, 86_CD ,_, 31_CD -RRB-_-RRB- ,_, sets_NNS -LRB-_-LRB- Shopping_NNP Cart_NNP Analysis_NNP -RRB-_-RRB- -LRB-_-LRB- 132_CD ,_, 176_CD ,_, 32_CD -RRB-_-RRB- ,_, trees_NNS -LRB-_-LRB- HTML\/XML-documents_NNS -RRB-_-RRB- =_JJ -_: =[_NN 174_CD ,_, 81_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC graphs_NNS -LRB-_-LRB- Organic_NNP Molecules_NNPS ,_, Protein_NN Structures_NNS ,_, WWW_NN or_CC Metabolic_JJ Networks_NNP -RRB-_-RRB- -LRB-_-LRB- 65_CD ,_, 80_CD ,_, 90_CD ,_, 91_CD ,_, 92_CD ,_, 116_CD ,_, 148_CD ,_, 157_CD ,_, 107_CD ,_, 108_CD -RRB-_-RRB- ._.
+Apparently_RB ,_, these_DT models_NNS have_VBP the_DT advantage_NN that_IN they_PRP allow_VBP for_IN a_DT precise_JJ
+et_FW ._.
+Nonetheless_RB ,_, we_PRP take_VBP care_NN of_IN efficiency_NN issues_NNS while_IN performing_VBG the_DT mining_NN task_NN ._.
+Moreover_RB ,_, there_EX exist_VBP efficient_JJ algorithms_NNS designed_VBN for_IN mining_NN frequent_JJ substructures_NNS in_IN large_JJ graphs_NNS -LRB-_-LRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, which_WDT can_MD be_VB used_VBN to_TO extend_VB our_PRP$ model_NN to_TO process_VB larger_JJR data_NNS sets_NNS ._.
+5_CD ._.
+Results_NNS and_CC Discussion_NN In_IN this_DT section_NN we_PRP show_VBP how_WRB the_DT computational_JJ model_NN presented_VBN in_IN this_DT work_NN enables_VBZ us_PRP to_TO shed_VB light_NN on_IN t_NN
+uctured_JJ relational_JJ datasets_NNS ,_, such_JJ as_IN :_: Itemsets_NNS or_CC co-occurrences_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- -LRB-_-LRB- transactional_JJ ,_, unordered_JJ data_NNS -RRB-_-RRB- ,_, Sequences_NNS -LRB-_-LRB- 2_CD ,_, 24_CD -RRB-_-RRB- -LRB-_-LRB- temporal_JJ or_CC positional_JJ data_NNS ,_, as_IN in_IN text_NN mining_NN ,_, bioinformatics_NNS -RRB-_-RRB- ,_, Tree_NN patterns_NNS =_JJ -_: =[_NN 25_CD ,_, 3_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- XML\/semistructured_JJ data_NNS -RRB-_-RRB- ,_, and_CC Graph_NN patterns_NNS -LRB-_-LRB- 10_CD ,_, 13_CD ,_, 21_CD ,_, 22_CD -RRB-_-RRB- -LRB-_-LRB- complex_JJ relational_JJ data_NNS ,_, bioinformatics_NNS -RRB-_-RRB- ._.
+Figure_NN 1_CD shows_VBZ examples_NNS of_IN these_DT different_JJ types_NNS of_IN patterns_NNS ;_: in_IN a_DT generic_JJ sense_NN a_DT pattern_NN de_IN
+t_NN sequential_JJ pattern_NN mining_NN algorithms_NNS are_VBP the_DT AprioriAll_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, GSP_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, SPIRIT_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, SPADE_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, FreeSpan_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, PrefixSapn_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC SPAM_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- algorithms_NNS ._.
+The_DT best-known_JJ tree_NN miner_NN algorithms_NNS are_VBP TreeMiner_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, FREQT_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC FreeTreeMiner_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+The_DT contribution_NN of_IN the_DT novel_JJ approach_NN proposed_VBN in_IN this_DT paper_NN is_VBZ to_TO use_VB automaton_NN theory_NN for_IN testing_VBG the_DT subpattern_JJ inclusion_NN ._.
+A._FW Subsequence_FW Inclusion_NN Test_NN For_IN tes_NNS
+on_IN the_DT structure_NN of_IN the_DT data_NNS present_JJ in_IN XML-databases_NNS ._.
+Frequent_JJ tree_NN mining_NN is_VBZ an_DT instance_NN of_IN frequent_JJ pattern_NN mining_NN ,_, specialized_VBN on_IN tree_NN structured_JJ data_NNS ._.
+Some_DT well_RB known_VBN algorithms_NNS are_VBP described_VBN in_IN =_JJ -_: =[_NN 2,13,14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Briefly_RB ,_, given_VBN a_DT set_NN of_IN tree_NN data_NNS ,_, the_DT problem_NN is_VBZ to_TO find_VB all_DT subtrees_NNS that_WDT satisfy_VBP the_DT minimum_JJ support_NN constraint_NN ,_, that_DT is_VBZ ,_, all_DT subtrees_NNS that_WDT occur_VBP in_IN at_IN least_JJS n_NN %_NN of_IN the_DT data_NNS records_NNS ._.
+Classificatio_NNP
+ests_NNS ._.
+Chi_NNP et_FW al._FW -LRB-_-LRB- 18_CD -RRB-_-RRB- proposed_VBD an_DT algorithm_NN to_TO mine_VB subtrees_NNS from_IN free_JJ trees_NNS and_CC summarized_VBD the_DT characteristics_NNS of_IN a_DT tree-mining_JJ algorithm_NN and_CC provided_VBD a_DT comparative_JJ analysis_NN of_IN such_JJ algorithms_NNS ._.
+Zaki_NN =_JJ -_: =[_NN 123_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT method_NN to_TO mine_VB embedded_JJ subtrees_NNS from_IN trees_NNS -LRB-_-LRB- rooted_JJ and_CC unrooted_JJ -RRB-_-RRB- ._.
+Asai_NNP et_FW al._FW -LRB-_-LRB- 5_CD -RRB-_-RRB- provided_VBD a_DT tool_NN for_IN mining_NN induced_VBD subtrees_NNS from_IN a_DT population_NN of_IN trees_NNS ._.
+The_DT mining_NN algorithms_NNS are_VBP used_VBN fo_IN
+ounds_NNS from_IN labeled_JJ graphs_NNS ,_, and_CC applied_VBD it_PRP to_TO predict_VB the_DT functions_NNS of_IN chemical_NN compounds_NNS ._.
+The_DT prevalence_NN of_IN the_DT World_NNP Wide_NN Web_NN has_VBZ also_RB prompted_VBN works_NNS to_TO find_VB frequent_JJ substructures_NNS in_IN Web_NN documents_NNS =_JJ -_: =[_NN 1_CD ,_, 21_CD ,_, 22_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT objective_NN is_VBZ to_TO discover_VB the_DT frequent_JJ substructures_NNS from_IN a_DT collection_NN of_IN semistructured_JJ data_NNS objects_NNS -LRB-_-LRB- files_NNS -RRB-_-RRB- of_IN similar_JJ structure_NN ._.
+-LRB-_-LRB- 22_CD -RRB-_-RRB- employs_VBZ a_DT tree_NN matching_NN algorithm_NN to_TO count_VB the_DT support_NN of_IN
+size_NN is_VBZ 30_CD ._.
+The_DT number_NN of_IN labels_NNS is_VBZ 20_CD ._.
+2_CD ._.
+Synthetic_JJ dataset_NN d10000_NN :_: This_DT dataset_NN contains_VBZ 10,000_CD transactions_NNS ._.
+The_DT average_NN of_IN tree_NN size_NN is_VBZ 21_CD ._.
+The_DT number_NN of_IN labels_NNS is_VBZ 20_CD ._.
+3_LS ._.
+Real_JJ world_NN dataset_JJ CSLOGS_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: :_: This_DT dataset_NN contains_VBZ 59,691_CD transactions_NNS ._.
+The_DT average_NN of_IN tree_NN size_NN is_VBZ 13_CD ._.
+The_DT number_NN of_IN labels_NNS is_VBZ 13335_CD ._.
+All_DT experiments_NNS were_VBD done_VBN on_IN a_DT PC_NN -LRB-_-LRB- Celeron_NN M_NN 350_CD 1.3_CD GHz_NNS -RRB-_-RRB- with_IN 1GB_NN of_IN main_JJ memory_NN running_VBG Lin_NNP
+ndences_NNS and_CC are_VBP less_RBR costly_JJ for_IN processing_NN than_IN graphs_NNS ._.
+A_DT lot_NN of_IN recent_JJ works_NNS are_VBP interested_JJ in_IN knowledge_NN discovery_NN from_IN tree-structured_JJ data_NNS ._.
+For_IN example_NN we_PRP can_MD cite_VB the_DT extraction_NN of_IN frequent_JJ trees_NNS =_JJ -_: =[_NN 2_CD ,_, 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC the_DT detection_NN of_IN tree_NN patterns_NNS ,_, either_CC in_IN the_DT framework_NN of_IN relational_JJ databases_NNS or_CC in_IN the_DT one_CD of_IN XML_NN data_NNS -LRB-_-LRB- 4_CD ,_, 5_CD -RRB-_-RRB- ._.
+Trees_NNP are_VBP also_RB studied_VBN in_IN machine_NN learning_NN ,_, particularly_RB in_IN the_DT inference_NN of_IN tree_NN
+ent_JJ pattern_NN mining_NN focuses_VBZ on_IN discovering_VBG frequently_RB appearing_VBG sub-structures_NNS in_IN datasets_NNS ._.
+The_DT structures_NNS explored_VBN include_VBP itemsets_NNS ,_, sequences_NNS ,_, sub-trees_NNS ,_, sub-graphs_NNS ,_, and_CC other_JJ topological_JJ structures_NNS =_JJ -_: =[_NN 29_CD ,_, 3_CD ,_, 33_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Frequent_JJ pattern_NN mining_NN has_VBZ emerged_VBN as_IN a_DT very_RB useful_JJ class_NN of_IN techniques_NNS for_IN analyzing_VBG datasets_NNS from_IN a_DT variety_NN of_IN domains_NNS ,_, including_VBG retail_JJ transactions_NNS ,_, DNA_NN sequences_NNS ,_, chemical_NN compounds_NNS ,_, XML_NN docum_NN
+t_NN pattern_NN mining_NN has_VBZ emerged_VBN as_IN a_DT very_RB useful_JJ class_NN of_IN techniques_NNS for_IN analyzing_VBG datasets_NNS from_IN a_DT variety_NN of_IN domains_NNS ,_, including_VBG retail_JJ transactions_NNS ,_, DNA_NN sequences_NNS ,_, chemical_NN compounds_NNS ,_, and_CC XML_NN documents_NNS =_JJ -_: =[_NN 33_CD ,_, 2_CD ,_, 39_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+At_IN this_DT time_NN ,_, the_DT major_JJ relational_JJ DBMSs_NNS have_VBP all_DT implemented_VBN data_NNS mining_NN tools_NNS including_VBG a_DT frequent_JJ itemset_NN operator_NN -LRB-_-LRB- Oracle_NNP 10g_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, IBM_NNP DB2_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, SQL_NN Server_NN 9.0_CD -LRB-_-LRB- 32_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Most_JJS existing_VBG research_NN and_CC
+ssociations_NNS inherent_JJ in_IN semistructured_JJ objects_NNS was_VBD given_VBN in_IN -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+-LRB-_-LRB- 5_CD -RRB-_-RRB- improved_VBD the_DT previous_JJ work_NN by_IN introducing_VBG a_DT new_JJ representation_NN of_IN semi-structured_JJ objects_NNS and_CC a_DT more_RBR powerful_JJ wildcard_JJ mechanism_NN ._.
+=_SYM -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: adopted_VBD a_DT new_JJ data_NN structure_NN called_VBD scope-list_JJ for_IN efficiently_RB mining_VBG all_DT frequent_JJ subtrees_NNS in_IN a_DT forest_NN ._.
+-LRB-_-LRB- 24_CD -RRB-_-RRB- proposed_VBD a_DT PathJoin_NNP algorithm_NN to_TO uncover_VB maximal_JJ frequent_JJ subtrees_NNS from_IN a_DT database_NN of_IN uno_NN
+For_IN the_DT last_JJ years_NNS ,_, a_DT number_NN of_IN researches_VBZ on_IN efficient_JJ ⋆_JJ Present_JJ address_NN :_: LIRIS_NNP ,_, University_NNP Claude-Bernard_NNP Lyon_NNP 1_CD ,_, Francesalgorithms_NNPS for_IN semi-structured_JJ data_NNS mining_NN have_VBP been_VBN done_VBN for_IN ordered_VBN trees_NNS =_JJ -_: =[_NN 3_CD ,_, 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, unordered_JJ trees_NNS -LRB-_-LRB- 4_CD ,_, 11_CD ,_, 15_CD ,_, 22_CD -RRB-_-RRB- ,_, and_CC general_JJ graphs_NNS -LRB-_-LRB- 14_CD ,_, 26_CD -RRB-_-RRB- ._.
+Presently_RB ,_, one_CD of_IN the_DT major_JJ topics_NNS in_IN semi-structured_JJ data_NNS mining_NN is_VBZ so-called_JJ closed_JJ tree_NN mining_NN ,_, an_DT extension_NN of_IN closed_JJ pattern_NN minin_NN
+actional_JJ data_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- has_VBZ been_VBN well_RB studied_VBN and_CC resulted_VBD in_IN several_JJ algorithms_NNS that_WDT cansnd_VBP association_NN rules_NNS within_IN a_DT limited_JJ amount_NN of_IN time_NN ._.
+Also_RB more_RBR complex_JJ patterns_NNS have_VBP been_VBN considered_VBN such_JJ as_IN trees_NNS =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, graphs_NNS -LRB-_-LRB- 11_CD ,_, 10_CD -RRB-_-RRB- ,_, or_CC arbitrary_JJ relational_JJ structures_NNS -LRB-_-LRB- 5_CD ,_, 6_CD -RRB-_-RRB- ._.
+However_RB ,_, the_DT presented_VBN algorithms_NNS only_RB work_VBP on_IN databases_NNS consisting_VBG of_IN a_DT set_NN of_IN transactions_NNS ._.
+For_IN example_NN ,_, in_IN the_DT tree_NN case_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, every_DT tr_NN
+ctions_NNS ._.
+Indeed_RB ,_, most_RBS frequent_JJ pattern_NN mining_NN or_CC association_NN rule_NN mining_NN algorithms_NNS work_VBP on_IN so_RB called_VBN transaction_NN databases_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Not_RB only_RB for_IN itemsets_NNS ,_, but_CC also_RB for_IN more_JJR complex_NN patterns_NNS such_JJ as_IN trees_NNS =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, graphs_NNS -LRB-_-LRB- 13_CD ,_, 15_CD ,_, 19_CD -RRB-_-RRB- ,_, or_CC arbitrary_JJ relational_JJ structures_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, databases_NNS consisting_VBG of_IN a_DT set_NN of_IN transactions_NNS are_VBP used_VBN ._.
+For_IN example_NN ,_, in_IN the_DT tree_NN case_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, every_DT transaction_NN in_IN the_DT database_NN contains_VBZ a_DT
+ent_NN patterns_NNS ._.
+Different_NNP from_IN Chopper_NNP and_CC XSpanner_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, PrefixTreeESpan_NN does_VBZ not_RB need_VB a_DT checking_NN process_NN ._.
+Our_PRP$ performance_NN study_NN shows_VBZ that_IN PrefixTreeESpan_NNP outperforms_VBZ Apriori-like_JJ algorithm_NN :_: TreeMiner_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC pattern-growth_NN algorithms_NNS :_: Chopper_NN ,_, XSpanner_NN ._.
+1_CD Introduction_NN Mining_NN frequent_JJ structural_JJ patterns_NNS from_IN a_DT large_JJ tree_NN database_NN -LRB-_-LRB- 2_CD ,_, 4_CD ,_, 6_CD -RRB-_-RRB- and_CC a_DT graph_NN database_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- is_VBZ a_DT new_JJ subject_NN in_IN frequent_JJ patt_NN
+ferred_VBN to_TO as_IN support_NN threshold_NN ._.
+There_EX are_VBP many_JJ types_NNS of_IN patterns_NNS :_: itemsets_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, item_NN sequences_NNS ,_, sequences_NNS of_IN itemsets_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, episodes_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, boolean_JJ formulas_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, rooted_VBD labeled_VBN ordered\/unordered_JJ trees_NNS =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, labeled_VBD induced_VBN subgraphs_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, labeled_JJ subgraphs_NNS -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+In_IN frequent_JJ itemset_NN mining_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- the_DT pattern_NN context_NN is_VBZ -LRB-_-LRB- 2_CD I_NN ,_, ⊆_NN -RRB-_-RRB- ,_, where_WRB I_PRP is_VBZ a_DT given_VBN set_NN ,_, ⊆_NN is_VBZ the_DT usual_JJ subset_NN relation_NN ,_, and_CC the_DT input_NN data_NNS is_VBZ
+ot_NN ._.
+We_PRP say_VBP that_IN a_DT rooted_JJ tree_NN is_VBZ ordered_VBN if_IN the_DT set_NN of_IN children_NNS of_IN each_DT vertex_NN in_IN the_DT tree_NN is_VBZ ordered_VBN ._.
+If_IN a_DT labeled_JJ rooted_JJ tree_NN is_VBZ ordered_VBN ,_, then_RB there_EX are_VBP ways_NNS to_TO represent_VB the_DT tree_NN in_IN a_DT unique_JJ form_NN ._.
+=_SYM -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ one_CD example_NN in_IN which_WDT a_DT depth-first_JJ traversal_NN is_VBZ used_VBN to_TO obtain_VB unique_JJ string_NN representations_NNS for_IN rooted_JJ ordered_VBN trees_NNS ._.
+Notice_NNP that_IN when_WRB a_DT rooted_JJ tree_NN is_VBZ ordered_VBN ,_, the_DT isomorphism_NN does_VBZ not_RB really_RB ap_IN
+groups_NNS of_IN phylogenies_NNS ._.
+We_PRP also_RB describe_VBP extensions_NNS of_IN our_PRP$ algorithms_NNS for_IN undirected_JJ acyclic_JJ graphs_NNS -LRB-_-LRB- or_CC free_JJ trees_NNS -RRB-_-RRB- ._.
+1_CD Introduction_NN Frequent_JJ structure_NN mining_NN -LRB-_-LRB- FSM_NN -RRB-_-RRB- is_VBZ a_DT problem_NN of_IN continuing_VBG interest_NN =_JJ -_: =[_NN 22_CD ,_, 45_CD ,_, 48_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT goal_NN of_IN FSM_NNP is_VBZ to_TO discover_VB and_CC extract_VB patterns_NNS frequently_RB occurring_VBG in_IN tree_NN and_CC graph_NN structures_NNS ,_, which_WDT often_RB represent_VBP complex_JJ interactions_NNS among_IN entities_NNS ._.
+FSM_NNP finds_VBZ many_JJ applications_NNS in_IN bioin_NN
+._.
+The_DT main_JJ difference_NN with_IN our_PRP$ approach_NN is_VBZ that_IN CMTreeMiner_NN is_VBZ not_RB incremental_JJ and_CC works_VBZ with_IN labeled_JJ nodes_NNS ,_, and_CC we_PRP deal_VBP with_IN unlabeled_JJ trees_NNS ._.
+On_IN synthetic_JJ data_NNS ,_, we_PRP use_VBP the_DT same_JJ dataset_NN as_IN in_IN -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: for_IN rooted_JJ ordered_VBN trees_NNS restricting_VBG the_DT number_NN of_IN distinct_JJ node_NN labels_NNS to_TO one_CD ._.
+We_PRP call_VBP this_DT dataset_NN TN1_NN ,_, and_CC is_VBZ generated_VBN by_IN the_DT tree_NN generation_NN program_NN of_IN Zaki_NNP -LRB-_-LRB- 19_CD -RRB-_-RRB- available_JJ from_IN his_PRP$ web_NN page_NN ._.
+Thi_NNP
+dered_VBN data_NNS tree_NN ._.
+The_DT algorithm_NN counts_VBZ each_DT occurrence_NN in_IN a_DT data_NN tree_NN ,_, but_CC can_MD easily_RB also_RB be_VB used_VBN for_IN partition_NN counting_NN ._.
+It_PRP uses_VBZ an_DT efficient_JJ scheme_NN for_IN generating_VBG and_CC counting_VBG ordered_VBN trees_NNS ._.
+--_: Zaki_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: developed_VBD an_DT algorithm_NN for_IN discovering_VBG embedded_JJ subtrees_NNS in_IN a_DT node_NN labeled_VBN ,_, ordered_VBN data_NNS tree_NN ._.
+The_DT algorithm_NN counts_VBZ occurrences_NNS in_IN partitions_NNS ,_, but_CC can_MD easily_RB also_RB be_VB used_VBN to_TO count_VB occurrences_NNS separat_NN
+ructured_VBN relational_JJ datasets_NNS ,_, such_JJ as_IN :_: Itemsets_NNS or_CC co-occurrences_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- -LRB-_-LRB- transactional_JJ ,_, unordered_JJ data_NNS -RRB-_-RRB- ,_, Sequences_NNS -LRB-_-LRB- 2_CD ,_, 8_CD -RRB-_-RRB- -LRB-_-LRB- temporal_JJ or_CC positional_JJ data_NNS ,_, as_IN in_IN text_NN mining_NN ,_, bioinformatics_NNS -RRB-_-RRB- ,_, Tree_NN patterns_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- XML\/semistructured_JJ data_NNS -RRB-_-RRB- ,_, and_CC Graph_NN patterns_NNS -LRB-_-LRB- 4_CD --_: 6_CD -RRB-_-RRB- -LRB-_-LRB- complex_JJ relational_JJ data_NNS ,_, bioinformatics_NNS -RRB-_-RRB- ._.
+Figure_NN 1_CD shows_VBZ examples_NNS of_IN these_DT different_JJ types_NNS of_IN patterns_NNS ;_: in_IN a_DT generic_JJ sense_NN a_DT pattern_NN denotes_VBZ links_NNS
+uctured_JJ relational_JJ datasets_NNS ,_, such_JJ as_IN :_: Itemsets_NNS or_CC co-occurrences_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- -LRB-_-LRB- transactional_JJ ,_, unordered_JJ data_NNS -RRB-_-RRB- ,_, Sequences_NNS -LRB-_-LRB- 2_CD ,_, 24_CD -RRB-_-RRB- -LRB-_-LRB- temporal_JJ or_CC positional_JJ data_NNS ,_, as_IN in_IN text_NN mining_NN ,_, bioinformatics_NNS -RRB-_-RRB- ,_, Tree_NN patterns_NNS =_JJ -_: =[_NN 25,3_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- XML\/semistructured_JJ data_NNS -RRB-_-RRB- ,_, and_CC Graph_NN patterns_NNS -LRB-_-LRB- 10,13,21,22_CD -RRB-_-RRB- -LRB-_-LRB- complex_JJ relational_JJ data_NNS ,_, bioinformatics_NNS -RRB-_-RRB- ._.
+Figure_NN 1_CD shows_VBZ ⋆_NNP This_NNP work_NN was_VBD supported_VBN by_IN NSF_NNP Grant_NNP EIA-0103708_NN under_IN the_DT KD-D_NN program_NN ,_, NSF_NNP CA_NNP
+._.
+6.1_CD Tree_NN Classification_NN We_PRP evaluate_VBP our_PRP$ approach_NN to_TO tree_NN classification_NN on_IN both_CC real_JJ and_CC synthetic_JJ classification_NN data_NNS sets_NNS ._.
+For_IN synthetic_JJ classification_NN ,_, we_PRP use_VBP the_DT tree_NN generation_NN program_NN of_IN Zaki_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, available_JJ from_IN his_PRP$ web_NN page_NN ._.
+We_PRP generate_VBP two_CD mother_NN trees_NNS ,_, one_CD for_IN each_DT class_NN ._.
+The_DT first_JJ mother_NN tree_NN is_VBZ generated_VBN with_IN the_DT following_JJ parameters_NNS :_: the_DT number_NN of_IN distinct_JJ node_NN labels_NNS N_NN =_JJ 200_CD ,_, the_DT total_NN
+ng_NN popularity_NN of_IN XML_NN in_IN databases_NNS ._.
+There_EX are_VBP three_CD categories_NNS of_IN methods_NNS for_IN mining_NN frequent_JJ subtrees_NNS ._.
+The_DT first_JJ -LRB-_-LRB- and_CC by_IN far_RB the_DT most_RBS common_JJ -RRB-_-RRB- category_NN of_IN algorithms_NNS are_VBP based_VBN on_IN enumeration_NN trees_NNS :_: In_IN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Zaki_NNP presented_VBD an_DT algorithm_NN ,_, TreeMiner_NNP ,_, to_TO discover_VB all_DT frequent_JJ embedded_JJ subtrees_NNS ,_, i.e._FW ,_, those_DT subtrees_NNS that_WDT preserve_VBP ancestor-descendant_JJ relationships_NNS ,_, in_IN a_DT forest_NN or_CC a_DT database_NN of_IN rooted_JJ ordered_VBN
+uence_NN and_CC tree_NN data_NNS for_IN patterns_NNS of_IN interest_NN -LRB-_-LRB- 3_CD ,_, 7_CD ,_, 20_CD -RRB-_-RRB- ._.
+While_IN the_DT advent_NN of_IN XML_NN and_CC the_DT need_NN for_IN mining_NN semi-structured_JJ data_NNS has_VBZ sparked_VBN a_DT lot_NN of_IN interest_NN in_IN finding_VBG frequent_JJ rooted_JJ trees_NNS in_IN forests_NNS =_JJ -_: =[_NN 16_CD ,_, 1_CD ,_, 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, other_JJ approaches_NNS have_VBP focused_VBN on_IN mining_NN for_IN patterns_NNS in_IN databases_NNS containing_VBG general_JJ graphs_NNS -LRB-_-LRB- 12_CD ,_, 2_CD ,_, 18_CD ,_, 20_CD ,_, 7_CD ,_, 14_CD -RRB-_-RRB- ._.
+The_DT work_NN described_VBN in_IN this_DT paper_NN falls_VBZ into_IN this_DT latter_JJ category_NN :_: we_PRP are_VBP mining_NN fo_NN
+html_FW Path\/poems\/akgun_FW akova\/biyografi_FW ._.
+html_JJ Path\/poems\/akgun_NN akova\/contents_NNS ._.
+html_FW Path\/sair_FW listesi_FW ._.
+html_NN Sequence_NN Mining_NN If_IN our_PRP$ task_NN is_VBZ to_TO perform_VB sequence_NN mining_NN ,_, we_PRP look_VBP for_IN the_DT longest_JJS forward_JJ links_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: in_IN a_DT user_NN session_NN ,_, and_CC generate_VB a_DT new_JJ sequence_NN each_DT time_NN a_DT back_JJ edge_NN is_VBZ traversed_VBN ._.
+We_PRP applied_VBD sequence_NN mining_NN to_TO the_DT LOGML_NN document_NN from_IN the_DT CS_NN web_NN site_NN ._.
+From_IN the_DT 200_CD user_NN sessions_NNS ,_, we_PRP obtain_VBP 8208_CD ma_FW
+pport_NN counting_NN ,_, as_IN discussed_VBN below_IN ._.
+Tree_NN T0_NN n0_NN ,_, -LRB-_-LRB- 0,3_CD -RRB-_-RRB- 1_CD 2_CD 3_CD n2_NN ,_, -LRB-_-LRB- 2,3_CD -RRB-_-RRB- n1_NN ,_, -LRB-_-LRB- 1,1_CD -RRB-_-RRB- Tree_NN T1_NN n0_NN ,_, -LRB-_-LRB- 0,5_CD -RRB-_-RRB- 2_CD n1_NN ,_, -LRB-_-LRB- 1,3_CD -RRB-_-RRB- 1_CD 2_CD 3_CD 2_CD 4_CD n2_NN ,_, -LRB-_-LRB- 2,2_CD -RRB-_-RRB- n3_NN ,_, -LRB-_-LRB- 3_CD ,_, 3_CD -RRB-_-RRB- 4_CD n3_NN ,_, -LRB-_-LRB- 3,3_CD -RRB-_-RRB- Database_NN D_NN of_IN 3_CD Trees_NNP n4_NN ,_, -LRB-_-LRB- 4_CD ,_, 4_LS -RRB-_-RRB- n5_NN ,_, -LRB-_-LRB- 5,5_CD -RRB-_-RRB- n0_NN ,_, =_JJ -_: =[_NN 0,7_CD -RRB-_-RRB- 1_CD n1_NN ,_, -LRB-_-LRB- 1,2_CD -RRB-_-RRB- 3_CD 5_CD -_: =_JJ -_: n3_NN ,_, -LRB-_-LRB- 3,7_CD -RRB-_-RRB- n2_NN ,_, -LRB-_-LRB- 2,2_CD -RRB-_-RRB- 2_CD Tree_NN T2_NN n5_NN ,_, -LRB-_-LRB- 5,5_CD -RRB-_-RRB- 1_CD n4_NN ,_, -LRB-_-LRB- 4,7_CD -RRB-_-RRB- 2_CD 3_CD 4_CD n7_NN ,_, -LRB-_-LRB- 7,7_CD -RRB-_-RRB- n6_NN ,_, -LRB-_-LRB- 6,7_CD -RRB-_-RRB- D_NN in_IN Horizontal_JJ Format_NN :_: -LRB-_-LRB- tid_NN ,_, string_NN encoding_NN -RRB-_-RRB- -LRB-_-LRB- T0_NN ,_, 1_CD 2_CD −_CD 1_CD 3_CD 4_CD −_NN 1_CD −_NN 1_CD -RRB-_-RRB- -LRB-_-LRB- T1_NN ,_, 2_CD 1_CD 2_CD −_CD 1_CD 4_CD −_NN 1_CD −_NN 1_CD 2_CD −_CD 1_CD 3_CD −_NN 1_CD -RRB-_-RRB- -LRB-_-LRB-
+eing_VB an_DT instance_NN of_IN frequent_JJ structure_NN mining_NN ,_, has_VBZ obvious_JJ relation_NN to_TO association_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC sequence_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- mining_NN ._.
+Frequent_JJ tree_NN mining_NN is_VBZ also_RB related_JJ to_TO tree_NN isomorphism_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- and_CC tree_NN pattern_NN matching_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- ._.
+-_: =_SYM -_: Given_IN a_DT pattern_NN tree_NN P_NN and_CC a_DT target_NN tree_NN T_NN ,_, with_IN |_CD P_NN |_FW ≤_FW |_FW T_NN |_NN ,_, the_DT subtree_NN isomorphism_NN problem_NN is_VBZ to_TO decide_VB whether_IN P_NN is_VBZ isomorphic_JJ to_TO any_DT subtree_NN of_IN T_NN ,_, i.e._FW ,_, there_EX is_VBZ a_DT one-to-one_JJ mapping_NN from_IN P_NN t_NN
+t_NN only_RB useful_JJ for_IN studying_VBG customer_NN choices_NNS ,_, but_CC also_RB helps_VBZ to_TO better_RBR organize_VB web_NN pages_NNS ._.
+This_DT is_VBZ accomplished_VBN by_IN knowing_VBG which_WDT web_NN pages_NNS are_VBP most_RBS frequently_RB accessed_VBN by_IN the_DT web_NN surfers_NNS ._.
+We_PRP use_VBP LOGML_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT publicly_RB available_JJ XML_NN application_NN ,_, to_TO describe_VB log_NN reports_NNS of_IN web_NN servers_NNS ._.
+LOGML_NN provides_VBZ a_DT XML_NN vocabulary_NN to_TO structurally_RB express_VB the_DT contents_NNS of_IN the_DT log_NN file_NN information_NN in_IN a_DT compact_JJ manner_NN ._.
+LO_NN
+tree_NN T_NN in_IN D_NN is_VBZ stored_VBN in_IN its_PRP$ string_NN encoding_NN -LRB-_-LRB- horizontal_JJ -RRB-_-RRB- format_NN -LRB-_-LRB- see_VB Figure_NNP 4_CD -RRB-_-RRB- ._.
+F1_NN and_CC F2_NN are_VBP computed_VBN as_IN in_IN TreeMiner_NNP ._.
+Due_JJ to_TO lack_NN of_IN space_NN we_PRP describe_VBP only_RB the_DT main_JJ features_NNS of_IN PatternMatcher_NN ;_: see_VB =_JJ -_: =[_NN 22_CD -RRB-_-RRB- for_IN det_NN -_: =_JJ -_: ails_NNS ._.
+PatternMatcher_NN -LRB-_-LRB- D_NN ,_, minsup_NN -RRB-_-RRB- :_: 1_CD ._.
+F1_NN =_JJ -LCB-_-LRB- frequent_JJ 1-subtrees_NNS -RCB-_-RRB- ;_: 2_CD ._.
+F2_NN =_JJ -LCB-_-LRB- classes_NNS of_IN frequent_JJ 2-subtrees_NNS -RCB-_-RRB- ;_: 3_CD ._.
+for_IN -LRB-_-LRB- k_NN =_JJ 3_CD ;_: Fk_FW −_FW 1_CD =_JJ ∅_NN ;_: k_NN =_JJ k_NN +_CC 1_LS -RRB-_-RRB- do_VBP 4_CD ._.
+Ck_NN =_JJ -LCB-_-LRB- classes_NNS -LRB-_-LRB- P_NN -RRB-_-RRB- k_NN −_NN 1_CD of_IN candidate_NN k_NN -_:
+e_LS triple_JJ -LRB-_-LRB- 0_CD ,_, 0_CD ,_, -LRB-_-LRB- 1_CD ,_, 1_CD -RRB-_-RRB- -RRB-_-RRB- to_TO the_DT new_JJ scope_NN list_NN ._.
+In_IN like_JJ manner_NN ,_, we_PRP test_VBP the_DT other_JJ occurrences_NNS of_IN 2_CD under_IN 1_CD in_IN trees_NNS T1_NN and_CC T2_NN ._.
+Note_VB that_IN for_IN T2_NN there_EX are_VBP three_CD instances_NNS of_IN the_DT candidate_NN pattern_NN :_: s2_NN =_JJ =_JJ -_: =[_NN 2_CD ,_, 2_CD -RRB-_-RRB- ⊂_CD s_NN -_: =_JJ -1_CD =_JJ -LRB-_-LRB- 0_CD ,_, 7_CD -RRB-_-RRB- ,_, s2_NN =_JJ -LRB-_-LRB- 5_CD ,_, 5_CD -RRB-_-RRB- ⊂_CD s1_NN =_JJ -LRB-_-LRB- 0_CD ,_, 7_CD -RRB-_-RRB- ,_, and_CC s2_NN =_JJ -LRB-_-LRB- 5_CD ,_, 5_CD -RRB-_-RRB- ⊂_CD s1_NN =_JJ -LRB-_-LRB- 4_CD ,_, 7_CD -RRB-_-RRB- ._.
+If_IN a_DT new_JJ scope-list_NN occurs_VBZ in_IN at_IN least_JJS minsup_JJ tids_NNS ,_, the_DT pattern_NN is_VBZ considered_VBN frequent_JJ ._.
+Consider_VB the_DT result_NN of_IN extending_VBG class_NN
+uctures_NNS -LRB-_-LRB- subgraphs_NNS -RRB-_-RRB- describing_VBG the_DT carcinogenesis_NN of_IN chemical_NN compounds_NNS ._.
+They_PRP reported_VBD that_IN mining_NN beyond_IN 6_CD predicates_NNS was_VBD unfeasible_JJ due_JJ to_TO the_DT complexity_NN of_IN the_DT subgraph_NN patterns_NNS ._.
+The_DT SUBDUE_NNP system_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: also_RB discovers_VBZ graph_NN patterns_NNS using_VBG the_DT Minimum_NNP Description_NN Length_NN principle_NN ._.
+An_DT approach_NN termed_VBN Graph-Based_JJ Induction_NN -LRB-_-LRB- GBI_NN -RRB-_-RRB- was_VBD proposed_VBN in_IN -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, which_WDT uses_VBZ beam_NN search_NN for_IN mining_NN subgraphs_NNS ._.
+However_RB
+lly_NN trees_NNS ._.
+To_TO get_VB information_NN about_IN a_DT newly_RB sequenced_VBN RNA_NN ,_, they_PRP compare_VBP it_PRP with_IN known_JJ RNA_NN structures_NNS ,_, looking_VBG for_IN common_JJ topological_JJ patterns_NNS ,_, which_WDT provide_VBP important_JJ clues_NNS to_TO the_DT function_NN of_IN the_DT RNA_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN we_PRP introduce_VBP TreeMiner_NNP ,_, an_DT efficient_JJ algorithm_NN for_IN the_DT problem_NN of_IN mining_NN frequent_JJ subtrees_NNS in_IN a_DT forest_NN -LRB-_-LRB- the_DT database_NN -RRB-_-RRB- ._.
+The_DT key_JJ contributions_NNS of_IN our_PRP$ work_NN are_VBP as_IN follows_VBZ :_: 1_LS -RRB-_-RRB- We_PRP introduce_VBP
+tructures_NNS to_TO be_VB discovered_VBN ,_, one_CD extracts_NNS more_RBR informative_JJ patterns_NNS ;_: we_PRP are_VBP specifically_RB interested_JJ in_IN mining_VBG tree-like_JJ patterns_NNS ._.
+As_IN a_DT motivating_VBG example_NN for_IN tree_NN mining_NN ,_, consider_VB the_DT web_NN usage_NN mining_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: problem_NN ._.
+Given_VBN a_DT database_NN of_IN web_NN access_NN logs_NNS at_IN a_DT popular_JJ site_NN ,_, one_PRP can_MD perform_VB several_JJ mining_NN tasks_NNS ._.
+The_DT simplest_JJS is_VBZ to_TO ignore_VB all_DT link_NN information_NN from_IN the_DT logs_NNS ,_, and_CC to_TO mine_VB only_RB the_DT frequent_JJ sets_NNS
+-RRB-_-RRB- 2_CD -LRB-_-LRB- 0_CD 1_CD -RRB-_-RRB- ._.
+The_DT join_VBP of_IN L_NN -LRB-_-LRB- 1_CD ;_: 0_CD -RRB-_-RRB- \_CD L_NN -LRB-_-LRB- 2_CD ;_: 0_CD -RRB-_-RRB- leads_VBZ to_TO an_DT out-scope_JJ test_NN ._.
+We_PRP need_VBP to_TO test_VB for_IN disjoint_JJ scopes_NNS ,_, with_IN s_NN 1s2_NN ,_, which_WDT have_VBP the_DT same_JJ match_NN label_NN ._.
+For_IN example_NN we_PRP find_VBP that_IN s_NN 1_CD =_JJ -LRB-_-LRB- 3_CD ;_: 3_LS -RRB-_-RRB- and_CC s_NN 2_CD =_JJ =_JJ -_: =[_NN 4_CD ;_: 4_LS -RRB-_-RRB- -_: =_SYM -_: satisfy_VB these_DT condition_NN ._.
+Thus_RB we_PRP add_VBP the_DT triple_JJ -LRB-_-LRB- 0_CD ;_: -LRB-_-LRB- 4_CD ;_: 4_LS -RRB-_-RRB- ;_: 03_CD -RRB-_-RRB- to_TO L_NN -LRB-_-LRB- 2_CD ;_: 0_CD -RRB-_-RRB- 2_CD -LRB-_-LRB- 0_CD 1_CD -RRB-_-RRB- ._.
+For_IN each_DT pair_NN of_IN scopes_NNS s_NN 1_CD and_CC s_NN 2_CD that_WDT satisfy_VBP the_DT three_CD conditions_NNS ,_, we_PRP add_VBP an_DT entry_NN to_TO the_DT new_JJ candidate_NN 's_POS scope_NN
+Equivalence_JJ Classes_NNS There_EX are_VBP many_JJ possible_JJ ways_NNS to_TO generate_VB candidate_NN subtrees_NNS ,_, but_CC experience_NN gained_VBN from_IN many_JJ frequent_JJ structure_NN mining_NN problems_NNS ,_, such_JJ as_IN frequent_JJ itemsets_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, frequent_JJ sequences_NNS =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC frequent_JJ subgraphs_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, suggests_VBZ that_IN following_VBG the_DT Apriori-principle_NN will_MD yield_VB an_DT efficient_JJ method_NN ._.
+The_DT Apriori-principle_NN is_VBZ that_IN all_DT sub-patterns_NNS of_IN a_DT frequent_JJ pattern_NN must_MD themselves_PRP be_VB freq_VBN
+aditional_JJ -LRB-_-LRB- induced_JJ -RRB-_-RRB- subtrees_NNS ,_, while_IN we_PRP mine_VBP embedded_JJ subtrees_NNS ._.
+With_IN the_DT advent_NN of_IN XML_NN as_IN a_DT data_NN representation_NN and_CC exchange_NN standard_NN ,_, there_EX has_VBZ been_VBN active_JJ work_NN in_IN indexing_NN and_CC querying_VBG XML_NN documents_NNS =_JJ -_: =[_NN 15_CD ,_, 23_CD ,_, 2_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT are_VBP mainly_RB tree_NN -LRB-_-LRB- or_CC graph_NN -RRB-_-RRB- structured_VBN ._.
+To_TO efficiently_RB answer_VB ancestordescendant_JJ queries_NNS various_JJ node_NN numbering_NN schemes_NNS similar_JJ to_TO ours_PRP have_VBP been_VBN proposed_VBN -LRB-_-LRB- 15_CD ,_, 23_CD ,_, 1_CD -RRB-_-RRB- ._.
+Other_JJ work_NN has_VBZ looked_VBN at_IN
+matching_VBG deal_NN with_IN induced_VBN subtrees_NNS ,_, while_IN we_PRP mine_VBP embedded_JJ subtrees_NNS ._.
+Further_RB we_PRP are_VBP interested_JJ in_IN enumerating_VBG all_DT common_JJ subtrees_NNS in_IN a_DT collection_NN of_IN trees_NNS ._.
+The_DT tree_NN inclusion_NN problem_NN was_VBD studied_VBN in_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, i.e._FW ,_, given_VBN labeled_JJ trees_NNS P_NN and_CC T_NN ,_, can_MD P_NN be_VB obtained_VBN from_IN T_NN by_IN deleting_VBG nodes_NNS ?_.
+This_DT problem_NN is_VBZ equivalent_JJ to_TO checking_NN if_IN P_NN is_VBZ embedded_VBN in_IN T_NN ._.
+The_DT paper_NN presents_VBZ a_DT dynamic_JJ programming_NN algorithm_NN for_IN
+aditional_JJ -LRB-_-LRB- induced_JJ -RRB-_-RRB- subtrees_NNS ,_, while_IN we_PRP mine_VBP embedded_JJ subtrees_NNS ._.
+With_IN the_DT advent_NN of_IN XML_NN as_IN a_DT data_NN representation_NN and_CC exchange_NN standard_NN ,_, there_EX has_VBZ been_VBN active_JJ work_NN in_IN indexing_NN and_CC querying_VBG XML_NN documents_NNS =_JJ -_: =[_NN 15_CD ,_, 23_CD ,_, 2_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT are_VBP mainly_RB tree_NN -LRB-_-LRB- or_CC graph_NN -RRB-_-RRB- structured_VBN ._.
+To_TO efficiently_RB answer_VB ancestordescendant_JJ queries_NNS various_JJ node_NN numbering_NN schemes_NNS similar_JJ to_TO ours_PRP have_VBP been_VBN proposed_VBN -LRB-_-LRB- 15_CD ,_, 23_CD ,_, 1_CD -RRB-_-RRB- ._.
+Other_JJ work_NN has_VBZ looked_VBN at_IN
+ng_NN methods_NNS ,_, an_DT important_JJ problem_NN is_VBZ that_DT of_IN Association_NNP Rule_NNP Mining_NNP -LRB-_-LRB- 1_CD ,_, 12_CD -RRB-_-RRB- ,_, which_WDT finds_VBZ the_DT item_NN sets_VBZ that_IN frequently_RB occur_VBP in_IN many_JJ database_NN transactions_NNS ._.
+Another_DT important_JJ method_NN is_VBZ Sequence_NN Mining_NN =_JJ -_: =[_NN 7_CD ,_, 10_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB the_DT task_NN is_VBZ to_TO discover_VB a_DT sequence_NN of_IN item_NN sets_NNS ,_, shared_VBN across_IN time_NN among_IN a_DT large_JJ number_NN of_IN objects_NNS in_IN a_DT given_VBN database_NN ._.
+These_DT mining_NN tasks_NNS can_MD be_VB placed_VBN within_IN a_DT generic_JJ framework_NN ,_, which_WDT we_PRP t_NN
+es_NNS over_IN the_DT horizontal_JJ layout_NN :_: Firstly_RB ,_, computing_VBG the_DT support_NN of_IN patterns_NNS is_VBZ simpler_JJR and_CC faster_RBR with_IN the_DT vertical_JJ layout_NN since_IN it_PRP involves_VBZ only_RB the_DT joining_VBG of_IN idlists_NNS -LRB-_-LRB- which_WDT can_MD be_VB further_RB compressed_VBN =_JJ -_: =[_NN 2_CD ,_, 9_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Secondl_NNP -_: =_JJ -_: y_NN ,_, with_IN the_DT vertical_JJ layout_NN ,_, there_EX is_VBZ an_DT automatic_JJ ``_`` reduction_NN ''_'' of_IN the_DT database_NN before_IN each_DT scan_VBP in_IN that_DT only_RB those_DT items_NNS that_WDT are_VBP relevant_JJ to_TO the_DT following_NN scan_VB of_IN the_DT mining_NN process_NN are_VBP acc_NN
+number_NN of_IN scopes_NNS with_IN a_DT match_NN label_NN ._.
+Then_RB the_DT time_NN to_TO perform_VB scopelist_NN joins_VBZ is_VBZ given_VBN as_IN O_NN -LRB-_-LRB- α_NN 2_CD -LRB-_-LRB- a_DT +_CC b_NN -RRB-_-RRB- -RRB-_-RRB- ,_, which_WDT reduces_VBZ to_TO O_NN -LRB-_-LRB- a_DT +_CC b_NN -RRB-_-RRB- if_IN α_NN is_VBZ a_DT small_JJ constant_NN ._.
+1_CD 2_CD 3_CD 4_CD 0_CD ,_, -LRB-_-LRB- 0_CD ,_, 3_CD -RRB-_-RRB- 1_CD ,_, -LRB-_-LRB- 1_CD ,_, 3_CD -RRB-_-RRB- 2_CD ,_, -LRB-_-LRB- 0_CD ,_, 7_CD -RRB-_-RRB- 2_CD =_JJ -_: =_JJ ,_, -LRB-_-LRB- 4_CD ,_, 7_CD -RRB-_-RRB- Prefix_NN =_JJ -_: =-{_CD -RCB-_-RRB- Elements_NNS =_JJ -LRB-_-LRB- 1_CD ,_, −_NN 1_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 2_CD ,_, −_NN 1_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 3_CD ,_, −_NN 1_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 4_CD ,_, −_NN 1_CD -RRB-_-RRB- 0_CD ,_, -LRB-_-LRB- 1_CD ,_, 1_LS -RRB-_-RRB- 1_CD ,_, -LRB-_-LRB- 0_CD ,_, 5_CD -RRB-_-RRB- 1_CD ,_, -LRB-_-LRB- 2_CD ,_, 2_CD -RRB-_-RRB- 1_CD ,_, -LRB-_-LRB- 4_CD ,_, 4_CD -RRB-_-RRB- 2_CD ,_, -LRB-_-LRB- 2_CD ,_, 2_CD -RRB-_-RRB- 2_CD ,_, -LRB-_-LRB- 5_CD ,_, 5_CD -RRB-_-RRB- 0_CD ,_, -LRB-_-LRB- 2_CD ,_, 3_CD -RRB-_-RRB- 1_CD ,_, -LRB-_-LRB- 5_CD ,_, 5_CD -RRB-_-RRB- 2_CD ,_, -LRB-_-LRB- 1_CD ,_, 2_CD -RRB-_-RRB- 2_CD ,_, -LRB-_-LRB- 6_CD ,_, 7_CD -RRB-_-RRB- Infrequent_JJ Elements_NNS -LRB-_-LRB- 5_CD ,_, −_NN 1_CD -RRB-_-RRB- :_: 5_CD 0_CD ,_, -LRB-_-LRB- 3_CD ,_, 3_CD -RRB-_-RRB- 1_CD ,_, -LRB-_-LRB- 3_CD
+plex_NN interactions_NNS between_IN entities_NNS ._.
+FSM_NNP not_RB only_RB encompasses_VBZ mining_NN techniques_NNS like_IN associations_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC sequences_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, but_CC it_PRP also_RB generalizes_VBZ to_TO more_RBR complex_JJ patterns_NNS like_IN frequent_JJ trees_NNS and_CC graphs_NNS =_JJ -_: =[_NN 12_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Such_JJ patterns_NNS typically_RB arise_VBP in_IN applications_NNS like_IN bioinformatics_NNS ,_, web_NN mining_NN ,_, mining_NN semistructured_VBD documents_NNS ,_, and_CC so_RB on_RB ._.
+As_IN one_CD increases_VBZ the_DT complexity_NN of_IN the_DT structures_NNS to_TO be_VB discovered_VBN ,_, one_CD ext_NN
+ree_NN mining_NN ._.
+Graph_NN mining_NN algorithms_NNS are_VBP likely_JJ to_TO be_VB overly_RB general_JJ -LRB-_-LRB- thus_RB not_RB efficient_JJ -RRB-_-RRB- for_IN tree_NN mining_NN ._.
+Our_PRP$ approach_NN utilizes_VBZ the_DT tree_NN structure_NN for_IN efficient_JJ enumeration_NN ._.
+The_DT work_NN by_IN Dehaspe_FW et_FW al_FW =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: describes_VBZ a_DT level-wise_JJ Inductive_JJ Logic_NN Programming_VBG based_VBN technique_NN to_TO mine_VB frequent_JJ substructures_NNS -LRB-_-LRB- subgraphs_NNS -RRB-_-RRB- describing_VBG the_DT carcinogenesis_NN of_IN chemical_NN compounds_NNS ._.
+They_PRP reported_VBD that_IN mining_NN beyond_IN 6_CD p_NN
+es_NNS over_IN the_DT horizontal_JJ layout_NN :_: Firstly_RB ,_, computing_VBG the_DT support_NN of_IN patterns_NNS is_VBZ simpler_JJR and_CC faster_RBR with_IN the_DT vertical_JJ layout_NN since_IN it_PRP involves_VBZ only_RB the_DT joining_VBG of_IN idlists_NNS -LRB-_-LRB- which_WDT can_MD be_VB further_RB compressed_VBN =_JJ -_: =[_NN 2_CD ,_, 9_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Secondl_NNP -_: =_JJ -_: y_NN ,_, with_IN the_DT vertical_JJ layout_NN ,_, there_EX is_VBZ an_DT automatic_JJ ``_`` reduction_NN ''_'' of_IN the_DT database_NN before_IN each_DT scan_VBP in_IN that_DT only_RB those_DT items_NNS that_WDT are_VBP relevant_JJ to_TO the_DT following_NN scan_VB of_IN the_DT mining_NN process_NN are_VBP acc_NN
+atory_JJ mining_NN tasks_NNS ,_, namely_RB those_DT dealing_VBG with_IN extracting_VBG patterns_NNS in_IN massive_JJ databases_NNS representing_VBG complex_JJ interactions_NNS between_IN entities_NNS ._.
+FSM_NNP not_RB only_RB encompasses_VBZ mining_NN techniques_NNS like_IN associations_NNS =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: and_CC sequences_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, but_CC it_PRP also_RB generalizes_VBZ to_TO more_RBR complex_JJ patterns_NNS like_IN frequent_JJ trees_NNS and_CC graphs_NNS -LRB-_-LRB- 12_CD ,_, 14_CD -RRB-_-RRB- ._.
+Such_JJ patterns_NNS typically_RB arise_VBP in_IN applications_NNS like_IN bioinformatics_NNS ,_, web_NN mining_NN ,_, mining_NN semi_NNS
+aditional_JJ -LRB-_-LRB- induced_JJ -RRB-_-RRB- subtrees_NNS ,_, while_IN we_PRP mine_VBP embedded_JJ subtrees_NNS ._.
+With_IN the_DT advent_NN of_IN XML_NN as_IN a_DT data_NN representation_NN and_CC exchange_NN standard_NN ,_, there_EX has_VBZ been_VBN active_JJ work_NN in_IN indexing_NN and_CC querying_VBG XML_NN documents_NNS =_JJ -_: =[_NN 15_CD ,_, 23_CD ,_, 2_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT are_VBP mainly_RB tree_NN -LRB-_-LRB- or_CC graph_NN -RRB-_-RRB- structured_VBN ._.
+To_TO efficiently_RB answer_VB ancestordescendant_JJ queries_NNS various_JJ node_NN numbering_NN schemes_NNS similar_JJ to_TO ours_PRP have_VBP been_VBN proposed_VBN -LRB-_-LRB- 15_CD ,_, 23_CD ,_, 1_CD -RRB-_-RRB- ._.
+Other_JJ work_NN has_VBZ looked_VBN at_IN
+complexity_NN of_IN the_DT subgraph_NN patterns_NNS ._.
+The_DT SUBDUE_NN system_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- also_RB discovers_VBZ graph_NN patterns_NNS using_VBG the_DT Minimum_NNP Description_NN Length_NN principle_NN ._.
+An_DT approach_NN termed_VBN Graph-Based_JJ Induction_NN -LRB-_-LRB- GBI_NN -RRB-_-RRB- was_VBD proposed_VBN in_IN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT uses_VBZ beam_NN search_NN for_IN mining_NN subgraphs_NNS ._.
+However_RB ,_, both_DT SUBDUE_NNP and_CC GBI_NNP may_MD miss_VB some_DT significant_JJ patterns_NNS ,_, since_IN they_PRP perform_VBP a_DT heuristic_NN search_NN ._.
+We_PRP perform_VBP a_DT complete_JJ -LRB-_-LRB- but_CC not_RB exhaustive_JJ -RRB-_-RRB- search_NN
+ng_NN methods_NNS ,_, an_DT important_JJ problem_NN is_VBZ that_DT of_IN Association_NNP Rule_NNP Mining_NNP -LRB-_-LRB- 1_CD ,_, 12_CD -RRB-_-RRB- ,_, which_WDT finds_VBZ the_DT item_NN sets_VBZ that_IN frequently_RB occur_VBP in_IN many_JJ database_NN transactions_NNS ._.
+Another_DT important_JJ method_NN is_VBZ Sequence_NN Mining_NN =_JJ -_: =[_NN 7_CD ,_, 10_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB the_DT task_NN is_VBZ to_TO discover_VB a_DT sequence_NN of_IN item_NN sets_NNS ,_, shared_VBN across_IN time_NN among_IN a_DT large_JJ number_NN of_IN objects_NNS in_IN a_DT given_VBN database_NN ._.
+These_DT mining_NN tasks_NNS can_MD be_VB placed_VBN within_IN a_DT generic_JJ framework_NN ,_, which_WDT we_PRP t_NN
+In_IN a_DT recent_JJ paper_NN ,_, Asai_NNP et_FW al._FW -LRB-_-LRB- 5_CD -RRB-_-RRB- presented_VBN FREQT_NNP ,_, an_DT apriori-like_JJ algorithm_NN for_IN mining_NN labeled_VBN ordered_VBD trees_NNS ;_: they_PRP independently_RB proposed_VBD a_DT candidate_NN generation_NN scheme_NN similar_JJ to_TO ours_PRP ._.
+Wang_NNP and_CC Liu_NNP =_SYM -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: developed_VBD an_DT algorithm_NN to_TO mine_VB frequently_RB occurring_VBG subtrees_NNS in_IN XML_NN documents_NNS ._.
+Their_PRP$ algorithm_NN is_VBZ also_RB reminiscent_JJ of_IN the_DT level-wise_JJ Apriori_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- approach_NN ,_, and_CC they_PRP mine_VBP induced_VBN subtrees_NNS only_RB ._.
+A_DT relat_NN
+plex_NN interactions_NNS between_IN entities_NNS ._.
+FSM_NNP not_RB only_RB encompasses_VBZ mining_NN techniques_NNS like_IN associations_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC sequences_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, but_CC it_PRP also_RB generalizes_VBZ to_TO more_RBR complex_JJ patterns_NNS like_IN frequent_JJ trees_NNS and_CC graphs_NNS =_JJ -_: =[_NN 12_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Such_JJ patterns_NNS typically_RB arise_VBP in_IN applications_NNS like_IN bioinformatics_NNS ,_, web_NN mining_NN ,_, mining_NN semistructured_VBD documents_NNS ,_, and_CC so_RB on_RB ._.
+As_IN one_CD increases_VBZ the_DT complexity_NN of_IN the_DT structures_NNS to_TO be_VB discovered_VBN ,_, one_CD ext_NN
+8_CD ._.
+RELATED_NNS WORK_VBP Tree_NN mining_NN ,_, being_VBG an_DT instance_NN of_IN frequent_JJ structure_NN mining_NN ,_, has_VBZ obvious_JJ relation_NN to_TO association_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC sequence_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- mining_NN ._.
+Frequent_JJ tree_NN mining_NN is_VBZ also_RB related_JJ to_TO tree_NN isomorphism_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- a_DT -_: =_JJ -_: nd_NN tree_NN pattern_NN matching_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Given_VBN a_DT pattern_NN tree_NN P_NN and_CC a_DT target_NN tree_NN T_NN ,_, with_IN |_CD P_NN |_FW ≤_FW |_FW T_NN |_NN ,_, the_DT subtree_NN isomorphism_NN problem_NN is_VBZ to_TO decide_VB whether_IN P_NN is_VBZ isomorphic_JJ to_TO any_DT subtree_NN of_IN T_NN ,_, i.e._FW ,_, there_EX is_VBZ
+at_IN TREEMINERV_NN outperforms_VBZ TREEMINERH_NN ,_, by_IN a_DT factor_NN of_IN 4_CD to_TO 20_CD ,_, and_CC has_VBZ good_JJ scaleup_NN properties_NNS ._.
+1_CD Introduction_NN Among_IN exploratory_JJ mining_NN methods_NNS ,_, an_DT important_JJ problem_NN is_VBZ that_DT of_IN Association_NNP Rule_NNP Mining_NNP =_SYM -_: =[_NN 1_CD ,_, 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT finds_VBZ the_DT item_NN sets_VBZ that_IN frequently_RB occur_VBP in_IN many_JJ database_NN transactions_NNS ._.
+Another_DT important_JJ method_NN is_VBZ Sequence_NN Mining_NN -LRB-_-LRB- 7_CD ,_, 10_CD ,_, 13_CD -RRB-_-RRB- ,_, where_WRB the_DT task_NN is_VBZ to_TO discover_VB a_DT sequence_NN of_IN item_NN sets_NNS ,_, shared_VBN
+at_IN TREEMINERV_NN outperforms_VBZ TREEMINERH_NN ,_, by_IN a_DT factor_NN of_IN 4_CD to_TO 20_CD ,_, and_CC has_VBZ good_JJ scaleup_NN properties_NNS ._.
+1_CD Introduction_NN Among_IN exploratory_JJ mining_NN methods_NNS ,_, an_DT important_JJ problem_NN is_VBZ that_DT of_IN Association_NNP Rule_NNP Mining_NNP =_SYM -_: =[_NN 1_CD ,_, 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT finds_VBZ the_DT item_NN sets_VBZ that_IN frequently_RB occur_VBP in_IN many_JJ database_NN transactions_NNS ._.
+Another_DT important_JJ method_NN is_VBZ Sequence_NN Mining_NN -LRB-_-LRB- 7_CD ,_, 10_CD ,_, 13_CD -RRB-_-RRB- ,_, where_WRB the_DT task_NN is_VBZ to_TO discover_VB a_DT sequence_NN of_IN item_NN sets_NNS ,_, shared_VBN
+btrees_NNS in_IN D._NNP In_NNP some_DT domains_NNS one_PRP might_MD be_VB interested_JJ in_IN using_VBG weighted_JJ support_NN ,_, instead_RB of_IN support_NN ._.
+Both_DT of_IN them_PRP are_VBP supported_VBN by_IN our_PRP$ mining_NN approach_NN ,_, but_CC we_PRP focus_VBP mainly_RB on_IN support_NN ._.
+S1_NN 1_CD 1_CD 2_CD n1_NN ,_, s_NN =_JJ =_JJ -_: =[_NN 1_CD ,_, 5_CD -RRB-_-RRB- 1_CD n2_NN ,_, s_NN =_JJ -LRB-_-LRB- 2_CD ,_, -_: =_SYM -_: 4_LS -RRB-_-RRB- n3_NN ,_, s_NN =[_NN 3_CD ,_, 3_CD -RRB-_-RRB- 1_CD 2_CD 1_CD 2_CD T_NN -LRB-_-LRB- a_DT tree_NN in_IN D_NN -RRB-_-RRB- n0_NN ,_, s_NN =_JJ -LRB-_-LRB- 0_CD ,_, 6_CD -RRB-_-RRB- 3_CD S2_NN 0_CD 0_CD T_NN 's_POS String_NNP Encoding_NNP :_: 0_CD 1_CD 3_CD 1_CD −_CD 1_CD 2_CD −_CD 1_CD −_CD 1_CD 2_CD −_CD 1_CD −_CD 1_CD 2_CD −_CD 1_CD 2_CD 2_CD 2_CD support_NN =_JJ 1_CD support_NN =_JJ 1_CD weighted_JJ support_NN =_JJ 2_CD weighted_JJ support_NN
+btrees_NNS in_IN D._NNP In_NNP some_DT domains_NNS one_PRP might_MD be_VB interested_JJ in_IN using_VBG weighted_JJ support_NN ,_, instead_RB of_IN support_NN ._.
+Both_DT of_IN them_PRP are_VBP supported_VBN by_IN our_PRP$ mining_NN approach_NN ,_, but_CC we_PRP focus_VBP mainly_RB on_IN support_NN ._.
+S1_NN 1_CD 1_CD 2_CD n1_NN ,_, s_NN =_JJ =_JJ -_: =[_NN 1_CD ,_, 5_CD -RRB-_-RRB- 1_CD n2_NN ,_, s_NN =_JJ -LRB-_-LRB- 2_CD ,_, -_: =_SYM -_: 4_LS -RRB-_-RRB- n3_NN ,_, s_NN =[_NN 3_CD ,_, 3_CD -RRB-_-RRB- 1_CD 2_CD 1_CD 2_CD T_NN -LRB-_-LRB- a_DT tree_NN in_IN D_NN -RRB-_-RRB- n0_NN ,_, s_NN =_JJ -LRB-_-LRB- 0_CD ,_, 6_CD -RRB-_-RRB- 3_CD S2_NN 0_CD 0_CD T_NN 's_POS String_NNP Encoding_NNP :_: 0_CD 1_CD 3_CD 1_CD −_CD 1_CD 2_CD −_CD 1_CD −_CD 1_CD 2_CD −_CD 1_CD −_CD 1_CD 2_CD −_CD 1_CD 2_CD 2_CD 2_CD support_NN =_JJ 1_CD support_NN =_JJ 1_CD weighted_JJ support_NN =_JJ 2_CD weighted_JJ support_NN

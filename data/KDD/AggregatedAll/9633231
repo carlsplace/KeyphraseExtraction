@@ -1,0 +1,99 @@
+Constrained_VBN optimization_NN for_IN validation-guided_JJ conditional_JJ random_JJ field_NN learning_VBG
+Conditional_JJ random_JJ fields_NNS -LRB-_-LRB- CRFs_NNS -RRB-_-RRB- are_VBP a_DT class_NN of_IN undirected_JJ graphical_JJ models_NNS which_WDT have_VBP been_VBN widely_RB used_VBN for_IN classifying_VBG and_CC labeling_VBG sequence_NN data_NNS ._.
+The_DT training_NN of_IN CRFs_NNS is_VBZ typically_RB formulated_VBN as_IN an_DT unconstrained_JJ optimization_NN problem_NN that_WDT maximizes_VBZ the_DT conditional_JJ likelihood_NN ._.
+However_RB ,_, maximum_NN likelihood_NN training_NN is_VBZ prone_JJ to_TO overfitting_NN ._.
+To_TO address_VB this_DT issue_NN ,_, we_PRP propose_VBP a_DT novel_JJ constrained_VBN nonlinear_JJ optimization_NN formulation_NN in_IN which_WDT the_DT prediction_NN accuracy_NN of_IN cross-validation_NN sets_NNS are_VBP included_VBN as_IN constraints_NNS ._.
+Instead_RB of_IN requiring_VBG multiple_JJ passes_NNS of_IN training_NN ,_, the_DT constrained_VBN formulation_NN allows_VBZ the_DT cross-validation_NN be_VB handled_VBN in_IN one_CD pass_NN of_IN constrained_VBN optimization_NN ._.
+The_DT new_JJ formulation_NN is_VBZ discontinuous_JJ ,_, and_CC classical_JJ Lagrangian_JJ based_JJ constraint_NN handling_NN methods_NNS are_VBP not_RB applicable_JJ ._.
+A_DT new_JJ constrained_VBN optimization_NN algorithm_NN based_VBN on_IN the_DT recently_RB proposed_VBN extended_JJ saddle_NN point_NN theory_NN is_VBZ developed_VBN to_TO learn_VB the_DT constrained_VBN CRF_NN model_NN ._.
+Experimental_JJ results_NNS on_IN gene_NN and_CC stock-price_JJ prediction_NN tasks_NNS show_VBP that_IN the_DT constrained_VBN formulation_NN is_VBZ able_JJ to_TO significantly_RB improve_VB the_DT generalization_NN ability_NN of_IN CRF_NN training_NN ._.
+equence_NN labeling_NN ._.
+CRFs_NNS have_VBP attracted_VBN intensive_JJ interest_NN and_CC achieved_VBD success_NN in_IN various_JJ domains_NNS ,_, such_JJ as_IN as_IN computer_NN vision_NN -LRB-_-LRB- 12_CD ,_, 17_CD -RRB-_-RRB- ,_, natural_JJ language_NN processing_NN -LRB-_-LRB- 10_CD ,_, 16_CD ,_, 15_CD ,_, 13_CD -RRB-_-RRB- ,_, and_CC bioinformatics_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN general_JJ ,_, CRFs_NNS model_VBP the_DT conditional_JJ distribution_NN p_NN -LRB-_-LRB- y_NN |_CD x_NN -RRB-_-RRB- between_IN the_DT labeling_NN sequence_NN and_CC the_DT observation_NN sequence_NN ._.
+The_DT learning_NN of_IN CRF_NN parameters_NNS is_VBZ traditionally_RB formulated_VBN as_IN an_DT unconstrained_JJ
+e_LS training_NN data_NNS ._.
+The_DT fuzzy_JJ maximum_NN entropy_NN framework_NN encourages_VBZ the_DT model_NN to_TO fit_VB the_DT training_NN data_NNS ,_, while_IN at_IN the_DT meantime_NN adds_VBZ a_DT prior_JJ distribution_NN favoring_VBG uniform_JJ models_NNS ._.
+The_DT fat_JJ constraints_NNS method_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: tries_VBZ to_TO avoid_VB over-fitting_JJ by_IN not_RB exactly_RB satisfying_VBG the_DT constraints_NNS but_CC instead_RB requiring_VBG the_DT difference_NN between_IN the_DT empirical_JJ and_CC model_JJ distributions_NNS to_TO be_VB within_IN certain_JJ range_NN ._.
+It_PRP was_VBD reported_VBN th_DT
+clique_NN -LRB-_-LRB- feature_NN -RRB-_-RRB- only_RB involves_VBZ two_CD consecutive_JJ hidden_JJ states_NNS as_IN shown_VBN in_IN Figure_NNP 1_CD -LRB-_-LRB- b_NN -RRB-_-RRB- ._.
+Let_VB x_NN and_CC y_NN be_VB the_DT observation_NN and_CC labeling_NN sequences_NNS ,_, respectively_RB ._.
+By_IN the_DT fundamental_JJ theorem_NN of_IN random_JJ fields_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT linear-chain_JJ CRF_NN defines_VBZ the_DT conditional_JJ distribution_NN of_IN a_DT label_NN sequence_NN y_NN ,_, given_VBN the_DT observation_NN sequence_NN x_NN as_IN p_NN -LRB-_-LRB- y_NN |_CD x_NN -RRB-_-RRB- =_JJ 1_CD Z_NN -LRB-_-LRB- x_NN -RRB-_-RRB- exp_NN -LRB-_-LRB- KX_NNP TX_NNP -RRB-_-RRB- ωkfk_NN -LRB-_-LRB- yt_NN ,_, yt_FW −_FW 1_CD ,_, xt_NN -RRB-_-RRB- ,_, -LRB-_-LRB- 1_LS -RRB-_-RRB- k_NN =_JJ 1_CD t_NN =_JJ 1_CD where_WRB -LCB-_-LRB- fk_NN -LRB-_-LRB- yt_NN ,_, yt_FW −_FW 1_CD ,_,
+is_VBZ varied_VBN up_RP to_TO a_DT factor_NN of_IN 10_CD -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Our_PRP$ own_JJ experimental_JJ results_NNS have_VBP confirmed_VBN it_PRP ._.
+A_DT number_NN of_IN other_JJ smoothing_NN methods_NNS have_VBP been_VBN used_VBN to_TO address_VB the_DT overfitting_JJ problems_NNS for_IN maximum_NN entropy_NN models_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT smoothing_NN method_NN tries_VBZ to_TO relax_VB the_DT constraint_NN that_IN the_DT model_NN distribution_NN should_MD be_VB exactly_RB the_DT same_JJ as_IN the_DT empirical_JJ distribution_NN on_IN the_DT training_NN data_NNS ._.
+The_DT goodTuring_NN smoothing_NN algorithm_NN -LRB-_-LRB- 14_CD -RRB-_-RRB-
+the_DT aim_NN of_IN gene_NN prediction_NN is_VBZ to_TO find_VB out_RP the_DT protein_NN coding_NN regions_NNS ,_, known_VBN as_IN genes_NNS ,_, and_CC their_PRP$ associated_VBN components_NNS ,_, including_VBG coding_VBG exons_NNS ,_, start\/stop_NN exons_NNS ,_, promoters_NNS ,_, and_CC poly-adenylation_NN sites_NNS =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP first_RB illustrate_VBP the_DT improvement_NN of_IN the_DT constrained_VBN approach_NN on_IN a_DT simple_JJ model_NN and_CC then_RB report_NN results_VBZ on_IN a_DT state-of-the-art_JJ gene_NN predictor_NN ._.
+Figure_NN 5_CD shows_VBZ a_DT finite_JJ state_NN machine_NN representation_NN o_NN
+495-9\/09_CD \/_: 06_CD ..._: $_$ 10.00_CD ._.
+a_DT class_NN of_IN discriminative_JJ probabilistic_JJ models_NNS for_IN sequence_NN labeling_NN ._.
+CRFs_NNS have_VBP attracted_VBN intensive_JJ interest_NN and_CC achieved_VBD success_NN in_IN various_JJ domains_NNS ,_, such_JJ as_IN as_IN computer_NN vision_NN =_JJ -_: =[_NN 12_CD ,_, 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, natural_JJ language_NN processing_NN -LRB-_-LRB- 10_CD ,_, 16_CD ,_, 15_CD ,_, 13_CD -RRB-_-RRB- ,_, and_CC bioinformatics_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+In_IN general_JJ ,_, CRFs_NNS model_VBP the_DT conditional_JJ distribution_NN p_NN -LRB-_-LRB- y_NN |_CD x_NN -RRB-_-RRB- between_IN the_DT labeling_NN sequence_NN and_CC the_DT observation_NN sequence_NN ._.
+The_DT learn_VBP
+riminative_JJ probabilistic_JJ models_NNS for_IN sequence_NN labeling_NN ._.
+CRFs_NNS have_VBP attracted_VBN intensive_JJ interest_NN and_CC achieved_VBD success_NN in_IN various_JJ domains_NNS ,_, such_JJ as_IN as_IN computer_NN vision_NN -LRB-_-LRB- 12_CD ,_, 17_CD -RRB-_-RRB- ,_, natural_JJ language_NN processing_NN =_JJ -_: =[_NN 10_CD ,_, 16_CD ,_, 15_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC bioinformatics_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+In_IN general_JJ ,_, CRFs_NNS model_VBP the_DT conditional_JJ distribution_NN p_NN -LRB-_-LRB- y_NN |_CD x_NN -RRB-_-RRB- between_IN the_DT labeling_NN sequence_NN and_CC the_DT observation_NN sequence_NN ._.
+The_DT learning_NN of_IN CRF_NN parameters_NNS is_VBZ traditionally_RB formula_NN
+riminative_JJ probabilistic_JJ models_NNS for_IN sequence_NN labeling_NN ._.
+CRFs_NNS have_VBP attracted_VBN intensive_JJ interest_NN and_CC achieved_VBD success_NN in_IN various_JJ domains_NNS ,_, such_JJ as_IN as_IN computer_NN vision_NN -LRB-_-LRB- 12_CD ,_, 17_CD -RRB-_-RRB- ,_, natural_JJ language_NN processing_NN =_JJ -_: =[_NN 10_CD ,_, 16_CD ,_, 15_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC bioinformatics_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+In_IN general_JJ ,_, CRFs_NNS model_VBP the_DT conditional_JJ distribution_NN p_NN -LRB-_-LRB- y_NN |_CD x_NN -RRB-_-RRB- between_IN the_DT labeling_NN sequence_NN and_CC the_DT observation_NN sequence_NN ._.
+The_DT learning_NN of_IN CRF_NN parameters_NNS is_VBZ traditionally_RB formula_NN
+riminative_JJ probabilistic_JJ models_NNS for_IN sequence_NN labeling_NN ._.
+CRFs_NNS have_VBP attracted_VBN intensive_JJ interest_NN and_CC achieved_VBD success_NN in_IN various_JJ domains_NNS ,_, such_JJ as_IN as_IN computer_NN vision_NN -LRB-_-LRB- 12_CD ,_, 17_CD -RRB-_-RRB- ,_, natural_JJ language_NN processing_NN =_JJ -_: =[_NN 10_CD ,_, 16_CD ,_, 15_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC bioinformatics_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+In_IN general_JJ ,_, CRFs_NNS model_VBP the_DT conditional_JJ distribution_NN p_NN -LRB-_-LRB- y_NN |_CD x_NN -RRB-_-RRB- between_IN the_DT labeling_NN sequence_NN and_CC the_DT observation_NN sequence_NN ._.
+The_DT learning_NN of_IN CRF_NN parameters_NNS is_VBZ traditionally_RB formula_NN
+find_VB the_DT regularization_NN parameter_NN δ_NN 2_CD first_RB ._.
+However_RB ,_, it_PRP has_VBZ been_VBN reported_VBN that_IN the_DT model_NN accuracy_NN does_VBZ not_RB appear_VB to_TO be_VB sensitive_JJ to_TO the_DT changes_NNS in_IN δ_NN 2_CD ,_, even_RB when_WRB δ_NN 2_CD is_VBZ varied_VBN up_RP to_TO a_DT factor_NN of_IN 10_CD =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ own_JJ experimental_JJ results_NNS have_VBP confirmed_VBN it_PRP ._.
+A_DT number_NN of_IN other_JJ smoothing_NN methods_NNS have_VBP been_VBN used_VBN to_TO address_VB the_DT overfitting_JJ problems_NNS for_IN maximum_NN entropy_NN models_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+The_DT smoothing_NN method_NN tries_VBZ to_TO r_NN
+iable_JJ ,_, classic_JJ constrained_VBN optimization_NN methods_NNS ,_, like_IN Lagrangian_JJ method_NN ,_, are_VBP not_RB applicable_JJ ._.
+A_DT new_JJ constrained_VBN optimization_NN algorithm_NN based_VBN on_IN the_DT recently_RB proposed_VBN extended_JJ saddle_NN point_NN -LRB-_-LRB- ESP_NNP -RRB-_-RRB- theory_NN =_JJ -_: =[_NN 20_CD ,_, 21_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ developed_VBN to_TO solve_VB the_DT constrained_VBN problem_NN ._.
+Unlike_IN the_DT traditional_JJ Lagrange_NNP multiplier_NN method_NN ,_, in_IN which_WDT a_DT set_NN of_IN unique_JJ Lagrange_NNP multipliers_NNS is_VBZ required_VBN ,_, the_DT ESP_NNP condition_NN is_VBZ satisfied_VBN for_IN an_DT exte_NN
+495-9\/09_CD \/_: 06_CD ..._: $_$ 10.00_CD ._.
+a_DT class_NN of_IN discriminative_JJ probabilistic_JJ models_NNS for_IN sequence_NN labeling_NN ._.
+CRFs_NNS have_VBP attracted_VBN intensive_JJ interest_NN and_CC achieved_VBD success_NN in_IN various_JJ domains_NNS ,_, such_JJ as_IN as_IN computer_NN vision_NN =_JJ -_: =[_NN 12_CD ,_, 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, natural_JJ language_NN processing_NN -LRB-_-LRB- 10_CD ,_, 16_CD ,_, 15_CD ,_, 13_CD -RRB-_-RRB- ,_, and_CC bioinformatics_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+In_IN general_JJ ,_, CRFs_NNS model_VBP the_DT conditional_JJ distribution_NN p_NN -LRB-_-LRB- y_NN |_CD x_NN -RRB-_-RRB- between_IN the_DT labeling_NN sequence_NN and_CC the_DT observation_NN sequence_NN ._.
+The_DT learn_VBP
+,_, if_IN not_RB prohibitive_JJ ,_, to_TO use_VB the_DT traditional_JJ k-fold_NN cross-validation_NN ._.
+We_PRP use_VBP cross-validation_NN in_IN a_DT single_JJ training_NN multiple_JJ validation_NN -LRB-_-LRB- STMV_NN -RRB-_-RRB- framework_NN originally_RB proposed_VBN for_IN neural_JJ network_NN training_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Instead_RB of_IN separating_VBG the_DT training_NN and_CC validation_NN phases_NNS ,_, we_PRP integrate_VBP validation_NN into_IN the_DT training_NN process_NN by_IN modeling_NN the_DT validation_NN quality_NN as_IN constraints_NNS in_IN the_DT problem_NN formulation_NN ._.
+We_PRP select_JJ mu_NN
+iable_JJ ,_, classic_JJ constrained_VBN optimization_NN methods_NNS ,_, like_IN Lagrangian_JJ method_NN ,_, are_VBP not_RB applicable_JJ ._.
+A_DT new_JJ constrained_VBN optimization_NN algorithm_NN based_VBN on_IN the_DT recently_RB proposed_VBN extended_JJ saddle_NN point_NN -LRB-_-LRB- ESP_NNP -RRB-_-RRB- theory_NN =_JJ -_: =[_NN 20_CD ,_, 21_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ developed_VBN to_TO solve_VB the_DT constrained_VBN problem_NN ._.
+Unlike_IN the_DT traditional_JJ Lagrange_NNP multiplier_NN method_NN ,_, in_IN which_WDT a_DT set_NN of_IN unique_JJ Lagrange_NNP multipliers_NNS is_VBZ required_VBN ,_, the_DT ESP_NNP condition_NN is_VBZ satisfied_VBN for_IN an_DT exte_NN
+blem_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- based_VBN on_IN the_DT ESP_NNP search_NN framework_NN in_IN Figure_NNP 3_CD ._.
+We_PRP have_VBP recently_RB developed_VBN CRF-OPT_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, a_DT package_NN for_IN general_JJ unconstrained_JJ CRF_NN training_NN ,_, on_IN top_NN of_IN the_DT Toolkit_NNP for_IN Advanced_NNP Optimization_NNP -LRB-_-LRB- TAO_NNP -RRB-_-RRB- =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+CRF-OPT_NN uses_VBZ the_DT Limited_NNP Memory_NN Variable_NNP Metric_NNP -LRB-_-LRB- LMVM_NNP -RRB-_-RRB- method_NN ,_, a_DT quasi-Newton_JJ method_NN ,_, as_IN the_DT unconstrained_JJ optimization_NN algorithm_NN ._.
+We_PRP develop_VBP our_PRP$ constrained_VBN CRF_NN solver_NN on_IN top_NN of_IN CRFOPT_NNP ._.
+The_DT ℓ_NN m_NN 1_CD -_:
+tion_NN is_VBZ satisfied_JJ :_: Lc_NN -LRB-_-LRB- x_NN ∗_NN ,_, α_NN ,_, β_NN -RRB-_-RRB- ≤_NN Lc_NN -LRB-_-LRB- x_NN ∗_NN ,_, α_FW ∗_FW ∗_FW ,_, β_FW ∗_FW ∗_FW -RRB-_-RRB- ≤_CD Lc_NN -LRB-_-LRB- x_NN ,_, α_FW ∗_FW ∗_FW ,_, β_FW ∗_FW ∗_FW -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- for_IN all_DT x_NN ∈_CD NCN_NN -LRB-_-LRB- x_NN ∗_NN -RRB-_-RRB- ,_, α_FW ∈_FW R_NN m_NN ,_, and_CC β_FW ∈_FW R_NN r_NN ._.
+Theorem_NN 1_CD differs_VBZ from_IN the_DT traditional_JJ saddle_NN point_NN -LRB-_-LRB- SP_NN -RRB-_-RRB- condition_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: in_IN a_DT significant_JJ way_NN ._.
+The_DT traditional_JJ SP_NN condition_NN is_VBZ based_VBN on_IN a_DT Lagrangian_JJ function_NN and_CC works_VBZ only_RB for_IN NLPs_NNS with_IN continuous_JJ and_CC differentiable_JJ constraints_NNS ._.
+Further_RB ,_, the_DT SP_NN condition_NN is_VBZ true_JJ at_IN uniqu_NN
+aring_VBG to_TO an_DT average_NN of_IN only_RB 2_CD −_CD 4_CD %_NN accuracy_NN when_WRB testing_NN on_IN unseen_JJ data_NNS ._.
+One_CD existing_VBG approach_NN to_TO address_VB the_DT overfitting_JJ problem_NN of_IN CRFs_NNS is_VBZ to_TO include_VB a_DT regularization_NN term_NN in_IN the_DT objective_JJ function_NN =_JJ -_: =[_NN 16_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: to_TO penalize_VB large_JJ weight_NN vectors_NNS ._.
+A_DT major_JJ problem_NN with_IN this_DT approach_NN is_VBZ that_IN ,_, the_DT regularization_NN factor_NN which_WDT controls_VBZ the_DT penalty_NN strength_NN is_VBZ hard_JJ to_TO control_VB ._.
+A_DT randomly_RB selected_VBN regularization_NN fact_NN
+s_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+The_DT smoothing_NN method_NN tries_VBZ to_TO relax_VB the_DT constraint_NN that_IN the_DT model_NN distribution_NN should_MD be_VB exactly_RB the_DT same_JJ as_IN the_DT empirical_JJ distribution_NN on_IN the_DT training_NN data_NNS ._.
+The_DT goodTuring_NN smoothing_VBG algorithm_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: tries_VBZ to_TO add_VB a_DT discount_NN to_TO the_DT empirical_JJ count_NN of_IN events_NNS in_IN the_DT training_NN data_NNS ._.
+The_DT fuzzy_JJ maximum_NN entropy_NN framework_NN encourages_VBZ the_DT model_NN to_TO fit_VB the_DT training_NN data_NNS ,_, while_IN at_IN the_DT meantime_NN adds_VBZ a_DT prior_JJ di_FW
+riminative_JJ probabilistic_JJ models_NNS for_IN sequence_NN labeling_NN ._.
+CRFs_NNS have_VBP attracted_VBN intensive_JJ interest_NN and_CC achieved_VBD success_NN in_IN various_JJ domains_NNS ,_, such_JJ as_IN as_IN computer_NN vision_NN -LRB-_-LRB- 12_CD ,_, 17_CD -RRB-_-RRB- ,_, natural_JJ language_NN processing_NN =_JJ -_: =[_NN 10_CD ,_, 16_CD ,_, 15_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC bioinformatics_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+In_IN general_JJ ,_, CRFs_NNS model_VBP the_DT conditional_JJ distribution_NN p_NN -LRB-_-LRB- y_NN |_CD x_NN -RRB-_-RRB- between_IN the_DT labeling_NN sequence_NN and_CC the_DT observation_NN sequence_NN ._.
+The_DT learning_NN of_IN CRF_NN parameters_NNS is_VBZ traditionally_RB formula_NN
+ill_RB a_DT much_RB simplified_VBN one_CD ,_, the_DT results_NNS show_VBP the_DT effectiveness_NN of_IN the_DT proposed_VBN work_NN ._.
+In_IN the_DT following_JJ experiment_NN ,_, we_PRP integrate_VBP these_DT techniques_NNS to_TO CONTRAST_NNP ,_, a_DT state-of-the-art_JJ CRF-based_JJ gene_NN predictor_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: to_TO predict_VB fly_NN genomes_NNS ._.
+By_IN effectively_RB making_VBG use_NN of_IN multiple_JJ informants_NNS ,_, CONTRAST_NN is_VBZ able_JJ to_TO show_VB substantial_JJ improvement_NN over_IN previous_JJ de_FW novo_FW gene_NN predictors_NNS ._.
+The_DT main_JJ component_NN of_IN this_DT gene_NN predi_NN
+the_DT overfitting_NN problem_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT new_JJ constrained_VBN formulations_NNS for_IN CRF_NN training_NN to_TO help_VB overcome_VB the_DT overfitting_NN problem_NN ,_, inspired_VBN by_IN the_DT idea_NN of_IN cross-validation_NN ._.
+Cross-validation_NN =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ often_RB used_VBN to_TO estimate_VB the_DT accuracy_NN of_IN a_DT classifier_NN and_CC to_TO select_VB models_NNS ._.
+We_PRP propose_VBP to_TO use_VB cross-validation_NN in_IN a_DT novel_JJ way_NN as_IN a_DT measure_NN to_TO address_NN overfitting_NN ._.
+Constraintsprescribing_VBG the_DT differe_NN
+n_NN difficult_JJ training_NN scenarios_NNS ._.
+We_PRP have_VBP found_VBN that_IN ,_, for_IN CRF_NNP training_NN ,_, gradient-based_JJ optimization_NN methods_NNS may_MD terminate_VB prematurely_RB at_IN non-optimal_JJ points_NNS due_JJ to_TO a_DT flat_JJ terrain_NN near_IN the_DT global_JJ optimum_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT violated_VBN constraints_NNS provide_VBP additional_JJ guidance_NN during_IN search_NN ,_, leading_VBG the_DT search_NN to_TO good_JJ directions_NNS that_WDT effectively_RB reduce_VB the_DT objective_JJ function_NN ._.
+Since_IN the_DT new_JJ constraint_NN formulation_NN is_VBZ disc_NN

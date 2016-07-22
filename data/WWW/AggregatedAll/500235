@@ -1,0 +1,181 @@
+Automatic_NNP detection_NN of_IN fragments_NNS in_IN dynamically_RB generated_VBN web_NN pages_NNS
+Dividing_VBG web_NN pages_NNS into_IN fragments_NNS has_VBZ been_VBN shown_VBN to_TO provide_VB significant_JJ benefits_NNS for_IN both_DT content_NN generation_NN and_CC caching_NN ._.
+In_IN order_NN for_IN a_DT web_NN site_NN to_TO use_VB fragment-based_JJ content_NN generation_NN ,_, however_RB ,_, good_JJ methods_NNS are_VBP needed_VBN for_IN dividing_VBG web_NN pages_NNS into_IN fragments_NNS ._.
+Manual_JJ fragmentation_NN of_IN web_NN pages_NNS is_VBZ expensive_JJ ,_, error_NN prone_JJ ,_, and_CC unscalable_JJ ._.
+This_DT paper_NN proposes_VBZ a_DT novel_JJ scheme_NN to_TO automatically_RB detect_VB and_CC flag_NN fragments_NNS that_WDT are_VBP cost-effective_JJ cache_NN units_NNS in_IN web_NN sites_NNS serving_VBG dynamic_JJ content_NN ._.
+We_PRP consider_VBP the_DT fragments_NNS to_TO be_VB interesting_JJ if_IN they_PRP are_VBP shared_VBN among_IN multiple_JJ documents_NNS or_CC they_PRP have_VBP different_JJ lifetime_NN or_CC personalization_NN characteristics_NNS ._.
+Our_PRP$ approach_NN has_VBZ three_CD unique_JJ features_NNS ._.
+First_RB ,_, we_PRP propose_VBP a_DT hierarchical_JJ and_CC fragment-aware_JJ model_NN of_IN the_DT dynamic_JJ web_NN pages_NNS and_CC a_DT data_NN structure_NN that_WDT is_VBZ compact_JJ and_CC effective_JJ for_IN fragment_NN detection_NN ._.
+Second_RB ,_, we_PRP present_VBP an_DT efficient_JJ algorithm_NN to_TO detect_VB maximal_JJ fragments_NNS that_WDT are_VBP shared_VBN among_IN multiple_JJ documents_NNS ._.
+Third_RB ,_, we_PRP develop_VBP a_DT practical_JJ algorithm_NN that_WDT effectively_RB detects_VBZ fragments_NNS based_VBN on_IN their_PRP$ lifetime_NN and_CC personalization_NN characteristics_NNS ._.
+We_PRP evaluate_VBP the_DT proposed_VBN scheme_NN through_IN a_DT series_NN of_IN experiments_NNS ,_, showing_VBG the_DT benefits_NNS and_CC costs_NNS of_IN the_DT algorithms_NNS ._.
+We_PRP also_RB study_VBD the_DT impact_NN of_IN adopting_VBG the_DT fragments_NNS detected_VBN by_IN our_PRP$ system_NN on_IN disk_NN space_NN utilization_NN and_CC network_NN bandwidth_NN consumption_NN ._.
+not_RB discuss_VB the_DT change_NN of_IN these_DT blocks_NNS during_IN the_DT evolution_NN of_IN the_DT Web_NN page_NN ,_, which_WDT happens_VBZ frequently_RB on_IN the_DT Web_NN ._.
+In_IN our_PRP$ work_NN ,_, we_PRP dynamically_RB trace_VBP the_DT block_NN in_IN a_DT Web_NN page_NN after_IN a_DT user_NN marks_VBZ a_DT block_NN ._.
+=_SYM -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: proposes_VBZ a_DT hierarchical_JJ and_CC fragment-aware_JJ model_NN of_IN dynamic_JJ Web_NN pages_NNS and_CC considers_VBZ the_DT lifetime_NN of_IN fragments_NNS ._.
+It_PRP aims_VBZ at_IN detecting_VBG fragments_NNS that_WDT are_VBP most_RBS beneficial_JJ to_TO caching_NN and_CC content_NN generatio_NN
+hes_NNS of_IN these_DT architectures_NNS and_CC this_DT dissertation_NN are_VBP complementary_JJ and_CC they_PRP would_MD benefit_VB each_DT other_JJ ._.
+Moving_VBG up_RB to_TO the_DT presentation_NN layer_NN ,_, there_EX has_VBZ been_VBN widespread_JJ adoption_NN of_IN fragment-based_JJ caching_NN =_JJ -_: =[_NN 54_CD ,_, 110_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT improves_VBZ cache_NN utilization_NN by_IN separately_RB caching_VBG different_JJ parts_NNS of_IN generated_VBN web_NN pages_NNS ._.
+While_IN fragment-based_JJ caching_NN works_VBZ at_IN the_DT edge_NN ,_, a_DT recent_JJ proposal_NN has_VBZ proposed_VBN moving_VBG web_NN page_NN assembly_NN
+le_DT that_IN the_DT document_NN is_VBZ included_VBN in_IN the_DT other_JJ ._.
+Web_NN pages_NNS are_VBP typically_RB composed_VBN of_IN fragments_NNS ,_, either_CC static_JJ ones_NNS -LRB-_-LRB- e.g._FW ,_, logo_NN images_NNS -RRB-_-RRB- ,_, or_CC dynamic_JJ -LRB-_-LRB- e.g._FW ,_, personalized_JJ product_NN promotions_NNS ,_, local_JJ weather_NN -RRB-_-RRB- =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+When_WRB targeting_VBG pages_NNS for_IN a_DT similarity_NN based_VBN ``_`` grouping_VBG ''_'' ,_, the_DT test_NN for_IN similarity_NN should_MD be_VB on_IN the_DT fragment_NN of_IN interest_NN and_CC not_RB the_DT entire_JJ page_NN ._.
+Bloom_NNP filters_NNS ,_, when_WRB applied_VBN to_TO similarity_NN detection_NN ,_, ha_FW
+hese_NN works_VBZ ,_, our_PRP$ geometric_JJ clustering_NN method_NN does_VBZ not_RB depend_VB on_IN rules_NNS ,_, domain_NN knowledge_NN or_CC ontologies_NNS ._.
+Web_NN page_NN partitioning_VBG techniques_NNS have_VBP been_VBN used_VBN for_IN content_NN adaptation_NN -LRB-_-LRB- 6_CD ,_, 4_CD -RRB-_-RRB- and_CC content_NN caching_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+VIPS_NNS -LRB-_-LRB- 36_CD -RRB-_-RRB- algorithm_NN uses_VBZ visual_JJ cues_NNS to_TO partition_NN a_DT Web_NN page_NN into_IN geometric_JJ segments_NNS ._.
+This_DT algorithm_NN is_VBZ used_VBN in_IN -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, where_WRB the_DT segments_NNS are_VBP described_VBN by_IN a_DT set_NN of_IN features_NNS -LRB-_-LRB- e.g._FW spatial_JJ features_NNS ,_, nu_FW
+composed_VBN of_IN fragments_NNS ,_, either_CC static_JJ ones_NNS -LRB-_-LRB- e.g._FW ,_, logo_NN images_NNS -RRB-_-RRB- ,_, or_CC dynamic_JJ -LRB-_-LRB- e.g._FW ,_, personalized_JJ product_NN promotions_NNS ,_, local_JJ weather_NN -RRB-_-RRB- ._.
+Fragments_NNS can_MD be_VB detected_VBN automatically_RB using_VBG techniques_NNS described_VBN in_IN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: or_CC when_WRB they_PRP contain_VBP an_DT inmarkup_JJ scripting_NN language_NN -LRB-_-LRB- e.g._FW ,_, Edge_NNP Side_NNP Includes_VBZ -LRB-_-LRB- ESI_NN -RRB-_-RRB- ,_, an_DT XML-based_JJ markup_NN language_NN -RRB-_-RRB- that_WDT can_MD define_VB tags_NNS and_CC templates_NNS to_TO identify_VB fragments_NNS ._.
+When_WRB targeting_VBG pages_NNS for_IN a_DT
+re_IN computed_VBN by_IN taking_VBG the_DT union_NN of_IN the_DT shingles_NNS of_IN the_DT classes_NNS and_CC selecting_VBG the_DT minimum_JJ Spackage_NN values_NNS ._.
+This_DT way_NN ,_, RefactoringCrawler_NNP efficiently_RB computates_VBZ shingles_NNS values_VBZ and_CC avoids_VBZ recomputations_NNS =_JJ -_: =_JJ -LRB-_-LRB- RILD04_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+RefactoringCrawler_NNP uses_VBZ the_DT shingles_NNS to_TO find_VB candidates_NNS 3_CD for_IN the_DT specified_VBN refactorings_NNS ._.
+More_RBR specifically_RB ,_, let_VB B1_NN and_CC B2_NN be_VB bags_NN of_IN shingles_NNS for_IN a_DT pair_NN of_IN methods_NNS ,_, classes_NNS ,_, or_CC packages_NNS ._.
+Refactorin_NN
+ide_NN information_NN ._.
+One_CD of_IN the_DT first_JJ effort_NN is_VBZ DYCE_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, which_WDT is_VBZ model-based_JJ dynamic_JJ Web_NN content_NN emulator_NN ._.
+Recently_RB ,_, Ramaswamy_NNP et_FW al._FW proposed_VBD a_DT novel_JJ scheme_NN to_TO automatically_RB detect_VB and_CC flag_NN fragments_NNS =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT shares_VBZ the_DT similar_JJ goal_NN of_IN this_DT paper_NN ._.
+However_RB ,_, there_EX are_VBP three_CD differences_NNS between_IN us_PRP :_: First_JJ ,_, although_IN both_DT of_IN our_PRP$ work_NN intends_VBZ to_TO automatic_JJ detection_NN of_IN fragments_NNS ,_, our_PRP$ keyword-based_JJ is_VBZ simpl_NN
+nnotation_NN of_IN Web_NN content_NN ._.
+Heuristics_NNS have_VBP been_VBN proposed_VBN to_TO partition_NN HTML_NNP documents_NNS into_IN tree-like_JJ structures_NNS so_RB as_IN to_TO facilitate_VB Web_NN browsing_VBG on_IN small-screen_JJ devices_NNS -LRB-_-LRB- BGMP00_NN ,_, CMZ03_NN -RRB-_-RRB- ,_, content_NN caching_NN =_JJ -_: =_JJ -LRB-_-LRB- RILD04_NN -RRB-_-RRB- -_: =_JJ -_: ,_, efficient_JJ Web_NN search_NN -LRB-_-LRB- YCWM03_NN -RRB-_-RRB- ,_, data_NN cleaning_NN -LRB-_-LRB- YL03a_NN -RRB-_-RRB- ,_, and_CC converting_VBG HTML_NNP documents_NNS into_IN XML_NN data_NNS -LRB-_-LRB- CGS02_NN ,_, YZ01_NN -RRB-_-RRB- ._.
+However_RB ,_, the_DT partitioning_VBG algorithms_NNS in_IN these_DT works_NNS do_VBP not_RB perform_VB complex_JJ sequential_JJ
+rther_NN ,_, manual_JJ markup_NN of_IN fragments_NNS in_IN web_NN pagess114_NN WEB_NN CONTENT_NN DELIVERY_NN does_VBZ not_RB scale_VB ,_, and_CC it_PRP becomes_VBZ unmanageable_JJ for_IN edge_NN caches_NNS serving_VBG web_NN data_NNS from_IN multiple_JJ content_NN providers_NNS ._.
+Ramaswamy_NNP et_FW al._FW -LRB-_-LRB- =_JJ -_: =_JJ Ramaswamy_NNP et_FW al._FW ,_, 2004_CD -_: =-]_CD present_JJ a_DT scheme_NN to_TO automatically_RB detect_VB fragments_NNS in_IN web_NN pages_NNS ._.
+This_DT scheme_NN automatically_RB detects_VBZ and_CC flags_NNS fragments_NNS at_IN a_DT given_VBN web_NN site_NN which_WDT exhibit_VBP potential_JJ benefits_NNS as_IN potential_JJ cache_NN units_NNS ._.
+The_DT approaches_NNS of_IN these_DT architectures_NNS and_CC Ganesh_NNP are_VBP complementary_JJ and_CC they_PRP would_MD benefit_VB each_DT other_JJ ._.
+Moving_VBG up_RB to_TO the_DT presentation_NN layer_NN ,_, there_EX has_VBZ been_VBN widespread_JJ adoption_NN of_IN fragment-based_JJ caching_NN =_JJ -_: =[_NN 19_CD ,_, 38_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT improves_VBZ cache_NN utilization_NN by_IN separately_RB caching_VBG different_JJ parts_NNS of_IN generated_VBN web_NN pages_NNS ._.
+While_IN fragment-based_JJ caching_NN works_VBZ at_IN the_DT edge_NN ,_, a_DT recent_JJ proposal_NN has_VBZ proposed_VBN moving_VBG web_NN page_NN assembly_NN
+ntly_RB outperform_VB their_PRP$ nearest_JJS competitor_NN -_: the_DT Entropy-based_JJ blocking_NN algorithm_NN proposed_VBN by_IN Lin_NNP and_CC Ho_NNP -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+We_PRP also_RB compared_VBD ContentExtractor_NNP with_IN the_DT Shingling_VBG algorithm_NN devised_VBN by_IN Ramaswamy_NNP et_NNP ._.
+al._FW =_SYM -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+ContentExtractor_NNP achieves_VBZ similar_JJ savings_NNS on_IN storage_NN requirements_NNS as_IN the_DT Shingling_NNP algorithm_NN ._.
+However_RB it_PRP outperforms_VBZ the_DT Shingling_NNP algorithm_NN significantly_RB with_IN respect_NN to_TO runtime_NN ,_, showing_VBG that_IN
+rvices_NNS ,_, etc._FW ._.
+Based_VBN on_IN such_JJ observations_NNS ,_, recently_RB ,_, there_EX are_VBP several_JJ interesting_JJ works_NNS studying_VBG the_DT methods_NNS of_IN extracting_VBG useful_JJ information_NN on_IN web_NN pages_NNS using_VBG the_DT structural_JJ view_NN of_IN web_NN documents_NNS 94s_NN =_JJ -_: =[_NN 66_CD ,_, 38_CD ,_, 60_CD ,_, 61_CD ,_, 56_CD ,_, 57_CD ,_, 64_CD ,_, 10_CD ,_, 65_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS of_IN these_DT works_NNS are_VBP based_VBN on_IN the_DT static_JJ view_NN of_IN web_NN pages_NNS ,_, and_CC often_RB based_VBN on_IN a_DT tree-structured_JJ view_NN of_IN HTML_NNP documents_NNS ._.
+The_DT essential_JJ goal_NN of_IN these_DT approaches_NNS is_VBZ to_TO find_VB informative_JJ content_NN from_IN
+f_LS these_DT works_NNS ,_, our_PRP$ geometric_JJ clustering_NN method_NN does_VBZ not_RB depend_VB on_IN rules_NNS ,_, domain_NN knowledge_NN or_CC ontologies_NNS ._.
+Web_NN page_NN partitioning_VBG techniques_NNS have_VBP been_VBN used_VBN for_IN content_NN adaptation_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC content_NN caching_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+VIPS_NNS -LRB-_-LRB- 34_CD -RRB-_-RRB- algorithm_NN uses_VBZ visual_JJ cues_NNS to_TO partition_NN a_DT Web_NN page_NN into_IN geometric_JJ segments_NNS ._.
+This_DT algorithm_NN is_VBZ used_VBN in_IN -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, where_WRB the_DT segments_NNS are_VBP described_VBN by_IN a_DT set_NN of_IN features_NNS -LRB-_-LRB- e.g._FW spatial_JJ features_NNS ,_, nu_FW
+Web_NN page_NN partitioning_VBG techniques_NNS have_VBP been_VBN proposed_VBN for_IN adapting_VBG content_NN on_IN small_JJ screen_NN devices_NNS -LRB-_-LRB- Buyukkoten_NNP et_FW al._FW 2001_CD ;_: Buyukkoten_NNP et_FW al._FW 2000_CD ;_: Chen_NNP et_FW al._FW 2003_CD ;_: Yin_NNP and_CC Lee_NNP 2004_CD -RRB-_-RRB- ,_, content_NN caching_NN -LRB-_-LRB- =_JJ -_: =_JJ Ramaswamy_NNP et_FW al._FW 2004_CD -_: =-]_NN ,_, data_NN cleaning_NN -LRB-_-LRB- Song_NN et_FW al._FW 2004_CD ;_: Yi_NNP and_CC Liu_NNP 2003_CD -RRB-_-RRB- ,_, and_CC search_NN -LRB-_-LRB- Yu_NN et_FW al._FW 2003_CD -RRB-_-RRB- ._.
+The_DT idea_NN of_IN using_VBG content_NN similarities_NNS for_IN semantic_JJ analysis_NN was_VBD also_RB recently_RB explored_VBN in_IN -LRB-_-LRB- Zhang_NNP et_FW al._FW 2004_CD -RRB-_-RRB- in_IN the_DT
+h_NN has_VBZ been_VBN used_VBN in_IN a_DT wide_JJ variety_NN of_IN web_NN and_CC Internet_NN data_NNS management_NN problems_NNS ,_, such_JJ as_IN redundancy_NN elimination_NN in_IN web_NN caches_NNS and_CC search_NN engines_NNS ,_, and_CC template_NN and_CC fragment_NN detection_NN in_IN web_NN pages_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Shingles_NNS are_VBP essentially_RB a_DT set_NN of_IN numbers_NNS that_WDT act_VBP as_IN a_DT fingerprint_NN of_IN a_DT document_NN ._.
+Shingles_NNS have_VBP the_DT unique_JJ property_NN that_IN if_IN two_CD documents_NNS vary_VBP by_IN a_DT small_JJ amount_NN their_PRP$ shingle_NN sets_NNS also_RB differ_VBP by_IN a_DT
+method_NN does_VBZ not_RB depend_VB on_IN manually_RB specified_VBN rules_NNS or_CC any_DT domain_NN knowledge_NN or_CC semantic_JJ information_NN ._.
+Besides_IN content_NN adaptation_NN ,_, Web_NN page_NN partitioning_VBG techniques_NNS have_VBP also_RB been_VBN used_VBN in_IN content_NN caching_NN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_JJ -_: and_CC data_NNS cleaning_NN -LRB-_-LRB- 39_CD -RRB-_-RRB- ._.
+VIPS_NNS -LRB-_-LRB- 41_CD -RRB-_-RRB- algorithm_NN uses_VBZ visual_JJ cues_NNS to_TO partition_NN a_DT Web_NN page_NN into_IN geometric_JJ segments_NNS ._.
+The_DT algorithm_NN extracts_VBZ nodes_NNS from_IN the_DT DOM_NNP tree_NN ,_, finds_VBZ vertical_JJ and_CC horizontal_JJ separator_NN l_NN
+ide_NN information_NN ._.
+One_CD of_IN the_DT first_JJ effort_NN is_VBZ DYCE_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, which_WDT is_VBZ model-based_JJ dynamic_JJ Web_NN content_NN emulator_NN ._.
+Recently_RB ,_, Ramaswamy_NNP et_FW al._FW proposed_VBD a_DT novel_JJ scheme_NN to_TO automatically_RB detect_VB and_CC flag_NN fragments_NNS =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT share_VBP the_DT similar_JJ goal_NN of_IN this_DT paper_NN ._.
+However_RB ,_, there_EX are_VBP three_CD differences_NNS between_IN us_PRP :_: First_JJ ,_, although_IN both_DT of_IN our_PRP$ work_NN intends_VBZ to_TO automatic_JJ detection_NN of_IN fragments_NNS ,_, our_PRP$ keyword-based_JJ is_VBZ simple_JJ
+is_VBZ expensive_JJ ,_, error_NN prone_JJ ,_, and_CC unscalable_JJ ._.
+In_IN this_DT thesis_NN we_PRP propose_VBP a_DT novel_JJ scheme_NN to_TO automatically_RB detect_VB and_CC flag_NN fragments_NNS that_WDT are_VBP cost-effective_JJ cache_NN units_NNS in_IN web_NN sites_NNS serving_VBG dynamic_JJ content_NN =_JJ -_: =[_NN 85_CD ,_, 86_CD ,_, 87_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ approach_NN analyzes_VBZ web_NN pages_NNS with_IN respect_NN to_TO their_PRP$ information_NN sharing_NN behavior_NN ,_, personalization_NN characteristics_NNS and_CC change_NN patterns_NNS ,_, and_CC detects_VBZ fragments_NNS which_WDT are_VBP shared_VBN among_IN multiple_JJ documen_NNS
+statistics_NNS reported_VBN in_IN -LRB-_-LRB- 60_CD -RRB-_-RRB- ._.
+For_IN example_NN ,_, we_PRP have_VBP taken_VBN average_JJ page_NN size_NN 20KB_NN and_CC averagae_NN session_NN length_NN 10_CD based_VBN on_IN this_DT statistics_NNS ._.
+Fragment_NN size_NN taken_VBN as_IN 2KB_NN based_VBN on_IN the_DT observation_NN reported_VBN in_IN =_JJ -_: =[_NN 56_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT fanout_NN is_VBZ fixed_VBN based_VBN on_IN a_DT conservative_JJ value_NN from_IN -LRB-_-LRB- 38_CD -RRB-_-RRB- The_DT average_JJ user_NN think_VBP time_NN between_IN requests_NNS is_VBZ set_VBN to_TO 5_CD seconds_NNS based_VBN on_IN -LRB-_-LRB- 58_CD -RRB-_-RRB- ._.
+Some_DT of_IN these_DT parameters_NNS values_NNS have_VBP been_VBN set_VBN larger_JJR to_TO ac_VB
+RELATED_NNS WORK_VBP The_DT problem_NN of_IN decomposing_VBG web_NN pages_NNS into_IN blocks_NNS for_IN post_NN processing_NN has_VBZ been_VBN an_DT area_NN of_IN recent_JJ interest_NN in_IN the_DT literature_NN ._.
+In_IN our_PRP$ understanding_NN of_IN the_DT published_VBN work_NN ,_, web_NN page_NN fragments_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, blocks_NNS -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, elements_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, nodes_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC shingles_VBZ all_DT refer_VBP to_TO the_DT idea_NN of_IN tiling_VBG the_DT physical_JJ representation_NN of_IN a_DT web_NN page_NN with_IN smaller_JJR blocks_NNS ,_, as_IN in_IN Figure_NNP 3_CD ._.
+In_IN this_DT paper_NN ,_, we_PRP follow_VBP the_DT use_NN in_IN
+be_VB the_DT best_JJS way_NN to_TO ensure_VB the_DT reuse_NN of_IN cached_JJ entries_NNS ._.
+The_DT idea_NN behind_IN fragmentation_NN is_VBZ to_TO isolate_VB parts_NNS of_IN the_DT dynamic_JJ page_NN that_WDT exhibit_VBP potential_JJ benefits_NNS and_CC thus_RB are_VBP cost-effective_JJ as_IN cache_NN units_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT fragment_NN is_VBZ then_RB a_DT part_NN of_IN the_DT generated_VBN HTML_NNP which_WDT does_VBZ not_RB necessarily_RB correspond_VB to_TO a_DT logical_JJ entity_NN ._.
+Caching_NN at_IN fragment_NN level_NN aims_VBZ to_TO achieve_VB several_JJ benefits_NNS such_JJ as_IN the_DT reduction_NN of_IN server_NN
+el_IN approach_NN for_IN constructing_VBG profiles_NNS and_CC WIC_NNP -LRB-_-LRB- 30_CD -RRB-_-RRB- or_CC ECAM_NN -LRB-_-LRB- 40_CD -RRB-_-RRB- algorithms_NNS for_IN monitoring_VBG the_DT interested_JJ resources_NNS ._.
+The_DT downloaded_VBN pages_NNS are_VBP automatically_RB fragmented_VBN using_VBG the_DT fragmentation_NN algorithm_NN =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_JJ -_: and_CC stored_VBN in_IN the_DT server_NN ._.
+On_IN a_DT request_NN from_IN a_DT client_NN ,_, only_RB updated_VBN fragments_NNS are_VBP sent_VBN ,_, thereby_RB ,_, increasing_VBG the_DT resource_NN utilization_NN ._.
+This_DT layer_NN maintains_VBZ page_NN layout_NN of_IN each_DT page_NN and_CC hash_JJ value_NN of_IN th_DT
+ally_NN ''_'' related_JJ items_NNS and_CC classify_VB them_PRP against_IN concepts_NNS in_IN the_DT ontology_NN ._.
+Web_NN page_NN partitioning_VBG techniques_NNS have_VBP been_VBN proposed_VBN for_IN adapting_VBG content_NN on_IN small_JJ screen_NN devices_NNS -LRB-_-LRB- 4_CD ,_, 5_CD ,_, 7_CD ,_, 32_CD -RRB-_-RRB- ,_, content_NN caching_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, data_NNS cleaning_NN -LRB-_-LRB- 26_CD ,_, 31_CD -RRB-_-RRB- ,_, and_CC search_NN -LRB-_-LRB- 33_CD -RRB-_-RRB- ._.
+The_DT idea_NN of_IN using_VBG content_NN similarities_NNS for_IN semantic_JJ analysis_NN was_VBD also_RB recently_RB explored_VBN in_IN -LRB-_-LRB- 34_CD -RRB-_-RRB- in_IN the_DT context_NN of_IN Web_NN forms_NNS ._.
+The_DT fundamental_JJ difference_NN betwe_NN
+g_NN three_CD characteristics_NNS :_: First_JJ ,_, it_PRP is_VBZ a_DT compact_JJ DOM_NN tree_NN with_IN all_PDT the_DT text-formatting_JJ tags_NNS -LRB-_-LRB- e.g._FW ,_, <Big>_NN ,_, <Bold>_NN ,_, <I>_NN -RRB-_-RRB- removed_VBD ._.
+Second_RB ,_, the_DT content_NN of_IN each_DT node_NN is_VBZ fingerprinted_VBN with_IN Shingles_NNS encoding_VBG =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Shingles_NNS are_VBP fingerprints_NNS with_IN the_DT property_NN that_IN if_IN a_DT document_NN changes_NNS by_IN a_DT small_JJ amount_NN ,_, its_PRP$ Shingles_NNP encoding_NN also_RB changes_VBZ by_IN a_DT small_JJ amount_NN ._.
+Third_RB ,_, each_DT node_NN is_VBZ augmented_VBN with_IN additional_JJ informat_NN
+ted_VBN ._.
+SubSq_NN =_JJ -LCB-_-LRB- T1T2_NN ..._: TW_NNP ,_, T2T3_NN ..._: TW_NNP +1_CD ,_, ..._: ,_, TN_NN −_NN W_NN +1_CD TN_NN −_NN W_NN +2_NN ..._: TN_NN -RCB-_-RRB- ._.
+Each_DT of_IN these_DT subsequences_NNS is_VBZ hashed_VBN to_TO a_DT number_NN between_IN -LRB-_-LRB- 0_CD ,_, 2_CD K_NN -RRB-_-RRB- to_TO obtain_VB a_DT token-ID_NN ._.
+A_DT hash_JJ function_NN similar_JJ to_TO Rabin_NNP 's_POS fun_NN =_JJ -_: =_JJ ction_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- -_: =_JJ -_: could_MD be_VB employed_VBN for_IN this_DT purpose_NN ._.
+The_DT parameter_NN K_NN governs_VBZ the_DT size_NN of_IN the_DT hash_JJ value_NN set_VBN to_TO which_WDT the_DT subsequences_NNS are_VBP mapped_VBN ._.
+If_IN the_DT parameter_NN K_NN is_VBZ set_VBN to_TO a_DT small_JJ value_NN many_JJ subsequences_NNS might_MD be_VB
+tions_NNS in_IN size_NN without_IN the_DT need_NN for_IN explicit_JJ version_NN management_NN ._.
+In_IN addition_NN to_TO these_DT ,_, discovering_VBG and_CC extracting_VBG objects_NNS from_IN web_NN pages_NNS has_VBZ received_VBN considerable_JJ attention_NN from_IN the_DT research_NN community_NN =_JJ -_: =[_NN 8_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN these_DT projects_NNS aim_VBP at_IN extracting_VBG objects_NNS based_VBN on_IN the_DT nature_NN of_IN the_DT information_NN they_PRP contain_VBP ,_, our_PRP$ work_NN concentrates_VBZ on_IN discovering_VBG fragments_NNS based_VBN on_IN their_PRP$ lifetime_NN ,_, personalization_NN and_CC sharin_NN
+e_LS restrictive_JJ in_IN the_DT sense_NN that_IN they_PRP work_VBP on_IN full_JJ HTML_NNP pages_NNS and_CC can_MD only_RB detect_VB and_CC eliminate_VB pages_NNS -LRB-_-LRB- or_CC byte-blocks_NNS -RRB-_-RRB- which_WDT are_VBP exact_JJ replicas_NNS ._.
+Pages_NNP that_WDT are_VBP similar_JJ at_IN the_DT level_NN of_IN entire_JJ web_NN pages_NNS =_JJ -_: =[_NN 25_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: or_CC pieces_NNS of_IN web_NN pages_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- can_MD be_VB identified_VBN using_VBG resemblance_NN detection_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC then_RB delta-encoded_JJ ._.
+While_IN these_DT techniques_NNS have_VBP the_DT potential_NN to_TO reduce_VB transfer_NN sizes_NNS ,_, decomposing_VBG web_NN pages_NNS into_IN se_FW
+g_NN three_CD characteristics_NNS :_: First_JJ ,_, it_PRP is_VBZ a_DT compact_JJ DOM_NN tree_NN with_IN all_PDT the_DT text-formatting_JJ tags_NNS -LRB-_-LRB- e.g._FW ,_, <Big>_NN ,_, <Bold>_NN ,_, <I>_NN -RRB-_-RRB- removed_VBD ._.
+Second_RB ,_, the_DT content_NN of_IN each_DT node_NN is_VBZ fingerprinted_VBN with_IN Shingles_NNS encoding_VBG =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Shingles_NNS are_VBP fingerprints_NNS with_IN the_DT property_NN that_IN if_IN a_DT document_NN changes_NNS by_IN a_DT small_JJ amount_NN ,_, its_PRP$ Shingles_NNP encoding_NN also_RB changes_VBZ by_IN a_DT small_JJ amount_NN ._.
+Third_RB ,_, each_DT node_NN is_VBZ augmented_VBN with_IN additional_JJ informat_NN
+er_NN to_TO detect_VB L-P_NN fragments_NNS ._.
+Both_DT of_IN these_DT detect_VBP embedded_JJ fragments_NNS ._.
+There_EX has_VBZ been_VBN significant_JJ work_NN in_IN identifying_VBG web_NN objects_NNS that_WDT are_VBP identical_JJ ,_, either_CC at_IN the_DT granularity_NN of_IN entire_JJ pages_NNS or_CC images_NNS =_JJ -_: =[_NN 4_CD ,_, 16_CD ,_, 20_CD -RRB-_-RRB- -_: =_JJ -_: or_CC pieces_NNS of_IN pages_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, using_VBG MD5_NN or_CC SHA-1_NN hashes_VBZ to_TO detect_VB and_CC eliminate_VB redundant_JJ data_NNS storage_NN and_CC transfer_NN ._.
+While_IN the_DT motivations_NNS of_IN these_DT researches_VBZ are_VBP similar_JJ to_TO that_DT of_IN the_DT shared_JJ fragment_NN de_IN
+er_NN to_TO detect_VB L-P_NN fragments_NNS ._.
+Both_DT of_IN these_DT detect_VBP embedded_JJ fragments_NNS ._.
+There_EX has_VBZ been_VBN significant_JJ work_NN in_IN identifying_VBG web_NN objects_NNS that_WDT are_VBP identical_JJ ,_, either_CC at_IN the_DT granularity_NN of_IN entire_JJ pages_NNS or_CC images_NNS =_JJ -_: =[_NN 4_CD ,_, 16_CD ,_, 20_CD -RRB-_-RRB- -_: =_JJ -_: or_CC pieces_NNS of_IN pages_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, using_VBG MD5_NN or_CC SHA-1_NN hashes_VBZ to_TO detect_VB and_CC eliminate_VB redundant_JJ data_NNS storage_NN and_CC transfer_NN ._.
+While_IN the_DT motivations_NNS of_IN these_DT researches_VBZ are_VBP similar_JJ to_TO that_DT of_IN the_DT shared_JJ fragment_NN de_IN
+er_NN to_TO detect_VB L-P_NN fragments_NNS ._.
+Both_DT of_IN these_DT detect_VBP embedded_JJ fragments_NNS ._.
+There_EX has_VBZ been_VBN significant_JJ work_NN in_IN identifying_VBG web_NN objects_NNS that_WDT are_VBP identical_JJ ,_, either_CC at_IN the_DT granularity_NN of_IN entire_JJ pages_NNS or_CC images_NNS =_JJ -_: =[_NN 4_CD ,_, 16_CD ,_, 20_CD -RRB-_-RRB- -_: =_JJ -_: or_CC pieces_NNS of_IN pages_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, using_VBG MD5_NN or_CC SHA-1_NN hashes_VBZ to_TO detect_VB and_CC eliminate_VB redundant_JJ data_NNS storage_NN and_CC transfer_NN ._.
+While_IN the_DT motivations_NNS of_IN these_DT researches_VBZ are_VBP similar_JJ to_TO that_DT of_IN the_DT shared_JJ fragment_NN de_IN
+h_NN of_IN these_DT detect_VBP embedded_JJ fragments_NNS ._.
+There_EX has_VBZ been_VBN significant_JJ work_NN in_IN identifying_VBG web_NN objects_NNS that_WDT are_VBP identical_JJ ,_, either_CC at_IN the_DT granularity_NN of_IN entire_JJ pages_NNS or_CC images_NNS -LRB-_-LRB- 4_CD ,_, 16_CD ,_, 20_CD -RRB-_-RRB- or_CC pieces_NNS of_IN pages_NNS =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, using_VBG MD5_NN or_CC SHA-1_NN hashes_VBZ to_TO detect_VB and_CC eliminate_VB redundant_JJ data_NNS storage_NN and_CC transfer_NN ._.
+While_IN the_DT motivations_NNS of_IN these_DT researches_VBZ are_VBP similar_JJ to_TO that_DT of_IN the_DT shared_JJ fragment_NN detection_NN algorithm_NN ,_, they_PRP
+d_NN their_PRP$ diversified_JJ freshness_NN requirements_NNS ._.
+Several_JJ efforts_NNS have_VBP been_VBN made_VBN to_TO address_VB the_DT problem_NN of_IN efficient_JJ serving_VBG of_IN dynamic_JJ pages_NNS ,_, among_IN which_WDT Fragment-based_JJ publishing_NN and_CC caching_NN of_IN web_NN pages_NNS =_JJ -_: =[_NN 2_CD ,_, 10_CD ,_, 11_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: stands_VBZ out_RP ;_: it_PRP has_VBZ been_VBN successfully_RB commercialized_VBN in_IN recent_JJ years_NNS ._.
+Conceptually_RB ,_, a_DT fragment_NN is_VBZ a_DT portion_NN of_IN a_DT web_NN page_NN which_WDT has_VBZ a_DT distinct_JJ theme_NN or_CC functionality_NN and_CC is_VBZ distinguishable_JJ from_IN the_DT ot_NN
+ity_NN to_TO deliver_VB only_RB changing_VBG fragments_NNS ._.
+In_IN addition_NN to_TO the_DT above_JJ work_NN ,_, there_EX is_VBZ a_DT considerable_JJ amount_NN of_IN literature_NN in_IN the_DT more_RBR general_JJ area_NN of_IN the_DT generation_NN ,_, delivery_NN and_CC caching_NN of_IN dynamic_JJ content_NN =_JJ -_: =[_NN 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+None_NN of_IN these_DT previous_JJ papers_NNS addresses_VBZ the_DT problem_NN of_IN how_WRB to_TO automatically_RB detect_VB fragments_NNS in_IN web_NN pages_NNS ,_, however_RB ._.
+The_DT work_NN of_IN Bar-Yossef_NNP and_CC Rajagopalan_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- is_VBZ related_JJ to_TO our_PRP$ research_NN on_IN automated_VBN
+d_NN their_PRP$ diversified_JJ freshness_NN requirements_NNS ._.
+Several_JJ efforts_NNS have_VBP been_VBN made_VBN to_TO address_VB the_DT problem_NN of_IN efficient_JJ serving_VBG of_IN dynamic_JJ pages_NNS ,_, among_IN which_WDT Fragment-based_JJ publishing_NN and_CC caching_NN of_IN web_NN pages_NNS =_JJ -_: =[_NN 2_CD ,_, 10_CD ,_, 11_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: stands_VBZ out_RP ;_: it_PRP has_VBZ been_VBN successfully_RB commercialized_VBN in_IN recent_JJ years_NNS ._.
+Conceptually_RB ,_, a_DT fragment_NN is_VBZ a_DT portion_NN of_IN a_DT web_NN page_NN which_WDT has_VBZ a_DT distinct_JJ theme_NN or_CC functionality_NN and_CC is_VBZ distinguishable_JJ from_IN the_DT ot_NN
+other_JJ hand_NN ,_, most_JJS of_IN the_DT dynamic_JJ and_CC personalized_JJ web_NN pages_NNS are_VBP not_RB completely_RB dynamic_JJ or_CC personalized_JJ ._.
+Often_RB the_DT dynamic_JJ and_CC personalized_JJ content_NN are_VBP embedded_VBN in_IN relatively_RB static_JJ web_NN page_NN templates_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Furthermore_RB ,_, dynamic_JJ web_NN pages_NNS from_IN the_DT same_JJ web_NN site_NN tend_VBP to_TO share_VB information_NN among_IN themselves_PRP ._.
+Figure_NN 1_CD shows_VBZ a_DT dynamic_JJ web_NN page_NN generated_VBN through_IN a_DT fragmentbased_JJ publishing_NN system_NN ._.
+This_DT Football_NNP
+d_NN their_PRP$ diversified_JJ freshness_NN requirements_NNS ._.
+Several_JJ efforts_NNS have_VBP been_VBN made_VBN to_TO address_VB the_DT problem_NN of_IN efficient_JJ serving_VBG of_IN dynamic_JJ pages_NNS ,_, among_IN which_WDT Fragment-based_JJ publishing_NN and_CC caching_NN of_IN web_NN pages_NNS =_JJ -_: =[_NN 2_CD ,_, 10_CD ,_, 11_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: stands_VBZ out_RP ;_: it_PRP has_VBZ been_VBN successfully_RB commercialized_VBN in_IN recent_JJ years_NNS ._.
+Conceptually_RB ,_, a_DT fragment_NN is_VBZ a_DT portion_NN of_IN a_DT web_NN page_NN which_WDT has_VBZ a_DT distinct_JJ theme_NN or_CC functionality_NN and_CC is_VBZ distinguishable_JJ from_IN the_DT ot_NN
+f_LS service_NN for_IN dynamic_JJ web_NN content_NN ._.
+Chan_NNP and_CC Woo_NNP -LRB-_-LRB- 12_CD -RRB-_-RRB- use_VBP the_DT structural_JJ similarity_NN existing_VBG among_IN various_JJ pages_NNS of_IN a_DT single_JJ site_NN to_TO efficiently_RB deltaencode_VB multiple_JJ web_NN pages_NNS over_IN time_NN ._.
+Naaman_NNP et_FW al._FW =_SYM -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: present_JJ analytical_JJ and_CC simulation_NN based_JJ studies_NNS to_TO compare_VB ESI_NN and_CC deltaencoding_NN ,_, finding_VBG that_IN ESI_NNP has_VBZ potential_JJ performance_NN advantages_NNS due_JJ to_TO its_PRP$ ability_NN to_TO deliver_VB only_RB changing_VBG fragments_NNS ._.
+In_IN addit_NN
+s_NN and_CC thus_RB are_VBP cost-effective_JJ as_IN cache_NN units_NNS ._.
+We_PRP refer_VBP to_TO these_DT interesting_JJ fragments_NNS as_IN candidate_NN fragments_NNS in_IN the_DT rest_NN of_IN the_DT paper_NN ._.
+The_DT web_NN documents_NNS considered_VBN here_RB are_VBP well-formed_JJ HTML_NNP documents_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: although_IN the_DT approach_NN can_MD be_VB applied_VBN to_TO XML_NN documents_NNS as_RB well_RB ._.
+Documents_NNS that_WDT are_VBP not_RB well_RB formed_VBN can_MD be_VB converted_VBN to_TO well-formed_JJ documents_NNS through_IN document_NN normalization_NN ,_, for_IN example_NN using_VBG HTML_NNP Tidy_NNP
+des_FW -LRB-_-LRB- 2_CD -RRB-_-RRB- is_VBZ a_DT markup_NN language_NN to_TO define_VB web_NN page_NN components_NNS for_IN page_NN assembly_NN at_IN the_DT edge_NN caches_NNS ._.
+ESI_NNP provides_VBZ mechanisms_NNS for_IN specifying_VBG the_DT cacheability_NN properties_NNS at_IN fragment_NN level_NN ._.
+Mohapatra_NNP et_FW al._FW =_SYM -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: discuss_VB a_DT fragment-based_JJ mechanism_NN to_TO manage_VB quality_NN of_IN service_NN for_IN dynamic_JJ web_NN content_NN ._.
+Chan_NNP and_CC Woo_NNP -LRB-_-LRB- 12_CD -RRB-_-RRB- use_VBP the_DT structural_JJ similarity_NN existing_VBG among_IN various_JJ pages_NNS of_IN a_DT single_JJ site_NN to_TO efficiently_RB d_NN
+e_LS restrictive_JJ in_IN the_DT sense_NN that_IN they_PRP work_VBP on_IN full_JJ HTML_NNP pages_NNS and_CC can_MD only_RB detect_VB and_CC eliminate_VB pages_NNS -LRB-_-LRB- or_CC byte-blocks_NNS -RRB-_-RRB- which_WDT are_VBP exact_JJ replicas_NNS ._.
+Pages_NNP that_WDT are_VBP similar_JJ at_IN the_DT level_NN of_IN entire_JJ web_NN pages_NNS =_JJ -_: =[_NN 25_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: or_CC pieces_NNS of_IN web_NN pages_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- can_MD be_VB identified_VBN using_VBG resemblance_NN detection_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC then_RB delta-encoded_JJ ._.
+While_IN these_DT techniques_NNS have_VBP the_DT potential_NN to_TO reduce_VB transfer_NN sizes_NNS ,_, decomposing_VBG web_NN pages_NNS into_IN se_FW
+dy_NN of_IN similarity_NN across_IN pages_NNS at_IN the_DT level_NN of_IN unstructured_JJ bytes_NNS ,_, finding_VBG that_IN different_JJ versions_NNS of_IN the_DT Slashdot_NNP home_NN page_NN within_IN a_DT short_JJ time_NN frame_NN are_VBP extremely_RB compressible_JJ relative_JJ to_TO each_DT other_JJ =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT web_NN page_NN provides_VBZ a_DT good_JJ case_NN study_NN to_TO detect_VB L-P_NN fragments_NNS for_IN a_DT number_NN of_IN reasons_NNS ._.
+First_RB ,_, this_DT web_NN page_NN is_VBZ highly_RB dynamic_JJ ._.
+Not_RB only_RB are_VBP there_EX parts_NNS of_IN the_DT page_NN that_WDT change_VBP every_DT few_JJ minutes_NNS ,_,
+which_WDT aid_VBP us_PRP to_TO create_VB a_DT model_NN for_IN accesses_NNS and_CC invalidations_NNS of_IN these_DT web_NN pages_NNS ._.
+First_RB ,_, we_PRP assume_VBP that_IN the_DT requests_NNS for_IN web_NN pages_NNS arrive_VBP according_VBG to_TO a_DT Poisson_NNP process_NN ,_, as_IN supported_VBN by_IN past_JJ analysis_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP assume_VBP the_DT request_NN arrival_NN rate_NN to_TO be_VB 100_CD requests_NNS per_IN second_NN ._.
+Second_RB ,_, we_PRP also_RB model_VBP the_DT invalidation_NN processes_NNS of_IN individual_JJ fragments_NNS as_IN Poisson_NNP processes_NNS ._.
+We_PRP assume_VBP that_IN the_DT invalidation_NN proce_NN
+g_NN three_CD characteristics_NNS :_: First_JJ ,_, it_PRP is_VBZ a_DT compact_JJ DOM_NN tree_NN with_IN all_PDT the_DT text-formatting_JJ tags_NNS -LRB-_-LRB- e.g._FW ,_, <Big>_NN ,_, <Bold>_NN ,_, <I>_NN -RRB-_-RRB- removed_VBD ._.
+Second_RB ,_, the_DT content_NN of_IN each_DT node_NN is_VBZ fingerprinted_VBN with_IN Shingles_NNS encoding_VBG =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Shingles_NNS are_VBP fingerprints_NNS with_IN the_DT property_NN that_IN if_IN a_DT document_NN changes_NNS by_IN a_DT small_JJ amount_NN ,_, its_PRP$ Shingles_NNP encoding_NN also_RB changes_VBZ by_IN a_DT small_JJ amount_NN ._.
+Third_RB ,_, each_DT node_NN is_VBZ augmented_VBN with_IN additional_JJ informat_NN
+d_NN their_PRP$ diversified_JJ freshness_NN requirements_NNS ._.
+Several_JJ efforts_NNS have_VBP been_VBN made_VBN to_TO address_VB the_DT problem_NN of_IN efficient_JJ serving_VBG of_IN dynamic_JJ pages_NNS ,_, among_IN which_WDT Fragment-based_JJ publishing_NN and_CC caching_NN of_IN web_NN pages_NNS =_JJ -_: =[_NN 2_CD ,_, 10_CD ,_, 11_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: stands_VBZ out_RP ;_: it_PRP has_VBZ been_VBN successfully_RB commercialized_VBN in_IN recent_JJ years_NNS ._.
+Conceptually_RB ,_, a_DT fragment_NN is_VBZ a_DT portion_NN of_IN a_DT web_NN page_NN which_WDT has_VBZ a_DT distinct_JJ theme_NN or_CC functionality_NN and_CC is_VBZ distinguishable_JJ from_IN the_DT ot_NN

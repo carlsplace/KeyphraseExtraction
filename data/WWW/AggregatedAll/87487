@@ -1,0 +1,282 @@
+XL_NNP :_: an_DT XML_NN programming_NN language_NN for_IN web_NN service_NN specification_NN and_CC composition_NN
+We_PRP present_VBP an_DT XML_NN programming_NN language_NN specially_RB designed_VBN for_IN the_DT implementation_NN of_IN Web_NN services_NNS ._.
+XL_NNP is_VBZ portable_JJ and_CC fully_RB compliant_JJ with_IN W3C_NN standards_NNS such_JJ as_IN XQuery_NN ,_, XML_NN Protocol_NNP ,_, and_CC XML_NN Schema_NN ._.
+One_CD of_IN the_DT key_JJ features_NNS of_IN XL_NNP is_VBZ that_IN it_PRP allows_VBZ programmers_NNS to_TO concentrate_VB on_IN the_DT logic_NN of_IN their_PRP$ application_NN ._.
+XL_NNP provides_VBZ high-level_JJ and_CC declarative_JJ constructs_NNS for_IN actions_NNS which_WDT are_VBP typically_RB carried_VBN out_RP in_IN the_DT implementation_NN of_IN a_DT Web_NN service_NN ;_: e.g._FW ,_, logging_VBG ,_, error_NN handling_NN ,_, retry_VB of_IN actions_NNS ,_, workload_NN management_NN ,_, events_NNS ,_, etc._FW ._.
+Issues_NNS such_JJ as_IN performance_NN tuning_NN -LRB-_-LRB- e.g._FW ,_, caching_NN ,_, horizontal_JJ partitioning_NN ,_, etc._NN -RRB-_-RRB- should_MD be_VB carried_VBN out_RP automatically_RB by_IN an_DT implementation_NN of_IN the_DT language_NN ._.
+This_DT way_NN ,_, the_DT productivity_NN of_IN the_DT programmers_NNS ,_, the_DT ability_NN of_IN evolution_NN of_IN the_DT programs_NNS ,_, and_CC the_DT chances_NNS to_TO achieve_VB good_JJ performance_NN are_VBP substantially_RB enhanced_VBN ._.
+ucts_NNS for_IN sending_VBG and_CC receiving_VBG data_NNS can_MD not_RB be_VB consistently_RB applied_VBN with_IN the_DT uniform_JJ interface_NN principle_NN of_IN a_DT RESTful_JJ Web_NN service_NN ._.
+Moreover_RB ,_, in_IN some_DT cases_NNS ,_, also_RB the_DT assumption_NN of_IN dealing_VBG with_IN XML_NN data_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: may_MD not_RB apply_VB when_WRB accessing_VBG resources_NNS represented_VBN in_IN other_JJ ,_, more_RBR lightweight_JJ ,_, formats_NNS such_JJ as_IN the_DT JavaScript_NNP Object_NNP Notation_NNP -LRB-_-LRB- JSON_NNP -LRB-_-LRB- 10_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+In_IN this_DT paper_NN we_PRP argue_VBP that_IN process-based_JJ composition_NN langua_NN
+riptions_NNS of_IN the_DT component_NN services_NNS ,_, their_PRP$ characteristics_NNS -LRB-_-LRB- e.g._FW ,_, data_NNS types_NNS -RRB-_-RRB- ,_, and_CC how_WRB they_PRP are_VBP plugged_VBN together_RB ._.
+There_EX are_VBP several_JJ differences_NNS between_IN CSSL_NNP and_CC existing_VBG service_NN composition_NN languages_NNS -LRB-_-LRB- =_JJ -_: =[_NN 18,28,2,13,21,10,34_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+First_RB ,_, CSSL_NN adopts_VBZ the_DT ontology-based_JJ model_NN introduced_VBN in_IN Sect_NNP ._.
+2_CD to_TO cater_VB to_TO Semantic_NNP Web-enabled_JJ Web_NN services_NNS ._.
+Most_JJS of_IN the_DT existing_VBG languages_NNS do_VBP not_RB consider_VB semantic_JJ capabilities_NNS of_IN Web_NN services_NNS
+he_PRP information_NN ._.
+This_DT valuable_JJ flexibility_NN makes_VBZ it_PRP difficult_JJ to_TO statically_RB determine_VB the_DT actual_JJ data_NNS type_NN of_IN a_DT given_VBN HTTP_NN response_NN payload_NN ._.
+In_IN some_DT cases_NNS ,_, also_RB the_DT assumption_NN of_IN dealing_VBG with_IN XML_NN data_NN =_JJ -_: =[_NN 39_CD -RRB-_-RRB- -_: =_SYM -_: may_MD not_RB hold_VB when_WRB accessing_VBG resources_NNS represented_VBN in_IN other_JJ ,_, more_RBR lightweight_JJ ,_, formats_NNS such_JJ as_IN the_DT JavaScript_NNP Object_NNP Notation_NNP -LRB-_-LRB- JSON_NNP -LRB-_-LRB- 40_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Thus_RB ,_, the_DT assumption_NN that_IN BPEL_NN variables_NNS may_MD only_RB contain_VB SOA_NN
+,_, ._.
+,_, =_JJ -_: =[_NN 47_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+IT_NNP ,_, ._.
+programming_NN languages_NNS ._.
+For_IN instance_NN ,_, the_DT translation_NN between_IN the_DT XML_NN on_IN the_DT wire_NN and_CC the_DT corresponding_JJ memory_NN data_NNS structures_NNS has_VBZ been_VBN problematic_JJ and_CC is_VBZ the_DT main_JJ source_NN of_IN performance_NN inefficiencies_NNS =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Taking_VBG Java_NNP as_IN an_DT example_NN ,_, several_JJ attempts_NNS were_VBD necessary_JJ -LRB-_-LRB- Apache_JJ SOAP_NN to_TO JAXRPC_NN 1.0_CD and_CC 1.1_CD to_TO JAX-WS_NN and_CC JAX-B_NN -RRB-_-RRB- to_TO produce_VB a_DT stable_JJ Web_NN service_NN marshalling_VBG layer_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+Furthermore_RB ,_, XML_NN Schema_NN is_VBZ
+rrelation_NN ,_, capturing_VBG complex_JJ interactions_NNS with_IN these_DT libraries_NNS remains_VBZ daunting_JJ ._.
+On_IN the_DT other_JJ hand_NN ,_, a_DT number_NN of_IN service-oriented_JJ languages_NNS have_VBP been_VBN proposed_VBN ,_, ranging_VBG from_IN research_NN proposals_NNS -LRB-_-LRB- e.g._FW XL_NNP =_SYM -_: =[_NN 2_CD ,_, 3_CD -RRB-_-RRB- -_: =--RRB-_NN down_IN to_TO standardisation_NN initiatives_NNS ,_, most_RBS notably_RB the_DT Business_NNP Process_VB Execution_NN Language_NN for_IN Web_NN Services_NNPS -LRB-_-LRB- BPEL_NN -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+BPEL_NN facilitates_VBZ the_DT development_NN of_IN services_NNS that_WDT engage_VBP in_IN concurrent_JJ interact_NN
+and_CC containers_NNS -RRB-_-RRB- are_VBP struggling_VBG to_TO be_VB extended_VBN to_TO incorporate_VB the_DT technologies_NNS required_VBN by_IN the_DT new_JJ paradigm_NN ._.
+Still_RB ,_, there_EX is_VBZ a_DT mismatch_NN between_IN the_DT new_JJ paradigm_NN and_CC the_DT capabilities_NNS of_IN available_JJ tools_NNS =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT is_VBZ a_DT great_JJ window_NN of_IN opportunity_NN to_TO try_VB out_RP innovative_JJ approaches_NNS for_IN effectively_RB building_VBG integrated_VBN systems_NNS using_VBG the_DT service-oriented_JJ computing_NN paradigm_NN ._.
+2_LS -RRB-_-RRB- Abstractions_NNS can_MD hide_VB but_CC can_MD not_RB
+atatype_NN is_VBZ supported_VBN by_IN a_DT custom_NN compiler_NN ,_, which_WDT also_RB implements_VBZ the_DT caching_NN strategy_NN explained_VBD in_IN Section_NN 2_CD ._.
+Recently_RB ,_, there_EX have_VBP been_VBN a_DT few_JJ extensions_NNS of_IN Java_NNP with_IN built-in_JJ XML_NN syntax_NN and_CC datatypes_NN =_JJ -_: =[_NN 10_CD ,_, 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC none_NN of_IN them_PRP considers_VBZ support_NN for_IN caching_NN ._.
+In_IN fact_NN ,_, both_DT map_NN XML_NN internally_RB to_TO objects_NNS which_WDT are_VBP serialized_VBN on_IN demand_NN ._.
+8_CD Conclusion_NN When_WRB the_DT present_JJ author_NN first_RB learned_VBD about_IN BigWig_NNP 's_POS caching_NN
+With_IN the_DT semantics_NNS in_IN hand_NN ,_, they_PRP encoded_VBD their_PRP$ service_NN descriptions_NNS in_IN a_DT Petri_NNP Net_NNP formalism_NN and_CC defined_VBN decision_NN procedures_NNS for_IN Web_NN services_NNS simulation_NN ,_, verification_NN and_CC composition_NN ._.
+Florescu_NNP et_FW al._FW =_SYM -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: presented_VBD an_DT XML_NN programming_NN language_NN XL_NNP specially_RB designed_VBN for_IN the_DT implementation_NN of_IN Web_NN services_NNS ._.
+XL_NNP is_VBZ portable_JJ and_CC fully_RB compliant_JJ with_IN W3C_NN standards_NNS such_JJ as_IN XQuery_NN ,_, XML_NN Protocol_NNP ,_, and_CC XML_NN Schema_NN ._.
+of_IN the_DT proposed_VBN programming_NN interface_NN ,_, the_DT notion_NN of_IN a_DT Web_NN service_NN and_CC how_WRB Web_NN services_NNS interact_VBP in_IN conversations_NNS ,_, and_CC the_DT syntax_NN of_IN the_DT most_RBS important_JJ programming_NN constructs_NNS ._.
+An_DT example_NN is_VBZ given_VBN in_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+3.1_CD Design_NN Principles_NNS In_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, we_PRP gave_VBD a_DT list_NN of_IN 17_CD desiderata_NNS that_IN we_PRP believe_VBP to_TO be_VB important_JJ for_IN a_DT programming_NN language_NN that_WDT supports_VBZ the_DT definition_NN and_CC composition_NN of_IN Web_NN services_NNS ._.
+Here_RB ,_, we_PRP would_MD
+t_NN included_VBN in_IN XQuery_NN !_.
+,_, including_VBG assignment_NN ,_, while_IN expressions_NNS ,_, and_CC independent_JJ control_NN over_IN atomicity_NN ._.
+Florescu_NNP ,_, Grünhagen_NNP ,_, and_CC Kossmann_NNP have_VBP proposed_VBN a_DT web_NN services_NNS implementation_NN language_NN named_VBN XL_NNP =_SYM -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT preceded_VBD the_DT XQuery_NNP Update_NNP Facility_NNP and_CC provided_VBD its_PRP$ own_JJ update_VBP syntax_NN ,_, together_RB with_IN features_NNS for_IN exception_NN handling_NN ,_, assertions_NNS ,_, triggers_NNS ,_, parallel_JJ execution_NN ,_, and_CC asynchronous_JJ interactions_NNS amo_VBP
+ow_NN analyses_NNS constructing_VBG a_DT graph_NN which_WDT summarizes_VBZ all_DT possible_JJ XML_NN fragments_NNS ._.
+JWig_NN 's_POS data_NN flow_NN analysis_NN is_VBZ rather_RB time_NN consuming_NN ._.
+Other_JJ full_JJ compile_VBP time_NN validation_NN approaches_NNS include_VBP Xen_NN -LRB-_-LRB- MSB03_NN -RRB-_-RRB- ,_, XL_NNP =_SYM -_: =_JJ -LRB-_-LRB- FGK02_NN -RRB-_-RRB- -_: =_JJ -_: ,_, XJ_NN -LRB-_-LRB- HRS_NN +_CC 03_CD -RRB-_-RRB- and_CC WASH_NN -LRB-_-LRB- Thi_NNP -RRB-_-RRB- ._.
+s6_NNP Concluding_NNP Remarks_NNP ,_, Outlook_NNP for_IN Future_NNP Work_NNP This_NNP paper_NN presented_VBD a_DT short_JJ overview_NN over_IN the_DT XOBE_NNP project_NN and_CC concentrated_VBD on_IN the_DT type_NN system_NN of_IN XOBE_NN ._.
+XOBE_NN is_VBZ an_DT extens_NN
+._.
+g._NN :_: HaXML_NN -LRB-_-LRB- 276_CD -RRB-_-RRB- for_IN Haskell_NNP ,_, XMerL_NN -LRB-_-LRB- 282_CD -RRB-_-RRB- for_IN Erlang_NNP ,_, CLP_NNP -LRB-_-LRB- Flex_NNP -RRB-_-RRB- -LRB-_-LRB- 88_CD -RRB-_-RRB- for_IN Prolog_NNP ,_, or_CC XJ_NN -LRB-_-LRB- 145_CD -RRB-_-RRB- for_IN Java_NNP ._.
+General-purpose_JJ programming_NN languages_NNS with_IN Web_NN service_NN support_NN are_VBP also_RB not_RB considered_VBN ,_, e.g._FW :_: XL_NNP =_SYM -_: =[_NN 115_CD ,_, 116_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Scala_NNP -LRB-_-LRB- 218_CD -RRB-_-RRB- ,_, Water_NN -LRB-_-LRB- 235_CD -RRB-_-RRB- ._.
+--_: Reactive_JJ languages_NNS ._.
+A_DT reactive_JJ language_NN allows_VBZ specification_NN of_IN updates_NNS and_CC logic_NN describing_VBG how_WRB to_TO react_VB when_WRB events_NNS occur_VBP ._.
+Several_JJ proposals_NNS have_VBP been_VBN made_VBN for_IN adapting_VBG
+gWig_NN ._.
+The_DT upcoming_VBG standard_NN of_IN an_DT XML_NN query_NN language_NN XQuery_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- has_VBZ to_TO support_VB static_JJ validity_NN as_RB well_RB ._.
+Based_VBN on_IN XQuery_NN another_DT challenging_JJ approach_NN is_VBZ presented_VBN by_IN the_DT XML_NN programming_NN language_NN -LRB-_-LRB- XL_NNP -RRB-_-RRB- =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+XL_NNP is_VBZ a_DT programming_NN language_NN for_IN the_DT implementation_NN of_IN web_NN services_NNS ._.
+It_PRP provides_VBZ high-level_JJ and_CC declarative_JJ constructs_NNS adopting_VBG XQuery_NN ._.
+Additionally_RB imperative_JJ language_NN statements_NNS are_VBP introduced_VBN mak_NN
+of_IN the_DT snapshot_NN semantics_NNS are_VBP mentioned_VBN explicitly_RB in_IN the_DT XQuery_NN update_VBP requirements_NNS document_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, and_CC have_VBP been_VBN explored_VBN by_IN the_DT W3C_NN XML_NN update_VBP task_NN force_NN -LRB-_-LRB- 10_CD ,_, 4_CD -RRB-_-RRB- ._.
+Work_NN on_IN the_DT XL_NNP programming_NN language_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: indicates_VBZ support_NN for_IN fully_RB compositional_JJ updates_NNS ,_, but_CC not_RB for_IN control_NN of_IN update_VB application_NN ._.
+To_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, our_PRP$ work_NN is_VBZ the_DT first_JJ to_TO propose_VB a_DT complete_JJ treatment_NN of_IN such_PDT an_DT operator_NN ,_,
+ty_NN of_IN a_DT composition_NN ,_, as_IN all_DT information_NN about_IN the_DT port_NN types_NNS and_CC operations_NNS that_WDT identify_VBP the_DT Web_NN service_NN to_TO be_VB invoked_VBN are_VBP bound_VBN to_TO constant_JJ values_NNS ._.
+This_DT is_VBZ not_RB the_DT case_NN in_IN other_JJ languages_NNS ,_, e.g._FW ,_, XL_NNP =_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB flexible_JJ binding_NN is_VBZ supported_VBN by_IN letting_VBG the_DT argument_NN of_IN an_DT invoke_VB command_NN represent_VBP an_DT arbitrary_JJ XQuery_NN expression_NN ,_, which_WDT is_VBZ evaluated_VBN at_IN runtime_NN to_TO choose_VB the_DT actual_JJ service_NN to_TO be_VB invoked_VBN ._.
+R_NN
+e._NN WSDLs_NNS can_MD be_VB stored_VBN in_IN UDDI_NNP -LRB-_-LRB- 23_CD -RRB-_-RRB- registries_NNS and\/or_CC published_VBN on_IN the_DT Web_NN ._.
+For_IN web_NN services_NNS defined_VBN using_VBG XML_NN ,_, web_NN service_NN modules_NNS can_MD also_RB be_VB loaded_VBN by_IN the_DT XVM_NNP runtime_NN to_TO accept_VB remote_JJ requests_NNS ._.
+XL_NNP =_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ an_DT XML_NN Programming_NN Language_NN whose_WP$ only_JJ type_NN system_NN is_VBZ the_DT XML_NN type_NN system_NN ._.
+Both_CC the_DT input_NN and_CC the_DT output_NN of_IN an_DT XL_NNP program_NN are_VBP XML_NN messages_NNS ._.
+Unlike_IN XL_NNP ,_, the_DT XVM_NNP is_VBZ not_RB a_DT programming_NN language_NN ._.
+6_CD ._.
+CON_NN
+catch_NN on_IN as_IN most_JJS database_NN management_NN system_NN optimizers_NNS to_TO this_DT day_NN rely_VB on_IN tuple-based_JJ algebras_NNS -LRB-_-LRB- 1_CD ,_, 20_CD ,_, 19_CD -RRB-_-RRB- ._.
+The_DT recent_JJ emergence_NN of_IN languages_NNS which_WDT blend_VBP database_NN and_CC programming_NN languages_NNS features_VBZ =_JJ -_: =[_NN 17_CD ,_, 12_CD ,_, 4_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ created_VBN renewed_VBN interest_NN in_IN list_NN comprehensions_NNS ._.
+We_PRP believe_VBP our_PRP$ work_NN is_VBZ the_DT first_JJ to_TO provide_VB a_DT list_NN comprehension_NN treatment_NN of_IN a_DT tuple-based_JJ database_NN algebra_NN ._.
+The_DT reconciliation_NN of_IN record_NN subtypi_NNS
+riptions_NNS of_IN the_DT component_NN services_NNS ,_, their_PRP$ characteristics_NNS -LRB-_-LRB- e.g._FW ,_, data_NNS types_NNS -RRB-_-RRB- ,_, and_CC how_WRB they_PRP are_VBP plugged_VBN together_RB ._.
+There_EX are_VBP several_JJ differences_NNS between_IN CSSL_NNP and_CC existing_VBG service_NN composition_NN languages_NNS -LRB-_-LRB- =_JJ -_: =[_NN 18,28,2,13,21,10,34_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+First_RB ,_, CSSL_NN adopts_VBZ the_DT ontology-based_JJ model_NN introduced_VBN in_FW Sect_FW .2_NN to_TO cater_VB to_TO Semantic_NNP Web-enabled_JJ Web_NN services_NNS ._.
+Most_JJS of_IN the_DT existing_VBG languages_NNS do_VBP not_RB consider_VB semantic_JJ capabilities_NNS of_IN Web_NN services_NNS ._.
+Se_NN
+t-response_NN Web_NN Service_NN operation_NN ._.
+If_IN the_DT user_NN wants_VBZ a_DT full_JJ set_NN of_IN programming_NN functionality_NN to_TO create_VB Web_NN Service_NNP -LRB-_-LRB- such_JJ as_IN event_NN handling_NN -RRB-_-RRB- ,_, a_DT special_JJ programming_NN language_NN for_IN Web_NN Services_NNPS ,_, such_JJ as_IN XL_NNP =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, could_MD be_VB used_VBN instead_RB of_IN WSCD_NNP ._.
+In_IN fact_NN ,_, since_IN XL_NNP uses_VBZ XQuery_NN expressions_NNS to_TO access_NN data_NNS ,_, a_DT possible_JJ extension_NN of_IN WReX_NN is_VBZ to_TO support_VB the_DT XL_NNP language_NN ,_, in_IN addition_NN to_TO WSCD_NNP ,_, for_IN services_NNS with_IN complicate_VBP
+tcher_JJR Figure_NNP 2.1_CD ._.
+A_DT Warehouse_NNP Web_NN Service_NNP Composition_NNP ?_.
+bank_NN ?_.
+a_DT ..._: Warehouse1_NN ..._: !_.
+k_NN G_NN -LRB-_-LRB- r_NN 1_CD ⇒_NN F_NN p_NN 1_CD -RRB-_-RRB- LTL_NN property_NN research_NN on_IN web_NN service_NN composition_NN -LRB-_-LRB- 28_CD ,_, 65_CD -RRB-_-RRB- ,_, work_NN on_IN web_NN service_NN programming_NN languages_NNS =_JJ -_: =[_NN 5_CD ,_, 35_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC the_DT AZTEC_JJ prototype_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Fig._NN 2.1_CD shows_VBZ a_DT natural_JJ -LRB-_-LRB- though_IN informal_JJ -RRB-_-RRB- way_NN to_TO specify_VB a_DT composition_NN of_IN web_NN services_NNS ._.
+For_IN each_DT web_NN service_NN composition_NN ,_, its_PRP$ specification_NN consists_VBZ of_IN two_CD parts_NNS :_: a_DT co_NN
+简化应用逻辑_NN ,_, 提高服务可重用性_NN ,_, 单个_NN Web_NN 服务都不可能做得非常复杂_NN ,_, 因此现实中复杂服务的应s岳昆_FW 等_FW :_: Web_NN 服务核心支撑技术_NN :_: 研究综述_CD 431_CD 用需要组合多个简单的_CD Web_NN 服务_NN ._.
+其次_NN ,_, Web_NN 应用是基于不同方式的异构系统而建立的_NN ,_, 为了将松散耦合的_FW 、_FW 分_FW 散的各类_FW Web_NN 服务有机地组织成一个可用的系统_NN ,_, 其中服务的集成需要组合异构的服务_NN ._.
+相应地_NN ,_, 服务组合描述_NN 语言的设计也是一个重要的研究分支_NN =_JJ -_: =[_NN 47_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+其二是充分利用现有的_NNP IT_NNP 设备_NNP ,_, 并进行资源的按需配置的问题_NNP ._.
+如何_FW 使具有分布式结构的应用系统能够在开放式环境下提供较高质量的服务_FW ,_, 缩短_NN Web_NN 服务的响应时间_CD ,_, 提高系统_FW 的健壮性_FW ,_, 是直接影响商务应用的因素_NN -LRB-_-LRB- 1,3,20_CD -RRB-_-RRB- ._.
+针对这些问题_RB ,_, 在_FW P2P_FW 环境下实现_FW Web_NN 服务是一种有效的解决方_FW 案_FW ,_, 在这方面目前已经有很多的研究成果及相应原型系统_NN -LRB-_-LRB- 35,36_CD -RRB-_-RRB- ._.
+同样_NN ,_, 为了提高_NN Web_NN 服务_NN
+has_VBZ analyzed_VBN workflows_NNS ._.
+XPDL_NN -LRB-_-LRB- XML_NN Process_VBP Description_NN Language_NN -RRB-_-RRB- -LRB-_-LRB- 18_CD -RRB-_-RRB- is_VBZ their_PRP$ specification_NN on_IN how_WRB to_TO model_VB workflows_NNS ._.
+Another_DT view_NN to_TO describe_VB workflows_NNS is_VBZ coming_VBG from_IN programming_NN language_NN direction_NN =_JJ -_: =[_NN 5_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN these_DT methodologies_NNS ,_, a_DT service_NN composition_NN is_VBZ thought_VBN as_IN a_DT program_NN that_WDT runs_VBZ on_IN the_DT web_NN and_CC it_PRP is_VBZ described_VBN using_VBG a_DT programming_NN language_NN ._.
+The_DT Business_NNP Process_VBP Modeling_NN Language_NN -LRB-_-LRB- BPML_NN -RRB-_-RRB- -LRB-_-LRB- 1_LS -RRB-_-RRB- defines_VBZ
+for_IN modeling_NN at_IN a_DT more_RBR fundamental_JJ level_NN both_DT e-services_NNS themselves_PRP ,_, and_CC frameworks_NNS for_IN combining_VBG them_PRP ._.
+The_DT programming_NN language_NN community_NN is_VBZ addressing_VBG the_DT web_NN services_NNS phenomenon_NN with_IN new_JJ languages_NNS =_JJ -_: =[_NN 7_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: and_CC specialized_JJ type_NN systems_NNS -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+Recent_JJ work_NN on_IN e-services_NNS in_IN the_DT semantic_JJ web_NN community_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 24_CD ,_, 8_CD ,_, 25_CD ,_, 14_CD -RRB-_-RRB- -RRB-_-RRB- is_VBZ beginning_VBG to_TO combine_VB tools_NNS for_IN annotating_VBG e-services_NNS and_CC for_IN planning_NN ,_, so_IN that_IN e_SYM -_:
+t_NN are_VBP focused_VBN primarily_RB on_IN process_NN model_NN and_CC i\/o_NN signatures_NNS ,_, but_CC not_RB on_IN the_DT data_NNS flow_NN and_CC the_DT manipulation_NN of_IN the_DT data_NNS as_IN it_PRP passes_VBZ through_IN this_DT flow_NN ._.
+One_CD exception_NN to_TO this_DT trend_NN is_VBZ recent_JJ work_NN on_IN XL_NNP =_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, that_WDT blends_VBZ XML_NN query_NN processing_NN and_CC web_NN service_NN composition_NN constructs_NNS ,_, and_CC on_IN XButler_NN -LRB-_-LRB- 28_CD ,_, 13_CD -RRB-_-RRB- ,_, which_WDT essentially_RB incorporates_VBZ a_DT WSDL_NN stack_VB into_IN the_DT Galax_NNP XQuery_NN engine_NN ._.
+Is_VBZ there_RB value_NN in_IN associat_NN
+icrosoft_NN ._.
+NET_NN -LRB-_-LRB- NET01_NN -RRB-_-RRB- ,_, or_CC IBM_NNP WebSphere_NNP -LRB-_-LRB- Web_NN -RRB-_-RRB- show_VBP that_IN Web_NN service_NN technology_NN for_IN application_NN collaboration_NN and_CC integration_NN gains_NNS increasing_VBG attention_NN in_IN research_NN and_CC industry_NN ._.
+Florescu_NNP and_CC Kossmann_NNP =_SYM -_: =_JJ -LRB-_-LRB- FK01_NN -RRB-_-RRB- -_: =_SYM -_: present_VB a_DT platform_NN for_IN Web_NN services_NNS based_VBN on_IN an_DT abstract_JJ programming_NN language_NN and_CC supporting_VBG Web_NN conversations_NNS and_CC Web_NN service_NN composition_NN ._.
+Keidl_NNP et_FW al._FW -LRB-_-LRB- KSSK02_NN -RRB-_-RRB- introduce_VBP an_DT architecture_NN for_IN dynamic_NN
+of_IN XML_NN data_NNS ,_, Web_NN Services_NNPS -LRB-_-LRB- 9_CD -RRB-_-RRB- is_VBZ also_RB rapidly_RB progressing_VBG as_IN a_DT standard_NN for_IN facilitating_VBG interoperation_NN between_IN applications_NNS regardless_RB of_IN their_PRP$ location_NN on_IN the_DT connected_JJ network_NN or_CC the_DT host_NN platform_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT utilisation_NN of_IN an_DT XML_NN based_JJ language_NN structure_NN for_IN UI_NN definition_NN has_VBZ been_VBN adopted_VBN for_IN several_JJ high_JJ profile_NN industry_NN initiatives_NNS such_JJ as_IN ;_: Microsoft_NNP in_IN their_PRP$ recently_RB prepared_VBN specification_NN for_IN XA_NN
+23_CD ,_, 26_CD ,_, 78_CD ,_, 96_CD ,_, 108_CD ,_, 110_CD ,_, 118_CD -RRB-_-RRB- -RRB-_-RRB- are_VBP currently_RB under_IN development_NN spanning_NN from_IN the_DT extension_NN of_IN traditional_JJ programming_NN or_CC scripting_NN languages_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 70_CD ,_, 93_CD ,_, 130_CD -RRB-_-RRB- -RRB-_-RRB- to_TO new_JJ ,_, ad-hoc_JJ languages_NNS -LRB-_-LRB- e.g._FW ,_, XL_NNP =_SYM -_: =[_NN 44_CD ,_, 45_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, including_VBG XML-based_JJ process_NN modeling_NN languages_NNS -LRB-_-LRB- 16_CD ,_, 37_CD ,_, 68_CD -RRB-_-RRB- as_RB well_RB as_IN visual_JJ programming_NN languages_NNS -LRB-_-LRB- 97_CD ,_, 72_CD -RRB-_-RRB- and_CC data-driven_JJ modeling_NN languages_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+A_DT recent_JJ survey_NN on_IN Web_NN service_NN composition_NN has_VBZ
+Xact_NN project_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, JWig_NN 's_POS validation_NN algorithm_NN is_VBZ extended_VBN to_TO implement_VB further_RBR compile_VB time_NN guarantees_NNS ,_, such_JJ that_IN ,_, dynamically_RB transformed_VBN XML_NN documents_NNS are_VBP valid_JJ according_VBG to_TO a_DT given_VBN XML_NN schema_NN ._.
+XL_NNP =_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: adopts_VBZ to_TO XQuery_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC combines_VBZ imperative_JJ and_CC declarative_JJ programming_NN language_NN features_NNS to_TO facilitate_VB the_DT development_NN of_IN Web_NN services_NNS ._.
+The_DT XML_NN Objects_NNS Programming_VBG Language_NN -LRB-_-LRB- 38_CD -RRB-_-RRB- integrates_VBZ XML_NN and_CC
+anguages_NNS that_WDT adapt_VBP themselves_PRP better_JJR to_TO the_DT challenges_NNS posed_VBN by_IN web_NN services_NNS ._.
+Some_DT concentrate_NN on_IN bridging_VBG the_DT gap_NN between_IN the_DT program_NN language_NN and_CC the_DT XML_NN objects_NNS that_IN web_NN services_NNS should_MD exchange_VB -LRB-_-LRB- =_JJ -_: =_JJ Florescu_NNP et_FW al._FW ,_, 2002_CD -_: =--RRB-_NN ,_, others_NNS provide_VBP abstractions_NNS to_TO manipulate_VB interfaces_NNS -LRB-_-LRB- Cooney_NNP et_FW al._FW ,_, 2005_CD -RRB-_-RRB- ,_, and_CC others_NNS address_VBP asynchronous_JJ communication_NN by_IN means_NNS of_IN message_NN passing_NN --_: e.g._FW ,_, Cω_NN -LRB-_-LRB- Bierman_NNP et_FW al._FW ,_, 2005_CD -RRB-_-RRB- ._.
+The_DT latter_JJ co_NN
+finishes_VBZ its_PRP$ execution_NN ._.
+On_IN the_DT contrary_NN ,_, if_IN two_CD Web_NN Services_NNPS do_VBP 3snot_NN depend_VB on_IN each_DT other_JJ ,_, they_PRP can_MD be_VB executed_VBN in_IN parallel_NN to_TO achieve_VB higher_JJR efficiency_NN ._.
+Currently_RB there_EX are_VBP large_JJ number_NN of_IN research_NN =_JJ -_: =[_NN 13_CD ,_, 18_CD ,_, 19_CD ,_, 20_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: and_CC industrial_JJ work_NN -LRB-_-LRB- 5_CD ,_, 6_CD ,_, 7_CD ,_, 8_CD ,_, 12_CD -RRB-_-RRB- that_WDT work_VBP on_IN Web_NN Services_NNP components_NNS ._.
+So_RB far_RB ,_, none_NN of_IN them_PRP address_VBP the_DT key_JJ benefits_NNS on_IN data_NNS processing_NN and_CC integration_NN as_IN WSIPL_NN does_VBZ ._.
+This_DT paper_NN presents_VBZ WSIPL_NNP ,_, i_FW
+ndex_NN selection_NN to_TO be_VB carried_VBN out_RP independently_RB of_IN any_DT specific_JJ programming_NN language_NN environment_NN ._.
+Florescu_NNP ,_, Gruenhagen_NNP ,_, and_CC Kossmann_NNP have_VBP proposed_VBN and_CC implemented_VBN an_DT XML_NN programming_NN language_NN called_VBN XL_NNP =_SYM -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT is_VBZ similar_JJ in_IN concept_NN to_TO XQueryP_NN ._.
+Like_IN XQueryP_NN ,_, XL_NNP extends_VBZ XQuery_NN to_TO include_VB ordered_VBN execution_NN ,_, assignment_NN statements_NNS ,_, blocks_NNS ,_, exception_NN handlers_NNS ,_, and_CC while-loops_NNS ._.
+XL_NNP also_RB includes_VBZ more_JJR ambitiou_NN
+g_NN at_IN a_DT more_RBR fundamental_JJ level_NN both_DT e-services_NNS themselves_PRP ,_, and_CC frameworks_NNS for_IN combining_VBG them_PRP have_VBP been_VBN studied_VBN in_IN -LRB-_-LRB- 5_CD ,_, 8_CD ,_, 14_CD ,_, 15_CD ,_, 29_CD ,_, 16_CD ,_, 2_CD ,_, 1_CD ,_, 17_CD -RRB-_-RRB- ._.
+New_JJ languages_NNS for_IN defining_VBG services_NNS were_VBD proposed_VBN in_IN =_JJ -_: =[_NN 3_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Specialized_JJ type_NN systems_NNS were_VBD considered_VBN in_IN -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Finally_RB ,_, tools_NNS were_VBD developed_VBN for_IN annotating_VBG e-services_NNS and_CC for_IN planning_NN ,_, aiming_VBG at_IN combining_VBG web_NN services_NNS automatically_RB to_TO achieve_VB a_DT specified_JJ func_NN
+g_NN at_IN a_DT more_RBR fundamental_JJ level_NN both_DT e-services_NNS themselves_PRP ,_, and_CC frameworks_NNS for_IN combining_VBG them_PRP have_VBP been_VBN studied_VBN in_IN -LRB-_-LRB- 5_CD ,_, 8_CD ,_, 14_CD ,_, 15_CD ,_, 29_CD ,_, 16_CD ,_, 2_CD ,_, 1_CD ,_, 17_CD -RRB-_-RRB- ._.
+New_JJ languages_NNS for_IN defining_VBG services_NNS were_VBD proposed_VBN in_IN =_JJ -_: =[_NN 3_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Specialized_JJ type_NN systems_NNS were_VBD considered_VBN in_IN -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Finally_RB ,_, tools_NNS were_VBD developed_VBN for_IN annotating_VBG e-services_NNS and_CC for_IN planning_NN ,_, aiming_VBG at_IN combining_VBG web_NN services_NNS automatically_RB to_TO achieve_VB a_DT specified_JJ func_NN
+n_NN of_IN WSs_NNS in_IN support_NN of_IN a_DT user_NN query_NN ._.
+Several_JJ frameworks_NNS strive_VBP to_TO realize_VB this_DT vision_NN ,_, e.g._FW ,_, Global_JJ XML_NN Web_NN Service_NNP Architecture_NNP -LRB-_-LRB- GXA_NNP -RRB-_-RRB- -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, the_DT Business_NNP Process_VB Execution_NN Language_NN -LRB-_-LRB- BPEL4WS_NN -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, XL_NNP =_SYM -_: =[_NN 8_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT key_JJ challenge_NN is_VBZ to_TO execute_VB plans_NNS in_IN a_DT physical-location-independent_JJ manner_NN ._.
+This_DT means_VBZ the_DT plan_NN will_MD execute_VB as_RB long_RB as_IN a_DT copy_NN of_IN the_DT referenced_VBN WS_NN is_VBZ available_JJ ._.
+This_DT criterion_NN is_VBZ important_JJ becau_NN
+are_VBP native_JJ ServiceGlobe_NNP services_NNS ._.
+They_PRP are_VBP implemented_VBN in_IN Java_NNP using_VBG the_DT service_NN API_NN provided_VBN by_IN the_DT ServiceGlobe_NNP system_NN ._.
+Of_IN course_NN ,_, it_PRP is_VBZ feasible_JJ to_TO use_VB a_DT specialized_JJ programming_NN language_NN ,_, e.g._FW ,_, XL_NNP =_SYM -_: =_JJ -LRB-_-LRB- FK01_NN -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC a_DT graphical_JJ tool_NN to_TO draw_VB a_DT representation_NN -LRB-_-LRB- similar_JJ to_TO a_DT workflow_NN graph_NN -RRB-_-RRB- of_IN a_DT service_NN ,_, but_CC that_DT is_VBZ not_RB the_DT focus_NN of_IN our_PRP$ work_NN ._.
+ServiceGlobe_NN services_NNS use_VBP SOAP_NN to_TO communicate_VB with_IN other_JJ services_NNS ._.
+Ser_NN
+This_DT is_VBZ the_DT process_NN of_IN coding_VBG e-services_NNS ._.
+The_DT basic_JJ method_NN is_VBZ to_TO use_VB Java_NNP and_CC the_DT e-service_NN API_NN provided_VBN by_IN ServiceGlobe_NNP ._.
+A_DT more_RBR comfortable_JJ way_NN is_VBZ to_TO use_VB a_DT specialized_JJ programming_NN language_NN ,_, e.g._FW ,_, XL_NNP =_SYM -_: =_JJ -LRB-_-LRB- FK01_NN -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC a_DT graphical_JJ tool_NN to_TO draw_VB a_DT representation_NN -LRB-_-LRB- similar_JJ to_TO a_DT workflow_NN graph_NN -RRB-_-RRB- of_IN the_DT eservice_NN ._.
+Both_DT ,_, programs_NNS and_CC graphs_NNS must_MD be_VB compiled_VBN into_IN Java_NNP classes_NNS using_VBG the_DT ServiceGlobe_NNP API_NNP to_TO obtain_VB services_NNS
+exchanged_VBN SOAP_NN message_NN ,_, either_CC individually_RB or_CC in_IN batches_NNS ,_, to_TO the_DT Solution_NN Manager_NNP Service_NNP ._.
+This_DT simple_JJ solution_NN has_VBZ performance_NN ,_, scalability_NN ,_, single_JJ point_NN of_IN failure\/congestion_NN ,_, and_CC trust_NN problems_NNS ._.
+=_SYM -_: =_JJ -LRB-_-LRB- Flo02_NN -RRB-_-RRB- -_: =_SYM -_: presented_VBN XL_NNP as_IN a_DT new_JJ high-level_JJ declarative_JJ programming_NN language_NN that_WDT can_MD be_VB used_VBN for_IN describing_VBG implementation_NN of_IN Web_NN Services_NNPS and_CC Web_NN Service_NN compositions_NNS ._.
+When_WRB -LRB-_-LRB- Flo02_NN -RRB-_-RRB- was_VBD published_VBN ,_, XL_NNP was_VBD still_RB
+tatic_JJ -LRB-_-LRB- http:\/\/www.cis_NN ._.
+upenn.edu\/~bcpierce\/xtatic\/_NN -RRB-_-RRB- ,_, Scriptol_NN -LRB-_-LRB- http:\/\/www.scriptol.com\/_NN -RRB-_-RRB- ,_, Cω_NN -LRB-_-LRB- http:\/\/research_NN ._.
+microsoft.com\/Comega\/_NN ,_, -LRB-_-LRB- 272_CD -RRB-_-RRB- -RRB-_-RRB- ,_, and_CC with_IN special_JJ focus_NN on_IN Web_NN services_NNS and_CC composition_NN XL_NNP =_SYM -_: =[_NN 165_CD ,_, 166_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Scala_NNP -LRB-_-LRB- 289_CD -RRB-_-RRB- ,_, Water_NN -LRB-_-LRB- 309_CD -RRB-_-RRB- ._.
+All_DT of_IN these_DT languages_NNS provide_VBP some_DT form_NN of_IN specialized_JJ data_NNS structures_NNS for_IN representing_VBG and_CC accessing_VBG XML_NN data_NNS ._.
+For_IN existing_VBG programming_NN languages_NNS ,_, convenient_JJ access_NN to_TO XM_NN
+te_IN the_DT effectiveness_NN of_IN the_DT approach_NN ._.
+1_CD ._.
+INTRODUCTION_NN In_IN order_NN to_TO facilitate_VB Web_NN development_NN ,_, a_DT number_NN of_IN languages_NNS blending_VBG database_NN and_CC programming_NN language_NN capabilities_NNS have_VBP recently_RB been_VBN proposed_VBN =_JJ -_: =[_NN 5_CD ,_, 12_CD ,_, 13_CD ,_, 17_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Two_CD well-known_JJ examples_NNS are_VBP LINQ_NNP -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, which_WDT extends_VBZ ._.
+NET_NN languages_NNS such_JJ as_IN C_NN #_# or_CC Visual_JJ Basic_JJ with_IN querying_VBG primitives_NNS ,_, and_CC XQueryP_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, which_WDT extends_VBZ the_DT W3C_NN XML_NN Query_NN language_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- with_IN imperative_JJ
+roceedings_NNS by_IN deepX_NN 1sRendered_VBN by_IN www.RenderX.com_NN To_TO eliminate_VB redundant_JJ development_NN of_IN these_DT infrastructure_NN services_NNS ,_, an_DT alternative_JJ application_NN strategy_NN is_VBZ proposed_VBN to_TO build_VB a_DT generic_JJ framework_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT generic_JJ framework_NN architecture_NN separates_VBZ the_DT application_NN logic_NN from_IN the_DT implementation_NN and_CC introduces_VBZ a_DT declarative_JJ language_NN to_TO specify_VB the_DT application_NN logic_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Since_IN the_DT framework_NN provide_VBP
+General_JJ Terms_NNS Languages_NNPS ,_, Performances_NNPS 1_CD ._.
+INTRODUCTION_NN In_IN order_NN to_TO facilitate_VB Web_NN development_NN ,_, a_DT number_NN of_IN languages_NNS blending_VBG database_NN and_CC programming_NN language_NN capabilities_NNS have_VBP recently_RB been_VBN proposed_VBN =_JJ -_: =[_NN 5_CD ,_, 12_CD ,_, 15_CD ,_, 19_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Two_CD well-known_JJ examples_NNS are_VBP LINQ_NNP -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, which_WDT extends_VBZ ._.
+NET_NN languages_NNS such_JJ as_IN C_NN #_# or_CC Visual_JJ Basic_JJ with_IN querying_VBG primitives_NNS ,_, and_CC XQueryP_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, which_WDT extends_VBZ the_DT W3C_NN XML_NN Query_NN language_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- with_IN imperative_JJ
+ring_NN and_CC querying_VBG structured_JJ data_NNS ,_, and_CC thus_RB they_PRP are_VBP at_IN the_DT core_NN of_IN data_NNS management_NN in_IN all_DT organizations_NNS ._.
+Recently_RB ,_, however_RB ,_, some_DT modern_JJ application_NN areas_NNS ,_, such_JJ as_IN bioinformatics_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- and_CC Web_NN services_NNS =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, have_VBP created_VBN a_DT need_NN for_IN storing_VBG and_CC querying_VBG information_NN that_WDT can_MD not_RB easily_RB be_VB organized_VBN into_IN tables_NNS ,_, columns_NNS ,_, and_CC rows_NNS ._.
+XML_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, a_DT document_NN description_NN metalanguage_NN recommended_VBN by_IN the_DT World_NNP Wide_NN We_PRP
+ing_NN of_IN structure_NN and_CC data_NNS ._.
+However_RB ,_, to_TO use_VB XML_NN to_TO represent_VB service_NN logic_NN ,_, i.e._FW ,_, the_DT dynamic_JJ behavior_NN ,_, poses_VBZ a_DT challenge_NN ._.
+Some_DT XML-based_JJ programming_NN language_NN are_VBP available_JJ ,_, such_JJ as_IN Superx_NNP +_CC +_CC -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC XL_NNP =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+But_CC the_DT limitation_NN for_IN using_VBG such_PDT a_DT language_NN is_VBZ that_IN the_DT language_NN is_VBZ not_RB general_JJ enough_RB and_CC not_RB portable_JJ ._.
+In_IN TAPAS_NNP ,_, the_DT behavior_NN is_VBZ defined_VBN by_IN plug-and-play_JJ manuscripts_NNS and_CC Node_VB inherent_JJ capabiliti_NNS
+programming_NN languages_NNS ._.
+For_IN instance_NN ,_, the_DT translation_NN between_IN the_DT XML_NN on_IN the_DT wire_NN and_CC the_DT corresponding_JJ memory_NN data_NNS structures_NNS has_VBZ been_VBN problematic_JJ and_CC is_VBZ the_DT main_JJ source_NN of_IN performance_NN inefficiencies_NNS =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Taking_VBG Java_NNP as_IN an_DT example_NN ,_, several_JJ attempts_NNS were_VBD necessary_JJ -LRB-_-LRB- Apache_JJ SOAP_NN to_TO JAXRPC_NN 1.0_CD and_CC 1.1_CD to_TO JAX-WS_NN and_CC JAX-B_NN -RRB-_-RRB- to_TO produce_VB a_DT stable_JJ Web_NN service_NN marshalling_VBG layer_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+Furthermore_RB ,_, XML_NN Schema_NN is_VBZ
+icrosoft_NN has_VBZ recently_RB released_VBN their_PRP$ BizTalk_NNP Server_NN 2000_CD -LRB-_-LRB- Biz_NN -RRB-_-RRB- ._.
+There_EX is_VBZ also_RB a_DT Business_NNP Process_VB Model_NNP Initiative_NNP with_IN the_DT goal_NN to_TO implement_VB cross-organization_NN processes_NNS and_CC workflows_NNS on_IN the_DT Internet_NN =_JJ -_: =_JJ -LRB-_-LRB- BPM_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT state_NN of_IN the_DT art_NN in_IN the_DT Java_NNP world_NN is_VBZ to_TO support_VB XML_NN via_IN so-called_JJ servlets_NNS that_WDT translate_VBP -LRB-_-LRB- XML_NN and_CC HTML_NNP -RRB-_-RRB- requests_NNS into_IN Java_NNP classes_NNS and_CC back_RB -LRB-_-LRB- JAK_NN -RRB-_-RRB- ._.
+At_IN the_DT time_NN of_IN this_DT writing_NN ,_, Sun_NNP Microsystems_NNPS
+g_NN language_NN proposal_NN --_: most_RBS prominently_RB ,_, SUN_NNP 's_POS J2EE_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- and_CC SunOne_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, and_CC Microsoft_NNP 's_POS ._.
+NET_NN initiative_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+Compaq_NNP has_VBZ developed_VBN the_DT WebL_NN language_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- ;_: HP_NNP has_VBZ developed_VBN the_DT eFlow_NN and_CC eSpeak_NN systems_NNS =_JJ -_: =[_NN 4_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, IBM_NNP is_VBZ working_VBG on_IN a_DT language_NN called_VBN Web_NN Service_NN Flow_NN Language_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, and_CC Microsoft_NNP has_VBZ recently_RB released_VBN their_PRP$ BizTalk_NNP Server_NN 2000_CD -LRB-_-LRB- 1_CD -RRB-_-RRB- and_CC XLANG_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ._.
+While_IN there_EX are_VBP many_JJ similarities_NNS between_IN WSFL_NNP a_DT
+is_VBZ invoked_VBN as_IN part_NN of_IN a_DT transaction_NN -LRB-_-LRB- see_VB the_DT previous_JJ section_NN -RRB-_-RRB- ._.
+There_EX has_VBZ been_VBN a_DT great_JJ deal_NN of_IN work_NN since_IN the_DT seventies_NNS on_IN distributed_VBN transactions_NNS and_CC models_NNS for_IN distributed_VBN transactions_NNS -LRB-_-LRB- see_VB ,_, e.g._FW ,_, =_JJ -_: =_JJ -LRB-_-LRB- Moh00a_NN -RRB-_-RRB- -_: =--RRB-_NN ._.
+All_PDT this_DT work_NN is_VBZ relevant_JJ ._.
+In_IN our_PRP$ initial_JJ design_NN ,_, we_PRP propose_VBP to_TO enforce_VB the_DT full_JJ ACID_NN paradigm_NN for_IN transactions_NNS ._.
+Enforcing_VBG an_DT ACID_NN paradigm_NN involves_VBZ the_DT implementation_NN of_IN a_DT two-phase_NN commit_VB protoco_NN
+facto_JJ -RRB-_-RRB- standards_NNS which_WDT are_VBP currently_RB under_IN development_NN and_CC which_WDT are_VBP important_JJ requisites_NNS in_IN order_NN to_TO enable_VB the_DT open_JJ composition_NN of_IN Web_NN services_NNS ;_: in_IN particular_JJ SOAP_NN -LRB-_-LRB- Proa_NN -RRB-_-RRB- ,_, XML_NN protocol_NN -LRB-_-LRB- Prob_NN -RRB-_-RRB- ,_, UDDI_NN =_JJ -_: =_JJ -LRB-_-LRB- UDD_NN -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC WSDL_NN -LRB-_-LRB- CCMW_NN -RRB-_-RRB- ._.
+5_CD Summary_NN In_IN this_DT paper_NN we_PRP sketched_VBD the_DT requirements_NNS and_CC presented_VBD an_DT initial_JJ design_NN of_IN an_DT XML_NN programming_NN language_NN whoose_NN purpose_NN is_VBZ to_TO render_VB the_DT implementation_NN and_CC the_DT compositio_NN
+In_IN the_DT industry_NN ,_, there_EX have_VBP been_VBN a_DT number_NN of_IN concrete_JJ proposals_NNS for_IN new_JJ languages_NNS and_CC frameworks_NNS related_VBN but_CC not_RB identical_JJ to_TO our_PRP$ programming_NN language_NN proposal_NN ._.
+Compaq_NNP has_VBZ developed_VBN the_DT WebL_NN language_NN =_JJ -_: =_JJ -LRB-_-LRB- Web_NN -RRB-_-RRB- -_: =_JJ -_: ;_: HP_NNP has_VBZ developed_VBN the_DT eFlow_NN and_CC eSpeak_NN systems_NNS -LRB-_-LRB- CIJ_NN 00_CD ,_, eSp_NN -RRB-_-RRB- ,_, IBM_NNP is_VBZ working_VBG on_IN a_DT language_NN called_VBN Web_NN Service_NN Flow_NN Language_NN -LRB-_-LRB- WSF_NN -RRB-_-RRB- ,_, and_CC Microsoft_NNP has_VBZ recently_RB released_VBN their_PRP$ BizTalk_NNP Server_NN 2000_CD -LRB-_-LRB- Biz_NN -RRB-_-RRB- ._.
+age_NN and_CC present_VB a_DT sketch_NN of_IN an_DT initial_JJ design_NN ._.
+Our_PRP$ design_NN is_VBZ based_VBN on_IN familiar_JJ concepts_NNS of_IN imperative_JJ programming_NN languages_NNS as_RB well_RB as_IN on_IN those_DT of_IN parallel_JJ programming_NN -LRB-_-LRB- Hoa85_NN -RRB-_-RRB- and_CC workflow_NN management_NN =_JJ -_: =_JJ -LRB-_-LRB- Moh00b_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT long-term_JJ goal_NN of_IN this_DT paper_NN is_VBZ to_TO stimulate_VB a_DT discussion_NN about_IN the_DT foundamental_JJ concepts_NNS and_CC syntax_NN of_IN XL_NNP ,_, and_CC eventually_RB to_TO submit_VB a_DT proposal_NN to_TO the_DT W3C_NN with_IN the_DT help_NN of_IN as_RB many_JJ practitioners_NNS
+design_NN philosophy_NN and_CC encourage_VB us_PRP to_TO pursue_VB XL_NNP ._.
+BPEL_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- is_VBZ very_RB similar_JJ to_TO XL_NNP ._.
+Like_IN XL_NNP ,_, BPEL_NNP declarative_JJ Web_NN service_NN description_NN based_VBN on_IN several_JJ XML_NN standards_NNS ._.
+The_DT Web_NN Service_NN Modeling_NN Framework_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: focuses_VBZ on_IN interface_NN description_NN and_CC the_DT mediation_NN of_IN different_JJ data-types_NNS and_CC processing_NN concepts_NNS between_IN different_JJ Web_NN services_NNS ._.
+On_IN the_DT WWW_NNP conference_NN 2002_CD the_DT language_NN XL_NNP was_VBD introduced_VBN for_IN the_DT fi_NN
+r_NN the_DT Web_NN service_NN sends_VBZ a_DT message_NN to_TO another_DT Web_NN service_NN ._.
+Currently_RB ,_, the_DT conversation_NN patterns_NNS supported_VBN by_IN XL_NNP correspond_VBP one_CD to_TO one_CD to_TO the_DT different_JJ kinds_NNS of_IN scopes_NNS of_IN transactions_NNS supported_VBN by_IN J2EE_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT patterns_NNS are_VBP described_VBN in_IN Table_NNP 1_CD --_: for_IN each_DT pattern_NN ,_, two_CD situations_NNS must_MD be_VB considered_VBN :_: -LRB-_-LRB- a_LS -RRB-_-RRB- the_DT ingoing_JJ message_NN is_VBZ not_RB part_NN of_IN a_DT conversation_NN -LRB-_-LRB- defined_VBN as_IN none_NN in_IN the_DT second_JJ column_NN of_IN Table_NNP 1_CD -RRB-_-RRB-
+HP_NNP has_VBZ developed_VBN the_DT eFlow_NN and_CC eSpeak_NN systems_NNS -LRB-_-LRB- 4_CD ,_, 11_CD -RRB-_-RRB- ,_, IBM_NNP is_VBZ working_VBG on_IN a_DT language_NN called_VBN Web_NN Service_NN Flow_NN Language_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, and_CC Microsoft_NNP has_VBZ recently_RB released_VBN their_PRP$ BizTalk_NNP Server_NN 2000_CD -LRB-_-LRB- 1_CD -RRB-_-RRB- and_CC XLANG_NN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN there_EX are_VBP many_JJ similarities_NNS between_IN WSFL_NNP and_CC XLANG_NNP on_IN one_CD hand_NN and_CC XL_NNP on_IN the_DT other_JJ hand_NN ,_, there_EX are_VBP a_DT couple_NN of_IN major_JJ differences_NNS ._.
+First_RB ,_, both_DT WSFL_NNP and_CC XLANG_NNP are_VBP XML_NN programming_NN languages_NNS in_IN th_DT
+or_CC the_DT persistent_JJ data_NNS -LRB-_-LRB- e.g._FW relational_JJ databases_NNS ,_, XML_NN files_NNS -RRB-_-RRB- ._.
+Our_PRP$ way_NN to_TO create_VB and_CC manage_VB persistent_JJ data_NNS is_VBZ very_RB similar_JJ in_IN spirit_NN with_IN the_DT approaches_NNS proposed_VBN for_IN persistent_JJ programming_NN languages_NNS =_JJ -_: =_JJ -LRB-_-LRB- AM95_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, the_DT novel_JJ Web_NN services_NNS context_NN imposes_VBZ the_DT reconsideration_NN of_IN a_DT certain_JJ number_NN of_IN issues_NNS ._.
+For_IN example_NN ,_, unlike_IN most_RBS traditional_JJ persistent_JJ programming_NN languages_NNS ,_, we_PRP do_VBP not_RB recommend_VB for_IN XL_NNP t_NN
+yet_RB ._.
+By_IN a_DT Web_NN service_NN we_PRP understand_VBP an_DT autonomous_JJ piece_NN of_IN software_NN uniquely_RB identified_VBN by_IN an_DT URI_NNP and_CC that_WDT can_MD interact_VB with_IN peer_VB Web_NN services_NNS via_IN messages_NNS using_VBG Internet_NNP protocols_NNS like_IN XML_NN Protocol_NNP =_SYM -_: =[_NN 26_CD -RRB-_-RRB- -_: =_JJ -_: or_CC HTTP_NNP ._.
+Web_NN services_NNS can_MD ,_, but_CC they_PRP are_VBP not_RB required_VBN to_TO ,_, preserve_VB an_DT internal_JJ state_NN ._.
+In_IN addition_NN ,_, Web_NN services_NNS can_MD participate_VB in_IN complex_JJ conversations_NNS ._.
+A_DT conversation_NN is_VBZ an_DT exchange_NN of_IN correlated_VBN me_PRP
+evelopment_NN of_IN object_NN databases_NNS technology_NN in_IN the_DT recent_JJ past_NN -LRB-_-LRB- CM84_NN -RRB-_-RRB- ._.
+While_IN most_JJS people_NNS seem_VBP to_TO have_VB resigned_VBN themselves_PRP to_TO using_VBG interfaces_NNS like_IN ODBC_NNP and_CC JDBC_NNP ,_, the_DT additional_JJ XMLJava_NN ``_`` stuttering_NN step_NN ''_'' =_SYM -_: =_JJ -LRB-_-LRB- Lam_NN -RRB-_-RRB- -_: =_SYM -_: might_MD have_VB a_DT good_JJ chance_NN to_TO finally_RB turn_VB people_NNS 's_POS minds_NNS ._.
+It_PRP is_VBZ not_RB unusual_JJ that_IN eighty_CD percent_NN or_CC more_JJR of_IN Web_NN applications_NNS code_NN is_VBZ indeed_RB due_JJ to_TO data_NNS marshalling_VBG ._.
+Moreover_RB ,_, a_DT great_JJ deal_NN of_IN the_DT plumbi_NN
+we_PRP believe_VBP that_IN this_DT is_VBZ a_DT mandatory_JJ condition_NN for_IN the_DT success_NN of_IN such_PDT a_DT programming_NN language_NN ._.
+Two_CD recent_JJ and_CC independent_JJ projects_NNS have_VBP a_DT similar_JJ design_NN philosophy_NN and_CC encourage_VB us_PRP to_TO pursue_VB XL_NNP ._.
+BPEL_NN =_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ very_RB similar_JJ to_TO XL_NNP ._.
+Like_IN XL_NNP ,_, BPEL_NNP declarative_JJ Web_NN service_NN description_NN based_VBN on_IN several_JJ XML_NN standards_NNS ._.
+The_DT Web_NN Service_NNP Modeling_NNP Framework_NNP -LRB-_-LRB- 13_CD -RRB-_-RRB- focuses_VBZ on_IN interface_NN description_NN and_CC the_DT mediation_NN of_IN
+conversations_NNS ,_, database_NN interaction_NN ,_, transactions_NNS ,_, and_CC security_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Recently_RB ,_, Sun_NNP Microsystems_NNPS introduced_VBD the_DT JXTA_NNP project_NN on_IN peer-to-peer_JJ computing_NN to_TO support_VB distributed_VBN computing_NN on_IN the_DT Internet_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Finally_RB ,_, the_DT notion_NN of_IN a_DT service_NN composition_NN is_VBZ based_VBN on_IN a_DT solid_JJ theoretical_JJ background_NN consisting_VBG on_IN the_DT calculi_NN developed_VBD first_RB by_IN Hoare_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- and_CC more_RBR recently_RB by_IN Cardelli_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+However_RB ,_, none_NN of_IN th_DT
+on_IN the_DT Internet_NN -LRB-_-LRB- JXT_NN -RRB-_-RRB- ._.
+Finally_RB ,_, the_DT notion_NN of_IN a_DT service_NN composition_NN is_VBZ based_VBN on_IN a_DT solid_JJ theoretical_JJ background_NN consisting_VBG on_IN the_DT calculus_NN developed_VBD first_RB by_IN Hoare_NN -LRB-_-LRB- Hoa85_NN -RRB-_-RRB- and_CC more_RBR recently_RB by_IN Cardelli_NN =_JJ -_: =_JJ -LRB-_-LRB- CD99_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, none_NN of_IN those_DT languages_NNS and_CC frameworks_NNS are_VBP totally_RB consistent_JJ with_IN the_DT current_JJ W3C_NN standards_NNS ,_, and_CC we_PRP believe_VBP that_IN this_DT is_VBZ a_DT mandatory_JJ condition_NN for_IN the_DT success_NN of_IN such_PDT a_DT programming_NN languag_NN
+tly_RB ,_, XL_NNP adds_VBZ to_TO Web_NN services_NNS the_DT concepts_NNS of_IN declarative_JJ behavior_NN specification_NN inherited_VBN first_RB from_IN relational_JJ databases_NNS and_CC then_RB from_IN J2EE_NN ._.
+The_DT recently_RB started_VBN language_NN projects_NNS -LRB-_-LRB- Water_NN -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, JWIG_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =--RRB-_NN provide_VBP efficient_JJ methods_NNS for_IN Web_NN service_NN specification_NN ,_, but_CC still_RB both_DT languages_NNS do_VBP not_RB solve_VB the_DT mismatches_NNS between_IN XML_NN ,_, Java_NNP and_CC databases_NNS ._.
+Two_CD other_JJ specifications_NNS worth_JJ mentioning_VBG are_VBP the_DT Busin_NNP
+programming_NN language_NN proposal_NN ._.
+Compaq_NNP has_VBZ developed_VBN the_DT WebL_NN language_NN -LRB-_-LRB- Web_NN -RRB-_-RRB- ;_: HP_NNP has_VBZ developed_VBN the_DT eFlow_NN and_CC eSpeak_NN systems_NNS -LRB-_-LRB- CIJ_NN 00_CD ,_, eSp_NN -RRB-_-RRB- ,_, IBM_NNP is_VBZ working_VBG on_IN a_DT language_NN called_VBN Web_NN Service_NN Flow_NN Language_NN =_JJ -_: =_JJ -LRB-_-LRB- WSF_NN -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC Microsoft_NNP has_VBZ recently_RB released_VBN their_PRP$ BizTalk_NNP Server_NN 2000_CD -LRB-_-LRB- Biz_NN -RRB-_-RRB- ._.
+There_EX is_VBZ also_RB a_DT Business_NNP Process_VB Model_NNP Initiative_NNP with_IN the_DT goal_NN to_TO implement_VB cross-organization_NN processes_NNS and_CC workflows_NNS on_IN the_DT In_NNP
+back_RB and_CC forth_RB through_IN JDBC-like_JJ interfaces_NNS to_TO access_VB and_CC update_VB the_DT RDBMS_NNP ,_, the_DT infamous_JJ ``_`` database_NN impedance_NN mismatch_NN ''_'' that_WDT triggered_VBD the_DT development_NN of_IN object_NN databases_NNS technology_NN in_IN the_DT recent_JJ past_NN =_JJ -_: =_JJ -LRB-_-LRB- CM84_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN most_JJS people_NNS seem_VBP to_TO have_VB resigned_VBN themselves_PRP to_TO using_VBG interfaces_NNS like_IN ODBC_NNP and_CC JDBC_NNP ,_, the_DT additional_JJ XMLJava_NN ``_`` stuttering_NN step_NN ''_'' -LRB-_-LRB- Lam_NN -RRB-_-RRB- might_MD have_VB a_DT good_JJ chance_NN to_TO finally_RB turn_VB people_NNS 's_POS minds_NNS ._.
+It_PRP
+7_CD summarises_VBZ related_JJ work_NN ._.
+Section_NN 8_CD concludes_VBZ this_DT paper_NN and_CC shows_VBZ avenues_NNS for_IN future_JJ work_NN ._.
+3s2_JJ Overview_NN of_IN Relevant_JJ Web_NN Technology_NNP 2.1_CD Data_NNP Model_NNP The_DT W3C_NN XML_NN data_NNS model_NN describes_VBZ ,_, in_IN an_DT E\/R_NN fashion_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT set_NN of_IN entities_NNS present_JJ in_IN an_DT XML_NN document_NN and_CC a_DT set_NN of_IN relationships_NNS among_IN them_PRP ._.
+The_DT entities_NNS describe_VBP the_DT data_NNS itself_PRP -LRB-_-LRB- e.g._FW ,_, nodes_NNS ,_, values_NNS ,_, sequences_NNS -RRB-_-RRB- and_CC schema_NN components_NNS ._.
+The_DT data_NN is_VBZ modeled_VBN
+he_PRP Business_NNP Process_VB Model_NNP Initiative_NNP whose_WP$ goal_NN is_VBZ to_TO implement_VB cross-organisation_NN processes_NNS and_CC workflows_NNS on_IN the_DT Internet_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC DAML-S_NN whose_WP$ goal_NN is_VBZ the_DT automation_NN of_IN Web_NN services_NNS using_VBG ontologies_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+DAML-S_NN accomplishes_VBZ an_DT automatic_JJ selection_NN ,_, composition_NN ,_, and_CC interoperation_NN of_IN Web_NN services_NNS ._.
+Like_IN XL_NNP ,_, DAML-S_NN provides_VBZ control_NN statements_NNS to_TO specifiy_VB application_NN logic_NN ._.
+Moreover_RB ,_, the_DT state_NN of_IN the_DT art_NN
+can_MD be_VB any_DT expression_NN defined_VBN by_IN the_DT W3C_NN XQuery_NN proposal_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- ._.
+Update_NNP Statements_NNS Unfortunately_RB ,_, the_DT W3C_NN has_VBZ not_RB yet_RB released_VBN a_DT recommendation_NN to_TO manipulate_VB XML_NN data_NNS ;_: there_EX is_VBZ only_RB an_DT initial_JJ proposal_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Once_RB a_DT recommendation_NN has_VBZ been_VBN released_VBN by_IN the_DT W3C_NN ,_, XL_NNP is_VBZ going_VBG to_TO adopt_VB the_DT syntax_NN and_CC semantics_NNS of_IN that_DT recommendation_NN ._.
+In_IN the_DT meantime_NN ,_, we_PRP will_MD use_VB the_DT following_JJ statements_NNS to_TO manipulate_VB XML_NN data_NNS
+and_CC Microsoft_NNP 's_POS ._.
+NET_NN initiative_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+Compaq_NNP has_VBZ developed_VBN the_DT WebL_NN language_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- ;_: HP_NNP has_VBZ developed_VBN the_DT eFlow_NN and_CC eSpeak_NN systems_NNS -LRB-_-LRB- 4_CD ,_, 11_CD -RRB-_-RRB- ,_, IBM_NNP is_VBZ working_VBG on_IN a_DT language_NN called_VBN Web_NN Service_NN Flow_NN Language_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC Microsoft_NNP has_VBZ recently_RB released_VBN their_PRP$ BizTalk_NNP Server_NN 2000_CD -LRB-_-LRB- 1_CD -RRB-_-RRB- and_CC XLANG_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ._.
+While_IN there_EX are_VBP many_JJ similarities_NNS between_IN WSFL_NNP and_CC XLANG_NNP on_IN one_CD hand_NN and_CC XL_NNP on_IN the_DT other_JJ hand_NN ,_, there_EX are_VBP a_DT couple_NN of_IN
+zation_NN processes_NNS and_CC workflows_NNS on_IN the_DT Internet_NN -LRB-_-LRB- BPM_NN -RRB-_-RRB- ._.
+The_DT state_NN of_IN the_DT art_NN in_IN the_DT Java_NNP world_NN is_VBZ to_TO support_VB XML_NN via_IN so-called_JJ servlets_NNS that_WDT translate_VBP -LRB-_-LRB- XML_NN and_CC HTML_NNP -RRB-_-RRB- requests_NNS into_IN Java_NNP classes_NNS and_CC back_RB =_JJ -_: =_JJ -LRB-_-LRB- JAK_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+At_IN the_DT time_NN of_IN this_DT writing_NN ,_, Sun_NNP Microsystems_NNP just_RB introduced_VBD the_DT JXTA_NNP project_NN on_IN peer-to-peer_JJ computing_NN to_TO support_VB distributed_VBN computing_NN on_IN the_DT Internet_NN -LRB-_-LRB- JXT_NN -RRB-_-RRB- ._.
+Finally_RB ,_, the_DT notion_NN of_IN a_DT service_NN comp_NN
+g_NN language_NN proposal_NN --_: most_RBS prominently_RB ,_, SUN_NNP 's_POS J2EE_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- and_CC SunOne_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, and_CC Microsoft_NNP 's_POS ._.
+NET_NN initiative_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+Compaq_NNP has_VBZ developed_VBN the_DT WebL_NN language_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- ;_: HP_NNP has_VBZ developed_VBN the_DT eFlow_NN and_CC eSpeak_NN systems_NNS =_JJ -_: =[_NN 4_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, IBM_NNP is_VBZ working_VBG on_IN a_DT language_NN called_VBN Web_NN Service_NN Flow_NN Language_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, and_CC Microsoft_NNP has_VBZ recently_RB released_VBN their_PRP$ BizTalk_NNP Server_NN 2000_CD -LRB-_-LRB- 1_CD -RRB-_-RRB- and_CC XLANG_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ._.
+While_IN there_EX are_VBP many_JJ similarities_NNS between_IN WSFL_NNP a_DT

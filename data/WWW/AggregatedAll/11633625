@@ -1,0 +1,92 @@
+Automated_NNP object_NN persistence_NN for_IN JavaScript_NNP
+Traditionally_RB web_NN applications_NNS have_VBP required_VBN an_DT internet_NN connection_NN in_IN order_NN to_TO work_VB with_IN data_NNS ._.
+Browsers_NNS have_VBP lacked_VBN any_DT mechanisms_NNS to_TO allow_VB web_NN applications_NNS to_TO operate_VB offline_JJ with_IN a_DT set_NN of_IN data_NNS to_TO provide_VB constant_JJ access_NN to_TO applications_NNS ._.
+Recently_RB ,_, through_IN browser_NN plug-ins_NNS such_JJ as_IN Google_NNP Gears_NNP ,_, browsers_NNS have_VBP gained_VBN the_DT ability_NN to_TO persist_VB data_NNS for_IN offline_JJ use_NN ._.
+However_RB ,_, until_IN now_RB it_PRP 's_VBZ been_VBN difficult_JJ for_IN a_DT web_NN developer_NN using_VBG these_DT plug-ins_NNS to_TO manage_VB persisting_VBG data_NNS both_CC locally_RB for_IN offline_JJ use_NN and_CC in_IN the_DT internet_NN cloud_NN due_JJ to_TO :_: synchronization_NN requirements_NNS ,_, managing_VBG throughput_NN and_CC latency_NN to_TO the_DT cloud_NN ,_, and_CC making_VBG it_PRP work_VB within_IN the_DT confines_NNS of_IN a_DT standards-compliant_JJ web_NN browser_NN ._.
+Historically_NNP in_IN non-browser_JJ environments_NNS ,_, programming_NN language_NN environments_NNS have_VBP offered_VBN automated_JJ object_NN persistence_NN to_TO shield_VB the_DT developer_NN from_IN these_DT complexities_NNS ._.
+In_IN our_PRP$ research_NN we_PRP have_VBP created_VBN a_DT framework_NN which_WDT introduces_VBZ automated_JJ persistence_NN of_IN data_NNS objects_NNS for_IN JavaScript_NNP utilizing_VBG the_DT internet_NN ._.
+Unlike_IN traditional_JJ object_NN persistence_NN solutions_NNS ,_, ours_PRP relies_VBZ only_RB on_IN existing_JJ or_CC forthcoming_JJ internet_NN standards_NNS and_CC does_VBZ not_RB rely_VB upon_IN specific_JJ runtime_NN mechanisms_NNS such_JJ as_IN OS_NN or_CC interpreter\/compiler_NN support_NN ._.
+A_DT new_JJ design_NN was_VBD required_VBN in_IN order_NN to_TO be_VB suitable_JJ to_TO the_DT internet_NN 's_POS unique_JJ characteristics_NNS of_IN varying_VBG connection_NN quality_NN and_CC a_DT browser_NN 's_POS specific_JJ restrictions_NNS ._.
+We_PRP validate_VBP our_PRP$ approach_NN using_VBG benchmarks_NNS which_WDT show_VBP that_IN our_PRP$ framework_NN can_MD handle_VB thousands_NNS of_IN data_NNS objects_NNS automatically_RB ,_, reducing_VBG the_DT amount_NN of_IN work_NN needed_VBN by_IN developers_NNS to_TO support_VB offline_JJ Web_NN applications_NNS ._.
+us_PRP on_IN moving_VBG objects_NNS for_IN execution_NN while_IN we_PRP have_VBP focused_VBN on_IN persistence_NN ._.
+The_DT Thor_NNP object-oriented_JJ database_NN is_VBZ a_DT persistent_JJ object_NN system_NN that_WDT supported_VBD disconnected_VBN operation_NN in_IN an_DT optimistic_JJ fashion_NN =_JJ -_: =[_NN 11_CD ,_, 21_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP was_VBD designed_VBN for_IN desktop_NN applications_NNS operating_VBG in_IN a_DT WAN_NNP environment_NN where_WRB server_NN redundancy_NN was_VBD key_JJ ._.
+In_IN comparison_NN to_TO our_PRP$ work_NN ,_, our_PRP$ design_NN space_NN was_VBD the_DT internet_NN where_WRB we_PRP had_VBD to_TO operate_VB within_IN t_NN
+tence_NN of_IN data_NNS for_IN offline_JJ use_NN by_IN JavaScript_NNP is_VBZ now_RB being_VBG widely_RB deployed_VBN in_IN all_DT major_JJ browsers_NNS ._.
+Some_DT support_NN is_VBZ provided_VBN for_IN both_DT simple_JJ persistent_JJ hash_JJ maps_NNS -LRB-_-LRB- 14_CD -RRB-_-RRB- and_CC also_RB for_IN SQL-style_JJ database_NN APIs_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, none_NN of_IN the_DT existing_VBG mechanisms_NNS directly_RB support_VBP either_CC object_VBP structured_JJ data_NNS or_CC automatic_JJ persistence_NN ._.
+This_DT means_VBZ that_IN developers_NNS still_RB must_MD manage_VB several_JJ difficult_JJ problems_NNS by_IN themselve_NN
+integrate_VB into_IN the_DT language_NN .8.4_CD Web_NN Browsers_NNP The_NNP Gears_NNP plug-in_JJ introduced_VBD the_DT idea_NN of_IN local_JJ storage_NN in_IN web_NN browsers_NNS ,_, which_WDT helped_VBD lead_VB to_TO the_DT W3C_NN Web_NN Storage_NNP API_NNP -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+The_DT Web_NN Workers_NNP specification_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, while_IN allowing_VBG for_IN concurrent_JJ processing_NN in_IN the_DT web_NN browser_NN ,_, can_MD only_RB be_VB passed_VBN copies_NNS of_IN objects_NNS consisting_VBG of_IN only_JJ data_NNS while_IN also_RB not_RB being_VBG able_JJ to_TO access_VB localStorage_NN ._.
+These_DT limitations_NNS make_VBP Web_NN
+ed_VBN as_IN deleted_VBN ._.
+6_CD ._.
+PERSISTING_NNP DATA_NNP REMOTELY_NNP When_WRB dealing_VBG with_IN a_DT distributed_VBN system_NN that_WDT allows_VBZ for_IN offline_JJ use_NN ,_, two_CD approaches_NNS can_MD be_VB used_VBN :_: optimistic_JJ or_CC pessimistic_JJ updating_VBG of_IN the_DT data_NNS while_IN offline_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN an_DT optimistic_JJ updating_VBG scheme_NN you_PRP allow_VBP for_IN offline_JJ mutation_NN of_IN data_NNS ,_, with_IN the_DT hope_NN that_IN when_WRB it_PRP comes_VBZ time_NN to_TO synchronizethe_NN data_NNS you_PRP will_MD most_RBS likely_RB be_VB able_JJ to_TO without_IN conflicts_NNS ._.
+A_DT pessimisti_NN
+us_PRP on_IN moving_VBG objects_NNS for_IN execution_NN while_IN we_PRP have_VBP focused_VBN on_IN persistence_NN ._.
+The_DT Thor_NNP object-oriented_JJ database_NN is_VBZ a_DT persistent_JJ object_NN system_NN that_WDT supported_VBD disconnected_VBN operation_NN in_IN an_DT optimistic_JJ fashion_NN =_JJ -_: =[_NN 11_CD ,_, 21_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP was_VBD designed_VBN for_IN desktop_NN applications_NNS operating_VBG in_IN a_DT WAN_NNP environment_NN where_WRB server_NN redundancy_NN was_VBD key_JJ ._.
+In_IN comparison_NN to_TO our_PRP$ work_NN ,_, our_PRP$ design_NN space_NN was_VBD the_DT internet_NN where_WRB we_PRP had_VBD to_TO operate_VB within_IN t_NN
+._.
+8_CD ._.
+RELATED_NNS WORK_VBP 8.1_CD Networked_NNP File_NNP Systems_NNPS and_CC Databases_NNPS A_DT modification_NN of_IN the_DT AFS_NNP file_NN system_NN by_IN Huston_NNP and_CC Honeyman_NNP allowed_VBD for_IN disconnected_VBN use_NN using_VBG an_DT optimistic_JJ update_VBP policy_NN much_RB like_IN we_PRP use_VBP =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Callbacks_NNS were_VBD also_RB used_VBN to_TO notify_VB the_DT user_NN if_IN conflicts_NNS arose_VBN from_IN disconnected_VBN mutations_NNS ._.
+The_DT Coda_NNP filesystem_NN also_RB used_VBD optimistic_JJ updating_VBG -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+Coda_NNP viewed_VBD local_JJ data_NNS as_IN second-class_JJ replicas_NNS of_IN
+tances_NNS where_WRB the_DT server_NN automatically_RB detects_VBZ a_DT conflict_NN during_IN an_DT update_VB -LRB-_-LRB- discussed_VBN in_IN Section_NN 6.2.1_CD -RRB-_-RRB- ,_, we_PRP follow_VBP the_DT tradition_NN of_IN letting_VBG the_DT application_NN handle_VB how_WRB to_TO semantically_RB resolve_VB conflicts_NNS =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT allows_VBZ developers_NNS to_TO create_VB web_NN applications_NNS where_WRB data_NNS is_VBZ shared_VBN ;_: either_CC structure_VB the_DT objects_NNS such_JJ that_IN only_RB a_DT single_JJ user_NN edits_VBZ any_DT one_CD object_NN at_IN a_DT time_NN or_CC develop_VB their_PRP$ own_JJ approach_NN to_TO reso_VB
+a_DT compilation_NN step_NN would_MD be_VB a_DT shift_NN in_IN development_NN for_IN a_DT typical_JJ JavaScript_NNP developer_NN ._.
+This_DT has_VBZ led_VBN us_PRP to_TO use_VB a_DT different_JJ approach_NN from_IN previous_JJ work_NN which_WDT typically_RB relied_VBP on_IN compiler_NN modifications_NNS =_JJ -_: =[_NN 6_CD ,_, 8_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP leverage_NN the_DT use_NN of_IN JavaScript_NNP property_NN accessors_NNS ,_, an_DT extensibility_NN mechanism_NN being_VBG introduced_VBN in_IN ECMAScript_NN 5_CD ,_, but_CC also_RB describe_VBP how_WRB we_PRP have_VBP needed_VBN to_TO work_VB around_IN some_DT lack_NN of_IN support_NN for_IN extens_NNS
+just_RB over_IN 3x_NN longer_RB ._.
+While_IN the_DT use_NN of_IN the_DT framework_NN clearly_RB adds_VBZ overhead_JJ ,_, this_DT would_MD most_RBS likely_RB not_RB be_VB noticeable_JJ by_IN a_DT user_NN until_IN the_DT sub-graph_NN was_VBD over_IN 1000_CD objects_NNS and_CC thus_RB take_VBP longer_RBR than_IN 150ms_CD =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Developers_NNS using_VBG our_PRP$ framework_NN would_MD need_VB to_TO take_VB care_NN when_WRB attaching_VBG entirely_RB new_JJ sub-graphs_NNS of_IN much_RB larger_JJR sizes_NNS ,_, but_CC that_DT scenario_NN seems_VBZ unlikely_JJ ,_, as_IN described_VBN in_IN Section_NNP 7.1.2_CD ._.
+Objects_NNS \/_: Propert_NNP
+a_DT compilation_NN step_NN would_MD be_VB a_DT shift_NN in_IN development_NN for_IN a_DT typical_JJ JavaScript_NNP developer_NN ._.
+This_DT has_VBZ led_VBN us_PRP to_TO use_VB a_DT different_JJ approach_NN from_IN previous_JJ work_NN which_WDT typically_RB relied_VBP on_IN compiler_NN modifications_NNS =_JJ -_: =[_NN 6_CD ,_, 8_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP leverage_NN the_DT use_NN of_IN JavaScript_NNP property_NN accessors_NNS ,_, an_DT extensibility_NN mechanism_NN being_VBG introduced_VBN in_IN ECMAScript_NN 5_CD ,_, but_CC also_RB describe_VBP how_WRB we_PRP have_VBP needed_VBN to_TO work_VB around_IN some_DT lack_NN of_IN support_NN for_IN extens_NNS
+conflict_NN occurs_VBZ if_IN the_DT timestamp_NN on_IN the_DT object_NN is_VBZ newer_JJR than_IN the_DT snapshot_NN timestamp_NN the_DT browser_NN sent_VBN with_IN the_DT log_NN ._.
+A_DT deletion_NN of_IN an_DT object_NN is_VBZ in_IN conflict_NN if_IN the_DT object_NN has_VBZ mutated_VBN since_IN the_DT last_JJ sync_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Preferring_VBG the_DT version_NN of_IN an_DT object_NN in_IN the_DT server_NN over_IN the_DT browser_NN provides_VBZ master_NN copy_NN semantics_NNS -LRB-_-LRB- 2_CD ,_, 3_CD -RRB-_-RRB- ._.
+If_IN there_EX is_VBZ no_DT conflict_NN the_DT server_NN 's_POS version_NN of_IN the_DT object_NN is_VBZ updated_VBN based_VBN on_IN the_DT values_NNS se_FW
+a_DT compilation_NN step_NN would_MD be_VB a_DT shift_NN in_IN development_NN for_IN a_DT typical_JJ JavaScript_NNP developer_NN ._.
+This_DT has_VBZ led_VBN us_PRP to_TO use_VB a_DT different_JJ approach_NN from_IN previous_JJ work_NN which_WDT typically_RB relied_VBP on_IN compiler_NN modifications_NNS =_JJ -_: =[_NN 6_CD ,_, 8_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP leverage_NN the_DT use_NN of_IN JavaScript_NNP property_NN accessors_NNS ,_, an_DT extensibility_NN mechanism_NN being_VBG introduced_VBN in_IN ECMAScript_NN 5_CD ,_, but_CC also_RB describe_VBP how_WRB we_PRP have_VBP needed_VBN to_TO work_VB around_IN some_DT lack_NN of_IN support_NN for_IN extens_NNS
+th_DT the_DT log_NN ._.
+A_DT deletion_NN of_IN an_DT object_NN is_VBZ in_IN conflict_NN if_IN the_DT object_NN has_VBZ mutated_VBN since_IN the_DT last_JJ sync_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Preferring_VBG the_DT version_NN of_IN an_DT object_NN in_IN the_DT server_NN over_IN the_DT browser_NN provides_VBZ master_NN copy_NN semantics_NNS =_JJ -_: =[_NN 2_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+If_IN there_EX is_VBZ no_DT conflict_NN the_DT server_NN 's_POS version_NN of_IN the_DT object_NN is_VBZ updated_VBN based_VBN on_IN the_DT values_NNS sent_VBN over_RP in_IN the_DT log_NN from_IN the_DT browser_NN ._.
+As_IN a_DT return_NN value_NN sent_VBN to_TO browser_NN ,_, the_DT server_NN sends_VBZ all_DT objects_NNS -LRB-_-LRB- and_CC
+en_IN the_DT transitive_JJ graph_NN of_IN object_NN references_NNS into_IN a_DT set_NN of_IN objects_NNS ._.
+The_DT traversal_NN transforms_VBZ each_DT object_NN property_NN that_WDT holds_VBZ an_DT internal_JJ JavaScript_NNP reference_NN to_TO an_DT external_JJ globally_RB unique_JJ identifier_NN =_JJ -_: =[_NN 4_CD ,_, 5_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT GUIDs_NNS are_VBP then_RB used_VBN to_TO insert_VB a_DT serialized_VBN version_NN of_IN each_DT object_NN into_IN the_DT map_NN ._.
+For_IN serialization_NN we_PRP rely_VBP on_IN the_DT standard_JJ JavaScript_NNP Object_NNP Notation_NNP -LRB-_-LRB- JSON_NNP -RRB-_-RRB- to_TO represent_VB each_DT individual_JJ object_NN
+ew_NN ._.
+The_DT Bayou_NNP system_NN influenced_VBD us_PRP by_IN making_VBG it_PRP clear_JJ that_IN metadata_NN should_MD never_RB contain_VB server-specific_JJ details_NNS as_IN that_DT prevents_VBZ scaling_NN and_CC thus_RB all_DT metadata_NN should_MD be_VB globally_RB applicable_JJ and_CC usable_JJ =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT Ficus_NN file_NN system_NN emphasized_VBD ``_`` no_DT lost_VBD update_VB ''_'' semantics_NNS to_TO retain_VB data_NN consistency_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+The_DT authors_NNS also_RB pointed_VBD out_RP that_IN users_NNS act_VBP as_IN their_PRP$ own_JJ write_VB token_JJ ,_, minimizing_VBG actual_JJ conflicts_NNS in_IN data_NNS
+script_NN computations_NNS unfortunately_RB requires_VBZ careful_JJ consideration_NN and_CC manual_JJ intervention_NN by_IN script_NN programmers_NNS ._.
+Historically_NNP in_IN non-browser_JJ environments_NNS ,_, distributed_VBN programming_NN language_NN environments_NNS =_JJ -_: =[_NN 4_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP offered_VBN automated_JJ ,_, object_NN persistence_NN to_TO shield_VB the_DT developer_NN from_IN these_DT complexities_NNS ._.
+In_IN this_DT research_NN we_PRP investigate_VBP the_DT feasibility_NN of_IN automating_VBG persistence_NN of_IN data_NNS objects_NNS for_IN JavaScript_NNP ._.
+D_NN
+th_DT the_DT log_NN ._.
+A_DT deletion_NN of_IN an_DT object_NN is_VBZ in_IN conflict_NN if_IN the_DT object_NN has_VBZ mutated_VBN since_IN the_DT last_JJ sync_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Preferring_VBG the_DT version_NN of_IN an_DT object_NN in_IN the_DT server_NN over_IN the_DT browser_NN provides_VBZ master_NN copy_NN semantics_NNS =_JJ -_: =[_NN 2_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+If_IN there_EX is_VBZ no_DT conflict_NN the_DT server_NN 's_POS version_NN of_IN the_DT object_NN is_VBZ updated_VBN based_VBN on_IN the_DT values_NNS sent_VBN over_RP in_IN the_DT log_NN from_IN the_DT browser_NN ._.
+As_IN a_DT return_NN value_NN sent_VBN to_TO browser_NN ,_, the_DT server_NN sends_VBZ all_DT objects_NNS -LRB-_-LRB- and_CC
+us_PRP on_IN moving_VBG objects_NNS for_IN execution_NN while_IN we_PRP have_VBP focused_VBN on_IN persistence_NN ._.
+The_DT Thor_NNP object-oriented_JJ database_NN is_VBZ a_DT persistent_JJ object_NN system_NN that_WDT supported_VBD disconnected_VBN operation_NN in_IN an_DT optimistic_JJ fashion_NN =_JJ -_: =[_NN 11_CD ,_, 21_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP was_VBD designed_VBN for_IN desktop_NN applications_NNS operating_VBG in_IN a_DT WAN_NNP environment_NN where_WRB server_NN redundancy_NN was_VBD key_JJ ._.
+In_IN comparison_NN to_TO our_PRP$ work_NN ,_, our_PRP$ design_NN space_NN was_VBD the_DT internet_NN where_WRB we_PRP had_VBD to_TO operate_VB within_IN t_NN
+script_NN computations_NNS unfortunately_RB requires_VBZ careful_JJ consideration_NN and_CC manual_JJ intervention_NN by_IN script_NN programmers_NNS ._.
+Historically_NNP in_IN non-browser_JJ environments_NNS ,_, distributed_VBN programming_NN language_NN environments_NNS =_JJ -_: =[_NN 4_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP offered_VBN automated_JJ ,_, object_NN persistence_NN to_TO shield_VB the_DT developer_NN from_IN these_DT complexities_NNS ._.
+In_IN this_DT research_NN we_PRP investigate_VBP the_DT feasibility_NN of_IN automating_VBG persistence_NN of_IN data_NNS objects_NNS for_IN JavaScript_NNP ._.
+D_NN
+er-specific_JJ details_NNS as_IN that_DT prevents_VBZ scaling_NN and_CC thus_RB all_DT metadata_NN should_MD be_VB globally_RB applicable_JJ and_CC usable_JJ -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+The_DT Ficus_NN file_NN system_NN emphasized_VBD ``_`` no_DT lost_VBD update_VB ''_'' semantics_NNS to_TO retain_VB data_NNS consistency_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT authors_NNS also_RB pointed_VBD out_RP that_IN users_NNS act_VBP as_IN their_PRP$ own_JJ write_VB token_JJ ,_, minimizing_VBG actual_JJ conflicts_NNS in_IN data_NNS from_IN multiple_JJ updates_NNS while_IN offline_NN ._.
+While_IN strictly_RB not_RB a_DT networked_JJ file_NN system_NN ,_, Balasubrama_NN
+to_TO provide_VB such_JJ offline_JJ use_NN are_VBP currently_RB being_VBG standardized_JJ as_IN part_NN of_IN the_DT new_JJ HTML5_NN standard_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+Although_IN most_JJS browsers_NNS have_VBP historically_RB had_VBN the_DT capability_NN to_TO cache_NN some_DT components_NNS of_IN a_DT Web_NN page_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, such_JJ as_IN HTML_NNP and_CC media_NNS resources_NNS ,_, this_DT did_VBD not_RB include_VB the_DT intermediate_JJ results_NNS of_IN computations_NNS performed_VBN by_IN script_NN logic_NN ._.
+As_IN script_NN logic_NN has_VBZ become_VBN a_DT more_RBR integral_JJ part_NN of_IN application_NN functionalit_NN

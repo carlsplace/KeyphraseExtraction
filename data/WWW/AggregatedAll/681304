@@ -1,0 +1,78 @@
+A_DT uniform_JJ approach_NN to_TO accelerated_VBN PageRank_NN computation_NN
+In_IN this_DT note_NN we_PRP consider_VBP a_DT simple_JJ reformulation_NN of_IN the_DT traditional_JJ power_NN iteration_NN algorithm_NN for_IN computing_VBG the_DT stationary_JJ distribution_NN of_IN a_DT Markov_NNP chain_NN ._.
+Rather_RB than_IN communicate_VBP their_PRP$ current_JJ probability_NN values_NNS to_TO their_PRP$ neighbors_NNS at_IN each_DT step_NN ,_, nodes_NNS instead_RB communicate_VBP only_JJ changes_NNS in_IN probability_NN value_NN ._.
+This_DT reformulation_NN enables_VBZ a_DT large_JJ degree_NN of_IN flexibility_NN in_IN the_DT manner_NN in_IN which_WDT nodes_NNS update_VBP their_PRP$ values_NNS ,_, leading_VBG to_TO an_DT array_NN of_IN optimizations_NNS and_CC features_NNS ,_, including_VBG faster_JJR convergence_NN ,_, efficient_JJ incremental_JJ updating_VBG ,_, and_CC a_DT robust_JJ distributed_VBN implementation_NN ._.
+While_IN the_DT spirit_NN of_IN many_JJ of_IN these_DT optimizations_NNS appear_VBP in_IN previous_JJ literature_NN ,_, we_PRP observe_VBP several_JJ cases_NNS where_WRB this_DT unification_NN simplifies_VBZ previous_JJ work_NN ,_, removing_VBG technical_JJ complications_NNS and_CC extending_VBG their_PRP$ range_NN of_IN applicability_NN ._.
+We_PRP implement_VBP and_CC measure_VBP the_DT performance_NN of_IN several_JJ optimizations_NNS on_IN a_DT sizable_JJ -LRB-_-LRB- 34M_JJ node_NN -RRB-_-RRB- web_NN subgraph_NN ,_, seeing_VBG significant_JJ composite_JJ performance_NN gains_NNS ,_, especially_RB for_IN the_DT case_NN of_IN incremental_JJ recomputation_NN after_IN changes_NNS to_TO the_DT web_NN graph_NN ._.
+g_NN ;_: however_RB it_PRP is_VBZ not_RB clear_JJ that_IN extending_VBG to_TO the_DT streaming_NN model_NN is_VBZ possible_JJ ._.
+Recent_JJ work_NN by_IN Wicks_NNP ,_, Greenwald_NNP -LRB-_-LRB- 29_CD -RRB-_-RRB- shows_VBZ an_DT interesting_JJ approach_NN to_TO parallelizing_VBG the_DT computation_NN of_IN PageRank_NN ._.
+McSherry_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: exploits_VBZ the_DT link_NN structure_NN of_IN the_DT web_NN graph_NN within_IN and_CC across_IN domains_NNS to_TO accelerate_VB the_DT computation_NN of_IN PageRank_NN ._.
+Andersen_NNP et_NNP ._.
+al._FW -LRB-_-LRB- 2_LS -RRB-_-RRB- computes_VBZ local_JJ cuts_NNS near_IN a_DT specified_VBN vertex_NN using_VBG personalized_JJ P_NN
+rently_RB ,_, page_NN importance_NN is_VBZ calculated_VBN by_IN using_VBG the_DT link_NN graph_NN of_IN the_DT web_NN and_CC such_PDT a_DT process_NN is_VBZ called_VBN link_NN analysis_NN ._.
+Well_RB known_VBN link_NN analysis_NN algorithms_NNS include_VBP HITS_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, PageRank_NN -LRB-_-LRB- 5_CD ,_, 18_CD -RRB-_-RRB- ,_, and_CC others_NNS =_JJ -_: =[_NN 4_CD ,_, 8_CD ,_, 9_CD ,_, 11_CD ,_, 12_CD ,_, 16_CD ,_, 17_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS of_IN the_DT algorithms_NNS assume_VBP that_IN if_IN many_JJ important_JJ pages_NNS link_VBP to_TO a_DT page_NN on_IN the_DT link_NN graph_NN ,_, then_RB the_DT page_NN is_VBZ also_RB likely_JJ to_TO be_VB important_JJ ,_, and_CC they_PRP calculate_VBP the_DT importance_NN of_IN the_DT page_NN on_IN the_DT basis_NN
+y._NNP Google_NNP established_VBD its_PRP$ leadership_NN in_IN the_DT search_NN engine_NN market_NN ,_, and_CC a_DT lot_NN of_IN studies_NNS have_VBP been_VBN made_VBN on_IN how_WRB to_TO accelerate_VB the_DT calculation_NN of_IN the_DT PageRank_NNP ._.
+McSherry_NNP at_IN Microsoft_NNP Research_NNP reformulated_VBD =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: the_DT power_NN iteration_NN algorithm_NN in_IN such_PDT a_DT way_NN that_IN the_DT nodes_NNS do_VBP not_RB communicate_VB anymore_RB the_DT current_JJ probability_NN values_NNS to_TO their_PRP$ neighbors_NNS ,_, instead_RB ,_, they_PRP communicate_VBP only_RB changes_NNS in_IN the_DT probability_NN valu_NN
+mount_VB of_IN time_NN ._.
+This_DT brought_VBD many_JJ researchers_NNS to_TO look_VB for_IN other_JJ possible_JJ solution_NN methods_NNS ._.
+There_EX is_VBZ a_DT large_JJ body_NN of_IN work_NN on_IN accelerating_VBG PageRank_NNP computation_NN ,_, varying_VBG from_IN centralized_VBN algorithms_NNS -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 27_CD ,_, 29_CD ,_, 8_CD ,_, 1_CD ,_, 38_CD ,_, 16_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, to_TO parallel_JJ algorithms_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 34_CD ,_, 33_CD -RRB-_-RRB- -RRB-_-RRB- to_TO decentralized_VBN P2P_NN algorithms_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 49_CD ,_, 43_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+In_IN a_DT recent_JJ work_NN -LRB-_-LRB- 39_CD -RRB-_-RRB- McSherry_NNP claims_VBZ that_IN with_IN some_DT clever_JJ engineering_NN and_CC exploitation_NN of_IN the_DT unique_JJ prop_VB
+nk_NN and_CC social_JJ network_NN graphs_NNS -RRB-_-RRB- -LRB-_-LRB- 19_CD ,_, 21_CD -RRB-_-RRB- ._.
+McSherry_NNP showed_VBD an_DT elegant_JJ approach_NN to_TO computing_VBG PageRank_NNP ,_, whereby_WRB nodes_NNS comX_NN '_'' Y_NN '_'' D_NN municate_VBP the_DT change_NN in_IN their_PRP$ probability_NN -LRB-_-LRB- score_NN -RRB-_-RRB- instead_RB of_IN their_PRP$ new_JJ value_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+He_PRP also_RB showed_VBD that_IN the_DT algorithm_NN converges_VBZ more_RBR quickly_RB without_IN requiring_VBG global_JJ synchronisation_NN ,_, and_CC is_VBZ robust_JJ to_TO lost_VBN messages_NNS ._.
+Kambatla_FW et_FW al._FW obtain_VB some_DT of_IN these_DT advantages_NNS with_IN ``_`` asynchronous_JJ
+uses_VBZ two_CD vectors_NNS in_IN the_DT implementation_NN ._.
+We_PRP remark_VBP that_IN a_DT single_JJ vector_NN suffices_VBZ since_IN by_IN using_VBG updated_VBN values_NNS within_IN an_DT iteration_NN we_PRP only_RB speed_VBP convergence_NN up_RP ._.
+A_DT similar_JJ argument_NN is_VBZ given_VBN by_IN McSherry_NN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: for_IN the_DT power_NN iteration_NN ,_, however_RB there_RB the_DT resulting_VBG sequential_JJ update_VBP procedure_NN still_RB requires_VBZ two_CD vectors_NNS ._.
+2.1_CD Rounding_VBG In_IN Algorithm_NN 1_CD we_PRP compute_VBP the_DT steps_NNS of_IN the_DT dynamic_JJ programming_NN personalized_VBD P_NN
+h_NN recursively_RB determines_VBZ the_DT importance_NN of_IN a_DT web_NN page_NN by_IN the_DT importance_NN of_IN all_PDT the_DT pages_NNS pointing_VBG to_TO it_PRP ._.
+Although_IN improvements_NNS for_IN a_DT centralized_JJ computation_NN of_IN PageRank_NN have_VBP been_VBN researched_VBN in_IN detail_NN =_JJ -_: =[_NN 1,5,9,11,12,16,13,18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, approaches_NNS on_IN distributing_VBG it_PRP over_IN several_JJ computers_NNS have_VBP caught_VBN researchers_NNS '_POS attention_NN only_RB recently_RB ._.
+In_IN this_DT paper_NN we_PRP introduce_VBP a_DT new_JJ approach_NN to_TO computing_VBG the_DT exact_JJ PageRank_NN in_IN a_DT parallel_JJ fashion_NN
+es_NNS are_VBP very_RB sparse_JJ in_IN our_PRP$ data_NN set_NN ,_, the_DT actual_JJ time_NN complexity_NN is_VBZ far_RB lower_JJR ._.
+However_RB ,_, in_IN Web_NN environment_NN ,_, the_DT size_NN of_IN data_NNS are_VBP increasing_VBG at_IN a_DT fast_JJ speed_NN ,_, and_CC some_DT acceleration_NN to_TO the_DT algorithm_NN -LRB-_-LRB- like_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: for_IN PageRank_NNP -RRB-_-RRB- should_MD be_VB developed_VBN ._.
+3.3.2_CD Convergence_NN of_IN SPR_NN Algorithm_NN Here_RB ,_, we_PRP give_VBP a_DT brief_JJ proof_NN of_IN the_DT convergence_NN of_IN the_DT SPR_NN algorithm_NN ._.
+It_PRP can_MD be_VB derived_VBN from_IN the_DT algorithm_NN that_WDT :_: where_WRB Web_NN page_NN an_DT
+ample_JJ ,_, enhancements_NNS for_IN HITS_NNP and_CC PageRank_NNP could_MD also_RB be_VB extended_VBN to_TO TOPHITS_NNP ,_, including_VBG hub_NN and_CC authority_NN thresholding_NN for_IN HITS_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC optimizations_NNS for_IN accelerating_VBG computation_NN of_IN the_DT PageRank_NN score_NN =_JJ -_: =[_NN 38_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN terms_NNS of_IN applications_NNS ,_, TOPHITS_NNS may_MD be_VB useful_JJ ,_, in_IN the_DT same_JJ way_NN as_IN HITS_NNP ,_, in_IN partitioning_VBG the_DT web_NN into_IN tightly_RB interconnected_VBN groupings_NNS -LRB-_-LRB- 20_CD ,_, 28_CD ,_, 25_CD -RRB-_-RRB- ._.
+Alternatively_RB ,_, multidimensional_JJ models_NNS of_IN trust_NN
+ently_RB use_VB previous_JJ computations_NNS to_TO obtain_VB a_DT new_JJ PageRank_NN vector_NN ._.
+Worth_NNP mentioning_VBG are_VBP iterative_JJ aggregation_NN techniques_NNS -LRB-_-LRB- 3_CD ,_, 8_CD -RRB-_-RRB- ,_, Monte_NNP Carlo_NNP methods_NNS and_CC asymptotic_JJ analysis_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, and_CC sequential_JJ updating_VBG =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN these_DT approaches_NNS yield_VBP some_DT faster_JJR convergence_NN ,_, there_EX is_VBZ plenty_NN of_IN room_NN for_IN research_NN in_IN this_DT direction_NN ._.
+In_IN particular_JJ ,_, in_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- it_PRP is_VBZ suggested_VBN that_IN extrapolation_NN techniques_NNS from_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- could_MD po_VB
+ing_JJ Web_NN pages_NNS into_IN smaller_JJR units_NNS for_IN providing_VBG ranking_NN over_IN individual_JJ components_NNS of_IN Web_NN pages_NNS ._.
+Source-centric_JJ ranking_NN can_MD also_RB take_VB advantage_NN of_IN algorithmic_JJ enhancements_NNS for_IN speeding_JJ PageRank_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+For_IN an_DT introduction_NN to_TO Web_NN spam_NN ,_, we_PRP refer_VBP the_DT interested_JJ reader_NN to_TO -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+Previous_JJ techniques_NNS suggested_VBD for_IN dealing_VBG with_IN Web_NN spam_NN include_VBP a_DT modified_VBN version_NN of_IN PageRank_NN that_WDT is_VBZ seeded_VBN with_IN expert_NN op_NN
+zation_NN at_IN query_NN time_NN ._.
+Second_RB ,_, it_PRP creates_VBZ a_DT large_JJ computation_NN task_NN for_IN the_DT web_NN search_NN server_NN ,_, which_WDT we_PRP believe_VBP would_MD be_VB more_RBR appropriately_RB to_TO perform_VB on_IN the_DT client_NN ._.
+Other_JJ work_NN on_IN PageRank_NN acceleration_NN =_JJ -_: =[_NN 20_CD ,_, 23_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: focuses_VBZ on_IN using_VBG the_DT full_JJ webgraph_JJ data_NNS in_IN the_DT most_RBS effective_JJ manner_NN for_IN global_JJ PageRank_NN ._.
+Our_PRP$ ideas_NNS focus_VB on_IN using_VBG less_RBR webgraph_JJ data_NNS to_TO quickly_RB compute_VB an_DT approximation_NN to_TO personal_JJ PageRank_NN ._.
+An_DT alte_NN
+iciently_RB use_VB previous_JJ computations_NNS to_TO obtain_VB a_DT new_JJ PageRank_NN vector_NN ._.
+Worth_NNP mentioning_VBG are_VBP Monte_NNP Carlo_NNP methods_NNS and_CC asymptotic_JJ analysis_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, iterative_JJ aggregation_NN techniques_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, and_CC sequential_JJ updating_VBG =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN these_DT approaches_NNS yield_VBP some_DT faster_JJR convergence_NN ,_, there_EX is_VBZ plenty_NN of_IN room_NN for_IN research_NN in_IN this_DT direction_NN ._.
+In_IN particular_JJ ,_, in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- it_PRP is_VBZ suggested_VBN that_IN extrapolation_NN techniques_NNS from_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- could_MD po_VB
+linear_JJ system_NN ._.
+See_VB -LRB-_-LRB- 29_CD -RRB-_-RRB- for_IN a_DT delightful_JJ mathematical_JJ account_NN ._.
+A_DT stochastic_JJ approach_NN is_VBZ to_TO order_NN based_VBN on_IN the_DT steady_JJ state_NN distribution_NN of_IN a_DT Markov_NNP chain_NN ;_: other_JJ approaches_NNS are_VBP also_RB possible_JJ ,_, see_VB e.g._FW =_SYM -_: =[_NN 1,12,21,32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One_CD especially_RB interesting_JJ viewpoint_NN is_VBZ that_DT of_IN ranking_NN based_VBN on_IN a_DT link-expressing_JJ infinite_JJ series_NN -LRB-_-LRB- 34,14_CD -RRB-_-RRB- ._.
+A_DT critical_JJ parameter_NN is_VBZ the_DT damping_VBG factor_NN ,_, µ_NN ,_, used_VBN to_TO construct_VB from_IN the_DT original_JJ link_NN ma_NN
+mputation_NN down_RB even_RB further_RBR -RRB-_-RRB- ,_, and_CC if_IN spread_VBN across_IN multiple_JJ machines_NNS ,_, requires_VBZ significant_JJ communication_NN between_IN them_PRP ._.
+Though_IN much_JJ work_NN has_VBZ been_VBN done_VBN on_IN optimizing_VBG the_DT PageRank_NN computation_NN -LRB-_-LRB- see_VB e.g._FW ,_, =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 6_CD -RRB-_-RRB- -RRB-_-RRB- ,_, it_PRP remains_VBZ a_DT relatively_RB slow_JJ ,_, computationally_RB expensive_JJ property_NN to_TO compute_VB ._.
+3_LS ._.
+RANKNET_JJ Much_JJ work_NN in_IN machine_NN learning_NN has_VBZ been_VBN done_VBN on_IN the_DT problems_NNS of_IN classification_NN and_CC regression_NN ._.
+Let_VB X_NN ={_NN
+for_IN crawling_VBG ;_: and_CC -LRB-_-LRB- 2_LS -RRB-_-RRB- measuring_VBG the_DT ``_`` semantic_JJ relatedness_NN ''_'' of_IN concepts_NNS in_IN a_DT taxonomy_NN ._.
+2_CD ._.
+RELATED_NNS WORK_VBP There_EX is_VBZ a_DT large_JJ body_NN of_IN work_NN on_IN PageRank_NN computation_NN ,_, varying_VBG from_IN centralized_VBN algorithms_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 20_CD ,_, 22_CD ,_, 6_CD ,_, 1_CD ,_, 26_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, to_TO parallel_JJ algorithms_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 24_CD ,_, 23_CD -RRB-_-RRB- -RRB-_-RRB- to_TO decentralized_VBN P2P_NN algorithms_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 32_CD ,_, 28_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+All_DT of_IN these_DT are_VBP designed_VBN for_IN computing_VBG the_DT whole_JJ PageRank_NN vector_NN and_CC are_VBP therefore_RB not_RB directly_RB applicable_JJ
+differ_VBP from_IN our_PRP$ work_NN in_IN that_DT our_PRP$ node_NN selection_NN algorithms_NNS do_VBP not_RB use_VB -LRB-_-LRB- or_CC have_VB access_NN to_TO -RRB-_-RRB- global_JJ PageRank_NN values_NNS ._.
+Many_JJ algorithmic_JJ improvements_NNS for_IN computing_VBG exact_JJ PageRank_NN values_NNS have_VBP been_VBN proposed_VBN =_JJ -_: =[_NN 9_CD ,_, 10_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+If_IN such_JJ algorithms_NNS are_VBP used_VBN to_TO compute_VB the_DT global_JJ PageRanks_NNP of_IN our_PRP$ local_JJ domain_NN ,_, they_PRP would_MD all_DT require_VB O_NN -LRB-_-LRB- N_NN -RRB-_-RRB- computation_NN ,_, storage_NN ,_, and_CC bandwidth_NN ,_, where_WRB N_NN is_VBZ the_DT size_NN of_IN the_DT global_JJ domain_NN ._.
+This_DT is_VBZ in_IN
+ortation_NN vector_NN ._.
+Just_RB like_IN the_DT dangling_VBG node_NN vector_NN u_NN ,_, v_LS is_VBZ a_DT probability_NN vector_NN ._.
+See_VB -LRB-_-LRB- 9_CD -RRB-_-RRB- for_IN a_DT discussion_NN about_IN the_DT impact_NN of_IN setting_VBG u_NN ̸_NN =_JJ v._CC It_PRP is_VBZ common_JJ practice_NN to_TO set_VB u_NN =_JJ v_LS in_IN the_DT PageRank_NNP model_NN =_JJ -_: =[_NN 22_CD ,_, 26_CD ,_, 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT PageRank_NN vector_NN is_VBZ defined_VBN as_IN the_DT vector_NN satisfying_JJ x_NN =_JJ Ax_NN with_IN A_NN defined_VBN in_IN -LRB-_-LRB- 2.1_CD -RRB-_-RRB- ._.
+We_PRP note_VBP that_IN in_IN general_JJ ,_, for_IN nonnegative_JJ v_LS ,_, primitivity_NN and_CC irreducibility_NN are_VBP not_RB needed_VBN to_TO ensure_VB the_DT unique_JJ

@@ -1,0 +1,173 @@
+A_DT convenient_JJ method_NN for_IN securely_RB managing_VBG passwords_NNS
+Computer_NN users_NNS are_VBP asked_VBN to_TO generate_VB ,_, keep_VB secret_NN ,_, and_CC recall_VBP an_DT increasing_VBG number_NN of_IN passwords_NNS for_IN uses_NNS including_VBG host_NN accounts_NNS ,_, email_NN servers_NNS ,_, e-commerce_NN sites_NNS ,_, and_CC online_JJ financial_JJ services_NNS ._.
+Unfortunately_RB ,_, the_DT password_NN entropy_NN that_IN users_NNS can_MD comfortably_RB memorize_VB seems_VBZ insufficient_JJ to_TO store_VB unique_JJ ,_, secure_JJ passwords_NNS for_IN all_PDT these_DT accounts_NNS ,_, and_CC it_PRP is_VBZ likely_JJ to_TO remain_VB constant_JJ as_IN the_DT number_NN of_IN passwords_NNS -LRB-_-LRB- and_CC the_DT adversary_NN 's_POS computational_JJ power_NN -RRB-_-RRB- increases_VBZ into_IN the_DT future_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT technique_NN that_WDT uses_VBZ a_DT strengthened_JJ cryptographic_JJ hash_JJ function_NN to_TO compute_VB secure_JJ passwords_NNS for_IN arbitrarily_RB many_JJ accounts_NNS while_IN requiring_VBG the_DT user_NN to_TO memorize_VB only_RB a_DT single_JJ short_JJ password_NN ._.
+This_DT mechanism_NN functions_VBZ entirely_RB on_IN the_DT client_NN ;_: no_DT server-side_JJ changes_NNS are_VBP needed_VBN ._.
+Unlike_IN previous_JJ approaches_NNS ,_, our_PRP$ design_NN is_VBZ both_DT highly_RB resistant_JJ to_TO brute_JJ force_NN attacks_NNS and_CC nearly_RB stateless_JJ ,_, allowing_VBG users_NNS to_TO retrieve_VB their_PRP$ passwords_NNS from_IN any_DT location_NN so_RB long_RB as_IN they_PRP can_MD execute_VB our_PRP$ program_NN and_CC remember_VB a_DT short_JJ secret_NN ._.
+This_DT combination_NN of_IN security_NN and_CC convenience_NN will_MD ,_, we_PRP believe_VBP ,_, entice_VBP users_NNS to_TO adopt_VB our_PRP$ scheme_NN ._.
+We_PRP discuss_VBP the_DT construction_NN of_IN our_PRP$ algorithm_NN in_IN detail_NN ,_, compare_VB its_PRP$ strengths_NNS and_CC weaknesses_NNS to_TO those_DT of_IN related_JJ approaches_NNS ,_, and_CC present_JJ Password_NNP Multiplier_NNP ,_, an_DT implementation_NN in_IN the_DT form_NN of_IN an_DT extension_NN to_TO the_DT Mozilla_NNP Firefox_NNP web_NN browser_NN ._.
+increases_VBZ password_NN strength_NN ,_, and_CC can_MD defend_VB against_IN phishing_NN attacks_NNS ._.
+This_DT approach_NN has_VBZ been_VBN taken_VBN in_IN projects_NNS such_JJ as_IN the_DT Lucent_NNP Personal_NNP Web_NN Assistant_NNP -LRB-_-LRB- LPWA_NNP -RRB-_-RRB- -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, PwdHash_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, Password_NN Multiplier_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC Passpet_NN -LRB-_-LRB- 38_CD -RRB-_-RRB- ._.
+However_RB ,_, these_DT systems_NNS still_RB have_VBP security_NN limitations_NNS which_WDT will_MD be_VB discussed_VBN in_IN Section_NN 2_CD ._.
+Moreover_RB ,_, password_NN hashing_VBG systems_NNS ,_, if_IN not_RB carefully_RB designed_VBN and_CC implemented_VBN ,_, suffer_VBP f_SYM
+assword_NN entry_NN -LRB-_-LRB- 93_CD -RRB-_-RRB- ._.
+Academic_NNP research_NN by_IN Halderman_NNP et_FW al._FW focused_VBN on_IN building_NN browser_NN extensions_NNS to_TO automatically_RB derive_VB domain-specific_JJ passwords_NNS by_IN hashing_VBG a_DT master_NN password_NN with_IN the_DT current_JJ domain_NN =_JJ -_: =[_NN 51_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT similar_JJ approach_NN was_VBD taken_VBN by_IN Ross_NNP et_FW al._FW ,_, who_WP also_RB supported_VBD the_DT difficult_JJ case_NN of_IN remote_JJ access_NN to_TO domainspecific_JJ passwords_NNS when_WRB needed_VBN through_IN a_DT secure_JJ server_NN -LRB-_-LRB- 94_CD -RRB-_-RRB- ,_, their_PRP$ PwdHash_NNP browser_NN extens_NNS
+y_NN for_IN hiding_NN passwords_NNS in_IN a_DT long_JJ list_NN of_IN dummy_NN passwords_NNS ._.
+Slow_JJ hash_JJ functions_NNS and_CC halting_VBG functions_NNS ._.
+Many_JJ password_NN management_NN proposals_NNS discuss_VBP slow_JJ hash_JJ functions_NNS for_IN slowing_VBG down_RP dictionary_NN attacks_NN =_JJ -_: =[_NN 1,5,10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT methods_NNS are_VBP based_VBN on_IN the_DT assumption_NN that_IN the_DT attacker_NN has_VBZ limited_VBN computing_NN power_NN ._.
+They_PRP can_MD be_VB used_VBN to_TO protect_VB the_DT user_NN 's_POS master_NN password_NN against_IN dictionary_NN attacks_NNS ._.
+Our_PRP$ approach_NN ,_, which_WDT is_VBZ sec_NN
+s_NN PBKDF2_NN ._.
+9_CD Related_JJ Work_NN Slowing_VBG down_IN hash_JJ functions_NNS ,_, like_IN DPAPI_NNP does_VBZ ,_, is_VBZ a_DT standard_JJ defense_NN ._.
+Many_JJ password_NN management_NN proposals_NNS discuss_VBP how_WRB to_TO slow_VB hash_JJ functions_NNS for_IN slowing_VBG down_RP dictionary_NN attacks_NN =_JJ -_: =[_NN 3_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT methods_NNS are_VBP based_VBN on_IN the_DT assumption_NN that_IN the_DT attacker_NN has_VBZ limited_VBN computing_NN power_NN ._.
+Several_JJ recent_JJ papers_NNS propose_VBP models_NNS for_IN how_WRB humans_NNS generate_VBP passwords_NNS -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+These_DT results_NNS apply_VBP their_PRP$ models_NNS
+,_, password_NN schemes_NNS resilient_JJ to_TO shoulder_VB surfing_NN attacks_NNS -LRB-_-LRB- 12,27_CD -RRB-_-RRB- ,_, and_CC schemes_NNS generating_VBG domain-specific_JJ passwords_NNS from_IN a_DT combination_NN of_IN single_JJ user-chosen_JJ passwords_NNS and_CC multiple_JJ domain-specific_JJ keys_NNS =_JJ -_: =[_NN 26,11_CD -RRB-_-RRB- -_: =_SYM -_: can_MD all_DT be_VB used_VBN to_TO authenticate_VB users_NNS and_CC thereby_RB solve_VB parts_NNS of_IN the_DT problem_NN of_IN phishing_NN and\/or_CC IDF_NN ._.
+Our_PRP$ scheme_NN can_MD be_VB viewed_VBN as_IN a_DT careful_JJ combination_NN of_IN known_JJ and_CC modified_JJ tools_NNS and_CC techniques_NNS -LRB-_-LRB- e.g._FW
+ting_IN a_DT random_JJ number_NN that_WDT appears_VBZ completely_RB random_JJ ._.
+In_IN this_DT manner_NN ,_, a_DT completely_RB random_JJ password_NN or_CC cryptographic_JJ key_NN presents_VBZ no_DT opening_NN or_CC prior_JJ knowledge_NN that_WDT can_MD be_VB exploited_VBN by_IN an_DT hostile_JJ agent_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Many_JJ prior_JJ art_NN methods_NNS exist_VBP for_IN generating_VBG random_JJ numbers_NNS ._.
+These_DT prior_JJ art_NN methods_NNS typically_RB involve_VBP the_DT use_NN of_IN some_DT type_NN of_IN chaotic_JJ system_NN ._.
+A_DT chaotic_JJ system_NN is_VBZ one_CD with_IN a_DT state_NN that_IN changes_NNS over_IN t_NN
+protect_VB against_IN password_NN guessing_VBG attacks_NNS ,_, of_IN independent_JJ interest_NN beyond_IN password_NN managers_NNS and_CC graphical_JJ passwords_NNS :_: a_DT new_JJ salt_NN generation_NN method_NN which_WDT avoids_VBZ the_DT long_JJ user_NN wait_NN time_NN of_IN earlier_JJR work_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+2_CD Background_NN and_CC Related_JJ Work_NN The_DT numerous_JJ graphical_JJ password_NN -LRB-_-LRB- gp_NN -RRB-_-RRB- schemes_NNS proposed_VBN in_IN recent_JJ years_NNS can_MD be_VB classified_VBN into_IN three_CD types_NNS according_VBG to_TO the_DT memory_NN task_NN involved_VBN :_: recall-based_JJ schemes_NNS -LRB-_-LRB- e._NN
+tudy_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- found_VBD that_IN the_DT most_RBS 62commonly_RB used_VBN are_VBP those_DT built-in_JJ to_TO the_DT browser_NN itself_PRP -LRB-_-LRB- e.g._FW ,_, password_NN auto_NN complete_JJ -RRB-_-RRB- ,_, rather_RB than_IN those_DT implemented_VBN as_IN a_DT browser_NN extension_NN -LRB-_-LRB- e.g._FW ,_, Password_NN Multiplier_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Password_NN managers_NNS typically_RB store_VBP encrypted_JJ password_NN data_NNS in_IN a_DT local_JJ database_NN or_CC file_NN and_CC are_VBP able_JJ to_TO automatically_RB fill_VB in_FW login_FW forms_NNS of_IN registered_JJ web_NN sites_NNS ._.
+Password_NN managers_NNS can_MD reduce_VB a_DT user_NN '_''
+._.
+While_IN users_NNS can_MD usually_RB easily_RB memorize_VB a_DT couple_NN of_IN passwords_NNS ,_, the_DT current_JJ explosion_NN of_IN the_DT number_NN of_IN passwords_NNS each_DT user_NN has_VBZ to_TO maintain_VB is_VBZ severely_RB testing_VBG the_DT limits_NNS of_IN their_PRP$ cognitive_JJ abilities_NNS =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT leads_VBZ to_TO ``_`` weak_JJ ''_'' choices_NNS in_IN practice_NN ._.
+For_IN example_NN ,_, users_NNS often_RB tend_VBP to_TO choose_VB short_JJ and_CC ``_`` low-entropy_JJ ''_'' passwords_NNS -LRB-_-LRB- 3_CD ,_, 4_CD -RRB-_-RRB- ,_, enabling_VBG offline_JJ dictionary_NN attacks_NNS and_CC brute-forcing_JJ attempts_NNS ,_, or_CC they_PRP wr_VBP
+munity_NN to_TO Phishing_NNP attacks_NNS ,_, which_WDT break_VBP ordinary_JJ password_NN protocols_NNS ,_, simple_JJ challengehandshake_NN authentication_NN protocols_NNS such_JJ as_IN site_NN key_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC message_NN digest_VBP protocols_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, and_CC hash-based_JJ protocols_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, TPP_NN ,_, thanks_NNS to_TO its_PRP$ use_NN of_IN a_DT universal_JJ password_NN ,_, has_VBZ several_JJ other_JJ highly_RB desirable_JJ features_NNS ._.
+Early_JJ password_NN protocols_NNS such_JJ as_IN Lamport_NNP 's_POS -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC Rubin_NNP 's_POS -LRB-_-LRB- 7_CD -RRB-_-RRB- one-time_JJ password_NN protocols_NNS are_VBP f_SYM
+y_NN use_NN these_DT systems_NNS ?_.
+Do_VBP they_PRP want_VB to_TO ?_.
+These_DT are_VBP some_DT of_IN the_DT questions_NNS which_WDT we_PRP address_VBP in_IN this_DT paper_NN ,_, as_IN we_PRP carry_VBP out_RP a_DT usability_NN study_NN of_IN two_CD password_NN managers_NNS --_: PwdHash_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- and_CC Password_NN Multiplier_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Despite_IN the_DT inadequacies_NNS of_IN passwords_NNS from_IN a_DT security_NN viewpoint_NN ,_, they_PRP are_VBP becoming_VBG more_RBR common_JJ ._.
+This_DT is_VBZ causing_VBG additional_JJ challenges_NNS for_IN ordinary_JJ users_NNS who_WP accumulate_VBP password-protected_JJ accounts_NNS fo_NN
+ltiple_NN sites_NNS ._.
+Password_NN hashing_VBG addresses_NNS these_DT problems_NNS by_IN hashing_VBG the_DT user_NN 's_POS secret_JJ password_NN together_RB with_IN a_DT variable_JJ ,_, non-secret_JJ string_NN -LRB-_-LRB- e.g._FW ,_, each_DT site_NN 's_POS domain_NN name_NN -RRB-_-RRB- to_TO produce_VB per-site_JJ passwords_NNS =_JJ -_: =[_NN 1_CD ,_, 17_CD ,_, 24_CD ,_, 37_CD ,_, 38_CD ,_, 62_CD ,_, 83_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recent_JJ work_NN in_IN this_DT area_NN has_VBZ made_VBN usability_NN one_CD of_IN the_DT primary_JJ goals_NNS -LRB-_-LRB- 24_CD ,_, 62_CD ,_, 83_CD -RRB-_-RRB- ,_, but_CC studies_NNS have_VBP shown_VBN some_DT users_NNS still_RB have_VBP trouble_NN using_VBG them_PRP correctly_RB and_CC securely_RB -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Also_RB ,_, if_IN password_NN hashi_NNS
+approach_NN to_TO the_DT password_NN theft_NN problem_NN is_VBZ a_DT password_NN manager_NN that_WDT automatically_RB generates_VBZ a_DT unique_JJ password_NN for_IN each_DT site_NN ,_, ensuring_VBG that_IN the_DT user_NN 's_POS password_NN at_IN that_DT site_NN can_MD not_RB be_VB used_VBN anywhere_RB else_RB =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT solutions_NNS can_MD be_VB vulnerable_JJ to_TO picture-in-picture_JJ user_NN interface_NN spoofing_NN ,_, so_IN it_PRP is_VBZ important_JJ to_TO provide_VB a_DT trusted_VBN path_NN to_TO prevent_VB the_DT master_NN password_NN from_IN being_VBG compromised_VBN -LRB-_-LRB- 24_CD --_: 26_CD -RRB-_-RRB- ._.
+The_DT trust_NN
+y_NN ,_, Schneier_NNP ,_, Hall_NNP ,_, and_CC Wagner_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB- proposed_VBD a_DT scheme_NN called_VBN key_NN stretching_VBG in_IN which_WDT the_DT password_NN must_MD be_VB hashed_VBN repeatedly_RB a_DT fixed_JJ number_NN of_IN times_NNS before_IN it_PRP can_MD be_VB used_VBN ._.
+Halderman_NNP ,_, Waters_NNP ,_, and_CC Felten_NNP =_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: refined_VBN this_DT scheme_NN in_IN a_DT tool_NN called_VBN Password_NNP Multiplier_NNP ,_, which_WDT caches_VBZ an_DT intermediate_JJ hashing_VBG result_NN on_IN the_DT user_NN 's_POS machine_NN to_TO make_VB logins_NNS faster_RBR for_IN valid_JJ users_NNS ._.
+Passpet_NNP uses_VBZ a_DT further_JJ refinement_NN of_IN
+e-mails_NNS from_IN reaching_VBG their_PRP$ targets_NNS ._.
+Popular_NNP Web_NN browsers_NNS have_VBP started_VBN to_TO include_VB blacklists_NNS of_IN DNS_NN domains_NNS and_CC IP_NNP address_NN ranges_NNS specific_JJ to_TO known_JJ phishing_NN sites_NNS -LRB-_-LRB- 27_CD ,_, 24_CD -RRB-_-RRB- ._.
+Several_JJ research_NN projects_NNS =_JJ -_: =[_NN 30_CD ,_, 18_CD ,_, 40_CD ,_, 36_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP developed_VBN password_NN management_NN tools_NNS for_IN the_DT different_JJ Web_NN sites_NNS that_IN users_NNS access_NN ._.
+Typically_RB these_DT tools_NNS must_MD be_VB activated_VBN by_IN users_NNS when_WRB filling_VBG out_RP Web_NN forms_NNS ;_: once_RB activated_VBN ,_, they_PRP provide_VBP a_DT sep_NN
+-LRB-_-LRB- 2_LS -RRB-_-RRB- ._.
+Their_PRP$ algorithm_NN is_VBZ defined_VBN as_IN K_NN long_JJ =_JJ HMAC_NN -LRB-_-LRB- K_NN short_JJ ,_, dom_NN -RRB-_-RRB- ,_, where_WRB dom_NN is_VBZ the_DT domain_NN name_NN ._.
+Halderman_NNP et_FW al._FW proposed_VBD a_DT method_NN ,_, which_WDT needs_VBZ more_JJR time_NN to_TO generate_VB a_DT strong_JJ password_NN than_IN Ross_NNP et_FW al._FW =_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, defined_VBN as_IN Copyright_NNP is_VBZ held_VBN by_IN the_DT author\/owner_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- ._.
+WWW_NN 2007_CD ,_, May_NNP 8_CD --_: 12_CD ,_, 2007_CD ,_, Banff_NNP ,_, Alberta_NNP ,_, Canada_NNP ._.
+ACM_NN 978-1-59593-654-7_CD \/_: 07\/0005_CD 1215_CD Heejo_NNP Lee_NNP Dept._NNP of_IN Computer_NNP Science_NNP and_CC Engineering_NNP Korea_NNP Un_NNP
+o_NN recover_VB an_DT unhashed_JJ password_NN that_WDT can_MD be_VB used_VBN at_IN other_JJ accounts_NNS ._.
+Dictionary_NNP attacks_NNS can_MD be_VB expensive_JJ for_IN strong_JJ passwords_NNS ,_, and_CC various_JJ techniques_NNS to_TO further_RB strengthen_VB password_NN hashes_NNS are_VBP available_JJ =_JJ -_: =[_NN 16_CD ,_, 31_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+•_NNP Phishing_NNP ._.
+The_DT network_NN is_VBZ trustworthy_JJ ,_, but_CC the_DT user_NN has_VBZ connected_VBN to_TO a_DT malicious_JJ spoof_NN site_NN that_WDT is_VBZ visually_RB similar_JJ to_TO another_DT site_NN that_IN she_PRP has_VBZ an_DT existing_VBG relationship_NN with_IN ._.
+This_DT malicious_JJ spoof_NN
+off-line_JJ attacks_NNS are_VBP possible_JJ ._.
+Indeed_RB in_IN such_JJ environments_NNS ,_, a_DT 43-bit_JJ full_JJ password_NN space_NN is_VBZ clearly_RB insufficient_JJ to_TO start_VB with_IN ,_, so_IN one_PRP would_MD assume_VB some_DT tolerable_JJ level_NN of_IN password_NN stretching_VBG -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 15_CD ,_, 34_CD -RRB-_-RRB- -_: =--RRB-_NN would_MD be_VB implemented_VBN to_TO increase_VB the_DT difficulty_NN of_IN attack_NN ._.
+Regardless_RB of_IN these_DT implementation_NN details_NNS ,_, click-based_JJ graphical_JJ password_NN schemes_NNS may_MD still_RB be_VB a_DT suitable_JJ alternative_NN for_IN systems_NNS where_WRB of_IN
+nd_NN for_IN the_DT majority_NN of_IN users_NNS ,_, would_MD actually_RB make_VB it_PRP easier_JJR for_IN them_PRP to_TO operate_VB on_IN multiple_JJ accounts_NNS while_IN using_VBG strong_JJ passwords_NNS ._.
+It_PRP is_VBZ called_VBN the_DT Password_NNP Multiplier_NNP ,_, developed_VBN by_IN J._NNP Alex_NNP Halderman_NNP =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT is_VBZ an_DT add-on_JJ to_TO the_DT Firefox_NNP browser_NN ._.
+The_DT add-on_JJ creates_VBZ an_DT initial_JJ hash_NN for_IN each_DT user_NN that_WDT includes_VBZ his_PRP$ or_CC her_PRP$ email_NN address_NN ,_, and_CC takes_VBZ approximately_RB 100_CD seconds_NNS to_TO generate_VB -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+Due_JJ to_TO the_DT co_NN
+tant_NN that_IN users_NNS choose_VBP a_DT strong_JJ password_NN as_IN the_DT master_NN password_NN ._.
+It_PRP is_VBZ recognized_VBN that_IN passwords_NNS chosen_VBN by_IN users_NNS have_VBP low_JJ entropy_NN and_CC are_VBP easily_RB susceptible_JJ to_TO dictionary_NN attacks_NNS ._.
+Recently_RB authors_NNS of_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP proposed_VBN techniques_NNS for_IN strengthening_VBG user_NN passwords_NNS ,_, by_IN repeatedly_RB applying_VBG cryptographic_JJ hash_JJ functions_NNS on_IN passwords_NNS ._.
+Similar_JJ techniques_NNS could_MD be_VB applied_VBN on_IN the_DT master_NN password_NN to_TO further_RB stre_VB
+fixed_VBN iteration_NN counts_NNS ;_: unlike_IN in_IN our_PRP$ proposal_NN ,_, the_DT cost_NN parameter_NN was_VBD preset_JJ by_IN the_DT system_NN administrator_NN ,_, and_CC was_VBD stored_VBN locally_RB in_IN the_DT clear_JJ ._.
+For_IN client\/server_NN authentication_NN ,_, it_PRP has_VBZ been_VBN suggested_VBN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: to_TO slow_VB down_RP key_JJ derivation_NN the_DT first_JJ time_NN ,_, and_CC make_VB it_PRP subsequently_RB faster_RBR by_IN caching_VBG some_DT state_NN on_IN the_DT client_NN ,_, in_IN an_DT attempt_NN to_TO impede_VB online_JJ trial-and-error_JJ attacks_NNS without_IN becoming_VBG completely_RB vul_NN
+ord_NN salted_VBN with_IN the_DT PhishBank_NN domain_NN ._.
+This_DT ,_, of_IN course_NN ,_, can_MD not_RB be_VB used_VBN to_TO login_VB to_TO BigBank_NNP ,_, unless_IN the_DT phisher_NN first_RB inverts_VBZ the_DT hash_NN ._.
+Their_PRP$ system_NN has_VBZ no_DT need_NN to_TO store_VB any_DT passwords_NNS ._.
+Halderman_NNP et_FW al._FW =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: also_RB propose_VBP a_DT system_NN to_TO manage_VB a_DT user_NN 's_POS passwords_NNS ._.
+Passwords_NNPS both_DT for_IN web_NN sites_NNS and_CC other_JJ applications_NNS on_IN the_DT user_NN 's_POS computer_NN are_VBP protected_VBN ._.
+In_IN contrast_NN to_TO -LRB-_-LRB- 14_CD -RRB-_-RRB- the_DT user_NN 's_POS passwords_NNS are_VBP stored_VBN ,_, in_IN h_NN
+od_NN of_IN secure_JJ data_NNS entry_NN ._.
+These_DT schemes_NNS can_MD be_VB attacked_VBN by_IN having_VBG the_DT keylogger_NN do_VBP a_DT screen_NN capture_NN at_IN each_DT mouse_NN click_VBP event_NN ._.
+The_DT problem_NN of_IN password_NN phishing_NN has_VBZ attracted_VBN lots_NNS of_IN attention_NN recently_RB =_JJ -_: =[_NN 15_CD ,_, 12_CD ,_, 9_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Generally_RB the_DT target_NN of_IN a_DT phishing_NN attack_NN is_VBZ the_DT password_NN or_CC other_JJ sensitive_JJ information_NN such_JJ as_IN credit_NN card_NN number_NN of_IN the_DT victim_NN ._.
+In_IN contrast_NN to_TO the_DT spyware_NN case_NN the_DT machine_NN being_VBG used_VBN is_VBZ not_RB gener_NN
+-_: entropy_NN passwords_NNS ._.
+Several_JJ researchers_NNS have_VBP also_RB proposed_VBN complementary_JJ approaches_NNS to_TO thwart_VB password_NN guessing_VBG ,_, primarily_RB involving_VBG expensive_JJ hash_JJ functions_NNS that_WDT raise_VBP the_DT cost_NN of_IN brute-force_JJ attack_NN =_JJ -_: =[_NN 8_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Challenge_NN questions_NNS ,_, as_IN mentioned_VBN above_IN ,_, are_VBP a_DT popular_JJ form_NN of_IN user_NN authentication_NN ._.
+They_PRP are_VBP similar_JJ to_TO passwords_NNS ,_, except_IN that_IN they_PRP rely_VBP on_IN biographical_JJ secrets_NNS ._.
+On_IN registering_VBG with_IN a_DT given_VBN site_NN ,_, a_DT
+od_NN of_IN secure_JJ data_NNS entry_NN ._.
+These_DT schemes_NNS can_MD be_VB attacked_VBN by_IN having_VBG the_DT keylogger_NN do_VBP a_DT screen_NN capture_NN at_IN each_DT mouse_NN click_VBP event_NN ._.
+The_DT problem_NN of_IN password_NN phishing_NN has_VBZ attracted_VBN lots_NNS of_IN attention_NN recently_RB =_JJ -_: =[_NN 15_CD ,_, 12_CD ,_, 9_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Generally_RB the_DT target_NN of_IN a_DT phishing_NN attack_NN is_VBZ the_DT password_NN or_CC other_JJ sensitive_JJ information_NN such_JJ as_IN credit_NN card_NN number_NN of_IN the_DT victim_NN ._.
+In_IN contrast_NN to_TO the_DT spyware_NN case_NN the_DT machine_NN being_VBG used_VBN is_VBZ not_RB gener_NN
+2006_CD ._.
+c_NN ○_CD USENIX_NNP tems_NNS ?_.
+Do_VBP they_PRP want_VB to_TO ?_.
+These_DT are_VBP some_DT of_IN the_DT questions_NNS which_WDT we_PRP address_VBP in_IN this_DT paper_NN ,_, as_IN we_PRP carry_VBP out_RP a_DT usability_NN study_NN of_IN two_CD password_NN managers_NNS --_: PwdHash_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- and_CC Password_NN Multiplier_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Despite_IN the_DT inadequacies_NNS of_IN passwords_NNS from_IN a_DT security_NN viewpoint_NN ,_, they_PRP are_VBP becoming_VBG more_RBR common_JJ ._.
+This_DT is_VBZ causing_VBG additional_JJ challenges_NNS for_IN ordinary_JJ users_NNS who_WP accumulate_VBP password-protected_JJ accounts_NNS fo_NN
+off-line_JJ attacks_NNS are_VBP possible_JJ ._.
+Indeed_RB in_IN such_JJ environments_NNS ,_, a_DT 43-bit_JJ full_JJ password_NN space_NN is_VBZ clearly_RB insufficient_JJ to_TO start_VB with_IN ,_, so_IN one_PRP would_MD assume_VB some_DT tolerable_JJ level_NN of_IN password_NN stretching_VBG -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 15_CD ,_, 34_CD -RRB-_-RRB- -_: =--RRB-_NN would_MD be_VB implemented_VBN to_TO increase_VB the_DT difficulty_NN of_IN attack_NN ._.
+Regardless_RB of_IN these_DT implementation_NN details_NNS ,_, click-based_JJ graphical_JJ password_NN schemes_NNS may_MD still_RB be_VB a_DT suitable_JJ alternative_NN for_IN systems_NNS where_WRB of_IN
+-_: in-the-middle_JJ attacks_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+Furthermore_RB ,_, out-of-band_JJ techniques_NNS can_MD be_VB logistically_RB difficult_JJ to_TO deploy_VB ._.
+Several_JJ research_NN projects_NNS have_VBP proposed_VBN using_VBG password_NN managers_NNS to_TO protect_VB users_NNS '_POS credentials_NNS =_JJ -_: =[_NN 14_CD ,_, 23_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Almost_RB all_DT these_DT tools_NNS rely_VBP on_IN a_DT technique_NN known_VBN as_IN ``_`` password_NN hashing_VBG ''_'' to_TO ensure_VB that_IN one_CD user_NN never_RB re-uses_VBZ a_DT password_NN on_IN more_JJR than_IN one_CD Web_NN site_NN ._.
+The_DT idea_NN is_VBZ simple_JJ :_: these_DT techniques_NNS use_VBP some_DT site_NN -_:
+rmation_NN -LRB-_-LRB- normally_RB website_NN name_NN -RRB-_-RRB- ._.
+Examples_NNS of_IN hashing_VBG based_VBN password_NN management_NN applications_NNS are_VBP Lucent_NNP Personalized_NNP Web_NN Assistant_NNP -LRB-_-LRB- 120_CD -RRB-_-RRB- ,_, HP_NNP Site_NN Password_NN -LRB-_-LRB- 121_CD -RRB-_-RRB- ,_, Halderman_NNP et_FW al._FW 's_POS Password_NN Multiplier_NN =_JJ -_: =[_NN 122_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC Yee_NNP et_FW al._FW 's_POS Passpet_NN -LRB-_-LRB- 123_CD -RRB-_-RRB- ._.
+Although_IN autonomous_JJ approach_NN generally_RB does_VBZ not_RB suffer_VB from_IN Problems_NNS 1_CD ,_, 2_CD ,_, and_CC 3_CD above_RB ,_, they_PRP still_RB have_VBP some_DT drawbacks_NNS ._.
+Software_NNP applications_NNS are_VBP usually_RB not_RB portable_JJ
+hniques_NNS complement_VBP one_CD another_DT nicely_RB ._.
+In_IN addition_NN ,_, the_DT Passmark_NN -LRB-_-LRB- Pas_NN -RRB-_-RRB- web_NN personalization_NN method_NN for_IN fighting_VBG phishing_NN provides_VBZ independent_JJ functionality_NN and_CC may_MD complement_VB PwdHash_NNP ._.
+Halderman_NNP et_FW al._FW =_SYM -_: =_JJ -LRB-_-LRB- HWF05_NN -RRB-_-RRB- -_: =_JJ -_: study_NN how_WRB to_TO secure_VB password_NN hashing_VBG from_IN dictionary_NN attacks_NNS by_IN using_VBG ultra-slow_JJ hash_JJ functions_NNS ._.
+As_IN discussed_VBN earlier_RBR ,_, these_DT techniques_NNS can_MD be_VB integrated_VBN into_IN PwdHash_NNP to_TO help_VB defend_VB against_IN dictionar_NN
+y_NN of_IN these_DT have_VBP involved_VBN applying_VBG novel_JJ cryptographic_JJ techniques_NNS to_TO solve_VB problems_NNS of_IN practical_JJ importance_NN ._.
+Here_RB are_VBP three_CD examples_NNS :_: •_CD Password_NN security_NN ._.
+In_IN joint_JJ work_NN ,_, Ed_NNP Felten_NNP ,_, Brent_NNP Waters_NNP ,_, and_CC I_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: studied_VBN how_WRB we_PRP can_MD improve_VB web_NN site_NN password_NN security_NN without_IN inconveniencing_VBG users_NNS or_CC requiring_VBG server-side_JJ changes_NNS ._.
+Building_NN on_IN work_NN by_IN Abadi_NNP et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- and_CC Kelsey_NNP et_FW al._FW -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, we_PRP devised_VBD improved_VBN
+behavior_NN is_VBZ needed_VBN ._.
+Further_RB ,_, different_JJ sites_NNS have_VBP different_JJ password_NN rules_NNS -LRB-_-LRB- e.g._FW numeric_JJ ,_, alphanumeric_JJ ,_, etc._NN -RRB-_-RRB- and_CC length_NN requirements_NNS ._.
+These_DT rules_NNS must_MD be_VB tabulated_VBN for_IN the_DT client_NN ._.
+Halderman_NNP et_FW al._FW =_SYM -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: also_RB propose_VBP a_DT system_NN to_TO manage_VB a_DT user_NN 's_POS passwords_NNS ._.
+Passwords_NNPS both_DT for_IN web_NN sites_NNS and_CC other_JJ applications_NNS on_IN the_DT user_NN 's_POS computer_NN are_VBP protected_VBN ._.
+In_IN contrast_NN to_TO -LRB-_-LRB- 23_CD -RRB-_-RRB- the_DT user_NN 's_POS passwords_NNS are_VBP stored_VBN in_IN ha_NN
+y_NN of_IN these_DT have_VBP involved_VBN applying_VBG novel_JJ cryptographic_JJ techniques_NNS to_TO solve_VB problems_NNS of_IN practical_JJ importance_NN ._.
+Here_RB are_VBP three_CD examples_NNS :_: •_CD Password_NN security_NN ._.
+In_IN joint_JJ work_NN ,_, Ed_NNP Felten_NNP ,_, Brent_NNP Waters_NNP ,_, and_CC I_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: studied_VBN how_WRB we_PRP can_MD improve_VB web_NN site_NN password_NN security_NN without_IN inconveniencing_VBG users_NNS or_CC requiring_VBG server-side_JJ changes_NNS ._.
+Building_NN on_IN work_NN by_IN Abadi_NNP et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- and_CC Kelsey_NNP et_FW al._FW -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, we_PRP devised_VBD improved_VBN
+user_NN 's_POS IP_NNP address_NN and_CC location_NN ._.
+Some_DT sites_NNS are_VBP moving_VBG to_TO stronger_JJR authentication_NN using_VBG one-time_JJ password_NN tokens_NNS such_JJ as_IN RSA_NN SecurID_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+These_DT methods_NNS ,_, as_RB well_RB as_IN many_JJ other_JJ anti-phishing_JJ proposals_NNS =_JJ -_: =[_NN 13_CD ,_, 6_CD ,_, 9_CD ,_, 7_CD ,_, 15_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, focus_VB primarily_RB on_IN reducing_VBG the_DT value_NN that_IN phishers_NNS derive_VBP from_IN stolen_JJ passwords_NNS ._.
+Fortunately_RB for_IN thieves_NNS ,_, and_CC unfortunately_RB for_IN the_DT rest_NN of_IN us_PRP ,_, a_DT new_JJ form_NN of_IN attack_NN using_VBG a_DT Transaction_NN Generator_NN -LRB-_-LRB- T_NN
+-_: The-Middle_JJ Attacks_NNS ._.
+Thus_RB the_DT strengthened_JJ protocol_NN still_RB does_VBZ not_RB enjoy_VB feature_NN 1_CD ._.
+The_DT login_NN protocol_NN SRP_NN -LRB-_-LRB- 14_CD ,_, 13_CD -RRB-_-RRB- doest_NN not_RB enjoy_VB any_DT of_IN features_NNS 3_CD ,_, 4_CD ,_, and_CC 5_CD above_RB ._.
+The_DT hash-based_JJ protocols_NNS ,_, such_JJ as_IN =_JJ -_: =[_NN 5_CD ,_, 9_CD ,_, 8_CD ,_, 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, enjoy_VBP the_DT features_NNS 2_CD ,_, 4_CD ,_, and_CC 5_CD ._.
+They_PRP also_RB allow_VBP the_DT web_NN site_NN to_TO verify_VB that_IN the_DT user_NN has_VBZ registered_VBN in_IN the_DT site_NN sometimes_RB in_IN the_DT past_NN ._.
+Unfortunately_RB ,_, they_PRP do_VBP no_RB allow_VB the_DT user_NN 's_POS browser_NN to_TO verify_VB th_DT
+ncreasing_VBG password_NN security_NN by_IN altering_VBG the_DT order_NN in_IN which_WDT typed_VBD password_NN characters_NNS are_VBP positioned_VBN ._.
+As_IN an_DT example_NN ,_, the_DT authors_NNS explain_VBP that_IN ``_`` sandwich_NN ''_'' could_MD be_VB input_NN as_IN ``_`` snwchida_NN ''_'' ._.
+Password_NN managers_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 22_CD -RRB-_-RRB- improve_VB password_NN security_NN by_IN generating_VBG and_CC storing_VBG secure_JJ passwords_NNS for_IN each_DT user_NN account_NN while_IN the_DT user_NN need_MD only_RB remember_VB one_CD password_NN for_IN all_DT their_PRP$ accounts_NNS ._.
+However_RB ,_, they_PRP come_VBP with_IN their_PRP$ ow_NN
+SJ_NN -RRB-_-RRB- ,_, can_MD be_VB stored_VBN using_VBG a_DT one-way_JJ hash_NN ._.
+Hashing_VBG algorithms_NNS with_IN an_DT adaptable_JJ cost_NN -LRB-_-LRB- e.g._FW ,_, see_VB -LRB-_-LRB- Provos_NNP and_CC Mazieres_NNP 1999_CD -RRB-_-RRB- -RRB-_-RRB- and_CC that_IN use_NN password_NN stretching_VBG or_CC repeated_VBN hashing_VBG of_IN passwords_NNS -LRB-_-LRB- e.g._FW ,_, see_VB -LRB-_-LRB- =_JJ -_: =_JJ Halderman_NNP et_FW al._FW 2005_CD -_: =-]_CD -RRB-_-RRB- increase_VBP the_DT computational_JJ cost_NN of_IN guessing_VBG attacks_NNS ._.
+``_`` Salting_NNP ''_'' adds_VBZ random_JJ data_NNS to_TO the_DT computation_NN of_IN each_DT user_NN 's_POS password_NN hash_NN ,_, and_CC thus_RB if_IN any_DT users_NNS 8_CD The_DT difference_NN is_VBZ more_RBR noticeable_JJ in_IN the_DT spa_NN
+ate_VBD a_DT low_JJ password_NN that_WDT is_VBZ reused_VBN across_IN several_JJ accounts_NNS ,_, and_CC will_MD have_VB a_DT low-level_JJ of_IN security_NN associated_VBN with_IN that_DT password_NN -LRB-_-LRB- further_RB justifying_VBG its_PRP$ reuse_NN across_IN several_JJ accounts_NNS -RRB-_-RRB- ._.
+Halderman_NNP et_FW al._FW =_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: develop_VB a_DT technique_NN that_WDT requires_VBZ users_NNS to_TO memorize_VB only_RB one_CD password_NN ._.
+Using_VBG a_DT secure_JJ hash_JJ function_NN ,_, this_DT password_NN can_MD be_VB transformed_VBN into_IN distinct_JJ passwords_NNS for_IN each_DT website_NN ._.
+Related_JJ approaches_NNS incl_VBP
+In-The-Middle_JJ Attacks_NNS ._.
+Thus_RB the_DT strengthened_JJ protocol_NN still_RB does_VBZ not_RB enjoy_VB feature_NN 1_CD ._.
+The_DT login_NN protocol_NN SRP_NN -LRB-_-LRB- 9,10_CD -RRB-_-RRB- doest_VBP not_RB enjoy_VB any_DT of_IN features_NNS 3_CD ,_, 4_CD ,_, and_CC 5_CD above_RB ._.
+The_DT hash-based_JJ protocols_NNS ,_, such_JJ as_IN =_JJ -_: =[_NN 11,12,13,14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, enjoy_VBP the_DT features_NNS 2_CD ,_, 4_CD ,_, and_CC 5_CD ._.
+They_PRP also_RB allow_VBP the_DT web_NN site_NN to_TO verify_VB that_IN the_DT user_NN has_VBZ registered_VBN in_IN the_DT site_NN sometimes_RB in_IN the_DT past_NN ._.
+Unfortunately_RB ,_, they_PRP do_VBP no_RB allow_VB the_DT user_NN 's_POS browser_NN to_TO verify_VB th_DT

@@ -1,0 +1,185 @@
+Unparsing_JJ RDF\/XML_NN
+It_PRP is_VBZ difficult_JJ to_TO serialize_VB an_DT RDF_NN graph_NN as_IN a_DT humanly_RB readable_JJ RDF\/XML_NN document_NN ._.
+This_DT paper_NN describes_VBZ the_DT approach_NN taken_VBN in_IN Jena_NNP 1.2_CD ,_, in_IN which_WDT a_DT design_NN pattern_NN of_IN guarded_VBN procedures_NNS invoked_VBD using_VBG top_NN down_IN recursive_JJ descent_NN is_VBZ used_VBN ._.
+Each_DT procedure_NN corresponds_VBZ to_TO a_DT grammar_NN rule_NN ;_: the_DT guard_NN makes_VBZ the_DT choice_NN about_IN the_DT applicability_NN of_IN the_DT production_NN ._.
+This_DT approach_NN is_VBZ seen_VBN to_TO correspond_VB closely_RB to_TO the_DT design_NN of_IN an_DT LL_NN -LRB-_-LRB- k_NN -RRB-_-RRB- parser_NN ,_, and_CC a_DT theoretical_JJ justification_NN of_IN this_DT correspondence_NN is_VBZ found_VBN in_IN universal_JJ algebra_NN ._.
+facess4_NN Dennis_NNP Quan_NNP ,_, David_NNP Huynh_NNP ,_, and_CC David_NNP R._NNP Karger_NNP for_IN manipulating_VBG information_NN ._.
+Toolkits_NNS for_IN generating_NN ,_, processing_NN ,_, and_CC visualizing_VBG graphs_NNS of_IN RDF_NNP data_NNS are_VBP widely_RB available_JJ on_IN most_JJS platforms_NNS -LRB-_-LRB- 14_CD -RRB-_-RRB- =_JJ -_: =[_NN 15_CD -RRB-_-RRB- ._.
+-_: =_JJ -_: Tools_NNS for_IN editing_NN data_NNS according_VBG to_TO specific_JJ ontologies_NNS ,_, such_JJ as_IN Ont-O-Mat_NNP and_CC Protégé_NNP ,_, give_VBP knowledge_NN engineers_NNS powerful_JJ tools_NNS for_IN creating_VBG and_CC manipulating_VBG data_NNS that_WDT corresponds_VBZ to_TO specific_JJ schema_NN
+-RRB-_-RRB- ;_: a_DT query_NN 2_CD The_DT term_NN ``_`` Model_NNP ''_'' is_VBZ taken_VBN from_IN the_DT original_JJ RDF_NNP Model_NNP &_CC Syntax_NNP Recommendation_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, meaning_VBG data_NNS model_NN ._.
+slanguage_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ;_: further_JJ I\/O_NN modules_NNS for_IN N3_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC N-triple_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC RDF\/XML_NN out_RP =_JJ -_: =_JJ put_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Using_VBG the_DT API_NNP the_DT user_NN can_MD choose_VB to_TO store_VB RDF_NNP graphs_NNS in_IN memory_NN or_CC in_IN persistent_JJ stores_NNS ._.
+Jena1_NN provides_VBZ an_DT additional_JJ API_NN for_IN manipulating_VBG DAML+OIL_NN -LRB-_-LRB- 33_CD -RRB-_-RRB- ._.
+Jena2_NN provides_VBZ additional_JJ functionality_NN for_IN
+ng_NN DTD_NN validation_NN -LRB-_-LRB- while_IN this_DT is_VBZ also_RB true_JJ for_IN any_DT other_JJ XML_NN syntax_NN embedded_VBN in_IN a_DT DTD-constrained_JJ format_NN -RRB-_-RRB- ._.
+10_CD ._.
+It_PRP is_VBZ hard_JJ to_TO emit_VB human-readable_JJ RDF\/XML_NN from_IN an_DT RDF_NN graph_NN due_JJ to_TO the_DT range_NN of_IN choices_NNS -LRB-_-LRB- =_JJ -_: =_JJ -LRB-_-LRB- Unparsing_JJ -RRB-_-RRB- -_: =--RRB-_NN ._.
+11_CD ._.
+RDF\/XML_NN can_MD not_RB describe_VB collections_NNS of_IN literals_NNS ._.
+12_CD ._.
+Not_RB all_DT property_NN URIs_NNS can_MD be_VB encoded_VBN ._.
+13_CD ._.
+Various_JJ aesthetic_JJ criticisms_NNS have_VBP been_VBN leveled_VBN at_IN the_DT syntax_NN such_JJ as_IN being_VBG ``_`` ugly_JJ ''_'' ._.
+These_DT can_MD not_RB
+rogram_NN to_TO convert_VB RDF\/XML_NN files_NNS between_IN different_JJ notations_NNS -LRB-_-LRB- see_VB chapter_NN 2.6_CD -RRB-_-RRB- or_CC to_TO check_VB RDF\/XML_NN files_NNS for_IN errors_NNS ._.
+Detailed_JJ information_NN on_IN the_DT implementation_NN can_MD be_VB found_VBN in_IN •_NN ``_`` CoParsing_NNP RDF_NNP &_CC XML_NN ''_'' -LRB-_-LRB- =_JJ -_: =_JJ -LRB-_-LRB- Car01a_NN -RRB-_-RRB- -_: =--RRB-_NN where_WRB the_DT parsing_NN of_IN RDF\/XML_NN files_NNS and_CC the_DT generation_NN of_IN a_DT internal_JJ model_NN representation_NN are_VBP discussed_VBN •_NNP ``_`` Unparsing_JJ RDF\/XML_NN ''_'' -LRB-_-LRB- -LRB-_-LRB- Car01b_NN -RRB-_-RRB- which_WDT explains_VBZ the_DT process_NN of_IN serializing_VBG a_DT model_NN to_TO generate_VB v_LS
+sible_JJ to_TO embed_VB in_IN XHTML_NNP while_IN retaining_VBG DTD_NN validation_NN -LRB-_-LRB- also_RB true_JJ with_IN any_DT other_JJ XML_NN syntax_NN -RRB-_-RRB- ._.
+10_CD ._.
+It_PRP is_VBZ hard_JJ to_TO emit_VB human-readable_JJ RDF\/XML_NN from_IN an_DT RDF_NN graph_NN due_JJ to_TO the_DT range_NN of_IN choices_NNS -LRB-_-LRB- after_IN Carroll_NNP =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+11_CD ._.
+It_PRP can_MD not_RB describe_VB collections_NNS of_IN literals_NNS ._.
+12_CD ._.
+Not_RB all_DT property_NN URIs_NNS can_MD be_VB encoded_VBN ._.
+13_CD ._.
+Various_JJ aesthetic_JJ criticisms_NNS have_VBP been_VBN levelled_VBN at_IN the_DT syntax_NN such_JJ as_IN being_VBG ``_`` ugly_JJ ''_'' ._.
+4_LS ._.
+RDF_NNP NEW_NNP SYNTAXES_NNP
+eply_RB embedded_JJ ._.
+Having_VBG an_DT arbitrary_JJ limit_NN to_TO embedding_NN is_VBZ suggested_VBN ._.
+7.3_CD Top-Level_JJ Elements_NNS In_IN many_JJ of_IN the_DT applications_NNS of_IN RDF_NNP there_EX is_VBZ a_DT preference_NN for_IN not_RB embedding_VBG some_DT elements_NNS ._.
+E.g._NN in_IN RDF_NN Schema_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: and_CC DAML_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- it_PRP is_VBZ preferred_VBN to_TO list_VB properties_NNS and_CC classes_NNS as_IN top-level_JJ elements_NNS rather_RB than_IN having_VBG an_DT embedded_JJ description_NN of_IN one_CD within_IN the_DT description_NN of_IN some_DT other_JJ property_NN or_CC class_NN ._.
+7.4_CD Order_NN
+r_NN over_IN text_NN ._.
+Most_JJS uses_NNS of_IN XML_NN have_VBP a_DT similarly_RB two-layered_JJ specification_NN often_RB by_IN means_NNS of_IN a_DT document_NN type_NN definition_NN or_CC an_DT XML_NN Schema_NN -LRB-_-LRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 28_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+The_DT RDF_NNP grammar_NN is_VBZ specified_VBN by_IN Model_NNP &_CC Syntax_NNP =_SYM -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: and_CC rearticulated_VBN in_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+A_DT parser_NN architecture_NN reflecting_VBG this_DT ,_, uses_VBZ a_DT general-purpose_JJ XML_NN parser_NN for_IN the_DT initial_JJ analysis_NN ,_, which_WDT is_VBZ then_RB followed_VBN by_IN analysis_NN using_VBG the_DT RDF\/XML_NN grammar_NN ._.
+1.1_CD Parsers_NNS
+uring_VBG design_NN ,_, the_DT parser_NN becomes_VBZ the_DT dominant_JJ routine_NN and_CC the_DT other_JJ coroutines_NNS are_VBP downgraded_VBN through_IN an_DT inversion_NN transformation_NN to_TO be_VB subroutines_NNS of_IN the_DT parser_NN ._.
+This_DT is_VBZ exemplified_VBN by_IN lex_NN and_CC yacc_NN -LRB-_-LRB- =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 20_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Conceptually_RB both_DT systems_NNS can_MD be_VB used_VBN to_TO write_VB filters_NNS that_WDT take_VBP an_DT 2_CD RDF_NN Lexer_FW Lexemes_FW SAX_NN events_NNS Tokens_NNP RDF_NNP Parser_NNP Triples_NNP Graph_NNP Buildersinput_NNP stream_NN and_CC produce_VBP an_DT output_NN stream_NN ._.
+Howeve_NNP
+The_DT usual_JJ solution_NN is_VBZ to_TO use_VB a_DT gensym_NN ._.
+However_RB ,_, this_DT is_VBZ unsatisfactory_JJ since_IN the_DT labeling_NN of_IN the_DT node_NN changes_VBZ the_DT meaning_NN of_IN the_DT document_NN with_IN respect_NN to_TO the_DT model_NN theory_NN or_CC simply_RB to_TO graph_NN equality_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+2.3_CD The_DT Abbreviated_JJ Syntax_NN The_DT abbreviated_JJ form_NN -LRB-_-LRB- see_VB M&S_NNP -LRB-_-LRB- 19_CD -RRB-_-RRB- and_CC the_DT rearticulation2_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- -RRB-_-RRB- is_VBZ -LRB-_-LRB- intended_VBN to_TO be_VB -RRB-_-RRB- logically_RB equivalent_JJ to_TO the_DT basic_JJ syntax_NN ._.
+However_RB it_PRP allows_VBZ a_DT number_NN of_IN new_JJ constructio_NN
+ider_NN at_IN least_JJS a_DT factorial_JJ number_NN of_IN different_JJ possible_JJ orders_NNS in_IN its_PRP$ considerations_NNS of_IN all_DT serializations_NNS ._.
+5.1_CD LL_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- Parsing_VBG Instead_RB ,_, we_PRP take_VBP our_PRP$ inspiration_NN from_IN recursive_JJ descent_NN LL_NN -LRB-_-LRB- k_NN -RRB-_-RRB- parsers_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+These_DT express_VBP each_DT grammar_NN rule_NN as_IN a_DT procedure_NN ;_: choice_NN points_NNS in_IN the_DT grammar_NN are_VBP explicitly_RB represented_VBN in_IN the_DT procedures_NNS by_IN lookahead_NN code_NN ._.
+The_DT lookahead_NN code_NN uses_VBZ the_DT leftmost_JJS section_NN of_IN the_DT
+te_IN Only_RB Approved_VBN for_IN External_NNP Publication_NNP ©_NNP Copyright_NNP Hewlett-Packard_NNP Company_NNP 2001s1_NN ._.
+Introduction_NN This_DT paper_NN discusses_VBZ the_DT high-level_JJ design_NN of_IN the_DT output_NN routines_NNS for_IN the_DT RDF\/XML_NN abbreviated_VBD syntax_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: within_IN the_DT Jena_NNP toolkit_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+We_PRP propose_VBP a_DT new_JJ design_NN pattern_NN for_IN top-down_JJ recursive_JJ descent_NN unparsers_NNS which_WDT generate_VBP output_NN according_VBG to_TO a_DT grammar_NN ._.
+Output_NN is_VBZ usually_RB regarded_VBN in_IN computer_NN science_NN as_IN
+arser_NN invokes_VBZ the_DT callback_NN methods_NNS known_VBN as_IN SAX_NN events_NNS ._.
+These_DT methods_NNS are_VBP the_DT link_NN into_IN the_DT RDF_NNP parser_NN ._.
+In_IN RDFFilter_NN the_DT parsing_NN of_IN RDF_NNP loosely_RB follows_VBZ an_DT Augmented_JJ Transition_NN Network_NNP design_NN -LRB-_-LRB- -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+The_DT RDF_NNP parser_NN switches_VBZ between_IN various_JJ states_NNS and_CC has_VBZ a_DT single_JJ pushdown_NN stack_VBP and_CC arbitrary_JJ code_NN augmenting_VBG the_DT finite_JJ state_NN machine_NN ._.
+The_DT apparent_JJ simplicity_NN of_IN such_PDT an_DT approach_NN belies_VBZ the_DT complex_NN
+r_NN use_NN of_IN the_DT word_NN unparsing_NN for_IN grammatically_RB driven_VBN generation_NN ._.
+Moreover_RB ,_, the_DT experience_NN of_IN computational_JJ linguistics_NNS suggests_VBZ that_IN parsing_VBG techniques_NNS such_JJ as_IN top-down_JJ left-toright_NN with_IN backtracking_VBG =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT were_VBD developed_VBN for_IN parsing_NN ,_, can_MD be_VB applied_VBN directly_RB to_TO generation_NN ,_, as_RB long_RB as_IN a_DT little_JJ care_NN is_VBZ taken_VBN ._.
+s5_NN ._.
+Recursive_JJ descent_NN unparsing_JJ architecture_NN The_DT parsing_VBG techniques_NNS of_IN computational_JJ lingui_NNS
+the_DT RDF\/XML_NN grammar_NN ._.
+1.1_CD Parsers_NNS and_CC coroutines_NNS Lexer_NNP Parser_NNP Generator_NNP Lexemes_NNPS XML_NN Parser_NN Figure_NN 1_CD :_: Traditional_JJ parsing_NN Figure_NNP 2_CD :_: The_DT top-level_JJ dataflow_NN for_IN RDF\/XML_FW parsing_FW From_IN the_DT beginning_NN -LRB-_-LRB- Conway_NNP =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: in_IN 1963_CD -RRB-_-RRB- ,_, parser_NN architectures_NNS have_VBP been_VBN conceptualized_VBN as_IN dataflow_NN pipelines_NNS between_IN coroutines_NNS which_WDT are_VBP all_DT first_JJ class_NN processors_NNS ,_, e.g._FW a_DT lexer_NN ,_, a_DT parser_NN ,_, a_DT code_NN generator_NN ,_, as_IN in_IN figure_NN 1_CD ._.
+Conway_NNP
+cle_NN to_TO be_VB written_VBN out_RP ._.
+8_CD ._.
+Customizability_NNP A_NNP full_JJ implementation_NN of_IN an_DT RDF\/XMl_NN serializer_NN should_MD be_VB readily_RB customizable_JJ for_IN the_DT various_JJ RDF_NNP subdialects_NNS like_IN RDF_NNP Schema_NNP -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, DAML_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, CC\/PP_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, RSS_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, PRISM_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+Each_DT of_IN these_DT either_CC explicitly_RB or_CC implicitly_RB uses_VBZ only_RB a_DT subset_NN of_IN the_DT full_JJ RDF\/XML_NN grammar_NN ._.
+Also_RB the_DT pragmatic_JJ rules_NNS may_MD have_VB a_DT different_JJ force_NN with_IN each_DT ._.
+12sHence_NN customizability_NN incl_NN
+proach_NN to_TO coroutines_NNS is_VBZ to_TO model_VB each_DT coroutine_NN as_IN a_DT Java_NNP Thread_NNP ._.
+The_DT sequence_NN of_IN execution_NN is_VBZ determined_VBN implicitly_RB by_IN the_DT dataflow_NN ._.
+The_DT coroutines_NNS are_VBP linked_VBN using_VBG a_DT pipe_NN ,_, e.g._FW Lea_NNP 's_POS bounded_VBN buffer_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT choice_NN of_IN pipe_NN length_NN has_VBZ a_DT dramatic_JJ impact_NN on_IN performance_NN ._.
+The_DT author_NN 's_POS experiments_NNS for_IN ARP_NNP suggested_VBD a_DT surprisingly_RB long_JJ optimal_JJ length_NN of_IN about_IN 800_CD objects_NNS in_IN the_DT pipe_NN ._.
+Some_DT programming_NN langu_NN
+he_PRP SAX_NNP parser_NN invokes_VBZ the_DT callback_NN methods_NNS known_VBN as_IN SAX_NN events_NNS ._.
+These_DT methods_NNS are_VBP the_DT link_NN into_IN the_DT RDF_NNP parser_NN ._.
+In_IN RDFFilter_NN the_DT parsing_NN of_IN RDF_NNP loosely_RB follows_VBZ an_DT Augmented_JJ Transition_NN Network_NNP design_NN -LRB-_-LRB- =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 31_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+The_DT RDF_NNP parser_NN switches_VBZ between_IN various_JJ states_NNS and_CC has_VBZ a_DT single_JJ pushdown_NN stack_VBP and_CC arbitrary_JJ code_NN augmenting_VBG the_DT finite_JJ state_NN machine_NN ._.
+The_DT apparent_JJ simplicity_NN of_IN such_PDT an_DT approach_NN belies_VBZ th_DT
+t_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- items_NNS ._.
+XML_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- in_IN turn_NN is_VBZ defined_VBN by_IN means_NNS of_IN a_DT grammar_NN over_IN text_NN ._.
+Most_JJS uses_NNS of_IN XML_NN have_VBP a_DT similarly_RB two-layered_JJ specification_NN often_RB by_IN means_NNS of_IN a_DT document_NN type_NN definition_NN or_CC an_DT XML_NN Schema_NN -LRB-_-LRB- -LRB-_-LRB- 4_LS -RRB-_-RRB- =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 28_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+The_DT RDF_NNP grammar_NN is_VBZ specified_VBN by_IN Model_NNP &_CC Syntax_NNP -LRB-_-LRB- 18_CD -RRB-_-RRB- and_CC rearticulated_VBN in_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+A_DT parser_NN architecture_NN reflecting_VBG this_DT ,_, uses_VBZ a_DT general-purpose_JJ XML_NN parser_NN for_IN the_DT initial_JJ analysis_NN ,_, which_WDT is_VBZ then_RB
+igned_VBN and_CC more_RBR intelligible_JJ output_NN routines_NNS ._.
+The_DT major_JJ exception_NN to_TO this_DT generalization_NN that_IN output_NN is_VBZ unproblematic_JJ is_VBZ in_IN computational_JJ linguistics_NNS ._.
+Here_RB ,_, since_IN the_DT late_JJ 80s_NNS it_PRP has_VBZ been_VBN commonplace_JJ -LRB-_-LRB- =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 30_CD -RRB-_-RRB- -RRB-_-RRB- that_IN generation_NN and_CC parsing_NN are_VBP essentially_RB the_DT same_JJ ,_, with_IN many_JJ systems_NNS using_VBG the_DT same_JJ architecture_NN ,_, the_DT same_JJ grammar_NN and_CC the_DT same_JJ rules_NNS for_IN both_DT ._.
+Both_CC the_DT surface_NN textual_JJ realization_NN an_DT
+re_IN intelligible_JJ output_NN routines_NNS ._.
+The_DT major_JJ exception_NN to_TO this_DT generalization_NN that_IN output_NN is_VBZ unproblematic_JJ is_VBZ in_IN computational_JJ linguistics_NNS ._.
+Here_RB ,_, since_IN the_DT late_JJ 80s_NNS it_PRP has_VBZ been_VBN commonplace_JJ -LRB-_-LRB- -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =--RRB-_NN that_IN generation_NN and_CC parsing_NN are_VBP essentially_RB the_DT same_JJ ,_, with_IN many_JJ systems_NNS using_VBG the_DT same_JJ architecture_NN ,_, the_DT same_JJ grammar_NN and_CC the_DT same_JJ rules_NNS for_IN both_DT ._.
+Both_CC the_DT surface_NN textual_JJ realization_NN and_CC the_DT deeper_JJR
+ign_RB ,_, the_DT parser_NN becomes_VBZ the_DT dominant_JJ routine_NN and_CC the_DT other_JJ coroutines_NNS are_VBP downgraded_VBN through_IN an_DT inversion_NN transformation_NN to_TO be_VB subroutines_NNS of_IN the_DT parser_NN ._.
+This_DT is_VBZ exemplified_VBN by_IN lex_NN and_CC yacc_NN -LRB-_-LRB- -LRB-_-LRB- 17_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Conceptually_RB both_DT systems_NNS can_MD be_VB used_VBN to_TO write_VB filters_NNS that_WDT take_VBP an_DT 2_CD RDF_NN Lexer_FW Lexemes_FW SAX_NN events_NNS Tokens_NNP RDF_NNP Parser_NNP Triples_NNP Graph_NNP Buildersinput_NNP stream_NN and_CC produce_VBP an_DT output_NN stream_NN ._.
+However_RB ,_, a_DT basi_NN
+re_VB made_VBN ._.
+2_CD ._.
+RDF\/XML_NN Syntax_NN 2.1_CD The_DT Abstract_JJ Syntax_NN Following_VBG the_DT RDF_NNP Model_NNP Theory_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, we_PRP see_VBP that_IN an_DT RDF_NN document_NN is_VBZ a_DT serialization_NN of_IN a_DT graph_NN ._.
+The_DT graph_NN is_VBZ directed_VBN ,_, with_IN edges_NNS labeled_VBN with_IN URIs_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC some_DT nodes_NNS also_RB labeled_VBN with_IN URIs_NNS ._.
+No_DT URI_NNP labels_VBZ two_CD nodes_NNS ._.
+The_DT unlabelled_JJ nodes_NNS are_VBP called_VBN `_`` blank_JJ nodes_NNS '_POS ._.
+-LRB-_-LRB- Note_VB :_: this_DT graph_NN is_VBZ referred_VBN to_TO as_IN the_DT model_NN by_IN the_DT older_JJR Model_NNP &_CC Syntax_NNP -LRB-_-LRB- 19_CD -RRB-_-RRB- specifi_NNS
+than_IN output_NN templates_NNS with_IN slots_NNS for_IN the_DT unknowns_NNS ._.
+Typically_RB ,_, output_NN uses_NNS bounded_VBD space_NN algorithms_NNS such_JJ as_IN iterating_VBG over_IN a_DT print_NN statement_NN ._.
+A_DT few_JJ systems_NNS ,_, such_JJ as_IN the_DT DOM_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, JSP_NNP -LRB-_-LRB- 29_CD -RRB-_-RRB- or_CC Metatool_NNP -LRB-_-LRB- =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 10_CD -RRB-_-RRB- -RRB-_-RRB- ,_, provide_VBP slightly_RB more_JJR sophisticated_JJ means_NNS of_IN structuring_VBG output_NN ,_, but_CC none_NN of_IN these_DT matches_NNS the_DT sophistication_NN of_IN parsing_VBG technology_NN ._.
+The_DT XML_NN DOM_NN is_VBZ useful_JJ when_WRB writing_VBG small_JJ XML_NN files_NNS ._.
+The_DT app_NN
+output_NN templates_NNS with_IN slots_NNS for_IN the_DT unknowns_NNS ._.
+Typically_RB ,_, output_NN uses_NNS bounded_VBD space_NN algorithms_NNS such_JJ as_IN iterating_VBG over_IN a_DT print_NN statement_NN ._.
+A_DT few_JJ systems_NNS ,_, such_JJ as_IN the_DT DOM_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, JSP_NNP -LRB-_-LRB- 29_CD -RRB-_-RRB- or_CC Metatool_NN -LRB-_-LRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, provide_VBP slightly_RB more_JJR sophisticated_JJ means_NNS of_IN structuring_VBG output_NN ,_, but_CC none_NN of_IN these_DT matches_NNS the_DT sophistication_NN of_IN parsing_VBG technology_NN ._.
+The_DT XML_NN DOM_NN is_VBZ useful_JJ when_WRB writing_VBG small_JJ XML_NN files_NNS ._.
+The_DT applicat_NN
+ritten_VBN out_RP ._.
+8_CD ._.
+Customizability_NNP A_NNP full_JJ implementation_NN of_IN an_DT RDF\/XMl_NN serializer_NN should_MD be_VB readily_RB customizable_JJ for_IN the_DT various_JJ RDF_NNP subdialects_NNS like_IN RDF_NNP Schema_NNP -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, DAML_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, CC\/PP_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, RSS_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, PRISM_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Each_DT of_IN these_DT either_CC explicitly_RB or_CC implicitly_RB uses_VBZ only_RB a_DT subset_NN of_IN the_DT full_JJ RDF\/XML_NN grammar_NN ._.
+Also_RB the_DT pragmatic_JJ rules_NNS may_MD have_VB a_DT different_JJ force_NN with_IN each_DT ._.
+12sHence_NN customizability_NN includes_VBZ 7_CD :_: •_CD T_NN
+tic_JJ representation_NN of_IN the_DT sentence_NN are_VBP representations_NNS of_IN the_DT sentence_NN and_CC we_PRP mediate_VBP between_IN the_DT two_CD using_VBG the_DT grammar_NN ._.
+Both_DT are_VBP annotations_NNS over_IN the_DT grammar_NN ,_, and_CC have_VBP a_DT theoretically_RB similar_JJ status_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4_LS ._.
+Universal_NNP Algebra_NNP ,_, Parsing_NNP and_CC Unparsing_NNP This_NNP section_NN should_MD be_VB omitted_VBN by_IN the_DT reader_NN uninterested_JJ in_IN theory_NN ._.
+To_TO explore_VB the_DT insight_NN of_IN computational_JJ linguists_NNS in_IN more_JJR depth_NN ,_, we_PRP will_MD employ_VB the_DT u_NN
+,_, despite_IN being_VBG XML_NN ,_, is_VBZ only_RB machine-readable_JJ ._.
+People_NNS can_MD not_RB understand_VB it_PRP ._.
+A_DT DAML_NN ontology_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- read_VBN in_IN and_CC written_VBN out_RP by_IN an_DT RDF_NN processor_NN becomes_VBZ unintelligible_JJ to_TO the_DT DAML_NNP expert_NN ._.
+A_DT CC\/PP_NN profile_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ mangled_JJ to_TO the_DT point_NN of_IN ceasing_VBG to_TO be_VB a_DT CC\/PP_NN profile_NN ._.
+RDF\/XML_NN is_VBZ only_RB human_JJ readable_NN in_IN its_PRP$ abbreviated_JJ form_NN ._.
+2s2_FW .2.1_FW Blank_FW Nodes_FW A_NN worry_NN when_WRB writing_VBG a_DT basic_JJ syntax_NN output_NN routine_NN is_VBZ what_WP to_TO do_VB
+nd_NN of_IN each_DT element_NN -LRB-_-LRB- rather_RB like_IN SAX_NNP events_NNS -RRB-_-RRB- •_VBP Some_DT order_NN may_MD be_VB imposed_VBN on_IN the_DT unordered_JJ attribute_NN nodes_NNS ._.
+These_DT steps_NNS are_VBP performed_VBN by_IN the_DT RDF_NNP lexer_NN ,_, which_WDT in_IN addition_NN ,_, recognizes_VBZ key_JJ qualified_JJ names_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- qnames_NNS -RRB-_-RRB- on_IN elements_NNS and_CC attributes_NNS ,_, such_JJ as_IN rdf_NN :_: Description_NN and_CC rdf_NN :_: about_IN ._.
+4_LS ._.
+Design_NN with_IN Java_NNP and_CC JavaCC_NNP Key_NNP design_NN decisions_NNS concern_VBP the_DT implementation_NN of_IN coroutines_NNS and_CC the_DT general_JJ approach_NN to_TO bo_VB
+taflow_JJ link_NN between_IN the_DT two_CD coparsers_NNS ,_, and_CC hence_RB the_DT nature_NN of_IN the_DT RDF_NNP lexer_NN ._.
+4_CD Graph_NN BuildersClues_NNS come_VBP from_IN XML_NN Information_NNP Set_NNP -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, the_DT XPath_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- data_NNS model_NN and_CC from_IN grammars_NNS for_IN RDF_NNP like_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT are_VBP explicitly_RB in_IN terms_NNS of_IN items_NNS from_IN such_JJ information_NN models_NNS ._.
+In_IN particular_JJ the_DT XPath_NN data_NN model_NN element_NN ,_, attribute_NN and_CC text_NN nodes_NNS are_VBP constrained_VBN by_IN an_DT RDF_NNP grammar_NN ._.
+The_DT architectural_JJ choice_NN o_NN
+ursive_JJ descent_NN ._.
+This_DT too_RB has_VBZ proved_VBN to_TO be_VB difficult_JJ to_TO maintain_VB ._.
+VRP_NN is_VBZ better_RB structured_VBN as_IN an_DT RDF_NN parser_NN than_IN either_DT of_IN the_DT other_JJ two_CD ._.
+It_PRP uses_VBZ an_DT explicit_JJ RDF\/XML_NN grammar_NN which_WDT is_VBZ compiled_VBN with_IN CUP_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: into_IN Java_NNP code_NN ._.
+This_DT grammar_NN attacks_VBZ both_CC the_DT RDF_NN and_CC XML_NN parts_NNS of_IN the_DT 3sspecification_NN at_IN the_DT same_JJ level_NN and_CC in_IN one_CD pass_NN ._.
+CUP_NN ,_, like_IN yacc_NN ,_, generates_VBZ LALR_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- parsers_NNS through_IN the_DT use_NN of_IN shift_NN &_CC reduce_VB t_NN
+recursive_JJ descent_NN parser_NN ,_, getting_VBG most_JJS of_IN the_DT benefits_NNS from_IN both_DT features_NNS ._.
+During_IN the_DT development_NN of_IN ARP_NNP one_CD version_NN was_VBD coded_VBN with_IN three_CD different_JJ parser_NN generators_NNS :_: JavaCC_NN ,_, CUP_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- and_CC BYACC\/Java_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+CUP_NN and_CC BYACC\/Java_NN are_VBP very_RB similar_JJ ,_, principal_JJ differences_NNS being_VBG :_: •_CD CUP_NN is_VBZ the_DT better_RB known_VBN Java_NNP LALR_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- system_NN •_FW BYACC\/Java_FW is_VBZ a_DT straight_JJ port_NN of_IN the_DT very_RB well-known_JJ yacc_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- LALR_NN -LRB-_-LRB- 1_LS -RRB-_-RRB- system_NN ._.
+•_NN CUP_NN
+the_DT coparsers_NNS ._.
+A_DT further_JJ design_NN decision_NN ,_, omitted_VBN from_IN this_DT paper_NN ,_, is_VBZ the_DT triple_JJ production_NN interface_NN by_IN which_WDT the_DT RDF_NNP parser_NN communicates_VBZ with_IN the_DT rest_NN of_IN the_DT RDF_NN system_NN ._.
+See_NNP Melnik_NNP 's_POS ``_`` Stanford_NNP API_NNP ''_'' =_SYM -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: for_IN an_DT example_NN approach_NN ._.
+4.1_CD Coroutines_NNS within_IN Java_NNP The_NNP Java_NNP Virtual_NNP Machine_NNP is_VBZ a_DT multithreaded_JJ environment_NN without_IN support_NN for_IN coroutines_NNS ._.
+As_IN such_JJ ,_, a_DT natural_JJ ,_, if_IN expensive_JJ ,_, approach_NN to_TO coroutines_NNS is_VBZ
+n_NN ,_, one_CD of_IN the_DT parsers_NNS is_VBZ inverted_VBN so_IN that_IN it_PRP can_MD function_VB as_IN a_DT subroutine_NN to_TO the_DT other_JJ ._.
+2_CD ._.
+RDF\/XML_FW Parsers_FW We_PRP briefly_RB survey_VBP the_DT following_JJ three_CD RDF\/XML_NN parsers_NNS ,_, all_DT written_VBN in_IN Java_NNP :_: SiRPAC_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, VRP_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =-[_NN 30_CD -RRB-_-RRB- ,_, RDFFilter_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Both_CC SiRPAC_NN and_CC RDFFilter_NN are_VBP built_VBN on_IN top_NN of_IN SAX_NN XML_NN parsers_NNS ._.
+As_IN such_PDT the_DT main_JJ method_NN of_IN the_DT program_NN invokes_VBZ the_DT SAX_NNP parser_NN ._.
+As_IN various_JJ XML_NN syntactic_JJ constructs_NNS are_VBP recognized_VBN t_NN
+ne_NN of_IN the_DT parsers_NNS is_VBZ inverted_VBN so_IN that_IN it_PRP can_MD function_VB as_IN a_DT subroutine_NN to_TO the_DT other_JJ ._.
+2_CD ._.
+RDF\/XML_FW Parsers_FW We_PRP briefly_RB survey_VBP the_DT following_JJ three_CD RDF\/XML_NN parsers_NNS ,_, all_DT written_VBN in_IN Java_NNP :_: SiRPAC_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, VRP_NN -LRB-_-LRB- 29_CD -RRB-_-RRB- =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_JJ -_: ,_, RDFFilter_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Both_CC SiRPAC_NN and_CC RDFFilter_NN are_VBP built_VBN on_IN top_NN of_IN SAX_NN XML_NN parsers_NNS ._.
+As_IN such_PDT the_DT main_JJ method_NN of_IN the_DT program_NN invokes_VBZ the_DT SAX_NNP parser_NN ._.
+As_IN various_JJ XML_NN syntactic_JJ constructs_NNS are_VBP recognized_VBN the_DT S_NN
+at_IN least_JJS a_DT factorial_JJ number_NN of_IN different_JJ possible_JJ orders_NNS in_IN its_PRP$ considerations_NNS of_IN all_DT serializations_NNS ._.
+5.1_CD LL_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- Parsing_VBG Instead_RB ,_, we_PRP take_VBP our_PRP$ inspiration_NN from_IN recursive_JJ descent_NN LL_NN -LRB-_-LRB- k_NN -RRB-_-RRB- parsers_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT express_VBP each_DT grammar_NN rule_NN as_IN a_DT procedure_NN ;_: choice_NN points_NNS in_IN the_DT grammar_NN are_VBP explicitly_RB represented_VBN in_IN the_DT procedures_NNS by_IN lookahead_NN code_NN ._.
+The_DT lookahead_NN code_NN uses_VBZ the_DT leftmost_JJS section_NN of_IN the_DT unmat_NN
+lly_RB using_VBG a_DT recursive_JJ style_NN of_IN object_NN oriented_JJ programming_NN ,_, making_VBG unbounded_JJ use_NN of_IN the_DT call_NN stack_VB ._.
+We_PRP note_VBP that_IN such_PDT a_DT serialization_NN style_NN does_VBZ follow_VB a_DT top-down_JJ application_NN of_IN the_DT XML_NN grammar_NN rules_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, often_RB with_IN one_CD method_NN corresponding_VBG to_TO each_DT rule_NN in_IN the_DT grammar_NN ._.
+However_RB ,_, the_DT choices_NNS available_JJ in_IN the_DT grammar_NN are_VBP made_VBN earlier_RBR ,_, during_IN the_DT construction_NN of_IN the_DT DOM_NNP tree_NN ._.
+JSP_NNP and_CC Metatool_NNP each_DT provid_NN

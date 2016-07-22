@@ -1,0 +1,114 @@
+Statically_RB locating_VBG web_NN application_NN bugs_NNS caused_VBN by_IN asynchronous_JJ calls_NNS
+Ajax_NNP becomes_VBZ more_RBR and_CC more_RBR important_JJ for_IN web_NN applications_NNS that_WDT care_VBP about_IN client_NN side_NN user_NN experience_NN ._.
+It_PRP allows_VBZ sending_VBG requests_NNS asynchronously_RB ,_, without_IN blocking_VBG clients_NNS from_IN continuing_VBG execution_NN ._.
+Callback_NN functions_NNS are_VBP only_RB executed_VBN upon_IN receiving_VBG the_DT responses_NNS ._.
+While_IN such_JJ mechanism_NN makes_VBZ browsing_VBG a_DT smooth_JJ experience_NN ,_, it_PRP may_MD cause_VB severe_JJ problems_NNS in_IN the_DT presence_NN of_IN unexpected_JJ network_NN latency_NN ,_, due_JJ to_TO the_DT non-determinism_NN of_IN asynchronism_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP demonstrate_VBP the_DT possible_JJ problems_NNS caused_VBN by_IN the_DT asynchronism_NN and_CC propose_VBP a_DT static_JJ program_NN analysis_NN to_TO automatically_RB detect_VB such_JJ bugs_NNS in_IN web_NN applications_NNS ._.
+As_IN client_NN side_NN Ajax_NN code_NN is_VBZ often_RB wrapped_VBN in_IN server-side_JJ scripts_NNS ,_, we_PRP also_RB develop_VBP a_DT technique_NN that_WDT extracts_VBZ client-side_JJ JavaScript_NNP code_NN from_IN server-side_JJ scripts_NNS ._.
+We_PRP evaluate_VBP our_PRP$ technique_NN on_IN a_DT number_NN of_IN real-world_JJ web_NN applications_NNS ._.
+Our_PRP$ results_NNS show_VBP that_IN it_PRP can_MD effectively_RB identify_VB real_JJ bugs_NNS ._.
+We_PRP also_RB discuss_VBP possible_JJ ways_NNS to_TO avoid_VB such_JJ bugs_NNS ._.
+le_DT modifications_NNS may_MD be_VB made_VBN to_TO the_DT permanent_JJ state_NN ._.
+Traditional_JJ data_NNS race_NN detection_NN techniques_NNS assume_VBP multiple_JJ threads_NNS or_CC processes_NNS ,_, and_CC rely_VBP on_IN reasoning_NN about_IN synchronizations_NNS and_CC shared_JJ variables_NNS =_JJ -_: =[_NN 7_CD ,_, 19_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN our_PRP$ case_NN ,_, JS_NN execution_NN is_VBZ essentially_RB single-threaded_JJ and_CC there_EX are_VBP no_DT synchronizations_NNS ._.
+The_DT atomicity_NN violation_NN problem_NN defined_VBN in_IN case_NN -LRB-_-LRB- c_NN -RRB-_-RRB- is_VBZ similar_JJ to_TO that_DT for_IN regular_JJ programs_NNS ._.
+Our_PRP$ problem_NN i_FW
+ion_NN ._.
+Our_PRP$ analysis_NN is_VBZ also_RB static_JJ but_CC aims_VBZ at_IN a_DT different_JJ problem_NN ._.
+Data_NN Race_NN Detection_NN and_CC Atomicity_NN Violation_NN ._.
+There_EX are_VBP many_JJ existing_VBG works_NNS on_IN data_NNS race_NN detection_NN -LRB-_-LRB- 7_CD ,_, 19_CD ,_, 16_CD -RRB-_-RRB- and_CC atomicity_NN violation_NN =_JJ -_: =[_NN 17_CD ,_, 9_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS of_IN them_PRP are_VBP designed_VBN for_IN threads_NNS or_CC processes_NNS ._.
+The_DT execution_NN model_NN is_VBZ different_JJ from_IN that_DT of_IN JS_NN ._.
+They_PRP often_RB leverage_NN synchronization_NN primitives_NNS ._.
+Hence_RB ,_, they_PRP are_VBP not_RB directly_RB applicable_JJ ._.
+8_CD ._.
+CONC_NN
+tions_NNS ,_, simulate_VBP user_NN events_NNS and_CC infer_VB model_NN automatically_RB ._.
+In_IN comparison_NN ,_, our_PRP$ technique_NN is_VBZ static_JJ and_CC focusing_VBG specifically_RB on_IN problems_NNS caused_VBN by_IN asynchronous_JJ calls_NNS ._.
+JavaScript_NNP Analysis_NNP ._.
+Recent_JJ works_NNS =_JJ -_: =[_NN 21_CD ,_, 18_CD -RRB-_-RRB- -_: =_JJ -_: survey_NN the_DT use_NN of_IN JS_NNP ,_, including_VBG dynamic_JJ features_NNS and_CC their_PRP$ impact_NN on_IN security_NN concerns_NNS ._.
+Several_JJ works_NNS apply_VBP static_JJ analysis_NN to_TO identifythevulnerabilitiesincludingDrive-byDownloadand_JJ Cross_NN Site_NN Script_NN
+humbs_NNS -LRB-_-LRB- name_NN -RRB-_-RRB- -LCB-_-LRB- 581_CD for_IN -LRB-_-LRB- i_LS =_JJ 0_CD ;_: i_LS -LRB-_-LRB- thumbArray_NN ._.
+length_NN ;_: i_LS +_CC +_CC -RRB-_-RRB- -LCB-_-LRB- 664_CD myDeleteDC_NN ._.
+innerHTML_NN +_CC =_JJ `_`` <input type="button" onclick="’ + ‘doDelete(\‘’+ i ‘\’);">_NN '_'' +_CC ..._: ;_: -RCB-_-RRB- 681_CD -RCB-_-RRB- Figure_NNP 4_CD :_: Code_NNP snippet_NN from_IN Ajallerix_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: we_PRP replace_VBP predicates_NNS in_IN the_DT script_NN with_IN calls_NNS to_TO our_PRP$ functions_NNS ._.
+Our_PRP$ technique_NN then_RB automatically_RB executes_VBZ the_DT transformed_VBN program_NN ._.
+During_IN execution_NN ,_, our_PRP$ functionsgain_NN controlateach_NN predicatepointand_NN
+ripts_NNS and_CC presents_VBZ the_DT possible_JJ client_NN pages_NNS in_IN regular_JJ expressions_NNS ._.
+However_RB ,_, since_IN such_JJ regular_JJ expressions_NNS are_VBP not_RB valid_JJ JS_NN code_NN ,_, program_NN analysis_NN would_MD not_RB be_VB directly_RB applicable_JJ ._.
+Besides_IN ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: apply_VB symbolic_JJ execution_NN technique_NN to_TO generate_VB inputs_NNS to_TO cover_VB feasible_JJ control_NN flow_NN paths_NNS in_IN server_NN side_NN scripts_NNS ._.
+Thus_RB ,_, the_DT pages_NNS generated_VBN by_IN their_PRP$ technique_NN are_VBP precise_JJ ._.
+However_RB ,_, symbolic_JJ executio_NN
+controlflowpaths_NNS ._.
+Thus_RB ,_, before_IN feeding_VBG the_DT pages_NNS to_TO our_PRP$ JS_NN analysis_NN ,_, a_DT HTML_NNP syntax_NN checker_NN is_VBZ used_VBN to_TO filter_NN out_RP invalid_JJ pages_NNS ._.
+5_CD ._.
+EVALUATION_NN Our_PRP$ system_NN is_VBZ implemented_VBN based_VBN on_IN the_DT WALA_NNP infrastructure_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: andtheopensource_NN PHP_NN compiler_NN -LRB-_-LRB- phc_NN -RRB-_-RRB- -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+The_DT implementation_NN consists_VBZ of_IN two_CD parts_NNS ._.
+The_DT client_NN page_NN extraction_NN part_NN is_VBZ implemented_VBN as_IN a_DT plugin_NN of_IN the_DT phc_NN compiler_NN ._.
+The_DT plug-in_JJ traverses_VBZ the_DT AST_NNP provide_VB
+in_IN the_DT sense_NN that_IN we_PRP do_VBP n't_RB have_VB synchronizations_NNS to_TO leverage_NN ._.
+Furthermore_RB ,_, traditional_JJ atomicity_NN violation_NN detection_NN relies_VBZ on_IN users_NNS to_TO provide_VB an_DT approximation_NN of_IN atomic_JJ regions_NNS in_IN subject_JJ programs_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN our_PRP$ case_NN ,_, such_JJ information_NN can_MD be_VB precisely_RB derived_VBN from_IN JS_NN code_NN as_IN we_PRP know_VBP where_WRB the_DT atomicity_NN should_MD hold_VB ._.
+That_DT is_VBZ the_DT duration_NN between_IN a_DT request_NN and_CC its_PRP$ response_NN ._.
+Thus_RB ,_, our_PRP$ technique_NN is_VBZ fully_RB
+the_DT value_NN of_IN action_NN sent_VBN in_IN the_DT client_NN 's_POS request_NN ._.
+Thus_RB ,_, two_CD different_JJ pages_NNS can_MD be_VB generated_VBN ._.
+Several_JJ existing_VBG techniques_NNS are_VBP relevant_JJ to_TO solving_VBG client_NN side_NN page_NN extraction_NN problem_NN ._.
+Minamide_NNP 's_POS work_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: analyzes_VBZ server_NN scripts_NNS and_CC presents_VBZ the_DT possible_JJ client_NN pages_NNS in_IN regular_JJ expressions_NNS ._.
+However_RB ,_, since_IN such_JJ regular_JJ expressions_NNS are_VBP not_RB valid_JJ JS_NN code_NN ,_, program_NN analysis_NN would_MD not_RB be_VB directly_RB applicable_JJ
+le_DT modifications_NNS may_MD be_VB made_VBN to_TO the_DT permanent_JJ state_NN ._.
+Traditional_JJ data_NNS race_NN detection_NN techniques_NNS assume_VBP multiple_JJ threads_NNS or_CC processes_NNS ,_, and_CC rely_VBP on_IN reasoning_NN about_IN synchronizations_NNS and_CC shared_JJ variables_NNS =_JJ -_: =[_NN 7_CD ,_, 19_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN our_PRP$ case_NN ,_, JS_NN execution_NN is_VBZ essentially_RB single-threaded_JJ and_CC there_EX are_VBP no_DT synchronizations_NNS ._.
+The_DT atomicity_NN violation_NN problem_NN defined_VBN in_IN case_NN -LRB-_-LRB- c_NN -RRB-_-RRB- is_VBZ similar_JJ to_TO that_DT for_IN regular_JJ programs_NNS ._.
+Our_PRP$ problem_NN i_FW
+le_DT modifications_NNS may_MD be_VB made_VBN to_TO the_DT permanent_JJ state_NN ._.
+Traditional_JJ data_NNS race_NN detection_NN techniques_NNS assume_VBP multiple_JJ threads_NNS or_CC processes_NNS ,_, and_CC rely_VBP on_IN reasoning_NN about_IN synchronizations_NNS and_CC shared_JJ variables_NNS =_JJ -_: =[_NN 7_CD ,_, 19_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN our_PRP$ case_NN ,_, JS_NN execution_NN is_VBZ essentially_RB single-threaded_JJ and_CC there_EX are_VBP no_DT synchronizations_NNS ._.
+The_DT atomicity_NN violation_NN problem_NN defined_VBN in_IN case_NN -LRB-_-LRB- c_NN -RRB-_-RRB- is_VBZ similar_JJ to_TO that_DT for_IN regular_JJ programs_NNS ._.
+Our_PRP$ problem_NN i_FW
+rks_NNS apply_VBP static_JJ analysis_NN to_TO identifythevulnerabilitiesincludingDrive-byDownloadand_JJ Cross_NN Site_NN Scripting_NN -LRB-_-LRB- XSS_NN -RRB-_-RRB- ._.
+Chugh_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- applies_VBZ information_NN flow_NN analysis_NN to_TO avoid_VB information_NN leak_NN ._.
+Wassermann_NNP and_CC Su_NNP =_SYM -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: apply_VB taint_NN analysis_NN and_CC string_NN analysis_NN to_TO perform_VB input_NN check_NN in_IN order_NN to_TO detect_VB the_DT XSS_NN vulnerabilities_NNS ._.
+Guha_NNP et_FW al._FW -LRB-_-LRB- 10_CD -RRB-_-RRB- use_VBP static_JJ analysis_NN to_TO extract_VB a_DT model_NN of_IN expected_VBN user_NN behavior_NN to_TO detect_VB
+erver_NN scripts_NNS and_CC presents_VBZ the_DT possible_JJ client_NN pages_NNS in_IN regular_JJ expressions_NNS ._.
+However_RB ,_, since_IN such_JJ regular_JJ expressions_NNS are_VBP not_RB valid_JJ JS_NN code_NN ,_, program_NN analysis_NN would_MD not_RB be_VB directly_RB applicable_JJ ._.
+Besides_IN ,_, =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 11_CD -RRB-_-RRB- apply_VBP symbolic_JJ execution_NN technique_NN to_TO generate_VB inputs_NNS to_TO cover_VB feasible_JJ control_NN flow_NN paths_NNS in_IN server_NN side_NN scripts_NNS ._.
+Thus_RB ,_, the_DT pages_NNS generated_VBN by_IN their_PRP$ technique_NN are_VBP precise_JJ ._.
+However_RB ,_, symbolic_JJ
+ion_NN ._.
+Our_PRP$ analysis_NN is_VBZ also_RB static_JJ but_CC aims_VBZ at_IN a_DT different_JJ problem_NN ._.
+Data_NN Race_NN Detection_NN and_CC Atomicity_NN Violation_NN ._.
+There_EX are_VBP many_JJ existing_VBG works_NNS on_IN data_NNS race_NN detection_NN -LRB-_-LRB- 7_CD ,_, 19_CD ,_, 16_CD -RRB-_-RRB- and_CC atomicity_NN violation_NN =_JJ -_: =[_NN 17_CD ,_, 9_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS of_IN them_PRP are_VBP designed_VBN for_IN threads_NNS or_CC processes_NNS ._.
+The_DT execution_NN model_NN is_VBZ different_JJ from_IN that_DT of_IN JS_NN ._.
+They_PRP often_RB leverage_NN synchronization_NN primitives_NNS ._.
+Hence_RB ,_, they_PRP are_VBP not_RB directly_RB applicable_JJ ._.
+8_CD ._.
+CONC_NN
+c_NN manipulations_NNS ._.
+Such_JJ techniques_NNS require_VBP lots_NNS of_IN manual_JJ efforts_NNS ._.
+The_DT other_JJ kind_NN of_IN techniques_NNS is_VBZ to_TO automatically_RB discover_VB user_NN interfaces_NNS and_CC exercise_VB them_PRP to_TO reduce_VB the_DT human_JJ efforts_NNS ,_, such_JJ as_IN ATUSA_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN general_JJ ,_, these_DT testing_NN techniques_NNS focus_VBP on_IN achieving_VBG high_JJ coverage_NN on_IN the_DT user_NN action_NN sequences_NNS ._.
+They_PRP hardly_RB serve_VBP our_PRP$ purpose_NN as_IN our_PRP$ problems_NNS are_VBP due_JJ to_TO non-determinism_JJ ._.
+Even_RB with_IN the_DT same_JJ actio_NN
+ies_NNS information_NN flow_NN analysis_NN to_TO avoid_VB information_NN leak_NN ._.
+Wassermann_NNP and_CC Su_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- apply_VBP taint_NN analysis_NN and_CC string_NN analysis_NN to_TO perform_VB input_NN check_NN in_IN order_NN to_TO detect_VB the_DT XSS_NN vulnerabilities_NNS ._.
+Guha_NNP et_FW al._FW =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: use_VB static_JJ analysis_NN to_TO extract_VB a_DT model_NN of_IN expected_VBN user_NN behavior_NN to_TO detect_VB Ajax_NNP intrusion_NN ._.
+Our_PRP$ analysis_NN is_VBZ also_RB static_JJ but_CC aims_VBZ at_IN a_DT different_JJ problem_NN ._.
+Data_NN Race_NN Detection_NN and_CC Atomicity_NN Violation_NN ._.
+Th_NN
+of_IN JS_NNP ,_, including_VBG dynamic_JJ features_NNS and_CC their_PRP$ impact_NN on_IN security_NN concerns_NNS ._.
+Several_JJ works_NNS apply_VBP static_JJ analysis_NN to_TO identifythevulnerabilitiesincludingDrive-byDownloadand_JJ Cross_NN Site_NN Scripting_NN -LRB-_-LRB- XSS_NN -RRB-_-RRB- ._.
+Chugh_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: applies_VBZ information_NN flow_NN analysis_NN to_TO avoid_VB information_NN leak_NN ._.
+Wassermann_NNP and_CC Su_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- apply_VBP taint_NN analysis_NN and_CC string_NN analysis_NN to_TO perform_VB input_NN check_NN in_IN order_NN to_TO detect_VB the_DT XSS_NN vulnerabilities_NNS ._.
+Guha_FW et_FW
+recorder_NN interactions_NNS ._.
+They_PRP require_VBP lots_NNS of_IN manual_JJ effort_NN ._.
+Furthermore_RB ,_, these_DT techniques_NNS are_VBP not_RB good_JJ at_IN the_DT problems_NNS we_PRP are_VBP addressing_VBG because_IN they_PRP do_VBP not_RB consider_VB non-determinism_JJ ._.
+Marchetto_NNP et_FW al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP a_DT state-based_JJ approach_NN to_TO test_VB Ajax_NNP applications_NNS ._.
+They_PRP collect_VBP traces_NNS of_IN JS_NN execution_NN and_CC construct_NN state_NN machines_NNS from_IN the_DT traces_NNS ._.
+Test_NN cases_NNS are_VBP generated_VBN from_IN the_DT state_NN machines_NNS to_TO expose_VB
+tions_NNS ,_, simulate_VBP user_NN events_NNS and_CC infer_VB model_NN automatically_RB ._.
+In_IN comparison_NN ,_, our_PRP$ technique_NN is_VBZ static_JJ and_CC focusing_VBG specifically_RB on_IN problems_NNS caused_VBN by_IN asynchronous_JJ calls_NNS ._.
+JavaScript_NNP Analysis_NNP ._.
+Recent_JJ works_NNS =_JJ -_: =[_NN 21_CD ,_, 18_CD -RRB-_-RRB- -_: =_JJ -_: survey_NN the_DT use_NN of_IN JS_NNP ,_, including_VBG dynamic_JJ features_NNS and_CC their_PRP$ impact_NN on_IN security_NN concerns_NNS ._.
+Several_JJ works_NNS apply_VBP static_JJ analysis_NN to_TO identifythevulnerabilitiesincludingDrive-byDownloadand_JJ Cross_NN Site_NN Script_NN

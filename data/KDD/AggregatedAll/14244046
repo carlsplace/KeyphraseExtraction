@@ -1,0 +1,188 @@
+Model_NNP order_NN selection_NN for_IN boolean_JJ matrix_NN factorization_NN
+Matrix_NNP factorizations_NNS --_: where_WRB a_DT given_VBN data_NN matrix_NN is_VBZ approximated_VBN by_IN a_DT product_NN of_IN two_CD or_CC more_JJR factor_NN matrices_NNS --_: are_VBP powerful_JJ data_NNS mining_NN tools_NNS ._.
+Among_IN other_JJ tasks_NNS ,_, matrix_NN factorizations_NNS are_VBP often_RB used_VBN to_TO separate_VB global_JJ structure_NN from_IN noise_NN ._.
+This_DT ,_, however_RB ,_, requires_VBZ solving_VBG the_DT `_`` model_NN order_NN selection_NN problem_NN '_'' of_IN determining_VBG where_WRB fine-grained_JJ structure_NN stops_NNS ,_, and_CC noise_NN starts_NNS ,_, i.e._FW ,_, what_WP is_VBZ the_DT proper_JJ size_NN of_IN the_DT factor_NN matrices_NNS ._.
+Boolean_JJ matrix_NN factorization_NN -LRB-_-LRB- BMF_NN -RRB-_-RRB- --_: where_WRB data_NNS ,_, factors_NNS ,_, and_CC matrix_NN product_NN are_VBP Boolean_NNP --_: has_VBZ received_VBN increased_VBN attention_NN from_IN the_DT data_NNS mining_NN community_NN in_IN recent_JJ years_NNS ._.
+The_DT technique_NN has_VBZ desirable_JJ properties_NNS ,_, such_JJ as_IN high_JJ interpretability_NN and_CC natural_JJ sparsity_NN ._.
+But_CC so_RB far_RB no_DT method_NN for_IN selecting_VBG the_DT correct_JJ model_NN order_NN for_IN BMF_NNP has_VBZ been_VBN available_JJ ._.
+In_IN this_DT paper_NN we_PRP propose_VBP to_TO use_VB the_DT Minimum_NNP Description_NN Length_NN -LRB-_-LRB- MDL_NN -RRB-_-RRB- principle_NN for_IN this_DT task_NN ._.
+Besides_IN solving_VBG the_DT problem_NN ,_, this_DT well-founded_JJ approach_NN has_VBZ numerous_JJ benefits_NNS ,_, e.g._FW ,_, it_PRP is_VBZ automatic_JJ ,_, does_VBZ not_RB require_VB a_DT likelihood_NN function_NN ,_, is_VBZ fast_JJ ,_, and_CC ,_, as_IN experiments_NNS show_VBP ,_, is_VBZ highly_RB accurate_JJ ._.
+We_PRP formulate_VBP the_DT description_NN length_NN function_NN for_IN BMF_NN in_IN general_JJ --_: making_VBG it_PRP applicable_JJ for_IN any_DT BMF_NNP algorithm_NN ._.
+We_PRP extend_VBP an_DT existing_VBG algorithm_NN for_IN BMF_NNP to_TO use_VB MDL_NNP to_TO identify_VB the_DT best_JJS Boolean_JJ matrix_NN factorization_NN ,_, analyze_VBP the_DT complexity_NN of_IN the_DT problem_NN ,_, and_CC perform_VB an_DT extensive_JJ experimental_JJ evaluation_NN to_TO study_VB its_PRP$ behavior_NN ._.
+oo_RB high_JJ ,_, the_DT factors_NNS start_VBP to_TO specialize_VB to_TO noise_NN ,_, and_CC hence_RB ,_, the_DT cross-validation_NN error_NN increases_NNS ._.
+Normally_RB ,_, hold-out_JJ set_NN would_MD contain_VB either_CC rows_NNS or_CC columns_NNS ,_, but_CC not_RB both_DT ._.
+Recently_RB ,_, Owen_NNP and_CC Perry_NNP =_SYM -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT method_NN to_TO leave_VB out_RP a_DT sub-matrix_NN ._.
+The_DT method_NN is_VBZ based_VBN on_IN the_DT assumption_NN that_IN the_DT remaining_VBG matrix_NN has_VBZ the_DT same_JJ rank_NN as_IN the_DT original_JJ matrix_NN ,_, as_IN this_DT is_VBZ needed_VBN to_TO fit_VB the_DT factors_NNS to_TO the_DT test_NN
+es_NNS of_IN matrices_NNS ._.
+Boolean_JJ matrix_NN factorizations_NNS have_VBP been_VBN studied_VBN extensively_RB in_IN combinatorics_NNS -LRB-_-LRB- see_VB ,_, e.g._FW ,_, -LRB-_-LRB- 25_CD -RRB-_-RRB- and_CC references_NNS therein_RB -RRB-_-RRB- ._.
+The_DT use_NN of_IN Boolean_JJ factorizations_NNS in_IN data_NN mining_NN was_VBD proposed_VBN in_IN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC they_PRP are_VBP related_JJ to_TO many_JJ other_JJ data_NNS mining_NN methods_NNS -LRB-_-LRB- see_VB below_IN for_IN some_DT related_JJ work_NN and_CC -LRB-_-LRB- 20_CD -RRB-_-RRB- for_IN more_JJR -RRB-_-RRB- ._.
+Outside_JJ data_NNS mining_NN ,_, Boolean_JJ factorizations_NNS have_VBP found_VBN application_NN in_IN ,_, e.g._FW ,_, finding_VBG roles_NNS
+odel_NN order_NN ._.
+While_IN often_RB the_DT intrinsic_JJ dimension_NN refers_VBZ to_TO the_DT number_NN of_IN variables_NNS needed_VBN to_TO explain_VB the_DT data_NNS completely_RB -LRB-_-LRB- e.g._FW ,_, the_DT rank_NN of_IN a_DT matrix_NN -RRB-_-RRB- ,_, also_RB noise-invariant_JJ approaches_NNS have_VBP been_VBN studied_VBN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Tatti_NNP et_FW al._FW -LRB-_-LRB- 34_CD -RRB-_-RRB- defined_VBD intrinsic_JJ dimensionality_NN to_TO Boolean_NNP data_NNS based_VBN on_IN fractal_JJ dimensions_NNS ._.
+As_IN discussed_VBN by_IN Faloutsos_NNP and_CC Megalooikonomou_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, the_DT Minimum_NNP Description_NN Length_NN principle_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- is_VBZ a_DT
+ar_NN uses_VBZ for_IN matrix_NN factorizations_NNS are_VBP separating_VBG structure_NN and_CC noise_NN ,_, and_CC learning_VBG missing_JJ values_NNS of_IN matrices_NNS ._.
+Boolean_JJ matrix_NN factorizations_NNS have_VBP been_VBN studied_VBN extensively_RB in_IN combinatorics_NNS -LRB-_-LRB- see_VB ,_, e.g._FW ,_, =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_JJ -_: and_CC references_NNS therein_RB -RRB-_-RRB- ._.
+The_DT use_NN of_IN Boolean_JJ factorizations_NNS in_IN data_NN mining_NN was_VBD proposed_VBN in_IN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, and_CC they_PRP are_VBP related_JJ to_TO many_JJ other_JJ data_NNS mining_NN methods_NNS -LRB-_-LRB- see_VB below_IN for_IN some_DT related_JJ work_NN and_CC -LRB-_-LRB- 20_CD -RRB-_-RRB- for_IN mo_NN
+KRIMP_NN and_CC LESS_NN do_VBP not_RB allow_VB overlap_VB between_IN patterns_NNS covering_VBG the_DT same_JJ row_NN ._.
+All_DT three_CD typically_RB return_VB many_JJ more_JJR ,_, and_CC much_RB more_RBR specific_JJ ,_, patterns_NNS than_IN BMF_NNP ._.
+Summarization_NN ,_, proposed_VBN by_IN Chandola_NNP et_FW al._FW =_SYM -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, is_VBZ a_DT compressionbased_JJ approach_NN that_WDT identifies_VBZ a_DT group_NN of_IN itemsets_NNS such_JJ that_IN each_DT transaction_NN is_VBZ summarized_VBN by_IN one_CD itemset_NN with_IN as_RB little_JJ loss_NN of_IN information_NN as_IN possible_JJ ._.
+Wang_NNP and_CC Parthasararthy_NNP -LRB-_-LRB- 40_CD
+set_VBN mining_NN techniques_NNS are_VBP related_VBN ._.
+KRIMP_NN -LRB-_-LRB- 38_CD -RRB-_-RRB- pioneered_VBD the_DT use_NN of_IN MDL_NN for_IN identifying_VBG good_JJ pattern_NN sets_NNS ,_, and_CC selects_VBZ that_IN group_NN of_IN frequent_JJ itemsets_NNS that_WDT describes_VBZ the_DT data_NNS best_RB ._.
+LESS_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- and_CC PACK_NN =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =_SYM -_: follow_VB a_DT similar_JJ approach_NN ,_, but_CC respectively_RB describe_VBP data_NNS using_VBG low-entropy_JJ sets_NNS and_CC decision_NN trees_NNS ._.
+A_DT major_JJ difference_NN between_IN these_DT methods_NNS and_CC BMF_NN is_VBZ that_IN rows_NNS are_VBP only_RB covered_VBN using_VBG subsets_NNS of_IN th_DT
+municipalities_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+The_DT DNA_NN Amplification_NN data_NNS ,_, of_IN 4590-by-392_NN ,_, contains_VBZ information_NN on_IN DNA_NN copy_NN number_NN amplifications_NNS ._.
+Such_JJ copies_NNS activate_VBP oncogenes_NNS and_CC are_VBP hallmarks_NNS of_IN nearly_RB all_DT advanced_JJ tumors_NNS =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Amplified_VBN genes_NNS represent_VBP attractive_JJ targets_NNS for_IN therapy_NN ,_, diagnostics_NNS and_CC prognostics_NNS ._.
+This_DT dataset_NN exhibits_VBZ a_DT banded_VBN structure_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+The_DT Mammals_NNPS presence_NN data_NNS 4_CD consists_VBZ of_IN presence_NN records_NNS of_IN 124_CD
+ctivate_NN oncogenes_NNS and_CC are_VBP hallmarks_NNS of_IN nearly_RB all_DT advanced_JJ tumors_NNS -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+Amplified_VBN genes_NNS represent_VBP attractive_JJ targets_NNS for_IN therapy_NN ,_, diagnostics_NNS and_CC prognostics_NNS ._.
+This_DT dataset_NN exhibits_VBZ a_DT banded_VBN structure_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT Mammals_NNPS presence_NN data_NNS 4_CD consists_VBZ of_IN presence_NN records_NNS of_IN 124_CD European_JJ mammals_NNS within_IN 2183_CD geographical_JJ areas_NNS of_IN 50_CD ×_CD 50_CD kilometers_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+Newsgroups_NNP is_VBZ a_DT subset_NN of_IN the_DT 20Newsgroups_FW dataset_FW ,_, 5_CD cont_NN
+Tiling_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, which_WDT essentially_RB employs_VBZ the_DT well_RB known_VBN greedy_JJ set-cover_JJ algorithm_NN to_TO iteratively_RB cover_VB the_DT data_NNS with_IN that_DT itemset_NN that_WDT covers_VBZ the_DT most_RBS uncovered_JJ 1s_NNS in_IN the_DT data_NNS ._.
+Kontonasios_NNP and_CC De_NNP Bie_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: iteratively_RB discover_VB the_DT most_RBS interesting_JJ `_`` noisy_JJ tile_NN '_'' ,_, where_WRB they_PRP define_VBP interestingness_NN through_IN a_DT local_JJ MDL_NN score_NN ._.
+Unlike_IN our_PRP$ situation_NN ,_, it_PRP does_VBZ not_RB return_VB a_DT model_NN for_IN the_DT data_NNS ,_, but_CC rather_RB orders_NNS a_DT
+th_DT principle_NN ._.
+5.1_CD MDL_NN ,_, a_DT brief_JJ primer_NN The_DT MDL_NN -LRB-_-LRB- Minimum_NNP Description_NN Length_NN -RRB-_-RRB- -LRB-_-LRB- 14_CD ,_, 31_CD -RRB-_-RRB- principle_NN ,_, like_IN its_PRP$ close_JJ cousin_NN MML_NNP -LRB-_-LRB- Minimum_NNP Message_NNP Length_NN -RRB-_-RRB- -LRB-_-LRB- 39_CD -RRB-_-RRB- ,_, is_VBZ a_DT practical_JJ version_NN of_IN Kolmogorov_NNP complexity_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+All_DT three_CD embrace_VBP the_DT slogan_NN Induction_NN by_IN Compression_NN ._.
+For_IN MDL_NNP ,_, this_DT principle_NN can_MD be_VB roughly_RB described_VBN as_IN follows_VBZ ._.
+Given_VBN a_DT set_NN of_IN models_NNS 1_CD H_NN ,_, the_DT best_JJS model_NN H_NN ∈_NN H_NN is_VBZ the_DT one_NN that_WDT minimizes_VBZ L_NN -LRB-_-LRB- H_NN -RRB-_-RRB- +_CC L_NN
+efore_RB ,_, pattern_NN set_VBD mining_NN techniques_NNS are_VBP related_VBN ._.
+KRIMP_NN -LRB-_-LRB- 38_CD -RRB-_-RRB- pioneered_VBD the_DT use_NN of_IN MDL_NN for_IN identifying_VBG good_JJ pattern_NN sets_NNS ,_, and_CC selects_VBZ that_IN group_NN of_IN frequent_JJ itemsets_NNS that_WDT describes_VBZ the_DT data_NNS best_RB ._.
+LESS_NN =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: and_CC PACK_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- follow_VBP a_DT similar_JJ approach_NN ,_, but_CC respectively_RB describe_VBP data_NNS using_VBG low-entropy_JJ sets_NNS and_CC decision_NN trees_NNS ._.
+A_DT major_JJ difference_NN between_IN these_DT methods_NNS and_CC BMF_NN is_VBZ that_IN rows_NNS are_VBP only_RB covered_VBN using_VBG
+e_LS Asso_NNP algorithm_NN to_TO solve_VB BMF_NN was_VBD proposed_VBN by_IN Miettinen_NNP et_FW al._FW -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Later_RB ,_, Lu_FW et_FW al._FW -LRB-_-LRB- 19_CD -RRB-_-RRB- proposed_VBD a_DT heuristic_NN based_VBN on_IN a_DT mixedinteger-programming_JJ formulation_NN ._.
+Independently_RB ,_, Belohlavek_NN and_CC Vychodil_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: gave_VBD an_DT algorithm_NN for_IN computing_VBG the_DT Boolean_JJ rank_NN of_IN a_DT matrix_NN based_VBN on_IN solving_VBG the_DT Set_NNP Cover_NNP problem_NN ._.
+At_IN worst_JJS case_NN this_DT algorithm_NN can_MD take_VB exponential_JJ time_NN and_CC does_VBZ not_RB guarantee_VB any_DT non-trivial_JJ appr_NN
+the_DT left-hand_JJ matrix_NN B_NN -RRB-_-RRB- and_CC their_PRP$ occurrences_NNS -LRB-_-LRB- the_DT righthand_NN matrix_NN C_NN -RRB-_-RRB- ._.
+As_IN such_JJ ,_, BMF_NN essentially_RB describes_VBZ the_DT data_NNS with_IN a_DT set_NN of_IN patterns_NNS ._.
+Therefore_RB ,_, pattern_NN set_VBD mining_NN techniques_NNS are_VBP related_VBN ._.
+KRIMP_NN =_JJ -_: =[_NN 38_CD -RRB-_-RRB- -_: =_SYM -_: pioneered_VBD the_DT use_NN of_IN MDL_NN for_IN identifying_VBG good_JJ pattern_NN sets_NNS ,_, and_CC selects_VBZ that_IN group_NN of_IN frequent_JJ itemsets_NNS that_WDT describes_VBZ the_DT data_NNS best_RB ._.
+LESS_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- and_CC PACK_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- follow_VBP a_DT similar_JJ approach_NN ,_, but_CC respective_JJ
+ber_NN of_IN latent_JJ dimensions_NNS in_IN synthetic_JJ and_CC real-world_JJ BMF_NN tasks_NNS .2_NN ._.
+RELATED_NNS WORK_VBP Matrix_NNP factorization_NN methods_NNS such_JJ as_IN Singular_JJ Value_NN Decomposition_NN -LRB-_-LRB- SVD_NN -RRB-_-RRB- -LRB-_-LRB- 13_CD -RRB-_-RRB- or_CC Non-negative_JJ Matrix_NNP Factorization_NN -LRB-_-LRB- NMF_NN -RRB-_-RRB- =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP ubiquitous_JJ in_IN data_NNS mining_NN and_CC machine_NN learning_NN ._.
+Two_CD of_IN the_DT most_RBS popular_JJ uses_NNS for_IN matrix_NN factorizations_NNS are_VBP separating_VBG structure_NN and_CC noise_NN ,_, and_CC learning_VBG missing_JJ values_NNS of_IN matrices_NNS ._.
+Boolean_JJ matrix_NN
+ploring_VBG these_DT hypotheses_NNS here_RB ._.
+Finally_RB ,_, we_PRP note_VBP that_IN our_PRP$ encoding_VBG length_NN functions_NNS are_VBP easily_RB adaptable_JJ for_IN different_JJ variations_NNS of_IN BMF_NNP ,_, such_JJ as_IN Boolean_JJ column_NN subset-selection_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- and_CC dominated_VBD BMF_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+8_CD ._.
+CONCLUSION_NN We_PRP proposed_VBD a_DT general_JJ solution_NN to_TO the_DT model_NN order_NN selection_NN problem_NN for_IN Boolean_JJ matrix_NN factorization_NN ._.
+By_IN the_DT Minimum_NNP Description_NN Length_NN principle_NN ,_, we_PRP formulate_VBP the_DT number_NN of_IN bits_NNS requi_NNS
+for_IN DNA_NN ,_, 6_CD The_DT authors_NNS are_VBP grateful_JJ to_TO Ata_NNP Kabán_NNP for_IN pre-processing_VBG the_DT data_NNS ;_: the_DT pre-processing_NN in_IN explained_VBN in_IN -LRB-_-LRB- 20_CD -RRB-_-RRB- 7_CD NOW_RB public_JJ release_NN 030717_CD ,_, available_JJ from_IN http:\/\/www_NN ._.
+helsinki_NNS ._.
+fi\/science\/now_NN \/_: =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+0_CD 0.5_CD 0.4_CD 0.3_CD t_NN 0.2_CD 0.10_CD 10_CD 20_CD 30_CD 40_CD 50_CD 60_CD 70_CD 80_CD 90_CD 100_CD x_CC 105_CD 3.26_CD Abstracts_NNS k_NN =_JJ 15_CD x_CC 104_CD 7_CD DBLP_NN k_NN =_JJ 4_CD x_CC 105_CD 3.8_CD Dialect_NN k_NN =_JJ 37_CD x_CC 105_CD 3.5_CD DNA_NN Amplification_NN k_NN =_JJ 57_CD 3.24_CD 6.95_CD 3.6_CD 3_CD 3.22_CD 6.9_CD 3.4_CD 3.2_CD 6_CD
+s_NN changed_VBD ,_, from_IN normal_JJ to_TO Boolean_NNP ._.
+As_IN a_DT consequence_NN ,_, it_PRP is_VBZ possible_JJ that_IN BMF_NN obtains_VBZ smaller_JJR reconstruction_NN error_NN than_IN SVD_NNP for_IN the_DT same_JJ decomposition_NN size_NN --_: something_NN that_IN NMF_NNP ,_, by_IN definition_NN ,_, can_MD not_RB do_VB =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Furthermore_RB ,_, it_PRP can_MD be_VB shown_VBN that_IN for_IN sparse_JJ Boolean_JJ matrices_NNS ,_, there_EX is_VBZ always_RB a_DT sparse_JJ exact_JJ factorization_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+But_CC no_DT matter_NN what_WDT factorization_NN method_NN one_CD applies_VBZ ,_, one_CD always_RB has_VBZ to_TO solve_VB the_DT mod_NN
+surprise_NN that_IN many_JJ methods_NNS for_IN model_NN order_NN selection_NN for_IN these_DT two_CD decompositions_NNS have_VBP been_VBN proposed_VBN ._.
+One_CD of_IN the_DT earliest_JJS suggestions_NNS was_VBD the_DT Guttman_NNP --_: Kaiser_NNP criterion_NN ,_, dating_VBG back_RB to_TO the_DT Fifties_NNPS -LRB-_-LRB- see_VB =_JJ -_: =[_NN 41_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+In_IN that_DT criterion_NN ,_, one_CD selects_VBZ those_DT principal_JJ vectors_NNS that_WDT have_VBP corresponding_JJ principal_JJ value_NN greater_JJR than_IN 1_CD ._.
+It_PRP is_VBZ perhaps_RB not_RB surprising_JJ that_IN this_DT simple_JJ criterion_NN has_VBZ shown_VBN to_TO perform_VB poorly_RB -LRB-_-LRB- 4_CD
+and_CC least_JJS redundant_JJ model_NN for_IN a_DT dataset_NN ._.
+As_IN such_JJ ,_, MDL_NNP has_VBZ been_VBN successfully_RB employed_VBN for_IN a_DT wide_JJ range_NN of_IN data_NN mining_NN tasks_NNS ,_, including_VBG ,_, for_IN example_NN ,_, discretization_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, imputation_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, and_CC clustering_NN =_JJ -_: =[_NN 4_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Basically_RB ,_, a_DT Boolean_JJ matrix_NN factorization_NN gives_VBZ us_PRP a_DT group_NN of_IN patterns_NNS -LRB-_-LRB- the_DT left-hand_JJ matrix_NN B_NN -RRB-_-RRB- and_CC their_PRP$ occurrences_NNS -LRB-_-LRB- the_DT righthand_NN matrix_NN C_NN -RRB-_-RRB- ._.
+As_IN such_JJ ,_, BMF_NN essentially_RB describes_VBZ the_DT data_NNS with_IN a_DT set_NN
+ors_NNS that_WDT have_VBP corresponding_JJ principal_JJ value_NN greater_JJR than_IN 1_CD ._.
+It_PRP is_VBZ perhaps_RB not_RB surprising_JJ that_IN this_DT simple_JJ criterion_NN has_VBZ shown_VBN to_TO perform_VB poorly_RB -LRB-_-LRB- 41_CD -RRB-_-RRB- ._.
+Another_DT often-used_JJ method_NN is_VBZ Cattell_NNP 's_POS scree_NN test_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB one_NN selects_VBZ the_DT point_NN where_WRB the_DT ratio_NN between_IN two_CD consecutive_JJ singular_JJ values_NNS -LRB-_-LRB- in_IN descending_VBG order_NN -RRB-_-RRB- is_VBZ high_JJ ._.
+Usually_RB ,_, this_DT is_VBZ done_VBN by_IN visual_JJ analysis_NN ,_, but_CC automated_JJ methods_NNS have_VBP also_RB been_VBN prop_VB
+est_FW t._FW 5_CD ._.
+MDL_NN FOR_IN BMF_NN In_IN this_DT section_NN we_PRP give_VBP our_PRP$ approach_NN for_IN selecting_VBG model_NN orders_NNS for_IN BMF_NN by_IN the_DT Minimum_NNP Description_NN Length_NN principle_NN ._.
+5.1_CD MDL_NN ,_, a_DT brief_JJ primer_NN The_DT MDL_NN -LRB-_-LRB- Minimum_NNP Description_NN Length_NN -RRB-_-RRB- =_JJ -_: =[_NN 14_CD ,_, 31_CD -RRB-_-RRB- -_: =_JJ -_: principle_NN ,_, like_IN its_PRP$ close_JJ cousin_NN MML_NNP -LRB-_-LRB- Minimum_NNP Message_NNP Length_NN -RRB-_-RRB- -LRB-_-LRB- 39_CD -RRB-_-RRB- ,_, is_VBZ a_DT practical_JJ version_NN of_IN Kolmogorov_NN complexity_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+All_DT three_CD embrace_VBP the_DT slogan_NN Induction_NN by_IN Compression_NN ._.
+For_IN MDL_NNP ,_, this_DT principl_NN
+and_CC least_JJS redundant_JJ model_NN for_IN a_DT dataset_NN ._.
+As_IN such_JJ ,_, MDL_NNP has_VBZ been_VBN successfully_RB employed_VBN for_IN a_DT wide_JJ range_NN of_IN data_NN mining_NN tasks_NNS ,_, including_VBG ,_, for_IN example_NN ,_, discretization_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, imputation_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, and_CC clustering_NN =_JJ -_: =[_NN 4_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Basically_RB ,_, a_DT Boolean_JJ matrix_NN factorization_NN gives_VBZ us_PRP a_DT group_NN of_IN patterns_NNS -LRB-_-LRB- the_DT left-hand_JJ matrix_NN B_NN -RRB-_-RRB- and_CC their_PRP$ occurrences_NNS -LRB-_-LRB- the_DT righthand_NN matrix_NN C_NN -RRB-_-RRB- ._.
+As_IN such_JJ ,_, BMF_NN essentially_RB describes_VBZ the_DT data_NNS with_IN a_DT set_NN
+he_PRP dimensions_NNS n_NN ,_, m_NN ,_, k_NN ,_, and_CC then_RB the_DT content_NN of_IN the_DT two_CD factor_NN matrices_NNS ._.
+By_IN explicitly_RB encoding_VBG the_DT dimensions_NNS of_IN the_DT matrices_NNS ,_, we_PRP can_MD subsequently_RB encode_VB matrices_NNS B_NN and_CC C_NN using_VBG an_DT optimal_JJ prefix_NN code_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO encode_VB m_NN and_CC k_NN ,_, we_PRP use_VBP the_DT EliasDelta_NNP code_NN ,_, which_WDT is_VBZ a_DT Universal_NNP code_NN for_IN integers_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+A_DT Universal_NNP code_NN is_VBZ a_DT code_NN that_WDT can_MD be_VB decoded_VBN unambiguously_RB without_IN requiring_VBG the_DT decoder_NN to_TO have_VB any_DT back_NN
+g_NN model_NN orders_NNS for_IN BMF_NN by_IN the_DT Minimum_NNP Description_NN Length_NN principle_NN ._.
+5.1_CD MDL_NN ,_, a_DT brief_JJ primer_NN The_DT MDL_NN -LRB-_-LRB- Minimum_NNP Description_NN Length_NN -RRB-_-RRB- -LRB-_-LRB- 14_CD ,_, 31_CD -RRB-_-RRB- principle_NN ,_, like_IN its_PRP$ close_JJ cousin_NN MML_NNP -LRB-_-LRB- Minimum_NNP Message_NNP Length_NN -RRB-_-RRB- =_JJ -_: =[_NN 39_CD -RRB-_-RRB- -_: =_JJ -_: ,_, is_VBZ a_DT practical_JJ version_NN of_IN Kolmogorov_NN complexity_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+All_DT three_CD embrace_VBP the_DT slogan_NN Induction_NN by_IN Compression_NN ._.
+For_IN MDL_NNP ,_, this_DT principle_NN can_MD be_VB roughly_RB described_VBN as_IN follows_VBZ ._.
+Given_VBN a_DT set_NN of_IN models_NNS 1_CD H_NN ,_, t_NN
+,_, also_RB noise-invariant_JJ approaches_NNS have_VBP been_VBN studied_VBN -LRB-_-LRB- 30_CD -RRB-_-RRB- ._.
+Tatti_NNP et_FW al._FW -LRB-_-LRB- 34_CD -RRB-_-RRB- defined_VBD intrinsic_JJ dimensionality_NN to_TO Boolean_NNP data_NNS based_VBN on_IN fractal_JJ dimensions_NNS ._.
+As_IN discussed_VBN by_IN Faloutsos_NNP and_CC Megalooikonomou_NNP =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT Minimum_NNP Description_NN Length_NN principle_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- is_VBZ a_DT powerful_JJ ,_, well-founded_JJ ,_, and_CC natural_JJ approach_NN to_TO data_NNS mining_NN ,_, as_IN it_PRP allows_VBZ us_PRP to_TO clearly_RB identify_VB the_DT most_RBS succinct_JJ and_CC least_JJS redundant_JJ model_NN for_IN a_DT
+s_NNS and_CC prognostics_NNS ._.
+This_DT dataset_NN exhibits_VBZ a_DT banded_VBN structure_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+The_DT Mammals_NNPS presence_NN data_NNS 4_CD consists_VBZ of_IN presence_NN records_NNS of_IN 124_CD European_JJ mammals_NNS within_IN 2183_CD geographical_JJ areas_NNS of_IN 50_CD ×_CD 50_CD kilometers_NNS =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Newsgroups_NNP is_VBZ a_DT subset_NN of_IN the_DT 20Newsgroups_FW dataset_FW ,_, 5_CD containing_NN ,_, for_IN 400_CD posts_NNS from_IN 4_CD news3_NN http:\/\/www.informatik.uni-trier.de\/~ley\/db\/_NN 4_CD Available_JJ for_IN research_NN purposes_NNS from_IN the_DT Societas_NNP Europaea_NNP
+t_NN will_MD never_RB increase_VB the_DT error_NN on_IN test_NN data_NNS -LRB-_-LRB- if_IN it_PRP would_MD ,_, we_PRP would_MD not_RB use_VB it_PRP to_TO explain_VB the_DT test_NN data_NNS -RRB-_-RRB- ._.
+This_DT is_VBZ not_RB special_JJ to_TO Boolean_JJ factorizations_NNS ,_, as_IN similar_JJ behavior_NN has_VBZ been_VBN reported_VBN with_IN PCA_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Of_IN our_PRP$ error_NN matrix_NN encoding_VBG strategies_NNS ,_, the_DT inefficient_JJ Naïve_JJ Factor_NN and_CC Naïve_JJ Indices_NNS do_VBP not_RB work_VB well_RB in_IN practice_NN --_: except_IN when_WRB noise_NN is_VBZ low_JJ and_CC a_DT model_NN closely_RB resembling_VBG the_DT true_JJ model_NN is_VBZ offered_VBN
+he_PRP algorithm_NN is_VBZ able_JJ to_TO identify_VB the_DT correct_JJ number_NN of_IN latent_JJ dimensions_NNS in_IN synthetic_JJ and_CC real-world_JJ BMF_NN tasks_NNS .2_NN ._.
+RELATED_NNS WORK_VBP Matrix_NNP factorization_NN methods_NNS such_JJ as_IN Singular_JJ Value_NN Decomposition_NN -LRB-_-LRB- SVD_NN -RRB-_-RRB- =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: or_CC Non-negative_JJ Matrix_NNP Factorization_NN -LRB-_-LRB- NMF_NN -RRB-_-RRB- -LRB-_-LRB- 29_CD -RRB-_-RRB- are_VBP ubiquitous_JJ in_IN data_NNS mining_NN and_CC machine_NN learning_NN ._.
+Two_CD of_IN the_DT most_RBS popular_JJ uses_NNS for_IN matrix_NN factorizations_NNS are_VBP separating_VBG structure_NN and_CC noise_NN ,_, and_CC lear_NN
+ften_VB the_DT intrinsic_JJ dimension_NN refers_VBZ to_TO the_DT number_NN of_IN variables_NNS needed_VBN to_TO explain_VB the_DT data_NNS completely_RB -LRB-_-LRB- e.g._FW ,_, the_DT rank_NN of_IN a_DT matrix_NN -RRB-_-RRB- ,_, also_RB noise-invariant_JJ approaches_NNS have_VBP been_VBN studied_VBN -LRB-_-LRB- 30_CD -RRB-_-RRB- ._.
+Tatti_NNP et_FW al._FW =_SYM -_: =[_NN 34_CD -RRB-_-RRB- -_: =_SYM -_: defined_VBN intrinsic_JJ dimensionality_NN to_TO Boolean_NNP data_NNS based_VBN on_IN fractal_JJ dimensions_NNS ._.
+As_IN discussed_VBN by_IN Faloutsos_NNP and_CC Megalooikonomou_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, the_DT Minimum_NNP Description_NN Length_NN principle_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- is_VBZ a_DT powerful_JJ ,_, well-foun_JJ
+lished_VBN ._.
+The_DT dataset_NN is_VBZ collected_VBN from_IN the_DT DBLP_NN database_NN 3_CD and_CC it_PRP is_VBZ pre-processed_JJ as_IN in_IN -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+Dialect_NN is_VBZ a_DT 1334-by-506_JJ presence_NN data_NNS of_IN dialectical_JJ linguistic_JJ properties_NNS in_IN 506_CD Finnish_JJ municipalities_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT DNA_NN Amplification_NN data_NNS ,_, of_IN 4590-by-392_NN ,_, contains_VBZ information_NN on_IN DNA_NN copy_NN number_NN amplifications_NNS ._.
+Such_JJ copies_NNS activate_VBP oncogenes_NNS and_CC are_VBP hallmarks_NNS of_IN nearly_RB all_DT advanced_JJ tumors_NNS -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+Amplified_VBN gen_NN
+ed_VBN to_TO many_JJ other_JJ data_NNS mining_NN methods_NNS -LRB-_-LRB- see_VB below_IN for_IN some_DT related_JJ work_NN and_CC -LRB-_-LRB- 20_CD -RRB-_-RRB- for_IN more_JJR -RRB-_-RRB- ._.
+Outside_JJ data_NNS mining_NN ,_, Boolean_JJ factorizations_NNS have_VBP found_VBN application_NN in_IN ,_, e.g._FW ,_, finding_VBG roles_NNS for_IN access_NN control_NN =_JJ -_: =[_NN 33_CD ,_, 36_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT Asso_NNP algorithm_NN to_TO solve_VB BMF_NN was_VBD proposed_VBN by_IN Miettinen_NNP et_FW al._FW -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Later_RB ,_, Lu_FW et_FW al._FW -LRB-_-LRB- 19_CD -RRB-_-RRB- proposed_VBD a_DT heuristic_NN based_VBN on_IN a_DT mixedinteger-programming_JJ formulation_NN ._.
+Independently_RB ,_, Belohlavek_NNP and_CC Vycho_NNP
+udied_JJ -LRB-_-LRB- 30_CD -RRB-_-RRB- ._.
+Tatti_NNP et_FW al._FW -LRB-_-LRB- 34_CD -RRB-_-RRB- defined_VBD intrinsic_JJ dimensionality_NN to_TO Boolean_NNP data_NNS based_VBN on_IN fractal_JJ dimensions_NNS ._.
+As_IN discussed_VBN by_IN Faloutsos_NNP and_CC Megalooikonomou_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, the_DT Minimum_NNP Description_NN Length_NN principle_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT powerful_JJ ,_, well-founded_JJ ,_, and_CC natural_JJ approach_NN to_TO data_NNS mining_NN ,_, as_IN it_PRP allows_VBZ us_PRP to_TO clearly_RB identify_VB the_DT most_RBS succinct_JJ and_CC least_JJS redundant_JJ model_NN for_IN a_DT dataset_NN ._.
+As_IN such_JJ ,_, MDL_NNP has_VBZ been_VBN successfully_RB emp_NN
+been_VBN proposed_VBN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 42_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Since_IN these_DT two_CD classical_JJ methods_NNS ,_, researchers_NNS have_VBP proposed_VBN many_JJ alternative_JJ methods_NNS ._.
+For_IN example_NN ,_, in_IN a_DT probabilistic_JJ framework_NN one_PRP can_MD use_VB Bayesian_JJ model_NN selection_NN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 23_CD ,_, 32_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+For_IN BMF_NNP ,_, however_RB ,_, it_PRP would_MD be_VB very_RB hard_JJ ,_, if_IN not_RB impossible_JJ ,_, to_TO construct_VB a_DT good_JJ likelihood_NN function_NN ._.
+Yet_RB another_DT approach_NN is_VBZ to_TO use_VB cross_JJ validation_NN ._.
+While_IN this_DT is_VBZ perhaps_RB mostly_RB used_VBN when_WRB learning_VBG
+o_NN clearly_RB identify_VBP the_DT most_RBS succinct_JJ and_CC least_JJS redundant_JJ model_NN for_IN a_DT dataset_NN ._.
+As_IN such_JJ ,_, MDL_NNP has_VBZ been_VBN successfully_RB employed_VBN for_IN a_DT wide_JJ range_NN of_IN data_NN mining_NN tasks_NNS ,_, including_VBG ,_, for_IN example_NN ,_, discretization_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, imputation_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, and_CC clustering_NN -LRB-_-LRB- 4_CD ,_, 16_CD -RRB-_-RRB- ._.
+Basically_RB ,_, a_DT Boolean_JJ matrix_NN factorization_NN gives_VBZ us_PRP a_DT group_NN of_IN patterns_NNS -LRB-_-LRB- the_DT left-hand_JJ matrix_NN B_NN -RRB-_-RRB- and_CC their_PRP$ occurrences_NNS -LRB-_-LRB- the_DT righthand_NN matrix_NN C_NN -RRB-_-RRB- ._.
+As_IN such_JJ ,_, BMF_NN
+ch_NN transaction_NN is_VBZ -LRB-_-LRB- partially_RB -RRB-_-RRB- covered_VBN by_IN the_DT largest_JJS itemset_NN that_WDT is_VBZ frequent_JJ ._.
+In_IN BMF_NNP ,_, however_RB ,_, we_PRP do_VBP not_RB require_VB every_DT row_NN to_TO be_VB modeled_VBN by_IN at_IN least_JJS one_CD factor_NN ._.
+More_RBR closely_RB related_JJ to_TO BMF_NN is_VBZ Tiling_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT essentially_RB employs_VBZ the_DT well_RB known_VBN greedy_JJ set-cover_JJ algorithm_NN to_TO iteratively_RB cover_VB the_DT data_NNS with_IN that_DT itemset_NN that_WDT covers_VBZ the_DT most_RBS uncovered_JJ 1s_NNS in_IN the_DT data_NNS ._.
+Kontonasios_NNP and_CC De_NNP Bie_NNP -LRB-_-LRB- 17_CD -RRB-_-RRB- iterati_NNS
+-LRB-_-LRB- 3_LS -RRB-_-RRB- ,_, is_VBZ a_DT compressionbased_JJ approach_NN that_WDT identifies_VBZ a_DT group_NN of_IN itemsets_NNS such_JJ that_IN each_DT transaction_NN is_VBZ summarized_VBN by_IN one_CD itemset_NN with_IN as_RB little_JJ loss_NN of_IN information_NN as_IN possible_JJ ._.
+Wang_NNP and_CC Parthasararthy_NNP =_SYM -_: =[_NN 40_CD -RRB-_-RRB- -_: =_SYM -_: find_VB summary_NN sets_NNS ,_, i.e._FW ,_, sets_NNS of_IN itemsets_NNS such_JJ that_IN each_DT transaction_NN is_VBZ -LRB-_-LRB- partially_RB -RRB-_-RRB- covered_VBN by_IN the_DT largest_JJS itemset_NN that_WDT is_VBZ frequent_JJ ._.
+In_IN BMF_NNP ,_, however_RB ,_, we_PRP do_VBP not_RB require_VB every_DT row_NN to_TO be_VB modeled_VBN by_IN at_IN l_NN
+olean_NN factorizations_NNS can_MD yield_VB smaller_JJR reconstruction_NN error_NN than_IN factorizations_NNS of_IN same_JJ size_NN done_VBN under_IN the_DT normal_JJ arithmetic_NN ._.
+Unfortunately_RB ,_, unlike_IN normal_JJ rank_NN ,_, computing_VBG the_DT Boolean_JJ rank_NN is_VBZ NP-hard_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC even_RB approximation_NN is_VBZ hard_JJ -LRB-_-LRB- 22_CD -RRB-_-RRB- -LRB-_-LRB- although_IN recent_JJ work_NN shows_VBZ that_IN logarithmic_JJ approximations_NNS can_MD be_VB obtained_VBN by_IN assuming_VBG sparsity_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+But_CC even_RB assuming_VBG we_PRP could_MD compute_VB the_DT Boolean_NNP rank_NN effici_NNS
+fy_IN the_DT most_RBS succinct_JJ and_CC least_JJS redundant_JJ model_NN for_IN a_DT dataset_NN ._.
+As_IN such_JJ ,_, MDL_NNP has_VBZ been_VBN successfully_RB employed_VBN for_IN a_DT wide_JJ range_NN of_IN data_NN mining_NN tasks_NNS ,_, including_VBG ,_, for_IN example_NN ,_, discretization_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, imputation_NN =_JJ -_: =[_NN 37_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC clustering_NN -LRB-_-LRB- 4_CD ,_, 16_CD -RRB-_-RRB- ._.
+Basically_RB ,_, a_DT Boolean_JJ matrix_NN factorization_NN gives_VBZ us_PRP a_DT group_NN of_IN patterns_NNS -LRB-_-LRB- the_DT left-hand_JJ matrix_NN B_NN -RRB-_-RRB- and_CC their_PRP$ occurrences_NNS -LRB-_-LRB- the_DT righthand_NN matrix_NN C_NN -RRB-_-RRB- ._.
+As_IN such_JJ ,_, BMF_NNS essentially_RB descr_VBP
+data_NNS mining_NN ,_, Boolean_JJ factorizations_NNS have_VBP found_VBN application_NN in_IN ,_, e.g._FW ,_, finding_VBG roles_NNS for_IN access_NN control_NN -LRB-_-LRB- 33_CD ,_, 36_CD -RRB-_-RRB- ._.
+The_DT Asso_NNP algorithm_NN to_TO solve_VB BMF_NN was_VBD proposed_VBN by_IN Miettinen_NNP et_FW al._FW -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Later_RB ,_, Lu_FW et_FW al._FW =_SYM -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT heuristic_NN based_VBN on_IN a_DT mixedinteger-programming_JJ formulation_NN ._.
+Independently_RB ,_, Belohlavek_NNP and_CC Vychodil_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- gave_VBD an_DT algorithm_NN for_IN computing_VBG the_DT Boolean_JJ rank_NN of_IN a_DT matrix_NN based_VBN on_IN solving_VBG the_DT Set_NN
+ed_VBN to_TO many_JJ other_JJ data_NNS mining_NN methods_NNS -LRB-_-LRB- see_VB below_IN for_IN some_DT related_JJ work_NN and_CC -LRB-_-LRB- 20_CD -RRB-_-RRB- for_IN more_JJR -RRB-_-RRB- ._.
+Outside_JJ data_NNS mining_NN ,_, Boolean_JJ factorizations_NNS have_VBP found_VBN application_NN in_IN ,_, e.g._FW ,_, finding_VBG roles_NNS for_IN access_NN control_NN =_JJ -_: =[_NN 33_CD ,_, 36_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT Asso_NNP algorithm_NN to_TO solve_VB BMF_NN was_VBD proposed_VBN by_IN Miettinen_NNP et_FW al._FW -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Later_RB ,_, Lu_FW et_FW al._FW -LRB-_-LRB- 19_CD -RRB-_-RRB- proposed_VBD a_DT heuristic_NN based_VBN on_IN a_DT mixedinteger-programming_JJ formulation_NN ._.
+Independently_RB ,_, Belohlavek_NNP and_CC Vycho_NNP
+selects_VBZ the_DT point_NN where_WRB the_DT ratio_NN between_IN two_CD consecutive_JJ singular_JJ values_NNS -LRB-_-LRB- in_IN descending_VBG order_NN -RRB-_-RRB- is_VBZ high_JJ ._.
+Usually_RB ,_, this_DT is_VBZ done_VBN by_IN visual_JJ analysis_NN ,_, but_CC automated_JJ methods_NNS have_VBP also_RB been_VBN proposed_VBN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 42_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Since_IN these_DT two_CD classical_JJ methods_NNS ,_, researchers_NNS have_VBP proposed_VBN many_JJ alternative_JJ methods_NNS ._.
+For_IN example_NN ,_, in_IN a_DT probabilistic_JJ framework_NN one_PRP can_MD use_VB Bayesian_JJ model_NN selection_NN -LRB-_-LRB- e.g._FW -LRB-_-LRB- 23_CD ,_, 32_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+For_IN BMF_NN ,_, howev_NN
+been_VBN proposed_VBN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 42_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Since_IN these_DT two_CD classical_JJ methods_NNS ,_, researchers_NNS have_VBP proposed_VBN many_JJ alternative_JJ methods_NNS ._.
+For_IN example_NN ,_, in_IN a_DT probabilistic_JJ framework_NN one_PRP can_MD use_VB Bayesian_JJ model_NN selection_NN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 23_CD ,_, 32_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+For_IN BMF_NNP ,_, however_RB ,_, it_PRP would_MD be_VB very_RB hard_JJ ,_, if_IN not_RB impossible_JJ ,_, to_TO construct_VB a_DT good_JJ likelihood_NN function_NN ._.
+Yet_RB another_DT approach_NN is_VBZ to_TO use_VB cross_JJ validation_NN ._.
+While_IN this_DT is_VBZ perhaps_RB mostly_RB used_VBN when_WRB learning_VBG

@@ -1,0 +1,130 @@
+Fastanova_NNP :_: an_DT efficient_JJ algorithm_NN for_IN genome-wide_JJ association_NN study_NN
+Studying_VBG the_DT association_NN between_IN quantitative_JJ phenotype_NN -LRB-_-LRB- such_JJ as_IN height_NN or_CC weight_NN -RRB-_-RRB- and_CC single_JJ nucleotide_NN polymorphisms_NNS -LRB-_-LRB- SNPs_NNS -RRB-_-RRB- is_VBZ an_DT important_JJ problem_NN in_IN biology_NN ._.
+To_TO understand_VB underlying_JJ mechanisms_NNS of_IN complex_JJ phenotypes_NNS ,_, it_PRP is_VBZ often_RB necessary_JJ to_TO consider_VB joint_JJ genetic_JJ effects_NNS across_IN multiple_JJ SNPs_NNS ._.
+ANOVA_NN -LRB-_-LRB- analysis_NN of_IN variance_NN -RRB-_-RRB- test_NN is_VBZ routinely_RB used_VBN in_IN association_NN study_NN ._.
+Important_JJ findings_NNS from_IN studying_VBG gene-gene_JJ -LRB-_-LRB- SNP-pair_JJ -RRB-_-RRB- interactions_NNS are_VBP appearing_VBG in_IN the_DT literature_NN ._.
+However_RB ,_, the_DT number_NN of_IN SNPs_NNS can_MD be_VB up_RB to_TO millions_NNS ._.
+Evaluating_VBG joint_JJ effects_NNS of_IN SNPs_NNS is_VBZ a_DT challenging_JJ task_NN even_RB for_IN SNP-pairs_NNS ._.
+Moreover_RB ,_, with_IN large_JJ number_NN of_IN SNPs_NNS correlated_VBD ,_, permutation_NN procedure_NN is_VBZ preferred_VBN over_IN simple_JJ Bonferroni_NNP correction_NN for_IN properly_RB controlling_VBG family-wise_JJ error_NN rate_NN and_CC retaining_VBG mapping_NN power_NN ,_, which_WDT dramatically_RB increases_VBZ the_DT computational_JJ cost_NN of_IN association_NN study_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP study_VBD the_DT problem_NN of_IN finding_VBG SNP-pairs_NNS that_WDT have_VBP significant_JJ associations_NNS with_IN a_DT given_VBN quantitative_JJ phenotype_NN ._.
+We_PRP propose_VBP an_DT efficient_JJ algorithm_NN ,_, FastANOVA_NN ,_, for_IN performing_VBG ANOVA_NNP tests_NNS on_IN SNP-pairs_NNS in_IN a_DT batch_NN mode_NN ,_, which_WDT also_RB supports_VBZ large_JJ permutation_NN test_NN ._.
+We_PRP derive_VBP an_DT upper_JJ bound_VBN of_IN SNP-pair_JJ ANOVA_NNP test_NN ,_, which_WDT can_MD be_VB expressed_VBN as_IN the_DT sum_NN of_IN two_CD terms_NNS ._.
+The_DT first_JJ term_NN is_VBZ based_VBN on_IN single-SNP_JJ ANOVA_NNP test_NN ._.
+The_DT second_JJ term_NN is_VBZ based_VBN on_IN the_DT SNPs_NNS and_CC independent_JJ of_IN any_DT phenotype_NN permutation_NN ._.
+Furthermore_RB ,_, SNP-pairs_NNS can_MD be_VB organized_VBN into_IN groups_NNS ,_, each_DT of_IN which_WDT shares_VBZ a_DT common_JJ upper_JJ bound_VBD ._.
+This_DT allows_VBZ for_IN maximum_NN reuse_NN of_IN intermediate_JJ computation_NN ,_, efficient_JJ upper_JJ bound_VBN estimation_NN ,_, and_CC effective_JJ SNP-pair_JJ pruning_NN ._.
+Consequently_RB ,_, FastANOVA_NN only_RB needs_VBZ to_TO perform_VB the_DT ANOVA_NNP test_NN on_IN a_DT small_JJ number_NN of_IN candidate_NN SNP-pairs_NNS without_IN the_DT risk_NN of_IN missing_VBG any_DT significant_JJ ones_NNS ._.
+Extensive_JJ experiments_NNS demonstrate_VBP that_IN FastANOVA_NN is_VBZ orders_NNS of_IN magnitude_NN faster_RBR than_IN the_DT brute-force_JJ implementation_NN of_IN ANOVA_NNP tests_NNS on_IN all_DT SNP_NN pairs_NNS ._.
+cently_RB ,_, the_DT approach_NN based_VBN on_IN search_NN space_NN pruning_NN has_VBZ been_VBN shown_VBN to_TO be_VB able_JJ to_TO dramatically_RB speed_VB up_RP the_DT process_NN of_IN epistasis_NN detection_NN without_IN compromising_VBG the_DT optimality_NN of_IN the_DT results_NNS ._.
+FastANOVA_NN -LRB-_-LRB- =_JJ -_: =_JJ Zhang_NNP et_FW al._FW ,_, 2008_CD -_: =--RRB-_NN and_CC FastChi_NNP -LRB-_-LRB- Zhang_NNP et_FW al._FW ,_, PSB2009_NN -RRB-_-RRB- are_VBP specifically_RB designed_VBN for_IN ANOVA_NNP test_NN and_CC chi-square_JJ test_NN respectively_RB ._.
+The_DT COE_NNP algorithm_NN -LRB-_-LRB- Zhang_NNP et_FW al._FW ,_, RECOMB2009_NN -RRB-_-RRB- is_VBZ a_DT more_RBR general_JJ approach_NN that_WDT is_VBZ applica_NN
+en_IN a_DT single_JJ nucleotide_NN -LRB-_-LRB- A_NN ,_, T_NN ,_, G_NN ,_, or_CC C_NN -RRB-_-RRB- in_IN the_DT genome_NN differs_VBZ between_IN individuals_NNS of_IN a_DT species_NN ._.
+For_IN inbred_JJ species_NNS ,_, a_DT SNP_NN usually_RB shows_VBZ variation_NN between_IN only_RB two_CD of_IN the_DT four_CD possible_JJ nucleotide_NN types_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT allows_VBZ us_PRP to_TO represent_VB it_PRP by_IN a_DT binary_JJ variable_NN ._.
+The_DT binary_JJ representation_NN of_IN a_DT SNP_NN is_VBZ also_RB referred_VBN to_TO as_IN the_DT genotype_NN of_IN the_DT SNP_NN ._.
+Various_JJ statistics_NNS can_MD be_VB applied_VBN to_TO measure_VB the_DT association_NN
+ubset_NN ,_, the_DT association_NN between_IN SNPs_NNS and_CC the_DT phenotypes_NNS are_VBP searched_VBN ._.
+These_DT methods_NNS are_VBP not_RB complete_JJ since_IN the_DT SNPs_NNS with_IN weak_JJ marginal_JJ effects_NNS may_MD not_RB be_VB selected_VBN in_IN the_DT first_JJ place_NN ._.
+Genetic_JJ algorithm_NN =_JJ -_: =[_NN 5_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ been_VBN applied_VBN in_IN finding_VBG SNP-pairs_NNS for_IN quantitative_JJ phenotypes_NNS ._.
+These_DT methods_NNS can_MD not_RB guarantee_VB to_TO find_VB the_DT optimal_JJ solution_NN ._.
+Feature_NN selection_NN methods_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- have_VBP been_VBN proposed_VBN to_TO address_VB the_DT proble_NN
+NPs_NNS is_VBZ limited_JJ ,_, e.g._FW ,_, from_IN tens_NNS to_TO a_DT few_JJ hundreds_NNS ,_, exhaustive_JJ algorithms_NNS that_WDT explicitly_RB enumerate_VB all_DT possible_JJ SNP_NN combinations_NNS and_CC evaluate_VB their_PRP$ associations_NNS with_IN the_DT phenotype_NN have_VBP been_VBN developed_VBN =_JJ -_: =[_NN 16_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT methods_NNS are_VBP not_RB well_RB adapted_VBN to_TO genome-wide_JJ association_NN study_NN ._.
+To_TO avoid_VB exhaustively_RB enumerating_VBG the_DT search_NN space_NN ,_, a_DT common_JJ approach_NN is_VBZ to_TO break_VB the_DT problem_NN into_IN two_CD steps_NNS -LRB-_-LRB- 8_CD ,_, 10_CD -RRB-_-RRB- ._.
+First_RB ,_, a_DT su_NN
+genome-wide_JJ association_NN study_NN intractable_JJ ._.
+The_DT computational_JJ challenge_NN of_IN genome-wide_JJ association_NN study_NN is_VBZ further_RB compounded_VBN by_IN another_DT well-known_JJ statistical_JJ problem_NN --_: the_DT multiple_JJ testing_NN problem_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT multiple_JJ testing_NN problem_NN can_MD be_VB described_VBN as_IN the_DT potential_JJ increase_NN in_IN Type_NN I_CD error_NN when_WRB statistical_JJ tests_NNS are_VBP performed_VBN multiple_JJ times_NNS ._.
+Let_VB α_NN be_VB the_DT Type_NN I_CD error_NN for_IN each_DT independent_JJ test_NN ._.
+If_IN n_NN
+in_IN the_DT first_JJ place_NN ._.
+Genetic_JJ algorithm_NN -LRB-_-LRB- 5_CD ,_, 15_CD -RRB-_-RRB- has_VBZ been_VBN applied_VBN in_IN finding_VBG SNP-pairs_NNS for_IN quantitative_JJ phenotypes_NNS ._.
+These_DT methods_NNS can_MD not_RB guarantee_VB to_TO find_VB the_DT optimal_JJ solution_NN ._.
+Feature_NN selection_NN methods_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN proposed_VBN to_TO address_VB the_DT problem_NN of_IN finding_VBG important_JJ SNPs_NNS ._.
+In_IN feature_NN selection_NN ,_, the_DT selected_VBN feature_NN subset_NN usually_RB contains_VBZ features_NNS that_WDT have_VBP low_JJ correlation_NN with_IN each_DT other_JJ but_CC have_VBP str_NN
+earch_JJ interests_NNS and_CC is_VBZ an_DT ongoing_JJ research_NN area_NN in_IN biology_NN and_CC statistic_NN communities_NNS ._.
+In_IN this_DT section_NN ,_, we_PRP give_VBP a_DT briefly_NN review_NN of_IN the_DT related_JJ work_NN from_IN a_DT computational_JJ point_NN of_IN view_NN ._.
+Please_VB refer_VB to_TO =_JJ -_: =[_NN 4_CD ,_, 7_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: for_IN excellent_JJ surveys_NNS of_IN existing_VBG work_NN ._.
+Under_IN the_DT assumption_NN that_IN the_DT number_NN of_IN SNPs_NNS is_VBZ limited_JJ ,_, e.g._FW ,_, from_IN tens_NNS to_TO a_DT few_JJ hundreds_NNS ,_, exhaustive_JJ algorithms_NNS that_WDT explicitly_RB enumerate_VB all_DT possible_JJ SNP_NN co_NN
+tion_NN study_NN of_IN a_DT phenotype_NN and_CC SNP-pairs_NN is_VBZ also_RB called_VBN two-locus_JJ association_NN mapping_NN ._.
+Important_JJ findings_NNS are_VBP appearing_VBG in_IN the_DT literature_NN from_IN studying_VBG the_DT association_NN between_IN phenotypes_NNS and_CC SNP-pairs_NN =_JJ -_: =[_NN 21_CD ,_, 22_CD ,_, 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN the_DT standard_JJ ANOVA_NNP test_NN has_VBZ been_VBN a_DT valuable_JJ tool_NN to_TO find_VB association_NN between_IN SNP-pairs_NNS and_CC phenotype_NN ,_, it_PRP is_VBZ usually_RB not_RB performed_VBN in_IN genome-wide_JJ scale_NN ._.
+This_DT is_VBZ due_JJ to_TO the_DT fact_NN that_IN the_DT sear_NN
+een_FW SNPs_FW and_CC the_DT phenotypes_NNS of_IN interest_NN ,_, among_IN which_WDT ANOVA_NN -LRB-_-LRB- analysis_NN of_IN variance_NN -RRB-_-RRB- test_NN is_VBZ one_CD of_IN the_DT standard_JJ statistic_NN methods_NNS and_CC has_VBZ been_VBN routinely_RB used_VBN in_IN quantitative_JJ phenotype_NN association_NN study_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT goal_NN of_IN ANOVA_NNP test_NN is_VBZ to_TO determine_VB whether_IN the_DT group_NN means_NNS are_VBP significantly_RB different_JJ after_IN accounting_VBG for_IN the_DT variances_NNS within_IN groups_NNS ._.
+It_PRP accomplishes_VBZ the_DT comparison_NN by_IN decomposing_VBG the_DT total_NN v_LS
+ith_VB each_DT other_JJ but_CC have_VBP strong_JJ correlation_NN with_IN the_DT target_NN feature_NN ._.
+In_IN the_DT application_NN of_IN selecting_VBG SNPs_NNS ,_, the_DT goal_NN is_VBZ to_TO select_VB a_DT subset_NN of_IN SNPs_NNS that_WDT can_MD be_VB used_VBN as_IN proxies_NNS for_IN all_DT SNPs_NNS in_IN the_DT genome_NN =_JJ -_: =[_NN 9_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT selected_VBN SNPs_NNS can_MD then_RB be_VB used_VBN as_IN the_DT input_NN SNPs_NNS in_IN the_DT association_NN study_NN ._.
+Apparently_RB ,_, these_DT methods_NNS are_VBP also_RB not_RB complete_JJ ._.
+3_LS ._.
+TWO-LOCUS_NNP ANOVA_NNP TEST_NNP Let_NNP -LCB-_-LRB- X1_NN ,_, X2_NN ,_, ·_NNP ·_NNP ·_NNP ,_, XN_NNP -RCB-_-RRB- be_VB the_DT set_NN of_IN SNPs_NNS o_NN
+earch_JJ interests_NNS and_CC is_VBZ an_DT ongoing_JJ research_NN area_NN in_IN biology_NN and_CC statistic_NN communities_NNS ._.
+In_IN this_DT section_NN ,_, we_PRP give_VBP a_DT briefly_NN review_NN of_IN the_DT related_JJ work_NN from_IN a_DT computational_JJ point_NN of_IN view_NN ._.
+Please_VB refer_VB to_TO =_JJ -_: =[_NN 4_CD ,_, 7_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: for_IN excellent_JJ surveys_NNS of_IN existing_VBG work_NN ._.
+Under_IN the_DT assumption_NN that_IN the_DT number_NN of_IN SNPs_NNS is_VBZ limited_JJ ,_, e.g._FW ,_, from_IN tens_NNS to_TO a_DT few_JJ hundreds_NNS ,_, exhaustive_JJ algorithms_NNS that_WDT explicitly_RB enumerate_VB all_DT possible_JJ SNP_NN co_NN
+are_VBP performed_VBN on_IN a_DT 2.4_CD GHz_NN PC_NN with_IN 1G_NN memory_NN running_VBG WindowsXP_NN system_NN ._.
+Dataset_NNP :_: The_DT SNP_NN dataset_NN used_VBN for_IN the_DT experiments_NNS is_VBZ extracted_VBN from_IN a_DT set_NN of_IN combined_JJ SNPs_NNS from_IN the_DT 140k_FW Broad\/MIT_FW mouse_NN dataset_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_JJ -_: and_CC 10k_JJ GNF_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- mouse_NN dataset_NN ._.
+This_DT merged_JJ dataset_NN has_VBZ 156,525_CD SNPs_NNS for_IN 71_CD individuals_NNS ._.
+The_DT missing_VBG values_NNS in_IN the_DT dataset_NN are_VBP imputed_JJ using_VBG NPUTE_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+We_PRP use_VBP both_DT real_JJ phenotypes_NNS and_CC synthetic_JJ pheno_NN
+rder_NN to_TO find_VB the_DT genetic_JJ factors_NNS underlying_VBG continuous_JJ phenotypes_NNS -LRB-_-LRB- such_JJ as_IN height_NN or_CC weight_NN -RRB-_-RRB- ._.
+These_DT phenotypes_NNS are_VBP often_RB complex_JJ in_IN the_DT sense_NN that_IN they_PRP are_VBP likely_RB due_JJ to_TO the_DT effects_NNS of_IN multiple_JJ genes_NNS =_JJ -_: =[_NN 6_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT most_RBS abundant_JJ source_NN of_IN genetic_JJ variation_NN is_VBZ represented_VBN by_IN single_JJ nucleotide_NN polymorphisms_NNS -LRB-_-LRB- SNPs_NNS -RRB-_-RRB- ._.
+A_DT SNP_NN is_VBZ a_DT DNA_NN sequence_NN variation_NN occurring_VBG when_WRB a_DT single_JJ nucleotide_NN -LRB-_-LRB- A_NN ,_, T_NN ,_, G_NN ,_, or_CC C_NN -RRB-_-RRB- in_IN the_DT ge_NN
+n_NN developed_VBD -LRB-_-LRB- 16_CD ,_, 19_CD -RRB-_-RRB- ._.
+These_DT methods_NNS are_VBP not_RB well_RB adapted_VBN to_TO genome-wide_JJ association_NN study_NN ._.
+To_TO avoid_VB exhaustively_RB enumerating_VBG the_DT search_NN space_NN ,_, a_DT common_JJ approach_NN is_VBZ to_TO break_VB the_DT problem_NN into_IN two_CD steps_NNS =_JJ -_: =[_NN 8_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+First_RB ,_, a_DT subset_NN of_IN important_JJ SNPs_NNS are_VBP selected_VBN ._.
+Second_JJ ,_, within_IN the_DT selected_VBN subset_NN ,_, the_DT association_NN between_IN SNPs_NNS and_CC the_DT phenotypes_NNS are_VBP searched_VBN ._.
+These_DT methods_NNS are_VBP not_RB complete_JJ since_IN the_DT SNPs_NNS with_IN w_NN
+bined_VBN SNPs_NNS from_IN the_DT 140k_FW Broad\/MIT_FW mouse_NN dataset_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- and_CC 10k_NN GNF_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- mouse_NN dataset_NN ._.
+This_DT merged_JJ dataset_NN has_VBZ 156,525_CD SNPs_NNS for_IN 71_CD individuals_NNS ._.
+The_DT missing_VBG values_NNS in_IN the_DT dataset_NN are_VBP imputed_JJ using_VBG NPUTE_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP use_VBP both_DT real_JJ phenotypes_NNS and_CC synthetic_JJ phenotypes_NNS in_IN our_PRP$ experiments_NNS ._.
+The_DT real_JJ phenotype_NN data_NNS is_VBZ available_JJ from_IN the_DT Jackson_NNP Lab_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+6.1_CD Real_NNP Phenotypes_NNPS We_PRP use_VBP three_CD real_JJ phenotypes_NNS in_IN our_PRP$ experi_NNS
+ubset_NN ,_, the_DT association_NN between_IN SNPs_NNS and_CC the_DT phenotypes_NNS are_VBP searched_VBN ._.
+These_DT methods_NNS are_VBP not_RB complete_JJ since_IN the_DT SNPs_NNS with_IN weak_JJ marginal_JJ effects_NNS may_MD not_RB be_VB selected_VBN in_IN the_DT first_JJ place_NN ._.
+Genetic_JJ algorithm_NN =_JJ -_: =[_NN 5_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ been_VBN applied_VBN in_IN finding_VBG SNP-pairs_NNS for_IN quantitative_JJ phenotypes_NNS ._.
+These_DT methods_NNS can_MD not_RB guarantee_VB to_TO find_VB the_DT optimal_JJ solution_NN ._.
+Feature_NN selection_NN methods_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- have_VBP been_VBN proposed_VBN to_TO address_VB the_DT proble_NN
+000_CD and_CC number_NN of_IN permutations_NNS K_NN =_JJ 1_CD ,_, 000_CD ,_, the_DT number_NN of_IN ANOVA_NNP tests_NNS is_VBZ around_IN 5_CD ×_CD 10_CD 10_CD ._.
+Therefore_RB ,_, ANOVA_NNP test_NN is_VBZ often_RB reserved_JJ for_IN validating_VBG a_DT small_JJ set_NN of_IN candidates_NNS identified_VBN by_IN other_JJ methods_NNS =_JJ -_: =[_NN 17_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP examine_VBP the_DT computational_JJ aspect_NN of_IN ANOVA_NNP test_NN ._.
+We_PRP present_VBP an_DT efficient_JJ algorithm_NN ,_, FastANOVA_NN ,_, and_CC show_VBP that_IN the_DT standard_JJ ANOVA_NNP test_NN can_MD be_VB applied_VBN in_IN genome-wide_JJ scale_NN for_IN two-locu_NN
+NPs_NNS is_VBZ limited_JJ ,_, e.g._FW ,_, from_IN tens_NNS to_TO a_DT few_JJ hundreds_NNS ,_, exhaustive_JJ algorithms_NNS that_WDT explicitly_RB enumerate_VB all_DT possible_JJ SNP_NN combinations_NNS and_CC evaluate_VB their_PRP$ associations_NNS with_IN the_DT phenotype_NN have_VBP been_VBN developed_VBN =_JJ -_: =[_NN 16_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT methods_NNS are_VBP not_RB well_RB adapted_VBN to_TO genome-wide_JJ association_NN study_NN ._.
+To_TO avoid_VB exhaustively_RB enumerating_VBG the_DT search_NN space_NN ,_, a_DT common_JJ approach_NN is_VBZ to_TO break_VB the_DT problem_NN into_IN two_CD steps_NNS -LRB-_-LRB- 8_CD ,_, 10_CD -RRB-_-RRB- ._.
+First_RB ,_, a_DT su_NN
+rder_NN to_TO find_VB the_DT genetic_JJ factors_NNS underlying_VBG continuous_JJ phenotypes_NNS -LRB-_-LRB- such_JJ as_IN height_NN or_CC weight_NN -RRB-_-RRB- ._.
+These_DT phenotypes_NNS are_VBP often_RB complex_JJ in_IN the_DT sense_NN that_IN they_PRP are_VBP likely_RB due_JJ to_TO the_DT effects_NNS of_IN multiple_JJ genes_NNS =_JJ -_: =[_NN 6_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT most_RBS abundant_JJ source_NN of_IN genetic_JJ variation_NN is_VBZ represented_VBN by_IN single_JJ nucleotide_NN polymorphisms_NNS -LRB-_-LRB- SNPs_NNS -RRB-_-RRB- ._.
+A_DT SNP_NN is_VBZ a_DT DNA_NN sequence_NN variation_NN occurring_VBG when_WRB a_DT single_JJ nucleotide_NN -LRB-_-LRB- A_NN ,_, T_NN ,_, G_NN ,_, or_CC C_NN -RRB-_-RRB- in_IN the_DT ge_NN
+ith_VB each_DT other_JJ but_CC have_VBP strong_JJ correlation_NN with_IN the_DT target_NN feature_NN ._.
+In_IN the_DT application_NN of_IN selecting_VBG SNPs_NNS ,_, the_DT goal_NN is_VBZ to_TO select_VB a_DT subset_NN of_IN SNPs_NNS that_WDT can_MD be_VB used_VBN as_IN proxies_NNS for_IN all_DT SNPs_NNS in_IN the_DT genome_NN =_JJ -_: =[_NN 9_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT selected_VBN SNPs_NNS can_MD then_RB be_VB used_VBN as_IN the_DT input_NN SNPs_NNS in_IN the_DT association_NN study_NN ._.
+Apparently_RB ,_, these_DT methods_NNS are_VBP also_RB not_RB complete_JJ ._.
+3_LS ._.
+TWO-LOCUS_NNP ANOVA_NNP TEST_NNP Let_NNP -LCB-_-LRB- X1_NN ,_, X2_NN ,_, ·_NNP ·_NNP ·_NNP ,_, XN_NNP -RCB-_-RRB- be_VB the_DT set_NN of_IN SNPs_NNS o_NN
+tion_NN study_NN of_IN a_DT phenotype_NN and_CC SNP-pairs_NN is_VBZ also_RB called_VBN two-locus_JJ association_NN mapping_NN ._.
+Important_JJ findings_NNS are_VBP appearing_VBG in_IN the_DT literature_NN from_IN studying_VBG the_DT association_NN between_IN phenotypes_NNS and_CC SNP-pairs_NN =_JJ -_: =[_NN 21_CD ,_, 22_CD ,_, 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN the_DT standard_JJ ANOVA_NNP test_NN has_VBZ been_VBN a_DT valuable_JJ tool_NN to_TO find_VB association_NN between_IN SNP-pairs_NNS and_CC phenotype_NN ,_, it_PRP is_VBZ usually_RB not_RB performed_VBN in_IN genome-wide_JJ scale_NN ._.
+This_DT is_VBZ due_JJ to_TO the_DT fact_NN that_IN the_DT sear_NN
+earch_JJ interests_NNS and_CC is_VBZ an_DT ongoing_JJ research_NN area_NN in_IN biology_NN and_CC statistic_NN communities_NNS ._.
+In_IN this_DT section_NN ,_, we_PRP give_VBP a_DT briefly_NN review_NN of_IN the_DT related_JJ work_NN from_IN a_DT computational_JJ point_NN of_IN view_NN ._.
+Please_VB refer_VB to_TO =_JJ -_: =[_NN 4_CD ,_, 7_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: for_IN excellent_JJ surveys_NNS of_IN existing_VBG work_NN ._.
+Under_IN the_DT assumption_NN that_IN the_DT number_NN of_IN SNPs_NNS is_VBZ limited_JJ ,_, e.g._FW ,_, from_IN tens_NNS to_TO a_DT few_JJ hundreds_NNS ,_, exhaustive_JJ algorithms_NNS that_WDT explicitly_RB enumerate_VB all_DT possible_JJ SNP_NN co_NN
+n_NN developed_VBD -LRB-_-LRB- 16_CD ,_, 19_CD -RRB-_-RRB- ._.
+These_DT methods_NNS are_VBP not_RB well_RB adapted_VBN to_TO genome-wide_JJ association_NN study_NN ._.
+To_TO avoid_VB exhaustively_RB enumerating_VBG the_DT search_NN space_NN ,_, a_DT common_JJ approach_NN is_VBZ to_TO break_VB the_DT problem_NN into_IN two_CD steps_NNS =_JJ -_: =[_NN 8_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+First_RB ,_, a_DT subset_NN of_IN important_JJ SNPs_NNS are_VBP selected_VBN ._.
+Second_JJ ,_, within_IN the_DT selected_VBN subset_NN ,_, the_DT association_NN between_IN SNPs_NNS and_CC the_DT phenotypes_NNS are_VBP searched_VBN ._.
+These_DT methods_NNS are_VBP not_RB complete_JJ since_IN the_DT SNPs_NNS with_IN w_NN
+000_CD and_CC number_NN of_IN permutations_NNS K_NN =_JJ 1_CD ,_, 000_CD ,_, the_DT number_NN of_IN ANOVA_NNP tests_NNS is_VBZ around_IN 5_CD ×_CD 10_CD 10_CD ._.
+Therefore_RB ,_, ANOVA_NNP test_NN is_VBZ often_RB reserved_JJ for_IN validating_VBG a_DT small_JJ set_NN of_IN candidates_NNS identified_VBN by_IN other_JJ methods_NNS =_JJ -_: =[_NN 17_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP examine_VBP the_DT computational_JJ aspect_NN of_IN ANOVA_NNP test_NN ._.
+We_PRP present_VBP an_DT efficient_JJ algorithm_NN ,_, FastANOVA_NN ,_, and_CC show_VBP that_IN the_DT standard_JJ ANOVA_NNP test_NN can_MD be_VB applied_VBN in_IN genome-wide_JJ scale_NN for_IN two-locu_NN
+tion_NN study_NN of_IN a_DT phenotype_NN and_CC SNP-pairs_NN is_VBZ also_RB called_VBN two-locus_JJ association_NN mapping_NN ._.
+Important_JJ findings_NNS are_VBP appearing_VBG in_IN the_DT literature_NN from_IN studying_VBG the_DT association_NN between_IN phenotypes_NNS and_CC SNP-pairs_NN =_JJ -_: =[_NN 21_CD ,_, 22_CD ,_, 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN the_DT standard_JJ ANOVA_NNP test_NN has_VBZ been_VBN a_DT valuable_JJ tool_NN to_TO find_VB association_NN between_IN SNP-pairs_NNS and_CC phenotype_NN ,_, it_PRP is_VBZ usually_RB not_RB performed_VBN in_IN genome-wide_JJ scale_NN ._.
+This_DT is_VBZ due_JJ to_TO the_DT fact_NN that_IN the_DT sear_NN

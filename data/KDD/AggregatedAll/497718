@@ -1,0 +1,434 @@
+SimRank_NNP :_: a_DT measure_NN of_IN structural-context_JJ similarity_NN
+The_DT problem_NN of_IN measuring_VBG ``_`` similarity_NN ''_'' of_IN objects_NNS arises_VBZ in_IN many_JJ applications_NNS ,_, and_CC many_JJ domain-specific_JJ measures_NNS have_VBP been_VBN developed_VBN ,_, e.g._FW ,_, matching_VBG text_NN across_IN documents_NNS or_CC computing_NN overlap_VBP among_IN item-sets_NNS ._.
+We_PRP propose_VBP a_DT complementary_JJ approach_NN ,_, applicable_JJ in_IN any_DT domain_NN with_IN object-to-object_JJ relationships_NNS ,_, that_WDT measures_VBZ similarity_NN of_IN the_DT structural_JJ context_NN in_IN which_WDT objects_NNS occur_VBP ,_, based_VBN on_IN their_PRP$ relationships_NNS with_IN other_JJ objects_NNS ._.
+Effectively_RB ,_, we_PRP compute_VBP a_DT measure_NN that_WDT says_VBZ ``_`` two_CD objects_NNS are_VBP similar_JJ if_IN they_PRP are_VBP related_JJ to_TO similar_JJ objects_NNS :_: ''_'' This_DT general_JJ similarity_NN measure_NN ,_, called_VBN SimRank_NNP ,_, is_VBZ based_VBN on_IN a_DT simple_JJ and_CC intuitive_JJ graph-theoretic_JJ model_NN ._.
+For_IN a_DT given_VBN domain_NN ,_, SimRank_NN can_MD be_VB combined_VBN with_IN other_JJ domain-specific_JJ similarity_NN measures_NNS ._.
+We_PRP suggest_VBP techniques_NNS for_IN efficient_JJ computation_NN of_IN SimRank_NNP scores_NNS ,_, and_CC provide_VBP experimental_JJ results_NNS on_IN two_CD application_NN domains_NNS showing_VBG the_DT computational_JJ feasibility_NN and_CC effectiveness_NN of_IN our_PRP$ approach_NN ._.
+values_NNS ._.
+Examples_NNS are_VBP Levenstein_NNP and_CC Euclidean_NNP distance_NN for_IN string_NN and_CC numeric_JJ attributes_NNS respectively_RB ._.
+Link-based_JJ similarity_NN is_VBZ defined_VBN based_VBN on_IN neighborhood_NN linked_VBN to_TO the_DT users_NNS to_TO be_VB compared_VBN ,_, e.g._FW =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS of_IN these_DT measures_NNS are_VBP mainly_RB for_IN entity_NN resolution_NN ._.
+In_IN this_DT work_NN ,_, we_PRP do_VBP not_RB intend_VB to_TO resolve_VB distinct_JJ users_NNS ._.
+Instead_RB ,_, we_PRP would_MD like_VB to_TO cluster_VB them_PRP by_IN the_DT density_NN of_IN connectivity_NN in_IN their_PRP$ neig_NN
+ent_JJ to_TO the_DT approach_NN in_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+As_IN a_DT first_JJ idea_NN for_IN the_DT computation_NN of_IN ψ_NN the_DT extracted_VBN terminology_NN graphs_NNS would_MD have_VB to_TO be_VB analyzed_VBN ._.
+If_IN we_PRP represent_VBP concepts_NNS as_IN groups_NNS of_IN words_NNS we_PRP expect_VBP that_IN ideas_NNS from_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB they_PRP say_VBP that_IN ``_`` two_CD objects_NNS are_VBP similar_JJ if_IN they_PRP are_VBP related_JJ to_TO similar_JJ objects_NNS ''_'' ,_, can_MD be_VB transferred_VBN ._.
+Such_JJ similarity_NN measured_VBN could_MD be_VB used_VBN to_TO decide_VB about_IN the_DT merging_JJ of_IN concepts_NNS in_IN ψ_NN ._.
+5_CD ._.
+CONC_NN
+ty_NN between_IN query-page_JJ pairs_NNS can_MD be_VB propagated_VBN at_IN the_DT next_JJ recursion_NN ._.
+It_PRP has_VBZ been_VBN proved_VBN that_IN the_DT value_NN of_IN S_NN s_NN k_NN ,_, which_WDT is_VBZ based_VBN on_IN the_DT value_NN of_IN S_NN s_NN k_NN −_NN 1_CD ,_, is_VBZ non-decreasing_JJ and_CC will_MD converge_VB eventually_RB =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN our_PRP$ approach_NN ,_, we_PRP start_VBP with_IN S_NN s_NN 0_CD :_: S_NN s_NN 0_CD =_JJ α_NN if_IN a_DT and_CC b_NN are_VBP connected_VBN via_IN a_DT query_JJ edge_NN β_NN if_IN a_DT and_CC b_NN are_VBP connected_VBN via_IN a_DT page_NN edge_NN 0_CD otherwise_RB 4.2_CD Evolution_NN based_VBN Graph_NNP and_CC Similarity_NNP Simila_NNP
+h_NN emphasize_VBP the_DT effect_NN of_IN particular_JJ representative_JJ topic_NN keywords_NNS to_TO increase_VB the_DT importance_NN of_IN certain_JJ web_NN pages_NNS ._.
+Those_DT are_VBP used_VBN to_TO generate_VB query-specific_JJ importance_NN scores_NNS ._.
+Alternatively_RB ,_, SimRank_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: computes_VBZ a_DT purely_RB structural_JJ score_NN that_WDT is_VBZ independent_JJ of_IN domain-specific_JJ information_NN ._.
+The_DT SimRank_NNP score_NN is_VBZ a_DT structure_NN similarity_NN measure_NN between_IN pairs_NNS of_IN pages_NNS in_IN the_DT web_NN graph_NN with_IN the_DT intuition_NN t_NN
+h_NN emphasize_VBP the_DT effect_NN of_IN particular_JJ representative_JJ topic_NN keywords_NNS to_TO increase_VB the_DT importance_NN of_IN certain_JJ web_NN pages_NNS ._.
+Those_DT are_VBP used_VBN to_TO generate_VB query-specific_JJ importance_NN scores_NNS ._.
+Alternatively_RB ,_, SimRank_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: computes_VBZ a_DT purely_RB structural_JJ score_NN that_WDT is_VBZ independent_JJ of_IN domain-specific_JJ information_NN ._.
+The_DT SimRank_NNP score_NN is_VBZ a_DT structure_NN similarity_NN measure_NN between_IN pairs_NNS of_IN pages_NNS in_IN the_DT web_NN graph_NN with_IN the_DT intuition_NN t_NN
+anguage-independentdataset_NN ._.
+Recent_JJ link-based_JJ similarity_NN algorithms_NNS iterate_VBP some_DT equations_NNS expressing_VBG basic_JJ intuitions_NNS about_IN similarity_NN preferences_NNS ._.
+SimRank_NNP recursively_RB refines_VBZ the_DT cocitation_NN measure_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT algorithm_NN of_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- follows_VBZ the_DT philosophy_NN of_IN HITS_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- claiming_VBG that_IN related_JJ pages_NNS form_VBP a_DT dense_JJ bipartite_JJ subgraph_NN within_IN the_DT link_NN structure_NN ._.
+Additional_JJ similarity_NN metrics_NNS for_IN the_DT web_NN graph_NN are_VBP pr_NN
+,_, which_WDT is_VBZ less_RBR computationally_RB expensive_JJ than_IN HOSVD_NN ._.
+Several_JJ recent_JJ studies_NNS utilize_VBP pairwise_JJ co-occurrence_NN data_NNS for_IN different_JJ specific_JJ purposes_NNS such_JJ as_IN object_NN clustering_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC similarity_NN measuring_NN =_JJ -_: =[_NN 24_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, a_DT unified_JJ approach_NN is_VBZ proposed_VBN to_TO analyze_VB both_CC link_NN and_CC text_NN information_NN ._.
+Compared_VBN with_IN these_DT studies_NNS ,_, our_PRP$ approach_NN is_VBZ more_RBR general_JJ and_CC fundamental_JJ in_IN that_IN we_PRP provide_VBP a_DT general_JJ principled_JJ me_PRP
+h_NN words_NNS represented_VBN as_IN nodes_NNS and_CC relationships_NNS as_IN edges_NNS ,_, but_CC we_PRP compute_VBP word_NN similarity_NN across_IN the_DT two_CD monolingual_JJ graphs_NNS with_IN an_DT inter-graph_JJ similarity_NN algorithm_NN ._.
+This_DT algorithm_NN is_VBZ based_VBN on_IN SimRank_NNP -LRB-_-LRB- =_JJ -_: =_JJ Jeh_NNP and_CC Widom_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+SimRank_NNP recursively_RB computes_VBZ node_NN similarities_NNS based_VBN on_IN the_DT similarity_NN scores_NNS of_IN neighboring_JJ nodes_NNS within_IN a_DT graph_NN ._.
+Dorow_NNP et_FW al._FW -LRB-_-LRB- 2009_CD -RRB-_-RRB- proposed_VBD an_DT extension_NN that_WDT computes_VBZ node-similarities_NNS across_IN t_NN
+e_LS the_DT query-click_JJ graph_NN to_TO find_VB related_JJ keywords_NNS for_IN advertising_NN ._.
+Antonellis_NNP et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- also_RB use_VBP the_DT query-click_JJ graph_NN ,_, and_CC exploit_VB the_DT idea_NN of_IN co-citation_NN through_IN its_PRP$ generalization_NN known_VBN as_IN SimRank_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Mei_NNP ,_, Zhou_NNP and_CC Church_NNP -LRB-_-LRB- 22_CD -RRB-_-RRB- use_VBP a_DT computation_NN of_IN hitting_VBG time_NN for_IN ranking_JJ related_JJ queries_NNS ._.
+Query_JJ recommendation_NN based_VBN on_IN query_NN reformulations_NNS ._.
+Many_JJ effective_JJ approaches_NNS focus_VB on_IN the_DT analysis_NN of_IN user_NN q_NN
+ggested_VBN by_IN Goldman_NNP et_FW al_FW -LRB-_-LRB- 1998_CD -RRB-_-RRB- ,_, where_WRB similarity_NN was_VBD evaluated_VBN according_VBG to_TO the_DT shortest_JJS path_NN between_IN objects_NNS ._.
+Later_JJ models_NNS include_VBP BANKS_NNS -LRB-_-LRB- Bhalotia_NNP et_FW al._FW 2002_CD -RRB-_-RRB- ,_, XRank_NN -LRB-_-LRB- Guo_NN et_FW al._FW 2003_CD -RRB-_-RRB- and_CC SimRank_NN -LRB-_-LRB- =_JJ -_: =_JJ Jeh_NNP and_CC Widom_NNP 2002_CD -_: =-]_CD ._.
+SimRank_NNP is_VBZ a_DT similarity_NN measure_NN adapted_VBN for_IN graphs_NNS describing_VBG relational_JJ data_NNS ._.
+In_IN this_DT model_NN ,_, objects_NNS are_VBP recursively_RB defined_VBN to_TO be_VB similar_JJ if_IN they_PRP are_VBP related_VBN 24_CD The_DT complexity_NN of_IN online_NN iterative_JJ
+pages_NNS are_VBP similar_JJ ,_, we_PRP expect_VBP there_EX to_TO be_VB a_DT high_JJ overlap_VB between_IN their_PRP$ corresponding_JJ sets_NNS of_IN similar_JJ pages_NNS ._.
+Though_IN the_DT scenario_NN is_VBZ a_DT bit_RB different_JJ ,_, a_DT similar_JJ idea_NN underlies_VBZ the_DT computation_NN of_IN SimRank_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT case_NN of_IN SimRank_NNP ,_, two_CD documents_NNS are_VBP similar_JJ if_IN the_DT documents_NNS that_WDT cite_VBP them_PRP are_VBP similar_JJ providing_VBG a_DT recursive_JJ mechanism_NN for_IN computing_NN similarity_NN measure_NN ._.
+In_IN the_DT case_NN of_IN LTRank_NN ,_, similarity_NN is_VBZ c_NN
+ers_NNPS of_IN these_DT papers_NNS ._.
+Moreover_RB ,_, rules_NNS are_VBP established_VBN to_TO determine_VB a_DT possible_JJ degree_NN of_IN COI_NNP among_IN the_DT authors_NNS based_VBN on_IN the_DT Social_NNP Networks_NNP built_VBD and_CC the_DT relationship_NN 's_POS weights_NNS between_IN them_PRP ._.
+Jeh_NNP et_FW al._FW =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP a_DT measure_NN of_IN structural-context_JJ similarity_NN ,_, called_VBD SimRank_NNP ._.
+The_DT recommender_NN systems_NNS were_VBD used_VBN as_IN motivation_NN ._.
+The_DT base_NN idea_NN of_IN the_DT model_NN is_VBZ that_IN two_CD objects_NNS are_VBP similar_JJ if_IN they_PRP are_VBP related_JJ to_TO
+ithms_NNS that_WDT operate_VBP on_IN traditional_JJ folksonomies_NNS have_VBP already_RB been_VBN successfully_RB applied_VBN in_IN order_NN to_TO improve_VB Web_NN search_NN ._.
+In_IN -LRB-_-LRB- Bao_NNP et_FW al._FW ,_, 2007_CD -RRB-_-RRB- the_DT authors_NNS introduced_VBD SocialSimRank_NNP ,_, which_WDT adapts_VBZ SimRank_NNP -LRB-_-LRB- =_JJ -_: =_JJ Jeh_NNP and_CC Widom_NNP ,_, 2002_CD -_: =--RRB-_NN and_CC computes_VBZ similarity_NN between_IN tags_NNS and_CC resources_NNS respectivly_RB ._.
+Furthermore_RB ,_, Bao_NNP et_FW al._FW presented_VBD the_DT SocialPageRank_NNP algorithm_NN ,_, which_WDT ranks_VBZ Web_NN resources_NNS according_VBG to_TO how_WRB popular_JJ they_PRP are_VBP annotated_JJ ._.
+res_NNS ._.
+In_IN the_DT case_NN of_IN feature_NN types_NNS like_IN citations\/links_NNS ,_, the_DT set_NN of_IN nodes_NNS in_IN the_DT graph_NN is_VBZ V0_NN and_CC similarity_NN can_MD be_VB estimated_VBN using_VBG the_DT citation\/link_JJ graph_NN structure_NN using_VBG node_NN similarity_NN measures_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT object_NN graph_NN and_CC the_DT feature_NN graphs_NNS can_MD be_VB viewed_VBN as_IN different_JJ layers_NNS of_IN graphs_NNS ._.
+These_DT layers_NNS are_VBP connected_VBN using_VBG the_DT concept_NN of_IN layer_NN connectivity_NN as_IN defined_VBN below_IN ,_, Definition_NNP 4_CD ._.
+Layer_NNP Connecti_NNP
+een_VB the_DT graph_NN and_CC a_DT structure_NN graph_NN ,_, which_WDT reflects_VBZ the_DT features_NNS we_PRP care_VBP about_IN in_IN the_DT recommendation_NN ._.
+Third_NNP ,_, Melnik_NNP et_FW al._FW 's_POS approach_NN requires_VBZ adjustment_NN by_IN humans_NNS ,_, which_WDT ours_PRP does_VBZ not_RB ._.
+Jeh_NN and_CC Widom_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP a_DT domain-independent_JJ similarity_NN measurement_NN ,_, SimRank_NNP ._.
+SimRank_NNP measures_VBZ the_DT similarity_NN between_IN objects_NNS ._.
+It_PRP follows_VBZ the_DT intuition_NN that_IN ``_`` two_CD objects_NNS are_VBP similar_JJ if_IN they_PRP are_VBP related_JJ to_TO similar_JJ ob_NN
+node_NN a_DT ,_, and_CC includes_VBZ all_PDT the_DT articles_NNS that_WDT link_VBP to_TO or_CC are_VBP linked_VBN to_TO a._VB The_DT semantic_JJ similarity_NN between_IN nodes_NNS a_DT and_CC b_NN is_VBZ then_RB defined_VBN in_IN formula_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, which_WDT is_VBZ similar_JJ to_TO the_DT first_JJ iteration_NN of_IN SimRank_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT only_JJ difference_NN being_VBG the_DT normalization_NN factor_NN and_CC weights_NNS ._.
+|_NN N_NN -LRB-_-LRB- a_DT -RRB-_-RRB- |_NN ,_, |_NN N_NN -LRB-_-LRB- b_NN -RRB-_-RRB- |_FW ∑_FW -LRB-_-LRB- w_NN -LRB-_-LRB- N_NN -LRB-_-LRB- a_DT -RRB-_-RRB- -RRB-_-RRB- ,_, w_NN -LRB-_-LRB- N_NN -LRB-_-LRB- b_NN -RRB-_-RRB- -RRB-_-RRB- avg_FW i_FW j_NN -LCB-_-LRB- i_FW ,_, j_NN N_NN -LRB-_-LRB- a_DT -RRB-_-RRB- ,_, N_NN j_NN -LRB-_-LRB- b_NN -RRB-_-RRB- ∈_CD M_NN -RCB-_-RRB- sim_NN -LRB-_-LRB- a_DT ,_, b_NN -RRB-_-RRB- =_JJ |_CD N_NN -LRB-_-LRB- a_DT -RRB-_-RRB- |_FW ⎛_FW |_NN N_NN -LRB-_-LRB- b_NN -RRB-_-RRB- |_FW ⎞_FW avg_FW ⎜_FW ∑_FW
+e_LS grouped_VBD based_VBN on_IN the_DT users_NNS '_POS preferences_NNS ._.
+Various_JJ aspects_NNS of_IN objects_NNS can_MD be_VB used_VBN to_TO determine_VB similarity_NN ,_, usually_RB depending_VBG on_IN the_DT domain_NN and_CC the_DT appropriate_JJ definition_NN of_IN similarity_NN for_IN that_DT domain_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Bibliometrics_NNS studies_NNS the_DT citation_NN patterns_NNS of_IN scientific_JJ papers_NNS -LRB-_-LRB- or_CC other_JJ publications_NNS -RRB-_-RRB- ,_, and_CC relationships_NNS between_IN papers_NNS are_VBP interred_VBN from_IN their_PRP$ crosscitations_NNS ._.
+Most_RBS noteworthy_JJ from_IN this_DT field_NN are_VBP
+g_NN Rank_NNP -RRB-_-RRB- is_VBZ a_DT very_RB recently_RB introduced_VBN measure_NN of_IN structural_JJ similarity_NN for_IN nodes_NNS in_IN an_DT information_NN network_NN ._.
+It_PRP enriches_VBZ a_DT former_JJ successful_JJ measure_NN of_IN node_NN similarity_NN in_IN information_NN networks_NNS ,_, SimRank_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN their_PRP$ paper_NN ,_, the_DT authors_NNS prove_VBP that_IN P-Rank_NN is_VBZ a_DT unified_JJ structural_JJ similarity_NN network_NN ,_, under_IN whichall_JJ state_NN of_IN the_DT art_NN similarity_NN measures_NNS ,_, including_VBG CoCitation_NN ,_, Coupling_NN ,_, Amsler_NNP and_CC SimRank_NNP ,_, ar_NN
+om_NN walk_NN with_IN restart_VB on_IN image_NN captioning_VBG application_NN ._.
+We_PRP plan_VBP to_TO further_RB explore_VB the_DT random_JJ walk_NN algorithm_NN on_IN bipartite_JJ graph_NN and_CC use_VB it_PRP to_TO identify_VB anomaly_NN nodes_NNS ._.
+Similar_JJ idea_NN also_RB appear_VBP in_IN SimRank_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT is_VBZ a_DT similarity_NN measure_NN between_IN nodes_NNS in_IN a_DT graph_NN with_IN the_DT intuition_NN that_IN two_CD nodes_NNS are_VBP similar_JJ if_IN they_PRP are_VBP related_VBN by_IN similar_JJ nodes_NNS ._.
+Collaborative_NNP Filtering_NNP Collaborative_NNP filtering_VBG is_VBZ a_DT wellstu_NN
+back_RB to_TO node_NN vx_NN -LRB-_-LRB- restart_VB -RRB-_-RRB- ._.
+Thus_RB ,_, the_DT relevance_NN score_NN of_IN node_NN vx_NN with_IN respect_NN to_TO node_NN vy_NN is_VBZ defined_VBN as_IN the_DT steady-state_JJ probability_NN rvx_NN ,_, vy_NN that_IN the_DT random_JJ walker_NN will_MD finally_RB stay_VB at_IN node_NN vy_NN ._.
+SimRank_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: also_RB computes_VBZ a_DT global_JJ similarity_NN measure_NN based_VBN on_IN the_DT structural_JJ context_NN of_IN a_DT network_NN that_WDT says_VBZ ``_`` two_CD objects_NNS are_VBP similar_JJ if_IN they_PRP are_VBP related_JJ to_TO similar_JJ objects_NNS ''_'' ._.
+Recently_RB ,_, Clauset_NNP et_FW al._FW -LRB-_-LRB- 3_CD -RRB-_-RRB- propose_VBP
+ank_NN similarity_NN with_IN applications_NNS to_TO search_VB engine_NN ranking_NN and_CC document_NN corpora_NN clustering_NN ._.
+SimRank_NNP is_VBZ a_DT recursive_JJ refinement_NN of_IN co-citation_NN measure_NN that_WDT computes_VBZ similarity_NN by_IN common_JJ neighbors_NNS alone_RB =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT intuitive_JJ model_NN for_IN SimRank_NNP measure_NN is_VBZ based_VBN on_IN random_JJ walk_NN over_IN a_DT web-graph_NN like_IN Google_NNP PageRank_NNP -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+The_DT SimRank_NNP similarity_NN between_IN two_CD pages_NNS is_VBZ defined_VBN recursively_RB as_IN the_DT average_JJ similarity_NN b_NN
+anking_NN ,_, document_NN corpora_NN clustering_NN ,_, collaborative_JJ filtering_VBG for_IN recommender_NN systems_NNS ,_, etc._FW ._.
+SimRank_NNP is_VBZ a_DT recursive_JJ refinement_NN of_IN co-citation_NN measure_NN that_WDT computes_VBZ similarity_NN by_IN common_JJ neighbors_NNS alone_RB =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT intuitive_JJ model_NN for_IN SimRank_NNP measure_NN is_VBZ based_VBN on_IN random_JJ walk_NN over_IN a_DT web-graph_NN like_IN Google_NNP PageRank_NNP -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+The_DT SimRank_NNP similarity_NN between_IN two_CD web_NN pages_NNS is_VBZ defined_VBN recursively_RB as_IN the_DT average_JJ similari_NN
+paper_NN ._.
+2_CD Preliminaries_NNPS In_IN this_DT section_NN ,_, we_PRP briefly_RB introduce_VBP the_DT fundamental_JJ concepts_NNS ,_, and_CC formulate_VB the_DT basic_JJ problem_NN of_IN SimRank_NN similarity_NN scoring_VBG on_IN undirected_JJ graphs_NNS ._.
+More_JJR details_NNS can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 2,1,7_CD -RRB-_-RRB- -_: =_JJ -.282_CD W._NNP Yu_NNP ,_, X._NNP Lin_NNP ,_, and_CC J._NNP Le_NNP 2.1_CD Problem_NNP Statement_NNP Assume_VB an_DT undirected_JJ web_NN graph_NN G_NN =_JJ -LRB-_-LRB- V_NN ,_, E_NN -RRB-_-RRB- ,_, whereVis_VBZ the_DT set_NN of_IN vertices_NNS representing_VBG web_NN documents_NNS ,_, and_CC E_NN is_VBZ the_DT set_NN of_IN edges_NNS ._.
+Each_DT edge_NN -LRB-_-LRB- p_NN ,_, q_NN -RRB-_-RRB- ∈_NN E_NN be_VB
+y_NN is_VBZ correlated_VBN with_IN the_DT product_NN of_IN the_DT number_NN of_IN collaborators_NNS of_IN x_NN and_CC y._VB The_DT scoring_VBG function_NN for_IN that_DT measure_NN is_VBZ :_: Other_JJ methods_NNS for_IN link_NN prediction_NN include_VBP Hitting_NNP Time_NNP ,_, Rooted_NNP PageRank_NNP ,_, SimRank_NNP =_SYM -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Unseen_NNP Bigrams_NNP ,_, and_CC clustering_NN ._.
+The_DT last_JJ link_NN prediction_NN measure_NN that_IN we_PRP will_MD discuss_VB is_VBZ the_DT Katz_NNP measure_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, which_WDT we_PRP used_VBD for_IN our_PRP$ link_NN prediction_NN purposes_NNS ._.
+Katz_NNP defines_VBZ a_DT measure_NN that_WDT directly_RB s_VBZ
+s_NN for_IN keyword-based_JJ advertising_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ._.
+They_PRP established_VBD a_DT formal_JJ graph_NN model_NN to_TO solve_VB the_DT problem_NN ._.
+Antonellis_NNP et_FW al._FW proposed_VBN query_NN rewriting_VBG through_IN link_NN analysis_NN of_IN the_DT click_VBP graph_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- using_VBG SimRank_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: to_TO identify_VB similar_JJ queries_NNS ._.
+However_RB ,_, all_DT of_IN these_DT approaches_NNS used_VBD a_DT finite_JJ ad_NN query_NN set_NN which_WDT does_VBZ not_RB come_VB close_RB to_TO the_DT scale_NN this_DT paper_NN is_VBZ experimenting_VBG with_IN ._.
+Finally_RB ,_, some_DT researchers_NNS experimente_VBP
+objects_NNS represented_VBN as_IN RDF_NNP graphs_NNS ._.
+We_PRP augment_VBP their_PRP$ framework_NN with_IN Cloneable_NNP Properties_NNP for_IN our_PRP$ link_NN suggestion_NN task_NN and_CC define_VB our_PRP$ own_JJ similarity_NN measurements_NNS between_IN corresponding_JJ property_NN values_NNS ._.
+=_SYM -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: presented_VBD an_DT algorithm_NN for_IN analyzing_VBG general_JJ logical_JJ graphs_NNS to_TO compute_VB similarity_NN scores_NNS between_IN nodes_NNS based_VBN on_IN their_PRP$ structural_JJ contexts_NNS ,_, but_CC the_DT algorithm_NN do_VBP not_RB support_VB weighted_JJ edges_NNS ._.
+-LRB-_-LRB- 20_CD -RRB-_-RRB- propos_NNS
+ressed_VBN in_IN the_DT following_JJ equation_NN :_: Sim_NN -LRB-_-LRB- c_NN ,_, c_NN ′_NN -RRB-_-RRB- =_JJ F_NN -LRB-_-LRB- Sim_NN -LRB-_-LRB- Oi_NN -LRB-_-LRB- c_NN -RRB-_-RRB- ,_, Oj_NN -LRB-_-LRB- c_NN ′_NN -RRB-_-RRB- -RRB-_-RRB- -RRB-_-RRB- where_WRB ,_, F_NN is_VBZ a_DT generic_JJ function_NN that_WDT integrates_VBZ the_DT contributions_NNS to_TO the_DT similarity_NN given_VBN by_IN the_DT different_JJ case_NN components_NNS ._.
+In_IN =_JJ -_: =[_NN 49_CD -RRB-_-RRB- -_: =_SYM -_: they_PRP introduce_VBP a_DT definition_NN of_IN similarity_NN based_VBN on_IN the_DT similar_JJ principles_NNS :_: ``_`` two_CD objects_NNS are_VBP similar_JJ if_IN they_PRP are_VBP referenced_VBN by_IN similar_JJ objects_NNS ''_'' ._.
+They_PRP also_RB propose_VBP a_DT particular_JJ ``_`` integration_NN ''_'' function_NN ,_,
+rities_NNS using_VBG the_DT query_JJ term_NN vector_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+This_DT idea_NN was_VBD subsequently_RB applied_VBN to_TO the_DT Web_NN -LRB-_-LRB- 2_CD ,_, 3_CD -RRB-_-RRB- ._.
+Others_NNS have_VBP used_VBN query_JJ click-through_JJ data_NNS to_TO relate_VB queries_NNS and_CC documents_NNS -LRB-_-LRB- 1_CD ,_, 7_CD -RRB-_-RRB- ._.
+Recently_RB ,_, Jeh_NN and_CC Widom_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT generalized_JJ technique_NN to_TO incrementally_RB calculate_VB the_DT similarities_NNS -LRB-_-LRB- based_VBN on_IN a_DT bipartite_JJ graph_NN structure_NN -RRB-_-RRB- of_IN all_DT pairs_NNS of_IN objects_NNS -LRB-_-LRB- not_RB necessarily_RB of_IN the_DT same_JJ type_NN -RRB-_-RRB- ._.
+3_LS ._.
+EXPERIMENTS_NNS We_PRP used_VBD
+ewriting_VBG for_IN sponsored_VBN search_NN ._.
+We_PRP base_VBP rewrites_NNS on_IN a_DT historical_JJ click_VB graph_NN that_WDT records_VBZ the_DT ads_NNS that_WDT have_VBP been_VBN clicked_VBN on_RP in_IN response_NN to_TO past_JJ user_NN queries_NNS ._.
+Given_VBN a_DT query_FW q_FW ,_, we_PRP first_RB consider_VBP Simrank_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: as_IN a_DT way_NN to_TO identify_VB queries_NNS similar_JJ to_TO q_NN ,_, i.e._FW ,_, queries_NNS whose_WP$ ads_NNS a_DT user_NN may_MD be_VB interested_JJ in_IN ._.
+We_PRP argue_VBP that_IN Simrank_NNP fails_VBZ to_TO properly_RB identify_VB query_NN similarities_NNS in_IN our_PRP$ application_NN ,_, and_CC we_PRP present_VBP
+HMG03_NN -RRB-_-RRB- -LRB-_-LRB- SQCF05_NN -RRB-_-RRB- ;_: fingerprint_NN based_VBN -LRB-_-LRB- FR04_NN -RRB-_-RRB- ,_, and_CC so_RB on_RB ._.
+Many_JJ applications_NNS take_VBP random_JJ walk_NN and_CC related_JJ methods_NNS as_IN the_DT building_NN block_NN ,_, including_VBG PageRank_NN -LRB-_-LRB- PBMW98_NN -RRB-_-RRB- ,_, personalized_JJ PageRank_NN -LRB-_-LRB- Hav02_NN -RRB-_-RRB- ,_, SimRank_NN =_JJ -_: =_JJ -LRB-_-LRB- JW02_NN -RRB-_-RRB- -_: =_JJ -_: ,_, neighborhood_NN formulation_NN in_IN bipartite_JJ graphs_NNS -LRB-_-LRB- SQCF05_NN -RRB-_-RRB- ,_, content-based_JJ image_NN retrieval_NN -LRB-_-LRB- HLZ_NN +_CC 04_CD -RRB-_-RRB- ,_, cross_JJ modal_JJ correlation_NN discovery_NN -LRB-_-LRB- PYFD04_NN -RRB-_-RRB- ,_, the_DT BANKS_NN system_NN -LRB-_-LRB- ABC_NN +_CC 02_CD -RRB-_-RRB- ,_, ObjectRank_NN -LRB-_-LRB- BHP04_NN -RRB-_-RRB- ,_, Relation_NN
+ith_RB restart_VB -LRB-_-LRB- 26_CD ,_, 35_CD -RRB-_-RRB- ,_, sinkaugmented_VBD delivered_VBN current_JJ -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, cycle_NN free_JJ effective_JJ conductance_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, survivable_JJ network_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, direction-aware_JJ proximity_NN -LRB-_-LRB- 34_CD -RRB-_-RRB- ,_, ObjectRank_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, RelationalRank_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, SimRank_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: and_CC its_PRP$ fast_JJ approximation_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- Low-Rank_JJ Approximation_NN ._.
+Many_JJ real_JJ graphs_NNS have_VBP low_JJ intrinsic_JJ ranks_NNS ._.
+Low_JJ rank_NN approximation_NN -LRB-_-LRB- 11_CD ,_, 6_CD ,_, 1_LS -RRB-_-RRB- plays_VBZ a_DT very_RB important_JJ role_NN in_IN mining_VBG such_JJ graphs_NNS ,_, e.g._FW ,_, community_NN
+nteracts_NNS with_IN users_NNS ,_, responds_VBZ to_TO their_PRP$ requests_NNS ,_, and_CC collects_VBZ feedback_NN ._.
+3_LS ._.
+ALGORITHMS_NNP Figure_NNP 2_CD :_: Amazon_NNP image_NN information_NN network_NN ._.
+with_IN three_CD types_NNS of_IN nodes_NNS -LRB-_-LRB- images_NNS VI_NNP ,_, groups_NNS VG_NNS and_CC tags_NNS VT_NN -RRB-_-RRB- ._.
+SimRank_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ one_CD of_IN the_DT most_RBS popular_JJ algorithms_NNS for_IN evaluating_VBG object_NN similarity_NN in_IN information_NN networks_NNS ._.
+It_PRP calculates_VBZ the_DT similarity_NN between_IN objects_NNS based_VBN on_IN the_DT intuition_NN that_IN two_CD objects_NNS are_VBP similar_JJ if_IN the_DT
+lementation_NN and_CC testing_NN of_IN the_DT RankClus_NN method_NN have_VBP demonstrated_VBN the_DT high_JJ promise_NN of_IN this_DT approach_NN ._.
+For_IN processing_VBG efficiency_NN ,_, it_PRP is_VBZ an_DT order_NN of_IN magnitude_NN faster_RBR than_IN the_DT well-cited_JJ SimRank_NNP algorithm_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: because_IN SimRank_NNP has_VBZ to_TO calculate_VB the_DT pairwise_JJ similarity_NN between_IN every_DT two_CD objects_NNS of_IN the_DT same_JJ type_NN ,_, whereas_IN RankClus_NN uses_VBZ conditional_JJ ranking_NN as_IN the_DT measure_NN of_IN clusters_NNS ,_, and_CC only_RB need_VBP to_TO calculate_VB t_NN
+the_DT instance_NN counts_NNS of_IN a_DT given_VBN set_NN of_IN attribute-value_JJ pairs_NNS ._.
+6.1_CD Summarization_NN of_IN the_DT Data_NNP Graph_NNP Summarization_NNP -LRB-_-LRB- or_CC clustering_NN -RRB-_-RRB- of_IN graph-structured_JJ data_NNS has_VBZ been_VBN extensively_RB studied_VBN in_IN the_DT literature_NN =_JJ -_: =[_NN 15_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Graph_NN summarization_NN algorithms_NNS can_MD be_VB classified_VBN into_IN two_CD :_: some_DT -LRB-_-LRB- such_JJ as_IN -LRB-_-LRB- 9_CD ,_, 8_CD -RRB-_-RRB- -RRB-_-RRB- partition_NN the_DT graph_NN by_IN finding_VBG strongly_RB linked_VBN components_NNS and_CC grouping_VBG these_DT nodes_NNS into_IN super-nodes_NNS ._.
+Others_NNS ,_, such_JJ as_IN
+s_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+At_IN first_JJ ,_, community_NN discovery_NN is_VBZ conducted_VBN on_IN links_NNS only_RB without_IN consulting_VBG objects_NNS '_POS information_NN ._.
+Such_JJ techniques_NNS find_VBP communities_NNS as_IN strongly_RB connected_VBN sub-networks_NNS by_IN similarity_NN computation_NN =_JJ -_: =[_NN 15_CD ,_, 12_CD -RRB-_-RRB- -_: =_JJ -_: or_CC graph_NN partitioning_NN -LRB-_-LRB- 24_CD ,_, 20_CD ,_, 14_CD -RRB-_-RRB- ._.
+Later_RB ,_, it_PRP was_VBD found_VBN that_IN utilizing_VBG both_CC link_NN and_CC data_NN information_NN leads_VBZ to_TO the_DT discovery_NN of_IN more_RBR accurate_JJ and_CC meaningful_JJ communities_NNS -LRB-_-LRB- 17_CD ,_, 32_CD ,_, 30_CD -RRB-_-RRB- ._.
+Some_DT relational_NN
+f_LS -RRB-_-RRB- Running_VBG Time_NNP Figure_NNP 2_CD :_: Performance_NNP :_: -LRB-_-LRB- a_LS -RRB-_-RRB- Precision@10;_NN -LRB-_-LRB- b_NN -RRB-_-RRB- Precision@20;_NN -LRB-_-LRB- c_NN -RRB-_-RRB- Recall@50;_NN -LRB-_-LRB- d_NN -RRB-_-RRB- Precision_NN Recall_VB Curve_NN ;_: -LRB-_-LRB- e_LS -RRB-_-RRB- Parameter_NN Tuning_NN ;_: and_CC -LRB-_-LRB- f_LS -RRB-_-RRB- Running_VBG time_NN ._.
+provide_VB high_JJ quality_NN answers_NNS ._.
+SimRank_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT wellknownsimilarityfunctiondefinedonnetworks_NNS ,_, bywhich_VBP the_DT most_RBS similar_JJ objects_NNS for_IN the_DT given_VBN object_NN can_MD be_VB returned_VBN ._.
+However_RB ,_, due_JJ to_TO the_DT fact_NN that_IN it_PRP is_VBZ a_DT global_JJ graphmeasure_NN ,_, thehighcomputation_NN
+Moreover_RB ,_, other_JJ recent_JJ work_NN on_IN homogeneous_JJ networks_NNS ,_, such_JJ as_IN clustering_NN -LRB-_-LRB- e.g._FW ,_, spectral_JJ clustering_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC SCAN_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- -RRB-_-RRB- ,_, ranking_NN -LRB-_-LRB- e.g._FW ,_, PageRank_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC HITS_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- -RRB-_-RRB- ,_, and_CC similarity_NN search_NN -LRB-_-LRB- e.g._FW ,_, SimRank_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Personalized_VBN PageRank_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- -RRB-_-RRB- will_MD be_VB introduced_VBN in_IN our_PRP$ comparative_JJ study_NN of_IN heterogeneous_JJ networks_NNS ._.
+Ranking-based_JJ clustering_NN in_IN heterogeneous_JJ information_NN networks_NNS ._.
+Most_JJS methods_NNS perform_VBP clustering_NN
+as_IN follows_VBZ :_: PRA1_NN →_NN A2_NN =_JJ 1_CD |_CD LA_NNP 1_CD |_NN -LRB-_-LRB- |_NN -LCB-_-LRB- A2_NN -RCB-_-RRB- ∩_CD LA1_NN |_NN +_CC ∑_NN A_NNP ∈_NNP LA_NNP 1_CD ∩_NN BA_NN 2_CD -RRB-_-RRB- 1_CD |_CD LA_NNP |_CD -LRB-_-LRB- 9_CD -RRB-_-RRB- Earlier_RB we_PRP mentioned_VBD that_IN similar_JJ iterative_JJ algorithms_NNS exist_VBP to_TO directly_RB compute_VB relatedness_NN rather_RB than_IN ranking_NN ,_, SimRank_NN -LRB-_-LRB- =_JJ -_: =_JJ Jeh_NNP &_CC Widom_NNP ,_, 2002_CD -_: =--RRB-_NN and_CC PageSim_NN -LRB-_-LRB- Lin_NNP et_FW al._FW ,_, 2007_CD -RRB-_-RRB- being_VBG two_CD of_IN them_PRP ._.
+These_DT can_MD be_VB considered_VBN related_JJ research_NN ,_, but_CC unlike_IN our_PRP$ approach_NN ,_, they_PRP are_VBP even_RB more_RBR expensive_JJ than_IN PageRank_NN ,_, computing_NN values_NNS for_IN pairs_NNS of_IN nodes_NNS i_FW
+tead_NN of_IN using_VBG local_JJ neighborhood_NN information_NN ,_, the_DT global_JJ network_NN structure_NN can_MD be_VB used_VBN for_IN vertex_NN similarity_NN calculation_NN ._.
+We_PRP introduce_VBP three_CD global_JJ structure_NN based_VBN vertex_NN similarity_NN measures_NNS ,_, SimRank_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: Leicht-Holme-Newman_NN -LRB-_-LRB- LHN_NN -RRB-_-RRB- vertex_NN similarity_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, and_CC PRank_NN -LRB-_-LRB- 38_CD -RRB-_-RRB- ._.
+These_DT three_CD methods_NNS consider_VBP the_DT vertex_NN similarity_NN measure_NN based_VBN on_IN the_DT same_JJ intuition_NN :_: two_CD vertices_NNS are_VBP similar_JJ if_IN their_PRP$ immediate_JJ n_NN
+nd_FW y_FW can_MD be_VB inferred_VBN through_IN the_DT extended_JJ graph_NN ._.
+Generic_JJ simRank_NN ._.
+In_IN the_DT above_JJ extended_JJ graph_NN ,_, we_PRP use_VBP the_DT concept_NN that_IN ``_`` two_CD objects_NNS are_VBP similar_JJ if_IN they_PRP are_VBP similar_JJ to_TO two_CD similar_JJ objects_NNS ''_'' ._.
+JehandWidom_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: suggestedagenericmetriccalledSimRank_NN which_WDT captures_VBZ this_DT notion_NN recursively_RB ._.
+The_DT simRank_NN score_NN is_VBZ the_DT fixed_JJ point_NN of_IN the_DT following_JJ recursive_JJ equation_NN ._.
+simRank_NN -LRB-_-LRB- x_NN ,_, y_NN -RRB-_-RRB- =_JJ -LCB-_-LRB- 1_CD if_IN x_NN =_JJ y_FW γ_FW ._.
+∑_FW ∑_FW a_DT ∈_NN Γ_NN -LRB-_-LRB- x_NN -RRB-_-RRB- b_NN ∈_NN Γ_NN -LRB-_-LRB- y_NN -RRB-_-RRB-
+ng_NN among_IN the_DT neighbors_NNS of_IN x_NN at_IN random_JJ ._.
+Using_VBG this_DT approach_NN it_PRP is_VBZ possible_JJ to_TO compute_VB the_DT hitting_VBG time_NN Hx_NN ,_, y_NN as_IN the_DT expected_VBN number_NN of_IN steps_NNS required_VBN for_IN a_DT random_JJ walk_NN starting_VBG at_IN x_NN to_TO reach_VB y._NNP SimRank_NNP =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: supposes_VBZ that_IN two_CD nodes_NNS are_VBP similar_JJ to_TO the_DT extent_NN that_IN they_PRP are_VBP joined_VBN to_TO similar_JJ neighbors_NNS ._.
+In_IN particular_JJ s_NN -LRB-_-LRB- x_NN ,_, y_NN -RRB-_-RRB- =_JJ ∑_CD a_DT ∈_NN N_NN -LRB-_-LRB- x_NN -RRB-_-RRB- l_NN =_JJ 1_CD βl_FW ·_FW |_FW paths_NNS 〈_CD l_NN 〉_CD x_NN ,_, y_FW |_FW where_WRB paths_NNS 〈_CD l_NN 〉_FW ∑_FW b_NN ∈_NN N_NN -LRB-_-LRB- y_NN -RRB-_-RRB- s_NN -LRB-_-LRB- a_DT ,_, b_NN -RRB-_-RRB- γ_FW ·_FW |_FW N_NN -LRB-_-LRB- x_NN -RRB-_-RRB- |_FW ·_FW |_FW N_NN -LRB-_-LRB- y_NN -RRB-_-RRB-
+Rank_NNP Plus_NNP is_VBZ that_IN it_PRP can_MD deal_VB with_IN click_VBP fraud_NN ,_, which_WDT the_DT original_JJ BrowseRank_NNP algorithm_NN may_MD suffer_VB from_IN ._.
+Note_VB that_IN the_DT idea_NN of_IN generalizing_VBG BrowseRank_NNP to_TO BrowseRank_NNP Plus_NNP is_VBZ somehow_RB similar_JJ to_TO SimRank_NNP -LRB-_-LRB- =_JJ -_: =_JJ Jeh_NNP and_CC Widom_NNP 2002_CD -_: =--RRB-_NN ._.
+5.1_CD Mirror_NNP Semi-Markov_NNP Process_VB method_NN To_TO better_RBR explain_VB the_DT BrowseRank_NNP Plus_NNP algorithm_NN ,_, we_PRP define_VBP the_DT Mirror_NNP Semi-Markov_NNP Process_VB and_CC introduce_VB an_DT implementation_NN of_IN it_PRP for_IN page_NN importance_NN computation_NN
+aph_NN ._.
+Graph_NN matching_NN algorithms_NNS have_VBP been_VBN used_VBN for_IN various_JJ purposes_NNS ,_, such_JJ as_IN computer_NN vision_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, pattern_NN recognition_NN -LRB-_-LRB- 32,31_CD -RRB-_-RRB- ,_, bioinformatics_NNS -LRB-_-LRB- 33,34_CD -RRB-_-RRB- ,_, retrieving_VBG relevant_JJ principles_NNS from_IN ethics_NNS cases_NNS =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =_JJ -_: and_CC web_NN search_NN -LRB-_-LRB- 36_CD -RRB-_-RRB- ._.
+For_IN instance_NN ,_, in_IN -LRB-_-LRB- 32_CD -RRB-_-RRB- inexact_FW subgraph_FW matching_NN is_VBZ used_VBN for_IN recognition_NN of_IN engineering_NN symbols_NNS in_IN engineering_NN drawings_NNS ._.
+A_DT symbol_NN is_VBZ represented_VBN as_IN a_DT labeled_JJ graph_NN and_CC matched_JJ aga_NN
+anslation_NN ._.
+We_PRP employ_VBP undirected_JJ graphs_NNS with_IN typed_VBN nodes_NNS and_CC edges_NNS ._.
+Node_NN types_NNS represent_VBP parts_NNS of_IN speech_NN -LRB-_-LRB- POS_NN -RRB-_-RRB- ;_: edge_NN types_NNS represent_VBP different_JJ kinds_NNS of_IN relations_NNS ._.
+We_PRP use_VBP a_DT modified_VBN version_NN of_IN SimRank_NNP -LRB-_-LRB- =_JJ -_: =_JJ Jeh_NNP and_CC Widom_NNP ,_, 2002_CD -_: =--RRB-_NN as_IN a_DT similarity_NN measure_NN for_IN our_PRP$ experiments_NNS -LRB-_-LRB- see_VB Section_NNP 4_CD for_IN details_NNS -RRB-_-RRB- ._.
+SimRank_NNP is_VBZ based_VBN on_IN the_DT idea_NN that_IN two_CD nodes_NNS are_VBP similar_JJ if_IN their_PRP$ neighbors_NNS are_VBP similar_JJ ._.
+We_PRP apply_VBP this_DT notion_NN of_IN similarity_NN ac_NN
+p_NN logic_NN with_IN intelligent_JJ user_NN interfaces_NNS to_TO formulate_VB the_DT query_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+These_DT have_VBP been_VBN further_RB developed_VBN to_TO support_VB fuzzy_JJ logic_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Determining_VBG structural_JJ similarity_NN has_VBZ been_VBN investigated_VBN in_IN SimRank_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, SimFusion_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, AKTiveRank_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- and_CC Swoogle_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+SimRank_NNP measures_VBZ similarity_NN of_IN structural_JJ contexts_NNS ,_, but_CC concentrates_VBZ only_RB on_IN graph_NN theoretical_JJ model_NN instead_RB of_IN feature_NN vectors_NNS ._.
+SimFusion_NNP considers_VBZ o_NN
+that_IN the_DT existence_NN of_IN a_DT hyperlink_NN u_FW →_FW v_LS implies_VBZ that_IN page_NN u_NN votes_NNS for_IN v_LS as_IN a_DT quality_NN page_NN ._.
+In_IN this_DT paper_NN we_PRP address_VBP the_DT computational_JJ issues_NNS -LRB-_-LRB- 21_CD ,_, 25_CD ,_, 18_CD ,_, 19_CD -RRB-_-RRB- of_IN personalized_VBN PageRank_NN -LRB-_-LRB- 33_CD -RRB-_-RRB- and_CC SimRank_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Personalized_VBN PageRank_NN -LRB-_-LRB- PPR_NN -RRB-_-RRB- -LRB-_-LRB- 33_CD -RRB-_-RRB- enters_VBZ user_NN preferences_NNS by_IN assigning_VBG more_JJR importance_NN to_TO the_DT neighborhood_NN of_IN pages_NNS at_IN the_DT user_NN 's_POS selection_NN ._.
+Jeh_NNP and_CC Widom_NNP -LRB-_-LRB- 24_CD -RRB-_-RRB- introduced_VBD SimRank_NNP ,_, the_DT multi-step_JJ link_NN
+complete_JJ process_NN is_VBZ depicted_VBN in_IN figure_NN 1_CD ._.
+Fig._NNP 1_CD ._.
+Personalized_VBN Ranking_NNP Platform_NNP HubFinder_NNP is_VBZ an_DT algorithm_NN for_IN finding_VBG hubs_NNS ,_, related_VBN to_TO an_DT initial_JJ base_NN set_NN of_IN Web_NN pages_NNS ._.
+We_PRP define_VBP related_VBN similarly_RB to_TO =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, i.e._FW using_VBG only_JJ link_NN information_NN as_IN input_NN ._.
+Two_CD pages_NNS are_VBP related_VBN if_IN one_CD is_VBZ accessible_JJ from_IN the_DT other_JJ via_IN the_DT link_NN structure_NN of_IN the_DT Web_NN graph_NN -LRB-_-LRB- following_VBG either_CC in-going_JJ or_CC out-going_JJ links_NNS -RRB-_-RRB- ._.
+We_PRP should_MD
+or_CC finding_VBG hubs_NNS -LRB-_-LRB- or_CC authorities_NNS -RRB-_-RRB- related_JJ to_TO a_DT given_VBN initial_JJ set_NN of_IN pages_NNS ._.
+A_DT related_JJ page_NN of_IN any_DT type_NN is_VBZ one_CD that_WDT address_VBP the_DT same_JJ topic_NN as_IN the_DT original_JJ page_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- -LRB-_-LRB- e.g._FW both_DT are_VBP newspapers_NNS -RRB-_-RRB- ._.
+Similar_JJ to_TO =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP use_VBP the_DT link_NN structure_NN of_IN the_DT World_NNP Wide_NN Web_NN as_IN input_NN ._.
+If_IN there_EX is_VBZ a_DT link_NN from_IN page_NN v_LS to_TO page_NN w_NN ,_, then_RB the_DT author_NN of_IN v_LS recommends_VBZ page_NN w_NN ,_, and_CC the_DT two_CD pages_NNS are_VBP usually_RB related_JJ ._.
+However_RB ,_, we_PRP will_MD al_FW
+is_VBZ that_IN we_PRP use_VBP the_DT interrelationship_NN to_TO infer_VB probability_NN that_IN a_DT query\/webpage_NN belong_VB to_TO a_DT class_NN ,_, while_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- only_RB used_VBD the_DT interrelationship_NN as_IN additional_JJ feature_NN for_IN clustering_NN ._.
+The_DT analogous_JJ method_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ also_RB used_VBN in_IN finding_VBG similar_JJ objects_NNS ,_, which_WDT iteratively_RB calculate_VBP the_DT similarities_NNS between_IN the_DT objects_NNS through_IN the_DT link_NN relationship_NN ._.
+Wen_NNP et_FW al._FW -LRB-_-LRB- 19_CD -RRB-_-RRB- described_VBD a_DT query_JJ clustering_NN method_NN that_WDT makes_VBZ
+osed_VBN importance_NN score_NN calculation_NN is_VBZ based_VBN on_IN random_JJ walk_NN with_IN restart_VB ._.
+There_EX are_VBP many_JJ applications_NNS using_VBG random_JJ walk_NN and_CC related_JJ methods_NNS ,_, including_VBG PageRank_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, personalized_JJ PageRank_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, SimRank_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, neighborhood_NN formulation_NN in_IN bipartite_JJ graph_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, content-based_JJ image_NN retrieval_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, cross_JJ modal_JJ correlation_NN discovery_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, BANKS_NN system_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, ObjectRank_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, RalationalRank_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC so_RB on_RB ._.
+Communi_NNS
+structure_NN based_VBN -LRB-_-LRB- 18_CD -RRB-_-RRB- -LRB-_-LRB- 25_CD -RRB-_-RRB- ;_: fingerprint_NN based_VBN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, and_CC so_RB on_RB ._.
+Many_JJ applications_NNS take_VBP random_JJ walk_NN and_CC related_JJ methods_NNS as_IN the_DT building_NN block_NN ,_, including_VBG PageRank_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, personalized_JJ PageRank_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, SimRank_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, neighborhood_NN formulation_NN in_IN bipartite_JJ graphs_NNS -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, content-based_JJ image_NN retrieval_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, cross_JJ modal_JJ correlation_NN discovery_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, the_DT BANKS_NN system_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, ObjectRank_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, RalationalRank_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, and_CC so_RB on_RB ._.
+G_NN
+rall_NN importance_NN ,_, the_DT core_NN of_IN PageRank_NNP ,_, and_CC their_PRP$ relevance_NN to_TO a_DT particular_JJ topic_NN or_CC individual_NN ,_, by_IN biasing_VBG the_DT random_JJ resets_NNS towards_IN topically_RB relevant_JJ or_CC bookmarked_JJ pages_NNS -LRB-_-LRB- 12_CD ,_, 13_CD ,_, 15_CD ,_, 17_CD -RRB-_-RRB- ._.
+•_FW SimRank_FW =_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT fixed_JJ point_NN of_IN the_DT following_JJ recursive_JJ definition_NN :_: two_CD nodes_NNS are_VBP similar_JJ to_TO the_DT extent_NN that_IN they_PRP are_VBP joined_VBN to_TO similar_JJ neighbors_NNS ._.
+Numerically_RB ,_, this_DT quantity_NN is_VBZ specified_VBN by_IN defining_VBG similarity_NN -LRB-_-LRB- x_NN
+of_IN the_DT similarity_NN matrix_NN ._.
+An_DT example_NN of_IN two_CD graphs_NNS and_CC their_PRP$ similarity_NN matrix_NN is_VBZ shown_VBN in_IN Figure_NNP 1.2_CD ._.
+It_PRP is_VBZ interesting_JJ to_TO note_VB that_IN in_IN the_DT database_NN literature_NN similar_JJ ideas_NNS have_VBP been_VBN proposed_VBN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT application_NN there_EX is_VBZ information_NN retrieval_NN in_IN large_JJ databases_NNS with_IN which_WDT a_DT particular_JJ graph_NN structure_NN can_MD be_VB associated_VBN ._.
+The_DT ideas_NNS presented_VBN in_IN these_DT conference_NN papers_NNS are_VBP obviously_RB linked_VBN to_TO th_DT
+,_, a_DT variety_NN of_IN link-based_JJ similarity_NN measures_NNS ,_, which_WDT use_VBP only_RB the_DT hyperlinks_NNS in_IN the_DT Web_NN ,_, have_VBP been_VBN proposed_VBN for_IN this_DT task_NN ._.
+This_DT includes_VBZ companion_NN algorithm_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, cocitation_NN algorithm_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, and_CC SimRank_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, etc._NN ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT novel_JJ link-based_JJ similarity_NN measure_NN ,_, called_VBD PageSim_NNP ._.
+Contrast_NN to_TO SimRank_NNP ,_, our_PRP$ method_NN can_MD measure_VB similarity_NN between_IN any_DT two_CD web_NN pages_NNS ,_, whereas_IN SimRank_NNP can_MD not_RB in_IN some_DT
+rphism_NN problem_NN solution_NN -LRB-_-LRB- see_VB e.g._FW -LRB-_-LRB- 16_CD -RRB-_-RRB- -RRB-_-RRB- but_CC reduces_VBZ sensibly_RB the_DT computation_NN cost_NN ._.
+6_CD Equation_NN 1_CD is_VBZ generated_VBN with_IN the_DT spirit_NN of_IN the_DT principle_NN ``_`` two_CD objects_NNS are_VBP similar_JJ if_IN they_PRP contain_VBP similar_JJ objects_NNS ''_'' =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT is_VBZ a_DT quite_RB customized_VBN version_NN of_IN the_DT integration_NN function_NN proposed_VBN in_IN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+s5_NNP Future_NNP Works_NNP and_CC Conclusions_NNP This_NNP paper_NN presents_VBZ a_DT research_NN project_NN that_WDT addresses_VBZ a_DT fundamental_JJ issues_NNS in_IN CBR_NNP rec_NN
+ollaborative_JJ filtering_VBG -LRB-_-LRB- 14_CD -RRB-_-RRB- and_CC recommender_NN systems_NNS -LRB-_-LRB- 23_CD -RRB-_-RRB- ._.
+Most_JJS works_NNS discussed_VBN above_IN only_RB consider_VBP a_DT single_JJ type_NN of_IN relationship_NN when_WRB calculating_VBG the_DT similarity_NN of_IN data_NNS objects_NNS ._.
+Some_DT recent_JJ works_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBN using_VBG multiple_JJ relationships_NNS to_TO calculate_VB the_DT similarity_NN between_IN data_NNS objects_NNS ._.
+However_RB ,_, these_DT works_NNS differ_VBP from_IN ours_PRP mostly_RB in_IN 1_CD -RRB-_-RRB- how_WRB different_JJ kinds_NNS of_IN attributes_NNS -LRB-_-LRB- relationships_NNS -RRB-_-RRB- are_VBP combin_NN
+der_NN co-occurrences_NNS ,_, as_IN the_DT properties_NNS of_IN PageRank_NN are_VBP well_RB understood_VBN ,_, it_PRP can_MD be_VB computed_VBN very_RB efficiently_RB and_CC converges_VBZ to_TO a_DT stable_JJ solution_NN for_IN appropriate_JJ input_NN data_NNS -LRB-_-LRB- e.g._FW ,_, in_IN the_DT SimRank_NNP approach_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, PageRank_NNP has_VBZ been_VBN used_VBN in_IN a_DT similar_JJ way_NN to_TO compute_VB transitive_JJ similarities_NNS -RRB-_-RRB- ._.
+Our_PRP$ algorithm_NN comprises_VBZ the_DT following_JJ three_CD steps_NNS ,_, which_WDT are_VBP explained_VBN in_IN more_JJR detail_NN in_IN the_DT upcoming_JJ sections_NNS ._.
+I._NNP Comput_NNP
+3_LS -RRB-_-RRB- If_IN two_CD objects_NNS of_IN one_CD data_NN type_NN are_VBP similar_JJ ,_, they_PRP tend_VBP to_TO have_VB similar_JJ links_NNS ._.
+The_DT effectiveness_NN of_IN the_DT former_JJ two_CD assumptions_NNS has_VBZ been_VBN proved_VBN by_IN many_JJ previous_JJ approaches_NNS addressing_VBG relational_JJ data_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =-[_NN 20_CD -RRB-_-RRB- ._.
+The_DT effectiveness_NN of_IN the_DT third_JJ assumption_NN --_: the_DT reinforcements_NNS between_IN intra-type_JJ links_NNS and_CC inter-type_JJ links_NNS --_: has_VBZ also_RB been_VBN 123_CD proved_VBN in_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- -LRB-_-LRB- 17_CD -RRB-_-RRB- which_WDT point_VBP out_RP that_IN the_DT existence_NN of_IN inter-ty_NN
+that_IN quantity_NN of_IN references_NNS each_DT paper_NN cites_VBZ is_VBZ limited_JJ ._.
+Cohen_NNP and_CC Kjeldsen_NNP -LRB-_-LRB- 14_CD -RRB-_-RRB- used_VBD a_DT constrained_VBN spreading_NN activation_NN network_NN over_IN a_DT knowledge_NN base_NN to_TO improve_VB retrieval_NN recall_NN ._.
+Some_DT recent_JJ work_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: further_JJ leveraged_JJ citation_NN and_CC provided_VBD a_DT good_JJ mechanism_NN to_TO discover_VB more_RBR implicitly_RB similar_JJ objects_NNS ._.
+Its_PRP$ idea_NN is_VBZ that_IN the_DT similarity_NN between_IN each_DT pair_NN of_IN nodes_NNS is_VBZ determined_VBN by_IN their_PRP$ structural_JJ cont_NN
+e_LS weights_NNS represent_VBP confidence_NN in_IN having_VBG a_DT connecting_VBG path_NN between_IN the_DT entities_NNS ._.
+It_PRP has_VBZ been_VBN suggested_VBN to_TO model_VB similarity_NN between_IN objects_NNS in_IN relational_JJ data_NNS in_IN terms_NNS of_IN structural-context_JJ similarity_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB the_DT similarity_NN measure_NN corresponds_VBZ to_TO the_DT expected_VBN number_NN of_IN steps_NNS required_VBN for_IN a_DT random_JJ surfer_NN to_TO cross_VB the_DT graph_NN from_IN one_CD object_NN to_TO the_DT other_JJ ._.
+The_DT latter_NN did_VBD not_RB consider_VB edge_NN weights_NNS ._.
+As_IN me_PRP
+s_NN equal_JJ to_TO MAP_NN -LRB-_-LRB- aj_NN ,_, pn_NN -RRB-_-RRB- ._.
+Figure_NN 2_CD -LRB-_-LRB- b_NN -RRB-_-RRB- shows_VBZ the_DT first_JJ iteration_NN 's_POS SSR_NN result_NN of_IN the_DT sample_NN data_NNS where_WRB CA_NNP and_CC CP_NNP are_VBP set_VBN to_TO 1_CD ._.
+The_DT convergence_NN of_IN the_DT algorithm_NN can_MD be_VB proved_VBN in_IN a_DT similar_JJ way_NN as_IN SimRank_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN each_DT iteration_NN ,_, the_DT time_NN complexity_NN of_IN ,_, -LRB-_-LRB- 3_LS -RRB-_-RRB- 504_CD the_DT SSR_NN algorithm_NN is_VBZ O_NN -LRB-_-LRB- N_NN A_NN 2_CD NP_NN 2_CD -RRB-_-RRB- ._.
+Within_IN the_DT data_NNS set_NN of_IN our_PRP$ experiment_NN ,_, both_CC the_DT annotation_NN and_CC web_NN page_NN similarity_NN matrices_NNS are_VBP quite_RB sparse_JJ
+nking_NN assigns_VBZ a_DT real_JJ number_NN to_TO each_DT pair_NN of_IN pages_NNS ,_, and_CC thus_RB ,_, for_IN each_DT one_CD given_VBN page_NN ,_, determines_VBZ a_DT total_JJ order_NN relative_JJ to_TO the_DT given_VBN page_NN ._.
+Common_JJ Neighbors_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, Jaccard_NNP 's_POS Coefficient_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, and_CC SimRank_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: belong_VBP to_TO Relative_JJ Ranking_NN ._.
+All_PDT the_DT mentioned_VBN ranking_NN algorithms_NNS are_VBP established_VBN on_IN a_DT graph_NN ,_, and_CC will_MD be_VB established_VBN on_IN a_DT random_JJ graph_NN ._.
+For_IN our_PRP$ convenience_NN ,_, we_PRP first_RB give_VB some_DT notations_NNS ._.
+Throughout_IN t_NN
+nk_IN iteration_NN starts_VBZ with_IN simrank0_NN -LRB-_-LRB- u_NN ,_, v_LS -RRB-_-RRB- =_JJ 1_CD for_IN u_NN =_JJ v_LS and_CC simrank0_NN -LRB-_-LRB- u_NN ,_, v_LS -RRB-_-RRB- =_JJ 0_CD for_IN u_NN =_JJ v._CC The_DT SimRank_NN score_NN between_IN u_NN and_CC v_LS is_VBZ defined_VBN as_IN limk_FW →_FW ∞_FW simrankk_NN -LRB-_-LRB- u_NN ,_, v_LS -RRB-_-RRB- ,_, the_DT proof_NN of_IN convergence_NN can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Figure_NN 4_CD plots_NNS the_DT curves_NNS of_IN PageSim_NNP and_CC SimRank_NNP ._.
+For_IN the_DT curve_NN of_IN PageSim_NNP ,_, we_PRP set_VBD r_NN =_JJ 3_CD and_CC d_NN =_JJ 0.5_CD ._.
+Across_IN all_DT T_NN ,_, the_DT average_JJ improvement_NN of_IN PageSim_NNP over_IN SimRank_NNP under_IN the_DT cosine_JJ TFIDF_NN measure_NN is_VBZ
+riety_NN of_IN link-based_JJ similarity_NN measures_NNS ,_, which_WDT use_VBP only_RB the_DT hyperlinks_NNS in_IN the_DT Web_NN ,_, have_VBP been_VBN proposed_VBN for_IN this_DT task_NN ._.
+This_DT includes_VBZ companion_NN algorithm_NN -LRB-_-LRB- DH99_NN -RRB-_-RRB- ,_, cocitation_NN algorithm_NN -LRB-_-LRB- DH99_NN -RRB-_-RRB- ,_, and_CC SimRank_NN =_JJ -_: =_JJ -LRB-_-LRB- JW02_NN -RRB-_-RRB- -_: =_JJ -_: ,_, etc._NN ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT novel_JJ link-based_JJ similarity_NN measure_NN ,_, called_VBD PageSim_NNP ._.
+Contrast_NN to_TO SimRank_NNP ,_, our_PRP$ method_NN can_MD measure_VB similarity_NN between_IN any_DT two_CD web_NN pages_NNS ,_, whereas_IN SimRank_NNP can_MD not_RB in_IN some_DT
+ing_NN assigns_VBZ a_DT real_JJ number_NN to_TO each_DT pair_NN of_IN pages_NNS ,_, and_CC thus_RB ,_, for_IN each_DT one_CD given_VBN page_NN ,_, determines_VBZ a_DT total_JJ order_NN relative_JJ to_TO the_DT given_VBN page_NN ._.
+Common_JJ Neighbors_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, Jaccard_NNP 's_POS Coefficient_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, and_CC SimRank_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: belong_VBP to_TO Relative_JJ Ranking_NN ._.
+5.1.1_CD Absolute_JJ Ranking_NN As_IN a_DT kind_NN of_IN Absolute_JJ Ranking_NN ,_, PageRank_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- gives_VBZ the_DT importance_NN rank_NN of_IN Web_NN page_NN based_VBN on_IN the_DT link_NN structure_NN of_IN the_DT Web_NN ._.
+The_DT intuition_NN behind_IN Page_NNP
+pages_NNS are_VBP similar_JJ ,_, we_PRP expect_VBP there_EX to_TO be_VB a_DT high_JJ overlap_VB between_IN their_PRP$ corresponding_JJ sets_NNS of_IN similar_JJ pages_NNS ._.
+Though_IN the_DT scenario_NN is_VBZ a_DT bit_RB different_JJ ,_, a_DT similar_JJ idea_NN underlies_VBZ the_DT computation_NN of_IN SimRank_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT case_NN of_IN SimRank_NNP ,_, two_CD documents_NNS are_VBP similar_JJ if_IN the_DT documents_NNS that_WDT cite_VBP them_PRP are_VBP similar_JJ providing_VBG a_DT recursive_JJ mechanism_NN for_IN computing_NN similarity_NN measure_NN ._.
+In_IN the_DT case_NN of_IN LTRank_NN ,_, similarity_NN is_VBZ c_NN
+and_CC the_DT experimental_JJ results_NNS ._.
+2.2_CD Literature_NNP Review_NNP Although_IN the_DT importance_NN of_IN a_DT Web_NN page_NN is_VBZ determined_VBN by_IN either_CC the_DT textual_JJ content_NN of_IN pages_NNS or_CC the_DT hyperlink_NN structure_NN or_CC both_DT ._.
+As_IN in_IN previous_JJ work_NN =_JJ -_: =[_NN 11_CD ,_, 16_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP focus_VBP on_IN ranking_JJ methods_NNS solely_RB determined_VBN by_IN hyperlink_NN structure_NN of_IN the_DT Web_NN graph_NN ._.
+All_PDT the_DT mentioned_VBN ranking_NN algorithms_NNS are_VBP established_VBN on_IN a_DT graph_NN ._.
+For_IN our_PRP$ convenience_NN ,_, we_PRP first_RB give_VB some_DT notati_NNS
+,_, a_DT variety_NN of_IN link-based_JJ similarity_NN measures_NNS ,_, which_WDT use_VBP only_RB the_DT hyperlinks_NNS in_IN the_DT Web_NN ,_, have_VBP been_VBN proposed_VBN for_IN this_DT task_NN ._.
+This_DT includes_VBZ companion_NN algorithm_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, cocitation_NN algorithm_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, and_CC SimRank_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, etc._NN ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT novel_JJ link-based_JJ similarity_NN measure_NN ,_, called_VBD PageSim_NNP ._.
+Contrast_NN to_TO SimRank_NNP ,_, our_PRP$ method_NN can_MD measure_VB similarity_NN between_IN any_DT two_CD web_NN pages_NNS ,_, whereas_IN SimRank_NNP can_MD not_RB in_IN some_DT
+IGMOD_NN and_CC VLDB_NN are_VBP similar_JJ ,_, then_RB SIGMOD_NNP authors_NNS and_CC VLDB_NN authors_NNS should_MD be_VB similar_JJ ._.
+Unfortunately_RB ,_, similarities_NNS between_IN conferences_NNS may_MD not_RB be_VB available_JJ ,_, either_RB ._.
+This_DT problem_NN can_MD be_VB solved_VBN by_IN SimRank_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, in_IN which_WDT the_DT similarity_NN between_IN two_CD objects_NNS is_VBZ recursively_RB defined_VBN as_IN the_DT average_JJ similarity_NN between_IN objects_NNS linked_VBN with_IN them_PRP ._.
+For_IN example_NN ,_, the_DT similarity_NN between_IN two_CD authors_NNS is_VBZ the_DT average_JJ similari_NN
+c_NN coupling_NN and_CC SimRank_NN can_MD be_VB used_VBN to_TO determine_VB the_DT similarity_NN of_IN objects_NNS -LRB-_-LRB- e.g._FW web_NN pages_NNS -RRB-_-RRB- ,_, which_WDT are_VBP based_VBN on_IN the_DT citation_NN patterns_NNS of_IN documents_NNS and_CC the_DT similarity_NN of_IN structural_JJ context_NN respectively_RB =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =-[_NN 11_CD -RRB-_-RRB- ._.
+Moreover_RB ,_, the_DT Companion_NNP algorithm_NN derived_VBN from_IN HITS_NN -LRB-_-LRB- Hyperlink-Induced_JJ Topic_NN Selection_NN -RRB-_-RRB- is_VBZ proposed_VBN for_IN finding_VBG related_JJ pages_NNS by_IN exploiting_VBG links_NNS and_CC their_PRP$ order_NN on_IN a_DT page_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+sThis_NN conducts_VBZ
+ranking_NN of_IN objects_NNS in_IN a_DT static_JJ graph_NN produced_VBD using_VBG a_DT specified_JJ measure_NN ._.
+Notable_JJ variations_NNS from_IN this_DT theme_NN include_VBP approaches_NNS that_WDT rank_VBP objects_NNS relative_JJ to_TO one_CD or_CC more_JJR relevant_JJ objects_NNS in_IN the_DT graph_NN =_JJ -_: =[_NN 55_CD ;_: 114_CD ;_: 105_CD -RRB-_-RRB- -_: =_JJ -_: and_CC methods_NNS that_WDT rank_VBP objects_NNS over_IN time_NN in_IN dynamic_JJ graphs_NNS -LRB-_-LRB- 89_CD ;_: 88_CD -RRB-_-RRB- ._.
+Jeh_NNP and_CC Widom_NNP -LRB-_-LRB- 55_CD -RRB-_-RRB- propose_VBP a_DT metric_NN for_IN assessing_VBG the_DT similarity_NN of_IN two_CD objects_NNS based_VBN on_IN the_DT degree_NN to_TO which_WDT they_PRP link_VBP to_TO similar_JJ o_NN
+erences_NNS ._.
+In_IN particular_JJ ,_, several_JJ link-based_JJ algorithms_NNS have_VBP been_VBN suggested_VBN to_TO exploit_VB the_DT similarity_NN information_NN hidden_VBN in_IN the_DT link_NN structure_NN of_IN graph_NN ,_, such_JJ as_IN Co-citation_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, Companion_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, SimRank_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC PageSim_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- ._.
+Further_JJ methods_NNS arise_VBP from_IN graph_NN theory_NN ,_, such_JJ as_IN similarity_NN measure_NN that_WDT is_VBZ based_VBN on_IN network_NN flows_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+One_CD major_JJ problem_NN of_IN the_DT link-based_JJ algorithms_NNS is_VBZ that_IN they_PRP usually_RB do_VBP not_RB
+er-communities_NNS in_IN the_DT Web_NN computationally_RB more_RBR efficient_JJ ,_, in_IN the_DT spirit_NN of_IN -LRB-_-LRB- KRRT99_NN -RRB-_-RRB- ._.
+Finally_RB ,_, in_IN -LRB-_-LRB- FR05_NN -RRB-_-RRB- ,_, the_DT authors_NNS apply_VBP similar_JJ techniques_NNS to_TO produce_VB indices_NNS of_IN page_NN similarity_NN that_WDT extend_VBP SimRank_NN =_JJ -_: =_JJ -LRB-_-LRB- JW02_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- DELIS-TR-564_NN -RRB-_-RRB- we_PRP consider_VBP some_DT applications_NNS that_WDT motivate_VBP the_DT potential_JJ utility_NN of_IN estimating_VBG the_DT local_JJ clustering_NN coefficient_NN in_IN massive_JJ graphs_NNS ._.
+Our_PRP$ first_JJ application_NN involves_VBZ spam_NN detection_NN :_: w_NN
+ormation_NN -LRB-_-LRB- 25_CD ,_, 22_CD ,_, 16_CD ,_, 4_CD -RRB-_-RRB- ._.
+They_PRP find_VBP that_IN the_DT clustering_NN results_NNS can_MD be_VB improved_VBN compared_VBN with_IN the_DT results_NNS when_WRB they_PRP only_RB consider_VBP a_DT single_JJ type_NN of_IN interaction_NN relationship_NN ._.
+Other_JJ work_NN such_JJ as_IN SimRank_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: measures_VBZ the_DT similarity_NN between_IN different_JJ objects_NNS by_IN utilizing_VBG the_DT interactions_NNS among_IN heterogeneous_JJ objects_NNS ._.
+-LRB-_-LRB- 23_CD -RRB-_-RRB- proposes_VBZ to_TO conduct_VB latent_JJ semantic_JJ analysis_NN on_IN these_DT heterogeneous_JJ interrelated_JJ obje_NN
+used_VBN synonymously_RB ._.
+In_IN a_DT context_NN similar_JJ to_TO ours_PRP ,_, hitting_VBG time_NN was_VBD used_VBN as_IN a_DT measure_NN of_IN proximity_NN between_IN nodes_NNS to_TO predict_VB link_NN formation_NN in_IN a_DT social_JJ network_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ;_: also_RB ,_, the_DT node_NN similarity_NN measure_NN in_IN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: can_MD be_VB formulated_VBN in_IN terms_NNS of_IN hitting_VBG time_NN ._.
+Finally_RB ,_, the_DT relationship_NN between_IN hitting_VBG time_NN and_CC return_NN time_NN in_IN a_DT random_JJ walk_NN with_IN restart_VB is_VBZ related_JJ to_TO regenerative_JJ stochastic_JJ processes_NNS ._.
+In_IN fact_NN ,_, Theo_NNP
+ons_NNS for_IN generating_VBG API_NNP cross-references_NNS ._.
+5.1_CD Alternative_NNP Measures_NNS Below_NNP are_VBP other_JJ possible_JJ measures_NNS we_PRP have_VBP investigated_VBN ._.
+Similarity_NN In_IN fact_NN ,_, our_PRP$ initial_JJ implementation_NN of_IN Altair_NNP was_VBD based_VBN on_IN SimRank_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT powerful_JJ measure_NN used_VBN to_TO compute_VB similarity_NN between_IN two_CD items_NNS ._.
+However_RB ,_, there_EX are_VBP several_JJ serious_JJ issues_NNS when_WRB using_VBG it_PRP to_TO generate_VB API_NN cross-references_NNS ._.
+First_RB ,_, it_PRP focuses_VBZ on_IN how_WRB two_CD functions_NNS are_VBP
+和全局度量_FW 。_FW 其中前者包括_FW ``_`` 度中心度_FW ''_'' -LRB-_-LRB- degree_NN centrality_NN -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, 即个顶点的度数_NN ,_, 后者包括_NN ``_`` 特征向量_NN \/_: 能量中心度_NN ''_'' -LRB-_-LRB- eigenvector\/power_NN centrality_NN -RRB-_-RRB- -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, 即通过谱方法_NN -LRB-_-LRB- Spectral_JJ methods_NNS -RRB-_-RRB- 根据一个节点到其他重要节点的连接来刻画该节点的重要性_FW 。_FW 除了上述基于在静态图上用给定的度量进行全局排序的工作外_NN ,_, 对相对于图中若干相关节点的局部节_NN 点排序_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: 和在动态图上的节点排序_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- 也同样引人注目_FW 。_FW Jeh_NNP 和_NNP Widom_NNP -LRB-_-LRB- 6_CD -RRB-_-RRB- 提出了一种估计两个节点间相似程_FW 度的新的度量_FW ,_, 这种度量基于这两个节点到他们所链接的相似节点的度数_NNP 。_NNP 在他们的文章中_NNP ,_, 这种相似度_NNP 是通过随机游走来计算的_NNP 。_NNP Sun_NNP 等人_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- 则在此基础上引入了图分块以提高算法的稳定性_NNP 。_NNP 在动态图上排序_NNP 考虑了事件的时间信息_NNP ,_, 这种考虑是必要的_NNP ,_, 如电子邮件_NNP 、_NNP 电话或者文献发表情况_NNP 。_NNP 与静态图上的排序不_NNP 同_NNP ,_,
+ch_NN algorithm_NN ._.
+Traditionally_RB ,_, most_JJS studies_NNS search_VBP for_IN relevant_JJ documents_NNS by_IN comparing_VBG document_NN content_NN ._.
+A_DT number_NN of_IN studies_NNS ,_, however_RB ,_, searched_VBD documents_NNS using_VBG other_JJ methods_NNS ,_, including_VBG cited_VBN references_NNS =_JJ -_: =[_NN 15_CD ,_, 16_CD ,_, 19_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT regard_NN ,_, previous_JJ research_NN can_MD be_VB categorized_VBN into_IN two_CD schemes_NNS :_: co-citation_NN -LRB-_-LRB- 14_CD ,_, 18_CD -RRB-_-RRB- and_CC bibliographic_JJ coupling_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+In_IN the_DT co-citation_NN scheme_NN ,_, the_DT similarity_NN between_IN two_CD papers_NNS p_NN and_CC q_NN is_VBZ b_NN
+osed_VBN importance_NN score_NN calculation_NN is_VBZ based_VBN on_IN random_JJ walk_NN with_IN restart_VB ._.
+There_EX are_VBP many_JJ applications_NNS using_VBG random_JJ walk_NN and_CC related_JJ methods_NNS ,_, including_VBG PageRank_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, personalized_JJ PageRank_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, SimRank_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, neighborhood_NN formulation_NN in_IN bipartite_JJ graph_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, content-based_JJ image_NN retrieval_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, cross_JJ modal_JJ correlation_NN discovery_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, BANKS_NN system_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, ObjectRank_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, RalationalRank_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC so_RB on_RB ._.
+Communi_NNS
+for_IN entities_NNS in_IN a_DT graph_NN -LRB-_-LRB- Kalashnikov_NNP et_FW al._FW ,_, 2005_CD -RRB-_-RRB- ,_, where_WRB edges_NNS are_VBP unlabelled_JJ ._.
+It_PRP has_VBZ been_VBN suggested_VBN to_TO model_VB similarity_NN between_IN objects_NNS in_IN relational_JJ data_NNS in_IN terms_NNS of_IN structural-context_JJ similarity_NN -LRB-_-LRB- =_JJ -_: =_JJ Jeh_NNP and_CC Widom_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+We_PRP propose_VBP the_DT use_NN of_IN learned_VBN re-ranking_JJ schemes_NNS to_TO improve_VB performance_NN of_IN a_DT lazy_JJ graph_NN walk_NN ._.
+Earlier_JJR authors_NNS have_VBP considered_VBN instead_RB using_VBG hillclimbing_VBG approaches_NNS to_TO adjust_VB the_DT parameters_NNS of_IN a_DT gra_NN
+used_VBN synonymously_RB ._.
+Hitting_VBG time_NN has_VBZ appeared_VBN in_IN contexts_NNS related_VBN to_TO ours_PRP :_: in_IN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, hitting_VBG time_NN between_IN pairs_NNS of_IN nodes_NNS is_VBZ used_VBN as_IN a_DT measure_NN of_IN proximity_NN to_TO predict_VB link_NN formation_NN in_IN a_DT social_JJ network_NN ._.
+=_SYM -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: uses_VBZ hitting_VBG time_NN to_TO measure_VB similarity_NN between_IN nodes_NNS ;_: in_IN particular_JJ ,_, their_PRP$ expected-f_NN meeting_NN distance_NN is_VBZ the_DT hitting_VBG time_NN of_IN a_DT set_NN of_IN nodes_NNS in_IN a_DT random_JJ walk_NN -LRB-_-LRB- with_IN restart_VB -RRB-_-RRB- on_IN a_DT product_NN graph_NN ._.
+-LRB-_-LRB- 10_CD -RRB-_-RRB-
+lgorithms_NNS are_VBP developed_VBN -LRB-_-LRB- not_RB similarity_NN functions_NNS -RRB-_-RRB- and_CC is_VBZ thus_RB only_RB peripherally_RB related_JJ to_TO our_PRP$ work_NN ._.
+Jeh_NNP and_CC Widow_NNP propose_VBP a_DT distance_NN function_NN between_IN nodes_NNS of_IN a_DT graphs_NNS that_WDT is_VBZ based_VBN on_IN random_JJ walks_VBZ =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT distance_NN between_IN nodes_NNS u_NN and_CC v_LS is_VBZ measured_VBN using_VBG two_CD random_JJ web_NN surfer_NN ,_, one_CD at_IN u_NN and_CC the_DT other_JJ at_IN v._CC In_IN lock-step_NN ,_, the_DT surfers_NNS randomly_RB surf_NN the_DT web_NN ._.
+The_DT expected_JJ number_NN of_IN steps_NNS until_IN they_PRP meet_VBP
+king_NN assigns_VBZ a_DT real_JJ number_NN to_TO each_DT pair_NN of_IN pages_NNS ,_, and_CC thus_RB for_IN each_DT one_CD given_VBN page_NN ,_, determines_VBZ a_DT total_JJ order_NN relative_JJ to_TO the_DT given_VBN page_NN ._.
+Common_JJ Neighbors_NNS -LRB-_-LRB- 73_CD -RRB-_-RRB- ,_, Jaccard_NNP 's_POS Coefficient_NN -LRB-_-LRB- 62_CD -RRB-_-RRB- ,_, and_CC SimRank_NN =_JJ -_: =[_NN 47_CD -RRB-_-RRB- -_: =_SYM -_: belong_VBP to_TO Relative_JJ Ranking_NN ._.
+2.2.1_CD Absolute_JJ Ranking_NNP PageRank_NNP As_IN a_DT kind_NN of_IN Absolute_JJ Ranking_NN ,_, PageRank_NN -LRB-_-LRB- 76_CD -RRB-_-RRB- gives_VBZ the_DT importance_NN rank_NN of_IN Web_NN pages_NNS based_VBN on_IN the_DT link_NN structure_NN of_IN the_DT Web_NN ._.
+The_DT intuition_NN b_NN
+e_LS propagation_NN of_IN document_NN relevance_NN similar_JJ to_TO ours_PRP ._.
+Jeh_NNP and_CC Widom_NNP presented_VBD the_DT Personalized_NNP Pagerank_NNP algorithm_NN where_WRB random_JJ surfer_NN jumped_VBD more_RBR likely_JJ to_TO the_DT documents_NNS which_WDT user_NN initially_RB preferred_VBD =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT approach_NN by_IN Richardson_NNP and_CC Domingos_NNP makes_VBZ a_DT random_JJ ,_, but_CC ''_'' intelligent_JJ ''_'' surfer_NN not_RB only_RB to_TO follow_VB hyperlinks_NNS ,_, but_CC also_RB to_TO move_VB always_RB in_IN the_DT direction_NN of_IN more_JJR relevant_JJ documents_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+The_DT propagat_NN
+GB_NN and_CC their_PRP$ similarity_NN matrix_NN ._.
+The_DT vertex_NN of_IN GA_NN which_WDT is_VBZ most_RBS similar_JJ to_TO vertex_VB 5_CD in_IN GB_NN is_VBZ vertex_NN 3_CD ._.
+It_PRP is_VBZ interesting_JJ to_TO note_VB that_IN in_IN the_DT database_NN literature_NN similar_JJ ideas_NNS have_VBP been_VBN proposed_VBN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT applications_NNS there_EX are_VBP information_NN retrieval_NN in_IN large_JJ databases_NNS with_IN which_WDT a_DT particular_JJ graph_NN structure_NN can_MD be_VB associated_VBN ._.
+The_DT ideas_NNS presented_VBN in_IN these_DT conference_NN papers_NNS are_VBP obviously_RB linked_VBN to_TO
+-LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC HITS_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- algorithms_NNS to_TO identify_VB web_NN pages_NNS likely_JJ to_TO be_VB deemed_VBN ``_`` important_JJ ''_'' by_IN the_DT user_NN ._.
+The_DT citation_NN structure_NN of_IN scientific_JJ papers_NNS has_VBZ been_VBN analyzed_VBN to_TO find_VB papers_NNS related_VBN to_TO a_DT gi_NN =_JJ -_: =_JJ ven_JJ paper_NN -LRB-_-LRB- 8_CD ,_, 10_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT techniques_NNS have_VBP in_IN common_JJ that_IN they_PRP analyze_VBP graph_NN structures_NNS for_IN predetermined_JJ properties_NNS ._.
+Although_IN such_JJ analyses_NNS can_MD be_VB very_RB effective_JJ ,_, coming_VBG up_RP with_IN a_DT good_JJ property_NN for_IN analysis_NN is_VBZ often_RB a_DT
+scalable_JJ to_TO graphs_NNS with_IN billions_NNS of_IN vertices_NNS on_IN a_DT distributed_VBN architecture_NN ._.
+The_DT similarity_NN of_IN multi-step_JJ neighborhoods_NNS of_IN vertices_NNS are_VBP numerically_RB evaluated_VBN by_IN similarity_NN functions_NNS including_VBG SimRank_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT recursive_JJ refinement_NN of_IN cocitation_NN ;_: PSimRank_NN ,_, a_DT novel_JJ variant_NN with_IN better_JJR theoretical_JJ characteristics_NNS ;_: and_CC the_DT Jaccard_NNP coefficient_NN ,_, extended_VBN to_TO multi-step_JJ neighborhoods_NNS ._.
+Our_PRP$ methods_NNS are_VBP presented_VBN
+anguage-independentdataset_NN ._.
+Recent_JJ link-based_JJ similarity_NN algorithms_NNS iterate_VBP some_DT equations_NNS expressing_VBG basic_JJ intuitions_NNS about_IN similarity_NN preferences_NNS ._.
+SimRank_NNP recursively_RB refines_VBZ the_DT cocitation_NN measure_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT algorithm_NN of_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- follows_VBZ the_DT philosophy_NN of_IN HITS_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- claiming_VBG that_IN related_JJ pages_NNS form_VBP a_DT dense_JJ bipartite_JJ subgraph_NN within_IN the_DT link_NN structure_NN ._.
+Additional_JJ similarity_NN metrics_NNS for_IN the_DT web_NN graph_NN are_VBP pr_NN
+e_LS above_JJ method_NN just_RB returns_VBZ few_JJ alignments_NNS ._.
+LILY_NN uses_VBZ similarity_NN propagation_NN strategy_NN to_TO compensate_VB for_IN it_PRP ._.
+Compared_VBN with_IN other_JJ similarity_NN propagation_NN methods_NNS such_JJ as_IN similarity_NN flood_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC SimRank_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, our_PRP$ similarity_NN propagation_NN defines_VBZ stronger_JJR propagation_NN condition_NN and_CC is_VBZ based_VBN on_IN the_DT semantic_JJ subgraphs_NNS ._.
+The_DT propagation_NN graph_NN is_VBZ not_RB stable_JJ ,_, but_CC is_VBZ incremental_JJ during_IN propagation_NN process_NN ._.
+Using_VBG si_FW
+web_NN ,_, we_PRP can_MD afford_VB the_DT stationary-distribution_JJ computations_NNS ,_, but_CC the_DT hitting-time_JJ calculations_NNS are_VBP too_RB computationally_RB demanding_VBG ._. -RRB-_-RRB-
+Similarity_NN of_IN Nodes_NNS Based_VBN on_IN Neighbors_NNS '_POS Similarity_NN :_: SimRank_NNP SimRank_NNP =_SYM -_: =[_NN 87_CD -RRB-_-RRB- -_: =_JJ -_: was_VBD developed_VBN as_IN way_NN to_TO compute_VB node_NN similarity_NN in_IN contexts_NNS in_IN which_WDT there_EX are_VBP ``_`` structural-context_JJ ''_'' indicators_NNS of_IN similarity_NN ._.
+SimRank_NNP is_VBZ a_DT fixed_JJ point_NN of_IN the_DT following_JJ recursive_JJ definition_NN :_: two_CD nodes_NNS
+s_NN should_MD not_RB be_VB underestimated_VBN ._.
+They_PRP can_MD be_VB used_VBN for_IN predictive_JJ modeling_NN across_IN multiple_JJ relations_NNS -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, for_IN user-guided_JJ clustering_NN across_IN multiple_JJ relations_NNS -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, for_IN effective_JJ link-based_JJ clustering_NN =_JJ -_: =[_NN 16_CD ,_, 32_CD -RRB-_-RRB- -_: =_JJ -_: ,_, for_IN distinguishing_VBG different_JJ objects_NNS with_IN identical_JJ names_NNS -LRB-_-LRB- 33_CD -RRB-_-RRB- and_CC for_IN solving_VBG the_DT veracity_NN problem_NN ,_, i.e._FW ,_, finding_VBG reliable_JJ facts_NNS among_IN multiple_JJ conflicting_VBG web_NN information_NN providers_NNS -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+The_DT power_NN
+om_NN walk_NN with_IN restart_VB on_IN image_NN captioning_VBG application_NN ._.
+We_PRP plan_VBP to_TO further_RB explore_VB the_DT random_JJ walk_NN algorithm_NN on_IN bipartite_JJ graph_NN and_CC use_VB it_PRP to_TO identify_VB anomaly_NN nodes_NNS ._.
+Similar_JJ idea_NN also_RB appear_VBP in_IN SimRank_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: Volume_NN 7_CD ,_, Issue_NN 2_CD Page_NNP 54swhich_NN is_VBZ a_DT similarity_NN measure_NN between_IN nodes_NNS in_IN a_DT graph_NN with_IN the_DT intuition_NN that_IN two_CD nodes_NNS are_VBP similar_JJ if_IN they_PRP are_VBP related_VBN by_IN similar_JJ nodes_NNS ._.
+Collaborative_NNP Filtering_NNP ._.
+Collabora_NNP
+diverse_JJ set_NN of_IN research_NN problems_NNS including_VBG link_NN discovery_NN and_CC relevance_NN ranking_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Moreover_RB ,_, communities_NNS can_MD be_VB identified_VBN by_IN analyzing_VBG the_DT link_NN graph_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Beside_IN co-citation_NN used_VBN by_IN Kumar_NNP et_FW al._FW =_SYM -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: to_TO measure_VB similarity_NN ,_, bibliographic_JJ coupling_NN and_CC SimRank_NN based_VBN on_IN citation_NN patterns_NNS ,_, and_CC the_DT similarity_NN of_IN structural_JJ context_NN -LRB-_-LRB- respectively_RB -RRB-_-RRB- ,_, have_VBP also_RB been_VBN used_VBN to_TO identify_VB the_DT similarity_NN of_IN web_NN ob_NN
+ondences_NNS and_CC a_DT graph_NN of_IN contacts_NNS on_IN a_DT social_JJ network_NN which_WDT need_VBP to_TO be_VB reconciled_VBN ._.
+Some_DT work_NN has_VBZ been_VBN done_VBN on_IN finding_VBG similar_JJ nodes_NNS in_IN a_DT single_JJ graph_NN using_VBG page_NN rank_NN like_IN spreading_NN activation_NN approach_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One_CD way_NN of_IN extending_VBG Parag_NNP and_CC Domingos_NNP model_NN for_IN this_DT setting_NN can_MD be_VB to_TO create_VB nodes_NNS for_IN all_DT pairs_NNS of_IN nodes_NNS in_IN the_DT two_CD graphs_NNS ,_, yij_NN where_WRB node_NN i_FW belongs_VBZ to_TO one_CD graph_NN and_CC j_NN to_TO the_DT other_JJ ._.
+yij_NN and_CC yi_FW ′_FW
+main_JJ goal_NN is_VBZ to_TO identify_VB features_NNS based_VBN on_IN similarities_NNS to_TO known_JJ honest_JJ and_CC spam_NN pages_NNS that_WDT can_MD be_VB used_VBN to_TO classify_VB unknown_JJ pages_NNS ._.
+We_PRP demonstrate_VBP the_DT usability_NN of_IN co-citation_NN ,_, Companion_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, SimRank_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: and_CC variants_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- as_RB well_RB as_IN the_DT singular_JJ value_NN decomposition_NN of_IN the_DT adjacency_NN matrix_NN in_IN supervised_JJ spam_NN learning_NN ._.
+Hyperlink_NN based_VBD similarity_NN to_TO spam_NN versus_CC honest_JJ pages_NNS is_VBZ comparable_JJ to_TO trust_NN and_CC di_FW
+r_NN to_TO -LRB-_-LRB- 3_CD -RRB-_-RRB- for_IN more_JJR details_NNS -RRB-_-RRB- ._.
+Note_VB that_IN the_DT original_JJ algorithm_NN computes_VBZ ranks_NNS over_IN nodes_NNS ._.
+Since_IN we_PRP need_VBP ranks_NNS over_IN pairs_NNS ,_, we_PRP take_VBP the_DT minimum_NN and_CC maximum_NN page_NN ranks_NNS for_IN the_DT two_CD nodes_NNS in_IN a_DT pair_NN ._.
+SimRank_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ also_RB recursively_RB defined_VBN ._.
+It_PRP states_VBZ two_CD nodes_NNS are_VBP similar_JJ to_TO the_DT extent_NN they_PRP are_VBP connected_VBN to_TO similar_JJ neighbors_NNS ._.
+γ_FW ∈_FW -LRB-_-LRB- 0_CD ,_, 1_LS -RRB-_-RRB- is_VBZ a_DT parameter_NN that_WDT controls_VBZ how_WRB fast_JJ the_DT weight_NN of_IN connected_JJ nodes_NNS '_POS Si_NNP
+e_LS the_DT previous_JJ work_NN in_IN similarity_NN measures_NNS into_IN two_CD broad_JJ classes_NNS :_: basic_JJ measures_NNS inspired_VBN by_IN traditional_JJ IR_NN metrics_NNS ,_, such_JJ as_IN the_DT cosine_NN metric_NN -LRB-_-LRB- 3,4_CD ,_, 11_CD -RRB-_-RRB- ,_, and_CC graph_NN theoretic_JJ measures_NNS ,_, such_JJ as_IN SimRank_NN =_JJ -_: =[_NN 8,12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN the_DT second_JJ class_NN typically_RB provides_VBZ a_DT better_JJR quality_NN measure_NN ,_, the_DT computational_JJ efficiency_NN of_IN these_DT methods_NNS is_VBZ not_RB high_JJ enough_RB to_TO be_VB used_VBN in_IN practical_JJ data_NNS intensive_JJ applications_NNS ._.
+Therefore_RB ,_, i_FW
+tion_NN and_CC little_JJ actual_JJ use_NN of_IN the_DT neighborhood_NN beyond_IN two_CD steps_NNS in_IN the_DT graph_NN ._.
+For_IN future_JJ work_NN we_PRP plan_VBP testing_VBG more_RBR complex_JJ multi-step_JJ variants_NNS of_IN cocitation_NN and_CC the_DT Jaccard_NNP coefficient_NN ._.
+Jeh_NN and_CC Widom_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: define_VB SimRank_NNP as_IN a_DT multi-step_JJ generalization_NN of_IN downweighted_JJ cocitation_NN ._.
+In_IN an_DT alternate_JJ formulation_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- the_DT k-step_NN SimRank_NN Sim_NN -LRB-_-LRB- k_NN -RRB-_-RRB- v1_NN ,_, v2_NN equals_VBZ the_DT total_JJ weight_NN of_IN pairs_NNS of_IN walks_VBZ with_IN length_NN k_NN ′_FW ≤_FW
+n_NN the_DT queryclick_NN graph_NN ._.
+The_DT basic_JJ concept_NN they_PRP use_VBP is_VBZ similar_JJ to_TO cocitation_NN :_: two_CD queries_NNS are_VBP related_VBN if_IN they_PRP reference_VBP the_DT same_JJ document_NN ._.
+For_IN scoring_VBG the_DT query_NN rewrites_VBZ ,_, they_PRP use_VBP a_DT variant_NN of_IN SimRank_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT is_VBZ a_DT generalized_JJ measure_NN of_IN cocitation_NN ._.
+White_NNP et_FW al._FW -LRB-_-LRB- 29_CD ,_, 30_CD -RRB-_-RRB- the_DT query_NN rewrites_VBZ observed_VBN in_IN a_DT query_NN log_NN are_VBP used_VBN to_TO generate_VB query_NN recommendation_NN ._.
+Given_VBN an_DT input_NN query_NN ,_, they_PRP generate_VBP a_DT set_NN of_IN
+rity_NN measure_NN would_MD have_VB a_DT comparable_JJ impact_NN for_IN computer_NN science_NN techniques_NNS as_IN PageRank_NN ranking_NN algorithm_NN had_VBD for_IN web_NN search_NN ._.
+Considering_VBG the_DT outlined_VBN state_NN of_IN the_DT art_NN ,_, the_DT similarity_NN measure_NN SimRank_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: can_MD be_VB considered_VBN as_IN one_CD of_IN the_DT promising_JJ ones_NNS ,_, due_JJ to_TO the_DT following_JJ reasons_NNS ._.
+SimRank_NNP is_VBZ a_DT link-based_JJ similarity_NN measure_NN ,_, and_CC builds_VBZ on_IN the_DT approach_NN of_IN previously_RB existing_VBG link-based_JJ measures_NNS ._.
+SimRan_NN
+objects_NNS may_MD not_RB have_VB attributes_NNS that_WDT indicate_VBP such_JJ information_NN ._.
+But_CC the_DT links_NNS between_IN different_JJ types_NNS of_IN objects_NNS can_MD indicate_VB the_DT relationships_NNS between_IN objects_NNS ._.
+This_DT problem_NN can_MD be_VB solved_VBN by_IN SimRank_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, in_IN which_WDT the_DT similarity_NN between_IN two_CD objects_NNS is_VBZ recursively_RB defined_VBN as_IN the_DT average_JJ similarity_NN between_IN objects_NNS linked_VBN with_IN them_PRP ._.
+For_IN example_NN ,_, the_DT similarity_NN between_IN two_CD authors_NNS is_VBZ the_DT average_JJ similari_NN
+o_NN the_DT user_NN ,_, and_CC the_DT users_NNS will_MD be_VB connected_VBN to_TO each_DT other_JJ through_IN common_JJ group_NN nodes_NNS ,_, as_IN in_IN Figure_NNP 7_CD ._.
+That_DT is_VBZ ,_, GW_NNP will_MD have_VB user_NN ,_, attribute_NN and_CC group_NN nodes_NNS ._.
+We_PRP can_MD use_VB the_DT idea_NN of_IN SimRank_NNP proposed_VBN in_IN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+b_LS -RRB-_-RRB- The_DT correlation_NN between_IN Ai_NNP and_CC the_DT selected_VBN conditions_NNS Q._NNP We_PRP can_MD employ_VB the_DT ideas_NNS from_IN our_PRP$ work_NN on_IN ranking_JJ SQL_NN query_NN results_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, where_WRB association_NN rule_NN mining_NN is_VBZ used_VBN to_TO compute_VB the_DT attribute_NN co_NN
+cluster_NN ._.
+Obviously_RB ,_, good_JJ clusters_NNS promote_VBP good_JJ ranking_NN ,_, but_CC how_WRB to_TO get_VB good_JJ clusters_NNS ?_.
+A_DT straightforward_JJ way_NN is_VBZ to_TO first_RB evaluate_VB similarity_NN between_IN objects_NNS using_VBG a_DT link-based_JJ method_NN ,_, such_JJ as_IN SimRank_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC then_RB apply_VB graph_NN clustering_NN methods_NNS -LRB-_-LRB- 15_CD ,_, 12_CD -RRB-_-RRB- or_CC the_DT like_JJ to_TO generate_VB clusters_NNS ._.
+However_RB ,_, to_TO evaluate_VB similarity_NN between_IN objects_NNS in_IN an_DT arbitrary_JJ multi-typed_JJ information_NN network_NN is_VBZ a_DT difficult_JJ and_CC
+often_RB called_VBN graph_NN partition_NN ,_, aims_VBZ at_IN partitioning_VBG a_DT given_VBN graph_NN into_IN a_DT set_NN of_IN subgraphs_NNS based_VBN on_IN different_JJ criteria_NNS ,_, such_JJ as_IN minimum_JJ cut_NN ,_, min-max_JJ cut_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC normalized_VBN cut_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+Spectral_JJ clustering_NN =_JJ -_: =[_NN 7_CD ,_, 18_CD -RRB-_-RRB- -_: =_JJ -_: provides_VBZ an_DT efficient_JJ method_NN to_TO get_VB graph_NN partitions_NNS which_WDT is_VBZ in_IN fact_NN an_DT NP-hard_JJ problem_NN ._.
+Rather_RB than_IN investigate_VB the_DT global_JJ structure_NN like_IN spectral_JJ clustering_NN ,_, several_JJ density-based_JJ methods_NNS -LRB-_-LRB- 19_CD ,_, 21_CD -RRB-_-RRB-
+r_NN learning_VBG an_DT optimal_JJ linear_JJ combination_NN of_IN different_JJ relations_NNS to_TO meet_VB users_NNS '_POS expectation_NN ._.
+The_DT concept_NN of_IN random_JJ walk_NN has_VBZ been_VBN widely_RB used_VBN to_TO measure_VB vertex_NN distances_NNS and_CC similarities_NNS ._.
+Jeh_NN and_CC Widom_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: designed_VBD a_DT measure_NN called_VBN SimRank_NNP ,_, which_WDT defines_VBZ the_DT similarity_NN between_IN two_CD vertices_NNS in_IN a_DT graph_NN by_IN their_PRP$ neighborhood_NN similarity_NN ._.
+Pons_NNP and_CC Latapy_NNP -LRB-_-LRB- 18_CD -RRB-_-RRB- proposed_VBN to_TO use_VB short_JJ random_JJ walks_VBZ of_IN length_NN l_NN t_NN
+etc._NN ._.
+Due_JJ to_TO the_DT expressive_JJ power_NN of_IN graphs_NNS ,_, graph_NN patterns_NNS have_VBP to_TO represent_VB complex_JJ structural_JJ relationships_NNS among_IN objects_NNS in_IN various_JJ domains_NNS in_IN the_DT real_JJ world_NN ._.
+In_IN the_DT literature_NN ,_, the_DT existing_VBG work_NN =_JJ -_: =[_NN 5_CD ,_, 4_CD ,_, 7_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: discovers_VBZ complex_JJ relationships_NNS in_IN a_DT large_JJ graph_NN that_WDT is_VBZ static_JJ ._.
+However_RB ,_, many_JJ applications_NNS show_VBP that_IN graphs_NNS are_VBP evolving_VBG over_IN time_NN ._.
+In_IN social_JJ science_NN ,_, large_JJ social_JJ networks_NNS are_VBP changing_VBG ,_, and_CC social_JJ
+re_NN are_VBP countless_JJ ways_NNS to_TO define_VB similarity_NN or_CC distance_NN between_IN individual_JJ nodes_NNS in_IN a_DT network_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ;_: here_RB we_PRP use_VBP straightforward_JJ measures_NNS for_IN simplicity_NN and_CC efficiency_NN ._.
+If_IN more_RBR sophisticated_JJ techniques_NNS =_JJ -_: =[_NN 14_CD ,_, 18_CD ,_, 19_CD ,_, 25_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: can_MD scale_VB ,_, they_PRP may_MD provide_VB the_DT basis_NN for_IN improving_VBG the_DT results_NNS we_PRP present_VBP below_IN ._.
+Assume_VB that_IN there_EX are_VBP N_NN user-generated_JJ micro-content_JJ pages_NNS in_IN total_NN that_IN the_DT browsers_NNS have_VBP visited_VBN ._.
+Browsers_NNS and_CC cont_NN

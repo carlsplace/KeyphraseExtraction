@@ -1,0 +1,136 @@
+Exploring_VBG web_NN scale_NN language_NN models_NNS for_IN search_NN query_NN processing_NN
+It_PRP has_VBZ been_VBN widely_RB observed_VBN that_IN search_NN queries_NNS are_VBP composed_VBN in_IN a_DT very_RB different_JJ style_NN from_IN that_DT of_IN the_DT body_NN or_CC the_DT title_NN of_IN a_DT document_NN ._.
+Many_JJ techniques_NNS explicitly_RB accounting_VBG for_IN this_DT language_NN style_NN discrepancy_NN have_VBP shown_VBN promising_JJ results_NNS for_IN information_NN retrieval_NN ,_, yet_CC a_DT large_JJ scale_NN analysis_NN on_IN the_DT extent_NN of_IN the_DT language_NN differences_NNS has_VBZ been_VBN lacking_VBG ._.
+In_IN this_DT paper_NN ,_, we_PRP present_VBP an_DT extensive_JJ study_NN on_IN this_DT issue_NN by_IN examining_VBG the_DT language_NN model_NN properties_NNS of_IN search_NN queries_NNS and_CC the_DT three_CD text_NN streams_NNS associated_VBN with_IN each_DT web_NN document_NN :_: the_DT body_NN ,_, the_DT title_NN ,_, and_CC the_DT anchor_NN text_NN ._.
+Our_PRP$ information_NN theoretical_JJ analysis_NN shows_VBZ that_IN queries_NNS seem_VBP to_TO be_VB composed_VBN in_IN a_DT way_NN most_RBS similar_JJ to_TO how_WRB authors_NNS summarize_VBP documents_NNS in_IN anchor_NN texts_NNS or_CC titles_NNS ,_, offering_VBG a_DT quantitative_JJ explanation_NN to_TO the_DT observations_NNS in_IN past_JJ work_NN ._.
+We_PRP apply_VBP these_DT web_NN scale_NN n-gram_NN language_NN models_NNS to_TO three_CD search_NN query_NN processing_NN -LRB-_-LRB- SQP_NN -RRB-_-RRB- tasks_NNS :_: query_JJ spelling_NN correction_NN ,_, query_NN bracketing_NN and_CC long_JJ query_NN segmentation_NN ._.
+By_IN controlling_VBG the_DT size_NN and_CC the_DT order_NN of_IN different_JJ language_NN models_NNS ,_, we_PRP find_VBP that_IN the_DT perplexity_NN metric_NN to_TO be_VB a_DT good_JJ accuracy_NN indicator_NN for_IN these_DT query_JJ processing_NN tasks_NNS ._.
+We_PRP show_VBP that_IN using_VBG smoothed_VBD language_NN models_NNS yields_VBZ significant_JJ accuracy_NN gains_NNS for_IN query_NN bracketing_VBG for_IN instance_NN ,_, compared_VBN to_TO using_VBG web_NN counts_NNS as_IN in_IN the_DT literature_NN ._.
+We_PRP also_RB demonstrate_VBP that_IN applying_VBG web-scale_JJ language_NN models_NNS can_MD have_VB marked_JJ accuracy_NN advantage_NN over_IN smaller_JJR ones_NNS ._.
+NTS_NN Language_NN differences_NNS between_IN search_NN queries_NNS and_CC Web_NN documents_NNS have_VBP often_RB been_VBN assumed_VBN in_IN previous_JJ studies_NNS without_IN a_DT quantitative_JJ evaluation_NN -LRB-_-LRB- e.g._FW ,_, 2_CD ,_, 16_CD ,_, 33_CD -RRB-_-RRB- ._.
+Following_VBG and_CC extending_VBG the_DT study_NN in_IN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP performed_VBD a_DT large_JJ scale_NN analysis_NN of_IN Web_NN and_CC query_NN collections_NNS for_IN the_DT sake_NN of_IN quantifying_VBG the_DT language_NN discrepancy_NN between_IN search_NN queries_NNS and_CC Web_NN documents_NNS ._.
+Table_NNP 1_CD summarizes_VBZ the_DT Web_NN n-gram_NN mode_NN
+s_NN prior_JJ specific_JJ permission_NN and\/or_CC a_DT fee_NN ._.
+SIGIR_NN '_'' 10_CD ,_, July_NNP 19-23_CD ,_, 2010_CD ,_, Geneva_NNP ,_, Swizerland_NNP ._.
+Copyright_NN 2010_CD ACM_NNP 978-1-60558-896-4_CD \/_: 10\/07_CD ..._: $_$ 10.00_CD ._.
+1_CD An_DT earlier_JJR version_NN of_IN MWNLM_NN is_VBZ described_VBN in_IN Huang_NNP et_FW al._FW =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT paper_NN provides_VBZ updated_VBN information_NN regarding_VBG the_DT most_RBS recent_JJ development_NN of_IN MWNLM_NN ._.
+1_CD ._.
+INTRODUCTION_NN The_DT goal_NN of_IN a_DT statistical_JJ language_NN model_NN -LRB-_-LRB- LM_NN -RRB-_-RRB- is_VBZ to_TO predict_VB the_DT probability_NN of_IN a_DT word_NN string_NN ._.
+he_PRP titles_NNS of_IN the_DT documents_NNS ,_, or_CC the_DT anchor_NN text_NN from_IN all_DT hyperlinks_NNS ._.
+As_IN the_DT Microsoft_NNP Web_NN N-gram_NN Service_NN is_VBZ particularly_RB new_JJ ,_, its_PRP$ use_NN in_IN literature_NN is_VBZ somewhat_RB sparse_JJ ._.
+We_PRP note_VBP the_DT work_NN of_IN Huang_NNP et_FW al._FW =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT examined_VBD how_WRB the_DT accuracy_NN of_IN some_DT related_JJ IR_NN tasks_NNS could_MD be_VB improved_VBN using_VBG the_DT n-gram_NN service_NN ,_, such_JJ as_IN spelling_NN correction_NN and_CC query_NN segmentation_NN ._.
+Indeed_RB ,_, while_IN it_PRP is_VBZ plausible_JJ query_NN segmentat_NN
+Web_NN documents_NNS have_VBP indicated_VBN that_IN various_JJ portions_NNS of_IN Web_NN documents_NNS often_RB exhibit_VBP unique_JJ language_NN styles_NNS that_IN their_PRP$ respective_JJ language_NN models_NNS have_VBP significantly_RB different_JJ statistics_NNS from_IN one_CD another_DT =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =-[_NN 25_CD -RRB-_-RRB- ._.
+The_DT notion_NN is_VBZ indeed_RB quite_RB intuitive_JJ :_: the_DT body_NN of_IN the_DT document_NN tends_VBZ to_TO use_VB a_DT style_NN for_IN formal_JJ and_CC detail_NN descriptions_NNS ,_, whereas_IN the_DT title_NN of_IN a_DT document_NN is_VBZ more_JJR of_IN a_DT summary_NN style_NN ._.
+The_DT anchor_NN tex_NN
+nts_NNS by_IN literally_RB matching_VBG terms_NNS in_IN documents_NNS with_IN those_DT in_IN a_DT search_NN query_NN ._.
+However_RB ,_, lexical_JJ matching_NN methods_NNS can_MD be_VB inaccurate_JJ due_JJ to_TO the_DT language_NN discrepancy_NN between_IN Web_NN documents_NNS and_CC search_NN queries_NNS =_JJ -_: =[_NN 20_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: i.e._FW ,_, a_DT concept_NN is_VBZ often_RB expressed_VBN using_VBG different_JJ vocabularies_NNS and_CC language_NN styles_NNS in_IN documents_NNS and_CC queries_NNS ._.
+In_IN the_DT last_JJ two_CD decades_NNS ,_, different_JJ latent_JJ semantic_JJ models_NNS have_VBP been_VBN proposed_VBN to_TO address_VB t_NN
+tracks_VBZ the_DT current_JJ news_NN and_CC popular_JJ events_NNS ._.
+For_IN these_DT reasons_NNS ,_, recent_JJ research_NN has_VBZ exploited_VBN the_DT textual_JJ content_NN of_IN the_DT Web_NN to_TO create_VB models_NNS for_IN natural_JJ language_NN tools_NNS ,_, in_IN particular_JJ ,_, language_NN models_NNS =_JJ -_: =[_NN 14_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Typically_RB ,_, language_NN models_NNS are_VBP built_VBN on_IN a_DT training_NN corpus_NN of_IN sentences_NNS with_IN the_DT assumption_NN that_IN the_DT distribution_NN of_IN n-grams_NN in_IN the_DT training_NN set_NN is_VBZ the_DT same_JJ as_IN the_DT distribution_NN of_IN n-grams_NN in_IN the_DT task_NN
+manners_NNS of_IN IR_NN and_CC NLP_NN research_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Enabled_VBN by_IN the_DT power_NN of_IN such_JJ web_NN scale_NN data_NNS ,_, simple_JJ models_NNS can_MD yield_VB remarkable_JJ results_NNS in_IN various_JJ real-world_JJ applications_NNS such_JJ as_IN statistical_JJ machine_NN translation_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Many_JJ of_IN these_DT models_NNS rely_VBP on_IN the_DT web_NN count_NN information_NN ,_, either_CC as_IN web_NN page_NN hits_VBZ count_NN or_CC as_IN term_NN frequency_NN statistics_NNS derived_VBN from_IN a_DT large_JJ sample_NN of_IN the_DT web_NN -LRB-_-LRB- e.g._FW the_DT Google_NNP 1T_NN web_NN corpus_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- --_: 1T_NN C_NN
+b_NN frequency_NN and_CC EM_NN were_VBD used_VBN to_TO estimate_VB the_DT model_NN parameters_NNS ._.
+We_PRP adopt_VBP a_DT similar_JJ rationale_NN for_IN segmentation_NN ,_, but_CC using_VBG web_NN n-gram_NN language_NN models_NNS which_WDT significantly_RB simplify_VBP the_DT segmentation_NN model_NN ._.
+=_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT supervised_JJ approach_NN for_IN segmenting_VBG noun_NN phrase_NN queries_NNS ,_, yet_RB this_DT requires_VBZ developing_VBG a_DT large_JJ gold_NN standard_NN and_CC well_RB designed_VBN feature_NN sets_NNS from_IN queries_NNS that_WDT are_VBP widely_RB different_JJ ._.
+In_IN contras_NNS
+r_NN 's_POS encyclopedia_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- and_CC MEDLINE_NN abstracts_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Our_PRP$ work_NN ,_, on_IN the_DT other_JJ hand_NN ,_, uses_NNS smoothed_VBD web_NN language_NN models_NNS and_CC shows_VBZ significant_JJ improvement_NN for_IN web_NN queries_NNS which_WDT are_VBP much_RB more_RBR diverse_JJ ._.
+9_CD E.g._NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_JJ -_: showed_VBD that_IN Excite_NNP 's_POS average_JJ query_NN length_NN was_VBD 2.3_CD ,_, though_IN users_NNS become_VBP more_RBR sophisticated_JJ over_IN time_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+10_CD In_IN a_DT study_NN of_IN English_JJ queries_NNS ,_, around_IN 70_CD %_NN are_VBP found_VBN to_TO be_VB noun_NN phrases_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+For_IN instance_NN ,_, t_NN
+d_NN to_TO using_VBG only_JJ document_NN texts_NNS in_IN tradition_NN ,_, have_VBP achieved_VBN promising_JJ results_NNS -LRB-_-LRB- for_IN instance_NN ,_, -LRB-_-LRB- 3_CD ,_, 15_CD -RRB-_-RRB- demonstrated_VBD significant_JJ improvement_NN for_IN ranking_NN using_VBG search_NN queries_NNS -RRB-_-RRB- ._.
+In_IN particular_JJ ,_, Svore_FW et_FW al._FW =_SYM -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: studied_VBD the_DT contributions_NNS of_IN these_DT different_JJ sources_NNS to_TO IR_NNP accuracy_NN and_CC significantly_RB improved_VBD the_DT state-of-the-art_JJ ranking_NN function_NN BM25_NN ._.
+Complementary_JJ to_TO these_DT works_NNS in_IN document_NN ranking_NN ,_, we_PRP showcas_VBP
+rder_NN trees_NNS ,_, MSRLM_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- allows_VBZ the_DT smoothing_NN factor_NN to_TO be_VB properly_RB estimated_VBN on_IN the_DT web_NN scale_NN ._.
+An_DT improved_VBN version_NN of_IN MSRLM_NN called_VBN Constantly_RB Adaptive_JJ Language_NN Modeling_NN technique_NN -LRB-_-LRB- CALM_NN -RRB-_-RRB- was_VBD introduced_VBN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT allows_VBZ the_DT language_NN model_NN be_VB built_VBN incrementally_RB with_IN the_DT new_JJ web_NN data_NNS ._.
+This_DT work_NN leverages_VBZ these_DT recent_JJ advances_NNS in_IN large_JJ scale_NN language_NN modeling_NN techniques_NNS to_TO build_VB web_NN scale_NN n-gram_NN models_NNS ._.
+T_NN
+hallenges_NNS for_IN applying_VBG many_JJ of_IN the_DT classical_JJ language_NN modeling_NN techniques_NNS ._.
+For_IN the_DT purpose_NN of_IN developing_VBG a_DT web_NN machine_NN translation_NN system_NN ,_, an_DT approximation_NN approach_NN dubbed_VBN Stupid_NNP Backoff_NNP was_VBD proposed_VBN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: with_IN a_DT constant_JJ backoff_NN coefficient_NN ,_, permitting_VBG the_DT model_NN to_TO be_VB efficiently_RB trained_VBN for_IN web_NN data_NNS 1_CD Indeed_RB ,_, an_DT order-3_NN language_NN model_NN -LRB-_-LRB- derived_VBN from_IN a_DT trilliontoken_JJ web_NN corpus_NN -RRB-_-RRB- with_IN 4_CD billion_CD n-grams_NN s_NN
+age_NN hit_VBD counts_NNS from_IN bigram_NN queries_NNS have_VBP been_VBN used_VBN to_TO achieve_VB nearly_RB as_IN good_JJ results_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- without_IN recourse_NN to_TO the_DT taxonomy_NN as_IN in_IN the_DT previous_JJ more_RBR elaborate_JJ approach_NN ._.
+More_RBR recently_RB ,_, the_DT experiments_NNS in_IN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: using_VBG the_DT web_NN counts_NNS derived_VBN from_IN the_DT 1T_NNP Corpus_NNP have_VBP shown_VBN additional_JJ improvement_NN ._.
+However_RB ,_, these_DT methods_NNS used_VBD raw_JJ counts_NNS -LRB-_-LRB- some_DT with_IN un-smoothed_JJ probabilities_NNS esimated_VBN in_IN an_DT MLE_NN manner_NN -RRB-_-RRB- and_CC were_VBD appl_NN
+d_NN serve_VB very_RB large_JJ language_NN models_NNS ._.
+This_DT can_MD yield_VB significant_JJ accuracy_NN benefits_NNS compared_VBN to_TO smaller_JJR language_NN models_NNS ._.
+The_DT merits_NNS of_IN very_RB large_JJ scale_NN text_NN corpora_NN for_IN spelling_NN correction_NN were_VBD noted_VBN in_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT smoothed_VBN language_NN model_NN built_VBN from_IN a_DT giga-word_JJ English_NNP corpus_NN was_VBD used_VBN in_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- to_TO correct_VB errors_NNS made_VBN by_IN English_NNP as_IN second_JJ language_NN authors_NNS ._.
+The_DT 1T_NNP Corpus_NNP was_VBD used_VBN in_IN -LRB-_-LRB- 6_CD -RRB-_-RRB- for_IN the_DT spelling_NN correcti_NNS
+ults_NNS '_POS quality_NN without_IN burdening_VBG the_DT user_NN with_IN re-issuing_VBG the_DT correct_JJ query_NN ._.
+N-gram_NN language_NN models_NNS are_VBP capable_JJ of_IN simultaneously_RB handling_VBG typographical_JJ and_CC context-sensitive_JJ spelling_NN correction_NN tasks_NNS =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, since_IN they_PRP capture_VBP the_DT n-gram_NN probability_NN as_RB well_RB as_IN the_DT context_NN ._.
+Context-sensitive_JJ spelling_NN correction_NN for_IN document_NN text_NN has_VBZ been_VBN studied_VBN in_IN NLP_NNP and_CC recently_RB applied_VBN with_IN much_JJ success_NN in_IN word_NN proce_NN
+te_IN discounting_VBG 5_CD as_IN the_DT discount_NN function_NN ,_, whose_WP$ parameters_NNS can_MD be_VB efficiently_RB estimated_VBN and_CC performance_NN converges_VBZ to_TO that_DT of_IN more_RBR elaborate_JJ state-of-the-art_JJ techniques_NNS like_IN Kneser-Ney_NN -LRB-_-LRB- KN_NN -RRB-_-RRB- smoothing_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: in_IN large_JJ scale_NN data_NNS -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+This_DT smoothing_NN process_NN is_VBZ implemented_VBN in_IN a_DT large_JJ distributed_VBN environment_NN to_TO generate_VB web-scale_JJ smoothed_VBN language_NN models_NNS ,_, though_IN the_DT details_NNS of_IN which_WDT are_VBP outside_JJ of_IN the_DT scope_NN
+We_PRP use_VBP the_DT languages_NNS models_NNS to_TO rank_VB the_DT 6_CD The_DT details_NNS of_IN the_DT candidate_NN selection_NN and_CC decoding_NN process_NN are_VBP outside_IN the_DT scope_NN of_IN this_DT paper_NN ._.
+For_IN comprehensive_JJ coverage_NN ,_, interested_JJ readers_NNS can_MD refer_VB to_TO =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+spelling_NN candidates_NNS ._.
+Specifically_RB ,_, we_PRP use_VBP the_DT joint_JJ probability_NN derived_VBN from_IN the_DT language_NN models_NNS as_IN a_DT feature_NN for_IN ranking_NN ._.
+Given_VBN a_DT length_NN k_NN query_NN q_NN =_JJ w1w2_NN ..._: wk_NN ,_, the_DT joint_JJ probability_NN of_IN the_DT query_FW q_FW
+a_DT maximum_JJ likelihood_NN estimation_NN -LRB-_-LRB- MLE_NN -RRB-_-RRB- manner_NN ,_, is_VBZ tiny_JJ -LRB-_-LRB- but_CC non-zero_JJ -RRB-_-RRB- probability_NN is_VBZ given_VBN to_TO unseen_JJ n-grams_NN ._.
+This_DT has_VBZ been_VBN shown_VBN to_TO yield_VB significantly_RB better_JJR prediction_NN power_NN in_IN various_JJ applications_NNS =_JJ -_: =[_NN 31_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Even_RB though_IN algorithms_NNS for_IN building_VBG n-gram_NN models_NNS are_VBP widely_RB known_VBN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, as_IN we_PRP mentioned_VBD earlier_RBR applying_VBG them_PRP on_IN the_DT web_NN scale_NN -LRB-_-LRB- trillion-token_JJ corpus_NN -RRB-_-RRB- is_VBZ non-trivial_JJ ._.
+The_DT smoothing_VBG technique_NN implem_NN
+model_NN predicts_VBZ the_DT test_NN data_NNS ._.
+Formally_RB ,_, the_DT perplexity_NN between_IN an_DT empirical_JJ distribution_NN of_IN the_DT test_NN data_NNS ˜p_NN and_CC a_DT language_NN model_NN q_NN is_VBZ :_: Perplexity_NN -LRB-_-LRB- ˜p_NN ,_, q_NN -RRB-_-RRB- =_JJ 2_CD H_NN -LRB-_-LRB- ˜p_NN ,_, q_NN -RRB-_-RRB- 5_CD Interested_JJ reader_NN can_MD refer_VB to_TO =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: for_IN more_JJR details_NNS ._.
+-LRB-_-LRB- 1_LS -RRB-_-RRB- Figure_NNP 1_CD :_: Comparison_NN of_IN query_NN word_NN perplexity_NN with_IN different_JJ orders_NNS of_IN the_DT language_NN models_NNS of_IN similar_JJ sizes_NNS ,_, derived_VBN from_IN different_JJ data_NNS sources_NNS ._.
+where_WRB H_NN -LRB-_-LRB- ˜p_NN ,_, q_NN -RRB-_-RRB- def_NN =_JJ −_FW ∑_FW s_NN ˜p_NN -LRB-_-LRB- s_NN
+used_VBN raw_JJ counts_NNS -LRB-_-LRB- some_DT with_IN un-smoothed_JJ probabilities_NNS esimated_VBN in_IN an_DT MLE_NN manner_NN -RRB-_-RRB- and_CC were_VBD applied_VBN on_IN the_DT noun_NN compounds_NNS from_IN very_RB clean_JJ corpora_NN -LRB-_-LRB- e.g._FW Grolier_NNP 's_POS encyclopedia_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- and_CC MEDLINE_NN abstracts_NNS =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Our_PRP$ work_NN ,_, on_IN the_DT other_JJ hand_NN ,_, uses_NNS smoothed_VBD web_NN language_NN models_NNS and_CC shows_VBZ significant_JJ improvement_NN for_IN web_NN queries_NNS which_WDT are_VBP much_RB more_RBR diverse_JJ ._.
+9_CD E.g._NN -LRB-_-LRB- 26_CD -RRB-_-RRB- showed_VBD that_IN Excite_NNP 's_POS average_JJ query_NN length_NN w_NN
+Despite_IN the_DT importance_NN of_IN this_DT task_NN ,_, related_JJ research_NN in_IN this_DT area_NN is_VBZ relatively_RB little_JJ ._.
+For_IN the_DT goal_NN of_IN generating_VBG query_JJ substitutions_NNS ,_, pointwise_JJ mutual_JJ information_NN based_VBN on_IN query_NN terms_NNS was_VBD used_VBN in_IN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: to_TO segment_NN queries_NNS ._.
+Similar_JJ term_NN based_VBN PMI_NNP was_VBD used_VBN in_IN -LRB-_-LRB- 21_CD -RRB-_-RRB- to_TO find_VB high_JJ quality_NN sub-queries_NNS ._.
+-LRB-_-LRB- 28_CD -RRB-_-RRB- suggests_VBZ that_IN term-based_JJ PMI_NN is_VBZ not_RB appropriate_JJ to_TO capture_VB the_DT correlation_NN in_IN long_JJ entities_NNS and_CC prop_VB
+total_JJ query_JJ occurrences_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+Hence_RB the_DT study_NN of_IN threeword_FW query_FW is_VBZ of_IN much_JJ practical_JJ importance_NN ._.
+The_DT query_NN bracketing_VBG task_NN is_VBZ related_JJ to_TO ,_, though_IN not_RB the_DT same_JJ as_IN 10_CD ,_, the_DT noun_NN compound_NN bracketing_VBG task_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: in_IN NLP_NNP ._.
+The_DT noun_NN compound_NN bracketing_VBG task_NN can_MD be_VB summarized_VBN as_IN :_: given_VBN a_DT three-word_JJ noun_NN phrase_NN -LRB-_-LRB- NP_NN -RRB-_-RRB- 11_CD n1n2n3_NN ,_, determine_VBD the_DT sub-NP_NN structure_NN either_CC as_IN left_JJ or_CC right_JJ bracketing_NN ._.
+Consider_VB the_DT followin_NN
+s_NN well_RB as_IN web_NN search_NN queries_NNS ._.
+Recently_RB ,_, IR_NN techniques_NNS accounting_VBG for_IN these_DT alternative_JJ data_NNS sources_NNS ,_, compared_VBN to_TO using_VBG only_JJ document_NN texts_NNS in_IN tradition_NN ,_, have_VBP achieved_VBN promising_JJ results_NNS -LRB-_-LRB- for_IN instance_NN ,_, =_JJ -_: =[_NN 3_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: demonstrated_VBD significant_JJ improvement_NN for_IN ranking_NN using_VBG search_NN queries_NNS -RRB-_-RRB- ._.
+In_IN particular_JJ ,_, Svore_FW et_FW al._FW -LRB-_-LRB- 27_CD -RRB-_-RRB- studied_VBD the_DT contributions_NNS of_IN these_DT different_JJ sources_NNS to_TO IR_NNP accuracy_NN and_CC significantly_RB improved_VBD
+l_NN time_NN ._.
+Though_IN lexicon_NN based_VBN approaches_NNS can_MD handle_VB many_JJ of_IN such_JJ typographical_JJ errors_NNS in_IN a_DT traditional_JJ word_NN processing_NN setting_NN ,_, it_PRP 's_VBZ much_RB more_RBR challenging_JJ to_TO correct_VB misspelt_JJ web_NN search_NN engine_NN queries_VBZ =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+First_RB ,_, compiling_VBG a_DT high_JJ coverage_NN dictionary_NN for_IN the_DT web_NN is_VBZ near_RB impossible_JJ for_IN the_DT tremendous_JJ amount_NN of_IN proper_JJ nouns_NNS and_CC a_DT variety_NN of_IN languages_NNS ._.
+Also_RB ,_, the_DT web_NN search_NN query_NN language_NN is_VBZ a_DT living_VBG langu_NN
+a_DT maximum_JJ likelihood_NN estimation_NN -LRB-_-LRB- MLE_NN -RRB-_-RRB- manner_NN ,_, is_VBZ tiny_JJ -LRB-_-LRB- but_CC non-zero_JJ -RRB-_-RRB- probability_NN is_VBZ given_VBN to_TO unseen_JJ n-grams_NN ._.
+This_DT has_VBZ been_VBN shown_VBN to_TO yield_VB significantly_RB better_JJR prediction_NN power_NN in_IN various_JJ applications_NNS =_JJ -_: =[_NN 31_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Even_RB though_IN algorithms_NNS for_IN building_VBG n-gram_NN models_NNS are_VBP widely_RB known_VBN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, as_IN we_PRP mentioned_VBD earlier_RBR applying_VBG them_PRP on_IN the_DT web_NN scale_NN -LRB-_-LRB- trillion-token_JJ corpus_NN -RRB-_-RRB- is_VBZ non-trivial_JJ ._.
+The_DT smoothing_VBG technique_NN implem_NN
+stead_NN of_IN the_DT formal_JJ natural_JJ language_NN as_IN that_DT found_VBN in_IN the_DT text_NN of_IN a_DT clean_JJ corpus_NN such_JJ as_IN the_DT Wall_NNP Street_NNP Journal_NNP ._.
+The_DT query_JJ language_NN is_VBZ found_VBN to_TO be_VB dominated_VBN by_IN noun_NN phrases_NNS that_WDT are_VBP loosely_RB attached_VBN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT sharply_RB contrasts_VBZ with_IN text_NN written_VBN in_IN a_DT formal_JJ language_NN that_WDT well_RB conforms_VBZ to_TO the_DT underlying_JJ grammar_NN ._.
+-LRB-_-LRB- 2_LS -RRB-_-RRB- In_IN the_DT web_NN context_NN ,_, SQP_NN tasks_NNS are_VBP faced_VBN with_IN a_DT living_VBG language_NN with_IN an_DT open-domain_NN and_CC
+gram_NN probability_NN as_RB well_RB as_IN the_DT context_NN ._.
+Context-sensitive_JJ spelling_NN correction_NN for_IN document_NN text_NN has_VBZ been_VBN studied_VBN in_IN NLP_NNP and_CC recently_RB applied_VBN with_IN much_JJ success_NN in_IN word_NN processing_NN products_NNS like_IN Office_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Unlike_IN that_DT setting_NN where_WRB very_RB limited_JJ memory_NN necessitates_VBZ model_NN compression_NN and_CC pruning_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, the_DT distributed_VBN environment_NN in_IN commercial_JJ web_NN search_NN engines_NNS can_MD readily_RB and_CC efficiently_RB store_NN and_CC serv_NN
+oal_NN of_IN generating_VBG query_JJ substitutions_NNS ,_, pointwise_JJ mutual_JJ information_NN based_VBN on_IN query_NN terms_NNS was_VBD used_VBN in_IN -LRB-_-LRB- 19_CD -RRB-_-RRB- to_TO segment_NN queries_NNS ._.
+Similar_JJ term_NN based_VBN PMI_NNP was_VBD used_VBN in_IN -LRB-_-LRB- 21_CD -RRB-_-RRB- to_TO find_VB high_JJ quality_NN sub-queries_NNS ._.
+=_SYM -_: =[_NN 28_CD -RRB-_-RRB- -_: =_JJ -_: suggests_VBZ that_IN term-based_JJ PMI_NN is_VBZ not_RB appropriate_JJ to_TO capture_VB the_DT correlation_NN in_IN long_JJ entities_NNS and_CC proposed_VBD a_DT segment_NN based_JJ segmentation_NN approach_NN ._.
+Raw_NN web_NN frequency_NN and_CC EM_NN were_VBD used_VBN to_TO estimate_VB the_DT mode_NN
+compared_VBN to_TO smaller_JJR language_NN models_NNS ._.
+The_DT merits_NNS of_IN very_RB large_JJ scale_NN text_NN corpora_NN for_IN spelling_NN correction_NN were_VBD noted_VBN in_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+A_DT smoothed_VBN language_NN model_NN built_VBN from_IN a_DT giga-word_JJ English_NNP corpus_NN was_VBD used_VBN in_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: to_TO correct_VB errors_NNS made_VBN by_IN English_NNP as_IN second_JJ language_NN authors_NNS ._.
+The_DT 1T_NNP Corpus_NNP was_VBD used_VBN in_IN -LRB-_-LRB- 6_CD -RRB-_-RRB- for_IN the_DT spelling_NN correction_NN of_IN document_NN text_NN and_CC observed_VBN improved_JJ performance_NN compared_VBN to_TO using_VBG web_NN page_NN h_NN
+saurus_NN to_TO esimate_VB concept_NN probability_NN instead_RB of_IN word_NN probability_NN due_JJ to_TO the_DT data_NNS sparsity_NN problem_NN ._.
+Later_RB ,_, the_DT web_NN page_NN hit_VBD counts_NNS from_IN bigram_NN queries_NNS have_VBP been_VBN used_VBN to_TO achieve_VB nearly_RB as_IN good_JJ results_NNS =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: without_IN recourse_NN to_TO the_DT taxonomy_NN as_IN in_IN the_DT previous_JJ more_RBR elaborate_JJ approach_NN ._.
+More_RBR recently_RB ,_, the_DT experiments_NNS in_IN -LRB-_-LRB- 29_CD -RRB-_-RRB- using_VBG the_DT web_NN counts_NNS derived_VBN from_IN the_DT 1T_NNP Corpus_NNP have_VBP shown_VBN additional_JJ improvement_NN ._.
+correction_NN were_VBD noted_VBN in_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+A_DT smoothed_VBN language_NN model_NN built_VBN from_IN a_DT giga-word_JJ English_NNP corpus_NN was_VBD used_VBN in_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- to_TO correct_VB errors_NNS made_VBN by_IN English_NNP as_IN second_JJ language_NN authors_NNS ._.
+The_DT 1T_NNP Corpus_NNP was_VBD used_VBN in_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: for_IN the_DT spelling_NN correction_NN of_IN document_NN text_NN and_CC observed_VBN improved_JJ performance_NN compared_VBN to_TO using_VBG web_NN page_NN hit_VBD counts_NNS for_IN estimation_NN ._.
+The_DT challenges_NNS of_IN web_NN search_NN query_NN spelling_NN correction_NN was_VBD elucida_NN
+s_NN well_RB as_IN web_NN search_NN queries_NNS ._.
+Recently_RB ,_, IR_NN techniques_NNS accounting_VBG for_IN these_DT alternative_JJ data_NNS sources_NNS ,_, compared_VBN to_TO using_VBG only_JJ document_NN texts_NNS in_IN tradition_NN ,_, have_VBP achieved_VBN promising_JJ results_NNS -LRB-_-LRB- for_IN instance_NN ,_, =_JJ -_: =[_NN 3_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: demonstrated_VBD significant_JJ improvement_NN for_IN ranking_NN using_VBG search_NN queries_NNS -RRB-_-RRB- ._.
+In_IN particular_JJ ,_, Svore_FW et_FW al._FW -LRB-_-LRB- 27_CD -RRB-_-RRB- studied_VBD the_DT contributions_NNS of_IN these_DT different_JJ sources_NNS to_TO IR_NNP accuracy_NN and_CC significantly_RB improved_VBD
+is_VBZ area_NN is_VBZ relatively_RB little_JJ ._.
+For_IN the_DT goal_NN of_IN generating_VBG query_JJ substitutions_NNS ,_, pointwise_JJ mutual_JJ information_NN based_VBN on_IN query_NN terms_NNS was_VBD used_VBN in_IN -LRB-_-LRB- 19_CD -RRB-_-RRB- to_TO segment_NN queries_NNS ._.
+Similar_JJ term_NN based_VBN PMI_NNP was_VBD used_VBN in_IN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: to_TO find_VB high_JJ quality_NN sub-queries_NNS ._.
+-LRB-_-LRB- 28_CD -RRB-_-RRB- suggests_VBZ that_IN term-based_JJ PMI_NN is_VBZ not_RB appropriate_JJ to_TO capture_VB the_DT correlation_NN in_IN long_JJ entities_NNS and_CC proposed_VBD a_DT segment_NN based_JJ segmentation_NN approach_NN ._.
+Raw_NN web_NN frequenc_NN
+duce_NN environment_NN ._.
+However_RB ,_, the_DT model_NN is_VBZ no_RB longer_RB a_DT statistical_JJ model_NN for_IN not_RB properly_RB normalizing_VBG the_DT probabilities_NNS ._.
+Enabled_VBN by_IN an_DT ingenious_JJ data_NN structure_NN to_TO store_VB n-grams_NN in_IN backorder_NN trees_NNS ,_, MSRLM_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: allows_VBZ the_DT smoothing_NN factor_NN to_TO be_VB properly_RB estimated_VBN on_IN the_DT web_NN scale_NN ._.
+An_DT improved_VBN version_NN of_IN MSRLM_NN called_VBN Constantly_RB Adaptive_JJ Language_NN Modeling_NN technique_NN -LRB-_-LRB- CALM_NN -RRB-_-RRB- was_VBD introduced_VBN -LRB-_-LRB- 30_CD -RRB-_-RRB- which_WDT allows_VBZ the_DT

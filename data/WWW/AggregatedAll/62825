@@ -1,0 +1,174 @@
+Monitoring_VBG the_DT dynamic_JJ web_NN to_TO respond_VB to_TO continuous_JJ queries_NNS
+Continuous_JJ queries_NNS are_VBP queries_NNS for_IN which_WDT responses_NNS given_VBN to_TO users_NNS must_MD be_VB continuously_RB updated_VBN ,_, as_IN the_DT sources_NNS of_IN interest_NN get_VB updated_VBN ._.
+Such_JJ queries_NNS occur_VBP ,_, for_IN instance_NN ,_, during_IN on-line_JJ decision_NN making_NN ,_, e.g._FW ,_, traffic_NN flow_NN control_NN ,_, weather_NN monitoring_NN ,_, etc._NN ._.
+The_DT problem_NN of_IN keeping_VBG the_DT responses_NNS current_NN reduces_VBZ to_TO the_DT problem_NN of_IN deciding_VBG how_WRB often_RB to_TO visit_VB a_DT source_NN to_TO determine_VB if_IN and_CC how_WRB it_PRP has_VBZ been_VBN modified_VBN ,_, in_IN order_NN to_TO update_VB earlier_JJR responses_NNS accordingly_RB ._.
+On_IN the_DT surface_NN ,_, this_DT seems_VBZ to_TO be_VB similar_JJ to_TO the_DT crawling_VBG problem_NN since_IN crawlers_NNS attempt_VBP to_TO keep_VB indexes_NNS up-to-date_JJ as_IN pages_NNS change_NN and_CC users_NNS pose_VBP search_NN queries_NNS ._.
+We_PRP show_VBP that_IN this_DT is_VBZ not_RB the_DT case_NN ,_, both_DT due_JJ to_TO the_DT inherent_JJ differences_NNS between_IN the_DT nature_NN of_IN the_DT two_CD problems_NNS as_RB well_RB as_IN the_DT performance_NN metric_NN ._.
+We_PRP propose_VBP ,_, develop_VBP and_CC evaluate_VBP a_DT novel_JJ multi-phase_JJ -LRB-_-LRB- Continuous_JJ Adaptive_JJ Monitoring_NN -RRB-_-RRB- -LRB-_-LRB- CAM_NN -RRB-_-RRB- solution_NN to_TO the_DT problem_NN of_IN maintaining_VBG the_DT currency_NN of_IN query_JJ results_NNS ._.
+Some_DT of_IN the_DT important_JJ phases_NNS are_VBP :_: The_DT tracking_NN phase_NN ,_, in_IN which_WDT changes_NNS ,_, to_TO an_DT initially_RB identified_VBN set_NN of_IN relevant_JJ pages_NNS ,_, are_VBP tracked_VBN ._.
+From_IN the_DT observed_VBN change_NN characteristics_NNS of_IN these_DT pages_NNS ,_, a_DT probabilistic_JJ model_NN of_IN their_PRP$ change_NN behavior_NN is_VBZ formulated_VBN and_CC weights_NNS are_VBP assigned_VBN to_TO pages_NNS to_TO denote_VB their_PRP$ importance_NN for_IN the_DT current_JJ queries_NNS ._.
+During_IN the_DT next_JJ phase_NN ,_, the_DT resource_NN allocation_NN phase_NN ,_, based_VBN on_IN these_DT statistics_NNS ,_, resources_NNS ,_, needed_VBN to_TO continuously_RB monitor_VB these_DT pages_NNS for_IN changes_NNS ,_, are_VBP allocated_VBN ._.
+Given_VBN these_DT resource_NN allocations_NNS ,_, the_DT scheduling_NN phase_NN produces_VBZ an_DT optimal_JJ achievable_JJ schedule_NN for_IN the_DT monitoring_NN tasks_NNS ._.
+An_DT experimental_JJ evaluation_NN of_IN our_PRP$ approach_NN compared_VBN to_TO prior_JJ approaches_NNS for_IN crawling_VBG dynamic_JJ web_NN pages_NNS shows_VBZ the_DT effectiveness_NN of_IN CAM_NNP for_IN monitoring_VBG dynamic_JJ changes_NNS ._.
+For_IN example_NN ,_, by_IN monitoring_VBG just_RB 5_CD %_NN of_IN the_DT page_NN changes_NNS ,_, CAM_NNP is_VBZ able_JJ to_TO return_VB 90_CD %_NN of_IN the_DT changed_VBN information_NN to_TO the_DT users_NNS ._.
+The_DT experiments_NNS also_RB produce_VBP some_DT interesting_JJ observations_NNS pertaining_VBG to_TO the_DT differences_NNS between_IN the_DT two_CD problems_NNS of_IN crawling_VBG --_: to_TO build_VB an_DT index_NN --_: and_CC the_DT problem_NN of_IN change_NN tracking_NN --_: to_TO respond_VB to_TO continuous_JJ queries_NNS ._.
+about_IN dataset_JJ dynamics_NNS is_VBZ essential_JJ for_IN a_DT number_NN of_IN tasks_NNS :_: •_CD web_NN crawling_NN and_CC caching_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ;_: •_CD distributed_VBN query_NN optimisation_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ;_: •_CD maintaining_VBG link_NN integrity_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ;_: •_CD servicing_NN of_IN continuous_JJ queries_NNS =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ;_: Copyright_NNP is_VBZ held_VBN by_IN the_DT author\/owner_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- ._.
+LDOW2010_NN ,_, April_NNP 27_CD ,_, 2010_CD ,_, Raleigh_NNP ,_, USA_NNP ._. ._.
+•_NN replication_NN and_CC synchronisation_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+We_PRP begin_VBP in_IN Section_NN 2_CD by_IN reviewing_VBG existing_VBG work_NN ,_, and_CC continue_VB in_IN Section_NNP
+m_NN has_VBZ ,_, to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, not_RB been_VBN adressed_VBN in_IN the_DT literature_NN earlier_RBR ._.
+In_IN contrast_NN non-distrirbuted_JJ solutions_NNS to_TO resource_NN allocation_NN problems_NNS in_IN crawlers_NNS often_RB use_VBP estimated_VBN tracking_NN faces_VBZ =_JJ -_: =[_NN 6_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Other_JJ solutions_NNS -LRB-_-LRB- 8_CD ,_, 9_CD -RRB-_-RRB- use_VBP sampling_NN strategies_NNS ,_, applying_VBG parts_NNS of_IN the_DT available_JJ resources_NNS for_IN sampling_NN and_CC further_RB determine_VB if_IN the_DT sampled_VBN web_NN site_NN should_MD be_VB priorities_NNS in_IN the_DT remaining_VBG resources_NNS a_DT
+roach_NN enables_VBZ Corona_NNP to_TO provide_VB the_DT best_JJS update_VBP performance_NN for_IN its_PRP$ users_NNS ,_, while_IN ensuring_VBG that_IN content_NN servers_NNS are_VBP lightly_RB loaded_VBN and_CC do_VBP not_RB get_VB overwhelmed_VBN due_JJ to_TO flash-crowds_NNS or_CC sticky_JJ traffic_NN ._.
+CAM_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_JJ -_: and_CC WIC_NNP -LRB-_-LRB- 25_CD -RRB-_-RRB- are_VBP two_CD techniques_NNS for_IN allocating_VBG bandwidth_NN for_IN polling_NN data_NNS sources_NNS on_IN a_DT single_JJ node_NN ._.
+Similar_JJ to_TO Corona_NNP ,_, they_PRP perform_VBP resource_NN allocation_NN using_VBG analytical_JJ models_NNS for_IN the_DT tradeoff_NN and_CC nu_NN
+tion_NN is_VBZ assumed_VBN to_TO be_VB structured_VBN ._.
+In_IN many_JJ information_NN dissemination_NN systems_NNS ,_, too_RB -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, the_DT considered_VBN query_NN languages_NNS concern_NN structured_VBN or_CC semistructured_VBN data_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 36_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- 23_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 24_CD -RRB-_-RRB- continuous_JJ query_NN languages_NNS for_IN information_NN on_IN the_DT Web_NN are_VBP presented_VBN that_WDT are_VBP more_RBR appropriate_JJ in_IN a_DT Web_NN context_NN and_CC allow_VB e.g._FW the_DT evaluation_NN of_IN requests_NNS to_TO Web_NN forms_NNS ._.
+Although_IN the_DT b_NN
+majority_NN of_IN web_NN sites_NNS still_RB use_VBP the_DT conventional_JJ pull_NN mode_NN ._.
+To_TO alleviate_VB the_DT impact_NN of_IN changing_VBG web_NN contents_NNS on_IN information_NN retrieval_NN ,_, the_DT continual_JJ query_NN concept_NN was_VBD developed_VBN -LRB-_-LRB- for_IN example_NN ,_, see_VB -LRB-_-LRB- 32_CD -RRB-_-RRB- =_JJ -_: =[_NN 38_CD -RRB-_-RRB- -_: =-[_NN 13_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Continual_JJ queries_NNS systems_NNS search_NN for_IN relevant_JJ web_NN pages_NNS and_CC maintain_VB their_PRP$ freshness_NN by_IN continuously_RB monitoring_VBG them_PRP with_IN appropriate_JJ frequencies_NNS ._.
+A_DT continual_JJ query_NN application_NN strives_VBZ to_TO optim_VB
+changes_NNS in_IN the_DT Web_NN is_VBZ to_TO consider_VB information_NN that_WDT appears_VBZ in_IN the_DT future_NN ._.
+Continuous_JJ queries_NNS in_IN the_DT Web_NN may_MD help_VB a_DT client_NN to_TO query_VB future_JJ states_NNS of_IN the_DT Web_NN ,_, similar_JJ to_TO triggerssin_VB a_DT database_NN context_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+There_EX are_VBP different_JJ techniques_NNS available_JJ to_TO realize_VB such_JJ history_NN or_CC future-based_JJ Web_NN information_NN analysis_NN ._.
+In_IN a_DT push_NN system_NN a_DT server_NN actively_RB provides_VBZ a_DT client_NN with_IN information_NN ._.
+Information_NN ch_NN
+tion_NN is_VBZ assumed_VBN to_TO be_VB structured_VBN ._.
+In_IN many_JJ information_NN dissemination_NN systems_NNS ,_, too_RB -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, the_DT considered_VBN query_NN languages_NNS concern_NN structured_VBN or_CC semistructured_VBN data_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 36_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- 23_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 24_CD -RRB-_-RRB- continuous_JJ query_NN languages_NNS for_IN information_NN on_IN the_DT Web_NN are_VBP presented_VBN that_WDT are_VBP more_RBR appropriate_JJ in_IN a_DT Web_NN context_NN and_CC allow_VB e.g._FW the_DT evaluation_NN of_IN requests_NNS to_TO Web_NN forms_NNS ._.
+Although_IN the_DT b_NN
+with_IN profile-driven_JJ cache_NN management_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC cache_NN synchronization_NN -LRB-_-LRB- 5_CD ,_, 3_CD -RRB-_-RRB- ._.
+Combined_JJ push-pull_JJ methods_NNS also_RB exist_VBP -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Methods_NNS for_IN optimizing_VBG Web_NN information_NN monitoring_NN have_VBP recently_RB been_VBN presented_VBN in_IN =_JJ -_: =[_NN 14_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN particular_JJ ,_, -LRB-_-LRB- 14_CD -RRB-_-RRB- presents_VBZ a_DT resource_NN allocation_NN problem_NN aimed_VBN at_IN minimizing_VBG the_DT weighted_JJ importance_NN of_IN changes_NNS that_WDT are_VBP not_RB reported_VBN to_TO the_DT user_NN ._.
+The_DT optimization_NN problem_NN there_RB ,_, as_RB well_RB as_IN in_IN -LRB-_-LRB- 13_CD
+riggers_NNS -RRB-_-RRB- ,_, these_DT methods_NNS are_VBP based_VBN on_IN polling_NN ._.
+When_WRB many_JJ resources_NNS with_IN varying_VBG change_NN frequencies_NNS must_MD be_VB monitored_VBN ,_, an_DT adaptive_JJ technique_NN may_MD be_VB used_VBN ._.
+For_IN instance_NN ,_, CAM_NN -LRB-_-LRB- Continuous_JJ Adaptive_JJ Monitor_NNP -RRB-_-RRB- =_JJ -_: =[_NN 104_CD -RRB-_-RRB- -_: =_JJ -_: adaptively_JJ schedules_NNS polling_NN for_IN different_JJ resources_NNS based_VBN on_IN their_PRP$ update_VB frequency_NN learned_VBN during_IN a_DT tracking_NN phase_NN ._.
+CAM_NNP 's_POS resource_NN allocation_NN policy_NN leads_VBZ to_TO performance_NN an_DT order_NN of_IN magnitude_NN bette_NN
+pose_VB ._.
+However_RB ,_, periodic_JJ polling_NN breaks_VBZ down_RP in_IN the_DT presence_NN of_IN a_DT large_JJ number_NN of_IN frequently-updated_JJ Web_NN sources_NNS ,_, when_WRB resources_NNS become_VBP inadequate_JJ for_IN polling_NN all_DT Web_NN pages_NNS at_IN a_DT fast_JJ rate_NN ._.
+The_DT work_NN in_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: was_VBD the_DT first_JJ to_TO study_VB ways_NNS to_TO improve_VB upon_IN simple_JJ periodic_JJ polling_NN ,_, but_CC the_DT algorithm_NN proposed_VBN in_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, called_VBN CAM_NNP ,_, has_VBZ a_DT number_NN of_IN serious_JJ drawbacks_NNS :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- CAM_NN is_VBZ only_RB suitable_JJ for_IN a_DT narrow_JJ range_NN of_IN
+both_DT Internet_NNP services_NNS and_CC systems_NNS ,_, which_WDT is_VBZ a_DT direct_JJ result_NN of_IN the_DT personalized_JJ nature_NN of_IN Internet-related_JJ services_NNS that_WDT need_VBP an_DT array_NN of_IN resources_NNS ,_, i.e._FW ,_, CPU_NNP ,_, memory_NN ,_, and_CC I\/O_NN ,_, for_IN serving_VBG requests_NNS =_JJ -_: =[_NN 3_CD ,_, 15_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT complexity_NN of_IN the_DT architecture_NN of_IN Internet_NNP systems_NNS ,_, the_DT ever-increasing_JJ set_NN of_IN services_NNS that_IN they_PRP provide_VBP ,_, and_CC the_DT highly_RB diversified_JJ user_NN population_NN makes_VBZ such_JJ systems_NNS susceptible_JJ to_TO transient_JJ
+ts_IN different_JJ challenges_NNS from_IN Web_NN crawling_NN ,_, and_CC developed_VBD efficient_JJ monitoring_NN algorithms_NNS -LRB-_-LRB- 7_CD ,_, 11_CD -RRB-_-RRB- ._.
+I_PRP also_RB participated_VBD in_IN a_DT team_NN that_WDT developed_VBD a_DT monitoring_NN system_NN that_WDT was_VBD demonstrated_VBN at_IN SIGMOD_NNP 2004_CD =_SYM -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Access_NN Control_NN in_IN Databases_NNS :_: I_PRP worked_VBD on_IN the_DT design_NN and_CC implementation_NN of_IN an_DT access_NN control_NN model_NN ,_, called_VBN Event_NNP Based_VBN Access_NN Control_NN -LRB-_-LRB- EBAC_NN -RRB-_-RRB- model_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+The_DT EBAC_NN model_NN is_VBZ designed_VBN to_TO ease_VB the_DT administ_NN
+p-to-date_NN result_VBP in_IN a_DT real-time_JJ fashion_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Pandey_NNP proposed_VBD a_DT Continuous_JJ Adaptive_JJ Monitoring_NN -LRB-_-LRB- CAM_NN -RRB-_-RRB- method_NN consisting_VBG of_IN a_DT few_JJ phases_NNS in_IN which_WDT Web_NN pages_NNS are_VBP monitored_VBN based_VBN on_IN the_DT resources_NNS allocated_VBD =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT main_JJ purpose_NN of_IN this_DT approach_NN is_VBZ to_TO optimize_VB a_DT schedule_NN for_IN monitoring_VBG each_DT Web_NN page_NN ._.
+Both_DT work_NN did_VBD not_RB provide_VB any_DT mechanism_NN for_IN monitoring_VBG specific_JJ Web_NN content_NN regions_NNS for_IN metadata_NN maintenance_NN
+of_IN methods_NNS are_VBP therefore_RB needed_VBN ._.
+We_PRP have_VBP in_IN this_DT thesis_NN focused_VBD our_PRP$ work_NN on_IN solving_VBG the_DT incremental_JJ crawling_VBG task_NN when_WRB monitoring_VBG highly_RB dynamic_JJ data_NN sources_NNS of_IN different_JJ importance_NN ._.
+To_TO our_PRP$ knowledge_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 9_CD -RRB-_-RRB- are_VBP the_DT only_RB other_JJ related_JJ work_NN done_VBN on_IN this_DT area_NN ._.
+-LRB-_-LRB- 8_CD -RRB-_-RRB- showed_VBD that_IN traditional_JJ crawling_VBG schemes_NNS are_VBP not_RB optimal_JJ when_WRB we_PRP monitor_VBP fast_RB changing_VBG data_NNS sources_NNS ._.
+They_PRP also_RB proposed_VBD new_JJ metrics_NNS that_IN
+f_LS ICT_NNP Agder_NNP University_NNP College_NNP Grimstad_NNP ,_, Norway_NNP ole.granmo@hia.no_NNP Abstract_NNP --_: Recent_JJ approaches_NNS to_TO resource_NN allocation_NN in_IN web_NN monitoring_NN target_NN optimal_JJ performance_NN under_IN restricted_JJ capacity_NN constraints_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+The_DT resource_NN allocation_NN problem_NN is_VBZ generally_RB modelled_VBN as_IN a_DT knapsack_NN problem_NN with_IN known_JJ deterministic_JJ properties_NNS ._.
+However_RB ,_, for_IN practical_JJ purposes_NNS the_DT web_NN must_MD often_RB be_VB treated_VBN as_IN stochastic_JJ and_CC
+2_CD ,_, 21_CD -RRB-_-RRB- ._.
+Better_NNP understanding_NN of_IN the_DT behavior_NN and_CC workload_NN in_IN e-commerce_NN systems_NNS has_VBZ resulted_VBN in_IN new_JJ and_CC more_RBR effective_JJ resource_NN management_NN policies_NNS that_WDT are_VBP tailored_VBN for_IN such_JJ applications_NNS and_CC systems_NNS =_JJ -_: =[_NN 4_CD ,_, 11_CD ,_, 12_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Because_IN it_PRP is_VBZ difficult_JJ to_TO obtain_VB data_NNS from_IN real_JJ ecommerce_NN sites_NNS ,_, one_PRP can_MD only_RB resort_VB to_TO synthetic_JJ workload_NN generators_NNS to_TO study_VB such_JJ systems_NNS ,_, with_IN the_DT most_RBS prominent_JJ ones_NNS being_VBG the_DT benchmarks_NNS of_IN the_DT
+ptation_NN is_VBZ not_RB done_VBN after_IN every_DT epoch_NN ,_, but_CC once_RB after_IN several_JJ epochs_NNS suffices_VBZ ._.
+6_CD ._.
+CONCLUSIONS_NNS AND_CC RELATED_NNS WORK_VBP There_EX are_VBP several_JJ systems_NNS developed_VBN for_IN monitoring_VBG sources_NNS on_IN the_DT web_NN ._.
+CONQUER_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, WebCQ_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC C3_NN are_VBP the_DT most_RBS related_JJ project_NN to_TO our_PRP$ work_NN ._.
+The_DT most_RBS evident_JJ differences_NNS between_IN CAM_NNP and_CC any_DT of_IN these_DT related_JJ works_NNS is_VBZ the_DT approach_NN of_IN monitoring_NN ._.
+The_DT way_NN source_NN site_NN are_VBP monitored_VBN in_IN CAM_NNP is_VBZ mor_NN
+for_IN developing_VBG better_JJR crawling_NN techniques_NNS ._.
+They_PRP showed_VBD that_IN page_NN change_NN behavior_NN varies_VBZ significantly_RB from_IN page_NN to_TO page_NN and_CC so_RB crawling_VBG them_PRP equal_JJ number_NN of_IN times_NNS is_VBZ a_DT fallacious_JJ technique_NN ._.
+-LRB-_-LRB- 3_LS -RRB-_-RRB- and_CC =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: address_VB a_DT number_NN of_IN issues_NNS relating_VBG to_TO the_DT design_NN of_IN effective_JJ crawlers_NNS ._.
+In_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, authors_NNS approached_VBD the_DT problem_NN formally_RB and_CC devised_VBD an_DT optimal_JJ crawling_NN technique_NN ._.
+-LRB-_-LRB- Some_DT aspects_NNS of_IN our_PRP$ formal_JJ are_VBP
+es_NNS are_VBP assigned_VBN the_DT same_JJ importance_NN measure_NN -LRB-_-LRB- ωi_NN -RRB-_-RRB- ._.
+This_DT means_VBZ that_IN there_EX is_VBZ no_DT distinction_NN made_VBN among_IN queries_NNS and_CC they_PRP are_VBP defined_VBN to_TO have_VB equal_JJ importance_NN ._.
+7_CD ._.
+Page_NNP weight_NN distribution_NN :_: Recent_JJ studies_NNS =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: show_VBP that_IN popularity_NN of_IN pages_NNS vary_VBP in_IN a_DT Zipfian_JJ fashion_NN as_IN shown_VBN in_IN Fig_NN 3_CD ._.
+Drawing_VBG an_DT analogy_NN ,_, we_PRP choose_VBP ri_NN ,_, j_NN ,_, the_DT relevance_NN of_IN page_NN j_NN for_IN a_DT query_FW i_FW ,_, from_IN another_DT Zipf_NNP distribution_NN ._.
+There_EX is_VBZ some_DT Nu_NN
+ants_NNS ._.
+The_DT scheduling_NN step_NN involves_VBZ taking_VBG the_DT ideal_JJ timings_NNS for_IN the_DT monitoring_NN of_IN each_DT page_NN and_CC obtaining_VBG an_DT optimal_JJ achievable_JJ schedule_NN out_IN of_IN it_PRP ._.
+We_PRP map_VBP this_DT problem_NN to_TO flow-shop_JJ scheduling_NN problem_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: with_IN the_DT goal_NN of_IN minimizing_VBG the_DT average_JJ completion_NN time_NN ._.
+Next_RB we_PRP monitor_VBP these_DT pages_NNS according_VBG to_TO the_DT designed_VBN schedule_NN and_CC ,_, at_IN the_DT end_NN of_IN the_DT current_JJ monitoring_NN epoch_NN ,_, update_VBP the_DT statistics_NNS of_IN these_DT
+al_FW query_FW thread_NN -LRB-_-LRB- CQT_NN -RRB-_-RRB- with_IN continual_JJ query_NN manager_NN ,_, aggregrator_NN ,_, and_CC the_DT query_JJ evaluator_NN ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- Resource_NNP Manager_NNP ,_, and_CC -LRB-_-LRB- 3_LS -RRB-_-RRB- the_DT Index_NNP Rebuilder_NNP ._.
+Their_PRP$ functionalities_NNS are_VBP as_IN 1_CD For_IN example_NN ,_, the_DT authors_NNS of_IN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: report_NN that_IN with_IN two_CD 533_CD MHz_NN Alpha_NN processors_NNS ,_, 2_CD GB_NN of_IN RAM_NNP ,_, 118_CD GB_NN of_IN local_JJ disk_NN ,_, a_DT 100_CD Mbit\/sec_NNP FDDI_NNP connection_NN to_TO the_DT Internet_NN ,_, and_CC Mercator_NNP under_IN srcjava_NN ,_, their_PRP$ crawler_NN crawled_VBD at_IN an_DT average_JJ downl_NN
+ively_RB -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Formally_RB ,_, it_PRP can_MD be_VB stated_VBN as_IN minimizing_VBG ∑_NNP G_NNP i_LS =_JJ 1_CD Fi_NN -LRB-_-LRB- xi_NN -RRB-_-RRB- with_IN resource_NN constraint_NN ∑_NNP G_NNP i_LS =_JJ 1_CD xi_NN =_JJ Z_NN ,_, where_WRB xis_NN are_VBP discrete_JJ and_CC Fis_NN are_VBP convex_NN ._.
+A_DT greedy_JJ algorithm_NN exists_VBZ for_IN the_DT discrete_JJ case_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX is_VBZ a_DT faster_JJR algorithm_NN also_RB for_IN our_PRP$ problem_NN ,_, due_JJ to_TO Galil_NNP and_CC Megiddo_NNP ,_, which_WDT has_VBZ complexity_NN O_NN -LRB-_-LRB- G_NN -LRB-_-LRB- logZ_NN -RRB-_-RRB- 2_CD -RRB-_-RRB- ._.
+The_DT fastest_JJS algorithm_NN is_VBZ due_JJ to_TO Frederickson_NNP and_CC Johnson_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- of_IN complexity_NN O_NN -LRB-_-LRB- max_NN -LCB-_-LRB- G_NN ,_, Glo_NN
+ame_RB as_IN minimizing_VBG delay_NN time_NN ._.
+Note_VB that_IN Cmi_NNP is_VBZ the_DT same_JJ as_IN si_NN +_CC pi_NN because_IN of_IN non-preemptive_JJ scheduling_NN ._.
+Unfortunately_RB even_RB the_DT simpler_JJR problem_NN R_NNP |_NNP 1_CD |_CD rel_NN j_FW ≥_FW 0_CD |_CD ∑_CD j_NN Cm_NN j_NN has_VBZ been_VBN proved_VBN to_TO be_VB NP-Complete_JJ =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+So_RB we_PRP have_VBP to_TO look_VB for_IN approximation_NN algorithms_NNS ._.
+For_IN completion_NN time_NN problem_NN there_EX is_VBZ an_DT 1.58_CD approximation_NN algorithm_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- which_WDT we_PRP used_VBD in_IN our_PRP$ experiments_NNS as_IN a_DT heuristic_NN for_IN optimizing_VBG average_JJ delay_NN
+SIONS_NNS AND_CC RELATED_NNS WORK_VBP In_IN this_DT paper_NN ,_, we_PRP described_VBD the_DT achitecture_NN of_IN CAM_NNP ,_, a_DT continuous_JJ query_NN answering_VBG system_NN ._.
+There_EX are_VBP several_JJ systems_NNS developed_VBN for_IN monitoring_VBG sources_NNS on_IN the_DT web_NN ._.
+CONQUER_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, WebCQ_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: and_CC C3_NN are_VBP the_DT most_RBS related_JJ project_NN to_TO our_PRP$ work_NN ._.
+The_DT most_RBS evident_JJ differences_NNS between_IN CAM_NNP and_CC any_DT of_IN these_DT related_JJ works_NNS is_VBZ the_DT approach_NN of_IN monitoring_NN ._.
+The_DT way_NN source_NN site_NN are_VBP monitored_VBN in_IN CAM_NNP is_VBZ mor_NN
+much_RB like_IN a_DT crawler_NN does_VBZ ,_, but_CC with_IN the_DT goal_NN of_IN fetching_VBG new_JJ information_NN relevant_JJ to_TO one_CD or_CC more_JJR queries_NNS ,_, while_IN a_DT crawl_NN is_VBZ not_RB done_VBN with_IN any_DT specific_JJ user_NN request_NN in_IN mind_NN ._.
+2_CD ._.
+HOW_FW WEB-CAM_FW WORKS_VBZ Web-CAM_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: follows_VBZ a_DT multiphase_JJ approach_NN as_IN depicted_VBN in_IN Figure_NNP 1_CD ._.
+-LRB-_-LRB- a_DT -RRB-_-RRB- Based_VBN on_IN a_DT query_NN ,_, specified_VBN by_IN a_DT user_NN as_IN a_DT set_NN of_IN keywords_NNS ,_, pages_NNS relevant_JJ to_TO this_DT query_NN are_VBP identified_VBN ._.
+-LRB-_-LRB- b_NN -RRB-_-RRB- In_IN the_DT tracking_NN phase_NN ,_, the_DT iden_NN
+for_IN a_DT query_FW i_FW ,_, from_IN another_DT Zipf_NNP distribution_NN ._.
+There_EX is_VBZ some_DT Number_NN of_IN pages_NNS 2500 2000 1500 1000_CD 500_CD 0_CD 0_CD 2_CD 4_CD 6_CD 8_CD 10_CD 12_CD 14_CD 16_CD 18_CD Frequency_NN of_IN Access_NN Figure_NN 3_CD :_: Observed_VBN popularity_NN distribution_NN evidence_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: that_IN the_DT popularity_NN of_IN a_DT page_NN is_VBZ positively_RB related_JJ to_TO its_PRP$ rate_NN of_IN updates_NNS ._.
+Therefore_RB ,_, in_IN our_PRP$ experiments_NNS ,_, we_PRP make_VBP the_DT more_RBR dynamic_JJ pages_NNS have_VBP higher_JJR relevance_NN ._.
+The_DT summation_NN of_IN relevance_NN measures_NNS of_IN
+uniform_NN update_VBP probability_NN distribution_NN will_MD require_VB more_JJR monitoring_NN than_IN the_DT skewed_JJ case_NN ._.
+Luckily_RB ,_, the_DT Web_NN is_VBZ not_RB updated_VBN with_IN a_DT flat_JJ distribution_NN ._.
+A_DT recent_JJ measurement_NN study_NN by_IN Fetterly_NNP and_CC others_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: showed_VBD that_IN most_JJS web_NN pages_NNS do_VBP not_RB change_VB much_JJ ,_, and_CC that_IN a_DT page_NN 's_POS previous_JJ change_NN rate_NN is_VBZ a_DT good_JJ predictor_NN of_IN its_PRP$ future_JJ change_NN rate_NN ._.
+This_DT means_VBZ that_IN the_DT most_RBS favorable_JJ scenario_NN for_IN CAM_NNP is_VBZ ,_, in_IN fact_NN ,_, r_NN
+tion_NN is_VBZ set_VBN to_TO 2_CD and_CC that_DT of_IN the_DT update_VBP probability_NN distribution_NN is_VBZ set_VBN to_TO 1_CD ._.
+Sizes_NNS of_IN the_DT documents_NNS are_VBP generated_VBN as_IN shown_VBN in_IN Figure_NNP 15_CD -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+Also_RB ,_, the_DT more_RBR popular_JJ pages_NNS '_POS sizes_NNS are_VBP set_VBN to_TO be_VB smaller_JJR =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP define_VBP the_DT average_JJ monitoring_NN capacity_NN as_IN the_DT available_JJ bandwidth_NN divided_VBN by_IN average_JJ size_NN of_IN documents_NNS ._.
+sPercentage_NN 20.0_CD 15.0_CD 10.0_CD 5.0_CD 0.0_CD 0_CD 8_CD 16_CD 24_CD 32_CD 40_CD 48_CD 56_CD 64_CD Size_NN -LRB-_-LRB- in_IN KB_NN -RRB-_-RRB- Figure_NNP 15_CD :_: Size_NN of_IN w_NN
+e_LS change_NN behavior_NN of_IN web_NN pages_NNS ._.
+But_CC ,_, the_DT algorithms_NNS used_VBN for_IN crawling_VBG and_CC the_DT typical_JJ frequency_NN of_IN crawling_VBG are_VBP insufficient_JJ to_TO handle_VB a_DT class_NN of_IN queries_NNS known_VBN as_IN Continuous_JJ Queries_NNS -LRB-_-LRB- for_IN example_NN ,_, see_VBP =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =--RRB-_NN in_IN which_WDT the_DT user_NN expects_VBZ to_TO be_VB continuously_RB updated_VBN as_IN and_CC when_WRB new_JJ information_NN of_IN relevance_NN to_TO his\/her_FW query_FW becomes_VBZ Copyright_NNP is_VBZ held_VBN by_IN the_DT author\/owner_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- ._.
+WWW2003_NN ,_, May_NNP 20_CD --_: 24_CD ,_, 2003_CD ,_, Budapest_NNP ,_, H_NNP
+achievable_JJ schedule_NN for_IN monitoring_NN ._.
+Also_RB there_EX have_VBP been_VBN several_JJ studies_NNS of_IN web_NN crawling_VBG in_IN an_DT attempt_NN of_IN capturing_VBG web_NN dynamics_NNS ._.
+The_DT earliest_JJS study_NN to_TO our_PRP$ knowledge_NN is_VBZ by_IN Brewington_NNP and_CC Cybenko_NNP ._.
+In_IN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, they_PRP not_RB only_RB studied_VBD the_DT dynamics_NNS of_IN web_NN but_CC also_RB raise_VB some_DT very_RB interesting_JJ issues_NNS for_IN developing_VBG better_JJR crawling_NN techniques_NNS ._.
+They_PRP showed_VBD that_IN page_NN change_NN behavior_NN varies_VBZ significantly_RB from_IN page_NN
+g_NN issues_NNS for_IN developing_VBG better_JJR crawling_NN techniques_NNS ._.
+They_PRP showed_VBD that_IN page_NN change_NN behavior_NN varies_VBZ significantly_RB from_IN page_NN to_TO page_NN and_CC so_RB crawling_VBG them_PRP equal_JJ number_NN of_IN times_NNS is_VBZ a_DT fallacious_JJ technique_NN ._.
+=_SYM -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 2_LS -RRB-_-RRB- address_NN a_DT number_NN of_IN issues_NNS relating_VBG to_TO the_DT design_NN of_IN effective_JJ crawlers_NNS ._.
+In_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, authors_NNS approached_VBD the_DT problem_NN formally_RB and_CC devised_VBD an_DT optimal_JJ crawling_NN technique_NN ._.
+-LRB-_-LRB- Some_DT aspects_NNS of_IN our_PRP$ fo_NN
+cause_VB optimizing_VBG function_NN could_MD be_VB expressed_VBN in_IN terms_NNS of_IN yi_NN ,_, j_NN only_RB ._.
+Convex_NNP owing_VBG to_TO the_DT convex_JJ nature_NN of_IN the_DT objective_JJ function_NN ._.
+Discrete_JJ ,_, separable_JJ and_CC convex_JJ problems_NNS have_VBP been_VBN studied_VBN intensively_RB =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Formally_RB ,_, it_PRP can_MD be_VB stated_VBN as_IN minimizing_VBG ∑_NNP G_NNP i_LS =_JJ 1_CD Fi_NN -LRB-_-LRB- xi_NN -RRB-_-RRB- with_IN resource_NN constraint_NN ∑_NNP G_NNP i_LS =_JJ 1_CD xi_NN =_JJ Z_NN ,_, where_WRB xis_NN are_VBP discrete_JJ and_CC Fis_NN are_VBP convex_NN ._.
+A_DT greedy_JJ algorithm_NN exists_VBZ for_IN the_DT discrete_JJ case_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+There_EX
+5_CD ._.
+CONCLUSIONS_NNS AND_CC RELATED_NNS WORK_VBP In_IN this_DT paper_NN ,_, we_PRP described_VBD the_DT achitecture_NN of_IN CAM_NNP ,_, a_DT continuous_JJ query_NN answering_VBG system_NN ._.
+There_EX are_VBP several_JJ systems_NNS developed_VBN for_IN monitoring_VBG sources_NNS on_IN the_DT web_NN ._.
+CONQUER_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, WebCQ_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC C3_NN are_VBP the_DT most_RBS related_JJ project_NN to_TO our_PRP$ work_NN ._.
+The_DT most_RBS evident_JJ differences_NNS between_IN CAM_NNP and_CC any_DT of_IN these_DT related_JJ works_NNS is_VBZ the_DT approach_NN of_IN monitoring_NN ._.
+The_DT way_NN source_NN site_NN are_VBP monitored_VBN in_IN
+varies_VBZ significantly_RB from_IN page_NN to_TO page_NN and_CC so_RB crawling_VBG them_PRP equal_JJ number_NN of_IN times_NNS is_VBZ a_DT fallacious_JJ technique_NN ._.
+-LRB-_-LRB- 3_LS -RRB-_-RRB- and_CC -LRB-_-LRB- 2_LS -RRB-_-RRB- address_NN a_DT number_NN of_IN issues_NNS relating_VBG to_TO the_DT design_NN of_IN effective_JJ crawlers_NNS ._.
+In_IN -LRB-_-LRB- 4_LS -RRB-_-RRB- =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, authors_NNS approached_VBD the_DT problem_NN formally_RB and_CC devised_VBD an_DT optimal_JJ crawling_NN technique_NN ._.
+-LRB-_-LRB- Some_DT aspects_NNS of_IN our_PRP$ formal_JJ are_VBP adopted_VBN from_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC modified_VBN to_TO suit_VB our_PRP$ problem_NN definition_NN ._. -RRB-_-RRB-
+A_DT common_JJ assumption_NN
+ur_NN varies_VBZ significantly_RB from_IN page_NN to_TO page_NN and_CC so_RB crawling_VBG them_PRP equal_JJ number_NN of_IN times_NNS is_VBZ a_DT fallacious_JJ technique_NN ._.
+-LRB-_-LRB- 3_LS -RRB-_-RRB- and_CC -LRB-_-LRB- 2_LS -RRB-_-RRB- address_NN a_DT number_NN of_IN issues_NNS relating_VBG to_TO the_DT design_NN of_IN effective_JJ crawlers_NNS ._.
+In_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =-[_NN 10_CD -RRB-_-RRB- ,_, authors_NNS approached_VBD the_DT problem_NN formally_RB and_CC devised_VBD an_DT optimal_JJ crawling_NN technique_NN ._.
+-LRB-_-LRB- Some_DT aspects_NNS of_IN our_PRP$ formal_JJ are_VBP adopted_VBN from_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC modified_VBN to_TO suit_VB our_PRP$ problem_NN definition_NN ._. -RRB-_-RRB-
+A_DT common_JJ assump_NN
+sts_NNS for_IN the_DT discrete_JJ case_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+There_EX is_VBZ a_DT faster_JJR algorithm_NN also_RB for_IN our_PRP$ problem_NN ,_, due_JJ to_TO Galil_NNP and_CC Megiddo_NNP ,_, which_WDT has_VBZ complexity_NN O_NN -LRB-_-LRB- G_NN -LRB-_-LRB- logZ_NN -RRB-_-RRB- 2_CD -RRB-_-RRB- ._.
+The_DT fastest_JJS algorithm_NN is_VBZ due_JJ to_TO Frederickson_NNP and_CC Johnson_NNP =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: of_IN complexity_NN O_NN -LRB-_-LRB- max_NN -LCB-_-LRB- G_NN ,_, Glog_NN -LRB-_-LRB- Z\/G_NN -RRB-_-RRB- -RCB-_-RRB- -RRB-_-RRB- ._.
+In_IN our_PRP$ case_NN ,_, the_DT output_NN of_IN these_DT algorithms_NNS is_VBZ a_DT set_NN of_IN yi_NN ,_, j_NN 's_POS ._.
+This_DT set_NN in_IN turn_NN gives_VBZ us_PRP the_DT number_NN of_IN monitoring_NN tasks_NNS allocated_VBN to_TO a_DT page_NN -LRB-_-LRB- xi_NN =_JJ ∑_CD pi_NN j_NN =_JJ 0_CD yi_NN ,_, j_NN -RRB-_-RRB-
+any_DT web_NN scenario_NN ._.
+sIt_NN is_VBZ important_JJ to_TO mention_VB the_DT push-based_JJ alternative_NN to_TO answering_VBG continuous_JJ queries_NNS :_: information_NN is_VBZ pushed_VBN from_IN web_NN sources_NNS instead_RB of_IN users_NNS pulling_VBG it_PRP as_IN is_VBZ assumed_VBN in_IN our_PRP$ scheme_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Here_RB users_NNS register_VBP their_PRP$ queries_NNS with_IN the_DT sources_NNS and_CC when_WRB the_DT sources_NNS update_VBP the_DT relevant_JJ pages_NNS they_PRP themselves_PRP propagate_VBP their_PRP$ changes_NNS to_TO the_DT users_NNS ._.
+This_DT ,_, of_IN course_NN ,_, is_VBZ applicable_JJ only_RB to_TO push-ba_NN

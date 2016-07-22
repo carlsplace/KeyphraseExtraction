@@ -1,0 +1,125 @@
+Compressed_VBN data_NNS cubes_NNS for_IN OLAP_NN aggregate_NN query_NN approximation_NN on_IN continuous_JJ dimensions_NNS
+ferior_NN in_IN terms_NNS of_IN time-accuracy_NN and_CC memory-accuracy_NN tradeoffs_NNS when_WRB compared_VBN to_TO more_RBR sophisticated_JJ probabilistic_JJ models_NNS -LRB-_-LRB- 13_CD ,_, 15_CD ,_, 16_CD -RRB-_-RRB- ._.
+A_DT variety_NN of_IN flexible_JJ probabilistic_JJ models_NNS such_JJ as_IN mixture_NN models_NNS =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Bayesian_JJ networks_NNS -LRB-_-LRB- 7_CD ,_, 10_CD -RRB-_-RRB- ,_, and_CC related_JJ dependency_NN models_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- have_VBP also_RB been_VBN proposed_VBN with_IN the_DT goal_NN of_IN finding_VBG accurate_JJ ,_, fast_RB ,_, and_CC flexible_JJ models_NNS ._.
+However_RB ,_, all_DT of_IN this_DT prior_JJ work_NN is_VBZ either_RB not_RB scala_VB
+lied_VBD to_TO various_JJ real-life_JJ applications_NNS ,_, such_JJ as_IN image_NN segmentation_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, microarray_NN gene_NN expression_NN data_NNS clustering_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, Web_NN navigation_NN pattern_NN recognition_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, and_CC OLAP_NN aggregate_NN query_NN optimization_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT paper_NN concentrates_VBZ on_IN scalable_JJ cluster_NN analysis_NN based_VBN on_IN a_DT Gaussian_JJ mixture_NN model_NN with_IN independent_JJ attributes_NNS within_IN each_DT cluster_NN ._.
+Expectation-Maximization_NN -LRB-_-LRB- EM_NN -RRB-_-RRB- is_VBZ an_DT iterative_JJ algorithm_NN for_IN fi_FW
+6_CD -RRB-_-RRB- ,_, and_CC can_MD handle_VB clusters_NNS of_IN various_JJ shapes_NNS and_CC complicated_JJ databases_NNS -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+They_PRP ,_, especially_RB the_DT Gaussian_JJ mixture_NN model_NN ,_, have_VBP been_VBN successfully_RB applied_VBN to_TO various_JJ real_JJ applications_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- --_: =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Due_JJ to_TO its_PRP$ theoretical_JJ and_CC practical_JJ significance_NN ,_, we_PRP focus_VBP on_IN scalable_JJ clustering_NN based_VBN on_IN the_DT Gaussian_JJ mixture_NN model_NN hereafter_RB ._.
+Expectation-Maximization_NN -LRB-_-LRB- EM_NN -RRB-_-RRB- effectively_RB estimates_VBZ maximum_NN likeliho_NN
+ke_NN to_TO thank_VB the_DT referees_NNS for_IN their_PRP$ constructive_JJ suggestions_NNS ._.
+Kwong-Sak_NNP Leung_NNP ∗_NNP ∗_NNP Department_NNP of_IN Computer_NNP Sci_NNP ._.
+&_CC Eng_NNP ._.
+The_DT Chinese_NNP University_NNP of_IN Hong_NNP Kong_NNP Shatin_NNP ,_, N.T._NNP ,_, Hong_NNP Kong_NNP ksleung@cse.cuhk.edu.hk_NN =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 6_CD ,_, 9_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Thus_RB ,_, the_DT research_NN on_IN scalable_JJ model-based_JJ cluster_NN analysis_NN is_VBZ significant_JJ ._.
+The_DT Expectation-Maximization_NN -LRB-_-LRB- EM_NN -RRB-_-RRB- algorithm_NN is_VBZ an_DT iterative_JJ procedure_NN for_IN finding_VBG maximum_JJ likelihood_NN estimates_NNS of_IN paramete_NN
+puting_VBG exact_JJ answers_NNS ,_, approximate_JJ OLAP_NN results_NNS are_VBP often_RB acceptable_JJ for_IN exploration_NN purposes_NNS ._.
+Among_IN the_DT approximate_JJ techniques_NNS ,_, -LRB-_-LRB- 80_CD ,_, 79_CD -RRB-_-RRB- propose_VBP to_TO reduce_VB the_DT storage_NN overhead_NN using_VBG wavelets_NNS ,_, whereas_IN =_JJ -_: =[_NN 74_CD -RRB-_-RRB- -_: =_SYM -_: employs_VBZ the_DT Gaussian_JJ mixture_NN model_NN to_TO approximate_JJ continuous_JJ dimensions_NNS ._.
+A_DT variant_NN of_IN the_DT OLAP_NNP cube_NN computation_NN problem_NN is_VBZ called_VBN the_DT iceberg_NN queries_NNS -LRB-_-LRB- 30_CD -RRB-_-RRB- ._.
+By_IN introducing_VBG an_DT iceberg_NN threshold_NN ,_, sparse_JJ
+-_: based_VBN data_NNS ._.
+To_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, no_DT work_NN has_VBZ been_VBN done_VBN on_IN modeling_NN multidimensional_JJ structures_NNS for_IN continuous_JJ data_NNS ._.
+The_DT only_JJ work_NN that_WDT discusses_VBZ the_DT use_NN of_IN continuous_JJ dimensions_NNS is_VBZ found_VBN in_IN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_JJ -_: who_WP focuses_VBZ on_IN using_VBG the_DT known_JJ density_NN of_IN data_NNS to_TO calculate_VB aggregate_JJ queries_NNS without_IN accessing_VBG the_DT data_NNS ._.
+The_DT representation_NN reduces_VBZ the_DT storage_NN requirements_NNS ,_, but_CC does_VBZ not_RB present_VB the_DT continuity_NN in_IN t_NN
+ognized_VBN that_IN the_DT space_NN requirements_NNS of_IN data_NNS cubes_NNS in_IN practice_NN are_VBP often_RB huge_JJ ._.
+Some_DT studies_NNS investigate_VBP partial_JJ materialization_NN of_IN data_NNS cubes_NNS ,_, e.g._FW ,_, -LRB-_-LRB- 11_CD ,_, 3_CD -RRB-_-RRB- ._.
+Example_NN methods_NNS to_TO compress_VB data_NNS cubes_NNS are_VBP =_JJ -_: =[_NN 19_CD ,_, 20_CD ,_, 12_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Moreover_RB ,_, -LRB-_-LRB- 1_CD ,_, 2_CD ,_, 21_CD -RRB-_-RRB- investigate_VBP various_JJ approximation_NN methods_NNS for_IN data_NNS cubes_NNS ._.
+There_EX are_VBP several_JJ major_JJ methods_NNS on_IN computing_NN -LRB-_-LRB- iceberg_NN -RRB-_-RRB- cubes_NNS ._.
+MultiWay_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- is_VBZ an_DT array-based_JJ top-down_JJ approach_NN to_TO comp_VB
+of_IN the_DT form_NN premises_NNS →_VBP conclusion_NN of_IN the_DT dependency_NN rules_NNS and_CC the_DT form_NN dimensions_NNS →_VBP measure_NN of_IN the_DT cubes_NNS ._.
+Several_JJ papers_NNS use_VBP lattices_NNS along_IN OLAP_NNP ,_, often_RB for_IN supporting_VBG the_DT precomputation_NN of_IN OLAP_FW cubes_FW =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Casali_NNP et_FW al._FW -LRB-_-LRB- 4_CD -RRB-_-RRB- show_VBP a_DT method_NN to_TO organize_VB cubes_NNS in_IN a_DT closed_JJ cube_NN lattice_NN ,_, to_TO improve_VB the_DT computation_NN of_IN aggregations_NNS ._.
+Medina_NNP and_CC Nourine_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB- create_VBP a_DT concept_NN lattice_NN ,_, where_WRB each_DT concept_NN is_VBZ a_DT set_NN
+studies_NNS on_IN partial_JJ materialization_NN of_IN data_NNS cubes_NNS -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, iceberg_NN cube_NN computation_NN -LRB-_-LRB- 7_CD ,_, 11_CD ,_, 22_CD -RRB-_-RRB- ,_, computation_NN of_IN condensed_JJ ,_, dwarf_NN ,_, or_CC quotient_JJ cubes_NNS -LRB-_-LRB- 19_CD ,_, 18_CD ,_, 13_CD ,_, 14_CD -RRB-_-RRB- ,_, and_CC computation_NN of_IN approximate_JJ cubes_NNS =_JJ -_: =[_NN 16_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Besides_IN large_JJ data_NNS warehouse_NN applications_NNS ,_, there_EX are_VBP other_JJ kinds_NNS of_IN applications_NNS like_IN bioinformatics_NNS ,_, surveybased_JJ statistical_JJ analysis_NN ,_, and_CC text_NN processing_NN that_WDT need_VBP the_DT OLAP-styled_JJ data_NN analysis_NN ._.
+H_NN
+n_NN approximating_VBG Data_NNP Cubes_NNP through_IN various_JJ forms_NNS of_IN compression_NN such_JJ as_IN wavelets_NNS -LRB-_-LRB- VWI98_NN -RRB-_-RRB- ,_, multivariate_JJ polynomials_NNS -LRB-_-LRB- BS98_NN -RRB-_-RRB- ,_, or_CC by_IN using_VBG sampling_NN -LRB-_-LRB- GM98_NN ,_, AGP00_NN -RRB-_-RRB- or_CC data_NN probability_NN density_NN distributions_NNS =_JJ -_: =_JJ -LRB-_-LRB- SFB99_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN these_DT methods_NNS can_MD substantially_RB reduce_VB the_DT size_NN of_IN the_DT Cube_NN ,_, they_PRP do_VBP not_RB actually_RB store_VB the_DT values_NNS of_IN the_DT group-bys_NNS ,_, but_CC rather_RB approximate_JJ them_PRP ,_, thus_RB not_RB always_RB providing_VBG accurate_JJ results_NNS ._.
+In_IN
+ues_NNS ._.
+It_PRP is_VBZ different_JJ from_IN those_DT approaches_NNS that_WDT reduce_VBP the_DT cube_NN size_NN through_IN approximation_NN with_IN various_JJ forms_NNS ,_, such_JJ as_IN wavelet_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, multivariate_JJ polynomials_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, mixed_JJ modelby_JJ multivariate_JJ Gaussians_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, histogram_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, sampling_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- and_CC others_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+•_NN A_NN condensed_JJ cube_NN supports_VBZ general_JJ OLAP_NN applications_NNS ._.
+It_PRP is_VBZ different_JJ from_IN those_DT proposals_NNS to_TO reduce_VB the_DT size_NN of_IN a_DT cube_NN by_IN tailoring_VBG it_PRP to_TO only_RB answerin_VB
+or_CC complex_JJ measures_NNS -LRB-_-LRB- 1_CD ,_, 25_CD ,_, 18_CD ,_, 6_CD ,_, 11_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- selective_JJ materialization_NN of_IN views_NNS -LRB-_-LRB- 13_CD ,_, 3_CD ,_, 9_CD ,_, 10_CD ,_, 21_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 3_LS -RRB-_-RRB- computation_NN of_IN compressed_VBN data_NNS cubes_NNS by_IN approximation_NN ,_, such_JJ as_IN quasi-cubes_NNS ,_, wavelet_NN cubes_NNS ,_, etc._NN =_JJ -_: =[_NN 4_CD ,_, 23_CD ,_, 20_CD ,_, 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 4_CD -_: =--RRB-_NN computation_NN of_IN condensed_JJ ,_, dwarf_NN ,_, or_CC quotient_JJ cubes_NNS -LRB-_-LRB- 15_CD ,_, 24_CD ,_, 22_CD ,_, 16_CD -RRB-_-RRB- ,_, and_CC -LRB-_-LRB- 5_LS -RRB-_-RRB- computation_NN of_IN stream_NN ``_`` cubes_NNS ''_'' for_IN multi-dimensional_JJ regression_NN analysis_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Among_IN these_DT categories_NNS ,_, we_PRP believe_VBP that_IN
+ata_NN encoding_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- as_IN a_DT means_NN to_TO find_VB and_CC analyze_VB the_DT data_NNS but_CC only_RB applied_VBN to_TO individual_JJ data-sets_NNS ._.
+Other_JJ work_NN has_VBZ focused_VBN on_IN query_NN processing_NN inside_IN wavelet_NN space_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- or_CC through_IN some_DT density_NN function_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, and_CC to_TO our_PRP$ knowledge_NN ,_, there_EX has_VBZ been_VBN no_DT work_NN done_VBN in_IN the_DT area_NN of_IN interactive_JJ database_NN visualization_NN equivalent_JJ to_TO the_DT one_NN reported_VBN in_IN this_DT paper_NN ._.
+Histograms_NNS capture_VBP distribution_NN statistics_NNS
+ommendations_NNS expressed_VBN in_IN this_DT material_NN are_VBP those_DT of_IN the_DT author_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- and_CC do_VBP not_RB necessarily_RB reflect_VB the_DT views_NNS of_IN the_DT funding_NN agencies_NNS ._.
+of_IN compressed_VBN data_NNS cubes_NNS ,_, such_JJ as_IN quasi-cubes_NNS ,_, wavelet_NN cubes_NNS ,_, etc._NN =_JJ -_: =[_NN 4_CD ,_, 19_CD ,_, 16_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- closed_VBD cube_NN computation_NN with_IN index_NN structure_NN ,_, such_JJ as_IN condensed_JJ ,_, dwarf_NN ,_, or_CC quotient_JJ cubes_NNS -LRB-_-LRB- 13_CD ,_, 20_CD ,_, 18_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 4_LS -RRB-_-RRB- selective_JJ materialization_NN of_IN views_NNS -LRB-_-LRB- 11_CD ,_, 3_CD ,_, 17_CD -RRB-_-RRB- ,_, and_CC -LRB-_-LRB- 5_LS -RRB-_-RRB- cubes_VBZ computation_NN in_IN stream_NN da_NN
+stic_JJ models_NNS of_IN various_JJ forms_NNS have_VBP also_RB been_VBN investigated_VBN in_IN limited_JJ contexts_NNS ._.
+Mixtures_NNS of_IN Gaussian_JJ independence_NN models_NNS were_VBD investigated_VBN for_IN generating_VBG approximate_JJ queries_NNS on_IN real-valued_JJ data_NNS sets_NNS in_IN =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Bayesian_JJ networks_NNS for_IN the_DT task_NN of_IN selectivity_NN estimation_NN over_IN multiple_JJ tables_NNS in_IN a_DT relational_JJ database_NN were_VBD considered_VBN in_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+The_DT use_NN of_IN statistical_JJ interaction_NN models_NNS in_IN dependency_NN based_JJ histogra_NN
+nparametric_JJ wavelet_NN based_VBN data_NNS compression_NN has_VBZ been_VBN explored_VBN in_IN -LRB-_-LRB- 16_CD ,_, 15_CD -RRB-_-RRB- ,_, where_WRB it_PRP is_VBZ also_RB noted_VBN that_IN constant_JJ range_NN functions_NNS have_VBP a_DT sparse_JJ wavelet_NN representation_NN ._.
+Parametric_NNP modeling_NN is_VBZ proposed_VBN in_IN =_JJ -_: =[_NN 14_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+All_DT of_IN these_DT techniques_NNS follow_VBP the_DT pattern_NN of_IN reducing_VBG the_DT size_NN of_IN the_DT data_NNS ,_, then_RB evaluating_VBG queries_NNS on_IN the_DT smaller_JJR dataset_NN ._.
+These_DT two_CD threads_NNS are_VBP brought_VBN together_RB by_IN progressive_JJ query_NN evaluation_NN te_NN
+e_LS with_IN n_NN dimension_NN results_VBZ in_IN 2_CD n_NN cuboids_NNS ._.
+Thus_RB ,_, most_JJS work_NN issdedicated_VBN to_TO reduce_VB either_CC the_DT computation_NN time_NN or_CC the_DT final_JJ cube_NN size_NN ,_, such_JJ as_IN efficient_JJ cube_NN computation_NN -LRB-_-LRB- 9_CD ,_, 4_CD ,_, 17_CD ,_, 12_CD -RRB-_-RRB- ,_, cube_NN compression_NN =_JJ -_: =[_NN 13_CD ,_, 10_CD ,_, 15_CD -RRB-_-RRB- ._.
+Th_NN -_: =_JJ -_: ese_NN cost_NN reduction_NN are_VBP all_DT without_IN loss_NN of_IN any_DT information_NN ,_, while_IN some_DT others_NNS like_IN approximation_NN -LRB-_-LRB- 3_CD ,_, 2_CD -RRB-_-RRB- ,_, iceberg_NN cube_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- reduce_VB the_DT costs_NNS by_IN skipping_VBG ``_`` trivial_JJ ''_'' information_NN ._.
+The_DT approaches_NNS without_IN l_NN
+y_NN of_IN the_DT mixture_NN model_NN statistical_JJ summary_NN of_IN a_DT given_VBN database_NN has_VBZ been_VBN demonstrated_VBN in_IN data_NN mining_NN tasks_NNS such_JJ as_IN speeding_VBG up_RP nearest_JJS neighbor_NN queries_NNS -LRB-_-LRB- BFG99_NN -RRB-_-RRB- and_CC approximating_VBG OLAP_NN aggregate_NN queries_VBZ =_JJ -_: =_JJ -LRB-_-LRB- SFB99_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT mixture_NN models_NNS used_VBN in_IN query_NN selectivity_NN estimation_NN in_IN -LRB-_-LRB- SFB99_NN -RRB-_-RRB- were_VBD generated_VBN over_IN continuous-valued_JJ data_NNS only_RB ._.
+The_DT query_NN selectivity_NN task_NN addressed_VBN here_RB is_VBZ focused_VBN on_IN sparse_JJ -LCB-_-LRB- 0,1_CD -RCB-_-RRB- -_: valued_VBN data_NNS ._.
+iciently_RB ,_, possibly_RB trading_VBG off_RP the_DT computational_JJ efficiency_NN with_IN the_DT accuracy_NN of_IN query_NN answers_NNS ._.
+Selectivity_NN estimation_NN for_IN query_NN optimization_NN in_IN RDBMSs_NNS -LRB-_-LRB- 4_CD ,_, 16_CD -RRB-_-RRB- ,_, range_NN query_NN answering_VBG in_IN OLAP_NNP services_NNS =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, statistical_JJ and_CC scientific_JJ data_NN analysis_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, window_NN query_NN answering_VBG in_IN spatial_JJ databases_NNS -LRB-_-LRB- 1_CD ,_, 15_CD -RRB-_-RRB- ,_, are_VBP examples_NNS of_IN application_NN contexts_NNS where_WRB efficiently_RB aggregating_VBG data_NNS within_IN specified_JJ ranges_NNS of_IN
+e_LS Ai_NN to_TO aggregate_NN ,_, and_CC chose_VBD the_DT ranges_NNS of_IN all_DT attributes_NNS ._.
+If_IN the_DT user_NN does_VBZ not_RB want_VB to_TO specify_VB a_DT range_NN for_IN attribute_NN Ai_NN ,_, this_DT range_NN can_MD be_VB replaced_VBN by_IN the_DT maximum_NN and_CC minimum_NN values_NNS of_IN Ai_NNP ._.
+Following_VBG =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP can_MD approximate_JJ such_JJ an_DT aggregate_NN query_NN using_VBG a_DT density_NN estimator_FW f_FW by_IN computing_VBG the_DT integral_JJ :_: sum_NN -LRB-_-LRB- f_SYM ;_: Q_NNP ;_: i_LS -RRB-_-RRB- =_JJ Z_NN Q_NNP xi_FW f_FW -LRB-_-LRB- x1_NN ;_: :_: :_: :_: ;_: xd_NN -RRB-_-RRB- dx1_NN :_: :_: :_: dxd_NN :_: 3_CD Multi-dimensional_JJ Density_NNP Estimators_NNPS In_FW thi_FW
+model_NN with_IN k_NN non-empty_JJ clusters_NNS ._.
+These_DT include_VBP the_DT situation_NN when_WRB the_DT value_NN of_IN k_NN is_VBZ know_VB a_DT priori_FW and_CC applications_NNS in_IN which_WDT the_DT cluster_NN model_NN is_VBZ utilized_VBN as_IN a_DT compressed_VBN version_NN of_IN a_DT specific_JJ dataset_NN =_JJ -_: =[_NN 1_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT remaining_VBG portion_NN of_IN the_DT paper_NN is_VBZ organized_VBN as_IN follows_VBZ ._.
+Section_NN 2_CD formalizes_VBZ the_DT constrained_VBN clustering_NN optimization_NN problem_NN and_CC outlines_VBZ the_DT algorithm_NN computing_VBG a_DT locally_RB optimal_JJ solution_NN ._.
+The_DT
+ilistic_JJ approaches_NNS -LRB-_-LRB- 12_CD ,_, 5_CD -RRB-_-RRB- ,_, multidimensional_JJ histograms_NNS -LRB-_-LRB- 14_CD ,_, 18_CD -RRB-_-RRB- and_CC sampling_NN -LRB-_-LRB- 10_CD ,_, 9_CD -RRB-_-RRB- ._.
+Mixtures_NNS of_IN Gaussian_JJ independence_NN models_NNS were_VBD proposed_VBN for_IN query_NN selectivity_NN estimation_NN on_IN real-valued_JJ data_NNS sets_VBZ =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT experiments_NNS reported_VBN in_IN these_DT and_CC related_JJ papers_NNS only_RB deal_VBP with_IN relatively_RB low_JJ dimensional_JJ data_NN sets_NNS -LRB-_-LRB- order_NN of_IN 10_CD attributes_NNS -RRB-_-RRB- ,_, 165_CD while_IN the_DT methods_NNS we_PRP describe_VBP here_RB can_MD answer_VB queries_NNS directly_RB
+lem_NN of_IN choosing_VBG views_NNS to_TO materialize_VB data_NNS cubes_NNS under_IN space_NN constraints_NNS ._.
+-LRB-_-LRB- 6_CD -RRB-_-RRB- proposes_VBZ computing_NN iceberg_NN cube_NN and_CC use_NN BUC_NN to_TO handle_VB monotonic_JJ constraints_NNS ._.
+Methods_NNS to_TO compress_VB data_NNS cubes_NNS are_VBP studied_VBN in_IN =_JJ -_: =[_NN 23_CD ,_, 24_CD ,_, 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Moreover_RB ,_, -LRB-_-LRB- 4_CD ,_, 5_CD ,_, 26_CD -RRB-_-RRB- investigat_JJ various_JJ approximation_NN methods_NNS for_IN data_NNS cubes_NNS ._.
+Undoubtedly_NNP ,_, a_DT data_NN cube_NN has_VBZ to_TO be_VB updated_VBN timely_JJ to_TO reflect_VB the_DT changes_NNS of_IN the_DT base_NN table_NN ._.
+The_DT possible_JJ updates_NNS include_VBP
+rizations_NNS of_IN the_DT data_NNS at_IN various_JJ granularities_NNS to_TO identify_VB trends_NNS ,_, exceptions_NNS and_CC interesting_JJ regions_NNS ._.
+While_IN many_JJ previous_JJ studies_NNS on_IN efficient_JJ and_CC effective_JJ OLAP_NN over_IN relational_JJ business_NN data_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 8,18,27,26,19,2,4,7,12,9,28,25,23,20_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, few_JJ of_IN them_PRP systematically_RB studies_VBZ how_WRB to_TO extend_VB the_DT OLAP_NNP model_NN to_TO handle_VB complex_JJ data_NNS ,_, such_JJ as_IN bio-medical_JJ data_NNS ,_, time_NN series_NN and_CC semi-structured_JJ data_NNS ._.
+To_TO motivate_VB the_DT study_NN and_CC appreciate_VB the_DT chal_NN
+ognized_VBN that_IN the_DT space_NN requirements_NNS of_IN data_NNS cubes_NNS in_IN practice_NN are_VBP often_RB huge_JJ ._.
+Some_DT studies_NNS investigate_VBP partial_JJ materialization_NN of_IN data_NNS cubes_NNS -LRB-_-LRB- 6_CD ,_, 20_CD ,_, 22_CD -RRB-_-RRB- ._.
+Methods_NNS to_TO compress_VB data_NNS cubes_NNS are_VBP studied_VBN in_IN =_JJ -_: =[_NN 25_CD ,_, 26_CD ,_, 37_CD ,_, 38_CD ,_, 42_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Moreover_RB -LRB-_-LRB- 4_CD ,_, 5_CD ,_, 41_CD -RRB-_-RRB- investigate_VBP various_JJ approximation_NN methods_NNS for_IN data_NNS cubes_NNS ._.
+How_WRB to_TO implement_VB and_CC index_NN data_NNS cubes_NNS efficiently_RB is_VBZ a_DT critical_JJ problem_NN ._.
+In_IN -LRB-_-LRB- 35_CD ,_, 38_CD -RRB-_-RRB- ,_, Cubetree_NN and_CC Dwarf_NN are_VBP proposed_VBN by_IN
+ampling_NN -LRB-_-LRB- -LRB-_-LRB- 16_CD ,_, 13_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Mixtures_NNS of_IN Gaussian_JJ independence_NN models_NNS were_VBD proposed_VBN for_IN selectivity_NN query_NN estimation_NN on_IN real-valued_JJ data_NNS sets_NNS from_IN relatively_RB low-dimensional_JJ data_NN cubes_NNS -LRB-_-LRB- 5_CD or_CC fewer_JJR dimensions_NNS -RRB-_-RRB- =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Generalized_NNP queries_NNS were_VBD considered_VBN by_IN -LRB-_-LRB- 28_CD -RRB-_-RRB- in_IN the_DT context_NN of_IN language_NN modeling_NN using_VBG context_NN free_JJ grammars_NNS ._.
+To_TO our_PRP$ knowledge_NN ,_, our_PRP$ paper_NN is_VBZ the_DT first_JJ to_TO directly_RB address_VB the_DT problem_NN of_IN generalizatio_NN
+clustering_NN techniques_NNS have_VBP strong_JJ theoretical_JJ support_NN from_IN the_DT statistics_NNS community_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+The_DT model-based_JJ clustering_NN techniques_NNS have_VBP been_VBN successfully_RB applied_VBN on_IN ,_, such_JJ as_IN ,_, database_NN query_NN optimization_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: and_CC data_NNS mining_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+The_DT traditional_JJ clustering_NN algorithms_NNS normally_RB require_VBP numerous_JJ scans_NNS of_IN whole_JJ data_NNS sets_NNS to_TO get_VB better_JJR results_NNS ._.
+This_DT becomes_VBZ prohibitive_JJ over_IN modern_JJ large_JJ databases_NNS ,_, for_IN exa_NN
+nd_NN index_NN selection_NN trade_NN reduced_VBD querycost_JJ byadditional_JJ disk_NN space_NN -LRB-_-LRB- 51_CD -RRB-_-RRB- ._.
+For_IN example_NN ,_, compression_NN techniques_NNS have_VBP been_VBN used_VBN to_TO compress_VB keys_NNS in_IN a_DT B-tree_JJ index_NN 15s_NNS -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+View_NNP compression_NN was_VBD studied_VBN in_IN =_JJ -_: =[_NN 59_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, there_EX has_VBZ been_VBN no_DT investigation_NN of_IN the_DT relationship_NN of_IN compression_NN and_CC vertical_JJ partitioning_NN ,_, which_WDT is_VBZ a_DT technique_NN to_TO divide_VB the_DT table_NN into_IN partitions_NNS to_TO improve_VB I\/O_NN performance_NN ._.
+We_PRP investi_VBP
+ute_FW Ai_FW to_TO aggregate_NN and_CC choose_VB the_DT ranges_NNS of_IN all_DT attributes_NNS ._.
+If_IN the_DT user_NN does_VBZ not_RB want_VB to_TO specify_VB a_DT range_NN for_IN attribute_NN Ai_NN ,_, this_DT range_NN can_MD be_VB replaced_VBN by_IN the_DT maximum_NN and_CC minimum_NN values_NNS of_IN Ai_NNP ._.
+Following_VBG =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP can_MD approximate_JJ such_JJ an_DT aggregate_NN query_NN using_VBG a_DT density_NN estimator_FW f_FW by_IN computing_VBG the_DT integral_JJ :_: sum_NN -LRB-_-LRB- f_FW ,_, Q_NNP ,_, i_LS -RRB-_-RRB- =_JJ xi_FW f_FW -LRB-_-LRB- x1_NN ,_, ..._: ,_, xd_NN -RRB-_-RRB- dx1_NN ..._: dxd_NN Q_NNP 3_CD Multidimensional_JJ density_NN estimators_NNS In_IN this_DT section_NN ,_,
+rimental_JJ results_NNS are_VBP presented_VBN in_IN Section_NN 6_CD ._.
+2_CD Related_NNP Work_NNP Existing_VBG algorithms_NNS for_IN aggregate_JJ query_NN approximation_NN include_VBP quadtree_NN structure_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, histogram_NN techniques_NNS -LRB-_-LRB- 2_CD ,_, 3_CD -RRB-_-RRB- ,_, kernel_NN density_NN estimator_NN =_JJ -_: =[_NN 2_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, clustering_NN techniques_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, and_CC wavelet_NN decomposition_NN -LRB-_-LRB- 1_CD ,_, 6_CD -RRB-_-RRB- ._.
+Multi-Resolution_JJ aggregate_NN tree_NN -LRB-_-LRB- MRA-tree_NN -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- introduces_VBZ a_DT quadtree-like_JJ -LRB-_-LRB- or_CC R-tree_NN like_IN -RRB-_-RRB- multi-dimensional_JJ index_NN structure_NN that_IN answers_NNS
+egates_NNS for_IN approximate_JJ query_NN answering_VBG purposes_NNS ._.
+A_DT wavelet-based_JJ approach_NN is_VBZ used_VBN in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- to_TO approximate_JJ query_NN answering_NN ,_, and_CC proves_VBZ to_TO be_VB more_RBR effective_JJ than_IN sampling_NN techniques_NNS ._.
+In_IN a_DT similar_JJ spirit_NN ,_, =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: uses_VBZ the_DT probability_NN density_NN distribution_NN of_IN data_NNS in_IN order_NN to_TO propose_VB a_DT compressed_VBN representation_NN of_IN data_NNS cubes_NNS which_WDT reduces_VBZ data_NNS storage_NN and_CC leads_VBZ to_TO approximatesanswers_NNS to_TO aggregate_JJ queries_NNS ._.
+Wavel_NNP
+y_NN studies_NNS have_VBP focused_VBN on_IN iceberg_NN cube_NN calculation_NN -LRB-_-LRB- 43_CD -RRB-_-RRB- ,_, partial_JJ materialization_NN of_IN data_NNS cubes_NNS -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, semantic_JJ summarization_NN of_IN cubes_NNS -LRB-_-LRB- e.g._FW ,_, quotient_JJ cubes_NNS -RRB-_-RRB- -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, and_CC approximation_NN of_IN cube_NN computation_NN =_JJ -_: =[_NN 38_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recently_RB ,_, there_EX has_VBZ been_VBN an_DT increasing_VBG interest_NN for_IN applying\/adapting_NN data_NNS mining_NN techniques_NNS and_CC advanced_JJ statistical_JJ analysis_NN -LRB-_-LRB- e.g._FW ,_, cluster_NN analysis_NN ,_, principal_JJ component_NN analysis_NN ,_, log-linear_JJ model_NN
+stic_JJ models_NNS of_IN various_JJ forms_NNS have_VBP also_RB been_VBN investigated_VBN in_IN limited_JJ contexts_NNS ._.
+Mixtures_NNS of_IN Gaussian_JJ independence_NN models_NNS were_VBD investigated_VBN for_IN generating_VBG approximate_JJ queries_NNS on_IN real-valued_JJ data_NNS sets_NNS in_IN =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Bayesian_JJ networks_NNS for_IN the_DT task_NN of_IN selectivity_NN estimation_NN over_IN multiple_JJ tables_NNS in_IN a_DT relational_JJ database_NN were_VBD considered_VBN in_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+The_DT use_NN of_IN statistical_JJ interaction_NN models_NNS in_IN dependency_NN based_JJ histogra_NN

@@ -1,0 +1,70 @@
+Predicting_VBG customer_NN shopping_NN lists_NNS from_IN point-of-sale_JJ purchase_NN data_NNS
+This_DT paper_NN describes_VBZ a_DT prototype_NN that_WDT predicts_VBZ the_DT shopping_NN lists_NNS for_IN customers_NNS in_IN a_DT retail_JJ store_NN ._.
+The_DT shopping_NN list_NN prediction_NN is_VBZ one_CD aspect_NN of_IN a_DT larger_JJR system_NN we_PRP have_VBP developed_VBN for_IN retailers_NNS to_TO provide_VB individual_JJ and_CC personalized_JJ interactions_NNS with_IN customers_NNS as_IN they_PRP navigate_VBP through_IN the_DT retail_JJ store_NN ._.
+Instead_RB of_IN using_VBG traditional_JJ personalization_NN approaches_NNS ,_, such_JJ as_IN clustering_NN or_CC segmentation_NN ,_, we_PRP learn_VBP separate_JJ classifiers_NNS for_IN each_DT customer_NN from_IN historical_JJ transactional_JJ data_NNS ._.
+This_DT allows_VBZ us_PRP to_TO make_VB very_RB fine-grained_JJ and_CC accurate_JJ predictions_NNS about_IN what_WP items_NNS a_DT particular_JJ individual_JJ customer_NN will_MD buy_VB on_IN a_DT given_VBN shopping_NN trip_NN ._.
+We_PRP formally_RB frame_VBP the_DT shopping_NN list_NN prediction_NN as_IN a_DT classification_NN problem_NN ,_, describe_VBP the_DT algorithms_NNS and_CC methodology_NN behind_IN our_PRP$ system_NN ,_, its_PRP$ impact_NN on_IN the_DT business_NN case_NN in_IN which_WDT we_PRP frame_VBP it_PRP ,_, and_CC explore_VB some_DT of_IN the_DT properties_NNS of_IN the_DT data_NNS source_NN that_WDT make_VBP it_PRP an_DT interesting_JJ testbed_NN for_IN KDD_NNP algorithms_NNS ._.
+Our_PRP$ results_NNS show_VBP that_IN we_PRP can_MD predict_VB a_DT shopper_NN 's_POS shopping_NN list_NN with_IN high_JJ levels_NNS of_IN accuracy_NN ,_, precision_NN ,_, and_CC recall_NN ._.
+We_PRP believe_VBP that_IN this_DT work_NN impacts_VBZ both_CC the_DT data_NNS mining_NN and_CC the_DT retail_JJ business_NN community_NN ._.
+The_DT formulation_NN of_IN shopping_NN list_NN prediction_NN as_IN a_DT machine_NN learning_NN problem_NN results_VBZ in_IN algorithms_NNS that_WDT should_MD be_VB useful_JJ beyond_IN retail_JJ shopping_NN list_NN prediction_NN ._.
+For_IN retailers_NNS ,_, the_DT result_NN is_VBZ not_RB only_RB a_DT practical_JJ system_NN that_WDT increases_VBZ revenues_NNS by_IN up_IN to_TO 11_CD %_NN ,_, but_CC also_RB enhances_VBZ customer_NN experience_NN and_CC loyalty_NN by_IN giving_VBG them_PRP the_DT tools_NNS to_TO individually_RB interact_VB with_IN customers_NNS and_CC anticipate_VBP their_PRP$ needs_NNS ._.
+basket_NN analysis_NN in_IN the_DT direct_JJ marketing_NN industry_NN for_IN many_JJ years_NNS to_TO determine_VB which_WDT customers_NNS to_TO send_VB mailers_NNS to_TO ._.
+Additionally_RB ,_, a_DT line_NN of_IN research_NN based_VBN on_IN marketing_NN techniques_NNS developed_VBN by_IN Ehrenberg_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: seeks_VBZ to_TO use_VB a_DT purchase_NN incidence_NN model_NN with_IN anonymous_JJ data_NNS in_IN a_DT collaborative_JJ filtering_VBG setting_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Traditionally_RB ,_, most_JJS of_IN the_DT data_NNS mining_NN work_NN using_VBG retail_JJ transaction_NN data_NNS has_VBZ focused_VBN on_IN approac_NN
+mailers_NNS to_TO ._.
+Additionally_RB ,_, a_DT line_NN of_IN research_NN based_VBN on_IN marketing_NN techniques_NNS developed_VBN by_IN Ehrenberg_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- seeks_VBZ to_TO use_VB a_DT purchase_NN incidence_NN model_NN with_IN anonymous_JJ data_NNS in_IN a_DT collaborative_JJ filtering_VBG setting_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Traditionally_RB ,_, most_JJS of_IN the_DT data_NNS mining_NN work_NN using_VBG retail_JJ transaction_NN data_NNS has_VBZ focused_VBN on_IN approaches_NNS that_WDT use_VBP clustering_NN or_CC segmentation_NN strategies_NNS ._.
+Each_DT customer_NN is_VBZ ``_`` profiled_VBN ''_'' based_VBN on_IN other_JJ ``_`` simila_NN
+two_CD kinds_NNS of_IN machine_NN learning_NN methods_NNS to_TO perform_VB this_DT task_NN ._.
+First_RB we_PRP trained_VBD decision_NN trees_NNS -LRB-_-LRB- specifically_RB using_VBG C4_NN .5_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- -RRB-_-RRB- to_TO predict_VB each_DT class_NN label_NN ._.
+Next_RB we_PRP tried_VBD several_JJ linear_JJ methods_NNS -LRB-_-LRB- Perceptron_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Winnow_NNP -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, and_CC Naive_JJ Bayes_NNS -RRB-_-RRB- to_TO learn_VB each_DT class_NN ._.
+These_DT linear_JJ methods_NNS offer_VBP several_JJ advantages_NNS in_IN a_DT real-world_JJ setting_NN ,_, most_RBS notably_RB the_DT quick_JJ evaluation_NN of_IN generated_VBN hypotheses_NNS and_CC their_PRP$ ability_NN
+o_NN prediction_NN tasks_NNS involving_VBG transactional_JJ market_NN basket_NN data_NNS ._.
+One_CD technique_NN we_PRP intend_VBP to_TO experiment_NN with_IN in_IN future_JJ work_NN to_TO overcome_VB the_DT problem_NN of_IN data_NNS sparsity_NN is_VBZ the_DT shrinkage_NN approach_NN detailed_VBN in_IN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT line_NN of_IN work_NN ,_, a_DT hierarchy_NN is_VBZ imposed_VBN over_IN large_JJ numbers_NNS of_IN classes_NNS ,_, and_CC statistics_NNS about_IN groups_NNS of_IN classes_NNS are_VBP used_VBN to_TO smooth_VB conditional_JJ probability_NN estimations_NNS for_IN classes_NNS with_IN small_JJ numbe_NN
+whether_IN the_DT category_NN corresponding_VBG to_TO yi_NN was_VBD bought_VBN or_CC not_RB -RRB-_-RRB- ._.
+We_PRP experimented_VBD with_IN two_CD kinds_NNS of_IN machine_NN learning_NN methods_NNS to_TO perform_VB this_DT task_NN ._.
+First_RB we_PRP trained_VBD decision_NN trees_NNS -LRB-_-LRB- specifically_RB using_VBG C4_NN .5_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =--RRB-_NN to_TO predict_VB each_DT class_NN label_NN ._.
+Next_RB we_PRP tried_VBD several_JJ linear_JJ methods_NNS -LRB-_-LRB- Perceptron_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, Winnow_NNP -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, and_CC Naive_JJ Bayes_NNS -RRB-_-RRB- to_TO learn_VB each_DT class_NN ._.
+These_DT linear_JJ methods_NNS offer_VBP several_JJ advantages_NNS in_IN a_DT real-world_JJ se_FW
+to_TO modify_VB the_DT classification_NN algorithms_NNS used_VBN to_TO correct_VB for_IN this_DT noise_NN ,_, it_PRP has_VBZ been_VBN shown_VBN that_IN linear_JJ classifiers_NNS such_JJ as_IN Perceptron_NNP -LRB-_-LRB- with_IN some_DT modifications_NNS -RRB-_-RRB- can_MD learn_VB from_IN examples_NNS with_IN label_NN noise_NN =_JJ -_: =[_NN 8_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN practice_NN linear_NN classifiers_NNS are_VBP often_RB able_JJ to_TO learn_VB well_RB in_IN the_DT presence_NN of_IN classification_NN noise_NN ._.
+Based_VBN on_IN the_DT assumptions_NNS made_VBN about_IN the_DT distribution_NN of_IN forgotten_VBN purchases_NNS in_IN the_DT dataset_NN ,_, we_PRP ca_MD
+n_NN no_DT work_NN attempted_VBN on_IN retail_JJ transaction_NN data_NNS ._.
+Research_NN in_IN mining_NN association_NN rules_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- has_VBZ led_VBN to_TO methods_NNS to_TO optimize_VB product_NN assortments_NNS within_IN a_DT store_NN by_IN mining_VBG frequent_JJ itemsets_NNS from_IN basket_NN data_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Customer_NN segmentation_NN has_VBZ been_VBN used_VBN with_IN basket_NN analysis_NN in_IN the_DT direct_JJ marketing_NN industry_NN for_IN many_JJ years_NNS to_TO determine_VB which_WDT customers_NNS to_TO send_VB mailers_NNS to_TO ._.
+Additionally_RB ,_, a_DT line_NN of_IN research_NN based_VBN on_IN ma_NN
+nse_NN of_IN this_DT data_NNS and_CC create_VB actionable_JJ results_NNS have_VBP not_RB been_VBN very_RB successful_JJ ._.
+This_DT is_VBZ not_RB to_TO say_VB that_IN there_EX has_VBZ been_VBN no_DT work_NN attempted_VBN on_IN retail_JJ transaction_NN data_NNS ._.
+Research_NN in_IN mining_NN association_NN rules_NNS =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ led_VBN to_TO methods_NNS to_TO optimize_VB product_NN assortments_NNS within_IN a_DT store_NN by_IN mining_VBG frequent_JJ itemsets_NNS from_IN basket_NN data_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Customer_NN segmentation_NN has_VBZ been_VBN used_VBN with_IN basket_NN analysis_NN in_IN the_DT direct_JJ marketing_NN in_IN
+other_JJ interactions_NNS ._.
+Both_DT also_RB stated_VBN as_IN a_DT design_NN goal_NN that_IN it_PRP should_MD be_VB possible_JJ to_TO compile_VB or_CC augment_VB a_DT shopping_NN list_NN per_IN customer_NN based_VBN on_IN previous_JJ purchase_NN history_NN ._.
+The_DT 1:1_FW Pro_FW system_NN described_VBN in_IN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: was_VBD designed_VBN to_TO produce_VB individual_JJ profiles_NNS of_IN customer_NN behavior_NN in_IN the_DT form_NN of_IN sets_NNS of_IN association_NN rules_NNS for_IN each_DT customer_NN which_WDT could_MD then_RB be_VB restricted_VBN by_IN a_DT human_JJ expert_NN ._.
+Theoretically_RB these_DT profi_NNS
+visits_NNS ._.
+This_DT tactic_NN is_VBZ similar_JJ to_TO methods_NNS in_IN Natural_NNP Language_NNP Processing_NNP -LRB-_-LRB- NLP_NNP -RRB-_-RRB- for_IN tasks_NNS such_JJ as_IN part-of-speech_JJ tagging_NN ,_, where_WRB tags_NNS of_IN preceding_JJ words_NNS are_VBP used_VBN as_IN features_NNS to_TO predict_VB the_DT current_JJ tag_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT features_NNS we_PRP include_VBP in_IN example_NN -LRB-_-LRB- x_NN j_NN ,_, y_NN j_NN i_LS -RRB-_-RRB- about_IN transaction_NN t_NN j_NN are_VBP :_: 1_CD ._.
+Number_NN of_IN days_NNS at_IN t_NN j_NN since_IN product_NN category_NN was_VBD pi_NN bought_VBN by_IN that_DT customer_NN ._.
+We_PRP call_VBP this_DT the_DT replenishment_NN interval_NN a_DT
+e_LS in_IN a_DT position_NN now_RB to_TO deliver_VB personalized_JJ information_NN to_TO each_DT customer_NN at_IN several_JJ points_NNS in_IN the_DT store_NN ._.
+In_IN fact_NN ,_, a_DT few_JJ systems_NNS of_IN this_DT sort_NN have_VBP been_VBN developed_VBN ._.
+For_IN example_NN the_DT IBM_NNP Easi-Order_NNP system_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: and_CC a_DT system_NN developed_VBN at_IN Georgia_NNP Tech_NNP -LRB-_-LRB- 13_CD -RRB-_-RRB- use_VBP PDA_NNP 's_POS to_TO display_VB personalized_JJ grocery_NN information_NN to_TO each_DT shopper_NN before_RB ,_, and_CC during_IN their_PRP$ shopping_NN trips_NNS ._.
+In_IN the_DT first_JJ system_NN ,_, a_DT list_NN is_VBZ first_RB develop_VB
+information_NN to_TO each_DT customer_NN at_IN several_JJ points_NNS in_IN the_DT store_NN ._.
+In_IN fact_NN ,_, a_DT few_JJ systems_NNS of_IN this_DT sort_NN have_VBP been_VBN developed_VBN ._.
+For_IN example_NN the_DT IBM_NNP Easi-Order_NNP system_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC a_DT system_NN developed_VBN at_IN Georgia_NNP Tech_NNP =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: use_VB PDA_NNP 's_POS to_TO display_VB personalized_JJ grocery_NN information_NN to_TO each_DT shopper_NN before_RB ,_, and_CC during_IN their_PRP$ shopping_NN trips_NNS ._.
+In_IN the_DT first_JJ system_NN ,_, a_DT list_NN is_VBZ first_RB developed_VBN on_IN the_DT PDA_NNP ,_, then_RB sent_VBN to_TO the_DT store_NN to_TO be_VB
+to_TO modify_VB the_DT classification_NN algorithms_NNS used_VBN to_TO correct_VB for_IN this_DT noise_NN ,_, it_PRP has_VBZ been_VBN shown_VBN that_IN linear_JJ classifiers_NNS such_JJ as_IN Perceptron_NNP -LRB-_-LRB- with_IN some_DT modifications_NNS -RRB-_-RRB- can_MD learn_VB from_IN examples_NNS with_IN label_NN noise_NN =_JJ -_: =[_NN 8_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN practice_NN linear_NN classifiers_NNS are_VBP often_RB able_JJ to_TO learn_VB well_RB in_IN the_DT presence_NN of_IN classification_NN noise_NN ._.
+Based_VBN on_IN the_DT assumptions_NNS made_VBN about_IN the_DT distribution_NN of_IN forgotten_VBN purchases_NNS in_IN the_DT dataset_NN ,_, we_PRP ca_MD
+hose_NN a_DT cutoff_NN of_IN 10_CD categories_NNS ._.
+For_IN the_DT decision_NN tree_NN classifier_NN ,_, C4_NN .5_NN was_VBD used_VBN with_IN 25_CD %_NN pruning_NN and_CC default_NN parameterization_NN ._.
+For_IN the_DT linear_JJ classification_NN methods_NNS ,_, the_DT SNoW_NN learning_NN system_NN was_VBD used_VBN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+SNoW_NN is_VBZ a_DT general_JJ classification_NN system_NN incorporating_VBG several_JJ linear_JJ classifiers_NNS in_IN a_DT unified_JJ framework_NN ._.
+In_IN the_DT experiments_NNS shown_VBN ,_, classifiers_NNS were_VBD trained_VBN with_IN 2_CD runs_NNS over_IN each_DT training_NN set_VBN ._.
+Result_NN
+machine_NN learning_NN methods_NNS to_TO perform_VB this_DT task_NN ._.
+First_RB we_PRP trained_VBD decision_NN trees_NNS -LRB-_-LRB- specifically_RB using_VBG C4_NN .5_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- -RRB-_-RRB- to_TO predict_VB each_DT class_NN label_NN ._.
+Next_RB we_PRP tried_VBD several_JJ linear_JJ methods_NNS -LRB-_-LRB- Perceptron_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, Winnow_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC Naive_JJ Bayes_NNS -RRB-_-RRB- to_TO learn_VB each_DT class_NN ._.
+These_DT linear_JJ methods_NNS offer_VBP several_JJ advantages_NNS in_IN a_DT real-world_JJ setting_NN ,_, most_RBS notably_RB the_DT quick_JJ evaluation_NN of_IN generated_VBN hypotheses_NNS and_CC their_PRP$ ability_NN to_TO be_VB traine_NN

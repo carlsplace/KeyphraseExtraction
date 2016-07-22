@@ -1,0 +1,157 @@
+XRules_NNS :_: an_DT effective_JJ structural_JJ classifier_NN for_IN XML_NN data_NNS
+XML_NN documents_NNS have_VBP recently_RB become_VBN ubiquitous_JJ because_IN of_IN their_PRP$ varied_JJ applicability_NN in_IN a_DT number_NN of_IN applications_NNS ._.
+Classification_NN is_VBZ an_DT important_JJ problem_NN in_IN the_DT data_NNS mining_NN domain_NN ,_, but_CC current_JJ classification_NN methods_NNS for_IN XML_NN documents_NNS use_VBP IR-based_JJ methods_NNS in_IN which_WDT each_DT document_NN is_VBZ treated_VBN as_IN a_DT bag_NN of_IN words_NNS ._.
+Such_JJ techniques_NNS ignore_VBP a_DT significant_JJ amount_NN of_IN information_NN hidden_VBN inside_IN the_DT documents_NNS ._.
+In_IN this_DT paper_NN we_PRP discuss_VBP the_DT problem_NN of_IN rule_NN based_JJ classification_NN of_IN XML_NN data_NNS by_IN using_VBG frequent_JJ discriminatory_JJ substructures_NNS within_IN XML_NN documents_NNS ._.
+Such_JJ a_DT technique_NN is_VBZ more_RBR capable_JJ of_IN finding_VBG the_DT classification_NN characteristics_NNS of_IN documents_NNS ._.
+In_IN addition_NN ,_, the_DT technique_NN can_MD also_RB be_VB extended_VBN to_TO cost_VB sensitive_JJ classification_NN ._.
+We_PRP show_VBP the_DT effectiveness_NN of_IN the_DT method_NN with_IN respect_NN to_TO other_JJ classifiers_NNS ._.
+We_PRP note_VBP that_IN the_DT methodology_NN discussed_VBN in_IN this_DT paper_NN is_VBZ applicable_JJ to_TO any_DT kind_NN of_IN semi-structured_JJ data_NNS ._.
+following_VBG topics_NNS have_VBP been_VBN extensively_RB studied_VBN for_IN the_DT last_JJ few_JJ years_NNS :_: frequent_JJ subgraph_JJ mining_NN -LRB-_-LRB- 6_CD ,_, 12_CD ,_, 17_CD ,_, 27_CD -RRB-_-RRB- ,_, maximal_JJ -LRB-_-LRB- closed_JJ -RRB-_-RRB- subgraph_JJ mining_NN -LRB-_-LRB- 3_CD ,_, 9_CD ,_, 20_CD ,_, 25_CD -RRB-_-RRB- and_CC combination_NN with_IN machine_NN learning_NN =_JJ -_: =[_NN 21_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+See_VB surveys_NNS ,_, e.g._FW -LRB-_-LRB- 8_CD ,_, 24_CD -RRB-_-RRB- ,_, for_IN the_DT overviews_NNS ._.
+The_DT class_NN of_IN geometric_JJ graphs_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP address_VBP a_DT graph_NN mining_NN problem_NN for_IN the_DT class_NN G_NN of_IN geometric_JJ graphs_NNS ._.
+Geometric_JJ graphs_NNS -LRB-_-LRB- geographs_NNS ,_, for_IN sh_NN
+patterns_NNS in_IN a_DT database_NN of_IN tree-shaped_JJ data_NNS ._.
+Tree_NN mining_NN can_MD lead_VB to_TO many_JJ practical_JJ applications_NNS in_IN the_DT areas_NNS of_IN computer_NN networks_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, bioinformatics_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, and_CC XML_NN documents_NNS databases_NNS mining_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: and_CC hence_RB have_VBP received_VBN a_DT lot_NN of_IN attention_NN from_IN the_DT research_NN community_NN in_IN recent_JJ years_NNS ._.
+Most_JJS of_IN the_DT well-known_JJ algorithms_NNS use_VBP the_DT same_JJ generate-and-test_JJ principle_NN that_WDT made_VBD the_DT success_NN of_IN frequent_JJ it_PRP
+ets_NN ._.
+For_IN time_NN series_NN classification_NN ,_, Ye_NNP and_CC Keogh_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- used_VBN patterns_NNS called_VBD shapelets_NNS to_TO classify_VB time-series_JJ data_NNS ._.
+Other_JJ algorithms_NNS include_VBP DPrefixSpan_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- which_WDT classifies_VBZ action_NN sequences_NNS ,_, XRules_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT classifies_VBZ trees_NNS ,_, and_CC gPLS_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- which_WDT classifies_VBZ graph_NN structures_NNS ._.
+Table_NNP 1_CD ._.
+Comparison_NN of_IN related_JJ work_NN Binary_NNP Numerical_NNP Two-step_NNP MMRFS_NNP SoftMine_NNP ,_, Shapelet_NNP Direct_NNP DDPMine_NN ,_, M_NN b_NN T_NN ,_, gPLS_NN NDPMine_NN DPr_NN
+sts_NNS ,_, which_WDT often_RB means_VBZ that_IN in_IN order_NN to_TO predict_VB which_WDT class_NN an_DT example_NN belongs_VBZ to_TO ,_, a_DT score_NN is_VBZ computed_VBN for_IN each_DT class_NN from_IN the_DT patterns_NNS for_IN that_DT class_NN ._.
+Many_JJ such_JJ scoring_VBG strategies_NNS have_VBP been_VBN proposed_VBN =_JJ -_: =[_NN 19,67,41,75,56,1,63_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN some_DT cases_NNS ,_, such_JJ as_IN -LRB-_-LRB- 63_CD -RRB-_-RRB- ,_, another_DT approach_NN on_IN the_DT border_NN between_IN model-dependence_NN and_CC -_: independence_NN ,_, model-independent_JJ pattern_NN selection_NN takes_VBZ place_NN before_IN patterns_NNS are_VBP used_VBN in_IN such_JJ a_DT voting_NN sch_NN
+cated_VBN data_NN collection_NN methods_NNS ,_, there_EX is_VBZ a_DT fast_JJ accumulation_NN of_IN labeled_JJ graph_NN data_NNS ._.
+For_IN example_NN ,_, many_JJ XML_NN documents_NNS are_VBP modeled_VBN as_IN trees_NNS or_CC graphs_NNS and_CC it_PRP is_VBZ important_JJ to_TO build_VB classifiers_NNS for_IN XML_NN data_NN =_JJ -_: =[_NN 45_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN another_DT example_NN ,_, natural_JJ language_NN processing_NN of_IN sentences_NNS usually_RB produces_VBZ a_DT tree_NN -LRB-_-LRB- parsing_VBG tree_NN -RRB-_-RRB- representation_NN of_IN a_DT sentence_NN ._.
+In_IN many_JJ social_JJ science_NN studies_NNS ,_, building_VBG automated_JJ systems_NNS to_TO classi_VB
+n_NN a_DT forest_NN or_CC a_DT database_NN of_IN rooted_JJ ordered_VBN trees_NNS ._.
+This_DT algorithm_NN used_VBD a_DT new_JJ data_NN structure_NN ,_, scope-list_NN ,_, to_TO efficiently_RB count_VB the_DT frequency_NN of_IN candidate_NN subtrees_NNS ._.
+The_DT algorithm_NN was_VBD further_RB extended_VBN in_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: to_TO build_VB a_DT structural_JJ classifier_NN for_IN XML_NN data_NNS ._.
+Asai_NNP et_FW al._FW in_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- presented_VBD an_DT algorithm_NN ,_, FREQT_NN ,_, to_TO find_VB frequent_JJ rooted_JJ ordered_VBN subtrees_NNS ._.
+Also_RB two_CD algorithms_NNS were_VBD proposed_VBN by_IN Asai_NNP et_FW al._FW and_CC Yun_NNP Ch_NNP
+re-only_JJ approaches_NNS for_IN XML_NN classification_NN based_VBN on_IN tree_NN edit_NN distances_NNS are_VBP of_IN quadratic_JJ complexity_NN and_CC thus_RB are_VBP infeasible_JJ for_IN large_JJ corpus_NN ._.
+Other_JJ approaches_NNS include_VBP rule-based_JJ approaches_NNS like_IN XRules_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP is_VBZ based_VBN on_IN the_DT premise_NN that_IN the_DT presence_NN of_IN one_CD or_CC more_JJR particular_JJ type_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- of_IN structural_JJ pattern_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- in_IN an_DT XML_NN document_NN can_MD be_VB used_VBN to_TO predict_VB the_DT likelihood_NN of_IN its_PRP$ belonging_VBG to_TO a_DT particular_JJ cate_NN
+ocuments_NNS ._.
+The_DT association14based_JJ methods_NNS use_VBP the_DT associations_NNS among_IN different_JJ nodes_NNS visited_VBN in_IN a_DT session_NN in_IN order_NN to_TO perform_VB the_DT classification_NN ._.
+An_DT effective_JJ rule-based_JJ classifier_NN for_IN XML_NN is_VBZ XRules_NN -LRB-_-LRB- =_JJ -_: =_JJ Zaki_NNP &_CC Aggarwal_NNP ,_, 2003_CD -_: =--RRB-_NN ,_, a_DT method_NN that_WDT uses_VBZ a_DT set_NN of_IN structural_JJ rules_NNS for_IN XML_NN document_NN ._.
+classification_NN ._.
+XMiner_NN -LRB-_-LRB- Zaki_NNP ,_, 2002_CD -RRB-_-RRB- uses_VBZ frequent_JJ sub-trees_NNS in_IN a_DT collection_NN of_IN XML_NN trees_NNS to_TO mine_VB a_DT set_NN of_IN rules_NNS ._.
+In_IN the_DT training_NN phase_NN
+n_NN rules_NNS that_WDT associate_VBP the_DT presence_NN of_IN each_DT path_NN expression_NN of_IN a_DT cluster_NN description_NN in_IN the_DT documents_NNS of_IN the_DT peers_NNS to_TO the_DT likelihood_NN of_IN the_DT peer_VBP belonging_VBG to_TO this_DT cluster_NN ,_, an_DT idea_NN presented_VBN in_IN XRules_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT centralized_JJ algorithm_NN for_IN clustering_NN XML_NN data_NNS that_WDT uses_VBZ discriminatory_JJ structural_JJ patterns_NNS to_TO determine_VB the_DT cluster_NN each_DT document_NN belongs_VBZ to_TO ._.
+Furthermore_RB ,_, clustering_NN is_VBZ adaptive_JJ in_IN the_DT sense_NN that_IN
+reeMiner_NN -LRB-_-LRB- 33_CD -RRB-_-RRB- is_VBZ one_CD of_IN the_DT pioneer_NN of_IN mining_NN frequent_JJ tree_NN patterns_NNS ._.
+CMTreeMiner_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- mined_VBD closed_JJ and_CC maximal_JJ frequent_JJ tree_NN patterns_NNS together_RB ._.
+For_IN tree_NN classification_NN ,_, rule-based_JJ classifiers_NNS -LRB-_-LRB- XRules_NN =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_JJ -_: ,_, CTC_NN -LRB-_-LRB- 38_CD -RRB-_-RRB- -RRB-_-RRB- and_CC a_DT decision_NN tree_NN based_VBN classier_NN -LRB-_-LRB- Tree_NN 2_CD -LRB-_-LRB- 5_CD -RRB-_-RRB- -RRB-_-RRB- were_VBD proposed_VBN ._.
+But_CC none_NN of_IN them_PRP could_MD be_VB applied_VBN to_TO classify_VB sets_NNS of_IN trees_NNS as_IN documents_NNS ._.
+3_LS ._.
+PRELIMINARIES_NN Traditional_JJ authorship_NN attribution_NN
+classification_NN problems_NNS ._.
+Our_PRP$ proposed_VBN k-ee_FW subtrees_FW feature_NN set_NN can_MD be_VB considered_VBN to_TO be_VB a_DT variation_NN of_IN tree_NN patterns_NNS ._.
+In_IN the_DT data_NNS mining_NN domain_NN ,_, there_EX have_VBP been_VBN several_JJ studies_NNS on_IN tree_NN pattern_NN mining_NN =_JJ -_: =[_NN 30_CD ,_, 31_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+TreeMiner_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- is_VBZ one_CD of_IN the_DT pioneering_JJ frequent_JJ tree_NN pattern_NN mining_NN algorithms_NNS ._.
+For_IN tree_NN classification_NN ,_, rulebased_JJ classifiers_NNS -LRB-_-LRB- XRules_NNS -LRB-_-LRB- 31_CD -RRB-_-RRB- -RRB-_-RRB- and_CC a_DT decision_NN tree_NN based_VBN classifier_NN -LRB-_-LRB- Tree_NN 2_CD -LRB-_-LRB- 4_CD -RRB-_-RRB- -RRB-_-RRB- were_VBD p_NN
+-LRB-_-LRB- Jindal_NNP and_CC Liu_NNP ,_, 2006_CD -RRB-_-RRB- ,_, the_DT detection_NN of_IN erroneous_JJ sentences_NNS -LRB-_-LRB- Sun_NNP et_FW al._FW ,_, 2007_CD -RRB-_-RRB- and_CC question_NN sentences_NNS -LRB-_-LRB- Cong_NNP et_FW al._FW ,_, 2008_CD -RRB-_-RRB- etc._NN ._.
+However_RB ,_, works_VBZ on_IN syntactic_JJ patterns_NNS have_VBP only_RB been_VBN partially_RB explored_VBN -LRB-_-LRB- =_JJ -_: =_JJ Zaki_NNP and_CC Aggarwal_NNP ,_, 2003_CD -_: =_JJ -_: ;_: Sun_NNP et_FW al._FW ,_, 2007_CD ;_: Wang_NNP et_FW al._FW ,_, 2009_CD -RRB-_-RRB- ._.
+Grounded_VBN on_IN these_DT previous_JJ works_NNS ,_, we_PRP next_RB explain_VBP our_PRP$ mining_NN approach_NN of_IN the_DT sequential_JJ and_CC syntactic_JJ shallow_JJ patterns_NNS ._.
+2.1_CD Sequential_NNP Pattern_NNP Mining_NNP Sequential_NNP
+ith_NN XML_NN and_CC other_JJ formats_NNS ,_, as_RB well_RB as_IN for_IN algorithms_NNS and_CC applications_NNS not_RB originally_RB developed_VBN to_TO work_VB with_IN XML_NN data_NNS sources_NNS ._.
+In_IN effect_NN ,_, we_PRP can_MD observe_VB that_IN algorithms_NNS like_IN the_DT ones_NNS shown_VBN in_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: do_VBP not_RB take_VB advantage_NN of_IN loosely_RB coupling_NN ,_, since_IN they_PRP have_VBP to_TO scan_VB several_JJ times_NNS the_DT full_JJ document_NN and_CC are_VBP specifically_RB designed_VBN to_TO work_VB with_IN XML_NN data_NNS sources_NNS ._.
+For_IN example_NN ,_, -LRB-_-LRB- 10_CD -RRB-_-RRB- presents_VBZ an_DT algorithm_NN
+ata_NN mining_NN ._.
+1_CD ._.
+INTRODUCTION_NN Recently_RB ,_, there_EX has_VBZ been_VBN increasing_VBG research_NN efforts_NNS to_TO mine_VB XML_NN data_NNS ._.
+Existing_VBG work_NN on_IN mining_NN XML_NN data_NNS includes_VBZ frequent_JJ substructure_NN mining_NN -LRB-_-LRB- 6_CD ,_, 7_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- ,_, classification_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: and_CC association_NN rule_NN mining_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Among_IN these_DT ,_, the_DT frequent_JJ substructure_NN mining_NN is_VBZ the_DT most_RBS well_RB researched_VBN topic_NN ._.
+The_DT basic_JJ idea_NN is_VBZ to_TO extract_VB substructures_NNS -LRB-_-LRB- subtrees_NNS or_CC subgraphs_NNS -RRB-_-RRB- ,_, which_WDT occur_VBP frequ_NN
+namic_JJ structures_NNS efficiently_RB with_IN good_JJ scalability_NN ._.
+1_CD Introduction_NN Recently_RB ,_, with_IN the_DT increasing_VBG amount_NN of_IN XML_NN data_NNS available_JJ ,_, knowledge_NN engineering_NN from_IN XML_NN data_NNS becomes_VBZ an_DT issue_NN of_IN great_JJ importance_NN =_JJ -_: =[_NN 1_CD ,_, 5_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Existing_VBG work_NN on_IN mining_NN XML_NN data_NNS includes_VBZ frequent_JJ substructure_NN mining_NN -LRB-_-LRB- 4_CD ,_, 5_CD ,_, 8_CD ,_, 9_CD -RRB-_-RRB- ,_, classification_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC association_NN rule_NN mining_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Among_IN these_DT ,_, the_DT frequent_JJ substructure_NN mining_NN is_VBZ the_DT most_JJS we_PRP
+data_NNS include_VBP frequent_JJ substructure_NN mining_NN Email_NN address_NN :_: assourav@ntu.edu.sg_NN -LRB-_-LRB- Sourav_NNP S._NNP Bhowmick_NNP -RRB-_-RRB- ._.
+Preprint_NNP submitted_VBD to_TO Elsevier_NNP Science_NNP 14_CD September_NNP 2005s_NNS -LRB-_-LRB- 18_CD ,_, 20_CD ,_, 37_CD ,_, 9_CD ,_, 35_CD ,_, 16_CD ,_, 11_CD -RRB-_-RRB- ,_, classification_NN =_JJ -_: =[_NN 38_CD ,_, 12_CD ,_, 17_CD -RRB-_-RRB- -_: =_JJ -_: and_CC association_NN rule_NN mining_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, etc._NN ._.
+Among_IN these_DT ,_, the_DT frequent_JJ substructure_NN mining_NN is_VBZ one_CD of_IN the_DT most_RBS well-researched_JJ topics_NNS ._.
+The_DT basic_JJ idea_NN is_VBZ to_TO extract_VB substructures_NNS ,_, subtrees_NNS or_CC subgraphs_NNS ,_, which_WDT
+s._VBN Several_JJ approaches_NNS to_TO learning_VBG to_TO classify_VB structured_JJ data_NNS have_VBP been_VBN introduced_VBN in_IN the_DT field_NN of_IN machine_NN learning_NN ._.
+The_DT structure_NN classification_NN problem_NN has_VBZ been_VBN addressed_VBN as_IN a_DT rule_NN learning_NN problem_NN =_JJ -_: =[_NN 1,2,3,4,5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, as_IN a_DT graph_NN mining_NN problem_NN -LRB-_-LRB- 6,7,8,9,10,11,12,13,14,15_CD -RRB-_-RRB- and_CC as_IN a_DT propositionalization_NN problem_NN -LRB-_-LRB- 16,17,18_CD -RRB-_-RRB- ._.
+These_DT methods_NNS address_VBP two_CD main_JJ varieties_NNS of_IN problems_NNS ._.
+The_DT first_JJ category_NN concerns_NNS discovery_NN of_IN
+ng_NN for_IN measures_NNS that_WDT emphasize_VBP ,_, at_IN various_JJ degrees_NNS ,_, the_DT strength_NN of_IN the_DT correlation_NN between_IN an_DT eset_NN and_CC a_DT class_NN ._.
+Towards_IN this_DT end_NN ,_, we_PRP adopt_VBP and_CC evaluate_VBP three_CD statistical_JJ measures_NNS :_: Weighted_JJ Confidence_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: :_: An_DT eset_NN X_NN may_MD appear_VB too_RB frequently_RB in_IN some_DT categories_NNS ,_, and_CC too_RB rarely_RB in_IN others_NNS ._.
+Relative_JJ support_NN is_VBZ the_DT support_NN of_IN -LRB-_-LRB- X_NN ,_, c_NN -RRB-_-RRB- divided_VBN by_IN the_DT support_NN of_IN the_DT category_NN ,_, and_CC it_PRP is_VBZ given_VBN by_IN :_: δ_NN -LRB-_-LRB- X_NN ,_, c_NN -RRB-_-RRB- =_JJ σ_NN -LRB-_-LRB- X_NN ,_, c_NN -RRB-_-RRB-
+ed_VBN on_IN flat_JJ representations_NNS ,_, using_VBG feature_NN vectors_NNS or_CC attribute-value_JJ representations_NNS ,_, there_EX has_VBZ recently_RB been_VBN a_DT lot_NN of_IN interest_NN in_IN more_RBR expressive_JJ representations_NNS ,_, such_JJ as_IN sequences_NNS ,_, trees_NNS and_CC graphs_NNS =_JJ -_: =[_NN 4_CD ,_, 5_CD ,_, 1_CD ,_, 13_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Motivations_NNS for_IN this_DT interest_NN include_VBP drug_NN design_NN ,_, since_IN molecules_NNS can_MD be_VB represented_VBN as_IN graphs_NNS or_CC sequences_NNS ._.
+Classification_NN of_IN such_JJ data_NNS paves_VBZ the_DT way_NN towards_IN drug_NN design_NN on_IN the_DT screen_NN instead_RB of_IN e_SYM
+Tehran_NNP ,_, Tehran_NNP ,_, Iran_NNP -LRB-_-LRB- e-mail_JJ :_: rahgozar@ut.ac.ir_NN -RRB-_-RRB- ._.
+This_DT algorithm_NN used_VBD a_DT new_JJ data_NN structure_NN ,_, scope-list_NN ,_, to_TO efficiently_RB count_VB the_DT frequency_NN of_IN candidate_NN subtrees_NNS ._.
+The_DT algorithm_NN was_VBD further_RB extended_VBN in_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: to_TO build_VB a_DT structural_JJ classifier_NN for_IN XML_NN data_NNS ._.
+Asai_NNP et_FW al._FW in_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- presented_VBD an_DT algorithm_NN ,_, FREQT_NN ,_, to_TO find_VB frequent_JJ rooted_JJ ordered_VBN subtrees_NNS ._.
+Also_RB two_CD algorithms_NNS were_VBD proposed_VBN by_IN Asai_NNP et_FW al._FW and_CC Yun_NNP Chi_NNP
+mine_NN labeled_JJ ,_, embedded_JJ ,_, and_CC ordered_VBN subtrees_NNS ._.
+The_DT notions_NNS of_IN scope-lists_NNS and_CC rightmost_JJ extension_NN were_VBD introduced_VBN in_IN that_DT work_NN ._.
+TREEMINER_NN was_VBD also_RB used_VBN in_IN building_VBG a_DT structural_JJ classifier_NN for_IN XML_NN data_NN =_JJ -_: =[_NN 41_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT current_JJ paper_NN focuses_VBZ on_IN bioinformatics_NNS applications_NNS and_CC presents_VBZ a_DT new_JJ algorithm_NN called_VBN TREEMINERD_NNP to_TO mine_VB distinct_JJ occurrences_NNS of_IN trees_NNS ._.
+Asai_NNP et_FW al._FW -LRB-_-LRB- 5_CD -RRB-_-RRB- presented_VBN FreqT_NN ,_, an_DT apriori-like_JJ algor_NN
+ng_NN for_IN measures_NNS that_WDT emphasize_VBP ,_, at_IN various_JJ degrees_NNS ,_, the_DT strength_NN of_IN the_DT correlation_NN between_IN an_DT eset_NN and_CC a_DT class_NN ._.
+Towards_IN this_DT end_NN ,_, we_PRP adopt_VBP and_CC evaluate_VBP three_CD statistical_JJ measures_NNS :_: Weighted_JJ Confidence_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: :_: An_DT eset_NN X_NN may_MD appear_VB too_RB frequently_RB in_IN some_DT categories_NNS ,_, and_CC too_RB rarely_RB in_IN others_NNS ._.
+Relative_JJ support_NN is_VBZ the_DT support_NN of_IN -LRB-_-LRB- X_NN ,_, c_NN -RRB-_-RRB- divided_VBN by_IN the_DT support_NN of_IN the_DT category_NN ,_, and_CC it_PRP is_VBZ given_VBN by_IN :_: σ_NN -LRB-_-LRB- X_NN ,_, c_NN -RRB-_-RRB- δ_NN -LRB-_-LRB- X_NN ,_, c_NN
+he_PRP edit_VBD distance_NN ,_, minimum_JJ number_NN of_IN mutations_NNS required_VBN to_TO change_VB a_DT tree_NN into_IN another_DT one_CD -LRB-_-LRB- 3,4_CD -RRB-_-RRB- ,_, or_CC the_DT number_NN of_IN paths_NNS they_PRP share_VBP -LRB-_-LRB- 5_CD --_: 7_CD -RRB-_-RRB- ._.
+Other_JJ methods_NNS aim_VBP at_IN discovering_VBG frequent_JJ subtrees_NNS in_IN the_DT data_NN =_JJ -_: =[_NN 8_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP investigate_VBP in_IN this_DT paper_NN the_DT use_NN of_IN a_DT different_JJ kind_NN of_IN representation_NN for_IN the_DT manipulation_NN of_IN XML_NN documents_NNS ._.
+We_PRP propose_VBP to_TO transform_VB the_DT trees_NNS into_IN sets_NNS of_IN attribute-values_NNS ._.
+In_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, the_DT author_NN
+ecently_RB there_EX has_VBZ been_VBN interest_NN in_IN learning_VBG from_IN relational_JJ and_CC structural_JJ data_NNS -LRB-_-LRB- Dzeroski_NNP &_CC Lavrac_NNP ,_, 2001_CD -RRB-_-RRB- ._.
+Previously_RB ,_, we_PRP proposed_VBD the_DT Xrules_NNP method_NN for_IN building_VBG a_DT structural_JJ classifier_NN for_IN XML_NN data_NNS -LRB-_-LRB- =_JJ -_: =_JJ Zaki_NNP &_CC Aggarwal_NNP ,_, 2003_CD -_: =--RRB-_NN ._.
+This_DT current_JJ paper_NN significantly_RB expands_VBZ on_IN the_DT preliminary_JJ conference_NN version_NN ._.
+An_DT SVMbased_JJ approach_NN for_IN structured_JJ output_NN spaces_NNS has_VBZ recently_RB been_VBN proposed_VBN -LRB-_-LRB- Tsochantaridis_NNP et_FW al._FW ,_, 2004_CD -RRB-_-RRB- ._.
+An_DT approa_NN
+:_: frequent_JJ access_NN trees_NNS from_IN a_DT database_NN of_IN web_NN logs_NNS ,_, where_WRB each_DT record_NN corresponds_VBZ to_TO the_DT entire_JJ forward_JJ access_NN of_IN a_DT user_NN ,_, are_VBP explored_VBN in_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+--_: Classification_NN and_CC clustering_NN :_: the_DT work_NN presented_VBN in_IN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: uses_VBZ a_DT frequent_JJ treemining_JJ algorithm_NN to_TO extract_VB frequent_JJ substructures_NNS from_IN XML_NN data_NNS ,_, and_CC subsequently_RB classifies_VBZ the_DT data_NNS according_VBG to_TO its_PRP$ structure_NN ._.
+s_NN --_: Database_NN indexing_NN :_: in_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- a_DT frequent_JJ treemini_NN
+er_NN to_TO focus_VB the_DT search_NN as_IN in_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- or_CC to_TO extend_VB the_DT tree-mining_JJ process_NN to_TO first_JJ order_NN logic_NN ._.
+On_IN the_DT other_JJ hand_NN the_DT frequent_JJ patterns_NNS discovered_VBN could_MD also_RB be_VB used_VBN as_IN features_NNS for_IN some_DT classifier_NN as_IN in_IN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Considering_VBG our_PRP$ novel_JJ notion_NN we_PRP still_RB have_VBP to_TO evaluate_VB if_IN the_DT additional_JJ cost_NN in_IN time_NN and_CC memory_NN is_VBZ justified_VBN by_IN '_'' better_JJR '_POS patterns_NNS ._.
+Finally_RB ,_, it_PRP depends_VBZ on_IN the_DT data_NNS and_CC on_IN the_DT requirements_NNS of_IN the_DT use_NN
+ere_NN significant_JJ ,_, the_DT standard_JJ error_NN for_IN these_DT two_CD measures_NNS was_VBD computed_VBN ._.
+5.1_CD Data_NNP sets_VBZ We_PRP performed_VBD the_DT experiments_NNS on_IN two_CD real_JJ datasets_NNS namely_RB the_DT CSLOG_NN dataset_NN created_VBN and_CC used_VBN by_IN Zaki_NNP and_CC Aggarwal_NNP =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: and_CC the_DT Wikipedia_NNP XML_NN dataset_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+The_DT CSLOG_NN dataset_NN consist_VBP of_IN user_NN sessions_NNS of_IN the_DT RPI_NNP CS_NNP website_NN ,_, collected_VBN over_IN a_DT period_NN of_IN three_CD weeks_NNS ._.
+Each_DT user_NN session_NN consists_VBZ of_IN a_DT graph_NN and_CC contained_VBD the_DT we_PRP
+has_VBZ been_VBN recently_RB more_RBR specific_JJ work_NN on_IN finding_VBG the_DT structural_JJ similarity_NN between_IN XML_NN documents_NNS ,_, based_VBN on_IN the_DT general_JJ assumption_NN that_IN the_DT structure_NN of_IN an_DT XML_NN document_NN is_VBZ described_VBN as_IN an_DT ordered_VBN tree_NN =_JJ -_: =[_NN 11_CD ,_, 5_CD ,_, 23_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN particular_JJ ,_, Nierman_NNP and_CC Jagadish_NNP propose_VBP a_DT few_JJ tree_NN edit_VB operations_NNS and_CC a_DT dynamic_JJ programming_NN algorithm_NN to_TO find_VB the_DT structural_JJ similarity_NN between_IN XML_NN documents_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+They_PRP run_VBP experiments_NNS to_TO show_VB
+propriated_VBN for_IN the_DT multi-class_JJ classification_NN ,_, particularly_RB ,_, like_IN in_IN our_PRP$ case_NN ,_, when_WRB certain_JJ classes_NNS cover_VBP less_JJR than_IN 0.1_CD %_NN of_IN source_NN leaves_NNS ._.
+We_PRP thus_RB decided_VBD to_TO adopt_VB the_DT cost-based_JJ classification_NN model_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: to_TO evaluate_VB the_DT leaf_NN classification_NN methods_NNS ._.
+The_DT accuracy_NN of_IN a_DT classification_NN model_NN #_# on_IN a_DT data_NN set_NN is_VBZ given_VBN by_IN the_DT ratio_NN of_IN correct_JJ predictions_NNS to_TO the_DT total_JJ number_NN of_IN predictions_NNS made_VBN :_: #_#
+erms_NNS ,_, structural_JJ information_NN in_IN the_DT form_NN of_IN twigs_NNS and_CC paths_NNS and_CC also_RB ontological_JJ knowledge_NN -LRB-_-LRB- WordNet_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- -RRB-_-RRB- to_TO construct_VB more_RBR expressive_JJ feature_NN spaces_NNS that_WDT are_VBP then_RB used_VBN for_IN the_DT classification_NN ._.
+XRules_NN =_JJ -_: =[_NN 55_CD -RRB-_-RRB- -_: =_SYM -_: assigns_VBZ the_DT documents_NNS to_TO categories_NNS through_IN a_DT rule_NN based_VBN classification_NN approach_NN that_WDT relates_VBZ the_DT presence_NN of_IN a_DT particular_JJ structural_JJ pattern_NN in_IN an_DT XML_NN document_NN to_TO its_PRP$ likelihood_NN of_IN belonging_VBG to_TO a_DT pa_NN
+al_NNP ,_, as_IN it_PRP requires_VBZ a_DT quadratic_JJ number_NN of_IN comparisons_NNS between_IN document_NN elements_NNS ._.
+An_DT important_JJ insight_NN into_IN the_DT task_NN of_IN supervised_JJ classification_NN of_IN XML_NN data_NNS from_IN the_DT structure_NN viewpoint_NN is_VBZ provided_VBN in_IN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT authors_NNS propose_VBP a_DT machine_NN learning_NN technique_NN that_WDT exploits_VBZ mining_NN of_IN substructures_NNS frequently_RB occurring_VBG in_IN XML_NN documents_NNS in_IN order_NN to_TO define_VB classification_NN rules_NNS ._.
+More_RBR recently_RB ,_, it_PRP has_VBZ been_VBN raise_VB
+when_WRB applied_VBN to_TO XML_NN data_NNS is_VBZ that_IN the_DT structure_NN of_IN XML_NN data_NNS is_VBZ lost_VBN ._.
+Frequent_JJ pattern_NN based_VBN classification_NN techniques_NNS that_WDT are_VBP suited_VBN for_IN structured_JJ data_NNS are_VBP described_VBN in_IN the_DT work_NN of_IN Zaki_NNP and_CC Aggarwal_NNP =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Geamsakul_NNP et_FW al._FW -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC Bringmann_NNP and_CC Zimmermann_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+The_DT first_JJ method_NN computes_VBZ frequent_JJ trees_NNS ,_, orders_NNS these_DT based_VBN upon_IN some_DT rule_NN strength_NN measures_NNS ,_, and_CC uses_VBZ a_DT decision_NN list_NN N._NNP Fuhr_NNP ,_, M._NNP Lalmas_NNP ,_, and_CC
+its_PRP$ preorder_NN number_NN y_NN is_VBZ greater_JJR or_CC equal_JJ to_TO the_DT number_NN 193_CD appended_VBD to_TO the_DT match_NN label_NN of_IN e._NNP In_NNP Figure_NNP 8_CD node_NN 1_CD is_VBZ added_VBN to_TO the_DT root_NN of_IN candidate_NN tree_NN shown_VBN in_IN Figure_NNP 7_CD ._.
+t0_NN ,_, 1_CD 2_CD 3_CD ,_, -LRB-_-LRB- 3,3_CD -RRB-_-RRB- t0_NN ,_, 1_CD 4_CD 6_CD ,_, =_JJ -_: =[_NN 6,7_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- b_LS -RRB-_-RRB- RootPath_NN -LRB-_-LRB- 1,1_CD -RRB-_-RRB- -LRB-_-LRB- 7,0_CD -RRB-_-RRB- RootPath_NN -LRB-_-LRB- 1,1_NN -RRB-_-RRB- -LRB-_-LRB- 7,0_CD -RRB-_-RRB- -LRB-_-LRB- a_LS -RRB-_-RRB- t0_NN ,_, 1_CD 2_CD 3_CD ,_, -LRB-_-LRB- 3,3_CD -RRB-_-RRB- t0_FW ,1_FW 4_CD 6_CD ,_, -LRB-_-LRB- 6,7_CD -RRB-_-RRB- -LRB-_-LRB- c_NN -RRB-_-RRB- RootPath_NN -LRB-_-LRB- 7,0_CD -RRB-_-RRB- RootPath_NN -LRB-_-LRB- 7,0_CD -RRB-_-RRB- Fig._NNP 8_CD A_DT new_JJ node_NN is_VBZ added_VBN to_TO the_DT root_NN of_IN tree_NN ._.
+-LRB-_-LRB- a_LS -RRB-_-RRB- The_DT new_JJ candidate_NN subtree_NN ._.
+-LRB-_-LRB- b_NN -RRB-_-RRB-
+as_IN relational_JJ data_NNS mining_NN or_CC bioinformatics_NNS ._.
+In_IN the_DT field_NN of_IN classification_NN from_IN structured_JJ data_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, there_EX are_VBP three_CD common_JJ ways_NNS of_IN dealing_VBG with_IN this_DT kind_NN of_IN representation_NN :_: relational_JJ rule_NN learning_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, kernel_NN approaches_NNS -LRB-_-LRB- 3_CD ,_, 4_CD -RRB-_-RRB- or_CC propositionalisation_NN -LRB-_-LRB- 5_CD --_: 7_CD -RRB-_-RRB- ._.
+In_IN this_DT paper_NN we_PRP use_VBP propositionalisation_NN to_TO generate_VB attribute-value_JJ representations_NNS of_IN varying_VBG complexity_NN for_IN Multiple_JJ Sequence_NN Alignment_NN ._.
+T_NN
+s_NN within_IN very_RB high_JJ dimensional_JJ ,_, massive_JJ datasets_NNS ._.
+FPM_NNP is_VBZ very_RB well_RB suited_VBN to_TO selecting_VBG or_CC constructing_VBG good_JJ features_NNS in_IN complex_JJ data_NNS and_CC also_RB for_IN building_VBG global_JJ classification_NN models_NNS of_IN the_DT datasets_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT specific_JJ tasks_NNS encompassed_VBN by_IN FPM_NN include_VBP the_DT mining_NN of_IN increasingly_RB complex_JJ and_CC informative_JJ patterns_NNS ,_, in_IN complex_JJ structured_JJ and_CC unstructured_JJ relational_JJ datasets_NNS ,_, such_JJ as_IN :_: Itemsets_NNS or_CC co-occurre_NN
+rom_VB these_DT trees_NNS can_MD help_VB in_IN making_VBG recommendations_NNS ,_, in_IN web_NN personalization_NN ,_, and_CC in_IN better_JJR organization_NN of_IN web_NN pages_NNS -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+Frequent_JJ tree_NN mining_NN is_VBZ also_RB found_VBN to_TO be_VB useful_JJ in_IN analyzing_VBG XML_NN repositories_NNS =_JJ -_: =[_NN 44_CD -RRB-_-RRB- -_: =_JJ -_: ,_, in_IN designing_VBG caching_NN policies_NNS for_IN XML_NN indices_NNS -LRB-_-LRB- 41_CD -RRB-_-RRB- ,_, in_IN designing_VBG automatic_JJ language_NN parsers_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, in_IN examining_VBG parse_NN trees_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, and_CC in_IN many_JJ other_JJ applications_NNS ._.
+The_DT essential_JJ problem_NN in_IN these_DT instance_NN
+aditionally_RB using_VBG information_NN retrieval_NN techniques_NNS considering_VBG the_DT labels_NNS of_IN nodes_NNS as_IN bags_NN of_IN words_NNS ._.
+With_IN the_DT development_NN of_IN frequent_JJ tree_NN miners_NNS ,_, classification_NN methods_NNS using_VBG frequent_JJ trees_NNS appeared_VBD =_JJ -_: =[_NN 21_CD ,_, 14_CD ,_, 8_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recently_RB ,_, closed_VBD frequent_JJ miners_NNS were_VBD proposed_VBN -LRB-_-LRB- 7_CD ,_, 18_CD ,_, 1_CD -RRB-_-RRB- ,_, and_CC using_VBG them_PRP for_IN classification_NN tasks_NNS is_VBZ the_DT next_JJ natural_JJ step.Closure-based_JJ mining_NN on_IN relational_JJ data_NNS has_VBZ recently_RB provided_VBN some_DT intere_NN
+curring_VBG subtrees_NNS ._.
+This_DT issue_NN has_VBZ practical_JJ importance_NN ._.
+For_IN example_NN ,_, in_IN multiple_JJ multicast_JJ groups_NNS ,_, frequent_JJ occurring_NN subtrees_NNS can_MD be_VB used_VBN to_TO find_VB the_DT common_JJ parts_NNS among_IN different_JJ multicast_JJ events_NNS ;_: in_IN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, frequently_RB occurring_VBG subtrees_NNS are_VBP used_VBN to_TO classify_VB XML_NN data_NNS ._.
+However_RB ,_, as_IN we_PRP have_VBP discovered_VBN in_IN our_PRP$ previous_JJ study_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, because_IN of_IN the_DT combinatorial_JJ explosion_NN ,_, the_DT number_NN of_IN frequent_JJ subtrees_NNS usually_RB

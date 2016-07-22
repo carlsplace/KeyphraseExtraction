@@ -1,0 +1,164 @@
+Combining_VBG global_JJ optimization_NN with_IN local_JJ selection_NN for_IN efficient_JJ QoS-aware_NNP service_NN composition_NN
+The_DT run-time_JJ binding_NN of_IN web_NN services_NNS has_VBZ been_VBN recently_RB put_VBN forward_RB in_IN order_NN to_TO support_VB rapid_JJ and_CC dynamic_JJ web_NN service_NN compositions_NNS ._.
+With_IN the_DT growing_VBG number_NN of_IN alternative_JJ web_NN services_NNS that_WDT provide_VBP the_DT same_JJ functionality_NN but_CC differ_VBP in_IN quality_NN parameters_NNS ,_, the_DT service_NN composition_NN becomes_VBZ a_DT decision_NN problem_NN on_IN which_WDT component_NN services_NNS should_MD be_VB selected_VBN such_JJ that_IN user_NN 's_POS end-to-end_JJ QoS_NN requirements_NNS -LRB-_-LRB- e.g._FW availability_NN ,_, response_NN time_NN -RRB-_-RRB- and_CC preferences_NNS -LRB-_-LRB- e.g._FW price_NN -RRB-_-RRB- are_VBP satisfied_JJ ._.
+Although_IN very_RB efficient_JJ ,_, local_JJ selection_NN strategy_NN fails_VBZ short_JJ in_IN handling_VBG global_JJ QoS_NN requirements_NNS ._.
+Solutions_NNPS based_VBN on_IN global_JJ optimization_NN ,_, on_IN the_DT other_JJ hand_NN ,_, can_MD handle_VB global_JJ constraints_NNS ,_, but_CC their_PRP$ poor_JJ performance_NN renders_VBZ them_PRP inappropriate_JJ for_IN applications_NNS with_IN dynamic_JJ and_CC real-time_JJ requirements_NNS ._.
+In_IN this_DT paper_NN we_PRP address_VBP this_DT problem_NN and_CC propose_VBP a_DT solution_NN that_WDT combines_VBZ global_JJ optimization_NN with_IN local_JJ selection_NN techniques_NNS to_TO benefit_VB from_IN the_DT advantages_NNS of_IN both_DT worlds_NNS ._.
+The_DT proposed_VBN solution_NN consists_VBZ of_IN two_CD steps_NNS :_: first_RB ,_, we_PRP use_VBP mixed_JJ integer_NN programming_NN -LRB-_-LRB- MIP_NN -RRB-_-RRB- to_TO find_VB the_DT optimal_JJ decomposition_NN of_IN global_JJ QoS_NN constraints_NNS into_IN local_JJ constraints_NNS ._.
+Second_RB ,_, we_PRP use_VBP distributed_VBN local_JJ selection_NN to_TO find_VB the_DT best_JJS web_NN services_NNS that_WDT satisfy_VBP these_DT local_JJ constraints_NNS ._.
+The_DT results_NNS of_IN experimental_JJ evaluation_NN indicate_VBP that_IN our_PRP$ approach_NN significantly_RB outperforms_VBZ existing_VBG solutions_NNS in_IN terms_NNS of_IN computation_NN time_NN while_IN achieving_VBG close-to-optimal_JJ results_NNS ._.
+d_NN number_NN of_IN loop_NN iterations_NNS -RRB-_-RRB- ._.
+Also_RB ,_, aggregating_VBG QoS_NN characteristics_NNS for_IN complex_NN networks_NNS using_VBG service_NN compositions_NNS exposed_VBN as_IN services_NNS -LRB-_-LRB- Section_NN 2.3_CD -RRB-_-RRB- is_VBZ not_RB treated_VBN ._.
+On_IN the_DT other_JJ hand_NN ,_, some_DT proposals_NNS =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: aim_NN at_IN a_DT global_JJ optimization_NN ,_, but_CC ignore_VBP data-related_JJ issues_NNS ._.
+We_PRP will_MD try_VB to_TO balance_VB both_DT dimensions_NNS -LRB-_-LRB- use_NN of_IN global_JJ information_NN and_CC data-sensitivity_NN -RRB-_-RRB- while_IN keeping_VBG the_DT cost_NN analysis_NN automatic_JJ ._.
+2.1_CD An_DT
+._.
+,_, number_NN of_IN iterations_NNS in_IN a_DT loop_NN -RRB-_-RRB- are_VBP often_RB either_CC fixed_VBN or_CC modeled_VBN statistically_RB ._.
+Also_RB ,_, aggregating_VBG QoS_NN characteristics_NNS of_IN service_NN compositions_NNS exposed_VBN as_IN services_NNS is_VBZ often_RB not_RB done_VBN ._.
+Some_DT proposals_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- aim_NN at_IN performing_VBG global_JJ optimization_NN ,_, but_CC still_RB ignore_VB data-related_JJ issues_NNS ._.
+Our_PRP$ proposal_NN addresses_VBZ both_DT dimensions_NNS -LRB-_-LRB- global_JJ information_NN andClient_NN Figure_NN 1_CD ._.
+Request_NNP TA_NNP -LRB-_-LRB- n_NN -RRB-_-RRB- =_JJ 2n_CD +_CC 3_CD +_CC nS_NN -LRB-_-LRB- n_NN -RRB-_-RRB-
+the_DT case_NN of_IN SAT_NNP ._.
+Ko_NNP et_FW al._FW -LRB-_-LRB- 18_CD -RRB-_-RRB- propose_VBP a_DT constraint-based_JJ approach_NN that_WDT encodes_VBZ the_DT nonfunctional_JJ permissible_JJ values_NNS as_IN a_DT set_NN of_IN constraints_NNS whose_WP$ violation_NN needs_VBZ to_TO be_VB minimized_VBN ._.
+Alrifai_NNP and_CC Risse_NNP =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: develop_VB a_DT two-fold_JJ solution_NN that_WDT uses_VBZ a_DT hybrid_JJ in-teger_JJ programming_NN algorithm_NN to_TO find_VB the_DT decomposition_NN of_IN global_JJ QoS_NN into_IN local_JJ constraints_NNS ,_, and_CC then_RB ,_, selects_VBZ the_DT services_NNS that_WDT best_RB meet_VBP the_DT local_JJ
+Their_PRP$ goal_NN of_IN service_NN selection_NN is_VBZ to_TO maximize_VB an_DT application-specific_JJ utility_NN function_NN under_IN the_DT end-to-end_JJ QoS_NN constraints_NNS ._.
+In_IN addition_NN ,_, to_TO obtain_VB both_DT of_IN optimality_NN and_CC efficiency_NN ,_, Alrifai_NNP et_FW al._FW =_SYM -_: =[_NN 65_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP a_DT solution_NN that_WDT combines_VBZ global_JJ optimization_NN with_IN local_JJ selection_NN techniques_NNS ._.
+The_DT proposed_VBN solution_NN finds_VBZ the_DT optimal_JJ decomposition_NN of_IN global_JJ QoS_NN constraints_NNS into_IN local_JJ constraints_NNS by_IN using_VBG m_NN
+._.
+,_, number_NN of_IN iterations_NNS in_IN a_DT loop_NN -RRB-_-RRB- are_VBP often_RB either_CC fixed_VBN or_CC modeled_VBN statistically_RB ._.
+Also_RB ,_, aggregating_VBG QoS_NN characteristics_NNS of_IN service_NN compositions_NNS exposed_VBN as_IN services_NNS is_VBZ often_RB not_RB done_VBN ._.
+Some_DT proposals_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: aim_NN at_IN performing_VBG global_JJ optimization_NN ,_, but_CC still_RB ignore_VB data-related_JJ issues_NNS ._.
+Our_PRP$ proposal_NN addresses_VBZ both_DT dimensions_NNS -LRB-_-LRB- global_JJ information_NN and_CC datasensitivity_NN -RRB-_-RRB- while_IN still_RB aiming_VBG at_IN a_DT completely_RB automat_NN
+stantiation_NN in_IN a_DT given_VBN sensor_NN node_NN is_VBZ chosen_VBN as_IN part_NN of_IN a_DT composition_NN graph_NN ._.
+There_EX were_VBD methods_NNS proposed_VBN for_IN making_VBG an_DT efficient_JJ choice_NN of_IN operator_NN for_IN general_JJ distributed_VBN computations_NNS -LRB-_-LRB- e.g._FW -LRB-_-LRB- 3_CD -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- 5_CD -RRB-_-RRB- =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, in_IN addition_NN to_TO focusing_VBG on_IN a_DT single_JJ cost_NN metric_NN such_JJ as_IN energy_NN or_CC delay_NN ,_, prior_JJ work_NN has_VBZ not_RB taken_VBN into_IN account_NN the_DT operational_JJ uncertainty_NN arising_VBG in_IN sensor_NN network_NN deployments_NNS ,_, which_WDT dire_JJ
+can_MD be_VB done_VBN much_RB more_RBR efficient_JJ than_IN global_JJ optimization_NN -RRB-_-RRB- ._.
+This_DT approach_NN can_MD also_RB be_VB considered_VBN a_DT heuristic_NN ,_, since_IN the_DT combination_NN with_IN local_JJ selection_NN does_VBZ not_RB guarantee_VB a_DT globally_RB optimal_JJ solution_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_RBS comparably_RB to_TO our_PRP$ work_NN ,_, the_DT authors_NNS of_IN -LRB-_-LRB- 30_CD -RRB-_-RRB- use_VBP a_DT genetic_JJ algorithm_NN combined_VBN with_IN local_JJ search_NN to_TO efficiently_RB solve_VB the_DT QoS_NN optimization_NN problem_NN ._.
+The_DT main_JJ difference_NN of_IN our_PRP$ work_NN to_TO all_PDT these_DT ap_NN
+es_VBZ back_RB to_TO 2004_CD -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, however_RB ,_, newer_JJR research_NN is_VBZ still_RB able_JJ to_TO provide_VB new_JJ insights_NNS ._.
+For_IN instance_NN ,_, -LRB-_-LRB- 11_CD -RRB-_-RRB- defined_VBD a_DT domain-specific_JJ language_NN from_IN which_WDT dynamic_JJ QoS-optimized_JJ compositions_NNS are_VBP generated_VBN ._.
+=_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: improved_VBN on_IN the_DT methods_NNS of_IN optimization_NN that_WDT are_VBP used_VBN in_FW QoSaware_FW composition_NN ,_, and_CC proposed_VBD to_TO use_VB a_DT combination_NN of_IN local_JJ selection_NN and_CC global_JJ optimization_NN ._.
+The_DT approach_NN presented_VBN in_IN this_DT paper_NN diffe_NN
+heuristic_NN algorithms_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- have_VBP been_VBN investigated_VBN as_IN a_DT means_NN of_IN computing_VBG near-optimal_JJ solutions_NNS ._.
+To_TO improve_VB the_DT performance_NN of_IN service_NN selection_NN ,_, some_DT approaches_NNS attempt_VBP to_TO prune_VB the_DT search_NN space_NN ._.
+In_IN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, global_JJ QoS-constraints_NNS are_VBP split_VBN up_RP into_IN local_JJ constraints_NNS for_IN each_DT single_JJ service_NN task_NN ._.
+Subsequently_RB ,_, the_DT configuration_NN with_IN the_DT locally_RB best_JJS services_NNS is_VBZ selected_VBN ._.
+In_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, services_NNS that_WDT are_VBP not_RB par_JJ
+Integer_NNP Programming_NNP -LRB-_-LRB- IP_NNP -RRB-_-RRB- ,_, which_WDT is_VBZ still_RB a_DT common_JJ way_NN to_TO obtain_VB optimal_JJ solutions_NNS for_IN the_DT CP_NN ._.
+A_DT genetic_JJ algorithm_NN is_VBZ used_VBN in_IN -LRB-_-LRB- 6_CD ,_, 8_CD -RRB-_-RRB- ._.
+Moreover_RB ,_, many_JJ efficient_JJ heuristic_NN algorithms_NNS have_VBP been_VBN introduced_VBN =_JJ -_: =[_NN 2_CD ,_, 15_CD ,_, 12_CD ,_, 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT most_RBS recent_JJ being_NN in_IN -LRB-_-LRB- 13_CD ,_, 20_CD -RRB-_-RRB- ._.
+All_DT these_DT approaches_NNS share_VBP the_DT same_JJ definition_NN of_IN the_DT CP_NN ,_, which_WDT ignores_VBZ the_DT QoS_NN of_IN the_DT network_NN connecting_VBG the_DT services_NNS ._.
+Except_IN for_IN IP_NNP which_WDT requires_VBZ a_DT linear_JJ funct_NN
+ays_NNS of_IN how_WRB the_DT QoS_NN optimization_NN problem_NN can_MD be_VB formulated_VBN ._.
+In_IN more_RBR recent_JJ papers_NNS ,_, there_EX seems_VBZ to_TO be_VB a_DT trend_NN towards_IN using_VBG a_DT combination_NN of_IN different_JJ techniques_NNS ._.
+One_CD ex102ample_NN of_IN such_PDT an_DT approach_NN is_VBZ =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB large_JJ compositions_NNS are_VBP split_VBN into_IN small_JJ parts_NNS ,_, each_DT of_IN which_WDT is_VBZ optimized_VBN locally_RB ._.
+The_DT result_NN of_IN this_DT local_JJ optimizations_NNS is_VBZ then_RB again_RB optimized_VBN from_IN a_DT global_JJ perspective_NN ._.
+Similar_JJ to_TO most_JJS app_NN
+umber_NN of_IN quality_NN levels_NNS in_IN this_DT experiment_NN was_VBD set_VBN to_TO 10_CD ,_, 20_CD ,_, 30_CD ,_, 40_CD and_CC 50_CD levels_NNS ._.
+The_DT Dataset_NNP In_IN our_PRP$ evaluation_NN we_PRP experimented_VBD with_IN two_CD QoS_NN datasets_NNS ._.
+The_DT first_JJ dataset_NN is_VBZ the_DT QWS_NNP real_JJ dataset_NN from_IN =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT dataset_NN includes_VBZ measurements_NNS of_IN 9_CD QoS_NN attributes_NNS for_IN 2500_CD real_JJ web_NN services_NNS ._.
+Table_NNP 2_CD lists_VBZ the_DT QoS_NN attributes_VBZ in_IN this_DT dataset_NN and_CC gives_VBZ a_DT brief_JJ description_NN of_IN each_DT attribute_NN ._.
+The_DT dataset_NN was_VBD m_NN
+ocal_JJ selection_NN approach_NN is_VBZ especially_RB useful_JJ for_IN distributed_VBN environments_NNS where_WRB central_JJ QoS_NN management_NN is_VBZ not_RB desirable_JJ and_CC groups_NNS of_IN candidate_NN web_NN services_NNS are_VBP managed_VBN by_IN distributed_VBN service_NN brokers_NNS =_JJ -_: =[_NN 8_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT idea_NN is_VBZ to_TO select_VB one_CD service_NN from_IN each_DT group_NN of_IN service_NN candidates_NNS independently_RB on_IN the_DT other_JJ groups_NNS ._.
+Using_VBG a_DT given_VBN utility_NN function_NN ,_, the_DT values_NNS of_IN the_DT different_JJ QoS_NN criteria_NNS are_VBP mapped_VBN to_TO a_DT si_NN
+ard_NN in_IN the_DT strong_JJ sense_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+Consequently_RB ,_, it_PRP can_MD be_VB expected_VBN that_IN an_DT optimal_JJ solution_NN may_MD not_RB be_VB found_VBN in_IN a_DT reasonable_JJ amount_NN of_IN time_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+The_DT exponential_JJ time_NN complexity_NN of_IN the_DT proposed_VBN solutions_NNS =_JJ -_: =[_NN 24_CD ,_, 25_CD ,_, 5_CD ,_, 6_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ only_RB acceptable_JJ if_IN the_DT number_NN of_IN service_NN candidates_NNS is_VBZ very_RB limited_JJ ._.
+Already_RB in_IN larger_JJR enterprises_NNS and_CC even_RB more_RBR in_IN open_JJ service_NN infrastructures_NNS with_IN a_DT few_JJ thousands_NNS of_IN services_NNS the_DT response_NN time_NN
+this_DT paper_NN ,_, we_PRP focus_VBP on_IN the_DT sequential_JJ composition_NN model_NN ._.
+Other_JJ models_NNS may_MD be_VB reduced_VBN or_CC transformed_VBN to_TO the_DT sequential_JJ model_NN ._.
+Techniques_NNS for_IN handling_VBG multiple_JJ execution_NN paths_NNS and_CC unfolding_VBG loops_NNS from_IN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, can_MD be_VB used_VBN for_IN this_DT purpose_NN ._.
+The_DT QoS_NN vector_NN for_IN a_DT composite_JJ service_NN CS_NN is_VBZ defined_VBN as_IN QCS_NN =_JJ -LCB-_-LRB- q_FW ′_FW 1_CD -LRB-_-LRB- CS_NN -RRB-_-RRB- ,_, ..._: ,_, q_FW ′_FW r_NN -LRB-_-LRB- CS_NN -RRB-_-RRB- -RCB-_-RRB- ._.
+q_FW ′_FW i_FW -LRB-_-LRB- CS_NN -RRB-_-RRB- represents_VBZ the_DT estimated_VBN value_NN of_IN the_DT i-th_FW QoS_FW attribute_NN of_IN CS_NN a_DT
+Session_NN :_: Service_NNP Oriented_NNP Development_NNP 2_CD ._.
+RELATED_NNS WORK_VBP The_DT requirements_NNS for_IN composition_NN of_IN web_NN services_NNS can_MD be_VB stated_VBN in_IN a_DT workflow_NN language_NN such_JJ as_IN Business_NNP Process_VBP Execution_NN Language_NN -LRB-_-LRB- BPEL_NN -RRB-_-RRB- -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+In_IN =_JJ -_: =[_NN 26_CD ,_, 9_CD -RRB-_-RRB- -_: =_JJ -_: ontology-based_JJ representations_NNS for_IN describing_VBG QoS_NN properties_NNS and_CC requests_NNS were_VBD proposed_VBN to_TO support_VB semantic_JJ and_CC dynamic_JJ QoS-based_JJ discovery_NN of_IN web_NN services_NNS ._.
+Quality_NNP of_IN service_NN management_NN has_VBZ been_VBN wid_VBN
+umber_NN of_IN quality_NN levels_NNS in_IN this_DT experiment_NN was_VBD set_VBN to_TO 10_CD ,_, 20_CD ,_, 30_CD ,_, 40_CD and_CC 50_CD levels_NNS ._.
+The_DT Dataset_NNP In_IN our_PRP$ evaluation_NN we_PRP experimented_VBD with_IN two_CD QoS_NN datasets_NNS ._.
+The_DT first_JJ dataset_NN is_VBZ the_DT QWS_NNP real_JJ dataset_NN from_IN =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT dataset_NN includes_VBZ measurements_NNS of_IN 9_CD QoS_NN attributes_NNS for_IN 2500_CD real_JJ web_NN services_NNS ._.
+Table_NNP 2_CD lists_VBZ the_DT QoS_NN attributes_VBZ in_IN this_DT dataset_NN and_CC gives_VBZ a_DT brief_JJ description_NN of_IN each_DT attribute_NN ._.
+The_DT dataset_NN was_VBD m_NN
+oS_NN properties_NNS and_CC requests_NNS were_VBD proposed_VBN to_TO support_VB semantic_JJ and_CC dynamic_JJ QoS-based_JJ discovery_NN of_IN web_NN services_NNS ._.
+Quality_NNP of_IN service_NN management_NN has_VBZ been_VBN widely_RB discussed_VBN in_IN the_DT area_NN of_IN middleware_JJ systems_NNS =_JJ -_: =[_NN 7_CD ,_, 11_CD ,_, 12_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS of_IN these_DT works_NNS focus_VBP on_IN QoS_NN specification_NN and_CC management_NN ._.
+Recently_RB ,_, the_DT QoS-based_JJ web_NN service_NN selection_NN and_CC composition_NN in_IN service-oriented_JJ applications_NNS has_VBZ gained_VBN the_DT attention_NN of_IN many_JJ researc_NN
+oS_NN properties_NNS and_CC requests_NNS were_VBD proposed_VBN to_TO support_VB semantic_JJ and_CC dynamic_JJ QoS-based_JJ discovery_NN of_IN web_NN services_NNS ._.
+Quality_NNP of_IN service_NN management_NN has_VBZ been_VBN widely_RB discussed_VBN in_IN the_DT area_NN of_IN middleware_JJ systems_NNS =_JJ -_: =[_NN 7_CD ,_, 11_CD ,_, 12_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS of_IN these_DT works_NNS focus_VBP on_IN QoS_NN specification_NN and_CC management_NN ._.
+Recently_RB ,_, the_DT QoS-based_JJ web_NN service_NN selection_NN and_CC composition_NN in_IN service-oriented_JJ applications_NNS has_VBZ gained_VBN the_DT attention_NN of_IN many_JJ researc_NN
+oS_NN properties_NNS and_CC requests_NNS were_VBD proposed_VBN to_TO support_VB semantic_JJ and_CC dynamic_JJ QoS-based_JJ discovery_NN of_IN web_NN services_NNS ._.
+Quality_NNP of_IN service_NN management_NN has_VBZ been_VBN widely_RB discussed_VBN in_IN the_DT area_NN of_IN middleware_JJ systems_NNS =_JJ -_: =[_NN 7_CD ,_, 11_CD ,_, 12_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS of_IN these_DT works_NNS focus_VBP on_IN QoS_NN specification_NN and_CC management_NN ._.
+Recently_RB ,_, the_DT QoS-based_JJ web_NN service_NN selection_NN and_CC composition_NN in_IN service-oriented_JJ applications_NNS has_VBZ gained_VBN the_DT attention_NN of_IN many_JJ researc_NN
+pped_VBN to_TO the_DT price_NN levels_NNS of_IN service_NN classes_NNS ._.
+We_PRP use_VBP mixed_JJ integer_NN program_NN -LRB-_-LRB- MIP_NN -RRB-_-RRB- -LRB-_-LRB- 18_CD -RRB-_-RRB- solving_VBG techniques_NNS to_TO find_VB the_DT best_JJS mapping_NN of_IN global_JJ constraints_NNS to_TO local_JJ quality_NN levels_NNS ._.
+Unlike_IN the_DT MIP_NN model_NN in_IN =_JJ -_: =[_NN 24_CD ,_, 25_CD ,_, 5_CD ,_, 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, our_PRP$ MIP_NN model_NN has_VBZ much_RB less_JJR number_NN of_IN variables_NNS -LRB-_-LRB- i.e._FW the_DT quality_NN levels_NNS instead_RB of_IN actual_JJ service_NN candidates_NNS -RRB-_-RRB- and_CC can_MD be_VB ,_, therefore_RB ,_, solved_VBD much_RB faster_RBR ._.
+4.1.1_CD Determining_VBG Quality_JJ Levels_NNS Quality_NNP lev_NN
+omposition_NN system_NN ._.
+Figure_NN 2_CD gives_VBZ a_DT conceptual_JJ overview_NN of_IN the_DT QoS-aware_NNP service_NN composition_NN problem_NN ._.
+Given_VBN an_DT abstract_JJ composition_NN request_NN ,_, which_WDT can_MD be_VB stated_VBN in_IN a_DT workflow-like_JJ language_NN -LRB-_-LRB- e.g._FW BPEL_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, the_DT discovery_NN engine_NN uses_VBZ existing_VBG infrastructure_NN -LRB-_-LRB- e.g._FW UDDI_NNP -RRB-_-RRB- to_TO locate_VB available_JJ web_NN services_NNS for_IN each_DT task_NN in_IN the_DT workflow_NN using_VBG syntactic_JJ -LRB-_-LRB- and_CC probably_RB semantic_JJ -RRB-_-RRB- functional_JJ matching_NN between_IN the_DT
+on_IN solutions_NNS model_VBP the_DT service_NN selection_NN problem_NN as_IN a_DT standard_JJ mixed_JJ integer_NN program_NN -LRB-_-LRB- MIP_NN -RRB-_-RRB- ._.
+The_DT worst_JJS case_NN time_NN complexity_NN of_IN MIP_NN solvers_NNS using_VBG the_DT simplex_NN method_NN is_VBZ an_DT exponential_JJ function_NN O_NN -LRB-_-LRB- 2_CD n_NN ·_CD l_NN -RRB-_-RRB- =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT restricts_VBZ the_DT applicability_NN of_IN these_DT solutions_NNS to_TO small_JJ size_NN composition_NN problems_NNS ,_, where_WRB the_DT number_NN of_IN service_NN candidates_NNS l_NN is_VBZ very_RB limited_JJ ._.
+Returning_VBG back_RB to_TO the_DT given_VBN service_NN composition_NN sce_NN
+t_NN of_IN these_DT works_NNS focus_VBP on_IN QoS_NN specification_NN and_CC management_NN ._.
+Recently_RB ,_, the_DT QoS-based_JJ web_NN service_NN selection_NN and_CC composition_NN in_IN service-oriented_JJ applications_NNS has_VBZ gained_VBN the_DT attention_NN of_IN many_JJ researchers_NNS =_JJ -_: =[_NN 24_CD ,_, 25_CD ,_, 5_CD ,_, 6_CD ,_, 15_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- the_DT authors_NNS propose_VBP an_DT extensible_JJ QoS_NN computation_NN model_NN that_WDT supports_VBZ open_JJ and_CC fair_JJ management_NN of_IN QoS_NN data_NNS ._.
+The_DT problem_NN of_IN QoS-based_JJ composition_NN is_VBZ not_RB addressed_VBN by_IN this_DT work_NN ._.
+The_DT work_NN of_IN Ze_NN
+oS_NN properties_NNS and_CC requests_NNS were_VBD proposed_VBN to_TO support_VB semantic_JJ and_CC dynamic_JJ QoS-based_JJ discovery_NN of_IN web_NN services_NNS ._.
+Quality_NNP of_IN service_NN management_NN has_VBZ been_VBN widely_RB discussed_VBN in_IN the_DT area_NN of_IN middleware_JJ systems_NNS =_JJ -_: =[_NN 7_CD ,_, 11_CD ,_, 12_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS of_IN these_DT works_NNS focus_VBP on_IN QoS_NN specification_NN and_CC management_NN ._.
+Recently_RB ,_, the_DT QoS-based_JJ web_NN service_NN selection_NN and_CC composition_NN in_IN service-oriented_JJ applications_NNS has_VBZ gained_VBN the_DT attention_NN of_IN many_JJ researc_NN
+ile_JJ satisfying_JJ global_JJ constraints_NNS is_VBZ selected_VBN ._.
+The_DT global_JJ selection_NN problem_NN can_MD be_VB modeled_VBN as_IN a_DT Multi-Choice_NNP Multidimensional_NNP Knapsack_NNP problem_NN -LRB-_-LRB- MMKP_NN -RRB-_-RRB- ,_, which_WDT is_VBZ known_VBN to_TO be_VB NP-hard_JJ in_IN the_DT strong_JJ sense_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Consequently_RB ,_, it_PRP can_MD be_VB expected_VBN that_IN an_DT optimal_JJ solution_NN may_MD not_RB be_VB found_VBN in_IN a_DT reasonable_JJ amount_NN of_IN time_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+The_DT exponential_JJ time_NN complexity_NN of_IN the_DT proposed_VBN solutions_NNS -LRB-_-LRB- 24_CD ,_, 25_CD ,_, 5_CD ,_, 6_CD -RRB-_-RRB- is_VBZ only_RB accep_NN
+on_IN of_IN component_NN services_NNS with_IN regards_VBZ to_TO functional_JJ and_CC non-functional_JJ requirements_NNS ._.
+Figure_NN 1_CD :_: Web_NN Service_NNP Composition_NNP Example_NNP Consider_VB for_IN example_NN the_DT personalized_VBN multimedia_NNS delivery_NN scenario_NN -LRB-_-LRB- from_IN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =--RRB-_NN in_IN Figure_NNP 1_CD ._.
+A_DT smartphone_NN user_NN requests_NNS the_DT latest_JJS news_NN from_IN a_DT service_NN provider_NN ._.
+Available_JJ multimedia_NNS content_NN includes_VBZ a_DT news_NN ticker_NN and_CC topical_JJ videos_NNS available_JJ in_IN MPEG_NN 2_CD only_RB ._.
+The_DT news_NN provider_NN ha_NN
+pped_VBN to_TO the_DT price_NN levels_NNS of_IN service_NN classes_NNS ._.
+We_PRP use_VBP mixed_JJ integer_NN program_NN -LRB-_-LRB- MIP_NN -RRB-_-RRB- -LRB-_-LRB- 18_CD -RRB-_-RRB- solving_VBG techniques_NNS to_TO find_VB the_DT best_JJS mapping_NN of_IN global_JJ constraints_NNS to_TO local_JJ quality_NN levels_NNS ._.
+Unlike_IN the_DT MIP_NN model_NN in_IN =_JJ -_: =[_NN 24_CD ,_, 25_CD ,_, 5_CD ,_, 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, our_PRP$ MIP_NN model_NN has_VBZ much_RB less_JJR number_NN of_IN variables_NNS -LRB-_-LRB- i.e._FW the_DT quality_NN levels_NNS instead_RB of_IN actual_JJ service_NN candidates_NNS -RRB-_-RRB- and_CC can_MD be_VB ,_, therefore_RB ,_, solved_VBD much_RB faster_RBR ._.
+4.1.1_CD Determining_VBG Quality_JJ Levels_NNS Quality_NNP lev_NN
+e_LS ,_, to_TO enable_VB sorting_NN and_CC ranking_NN of_IN service_NN candidates_NNS ._.
+In_IN this_DT paper_NN we_PRP use_VBP a_DT Multiple_JJ Attribute_NN Decision_NN Making_VBG approach_NN for_IN the_DT utility_NN function_NN :_: i.e._FW the_DT Simple_JJ Additive_JJ Weighting_NN -LRB-_-LRB- SAW_NN -RRB-_-RRB- technique_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT utility_NN computation_NN involves_VBZ scaling_VBG the_DT QoS_NN attributes_NNS '_POS values_NNS to_TO allow_VB a_DT uniform_JJ measurement_NN of_IN the_DT multi-dimensional_JJ service_NN qualities_NNS independent_JJ of_IN their_PRP$ units_NNS and_CC ranges_NNS ._.
+The_DT scaling_VBG proce_NN
+Session_NN :_: Service_NNP Oriented_NNP Development_NNP 2_CD ._.
+RELATED_NNS WORK_VBP The_DT requirements_NNS for_IN composition_NN of_IN web_NN services_NNS can_MD be_VB stated_VBN in_IN a_DT workflow_NN language_NN such_JJ as_IN Business_NNP Process_VBP Execution_NN Language_NN -LRB-_-LRB- BPEL_NN -RRB-_-RRB- -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+In_IN =_JJ -_: =[_NN 26_CD ,_, 9_CD -RRB-_-RRB- -_: =_JJ -_: ontology-based_JJ representations_NNS for_IN describing_VBG QoS_NN properties_NNS and_CC requests_NNS were_VBD proposed_VBN to_TO support_VB semantic_JJ and_CC dynamic_JJ QoS-based_JJ discovery_NN of_IN web_NN services_NNS ._.
+Quality_NNP of_IN service_NN management_NN has_VBZ been_VBN wid_VBN
+ard_NN in_IN the_DT strong_JJ sense_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+Consequently_RB ,_, it_PRP can_MD be_VB expected_VBN that_IN an_DT optimal_JJ solution_NN may_MD not_RB be_VB found_VBN in_IN a_DT reasonable_JJ amount_NN of_IN time_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+The_DT exponential_JJ time_NN complexity_NN of_IN the_DT proposed_VBN solutions_NNS =_JJ -_: =[_NN 24_CD ,_, 25_CD ,_, 5_CD ,_, 6_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ only_RB acceptable_JJ if_IN the_DT number_NN of_IN service_NN candidates_NNS is_VBZ very_RB limited_JJ ._.
+Already_RB in_IN larger_JJR enterprises_NNS and_CC even_RB more_RBR in_IN open_JJ service_NN infrastructures_NNS with_IN a_DT few_JJ thousands_NNS of_IN services_NNS the_DT response_NN time_NN
+ocal_JJ selection_NN approach_NN is_VBZ especially_RB useful_JJ for_IN distributed_VBN environments_NNS where_WRB central_JJ QoS_NN management_NN is_VBZ not_RB desirable_JJ and_CC groups_NNS of_IN candidate_NN web_NN services_NNS are_VBP managed_VBN by_IN distributed_VBN service_NN brokers_NNS =_JJ -_: =[_NN 8_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT idea_NN is_VBZ to_TO select_VB one_CD service_NN from_IN each_DT group_NN of_IN service_NN candidates_NNS independently_RB on_IN the_DT other_JJ groups_NNS ._.
+Using_VBG a_DT given_VBN utility_NN function_NN ,_, the_DT values_NNS of_IN the_DT different_JJ QoS_NN criteria_NNS are_VBP mapped_VBN to_TO a_DT si_NN
+icial_JJ web_NN services_NNS ._.
+The_DT QoS_NN values_NNS were_VBD normally_RB distributed_VBN in_IN the_DT range_NN between_IN 1_CD and_CC 100_CD ._.
+Experiment_NN Settings_NNS We_PRP used_VBD the_DT open_JJ source_NN -LRB-_-LRB- Mixed_JJ Integer_NN Programming_NN -RRB-_-RRB- LpSolve_NN system_NN lpsolve_JJ version_NN 5.5_CD =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: for_IN solving_VBG the_DT MIP_NN model_NN in_IN both_DT approaches_NNS ._.
+The_DT experiments_NNS were_VBD conducted_VBN on_IN a_DT HP_NNP ProLiant_NNP DL380_NN G3_NN machine_NN with_IN 2_CD Intel_NNP Xeon_NNP 2.80_CD GHz_NN processors_NNS and_CC 6_CD GB_NN RAM_NNP ._.
+The_DT machine_NN is_VBZ running_VBG under_IN Linux_NN -LRB-_-LRB- C_NN
+t_NN of_IN these_DT works_NNS focus_VBP on_IN QoS_NN specification_NN and_CC management_NN ._.
+Recently_RB ,_, the_DT QoS-based_JJ web_NN service_NN selection_NN and_CC composition_NN in_IN service-oriented_JJ applications_NNS has_VBZ gained_VBN the_DT attention_NN of_IN many_JJ researchers_NNS =_JJ -_: =[_NN 24_CD ,_, 25_CD ,_, 5_CD ,_, 6_CD ,_, 15_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- the_DT authors_NNS propose_VBP an_DT extensible_JJ QoS_NN computation_NN model_NN that_WDT supports_VBZ open_JJ and_CC fair_JJ management_NN of_IN QoS_NN data_NNS ._.
+The_DT problem_NN of_IN QoS-based_JJ composition_NN is_VBZ not_RB addressed_VBN by_IN this_DT work_NN ._.
+The_DT work_NN of_IN Ze_NN
+uld_RB raise_VB a_DT very_RB high_JJ communication_NN cost_NN ._.
+The_DT WS_NNP HEU_NNP for_IN example_NN ,_, is_VBZ an_DT improvement_NN of_IN the_DT original_JJ heuristic_NN algorithm_NN for_IN solving_VBG general_JJ Multi-Choice_NNP Multidimensional_NNP Knapsack_NNP problems_NNS named_VBD M-HEU_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT WS_NNP HEU_NNP algorithm_NN starts_VBZ with_IN a_DT pre-processing_JJ step_NN for_IN finding_VBG an_DT initial_JJ feasible_JJ solution_NN ,_, i.e._FW a_DT service_NN combination_NN that_WDT satisfies_VBZ all_DT constraints_NNS but_CC not_RB necessarily_RB is_VBZ the_DT best_JJS solution_NN ._.
+A_DT
+umber_NN of_IN quality_NN levels_NNS in_IN this_DT experiment_NN was_VBD set_VBN to_TO 10_CD ,_, 20_CD ,_, 30_CD ,_, 40_CD and_CC 50_CD levels_NNS ._.
+The_DT Dataset_NNP In_IN our_PRP$ evaluation_NN we_PRP experimented_VBD with_IN two_CD QoS_NN datasets_NNS ._.
+The_DT first_JJ dataset_NN is_VBZ the_DT QWS_NNP real_JJ dataset_NN from_IN =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT dataset_NN includes_VBZ measurements_NNS of_IN 9_CD QoS_NN attributes_NNS for_IN 2500_CD real_JJ web_NN services_NNS ._.
+Table_NNP 2_CD lists_VBZ the_DT QoS_NN attributes_VBZ in_IN this_DT dataset_NN and_CC gives_VBZ a_DT brief_JJ description_NN of_IN each_DT attribute_NN ._.
+The_DT dataset_NN was_VBD m_NN

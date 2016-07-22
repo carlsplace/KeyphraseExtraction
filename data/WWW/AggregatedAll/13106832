@@ -1,0 +1,135 @@
+Piazza_NNP :_: data_NNS management_NN infrastructure_NN for_IN semantic_JJ web_NN applications_NNS
+The_DT Semantic_JJ Web_NN envisions_VBZ a_DT World_NNP Wide_NN Web_NN in_IN which_WDT data_NN is_VBZ described_VBN with_IN rich_JJ semantics_NNS and_CC applications_NNS can_MD pose_VB complex_JJ queries_NNS ._.
+To_TO this_DT point_NN ,_, researchers_NNS have_VBP defined_VBN new_JJ languages_NNS for_IN specifying_VBG meanings_NNS for_IN concepts_NNS and_CC developed_VBD techniques_NNS for_IN reasoning_NN about_IN them_PRP ,_, using_VBG RDF_NNP as_IN the_DT data_NNS model_NN ._.
+To_TO flourish_VB ,_, the_DT Semantic_JJ Web_NN needs_VBZ to_TO be_VB able_JJ to_TO accommodate_VB the_DT huge_JJ amounts_NNS of_IN existing_VBG data_NNS and_CC the_DT applications_NNS operating_VBG on_IN them_PRP ._.
+To_TO achieve_VB this_DT ,_, we_PRP are_VBP faced_VBN with_IN two_CD problems_NNS ._.
+First_RB ,_, most_JJS of_IN the_DT world_NN 's_POS data_NNS is_VBZ available_JJ not_RB in_IN RDF_NNP but_CC in_IN XML_NN ;_: XML_NN and_CC the_DT applications_NNS consuming_VBG it_PRP rely_VB not_RB only_RB on_IN the_DT domain_NN structure_NN of_IN the_DT data_NNS ,_, but_CC also_RB on_IN its_PRP$ document_NN structure_NN ._.
+Hence_RB ,_, to_TO provide_VB interoperability_NN between_IN such_JJ sources_NNS ,_, we_PRP must_MD map_VB between_IN both_DT their_PRP$ domain_NN structures_NNS and_CC their_PRP$ document_NN structures_NNS ._.
+Second_JJ ,_, data_NN management_NN practitioners_NNS often_RB prefer_VBP to_TO exchange_NN data_NNS through_IN local_JJ point-to-point_JJ data_NNS translations_NNS ,_, rather_RB than_IN mapping_NN to_TO common_JJ mediated_JJ schemas_NNS or_CC ontologies_NNS ._.
+This_DT paper_NN describes_VBZ the_DT Piazza_NNP system_NN ,_, which_WDT addresses_VBZ these_DT challenges_NNS ._.
+Piazza_NNP offers_VBZ a_DT language_NN for_IN mediating_VBG between_IN data_NNS sources_NNS on_IN the_DT Semantic_JJ Web_NN ,_, which_WDT maps_VBZ both_CC the_DT domain_NN structure_NN and_CC document_NN structure_NN ._.
+Piazza_NNP also_RB enables_VBZ interoperation_NN of_IN XML_NN data_NNS with_IN RDF_NN data_NNS that_WDT is_VBZ accompanied_VBN by_IN rich_JJ OWL_NN ontologies_NNS ._.
+Mappings_NNS in_IN Piazza_NNP are_VBP provided_VBN at_IN a_DT local_JJ scale_NN between_IN small_JJ sets_NNS of_IN nodes_NNS ,_, and_CC our_PRP$ query_NN answering_VBG algorithm_NN is_VBZ able_JJ to_TO chain_NN sets_VBZ mappings_NNS together_RB to_TO obtain_VB relevant_JJ data_NNS from_IN across_IN the_DT Piazza_NNP network_NN ._.
+We_PRP also_RB describe_VBP an_DT implemented_VBN scenario_NN in_IN Piazza_NNP and_CC the_DT lessons_NNS we_PRP learned_VBD from_IN it_PRP ._.
+paths_NNS to_TO -LRB-_-LRB- partial_JJ -RRB-_-RRB- DTDs_NNS ._.
+The_DT important_JJ ,_, but_CC complementary_JJ issue_NN of_IN providing_VBG support_NN for_IN generating_VBG semantic_JJ mappings_NNS between_IN peers_NNS has_VBZ been_VBN a_DT topic_NN of_IN considerable_JJ interest_NN in_IN the_DT database_NN community_NN =_JJ -_: =[_NN 29_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC in_IN the_DT ontology_JJ literature_NN -LRB-_-LRB- 23_CD ,_, 12_CD ,_, 26_CD -RRB-_-RRB- ._.
+The_DT problem_NN of_IN estimating_VBG information_NN loss_NN in_IN mappings_NNS has_VBZ also_RB been_VBN studied_VBN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+An_DT important_JJ problem_NN that_IN we_PRP have_VBP not_RB yet_RB addressed_VBN is_VBZ that_DT of_IN potenti_NN
+hasizes_VBZ the_DT flexibility_NN and_CC scalability_NN needed_VBN for_IN the_DT latter_JJ kind_NN ._.
+6_CD ._.
+RELATED_NNS WORK_VBP One_CD of_IN the_DT key_JJ goals_NNS of_IN Piazza_NNP is_VBZ to_TO provide_VB semantic_JJ mediation_NN between_IN disparate_JJ data_NNS sources_NNS ._.
+Federated_NNP databases_NNS =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_JJ -_: and_CC data_NN integration_NN systems_NNS -LRB-_-LRB- 27_CD ,_, 22_CD -RRB-_-RRB- both_DT address_NN this_DT problem_NN ,_, but_CC they_PRP rely_VBP on_IN a_DT two-tier_JJ mediator_NN architecture_NN ,_, in_IN which_WDT data_NNS sources_NNS are_VBP mapped_VBN to_TO a_DT global_JJ mediated_JJ schema_NN that_WDT encompassed_VBD all_PDT a_DT
+ility_NN needed_VBN for_IN the_DT latter_JJ kind_NN ._.
+6_CD ._.
+RELATED_NNS WORK_VBP One_CD of_IN the_DT key_JJ goals_NNS of_IN Piazza_NNP is_VBZ to_TO provide_VB semantic_JJ mediation_NN between_IN disparate_JJ data_NNS sources_NNS ._.
+Federated_NNP databases_NNS -LRB-_-LRB- 32_CD -RRB-_-RRB- and_CC data_NN integration_NN systems_NNS =_JJ -_: =[_NN 27_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: both_DT address_NN this_DT problem_NN ,_, but_CC they_PRP rely_VBP on_IN a_DT two-tier_JJ mediator_NN architecture_NN ,_, in_IN which_WDT data_NNS sources_NNS are_VBP mapped_VBN to_TO a_DT global_JJ mediated_JJ schema_NN that_WDT encompassed_VBD all_DT available_JJ information_NN ._.
+This_DT architectur_NN
+be_VB the_DT standard_JJ representation_NN of_IN a_DT wide_JJ variety_NN of_IN data_NNS sources_NNS -LRB-_-LRB- as_IN do_VBP others_NNS -LRB-_-LRB- 28_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+In_IN some_DT cases_NNS ,_, accessing_VBG the_DT actual_JJ data_NNS may_MD require_VB an_DT additional_JJ level_NN of_IN translation_NN -LRB-_-LRB- e.g._FW ,_, with_IN systems_NNS like_IN =_JJ -_: =[_NN 13_CD ,_, 31_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Perhaps_RB of_IN equal_JJ importance_NN ,_, many_JJ applications_NNS ,_, tools_NNS ,_, and_CC programming_NN languages_NNS or_CC libraries_NNS have_VBP facilities_NNS for_IN loading_NN ,_, processing_NN ,_, and_CC importing_VBG XML_NN data_NNS ._.
+In_IN the_DT ideal_JJ case_NN ,_, one_PRP could_MD map_VB the_DT w_NN
+ut_IN complementary_JJ issue_NN of_IN providing_VBG support_NN for_IN generating_VBG semantic_JJ mappings_NNS between_IN peers_NNS has_VBZ been_VBN a_DT topic_NN of_IN considerable_JJ interest_NN in_IN the_DT database_NN community_NN -LRB-_-LRB- 29_CD ,_, 11_CD -RRB-_-RRB- ,_, and_CC in_IN the_DT ontology_JJ literature_NN =_JJ -_: =[_NN 23_CD ,_, 12_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT problem_NN of_IN estimating_VBG information_NN loss_NN in_IN mappings_NNS has_VBZ also_RB been_VBN studied_VBN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+An_DT important_JJ problem_NN that_IN we_PRP have_VBP not_RB yet_RB addressed_VBN is_VBZ that_DT of_IN potential_JJ data_NNS source_NN inconsistencies_NNS ;_: but_CC this_DT prob_NN
+guages_NNS for_IN mapping_NN between_IN ontologies_NNS ._.
+Our_PRP$ goal_NN is_VBZ to_TO provide_VB the_DT missing_VBG link_NN between_IN data_NNS described_VBN using_VBG rich_JJ ontologies_NNS and_CC the_DT wealth_NN of_IN data_NNS that_WDT is_VBZ currently_RB managed_VBN by_IN a_DT variety_NN of_IN tools_NNS ._.
+See_VB =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: for_IN a_DT discussion_NN of_IN additional_JJ challenges_NNS in_IN this_DT area_NN ._.
+The_DT paper_NN is_VBZ organized_VBN as_IN follows_VBZ ._.
+Section_NN 2_CD provides_VBZ an_DT overview_NN of_IN Piazza_NNP ,_, and_CC Section_NN 3_CD describes_VBZ the_DT language_NN for_IN mapping_NN between_IN nodes_NNS in_IN
+ML+OIL_NN and_CC OWL_NN ,_, the_DT recent_JJ standard_NN emerging_VBG from_IN the_DT W3C_NN ._.
+The_DT progress_NN on_IN developing_VBG ontologies_NNS and_CC representation_NN languages_NNS leaves_VBZ us_PRP with_IN two_CD significant_JJ problems_NNS ._.
+The_DT first_JJ problem_NN -LRB-_-LRB- also_RB noted_VBN by_IN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =--RRB-_NN is_VBZ that_IN there_EX is_VBZ a_DT wide_JJ disconnect_VB between_IN the_DT RDF_NNP world_NN and_CC most_JJS of_IN today_NN 's_POS data_NNS providers_NNS and_CC applications_NNS ._.
+RDF_NNP represents_VBZ everything_NN as_IN a_DT set_NN of_IN classes_NNS and_CC properties_NNS ,_, creating_VBG a_DT graph_NN of_IN relati_NNS
+allel_NN ,_, distributed_VBN environment_NN for_IN resource_NN sharing_NN and_CC information_NN exchange_NN ,_, and_CC to_TO allow_VB arbitrary_JJ users_NNS -LRB-_-LRB- especially_RB scientific_JJ users_NNS -RRB-_-RRB- to_TO ``_`` plug_VB in_IN ''_'' to_TO the_DT grid_NN ._.
+As_IN noted_VBN in_IN the_DT lively_JJ discussion_NN in_IN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_JJ -_: ,_, there_EX will_MD be_VB some_DT interesting_JJ relationships_NNS between_IN grid_NN computing_NN and_CC the_DT Semantic_JJ Web_NN ._.
+We_PRP believe_VBP that_IN Piazza_NNP provides_VBZ a_DT data_NN management_NN infrastructure_NN to_TO support_VB data_NNS services_NNS on_IN the_DT grid_NN ._.
+Final_NNP
+hard_JJ to_TO build_VB a_DT consensus_NN about_IN what_WP terminologies_NNS and_CC structures_NNS should_MD be_VB used_VBN ._.
+In_IN fact_NN ,_, it_PRP is_VBZ for_IN this_DT reason_NN that_IN many_JJ data_NNS warehouse_NN projects_NNS tend_VBP to_TO fail_VB precisely_RB at_IN the_DT phase_NN of_IN schema_NN design_NN =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Interoperability_NNP is_VBZ typically_RB attained_VBN in_IN the_DT real_JJ world_NN by_IN writing_VBG translators_NNS -LRB-_-LRB- usually_RB with_IN custom_NN code_NN -RRB-_-RRB- among_IN small_JJ sets_NNS of_IN data_NNS sources_NNS that_WDT are_VBP closely_RB related_JJ and_CC serve_VB similar_JJ needs_NNS ,_, and_CC then_RB
+a_DT set_NN of_IN complete_JJ instances_NNS of_IN Twhose_NN projection_NN is_VBZ It_PRP ._.
+When_WRB we_PRP answer_VBP queries_NNS over_IN the_DT target_NN T_NN ,_, we_PRP provide_VBP only_RB the_DT answers_NNS that_WDT are_VBP consistent_JJ with_IN all_DT such_JJ I_PRP ′_FW ts_FW -LRB-_-LRB- known_VBN as_IN the_DT certain_JJ answers_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT basis_NN for_IN specifying_VBG semantics_NNS in_IN the_DT data_NNS integration_NN literature_NN -RRB-_-RRB- ._.
+It_PRP is_VBZ important_JJ to_TO note_VB that_IN partial_JJ instances_NNS of_IN the_DT target_NN are_VBP useful_JJ for_IN many_JJ queries_NNS ,_, in_IN particular_JJ ,_, when_WRB a_DT query_NN asks_VBZ for_IN
+ry_NN composition_NN for_IN an_DT XQuery-like_JJ language_NN ._.
+In_IN the_DT other_JJ direction_NN ,_, composing_VBG mappings_NNS requires_VBZ using_VBG mappings_NNS in_IN the_DT reverse_JJ direction_NN ,_, which_WDT is_VBZ known_VBN as_IN the_DT problem_NN of_IN answering_VBG queries_NNS using_VBG views_NNS =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT two_CD problems_NNS are_VBP well_RB understood_VBN in_IN the_DT relational_JJ setting_NN -LRB-_-LRB- i.e._FW ,_, when_WRB data_NNS is_VBZ relational_JJ and_CC mappings_NNS are_VBP specified_VBN as_IN some_DT restricted_JJ version_NN of_IN SQL_NN -RRB-_-RRB- ,_, but_CC they_PRP have_VBP only_RB recently_RB been_VBN treate_JJ
+asses_NNS ,_, and_CC it_PRP specifies_VBZ or_CC restricts_VBZ their_PRP$ structure_NN and_CC also_RB assigns_VBZ special_JJ semantic_JJ meaning_NN -LRB-_-LRB- e.g._FW ,_, keys_NNS or_CC references_NNS -RRB-_-RRB- to_TO certain_JJ fields_NNS ._.
+In_IN contrast_NN ,_, languages_NNS such_JJ as_IN RDFS_NN ,_, DAML+OIL_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- and_CC OWL_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: come_VBN from_IN the_DT Knowledge_NN Representation_NN -LRB-_-LRB- KR_NN -RRB-_-RRB- heritage_NN ,_, where_WRB ontologies_NNS are_VBP used_VBN to_TO represent_VB sets_NNS of_IN objects_NNS in_IN the_DT domain_NN and_CC relationships_NNS between_IN sets_NNS ._.
+OWL_NN uses_VBZ portions_NNS of_IN XML_NN Schema_NN to_TO express_VB t_NN
+ble_VB to_TO automatically_RB extract_VB concepts_NNS or_CC relationships_NNS from_IN this_DT data_NNS or_CC to_TO relate_VB items_NNS from_IN different_JJ sources_NNS ._.
+The_DT Web_NN community_NN is_VBZ attempting_VBG to_TO address_VB this_DT limitation_NN by_IN designing_VBG a_DT Semantic_JJ Web_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT Semantic_JJ Web_NN aims_VBZ to_TO provide_VB data_NNS in_IN a_DT format_NN that_WDT embeds_VBZ semantic_JJ information_NN ,_, and_CC then_RB seeks_VBZ to_TO develop_VB sophisticated_JJ query_NN tools_NNS to_TO interpret_VB and_CC combine_VB this_DT information_NN ._.
+The_DT result_NN should_MD b_NN
+on_IN loss_NN in_IN mappings_NNS has_VBZ also_RB been_VBN studied_VBN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+An_DT important_JJ problem_NN that_IN we_PRP have_VBP not_RB yet_RB addressed_VBN is_VBZ that_DT of_IN potential_JJ data_NNS source_NN inconsistencies_NNS ;_: but_CC this_DT problem_NN has_VBZ received_VBN recent_JJ attention_NN in_IN =_JJ -_: =[_NN 3_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT second_JJ goal_NN of_IN this_DT paper_NN is_VBZ to_TO address_VB not_RB only_RB mediation_NN between_IN XML_NN sources_NNS ,_, but_CC to_TO provide_VB an_DT intermediary_JJ between_IN the_DT XML_NN and_CC RDF_NN worlds_NNS ,_, since_IN most_JJS real-world_JJ data_NNS is_VBZ in_IN XML_NN but_CC ontologies_NNS m_NN
+on_IN loss_NN in_IN mappings_NNS has_VBZ also_RB been_VBN studied_VBN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+An_DT important_JJ problem_NN that_IN we_PRP have_VBP not_RB yet_RB addressed_VBN is_VBZ that_DT of_IN potential_JJ data_NNS source_NN inconsistencies_NNS ;_: but_CC this_DT problem_NN has_VBZ received_VBN recent_JJ attention_NN in_IN =_JJ -_: =[_NN 3_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT second_JJ goal_NN of_IN this_DT paper_NN is_VBZ to_TO address_VB not_RB only_RB mediation_NN between_IN XML_NN sources_NNS ,_, but_CC to_TO provide_VB an_DT intermediary_JJ between_IN the_DT XML_NN and_CC RDF_NN worlds_NNS ,_, since_IN most_JJS real-world_JJ data_NNS is_VBZ in_IN XML_NN but_CC ontologies_NNS m_NN
+d_NN all_DT be_VB combined_VBN into_IN a_DT single_JJ element_NN ;_: Piazza_NNP must_MD ``_`` fuse_NN ''_'' these_DT results_NNS together_RB based_VBN on_IN the_DT output_NN element_NN 's_POS unique_JJ identifiers_NNS -LRB-_-LRB- similar_JJ to_TO the_DT use_NN of_IN Skolem_NNP functions_NNS in_IN languages_NNS such_JJ as_IN XML-QL_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+A_DT complete_JJ formal_JJ description_NN mediated_JJ schema_NN ,_, and_CC map_VB the_DT data_NNS source_NN to_TO the_DT view_NN ._.
+However_RB ,_, the_DT algorithmic_JJ problem_NN of_IN query_JJ answering_NN would_MD be_VB identical_JJ to_TO the_DT LAV_NNP scenario_NN ._.
+of_IN the_DT language_NN would_MD
+ility_NN needed_VBN for_IN the_DT latter_JJ kind_NN ._.
+6_CD ._.
+RELATED_NNS WORK_VBP One_CD of_IN the_DT key_JJ goals_NNS of_IN Piazza_NNP is_VBZ to_TO provide_VB semantic_JJ mediation_NN between_IN disparate_JJ data_NNS sources_NNS ._.
+Federated_NNP databases_NNS -LRB-_-LRB- 32_CD -RRB-_-RRB- and_CC data_NN integration_NN systems_NNS =_JJ -_: =[_NN 27_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: both_DT address_NN this_DT problem_NN ,_, but_CC they_PRP rely_VBP on_IN a_DT two-tier_JJ mediator_NN architecture_NN ,_, in_IN which_WDT data_NNS sources_NNS are_VBP mapped_VBN to_TO a_DT global_JJ mediated_JJ schema_NN that_WDT encompassed_VBD all_DT available_JJ information_NN ._.
+This_DT architectur_NN
+following_VBG specific_JJ contributions_NNS ._.
+•_RB We_PRP propose_VBP a_DT language_NN for_IN mediating_VBG between_IN nodes_NNS that_WDT allows_VBZ mapping_NN simple_JJ forms_NNS of_IN domain_NN structure_NN and_CC rich_JJ document_NN structure_NN ._.
+The_DT language_NN is_VBZ based_VBN on_IN XQuery_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT emerging_VBG standard_NN for_IN querying_VBG XML_NN ._.
+We_PRP also_RB show_VBP that_IN this_DT language_NN can_MD map_VB between_IN nodes_NNS containing_VBG RDF_NN data_NNS and_CC nodes_NNS containing_VBG XML_NN data_NNS ._.
+•_RB We_PRP describe_VBP an_DT algorithm_NN for_IN answering_VBG queries_NNS in_IN P_NN
+orithm_NN described_VBN in_IN Section_NN 4_CD in_IN order_NN to_TO chain_VB through_IN the_DT semantic_JJ mappings_NNS and_CC output_NN a_DT set_NN of_IN queries_NNS over_IN the_DT relevant_JJ nodes_NNS ._.
+Our_PRP$ query_JJ evaluation_NN engine_NN is_VBZ based_VBN on_IN the_DT Tukwila_NNP XML_NN Query_NNP Engine_NNP =_SYM -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC it_PRP has_VBZ the_DT important_JJ property_NN that_IN it_PRP yields_VBZ answers_NNS as_IN the_DT data_NN is_VBZ streaming_VBG in_RP from_IN the_DT nodes_NNS on_IN the_DT network_NN ._.
+We_PRP chose_VBD our_PRP$ application_NN ,_, DB_NNP Research_NNP ,_, to_TO be_VB representative_JJ of_IN certain_JJ types_NNS of_IN ac_NN
+ld_NN data_NNS is_VBZ in_IN XML_NN but_CC ontologies_NNS may_MD have_VB richer_JJR information_NN ._.
+Patel-Schneider_NNP and_CC Simeon_NNP -LRB-_-LRB- 28_CD -RRB-_-RRB- propose_VBP techniques_NNS for_IN merging_JJ XML_NN and_CC RDF_NN into_IN a_DT common_JJ ,_, XML-like_JJ representation_NN ._.
+Conversely_RB ,_, the_DT Sesame_NNP =_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: stores_NNS RDF_NNP in_IN a_DT variety_NN of_IN underlying_JJ storage_NN formats_NNS ._.
+Amann_NNP et_FW al._FW -LRB-_-LRB- 2_CD -RRB-_-RRB- discuss_VBP a_DT data_NN integration_NN system_NN whereby_WRB XML_NN sources_NNS are_VBP mapped_VBN into_IN a_DT simple_JJ ontology_NN -LRB-_-LRB- supporting_NN inheritance_NN and_CC roles_NNS ,_, but_CC
+find_VB all_DT related_JJ data_NNS ._.
+Our_PRP$ initial_JJ work_NN in_IN this_DT direction_NN focused_VBD on_IN the_DT relational_JJ model_NN and_CC was_VBD presented_VBN in_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- ;_: a_DT language_NN for_IN mediating_VBG between_IN relational_JJ sources_NNS has_VBZ recently_RB been_VBN presented_VBN in_IN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Mappings_NNS between_IN schemas_NNS can_MD be_VB specified_VBN in_IN many_JJ ways_NNS ._.
+Cluet_NNP et_FW al._FW suggest_VBP a_DT classification_NN of_IN mapping_NN schemes_NNS between_IN XML_NN documents_NNS in_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- ;_: following_VBG their_PRP$ framework_NN ,_, we_PRP could_MD classify_VB our_PRP$ system_NN
+paths_NNS to_TO -LRB-_-LRB- partial_JJ -RRB-_-RRB- DTDs_NNS ._.
+The_DT important_JJ ,_, but_CC complementary_JJ issue_NN of_IN providing_VBG support_NN for_IN generating_VBG semantic_JJ mappings_NNS between_IN peers_NNS has_VBZ been_VBN a_DT topic_NN of_IN considerable_JJ interest_NN in_IN the_DT database_NN community_NN =_JJ -_: =[_NN 29_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC in_IN the_DT ontology_JJ literature_NN -LRB-_-LRB- 23_CD ,_, 12_CD ,_, 26_CD -RRB-_-RRB- ._.
+The_DT problem_NN of_IN estimating_VBG information_NN loss_NN in_IN mappings_NNS has_VBZ also_RB been_VBN studied_VBN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+An_DT important_JJ problem_NN that_IN we_PRP have_VBP not_RB yet_RB addressed_VBN is_VBZ that_DT of_IN potenti_NN
+etween_VBN relational_JJ sources_NNS has_VBZ recently_RB been_VBN presented_VBN in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+Mappings_NNS between_IN schemas_NNS can_MD be_VB specified_VBN in_IN many_JJ ways_NNS ._.
+Cluet_NNP et_FW al._FW suggest_VBP a_DT classification_NN of_IN mapping_NN schemes_NNS between_IN XML_NN documents_NNS in_IN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ;_: following_VBG their_PRP$ framework_NN ,_, we_PRP could_MD classify_VB our_PRP$ system_NN as_IN mapping_NN from_IN paths_NNS to_TO -LRB-_-LRB- partial_JJ -RRB-_-RRB- DTDs_NNS ._.
+The_DT important_JJ ,_, but_CC complementary_JJ issue_NN of_IN providing_VBG support_NN for_IN generating_VBG semantic_JJ mappings_NNS between_IN
+ctional_JJ ,_, and_CC hence_RB may_MD sometimes_RB need_VB to_TO be_VB traversed_VBN in_IN reverse_NN ._.
+In_IN fact_NN ,_, the_DT algorithm_NN can_MD also_RB go_VB in_IN reverse_NN through_IN mappings_NNS from_IN XML_NN to_TO RDF_NNP that_WDT flatten_VBP out_RP the_DT document_NN structure_NN ._.
+Previous_JJ work_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ presented_VBN an_DT analogous_JJ algorithm_NN for_IN the_DT simple_JJ case_NN where_WRB all_DT data_NNS sources_NNS are_VBP relational_JJ ._.
+Here_RB we_PRP extend_VBP the_DT algorithms_NNS considerably_RB to_TO the_DT XML_NN setting_NN ._.
+•_NN Finally_RB ,_, we_PRP describe_VBP an_DT implemented_VBN sc_NN
+ut_IN complementary_JJ issue_NN of_IN providing_VBG support_NN for_IN generating_VBG semantic_JJ mappings_NNS between_IN peers_NNS has_VBZ been_VBN a_DT topic_NN of_IN considerable_JJ interest_NN in_IN the_DT database_NN community_NN -LRB-_-LRB- 29_CD ,_, 11_CD -RRB-_-RRB- ,_, and_CC in_IN the_DT ontology_JJ literature_NN =_JJ -_: =[_NN 23_CD ,_, 12_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT problem_NN of_IN estimating_VBG information_NN loss_NN in_IN mappings_NNS has_VBZ also_RB been_VBN studied_VBN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+An_DT important_JJ problem_NN that_IN we_PRP have_VBP not_RB yet_RB addressed_VBN is_VBZ that_DT of_IN potential_JJ data_NNS source_NN inconsistencies_NNS ;_: but_CC this_DT prob_NN
+et_FW al._FW -LRB-_-LRB- 2_CD -RRB-_-RRB- discuss_VBP a_DT data_NN integration_NN system_NN whereby_WRB XML_NN sources_NNS are_VBP mapped_VBN into_IN a_DT simple_JJ ontology_NN -LRB-_-LRB- supporting_NN inheritance_NN and_CC roles_NNS ,_, but_CC no_DT description_NN logic-style_JJ definitions_NNS -RRB-_-RRB- ._.
+The_DT Edutella_NNP system_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: represents_VBZ an_DT interesting_JJ design_NN pointin_NN the_DT XML-RDF_NN interoperability_NN spectrum_NN ._.
+Like_IN Piazza_NNP ,_, it_PRP is_VBZ built_VBN on_IN a_DT peer-to-peer_JJ architecture_NN and_CC it_PRP mediates_VBZ between_IN different_JJ data_NNS representations_NNS ._.
+The_DT fo_NN
+eider_NN and_CC Simeon_NNP -LRB-_-LRB- 28_CD -RRB-_-RRB- propose_VBP techniques_NNS for_IN merging_JJ XML_NN and_CC RDF_NN into_IN a_DT common_JJ ,_, XML-like_JJ representation_NN ._.
+Conversely_RB ,_, the_DT Sesame_NNP -LRB-_-LRB- 7_CD -RRB-_-RRB- stores_NNS RDF_NNP in_IN a_DT variety_NN of_IN underlying_JJ storage_NN formats_NNS ._.
+Amann_NNP et_FW al._FW =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: discuss_VB a_DT data_NN integration_NN system_NN whereby_WRB XML_NN sources_NNS are_VBP mapped_VBN into_IN a_DT simple_JJ ontology_NN -LRB-_-LRB- supporting_NN inheritance_NN and_CC roles_NNS ,_, but_CC no_DT description_NN logic-style_JJ definitions_NNS -RRB-_-RRB- ._.
+The_DT Edutella_NN system_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- repres_NNS
+g_NN and_CC the_DT Semantic_JJ Web_NN ._.
+We_PRP believe_VBP that_IN Piazza_NNP provides_VBZ a_DT data_NN management_NN infrastructure_NN to_TO support_VB data_NNS services_NNS on_IN the_DT grid_NN ._.
+Finally_RB ,_, we_PRP note_VBP that_IN Piazza_NNP is_VBZ a_DT component_NN of_IN the_DT larger_JJR Revere_NNP Project_NNP =_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: that_IN attempts_NNS to_TO address_VB the_DT entire_JJ life-cycle_NN of_IN content_NN creation_NN on_IN the_DT Semantic_JJ Web_NN ._.
+7_CD ._.
+CONCLUSIONS_NNS AND_CC FUTURE_NNS WORK_VBP The_DT vision_NN of_IN the_DT semantic_JJ web_NN is_VBZ compelling_JJ and_CC will_MD certainly_RB lead_VB to_TO signific_JJ
+has_VBZ been_VBN a_DT topic_NN of_IN considerable_JJ interest_NN in_IN the_DT database_NN community_NN -LRB-_-LRB- 29_CD ,_, 11_CD -RRB-_-RRB- ,_, and_CC in_IN the_DT ontology_JJ literature_NN -LRB-_-LRB- 23_CD ,_, 12_CD ,_, 26_CD -RRB-_-RRB- ._.
+The_DT problem_NN of_IN estimating_VBG information_NN loss_NN in_IN mappings_NNS has_VBZ also_RB been_VBN studied_VBN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+An_DT important_JJ problem_NN that_IN we_PRP have_VBP not_RB yet_RB addressed_VBN is_VBZ that_DT of_IN potential_JJ data_NNS source_NN inconsistencies_NNS ;_: but_CC this_DT problem_NN has_VBZ received_VBN recent_JJ attention_NN in_IN -LRB-_-LRB- 3_CD ,_, 20_CD -RRB-_-RRB- ._.
+A_DT second_JJ goal_NN of_IN this_DT paper_NN is_VBZ to_TO add_VB
+ut_IN complementary_JJ issue_NN of_IN providing_VBG support_NN for_IN generating_VBG semantic_JJ mappings_NNS between_IN peers_NNS has_VBZ been_VBN a_DT topic_NN of_IN considerable_JJ interest_NN in_IN the_DT database_NN community_NN -LRB-_-LRB- 29_CD ,_, 11_CD -RRB-_-RRB- ,_, and_CC in_IN the_DT ontology_JJ literature_NN =_JJ -_: =[_NN 23_CD ,_, 12_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT problem_NN of_IN estimating_VBG information_NN loss_NN in_IN mappings_NNS has_VBZ also_RB been_VBN studied_VBN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+An_DT important_JJ problem_NN that_IN we_PRP have_VBP not_RB yet_RB addressed_VBN is_VBZ that_DT of_IN potential_JJ data_NNS source_NN inconsistencies_NNS ;_: but_CC this_DT prob_NN
+be_VB the_DT standard_JJ representation_NN of_IN a_DT wide_JJ variety_NN of_IN data_NNS sources_NNS -LRB-_-LRB- as_IN do_VBP others_NNS -LRB-_-LRB- 28_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+In_IN some_DT cases_NNS ,_, accessing_VBG the_DT actual_JJ data_NNS may_MD require_VB an_DT additional_JJ level_NN of_IN translation_NN -LRB-_-LRB- e.g._FW ,_, with_IN systems_NNS like_IN =_JJ -_: =[_NN 13_CD ,_, 31_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Perhaps_RB of_IN equal_JJ importance_NN ,_, many_JJ applications_NNS ,_, tools_NNS ,_, and_CC programming_NN languages_NNS or_CC libraries_NNS have_VBP facilities_NNS for_IN loading_NN ,_, processing_NN ,_, and_CC importing_VBG XML_NN data_NNS ._.
+In_IN the_DT ideal_JJ case_NN ,_, one_PRP could_MD map_VB the_DT w_NN
+a_DT detailed_JJ literature_NN that_WDT studies_VBZ the_DT differences_NNS between_IN the_DT expressive_JJ power_NN of_IN description_NN logics_NNS and_CC query_NN languages_NNS and_CC the_DT complexity_NN of_IN the_DT subsumption_NN and_CC containment_NN problem_NN for_IN them_PRP -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+For_IN example_NN ,_, certain_JJ forms_NNS of_IN negation_NN and_CC number_NN restrictions_NNS ,_, when_WRB present_JJ in_FW query_FW expressions_NNS ,_, make_VBP query_NN containment_NN undecidable_JJ ,_, while_IN arbitrary_JJ join_VB conditions_NNS can_MD not_RB be_VB expressed_VBN and_CC reason_NN

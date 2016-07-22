@@ -1,0 +1,163 @@
+Semi-supervised_JJ time_NN series_NN classification_NN
+The_DT problem_NN of_IN time_NN series_NN classification_NN has_VBZ attracted_VBN great_JJ interest_NN in_IN the_DT last_JJ decade_NN ._.
+However_RB current_JJ research_NN assumes_VBZ the_DT existence_NN of_IN large_JJ amounts_NNS of_IN labeled_JJ training_NN data_NNS ._.
+In_IN reality_NN ,_, such_JJ data_NNS may_MD be_VB very_RB difficult_JJ or_CC expensive_JJ to_TO obtain_VB ._.
+For_IN example_NN ,_, it_PRP may_MD require_VB the_DT time_NN and_CC expertise_NN of_IN cardiologists_NNS ,_, space_NN launch_NN technicians_NNS ,_, or_CC other_JJ domain_NN specialists_NNS ._.
+As_IN in_IN many_JJ other_JJ domains_NNS ,_, there_EX are_VBP often_RB copious_JJ amounts_NNS of_IN unlabeled_JJ data_NNS available_JJ ._.
+For_IN example_NN ,_, the_DT PhysioBank_NNP archive_NN contains_VBZ gigabytes_NNS of_IN ECG_NN data_NNS ._.
+In_IN this_DT work_NN we_PRP propose_VBP a_DT semi-supervised_JJ technique_NN for_IN building_NN time_NN series_NN classifiers_NNS ._.
+While_IN such_JJ algorithms_NNS are_VBP well_RB known_VBN in_IN text_NN domains_NNS ,_, we_PRP will_MD show_VB that_IN special_JJ considerations_NNS must_MD be_VB made_VBN to_TO make_VB them_PRP both_CC efficient_JJ and_CC effective_JJ for_IN the_DT time_NN series_NN domain_NN ._.
+We_PRP evaluate_VBP our_PRP$ work_NN with_IN a_DT comprehensive_JJ set_NN of_IN experiments_NNS on_IN diverse_JJ data_NNS sources_NNS including_VBG electrocardiograms_NNS ,_, handwritten_JJ documents_NNS ,_, and_CC video_NN datasets_NNS ._.
+The_DT experimental_JJ results_NNS demonstrate_VBP that_IN our_PRP$ approach_NN requires_VBZ only_RB a_DT handful_NN of_IN labeled_JJ examples_NNS to_TO construct_VB accurate_JJ classifiers_NNS ._.
+ncluding_VBG medicine_NN ,_, aerospace_NN ,_, finance_NN ,_, business_NN ,_, meteorology_NN ,_, and_CC entertainment_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- -LRB-_-LRB- 26_CD -RRB-_-RRB- -LRB-_-LRB- 36_CD -RRB-_-RRB- -LRB-_-LRB- 41_CD -RRB-_-RRB- ._.
+The_DT problem_NN of_IN time_NN series_NN classification_NN has_VBZ been_VBN the_DT subject_NN of_IN active_JJ research_NN for_IN decades_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =-[_NN 22_CD -RRB-_-RRB- -LRB-_-LRB- 24_CD -RRB-_-RRB- -LRB-_-LRB- 30_CD -RRB-_-RRB- ._.
+However_RB current_JJ methods_NNS are_VBP limited_VBN by_IN the_DT need_NN for_IN large_JJ amounts_NNS of_IN labeled_JJ training_NN data_NNS ._.
+In_IN reality_NN ,_, such_JJ data_NNS may_MD be_VB very_RB difficult_JJ or_CC expensive_JJ to_TO collect_VB ._.
+For_IN example_NN ,_, it_PRP may_MD requi_VB
+he_PRP underlying_VBG models_NNS \/_: features_NNS \/_: kernels_NNS \/_: similarity_NN functions_NNS match_VBP well_RB with_IN the_DT problem_NN at_IN hand_NN -LRB-_-LRB- 43_CD -RRB-_-RRB- ._.
+Otherwise_RB the_DT addition_NN of_IN unlabeled_JJ data_NNS may_MD degrade_VB the_DT performance_NN of_IN the_DT classifier_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =-[_NN 40_CD -RRB-_-RRB- ._.
+2.2_CD Semi-supervised_JJ Learning_NNP Labeled_NNP Training_NNP Instances_NNPS M_NN 2_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U1_NN -RRB-_-RRB- 1_LS -RRB-_-RRB- F_NN 5_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U2_NN -RRB-_-RRB- 2_LS -RRB-_-RRB- F_NN 4_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U3_NN -RRB-_-RRB- 3_LS -RRB-_-RRB- F_NN 3_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U4_NN -RRB-_-RRB- 4_LS -RRB-_-RRB- F_NN 2_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U5_NN -RRB-_-RRB- 5_CD -RRB-_-RRB- M_NN 6_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U6_NN -RRB-_-RRB- 6_CD -RRB-_-RRB- M_NN 5_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U7_NN -RRB-_-RRB- 7_CD -RRB-_-RRB- M_NN 4_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U8_NN -RRB-_-RRB- 8_CD -RRB-_-RRB- M_NN 3_CD Learning_NNP from_IN
+medicine_NN ,_, aerospace_NN ,_, finance_NN ,_, business_NN ,_, meteorology_NN ,_, and_CC entertainment_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- -LRB-_-LRB- 26_CD -RRB-_-RRB- -LRB-_-LRB- 36_CD -RRB-_-RRB- -LRB-_-LRB- 41_CD -RRB-_-RRB- ._.
+The_DT problem_NN of_IN time_NN series_NN classification_NN has_VBZ been_VBN the_DT subject_NN of_IN active_JJ research_NN for_IN decades_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =-[_NN 30_CD -RRB-_-RRB- ._.
+However_RB current_JJ methods_NNS are_VBP limited_VBN by_IN the_DT need_NN for_IN large_JJ amounts_NNS of_IN labeled_JJ training_NN data_NNS ._.
+In_IN reality_NN ,_, such_JJ data_NNS may_MD be_VB very_RB difficult_JJ or_CC expensive_JJ to_TO collect_VB ._.
+For_IN example_NN ,_, it_PRP may_MD require_VB the_DT t_NN
+aper_NN ,_, we_PRP are_VBP looking_VBG for_IN a_DT general_JJ semi-supervised_JJ classification_NN framework_NN for_IN time_NN series_NN ,_, so_IN we_PRP do_VBP not_RB consider_VB graph-based_JJ methods_NNS ._.
+The_DT idea_NN of_IN co-training_NN was_VBD first_RB proposed_VBN by_IN Blum_NNP and_CC Mitchell_NNP =_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP divides_VBZ the_DT features_NNS of_IN the_DT data_NNS into_IN two_CD disjoint_JJ sets_NNS ,_, with_IN each_DT set_NN being_VBG sufficient_JJ to_TO train_VB a_DT good_JJ classifier_NN ._.
+Two_CD classifiers_NNS are_VBP trained_VBN separately_RB on_IN each_DT feature_NN subset_NN ,_, and_CC the_DT predicti_NN
+able_JJ 1_CD :_: The_DT error_NN rates_NNS for_IN various_JJ classification_NN techniques_NNS on_IN Control-Chart_NNP Dataset_NNP Approach_NNP Error_NNP Rate_NNP One-nearest-neighbor_NN with_IN Euclidean_JJ distance_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- 1.3_CD %_NN First_JJ order_NN logic_NN rules_NNS with_IN boosting_VBG =_JJ -_: =[_NN 38_CD -RRB-_-RRB- -_: =_SYM -_: 3.6_CD %_NN Multi_JJ layer_NN perceptron_NN neural_JJ network_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- 1.9_CD %_NN Multiple_JJ classifier_NN system_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- 7.2_CD %_NN Multi-scale_JJ histogram_NN approach_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- 6.0_CD %_NN Note_NN that_IN the_DT works_NNS in_IN Table_NNP 1_CD do_VBP make_VB contributions_NNS in_IN telling_VBG us_PRP s_NN
+margin_NN maximization_NN algorithm_NN such_JJ as_IN Transductive_JJ Support_NN Vector_NNP Machines_NNP -LRB-_-LRB- TSVM_NNP -RRB-_-RRB- ._.
+Since_IN finding_VBG the_DT exact_JJ TSVM_NN solution_NN is_VBZ NP-hard_JJ ,_, several_JJ approximation_NN algorithms_NNS have_VBP been_VBN proposed_VBN -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- -LRB-_-LRB- 15_CD -RRB-_-RRB- -LRB-_-LRB- 16_CD -RRB-_-RRB- =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, the_DT unique_JJ structure_NN of_IN time_NN series_NN makes_VBZ the_DT density_NN measure_NN less_RBR meaningful_JJ ._.
+For_IN example_NN ,_, in_IN -LRB-_-LRB- 23_CD -RRB-_-RRB- Keogh_NNP et_FW ._.
+al._FW showed_VBD that_IN ``_`` -LRB-_-LRB- abnormal_JJ time_NN series_NN -RRB-_-RRB- do_VBP not_RB necessarily_RB live_VB in_IN sparse_JJ areas_NNS
+that_IN the_DT underlying_VBG models_NNS \/_: features_NNS \/_: kernels_NNS \/_: similarity_NN functions_NNS match_VBP well_RB with_IN the_DT problem_NN at_IN hand_NN -LRB-_-LRB- 43_CD -RRB-_-RRB- ._.
+Otherwise_RB the_DT addition_NN of_IN unlabeled_JJ data_NNS may_MD degrade_VB the_DT performance_NN of_IN the_DT classifier_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =-[_NN 7_CD -RRB-_-RRB- -LRB-_-LRB- 32_CD -RRB-_-RRB- -LRB-_-LRB- 40_CD -RRB-_-RRB- ._.
+2.2_CD Semi-supervised_JJ Learning_NNP Labeled_NNP Training_NNP Instances_NNPS M_NN 2_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U1_NN -RRB-_-RRB- 1_LS -RRB-_-RRB- F_NN 5_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U2_NN -RRB-_-RRB- 2_LS -RRB-_-RRB- F_NN 4_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U3_NN -RRB-_-RRB- 3_LS -RRB-_-RRB- F_NN 3_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U4_NN -RRB-_-RRB- 4_LS -RRB-_-RRB- F_NN 2_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U5_NN -RRB-_-RRB- 5_CD -RRB-_-RRB- M_NN 6_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U6_NN -RRB-_-RRB- 6_CD -RRB-_-RRB- M_NN 5_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U7_NN -RRB-_-RRB- 7_CD -RRB-_-RRB- M_NN 4_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U8_NN -RRB-_-RRB- 8_CD -RRB-_-RRB- M_NN 3_CD Learnin_NN
+nderlying_VBG models_NNS \/_: features_NNS \/_: kernels_NNS \/_: similarity_NN functions_NNS match_VBP well_RB with_IN the_DT problem_NN at_IN hand_NN -LRB-_-LRB- 43_CD -RRB-_-RRB- ._.
+Otherwise_RB the_DT addition_NN of_IN unlabeled_JJ data_NNS may_MD degrade_VB the_DT performance_NN of_IN the_DT classifier_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- -LRB-_-LRB- 32_CD -RRB-_-RRB- =_JJ -_: =[_NN 40_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+2.2_CD Semi-supervised_JJ Learning_NNP Labeled_NNP Training_NNP Instances_NNPS M_NN 2_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U1_NN -RRB-_-RRB- 1_LS -RRB-_-RRB- F_NN 5_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U2_NN -RRB-_-RRB- 2_LS -RRB-_-RRB- F_NN 4_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U3_NN -RRB-_-RRB- 3_LS -RRB-_-RRB- F_NN 3_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U4_NN -RRB-_-RRB- 4_LS -RRB-_-RRB- F_NN 2_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U5_NN -RRB-_-RRB- 5_CD -RRB-_-RRB- M_NN 6_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U6_NN -RRB-_-RRB- 6_CD -RRB-_-RRB- M_NN 5_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U7_NN -RRB-_-RRB- 7_CD -RRB-_-RRB- M_NN 4_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U8_NN -RRB-_-RRB- 8_CD -RRB-_-RRB- M_NN 3_CD Learning_NNP from_IN both_DT
+ous_JJ and_CC are_VBP of_IN interest_NN to_TO many_JJ communities_NNS ._.
+Such_JJ data_NNS can_MD be_VB found_VBN in_IN virtually_RB all_DT avenues_NNS of_IN human_JJ endeavor_NN including_VBG medicine_NN ,_, aerospace_NN ,_, finance_NN ,_, business_NN ,_, meteorology_NN ,_, and_CC entertainment_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- -LRB-_-LRB- 26_CD -RRB-_-RRB- =_JJ -_: =[_NN 36_CD -RRB-_-RRB- -_: =-[_NN 41_CD -RRB-_-RRB- ._.
+The_DT problem_NN of_IN time_NN series_NN classification_NN has_VBZ been_VBN the_DT subject_NN of_IN active_JJ research_NN for_IN decades_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- -LRB-_-LRB- 24_CD -RRB-_-RRB- -LRB-_-LRB- 30_CD -RRB-_-RRB- ._.
+However_RB current_JJ methods_NNS are_VBP limited_VBN by_IN the_DT need_NN for_IN large_JJ amounts_NNS of_IN label_NN
+et_CC The_DT wafer_NN dataset_NN is_VBZ a_DT collection_NN of_IN time_NN series_NN containing_VBG a_DT sequence_NN of_IN measurements_NNS recorded_VBN by_IN one_CD vacuum-chamber_NN sensor_NN during_IN the_DT etch_NN process_NN of_IN silicon_NN wafers_NNS for_IN semiconductor_NN fabrication_NN =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Each_DT wafer_NN has_VBZ an_DT assigned_VBN classification_NN of_IN normal_JJ or_CC abnormal_JJ ._.
+The_DT abnormal_JJ wafers_NNS are_VBP representative_JJ of_IN a_DT range_NN of_IN problems_NNS commonly_RB encountered_VBN during_IN semiconductor_NN manufacturing_NN ._.
+Of_IN the_DT 7,164_CD t_NN
+is_VBZ to_TO use_VB a_DT margin_NN maximization_NN algorithm_NN such_JJ as_IN Transductive_JJ Support_NN Vector_NNP Machines_NNP -LRB-_-LRB- TSVM_NNP -RRB-_-RRB- ._.
+Since_IN finding_VBG the_DT exact_JJ TSVM_NN solution_NN is_VBZ NP-hard_JJ ,_, several_JJ approximation_NN algorithms_NNS have_VBP been_VBN proposed_VBN -LRB-_-LRB- 4_LS -RRB-_-RRB- =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =-[_NN 15_CD -RRB-_-RRB- -LRB-_-LRB- 16_CD -RRB-_-RRB- -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+However_RB ,_, the_DT unique_JJ structure_NN of_IN time_NN series_NN makes_VBZ the_DT density_NN measure_NN less_RBR meaningful_JJ ._.
+For_IN example_NN ,_, in_IN -LRB-_-LRB- 23_CD -RRB-_-RRB- Keogh_NNP et_FW ._.
+al._FW showed_VBD that_IN ``_`` -LRB-_-LRB- abnormal_JJ time_NN series_NN -RRB-_-RRB- do_VBP not_RB necessarily_RB live_VB in_IN
+eries_NNS classification_NN has_VBZ typically_RB been_VBN treated_VBN like_IN a_DT classic_JJ discrimination_NN problem_NN ,_, for_IN example_NN ,_, the_DT famous_JJ problem_NN of_IN distinguishing_VBG between_IN ``_`` Democrat_NNP ''_'' and_CC ``_`` Republication_NNP ''_'' in_IN the_DT UCI_NN Vote_NN dataset_NN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB we_PRP argue_VBP that_IN realistic_JJ instances_NNS of_IN the_DT problem_NN are_VBP much_RB more_JJR like_IN text_NN filtering_VBG problems_NNS -LRB-_-LRB- 32_CD -RRB-_-RRB- in_IN two_CD important_JJ ways_NNS :_: •_CD It_PRP is_VBZ typically_RB not_RB the_DT case_NN that_IN we_PRP have_VBP two_CD or_CC more_RBR well_RB defined_VBN c_NN
+ic_JJ ._.
+The_DT classifier_NN can_MD simply_RB classify_VB everything_NN as_IN negative_JJ to_TO ensure_VB high_JJ accuracy_NN ._.
+Note_VB that_DT precision-recall_JJ breakeven_NN point_NN is_VBZ a_DT standard_JJ information_NN retrieval_NN measure_NN for_IN binary_JJ classification_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =-[_NN 32_CD -RRB-_-RRB- ._.
+Precision_NN and_CC recall_NN are_VBP defined_VBN as_IN :_: #_# of_IN correct_JJ positive_JJ predictions_NNS Precision_NN =_JJ #_# of_IN positive_JJ predictions_NNS #_# of_IN correct_JJ positive_JJ predictions_NNS Recall_VBP =_JJ #_# of_IN positive_JJ examples_NNS The_DT precision-recal_JJ
+s_NN important_JJ to_TO note_VB that_IN the_DT usefulness_NN of_IN unlabeled_JJ data_NNS depends_VBZ on_IN the_DT critical_JJ assumption_NN that_IN the_DT underlying_VBG models_NNS \/_: features_NNS \/_: kernels_NNS \/_: similarity_NN functions_NNS match_VBP well_RB with_IN the_DT problem_NN at_IN hand_NN =_JJ -_: =[_NN 43_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Otherwise_RB the_DT addition_NN of_IN unlabeled_JJ data_NNS may_MD degrade_VB the_DT performance_NN of_IN the_DT classifier_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- -LRB-_-LRB- 32_CD -RRB-_-RRB- -LRB-_-LRB- 40_CD -RRB-_-RRB- ._.
+2.2_CD Semi-supervised_JJ Learning_NNP Labeled_NNP Training_NNP Instances_NNPS M_NN 2_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U1_NN -RRB-_-RRB- 1_LS -RRB-_-RRB- F_NN 5_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U2_NN -RRB-_-RRB- 2_LS -RRB-_-RRB- F_NN 4_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U_NN
+ubiquitous_JJ and_CC are_VBP of_IN interest_NN to_TO many_JJ communities_NNS ._.
+Such_JJ data_NNS can_MD be_VB found_VBN in_IN virtually_RB all_DT avenues_NNS of_IN human_JJ endeavor_NN including_VBG medicine_NN ,_, aerospace_NN ,_, finance_NN ,_, business_NN ,_, meteorology_NN ,_, and_CC entertainment_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =-[_NN 26_CD -RRB-_-RRB- -LRB-_-LRB- 36_CD -RRB-_-RRB- -LRB-_-LRB- 41_CD -RRB-_-RRB- ._.
+The_DT problem_NN of_IN time_NN series_NN classification_NN has_VBZ been_VBN the_DT subject_NN of_IN active_JJ research_NN for_IN decades_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- -LRB-_-LRB- 24_CD -RRB-_-RRB- -LRB-_-LRB- 30_CD -RRB-_-RRB- ._.
+However_RB current_JJ methods_NNS are_VBP limited_VBN by_IN the_DT need_NN for_IN large_JJ amounts_NNS
+and_CC are_VBP of_IN interest_NN to_TO many_JJ communities_NNS ._.
+Such_JJ data_NNS can_MD be_VB found_VBN in_IN virtually_RB all_DT avenues_NNS of_IN human_JJ endeavor_NN including_VBG medicine_NN ,_, aerospace_NN ,_, finance_NN ,_, business_NN ,_, meteorology_NN ,_, and_CC entertainment_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- -LRB-_-LRB- 26_CD -RRB-_-RRB- -LRB-_-LRB- 36_CD -RRB-_-RRB- =_JJ -_: =[_NN 41_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT problem_NN of_IN time_NN series_NN classification_NN has_VBZ been_VBN the_DT subject_NN of_IN active_JJ research_NN for_IN decades_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- -LRB-_-LRB- 24_CD -RRB-_-RRB- -LRB-_-LRB- 30_CD -RRB-_-RRB- ._.
+However_RB current_JJ methods_NNS are_VBP limited_VBN by_IN the_DT need_NN for_IN large_JJ amounts_NNS of_IN labeled_JJ t_NN
+graph_NN ,_, whose_WP$ edges_NNS are_VBP the_DT distances_NNS between_IN the_DT nodes_NNS ._.
+After_IN the_DT graph_NN is_VBZ constructed_VBN ,_, several_JJ approaches_NNS can_MD be_VB used_VBN ,_, such_JJ as_IN graph_NN mincut_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, Tikhonov_NNP Regularization_NNP -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, Manifold_JJ Regularization_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, etc._NN ._.
+The_DT key_JJ problem_NN of_IN this_DT method_NN is_VBZ that_IN graph_NN construction_NN needs_VBZ to_TO be_VB hand_NN crafted_VBN for_IN each_DT domain_NN ,_, because_IN it_PRP encodes_VBZ prior_JJ knowledge_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP are_VBP looking_VBG for_IN a_DT general_JJ semi-supervi_NN
+ata_IN The_DT idea_NN of_IN using_VBG unlabeled_JJ data_NNS to_TO help_VB classification_NN may_MD sound_VB initially_RB unintuitive_JJ ._.
+However_RB ,_, several_JJ studies_NNS in_IN the_DT literature_NN have_VBP indicated_VBN the_DT utility_NN of_IN unlabeled_JJ data_NNS for_IN classification_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, early_JJ studies_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- -LRB-_-LRB- 19_CD -RRB-_-RRB- -LRB-_-LRB- 34_CD -RRB-_-RRB- asserted_VBD that_IN unlabeled_JJ data_NNS should_MD be_VB used_VBN whenever_WRB available_JJ ._.
+Castelli_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC Ratsaby_NNP et_NNP ._.
+al._FW -LRB-_-LRB- 37_CD -RRB-_-RRB- showed_VBD that_IN ``_`` unlabeled_JJ data_NNS are_VBP always_RB asymptotically_RB us_PRP
+t_NN the_DT underlying_VBG models_NNS \/_: features_NNS \/_: kernels_NNS \/_: similarity_NN functions_NNS match_VBP well_RB with_IN the_DT problem_NN at_IN hand_NN -LRB-_-LRB- 43_CD -RRB-_-RRB- ._.
+Otherwise_RB the_DT addition_NN of_IN unlabeled_JJ data_NNS may_MD degrade_VB the_DT performance_NN of_IN the_DT classifier_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- =_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =-[_NN 32_CD -RRB-_-RRB- -LRB-_-LRB- 40_CD -RRB-_-RRB- ._.
+2.2_CD Semi-supervised_JJ Learning_NNP Labeled_NNP Training_NNP Instances_NNPS M_NN 2_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U1_NN -RRB-_-RRB- 1_LS -RRB-_-RRB- F_NN 5_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U2_NN -RRB-_-RRB- 2_LS -RRB-_-RRB- F_NN 4_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U3_NN -RRB-_-RRB- 3_LS -RRB-_-RRB- F_NN 3_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U4_NN -RRB-_-RRB- 4_LS -RRB-_-RRB- F_NN 2_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U5_NN -RRB-_-RRB- 5_CD -RRB-_-RRB- M_NN 6_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U6_NN -RRB-_-RRB- 6_CD -RRB-_-RRB- M_NN 5_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U7_NN -RRB-_-RRB- 7_CD -RRB-_-RRB- M_NN 4_CD -LRB-_-LRB- U_NN -LRB-_-LRB- U8_NN -RRB-_-RRB- 8_CD -RRB-_-RRB- M_NN 3_CD Learning_NNP f_SYM
+elp_NN classification_NN may_MD sound_VB initially_RB unintuitive_JJ ._.
+However_RB ,_, several_JJ studies_NNS in_IN the_DT literature_NN have_VBP indicated_VBN the_DT utility_NN of_IN unlabeled_JJ data_NNS for_IN classification_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+For_IN example_NN ,_, early_JJ studies_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- -LRB-_-LRB- 19_CD -RRB-_-RRB- =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_SYM -_: asserted_VBD that_IN unlabeled_JJ data_NNS should_MD be_VB used_VBN whenever_WRB available_JJ ._.
+Castelli_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC Ratsaby_NNP et_NNP ._.
+al._FW -LRB-_-LRB- 37_CD -RRB-_-RRB- showed_VBD that_IN ``_`` unlabeled_JJ data_NNS are_VBP always_RB asymptotically_RB useful_JJ for_IN classification_NN ''_'' ._.
+Although_IN unlabe_NN
+ata_NN to_TO help_VB classification_NN may_MD sound_VB initially_RB unintuitive_JJ ._.
+However_RB ,_, several_JJ studies_NNS in_IN the_DT literature_NN have_VBP indicated_VBN the_DT utility_NN of_IN unlabeled_JJ data_NNS for_IN classification_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+For_IN example_NN ,_, early_JJ studies_NNS =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =-[_NN 19_CD -RRB-_-RRB- -LRB-_-LRB- 34_CD -RRB-_-RRB- asserted_VBD that_IN unlabeled_JJ data_NNS should_MD be_VB used_VBN whenever_WRB available_JJ ._.
+Castelli_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC Ratsaby_NNP et_NNP ._.
+al._FW -LRB-_-LRB- 37_CD -RRB-_-RRB- showed_VBD that_IN ``_`` unlabeled_JJ data_NNS are_VBP always_RB asymptotically_RB useful_JJ for_IN classification_NN ''_'' ._.
+Althoug_NNP
+n_NN the_DT literature_NN have_VBP indicated_VBN the_DT utility_NN of_IN unlabeled_JJ data_NNS for_IN classification_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+For_IN example_NN ,_, early_JJ studies_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- -LRB-_-LRB- 19_CD -RRB-_-RRB- -LRB-_-LRB- 34_CD -RRB-_-RRB- asserted_VBD that_IN unlabeled_JJ data_NNS should_MD be_VB used_VBN whenever_WRB available_JJ ._.
+Castelli_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Ratsaby_NNP et_NNP ._.
+al._FW -LRB-_-LRB- 37_CD -RRB-_-RRB- showed_VBD that_IN ``_`` unlabeled_JJ data_NNS are_VBP always_RB asymptotically_RB useful_JJ for_IN classification_NN ''_'' ._.
+Although_IN unlabeled_JJ data_NNS alone_RB are_VBP generally_RB insufficient_JJ to_TO yield_VB better-than-random-guess_JJ c_NN
+dicated_VBD the_DT utility_NN of_IN unlabeled_JJ data_NNS for_IN classification_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+For_IN example_NN ,_, early_JJ studies_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- -LRB-_-LRB- 19_CD -RRB-_-RRB- -LRB-_-LRB- 34_CD -RRB-_-RRB- asserted_VBD that_IN unlabeled_JJ data_NNS should_MD be_VB used_VBN whenever_WRB available_JJ ._.
+Castelli_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC Ratsaby_NNP et_NNP ._.
+al._FW =_SYM -_: =[_NN 37_CD -RRB-_-RRB- -_: =_JJ -_: showed_VBD that_IN ``_`` unlabeled_JJ data_NNS are_VBP always_RB asymptotically_RB useful_JJ for_IN classification_NN ''_'' ._.
+Although_IN unlabeled_JJ data_NNS alone_RB are_VBP generally_RB insufficient_JJ to_TO yield_VB better-than-random-guess_JJ classification_NN ,_, they_PRP do_VBP co_FW
+al_NNP is_VBZ to_TO use_VB a_DT margin_NN maximization_NN algorithm_NN such_JJ as_IN Transductive_JJ Support_NN Vector_NNP Machines_NNP -LRB-_-LRB- TSVM_NNP -RRB-_-RRB- ._.
+Since_IN finding_VBG the_DT exact_JJ TSVM_NN solution_NN is_VBZ NP-hard_JJ ,_, several_JJ approximation_NN algorithms_NNS have_VBP been_VBN proposed_VBN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =-[_NN 10_CD -RRB-_-RRB- -LRB-_-LRB- 15_CD -RRB-_-RRB- -LRB-_-LRB- 16_CD -RRB-_-RRB- -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+However_RB ,_, the_DT unique_JJ structure_NN of_IN time_NN series_NN makes_VBZ the_DT density_NN measure_NN less_RBR meaningful_JJ ._.
+For_IN example_NN ,_, in_IN -LRB-_-LRB- 23_CD -RRB-_-RRB- Keogh_NNP et_FW ._.
+al._FW showed_VBD that_IN ``_`` -LRB-_-LRB- abnormal_JJ time_NN series_NN -RRB-_-RRB- do_VBP not_RB necessarily_RB live_VB
+or_CC including_VBG medicine_NN ,_, aerospace_NN ,_, finance_NN ,_, business_NN ,_, meteorology_NN ,_, and_CC entertainment_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- -LRB-_-LRB- 26_CD -RRB-_-RRB- -LRB-_-LRB- 36_CD -RRB-_-RRB- -LRB-_-LRB- 41_CD -RRB-_-RRB- ._.
+The_DT problem_NN of_IN time_NN series_NN classification_NN has_VBZ been_VBN the_DT subject_NN of_IN active_JJ research_NN for_IN decades_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =-[_NN 14_CD -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- -LRB-_-LRB- 24_CD -RRB-_-RRB- -LRB-_-LRB- 30_CD -RRB-_-RRB- ._.
+However_RB current_JJ methods_NNS are_VBP limited_VBN by_IN the_DT need_NN for_IN large_JJ amounts_NNS of_IN labeled_JJ training_NN data_NNS ._.
+In_IN reality_NN ,_, such_JJ data_NNS may_MD be_VB very_RB difficult_JJ or_CC expensive_JJ to_TO collect_VB ._.
+For_IN example_NN ,_, it_PRP may_MD r_NN
+icine_NN ,_, aerospace_NN ,_, finance_NN ,_, business_NN ,_, meteorology_NN ,_, and_CC entertainment_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- -LRB-_-LRB- 26_CD -RRB-_-RRB- -LRB-_-LRB- 36_CD -RRB-_-RRB- -LRB-_-LRB- 41_CD -RRB-_-RRB- ._.
+The_DT problem_NN of_IN time_NN series_NN classification_NN has_VBZ been_VBN the_DT subject_NN of_IN active_JJ research_NN for_IN decades_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- -LRB-_-LRB- 24_CD -RRB-_-RRB- =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB current_JJ methods_NNS are_VBP limited_VBN by_IN the_DT need_NN for_IN large_JJ amounts_NNS of_IN labeled_JJ training_NN data_NNS ._.
+In_IN reality_NN ,_, such_JJ data_NNS may_MD be_VB very_RB difficult_JJ or_CC expensive_JJ to_TO collect_VB ._.
+For_IN example_NN ,_, it_PRP may_MD require_VB the_DT time_NN
+quitous_JJ and_CC are_VBP of_IN interest_NN to_TO many_JJ communities_NNS ._.
+Such_JJ data_NNS can_MD be_VB found_VBN in_IN virtually_RB all_DT avenues_NNS of_IN human_JJ endeavor_NN including_VBG medicine_NN ,_, aerospace_NN ,_, finance_NN ,_, business_NN ,_, meteorology_NN ,_, and_CC entertainment_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =-[_NN 36_CD -RRB-_-RRB- -LRB-_-LRB- 41_CD -RRB-_-RRB- ._.
+The_DT problem_NN of_IN time_NN series_NN classification_NN has_VBZ been_VBN the_DT subject_NN of_IN active_JJ research_NN for_IN decades_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- -LRB-_-LRB- 24_CD -RRB-_-RRB- -LRB-_-LRB- 30_CD -RRB-_-RRB- ._.
+However_RB current_JJ methods_NNS are_VBP limited_VBN by_IN the_DT need_NN for_IN large_JJ amounts_NNS of_IN l_NN
+we_PRP begin_VBP by_IN considering_VBG some_DT applications_NNS that_IN we_PRP will_MD later_RB address_VB experimentally_RB ._.
+Indexing_NN of_IN handwritten_JJ documents_NNS :_: There_EX has_VBZ been_VBN a_DT recent_JJ explosion_NN of_IN interest_NN in_IN indexing_NN handwritten_JJ documents_NNS =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_JJ -_: ,_, driven_VBN in_IN large_JJ part_NN by_IN Google_NNP and_CC Yahoo_NNP 's_POS stated_JJ interest_NN of_IN making_VBG large_JJ archives_NNS of_IN handwritten_JJ text_NN searchable_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+It_PRP has_VBZ recently_RB been_VBN shown_VBN that_IN simply_RB treating_VBG the_DT words_NNS as_IN ``_`` time_NN series_NN ''_'' -LRB-_-LRB- s_NNS
+here_RB has_VBZ been_VBN a_DT recent_JJ explosion_NN of_IN interest_NN in_IN indexing_NN handwritten_JJ documents_NNS -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, driven_VBN in_IN large_JJ part_NN by_IN Google_NNP and_CC Yahoo_NNP 's_POS stated_JJ interest_NN of_IN making_VBG large_JJ archives_NNS of_IN handwritten_JJ text_NN searchable_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP has_VBZ recently_RB been_VBN shown_VBN that_IN simply_RB treating_VBG the_DT words_NNS as_IN ``_`` time_NN series_NN ''_'' -LRB-_-LRB- see_VB Figure_NNP 1_LS -RRB-_-RRB- is_VBZ an_DT extremely_RB competitive_JJ approach_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- for_IN classifying_VBG -LRB-_-LRB- and_CC thus_RB indexing_NN -RRB-_-RRB- handwritten_JJ documents_NNS ._.
+A_DT -RRB-_-RRB- B_NN -RRB-_-RRB- C_NN
+520_CD were_VBD identified_VBN as_IN abnormal_JJ and_CC 1,506_CD were_VBD identified_VBN as_IN normal_JJ ._.
+All_PDT the_DT data_NNS records_NNS have_VBP been_VBN normalized_VBN and_CC rescaled_VBN to_TO have_VB length_NN 85_CD -LRB-_-LRB- recent_JJ results_NNS suggest_VBP that_IN we_PRP lose_VBP nothing_NN by_IN rescaling_VBG =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+We_PRP randomly_RB split_VBD the_DT data_NNS ,_, using_VBG half_NN for_IN training_NN and_CC half_NN for_IN testing_NN ,_, sas_NNS summarized_VBN in_IN Table_NNP 3_CD ._.
+Because_IN usually_RB cardiologists_NNS are_VBP more_RBR interested_JJ in_IN the_DT occurrences_NNS of_IN the_DT abnormal_JJ heartbeats_NNS ,_,
+o_NN use_VB a_DT margin_NN maximization_NN algorithm_NN such_JJ as_IN Transductive_JJ Support_NN Vector_NNP Machines_NNP -LRB-_-LRB- TSVM_NNP -RRB-_-RRB- ._.
+Since_IN finding_VBG the_DT exact_JJ TSVM_NN solution_NN is_VBZ NP-hard_JJ ,_, several_JJ approximation_NN algorithms_NNS have_VBP been_VBN proposed_VBN -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =-[_NN 16_CD -RRB-_-RRB- -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+However_RB ,_, the_DT unique_JJ structure_NN of_IN time_NN series_NN makes_VBZ the_DT density_NN measure_NN less_RBR meaningful_JJ ._.
+For_IN example_NN ,_, in_IN -LRB-_-LRB- 23_CD -RRB-_-RRB- Keogh_NNP et_FW ._.
+al._FW showed_VBD that_IN ``_`` -LRB-_-LRB- abnormal_JJ time_NN series_NN -RRB-_-RRB- do_VBP not_RB necessarily_RB live_VB in_IN spar_NN
+rch_NN and_CC personal_JJ experience_NN suggest_VBP that_IN people_NNS working_VBG on_IN real_JJ world_NN time_NN series_NN problems_NNS have_VBP already_RB done_VBN this_DT informally_RB ._.
+For_IN example_NN in_IN the_DT context_NN of_IN motion_NN capture_NN indexing_NN ,_, Kovar_NN and_CC Gleicher_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: noted_VBD that_IN they_PRP ``_`` ..._: add_VB robustness_NN to_TO the_DT search_NN by_IN concentrating_VBG on_IN finding_VBG these_DT closer_JJR motions_NNS and_CC then_RB using_VBG them_PRP as_IN new_JJ queries_NNS in_IN order_NN to_TO find_VB more_RBR distant_JJ motions_NNS ''_'' ._.
+Likewise_RB in_IN our_PRP$ own_JJ experien_NN
+resent_VB the_DT data_NNS by_IN nodes_NNS in_IN a_DT graph_NN ,_, whose_WP$ edges_NNS are_VBP the_DT distances_NNS between_IN the_DT nodes_NNS ._.
+After_IN the_DT graph_NN is_VBZ constructed_VBN ,_, several_JJ approaches_NNS can_MD be_VB used_VBN ,_, such_JJ as_IN graph_NN mincut_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, Tikhonov_JJ Regularization_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Manifold_JJ Regularization_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, etc._NN ._.
+The_DT key_JJ problem_NN of_IN this_DT method_NN is_VBZ that_IN graph_NN construction_NN needs_VBZ to_TO be_VB hand_NN crafted_VBN for_IN each_DT domain_NN ,_, because_IN it_PRP encodes_VBZ prior_JJ knowledge_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP are_VBP looki_NNS
+e_LS a_DT margin_NN maximization_NN algorithm_NN such_JJ as_IN Transductive_JJ Support_NN Vector_NNP Machines_NNP -LRB-_-LRB- TSVM_NNP -RRB-_-RRB- ._.
+Since_IN finding_VBG the_DT exact_JJ TSVM_NN solution_NN is_VBZ NP-hard_JJ ,_, several_JJ approximation_NN algorithms_NNS have_VBP been_VBN proposed_VBN -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- -LRB-_-LRB- 15_CD -RRB-_-RRB- =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =-[_NN 21_CD -RRB-_-RRB- ._.
+However_RB ,_, the_DT unique_JJ structure_NN of_IN time_NN series_NN makes_VBZ the_DT density_NN measure_NN less_RBR meaningful_JJ ._.
+For_IN example_NN ,_, in_IN -LRB-_-LRB- 23_CD -RRB-_-RRB- Keogh_NNP et_FW ._.
+al._FW showed_VBD that_IN ``_`` -LRB-_-LRB- abnormal_JJ time_NN series_NN -RRB-_-RRB- do_VBP not_RB necessarily_RB live_VB in_FW sparse_FW a_DT
+deavor_RB including_VBG medicine_NN ,_, aerospace_NN ,_, finance_NN ,_, business_NN ,_, meteorology_NN ,_, and_CC entertainment_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- -LRB-_-LRB- 26_CD -RRB-_-RRB- -LRB-_-LRB- 36_CD -RRB-_-RRB- -LRB-_-LRB- 41_CD -RRB-_-RRB- ._.
+The_DT problem_NN of_IN time_NN series_NN classification_NN has_VBZ been_VBN the_DT subject_NN of_IN active_JJ research_NN for_IN decades_NNS =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =-[_NN 12_CD -RRB-_-RRB- -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- -LRB-_-LRB- 24_CD -RRB-_-RRB- -LRB-_-LRB- 30_CD -RRB-_-RRB- ._.
+However_RB current_JJ methods_NNS are_VBP limited_VBN by_IN the_DT need_NN for_IN large_JJ amounts_NNS of_IN labeled_JJ training_NN data_NNS ._.
+In_IN reality_NN ,_, such_JJ data_NNS may_MD be_VB very_RB difficult_JJ or_CC expensive_JJ to_TO collect_VB ._.
+For_IN example_NN ,_, it_PRP m_NN
+ding_JJ medicine_NN ,_, aerospace_NN ,_, finance_NN ,_, business_NN ,_, meteorology_NN ,_, and_CC entertainment_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- -LRB-_-LRB- 26_CD -RRB-_-RRB- -LRB-_-LRB- 36_CD -RRB-_-RRB- -LRB-_-LRB- 41_CD -RRB-_-RRB- ._.
+The_DT problem_NN of_IN time_NN series_NN classification_NN has_VBZ been_VBN the_DT subject_NN of_IN active_JJ research_NN for_IN decades_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- -LRB-_-LRB- 14_CD -RRB-_-RRB- =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =-[_NN 24_CD -RRB-_-RRB- -LRB-_-LRB- 30_CD -RRB-_-RRB- ._.
+However_RB current_JJ methods_NNS are_VBP limited_VBN by_IN the_DT need_NN for_IN large_JJ amounts_NNS of_IN labeled_JJ training_NN data_NNS ._.
+In_IN reality_NN ,_, such_JJ data_NNS may_MD be_VB very_RB difficult_JJ or_CC expensive_JJ to_TO collect_VB ._.
+For_IN example_NN ,_, it_PRP may_MD require_VB t_NN
+manifold_RB ''_'' ,_, these_DT methods_NNS represent_VBP the_DT data_NNS by_IN nodes_NNS in_IN a_DT graph_NN ,_, whose_WP$ edges_NNS are_VBP the_DT distances_NNS between_IN the_DT nodes_NNS ._.
+After_IN the_DT graph_NN is_VBZ constructed_VBN ,_, several_JJ approaches_NNS can_MD be_VB used_VBN ,_, such_JJ as_IN graph_NN mincut_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Tikhonov_NNP Regularization_NNP -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, Manifold_JJ Regularization_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, etc._NN ._.
+The_DT key_JJ problem_NN of_IN this_DT method_NN is_VBZ that_IN graph_NN construction_NN needs_VBZ to_TO be_VB hand_NN crafted_VBN for_IN each_DT domain_NN ,_, because_IN it_PRP encodes_VBZ prior_JJ knowledge_NN

@@ -1,0 +1,615 @@
+Learning_NNP to_TO map_VB between_IN ontologies_NNS on_IN the_DT semantic_JJ web_NN
+Ontologies_NNS play_VBP a_DT prominent_JJ role_NN on_IN the_DT Semantic_JJ Web_NN ._.
+They_PRP make_VBP possible_JJ the_DT widespread_JJ publication_NN of_IN machine_NN understandable_JJ data_NNS ,_, opening_VBG myriad_JJ opportunities_NNS for_IN automated_JJ information_NN processing_NN ._.
+However_RB ,_, because_IN of_IN the_DT Semantic_JJ Web_NN 's_POS distributed_VBN nature_NN ,_, data_NNS on_IN it_PRP will_MD inevitably_RB come_VB from_IN many_JJ different_JJ ontologies_NNS ._.
+Information_NN processing_NN across_IN ontologies_NNS is_VBZ not_RB possible_JJ without_IN knowing_VBG the_DT semantic_JJ mappings_NNS between_IN their_PRP$ elements_NNS ._.
+Manually_RB finding_VBG such_JJ mappings_NNS is_VBZ tedious_JJ ,_, error-prone_JJ ,_, and_CC clearly_RB not_RB possible_JJ at_IN the_DT Web_NN scale_NN ._.
+Hence_RB ,_, the_DT development_NN of_IN tools_NNS to_TO assist_VB in_IN the_DT ontology_NN mapping_NN process_NN is_VBZ crucial_JJ to_TO the_DT success_NN of_IN the_DT Semantic_JJ Web_NN ._.
+We_PRP describe_VBP glue_NN ,_, a_DT system_NN that_WDT employs_VBZ machine_NN learning_NN techniques_NNS to_TO find_VB such_JJ mappings_NNS ._.
+Given_VBN two_CD ontologies_NNS ,_, for_IN each_DT concept_NN in_IN one_CD ontology_NN glue_NN finds_VBZ the_DT most_RBS similar_JJ concept_NN in_IN the_DT other_JJ ontology_NN ._.
+We_PRP give_VBP well-founded_JJ probabilistic_JJ definitions_NNS to_TO several_JJ practical_JJ similarity_NN measures_NNS ,_, and_CC show_VBP that_IN glue_NN can_MD work_VB with_IN all_DT of_IN them_PRP ._.
+This_DT is_VBZ in_IN contrast_NN to_TO most_RBS existing_JJ approaches_NNS ,_, which_WDT deal_VBP with_IN a_DT single_JJ similarity_NN measure_NN ._.
+Another_DT key_JJ feature_NN of_IN glue_NN is_VBZ that_IN it_PRP uses_VBZ multiple_JJ learning_NN strategies_NNS ,_, each_DT of_IN which_WDT exploits_VBZ a_DT different_JJ type_NN of_IN information_NN either_CC in_IN the_DT data_NN instances_NNS or_CC in_IN the_DT taxonomic_JJ structure_NN of_IN the_DT ontologies_NNS ._.
+To_TO further_RB improve_VB matching_NN accuracy_NN ,_, we_PRP extend_VBP glue_NN to_TO incorporate_VB commonsense_JJ knowledge_NN and_CC domain_NN constraints_NNS into_IN the_DT matching_JJ process_NN ._.
+For_IN this_DT purpose_NN ,_, we_PRP show_VBP that_IN relaxation_NN labeling_NN ,_, a_DT well-known_JJ constraint_NN optimization_NN technique_NN used_VBN in_IN computer_NN vision_NN and_CC other_JJ fields_NNS ,_, can_MD be_VB adapted_VBN to_TO work_VB efficiently_RB in_IN our_PRP$ context_NN ._.
+Our_PRP$ approach_NN is_VBZ thus_RB distinguished_VBN in_IN that_IN it_PRP works_VBZ with_IN a_DT variety_NN of_IN well-defined_JJ similarity_NN notions_NNS and_CC that_IN it_PRP efficiently_RB incorporates_VBZ multiple_JJ types_NNS of_IN knowledge_NN ._.
+We_PRP describe_VBP a_DT set_NN of_IN experiments_NNS on_IN several_JJ real-world_JJ domains_NNS ,_, and_CC show_VBP that_IN glue_NN proposes_VBZ highly_RB accurate_JJ semantic_JJ mappings_NNS ._.
+de_IN another_DT set_NN of_IN useful_JJ extensions_NNS for_IN PromptDiff_NNP ._.
+Ontology-merging_JJ tools_NNS ,_, such_JJ as_IN Prompt_NNP -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, use_NN semantics_NNS of_IN links_NNS between_IN frames_NNS and_CC user_NN 's_POS action_NN to_TO produce_VB hypotheses_NNS on_IN matching_JJ frames_NNS ._.
+GLU_NN =_JJ -_: =_JJ E_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- -_: =_SYM -_: uses_VBZ machine-learning_JJ techniques_NNS to_TO find_VB matches_NNS between_IN classes_NNS ._.
+AnchorPrompt_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- and_CC the_DT articulation_NN engine_NN of_IN the_DT SKAT_NN tool_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- use_VBP similarities_NNS in_IN the_DT ontology_NN graph_NN structure_NN to_TO suggest_VB candid_JJ
+rts_NNS over_IN the_DT past_JJ few_JJ years_NNS -LRB-_-LRB- 1,2,3_CD -RRB-_-RRB- ._.
+Instance-based_JJ ontology_NN matching_NN techniques_NNS determine_VBP the_DT similarity_NN between_IN concepts_NNS of_IN different_JJ ontologies_NNS by_IN examining_VBG the_DT extensional_JJ information_NN of_IN concepts_NNS =_JJ -_: =[_NN 4,5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, that_DT is_VBZ ,_, the_DT instance_NN data_NNS they_PRP classify_VBP ._.
+The_DT idea_NN behind_IN such_JJ instance-based_JJ matching_NN techniques_NNS is_VBZ that_DT similarity_NN between_IN the_DT extensions_NNS of_IN two_CD concepts_NNS reflects_VBZ the_DT semantic_JJ similarity_NN of_IN these_DT
+e_LS knowledge_NN sources_NNS to_TO build_VB a_DT new_JJ representation_NN of_IN the_DT problem_NN ,_, where_WRB the_DT meaning_NN is_VBZ encoded_VBN as_IN a_DT set_NN of_IN logical_JJ formulae_NN ._.
+Another_DT approach_NN to_TO match_VB ontologies_NNS is_VBZ provided_VBN by_IN instance_NN based_VBN methods_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+These_DT methods_NNS focus_VBP on_IN the_DT most_RBS active_JJ parts_NNS of_IN the_DT ontologies_NNS and_CC reflect_VBP the_DT semantics_NNS of_IN the_DT concepts_NNS as_IN they_PRP are_VBP actually_RB being_VBG used_VBN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+Instance-based_JJ ontology_NN matching_NN techniques_NNS determ_VBP
+ations_NNS ;_: however_RB ,_, this_DT is_VBZ a_DT complementary_JJ goal_NN to_TO ours_PRP :_: our_PRP$ system_NN matches_VBZ terms_NNS and_CC relations_NNS in_IN an_DT user_NN 's_POS query_NN with_IN distributed_VBN ontologies_NNS while_IN they_PRP match_VBP data_NNS repositories_NNS and_CC ontologies_NNS ._.
+In_IN GLUE_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: the_DT probability_NN of_IN matching_VBG two_CD concepts_NNS is_VBZ studied_VBN by_IN analyzing_VBG the_DT available_JJ ontologies_NNS using_VBG relaxation_NN labeling_NN methods_NNS ;_: however_RB ,_, this_DT approach_NN is_VBZ not_RB very_RB adaptable_JJ because_IN it_PRP analyzes_VBZ all_PDT the_DT o_NN
+are_VBP badly_RB needed_VBN to_TO simplify_VB and_CC speed_VB up_RP the_DT development_NN ,_, maintenance_NN and_CC use_NN of_IN such_JJ applications_NNS ._.
+Numerous_JJ researchers_NNS have_VBP addressed_VBN the_DT ontology_NN mapping_NN problem_NN either_CC for_IN specific_JJ applications_NNS =_JJ -_: =[_NN 6_CD ,_, 8_CD ,_, 9_CD ,_, 13_CD ,_, 14_CD ,_, 16_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: or_CC in_IN a_DT more_RBR generic_JJ way_NN for_IN different_JJ applications_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+The_DT proposed_VBN techniques_NNS for_IN automating_VBG ontology_NN mapping_NN exploit_VBP various_JJ types_NNS of_IN information_NN in_IN ontology_NN ,_, e.g._FW entity_NN names_NNS ,_, taxonomy_NN structu_NN
+gh_IN an_DT integration_NN process_NN taking_VBG into_IN account_NN ontologies_NNS possibly_RB existing_VBG at_IN the_DT various_JJ FSP_NNP 's_POS ._.
+A_DT large_JJ number_NN of_IN integration_NN techniques_NNS and_CC methodologies_NNS have_VBP been_VBN developed_VBN for_IN semantic_JJ ontologies_NNS =_JJ -_: =[_NN 15_CD ,_, 1_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN matching_NN techniques_NNS have_VBP been_VBN developed_VBN to_TO determine_VB semantic_JJ mappings_NNS between_IN concepts_NNS of_IN different_JJ related_JJ ontologies_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, that_WDT can_MD be_VB used_VBN in_IN our_PRP$ context_NN ._.
+Also_RB ,_, we_PRP assume_VBP the_DT ontology_NN
+CONE-merge_NN in_IN relation_NN to_TO other_JJ approaches_NNS ._.
+Table_NNP 2_CD ._.
+Issues_NNS concerning_VBG existing_VBG ontology_JJ mapping\/merging_NN tools_NNS ONIONS_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- PROMPT_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- FCA_NNP -_: Merge_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ONION_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- MOMIS_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- CUPID_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- IF-based_JJ -LRB-_-LRB- 7_CD -RRB-_-RRB- GLUE_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: CTX_NN -_: Match_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- S-Match_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- Mapping_NN Architecture_NNP Mediated_NNP Bottom-up_NNP &_CC Topdown_NNP Point-to-point_NNP Top-down_NNP Point-to-point_NNP Bottom-up_NNP Point-to-point_NNP Top-down_NNP Point-to-point_NNP Top-down_NNP Point-to-point_NNP Top-down_JJ
+t_NN ,_, in_IN this_DT experiment_NN it_PRP had_VBD no_DT impact_NN at_IN all_DT ._.
+It_PRP is_VBZ difficult_JJ to_TO compare_VB recall_NN and_CC precision_NN percentages_NNS of_IN HCONE-oriented_JJ approaches_NNS with_IN results_NNS of_IN other_JJ approaches_NNS such_JJ as_IN GLUE_NN -LRB-_-LRB- 66-97_CD %_NN precision_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =--RRB-_NN and_CC CTX-MATCH_NN -LRB-_-LRB- 60-76_CD %_NN precision_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+The_DT trade-off_NN between_IN precision_NN percentages_NNS and_CC time\/human_JJ involvement_NN spent_VBN during_IN mapping_NN must_MD be_VB carefully_RB examined_VBN when_WRB doing_VBG such_JJ comparisons_NNS ,_, as_RB well_RB as_IN t_NN
+t_NN -LRB-_-LRB- F_NN =_JJ P_NN \_CD R_NN -RRB-_-RRB- ._.
+Let_NNP M_NNP denote_VB the_DT elements_NNS that_WDT have_VBP matches_NNS but_CC are_VBP not_RB covered_VBN ,_, that_WDT is_VBZ M_NN =_JJ R_NN \_NN P_NN ._.
+We_PRP used_VBD the_DT quality_NN measures_NNS previously_RB employed_VBN by_IN many_JJ other_JJ researchers_NNS for_IN match_NN studies_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, namely_RB ,_, precision_NN ,_, which_WDT is_VBZ |_NNP I_NNP |_NNP \/_: |_CD P_NN |_NN ,_, and_CC recall_NN ,_, which_WDT is_VBZ |_NNP I_NNP |_NNP \/_: |_NNP R_NNP |_NNP ._.
+It_PRP is_VBZ difficult_JJ to_TO determine_VB R_NN manually_RB for_IN the_DT original_JJ repository_NN due_JJ to_TO its_PRP$ size_NN ._.
+Therefore_RB ,_, in_IN this_DT case_NN ,_, we_PRP used_VBD precision_NN an_DT
+integration_NN can_MD be_VB found_VBN in_IN several_JJ disciplines_NNS ,_, listed_VBN below_IN ._.
+Schema_NN mapping_NN ._.
+Although_IN the_DT focus_NN of_IN our_PRP$ paper_NN is_VBZ not_RB in_IN finding_VBG mappings_NNS ,_, automatic_JJ or_CC semi-automatic_JJ schema_NN -LRB-_-LRB- ontology_NN -RRB-_-RRB- matching_NN tools_NNS =_JJ -_: =[_NN 20_CD ,_, 16_CD ,_, 8_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: can_MD be_VB helpful_JJ in_IN providing_VBG suggestions_NNS to_TO a_DT domain_NN expert_NN ._.
+Clio_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- is_VBZ a_DT semi-automatic_JJ tool_NN that_WDT uses_VBZ an_DT abstract_JJ query_NN graph_NN representation_NN for_IN mappings_NNS ._.
+The_DT COMA_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- framework_NN combines_VBZ schemas_NNS
+ate_VBD but_CC who_WP both_DT chose_VBD to_TO use_VB the_DT same_JJ ontology_NN ._.
+Of_IN course_NN ,_, dealing_VBG with_IN problems_NNS that_WDT arise_VBP when_WRB terms_NNS are_VBP used_VBN inconsistently_RB or_CC different_JJ terms_NNS refer_VBP to_TO the_DT same_JJ concept_NN is_VBZ a_DT significant_JJ challenge_NN =_JJ -_: =[_NN 48_CD ,_, 77_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT number_NN of_IN additional_JJ points_NNS regarding_VBG RDF_NNP are_VBP relevant_JJ ._.
+First_RB ,_, the_DT above_JJ snippet_NN demonstrates_VBZ that_IN RDF_NN syntax_NN is_VBZ somewhat_RB verbose_JJ and_CC difficult_JJ to_TO write_VB by_IN hand_NN ._.
+Second_NNP ,_, RDF_NNP can_MD be_VB embedded_VBN inside_IN
+oment_NN they_PRP arise_VBP and_CC should_MD built_VBD up_RP a_DT relatively_RB small_JJ communication_NN vocabulary_NN such_JJ that_IN it_PRP remains_VBZ easy_JJ to_TO learn_VB and_CC to_TO process_NN ._.
+Another_DT approach_NN to_TO match_VB ontologies_NNS are_VBP the_DT instance_NN based_VBN methods_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+These_DT methods_NNS determine_VBP the_DT similarity_NN between_IN concepts_NNS of_IN different_JJ ontologies_NNS by_IN examining_VBG the_DT extensional_JJ information_NN of_IN concepts_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Various_JJ approaches_NNS to_TO instances_NNS based_VBN methods_NNS exist_VBP :_: in_IN
+e_LS operational_JJ -LRB-_-LRB- i.e._FW ,_, executable_JJ -RRB-_-RRB- rules_NNS in_IN formal_JJ languages_NNS ._.
+Similarly_RB ,_, research_NN in_IN knowledge_NN engineering_NN and_CC the_DT Semantic_JJ Web_NN has_VBZ resulted_VBN in_IN tools_NNS for_IN ontology_NN matching_NN and_CC mapping_NN ._.
+PROMT_NN -LRB-_-LRB- 43_CD -RRB-_-RRB- ,_, GLUE_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, MAFRA_NN -LRB-_-LRB- 36_CD -RRB-_-RRB- andBMO_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- are_VBP some_DT examples_NNS of_IN such_JJ systems_NNS ._.
+BMO_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- can_MD generate_VB block_NN matchings_NNS using_VBG a_DT hierarchical_JJ bipartition_NN algorithm_NN ._.
+This_DT system_NN builds_VBZ a_DT virtual_JJ document_NN for_IN each_DT ontology_NN and_CC
+ut_IN complementary_JJ issue_NN of_IN providing_VBG support_NN for_IN generating_VBG semantic_JJ mappings_NNS between_IN peers_NNS has_VBZ been_VBN a_DT topic_NN of_IN considerable_JJ interest_NN in_IN the_DT database_NN community_NN -LRB-_-LRB- 29_CD ,_, 11_CD -RRB-_-RRB- ,_, and_CC in_IN the_DT ontology_JJ literature_NN =_JJ -_: =[_NN 23_CD ,_, 12_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT problem_NN of_IN estimating_VBG information_NN loss_NN in_IN mappings_NNS has_VBZ also_RB been_VBN studied_VBN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+An_DT important_JJ problem_NN that_IN we_PRP have_VBP not_RB yet_RB addressed_VBN is_VBZ that_DT of_IN potential_JJ data_NNS source_NN inconsistencies_NNS ;_: but_CC this_DT prob_NN
+skeleton_NN algorithm_NN ._.
+Studies_NNS have_VBP also_RB been_VBN done_VBN regarding_VBG the_DT integration_NN of_IN information_NN across_IN ontologies_NNS -LRB-_-LRB- 87_CD -RRB-_-RRB- ._.
+Mapping_NN the_DT semantic_JJ elements_NNS between_IN two_CD ontologies_NNS is_VBZ the_DT ontology-matching_JJ problem_NN =_JJ -_: =[_NN 38_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Ontologies_NNS define_VBP semantics_NNS independently_RB of_IN data_NNS representation_NN and_CC reflect_VBP the_DT relevance_NN of_IN data_NNS without_IN accessing_VBG them_PRP ._.
+Such_JJ a_DT high-level_JJ description_NN of_IN the_DT semantics_NNS of_IN geographic_JJ information_NN pr_NN
+exhaustively_RB applied_VBN to_TO find_VB the_DT maximum_NN action_NN ._.
+We_PRP set_VBD the_DT RL_NN parameters_NNS as_IN follows_VBZ :_: α_NN =_JJ 0.00001_CD ,_, λ_NN =_JJ 0.9_CD ,_, γ_NN =_JJ 0.9_CD ._.
+•_NNP GLUE_NNP :_: in_IN order_NN to_TO compare_VB with_IN a_DT well-known_JJ system_NN on_IN the_DT this_DT dataset_NN ,_, we_PRP choose_VBP GLUE_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN these_DT experiments_NNS contrastive_VBP divergence_NN and_CC SampleRank_NN were_VBD run_VBN for_IN 10,000_CD samples_NNS each_DT ,_, while_IN reinforcement_NN learning_NN was_VBD run_VBN for_IN twenty_CD episodes_NNS and_CC 200_CD steps_NNS per_IN episode_NN ._.
+CD1_NN and_CC SampleRank_NN w_NN
+subscribed_VBD to_TO different_JJ ontologies_NNS ,_, then_RB our_PRP$ framework_NN has_VBZ to_TO deal_VB with_IN ontology_NN mapping_NN between_IN ontologies_NNS ._.
+There_EX are_VBP several_JJ approaches_NNS to_TO ontology_NN mapping_NN such_JJ as_IN the_DT one_CD taken_VBN in_IN the_DT GLUE_NN system_NN -LRB-_-LRB- =_JJ -_: =_JJ Doan_NNP et_FW al._FW ,_, 2002_CD -_: =--RRB-_NN ;_: Noy_NNP and_CC Musen_NNP -LRB-_-LRB- 2000_CD -RRB-_-RRB- also_RB developed_VBD a_DT tool_NN for_IN ontology_NN alignment_NN ._.
+Our_PRP$ architecture_NN moves_VBZ away_RB from_IN the_DT traditional_JJ teacher-student_JJ model_NN in_IN which_WDT the_DT teacher_NN determines_VBZ the_DT learning_VBG material_NN to_TO be_VB
+vely_RB applied_VBN to_TO find_VB the_DT maximum_NN action_NN ._.
+We_PRP set_VBD the_DT RL_NN parameters_NNS as_IN follows_VBZ :_: α_NN =_JJ 0.00001_CD ,_, λ_NN =_JJ 0.9_CD ,_, γ_NN =_JJ 0.9_CD •_CD GLUE_NN :_: in_IN order_NN to_TO compare_VB with_IN the_DT state_NN of_IN the_DT art_NN on_IN the_DT this_DT dataset_NN ,_, we_PRP use_VBP the_DT GLUE_NN system_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN these_DT experiments_NNS SampleRank_NNP was_VBD run_VBN for_IN twenty_CD episodes_NNS and_CC 10,000_CD steps_NNS per_IN episode_NN ,_, while_IN reinforcement_NN learning_NN was_VBD run_VBN for_IN twenty_CD episodes_NNS and_CC 200_CD steps_NNS per_IN episode_NN ._.
+SampleRank_NNP was_VBD run_VBN for_IN m_NN
+antic_JJ Web_NN ,_, context_NN is_VBZ often_RB used_VBN either_CC as_IN a_DT filter_NN for_IN disambiguation_NN in_IN information_NN retrieval_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, to_TO define_VB contextual_JJ web_NN services_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- or_CC as_IN a_DT means_NN to_TO integrate_VB or_CC merge_VB different_JJ ontologies_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Context_NN could_MD be_VB specified_VBN with_IN different_JJ granularity_NN levels_NNS -LRB-_-LRB- document_NN ,_, web_NN page_NN ,_, etc._NN -RRB-_-RRB- ._.
+Additional_JJ information_NN ,_, i.e._FW the_DT context_NN ,_, could_MD then_RB be_VB linked_VBN to_TO each_DT resource_NN ._.
+3_LS ._.
+Conceptual_JJ contexts_NNS and_CC r_NN
+knowledge_NN bases_NNS ,_, where_WRB a_DT knowledge_NN base_NN is_VBZ formed_VBN by_IN adding_VBG instances_NNS to_TO the_DT concepts_NNS in_IN the_DT ontology_NN ._.
+Knowledge_NN bases_NNS are_VBP used_VBN by_IN agents_NNS to_TO improve_VB ,_, reuse_NN and_CC to_TO maintain_VB them_PRP ._.
+The_DT following_VBG figure_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ an_DT example_NN ontology_NN of_IN a_DT computer_NN science_NN department_NN domain_NN with_IN concepts_NNS and_CC properties_NNS ._.
+Figure_NN 2.1_CD :_: Ontology_NN 5Ontologies_NNS can_MD be_VB used_VBN to_TO support_VB a_DT great_JJ variety_NN of_IN tasks_NNS in_IN diverse_JJ research_NN area_NN
+our_PRP$ approach_NN ,_, we_PRP consider_VBP the_DT semantic_JJ similarity_NN of_IN the_DT concepts_NNS '_POS children_NNS ,_, instead_RB ._.
+Instance-level_JJ Instance-level_JJ matching_NN uses_VBZ the_DT actual_JJ contents_NNS -LRB-_-LRB- or_CC instances_NNS -RRB-_-RRB- of_IN the_DT schema_NN or_CC ontology_JJ elements_NNS =_JJ -_: =[_NN 12_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN we_PRP have_VBP two_CD types_NNS of_IN ontologies_NNS to_TO align_VB ,_, namely_RB the_DT schema-like_JJ ontologies_NNS and_CC the_DT taxonomy-like_JJ ontologies_NNS ,_, in_IN this_DT paper_NN we_PRP have_VBP mainly_RB concentrated_VBN on_IN the_DT alignment_NN of_IN the_DT latter_JJ type_NN ._.
+,_, mappings_NNS on_IN the_DT terminological_JJ level_NN are_VBP currently_RB rare_JJ -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Since_IN some_DT datasets_NNS in_IN Linked_NNP Open_NNP Data_NNP use_VB multiple_JJ ontologies_NNS in_IN parallel_NN ,_, they_PRP allow_VBP for_IN applying_VBG an_DT instancebased_JJ matching_NN approach_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, i.e._FW ,_, exploiting_VBG information_NN about_IN instances_NNS belonging_VBG to_TO ontology_JJ classes_NNS for_IN constructing_VBG a_DT mapping_NN between_IN such_JJ classes_NNS ._.
+As_IN discussed_VBN above_RB ,_, the_DT DBPedia_NN dataset_NN uses_VBZ both_DT its_PRP$ own_JJ ontology_NN as_RB well_RB
+der_NN to_TO create_VB mappings_NNS into_IN his_PRP$ own_JJ ontology_NN --_: which_WDT may_MD be_VB a_DT lot_NN easier_JJR than_IN if_IN the_DT information_NN a_DT user_NN gets_VBZ is_VBZ restricted_JJ to_TO information_NN structures_NNS -LRB-_-LRB- as_IN in_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- -RRB-_-RRB- and\/or_CC information_NN proper_JJ only_RB -LRB-_-LRB- as_IN i_FW =_JJ -_: =_JJ n_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+W_NN -_: =_JJ -_: e_LS define_VB ``_`` deep_JJ annotation_NN ''_'' as_IN an_DT annotation_NN process_NN that_WDT utilizes_VBZ information_NN proper_JJ ,_, information_NN structures_NNS and_CC information_NN context_NN in_IN order_NN to_TO derive_VB mappings_NNS between_IN information_NN structures_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB-
+its_PRP$ all_PDT the_DT relations_NNS ._.
+A_DT concept_NN on_IN the_DT other_JJ hand_NN can_MD also_RB be_VB defined_VBN as_IN a_DT representative_NN for_IN a_DT set_NN of_IN instances_NNS ._.
+We_PRP can_MD therefore_RB infer_VB that_IN concepts_NNS that_WDT have_VBP the_DT same_JJ instances_NNS are_VBP the_DT same_JJ -LRB-_-LRB- R10_NN -RRB-_-RRB- =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Vice_NNP versa_RB ,_, instances_NNS that_WDT have_VBP the_DT same_JJ mother_NN concept_NN are_VBP similar_JJ -LRB-_-LRB- R11_NN -RRB-_-RRB- ._.
+It_PRP is_VBZ also_RB interesting_JJ to_TO have_VB a_DT look_NN at_IN the_DT possible_JJ distribution_NN of_IN instances_NNS on_IN concepts_NNS ._.
+If_IN concepts_NNS have_VBP a_DT similar_JJ low_JJ
+correspondence_NN between_IN the_DT concepts_NNS of_IN two_CD ontologies_NNS ,_, which_WDT is_VBZ the_DT target_NN of_IN ontology_NN mapping_NN ._.
+Lots_NNS of_IN research_NN has_VBZ been_VBN done_VBN on_IN ontology_NN mapping_NN ,_, including_VBG implemented_VBN systems_NNS named_VBD CUPID_NNP -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, GLUE_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: and_CC CTX-Match_JJ -LRB-_-LRB- 38_CD -RRB-_-RRB- ._.
+Some_DT existing_VBG systems_NNS do_VBP not_RB recognize_VB an_DT explicit_JJ boundary_NN between_IN ontology_NN mapping_NN and_CC ontology_NN merging_JJ ;_: these_DT include_VBP Chimaera_NNP -LRB-_-LRB- 35_CD -RRB-_-RRB- ,_, PROMPT_NN -LRB-_-LRB- 36_CD -RRB-_-RRB- ,_, FCA-Merge_NN -LRB-_-LRB- 39_CD -RRB-_-RRB- ,_, and_CC MOMIS_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+The_DT
+tead_NN of_IN computing_VBG semantic_JJ relations_NNS between_IN nodes_NNS ,_, they_PRP compute_VBP syntactic_JJ ``_`` similarity_NN ''_'' coefficients_NNS between_IN labels_NNS ,_, in_IN the_DT -LRB-_-LRB- 0,1_CD -RRB-_-RRB- range_NN ._.
+Some_DT examples_NNS of_IN previous_JJ solutions_NNS are_VBP -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 10_CD -RRB-_-RRB- ;_: see_VB -LRB-_-LRB- 6_CD -RRB-_-RRB- for_IN an_DT in_IN depth_NN discussion_NN about_IN syntactic_JJ and_CC semantic_JJ matching_NN ._.
+In_IN this_DT paper_NN we_PRP propose_VBP and_CC analyze_VBP in_IN detail_NN an_DT algorithm_NN and_CC a_DT system_NN implementing_VBG semantic_JJ matching_NN ._.
+Our_PRP$ approach_NN
+espondences_NNS are_VBP determined_VBN using_VBG -LRB-_-LRB- i_LS -RRB-_-RRB- syntactic_JJ similarity_NN measures_NNS and_CC -LRB-_-LRB- ii_LS -RRB-_-RRB- syntax_NN driven_JJ techniques_NNS ,_, see_VB ,_, for_IN instance_NN -LRB-_-LRB- Rahm_NNP and_CC Bernstein_NNP 2001_CD ;_: Madhavan_NNP ,_, Bernstein_NNP ,_, and_CC Rahm_NNP 2001_CD ;_: Do_NNP and_CC Rahm_NNP 2002_CD ;_: =_JJ -_: =_JJ Doan_NNP et_FW al._FW 2002_CD -_: =_JJ -_: ;_: Xu_NNP and_CC Embley_NNP 2003_CD ,_, etc._NN -RRB-_-RRB- ._.
+The_DT first_JJ key_JJ distinction_NN of_IN the_DT semantic_JJ matching_NN approach_NN is_VBZ that_IN we_PRP calculate_VBP mappings_NNS between_IN schema\/ontology_JJ elements_NNS -LRB-_-LRB- e.g._FW ,_, nodes_NNS of_IN graphs_NNS -RRB-_-RRB- by_IN computing_VBG semantic_JJ re_NN
+teristics_NNS of_IN sample_NN timetabling_VBG problemssFig_NN ._.
+2_CD ._.
+Schematic_JJ overview_NN of_IN the_DT tool_NN Two_CD algorithms_NNS -LRB-_-LRB- heuristic_NN and_CC Bayesian_JJ approach_NN -RRB-_-RRB- are_VBP developed_VBN to_TO finalize_VB the_DT mappings_NNS ._.
+The_DT ontology_JJ mapping_NN tool_NN GLUE_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: uses_NNS of_IN a_DT multi-strategy_JJ learning_NN approach_NN with_IN a_DT set_NN of_IN learners_NNS of_IN which_WDT the_DT predictions_NNS are_VBP combined_VBN ._.
+Domain_NN constraints_NNS and_CC general_JJ heuristics_NNS improve_VBP the_DT accuracy_NN of_IN the_DT matching_NN ._.
+Anchor-PROMPT_NN
+classes_NNS and_CC their_PRP$ attributes_NNS ,_, creating_VBG necessary_JJ subclasses_NNS and_CC putting_VBG them_PRP in_IN the_DT right_JJ places_NNS in_IN the_DT hierarchy_NN ._.
+Some_DT other_JJ systems_NNS use_VBP a_DT composite_JJ approach_NN to_TO achieve_VB better_JJR matching_NN results_NNS ._.
+GLUE_NN =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT system_NN uses_VBZ composite_JJ approach_NN to_TO combine_VB different_JJ matching_NN strategy_NN ._.
+It_PRP uses_VBZ machine_NN learning_NN techniques_NNS for_IN individual_JJ matchers_NNS and_CC an_DT automatic_JJ combination_NN of_IN match_NN results_NNS ._.
+Recently_RB ,_, there_EX
+to_TO customize_VB :_: TourinFrance_NN 2_CD and_CC the_DT bilingual_JJ -LRB-_-LRB- French_JJ and_CC English_JJ -RRB-_-RRB- thesaurus_NN of_IN tourism_NN and_CC leisure_NN activities_NNS 3_CD which_WDT includes_VBZ 2800_CD French_NNP terms_NNS ._.
+We_PRP manually_RB integrated_VBD these_DT ontologies_NNS in_IN WEBCOOP_NN -LRB-_-LRB- =_JJ -_: =_JJ Doan_NNP et_FW al._FW ,_, 2002_CD -_: =--RRB-_NN by_IN removing_VBG concepts_NNS that_WDT are_VBP either_RB too_RB specific_JJ -LRB-_-LRB- i.e._FW too_RB low_JJ level_NN -RRB-_-RRB- ,_, like_IN some_DT basic_JJ aspects_NNS of_IN ecology_NN or_CC rarely_RB considered_VBN ,_, as_IN e.g._FW the_DT economy_NN of_IN tourism_NN ._.
+We_PRP also_RB removed_VBD quite_RB surprising_JJ clas_NNS
+d_NN on_IN the_DT above_JJ conformance_NN ._.
+The_DT system_NN then_RB uses_VBZ the_DT channel_NN theory_NN to_TO infer_VB the_DT mappings_NNS between_IN different_JJ local_JJ ontologies_NNS using_VBG these_DT logic_NN infomorphisms_NNS ._.
+2_CD http:\/\/www.w3.org\/TR\/owl-features\/sGLUE_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ an_DT example_NN of_IN a_DT system_NN that_WDT employs_VBZ machinelearning_VBG techniques_NNS to_TO find_VB mappings_NNS ._.
+GLUE_NN uses_VBZ multiple_JJ learners_NNS exploiting_VBG information_NN in_IN concept_NN instances_NNS and_CC taxonomic_JJ structure_NN of_IN ontologies_NNS ._.
+GLUE_NN
+of_IN domain_NN knowledge_NN -RRB-_-RRB- ._.
+Overall_RB ,_, LSD_NN achieved_VBD matching_JJ accuracy_NN of_IN 75-90_CD %_NN on_IN small_JJ to_TO medium_NN sized_VBD schemas_NNS of_IN data_NNS sources_NNS on_IN the_DT Web_NN ._.
+LSD_NN was_VBD then_RB extended_VBN to_TO consider_VB simple_JJ taxonomies_NNS of_IN concepts_NNS in_IN =_JJ -_: =_JJ -LRB-_-LRB- DMDH02_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN recent_JJ work_NN -LRB-_-LRB- MBC_NN +_CC 03_CD -RRB-_-RRB- ,_, we_PRP investigate_VBP the_DT benefit_NN of_IN a_DT corpus_NN of_IN schemas_NNS and_CC matches_NNS ,_, and_CC the_DT ability_NN to_TO use_VB such_PDT a_DT corpus_NN to_TO predict_VB mappings_NNS between_IN a_DT pair_NN of_IN schemas_NNS that_WDT have_VBP not_RB been_VBN previo_VBN
+ifferent_JJ techniques_NNS ._.
+For_IN example_NN ,_, Similarity_NN Flooding_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC AnchorPrompt_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- algorithms_NNS compare_VBP graphs_NNS representing_VBG the_DT ontologies_NNS or_CC schemas_NNS ,_, looking_VBG for_IN similarities_NNS in_IN the_DT graph_NN structure_NN ._.
+GLUE_NN =_SYM -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ an_DT example_NN of_IN a_DT system_NN that_WDT employs_VBZ machine-learning_JJ techniques_NNS to_TO find_VB mappings_NNS ._.
+GLUE_NN uses_VBZ multiple_JJ learners_NNS exploiting_VBG information_NN in_IN concept_NN instances_NNS and_CC taxonomic_JJ structure_NN of_IN ontologies_NNS ._.
+GLU_NNP
+Most_JJS of_IN the_DT work_NN focuses_VBZ on_IN only_RB 1:1_CD mapping_NN -LRB-_-LRB- 9_CD ,_, 10_CD ,_, 15_CD ,_, 18_CD ,_, 22_CD ,_, 23_CD ,_, 26_CD ,_, 29_CD -RRB-_-RRB- despite_IN of_IN the_DT fact_NN that_IN approximately_RB 22_CD %_NN -50_CD %_NN of_IN mappings_NNS are_VBP beyond_IN this_DT cardinality_NN by_IN statistic_NN on_IN real-world_JJ examples_NNS =_JJ -_: =[_NN 11_CD ,_, 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Secondly_RB ,_, Ontology_NN mapping_NN work_NN has_VBZ been_VBN done_VBN mainly_RB on_IN metadata_NN heterogeneity_NN ,_, not_RB on_IN instance_NN heterogeneity_NN ._.
+In_IN natural_JJ language_NN processing_NN ,_, text_NN normalization_NN has_VBZ been_VBN studied_VBN -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+But_CC before_IN ad_NN
+ze_IN term_NN meaning_NN ,_, and_CC thus_RB semantics_NNS ,_, directly_RB ._.
+In_IN these_DT approaches_NNS semantic_JJ correspondences_NNS are_VBP determined_VBN using_VBG -LRB-_-LRB- i_LS -RRB-_-RRB- syntactic_JJ similarity_NN measures_NNS and_CC -LRB-_-LRB- ii_LS -RRB-_-RRB- syntax_NN driven_JJ techniques_NNS ,_, see_VB ,_, for_IN instance_NN =_JJ -_: =[_NN 24_CD ,_, 17_CD ,_, 14_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, etc._NN ._.
+The_DT first_JJ key_JJ distinction_NN of_IN the_DT semantic_JJ matching_NN approach_NN is_VBZ that_IN we_PRP calculate_VBP mappings_NNS between_IN schema\/ontology_JJ elements_NNS -LRB-_-LRB- e.g._FW ,_, nodes_NNS of_IN graphs_NNS -RRB-_-RRB- by_IN computing_VBG semantic_JJ relations_NNS -LRB-_-LRB- for_IN example_NN ,_,
+node_NN ,_, are_VBP also_RB accommodated_VBN ._.
+Multiple_JJ distance_NN measures_NNS are_VBP accomodated_VBN and_CC relevant_JJ information_NN is_VBZ allowed_VBN to_TO take_VB precedence_NN over_IN less_RBR relevant_JJ information_NN ._.
+An_DT SQL_NN based_JJ implementation_NN is_VBZ given_VBN ._.
+In_IN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Doan_NNP et_NNP ._.
+al._FW take_VB a_DT probabilistic_JJ approach_NN to_TO finding_VBG semantic_JJ mappings_NNS between_IN ontologies_NNS ._.
+Their_PRP$ system_NN ,_, GLUE_NN ,_, employs_VBZ machine_NN learning_NN techniques_NNS to_TO find_VB such_JJ mappings_NNS ._.
+Given_VBN two_CD ontologies_NNS ,_, for_IN ea_NN
+and_CC databases_NNS ._.
+Outside_JJ of_IN proactive_JJ retrieval_NN systems_NNS ,_, IACS_NNS '_POS learning_NN of_IN new_JJ context-related_JJ terms_NNS may_MD be_VB seen_VBN as_IN related_JJ to_TO learning_VBG semantic_JJ correspondences_NNS ,_, studied_VBN in_IN Semantic_JJ Web_NN research_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+6_CD Conclusion_NN and_CC Future_JJ Directions_NNS When_WRB rich_JJ contextual_JJ information_NN is_VBZ available_JJ ,_, it_PRP provides_VBZ a_DT potential_JJ resource_NN for_IN improving_VBG the_DT performance_NN of_IN proactive_JJ retrieval_NN systems_NNS ._.
+However_RB ,_, it_PRP may_MD be_VB d_NN
+are_VBP active_JJ areas_NNS of_IN research_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+AI_NN research_NN is_VBZ rich_JJ with_IN respect_NN to_TO matching_NN and_CC similaritybased_JJ algorithms_NNS ,_, and_CC some_DT of_IN these_DT techniques_NNS have_VBP been_VBN applied_VBN recently_RB to_TO schema_NN and_CC ontology_NN matching_NN =_JJ -_: =[_NN 8_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, several_JJ fundamental_JJ questions_NNS have_VBP yet_RB to_TO be_VB answered_VBN ._.
+For_IN instance_NN ,_, how_WRB are_VBP we_PRP to_TO choose_VB an_DT appropriate_JJ semantic_JJ model_NN and_CC mapping_NN for_IN a_DT source_NN ?_.
+What_WP -LRB-_-LRB- technical_JJ and_CC other_JJ -RRB-_-RRB- incentives_NNS can_MD w_VB
+ts_NNS of_IN ontologies_NNS ,_, ontology_NN mapping_NN necessarily_RB involves_VBZ finding_VBG the_DT correspondences_NNS between_IN two_CD taxonomies_NNS ,_, which_WDT is_VBZ often_RB based_VBN on_IN integrating_VBG objects_NNS from_IN one_CD taxonomy_NN into_IN the_DT other_JJ and_CC vice_RB versa_RB =_JJ -_: =[_NN 3_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+If_IN all_DT taxonomy_JJ creators_NNS and_CC users_NNS agreed_VBD on_IN a_DT universal_JJ standard_NN ,_, taxonomy_NN integration_NN would_MD not_RB be_VB so_RB difficult_JJ ._.
+But_CC the_DT Web_NN has_VBZ evolved_VBN without_IN central_JJ editorship_NN ._.
+Hence_RB the_DT correspondences_NNS betwe_VBP
+Association_NNP for_IN Artificial_NNP Intelligence_NNP -LRB-_-LRB- www.aaai.org_NN -RRB-_-RRB- ._.
+All_DT rights_NNS reserved_VBN ._.
+Christopher_NNP Thomas_NNP LSDIS_NNP Lab_NNP ,_, Dept._NNP of_IN Computer_NNP Science_NNP University_NNP of_IN Georgia_NNP Athens_NNP ,_, GA_NN 30602_CD chaos@uga.edu_NN GLUE_NN system_NN -LRB-_-LRB- =_JJ -_: =_JJ Doan_NNP et_FW al._FW 2002_CD -_: =--RRB-_NN uses_VBZ the_DT instances_NNS to_TO compute_VB a_DT similarity_NN measure_NN -LRB-_-LRB- Jaccard_NN coefficient_NN -RRB-_-RRB- between_IN the_DT concepts_NNS ,_, and_CC feeds_VBZ it_PRP to_TO a_DT relaxation_NN labeler_NN that_WDT exploits_VBZ general_JJ and_CC domain-specific_JJ heuristics_NNS to_TO match_VB the_DT
+ation_NN ;_: in_IN addition_NN ,_, it_PRP uses_VBZ an_DT estimate_NN of_IN the_DT logical_JJ consequences_NNS to_TO determine_VB the_DT similarity_NN of_IN entities_NNS -LRB-_-LRB- classes_NNS ,_, properties_NNS ,_, and_CC individuals_NNS -RRB-_-RRB- ._.
+Like_IN other_JJ similarity-based_JJ approaches_NNS for_IN matching_NN =_JJ -_: =[_NN 17_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, similarity_NN is_VBZ propagated_VBN incrementally_RB ;_: however_RB our_PRP$ approach_NN is_VBZ based_VBN on_IN a_DT clustering_NN algorithm_NN which_WDT considers_VBZ relationships_NNS among_IN sets_NNS of_IN equivalent_JJ entities_NNS ,_, rather_RB than_IN individual_JJ pairs_NNS of_IN entit_NN
+es_NNS also_RB attempt_VBP to_TO classify_VB the_DT data_NNS points_NNS in_IN S_NN into_IN M_NN by_IN using_VBG the_DT data_NNS in_IN S_NN to_TO enhance_VB the_DT classifiers_NNS in_FW M._FW These_DT methods_NNS output_NN a_DT simple_JJ 1-to-1_JJ mapping_NN of_IN classes_NNS from_IN S_NN to_TO M._NNP The_NNP GLUE_NNP framework_NN =_JJ -_: =_JJ -LRB-_-LRB- DMDH02_NN -RRB-_-RRB- -_: =_SYM -_: also_RB performs_VBZ a_DT 1-to-1_JJ mapping_NN between_IN the_DT source_NN and_CC master_NN taxonomy_NN classes_NNS but_CC uses_VBZ the_DT hierarchical_JJ information_NN to_TO assign_VB labels_NNS to_TO the_DT nodes_NNS using_VBG the_DT idea_NN of_IN `_`` relaxation_NN labeling_NN '_'' ._.
+The_DT key_JJ idea_NN
+ing_NN -LRB-_-LRB- Kalfoglou_NNP and_CC Schorlemmer_NNP 2002_CD -RRB-_-RRB- ,_, the_DT SMART_NNP ,_, PROMPT_NNP and_CC PROMPTDIFF_NNP tools_NNS for_IN the_DT Protégé_NNP ontology_NN development_NN environment_NN from_IN Noy_NNP and_CC Musen_NNP ,_, the_DT Chimeara_NNP tool_NN -LRB-_-LRB- McGuinness_NN et_FW al._FW 2000_CD -RRB-_-RRB- ,_, the_DT GLUE_NN -LRB-_-LRB- =_JJ -_: =_JJ Doan_NNP et_FW al._FW 2002_CD -_: =--RRB-_NN and_CC CAIMAN_NN -LRB-_-LRB- Lacher_NN and_CC Groh_NN 2001_CD -RRB-_-RRB- systems_NNS ,_, both_DT of_IN which_WDT use_VBP machine_NN learning_NN ,_, the_DT ITTalks_NN web-based_JJ system_NN -LRB-_-LRB- Prasad_NNP et_FW al._FW 2002_CD -RRB-_-RRB- ,_, the_DT ONION_NNP system_NN for_IN resolving_VBG heterogeneity_NN in_IN ontologies_NNS -LRB-_-LRB- Mitra_NNP an_DT
+-LRB-_-LRB- either_CC in_IN plain_JJ text_NN or_CC in_IN some_DT formal_JJ language_NN -RRB-_-RRB- ._.
+Then_RB ,_, the_DT manager_NN could_MD use_VB a_DT combination_NN of_IN information_NN extraction_NN or_CC wrapper_NN techniques_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 15,31_CD -RRB-_-RRB- -RRB-_-RRB- and\/or_CC ontology_NN matching_NN algorithms_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 14,13_CD -RRB-_-RRB- -_: =--RRB-_NN to_TO map_VB the_DT participant_NN 's_POS response_NN into_IN the_DT potluck_NN 's_POS ontology_NN ._.
+There_EX are_VBP several_JJ interesting_JJ outcomes_NNS to_TO this_DT mapping_NN ._.
+First_RB ,_, the_DT response_NN may_MD directly_RB map_VB to_TO one_CD of_IN the_DT original_JJ potluck_NN choices_NNS -LRB-_-LRB- e._NN
+ng_NN are_VBP Schema_NN Integration_NN ,_, i.e._FW the_DT problem_NN of_IN constructing_VBG a_DT global_JJ view_NN ,_, given_VBN a_DT set_NN of_IN independently_RB developed_VBN schemas_NNS -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, ``_`` message_NN translation_NN ''_'' for_IN E-Commerce_NN portals_NNS ,_, and_CC also_RB the_DT Semantic_JJ Web_NN =_JJ -_: =[_NN 2_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB matching_NN can_MD be_VB used_VBN for_IN mapping_NN messages_NNS between_IN autonomous_JJ agents_NNS ._.
+In_IN this_DT paper_NN we_PRP consider_VBP another_DT scenario_NN for_IN Schema_NNP Matching_NNP :_: given_VBN a_DT user_NN query_NN ,_, written_VBN with_IN the_DT target_NN schema_NN ¡_NN of_IN the_DT
+c_NN ontology_NN mapping_NN process_NN in_IN the_DT Semantic_JJ Web_NN context_NN ._.
+It_PRP 's_VBZ main_JJ contribution_NN is_VBZ that_IN it_PRP creates_VBZ a_DT true_JJ distributed_VBN ontology_NN mapping_NN framework_NN that_WDT is_VBZ differ_VBP from_IN the_DT mediator_NN based_VBN approaches_NNS ._.
+GLUE_NN =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: evolved_VBN from_IN a_DT mediator_NN based_VBN LSD_NNP data_NNS source_NN schema_NN matching_NN ,_, applies_VBZ machine_NN learning_NN techniques_NNS and_CC similarity_NN measures_NNS based_VBN on_IN joint_JJ probabilistic_JJ distributions_NNS ._.
+InfoSleuth_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- figure_NN 1_CD defines_VBZ
+lowing_VBG the_DT construction_NN of_IN robust_JJ tools_NNS which_WDT on_IN the_DT one_CD hand_NN assist_VB users_NNS to_TO generate_VB and_CC maintain_VB mappings_NNS at_IN design_NN time_NN by_IN incorporating_VBG automatic_JJ or_CC semi-automatic_JJ mapping_NN discovery_NN technologies_NNS =_JJ -_: =[_NN 2_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: and_CC on_IN the_DT other_JJ hand_NN execute_VBP semantic_JJ data_NNS transformation_NN at_IN run_NN time_NN by_IN reasoning_NN upon_IN the_DT mappings_NNS ._.
+Secondly_RB ,_, the_DT transformation_NN instructions_NNS should_MD not_RB only_RB allow_VB the_DT generation_NN of_IN semantic_JJ data_NNS
+using_VBG the_DT similarity_NN algorithm_NN AQUA_NN tries_VBZ to_TO reduce_VB to_TO a_DT minimum_NN the_DT possibility_NN of_IN failure_NN because_IN of_IN mismatches_NNS between_IN relation_NN names_NNS ._.
+Since_IN there_EX are_VBP several_JJ techniques_NNS for_IN assessing_VBG similarity_NN -LRB-_-LRB- =_JJ -_: =_JJ Doan_NNP et_FW al._FW 2002_CD -_: =_JJ -_: ,_, Noy_NNP et_FW al._FW 2000_CD ,_, Wu_NNP et_FW al._FW 1994_CD -RRB-_-RRB- ,_, a_DT future_JJ implementation_NN of_IN AQUA_NNP will_MD contain_VB several_JJ algorithms_NNS for_IN similarity_NN ._.
+3.3.2_CD Similarity_NN algorithm_NN evaluation_NN Some_DT of_IN the_DT typical_JJ queries_NNS used_VBN in_IN our_PRP$ experi_NNS
+other_JJ cases_NNS semantic_JJ Web_NN techniques_NNS like_IN DAML+OIL_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- or_CC DAML-S_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- also_RB allow_VBP us_PRP to_TO deal_VB with_IN service_NN requests_NNS where_WRB an_DT ontology_JJ matching_NN between_IN users_NNS and_CC providers_NNS has_VBZ to_TO be_VB performed_VBN ,_, e.g._FW -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Applying_VBG the_DT same_JJ relaxations_NNS with_IN general_JJ Web_NN services_NNS '_POS capabilities_NNS needed_VBN for_IN our_PRP$ service_NN level_NN agreements_NNS works_VBZ exactly_RB along_IN the_DT same_JJ lines_NNS as_IN in_IN the_DT above_JJ example_NN ._.
+Starting_VBG with_IN the_DT most_JJS speci_NNS
+ble_JJ Web_NN resources_NNS have_VBP underscored_VBN the_DT importance_NN of_IN automatic_JJ matching_NN between_IN sets_NNS of_IN elements_NNS ,_, also_RB known_VBN as_IN schema_NN matching_NN ._.
+As_IN a_DT result_NN ,_, several_JJ tools_NNS for_IN automated_JJ schema_NN matching_NN ,_, such_JJ as_IN GLUE_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: and_CC OntoBuilder_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, have_VBP been_VBN developed_VBN in_IN recent_JJ years_NNS ._.
+Given_VBN two_CD data_NNS schemata_NN -LRB-_-LRB- e.g._FW ,_, two_CD sets_NNS of_IN attributes_NNS -RRB-_-RRB- ,_, these_DT tools_NNS output_NN a_DT single_JJ mapping_NN from_IN elements_NNS of_IN one_CD schema_NN to_TO elements_NNS of_IN the_DT o_NN
+w_VB a_DT parallel_NN between_IN our_PRP$ method_NN and_CC global_JJ schema_NN alignment_NN methods_NNS -LRB-_-LRB- see_VB -LRB-_-LRB- 11_CD -RRB-_-RRB- for_IN an_DT overview_NN -RRB-_-RRB- ._.
+Similarity_NN Flooding_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- is_VBZ a_DT graph_NN matching_NN technique_NN based_VBN on_IN a_DT fixpoint-computation_NN ._.
+The_DT Glue_NN system_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: learns_VBZ classifiers_NNS for_IN classes_NNS from_IN instances_NNS in_IN order_NN to_TO evaluate_VB the_DT joint_JJ probability_NN distributions_NNS of_IN the_DT instances_NNS ._.
+Corpusbased_JJ Schema_NN Matching_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- relies_VBZ on_IN statistics_NNS about_IN elements_NNS and_CC their_PRP$
+ically_RB create_VB mappings_NNS between_IN heterogeneous_JJ ontologies_NNS ,_, where_WRB an_DT ontology_NN is_VBZ seen_VBN as_IN a_DT taxonomy_NN of_IN concepts_NNS ._.
+With_IN GLUE_NN ,_, the_DT authors_NNS port_NN their_PRP$ previous_JJ work_NN on_IN matching_JJ database_NN schemas_NNS -LRB-_-LRB- called_VBN LSD_NN -RRB-_-RRB- =_JJ -_: =_JJ -LRB-_-LRB- DMDH02_NN -RRB-_-RRB- -_: =_SYM -_: to_TO the_DT Semantic_JJ Web_NN domain_NN ._.
+GLUE_NN focuses_VBZ on_IN finding_VBG 1-to-1_JJ mappings_NNS between_IN concepts_NNS in_IN taxonomies_NNS ,_, although_IN the_DT authors_NNS say_VBP that_IN extending_VBG matching_NN to_TO relations_NNS and_CC attributes_NNS and_CC involving_VBG more_JJR com_NN
+e_LS same_JJ concept_NN as_IN ``_`` broadcast_NN range_NN =_JJ 100m_NN ''_'' in_IN another_DT ._.
+There_EX are_VBP several_JJ approaches_NNS to_TO ontology_JJ translation_NN ._.
+Broader_JJR areas_NNS ,_, such_JJ as_IN text_NN processing_NN can_MD benefit_VB from_IN probabilistic_JJ ,_, AI-based_JJ approaches_NNS =_JJ -_: =[_NN 70_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT more_RBR explicit_JJ approach_NN is_VBZ to_TO combine_VB ontologies_NNS to_TO form_VB knowledge_NN spaces_NNS -LRB-_-LRB- 71_CD -RRB-_-RRB- ._.
+The_DT higher_JJR level_NN of_IN structure_NN inherent_JJ in_IN semantic_JJ service_NN descriptions_NNS as_RB well_RB as_IN the_DT desire_NN to_TO preserve_VB the_DT narrowi_NN
+quantify_VB the_DT schema_NN matches_VBZ so_IN that_IN they_PRP can_MD be_VB used_VBN in_IN query_NN ._.
+Moreover_RB ,_, they_PRP did_VBD not_RB explore_VB how_WRB to_TO use_VB discovered_VBN schema_NN matches_NNS to_TO reinforce_VB duplication_NN detection_NN ._.
+Another_DT interesting_JJ work_NN is_VBZ GLUE_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT system_NN that_WDT employs_VBZ machine_NN learning_NN techniques_NNS to_TO find_VB mappings_NNS between_IN different_JJ ontologies_NNS ._.
+Similar_JJ to_TO our_PRP$ strategy_NN ,_, it_PRP uses_VBZ data_NN instances_NNS to_TO statistically_RB assess_VB the_DT correlations_NNS between_IN conc_NN
+which_WDT is_VBZ then_RB used_VBN by_IN the_DT clustering_NN algorithm_NN -LRB-_-LRB- 19_CD ,_, 31_CD -RRB-_-RRB- ._.
+A_DT number_NN of_IN schema_NN mapping_NN methods_NNS also_RB rely_VBP on_IN pairwise_JJ similarity_NN computations_NNS between_IN descriptions_NNS of_IN concepts_NNS or_CC records_NNS belonging_VBG to_TO them_PRP =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Because_IN the_DT total_JJ number_NN of_IN pairwise_JJ similarity_NN computations_NNS grows_VBZ quadratically_RB with_IN the_DT size_NN of_IN the_DT input_NN dataset_NN ,_, scaling_VBG the_DT above_JJ tasks_NNS to_TO large_JJ datasets_NNS is_VBZ problematic_JJ ._.
+Additionally_RB ,_, even_RB for_IN
+tic_JJ semantic_JJ reconciliation_NN ,_, which_WDT is_VBZ a_DT complementary_JJ goal_NN to_TO ours_PRP :_: our_PRP$ system_NN matches_VBZ a_DT set_NN of_IN user_NN keywords_NNS with_IN a_DT pool_NN of_IN ontologies_NNS ,_, and_CC they_PRP match_VBP data_NNS repositories_NNS and_CC ontologies_NNS ._.
+Finally_RB ,_, GLUE_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: studies_NNS the_DT probability_NN of_IN matching_VBG two_CD concepts_NNS by_IN analyzing_VBG the_DT available_JJ ontologies_NNS ,_, using_VBG a_DT relaxation_NN labeling_NN method_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ;_: however_RB ,_, this_DT approach_NN is_VBZ not_RB very_RB flexible\/adaptable_JJ because_IN it_PRP analy_RB
+relations_NNS and_CC ,_, at_IN each_DT loop_NN ,_, call_NN Match_Nodes_R_NN ._.
+At_IN present_NN ,_, there_EX exists_VBZ a_DT line_NN of_IN semi-automated_JJ schema_NN matching_NN and_CC ontology_NN integration_NN systems_NNS ,_, see_VBP for_IN instance_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, etc._NN ._.
+Most_JJS of_IN them_PRP implement_VBP syntactic_JJ matching_NN ._.
+A_DT good_JJ survey_NN ,_, up_IN to_TO 2001_CD ,_, is_VBZ provided_VBN in_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+The_DT classification_NN given_VBN in_IN this_DT survey_NN distinguishes_VBZ between_IN individual_JJ implementations_NNS of_IN match_NN and_CC
+sed_JJ ontology_NN mapping_NN tools_NNS compare_VBP the_DT similarity_NN of_IN the_DT concepts_NNS based_VBN on_IN the_DT source_NN ontologies_NNS and_CC their_PRP$ data_NNS instances_NNS ._.
+Examples_NNS of_IN instance-based_JJ ontology_NN mapping_NN tools_NNS are_VBP FCA-Merge_JJ -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC GLUE_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+FCA-Merge_NN merges_VBZ two_CD source_NN ontologies_NNS into_IN a_DT new_JJ ontology_NN ._.
+FCA-Merge_NN generates_VBZ a_DT pruned_VBN concept_NN lattice_NN by_IN analyzing_VBG the_DT frequencies_NNS of_IN usage_NN of_IN concepts_NNS ._.
+Merging_VBG decisions_NNS are_VBP made_VBN based_VBN on_IN the_DT pr_NN
+een_VB the_DT classes_NNS in_IN the_DT two_CD taxonomies_NNS ._.
+For_IN each_DT class_NN in_IN S_NN they_PRP attempt_VBP to_TO find_VB the_DT class_NN in_IN M_NN that_WDT is_VBZ `_`` most_RBS similar_JJ '_'' -LRB-_-LRB- Agarwal_NNP &_CC Srikant_NNP 2001_CD ;_: Sarawagi_NNP ,_, Chakrabarti_NNP ,_, &_CC Godbole_NNP 2003_CD ;_: Zhang_NNP &_CC Lee_NNP 2004_CD ;_: =_JJ -_: =_JJ Doan_NNP et_FW al._FW 2002_CD -_: =--RRB-_NN ._.
+Moreover_RB ,_, most_JJS of_IN these_DT methods_NNS either_CC completely_RB ignore_VB the_DT hierarchical_JJ structure_NN of_IN taxonomies_NNS or_CC do_VBP not_RB consider_VB mappings_NNS between_IN classes_NNS and_CC internal_JJ nodes_NNS in_IN the_DT hierarchies_NNS ._.
+The_DT only_JJ way_NN a_DT m_NN
+t_NN zanobini@dit.unitn.it_NN Semantic_JJ coordination_NN ,_, namely_RB the_DT problem_NN of_IN finding_VBG an_DT agreement_NN on_IN the_DT meaning_NN of_IN heterogeneous_JJ schemas_NNS ,_, is_VBZ one_CD of_IN the_DT key_JJ issues_NNS in_IN the_DT development_NN of_IN the_DT Semantic_JJ Web_NN -LRB-_-LRB- see_VB =_JJ -_: =[_NN 11_CD ,_, 10_CD ,_, 9_CD ,_, 8_CD ,_, 3_CD ,_, 5_CD ,_, 7_CD ,_, 1_CD ,_, 4_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: for_IN examples_NNS of_IN proposed_VBN techniques_NNS -RRB-_-RRB- ._.
+In_IN environments_NNS with_IN more_RBR or_CC less_RBR well-defined_JJ boundaries_NNS ,_, like_IN a_DT corporate_JJ Intranet_NNP ,_, the_DT problem_NN of_IN semantic_JJ coordination_NN can_MD be_VB addressed_VBN a_DT priori_FW by_IN defining_VBG
+gies_NNS is_VBZ a_DT major_JJ challenge_NN for_IN bridging_VBG the_DT gaps_NNS between_IN agents_NNS -LRB-_-LRB- software_NN and_CC human_JJ -RRB-_-RRB- with_IN different_JJ conceptualizations_NNS ._.
+There_EX are_VBP many_JJ works_NNS towards_IN the_DT mapping\/merging_NN of_IN ontologies_NNS -LRB-_-LRB- e.g._FW -LRB-_-LRB- 2_CD -RRB-_-RRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- -LRB-_-LRB- 4_LS -RRB-_-RRB- =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 6_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+These_DT works_NNS exploit_VBP linguistic_JJ ,_, structural_JJ ,_, domain_NN knowledge_NN and_CC matching_NN heuristics_NNS ._.
+Recent_JJ approaches_NNS aim_VBP to_TO exploit_VB all_DT types_NNS of_IN knowledge_NN and_CC further_JJ capture_NN the_DT intended_JJ meanings_NNS of_IN terms_NNS
+which_WDT is_VBZ then_RB used_VBN by_IN the_DT clustering_NN algorithm_NN -LRB-_-LRB- 19_CD ,_, 31_CD -RRB-_-RRB- ._.
+A_DT number_NN of_IN schema_NN mapping_NN methods_NNS also_RB rely_VBP on_IN pairwise_JJ similarity_NN computations_NNS between_IN descriptions_NNS of_IN concepts_NNS or_CC records_NNS belonging_VBG to_TO them_PRP =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Because_IN the_DT total_JJ number_NN of_IN pairwise_JJ similarity_NN computations_NNS grows_VBZ quadratically_RB with_IN the_DT size_NN of_IN the_DT input_NN dataset_NN ,_, scaling_VBG the_DT above_JJ tasks_NNS to_TO large_JJ datasets_NNS is_VBZ problematic_JJ ._.
+Additionally_RB ,_, even_RB for_IN
+e_LS methods_NNS for_IN discovering_VBG interesting_JJ subgraphs_NNS based_VBN on_IN semantic_JJ information_NN associated_VBN with_IN the_DT edges_NNS ._.
+There_EX has_VBZ been_VBN some_DT other_JJ work_NN in_IN this_DT area_NN ,_, for_IN example_NN Madche_NNP and_CC Staab_NNP -LRB-_-LRB- 77_CD -RRB-_-RRB- and_CC Doan_NNP et_FW al._FW =_SYM -_: =[_NN 32_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC there_EX is_VBZ much_RB more_JJR to_TO be_VB done_VBN ._.
+As_IN information_NN extraction_NN techniques_NNS continue_VBP to_TO improve_VB ,_, one_CD area_NN for_IN future_JJ research_NN is_VBZ combining_VBG information_NN extraction_NN with_IN techniques_NNS from_IN link_NN mining_NN to_TO help_VB
+name_NN based_JJ strategy_NN -RRB-_-RRB- may_MD be_VB not_RB successful_JJ ._.
+Hence_RB ,_, to_TO combine_VB different_JJ approaches_NNS is_VBZ an_DT effective_JJ way_NN ._.
+For_IN this_DT purpose_NN ,_, many_JJ composite_JJ approaches_NNS combining_VBG multiple_JJ mapping_NN algorithms_NNS are_VBP proposed_VBN =_JJ -_: =[_NN 1_CD ,_, 3_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, experiments_NNS show_VBP that_IN composite_JJ approach_NN does_VBZ not_RB always_RB outperform_VB the_DT single_JJ strategy_NN algorithm_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+In_IN the_DT previous_JJ work_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, we_PRP present_VBP RiMOM_NN ,_, a_DT system_NN that_WDT combines_VBZ multiple_JJ strategies_NNS
+he_PRP large_JJ number_NN of_IN concepts_NNS in_IN an_DT ontology_NN ._.
+Ehrig_NNP and_CC Sure_NNP in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- propose_VBP a_DT methodology_NN combining_VBG different_JJ similarity_NN measures_NNS for_IN identifying_VBG mappings_NNS between_IN two_CD ontologies_NNS ._.
+Doan_NNP et_FW al._FW in_IN -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP a_DT system_NN ,_, GLUE_NN ,_, that_WDT apply_VBP machine_NN learning_VBG techniques_NNS to_TO improve_VB the_DT mapping_NN discovering_VBG process_NN ._.
+However_RB ,_, complex_JJ mappings_NNS have_VBP proven_VBN difficult_JJ to_TO extract_VB and_CC the_DT mapping_NN discovery_NN procedu_NN
+ts_NNS of_IN ontologies_NNS ,_, ontology_NN mapping_NN necessarily_RB involves_VBZ finding_VBG the_DT correspondences_NNS between_IN two_CD taxonomies_NNS ,_, which_WDT is_VBZ often_RB based_VBN on_IN integrating_VBG objects_NNS from_IN one_CD taxonomy_NN into_IN the_DT other_JJ and_CC vice_RB versa_RB =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+If_IN all_DT taxonomy_JJ creators_NNS and_CC users_NNS agreed_VBD on_IN a_DT universal_JJ standard_NN ,_, taxonomy_NN integration_NN would_MD not_RB be_VB so_RB difficult_JJ ._.
+But_CC the_DT web_NN has_VBZ evolved_VBN without_IN central_JJ editorship_NN ._.
+Hence_RB the_DT correspondences_NNS betwe_VBP
+entify_VB the_DT reference_NN context_NN of_IN the_DT query_NN ;_: studies_NNS presented_VBN in_IN -LRB-_-LRB- 19_CD ,_, 13_CD -RRB-_-RRB- emphasize_VBP effectiveness_NN of_IN algorithms_NNS for_IN automatic_JJ semantic_JJ reconciliation_NN and_CC the_DT similarity_NN among_IN ontology-based_JJ schema_NN ;_: in_IN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: a_DT machine_NN learning_NN technique_NN is_VBZ adopted_VBN to_TO measure_VB probabilistically_RB the_DT similarity_NN between_IN concepts_NNS of_IN two_CD different_JJ reference_NN ontologies_NNS through_IN the_DT relaxation_NN labeling_NN technique_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+In_IN -LRB-_-LRB- 33_CD -RRB-_-RRB- a_DT ma_NN
+es_NNS versus_CC philosophically_RB motivated_JJ theories_NNS e.g._FW BWW_FW -RRB-_-RRB- ._.
+Once_RB we_PRP have_VBP established_VBN the_DT quality_NN metrics_NNS we_PRP will_MD conduct_VB an_DT empirical_JJ evaluation_NN of_IN current_JJ available_JJ tools_NNS -LRB-_-LRB- Chimaera_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, Prompt_VB -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, Glue_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, OntoMerge_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, ONION_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+These_DT experiments_NNS will_MD be_VB to_TO compare_VB ontology_JJ mapping_NN results_NNS using_VBG the_DT proposed_VBN quality_NN goals_NNS and_CC metrics_NNS ._.
+The_DT main_JJ contributions_NNS will_MD be_VB the_DT development_NN of_IN a_DT comprehensi_NN
+etermine_JJ corresponding_JJ schema_NN elements_NNS ,_, previous_JJ work_NN typically_RB exploits_VBZ either_CC schema_NN information_NN ,_, such_JJ as_IN element_NN names_NNS ,_, data_NNS types_NNS ,_, and_CC schema_NN structure_NN -LRB-_-LRB- 1_CD ,_, 7_CD ,_, 9_CD ,_, 14_CD ,_, 15_CD ,_, 16_CD ,_, 18_CD -RRB-_-RRB- ,_, or_CC instance_NN data_NN =_JJ -_: =[_NN 3_CD ,_, 2_CD ,_, 4_CD ,_, 6_CD ,_, 10_CD ,_, 11_CD ,_, 12_CD ,_, 13_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+So_RB far_RB ,_, only_RB a_DT few_JJ approaches_NNS try_VBP to_TO combine_VB both_DT schema_NN -_: and_CC instance-based_JJ techniques_NNS -LRB-_-LRB- 6_CD ,_, 10_CD ,_, 21_CD -RRB-_-RRB- ._.
+Inheriting_VBG the_DT composite_JJ combination_NN approach_NN from_IN COMA_NNP +_CC +_CC ,_, QuickMig_NNP is_VBZ able_JJ to_TO combine_VB schema-bas_NNS
+e_LS mediation_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- task_NN is_VBZ an_DT extended_JJ amalgamation_NN of_IN searching_VBG ,_, querying_VBG and_CC updating_VBG in_IN traditional_JJ information_NN systems_NNS ._.
+Such_JJ task_NN can_MD be_VB accomplished_VBN via_IN a_DT mediation_NN strategy_NN ,_, i.e._FW semantic_JJ mapping_NN =_JJ -_: =[_NN 7_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: and_CC answering_VBG query_NN by_IN source_NN descriptions_NNS -LRB-_-LRB- 21_CD ,_, 11_CD -RRB-_-RRB- ._.
+In_IN such_PDT a_DT mediation_NN strategy_NN ,_, mediators_NNS are_VBP typically_RB employed_VBN to_TO provide_VB an_DT integrated_JJ view_NN of_IN information_NN from_IN heterogeneous_JJ sources_NNS -LRB-_-LRB- 1_CD ,_, 6_CD -RRB-_-RRB- ._.
+A_DT m_NN
+dates_NNS for_IN reorganisation_NN ._.
+Performance_NNP evaluation_NN found_VBD Chimaera_NNP to_TO be_VB 3.46_CD times_NNS faster_RBR than_IN Ontolingua_NNP for_IN merging_VBG substantial_JJ taxonomies_NNS ,_, and_CC 14_CD times_NNS faster_RBR in_IN name_NN resolution_NN ._.
+3.1.6_CD GLUE_NN The_DT GLUE_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_JJ -_: project_NN utilises_VBZ machine_NN learning_VBG to_TO find_VB semantic_JJ mappings_NNS across_IN heterogeneous_JJ ontologies_NNS in_IN the_DT semantic_JJ web_NN ._.
+GLUE_NN uses_VBZ multiple_JJ learning_VBG techniques_NNS thus_RB exploiting_VBG different_JJ types_NNS of_IN information_NN
+ahead_RB ._.
+However_RB ,_, the_DT standards_NNS seem_VBP to_TO fit_VB the_DT needs_NNS of_IN the_DT Layer_NNP Model_NNP as_RB well_RB ._.
+The_DT treatment_NN of_IN semantic_JJ heterogeneity_NN has_VBZ already_RB been_VBN implemented_VBN with_IN semantic_JJ web_NN technology_NN in_IN a_DT few_JJ cases_NNS -LRB-_-LRB- e.g._FW =_JJ -_: =_JJ Doan_NNP et_FW al._FW 2002_CD -_: =_JJ -_: ,_, Kölle_NNP et_FW al._FW 2004_CD -RRB-_-RRB- ._.
+3_CD Quality_NNP Models_NNS The_DT heterogeneous_JJ quality_NN of_IN documents_NNS on_IN the_DT internet_NN has_VBZ been_VBN a_DT matter_NN of_IN growing_VBG concern_NN ._.
+Although_IN there_EX is_VBZ no_DT consensus_NN on_IN what_WDT quality_NN means_VBZ ,_, 63sThomas_FW Mand_FW
+the_DT matching_JJ process_NN and_CC its_PRP$ results_NNS can_MD be_VB applied_VBN in_IN many_JJ other_JJ interesting_JJ cases_NNS ._.
+4.1.1_CD The_DT Matching_NN Process_VBP Many_JJ different_JJ solutions_NNS to_TO the_DT matching_NN problem_NN have_VBP been_VBN proposed_VBN so_RB far_RB ,_, for_IN example_NN =_JJ -_: =[_NN 56_CD ,_, 42_CD ,_, 31_CD ,_, 61_CD ,_, 6_CD ,_, 66_CD ,_, 14_CD ,_, 33_CD ,_, 50_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT thesis_NN ,_, we_PRP have_VBP a_DT different_JJ focus_NN than_IN in_IN most_JJS of_IN 57sCHAPTER_NN 4_CD ._.
+RELEVANCE_NNP COMPUTATION_NNP :_: DMATCH-LITE_NN 58_CD these_DT other_JJ approaches_NNS ._.
+Since_IN our_PRP$ matching_NN process_NN is_VBZ situated_VBN in_IN a_DT crawler_NN environment_NN ,_,
+to_TO these_DT contrasts_VBZ ,_, combining_VBG the_DT two_CD representation_NN systems_NNS in_IN a_DT tighter_JJR way_NN is_VBZ a_DT serious_JJ challenge_NN which_WDT can_MD not_RB be_VB handled_VBN by_IN existing_VBG techniques_NNS for_IN mediating_VBG between_IN different_JJ ontologies_NNS ,_, such_JJ as_IN =_JJ -_: =[_NN 2_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT approaches_NNS can_MD bridge_VB differences_NNS between_IN ontologies_NNS serving_VBG the_DT same_JJ purpose_NN ,_, but_CC with_IN varying_VBG views_NNS and_CC conventions_NNS ,_, partly_RB supported_VBN by_IN similarity-based_JJ mappings_NNS established_VBN by_IN the_DT analysis_NN
+ues_NNS by_IN looking_VBG at_IN •_CD concept_NN names_NNS •_CD class_NN hierarchies_NNS •_CD property_NN definitions_NNS •_CD instance_NN definitions_NNS •_CD class_NN descriptions_NNS -LRB-_-LRB- as_IN Description_NN logic_NN statements_NNS -RRB-_-RRB- While_IN instance_NN based_VBN approaches_NNS such_JJ as_IN GLUE_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: can_MD be_VB seen_VBN as_IN helpful_JJ to_TO understand_VB the_DT ontology_JJ commitment_NN of_IN the_DT instances_NNS ,_, the_DT luxury_NN of_IN availability_NN of_IN time_NN and_CC access_NN to_TO the_DT data_NNS instances_NNS can_MD not_RB be_VB assumed_VBN ._.
+Giunchiglia_NNP and_CC Shvaiko_NNP -LRB-_-LRB- 13_CD -RRB-_-RRB- on_IN t_NN
+a_DT similarity_NN ,_, then_RB a_DT meta-learner_NN is_VBZ applied_VBN to_TO aggregate_NN all_PDT the_DT similarities_NNS by_IN means_NNS of_IN weighted_JJ average_NN ,_, where_WRB the_DT weights_NNS are_VBP also_RB obtained_VBN by_IN machine_NN learning_NN ._.
+LSD_NNP has_VBZ an_DT extension_NN called_VBN GLUE_NN =_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT gives_VBZ flexible_JJ similarity_NN definition_NN and_CC a_DT technique_NN to_TO take_VB into_IN account_NN background_NN knowledge_NN ._.
+Unlike_IN LSD_NNP ,_, COMA_NNP uses_VBZ schema-level_JJ matchers_NNS without_IN a_DT learning_NN process_NN ,_, and_CC it_PRP can_MD employ_VB hybrid_NN
+similarity_NN between_IN terms_NNS using_VBG machine_NN learning_VBG based_VBN text_NN classification_NN techniques_NNS ,_, and_CC searches_NNS for_IN mappings_NNS based_VBN on_IN the_DT similarity_NN matrix_NN obtained_VBN ,_, e.g._FW ,_, CAIMAN_NN -LRB-_-LRB- 80_CD -RRB-_-RRB- ,_, OntoMapper_NN -LRB-_-LRB- 130_CD -RRB-_-RRB- ,_, and_CC GLUE_NN =_JJ -_: =[_NN 42_CD ,_, 44_CD ,_, 43_CD ,_, 45_CD -RRB-_-RRB- -_: =_JJ -_: ;_: 3_LS -RRB-_-RRB- ontology_NN algebra_NN and_CC articulation_NN ,_, e.g._FW ,_, SKAT_NN -LRB-_-LRB- 103_CD -RRB-_-RRB- ,_, ONION_NN -LRB-_-LRB- 104_CD -RRB-_-RRB- ,_, which_WDT are_VBP semi-automatic_JJ ,_, with_IN good_JJ scalability_NN ,_, easy_JJ to_TO maintenance_NN ,_, but_CC slow_JJ ;_: 4_LS -RRB-_-RRB- information_NN flow_NN and_CC channel_NN theory_NN based_JJ appr_NN
+Functional_JJ view_NN of_IN an_DT adapter_NN V_NNP HP_NNP DQ_NN WL_NN F_NN 2_CD It_PRP is_VBZ out_IN of_IN the_DT scope_NN of_IN this_DT paper_NN to_TO discuss_VB the_DT different_JJ approaches_NNS of_IN automatic_JJ and_CC semi-automatic_JJ schema\/ontology_NN matching_NN ._.
+For_IN details_NNS we_PRP refer_VBP to_TO =_JJ -_: =[_NN 54,55,56_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+HY_NNP HQ_NNP WsAs_NNS can_MD be_VB seen_VBN in_IN Figure_NNP 2_CD the_DT assumptions_NNS inside_IN the_DT application_NN are_VBP left_VBN implicit_JJ ._.
+However_RB ,_, this_DT kind_NN of_IN information_NN is_VBZ required_VBN when_WRB exporting_VBG data\/events_NNS outside_IN the_DT boundaries_NNS of_IN this_DT p_NN
+the_DT second_JJ group_NN ._.
+In_IN this_DT section_NN ,_, we_PRP briefly_RB compare_VBP our_PRP$ method_NN with_IN some_DT of_IN the_DT most_RBS promising_JJ schema_NN --_: based_VBN methods_NNS recently_RB proposed_VBN ,_, namely_RB MOMIS_NNP -LRB-_-LRB- 2_LS -RRB-_-RRB- a_DT schema_NN based_VBN semi_IN automatic_JJ matcher_NN ,_, CUPI_NN =_JJ -_: =D_NN -LRB-_-LRB- 10_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: a_DT schema_NN based_VBN automatic_JJ matcher_NN and_CC GLUE_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- an_DT instance_NN based_VBN automatich_JJ matcher_NN ._.
+The_DT MOMIS_NNP -LRB-_-LRB- Mediator_NNP envirOnment_NN for_IN Multiple_JJ Information_NN Sources_NNS -RRB-_-RRB- -LRB-_-LRB- 2_CD -RRB-_-RRB- -RRB-_-RRB- is_VBZ a_DT framework_NN to_TO perform_VB information_NN extrac_NN
+r_NN adhoc_NN or_CC ill-defined_JJ ._.
+However_RB with_IN the_DT increased_VBN need_NN for_IN automation_NN ,_, there_EX is_VBZ a_DT need_NN for_IN well-defined_JJ semantics_NNS ,_, e.g._FW to_TO combine_VB information_NN about_IN known_JJ correspondences_NNS to_TO infer_VB new_JJ candidates_NNS ._.
+In_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP proposed_VBD the_DT use_NN of_IN instance_NN based_VBN semantics_NNS to_TO define_VB multiple_JJ well-defined_JJ measures_NNS of_IN similarity_NN ._.
+I_PRP expect_VBP that_IN this_DT will_MD enable_VB us_PRP to_TO develop_VB a_DT reasoning_NN mechanism_NN based_VBN on_IN some_DT form_NN of_IN proba_NN
+o_NN find_VB the_DT most_RBS similar_JJ concept_NN C_NN that_IN a_DT given_VBN description_NN e_SYM belongs_VBZ to_TO ?_.
+We_PRP define_VBP a_DT similarity_NN measure_NN ''_'' MSC_NN -LRB-_-LRB- e_SYM ,_, C_NN -RRB-_-RRB- ''_'' between_IN e_SYM and_CC C_NN by_IN combining_VBG Jaccard_NNP Coefficient_NNP -LRB-_-LRB- 31_CD -RRB-_-RRB- and_CC MSP_NNP -LRB-_-LRB- MostSpecific-Parent_NNP -RRB-_-RRB- =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_JJ -_: similarity_NN measures_NNS as_IN follows_VBZ :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- If_IN P_NN -LRB-_-LRB- C_NN |_CD e_LS -RRB-_-RRB- =_JJ 1_CD ,_, let_VB MSC_NNP -LRB-_-LRB- e_LS ,_, C_NN -RRB-_-RRB- =_JJ P_NN -LRB-_-LRB- e_SYM |_CD C_NN -RRB-_-RRB- =_JJ P_NN -LRB-_-LRB- e_LS -RRB-_-RRB- \/_: P_NN -LRB-_-LRB- C_NN -RRB-_-RRB- ._.
+In_IN this_DT case_NN ,_, e_SYM is_VBZ a_DT subclass_NN of_IN C_NN ,_, and_CC larger_JJR P_NN -LRB-_-LRB- e_SYM |_CD C_NN -RRB-_-RRB- means_VBZ C_NN is_VBZ more_RBR specific_JJ ;_: -LRB-_-LRB- 2_LS -RRB-_-RRB- Otherwise_RB ,_, let_VB MSC_NNP -LRB-_-LRB- e_LS ,_, C_NN
+o_NN ontology_NN mappings_NNS :_: based_VBN on_IN heuristics_NNS that_WDT identify_VBP structural_JJ and_CC naming_NN similarities_NNS between_IN models_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC using_VBG machine_NN learning_NN techniques_NNS in_IN order_NN to_TO learn_VB mappings_NNS between_IN models\/ontologies_NNS =_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN both_DT cases_NNS ,_, the_DT systems_NNS require_VBP feedback_NN from_IN the_DT users_NNS to_TO refine_VB the_DT proposed_VBN mappings_NNS ._.
+US_NNP activities_NNS in_IN ontology_NN alignment_NN and_CC merging_JJ -LRB-_-LRB- 7_CD -RRB-_-RRB- face_VBP the_DT fact_NN that_IN different_JJ domain-dependent_JJ ontologi_NNS
+Miles_NNP 's_POS Tutorial_NN -LRB-_-LRB- http:\/\/www.eumus.edu.uy\/eme\/c\/cintroduction_miles\/contents.html_NN -RRB-_-RRB- ._.
+1.2_CD ._.
+Ontology_NN Mapping_NN Algorithm_NN To_TO perform_VB ontology_NN mapping_NN ,_, we_PRP implemented_VBD a_DT modified_VBN version_NN of_IN the_DT GLUE_NN approach_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT algorithm_NN computes_VBZ the_DT matrix_NN of_IN similarities_NNS between_IN all_DT concepts_NNS in_IN two_CD ontologies_NNS ._.
+The_DT main_JJ idea_NN of_IN GLUE_NN is_VBZ based_VBN on_IN the_DT cross-classification_NN of_IN concept_NN instances_NNS ,_, counting_VBG of_IN instances_NNS asso_VBP
+order_NN to_TO match_VB information_NN demand_NN and_CC supply_NN more_RBR efficiently_RB ._.
+These_DT issues_NNS have_VBP fervently_RB been_VBN debated_VBN in_IN literature_NN since_IN the_DT emergence_NN of_IN the_DT semantic_JJ web_NN ,_, see_VBP for_IN instance_NN -LRB-_-LRB- Chaffee_NNP &_CC Gauch_NNP 2000_CD ,_, =_JJ -_: =_JJ Doan_NNP et_FW al._FW 2002_CD -_: =--RRB-_NN ._.
+The_DT meaning_NN and_CC purpose_NN of_IN content_NN mainly_RB impacts_VBZ the_DT structure_NN of_IN an_DT information_NN space_NN ._.
+While_IN being_VBG optimal_JJ from_IN a_DT technical_JJ point_NN of_IN view_NN ,_, balanced_JJ navigation_NN trees_NNS are_VBP not_RB necessarily_RB reflecting_VBG
+ding_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, Artemis_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 14_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Most_JJS of_IN these_DT approaches_NNS are_VBP intensional_JJ and_CC symmetric_JJ ._.
+None_NN of_IN them_PRP are_VBP both_CC asymmetric_JJ and_CC extensional_JJ ._.
+Among_IN extensional_JJ approaches_NNS ,_, we_PRP can_MD cite_VB GLUE_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT symmetric_JJ approach_NN uses_VBZ Bayesian_JJ learners_NNS in_IN order_NN to_TO classify_VB instances_NNS of_IN the_DT first_JJ ontology_NN into_IN the_DT other_JJ and_CC vice-versa_NN in_IN order_NN to_TO estimate_VB the_DT joint_JJ probability_NN distribution_NN and_CC then_RB pre_JJ
+27_CD ._.
+swould_JJ mean_NN to_TO give_VB up_RP the_DT benefits_NNS of_IN the_DT P2P_NN approach_NN mentioned_VBN above_IN ._.
+We_PRP can_MD consider_VB the_DT process_NN of_IN addressing_VBG the_DT semantic_JJ heterogeneity_NN as_IN the_DT process_NN of_IN ontology_NN matching_NN -LRB-_-LRB- ontology_NN mapping_NN -RRB-_-RRB- =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Matching_VBG processes_NNS typically_RB involve_VBP analyzing_NN data_NNS instances_NNS associated_VBN with_IN ontologies_NNS and_CC comparing_VBG them_PRP to_TO determine_VB the_DT correspondence_NN among_IN concepts_NNS ._.
+Given_VBN two_CD ontologies_NNS in_IN the_DT same_JJ domain_NN ,_, w_NN
+._.
+Furthermore_RB ,_, MOMIS_NNP includes_VBZ an_DT interactive_JJ process_NN as_IN a_DT step_NN of_IN the_DT integration_NN procedure_NN ,_, and_CC thus_RB ,_, unlike_IN CTXMATCH_NNP ,_, it_PRP does_VBZ not_RB support_VB a_DT fully_RB automatic_JJ and_CC run-time_JJ generation_NN of_IN mappings_NNS ._.
+GLUE_NN =_SYM -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT taxonomy_NN matcher_NN that_WDT builds_VBZ mappings_NNS taking_VBG advantage_NN of_IN information_NN contained_VBN in_IN instances_NNS ,_, using_VBG machine_NN learning_NN techniques_NNS and_CC domain-dependent_JJ constraints_NNS ,_, manually_RB provided_VBN by_IN domain_NN expe_NN
+icweb.org\/smappings_NNS -LRB-_-LRB- or_CC similarity_NN -RRB-_-RRB- are_VBP user-defined_JJ ,_, unlike_IN our_PRP$ approach_NN that_WDT is_VBZ mainly_RB focused_VBN on_IN the_DT use_NN of_IN lexical_JJ dictionaries_NNS -LRB-_-LRB- like_IN WordNet_NNP -RRB-_-RRB- for_IN semantic_JJ relationships_NNS dicovering_VBG ._.
+GLUE_NN and_CC iMAP_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP an_DT extension_NN of_IN LSD_NN system_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- whose_WP$ goal_NN is_VBZ to_TO semi-automatically_RB find_VB schema_NN mappings_NNS for_IN data_NNS integration_NN ._.
+Like_IN its_PRP$ ancestor_NN LSD_NN ,_, Glue_NN use_NN machine_NN learning_VBG techniques_NNS to_TO find_VB mappings_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+It_PRP
+form_NN evaluation_NN of_IN them_PRP ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- proposed_VBD a_DT catalogue_NN of_IN criteria_NNS and_CC exploited_VBD them_PRP for_IN comparing_VBG some_DT of_IN the_DT most_RBS popular_JJ systems_NNS ,_, i.e._FW ,_, Autoplex_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, Automatch_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, COMA_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, Cupid_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, LSD_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, GLUE_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, SemInt_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- and_CC SF_NN -LRB-_-LRB- Similarity_NN Flooding_NN -RRB-_-RRB- -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+In_IN our_PRP$ opinion_NN this_DT is_VBZ a_DT very_RB interesting_JJ effort_NN and_CC we_PRP have_VBP decided_VBN to_TO exploit_VB the_DT same_JJ criteria_NNS for_IN testing_VBG the_DT performances_NNS of_IN our_PRP$ approach_NN ._.
+This_DT al_FW
+This_DT module_NN establishes_VBZ similarities_NNS between_IN entities_NNS from_IN the_DT source_NN and_CC target_NN ontology_NN ,_, thus_RB ,_, it_PRP supports_VBZ mapping_NN discovery_NN ._.
+Several_JJ different_JJ similarity_NN measures_NNS have_VBP been_VBN proposed_VBN in_IN literature_NN =_JJ -_: =[_NN 14_CD ,_, 3_CD ,_, 5_CD ,_, 10_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP adopted_VBD a_DT multi-strategy_JJ process_NN -LRB-_-LRB- similar_JJ to_TO -LRB-_-LRB- 5_CD -RRB-_-RRB- -RRB-_-RRB- ,_, that_WDT calculates_VBZ similarities_NNS between_IN ontology_NN entities_NNS using_VBG different_JJ algorithms_NNS ._.
+The_DT first_JJ strategy_NN focuses_VBZ on_IN acquiring_VBG a_DT lexical_JJ similarity_NN
+ity_NN between_IN conceptual_JJ models_NNS is_VBZ hard_JJ to_TO measure_VB and_CC often_RB establishing_VBG a_DT suitable_JJ similarity_NN measure_NN is_VBZ a_DT very_RB subjective_JJ task_NN ._.
+Several_JJ different_JJ similarity_NN measures_NNS have_VBP been_VBN proposed_VBN in_IN literature_NN =_JJ -_: =[_NN 1_CD ,_, 10_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: focusing_VBG on_IN different_JJ aspects_NNS of_IN ontology_NN entities_NNS ._.
+We_PRP do_VBP n't_RB further_RB elaborate_VB on_IN this_DT issue_NN ,_, as_IN it_PRP is_VBZ not_RB in_IN scope_NN of_IN this_DT paper_NN ._.
+Semantic_NNP Bridging_NNP ._.
+Based_VBN on_IN the_DT similarities_NNS computed_VBN in_IN the_DT previou_NN
+system_NN behavior_NN ._.
+Previous_JJ work_NN ,_, such_JJ as_IN GLUE_NN ,_, has_VBZ also_RB attempted_VBN to_TO apply_VB machine_NN learning_NN approaches_VBZ to_TO ontology_VB mapping_NN on_IN the_DT semantic_JJ web_NN using_VBG heuristics_NNS and_CC multi-strategy_JJ learning_NN approaches_NNS -LRB-_-LRB- =_JJ -_: =_JJ Doan_NNP et_FW al._FW 2002_CD -_: =--RRB-_NN ._.
+This_DT paper_NN outlines_VBZ the_DT development_NN of_IN an_DT automated_JJ approach_NN to_TO user_NN modelling_NN and_CC to_TO aligning_VBG and_CC co-ordinating_VBG different_JJ conceptualisations_NNS for_IN achieving_VBG personalised_JJ data_NNS integration_NN for_IN a_DT GSW_NNP ._.
+for_IN ontology_JJ application_NN in_IN text_NN and_CC data_NN mining_NN for_IN bioinformatics_NNS -LRB-_-LRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 31_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+On_IN the_DT other_JJ hand_NN ,_, many_JJ approaches_NNS for_IN generic_JJ ontology_NN integration_NN and_CC mapping_NN have_VBP been_VBN proposed_VBN -LRB-_-LRB- -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 19_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 20_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+H.L._NNP Johnson_NNP and_CC colleagues_NNS implemented_VBD a_DT system_NN to_TO discover_VB relationships_NNS among_IN the_DT Gene_NNP Ontology_NNP and_CC three_CD other_JJ OBO_NNP ontologies_NNS :_: ChEBI_NN ,_, Cell_NN Type_NN ,_, and_CC BRENDA_NN Tissue_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+Exi_NN
+so_RB consider_VB the_DT similarity_NN of_IN related_JJ elements_NNS ._.
+-LRB-_-LRB- 7_CD -RRB-_-RRB- base_VBP their_PRP$ similarity_NN measures_NNS on_IN the_DT basis_NN of_IN a_DT distance_NN to_TO elements_NNS known_VBN a_DT priori_FW to_TO be_VB the_DT same_JJ ._.
+Other_JJ approaches_NNS such_JJ as_IN the_DT LSD_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC GLUE_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: systems_NNS make_VBP use_NN of_IN machine_NN learning_NN over_IN instance_NN data_NNS to_TO build_VB matches_NNS ._.
+LSD_NNP learns_VBZ classifiers_NNS based_VBN on_IN previously_RB hand-coded_JJ matches_NNS to_TO predict_VB how_WRB to_TO match_VB unseen_JJ schemas_NNS and_CC combines_VBZ multiple_JJ cl_NN
+ge_NN of_IN the_DT receiving_NN peer_VB according_VBG to_TO a_DT rating_NN model_NN ._.
+2.2_CD Ontology_NNP matching_NN In_IN the_DT following_NN ,_, we_PRP present_VBP examples_NNS of_IN different_JJ approaches_NNS for_IN ontology_NN matching_NN in_IN open_JJ distributed_VBN systems_NNS ._.
+sGLUE_NN ._.
+Glue_NN =_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: exploits_VBZ machine_NN learning_NN techniques_NNS to_TO find_VB semantic_JJ mappings_NNS between_IN concepts_NNS stored_VBN in_IN distinct_JJ and_CC autonomous_JJ ontologies_NNS ._.
+Given_VBN two_CD distinct_JJ ontologies_NNS ,_, the_DT mapping_NN discovery_NN process_NN between_IN thei_NNS
+contexts_NNS with_IN a_DT multitude_NN of_IN autonomous_JJ ontologies_NNS ,_, appropriate_JJ matching_NN techniques_NNS are_VBP required_VBN to_TO determine_VB semantic_JJ mappings_NNS between_IN concepts_NNS of_IN different_JJ ontologies_NNS that_WDT are_VBP semantically_RB related_VBN =_JJ -_: =[_NN 2_CD ,_, 7_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Some_DT research_NN work_NN on_IN this_DT topic_NN has_VBZ recently_RB appeared_VBN ._.
+We_PRP review_VBP such_JJ work_NN in_IN the_DT related_JJ work_NN section_NN of_IN the_DT paper_NN ._.
+⋆_NNP This_NNP paper_NN has_VBZ been_VBN partially_RB funded_VBN by_IN ``_`` Wide-scalE_NNP ,_, Broadband_NNP ,_, MIddleware_NNP for_IN
+in_IN information_NN integration_NN has_VBZ focused_VBN on_IN the_DT problem_NN of_IN mediation_NN over_IN Web_NN accessible_JJ resources_NNS ._.
+Challenges_NNS have_VBP included_VBN locating_VBG resources_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, identifying_VBG and_CC annotating_VBG their_PRP$ schema_NN and_CC contents_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC query_NN rewriting_VBG -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+More_RBR recent_JJ advances_NNS in_IN technologies_NNS for_IN the_DT Semantic_JJ Web_NN ,_, such_JJ as_IN RDF_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, OWL_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, and_CC the_DT widespread_JJ acceptance_NN of_IN ontologies_NNS among_IN user_NN communities_NNS ,_, h_NN
+cts_NNS of_IN the_DT universe_NN which_WDT can_MD be_VB classified_VBN in_IN the_DT schemas_NNS are_VBP effectively_RB classified_VBN under_IN them_PRP ;_: 3_CD ._.
+objects_NNS are_VBP classified_VBN according_VBG to_TO a_DT precise_JJ criterium_NN :_: 5_CD See_NNP ,_, for_IN example_NN ,_, Doan_NNP ,_, Madhavan_NNP et_FW al._FW =_SYM -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+6_CD Actually_RB ,_, they_PRP predict_VBP whether_IN an_DT instance_NN d_NN belongs_VBZ to_TO a_DT category_NN -LRB-_-LRB- node_NN -RRB-_-RRB- k_NN by_IN training_VBG a_DT classifier_NN with_IN positive_JJ and_CC negative_JJ examples_NNS of_IN instances_NNS belonging_VBG to_TO k._NN 7_CD Section_NN 3.3_CD is_VBZ devoted_VBN to_TO fo_VB
+mapping_NN problem_NN may_MD also_RB include_VB data_NNS instances_NNS of_IN one_CD or_CC both_DT schemas_NNS ._.
+We_PRP illustrate_VBP one_CD way_NN of_IN building_VBG MATCHINGADVISOR_NNP ,_, which_WDT extends_VBZ our_PRP$ previous_JJ work_NN on_IN schema_NN matching_NN in_IN the_DT LSD_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC GLUE_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: Systems_NNPS ._.
+We_PRP first_RB briefly_RB recall_VB the_DT main_JJ ideas_NNS in_IN LSD_NNP ._.
+LSD_NNP considered_VBD the_DT schema_NN matching_NN problem_NN in_IN the_DT context_NN of_IN data_NNS integration_NN ,_, where_WRB the_DT system_NN exposes_VBZ a_DT single_JJ mediated_JJ schema_NN ,_, and_CC we_PRP need_VBP t_NN
+larities_NNS 1015_CD tologies_NNS ._.
+Their_PRP$ matching_JJ process_NN is_VBZ based_VBN on_IN a_DT Tversky_NNP 's_POS measure_NN of_IN similarity_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- and_CC uses_VBZ synonym_NN sets_NNS ,_, distinguishing_VBG features_NNS and_CC semantic_JJ relations_NNS of_IN entity_NN classes_NNS ._.
+Doan_NNP et_NNP ._.
+al._FW =_SYM -_: =[_NN 17,18_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD the_DT application_NN of_IN Machine_NNP Learning_NNP techniques_NNS to_TO create_VB ,_, semi-automatically_RB ,_, mappings_NNS between_IN ontologies_NNS ._.
+In_IN their_PRP$ model_NN ,_, they_PRP used_VBD a_DT probabilistic_JJ distribution-based_JJ similarity_NN measure_NN cal_NN
+s_NN how_WRB to_TO use_VB multiple_JJ semantic_JJ web_NN tools_NNS and_CC techniques_NNS to_TO integrate_VB heterogeneous_JJ resources_NNS and_CC to_TO create_VB additional_JJ semantic_JJ relationships_NNS between_IN different_JJ RDF_NN datasets_NNS ._.
+By_IN introducing_VBG GLUE_NN system_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: to_TO create_VB ontology_NN mappings_NNS between_IN pairs_NNS of_IN terms_NNS coming_VBG from_IN the_DT three_CD independent_JJ GO_NN sub-ontologies_NNS ,_, introducing_VBG a_DT set_NN of_IN inference_NN rulebases_NNS ,_, and_CC using_VBG the_DT Oracle_NNP Network_NNP Data_NNP Model_NNP -LRB-_-LRB- NDM_NNP -RRB-_-RRB- -LRB-_-LRB- 23_CD -RRB-_-RRB- as_IN
+r_NN ,_, the_DT authors_NNS propose_VBP a_DT catalog_NN of_IN criteria_NNS for_IN comparing_VBG some_DT of_IN the_DT most_RBS popular_JJ interschema_NN property_NN extraction_NN systems_NNS ,_, namely_RB ,_, Autoplex_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, Automatch_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, COMA_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, Cupid_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, LSD_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, GLUE_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, SemInt_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- and_CC similarity_NN flooding_NN -LRB-_-LRB- SF_NN -RRB-_-RRB- -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+In_IN our_PRP$ opinion_NN ,_, this_DT is_VBZ a_DT very_RB interesting_JJ effort_NN and_CC we_PRP have_VBP decided_VBN to_TO exploit_VB the_DT same_JJ criteria_NNS -LRB-_-LRB- and_CC ,_, whenever_WRB possible_JJ ,_, the_DT same_JJ sources_NNS -RRB-_-RRB- ARTICLE_NN I_PRP
+to_TO compute_VB such_PDT a_DT relation_NN -LRB-_-LRB- e.g._FW external_JJ lexical_JJ resources_NNS ,_, ontologies_NNS ,_, string_NN manipulators_NNS ,_, graph_NN matching_NN techniques_NNS ,_, instance-based_JJ techniques_NNS -RRB-_-RRB- ._.
+In_IN this_DT paper_NN ,_, for_IN 1_CD A_NN very_RB partial_JJ list_NN includes_VBZ =_JJ -_: =[_NN 15_CD ,_, 14_CD ,_, 12_CD ,_, 11_CD ,_, 4_CD ,_, 6_CD ,_, 10_CD ,_, 2_CD ,_, 5_CD ,_, 9_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT detailed_JJ description_NN of_IN these_DT methods_NNS is_VBZ out_IN of_IN the_DT scope_NN of_IN this_DT paper_NN ._.
+sreasons_NNS that_WDT will_MD be_VB explained_VBN in_IN detail_NN ,_, we_PRP are_VBP mostly_RB concerned_VBN with_IN a_DT class_NN of_IN methods_NNS that_IN we_PRP call_VBP semantic_JJ methods_NNS ._.
+Th_NN
+o_NN provide_VBP similarity_NN mapping_NN between_IN sample_NN schemes_NNS ._.
+In_IN the_DT matching_JJ phase_NN the_DT training_NN sets_NNS are_VBP used_VBN to_TO match_VB new_JJ source_NN schemes_NNS ._.
+5_CD The_DT key_JJ features_NNS of_IN the_DT system_NN were_VBD later_RB exploited_VBN in_IN system_NN GLUE_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT instead_RB of_IN XML_NN schemes_NNS focuses_VBZ on_IN semantic_JJ mapping_NN of_IN ontologies_NNS ._.
+MKB_NNP Paper_NNP -LRB-_-LRB- 24_CD -RRB-_-RRB- further_RB enhances_VBZ the_DT previous_JJ work_NN with_IN the_DT idea_NN of_IN deeper_JJR exploitation_NN of_IN experience_NN from_IN previous_JJ matching_JJ ta_NN
+or_CC database_NN schemas_NNS ._.
+For_IN example_NN ,_, Similarity_NN Flooding_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC AnchorPrompt_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- algorithms_NNS compare_VBP graphs_NNS representing_VBG the_DT ontologies_NNS or_CC schemas_NNS ,_, looking_VBG for_IN similarities_NNS in_IN the_DT graph_NN structure_NN ._.
+GLUE_NN =_SYM -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ an_DT example_NN of_IN a_DT system_NN that_WDT employs_VBZ machine-learning_JJ techniques_NNS to_TO find_VB mappings_NNS ._.
+GLUE_NN uses_VBZ multiple_JJ learners_NNS exploiting_VBG information_NN in_IN concept_NN instances_NNS and_CC taxonomic_JJ structure_NN of_IN ontologies_NNS ._.
+GLU_NNP
+._.
+Most_JJS of_IN the_DT work_NN was_VBD focusing_VBG on_IN only_RB 1:1_CD mapping_NN -LRB-_-LRB- 9,10,15,18,22,23,26,29_CD -RRB-_-RRB- despite_IN of_IN the_DT fact_NN that_IN approximately_RB 22_CD --_: 50_CD %_NN of_IN mappings_NNS are_VBP beyond_IN this_DT cardinality_NN by_IN statistics_NNS on_IN real-world_JJ examples_NNS =_JJ -_: =[_NN 11,32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Secondly_RB ,_, ontology_NN mapping_NN has_VBZ been_VBN done_VBN mainly_RB on_IN metadata_NN heterogeneity_NN ,_, not_RB on_IN instance_NN heterogeneity_NN ._.
+In_IN natural_JJ language_NN processing_NN ,_, text_NN normalization_NN has_VBZ been_VBN studied_VBN -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+But_CC before_IN adaptin_NN
+riven_JJ approaches_NNS can_MD be_VB formalized_VBN and_CC automated_VBN ._.
+However_RB ,_, most_JJS of_IN the_DT data-driven_JJ approaches_NNS that_WDT can_MD be_VB found_VBN in_IN the_DT literature_NN are_VBP applicable_JJ only_RB if_IN the_DT domain_NN is_VBZ a_DT set_NN of_IN documents_NNS -LRB-_-LRB- texts_NNS -RRB-_-RRB- -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 6_CD ,_, 16_CD ,_, 12_CD ,_, 20_CD ,_, 28_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, and_CC they_PRP can_MD not_RB establish_VB mappings_NNS between_IN queries_NNS ._.
+The_DT technique_NN described_VBN in_IN this_DT paper_NN is_VBZ quite_RB general_JJ and_CC expressive_JJ as_IN it_PRP can_MD be_VB used_VBN for_IN articulating_VBG not_RB only_RB single_JJ terms_NNS but_CC also_RB queries_VBZ ._.
+a_DT principled_JJ ,_, seamless_JJ ,_, and_CC efficient_JJ way_NN all_PDT the_DT relevant_JJ information_NN -LRB-_-LRB- e.g._FW ,_, user_NN feedback_NN ,_, mappings_NNS from_IN a_DT different_JJ application_NN -RRB-_-RRB- and_CC techniques_NNS -LRB-_-LRB- e.g._FW ,_, machine_NN learning_NN ,_, heuristics_NNS -RRB-_-RRB- ._.
+My_PRP$ recent_JJ work_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: suggests_VBZ that_IN mappings_NNS can_MD be_VB given_VBN well-founded_JJ definitions_NNS based_VBN on_IN probabilistic_JJ interpretations_NNS ,_, and_CC that_IN a_DT unified_JJ mapping_NN framework_NN can_MD be_VB developed_VBN by_IN leveraging_VBG probabilistic_JJ representation_NN a_DT
+owever_RB ,_, the_DT shrinkage_NN approach_NN may_MD either_RB have_VB no_DT effect_NN or_CC hurt_NN slightly_RB in_IN some_DT classes_NNS with_IN a_DT large_JJ amount_NN of_IN training_NN data_NNS -LRB-_-LRB- MacCallum_NNP et_FW al._FW 1998_CD -RRB-_-RRB- ._.
+Previous_JJ hierarchical_JJ data_NNS integration_NN studies_NNS -LRB-_-LRB- =_JJ -_: =_JJ Doan_NNP et_FW al._FW 2002_CD -_: =_JJ -_: ;_: Rajan_NNP et_FW al._FW 2005_CD -RRB-_-RRB- examined_VBD the_DT hierarchical_JJ structures_NNS of_IN the_DT destination_NN catalog_NN are_VBP studied_VBN to_TO improve_VB the_DT accuracy_NN of_IN catalog_NN integration_NN ._.
+-LRB-_-LRB- Doan_NNP et_FW al._FW 2002_CD -RRB-_-RRB- extracted_VBD the_DT domain_NN constraint_NN feat_NN
+-LRB-_-LRB- E-NB_NN -RRB-_-RRB- -LRB-_-LRB- 1_LS -RRB-_-RRB- is_VBZ a_DT method_NN which_WDT does_VBZ use_VB this_DT information_NN ._.
+Although_IN E-NB_NN has_VBZ a_DT better_JJR performance_NN than_IN NB_NN ,_, it_PRP does_VBZ not_RB achieve_VB the_DT performance_NN of_IN SBI_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+SBI_NNP will_MD be_VB discussed_VBN in_IN the_DT next_JJ section_NN ._.
+GLUE_NN =_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ another_DT type_NN of_IN system_NN employing_VBG NB_NN ._.
+GLUE_NN combines_VBZ NB_NN and_CC a_DT constraint_NN optimization_NN technique_NN ._.
+Unlike_IN normal_JJ NB_NN ,_, the_DT document_NN classification_NN systems_NNS in_IN -LRB-_-LRB- 8_CD ,_, 10_CD ,_, 16_CD -RRB-_-RRB- classify_VBP documents_NNS into_IN hierarch_NN
+discovers_VBZ all_DT structure_NN mappings_NNS between_IN the_DT elements_NNS in_IN the_DT XML_NN and_CC HTML_NNP DOMs_NNS ._.
+Finding_VBG these_DT mappings_NNS is_VBZ more_RBR complicated_JJ than_IN finding_VBG text_NN matches_NNS ._.
+We_PRP adopt_VBP two_CD constraints_NNS used_VBN in_IN the_DT GLUE_NN system_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: as_IN a_DT guide_NN to_TO determine_VB whether_IN two_CD nodes_NNS should_MD be_VB structurally_RB matched_VBN :_: 1_CD ._.
+Neighbourhood_NNP Constraint_NNP :_: ``_`` two_CD nodes_NNS match_VBP if_IN nodes_NNS in_IN their_PRP$ neighborhood_NN also_RB match_VBP ''_'' ,_, where_WRB the_DT neighborhood_NN is_VBZ defined_VBN
+es_VBZ first_JJ ,_, then_RB it_PRP can_MD use_VB the_DT mapping_NN rules_NNS ._.
+The_DT mappings_NNS are_VBP generated_VBN either_CC by_IN ontology_NN experts_NNS or_CC by_IN some_DT automatic_JJ tools_NNS ._.
+Automating_VBG the_DT process_NN of_IN ontology_NN mapping_NN is_VBZ an_DT active_JJ area_NN of_IN research_NN =_JJ -_: =[_NN 33_CD ,_, 34_CD ,_, 24_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN our_PRP$ view_NN ,_, automatic_JJ ontology_NN mapping_NN can_MD save_VB time_NN and_CC give_VB suggestions_NNS to_TO ontology_JJ experts_NNS ._.
+But_CC without_IN ontology_NN experts_NNS '_POS involvements_NNS -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, an_DT ontology_JJ translation_NN system_NN can_MD not_RB directly_RB use_VB t_NN
+ng_NN a_DT semantic_JJ ontology_NN to_TO a_DT blog_NN community_NN is_VBZ difficult_JJ ._.
+We_PRP automatically_RB extract_VBP a_DT user-interest_JJ ontology_NN ;_: thus_RB ,_, creating_VBG and_CC updating_VBG ontologies_NNS is_VBZ easy_JJ for_IN users_NNS ._.
+In_IN researches_VBZ of_IN ontology_NN mapping_NN =_JJ -_: =[_NN 1,3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, similarity_NN measurements_NNS considering_VBG approximation_NN of_IN classes_NNS and_CC class_NN topologies_NNS are_VBP proposed_VBN in_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+In_IN addition_NN to_TO class_NN topology_NN ,_, we_PRP consider_VBP each_DT user_NN 's_POS weighted_JJ interest_NN in_IN each_DT class_NN and_CC inst_NN
+This_DT algorithm_NN strongly_RB relies_VBZ on_IN a_DT linguistic_JJ analysis_NN of_IN the_DT labels_NNS contained_VBN in_IN the_DT classifications_NNS ._.
+The_DT main_JJ difference_NN between_IN this_DT algorithm_NN and_CC other_JJ approaches_NNS to_TO schema_NN matching_NN such_JJ as_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 4_LS -RRB-_-RRB- is_VBZ that_IN in_IN order_NN to_TO interpret_VB a_DT node_NN of_IN a_DT hierarchy_NN we_PRP do_VBP not_RB limit_VB ourselves_PRP to_TO a_DT linguistic_JJ analysis_NN of_IN its_PRP$ labels_NNS ._.
+Instead_RB ,_, we_PRP extend_VBP this_DT analysis_NN by_IN considering_VBG the_DT implicit_JJ information_NN
+tion_NN of_IN classes_NNS ,_, relations_NNS and_CC relation_NN types_NNS from_IN text_NN in_IN order_NN to_TO build_VB a_DT domain_NN ontology_NN from_IN scratch_NN or_CC in_IN order_NN to_TO augment_VB or_CC refine_VB an_DT already_RB existent_JJ ontology_NN ._.
+Building_NN ,_, refining_NN and_CC matching_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_JJ -_: ontologies_NNS has_VBZ become_VBN even_RB more_RBR important_JJ in_IN the_DT context_NN of_IN the_DT Semantic_JJ Web_NN ,_, which_WDT depends_VBZ on_IN their_PRP$ proliferation_NN and_CC management_NN -LRB-_-LRB- 63_CD -RRB-_-RRB- ._.
+Ontologies_NNS can_MD be_VB used_VBN for_IN manual_JJ or_CC automatic_JJ creation_NN of_IN sema_NN
+implicit_JJ notion_NN carried_VBD within_IN ontological_JJ representations_NNS ._.
+But_CC manual_JJ or_CC semi-automatic_JJ identification_NN of_IN similarity_NN relationships_NNS --_: based_VBN on_IN linguistic_JJ or_CC structural_JJ similarities_NNS across_IN ontologies_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =-[_NN 24_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- -LRB-_-LRB- 16_CD -RRB-_-RRB- --_: is_VBZ costly_JJ ._.
+Consequently_RB ,_, representational_JJ facilities_NNS which_WDT enable_VBP to_TO implicitly_RB describe_VB similarities_NNS across_IN ontologies_NNS are_VBP required_VBN to_TO fully_RB facilitate_VB ontology_JJ interoperability_NN ._.
+Conce_NN
+attributes_NNS -LRB-_-LRB- for_IN example_NN ,_, different_JJ units_NNS ,_, different_JJ precision_NN ,_, or_CC different_JJ abbreviation_NN styles_NNS -RRB-_-RRB- ._.
+This_DT problem_NN has_VBZ been_VBN extensively_RB studied_VBN primarily_RB by_IN the_DT database_NN and_CC machine_NN learning_NN communities_NNS =_JJ -_: =[_NN 20_CD ,_, 13_CD ,_, 15_CD ,_, 8_CD ,_, 9_CD ,_, 27_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- for_IN a_DT survey_NN of_IN the_DT traditional_JJ approaches_NNS refer_VBP to_TO -LRB-_-LRB- 22_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Our_PRP$ model_NN is_VBZ able_JJ to_TO reason_VB about_IN all_DT three_CD different_JJ kinds_NNS of_IN conflicts_NNS mentioned_VBN above_IN ,_, based_VBN on_IN a_DT set_NN of_IN first_JJ order_NN logic_NN features_NNS empl_VBP
+uld_JJ gain_NN large_JJ benefits_NNS if_IN metamodels_NNS could_MD easily_RB be_VB merged_VBN and_CC aligned_VBN with_IN each_DT other_JJ ._.
+Therefore_RB ,_, integration_NN and_CC merging_VBG of_IN metamodels_NNS and_CC ontologies_NNS has_VBZ received_VBN an_DT increasing_VBG interest_NN lately_RB -LRB-_-LRB- 1_LS -RRB-_-RRB- =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT paper_NN proposes_VBZ an_DT approach_NN to_TO metamodel_NN merging_VBG where_WRB a_DT probabilistic_JJ inference_NN engine_NN is_VBZ employed_VBN to_TO evaluate_VB candidate_NN metamodel_NN concepts_NNS suitable_JJ for_IN merging_VBG ._.
+The_DT proposed_VBN approach_NN uses_VBZ Baye_NNP
+n_NN part_NN by_IN the_DT National_NNP Science_NNP Foundation_NNP under_IN Awards_NNS ITR_NN IIS-0326284_NN and_CC IIS-0513553_NN ._.
+account_VB the_DT structure_NN of_IN the_DT ontologies_NNS -LRB-_-LRB- 14_CD ,_, 16_CD ,_, 18_CD -RRB-_-RRB- ,_, or_CC even_RB the_DT data_NNS associated_VBN with_IN the_DT ontological_JJ concepts_NNS =_JJ -_: =[_NN 10_CD ,_, 12_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP concentrate_VBP on_IN the_DT structure_NN of_IN the_DT ontologies_NNS that_IN we_PRP want_VBP to_TO align_VB ._.
+Two_CD types_NNS of_IN architecture_NN can_MD be_VB considered_VBN :_: a_DT centralized_JJ architecture_NN and_CC a_DT peer-to-peer_JJ architecture_NN ._.
+In_IN th_DT
+4_CD ,_, 6_CD ,_, 12_CD ,_, 34_CD ,_, 7_CD ,_, 19_CD -RRB-_-RRB- ;_: Pragmatic_JJ methods_NNS :_: methods_NNS which_WDT assume_VBP that_IN the_DT relation_NN between_IN schema_NN elements_NNS can_MD be_VB inferred_VBN from_IN the_DT relation_NN between_IN the_DT data_NNS associated_VBN to_TO them_PRP ._.
+Examples_NNS can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 33_CD ,_, 8_CD ,_, 31_CD ,_, 7_CD ,_, 9_CD ,_, 29_CD ,_, 11_CD ,_, 5_CD ,_, 10_CD ,_, 20_CD ,_, 28_CD -RRB-_-RRB- -_: =_JJ -_: ;_: Conceptual_JJ methods_NNS :_: methods_NNS which_WDT try_VBP to_TO compute_VB a_DT mapping_NN by_IN comparing_VBG the_DT -LRB-_-LRB- lexical_JJ representation_NN of_IN the_DT -RRB-_-RRB- concepts_NNS associated_VBN by_IN the_DT schema_NN creators_NNS to_TO the_DT schema_NN elements_NNS ._.
+Examples_NNS can_MD be_VB found_VBN i_FW
+ing_IN the_DT procedure_NN after_IN inversing_VBG the_DT roles_NNS of_IN O1_NN and_CC O2_CD yields_NNS |_VBP A_DT ∩_NN O1_NN B_NN |_NN ._.
+The_DT same_JJ algorithm_NN is_VBZ applied_VBN for_IN the_DT other_JJ joint_JJ probabilities_NNS until_IN we_PRP have_VBP approximations_NNS of_IN all_DT of_IN them_PRP ,_, as_IN described_VBN in_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT second_JJ extensional_JJ indicator_NN for_IN semantic_JJ closeness_NN we_PRP propose_VBP is_VBZ based_VBN on_IN a_DT variable_JJ selection_NN procedure_NN for_IN SVMs_NNS ._.
+Variable_JJ selection_NN in_IN descriptive_JJ statistics_NNS is_VBZ about_IN pointing_VBG out_RP the_DT input_NN v_LS
+sful_NN ._.
+Hence_RB ,_, combining_VBG different_JJ similarity_NN methods_NNS is_VBZ an_DT effective_JJ way_NN ._.
+For_IN this_DT purpose_NN ,_, many_JJ approaches_NNS combining_VBG the_DT results_NNS of_IN several_JJ independently_RB executed_VBN mapping_NN algorithms_NNS are_VBP proposed_VBN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+There_EX are_VBP two_CD kinds_NNS of_IN approaches_NNS to_TO combine_VB multiple_JJ similarity_NN methods_NNS :_: hybrid_NN and_CC composite_JJ combination_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+Hybrid_NN approach_NN is_VBZ the_DT most_RBS common_JJ where_WRB different_JJ mapping_NN criteria_NNS -LRB-_-LRB-
+hemas_NNS to_TO an_DT approach_NN matching_VBG multiple_JJ schemas_NNS in_IN a_DT networked_JJ environment_NN ._.
+One_CD example_NN illustrating_VBG how_WRB the_DT schema_NN matching_NN process_NN could_MD be_VB further_RB automated_VBN at_IN the_DT local_JJ level_NN is_VBZ introduced_VBN in_IN GLUE_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT employs_VBZ machine_NN learning_NN techniques_NNS to_TO assist_VB in_IN the_DT ontology_JJ mapping_NN process_NN ._.
+GLUE_NN is_VBZ based_VBN on_IN a_DT probabilistic_JJ model_NN ,_, employs_VBZ similarity_NN measures_NNS and_CC uses_VBZ a_DT set_NN of_IN learning_VBG strategies_NNS to_TO explo_VB
+ith_VB the_DT Dutch_NNP Institute_NNP for_IN Sound_NNP and_CC Vision_NNP ._.
+Previous_JJ work_NN ._.
+A_DT common_JJ way_NN of_IN judging_VBG whether_IN two_CD concepts_NNS from_IN different_JJ ontologies_NNS are_VBP semantically_RB linked_VBN is_VBZ to_TO observe_VB their_PRP$ extensional_JJ information_NN =_JJ -_: =[_NN 4,5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, that_DT is_VBZ ,_, the_DT instance_NN data_NNS they_PRP classify_VBP ._.
+The_DT idea_NN behind_IN such_JJ instance-based_JJ matching_NN techniques_NNS is_VBZ that_DT similarity_NN between_IN the_DT extensions_NNS of_IN two_CD concepts_NNS reflects_VBZ the_DT semantic_JJ similarity_NN of_IN these_DT
+query_NN answering_NN ,_, which_WDT is_VBZ possible_JJ in_IN both_DT directions_NNS using_VBG their_PRP$ query_NN answering_VBG algorithm_NN ._.
+On_IN the_DT Semantic_JJ Web_NN the_DT data_NNS from_IN heterogeneous_JJ sources_NNS is_VBZ described_VBN by_IN different_JJ ontologies_NNS ._.
+Doan_NNP et_FW al._FW =_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: argue_VBP that_IN in_IN case_NN of_IN information_NN processing_VBG the_DT mapping_NN between_IN ontologies_NNS should_MD happen_VB -LRB-_-LRB- semi_NN -_: -RRB-_-RRB- automatically_RB ._.
+They_PRP developed_VBD a_DT system_NN that_WDT employs_VBZ machine_NN learning_NN techniques_NNS to_TO find_VB the_DT mappings_NNS ._.
+structures_NNS and_CC previous_JJ mapping_NN results_NNS verified_VBN by_IN the_DT application_NN ._.
+While_IN comparing_VBG instances_NNS the_DT EditDistance_NNP method_NN is_VBZ used_VBN in_IN conjunction_NN with_IN a_DT Glue_NN approach_NN based_VBN on_IN machine_NN learning_NN techniques_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP uses_VBZ predefined_JJ similarity_NN function_NN to_TO compute_VB a_DT similarity_NN value_NN for_IN each_DT pair_NN of_IN concepts_NNS and_CC generates_VBZ the_DT similarity_NN matrix_NN ._.
+A_DT method_NN that_WDT accomplishes_VBZ comparing_VBG instances_NNS of_IN tourism_NN ontology_NN
+s_NN interactive_JJ and_CC the_DT engineer_NN is_VBZ in_IN charge_NN of_IN making_VBG decisions_NNS that_WDT will_MD affect_VB the_DT merging_JJ ._.
+From_IN the_DT machine_NN learning_NN perspective_NN we_PRP report_VBP the_DT works_NNS of_IN Lacher_NNP and_CC Groh_NNP -LRB-_-LRB- 25_CD -RRB-_-RRB- and_CC Doan_NN and_CC colleagues_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: where_WRB their_PRP$ systems_NNS employ_VBP machine_NN learning_NN algorithms_NNS in_IN conjunction_NN with_IN similarity_NN measures_NNS to_TO yield_VB prospective_JJ mappings_NNS between_IN ontology_JJ concepts_NNS ._.
+Other_JJ works_NNS worth_IN citing_VBG here_RB are_VBP Chalupsky_NNP 's_POS O_NN
+es_NNS by_IN 100_CD to_TO 1_CD ._.
+2sOntology_NNP Infrastructure_NNP for_IN the_DT Semantic_JJ Web_NN may_MD be_VB a_DT lot_NN easier_JJR than_IN if_IN the_DT information_NN a_DT user_NN receives_VBZ is_VBZ restricted_JJ to_TO information_NN structures_NNS -LRB-_-LRB- 19_CD -RRB-_-RRB- and\/or_CC information_NN proper_JJ alone_RB =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP define_VBP ``_`` deep_JJ annotation_NN ''_'' as_IN an_DT annotation_NN process_NN that_WDT reaches_VBZ out_RP to_TO the_DT so-called_JJ Deep_JJ Web_NN 3_CD in_IN order_NN to_TO make_VB data_NNS available_JJ for_IN the_DT Semantic_JJ Web_NN --_: combining_VBG the_DT capabilities_NNS of_IN conventional_JJ ann_NN
+oncepts_NNS at_IN a_DT time_NN -LRB-_-LRB- Melnik_NNP et_FW al._FW ,_, 2002_CD ;_: Noy_NNP and_CC Musen_NNP ,_, 2001_CD ;_: Rodríguez_NNP and_CC Egenhofer_NNP ,_, 2003_CD -RRB-_-RRB- ._.
+Other_JJ approaches_NNS are_VBP instance-based_JJ ,_, that_DT is_VBZ ,_, they_PRP consider_VBP data_NNS associated_VBN with_IN the_DT ontological_JJ concepts_NNS -LRB-_-LRB- =_JJ -_: =_JJ Doan_NNP et_FW al._FW ,_, 2002_CD -_: =_JJ -_: ;_: Fossati_NNP et_FW al._FW ,_, 2006_CD ;_: Ichise_NNP et_FW al._FW ,_, 2001_CD -RRB-_-RRB- ._.
+In_IN this_DT paper_NN ,_, we_PRP concentrate_VBP on_IN the_DT first_JJ two_CD techniques_NNS ._.
+As_IN ontologies_NNS grow_VBP in_IN size_NN or_CC in_IN number_NN ,_, their_PRP$ alignment_NN should_MD ideally_RB be_VB automatic_JJ or_CC require_VB
+nsight_NN ._.
+5.5_CD Mappings_NNS The_DT DefineMappings_NNP procedure_NN in_IN our_PRP$ integration_NN algorithms_NNS remains_VBZ largely_RB unexplored_JJ area_NN of_IN research_NN for_IN us_PRP ._.
+There_EX is_VBZ a_DT body_NN of_IN work_NN for_IN finding_VBG correspondences_NNS between_IN schemas_NN =_JJ -_: =[_NN 38_CD ,_, 11_CD ,_, 10_CD ,_, 33_CD -RRB-_-RRB- -_: =_SYM -_: as_RB well_RB as_IN semi-automatic_JJ tool_NN for_IN discovering_VBG mapping_NN rules_NNS between_IN schemas_NNS called_VBN Clio_NNP -LRB-_-LRB- 31_CD ,_, 41_CD ,_, 21_CD -RRB-_-RRB- ._.
+As_IN mentioned_VBN previously_RB ,_, mapping_NN rules_NNS elaborate_VBP on_IN specific_JJ relationships_NNS between_IN correspondenc_NN
+antic_JJ Web_NN ,_, context_NN is_VBZ often_RB used_VBN either_CC as_IN a_DT filter_NN for_IN disambiguation_NN in_IN information_NN retrieval_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, to_TO define_VB contextual_JJ web_NN services_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- or_CC as_IN a_DT means_NN to_TO integrate_VB or_CC merge_VB different_JJ ontologies_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Context_NN could_MD be_VB specified_VBN with_IN different_JJ granularity_NN levels_NNS -LRB-_-LRB- document_NN ,_, web_NN page_NN ,_, etc._NN -RRB-_-RRB- ._.
+Additional_JJ information_NN ,_, i.e._FW the_DT context_NN ,_, could_MD then_RB be_VB linked_VBN to_TO each_DT resource_NN ._.
+-_: 323_CD -3_CD Conceptual_JJ context_NN
+ology-Matching_JJ Problem_NNP We_PRP now_RB introduce_VBP ontologies_NNS ,_, then_RB define_VB the_DT problem_NN of_IN ontology_NN matching_NN ._.
+An_DT ontology_NN specifies_VBZ a_DT conceptualization_NN of_IN a_DT domain_NN in_IN terms_NNS of_IN concepts_NNS ,_, attributes_NNS ,_, and_CC relations_NNS =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT concepts_NNS provided_VBD model_NN entities_NNS of_IN interest_NN in_IN the_DT domain_NN ._.
+They_PRP are_VBP typically_RB organized_VBN into_IN a_DT taxonomy_NN tree_NN where_WRB each_DT node_NN represents_VBZ a_DT concept_NN and_CC each_DT concept_NN is_VBZ a_DT specialization_NN of_IN its_PRP$ par_NN
+lenges_NNS ,_, focusing_VBG on_IN fleshing_VBG out_RP the_DT basic_JJ 2sarchitecture_NN ,_, developing_VBG expressive_JJ and_CC efficient_JJ ontology_NN languages_NNS ,_, building_VBG techniques_NNS for_IN efficient_JJ marking_VBG up_RP of_IN data_NNS ,_, and_CC learning_NN ontologies_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 15_CD ,_, 8_CD ,_, 29_CD ,_, 22_CD ,_, 4_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+A_DT key_JJ challenge_NN in_IN building_VBG the_DT Semantic_JJ Web_NN that_WDT has_VBZ received_VBN relatively_RB little_JJ attention_NN is_VBZ finding_VBG semantic_JJ mappings_NNS among_IN the_DT ontologies_NNS ._.
+Given_VBN the_DT de-centralized_JJ nature_NN of_IN the_DT development_NN of_IN t_NN
+do_VB here_RB ._.
+We_PRP now_RB describe_VBP other_JJ related_JJ work_NN to_TO GLUE_NN from_IN several_JJ perspectives_NNS ._.
+Ontology_NNP Matching_NNP :_: Many_JJ works_NNS have_VBP addressed_VBN ontology_JJ matching_NN in_IN the_DT context_NN of_IN ontology_NN design_NN and_CC integration_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 11_CD ,_, 23_CD ,_, 27_CD ,_, 26_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+These_DT works_NNS do_VBP not_RB deal_VB with_IN explicit_JJ notions_NNS of_IN similarity_NN ._.
+They_PRP use_VBP a_DT variety_NN of_IN heuristics_NNS to_TO match_VB ontology_JJ elements_NNS ._.
+They_PRP do_VBP not_RB use_VB 20smachine_NN learning_NN and_CC do_VBP not_RB exploit_VB information_NN in_IN the_DT d_NN
+extensively_RB in_IN the_DT vision_NN and_CC image_NN processing_NN community_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, and_CC successfully_RB adapted_VBN to_TO solve_VB matching_NN and_CC classification_NN problems_NNS in_IN natural_JJ language_NN processing_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- and_CC hypertext_NN classification_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP show_VBP that_IN relaxation_NN labeling_NN can_MD be_VB adapted_VBN efficiently_RB to_TO our_PRP$ context_NN ,_, and_CC that_IN it_PRP can_MD successfully_RB handle_VB a_DT broad_JJ variety_NN of_IN heuristics_NNS and_CC domain_NN constraints_NNS ._.
+In_IN the_DT rest_NN of_IN the_DT paper_NN we_PRP desc_VBP
+ce_NN ,_, and_CC heuristics_NNS are_VBP very_RB commonly_RB used_VBN when_WRB manually_RB mapping_VBG between_IN ontologies_NNS ._.
+Previous_JJ works_NNS have_VBP exploited_VBN only_RB one_CD form_NN or_CC the_DT other_JJ of_IN such_JJ knowledge_NN and_CC constraints_NNS ,_, in_IN restrictive_JJ settings_NNS =_JJ -_: =[_NN 28_CD ,_, 25_CD ,_, 20_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Here_RB ,_, we_PRP develop_VBP a_DT unifying_JJ approach_NN to_TO incorporate_VB all_DT such_JJ types_NNS of_IN information_NN ._.
+Our_PRP$ approach_NN is_VBZ based_VBN on_IN relaxation_NN labeling_NN ,_, a_DT powerful_JJ technique_NN used_VBN extensively_RB in_IN the_DT vision_NN and_CC image_NN process_NN
+elop_VB a_DT unifying_JJ approach_NN to_TO incorporate_VB all_DT such_JJ types_NNS of_IN information_NN ._.
+Our_PRP$ approach_NN is_VBZ based_VBN on_IN relaxation_NN labeling_NN ,_, a_DT powerful_JJ technique_NN used_VBN extensively_RB in_IN the_DT vision_NN and_CC image_NN processing_NN community_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC successfully_RB adapted_VBN to_TO solve_VB matching_NN and_CC classification_NN problems_NNS in_IN natural_JJ language_NN processing_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- and_CC hypertext_NN classification_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+We_PRP show_VBP that_IN relaxation_NN labeling_NN can_MD be_VB adapted_VBN efficien_NN
+e_LS learner_NN weights_NNS are_VBP set_VBN manually_RB ,_, based_VBN on_IN the_DT characteristics_NNS of_IN the_DT base_NN learners_NNS and_CC the_DT taxonomies_NNS ._.
+However_RB ,_, they_PRP can_MD also_RB be_VB set_VBN automatically_RB using_VBG a_DT machine_NN learning_NN approach_NN called_VBD stacking_VBG =_JJ -_: =[_NN 37_CD ,_, 34_CD -RRB-_-RRB- -_: =_JJ -_: ,_, as_IN we_PRP have_VBP shown_VBN in_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+12s5_NN Relaxation_NN Labeling_VBG We_PRP now_RB describe_VBP the_DT Relaxation_NNP Labeler_NNP ,_, which_WDT takes_VBZ the_DT similarity_NN matrix_NN from_IN the_DT Similarity_NNP Estimator_NNP ,_, and_CC searches_NNS for_IN the_DT mapping_NN configuration_NN
+pairs_NNS of_IN Student_NNP and_CC Professor_NNP such_JJ that_IN the_DT former_JJ is_VBZ advised_VBN by_IN the_DT latter_JJ ._.
+Many_JJ formal_JJ languages_NNS to_TO specify_VB ontologies_NNS have_VBP been_VBN proposed_VBN for_IN the_DT Semantic_JJ Web_NN ,_, such_JJ as_IN OIL_NNP ,_, DAML+OIL_NNP ,_, SHOE_NNP ,_, and_CC RDF_NN =_JJ -_: =[_NN 8_CD ,_, 2_CD ,_, 15_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Though_IN these_DT languages_NNS differ_VBP in_IN their_PRP$ terminologies_NNS and_CC expressiveness_NN ,_, the_DT ontologies_NNS that_IN they_PRP model_VBP essentially_RB share_VBP the_DT same_JJ features_NNS we_PRP described_VBD above_IN ._.
+Given_VBN two_CD ontologies_NNS ,_, the_DT ontology-mat_NN
+embership_NN of_IN an_DT instance_NN :_: its_PRP$ name_NN ,_, value_NN format_NN ,_, the_DT word_NN frequencies_NNS in_IN its_PRP$ value_NN ,_, and_CC each_DT of_IN these_DT is_VBZ best_RB utilized_VBN by_IN a_DT different_JJ learning_NN algorithm_NN ._.
+GLUE_NN uses_VBZ a_DT multi-strategy_JJ learning_NN approach_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: :_: we_PRP employ_VBP a_DT set_NN of_IN learners_NNS ,_, then_RB combine_VB their_PRP$ predictions_NNS using_VBG a_DT meta-learner_NN ._.
+In_IN previous_JJ work_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- we_PRP have_VBP shown_VBN that_IN multi-strategy_JJ learning_NN is_VBZ effective_JJ in_IN the_DT context_NN of_IN mapping_NN between_IN data_NNS
+lenges_NNS ,_, focusing_VBG on_IN fleshing_VBG out_RP the_DT basic_JJ 2sarchitecture_NN ,_, developing_VBG expressive_JJ and_CC efficient_JJ ontology_NN languages_NNS ,_, building_VBG techniques_NNS for_IN efficient_JJ marking_VBG up_RP of_IN data_NNS ,_, and_CC learning_NN ontologies_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 15_CD ,_, 8_CD ,_, 29_CD ,_, 22_CD ,_, 4_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+A_DT key_JJ challenge_NN in_IN building_VBG the_DT Semantic_JJ Web_NN that_WDT has_VBZ received_VBN relatively_RB little_JJ attention_NN is_VBZ finding_VBG semantic_JJ mappings_NNS among_IN the_DT ontologies_NNS ._.
+Given_VBN the_DT de-centralized_JJ nature_NN of_IN the_DT development_NN of_IN t_NN
+do_VB here_RB ._.
+We_PRP now_RB describe_VBP other_JJ related_JJ work_NN to_TO GLUE_NN from_IN several_JJ perspectives_NNS ._.
+Ontology_NNP Matching_NNP :_: Many_JJ works_NNS have_VBP addressed_VBN ontology_JJ matching_NN in_IN the_DT context_NN of_IN ontology_NN design_NN and_CC integration_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 11_CD ,_, 23_CD ,_, 27_CD ,_, 26_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+These_DT works_NNS do_VBP not_RB deal_VB with_IN explicit_JJ notions_NNS of_IN similarity_NN ._.
+They_PRP use_VBP a_DT variety_NN of_IN heuristics_NNS to_TO match_VB ontology_JJ elements_NNS ._.
+They_PRP do_VBP not_RB use_VB 20smachine_NN learning_NN and_CC do_VBP not_RB exploit_VB information_NN in_IN the_DT d_NN
+ess_NN ._.
+The_DT Anchor-PROMPT_JJ system_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- exploits_VBZ the_DT general_JJ heuristic_NN that_IN paths_NNS -LRB-_-LRB- in_IN the_DT taxonomies_NNS or_CC ontology_NN graphs_NNS -RRB-_-RRB- between_IN matching_JJ elements_NNS tend_VBP to_TO contain_VB other_JJ matching_JJ elements_NNS ._.
+The_DT HICAL_NN system_NN =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_SYM -_: exploits_VBZ the_DT data_NNS instances_NNS in_IN the_DT overlap_VBP between_IN the_DT two_CD taxonomies_NNS to_TO infer_VB mappings_NNS ._.
+-LRB-_-LRB- 17_CD -RRB-_-RRB- computes_VBZ the_DT similarity_NN between_IN two_CD taxonomic_JJ nodes_NNS based_VBN on_IN their_PRP$ signature_NN TF\/IDF_NN vectors_NNS ,_, which_WDT are_VBP co_FW
+._.
+Schema_NNP Matching_NNP :_: Schemas_NNS can_MD be_VB viewed_VBN as_IN ontologies_NNS with_IN restricted_JJ relationship_NN types_NNS ._.
+The_DT problem_NN of_IN schema_NN matching_NN has_VBZ been_VBN studied_VBN in_IN the_DT context_NN of_IN data_NNS integration_NN and_CC data_NN translation_NN -LRB-_-LRB- see_VB =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: for_IN a_DT survey_NN -RRB-_-RRB- ._.
+Several_JJ works_NNS -LRB-_-LRB- 25_CD ,_, 20_CD ,_, 24_CD -RRB-_-RRB- have_VBP exploited_VBN variations_NNS of_IN the_DT general_JJ heuristic_NN ``_`` two_CD nodes_NNS match_VBP if_IN nodes_NNS in_IN their_PRP$ neighborhood_NN also_RB match_VBP ''_'' ,_, but_CC in_IN an_DT isolated_VBN fashion_NN ,_, and_CC not_RB in_IN the_DT sa_NN
+er_NN was_VBD applied_VBN ,_, the_DT accuracy_NN typically_RB improved_VBD substantially_RB in_IN the_DT first_JJ few_JJ iterations_NNS ,_, then_RB gradually_RB dropped_VBD ._.
+This_DT phenomenon_NN has_VBZ also_RB been_VBN observed_VBN in_IN many_JJ previous_JJ works_NNS on_IN relaxation_NN labeling_NN =_JJ -_: =[_NN 16_CD ,_, 19_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Because_IN of_IN this_DT ,_, finding_VBG the_DT right_JJ stopping_VBG criterion_NN for_IN relaxation_NN labeling_NN is_VBZ of_IN crucial_JJ importance_NN ._.
+Many_JJ stopping_VBG criteria_NNS have_VBP been_VBN proposed_VBN ,_, but_CC no_DT general_JJ effective_JJ criterion_NN has_VBZ been_VBN found_VBN ._.
+t-name_NN ''_'' ,_, and_CC ``_`` the_DT union_NN of_IN Undergrad-Courses_NNP and_CC Grad-Courses_NNP maps_NNS to_TO Courses_NNS ''_'' ._.
+In_IN general_JJ ,_, a_DT mapping_NN may_MD be_VB specified_VBN as_IN a_DT query_NN that_WDT transforms_VBZ instances_NNS in_IN one_CD ontology_NN into_IN instances_NNS in_IN the_DT other_JJ =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+5sIn_NN this_DT paper_NN we_PRP focus_VBP on_IN finding_VBG 1-1_CD mappings_NNS between_IN the_DT taxonomies_NNS ._.
+This_DT is_VBZ because_IN the_DT taxonomies_NNS are_VBP central_JJ components_NNS of_IN ontologies_NNS ,_, and_CC successfully_RB matching_VBG them_PRP would_MD greatly_RB aid_VB in_IN matc_NN
+ve_FW in_FW GLUE_NN ._.
+Notions_NNS of_IN Similarity_NN :_: The_DT similarity_NN measure_NN in_IN -LRB-_-LRB- 33_CD -RRB-_-RRB- is_VBZ based_VBN on_IN ^_CD statistics_NNS ,_, and_CC can_MD be_VB thought_VBN of_IN as_IN being_VBG defined_VBN over_IN the_DT joint_JJ probability_NN distribution_NN of_IN the_DT concepts_NNS involved_VBN ._.
+In_IN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: the_DT authors_NNS propose_VBP an_DT information-theoretic_JJ notion_NN of_IN similarity_NN that_WDT is_VBZ based_VBN on_IN the_DT joint_JJ distribution_NN ._.
+These_DT works_NNS argue_VBP for_IN a_DT single_JJ best_RBS universal_JJ similarity_NN measure_NN ,_, whereas_IN GLUE_NN allows_VBZ for_IN ap_NN
+to_TO construct_VB ontologies_NNS from_IN data_NNS and_CC other_JJ ontologies_NNS ,_, and_CC extracting_VBG ontology_NN instances_NNS from_IN data_NNS -LRB-_-LRB- 29_CD ,_, 22_CD ,_, 31_CD -RRB-_-RRB- ._.
+Our_PRP$ work_NN here_RB provides_VBZ techniques_NNS to_TO help_VB in_IN the_DT ontology_JJ construction_NN process_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+=_SYM -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: gives_VBZ a_DT comprehensive_JJ summary_NN of_IN the_DT role_NN of_IN machine_NN learning_NN in_IN the_DT Semantic_JJ Web_NN effort_NN ._.
+8_CD Conclusion_NN and_CC Future_JJ Work_NN The_DT vision_NN of_IN the_DT semantic_JJ web_NN is_VBZ grand_JJ ._.
+With_IN the_DT proliferation_NN of_IN ontologies_NNS on_IN
+abeling_VBG ,_, a_DT powerful_JJ technique_NN used_VBN extensively_RB in_IN the_DT vision_NN and_CC image_NN processing_NN community_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, and_CC successfully_RB adapted_VBN to_TO solve_VB matching_NN and_CC classification_NN problems_NNS in_IN natural_JJ language_NN processing_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_JJ -_: and_CC hypertext_NN classification_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+We_PRP show_VBP that_IN relaxation_NN labeling_NN can_MD be_VB adapted_VBN efficiently_RB to_TO our_PRP$ context_NN ,_, and_CC that_IN it_PRP can_MD successfully_RB handle_VB a_DT broad_JJ variety_NN of_IN heuristics_NNS and_CC domain_NN constraints_NNS
+ce_NN ,_, and_CC heuristics_NNS are_VBP very_RB commonly_RB used_VBN when_WRB manually_RB mapping_VBG between_IN ontologies_NNS ._.
+Previous_JJ works_NNS have_VBP exploited_VBN only_RB one_CD form_NN or_CC the_DT other_JJ of_IN such_JJ knowledge_NN and_CC constraints_NNS ,_, in_IN restrictive_JJ settings_NNS =_JJ -_: =[_NN 28_CD ,_, 25_CD ,_, 20_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Here_RB ,_, we_PRP develop_VBP a_DT unifying_JJ approach_NN to_TO incorporate_VB all_DT such_JJ types_NNS of_IN information_NN ._.
+Our_PRP$ approach_NN is_VBZ based_VBN on_IN relaxation_NN labeling_NN ,_, a_DT powerful_JJ technique_NN used_VBN extensively_RB in_IN the_DT vision_NN and_CC image_NN process_NN
+3_LS ._.
+In_IN each_DT domain_NN we_PRP downloaded_VBD two_CD taxonomies_NNS ._.
+For_IN each_DT taxonomy_NN ,_, we_PRP downloaded_VBD the_DT entire_JJ 3_CD Many_JJ ontologies_NNS are_VBP also_RB available_JJ from_IN research_NN resources_NNS -LRB-_-LRB- e.g._FW ,_, DAML.org_NN ,_, semanticweb.org_NN ,_, OntoBroker_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, SHOE_NNP ,_, OntoAgents_NNP -RRB-_-RRB- ,_, they_PRP currently_RB have_VBP no_DT or_CC very_RB few_JJ data_NNS instances_NNS ._.
+16s0_NN 10_CD 20_CD 30_CD 40_CD 50_CD 60_CD 70_CD 80_CD 90_CD 100_CD Cornell_NNP to_TO Wash._NNP ._.
+Wash._NNP to_TO Cornell_NNP Cornell_NNP to_TO Wash._NNP ._.
+Wash._NNP to_TO Cornell_NNP Standard_NNP to_TO Yahoo_NNP Yahoo_NNP
+lar_JJ domains_NNS ,_, but_CC using_VBG different_JJ terminologies_NNS ,_, and_CC others_NNS will_MD have_VB overlapping_JJ domains_NNS ._.
+To_TO integrate_VB data_NNS from_IN disparate_JJ ontologies_NNS ,_, we_PRP must_MD know_VB the_DT semantic_JJ correspondences_NNS between_IN their_PRP$ elements_NNS =_JJ -_: =[_NN 6_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, in_IN the_DT conference-acquaintance_JJ scenario_NN described_VBN earlier_RBR ,_, in_IN order_NN to_TO find_VB the_DT right_JJ person_NN ,_, your_PRP$ softbot_NN must_MD know_VB that_IN ``_`` associate_JJ professor_NN ''_'' in_IN the_DT US_NNP corresponds_VBZ to_TO ``_`` senior_JJ lecturer_NN
+s_NN or_CC ontology_NN graphs_NNS -RRB-_-RRB- between_IN matching_JJ elements_NNS tend_VBP to_TO contain_VB other_JJ matching_JJ elements_NNS ._.
+The_DT HICAL_NN system_NN -LRB-_-LRB- 33_CD -RRB-_-RRB- exploits_VBZ the_DT data_NNS instances_NNS in_IN the_DT overlap_VBP between_IN the_DT two_CD taxonomies_NNS to_TO infer_VB mappings_NNS ._.
+=_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: computes_VBZ the_DT similarity_NN between_IN two_CD taxonomic_JJ nodes_NNS based_VBN on_IN their_PRP$ signature_NN TF\/IDF_NN vectors_NNS ,_, which_WDT are_VBP computed_VBN from_IN the_DT data_NNS instances_NNS ._.
+Schema_NNP Matching_NNP :_: Schemas_NNS can_MD be_VB viewed_VBN as_IN ontologies_NNS with_IN rest_NN
+ce_NN ,_, and_CC heuristics_NNS are_VBP very_RB commonly_RB used_VBN when_WRB manually_RB mapping_VBG between_IN ontologies_NNS ._.
+Previous_JJ works_NNS have_VBP exploited_VBN only_RB one_CD form_NN or_CC the_DT other_JJ of_IN such_JJ knowledge_NN and_CC constraints_NNS ,_, in_IN restrictive_JJ settings_NNS =_JJ -_: =[_NN 28_CD ,_, 25_CD ,_, 20_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Here_RB ,_, we_PRP develop_VBP a_DT unifying_JJ approach_NN to_TO incorporate_VB all_DT such_JJ types_NNS of_IN information_NN ._.
+Our_PRP$ approach_NN is_VBZ based_VBN on_IN relaxation_NN labeling_NN ,_, a_DT powerful_JJ technique_NN used_VBN extensively_RB in_IN the_DT vision_NN and_CC image_NN process_NN
+ce_NN ,_, and_CC heuristics_NNS are_VBP very_RB commonly_RB used_VBN when_WRB manually_RB mapping_VBG between_IN ontologies_NNS ._.
+Previous_JJ works_NNS have_VBP exploited_VBN only_RB one_CD form_NN or_CC the_DT other_JJ of_IN such_JJ knowledge_NN and_CC constraints_NNS ,_, in_IN restrictive_JJ settings_NNS =_JJ -_: =[_NN 28_CD ,_, 25_CD ,_, 20_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Here_RB ,_, we_PRP develop_VBP a_DT unifying_JJ approach_NN to_TO incorporate_VB all_DT such_JJ types_NNS of_IN information_NN ._.
+Our_PRP$ approach_NN is_VBZ based_VBN on_IN relaxation_NN labeling_NN ,_, a_DT powerful_JJ technique_NN used_VBN extensively_RB in_IN the_DT vision_NN and_CC image_NN process_NN
+do_VB here_RB ._.
+We_PRP now_RB describe_VBP other_JJ related_JJ work_NN to_TO GLUE_NN from_IN several_JJ perspectives_NNS ._.
+Ontology_NNP Matching_NNP :_: Many_JJ works_NNS have_VBP addressed_VBN ontology_JJ matching_NN in_IN the_DT context_NN of_IN ontology_NN design_NN and_CC integration_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 11_CD ,_, 23_CD ,_, 27_CD ,_, 26_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+These_DT works_NNS do_VBP not_RB deal_VB with_IN explicit_JJ notions_NNS of_IN similarity_NN ._.
+They_PRP use_VBP a_DT variety_NN of_IN heuristics_NNS to_TO match_VB ontology_JJ elements_NNS ._.
+They_PRP do_VBP not_RB use_VB 20smachine_NN learning_NN and_CC do_VBP not_RB exploit_VB information_NN in_IN the_DT d_NN
+lenges_NNS ,_, focusing_VBG on_IN fleshing_VBG out_RP the_DT basic_JJ 2sarchitecture_NN ,_, developing_VBG expressive_JJ and_CC efficient_JJ ontology_NN languages_NNS ,_, building_VBG techniques_NNS for_IN efficient_JJ marking_VBG up_RP of_IN data_NNS ,_, and_CC learning_NN ontologies_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 15_CD ,_, 8_CD ,_, 29_CD ,_, 22_CD ,_, 4_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+A_DT key_JJ challenge_NN in_IN building_VBG the_DT Semantic_JJ Web_NN that_WDT has_VBZ received_VBN relatively_RB little_JJ attention_NN is_VBZ finding_VBG semantic_JJ mappings_NNS among_IN the_DT ontologies_NNS ._.
+Given_VBN the_DT de-centralized_JJ nature_NN of_IN the_DT development_NN of_IN t_NN
+nto_VB a_DT ``_`` web_NN of_IN semantics_NNS ''_'' ._.
+Without_IN them_PRP ,_, the_DT semantic_JJ web_NN is_VBZ akin_JJ to_TO an_DT electronic_JJ version_NN of_IN the_DT Tower_NNP of_IN Babel_NNP ._.
+Unfortunately_RB ,_, manually_RB specifying_VBG such_JJ correspondences_NNS is_VBZ time-consuming_JJ ,_, error-prone_JJ =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC clearly_RB not_RB possible_JJ on_IN the_DT Web_NN scale_NN ._.
+Hence_RB ,_, the_DT development_NN of_IN tools_NNS to_TO assist_VB in_IN ontology_NN mapping_NN is_VBZ crucial_JJ to_TO the_DT success_NN of_IN the_DT Semantic_JJ Web_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- ._.
+In_IN this_DT paper_NN we_PRP describe_VBP the_DT GLUE_NN system_NN

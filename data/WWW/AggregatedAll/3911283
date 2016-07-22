@@ -1,0 +1,172 @@
+Dynamic_NNP placement_NN for_IN clustered_VBN web_NN applications_NNS
+We_PRP introduce_VBP and_CC evaluate_VBP a_DT middleware_JJ clustering_NN technology_NN capable_JJ of_IN allocating_VBG resources_NNS to_TO web_NN applications_NNS through_IN dynamic_JJ application_NN instance_NN placement_NN ._.
+We_PRP define_VBP application_NN instance_NN placement_NN as_IN the_DT problem_NN of_IN placing_VBG application_NN instances_NNS on_IN a_DT given_VBN set_NN of_IN server_NN machines_NNS to_TO adjust_VB the_DT amount_NN of_IN resources_NNS available_JJ to_TO applications_NNS in_IN response_NN to_TO varying_VBG resource_NN demands_NNS of_IN application_NN clusters_NNS ._.
+The_DT objective_NN is_VBZ to_TO maximize_VB the_DT amount_NN of_IN demand_NN that_WDT may_MD be_VB satisfied_VBN using_VBG a_DT configured_JJ placement_NN ._.
+To_TO limit_VB the_DT disturbance_NN to_TO the_DT system_NN caused_VBN by_IN starting_VBG and_CC stopping_VBG application_NN instances_NNS ,_, the_DT placement_NN algorithm_NN attempts_VBZ to_TO minimize_VB the_DT number_NN of_IN placement_NN changes_NNS ._.
+It_PRP also_RB strives_VBZ to_TO keep_VB resource_NN utilization_NN balanced_VBN across_IN all_DT server_NN machines_NNS ._.
+Two_CD types_NNS of_IN resources_NNS are_VBP managed_VBN ,_, one_CD load-dependent_JJ and_CC one_CD load-independent_JJ ._.
+When_WRB putting_VBG the_DT chosen_JJ placement_NN in_IN effect_NN our_PRP$ controller_NN schedules_NNS placement_NN changes_NNS in_IN a_DT manner_NN that_WDT limits_VBZ the_DT disruption_NN to_TO the_DT system_NN ._.
+resource_NN as_IN a_DT whole_JJ -LRB-_-LRB- e.g._FW a_DT server_NN in_IN Web_NN data_NN centers_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- or_CC a_DT multi-processor_JJ node_NN in_IN a_DT Grid_NNP system_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- -RRB-_-RRB- ,_, but_CC also_RB for_IN a_DT fraction_NN of_IN that_DT resource_NN -LRB-_-LRB- e.g._FW a_DT virtual_JJ machine_NN running_VBG on_IN a_DT physical_JJ node_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC a_DT channel_NN of_IN an_DT optical_JJ network_NN -RRB-_-RRB- ._.
+Similarly_RB ,_, the_DT minimal_JJ duration_NN for_IN which_WDT a_DT resource_NN may_MD be_VB allocated_VBN may_MD be_VB between_IN a_DT few_JJ seconds_NNS -LRB-_-LRB- servicing_VBG one_CD user_NN request_NN by_IN a_DT Web_NN service_NN -RRB-_-RRB- to_TO several_JJ month_NN
+0s_NNS delay_VBP on_IN the_DT idle_JJ machine_NN ._.
+Other_JJ studies_NNS also_RB report_VBP long_JJ application_NN startup_NN delays_NNS that_WDT could_MD extend_VB to_TO several_JJ minutes_NNS depending_VBG on_IN the_DT particularities_NNS of_IN the_DT application_NN and_CC the_DT server_NN machine_NN =_JJ -_: =[_NN 18_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Startup_NN delays_NNS on_IN the_DT order_NN of_IN minutes_NNS clearly_RB limit_VBP the_DT agility_NN of_IN a_DT hosting_VBG platform_NN :_: an_DT overloaded_JJ site_NN will_MD have_VB to_TO wait_VB this_DT long_JJ even_RB after_IN the_DT platform_NN decides_VBZ to_TO give_VB the_DT site_NN more_JJR resources_NNS
+the_DT necessary_JJ infrastructure_NN for_IN machine_NN virtualization_NN -LRB-_-LRB- 3_CD ,_, 15_CD ,_, 17_CD ,_, 21_CD -RRB-_-RRB- ._.
+Our_PRP$ work_NN is_VBZ also_RB related_JJ to_TO work_VB on_IN capacity_NN planning_VBG and_CC allocating_VBG resources_NNS to_TO applications_NNS in_IN non-virtualized_JJ environments_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, although_IN this_DT work_NN can_MD not_RB easily_RB be_VB extended_VBN to_TO the_DT problem_NN of_IN determining_VBG an_DT optimal_JJ sharing_NN of_IN resources_NNS ,_, especially_RB for_IN database_NN workloads_NNS in_IN virtualized_JJ environments_NNS ._.
+Tuning_NN database_NN systems_NNS for_IN
+esource_NN as_IN a_DT whole_JJ -LRB-_-LRB- e.g._FW a_DT server_NN in_IN Web_NN data_NN centers_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- or_CC a_DT multi-processor_JJ node_NN in_IN a_DT Grid_NNP system_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- -RRB-_-RRB- ,_, but_CC also_RB for_IN a_DT fraction_NN of_IN that_DT resource_NN -LRB-_-LRB- e.g._FW a_DT virtual_JJ machine_NN running_VBG on_IN a_DT physical_JJ node_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC a_DT channel_NN of_IN an_DT optical_JJ network_NN -RRB-_-RRB- ._.
+Similarly_RB ,_, the_DT minimal_JJ duration_NN for_IN which_WDT a_DT resource_NN may_MD be_VB allocated_VBN may_MD be_VB between_IN a_DT few_JJ seconds_NNS -LRB-_-LRB- servicing_VBG one_CD user_NN request_NN by_IN a_DT Web_NN service_NN -RRB-_-RRB- to_TO several_JJ month_NN
+late_RB the_DT feasibility_NN of_IN an_DT additional_JJ service_NN placement_NN during_IN the_DT request_NN processing_NN ._.
+According_VBG scheduling_NN algorithms_NNS ,_, based_VBN on_IN a_DT similar_JJ assumption_NN ,_, are_VBP part_NN of_IN current_JJ web_NN server_NN clusters_NNS research_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Figure_NNP 5_CD :_: Response_NN times_NNS for_IN Denic_NNP \/_: Saferpay_NNP service_NN in_IN the_DT ASG_NNP DSC_NNP scenario_NN Some_DT of_IN the_DT scheduling_NN techniques_NNS in_IN literature_NN also_RB consider_VBP the_DT usage_NN of_IN resource_NN availability_NN predictions_NNS ,_, based_VBN on_IN a_DT
+our_PRP$ model_NN the_DT MMOG_NNP resources_NNS are_VBP provided_VBN by_IN multiple_JJ geographically_RB distributed_VBN data_NNS centres_NNS with_IN different_JJ lease_NN policies_NNS ._.
+In_IN contrast_NN to_TO previous_JJ models_NNS of_IN client\/server_NNP Internet_NNP applications_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- --_: =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT focus_VBP on_IN non-interacting_JJ user_NN requests_NNS ,_, our_PRP$ model_NN is_VBZ designed_VBN around_IN the_DT notion_NN of_IN player_NN interactions_NNS within_IN the_DT same_JJ application_NN instance_NN ._.
+In_IN Section_NNP III_NNP we_PRP demonstrate_VBP through_IN the_DT analysis_NN
+ls_NNS provide_VBP automation_NN mechanisms_NNS by_IN which_WDT resource_NN allocations_NNS may_MD be_VB continuously_RB adjusted_VBN to_TO the_DT changing_VBG workload_NN ._.
+Previous_JJ work_NN focuses_VBZ on_IN different_JJ goals_NNS ,_, such_JJ as_IN maximizing_VBG resource_NN utilization_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: and_CC their_PRP$ own_JJ service_NN level_NN goals_NNS -LRB-_-LRB- 13_CD ,_, 5_CD -RRB-_-RRB- ._.
+Our_PRP$ proposal_NN can_MD apply_VB to_TO and_CC improve_VB any_DT of_IN these_DT placement_NN solutions_NNS ._.
+6_CD Conclusions_NNS and_CC Future_NNP Work_NNP Green_NNP data_NNS centers_NNS must_MD achieve_VB significantly_RB lower_JJR po_NN
+n_NN parallel_NN ,_, a_DT large_JJ portion_NN of_IN the_DT resources_NNS are_VBP unnecessary_JJ ._.
+Furthermore_RB ,_, determining_VBG the_DT resource_NN requirements_NNS dynamically_RB is_VBZ non-trivial_JJ for_IN MMOGs_NNS :_: unlike_IN many_JJ other_JJ client-server_JJ applications_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- --_: =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT interaction_NN between_IN the_DT concurrent_JJ system_NN users_NNS has_VBZ an_DT important_JJ role_NN in_IN the_DT load_NN of_IN the_DT system_NN ._.
+In_IN this_DT work_NN we_PRP investigate_VBP the_DT operation_NN of_IN MMOGs_NNS on_IN resources_NNS obtained_VBN dynamically_RB from_IN data_NN ce_NN
+source_NN allocations_NNS that_WDT should_MD delay_VB as_RB much_JJ as_IN possible_JJ the_DT need_NN for_IN adaptation_NN in_IN the_DT face_NN of_IN dynamic_JJ workloads_NNS ._.
+Other_JJ works_NNS attempt_VBP to_TO minimize_VB the_DT change_NN in_IN resource_NN allocations_NNS due_JJ to_TO adaptation_NN =_JJ -_: =[_NN 22_CD ,_, 32_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT challenges_NNS of_IN resource_NN allocation_NN and_CC of_IN application_NN modeling_NN for_IN multitier_JJ applications_NNS are_VBP studied_VBN in_IN -LRB-_-LRB- 60_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 40_CD -RRB-_-RRB- ._.
+Going_VBG further_RBR in_IN application_NN modeling_NN complexity_NN ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- proposes_VBZ resource_NN all_DT
+irtual_JJ machines_NNS represent_VBP an_DT expensive_JJ task_NN ,_, dynamic_NN provisioning_VBG is_VBZ typically_RB carried_VBN out_RP on_IN a_DT coarse-grained_JJ time_NN scale_NN ,_, possibly_RB through_IN capacity_NN planning_NN algorithms_NNS that_WDT are_VBP run_VBN periodically_RB -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Sudden_JJ and_CC unpredictable_JJ peaks_NNS in_IN the_DT end-user_JJ demand_NN -LRB-_-LRB- also_RB known_VBN as_IN flash_NN crowds_NNS -RRB-_-RRB- may_MD not_RB be_VB addressed_VBN only_RB through_IN dynamic_NN provisioning_VBG because_IN the_DT rapidly_RB changing_VBG service_NN access_NN patterns_NNS often_RB c_SYM
+-LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, an_DT integrated_VBN framework_NN is_VBZ proposed_VBN combining_VBG a_DT cluster-level_JJ load_NN balancer_NN and_CC nodelevel_JJ class-aware_JJ scheduler_NN to_TO achieve_VB both_DT overall_JJ system_NN efficiency_NN and_CC individual_JJ response_NN time_NN goals_NNS ._.
+In_IN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, resource_NN allocation_NN is_VBZ formulated_VBN as_IN a_DT two-dimensional_JJ packing_NN problem_NN ,_, enforced_VBN through_IN dynamic_JJ application_NN instance_NN placement_NN in_IN response_NN to_TO varying_VBG resource_NN demands_NNS ._.
+In_IN our_PRP$ work_NN ,_, we_PRP study_VBD more_RBR fi_IN
+on_IN placement_NN controller_NN is_VBZ to_TO ,_, when_WRB request_NN types_NNS change_VBP frequently_RB ,_, be_VB able_JJ to_TO satisfy_VB as_IN many_JJ requests_NNS as_IN possible_JJ ._.
+At_IN the_DT same_JJ time_NN the_DT controller_NN should_MD try_VB to_TO minimize_VB costly_JJ application_NN changes_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, e.g._FW start_VB and_CC stop_VB times_NNS ._.
+The_DT application_NN placement_NN is_VBZ hard_JJ problem_NN considering_VBG the_DT circumstances_NNS it_PRP must_MD operate_VB ._.
+The_DT algorithm_NN might_MD be_VB forced_VBN to_TO work_VB on_IN clusters_NNS with_IN a_DT large_JJ number_NN servers_NNS and_CC
+policies_NNS work_VBP at_IN crosspurposes_NNS ,_, then_RB it_PRP may_MD increase_VB the_DT need_NN for_IN migration_NN ,_, as_IN illustrated_VBN later_RB in_IN this_DT paper_NN ._.
+Some_DT systems_NNS have_VBP chosen_VBN to_TO integrate_VB provisioning_VBG and_CC placement_NN tightly_RB ;_: for_IN example_NN ,_, =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: takes_VBZ an_DT integrated_JJ approach_NN to_TO assigning_VBG distributed_VBN web_NN application_NN components_NNS in_IN a_DT server_NN cluster_NN to_TO meet_VB demands_NNS and_CC balance_NN load_NN under_IN dynamic_JJ conditions_NNS ._.
+A_DT proactive_JJ model-based_JJ approach_NN to_TO int_VB
+l_NN application_NN QoS_NN sensors_NNS ._.
+Dynamic_NNP resource_NN management_NN in_IN a_DT cluster_NN environment_NN has_VBZ been_VBN studied_VBN with_IN goals_NNS such_JJ as_IN QoS_NN awareness_NN ,_, performance_NN isolation_NN and_CC higher_JJR resource_NN utilization_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP is_VBZ formulated_VBN as_IN an_DT online_JJ optimization_NN problem_NN in_IN -LRB-_-LRB- 22_CD -RRB-_-RRB- using_VBG periodic_JJ utilization_NN measurements_NNS and_CC resource_NN allocation_NN is_VBZ implemented_VBN via_IN request_NN distribution_NN ._.
+In_IN -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, resource_NN provisioning_VBG for_IN
+olicies_NNS can_MD be_VB used_VBN to_TO manage_VB individual_JJ web_NN and_CC noninteractive_JJ applications_NNS ._.
+In_IN the_DT case_NN of_IN web_NN workloads_NNS ,_, these_DT management_NN techniques_NNS involve_VBP flow_NN control_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC dynamic_JJ application_NN placement_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT case_NN of_IN non-interactive_JJ workloads_NNS ,_, the_DT techniques_NNS involve_VBP job_NN scheduling_NN ,_, which_WDT may_MD be_VB performed_VBN based_VBN on_IN various_JJ existing_VBG scheduling_NN disciplines_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+To_TO effectively_RB manage_VB heterogeneous_JJ work_NN
+cide_NN in_IN what_WP nodes_NNS these_DT instances_NNS are_VBP going_VBG to_TO be_VB placed_VBN :_: this_DT is_VBZ what_WP is_VBZ known_VBN as_IN the_DT placement_NN problem_NN ._.
+The_DT placement_NN problem_NN is_VBZ to_TO find_VB a_DT placement_NN of_IN applications_NNS on_IN servers_NNS ,_, known_VBN to_TO be_VB NP-hard_NN =_JJ -_: =[_NN 11,6_CD -RRB-_-RRB- -_: =_JJ -_: and_CC heuristics_NNS must_MD be_VB used_VBN to_TO solve_VB it_PRP ._.
+Given_VBN a_DT certain_JJ workload_NN ,_, changing_VBG the_DT allocated_VBN CPU_NNP power_NN to_TO an_DT application_NN makes_VBZ a_DT significant_JJ difference_NN in_IN the_DT service_NN level_NN offered_VBN by_IN that_DT application_NN ._.
+0s_NNS delay_VBP on_IN the_DT idle_JJ machine_NN ._.
+Other_JJ studies_NNS also_RB report_VBP long_JJ application_NN startup_NN delays_NNS that_WDT could_MD extend_VB to_TO several_JJ minutes_NNS depending_VBG on_IN the_DT particularities_NNS of_IN the_DT application_NN and_CC the_DT server_NN machine_NN =_JJ -_: =[_NN 18_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Startup_NN delays_NNS on_IN the_DT order_NN of_IN minutes_NNS clearly_RB limit_VBP the_DT agility_NN of_IN a_DT hosting_VBG platform_NN :_: an_DT overloaded_JJ site_NN will_MD have_VB to_TO wait_VB this_DT long_JJ even_RB after_IN the_DT platform_NN decides_VBZ to_TO give_VB the_DT site_NN more_JJR resources_NNS
+Furthermore_RB ,_, these_DT approaches_NNS also_RB do_VBP not_RB deal_VB with_IN database_NN SLAs_NNS ._.
+There_EX has_VBZ been_VBN some_DT recent_JJ work_NN on_IN distributing_VBG application_NN servers_NNS across_IN a_DT cluster_NN so_RB as_IN to_TO effectively_RB manage_VB throughput_NN and_CC load_NN =_JJ -_: =[_NN 16_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT key_JJ difference_NN between_IN this_DT problem_NN and_CC the_DT problem_NN we_PRP consider_VBP in_IN this_DT paper_NN is_VBZ thatthe_JJ application_NN servers_NNS do_VBP not_RB have_VB persistent_JJ state_NN ;_: consequently_RB ,_, the_DT cost_NN of_IN migration_NN and_CC the_DT associated_VBN c_NN
+Each_DT technology_NN also_RB allows_VBZ controls_NNS on_IN the_DT number_NN of_IN cores_NNS assigned_VBN to_TO a_DT VM_NN ._.
+Our_PRP$ focus_NN on_IN the_DT agility_NN is_VBZ in_IN contrast_NN to_TO related_JJ algorithmic_JJ work_NN concerning_VBG resource_NN allocation_NN in_IN shared_JJ data_NN centers_NNS =_JJ -_: =[_NN 7_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN the_DT latter_JJ seeks_VBZ to_TO find_VB high-quality_JJ solutions_NNS for_IN a_DT required_JJ number_NN and_CC placement_NN of_IN application_NN instances_NNS on_IN physical_JJ machines_NNS ,_, our_PRP$ goal_NN is_VBZ to_TO reduce_VB the_DT time_NN for_IN enacting_VBG those_DT decisions_NNS ._.
+ost_NN models_NNS to_TO achieve_VB its_PRP$ objectives_NNS ._.
+There_EX is_VBZ also_RB work_NN on_IN application_NN deployment_NN and_CC control_NN ,_, including_VBG resource_NN allocation_NN and_CC dynamic_NN provisioning_VBG ,_, that_WDT does_VBZ not_RB exploit_VB virtualization_NN technology_NN =_JJ -_: =[_NN 3_CD ,_, 8_CD ,_, 21_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, this_DT work_NN also_RB treats_VBZ the_DT target_NN applications_NNS as_IN black_JJ boxes_NNS ._.
+The_DT virtualization_NN design_NN problem_NN that_WDT is_VBZ considered_VBN here_RB was_VBD posed_VBN ,_, but_CC not_RB solved_VBN ,_, in_IN our_PRP$ previous_JJ work_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+This_DT paper_NN buil_NN
+in_IN Section_NNP 2_CD ._.
+The_DT work_NN in_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- presents_VBZ techniques_NNS to_TO predict_VB workload_NN that_WDT could_MD be_VB used_VBN along_IN with_IN CAFe_NN ._.
+A_DT framework_NN for_IN dynamic_JJ placement_NN of_IN clustered_VBN web_NN applications_NNS is_VBZ presented_VBN by_IN Karve_NNP et_NNP ._.
+al._FW =_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Kimbrel_NNP et_NNP ._.
+al._FW -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+These_DT approaches_NNS consider_VBP multiple_JJ resources_NNS that_WDT are_VBP load-dependent_JJ and_CC load_NN independent_JJ ._.
+They_PRP solve_VBP an_DT optimization_NN problem_NN that_WDT attempts_VBZ to_TO change_VB the_DT component_NN placement_NN
+ies_NNS constraints_NNS expressed_VBN by_IN Eqns_NNS ._.
+-LRB-_-LRB- 2_LS -RRB-_-RRB- -_: -LRB-_-LRB- 5_CD -RRB-_-RRB- -LRB-_-LRB- function_NN canSolve_NN in_IN Figure_NNP 3_CD -RRB-_-RRB- ._.
+This_DT test_NN forms_VBZ a_DT familiar_JJ linear-programming_JJ problem_NN ,_, for_IN which_WDT a_DT number_NN of_IN efficient_JJ solutions_NNS may_MD be_VB found_VBN in_IN literature_NN =_JJ -_: =[_NN 12_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+If_IN the_DT current_JJ placement_NN can_MD serve_VB the_DT new_JJ demand_NN ,_, after_IN waiting_VBG δt_NN ,_, the_DT Placement_NNP Controller_NNP proceeds_NNS to_TO the_DT next_JJ control_NN cycle_NN ._.
+Otherwise_RB ,_, the_DT new_JJ placement_NN is_VBZ computed_VBN and_CC implemented_VBN ._.
+After_IN plac_NN
+ream_NN requests_NNS ._.
+Several_JJ movie_NN placement_NN and_CC video_NN stream_NN migration_NN policies_NNS have_VBP been_VBN studied_VBN ._.
+A_DT disk_NN load_NN balancing_VBG criterion_NN which_WDT combines_VBZ a_DT static_JJ component_NN and_CC a_DT dynamic_JJ component_NN is_VBZ described_VBN in_IN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT static_JJ component_NN decides_VBZ the_DT number_NN of_IN copies_NNS needed_VBN for_IN each_DT movie_NN by_IN first_RB solving_VBG an_DT apportionment_NN problem_NN and_CC then_RB solving_VBG the_DT problem_NN of_IN heuristically_RB assigning_VBG the_DT copies_NNS onto_IN storage_NN grou_NN
+es_VBZ an_DT algorithm_NN for_IN dynamically_RB shifting_VBG the_DT load_NN among_IN servers_NNS -LRB-_-LRB- i.e._FW migrating_JJ existing_VBG video_NN streams_NNS -RRB-_-RRB- ._.
+A_DT placement_NN algorithm_NN for_IN balancing_VBG the_DT load_NN and_CC storage_NN in_IN multimedia_NNS systems_NNS is_VBZ described_VBN in_IN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT algorithm_NN also_RB minimizes_VBZ the_DT blocking_VBG probability_NN of_IN new_JJ requests_NNS ._.
+In_IN the_DT area_NN of_IN parallel_NN and_CC grid_NN computing_NN ,_, several_JJ object_NN placement_NN strategies_NNS -LRB-_-LRB- or_CC ,_, meta-scheduling_JJ strategies_NNS -RRB-_-RRB- have_VBP been_VBN inve_JJ
+orithm_NN also_RB minimizes_VBZ the_DT blocking_VBG probability_NN of_IN new_JJ requests_NNS ._.
+In_IN the_DT area_NN of_IN parallel_NN and_CC grid_NN computing_NN ,_, several_JJ object_NN placement_NN strategies_NNS -LRB-_-LRB- or_CC ,_, meta-scheduling_JJ strategies_NNS -RRB-_-RRB- have_VBP been_VBN investigated_VBN =_JJ -_: =[_NN 19_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Communication_NN overhead_NN among_IN objects_NNS placed_VBN on_IN various_JJ machines_NNS in_IN a_DT heterogeneous_JJ distributed_VBN computing_NN environment_NN plays_VBZ an_DT important_JJ role_NN in_IN the_DT object_NN placement_NN strategy_NN ._.
+A_DT related_JJ problem_NN is_VBZ th_DT
+in_IN a_DT heterogeneous_JJ distributed_VBN computing_NN environment_NN plays_VBZ an_DT important_JJ role_NN in_IN the_DT object_NN placement_NN strategy_NN ._.
+A_DT related_JJ problem_NN is_VBZ that_DT of_IN replica_NN placement_NN in_IN adaptive_JJ content_NN distribution_NN networks_NNS =_JJ -_: =[_NN 21_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX the_DT problem_NN is_VBZ to_TO optimally_RB replicate_VB objects_NNS on_IN nodes_NNS with_IN finite_JJ storage_NN capacities_NNS so_IN that_IN clients_NNS fetching_VBG objects_NNS traverse_VB a_DT minimum_JJ average_JJ number_NN of_IN nodes_NNS in_IN such_PDT a_DT network_NN ._.
+The_DT problem_NN
+per_IN allows_VBZ multiple_JJ applications_NNS to_TO share_VB the_DT same_JJ server_NN thereby_RB achieving_VBG finer_JJ granularity_NN of_IN allocation_NN and_CC better_JJR utilization_NN of_IN resources_NNS compared_VBN to_TO dedicated-server_JJ approaches_NNS ._.
+Chandra_NNP et_FW al._FW =_SYM -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP argued_VBN that_IN such_JJ fine-grained_JJ resource_NN allocation_NN at_IN small_JJ time-scales_NNS can_MD lead_VB to_TO substantial_JJ multiplexing_JJ gains_NNS ._.
+The_DT problem_NN of_IN application_NN placement_NN in_IN a_DT shared_JJ cluster_NN of_IN servers_NNS has_VBZ been_VBN in_IN
+orithm_NN also_RB minimizes_VBZ the_DT blocking_VBG probability_NN of_IN new_JJ requests_NNS ._.
+In_IN the_DT area_NN of_IN parallel_NN and_CC grid_NN computing_NN ,_, several_JJ object_NN placement_NN strategies_NNS -LRB-_-LRB- or_CC ,_, meta-scheduling_JJ strategies_NNS -RRB-_-RRB- have_VBP been_VBN investigated_VBN =_JJ -_: =[_NN 19_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Communication_NN overhead_NN among_IN objects_NNS placed_VBN on_IN various_JJ machines_NNS in_IN a_DT heterogeneous_JJ distributed_VBN computing_NN environment_NN plays_VBZ an_DT important_JJ role_NN in_IN the_DT object_NN placement_NN strategy_NN ._.
+A_DT related_JJ problem_NN is_VBZ th_DT
+and_CC ._.
+In_IN the_DT case_NN of_IN web_NN applications_NNS ,_, typical_JJ examples_NNS for_IN load-dependent_JJ and_CC load-independent_JJ resources_NNS are_VBP CPU_NNP and_CC memory_NN ,_, respectively_RB ._.
+The_DT problem_NN of_IN application_NN placement_NN has_VBZ been_VBN studied_VBN before_IN =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- we_PRP have_VBP introduced_VBN a_DT placement_NN algorithm_NN that_WDT improves_VBZ on_IN the_DT prior_JJ art_NN in_IN several_JJ aspects_NNS ._.
+-LRB-_-LRB- 1_LS -RRB-_-RRB- It_PRP allows_VBZ multiple_JJ types_NNS of_IN resources_NNS to_TO be_VB managed_VBN ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- it_PRP aims_VBZ at_IN maximizing_VBG satisfied_JJ applic_NN
+has_VBZ been_VBN extensively_RB studied_VBN ._.
+A_DT popular_JJ approach_NN to_TO this_DT problem_NN relies_VBZ on_IN dynamic_JJ server_NN provisioning_VBG in_IN which_WDT full_JJ server_NN machines_NNS are_VBP allocated_VBN to_TO applications_NNS -LRB-_-LRB- and_CC provisioned_VBN for_IN them_PRP -RRB-_-RRB- as_IN needed_VBN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT approach_NN does_VBZ not_RB allow_VB applications_NNS to_TO overlap_VB on_IN nodes_NNS -LRB-_-LRB- unless_IN several_JJ applications_NNS are_VBP grouped_VBN and_CC managed_VBN as_IN one_CD -RRB-_-RRB- ._.
+The_DT solution_NN proposed_VBN in_IN this_DT paper_NN allows_VBZ multiple_JJ applications_NNS to_TO share_VB
+studied_VBN ,_, especially_RB distributed_VBN algorithms_NNS ._.
+Similar_JJ problems_NNS have_VBP been_VBN studied_VBN in_IN theoretical_JJ optimization_NN literature_NN ._.
+The_DT special_JJ case_NN of_IN our_PRP$ problem_NN with_IN uniform_JJ memory_NN requirements_NNS was_VBD studied_VBN in_IN =_JJ -_: =[_NN 22_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: where_WRB some_DT approximation_NN algorithms_NNS were_VBD suggested_VBN ._.
+Related_JJ optimization_NN problems_NNS include_VBP bin_NN packing_NN ,_, multiple_JJ knapsack_NN and_CC multi-dimensional_JJ knapsack_NN problems_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+6_CD ._.
+CONCLUSIONS_NNS AND_CC FUTURE_NNS WORK_VBP I_PRP
+-LRB-_-LRB- 5_LS -RRB-_-RRB- ∀_NN m_NN ∀_CD nRm_NN ,_, n_NN =_JJ false_JJ ⇒_NN Im_NN ,_, n_NN =_JJ 0_CD -LRB-_-LRB- 6_CD -RRB-_-RRB- ∀_FW mmanaged_FW m_NN =_JJ false_JJ ⇒_FW ∀_FW nIm_NN ,_, n_NN =_JJ I_PRP ∗_VBP m_NN ,_, n_NN The_DT optimization_NN problem_NN solved_VBN by_IN the_DT Placement_NNP Controller_NNP is_VBZ a_DT variant_NN of_IN the_DT Class_NNP Constrained_NNP Multiple-Knapsack_NNP Problem_NNP =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- CCMKP_NN -RRB-_-RRB- and_CC differs_VBZ from_IN prior_JJ formulations_NNS of_IN this_DT problem_NN mainly_RB in_IN that_IN it_PRP also_RB minimizes_VBZ placement_NN changes_NNS ._.
+Since_IN this_DT problem_NN is_VBZ NP-hard_JJ ,_, the_DT Placement_NNP Controller_NNP adopts_VBZ a_DT heuristic_NN ,_, which_WDT is_VBZ pr_NN
+or_CC work_NN on_IN this_DT subject_NN ._.
+2_CD ._.
+SYSTEM_NNP DESCRIPTION_NNP We_PRP have_VBP implemented_VBN the_DT placement_NN controller_NN presented_VBN in_IN this_DT paper_NN as_IN a_DT part_NN of_IN middleware_JJ technology_NN for_IN managing_VBG the_DT performance_NN of_IN web_NN applications_NNS =_JJ -_: =[_NN 6_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Web_NN applications_NNS handle_VBP web_NN requests_NNS and_CC generate_VB static_JJ or_CC dynamic_JJ web_NN content_NN ._.
+In_IN the_DT case_NN of_IN J2EE_NN ,_, runtime_NN components_NNS of_IN web_NN applications_NNS include_VBP HTTP_NN servers_NNS ,_, servlet_NN engines_NNS ,_, Enterprise_NNP Java_NNP Be_VB
+and_CC ._.
+In_IN the_DT case_NN of_IN web_NN applications_NNS ,_, typical_JJ examples_NNS for_IN load-dependent_JJ and_CC load-independent_JJ resources_NNS are_VBP CPU_NNP and_CC memory_NN ,_, respectively_RB ._.
+The_DT problem_NN of_IN application_NN placement_NN has_VBZ been_VBN studied_VBN before_IN =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- we_PRP have_VBP introduced_VBN a_DT placement_NN algorithm_NN that_WDT improves_VBZ on_IN the_DT prior_JJ art_NN in_IN several_JJ aspects_NNS ._.
+-LRB-_-LRB- 1_LS -RRB-_-RRB- It_PRP allows_VBZ multiple_JJ types_NNS of_IN resources_NNS to_TO be_VB managed_VBN ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- it_PRP aims_VBZ at_IN maximizing_VBG satisfied_JJ applic_NN
+of_IN web_NN applications_NNS ,_, typical_JJ examples_NNS for_IN load-dependent_JJ and_CC load-independent_JJ resources_NNS are_VBP CPU_NNP and_CC memory_NN ,_, respectively_RB ._.
+The_DT problem_NN of_IN application_NN placement_NN has_VBZ been_VBN studied_VBN before_IN -LRB-_-LRB- 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD -RRB-_-RRB- ._.
+In_IN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: we_PRP have_VBP introduced_VBN a_DT placement_NN algorithm_NN that_WDT improves_VBZ on_IN the_DT prior_JJ art_NN in_IN several_JJ aspects_NNS ._.
+-LRB-_-LRB- 1_LS -RRB-_-RRB- It_PRP allows_VBZ multiple_JJ types_NNS of_IN resources_NNS to_TO be_VB managed_VBN ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- it_PRP aims_VBZ at_IN maximizing_VBG satisfied_JJ application_NN de_IN
+and_CC ._.
+In_IN the_DT case_NN of_IN web_NN applications_NNS ,_, typical_JJ examples_NNS for_IN load-dependent_JJ and_CC load-independent_JJ resources_NNS are_VBP CPU_NNP and_CC memory_NN ,_, respectively_RB ._.
+The_DT problem_NN of_IN application_NN placement_NN has_VBZ been_VBN studied_VBN before_IN =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- we_PRP have_VBP introduced_VBN a_DT placement_NN algorithm_NN that_WDT improves_VBZ on_IN the_DT prior_JJ art_NN in_IN several_JJ aspects_NNS ._.
+-LRB-_-LRB- 1_LS -RRB-_-RRB- It_PRP allows_VBZ multiple_JJ types_NNS of_IN resources_NNS to_TO be_VB managed_VBN ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- it_PRP aims_VBZ at_IN maximizing_VBG satisfied_JJ applic_NN
+ightforward_VBN to_TO linearize_VB ._.
+Once_RB the_DT most_RBS balanced_JJ distribution_NN is_VBZ known_VBN ,_, we_PRP must_MD measure_VB the_DT amount_NN of_IN inequality_NN in_IN the_DT distribution_NN ._.
+As_IN a_DT good_JJ candidate_NN of_IN such_PDT a_DT measure_NN ,_, we_PRP consider_VBP the_DT Gini_NNP index_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- Gini_NNP -RRB-_-RRB- ,_, which_WDT is_VBZ defined_VBN as_IN a_DT ratio_NN of_IN the_DT area_NN between_IN the_DT line_NN of_IN perfect_JJ -LRB-_-LRB- uniform_JJ -RRB-_-RRB- distribution_NN -LRB-_-LRB- 45_CD degree_NN line_NN -RRB-_-RRB- and_CC the_DT Lorenz_NNP curve_NN of_IN the_DT actual_JJ distribution_NN to_TO the_DT total_JJ area_NN below_IN the_DT 45-degr_NN
+studied_VBN ,_, especially_RB distributed_VBN algorithms_NNS ._.
+Similar_JJ problems_NNS have_VBP been_VBN studied_VBN in_IN theoretical_JJ optimization_NN literature_NN ._.
+The_DT special_JJ case_NN of_IN our_PRP$ problem_NN with_IN uniform_JJ memory_NN requirements_NNS was_VBD studied_VBN in_IN =_JJ -_: =[_NN 22_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: where_WRB some_DT approximation_NN algorithms_NNS were_VBD suggested_VBN ._.
+Related_JJ optimization_NN problems_NNS include_VBP bin_NN packing_NN ,_, multiple_JJ knapsack_NN and_CC multi-dimensional_JJ knapsack_NN problems_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+6_CD ._.
+CONCLUSIONS_NNS AND_CC FUTURE_NNS WORK_VBP I_PRP
+y_NN requirements_NNS was_VBD studied_VBN in_IN -LRB-_-LRB- 22_CD ,_, 23_CD -RRB-_-RRB- where_WRB some_DT approximation_NN algorithms_NNS were_VBD suggested_VBN ._.
+Related_JJ optimization_NN problems_NNS include_VBP bin_NN packing_NN ,_, multiple_JJ knapsack_NN and_CC multi-dimensional_JJ knapsack_NN problems_NNS =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+6_CD ._.
+CONCLUSIONS_NNS AND_CC FUTURE_NNS WORK_VBP In_IN this_DT paper_NN ,_, we_PRP propose_VBP the_DT design_NN of_IN and_CC evaluate_VB a_DT middleware_JJ clustering_NN technology_NN capable_JJ of_IN dynamically_RB allocating_VBG resources_NNS to_TO web_NN applications_NNS through_IN dynamic_NN
+and_CC ._.
+In_IN the_DT case_NN of_IN web_NN applications_NNS ,_, typical_JJ examples_NNS for_IN load-dependent_JJ and_CC load-independent_JJ resources_NNS are_VBP CPU_NNP and_CC memory_NN ,_, respectively_RB ._.
+The_DT problem_NN of_IN application_NN placement_NN has_VBZ been_VBN studied_VBN before_IN =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- we_PRP have_VBP introduced_VBN a_DT placement_NN algorithm_NN that_WDT improves_VBZ on_IN the_DT prior_JJ art_NN in_IN several_JJ aspects_NNS ._.
+-LRB-_-LRB- 1_LS -RRB-_-RRB- It_PRP allows_VBZ multiple_JJ types_NNS of_IN resources_NNS to_TO be_VB managed_VBN ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- it_PRP aims_VBZ at_IN maximizing_VBG satisfied_JJ applic_NN
+d_NN characteristics_NNS observed_VBN at_IN the_DT request_NN router_NN while_IN taking_VBG into_IN account_NN the_DT control_JJ logic_NN of_IN the_DT request_NN router_NN ._.
+In_IN fact_NN ,_, a_DT request_NN router_NN provided_VBN by_IN our_PRP$ system_NN implements_VBZ SLA_NNP driven_JJ flow_NN control_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP use_VBP workload_NN observations_NNS at_IN the_DT router_NN and_CC its_PRP$ optimization_NN algorithm_NN to_TO estimate_VB application_NN throughput_NN that_WDT must_MD be_VB delivered_VBN by_IN the_DT system_NN to_TO maximize_VB the_DT overall_JJ system_NN utility_NN score_NN ._.
+Corres_NNS
+ies_NNS constraints_NNS expressed_VBN by_IN Eqns_NNS ._.
+-LRB-_-LRB- 2_LS -RRB-_-RRB- -_: -LRB-_-LRB- 5_CD -RRB-_-RRB- -LRB-_-LRB- function_NN canSolve_NN in_IN Figure_NNP 3_CD -RRB-_-RRB- ._.
+This_DT test_NN forms_VBZ a_DT familiar_JJ linear-programming_JJ problem_NN ,_, for_IN which_WDT a_DT number_NN of_IN efficient_JJ solutions_NNS may_MD be_VB found_VBN in_IN literature_NN =_JJ -_: =[_NN 12_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+If_IN the_DT current_JJ placement_NN can_MD serve_VB the_DT new_JJ demand_NN ,_, after_IN waiting_VBG δt_NN ,_, the_DT Placement_NNP Controller_NNP proceeds_NNS to_TO the_DT next_JJ control_NN cycle_NN ._.
+Otherwise_RB ,_, the_DT new_JJ placement_NN is_VBZ computed_VBN and_CC implemented_VBN ._.
+After_IN plac_NN

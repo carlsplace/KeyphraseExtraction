@@ -1,0 +1,107 @@
+Cross_NN domain_NN distribution_NN adaptation_NN via_IN kernel_NN mapping_NN
+When_WRB labeled_VBN examples_NNS are_VBP limited_JJ and_CC difficult_JJ to_TO obtain_VB ,_, transfer_NN learning_NN employs_VBZ knowledge_NN from_IN a_DT source_NN domain_NN to_TO improve_VB learning_VBG accuracy_NN in_IN the_DT target_NN domain_NN ._.
+However_RB ,_, the_DT assumption_NN made_VBN by_IN existing_VBG approaches_NNS ,_, that_IN the_DT marginal_JJ and_CC conditional_JJ probabilities_NNS are_VBP directly_RB related_JJ between_IN source_NN and_CC target_NN domains_NNS ,_, has_VBZ limited_VBN applicability_NN in_IN either_CC the_DT original_JJ space_NN or_CC its_PRP$ linear_JJ transformations_NNS ._.
+To_TO solve_VB this_DT problem_NN ,_, we_PRP propose_VBP an_DT adaptive_JJ kernel_NN approach_NN that_WDT maps_VBZ the_DT marginal_JJ distribution_NN of_IN target-domain_JJ and_CC source-domain_JJ data_NNS into_IN a_DT common_JJ kernel_NN space_NN ,_, and_CC utilize_VB a_DT sample_NN selection_NN strategy_NN to_TO draw_VB conditional_JJ probabilities_NNS between_IN the_DT two_CD domains_NNS closer_RB ._.
+We_PRP formally_RB show_VBP that_IN under_IN the_DT kernel-mapping_JJ space_NN ,_, the_DT difference_NN in_IN distributions_NNS between_IN the_DT two_CD domains_NNS is_VBZ bounded_VBN ;_: and_CC the_DT prediction_NN error_NN of_IN the_DT proposed_VBN approach_NN can_MD also_RB be_VB bounded_VBN ._.
+Experimental_JJ results_NNS demonstrate_VBP that_IN the_DT proposed_VBN method_NN outperforms_VBZ both_CC traditional_JJ inductive_JJ classifiers_NNS and_CC the_DT state-of-the-art_JJ boosting-based_JJ transfer_NN algorithms_NNS on_IN most_JJS domains_NNS ,_, including_VBG text_NN categorization_NN and_CC web_NN page_NN ratings_NNS ._.
+In_IN particular_JJ ,_, it_PRP can_MD achieve_VB around_IN 10_CD %_NN higher_JJR accuracy_NN than_IN other_JJ approaches_NNS for_IN the_DT text_NN categorization_NN problem_NN ._.
+The_DT source_NN code_NN and_CC datasets_NNS are_VBP available_JJ from_IN the_DT authors_NNS ._.
+l_NN Mean_NN Matching_NN -LRB-_-LRB- KMM_NN -RRB-_-RRB- to_TO diminish_VB the_DT difference_NN of_IN the_DT mean_NN of_IN samples_NNS in_IN RKHS_NN between_IN the_DT two_CD domains_NNS by_IN re-weighing_VBG the_DT samples_NNS in_IN the_DT source_NN domain_NN using_VBG the_DT MMD_NNP criterion_NN ._.
+Recently_RB ,_, Zhong_NNP et_FW al._FW =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: utilized_VBD the_DT Kernel_NNP Discriminative_NNP Analysis_NNP -LRB-_-LRB- KDA_NNP -RRB-_-RRB- to_TO make_VB the_DT marginal_JJ distributions_NNS from_IN two_CD domains_NNS closer_RB by_IN reweighing_VBG labeled_JJ data_NNS in_IN the_DT source_NN domain_NN for_IN training_NN ._.
+All_PDT the_DT above_JJ approaches_NNS onl_VBP
+the_DT kernel_NN matrix_NN computed_VBN for_IN all_DT feature-vectors_NNS -LRB-_-LRB- instances_NNS -RRB-_-RRB- in_IN the_DT source_NN or_CC target_NN domain_NN ,_, and_CC is_VBZ the_DT only_JJ parameter_NN to_TO be_VB determined_VBN ._.
+Our_PRP$ approach_NN is_VBZ similar_JJ to_TO the_DT one_NN proposed_VBN by_IN Zhong_NNP et_FW al_FW =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: but_CC unlike_IN their_PRP$ approach_NN ,_, we_PRP do_VBP not_RB use_VB the_DT bisecting_NN means_VBZ algorithm_NN to_TO correct_VB the_DT posterior_JJ distributions_NNS after_IN mapping_NN ._.
+This_DT is_VBZ expected_VBN to_TO be_VB true_JJ according_VBG to_TO our_PRP$ approach_NN ._.
+In_IN our_PRP$ problem_NN ,_,
+input_NN space_NN into_IN a_DT convenient_JJ feature_NN space_NN where_WRB a_DT linear_JJ boundary_NN can_MD be_VB easily_RB found_VBN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Importantly_RB ,_, this_DT also_RB sheds_VBZ light_NN on_IN transfer_NN learning_NN ._.
+First_RB ,_, a_DT suitable_JJ kernel_NN ,_, such_JJ as_IN Gaussian_JJ kernel_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, can_MD make_VB different_JJ input_NN data_NNS form_VBP similar_JJ marginal_JJ distribution_NN in_IN the_DT kernel_NN space_NN ._.
+Second_JJ ,_, in_IN the_DT kernel_NN space_NN ,_, some_DT examples_NNS have_VBP very_RB similar_JJ conditional_JJ probabilities_NNS and_CC can_MD be_VB used_VBN to_TO constr_VB
+nal_JJ space_NN to_TO RKHS_NN ._.
+We_PRP use_VBP the_DT inner_JJ product_NN to_TO avoid_VB explicit_JJ mapping_NN ,_, κ_NN -LRB-_-LRB- xi_NN ,_, x_NN j_NN -RRB-_-RRB- =_JJ -LRB-_-LRB- φ_NN -LRB-_-LRB- xi_NN -RRB-_-RRB- ·_FW φ_FW -LRB-_-LRB- x_NN j_NN -RRB-_-RRB- -RRB-_-RRB- ._.
+Then_RB ,_, a_DT kernel_NN matrix_NN can_MD be_VB formed_VBN as_IN K_NN ,_, Kij_NN =_JJ φ_NN -LRB-_-LRB- xi_NN -RRB-_-RRB- φ_NN -LRB-_-LRB- x_NN j_NN -RRB-_-RRB- ._.
+According_VBG to_TO the_DT Representer_NNP Theorem_NNP =_SYM -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, let_VB xij_NN is_VBZ the_DT jth_NN instance_NN of_IN class_NN i_FW and_CC then_RB any_DT solution_NN φ_NN -LRB-_-LRB- v_LS -RRB-_-RRB- ∈_NN F_NN can_MD be_VB presented_VBN as_IN :_: ∑_FW NC_FW ∑_FW ℓi_FW -LRB-_-LRB- 4_LS -RRB-_-RRB- φ_NN -LRB-_-LRB- v_LS -RRB-_-RRB- =_JJ αijφ_NN -LRB-_-LRB- xij_NN -RRB-_-RRB- i_LS =_JJ 1_CD j_NN =_JJ 1_CD where_WRB αij_NN is_VBZ the_DT jth_NN component_NN in_IN αi_NN =_JJ -LCB-_-LRB- αi1_NN ,_, ..._: ,_, αiℓi_NNS -RCB-_-RRB- ,_, which_WDT is_VBZ the_DT coe_NN
+that_WDT minimizes_VBZ S_NN -LRB-_-LRB- μ_NN -RRB-_-RRB- +_CC A_NN -LRB-_-LRB- μ_NN -RRB-_-RRB- ._.
+A_DT -LRB-_-LRB- μ_NN -RRB-_-RRB- represents_VBZ the_DT approximation_NN error_NN ,_, and_CC S_NN -LRB-_-LRB- μ_NN -RRB-_-RRB- represents_VBZ the_DT sample_NN error_NN ._.
+They_PRP correspond_VBP to_TO classic_JJ bias_NN and_CC variance_NN tradeoff_NN ._.
+The_DT detail_NN of_IN the_DT proof_NN can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT kernelized_VBN version_NN of_IN the_DT theorem_NN can_MD be_VB similarly_RB derived_VBN ._.
+3.2_CD Bounding_NNP Distributions_NNPS First_NNP ,_, we_PRP will_MD show_VB that_IN under_IN some_DT suitable_JJ conditions_NNS ,_, the_DT data_NNS in_IN a_DT Gaussian_JJ RKHS_NN induced_VBN by_IN a_DT kernel_NN fu_NN
+jection_NN as_IN :_: -LRB-_-LRB- 8_CD -RRB-_-RRB- vφ_NN -LRB-_-LRB- z_SYM -RRB-_-RRB- =_JJ NC_NN ∑_FW ∑_FW ℓi_FW i_FW =_JJ 1_CD j_NN =_JJ 1_CD αijκ_NN -LRB-_-LRB- xij_NN ,_, z_SYM -RRB-_-RRB- where_WRB xij_NN is_VBZ the_DT jth_NN instance_NN of_IN class_NN i._NN In_IN this_DT paper_NN ,_, we_PRP use_VBP the_DT Gaussian_JJ kernel_NN and_CC set_VB the_DT kernel-width_NN using_VBG a_DT heuristic_NN strategy_NN defined_VBN in_IN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN Section_NN 3_CD ,_, we_PRP discuss_VBP how_WRB the_DT difference_NN in_IN marginal_JJ distribution_NN between_IN target-domain_NN and_CC source-domain_NN is_VBZ bounded_VBN by_IN the_DT kernel_NN mapping_NN process_NN ._.
+2.2_CD Cluster-based_JJ Example_NN Selection_NN KDA_NN ,_, as_IN des_FW
+ditionals_NNS rs_NNS -LRB-_-LRB- y_FW |_FW x_LS -RRB-_-RRB- andrt_NN -LRB-_-LRB- y_NN |_CD x_NN -RRB-_-RRB- are_VBP not_RB completely_RB different_JJ ,_, rather_RB they_PRP are_VBP related_VBN ._.
+We_PRP then_RB state_VBP that_IN these_DT similar_JJ data_NNS can_MD be_VB exploited_VBN for_IN transfer_NN learning_NN under_IN the_DT ``_`` cluster-manifold_JJ ''_'' assumption_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Theorem_NN 3_CD provides_VBZ an_DT error_NN bound_VBN for_IN the_DT proposed_VBN transfer_NN learning_NN algorithm_NN ._.
+Based_VBN on_IN the_DT bound_VBN ,_, we_PRP show_VBP which_WDT situations_NNS can_MD not_RB be_VB handled_VBN by_IN the_DT proposed_VBN approach_NN ._.
+Finally_RB ,_, Theorem_NN 4_CD shows_VBZ the_DT
+plied_VBN here_RB ._.
+On_IN the_DT other_JJ hand_NN ,_, the_DT superior_JJ performance_NN of_IN KMapEnsemble_NN over_IN KMapWeighted_VBN on_IN all_DT of_IN the_DT 9_CD scenarios_NNS could_MD be_VB due_JJ to_TO the_DT effectiveness_NN of_IN model_NN averaging_NN over_IN boosting_VBG ._.
+Please_VB refer_VB to_TO =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: for_IN related_JJ discussion_NN ._.
+4.3_CD Sensitivity_NN Study_NN As_IN shown_VBN in_IN Section_NN 2_CD ,_, several_JJ inputs_NNS need_VBP to_TO be_VB specified_VBN before_IN the_DT execution_NN of_IN KMapEnsemble_NN ._.
+Among_IN those_DT parameters_NNS ,_, different_JJ numbers_NNS of_IN iterations_NNS
+ferent_JJ number_NN of_IN iterations_NNS ,_, and_CC varied_JJ sizes_NNS of_IN labeled_JJ target-domain_JJ data_NNS ._.
+4.1_CD Data_NNP Set_NNP and_CC Experiment_NNP Setting_NNP As_IN summarized_VBN in_IN Table_NNP 2_CD ,_, the_DT data_NNS collections_NNS involved_VBN in_IN our_PRP$ study_NN are_VBP Reuters-21578_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, 20-Newsgroups_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC SyskillWebert_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Among_IN them_PRP ,_, Reuters-21578_NN and_CC 20-Newsgroups_NNS are_VBP the_DT benchmarks_NNS of_IN text_NN categorization_NN ,_, and_CC SyskillWebert_NNP is_VBZ the_DT standard_NN used_VBN to_TO test_VB web_NN page_NN ratings_NNS ._.
+The_DT i_LS
+esolve_NN and_CC ,_, in_IN the_DT same_JJ time_NN ,_, take_VB advantage_NN of_IN the_DT difference_NN between_IN two_CD domains_NNS ._.
+Several_JJ methods_NNS use_VBP instance_NN weighting_NN or_CC to_TO increase_VB the_DT weights_NNS of_IN similar_JJ instances_NNS and_CC reduce_VB those_DT dissimilar_JJ -LRB-_-LRB- =_JJ -_: =[_NN 5_CD ,_, 8_CD ,_, 11_CD ,_, 16_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+For_IN example_NN ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- adopts_VBZ the_DT boosting_VBG weight_NN formula_NN as_IN the_DT reweighting_NN scheme_NN ._.
+Many_JJ others_NNS approaches_VBZ attempt_NN to_TO change_VB the_DT representation_NN of_IN instances_NNS through_IN mapping_VBG them_PRP into_IN other_JJ spaces_NNS where_WRB
+on_IN ,_, such_JJ as_IN the_DT kernel_NN manipulation_NN ,_, can_MD make_VB these_DT assumptions_NNS plausible_JJ ._.
+A_DT suitable_JJ kernel_NN is_VBZ able_JJ to_TO map_VB the_DT input_NN space_NN into_IN a_DT convenient_JJ feature_NN space_NN where_WRB a_DT linear_JJ boundary_NN can_MD be_VB easily_RB found_VBN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Importantly_RB ,_, this_DT also_RB sheds_VBZ light_NN on_IN transfer_NN learning_NN ._.
+First_RB ,_, a_DT suitable_JJ kernel_NN ,_, such_JJ as_IN Gaussian_JJ kernel_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, can_MD make_VB different_JJ input_NN data_NNS form_VBP similar_JJ marginal_JJ distribution_NN in_IN the_DT kernel_NN space_NN ._.
+ated_VBD earlier_RBR ,_, we_PRP pool_VBP the_DT labeled_JJ target_NN and_CC source_NN domain_NN data_NNS to_TO perform_VB KDA_NN and_CC train_NN classifiers_NNS ._.
+The_DT following_JJ analysis_NN establishes_VBZ the_DT error_NN bound_VBD for_IN discriminant_JJ analysis_NN ,_, which_WDT is_VBZ similar_JJ to_TO =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Based_VBN on_IN the_DT notations_NNS described_VBN in_IN Section_NN 2_CD ,_, let_VB us_PRP consider_VB the_DT target_NN mapping_NN function_NN f_FW ∗_FW :_: -LRB-_-LRB- 12_CD -RRB-_-RRB- f_FW ∗_FW =_JJ arg_NN min_NN f_SYM 1_CD ℓ_NN ℓ_NN ∑_NN -LRB-_-LRB- yi_FW −_FW f_FW -LRB-_-LRB- i_LS -RRB-_-RRB- -RRB-_-RRB- 2_CD Assume_VB for_IN the_DT moment_NN that_IN our_PRP$ hypothesis_NN space_NN is_VBZ linear_JJ ._.
+and_CC test_NN data_NNS must_MD follow_VB the_DT same_JJ -LRB-_-LRB- but_CC unknown_JJ -RRB-_-RRB- distribution_NN ._.
+The_DT difference_NN between_IN training_NN and_CC test_NN distributions_NNS can_MD be_VB classified_VBN into_IN two_CD types_NNS :_: covariate_NN shift_NN and_CC functional_JJ relation_NN change_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Covariate_JJ shift_NN is_VBZ related_JJ to_TO the_DT marginal_JJ distribution_NN q_NN -LRB-_-LRB- x_NN -RRB-_-RRB- ,_, while_IN functional_JJ relation_NN is_VBZ related_JJ to_TO the_DT conditional_JJ probability_NN r_NN -LRB-_-LRB- y_NN |_CD x_NN -RRB-_-RRB- ._.
+Our_PRP$ approach_NN to_TO dealing_VBG with_IN this_DT problem_NN is_VBZ as_IN follows_VBZ ._.
+The_DT
+ht_NN formula_NN as_IN the_DT reweighting_NN scheme_NN ._.
+Many_JJ others_NNS approaches_VBZ attempt_NN to_TO change_VB the_DT representation_NN of_IN instances_NNS through_IN mapping_VBG them_PRP into_IN other_JJ spaces_NNS where_WRB the_DT data_NNS from_IN two_CD domains_NNS are_VBP similar_JJ -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 18_CD ,_, 20_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Most_RBS recently_RB ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- proposes_VBZ a_DT locally_RB weighted_JJ ensemble_NN framework_NN to_TO combine_VB multiple_JJ models_NNS for_IN transfer_NN learning_NN by_IN dynamically_RB assigning_VBG weights_NNS of_IN a_DT model_NN according_VBG to_TO a_DT model_NN 's_POS predictive_JJ pow_NN
+esolve_NN and_CC ,_, in_IN the_DT same_JJ time_NN ,_, take_VB advantage_NN of_IN the_DT difference_NN between_IN two_CD domains_NNS ._.
+Several_JJ methods_NNS use_VBP instance_NN weighting_NN or_CC to_TO increase_VB the_DT weights_NNS of_IN similar_JJ instances_NNS and_CC reduce_VB those_DT dissimilar_JJ -LRB-_-LRB- =_JJ -_: =[_NN 5_CD ,_, 8_CD ,_, 11_CD ,_, 16_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+For_IN example_NN ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- adopts_VBZ the_DT boosting_VBG weight_NN formula_NN as_IN the_DT reweighting_NN scheme_NN ._.
+Many_JJ others_NNS approaches_VBZ attempt_NN to_TO change_VB the_DT representation_NN of_IN instances_NNS through_IN mapping_VBG them_PRP into_IN other_JJ spaces_NNS where_WRB
+The_DT above_JJ assumptions_NNS allow_VBP us_PRP to_TO state_NN that_IN the_DT difference_NN between_IN the_DT source_NN and_CC target_NN domain_NN distributions_NNS can_MD be_VB attributed_VBN to_TO co-variate_JJ shift_NN ._.
+3.3_CD Error_NN Bound_VBN for_IN Domain_NN Transfer_NN According_VBG to_TO =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, if_IN the_DT difference_NN between_IN the_DT two_CD distributions_NNS can_MD be_VB bounded_VBN ,_, the_DT generalization_NN error_NN can_MD also_RB be_VB bounded_VBN when_WRB we_PRP combine_VBP the_DT labeled_JJ data_NNS from_IN the_DT target-domain_NN and_CC sourcedomain_NN to_TO predict_VB the_DT u_NN
+d_NN avoid_VB their_PRP$ individual_JJ bias_NN ,_, we_PRP combine_VBP their_PRP$ predictions_NNS with_IN simple_JJ model_NN averaging_NN ._.
+KMapWeighted_VBN takes_VBZ advantage_NN of_IN a_DT re-weighting_JJ scheme_NN to_TO use_VB source-domain_JJ data_NNS ,_, similar_JJ to_TO that_DT of_IN TrAdaboost_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP first_RB employs_VBZ KDA_NNP to_TO obtain_VB a_DT new_JJ mapping_NN feature_NN space_NN ,_, and_CC then_RB adopts_VBZ a_DT weighting_NN scheme_NN based_VBN on_IN training_NN error_NN to_TO control_VB the_DT impacts_NNS of_IN source-domain_JJ data_NNS ._.
+Weights_NNS for_IN wrongly_RB predicted_VBN sou_NN
+erations_NNS ,_, and_CC varied_JJ sizes_NNS of_IN labeled_JJ target-domain_JJ data_NNS ._.
+4.1_CD Data_NNP Set_NNP and_CC Experiment_NNP Setting_NNP As_IN summarized_VBN in_IN Table_NNP 2_CD ,_, the_DT data_NNS collections_NNS involved_VBN in_IN our_PRP$ study_NN are_VBP Reuters-21578_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, 20-Newsgroups_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: and_CC SyskillWebert_NNP -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Among_IN them_PRP ,_, Reuters-21578_NN and_CC 20-Newsgroups_NNS are_VBP the_DT benchmarks_NNS of_IN text_NN categorization_NN ,_, and_CC SyskillWebert_NNP is_VBZ the_DT standard_NN used_VBN to_TO test_VB web_NN page_NN ratings_NNS ._.
+The_DT important_JJ statistics_NNS
+hose_NN source-domain_JJ data_NNS whose_WP$ conditional_JJ probability_NN is_VBZ similar_JJ to_TO target-domain_NN ._.
+To_TO achieve_VB this_DT ,_, we_PRP introduce_VBP a_DT cluster_NN method_NN ,_, Bisecting_VBG K-means_NNS ,_, with_IN a_DT self-adapting_JJ modification_NN as_IN adopted_VBN from_IN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP propose_VBP two_CD criteria_NNS to_TO control_VB self-adapting_JJ cluster_NN process_NN ._.
+If_IN the_DT sum_NN of_IN squared_VBN error_NN of_IN two_CD sub-clusters_NNS is_VBZ smaller_JJR than_IN that_DT of_IN the_DT whole_JJ cluster_NN ,_, then_RB the_DT cluster_NN is_VBZ to_TO be_VB splitted_VBN into_IN t_NN
+number_NN of_IN labeled_JJ data_NNS ._.
+That_DT is_VBZ ,_, we_PRP obtain_VBP ℓ_NN =_JJ βm_FW labeled_VBN data_NNS from_IN the_DT target-domain_NN and_CC o_NN =_JJ -LRB-_-LRB- 1_CD −_FW β_FW -RRB-_-RRB- m_NN from_IN the_DT source-domain_NN independently_RB ._.
+Consider_VB the_DT ideal_JJ labeling_NN function_NN f_FW ∗_FW :_: X_NN →_NN Y_NN ,_, whereY_NN =_JJ =_JJ -_: =[_NN 0_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN a_DT hypothesis_NN h_NN :_: X_NN →_NN Y_NN ,_, the_DT probability_NN of_IN h_NN disagreeing_VBG with_IN f_FW ∗_FW according_VBG to_TO the_DT target_NN domain_NN distribution_NN qt_NN -LRB-_-LRB- x_NN -RRB-_-RRB- can_MD be_VB defined_VBN as_IN -LRB-_-LRB- 20_CD -RRB-_-RRB- ɛt_NN -LRB-_-LRB- h_NN ,_, f_FW ∗_FW -RRB-_-RRB- =_JJ Ex_FW ∼_FW qt_FW -LRB-_-LRB- x_NN -RRB-_-RRB- -LRB-_-LRB- |_CD h_NN -LRB-_-LRB- x_NN -RRB-_-RRB- −_FW f_FW ∗_NN -LRB-_-LRB- x_NN -RRB-_-RRB- |_CD -RRB-_-RRB- ._.
+This_DT is_VBZ also_RB
+where_WRB Pt_NN -LRB-_-LRB- x_NN ,_, y_NN -RRB-_-RRB- and_CC Ps_NN -LRB-_-LRB- x_NN ,_, y_NN -RRB-_-RRB- are_VBP similar_JJ and_CC knowledge_NN can_MD be_VB transferred_VBN ._.
+Much_JJ work_NN has_VBZ been_VBN proposed_VBN to_TO solve_VB transfer_NN learning_NN problem_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+By_IN definition_NN ,_, P_NN -LRB-_-LRB- x_NN ,_, y_NN -RRB-_-RRB- =_JJ r_NN -LRB-_-LRB- y_NN |_CD x_NN -RRB-_-RRB- q_NN -LRB-_-LRB- x_NN -RRB-_-RRB- ._.
+Some_DT work_NN ,_, such_JJ as_IN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, assumes_VBZ that_IN conditional_JJ probabilities_NNS rt_NN -LRB-_-LRB- y_NN |_CD x_NN -RRB-_-RRB- andrs_NNS -LRB-_-LRB- y_FW |_FW x_LS -RRB-_-RRB- aresimilar_NN in_IN regions_NNS of_IN the_DT latent_JJ space_NN where_WRB marginal_JJ distribution_NN qt_NN -LRB-_-LRB- x_NN -RRB-_-RRB- and_CC qs_NN -LRB-_-LRB- x_NN -RRB-_-RRB- of_IN corresponding_JJ examples_NNS are_VBP close_JJ ._.
+Other_JJ works_NNS ,_, such_JJ
+oposes_VBZ a_DT locally_RB weighted_JJ ensemble_NN framework_NN to_TO combine_VB multiple_JJ models_NNS for_IN transfer_NN learning_NN by_IN dynamically_RB assigning_VBG weights_NNS of_IN a_DT model_NN according_VBG to_TO a_DT model_NN 's_POS predictive_JJ power_NN on_IN each_DT test_NN example_NN ._.
+=_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: uses_VBZ a_DT set_NN of_IN predefined_JJ kernels_NNS to_TO find_VB a_DT suitable_JJ kernel_NN for_IN the_DT new_JJ data_NNS ._.
+-LRB-_-LRB- 20_CD -RRB-_-RRB- improves_VBZ the_DT effectiveness_NN of_IN unsupervised_JJ dimension_NN reduction_NN with_IN the_DT help_NN of_IN related_JJ prior_JJ knowledge_NN from_IN other_JJ cl_NN
+ns_FW in_FW P_NN -LRB-_-LRB- x_NN ,_, y_NN -RRB-_-RRB- ,_, either_CC in_IN original_JJ space_NN or_CC its_PRP$ transformation_NN ,_, where_WRB Pt_NN -LRB-_-LRB- x_NN ,_, y_NN -RRB-_-RRB- and_CC Ps_NN -LRB-_-LRB- x_NN ,_, y_NN -RRB-_-RRB- are_VBP similar_JJ and_CC knowledge_NN can_MD be_VB transferred_VBN ._.
+Much_JJ work_NN has_VBZ been_VBN proposed_VBN to_TO solve_VB transfer_NN learning_NN problem_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+By_IN definition_NN ,_, P_NN -LRB-_-LRB- x_NN ,_, y_NN -RRB-_-RRB- =_JJ r_NN -LRB-_-LRB- y_NN |_CD x_NN -RRB-_-RRB- q_NN -LRB-_-LRB- x_NN -RRB-_-RRB- ._.
+Some_DT work_NN ,_, such_JJ as_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, assumes_VBZ that_IN conditional_JJ probabilities_NNS rt_NN -LRB-_-LRB- y_NN |_CD x_NN -RRB-_-RRB- andrs_NNS -LRB-_-LRB- y_FW |_FW x_LS -RRB-_-RRB- aresimilar_NN in_IN regions_NNS of_IN the_DT latent_JJ space_NN where_WRB marginal_JJ distribution_NN qt_NN -LRB-_-LRB- x_NN -RRB-_-RRB- an_DT
+ht_NN formula_NN as_IN the_DT reweighting_NN scheme_NN ._.
+Many_JJ others_NNS approaches_VBZ attempt_NN to_TO change_VB the_DT representation_NN of_IN instances_NNS through_IN mapping_VBG them_PRP into_IN other_JJ spaces_NNS where_WRB the_DT data_NNS from_IN two_CD domains_NNS are_VBP similar_JJ -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 18_CD ,_, 20_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Most_RBS recently_RB ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- proposes_VBZ a_DT locally_RB weighted_JJ ensemble_NN framework_NN to_TO combine_VB multiple_JJ models_NNS for_IN transfer_NN learning_NN by_IN dynamically_RB assigning_VBG weights_NNS of_IN a_DT model_NN according_VBG to_TO a_DT model_NN 's_POS predictive_JJ pow_NN
+sumes_NNS that_IN conditional_JJ probabilities_NNS rt_NN -LRB-_-LRB- y_NN |_CD x_NN -RRB-_-RRB- andrs_NNS -LRB-_-LRB- y_FW |_FW x_LS -RRB-_-RRB- aresimilar_NN in_IN regions_NNS of_IN the_DT latent_JJ space_NN where_WRB marginal_JJ distribution_NN qt_NN -LRB-_-LRB- x_NN -RRB-_-RRB- and_CC qs_NN -LRB-_-LRB- x_NN -RRB-_-RRB- of_IN corresponding_JJ examples_NNS are_VBP close_JJ ._.
+Other_JJ works_NNS ,_, such_JJ as_IN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, assumes_VBZ q_NN -LRB-_-LRB- x_NN -RRB-_-RRB- is_VBZ related_JJ to_TO r_NN -LRB-_-LRB- y_NN |_CD x_NN -RRB-_-RRB- ._.
+They_PRP both_DT implicitly_RB assume_VB that_IN marginal_JJ distribution_NN and_CC conditional_JJ probability_NN are_VBP directly_RB related_JJ ._.
+In_IN summary_NN ,_, either_CC of_IN the_DT following_NN is_VBZ assumed_VBN to_TO be_VB true_JJ

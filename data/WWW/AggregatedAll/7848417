@@ -1,0 +1,90 @@
+Non-intrusive_JJ monitoring_NN and_CC service_NN adaptation_NN for_IN WS-BPEL_NN
+Web_NN service_NN processes_NNS currently_RB lack_VBP monitoring_NN and_CC dynamic_NN -LRB-_-LRB- runtime_NN -RRB-_-RRB- adaptation_NN mechanisms_NNS ._.
+In_IN highly_RB dynamic_JJ processes_NNS ,_, services_NNS frequently_RB need_VBP to_TO be_VB exchanged_VBN due_JJ to_TO a_DT variety_NN of_IN reasons_NNS ._.
+In_IN this_DT paper_NN we_PRP present_VBP VieDAME_NN ,_, a_DT system_NN which_WDT allows_VBZ monitoring_NN of_IN BPEL_NN processes_NNS according_VBG to_TO Quality_NNP of_IN Service_NNP -LRB-_-LRB- QoS_NN -RRB-_-RRB- attributes_NNS and_CC replacement_NN of_IN existing_VBG partner_NN services_NNS based_VBN on_IN various_JJ -LRB-_-LRB- pluggable_JJ -RRB-_-RRB- replacement_NN strategies_NNS ._.
+The_DT chosen_JJ replacement_NN services_NNS can_MD be_VB syntactically_RB or_CC semantically_RB equivalent_JJ to_TO the_DT BPEL_NNP interface_NN ._.
+Services_NNP can_MD be_VB automatically_RB replaced_VBN during_IN runtime_NN without_IN any_DT downtime_NN of_IN the_DT overall_JJ system_NN ._.
+We_PRP implemented_VBD our_PRP$ solution_NN with_IN an_DT aspect-oriented_JJ approach_NN by_IN intercepting_VBG SOAP_NN messages_NNS and_CC allow_VB services_NNS to_TO be_VB exchanged_VBN during_IN runtime_NN with_IN little_JJ performance_NN penalty_NN costs_NNS ,_, as_IN shown_VBN in_IN our_PRP$ experiments_NNS ,_, thereby_RB making_VBG our_PRP$ approach_NN suitable_JJ for_IN high-availability_JJ BPEL_NN environments_NNS ._.
+ly_RB be_VB used_VBN with_IN other_JJ -LRB-_-LRB- e.g._FW ,_, domain_NN -_: or_CC service-specific_JJ -RRB-_-RRB- mediators_NNS when_WRB no_DT additional_JJ semantic_JJ information_NN is_VBZ available_JJ ._.
+Other_JJ authors_NNS have_VBP considered_VBN mediation_NN on_IN service_NN composition_NN level_NN ,_, e.g._FW ,_, in_IN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, WS-BPEL_NN processes_NNS are_VBP adapted_VBN by_IN exchanging_VBG service_NN bindings_NNS at_IN runtime_NN ,_, and_CC compatibility_NN between_IN services_NNS is_VBZ ensured_VBN using_VBG XSLT-based_JJ transformation_NN ._.
+Others_NNS use_VBP annotated_JJ WSDL_NN with_IN context_NN informa_NN
+matically_RB adapt_VB -LRB-_-LRB- some_DT -RRB-_-RRB- parameters_NNS of_IN the_DT hosting_VBG environment_NN via_IN the_DT Amazon_NNP S2_NN API_NN ._.
+3_CD Related_NNP Work_NNP We_PRP will_MD now_RB briefly_RB discuss_VB some_DT key_JJ related_JJ work_NN ._.
+QoS_NN monitoring_NN of_IN atomic_JJ services_NNS is_VBZ discussed_VBN in_IN =_JJ -_: =[_NN 3_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ Composition_NNP Monitor_NNP will_MD partially_RB be_VB based_VBN on_IN these_DT results_NNS ._.
+Monitoring_NN of_IN composition_NN instance_NN data_NNS has_VBZ been_VBN discussed_VBN in_IN -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+However_RB ,_, these_DT works_NNS do_VBP not_RB explicitly_RB cover_VB SLA_NN monitoring_NN ,_, whic_JJ
+site_NN Web_NN services_NNS ._.
+Most_JJS of_IN the_DT works_NNS have_VBP adopted_VBN the_DT concept_NN of_IN AOP_NN -LRB-_-LRB- Aspect-oriented_JJ Programming_NN -RRB-_-RRB- ._.
+Some_DT monitor_NN and_CC modify_VB messages_NNS exchanged_VBN between_IN services_NNS for_IN service_NN selection_NN and_CC error_NN handling_NN =_JJ -_: =[_NN 9_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Transparent_JJ transformation_NN of_IN a_DT composite_JJ Web_NN service_NN has_VBZ been_VBN also_RB tried_VBN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+AO4BPEL_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- directly_RB adopted_VBN AOP_NN and_CC allows_VBZ us_PRP to_TO weave_VB a_DT process_NN described_VBN in_IN BPEL_NNP into_IN an_DT existing_VBG BPEL_NN process_NN ._.
+But_CC t_NN
+before_IN deployment_NN ._.
+As_IN discussed_VBN in_IN Section_NN 1_CD ,_, online_JJ runtime_NN monitoring_NN techniques_NNS allow_VBP dynamic_JJ recovery_NN ,_, since_IN recovery_NN strategies_NNS can_MD be_VB applied_VBN as_RB soon_RB as_IN errors_NNS are_VBP detected_VBN ._.
+Existing_VBG work_NN -LRB-_-LRB- 52_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 53_CD -RRB-_-RRB- -_: =_SYM -_: focuses_VBZ on_IN the_DT definition_NN of_IN recovery_NN strategies_NNS for_IN local_JJ properties_NNS ,_, assuming_VBG that_IN process_NN definition_NN is_VBZ correct_JJ and_CC errors_NNS are_VBP introduced_VBN only_RB via_IN interactions_NNS with_IN external_JJ services_NNS ._.
+The_DT recovery_NN
+fragments_NNS of_IN a_DT service_NN composition_NN to_TO ease_VB dynamic_JJ service_NN adaptation_NN ._.
+Engineers_NNS may_MD specify_VB the_DT business_NN process_NN in_IN ,_, say_VB ,_, WSBPEL_NN -LRB-_-LRB- the_DT de_FW facto_FW language_NN -RRB-_-RRB- ._.
+To_TO support_VB service_NN adaptation_NN ,_, Moser_NNP et_FW al._FW =_SYM -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: extend_VB a_DT WS-BPEL_NN engine_NN by_IN an_DT interception_NN and_CC adaptation_NN layer_NN to_TO enable_VB dynamic_JJ service_NN selection_NN ._.
+This_DT layer_NN monitors_VBZ WS-BPEL_NN programs_NNS over_IN a_DT set_NN of_IN specified_VBN Quality-ofService_NN -LRB-_-LRB- QoS_NN -RRB-_-RRB- constraints_NNS a_DT
+eb_IN Service_NNP standards_NNS exist_VBP -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+They_PRP support_VBP a_DT wide_JJ range_NN of_IN functional_JJ and_CC nonfunctional_JJ requirements_NNS ._.
+To_TO describe_VB ,_, monitor_VB and_CC manage_VB Quality_NNP of_IN Service_NNP -LRB-_-LRB- QoS_NN -RRB-_-RRB- parameters_NNS ,_, numerous_JJ approaches_NNS exist_VBP =_JJ -_: =[_NN 13,15,7,24,3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ approach_NN is_VBZ to_TO use_VB the_DT OASIS_NN WSDM_NN -LRB-_-LRB- Web_NN Service_NN Distributed_VBN Management_NNP -RRB-_-RRB- standard_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- and_CC Web_NN Service_NNP Ping_NNP -LRB-_-LRB- see_VB Section_NNP 5_CD -RRB-_-RRB- to_TO solve_VB the_DT Web_NN Service_NN QoS_NN problem_NN ._.
+WSDM_NN uses_VBZ WSRF_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- and_CC WSN_NNP -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+ure_NN needs_VBZ to_TO provide_VB effective_JJ mechanisms_NNS to_TO monitor_VB the_DT executed_VBN business_NN processes_NNS at_IN runtime_NN ._.
+These_DT include_VBP technical_JJ aspects_NNS such_JJ as_IN monitoring_VBG Quality_NNP of_IN Service_NNP -LRB-_-LRB- QoS_NN -RRB-_-RRB- attributes_NNS of_IN the_DT services_NNS =_JJ -_: =[_NN 16,15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, resource_NN utilization_NN as_RB well_RB as_IN business-related_JJ information_NN relevant_JJ for_IN Key_NNP Performance_NNP Indicator_NNP -LRB-_-LRB- KPI_NNP -RRB-_-RRB- progression_NN or_CC Service_NNP Level_NNP Agreement_NNP -LRB-_-LRB- SLA_NNP -RRB-_-RRB- fulfillment_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+A_DT number_NN of_IN monitoring_NN system_NN
+ng_NN approaches_NNS ._.
+Examples_NNS of_IN such_JJ work_NN include_VBP the_DT WS-Binder_JJ -LRB-_-LRB- 20_CD -RRB-_-RRB- or_CC the_DT PAWS_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- frameworks_NNS .378_CD P._NNP Leitner_NNP et_FW al._FW ._.
+More_RBR advanced_JJ service_NN rebinding_NN was_VBD also_RB one_CD of_IN the_DT contributions_NNS of_IN Moser_NNP et_FW al._FW in_IN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Finally_RB ,_, some_DT work_NN on_IN service_NN rebinding_NN -LRB-_-LRB- dealing_NN also_RB with_IN stateful_JJ services_NNS -RRB-_-RRB- has_VBZ been_VBN presented_VBN by_IN Mosincat_NNP and_CC Binder_NNP in_IN -LRB-_-LRB- 23_CD -RRB-_-RRB- ._.
+An_DT early_JJ approach_NN towards_IN structural_JJ adaptation_NN of_IN compositions_NNS has_VBZ b_NN
+nd_NN for_IN a_DT comprehensive_JJ set_NN of_IN existing_VBG process_NN data_NNS to_TO learn_VB from_IN ._.
+This_DT kind_NN of_IN data_NNS can_MD be_VB collected_VBN using_VBG runtime_NN monitoring_NN of_IN compositions_NNS ,_, as_IN presented_VBN e.g._FW ,_, by_IN Baresi_NNP et_FW al._FW -LRB-_-LRB- 2_CD -RRB-_-RRB- or_CC Moser_NNP et_FW al._FW =_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT former_JJ work_NN presents_VBZ an_DT integration_NN of_IN two_CD separate_JJ research_NN approaches_NNS ,_, which_WDT result_VBP in_IN a_DT powerful_JJ monitoring_NN facility_NN for_IN WS-BPEL_NN based_JJ compositions_NNS ._.
+The_DT main_JJ focus_NN seems_VBZ to_TO be_VB on_IN the_DT definiti_NN
+rent_NN state_NN of_IN the_DT system_NN is_VBZ essential_JJ in_IN dynamic_JJ environments_NNS where_WRB services_NNS are_VBP discovered_VBN and_CC invoked_VBN at_IN runtime_NN ._.
+Research_NN in_IN the_DT area_NN of_IN quality_NN of_IN service_NN -LRB-_-LRB- QoS_NN -RRB-_-RRB- modeling_NN and_CC monitoring_NN -LRB-_-LRB- e.g._FW ,_, see_VBP =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =--RRB-_NN has_VBZ provided_VBN an_DT important_JJ building_NN block_NN to_TO observe_VB the_DT runtime_JJ state_NN of_IN a_DT service-oriented_JJ system_NN ._.
+Service-level_JJ agreements_NNS -LRB-_-LRB- SLAs_NNS -RRB-_-RRB- let_VBP service_NN providers_NNS specify_VBP quality_NN criteria_NNS demanded_VBN by_IN consume_VB
+rocesses_NNS -RRB-_-RRB- have_VBP also_RB been_VBN presented_VBN as_IN part_NN of_IN the_DT DISC_NN framework_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- ,_, which_WDT implements_VBZ dynamic_JJ and_CC only_RB partially_RB defined_VBN processes_NNS ._.
+A_DT different_JJ kind_NN of_IN self-healing_JJ processes_NNS have_VBP been_VBN discussed_VBN in_IN =_JJ -_: =[_NN 36_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, the_DT authors_NNS present_VBP the_DT VieDAME_NN framework_NN ,_, which_WDT autonomously_RB monitors_VBZ the_DT QoS_NN of_IN services_NNS used_VBN in_IN the_DT composition_NN ,_, and_CC triggers_VBZ service_NN re-selection_NN if_IN the_DT monitored_JJ QoS_NN falls_VBZ below_IN
+rent_NN state_NN of_IN the_DT system_NN is_VBZ essential_JJ in_IN dynamic_JJ environments_NNS where_WRB services_NNS are_VBP discovered_VBN and_CC invoked_VBN at_IN runtime_NN ._.
+Research_NN in_IN the_DT area_NN of_IN quality_NN of_IN service_NN -LRB-_-LRB- QoS_NN -RRB-_-RRB- modeling_NN and_CC monitoring_NN -LRB-_-LRB- e.g._FW ,_, see_VBP =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =--RRB-_NN has_VBZ provided_VBN an_DT important_JJ building_NN block_NN to_TO observe_VB the_DT runtime_JJ state_NN of_IN a_DT service-oriented_JJ system_NN ._.
+Service-level_JJ agreements_NNS -LRB-_-LRB- SLAs_NNS -RRB-_-RRB- let_VBP service_NN providers_NNS specify_VBP quality_NN criteria_NNS demanded_VBN by_IN consume_VB
+-RRB-_-RRB- Get_VB Catalog_NN Display_NN Catalog_NN Mary_NNP close_RB to_TO shop_VB with_IN Flash_NNP Sale_NNP Offer_NN running_NN ?_.
+Yes_NNP No_NNP Provide_VB Other_NNP Context_NNP Fetch_NNP Normal_JJ Catalog_NN Fetch_NNP Location_NNP Catalog_NN Adaptive_NNP Service_NNP Grids_NNP -LRB-_-LRB- ASG_NNP -RRB-_-RRB- -LRB-_-LRB- 18_CD -RRB-_-RRB- and_CC VieDAME_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP initiatives_NNS enabling_VBG dynamic_JJ compositions_NNS and_CC bindings_NNS of_IN services_NNS for_IN provisioning_VBG adaptive_JJ services_NNS ._.
+In_IN particular_JJ ,_, ASG_NNP proposes_VBZ a_DT sophisticated_JJ and_CC adaptive_JJ delivery_NN life-cycle_NN composed_VBN of_IN thr_NN
+s_NNS discussing_VBG how_WRB to_TO estimate_VB the_DT QoS_NN of_IN a_DT web_NN service-based_JJ workflow_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Also_RB ,_, in_IN order_NN to_TO measure_VB the_DT QoS_NN of_IN the_DT web_NN services_NNS ,_, many_JJ metrics_NNS have_VBP been_VBN proposed_VBN in_IN the_DT literature_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+The_DT QoS_NN attributes_NNS can_MD be_VB classified_VBN as_IN deterministic_JJ or_CC non-deterministic_JJ ._.
+The_DT former_JJ means_NNS that_IN the_DT attributes_NNS are_VBP already_RB known_VBN before_IN the_DT execution_NN of_IN the_DT service_NN -LRB-_-LRB- e.g._FW ,_, price_NN ,_,
+ions_NNS out_IN of_IN existing_VBG services_NNS ._.
+To_TO this_DT end_NN ,_, in_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- we_PRP propose_VBP an_DT automated_JJ approach_NN for_IN the_DT recovery_NN of_IN service_NN abstractions_NNS ,_, which_WDT aims_VBZ at_IN reducing_VBG the_DT complexity_NN of_IN the_DT service_NN substitution_NN problem_NN =_JJ -_: =[_NN 14_CD ,_, 15_CD ,_, 6_CD ,_, 1_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Nevertheless_RB ,_, in_IN the_DT approach_NN proposed_VBN in_IN -LRB-_-LRB- 2_LS -RRB-_-RRB- the_DT notion_NN of_IN service_NN abstraction_NN is_VBZ very_RB restrictive_JJ and_CC the_DT corresponding_JJ abstraction_NN recovery_NN technique_NN very_RB primitive_JJ ,_, allowing_VBG the_DT extraction_NN of_IN ab_NN
+SOAP_NN messages_NNS in_IN the_DT context_NN of_IN Web_NN services_NNS -LRB-_-LRB- WSs_NNS -RRB-_-RRB- can_MD be_VB classified_VBN into_IN three_CD groups_NNS ._.
+The_DT first_JJ approach_NN injects_VBZ some_DT modules_NNS into_IN the_DT WS_NNP engine_NN in_IN order_NN to_TO extract_VB the_DT expected_VBN information_NN ,_, e.g._FW ,_, =_JJ -_: =[_NN 23_CD ,_, 15_CD ,_, 20_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT second_JJ approach_NN intends_VBZ to_TO implement_VB a_DT software_NN which_WDT is_VBZ functions_VBZ as_IN a_DT SOAP_NN ``_`` proxy_NN ''_'' and_CC which_WDT is_VBZ independent_JJ and_CC external_JJ to_TO the_DT WS_NNP engine_NN ,_, e.g._FW ,_, SoapUI_NN 1_CD or_CC Membrane_NN SOAP\/HTTP_NN Monitor_NNP 2_CD ._.
+All_DT
+rvices_NNS are_VBP available_JJ and_CC services_NNS '_POS performance_NN fluctuates_VBZ ._.
+VI_NNP ._.
+RELATED_NNS WORK_VBP Related_JJ work_NN on_IN adaptation_NN of_IN service_NN compositions_NNS addresses_VBZ self-healing_JJ -LRB-_-LRB- 5_CD -RRB-_-RRB- --_: -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, but_CC scarcely_RB touches_NNS on_IN selftuning_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, whereas_IN achieving_VBG self-tuning_JJ behavior_NN is_VBZ the_DT focus_NN of_IN this_DT paper_NN ._.
+VieDAME_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- is_VBZ an_DT aspect-based_JJ service_NN monitoring_NN and_CC selection_NN system_NN that_WDT intercepts_VBZ SOAP_NN messages_NNS and_CC dynamically_RB replaces_VBZ serv_NN
+pairs_NNS with_IN WSDL_NN specifications_NNS ,_, to_TO extract_VB the_DT required_JJ contents_NNS from_IN the_DT document_NN ._.
+To_TO cope_VB with_IN changing_VBG business_NN requirements_NNS ,_, process_NN engineers_NNS may_MD modify_VB the_DT service-oriented_JJ business_NN process_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =-[_NN 26_CD -RRB-_-RRB- ._.
+Testers_NNS should_MD assure_VB the_DT quality_NN of_IN such_JJ revised_JJ applications_NNS ._.
+Regression_NN testing_NN ,_, aimed_VBN at_IN detecting_VBG potential_JJ faults_NNS caused_VBN by_IN software_NN changes_NNS ,_, is_VBZ the_DT de_FW facto_FW approach_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+It_PRP reruns_NNS te_VBP
+ative_JJ concrete_JJ services_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+The_DT second_JJ category_NN comprises_VBZ adapter-based_JJ approaches_NNS ,_, which_WDT deal_VBP with_IN existing_VBG client_NN applications_NNS that_WDT use_VBP concrete_JJ services_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT basic_JJ concept_NN in_IN this_DT case_NN is_VBZ to_TO derive_VB a_DT mapping_NN between_IN the_DT target_NN service_NN that_WDT should_MD be_VB substituted_VBN and_CC a_DT substitute_JJ service_NN that_WDT offers_VBZ similar_JJ functionality_NN through_IN a_DT different_JJ interface_NN ._.
+online_JJ social_JJ platforms_NNS or_CC enterprise_NN directories_NNS -LRB-_-LRB- in_IN corporate_JJ settings_NNS -RRB-_-RRB- complement_NN action_NN events_NNS by_IN putting_VBG them_PRP in_IN perspective_NN ._.
+The_DT raw_JJ events_NNS are_VBP captured_VBN by_IN distributed_VBN logging_VBG -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, monitoring_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC sensing_VBG -LRB-_-LRB- 14_CD -RRB-_-RRB- mechanisms_NNS ._.
+Within_IN individual_JJ services_NNS ,_, autonomous_JJ toolkits_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 15_CD --_: 17_CD -RRB-_-RRB- -RRB-_-RRB- provide_VBP monitoring_NN techniques_NNS to_TO provide_VB an_DT up-to-date_JJ view_NN on_IN capabilities_NNS and_CC QoS_NN values_NNS ._.
+3.2_CD Interactio_NN
+ls_NNS purely_RB based_VBN on_IN local_JJ information_NN ._.
+Our_PRP$ approach_NN combines_VBZ these_DT two_CD design_NN principles_NNS ._.
+We_PRP apply_VBP local_JJ service_NN properties_NNS and_CC service_NN interaction_NN data_NNS captured_VBN by_IN distributed_VBN logging_VBG -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, monitoring_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC sensing_VBG -LRB-_-LRB- 11_CD -RRB-_-RRB- mechanisms_NNS ._.
+Analysis_NN and_CC planning_NN -LRB-_-LRB- of_IN the_DT MAPEK_NN cycle_NN -RRB-_-RRB- apply_VBP global_JJ --_: but_CC aggregated_VBD --_: knowledge_NN while_IN the_DT ultimate_JJ execution_NN steps_NNS -LRB-_-LRB- i.e._FW ,_, service_NN ranking_NN -RRB-_-RRB- are_VBP triggered_VBN by_IN individual_JJ se_FW

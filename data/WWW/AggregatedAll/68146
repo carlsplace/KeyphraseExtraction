@@ -1,0 +1,449 @@
+Analysis_NN of_IN interacting_VBG BPEL_NN web_NN services_NNS
+This_DT paper_NN presents_VBZ a_DT set_NN of_IN tools_NNS and_CC techniques_NNS for_IN analyzing_VBG interactions_NNS of_IN composite_JJ web_NN services_NNS which_WDT are_VBP specified_VBN in_IN BPEL_NN and_CC communicate_VBP through_IN asynchronous_JJ XML_NN messages_NNS ._.
+We_PRP model_VBP the_DT interactions_NNS of_IN composite_JJ web_NN services_NNS as_IN conversations_NNS ,_, the_DT global_JJ sequence_NN of_IN messages_NNS exchanged_VBN by_IN the_DT web_NN services_NNS ._.
+As_IN opposed_VBN to_TO earlier_JJR work_NN ,_, our_PRP$ tool-set_NN handles_VBZ rich_JJ data_NNS manipulation_NN via_IN XPath_NN expressions_NNS ._.
+This_DT allows_VBZ us_PRP to_TO verify_VB designs_NNS at_IN a_DT more_RBR detailed_JJ level_NN and_CC check_NN properties_NNS about_IN message_NN content_NN ._.
+We_PRP present_VBP a_DT framework_NN where_WRB BPEL_NN specifications_NNS of_IN web_NN services_NNS are_VBP translated_VBN to_TO an_DT intermediate_JJ representation_NN ,_, followed_VBN by_IN the_DT translation_NN of_IN the_DT intermediate_JJ representation_NN to_TO a_DT verification_NN language_NN ._.
+As_IN an_DT intermediate_JJ representation_NN we_PRP use_VBP guarded_VBN automata_NN augmented_VBD with_IN unbounded_JJ queues_NNS for_IN incoming_JJ messages_NNS ,_, where_WRB the_DT guards_NNS are_VBP expressed_VBN as_IN XPath_NN expressions_NNS ._.
+As_IN the_DT target_NN verification_NN language_NN we_PRP use_VBP Promela_NNP ,_, input_NN language_NN of_IN the_DT model_NN checker_NN SPIN_NN ._.
+Since_IN SPIN_NN model_NN checker_NN is_VBZ a_DT finite-state_JJ verification_NN tool_NN we_PRP can_MD only_RB achieve_VB partial_JJ verification_NN by_IN fixing_VBG the_DT sizes_NNS of_IN the_DT input_NN queues_NNS in_IN the_DT translation_NN ._.
+We_PRP propose_VBP the_DT concept_NN of_IN synchronizability_NN to_TO address_VB this_DT problem_NN ._.
+We_PRP show_VBP that_IN if_IN a_DT composite_JJ web_NN service_NN is_VBZ synchronizable_JJ ,_, then_RB its_PRP$ conversation_NN set_NN remains_VBZ same_JJ when_WRB asynchronous_JJ communication_NN is_VBZ replaced_VBN with_IN synchronous_JJ communication_NN ._.
+We_PRP give_VBP a_DT set_NN of_IN sufficient_JJ conditions_NNS that_WDT guarantee_VBP synchronizability_NN and_CC that_WDT can_MD be_VB checked_VBN statically_RB ._.
+Based_VBN on_IN our_PRP$ synchronizability_NN results_NNS ,_, we_PRP show_VBP that_IN a_DT large_JJ class_NN of_IN composite_JJ web_NN services_NNS with_IN unbounded_JJ input_NN queues_NNS can_MD be_VB completely_RB verified_VBN using_VBG a_DT finite_JJ state_NN model_NN checker_NN such_JJ as_IN SPIN_NN ._.
+sible_JJ runs_NNS -LRB-_-LRB- e.g._FW ``_`` can_MD there_RB be_VB a_DT run_NN of_IN the_DT system_NN where_WRB both_DT activities_NNS take_VBP place_NN ''_'' -RRB-_-RRB- ._.
+This_DT is_VBZ for_IN two_CD main_JJ reasons_NNS ._.
+First_RB ,_, querying_VBG the_DT possible_JJ runs_NNS of_IN a_DT system_NN is_VBZ inherently_RB a_DT verification_NN problem_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: and_CC is_VBZ typically_RB of_IN very_RB high_JJ complexity_NN -LRB-_-LRB- NP-hard_NN even_RB for_IN very_RB simple_JJ specifications_NNS and_CC undecidable_JJ in_IN more_RBR general_JJ cases_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Second_RB ,_, the_DT analysis_NN of_IN runs_NNS requires_VBZ the_DT specification_NN to_TO have_VB a_DT wel_NN
+cification_NN conforms_VBZ to_TO a_DT choreography_NN specification_NN if_IN the_DT global_JJ sequence_NN of_IN messages_NNS generated_VBN by_IN the_DT orchestration_NN is_VBZ allowed_VBN by_IN the_DT choreography_NN specification_NN ._.
+Finally_RB ,_, synchronizability_NN analysis_NN =_JJ -_: =[_NN 5_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: investigates_VBZ the_DT effects_NNS of_IN asynchronous_JJ vs._CC synchronous_JJ communication_NN to_TO improve_VB theefficiency_NN of_IN interaction_NN analysis_NN ._.
+A_DT set_NN of_IN asynchronously_RB communicating_VBG peers_NNS are_VBP synchronizable_JJ if_IN their_PRP$ conve_NN
+,_, as_RB far_RB as_IN we_PRP know_VBP ,_, none_NN of_IN them_PRP aims_VBZ at_IN checking_NN of_IN the_DT same_JJ property_NN -LRB-_-LRB- session_NN compliance_NN -RRB-_-RRB- as_IN the_DT technique_NN proposed_VBN in_IN this_DT paper_NN ._.
+Short_JJ characteristic_NN of_IN selected_VBN approaches_NNS is_VBZ provided_VBN below_IN ._.
+In_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT authors_NNS present_VBP a_DT technique_NN for_IN checking_VBG LTL_NNP properties_NNS of_IN multiple_JJ interacting_NN web_NN services_NNS implemented_VBN in_IN BPEL_NNP ._.
+The_DT key_JJ idea_NN of_IN the_DT technique_NN is_VBZ -LRB-_-LRB- i_LS -RRB-_-RRB- translation_NN of_IN BPEL_NN implementation_NN of_IN each_DT
+ness_NN can_MD be_VB ensured_VBN by_IN statically_RB checking_VBG their_PRP$ composition_NN against_IN properties_NNS of_IN interest_NN ._.
+The_DT same_JJ approach_NN has_VBZ been_VBN taken_VBN by_IN several_JJ researchers_NNS in_IN the_DT context_NN of_IN Web_NN services_NNS as_RB well_RB ,_, e.g._FW ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+While_IN static_JJ analysis_NN is_VBZ very_RB appealing_JJ --_: errors_NNS are_VBP discovered_VBN ahead_RB of_IN time_NN and_CC without_IN the_DT need_NN to_TO exercise_VB the_DT system_NN ,_, this_DT approach_NN has_VBZ several_JJ major_JJ limitations_NNS as_IN follows_VBZ :_: ._.
+Web_NN
+onal_JJ features_NNS of_IN this_DT software_NN ,_, can_MD also_RB help_VB the_DT debugging_NN process_NN when_WRB further_JJ analysis_NN may_MD be_VB necessary_JJ to_TO verify_VB the_DT validity_NN of_IN a_DT result_NN ._.
+We_PRP also_RB integrate_VBP EA4B_NN with_IN a_DT service_NN analysis_NN tool_NN WSAT_NN =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: developed_VBN previously_RB ._.
+An_DT interesting_JJ use_NN of_IN the_DT integrated_VBN tool_NN is_VBZ to_TO use_VB WSAT_NNP to_TO find_VB logic_NN errors_NNS in_IN a_DT BPEL_NN specification_NN and_CC generate_VB error_NN traces_NNS ,_, the_DT error_NN traces_NNS are_VBP then_RB fed_VBN into_IN EA4B_NN -LRB-_-LRB- via_IN the_DT
+es_FW has_VBZ mostly_RB focused_VBN on_IN service_NN models_NNS ,_, verification_NN and_CC composition_NN ._.
+A_DT variety_NN of_IN models_NNS have_VBP been_VBN proposed_VBN to_TO specify_VB the_DT behaviors_NNS and_CC interactions_NNS of_IN Web_NN services_NNS ,_, based_VBN on_IN finite-state_JJ automata_NN =_JJ -_: =[_NN 6_CD ,_, 16_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, data-driven_JJ transducers_NNS -LRB-_-LRB- 2_CD ,_, 5_CD ,_, 12_CD ,_, 13_CD ,_, 14_CD ,_, 31_CD -RRB-_-RRB- or_CC recently_RB ,_, artifacts_NNS -LRB-_-LRB- 7_CD ,_, 11_CD ,_, 15_CD -RRB-_-RRB- ._.
+A_DT number_NN of_IN verification_NN problems_NNS have_VBP been_VBN studied_VBN to_TO decide_VB ,_, e.g._FW ,_, whether_IN a_DT transaction_NN with_IN certain_JJ properties_NNS
+ysis_NN ._.
+There_EX has_VBZ been_VBN a_DT vast_JJ amount_NN of_IN previous_JJ work_NN in_IN the_DT general_JJ area_NN of_IN program_NN analysis_NN and_CC verification_NN -LRB-_-LRB- see_VB e.g._FW -LRB-_-LRB- 15_CD -RRB-_-RRB- for_IN a_DT sample_NN -RRB-_-RRB- ,_, and_CC more_RBR specifically_RB in_IN the_DT analysis_NN of_IN BPEL_NN specifications_NNS =_JJ -_: =[_NN 9_CD ,_, 7_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT works_NNS mostly_RB consider_VBP logicbased_JJ query_NN languages_NNS where_WRB queries_NNS ,_, formulated_VBN as_IN logic_NN formulas_NNS ,_, test_NN if_IN the_DT runs_NNS of_IN the_DT application_NN or_CC program_NN satisfies_VBZ a_DT certain_JJ property_NN ;_: a_DT witness_NN counter_NN exa_NN
+investigates_VBZ how_WRB to_TO systematically_RB model_NN and_CC reason_NN about_IN BPEL_NN orchestrations_NNS ._.
+We_PRP conclude_VBP the_DT tutorial_NN by_IN giving_VBG a_DT brief_JJ overview_NN of_IN promising_JJ approaches_NNS ,_, such_JJ as_IN model_NN checking_NN BPEL_NN orchestrations_NNS =_JJ -_: =[_NN 9_CD ,_, 8_CD -RRB-_-RRB- -_: =_JJ -_: and_CC monitoring_VBG the_DT quality_NN of_IN service_NN provided_VBN by_IN orchstrated_JJ web_NN services_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+We_PRP then_RB discuss_VBP a_DT number_NN of_IN research_NN questions_NNS that_WDT arise_VBP from_IN the_DT emergence_NN of_IN BPEL_NN ._.
+We_PRP discuss_VBP the_DT need_NN for_IN not_RB just_RB
+odels_NNS of_IN concurrent_JJ systems_NNS have_VBP been_VBN applied_VBN :_: Petri_JJ nets_NNS -LRB-_-LRB- basic_JJ model_NN ,_, high-level_JJ ,_, colored_JJ -RRB-_-RRB- --_: comp_NN ._.
+-LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 32_CD -RRB-_-RRB- ,_, Process_VBP Algebras_NNPS --_: comp_NN ._.
+-LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, Lotos_NNP --_: comp_NN ._.
+-LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, Promela_NNP and_CC LTL_NNP --_: comp_NN ._.
+=_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, Abstract_NNP State_NNP Machines_NNP --_: comp_NN ._.
+-LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, Finite_NNP State_NNP Automata_NNP --_: comp_NN ._.
+-LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+These_DT conversions_NNS make_VBP it_PRP possible_JJ to_TO detect_VB deadlock_NN andTransformational_JJ Design_NN of_IN Business_NN Processes_NNS in_IN BPEL_NN L_NN
+he_PRP problems_NNS of_IN component_NN adaptation_NN and_CC evolution_NN as_IN a_DT programming_NN language_NN problem_NN ,_, and_CC several_JJ language_NN features_NNS have_VBP been_VBN proposed_VBN that_WDT can_MD address_VB some_DT -LRB-_-LRB- but_CC not_RB all_DT -RRB-_-RRB- problems_NNS ._.
+Descriptive_JJ classes_NNS =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: allowed_VBD the_DT programmer_NN to_TO create_VB supertypes_NNS after_IN the_DT fact_NN ,_, solving_VBG part_NN of_IN the_DT integration_NN problem_NN ._.
+However_RB ,_, this_DT adaptation_NN is_VBZ static_JJ -LRB-_-LRB- not_RB at_IN run_NN time_NN -RRB-_-RRB- and_CC does_VBZ not_RB keep_VB the_DT idea_NN of_IN components_NNS as_IN b_NN
+uential_JJ workflows_NNS to_TO realistic_JJ and_CC complex_JJ workflows_NNS with_IN human_JJ interactions_NNS ._.
+It_PRP has_VBZ been_VBN demonstrated_VBN that_IN services_NNS implemented_VBN on_IN existing_VBG platforms_NNS can_MD be_VB modeled_VBN using_VBG our_PRP$ behavioral_JJ formal_JJ model_NN =_JJ -_: =[_NN 13_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX exist_VBP different_JJ approaches_NNS tackling_VBG model-based_JJ adaptation_NN at_IN the_DT behavioural_JJ interoperability_NN level_NN ,_, and_CC aim_NN at_IN generating_VBG adaptors_NNS which_WDT are_VBP used_VBN to_TO solve_VB mismatch_NN in_IN a_DT non-intrusive_JJ way_NN ._.
+Ho_NNP
+tomatic_JJ composition_NN -LRB-_-LRB- 7_CD ,_, 33_CD -RRB-_-RRB- ,_, planning_NN -LRB-_-LRB- 32_CD ,_, 29_CD -RRB-_-RRB- or_CC model_NN deduction_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- ._.
+With_IN regards_VBZ to_TO the_DT reasoning_NN issue_NN ,_, works_NNS have_VBP been_VBN dedicated_VBN to_TO verifying_VBG WS_NN description_NN to_TO ensure_VB some_DT properties_NNS of_IN systems_NNS =_JJ -_: =[_NN 20_CD ,_, 37_CD ,_, 19_CD ,_, 36_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Summarizing_VBG these_DT works_NNS ,_, they_PRP use_VBP model_NN checking_NN to_TO verify_VB some_DT properties_NNS of_IN cooperating_VBG web_NN services_NNS described_VBN using_VBG XML-based_JJ languages_NNS -LRB-_-LRB- DAML-S_NN ,_, WSFL_NN ,_, WSDL_NN ,_, BPEL4WS_NN ,_, WSCI_NN -RRB-_-RRB- ._.
+Accordingly_RB ,_, they_PRP abst_VBP
+is_VBZ ,_, and_CC workflow_NN authorization_NN modeling_NN ._.
+In_IN paper_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, the_DT authors_NNS develop_VBP Petri_NNP Net_NNP semantics_NNS for_IN BPEL_NNP which_WDT support_VBP the_DT translation_NN from_IN BPEL_NNP into_IN Petri_NNP Net_NN and_CC analysis_NN of_IN BPEL_NN processes_NNS ._.
+In_IN paper_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: a_DT framework_NN is_VBZ provided_VBN to_TO analyze_VB interactions_NNS of_IN WS-BPEL_NN ._.
+WS-BPEL_NN are_VBP eventually_RB translated_VBN into_IN PROMELA_NN and_CC LTL_NN formulas_NNS ,_, which_WDT are_VBP then_RB checked_VBN with_IN SPIN_NN ._.
+Based_VBN on_IN model_NN Checker_NNP Bogor_NNP ,_, Bianculli_NNP
+are_VBP of_IN roughly_RB the_DT same_JJ size_NN .9_CD ._.
+RELATED_NNS WORK_VBP The_DT ideas_NNS and_CC techniques_NNS presented_VBN in_IN this_DT paper_NN are_VBP related_VBN to_TO a_DT variety_NN of_IN research_NN areas_NNS such_JJ as_IN concurrent_JJ systems_NNS -LRB-_-LRB- 26_CD ,_, 27_CD -RRB-_-RRB- ,_, web_NN service_NN composition_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, software_NN architectures_NNS -LRB-_-LRB- 36_CD ,_, 27_CD -RRB-_-RRB- ,_, etc._NN ._.
+A_DT complete_JJ survey_NN of_IN all_PDT these_DT threads_NNS is_VBZ not_RB intended_VBN here_RB ,_, and_CC instead_RB ,_, we_PRP focus_VBP on_IN comparing_VBG our_PRP$ work_NN with_IN the_DT most_RBS relevant_JJ research_NN thrusts_NNS ._.
+Feature_NN intera_NN
+ations_NNS ,_, we_PRP need_VBP to_TO represent_VB them_PRP formally_RB ,_, so_RB as_IN to_TO make_VB precise_JJ the_DT meaning_NN of_IN ``_`` taking_VBG a_DT transition_NN ''_'' ,_, ``_`` reading_VBG in_IN an_DT event_NN ''_'' ,_, etc._NN ._.
+Several_JJ formalisms_NNS for_IN representing_VBG BPEL_NNP models_NNS have_VBP been_VBN suggested_VBN =_JJ -_: =[_NN 12_CD ,_, 17_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT work_NN ,_, we_PRP build_VBP on_IN Foster_NNP 's_POS -LRB-_-LRB- 9_CD -RRB-_-RRB- approach_NN of_IN using_VBG an_DT LTS_NN as_IN the_DT underlying_JJ formalism_NN ._.
+Definition_NN 4_CD -LRB-_-LRB- Labeled_VBN Transition_NN Systems_NNPS -RRB-_-RRB- ._.
+A_DT Labeled_JJ Transition_NN System_NNP LTS_NNP is_VBZ a_DT quadruple_NN -LRB-_-LRB- S_NN ,_, Σ_NN ,_, δ_NN ,_, I_PRP -RRB-_-RRB- ,_, w_NN
+ations_NNS ,_, we_PRP need_VBP to_TO represent_VB them_PRP formally_RB ,_, so_RB as_IN to_TO make_VB precise_JJ the_DT meaning_NN of_IN ``_`` taking_VBG a_DT transition_NN ''_'' ,_, ``_`` reading_VBG in_IN an_DT event_NN ''_'' ,_, etc._NN ._.
+Several_JJ formalisms_NNS for_IN representing_VBG BPEL_NNP models_NNS have_VBP been_VBN suggested_VBN =_JJ -_: =[_NN 7_CD ,_, 10_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT work_NN ,_, we_PRP use_VBP Foster_NNP 's_POS -LRB-_-LRB- 5_CD -RRB-_-RRB- approach_NN of_IN using_VBG a_DT Labeled_JJ Transition_NN System_NN -LRB-_-LRB- LTS_NN -RRB-_-RRB- as_IN the_DT underlying_JJ formalism_NN ._.
+Definition_NN 1_CD -LRB-_-LRB- Labeled_VBN Transition_NN Systems_NNPS -RRB-_-RRB- A_DT Labeled_JJ Transition_NN System_NNP LTS_NNP is_VBZ a_DT quad_NN
+s_NNS attempting_VBG to_TO cancel_VB an_DT order_NN for_IN a_DT new_JJ crib_NN if_IN a_DT used_VBN crib_NN is_VBZ found_VBN soon_RB after_IN -RRB-_-RRB- ._.
+The_DT orchestration_NN should_MD satisfy_VB a_DT number_NN of_IN properties_NNS ,_, among_IN them_PRP -LRB-_-LRB- a_LS -RRB-_-RRB- a_DT crib_NN must_MD arrive_VB before_IN the_DT due_JJ date_NN ;_: and_CC =_JJ -_: =-LRB-_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: at_IN most_JJS one_CD crib_NN should_MD arrive_VB ._.
+For_IN example_NN ,_, the_DT last_JJ property_NN is_VBZ violated_VBN in_IN the_DT scenario_NN where_WRB both_CC the_DT user_NN and_CC her_PRP$ parents_NNS independently_RB find_VBP a_DT good_JJ local_JJ deal_NN on_IN the_DT same_JJ day_NN and_CC both_DT decide_VBP to_TO
+rrectness_NN can_MD be_VB ensured_VBN by_IN statically_RB checking_VBG their_PRP$ composition_NN against_IN properties_NNS of_IN interest_NN ._.
+The_DT same_JJ approach_NN has_VBZ been_VBN taken_VBN by_IN several_JJ researchers_NNS in_IN the_DT context_NN of_IN web_NN services_NNS as_RB well_RB ,_, e.g._FW ,_, =_JJ -_: =[_NN 2_CD ,_, 17_CD ,_, 19_CD ,_, 20_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN static_JJ analysis_NN is_VBZ very_RB appealing_JJ --_: errors_NNS are_VBP discovered_VBN ahead_RB of_IN time_NN and_CC without_IN the_DT need_NN to_TO exercise_VB the_DT system_NN ,_, this_DT approach_NN has_VBZ several_JJ major_JJ limitations_NNS :_: --_: Web_NN services_NNS are_VBP distributed_VBN
+ge_NN and_CC its_PRP$ constructs_NNS to_TO Extended_NNP Timed_NNP Automata_NNP ._.
+The_DT language_NN constructs_NNS are_VBP mapped_VBN to_TO a_DT simplified_VBN version_NN of_IN BPEL_NN 1.1_CD ._.
+Fu_FW et_FW al._FW presented_VBD a_DT translation_NN from_IN BPEL_NN to_TO guarded_VBN automata_NN in_IN their_PRP$ work_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ;_: the_DT guarded_VBN automata_NN is_VBZ further_RB translated_VBN into_IN Promela_NNP specification_NN which_WDT is_VBZ the_DT language_NN for_IN the_DT SPIN_NNP model_NN ._.
+Similar_JJ approaches_NNS are_VBP also_RB followed_VBN in_IN -LRB-_-LRB- 6_CD ,_, 7_CD -RRB-_-RRB- ._.
+All_DT these_DT efforts_NNS points_NNS to_TO the_DT fact_NN t_NN
+mong_NN services_NNS to_TO prevent_VB conflicting_VBG scenarios_NNS at_IN runtime_NN ._.
+Existing_VBG approaches_NNS address_VBP this_DT issue_NN by_IN defining_VBG a_DT global_JJ specification_NN -LRB-_-LRB- e.g._FW ,_, WS-CDL_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- -RRB-_-RRB- to_TO coordinate_VB the_DT behavior_NN of_IN all_DT participants_NNS =_JJ -_: =[_NN 36_CD ,_, 11_CD ,_, 12_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT global_JJ specification_NN defines_VBZ allowable_JJ interactions_NNS to_TO safeguard_VB the_DT collaborating_VBG services_NNS from_IN entering_VBG into_IN conflicting_VBG situations_NNS ._.
+To_TO implement_VB these_DT approaches_NNS ,_, the_DT global_JJ specification_NN is_VBZ
+luation_NN include_VBP strong_JJ constraints_NNS on_IN global_JJ QoS_NN parameters_NNS ,_, which_WDT show_VBP ,_, for_IN example_NN ,_, the_DT importance_NN and_CC effectiveness_NN of_IN loop_NN peeling_VBG with_IN such_JJ constraints_NNS ._.
+Analysis_NN of_IN Interacting_VBG BPEL_NN Web_NN Services_NNPS =_SYM -_: =[_NN 96_CD -RRB-_-RRB- -_: =_SYM -_: Problem_NNP :_: The_DT problem_NN illustrated_VBN and_CC faced_VBN by_IN the_DT authors_NNS consist_VBP of_IN a_DT set_NN of_IN techniques_NNS for_IN the_DT analysis_NN of_IN composite_JJ WS_NNS specified_VBN in_IN BPEL_NNP ._.
+Explanation_NN :_: The_DT analysis_NN illustrated_VBD in_IN the_DT paper_NN conside_NN
+ly_RB 10_CD 5_CD ._.
+it_PRP took_VBD about_RB 41_CD seconds_NNS with_IN 34_CD MB_NN memory_NN space_NN for_IN MCMAS_NNP to_TO verify_VB 15_CD properties_NNS ._.
+The_DT verification_NN results_NNS were_VBD in_IN accordance_NN with_IN what_WP expected_VBN ._.
+6_CD Conclusions_NNS Although_IN extensive_JJ research_NN =_JJ -_: =[_NN 19,8_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ been_VBN done_VBN on_IN the_DT automated_JJ verification_NN of_IN web_NN service_NN composition_NN using_VBG BPEL4WS_NN ,_, work_NN on_IN verification_NN of_IN OWL-S_NN process_NN models_NNS is_VBZ relatively_RB scant_JJ ._.
+Approaches_NNS closely_RB related_JJ to_TO our_PRP$ work_NN are_VBP -LRB-_-LRB- 2_CD -RRB-_-RRB-
+ata_NN types_NNS ._.
+CRESS_NNP differs_VBZ in_IN generating_VBG both_CC the_DT implementation_NN and_CC the_DT formal_JJ specification_NN from_IN the_DT same_JJ CRESS_NNP description_NN ,_, dealing_VBG fully_RB with_IN data_NNS types_NNS and_CC values_NNS ._.
+WSAT_NN -LRB-_-LRB- Web_NN Services_NNP Analysis_NNP Tool_NNP =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =--RRB-_NN is_VBZ used_VBN to_TO analyze_VB and_CC verify_VB composite_JJ web_NN services_NNS ,_, particularly_RB focusing_VBG on_IN asynchronous_JJ communication_NN ._.
+Specifications_NNS can_MD be_VB written_VBN bottom-up_JJ or_CC top-down_JJ ,_, finally_RB being_VBG translated_VBN into_IN Promela_NNP
+automated_JJ service_NN composition_NN approaches_NNS require_VBP developers_NNS to_TO provide_VB a_DT detailed_JJ specification_NN of_IN the_DT desired_VBN behaviors_NNS of_IN a_DT composite_JJ service_NN -LRB-_-LRB- e.g._FW ,_, goal_NN service_NN in_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- or_CC conversation_NN protocol_NN in_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =--RRB-_NN with_IN formal_JJ models_NNS or_CC a_DT specification_NN language_NN -LRB-_-LRB- e._NN g_NN ,_, BPEL4WS_NN -RRB-_-RRB- ._.
+To_TO ensure_VB the_DT correctness_NN of_IN the_DT design_NN ,_, developers_NNS of_IN a_DT composite_JJ service_NN need_VBP to_TO perform_VB formal_JJ verification_NN of_IN the_DT correctness_NN const_NN
+y_NN and_CC to_TO establish_VB confidence_NN in_IN its_PRP$ quality_NN ,_, sometime_RB even_RB with_IN techniques_NNS to_TO evaluate_VB performance_NN ._.
+Formal_JJ methods_NNS are_VBP applied_VBN in_IN the_DT design_NN of_IN -LRB-_-LRB- distributed_VBN -RRB-_-RRB- computer_NN systems_NNS ,_, including_VBG web_NN services_NNS =_JJ -_: =[_NN 84_CD ,_, 31_CD ,_, 44_CD -RRB-_-RRB- -_: =_SYM -_: where_WRB with_IN regards_VBZ to_TO BPEL_NN it_PRP is_VBZ acknowledge_VB that_IN the_DT specification_NN will_MD benefit_VB from_IN formalism_NN -LRB-_-LRB- 74_CD -RRB-_-RRB- ._.
+2.3.2_CD Formal_JJ Methods_NNS There_EX are_VBP different_JJ types_NNS of_IN formal_JJ specification_NN languages_NNS ,_, notations_NNS ,_, tech_NN
+ectures_NNS -LRB-_-LRB- SOA_NN -RRB-_-RRB- ._.
+However_RB ,_, abundant_JJ research_NN challenges_NNS still_RB remain_VBP -LRB-_-LRB- 11_CD -RRB-_-RRB- ;_: e.g._FW ,_, automatic_JJ web_NN service_NN discovery_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, web_NN service_NN composition_NN -LRB-_-LRB- 22_CD ,_, 21_CD ,_, 4_CD -RRB-_-RRB- ,_, or_CC formal_JJ verification_NN of_IN composed_VBN web_NN services_NNS =_JJ -_: =[_NN 18_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+✩_NN A_NN preliminary_JJ version_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- of_IN this_DT paper_NN was_VBD presented_VBN at_IN the_DT 20th_JJ IEEE_NN International_JJ Conference_NN on_IN Tools_NNS with_IN Artificial_JJ Intelligence_NNP -LRB-_-LRB- ICTAI_NNP -RRB-_-RRB- ,_, 2008_CD ._.
+∗_CD Corresponding_VBG author_NN :_: Wonhong_NNP Nam_NNP ;_: E-mail_NN :_: w_NN
+r_NN et_FW al._FW -LRB-_-LRB- 2_CD ,_, 8_CD -RRB-_-RRB- ,_, Lohmann_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- -RRB-_-RRB- ,_, liveness_NN -LRB-_-LRB- Foster_NNP et_FW al._FW -LRB-_-LRB- 2_CD ,_, 8_CD -RRB-_-RRB- -RRB-_-RRB- ,_, reachability_NN -LRB-_-LRB- Ouyang_NNP et_FW al._FW -LRB-_-LRB- 9_CD ,_, 10_CD -RRB-_-RRB- ,_, Qian_JJ et_FW al._FW -LRB-_-LRB- 11_CD -RRB-_-RRB- -RRB-_-RRB- ,_, deadlocks_NNS -LRB-_-LRB- Qian_JJ et_FW al._FW -LRB-_-LRB- 11_CD -RRB-_-RRB- -RRB-_-RRB- ,_, synchronizability_NN and_CC realizability_NN -LRB-_-LRB- Xiang_NNP et_FW al._FW =_SYM -_: =[_NN 4_CD ,_, 3_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, and_CC controllability_NN -LRB-_-LRB- Lohmann_NNP et_FW al._FW -LRB-_-LRB- 7_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Different_JJ from_IN these_DT research_NN efforts_NNS ,_, our_PRP$ work_NN focuses_VBZ on_IN detecting_VBG concurrency-related_JJ problematic_JJ activity_NN arrangement_NN in_IN composite_JJ web_NN services_NNS ._.
+In_IN ord_NN
+agrams_NNS ,_, Harel_NNP 's_POS Statecharts_NNP ,_, IO-Automata_NNP ,_, LTS_NNP ,_, etc_FW •_FW Petri_FW nets_NNS :_: colored_VBN Petri_NNP nets_NNS ,_, workflow_NN nets_NNS ,_, open_JJ nets_NNS ,_, etc_FW •_FW Temporal_JJ Logic_NN :_: Lamport_NNP 's_POS TLA_NNP •_NNP Message_NNP Sequence_NN Charts_NNS Here_RB are_VBP a_DT few_JJ references_NNS =_JJ -_: =[_NN 19_CD ,_, 38_CD ,_, 18_CD ,_, 7_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: where_WRB the_DT reader_NN can_MD find_VB more_JJR details_NNS about_IN these_DT models_NNS and_CC their_PRP$ use_NN in_IN the_DT service_NN development_NN process_NN ._.
+According_VBG to_TO us_PRP ,_, process_NN algebras_NNS are_VBP one_CD of_IN the_DT bestGwen_FW Salaün_FW 77_CD inria-00539017_NN ,_, versio_NN
+ping_NN of_IN composition_NN process_NN to_TO some_DT formal_JJ logic_NN to_TO be_VB then_RB used_VBN for_IN verification_NN ._.
+These_DT approaches_NNS include_VBP mapping_VBG the_DT BPEL_NN process_NN to_TO a_DT particular_JJ automata_NN with_IN guards_NNS ,_, and_CC using_VBG SPIN_NN model_NN checker_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, BPEL_NN to_TO timed_VBN automata_NN and_CC using_VBG UPPAAL_NN model_NN checker_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, BPMN_NN constructs_NNS into_IN labeled_JJ petri-nets_NNS then_RB using_VBG BPEL2PLML_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- and_CC others_NNS ._.
+Some_DT approaches_NNS do_VBP consider_VB the_DT prospect_NN of_IN building_NN upon_IN a_DT
+form_NN of_IN a_DT state-based_JJ encoding_NN and_CC then_RB run_VB a_DT Petri-net_JJ analysis_NN tool_NN or_CC model_NN checker_NN on_IN the_DT encoding_NN ._.
+Examples_NNS are_VBP the_DT Woflan_JJ tool_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- or_CC the_DT application_NN of_IN SMV_NN or_CC Spin_VB to_TO BPEL_NNP verification_NN ,_, e.g._FW ,_, =_JJ -_: =[_NN 19,20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN principle_NN ,_, these_DT approaches_NNS make_VBP it_PRP possible_JJ to_TO detect_VB errors_NNS in_IN business_NN processes_NNS ._.
+However_RB ,_, there_EX are_VBP severe_JJ limitations_NNS that_WDT so_RB far_RB prevented_VBD the_DT adoption_NN of_IN the_DT proposed_VBN solutions_NNS in_IN industri_NNS
+ed_VBN to_TO the_DT behavioral_JJ interface_NN level_NN where_WRB Behavioral_NNP Interface_NNP Description_NN Languages_NNS -LRB-_-LRB- BIDL_NN -RRB-_-RRB- and_CC related_JJ formal_JJ verification_NN techniques_NNS have_VBP emerged_VBN as_IN a_DT solution_NN to_TO detect_VB behavioral_JJ mismatch_NN ,_, e.g._FW ,_, =_JJ -_: =[_NN 2_CD ,_, 8_CD ,_, 17_CD ,_, 18_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, once_RB mismatch_NN is_VBZ detected_VBN ,_, the_DT issue_NN of_IN how_WRB components_NNS can_MD be_VB corrected_VBN to_TO enable_VB further_JJ composition_NN arises_VBZ ._.
+Software_NNP Adaptation_NNP -LRB-_-LRB- 35_CD ,_, 28_CD ,_, 6_CD -RRB-_-RRB- is_VBZ a_DT promising_JJ approach_NN which_WDT aims_VBZ at_IN supportin_NN
+inite_VB State_NNP Process_VB -LRB-_-LRB- FSP_NN -RRB-_-RRB- models_NNS and_CC compiled_VBN into_IN a_DT Labeled_VBN Transition_NN System_NN -LRB-_-LRB- LTS_NN -RRB-_-RRB- in_IN inferring_VBG the_DT correctness_NN of_IN the_DT Web_NN service_NN compositions_NNS which_WDT are_VBP specified_VBN using_VBG message_NN sequence_NN charts_NNS ._.
+In_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, finite_JJ automata_NN were_VBD augmented_VBN with_IN -LRB-_-LRB- i_LS -RRB-_-RRB- XML_NN messages_NNS and_CC -LRB-_-LRB- ii_LS -RRB-_-RRB- XPath_NN expressions_NNS as_IN the_DT basis_NN for_IN verifying_VBG temporal_JJ properties_NNS of_IN the_DT conversations_NNS of_IN composite_JJ Web_NN services_NNS ._.
+Rao_NNP et_FW al._FW -LRB-_-LRB- 12_CD -RRB-_-RRB- introdu_NN
+ing_NN aspects_NNS ._.
+Moreover_RB ,_, the_DT feasibility_NN of_IN verifying_VBG more_RBR complex_JJ business_NN processes_NNS is_VBZ not_RB clear_JJ and_CC still_RB subject_JJ to_TO future_JJ work_NN ._.
+Additionally_RB ,_, there_EX are_VBP some_DT attempts_NNS based_VBN on_IN finite_JJ state_NN machines_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC process_NN algebras_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Although_IN all_DT of_IN them_PRP are_VBP successful_JJ in_IN unraveling_NN weaknesses_NNS in_IN the_DT informal_JJ specification_NN ,_, they_PRP are_VBP of_IN different_JJ significance_NN for_IN formal_JJ verification_NN ._.
+Like_IN abstract_JJ state_NN
+a_DT realworld_JJ application_NN is_VBZ in_IN progress_NN ._.
+6_CD Related_JJ Work_NN A_NN number_NN of_IN approaches_NNS that_WDT adopt_VBP a_DT transition-system_JJ based_JJ framework_NN to_TO service_NN composition_NN have_VBP been_VBN proposed_VBN in_IN the_DT literature_NN ._.
+Bultan_NNP et_FW al._FW =_SYM -_: =[_NN 4_CD ,_, 7_CD -RRB-_-RRB- -_: =_JJ -_: model_NN Web_NN services_NNS as_IN automata_NN extended_VBD with_IN a_DT queue_NN ,_, and_CC communicate_VBP by_IN exchanging_VBG sequence_NN of_IN asynchronous_JJ messages_NNS ,_, which_WDT are_VBP used_VBN to_TO synthesize_VB a_DT composition_NN for_IN a_DT given_VBN specification_NN ._.
+Their_PRP$ appr_NN
+eloped_VBD -LRB-_-LRB- see_VB -LRB-_-LRB- 5_CD ,_, 7_CD -RRB-_-RRB- for_IN a_DT survey_NN -RRB-_-RRB- ._.
+Of_IN particular_JJ interest_NN in_IN the_DT context_NN of_IN the_DT work_NN described_VBN in_IN this_DT paper_NN are_VBP approaches_NNS to_TO service_NN composition_NN within_IN a_DT transition_NN system_NN based_JJ framework_NN ._.
+Fu_FW et_FW al._FW =_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: model_NN Web_NN services_NNS as_IN automata_NN extended_VBD with_IN a_DT queue_NN ,_, and_CC commu4_NN However_RB ,_, domain-specific_JJ information_NN about_IN component_NN services_NNS -LRB-_-LRB- e.g._FW ,_, a_DT partial-order_NN among_IN services_NNS -RRB-_-RRB- ,_, if_IN available_JJ ,_, can_MD be_VB used_VBN to_TO red_JJ
+tegy_NN is_VBZ found_VBN or_CC the_DT user_NN decides_VBZ to_TO abort_VB ._.
+6_CD Related_JJ Work_NN A_NN number_NN of_IN approaches_NNS have_VBP been_VBN proposed_VBN in_IN the_DT literature_NN which_WDT adopt_VBP a_DT transitionsystem_NN based_VBN framework_NN to_TO service_NN composition_NN ._.
+Fu_FW et_FW al._FW =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: model_NN Web_NN services_NNS assautomata_NN extended_VBN with_IN a_DT queue_NN ,_, and_CC communicate_VBP by_IN exchanging_VBG sequence_NN of_IN asynchronous_JJ messages_NNS ,_, which_WDT are_VBP used_VBN to_TO synthesize_VB a_DT composition_NN for_IN a_DT given_VBN specification_NN ._.
+Their_PRP$ appr_NN
+atomic_JJ processes_NNS of_IN OWL-S_NN ._.
+-LRB-_-LRB- iii_LS -RRB-_-RRB- Message_NN passing_NN ,_, including_VBG a_DT simple_JJ notion_NN of_IN ports_NNS and_CC links_NNS ,_, as_IN found_VBN in_IN web_NN services_NNS standards_NNS -LRB-_-LRB- e.g._FW ,_, WSDL_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, WS-BPEL_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- -RRB-_-RRB- and_CC some_DT formal_JJ investigations_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 6_CD ,_, 9_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+-LRB-_-LRB- iv_LS -RRB-_-RRB- The_DT behavior_NN of_IN web_NN services_NNS -LRB-_-LRB- which_WDT may_MD involve_VB multiple_JJ atomic_JJ processes_NNS and_CC message-passing_JJ activities_NNS -RRB-_-RRB- is_VBZ specified_VBN using_VBG finite_JJ state_NN transition_NN system_NN ,_, in_IN the_DT spirit_NN of_IN -LRB-_-LRB- 5_CD ,_, 6_CD ,_, 9_CD -RRB-_-RRB- ._.
+The_DT fir_NN
+;_: and_CC services_NNS consumer_NN and_CC producer_NN emulation_NN ._.
+In_IN addition_NN ,_, there_EX are_VBP several_JJ papers_NNS about_IN modeling_NN the_DT composition_NN of_IN web_NN services_NNS and_CC model_NN checking_NN on_IN the_DT composed_VBN web_NN services_NNS ._.
+Bultan_NNP ,_, Fu_NNP et_FW al._FW =_SYM -_: =[_NN 8_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: create_VB a_DT model_NN for_IN web_NN services_NNS to_TO describe_VB composite_JJ web_NN services_NNS ,_, focusing_VBG on_IN an_DT the_DT messages_NNS in_IN web_NN services_NNS ._.
+Finite_JJ state_NN machines_NNS are_VBP used_VBN to_TO represent_VB web_NN services_NNS that_WDT have_VBP a_DT sequence_NN of_IN messa_NN
+o_NN such_JJ verification_NN techniques_NNS ._.
+Instead_RB ,_, we4_FW Ankolekar_FW et_FW al._FW use_NN model_NN checking_NN ,_, a_DT method_NN that_WDT has_VBZ been_VBN fairly_RB successful_JJ in_IN the_DT verification_NN of_IN distributed_VBN systems_NNS ,_, such_JJ as_IN Web_NN services_NNS -LRB-_-LRB- e.g._FW BPEL_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Model_NNP checking_NN exhaustively_RB checks_VBZ all_DT possible_JJ executions_NNS of_IN a_DT system_NN to_TO verify_VB that_IN certain_JJ properties_NNS hold_VBP ._.
+It_PRP can_MD thus_RB formally_RB prove_VB the_DT correctness_NN of_IN a_DT system_NN ._.
+To_TO construct_VB such_JJ proofs_NNS ,_, mode_NN
+alization_NN of_IN Web_NN Service_NNP Choreography_NNP Interface_NNP -LRB-_-LRB- WSCI_NNP -RRB-_-RRB- using_VBG a_DT process_NN algebra_NN approach_NN -LRB-_-LRB- CCS_NN -RRB-_-RRB- ,_, and_CC discussed_VBD the_DT benefits_NNS of_IN such_JJ formalization_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+X._NNP Fu_NNP et_FW al._FW gave_VBD a_DT translation_NN from_IN BPEL_NN to_TO Promela_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Pi4SOA_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- is_VBZ a_DT tool_NN for_IN designing_VBG WS-CDL_NN choreography_NN with_IN a_DT nice_JJ graphical_JJ user_NN interface_NN ,_, and_CC supports_VBZ projection_NN from_IN WS-CDL_NN to_TO BPEL_NNP or_CC Java_NNP ._.
+It_PRP has_VBZ a_DT text-based_JJ simulator_NN which_WDT is_VBZ relatively_RB di_FW
+ng_NN this_DT direction_NN ._.
+There_EX have_VBP been_VBN studies_NNS also_RB on_IN static_JJ analysis_NN of_IN ebusiness_NN process_NN specifications_NNS ._.
+In_IN -LRB-_-LRB- 21_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, the_DT authors_NNS analyze_VBP BPEL_NN specifications_NNS via_IN converting_VBG them_PRP to_TO Petri_NNP Nets_NNPS ._.
+In_IN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT authors_NNS present_VBP a_DT set_NN of_IN tools_NNS and_CC techniques_NNS for_IN analyzing_VBG interactions_NNS of_IN composite_JJ asynchronous_JJ BPEL_NN services_NNS ._.
+-LRB-_-LRB- 16_CD -RRB-_-RRB- provides_VBZ a_DT verification_NN tool_NN for_IN web_NN service_NN orchestration_NN ,_, process_NN algebra_NN
+mposed_VBN web_NN services_NNS to_TO be_VB described_VBN in_IN a_DT BPEL-like_JJ manner_NN ._.
+Service_NN compositions_NNS and_CC workflow_NN descriptions_NNS are_VBP automatically_RB checked_VBN for_IN safety_NN and_CC liveness_NN properties_NNS ._.
+WSAT_NN -LRB-_-LRB- Web_NN Service_NNP Analysis_NNP Tool_NNP =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =--RRB-_NN models_NNS the_DT interactions_NNS of_IN composite_JJ web_NN services_NNS in_IN terms_NNS of_IN the_DT global_JJ sequences_NNS of_IN message_NN they_PRP exchange_VBP ._.
+For_IN verification_NN ,_, these_DT models_NNS are_VBP translated_VBN into_IN Promela_NNP and_CC verified_VBN with_IN SPIN_NN ._.
+The_DT OR_NN
+nt_NN a_DT technique_NN based_VBN on_IN ``_`` Planning_NNP as_IN Model_NNP Checking_NNP ''_'' for_IN planning_VBG under_IN uncertainty_NN for_IN composition_NN and_CC monitoringsof_NN BPEL4WS_NN processes_NNS ._.
+The_DT Model_NNP checking_NN approach_NN uses_VBZ the_DT MBP_NN Planner_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Fu_FW et_FW al_FW =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: presents_VBZ a_DT framework_NN where_WRB BPEL_NN specifications_NNS are_VBP translated_VBN to_TO an_DT intermediate_JJ representation_NN ,_, using_VBG guarded_VBN automata_NN as_IN XPath_NN expressions_NNS ._.
+This_DT is_VBZ followed_VBN by_IN the_DT translation_NN of_IN the_DT intermediate_JJ r_NN
+ons_NNS and_CC automatically_RB run_VB compensation_NN when_WRB a_DT failure_NN occurs_VBZ ._.
+Existing_VBG research_NN has_VBZ focused_VBN on_IN formalizing_VBG the_DT semantics_NNS of_IN compensation_NN -LRB-_-LRB- 7_CD ,_, 8_CD ,_, 9_CD ,_, 5_CD ,_, 4_CD -RRB-_-RRB- or_CC on_IN verifying_VBG interactions_NNS between_IN processes_NNS =_JJ -_: =[_NN 6_CD ,_, 15_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Here_RB ,_, we_PRP define_VBP a_DT notion_NN of_IN correctness_NN appropriate_JJ for_IN a_DT long-running_JJ transaction_NN ,_, focusing_VBG on_IN the_DT permanent_JJ changes_NNS made_VBN by_IN the_DT transaction_NN ._.
+Standard_JJ ,_, atomic_JJ transactions_NNS have_VBP a_DT well-defined_JJ ,_, appl_NN
+h_NN one_CD memory_NN ,_, provides_VBZ a_DT decision_NN procedure_NN for_IN the_DT safety_NN verification_NN problem_NN ._.
+While_IN automatic_JJ model_NN checking_NN techniques_NNS for_IN web_NN services_NNS and_CC business_NN process_NN applications_NNS have_VBP been_VBN proposed_VBN before_IN =_JJ -_: =[_NN 10,11,9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, we_PRP provide_VBP the_DT first_JJ automatic_JJ handling_NN of_IN compensation_NN stacks_NNS ._.
+2_CD Sagas_NNS with_IN Compensation_NNP A_NNP saga_NN is_VBZ a_DT high-level_JJ description_NN of_IN the_DT interaction_NN between_IN components_NNS for_IN w_NN
+ety_NN properties_NNS for_IN web_NN services_NNS ._.
+Several_JJ communication_NN models_NNS have_VBP been_VBN analyzed_VBN -LRB-_-LRB- 18_CD -RRB-_-RRB- and_CC conditions_NNS proposed_VBD allowing_VBG the_DT analysis_NN of_IN components_NNS communicating_VBG asynchronously_RB through_IN unbounded_JJ queues_NNS =_JJ -_: =[_NN 4_CD ,_, 13_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Hierarchical_JJ state_NN machines_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- have_VBP been_VBN proposed_VBN to_TO achieve_VB succinctness_NN compared_VBN to_TO flat_JJ finite-state_JJ models_NNS ._.
+Temporal_JJ logics_NNS for_IN specifying_VBG and_CC verifying_VBG temporal_JJ properties_NNS of_IN web_NN services_NNS -LRB-_-LRB- 21_CD ,_,
+-LRB-_-LRB- 12,17,24,26,40,46_CD -RRB-_-RRB- for_IN surveys_NNS -RRB-_-RRB- ._.
+Of_IN particular_JJ interest_NN in_IN the_DT context_NN of_IN the_DT work_NN described_VBN in_IN this_DT paper_NN are_VBP approaches_NNS to_TO service_NN composition_NN within_IN a_DT transition_NN system_NN based_JJ framework_NN ._.
+Fu_FW et_FW al._FW =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: model_NN Web_NN services_NNS as_IN automata_NN extended_VBD with_IN a_DT queue_NN ,_, that_WDT communicate_VBP by_IN exchanging_VBG a_DT sequence_NN of_IN asynchronous_JJ messages_NNS ,_, to_TO synthesize_VB a_DT composition_NN for_IN a_DT given_VBN specification_NN ._.
+Their_PRP$ approach_NN is_VBZ exte_NN
+,_, as_RB far_RB as_IN we_PRP know_VBP ,_, none_NN of_IN them_PRP aims_VBZ at_IN checking_NN of_IN the_DT same_JJ property_NN -LRB-_-LRB- session_NN compliance_NN -RRB-_-RRB- as_IN the_DT technique_NN proposed_VBN in_IN this_DT paper_NN ._.
+Short_JJ characteristic_NN of_IN selected_VBN approaches_NNS is_VBZ provided_VBN below_IN ._.
+In_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT authors_NNS present_VBP a_DT technique_NN for_IN checking_VBG LTL_NNP properties_NNS of_IN multiple_JJ interacting_NN web_NN services_NNS implemented_VBN in_IN BPEL_NNP ._.
+The_DT key_JJ idea_NN of_IN the_DT technique_NN is_VBZ -LRB-_-LRB- i_LS -RRB-_-RRB- translation_NN of_IN BPEL_NN implementation_NN of_IN each_DT
+interfaces_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- did_VBD not_RB support_VB the_DT two-player_JJ view_NN ,_, permitting_VBG analysis_NN only_RB for_IN closed_VBN systems_NNS ,_, where_WRB the_DT environment_NN is_VBZ known_VBN ._.
+sIn_NN contrast_NN to_TO the_DT formal_JJ verification_NN of_IN web_NN service_NN implementations_NNS =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 5_CD ,_, 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP explicitly_RB propose_VBP to_TO specify_VB and_CC verify_VB interfaces_NNS of_IN web_NN services_NNS ,_, which_WDT has_VBZ a_DT much_RB better_JJR chance_NN of_IN succeeding_VBG in_IN practice_NN ,_, because_IN interfaces_NNS are_VBP usually_RB less_RBR complex_JJ than_IN the_DT corresponding_JJ i_FW
+rrectness_NN can_MD be_VB ensured_VBN by_IN statically_RB checking_VBG their_PRP$ composition_NN against_IN properties_NNS of_IN interest_NN ._.
+The_DT same_JJ approach_NN has_VBZ been_VBN taken_VBN by_IN several_JJ researchers_NNS in_IN the_DT context_NN of_IN web_NN services_NNS as_RB well_RB ,_, e.g._FW ,_, =_JJ -_: =[_NN 12_CD ,_, 13_CD ,_, 26_CD ,_, 4_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN static_JJ analy2_NN sis_NN is_VBZ very_RB appealing_JJ --_: errors_NNS are_VBP discovered_VBN ahead_RB of_IN time_NN and_CC without_IN the_DT need_NN to_TO exercise_VB the_DT system_NN ,_, this_DT approach_NN has_VBZ several_JJ major_JJ limitations_NNS ._.
+First_RB of_IN all_DT ,_, web_NN services_NNS t_NN
+ith_VB our_PRP$ process_NN as_IN we_PRP have_VBP expected_VBN it_PRP during_IN the_DT process_NN design_NN ._.
+7_CD Related_NNP Work_NNP Several_JJ groups_NNS have_VBP proposed_VBN formal_JJ semantics_NNS for_IN BPEL_NNP ._.
+Among_IN them_PRP ,_, there_EX are_VBP semantics_NNS based_VBN on_IN finite_JJ state_NN machines_NNS =_JJ -_: =[_NN 17,18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT process_NN algebra_NN Lotos_NNP -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, abstract_JJ state_NN machines_NNS -LRB-_-LRB- 20,21_CD -RRB-_-RRB- ,_, and_CC Petri_NNP nets_NNS -LRB-_-LRB- 22,7_CD -RRB-_-RRB- ._.
+The_DT group_NN of_IN van_NNP der_NNP Aalst_NNP also_RB follows_VBZ a_DT Petri_NNP net-based_JJ approach_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Their_PRP$ semantics_NNS ,_, however_RB ,_, does_VBZ not_RB co_VB
+rect_VB the_DT traffic_NN towards_IN that_DT as_RB much_JJ as_IN we_PRP can_MD ._.
+They_PRP can_MD also_RB be_VB about_IN systems_NNS generated_VBN by_IN single_JJ services_NNS as_IN a_DT whole_NN ._.
+In_IN fact_NN ,_, this_DT type_NN of_IN constraints_NNS is_VBZ widely_RB used_VBN in_IN the_DT choreography_NN literature_NN =_JJ -_: =[_NN 7_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT study_NN ,_, we_PRP consider_VBP linear_JJ constraints_NNS ,_, a_DT subset_NN of_IN the_DT first_JJ type_NN of_IN constraints_NNS ._.
+For_IN example_NN ,_, in_IN the_DT service_NN A4_NN in_IN Example_NNP 1_CD ,_, we_PRP would_MD like_VB to_TO restrict_VB the_DT delegations_NNS based_VBN on_IN the_DT usage_NN hi_UH
+visioning_VBG of_IN a_DT formal_JJ semantics_NNS of_IN BPEL_NN has_VBZ been_VBN the_DT subject_NN of_IN a_DT variety_NN of_IN related_JJ work_NN ._.
+Many_JJ of_IN these_DT efforts_NNS however_RB ,_, focus_NN on_IN small_JJ subsets_NNS of_IN BPEL_NNP like_IN for_IN example_NN only_RB on_IN structured_JJ activities_NNS =_JJ -_: =[_NN 11,12_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT is_VBZ a_DT relatively_RB simple_JJ subset_NN ._.
+A_DT comparative_JJ summary_NN of_IN previous_JJ efforts_NNS in_IN this_DT area_NN is_VBZ given_VBN in_IN Table_NNP 1_CD ._.
+The_DT columns_NNS of_IN the_DT table_NN correspond_VBP to_TO the_DT following_JJ criteria_NNS :_: --_: Tech_NNP indicates_VBZ the_DT fo_NN
+actal_JJ components_NNS on_IN which_WDT properties_NNS can_MD be_VB verified_VBN using_VBG CADP_NN ._.
+In_IN the_DT Web_NN Service_NNP area_NN ,_, different_JJ works_NNS have_VBP been_VBN dedicated_VBN to_TO verifying_VBG Web_NN service_NN description_NN to_TO ensure_VB some_DT properties_NNS of_IN systems_NNS =_JJ -_: =[_NN 10,11,21,22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Summarising_VBG these_DT works_NNS ,_, they_PRP use_VBP model-checking_JJ to_TO verify_VB some_DT properties_NNS of_IN cooperating_VBG Web_NN services_NNS described_VBN using_VBG XML-based_JJ languages_NNS -LRB-_-LRB- DAML-S_NN ,_, WSFL_NN ,_, BPEL_NN ,_, WSCI_NN -RRB-_-RRB- ._.
+Accordingly_RB ,_, abstract_JJ represent_VBP
+s_NN of_IN their_PRP$ preconditions_NNS and_CC effects_NNS ,_, and_CC the_DT OWL-S_NN constructors_NNS into_IN a_DT Petri_NNP net_JJ model_NN ._.
+This_DT reduces_VBZ the_DT problem_NN of_IN composability_NN to_TO the_DT problemsof_NN reachability_NN in_IN the_DT Petri-net_NN ._.
+In_IN another_DT approach_NN =_JJ -_: =[_NN 6_CD ,_, 10_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT desired_VBN global_JJ behavior_NN is_VBZ a_DT ``_`` conversation_NN ''_'' -LRB-_-LRB- i.e._FW ,_, family_NN of_IN permitted_VBN message_NN sequences_NNS -RRB-_-RRB- specified_VBN using_VBG a_DT finite_JJ state_NN automaton_NN ._.
+Under_IN certain_JJ conditions_NNS ,_, the_DT automaton_NN can_MD be_VB ``_`` projected_VBN ''_'' to_TO
+y_NN represent_VBP a_DT BPEL_NN schema_NN and_CC specify_VB the_DT properties_NNS ._.
+In_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, Stahl_NNP maps_VBZ BPEL_NN schema_NN into_IN Petri_NNP nets_NNS and_CC utilises_VBZ a_DT verification_NN tool_NN LORA_NNP -LRB-_-LRB- Low_NNP Level_NNP Petri_NNP net_JJ Analyzer_NN -RRB-_-RRB- to_TO verify_VB CTL_NN properties_NNS ._.
+In_IN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT authors_NNS maps_VBZ BPEL_NNP into_IN Promela_NNP ,_, the_DT input_NN language_NN of_IN the_DT model_NN checker_NN SPIN_NN ,_, and_CC and_CC checks_NNS for_IN LTL_NNP properties_NNS ._.
+The_DT most_RBS significant_JJ difference_NN between_IN these_DT approaches_NNS and_CC our_PRP$ work_NN is_VBZ that_IN we_PRP
+BPEL4WS_NN -LRB-_-LRB- BPEL_NN -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, ,_, BPEL_NNP ._.
+=_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: Guarded_VBN ,_, Promela_NNP ,_, SPIN_NNP ,_,
+nitiative_JJ 's_POS scope_NN ._.
+Nonetheless_RB ,_, a_DT number_NN of_IN efforts_NNS outside_IN the_DT standardisation_NN initiative_NN itself_PRP have_VBP aimed_VBN at_IN providing_VBG formal_JJ semantics_NNS to_TO various_JJ subsets_NNS of_IN BPEL_NN in_IN terms_NNS of_IN finite_JJ state_NN machines_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, process_NN algebras_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, abstract_JJ state_NN machines_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, and_CC Petri_NNP nets_NNS -LRB-_-LRB- 12_CD ,_, 13_CD -RRB-_-RRB- ._.
+Some_DT of_IN these_DT formalisations_NNS can_MD be_VB used_VBN to_TO statically_RB check_VB semantic_JJ properties_NNS of_IN orchestrations_NNS or_CC to_TO check_VB that_IN a_DT giv_NN
+ocess_NN as_IN we_PRP have_VBP expected_VBN it_PRP during_IN the_DT process_NN design_NN ._.
+197_CD Related_NNP Work_NNP Several_JJ groups_NNS have_VBP proposed_VBN formal_JJ semantics_NNS for_IN BPEL4WS_NN 1.1_CD ._.
+Among_IN them_PRP ,_, there_EX are_VBP semantics_NNS based_VBN on_IN finite_JJ state_NN machines_NNS =_JJ -_: =[_NN 20,21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT process_NN algebra_NN Lotos_NNP -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, abstract_JJ state_NN machines_NNS -LRB-_-LRB- 23,24_CD -RRB-_-RRB- ,_, and_CC Petri_NNP nets_NNS -LRB-_-LRB- 25,12_CD -RRB-_-RRB- ._.
+However_RB ,_, to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, the_DT Petri_NNP net_JJ semantics_NNS proposed_VBN in_IN this_DT paper_NN is_VBZ the_DT only_JJ formal_JJ sema_NN
+f_LS the_DT services_NNS and_CC message_NN channels_NNS ._.
+It_PRP was_VBD shown_VBN that_IN when_WRB the_DT graph_NN of_IN services_NNS and_CC message_NN links_NNS is_VBZ a_DT tree_NN ,_, the_DT set_NN of_IN conversations_NNS is_VBZ also_RB a_DT regular_JJ language_NN ._.
+The_DT analysis_NN problem_NN was_VBD studied_VBN in_IN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: with_IN C_NN being_VBG the_DT set_NN of_IN all_DT conversation_NN protocols_NNS ._.
+Motivated_VBN by_IN the_DT bounded_VBN queue_NN case_NN ,_, the_DT notion_NN of_IN ``_`` synchronizability_NN ''_'' was_VBD formulated_VBN as_IN follows_VBZ ._.
+A_DT set_NN of_IN Mealy_JJ services_NNS is_VBZ synchronizable_JJ if_IN its_PRP$
+applied_VBN to_TO the_DT verification_NN of_IN WS-BPEL_NN executable_JJ processes_NNS against_IN WS-BPEL_NN abstract_JJ processes_NNS for_IN Web_NN services_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, as_RB well_RB as_IN the_DT analysis_NN of_IN behavioral_JJ properties_NNS of_IN composite_JJ WS-BPEL_NN Web_NN services_NNS =_JJ -_: =[_NN 4_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+CCS_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- was_VBD considered_VBN as_IN a_DT formal_JJ basis_NN for_IN reasoning_NN about_IN choreographic_JJ descriptions_NNS of_IN Web_NN services_NNS Figure_NNP 7_CD ._.
+Screenshot_NN of_IN FDR2_NN Downloaded_VBN from_IN http:\/\/sim.sagepub.com_NN at_IN PENNSYLVANIA_NNP STATE_NNP UNI_NNP
+represent_VB a_DT BPEL_NN schema_NN and_CC specify_VB the_DT properties_NNS ._.
+In_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, Stahl_NNP maps_VBZ BPEL_NN schemas_NNS into_IN Petri_NNP nets_NNS and_CC utilises_VBZ a_DT verification_NN tool_NN LORA_NNP -LRB-_-LRB- Low_NNP Level_NNP Petri_NNP net_JJ Analyzer_NN -RRB-_-RRB- to_TO verify_VB CTL_NN properties_NNS ._.
+In_IN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT authors_NNS map_VBP BPEL_NNP into_IN Promela_NNP ,_, the_DT input_NN language_NN of_IN the_DT model_NN checker_NN SPIN_NN ,_, and_CC then_RB use_VB SPIN_NN to_TO check_VB LTL_NN properties_NNS ._.
+The_DT most_RBS significant_JJ difference_NN between_IN these_DT approaches_NNS and_CC our_PRP$ work_NN is_VBZ t_NN
+to_TO the_DT subtle_JJ but_CC important_JJ issues_NNS of_IN the_DT specification_NN ._.
+Furthermore_RB ,_, based_VBN on_IN the_DT formal_JJ model_NN ,_, formal_JJ analysis_NN such_JJ as_IN model-checking_NN can_MD be_VB done_VBN to_TO discover_VB potential_JJ problems_NNS in_IN BPEL_NN source_NN codes_VBZ =_JJ -_: =[_NN 10_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO better_RBR understand_VB BPEL4People_NN and_CC to_TO help_VB analyze_VB the_DT related_JJ problems_NNS ,_, in_IN this_DT paper_NN ,_, we_PRP present_VBP a_DT formal_JJ model_NN of_IN BPEL4People_NN using_VBG the_DT CSP_NNP process_NN algebra_NN -LRB-_-LRB- 7_CD ,_, 16_CD -RRB-_-RRB- ,_, and_CC formalize_VB most_JJS of_IN the_DT co_NN
+-RRB-_-RRB- ,_, mediated_VBN composite_JJ services_NNS specified_VBN in_IN BPEL_NN were_VBD verified_VBN against_IN the_DT design_NN specified_VBN using_VBG Message_NN Sequence_NN Chart_NN and_CC Finite_JJ State_NN Process_VBP notations_NNS ,_, with_IN a_DT focus_NN on_IN the_DT control_NN flow_NN logic_NN ._.
+In_IN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, finite_JJ automata_NN were_VBD augmented_VBN with_IN -LRB-_-LRB- i_LS -RRB-_-RRB- XML_NN messages_NNS and_CC -LRB-_-LRB- ii_LS -RRB-_-RRB- XPath_NN expressions_NNS as_IN the_DT basis_NN for_IN verifying_VBG temporal_JJ properties_NNS of_IN the_DT conversations_NNS of_IN composite_JJ web_NN services_NNS ._.
+The_DT extended_JJ model_NN make_VB
+tate_VB web_NN service_NN flow_NN specified_VBN in_IN the_DT standard_JJ WSFL_NN -LRB-_-LRB- 29_CD -RRB-_-RRB- by_IN using_VBG the_DT explicit_JJ state_NN model_NN checker_NN SPIN_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+The_DT properties_NNS are_VBP expressed_VBN in_IN LTL_NN -LRB-_-LRB- abstracting_VBG from_IN data_NNS content_NN -RRB-_-RRB- ._.
+The_DT line_NN of_IN work_NN in_IN =_JJ -_: =[_NN 18_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: takes_VBZ into_IN account_NN the_DT contents_NNS of_IN the_DT exchanged_VBN messages_NNS and_CC thus_RB transcends_VBZ the_DT purely_RB propositional_JJ composition_NN models_NNS described_VBN above_IN -LRB-_-LRB- but_CC assumes_VBZ a_DT predefined_JJ finite_JJ domain_NN for_IN the_DT values_NNS ,_, which_WDT
+between_IN the_DT peer_VBP services_NNS is_VBZ created_VBN which_WDT in_IN turn_NN is_VBZ leveraged_VBN by_IN the_DT composition_NN algorithm_NN for_IN generating_VBG message_NN routing_VBG tables_NNS ,_, and_CC in_IN essence_NN ,_, creating_VBG the_DT P2P_NN conversation_NN model_NN ._.
+Bultan_NNP et_FW al._FW =_SYM -_: =[_NN 55_CD ,_, 35_CD ,_, 78_CD ,_, 79_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP techniques_NNS for_IN analyzing_VBG conversations_NNS of_IN composite_JJ Web_NN services_NNS for_IN both_CC synchronous_JJ and_CC asynchronous_JJ communication_NN models_NNS ._.
+Synchronous_JJ communication_NN happens_VBZ when_WRB a_DT message_NN sent_VBN by_IN a_DT service_NN
+sage_NN types_NNS passed_VBN between_IN peers_NNS during_IN a_DT valid_JJ execution_NN ._.
+One_CD of_IN the_DT open_JJ problems_NNS listed_VBN in_IN -LRB-_-LRB- 21_CD -RRB-_-RRB- is_VBZ the_DT verification_NN of_IN properties_NNS that_WDT pertain_VBP not_RB just_RB to_TO the_DT type_NN of_IN the_DT messages_NNS but_CC also_RB to_TO data_NNS ._.
+=_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: deals_NNS with_IN data_NNS present_JJ as_IN message_NN parameters_NNS by_IN translating_VBG the_DT specification_NN of_IN the_DT e-composition_NN to_TO Promela_NNP ,_, the_DT input_NN language_NN of_IN SPIN_NN ._.
+s7_NN ._.
+DISCUSSION_NN Our_PRP$ experience_NN with_IN the_DT wave_NN tool_NN in_IN the_DT cont_NN
+uable_JJ information_NN towards_IN correcting_VBG possible_JJ errors_NNS ._.
+6_CD Related_JJ Work_NN Several_JJ attempts_NNS have_VBP been_VBN made_VBN to_TO capture_VB the_DT behavior_NN of_IN BPEL_NN in_IN some_DT formal_JJ way_NN ._.
+Some_DT advocate_VBP the_DT use_NN of_IN finite_JJ state_NN machines_NNS =_JJ -_: =[_NN 12_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, others_NNS process_NN algebras_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, and_CC yet_RB others_NNS abstract_JJ state_NN machines_NNS -LRB-_-LRB- 9_CD ,_, 10_CD -RRB-_-RRB- ._.
+Our_PRP$ approach_NN is_VBZ specifically_RB tailored_VBN towards_IN mapping_VBG a_DT BPEL_NN process_NN model_NN onto_IN a_DT WF-net_NN ,_, which_WDT enables_VBZ us_PRP to_TO check_VB its_PRP$
+er_RB constitute_VB the_DT basis_NN of_IN our_PRP$ Web_NN Service_NNP Analysis_NNP Tool_NNP -LRB-_-LRB- WSAT_NNP -RRB-_-RRB- -LRB-_-LRB- 10_CD ,_, 19_CD -RRB-_-RRB- which_WDT can_MD verify_VB Linear_JJ Temporal_JJ Logic_NN -LRB-_-LRB- LTL_NN -RRB-_-RRB- properties_NNS of_IN conversation_NN protocols_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC interacting_VBG BPEL4WS_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- web_NN services_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Clearly_RB ,_, these_DT techniques_NNS can_MD also_RB be_VB used_VBN for_IN verification_NN of_IN other_JJ types_NNS of_IN software_NN systems_NNS that_WDT exchange_VBP XML_NN data_NNS ._.
+We_PRP use_VBP SPIN_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- as_IN a_DT back-end_JJ model_NN checker_NN in_IN verification_NN of_IN XML_NN data_NNS manipu_NN
+rvices_NNS in_IN an_DT asynchronous_JJ fashion_NN ._.
+A_DT global_JJ watcher_NN is_VBZ developed_VBN to_TO keep_VB track_NN of_IN messages_NNS being_VBG exchanged_VBN in_IN the_DT composition_NN to_TO detect_VB whether_IN a_DT specified_VBN goal_NN service_NN is_VBZ realizable_JJ ._.
+Subsequently_RB in_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: the_DT authors_NNS use_VBP Spin_VB model_NN checker_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- to_TO verify_VB whether_IN a_DT composition_NN correctly_RB replicates_VBZ the_DT required_JJ goal_NN ._.
+The_DT message_NN passing_NN framework_NN is_VBZ extended_VBN in_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- which_WDT uses_VBZ satisfiability_NN of_IN propositio_NN
+pproach_NN ,_, that_WDT assumes_VBZ the_DT point_NN of_IN view_NN of_IN a_DT BPEL_NN process_NN instance_NN that_WDT monitors_VBZ at_IN run_NN time_NN its_PRP$ conversations_NNS with_IN external_JJ services_NNS ,_, are_VBP the_DT ones_NNS based_VBN on_IN model_NN checking_NN ,_, like_IN the_DT work_NN by_IN Fu_FW et_FW al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT performs_VBZ a_DT static_JJ analysis_NN on_IN the_DT global_JJ sequence_NN of_IN messages_NNS exchanged_VBN by_IN a_DT set_NN of_IN composite_JJ web_NN services_NNS ._.
+Brenner_NNP et_FW al._FW -LRB-_-LRB- 8_CD -RRB-_-RRB- discuss_VBP six_CD different_JJ strategies_NNS of_IN runtime_NN testing_NN of_IN third-part_NN
+also_RB describe_VBP how_WRB our_PRP$ approach_NN is_VBZ different_JJ from_IN the_DT others_NNS ._.
+8.1_CD Model_NNP Checking_NNP Research_NNP on_IN model_NN checking_NN Web_NN service_NN compositions_NNS is_VBZ quite_RB recent_JJ ,_, but_CC it_PRP has_VBZ attracted_VBN considerable_JJ attention_NN ._.
+WSAT_NN =_SYM -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT framework_NN for_IN analyzing_VBG the_DT interactions_NNS among_IN composite_JJ Web_NN services_NNS modeled_VBN as_IN conversations_NNS ._.
+BPEL_NN specifications_NNS of_IN Web_NN services_NNS are_VBP translated_VBN into_IN an_DT intermediate_JJ representation_NN ,_, an_DT XPath-g_NN
+past_JJ runs_NNS ._.
+BP-QL_NN is_VBZ a_DT query_JJ language_NN for_IN process_NN specifications_NNS ,_, 1_CD not_RB about_IN their_PRP$ possible_JJ runs_NNS ._.
+This_DT is_VBZ for_IN two_CD main_JJ reasons_NNS ._.
+First_RB ,_, querying_VBG the_DT possible_JJ runs_NNS of_IN a_DT system_NN is_VBZ a_DT verification_NN problem_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: and_CC is_VBZ typically_RB of_IN very_RB high_JJ complexity_NN -LRB-_-LRB- from_IN NP-hard_NN for_IN very_RB simple_JJ specifications_NNS to_TO undecidable_JJ in_IN the_DT general_JJ case_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Second_RB ,_, the_DT analysis_NN of_IN runs_NNS requires_VBZ a_DT specification_NN to_TO have_VB a_DT well_NN de_IN
+he_PRP atomic_JJ processes_NNS of_IN OWL-S_NN ._.
+-LRB-_-LRB- c_LS -RRB-_-RRB- Message_NN passing_NN ,_, including_VBG a_DT simple_JJ notion_NN of_IN ports_NNS and_CC links_NNS ,_, as_IN found_VBN in_IN web_NN services_NNS standards_NNS -LRB-_-LRB- e.g._FW ,_, WSDL_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, BPEL4WS_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- -RRB-_-RRB- and_CC some_DT formal_JJ investigations_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 7_CD ,_, 10_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+-LRB-_-LRB- d_LS -RRB-_-RRB- The_DT behavior_NN of_IN web_NN services_NNS -LRB-_-LRB- which_WDT may_MD involve_VB multiple_JJ atomic_JJ processes_NNS and_CC message-passing_JJ activities_NNS -RRB-_-RRB- is_VBZ specified_VBN using_VBG finite_JJ state_NN transition_NN system_NN ,_, in_IN the_DT spirit_NN of_IN -LRB-_-LRB- 6_CD ,_, 7_CD ,_, 10_CD -RRB-_-RRB- ._.
+The_DT fir_NN
+allows_VBZ automatic_JJ tool_NN support_NN and_CC --_: as_IN a_DT result_NN --_: automata-based_JJ models_NNS are_VBP more_RBR and_CC more_RBR used_VBN to_TO formally_RB describe_VB ,_, compose_VB ,_, and_CC verify_VB service_NN -LRB-_-LRB- compositions_NNS -RRB-_-RRB- ._.
+Below_NNP follow_VB some_DT exemplary_JJ approaches_NNS ._.
+In_IN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: the_DT authors_NNS introduce_VBP a_DT framework_NN to_TO analyze_VB and_CC verify_VB properties_NNS of_IN service_NN compositions_NNS of_IN BPEL_NN processes_NNS communicating_VBG via_IN asynchronous_JJ XML_NN messages_NNS ._.
+This_DT framework_NN first_RB translates_VBZ the_DT BPEL_NN proc_NN
+ition_NN is_VBZ crucial_JJ ,_, and_CC has_VBZ proposed_VBN run-time_JJ monitoring_NN and_CC reaction_NN strategies_NNS to_TO make_VB compositions_NNS self-healing_JJ -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Other_JJ work_NN has_VBZ considered_VBN quality_NN of_IN service_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, model_NN checking_NN and_CC verification_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC proactive_JJ failure_NN handling_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+The_DT trend_NN is_VBZ towards_IN the_DT development_NN of_IN mechanisms_NNS to_TO monitor_VB the_DT composition_NN and_CC to_TO detect_VB and_CC recover_VB from_IN faults_NNS automatically_RB ,_, that_DT is_VBZ ,_, to_TO be_VB able_JJ to_TO per_IN
+re_VB adequate_JJ to_TO describe_VB real-size_JJ problems_NNS ,_, as_RB well_RB as_IN to_TO reason_NN on_IN them_PRP ._.
+Regarding_VBG the_DT reasoning_NN question_NN ,_, works_NNS have_VBP been_VBN dedicated_VBN to_TO verifying_VBG WS_NN descriptions_NNS to_TO ensure_VB some_DT properties_NNS of_IN systems_NNS =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+These_DT works_NNS use_VBP model_NN checking_NN to_TO verify_VB some_DT properties_NNS of_IN cooperating_VBG WSs_NNS described_VBN using_VBG XML-based_JJ languages_NNS -LRB-_-LRB- DAML-S_NN ,_, WSFL_NN ,_, BPEL_NN ,_, WSCI_NN -RRB-_-RRB- ._.
+Accordingly_RB ,_, they_PRP abstract_JJ their_PRP$ r_NN
+number_NN of_IN standards_NNS have_VBP been_VBN proposed_VBN for_IN describing_VBG the_DT behavior_NN of_IN a_DT web_NN service_NN ,_, such_JJ as_IN BPEL_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC WSCI_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+In_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, finite_JJ state_NN machines_NNS are_VBP used_VBN for_IN specifying_VBG behavioral_JJ interfaces_NNS and_CC in_IN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: it_PRP is_VBZ shown_VBN that_IN other_JJ behavioral_JJ descriptions_NNS -LRB-_-LRB- such_JJ as_IN BPEL_NN -RRB-_-RRB- can_MD be_VB translated_VBN to_TO finite_JJ state_NN machines_NNS ._.
+Finite_JJ state_NN machines_NNS are_VBP powerful_JJ enough_RB to_TO specify_VB behavioral_JJ interfaces_NNS of_IN typical_JJ web_NN ser_NN
+A_DT number_NN of_IN standards_NNS have_VBP been_VBN proposed_VBN for_IN describing_VBG the_DT behavior_NN of_IN aweb_JJ service_NN ,_, such_JJ as_IN BPEL_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC WSCI_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+In_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, finite_JJ state_NN machines_NNS are_VBP used_VBN for_IN specifying_VBG behavioral_JJ interfacesand_NN in_IN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: it_PRP is_VBZ shown_VBN that_IN other_JJ behavioral_JJ descriptions_NNS -LRB-_-LRB- such_JJ as_IN BPEL_NN -RRB-_-RRB- can_MD be_VB translated_VBN to_TO finite_JJ state_NN machines_NNS ._.
+Finite_JJ state_NN machines_NNS are_VBP powerful_JJ enough_RB to_TO specify_VB behavioral_JJ interfaces_NNS of_IN typical_JJ web_NN serv_NN
+e_LS to_TO the_DT unification_NN of_IN rather_RB different_JJ concepts_NNS in_IN WSFL_NNP and_CC XLANG_NNP ._.
+Several_JJ groups_NNS have_VBP proposed_VBN formal_JJ semantics_NNS for_IN BPEL_NNP ._.
+Among_IN the_DT existing_VBG attempts_NNS ,_, there_EX are_VBP some_DT based_VBN on_IN finite_JJ state_NN machines_NNS =_JJ -_: =[_NN 4_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, process_NN algebras_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, and_CC abstract_JJ state_NN machines_NNS -LRB-_-LRB- 7_CD ,_, 8_CD -RRB-_-RRB- ._.
+Though_IN all_DT of_IN them_PRP are_VBP successful_JJ in_IN unravelling_VBG weaknesses_NNS in_IN the_DT informal_JJ specification_NN ,_, they_PRP are_VBP of_IN different_JJ significance_NN for_IN formal_JJ ver_NN
+ms_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Using_VBG a_DT simple_JJ implementation_NN model_NN -LRB-_-LRB- such_JJ as_IN finitestate_NN machines_NNS -RRB-_-RRB- makes_VBZ it_PRP possible_JJ to_TO use_VB automated_JJ verification_NN techniques_NNS -LRB-_-LRB- such_JJ as_IN model_NN checking_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- -RRB-_-RRB- for_IN analyzinginteraction_NN properties_NNS =_JJ -_: =[_NN 14_CD ,_, 6_CD ,_, 8_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, in_IN order_NN to_TO make_VB sure_JJ that_IN a_DT Customer_NN does_VBZ not_RB indefinitely_RB wait_VB fora_NN reply_NN after_IN sending_VBG an_DT order_NN ,_, we_PRP may_MD want_VB to_TO verify_VB that_IN whenever_WRB an_DT order_NN message_NN is_VBZ sent_VBN ,_, eventually_RB either_CC a_DT bil_NN
+trace_NN of_IN the_DT shape_NN p_NN may_MD exist_VB ._.
+Again_RB ,_, if_IN not_RB ,_, the_DT activity_NN is_VBZ inconsistent_JJ with_IN the_DT pattern_NN ._.
+The_DT key_JJ difficulty_NN here_RB is_VBZ that_IN analyzing_VBG the_DT possible_JJ runs_NNS of_IN a_DT BP_NN is_VBZ essentially_RB a_DT verification_NN problem_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: and_CC is_VBZ typically_RB of_IN very_RB high_JJ complexity_NN -LRB-_-LRB- from_IN NP-hard_NN for_IN very_RB simple_JJ specifications_NNS to_TO undecidable_JJ in_IN the_DT general_JJ case_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+To_TO overcome_VB this_DT ,_, and_CC nevertheless_RB provide_VBP an_DT algorithm_NN of_IN tractable_JJ co_NN
+nal_JJ behavior_NN ._.
+BPEL_NN opens_VBZ up_RP the_DT possibility_NN of_IN applying_VBG a_DT range_NN of_IN formal_JJ techniques_NNS to_TO the_DT verification_NN of_IN the_DT behavior_NN of_IN Web_NN services_NNS ,_, and_CC different_JJ approaches_NNS have_VBP been_VBN defined_VBN for_IN verifying_VBG BPEL_NN =_JJ -_: =[_NN 6_CD ,_, 13_CD ,_, 14_CD ,_, 15_CD ,_, 7_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP are_VBP interested_JJ in_IN particular_JJ in_IN those_DT techniques_NNS that_WDT are_VBP applied_VBN to_TO the_DT verification_NN of_IN BPEL_NN compositions_NNS :_: in_IN this_DT case_NN ,_, we_PRP have_VBP to_TO verify_VB the_DT behaviors_NNS generated_VBN by_IN the_DT interactions_NNS of_IN a_DT set_NN of_IN
+growth_NN in_IN the_DT state_NN space_NN affects_VBZ the_DT performance_NN of_IN the_DT Spin_NN model_NN checker_NN significantly_RB ._.
+In_IN fact_NN ,_, Spin_NNP ran_VBD out_IN of_IN memory_NN when_WRB the_DT queue_NN size_NN was_VBD set_VBN to_TO 15_CD ._.
+We_PRP adapted_VBD the_DT synchronizability_NN analysis_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: into_IN our_PRP$ framework_NN in_IN order_NN to_TO verify_VB properties_NNS of_IN composite_JJ web_NN services_NNS in_IN the_DT presence_NN of_IN asynchronous_JJ communication_NN with_IN unbounded_JJ queues_NNS ._.
+A_DT composite_JJ web_NN service_NN is_VBZ called_VBN synchronizable_JJ if_IN its_PRP$
+terface_NN mapping_NN ,_, the_DT mapping_NN tool_NN must_MD convert_VB the_DT between_IN the_DT language_NN used_VBN at_IN the_DT interface_NN design_NN level_NN -LRB-_-LRB- e.g._FW BPEL_NN or_CC BPMN_NN -RRB-_-RRB- and_CC FSMs_NNS ._.
+Mappings_NNS from_IN BPEL_NN to_TO FSMs_NNS have_VBP been_VBN defined_VBN in_IN the_DT literature_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Messages_NNS intercepted_VBN by_IN the_DT engine_NN need_VBP to_TO be_VB correctly_RB associated_VBN to_TO their_PRP$ corresponding_JJ service_NN instance_NN ._.
+To_TO this_DT end_NN ,_, we_PRP impose_VBP that_IN every_DT SOAP_NN message_NN intercepted_VBN by_IN the_DT mediation_NN engine_NN should_MD
+ce_NN ._.
+Different_JJ solutions_NNS have_VBP been_VBN proposed_VBN during_IN the_DT last_JJ years_NNS to_TO check_VB such_JJ properties_NNS ._.
+Some_DT of_IN them_PRP consist_VBP on_IN the_DT translation_NN of_IN BPEL_NN into_IN different_JJ classes_NNS of_IN automata_NN ,_, like_IN Guarded_NNP Automata_NNP in_IN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Finite_NNP State_NNP Machine_NNP in_IN -LRB-_-LRB- 1_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 4_LS -RRB-_-RRB- ._.
+But_CC ,_, to_TO our_PRP$ knowledge_NN ,_, none_NN of_IN them_PRP introduce_VBP a_DT model_NN that_WDT allows_VBZ taking_VBG service_NN costs_NNS into_IN account_NN for_IN WS_NNP ._.
+In_IN this_DT direction_NN ,_, this_DT paper_NN defines_VBZ a_DT formal_JJ rep_NN
+er_RB constitute_VB the_DT basis_NN of_IN our_PRP$ Web_NN Service_NNP Analysis_NNP Tool_NNP -LRB-_-LRB- WSAT_NNP -RRB-_-RRB- -LRB-_-LRB- 10_CD ,_, 19_CD -RRB-_-RRB- which_WDT can_MD verify_VB Linear_JJ Temporal_JJ Logic_NN -LRB-_-LRB- LTL_NN -RRB-_-RRB- properties_NNS of_IN conversation_NN protocols_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC interacting_VBG BPEL4WS_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- web_NN services_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Clearly_RB ,_, these_DT techniques_NNS can_MD also_RB be_VB used_VBN for_IN verification_NN of_IN other_JJ types_NNS of_IN software_NN systems_NNS that_WDT exchange_VBP XML_NN data_NNS ._.
+We_PRP use_VBP SPIN_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- as_IN a_DT back-end_JJ model_NN checker_NN in_IN verification_NN of_IN XML_NN data_NNS manipu_NN
+mple_VB we_PRP could_MD use_VB Web_NN Service_NN Transition_NN Language_NN ,_, which_WDT can_MD be_VB translated_VBN into_IN FSMs_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Or_CC we_PRP could_MD use_VB a_DT BPEL4WS_NN specification_NN ,_, which_WDT can_MD be_VB translated_VBN into_IN an_DT extended_VBN version_NN of_IN guarded_VBN automata_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC in_IN turn_NN to_TO FSMs_NNS ._.
+In_IN the_DT next_JJ subsections_NNS we_PRP will_MD explain_VB in_IN detail_NN the_DT implementation_NN of_IN the_DT Synthesis_NN Engine_NNP and_CC of_IN the_DT Realization_NNP Module_NNP ._.
+4.1_CD Implementation_NN of_IN the_DT Synthesis_NN Engine_NNP Module_NNP Fro_NNP
+ompatibility_NN of_IN a-priori_NN not_RB compatible_JJ Choreographies_NNS are_VBP outlined_VBN ._.
+Another_DT approach_NN for_IN determining_VBG global_JJ interaction_NN models_NNS for_IN Web_NN Services_NNP develops_VBZ heuristics_NNS for_IN a_DT ``_`` Synchronizability_NNP Analysis_NNP ''_'' =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, similar_JJ to_TO the_DT compatibility_NN analysis_NN applied_VBD within_IN WW_NNP Discovery_NNP ._.
+Apart_RB from_IN these_DT efforts_NNS being_VBG of_IN academic_JJ nature_NN only_RB ,_, the_DT formal_JJ processes_NNS representation_NN used_VBN are_VBP questionable_JJ whether_IN being_VBG app_NN
+unit_NN testing_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, and_CC test_NN case_NN generation_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- -LRB-_-LRB- 28_CD -RRB-_-RRB- -RRB-_-RRB- simply_RB do_VBP not_RB consider_VB XPath_NN or_CC merely_RB model_VB it_PRP as_IN a_DT function_NN call_NN without_IN exploring_VBG deeply_RB its_PRP$ implication_NN from_IN the_DT V&V_NNP perspective_NN ._.
+Some_DT -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =-[_NN 11_CD -RRB-_-RRB- -RRB-_-RRB- simulate_VBP XPath_NN expressions_NNS in_IN another_DT language_NN using_VBG their_PRP$ styles_NNS of_IN programming_NN ._.
+The_DT conceptual_JJ structure_NN of_IN XPath_NN and_CC how_WRB various_JJ parts_NNS of_IN this_DT structure_NN may_MD interact_VB with_IN BPEL_NN remain_VBP unclear_JJ ._.
+ng_NN -RRB-_-RRB- for_IN the_DT sake_NN of_IN automating_VBG both_CC test_NN generation_NN and_CC execution_NN ._.
+However_RB ,_, the_DT description_NN of_IN these_DT protocols_NNS need_VBP to_TO be_VB made_VBN available_JJ in_IN the_DT web_NN service_NN registry_NN ._.
+Similar_JJ contributions_NNS are_VBP made_VBN by_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Web_NN services_NNS monitoring_NN ._.
+This_DT approach_NN is_VBZ generally_RB used_VBN to_TO testing_VBG commercial_JJ web_NN services_NNS ,_, where_WRB access_NN to_TO the_DT source_NN code_NN is_VBZ limited_JJ ,_, or_CC impossible_JJ ._.
+In_IN this_DT case_NN ,_, the_DT web_NN service_NN is_VBZ mainl_NN
+vity_NN to_TO a_DT transaction_NN management_NN and_CC provides_VBZ fault_NN ,_, compensation_NN ,_, and_CC event_NN handling_NN ._.
+A_DT process_NN is_VBZ the_DT outmost_JJS scope_NN of_IN the_DT described_VBN business_NN process_NN ._.
+For_IN more_JJR details_NNS about_IN BPEL_NN ,_, we_PRP refer_VBP to_TO -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC -LRB-_-LRB- 23_CD -RRB-_-RRB- ._.
+WS-BPEL_NN is_VBZ a_DT standard_JJ specification_NN ,_, therefore_RB it_PRP must_MD be_VB implemented_VBN ._.
+Nowadays_RB ,_, many_JJ implementations_NNS are_VBP available_JJ ,_, such_JJ as_IN Bexee_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, Oracle_NNP BPEL_NNP Process_VB Manager_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, BPEL_NN Maestro_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, o_NN
+fficult_NN to_TO analyze_VB ._.
+To_TO tackle_VB the_DT difficult_JJ problem_NN of_IN analyzing_VBG a_DT composite_JJ web_NN service_NN ,_, a_DT widely_RB adopted_VBN approach_NN is_VBZ modeling_NN individual_JJ processes_NNS as_IN variants_NNS of_IN communicating_VBG finite_JJ state_NN machines_NNS =_JJ -_: =[_NN 15_CD ,_, 16_CD ,_, 12_CD ,_, 23_CD -RRB-_-RRB- -_: =_JJ -_: or_CC variants_NNS of_IN Communicating_VBG Sequential_JJ Processes_NNS -LRB-_-LRB- CSP_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- -RRB-_-RRB- -LRB-_-LRB- 14_CD ,_, 20_CD -RRB-_-RRB- ._.
+In_IN these_DT approaches_NNS ,_, the_DT composed_VBN system_NN is_VBZ modeled_VBN by_IN a_DT product_NN automaton_NN ,_, where_WRB the_DT state_NN space_NN is_VBZ exponential_JJ in_IN the_DT number_NN o_NN
+e_LS -LRB-_-LRB- fault_NN tolerance_NN -RRB-_-RRB- contribute_VBP complexity_NN ._.
+Of_IN these_DT ,_, tool_NN support_NN for_IN monitoring_VBG and_CC controlling_VBG distributed_VBN tests_NNS has_VBZ received_VBN considerable_JJ attention_NN ._.
+Some_DT tools_NNS support_VBP primarily_RB functional_JJ testing_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 25_CD -RRB-_-RRB- ;_: others_NNS are_VBP specifically_RB targeted_VBN at_IN performance_NN testing_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+However_RB ,_, these_DT works_NNS address_VBP only_RB the_DT accidental_JJ issues_NNS associated_VBN with_IN distributed_VBN system_NN testing_NN ,_, and_CC do_VBP not_RB a_DT
+model_NN has_VBZ been_VBN chosen_VBN because_IN it_PRP is_VBZ simple_JJ ,_, graphical_JJ ,_, and_CC it_PRP can_MD be_VB easily_RB derived_VBN from_IN existing_VBG implementation_NN platforms_NNS '_POS 4_CD Radu_NNP Mateescu_NNP ,_, Pascal_NNP Poizat_NNP ,_, and_CC Gwen_NNP Salaün_NNP languages_NNS ,_, see_VBP for_IN instance_NN =_JJ -_: =[_NN 10,21,9_CD -RRB-_-RRB- -_: =_SYM -_: where_WRB such_JJ abstractions_NNS for_IN Web_NN services_NNS were_VBD used_VBN for_IN verification_NN ,_, composition_NN or_CC adaptation_NN purposes_NNS ._.
+For_IN space_NN reasons_NNS ,_, in_IN the_DT rest_NN of_IN the_DT paper_NN ,_, we_PRP will_MD describe_VB service_NN interfaces_NNS only_RB with_IN the_DT
+ne_NN ,_, and_CC carry_VB out_RP an_DT interaction_NN for_IN achieving_VBG a_DT given_VBN goal_NN ._.
+An_DT interaction_NN in_IN Web_NN service_NN domain_NN can_MD be_VB described_VBN as_IN a_DT flow_NN of_IN messages_NNS ,_, which_WDT may_MD contain_VB a_DT set_NN of_IN data_NNS ,_, exchanged_VBN among_IN Web_NN services_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT major_JJ challenging_JJ problems_NNS that_WDT remain_VBP are_VBP :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- how_WRB to_TO check_VB whether_IN Web_NN services_NNS are_VBP compatible_JJ -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- how_WRB to_TO identify_VB and_CC solve_VB potential_JJ mismatches_NNS ,_, and_CC -LRB-_-LRB- 3_LS -RRB-_-RRB- how_WRB to_TO conduct_VB a_DT successful_JJ inte_NN
+rcestate_NN ._.
+•_NN A_NN branchin_NN a_DT ``_`` flow_NN ''_'' activity_NN is_VBZ translated_VBN into_IN a_DT separateautomaton_NN ._.
+ThebeginningandtheendoftheseautomataaresynchronisedwiththeautomatonrepresentingtheBPEL_NN process_NN ._.
+Indoingso_NNP ,_, we_PRP differfrom_VBP =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, wherea_JJ ``_`` flow_NN ''_'' istranslatedsuchthat_NN :_: allbranchesare_FW executedsequentiallyandallpossiblepermutationsare_FW representedasasingleautomaton_NN ._.
+Theautomatageneratedfrom_NNP ``_`` if_IN ''_'' ,_, ``_`` while_IN ''_'' ,_, ``_`` pick_NN ''_'' and_CC ``_`` flow_NN ''_'' activitiesareil_NN
+ls_NNS ,_, for_IN instance_NN as_IN participants_NNS in_IN an_DT inter-organizational_JJ business_NN process_NN ._.
+The_DT behavior_NN of_IN a_DT service_NN can_MD be_VB formally_RB described_VBN in_IN various_JJ formalisms_NNS including_VBG process_NN algebra_NN -LRB-_-LRB- 5,6_CD -RRB-_-RRB- ,_, state_NN machines_NNS =_JJ -_: =[_NN 7,8,9,10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC Petri_NNP nets_NNS -LRB-_-LRB- 11,12,13_CD -RRB-_-RRB- ._.
+There_EX exist_VBP strong_JJ links_NNS from_IN industrial_JJ languages_NNS like_IN WS-BPEL_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- and_CC BPMN_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- to_TO these_DT formalisms_NNS ._.
+In_IN previous_JJ work_NN -LRB-_-LRB- 16,17,18_CD -RRB-_-RRB- ,_, we_PRP considered_VBD sets_NNS of_IN service_NN behavior_NN
+olation_NN detection_NN of_IN properties_NNS such_JJ as_IN atomicity_NN and_CC resource_NN constraints_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+Not_RB much_RB public_JJ literature_NN highlights_VBZ the_DT testing_NN challenges_NNS ._.
+Although_IN XML_NN has_VBZ been_VBN considered_VBN in_IN previous_JJ research_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: and_CC 1the_JJ impact_NN of_IN XPath_NN on_IN services_NNS has_VBZ been_VBN studied_VBN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, surprisingly_RB ,_, as_IN we_PRP are_VBP going_VBG to_TO present_JJ in_IN Section_NN 3_CD ,_, the_DT mismatch_NN among_IN service_NN interfaces_NNS in_IN the_DT testing_NN of_IN service_NN choreography_NN has_VBZ no_DT
+quested_VBN service_NN ._.
+The_DT complexity_NN of_IN the_DT decision_NN problems_NNS and_CC composition_NN synthesis_NN highly_RB depends_VBZ on_IN how_WRB Web_NN services_NNS are_VBP defined_VBN ._.
+A_DT variety_NN of_IN standards_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 7_CD ,_, 25_CD ,_, 27_CD ,_, 30_CD ,_, 31_CD -RRB-_-RRB- -RRB-_-RRB- and_CC models_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 2_CD ,_, 5_CD ,_, 6_CD ,_, 12_CD ,_, 13_CD ,_, 15_CD ,_, 18_CD ,_, 26_CD ,_, 29_CD -RRB-_-RRB- -_: =--RRB-_NN have_VBP been_VBN proposed_VBN for_IN Web_NN services_NNS -LRB-_-LRB- see_VB -LRB-_-LRB- 21_CD -RRB-_-RRB- for_IN a_DT survey_NN -RRB-_-RRB- ._.
+Some_DT of_IN the_DT models_NNS specify_VBP the_DT behaviors_NNS and_CC interactions_NNS of_IN Web_NN services_NNS in_IN terms_NNS of_IN finite-state_JJ automata_NN -LRB-_-LRB- FSA_NN -RRB-_-RRB- -LRB-_-LRB- 6_CD ,_, 15_CD ,_, 18_CD -RRB-_-RRB- ._.
+Other_JJ mode_NN
+However_RB ,_, such_JJ techniques_NNS may_MD be_VB ineffective_JJ in_IN revealing_VBG faults_NNS related_VBN to_TO the_DT WSDL_NN and_CC XPath_NN artifacts_NNS ._.
+Our_PRP$ experiment_NN verifies_VBZ this_DT point_NN ._.
+The_DT modeling_NN of_IN service_NN composition_NN has_VBZ been_VBN studied_VBN in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP analyze_VBP the_DT interactions_NNS between_IN BPEL_NN programs_NNS and_CC web_NN services_NNS using_VBG WS-BPEL_NN as_IN the_DT specification_NN ._.
+Analysis_NN tools_NNS such_JJ as_IN WSAT_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- have_VBP been_VBN developed_VBN to_TO conduct_VB formal_JJ analysis_NN of_IN web_NN servic_NN
+UR-FIRB_NN project_NN RBNE0195K5_NN ,_, ``_`` Knowledge_NNP Level_NNP Automated_NNP Software_NNP Engineering_NNP ''_'' ,_, and_CC by_IN the_DT MIUR-PRIN_NN 2004_CD project_NN ``_`` Advanced_NNP Artificial_NNP Intelligence_NNP Systems_NNPS for_IN Web_NN Services_NNP ''_'' ._.
+sdefined_VBN for_IN verifying_VBG BPEL_NN =_JJ -_: =[_NN 7,11,13,12,8_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP are_VBP interested_JJ in_IN particular_JJ in_IN those_DT techniques_NNS that_WDT are_VBP applied_VBN to_TO the_DT verification_NN of_IN BPEL_NN compositions_NNS :_: in_IN this_DT case_NN ,_, we_PRP have_VBP to_TO verify_VB the_DT behaviors_NNS generated_VBN by_IN the_DT interactions_NNS of_IN a_DT set_NN of_IN
+it_PRP interacts_VBZ with_IN other_JJ services_NNS including_VBG the_DT risk_NN assessment_NN service_NN ._.
+One_CD can_MD use_VB pre_JJ -_: and_CC post-conditions_NNS to_TO associate_VB behavioral_JJ descriptions_NNS for_IN ``_`` atomic_JJ ''_'' web_NN services_NNS that_WDT are_VBP specifie_NN =_JJ -_: =d_NN in_IN WSDL_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT pre_JJ -_: and_CC post-conditions_NNS can_MD be_VB used_VBN to_TO reason_VB about_IN the_DT composed_VBN behaviors_NNS of_IN web_NN services_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+However_RB ,_, BPEL_NN provides_VBZ more_RBR expressive_JJ behavioral_JJ descriptions_NNS ._.
+BPEL_NN not_RB only_RB allows_VBZ manipulat_NN
+g._NN ,_, -LRB-_-LRB- 19_CD ,_, 24_CD ,_, 2_CD ,_, 23_CD ,_, 8_CD -RRB-_-RRB- etc._NN -RRB-_-RRB- are_VBP rapidly_RB laying_VBG out_RP the_DT foundations_NNS that_IN the_DT industry_NN will_MD build_VB upon_IN ,_, there_EX are_VBP many_JJ research_NN challenges_NNS behind_IN web_NN services_NNS that_WDT are_VBP less_RBR well-defined_JJ and_CC understood_VBN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- ._.
+This_DT paper_NN attempt_NN -_: =_JJ -_: s_NN to_TO address_VB the_DT aspect_NN of_IN ``_`` global_JJ behaviors_NNS ''_'' of_IN interacting_VBG web_NN services_NNS ._.
+At_IN an_DT elementary_JJ level_NN ,_, a_DT web_NN service_NN is_VBZ composed_VBN of_IN ``_`` activities_NNS ''_'' whose_WP$ execution_NN performs_VBZ tasks_NNS of_IN inte_NN
+e_LS Out_RB in_IN Figure_NNP 5_CD -RRB-_-RRB- ._.
+In_IN BPEL_NNP ,_, the_DT type_NN of_IN the_DT contents_NNS of_IN a_DT message_NN can_MD be_VB defined_VBN using_VBG WSDL_NN message_NN declaration_NN constructs_NNS ,_, or_CC SOAP_NN definition_NN or_CC XML_NN Schema_NN ,_, we_PRP translate_VBP all_DT possible_JJ formats_NNS to_TO MSL_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT formal_JJ model_NN for_IN XML_NN Schema_NN ._.
+Next_RB we_PRP discuss_VBP the_DT translation_NN of_IN BPEL_NN control_NN flow_NN and_CC data_NN manipulation_NN ._.
+In_IN Figure_NNP 5_CD we_PRP present_VBP the_DT guarded_VBN automata_NN translation_NN for_IN some_DT typical_JJ language_NN construct_NN
+intaining_VBG their_PRP$ autonomy_NN ._.
+Our_PRP$ objective_NN is_VBZ to_TO understand_VB the_DT role_NN of_IN messaging_NN in_IN composing_VBG web_NN services_NNS and_CC to_TO develop_VB tools_NNS for_IN analyzing_VBG interactions_NNS of_IN composite_JJ web_NN services_NNS ._.
+In_IN our_PRP$ earlier_JJR work_NN =_JJ -_: =[_NN 5_CD ,_, 11_CD -RRB-_-RRB- ,_, we_PRP intro_VBP -_: =_SYM -_: duced_VBD a_DT global_JJ behavior_NN model_NN for_IN interacting_VBG web_NN services_NNS based_VBN on_IN their_PRP$ ``_`` conversations_NNS ''_'' ,_, i.e._FW ,_, the_DT global_JJ sequence_NN of_IN messages_NNS recorded_VBN in_IN the_DT order_NN in_IN which_WDT they_PRP are_VBP sent_VBN ._.
+Such_JJ message-o_NN
+ble_RB ,_, and_CC their_PRP$ semantics_NNS are_VBP reflected_VBN in_IN the_DT guards_NNS of_IN the_DT transitions_NNS appended_VBN to_TO each_DT activity_NN ._.
+Translation_NN of_IN the_DT control_NN flow_NN of_IN BPEL_NN to_TO finite_JJ state_NN machines_NNS or_CC petri-nets_NNS has_VBZ been_VBN discussed_VBN in_IN =_JJ -_: =[_NN 9_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT difference_NN in_IN our_PRP$ work_NN is_VBZ that_IN we_PRP handle_VBP XML_NN based_JJ data_NNS manipulation_NN using_VBG guarded_VBN automata_NN with_IN guards_NNS expressed_VBN as_IN XPath_NN expressions_NNS ._.
+This_DT enables_VBZ us_PRP to_TO verify_VB properties_NNS about_IN XML_NN data_NNS manipu_NN
+es_VBZ Figure_NNP 9_CD :_: Our_PRP$ Web_NN Service_NNP Analysis_NNP and_CC Verification_NNP Tool_NNP The_NNP synchronizability_NN conditions_NNS listed_VBN above_IN are_VBP derived_VBN from_IN the_DT realizability_NN conditions_NNS for_IN conversation_NN protocols_NNS that_IN we_PRP presented_VBD in_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT proof_NN along_IN the_DT lines_NNS of_IN the_DT proof_NN for_IN realizability_NN conditions_NNS given_VBN in_IN -LRB-_-LRB- 11_CD -RRB-_-RRB- can_MD be_VB used_VBN to_TO establish_VB Theorem_NNP 1_CD ._.
+Intuitively_RB ,_, we_PRP can_MD show_VB that_IN ,_, when_WRB a_DT composite_JJ web_NN service_NN satisfies_VBZ the_DT above_IN th_DT
+BPEL_NN web_NN services_NNS to_TO this_DT extended_JJ guarded_VBN automata_NN model_NN ._.
+2_CD ._.
+We_PRP further_RB extend_VBP the_DT translation_NN tool_NN developed_VBN in_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- from_IN guarded_VBN automata_NN to_TO Promela_NNP ,_, the_DT input_NN language_NN for_IN the_DT SPIN_NN model_NN checker_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT extension_NN handles_VBZ local_JJ variables_NNS in_IN guarded_VBN automata_NN ,_, and_CC supports_VBZ asynchronous_JJ messaging_NN with_IN input_NN queues_NNS ._.
+-LRB-_-LRB- In_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- a_DT composite_JJ web_NN service_NN is_VBZ specified_VBN in_IN a_DT top-down_JJ fashion_NN starting_VBG with_IN a_DT
+t_NN peers_NNS and_CC it_PRP is_VBZ not_RB implemented_VBN ._. -RRB-_-RRB-
+A_DT conversation_NN can_MD be_VB regarded_VBN as_IN a_DT linearization_NN of_IN the_DT message_NN events_NNS ,_, similar_JJ to_TO the_DT approach_NN used_VBN in_IN defining_VBG the_DT semantics_NNS of_IN Message_NN Sequence_NN Charts_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- in_IN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Formally_RB ,_, a_DT composite_JJ web_NN service_NN is_VBZ a_DT tuple_JJ S_NN =_JJ #_# -LRB-_-LRB- P_NN ,_, M_NN -RRB-_-RRB- ,_, A1_NN ,_, ..._: ,_, An_DT #_# ,_, where_WRB -LRB-_-LRB- P_NN ,_, M_NN -RRB-_-RRB- is_VBZ a_DT conversation_NN schema_NN ,_, n_NN =_JJ |_CD P_NN |_NN and_CC each_DT A_NN i_FW is_VBZ an_DT implementation_NN for_IN peer_VB p_NN i_LS #_# P_NN ._.
+A_DT conversation_NN schem_NN
+upling_VBG the_DT front_NN -_: and_CC back-ends_NNS of_IN the_DT translator_NN will_MD enable_VB us_PRP to_TO target_VB multiple_JJ web_NN service_NN languages_NNS at_IN the_DT front-end_NN -LRB-_-LRB- e.g._FW ,_, WSCI_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, DAML-S_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- -RRB-_-RRB- and_CC multiple_JJ verification_NN languages_NNS -LRB-_-LRB- e.g._FW ,_, SMV_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Action_NNP Language_NNP Verifier_NNP -LRB-_-LRB- 6_CD -RRB-_-RRB- -RRB-_-RRB- at_IN the_DT back-end_JJ in_IN the_DT future_NN ._.
+4.1_CD Translation_NN from_IN BPEL_NN to_TO Automata_NNP Given_IN a_DT set_NN of_IN BPEL_NN process_NN specifications_NNS and_CC the_DT related_JJ WSDL_NN port_NN declarations_NNS ,_, we_PRP can_MD construct_VB
+of_IN conversations_NNS of_IN a_DT composite_JJ web_NN service_NN ._.
+The_DT model_NN used_VBN in_IN -LRB-_-LRB- 5_CD ,_, 11_CD -RRB-_-RRB- does_VBZ not_RB have_VB message_NN contents_NNS and_CC hence_RB ,_, abstracts_NNS away_RB the_DT data_NN semantics_NNS ._.
+To_TO capture_VB data_NNS semantics_NNS ,_, in_IN our_PRP$ technical_JJ report_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP developed_VBD the_DT notion_NN of_IN a_DT guarded_VBN automaton_NN ._.
+Each_DT transition_NN of_IN a_DT guarded_VBN automaton_NN is_VBZ equipped_VBN with_IN a_DT guard_NN that_WDT is_VBZ expressed_VBN using_VBG an_DT XPath_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- expression_NN ._.
+The_DT use_NN of_IN XPath_NN expressions_NNS as_IN guar_NN
+rocessing_VBG Example_NNP ''_'' in_IN the_DT BPEL_NN document_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- to_TO Promela_NNP ,_, and_CC used_VBD the_DT SPIN_NNP model_NN checker_NN to_TO verify_VB it_PRP ._.
+The_DT source_NN code_NN -LRB-_-LRB- BPEL_NN and_CC WSDL_NN files_NNS -RRB-_-RRB- of_IN the_DT example_NN is_VBZ taken_VBN from_IN the_DT IBM_NNP BPWS4J_NN tool_NN sample_NN =_JJ -_: =_JJ set_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Since_IN no_DT BPEL_NN files_NNS are_VBP provided_VBN for_IN the_DT other_JJ three_CD peers_NNS -LRB-_-LRB- customer_NN ,_, loan_NN assessor_NN ,_, and_CC loan_NN approver_NN -RRB-_-RRB- involved_VBN in_IN the_DT interaction_NN ,_, we_PRP supplied_VBD their_PRP$ BPEL_NN implementations_NNS ._.
+The_DT control_JJ logic_NN of_IN the_DT
+s_NNS such_JJ as_IN BPEL_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, WSCI_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, BPML_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, DAML-S_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, etc._NN ._.
+Web_NN service_NN development_NN based_VBN on_IN these_DT standards_NNS is_VBZ supported_VBN by_IN di_FW #erent_FW -LRB-_-LRB- and_CC competing_VBG -RRB-_-RRB- implementation_NN platforms_NNS such_JJ as_IN ._.
+Net_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- and_CC J2EE_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Consider_VB a_DT loan_NN processing_NN service_NN -LRB-_-LRB- similar_JJ to_TO the_DT example_NN in_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- -RRB-_-RRB- that_WDT consists_VBZ of_IN services_NNS for_IN loan_NN processing_NN ,_, risk_NN assessment_NN ,_, etc._NN ,_, and_CC a_DT customer_NN process_NN ._.
+For_IN example_NN ,_, the_DT interface_NN of_IN the_DT web_NN
+ts_IN a_DT run_NN #_# =_JJ #_# 0_CD ,_, #_# 1_CD ,_, #_# 2_CD ,_, ..._: ,_, #_# |_CD #_# |_CD -1_CD of_IN S_NN such_JJ that_IN ,_, the_DT value_NN of_IN the_DT watcher_NN in_IN the_DT final_JJ configuration_NN #_# |_CD #_# |_CD -1_CD is_VBZ w._NNP Let_NNP L_NN -LRB-_-LRB- S_NN -RRB-_-RRB- denote_VBP the_DT set_NN of_IN conversations_NNS of_IN S._NNP We_PRP use_VBP the_DT temporal_JJ logic_NN LTL_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: to_TO express_VB properties_NNS of_IN conversations_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+We_PRP define_VBP the_DT set_NN of_IN atomic_JJ propositions_NNS as_IN follows_VBZ :_: Each_DT atomic_JJ proposition_NN is_VBZ either_DT of_IN the_DT form_NN c_NN where_WRB c_NN is_VBZ a_DT message_NN type_NN -LRB-_-LRB- i.e._FW ,_, c_NN #_# M_NN -RRB-_-RRB- ,_, or_CC c._FW pred_FW ,_,

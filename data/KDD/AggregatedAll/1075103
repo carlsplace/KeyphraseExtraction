@@ -1,0 +1,103 @@
+Learning_NNP to_TO rank_VB networked_JJ entities_NNS
+Several_JJ algorithms_NNS have_VBP been_VBN proposed_VBN to_TO learn_VB to_TO rank_VB entities_NNS modeled_VBN as_IN feature_NN vectors_NNS ,_, based_VBN on_IN relevance_NN feedback_NN ._.
+However_RB ,_, these_DT algorithms_NNS do_VBP not_RB model_VB network_NN connections_NNS or_CC relations_NNS between_IN entities_NNS ._.
+Meanwhile_RB ,_, Pagerank_NN and_CC variants_NNS find_VBP the_DT stationary_JJ distribution_NN of_IN a_DT reasonable_JJ but_CC arbitrary_JJ Markov_NNP walk_NN over_IN a_DT network_NN ,_, but_CC do_VBP not_RB learn_VB from_IN relevance_NN feedback_NN ._.
+We_PRP present_VBP a_DT framework_NN for_IN ranking_JJ networked_JJ entities_NNS based_VBN on_IN Markov_NNP walks_VBZ with_IN parameterized_JJ conductance_NN values_NNS associated_VBN with_IN the_DT network_NN edges_NNS ._.
+We_PRP propose_VBP two_CD flavors_NNS of_IN conductance_NN learning_NN problems_NNS in_IN our_PRP$ framework_NN ._.
+In_IN the_DT first_JJ setting_NN ,_, relevance_NN feedback_NN comparing_VBG node-pairs_JJ hints_NNS that_IN the_DT user_NN has_VBZ one_CD or_CC more_RBR hidden_JJ preferred_JJ communities_NNS with_IN large_JJ edge_NN conductance_NN ,_, and_CC the_DT algorithm_NN must_MD discover_VB these_DT communities_NNS ._.
+We_PRP present_VBP a_DT constrained_VBN maximum_NN entropy_NN network_NN flow_NN formulation_NN whose_WP$ dual_JJ can_MD be_VB solved_VBN efficiently_RB using_VBG a_DT cutting-plane_JJ approach_NN and_CC a_DT quasi-Newton_JJ optimizer_NN ._.
+In_IN the_DT second_JJ setting_NN ,_, edges_NNS have_VBP types_NNS ,_, and_CC relevance_NN feedback_NN hints_VBZ that_IN each_DT edge_NN type_NN has_VBZ a_DT potentially_RB different_JJ conductance_NN ,_, but_CC this_DT is_VBZ fixed_VBN across_IN the_DT whole_JJ network_NN ._.
+Our_PRP$ algorithm_NN learns_VBZ the_DT conductances_NNS using_VBG an_DT approximate_JJ Newton_NNP method_NN ._.
+twork_NN entities_NNS is_VBZ an_DT important_JJ topic_NN in_IN link_NN mining_NN ._.
+Given_VBN a_DT network_NN among_IN entities_NNS ,_, the_DT goal_NN is_VBZ to_TO find_VB a_DT good_JJ ranking_NN function_NN to_TO calculate_VB the_DT ranking_NN of_IN each_DT entity_NN using_VBG the_DT relational_JJ structure_NN =_JJ -_: =[_NN 1_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Copyright_NN is_VBZ held_VBN by_IN the_DT author\/owner_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- ._.
+WWW2008_NN ,_, April_NNP 21_CD --_: 25_CD ,_, 2008_CD ,_, Beijing_NNP ,_, China_NNP ._. ._.
+Considering_VBG those_DT two_CD directions_NNS of_IN recent_JJ studies_NNS --_: relation_NN extraction_NN from_IN the_DT web_NN and_CC ranking_NN learning_NN --_: the_DT
+t_NN pr_NN -LRB-_-LRB- u_NN -RRB-_-RRB- scores_NNS ._.
+A_DT variant_NN of_IN the_DT above_JJ paradigm_NN -LRB-_-LRB- that_WDT allowed_VBD taking_VBG much_JJ of_IN the_DT computation_NN offline_NN -RRB-_-RRB- was_VBD proposed_VBN as_IN OBJECTRANK_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+The_DT matrix_NN C_NN can_MD also_RB be_VB learned_VBN automatically_RB from_IN training_NN data_NN =_JJ -_: =[_NN 3_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Traditional_JJ offline_JJ computation_NN of_IN PageRank_NN is_VBZ done_VBN by_IN power_NN iteration_NN :_: Initialize_VB pr_NN to_TO some_DT random_JJ nonzero_NN vector_NN ,_, then_RB iterate_VB pr_FW ←_FW αCpr_FW +_CC -LRB-_-LRB- 1_CD −_NN α_NN -RRB-_-RRB- r._NN For_IN large_JJ data_NNS graphs_NNS -LRB-_-LRB- beyond_IN tens_NNS of_IN millions_NNS
+ss_FW max_FW -LRB-_-LRB- 0_CD ,_, 1_CD +_CC f_LS -LRB-_-LRB- u_NN -RRB-_-RRB- −_FW f_FW -LRB-_-LRB- v_LS -RRB-_-RRB- -RRB-_-RRB- upper_JJ bound_VBD on_IN 0-1_CD loss_NN ._.
+Training_NN loss_NN bounds_VBZ empirical_JJ 0-1_CD risk_NN •_NN -LRB-_-LRB- Pref_NN -RRB-_-RRB- uses_VBZ shifted_VBN hinge_NN max_NN -LRB-_-LRB- 0_CD ,_, f_LS -LRB-_-LRB- u_NN -RRB-_-RRB- −_FW f_FW -LRB-_-LRB- v_LS -RRB-_-RRB- -RRB-_-RRB- ,_, not_RB upper_JJ bound_VBD on_IN 0-1_CD loss_NN •_NN -LRB-_-LRB- u_NN ,_, v_LS -RRB-_-RRB- puv_NN =_JJ 1_CD keeps_VBZ flows_NNS in_IN =_JJ -_: =[_NN 0,1_CD -RRB-_-RRB- -_: =_SYM -_: •_CD Power-law_NN assumptions_NNS ⇒_VBP most_JJS nodes_NNS with_IN small_JJ pageranks_NNS •_CD Arbitrary_JJ additive_JJ margin_NN -LRB-_-LRB- e.g._FW ,_, ``_`` 1_CD ''_'' for_IN hinge_NN loss_NN -RRB-_-RRB- infeasible_FW •_FW Solution_NN :_: Make_VB F_NN =_JJ -LRB-_-LRB- u_NN ,_, v_LS -RRB-_-RRB- puv_NN variable_JJ •_NN Possible_JJ as_IN KL_NN -LRB-_-LRB- p_NN q_NN -RRB-_-RRB- is_VBZ still_RB we_PRP
+raining_VBG of_IN RWR-based_JJ proximity_NN measure_NN have_VBP used_VBN a_DT small_JJ number_NN of_IN training_NN queries_NNS --_: for_IN instance_NN ,_, Minkov_NNP and_CC Cohen_NNP used_VBD more_JJR than_IN 30_CD queries_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- --_: or_CC else_RB used_VBN artificially_RB generated_VBN document_NN orderings_NNS =_JJ -_: =[_NN 21_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Using_VBG large_JJ amounts_NNS of_IN realistic_JJ data_NNS in_IN this_DT study_NN makes_VBZ it_PRP possible_JJ to_TO learn_VB more_RBR complex_JJ models_NNS ._.
+We_PRP created_VBD two_CD publication_NN data_NNS sets_NNS -LRB-_-LRB- Yeast_NN and_CC Fly_VB -RRB-_-RRB- in_IN the_DT biological_JJ domain_NN ._.
+Paper_NN content_NN and_CC m_NN
+f_LS interest_NN ._.
+Previously_RB ,_, researchers_NNS have_VBP suggested_VBN improving_VBG graph_NN walk_NN based_JJ similarity_NN in_IN relational_JJ graphs_NNS by_IN learning_VBG edge_NN weights_NNS parameters_NNS in_IN the_DT graph_NN -LRB-_-LRB- Diligenti_NNP et_FW al._FW 2005_CD ;_: Nie_NNP et_FW al._FW 2005_CD ;_: =_JJ -_: =_JJ Agarwal_NNP et_FW al._FW 2006_CD -_: =-]_CD ._.
+The_DT assumption_NN underlying_VBG this_DT approach_NN is_VBZ that_IN for_IN a_DT particular_JJ task_NN ,_, some_DT relation_NN types_NNS should_MD be_VB favored_VBN by_IN the_DT graph_NN walk_NN over_IN others_NNS ._.
+We_PRP adapt_VBP an_DT error_NN backpropagation_NN gradient_NN descent_NN algori_NNS
+parameters_NNS is_VBZ very_RB small_JJ ._.
+Diligenti_NNP et_FW al._FW -LRB-_-LRB- 10_CD -RRB-_-RRB- optimize_VBP relation_NN weights_NNS using_VBG back-propagation_NN ,_, which_WDT has_VBZ linear_JJ convergence_NN ,_, therefore_RB requires_VBZ many_JJ iterations_NNS to_TO reach_VB convergence_NN ._.
+Agarwal_NNP et_FW al._FW =_SYM -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: applied_VBD efficient_JJ second_JJ order_NN optimization_NN procedure_NN with_IN preference_NN labels_NNS of_IN pairs_NNS of_IN entities_NNS ;_: however_RB ,_, instead_RB of_IN using_VBG real_JJ relevance_NN data_NNS ,_, document_NN orderings_NNS generated_VBN from_IN artificially_RB manipu_FW
+rning_NN ,_, graph-based_JJ models_NNS have_VBP been_VBN widely_RB and_CC successively_RB used_VBN in_IN information_NN retrieval_NN and_CC data_NN mining_NN ._.
+Examples_NNS include_VBP link_NN analysis_NN -LRB-_-LRB- 25_CD ,_, 19_CD -RRB-_-RRB- ,_, semi-supervised_JJ learning_NN -LRB-_-LRB- 36_CD ,_, 33_CD -RRB-_-RRB- ,_, learning_VBG to_TO rank_VB =_JJ -_: =[_NN 28_CD ,_, 4_CD ,_, 3_CD ,_, 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, text_NN classification_NN and_CC clustering_NN ,_, and_CC document_NN reranking_NN -LRB-_-LRB- 32_CD ,_, 20_CD ,_, 21_CD -RRB-_-RRB- problems_NNS ,_, etc._FW ._.
+A_DT family_NN of_IN work_NN on_IN the_DT structural_JJ re-ranking_JJ paradigm_NN over_IN a_DT graph_NN was_VBD proposed_VBN to_TO refine_VB the_DT initial_JJ ranking_NN
+dback_NN information_NN to_TO refine_VB the_DT graph_NN structure_NN -RRB-_-RRB- can_MD be_VB applied_VBN to_TO other_JJ random_JJ walk-based_JJ measurements_NNS ,_, such_JJ as_IN -LRB-_-LRB- 5_CD ,_, 13_CD -RRB-_-RRB- ._.
+In_IN terms_NNS of_IN dealing_VBG with_IN the_DT feedback_NN on_IN ranking_NN ,_, our_PRP$ work_NN is_VBZ also_RB related_JJ to_TO =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB the_DT goal_NN is_VBZ to_TO use_VB partial_JJ order_NN information_NN to_TO learn_VB the_DT weights_NNS of_IN different_JJ types_NNS of_IN edges_NNS ._.
+In_IN terms_NNS of_IN computation_NN ,_, the_DT fast_JJ algorithms_NNS -LRB-_-LRB- NB_NN LIN_NNP and_CC BB_NNP LIN_NNP -RRB-_-RRB- for_IN random_JJ walk_NN with_IN restart_VB in_IN
+es_NNS of_IN the_DT network_NN into_IN a_DT unified_JJ link_NN prediction_NN algorithm_NN ._.
+We_PRP develop_VBP a_DT method_NN based_VBN on_IN Supervised_NNP Random_NNP Walks_VBZ that_IN in_IN a_DT supervised_JJ way_NN learns_VBZ how_WRB to_TO bias_NN a_DT PageRank-like_JJ random_JJ walk_NN on_IN the_DT network_NN =_JJ -_: =[_NN 3_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: so_IN that_IN it_PRP visits_VBZ given_VBN nodes_NNS -LRB-_-LRB- i.e._FW ,_, positive_JJ training_NN examples_NNS -RRB-_-RRB- more_RBR often_RB than_IN the_DT others_NNS ._.
+We_PRP achieve_VBP this_DT by_IN using_VBG node_NN and_CC edge_NN features_NNS to_TO learn_VB edge_NN strengths_NNS -LRB-_-LRB- i.e._FW ,_, random_JJ walk_NN transition_NN prob_NN
+content-based_JJ ._.
+For_IN link-based_JJ metrics_NNS like_IN ObjectRank_NN -LRB-_-LRB- BHP04_NN -RRB-_-RRB- this_DT yields_VBZ poor_JJ results_NNS ._.
+Hence_RB ,_, we_PRP need_VBP link-based_JJ -LRB-_-LRB- structure-based_JJ -RRB-_-RRB- relevance_NN feedback_NN methods_NNS ._.
+Nie_NN et_FW al._FW -LRB-_-LRB- NZW_NN +05_CD -RRB-_-RRB- and_CC Ararwal_NNP et_FW al._FW =_SYM -_: =_JJ -LRB-_-LRB- ACA06_NN -RRB-_-RRB- -_: =_JJ -_: present_JJ query-independent_JJ techniques_NNS to_TO assign_VB popularity_NN propagation_NN factor_NN values_NNS -LRB-_-LRB- similar_JJ to_TO the_DT authority_NN flow_NN rates_NNS of_IN ObjectRank_NNP -RRB-_-RRB- to_TO Web_NN objects_NNS ,_, given_VBN an_DT optimal_JJ object_NN ranking_NN ._.
+Our_PRP$ structure_NN -_:
+ion_NN to_TO refine_VB the_DT graph_NN structure_NN -RRB-_-RRB- can_MD be_VB applied_VBN to_TO other_JJ random_JJ walk-based_JJ measurements_NNS ,_, such_JJ as_IN -LRB-_-LRB- FMT04_NN ,_, TKF07_NN -RRB-_-RRB- ._.
+In_IN term_NN of_IN dealing_VBG with_IN the_DT side_NN information_NN on_IN ranking_NN ,_, our_PRP$ work_NN is_VBZ also_RB related_JJ to_TO =_JJ -_: =_JJ -LRB-_-LRB- ACA06a_NN -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB the_DT goal_NN is_VBZ to_TO use_VB partial_JJ order_NN information_NN to_TO learn_VB the_DT weights_NNS of_IN different_JJ types_NNS of_IN edges_NNS ._.
+In_IN term_NN of_IN computation_NN ,_, the_DT fast_JJ algorithm_NN -LRB-_-LRB- NB_NN LIN_NNP -RRB-_-RRB- for_IN random_JJ walk_NN with_IN restart_VB in_IN -LRB-_-LRB- TFP08_NN -RRB-_-RRB- is_VBZ mo_NN
+α_NN is_VBZ the_DT parameter_NN that_WDT balances_VBZ the_DT graph_NN weights_NNS and_CC the_DT effect_NN of_IN randomness_NN ._.
+Since_IN P_NN uniquely_RB determines_VBZ the_DT ranking_JJ scores_NNS ,_, recent_JJ study_NN has_VBZ focused_VBN on_IN the_DT design_NN of_IN the_DT Markov_NNP transition_NN matrix_NN =_JJ -_: =[_NN 1_CD ,_, 71_CD ,_, 78_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT work_NN argued_VBD that_IN the_DT arbitrary_JJ design_NN of_IN P_NN in_IN standard_JJ PageRank_NN requires_VBZ a_DT strong_JJ domain-based_JJ hypothesis_NN and_CC might_MD fail_VB to_TO fit_VB certain_JJ ranking_JJ applications_NNS ._.
+In_IN particular_JJ ,_, advocates_NNS argue_VBP for_IN
+on_IN retrieval_NN -RRB-_-RRB- have_VBP investigated_VBN many_JJ attribute-based_JJ ranking_JJ functions_NNS learned_VBN from_IN given_VBN preference_NN orders_NNS ,_, only_RB a_DT few_JJ studies_NNS have_VBP concluded_VBN that_IN such_JJ an_DT impact_NN arises_VBZ from_IN relations_NNS and_CC structures_NNS =_JJ -_: =[_NN 8_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Furthermore_RB ,_, our_PRP$ model_NN is_VBZ target-dependent_JJ :_: the_DT important_JJ features_NNS of_IN relations_NNS and_CC structural_JJ embeddedness_NN vary_VBP among_IN different_JJ tasks_NNS ._.
+Relations_NNS and_CC structural_JJ embeddedness_NN influence_NN behavior_NN of_IN in_IN
+rch_NN over_IN each_DT edge_NN type_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, a_DT gradient_NN descent_NN algorithm_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, a_DT hill-climbing_JJ error_NN backpropagation_NN algorithm_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, and_CC a_DT hill-climbing_JJ approximation_NN algorithm_NN adapted_VBN for_IN partial_JJ order_NN preferences_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT common_JJ property_NN of_IN these_DT methods_NNS is_VBZ that_IN they_PRP decompose_VBP the_DT graph_NN walk_NN into_IN single_JJ steps_NNS ,_, thus_RB performing_VBG optimization_NN ``_`` locally_RB ''_'' ._.
+As_IN a_DT case_NN study_NN of_IN these_DT methods_NNS ,_, we_PRP follow_VBP closely_RB in_IN this_DT paper_NN
+ITS_NN centralities_NNS -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+Another_DT new_JJ study_NN by_IN Agarwal_NNP et_FW al._FW generalizes_VBZ completely_RB from_IN the_DT application_NN and_CC tries_VBZ to_TO learn_VB the_DT best_JJS edge_NN weighting_NN function_NN for_IN a_DT Markov_NNP walk_NN from_IN relevance_NN assessments_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Their_PRP$ notion_NN of_IN entities_NNS here_RB is_VBZ even_RB broader_JJR than_IN ours_PRP and_CC also_RB includes_VBZ the_DT documents_NNS itself_PRP ._.
+6_CD ._.
+CONCLUSIONS_NNS Formulating_VBG the_DT task_NN of_IN entity_NN ranking_NN as_IN a_DT graph-based_JJ relevance_NN propagation_NN has_VBZ shown_VBN
+ates_NNS endorsement_NN ,_, not_RB necessarily_RB similarity_NN of_IN scores_NNS ;_: e.g._FW ,_, thousands_NNS of_IN obscure_JJ pages_NNS link_VBP to_TO www.kernel-machines.org_NN ._.
+Earlier_RBR ,_, the_DT transition_NN probabilities_NNS used_VBN to_TO be_VB tuned_VBN by_IN hand_NN ;_: recently_RB ,_, we_PRP -LRB-_-LRB- =_JJ -_: =_JJ Agarwal_NNP et_FW al._FW ,_, 2006_CD -_: =--RRB-_CD proposed_VBN methods_NNS -LRB-_-LRB- henceforth_JJ NetRank_NN -RRB-_-RRB- to_TO learn_VB the_DT transition_NN parameters_NNS from_IN pairwise_JJ preferences_NNS ._.
+Pagerank_NN is_VBZ modeled_VBN as_IN a_DT flow_NN p_NN ,_, and_CC the_DT algorithm_NN minimizes_VBZ the_DT KL_NN divergence_NN from_IN p_NN to_TO a_DT ``_`` refere_NN
+es_NNS ._.
+PageRank_NN -LRB-_-LRB- 6_CD ,_, 18_CD -RRB-_-RRB- and_CC HITS_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- are_VBP the_DT two_CD earliest_JJS link_NN analysis_NN algorithms_NNS ._.
+They_PRP only_RB consider_VBP a_DT single_JJ type_NN of_IN relationship_NN -LRB-_-LRB- i.e._FW ,_, hyper-links_NNS -RRB-_-RRB- among_IN homogeneous_JJ Web_NN pages_NNS ._.
+Recent_JJ work_NN such_JJ as_IN =_JJ -_: =[_NN 26_CD ,_, 17_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: extends_VBZ PageRank_NNP or_CC HITS_NNP to_TO consider_VB the_DT interactions_NNS among_IN heterogeneous_JJ entities_NNS ._.
+All_DT these_DT algorithms_NNS focus_VBP on_IN improving_VBG the_DT estimation_NN of_IN entities_NNS '_POS static_JJ ranking_NN ,_, which_WDT is_VBZ query_NN independent_JJ ._.
+In_IN
+is_VBZ computed_VBN according_VBG to_TO its_PRP$ relative_JJ performance_NN with_IN respect_NN to_TO the_DT other_JJ models_NNS in_IN M_NN using_VBG the_DT formula_NN li_NN =_JJ sbest_FW −_FW si_FW ._.
+This_DT loss_NN sbest_FW −_FW sworst_FW function_NN normalizes_VBZ the_DT losses_NNS of_IN experts_NNS to_TO the_DT range_NN =_JJ -_: =[_NN 0_CD ,_, 1_CD -RRB-_-RRB- -_: =_JJ -_: and_CC could_MD be_VB used_VBN with_IN any_DT -LRB-_-LRB- even_RB unbounded_JJ -RRB-_-RRB- performance_NN metric_NN ,_, which_WDT in_IN our_PRP$ case_NN is_VBZ given_VBN by_IN formula_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+5_CD ._.
+RESULTS_NNS In_IN this_DT section_NN ,_, we_PRP present_VBP various_JJ experiments_NNS with_IN the_DT goal_NN of_IN studying_VBG and_CC eva_NN
+amework_NN ,_, which_WDT separates_VBZ learning_NN of_IN classifiers_NNS and_CC the_DT maintenance_NN of_IN task-specific_JJ constraints_NNS ._.
+The_DT constraints_NNS are_VBP enforced_VBN by_IN formulating_VBG and_CC solving_VBG integer_NN programming_NN problems_NNS ._.
+Agarwal_NNP et_FW al._FW =_SYM -_: =_JJ -LRB-_-LRB- ACA06_NN -RRB-_-RRB- -_: =_SYM -_: formulate_VB and_CC solve_VB optimization_NN problems_NNS to_TO enforce_VB user_NN preference_NN constraints_NNS while_IN 17sranking_VBG networked_JJ entities_NNS ._.
+Finally_RB ,_, in_IN -LRB-_-LRB- BVZ01_NN -RRB-_-RRB- Boykov_NNP et_FW al._FW give_VB a_DT fast_JJ approximate_JJ algorithm_NN for_IN segmentat_NN
+based_VBN on_IN neural_JJ networks_NNS ;_: Richardson_NNP et_FW al._FW -LRB-_-LRB- 33_CD -RRB-_-RRB- ,_, who_WP utilize_VBP many_JJ users_NNS '_POS interaction_NN with_IN Web_NN domains_NNS to_TO improve_VB their_PRP$ static_JJ rank_NN in_IN a_DT way_NN that_WDT is_VBZ independent_JJ of_IN hyperlink_NN structure_NN ;_: Agarwal_NNP et_FW al._FW =_SYM -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, who_WP propose_VBP the_DT combination_NN of_IN random_JJ walks_VBZ over_IN the_DT link_NN graph_NN with_IN relevance_NN feedback_NN information_NN ,_, and_CC ;_: Agichtein_NNP and_CC Zhang_NNP -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, who_WP used_VBD classification_NN techniques_NNS and_CC machine_NN learning_NN algorithms_NNS
+._.
+,_, -LRB-_-LRB- Jeh_NNP and_CC Widom_NNP ,_, 2003_CD ;_: Csalogny_NNP et_FW al._FW ,_, 2005_CD ;_: Tong_NNP et_FW al._FW ,_, 2006_CD ;_: Chakrabarti_NNP ,_, 2007_CD -RRB-_-RRB- -RRB-_-RRB- or_CC tuning_NN them_PRP to_TO specific_JJ tasks_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- Minkov_NNP and_CC Cohen_NNP ,_, 2007_CD ;_: Diligenti_NNP et_FW al._FW ,_, 2005_CD ;_: Toutanova_NNP et_FW al._FW ,_, 2004_CD ;_: =_JJ -_: =_JJ Agarwal_NNP et_FW al._FW ,_, 2006_CD -_: =--RRB-_NN -RRB-_-RRB- ._.
+These_DT measures_NNS are_VBP closely_RB related_JJ to_TO similarity_NN measures_NNS widely_RB used_VBN for_IN semisupervised_JJ learning_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- Kondor_NNP and_CC Lafferty_NNP ,_, 2002_CD ;_: Zhu_NNP ,_, 2005_CD -RRB-_-RRB- -RRB-_-RRB- and_CC spectral_JJ clustering_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- Meila_NNP and_CC Shi_NNP ,_, 2001_CD
+supervised_VBN learning_NN ,_, while_IN they_PRP are_VBP based_VBN on_IN semi-supervised_JJ learning_NN or_CC unsupervised_JJ learning_NN ._.
+There_EX are_VBP also_RB methods_NNS proposed_VBN for_IN learning_VBG to_TO rank_VB network_NN entities_NNS ,_, such_JJ as_IN papers_NNS in_IN citation_NN graph_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: and_CC pages_NNS in_IN Web_NN graph_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+In_IN the_DT methods_NNS ,_, only_RB relation_NN information_NN is_VBZ utilized_VBN ._.
+3_LS ._.
+GENERAL_JJ FRAMEWORK_NN 3.1_CD Motivation_NN There_EX are_VBP many_JJ application_NN problems_NNS in_IN which_WDT one_NN wants_VBZ to_TO learn_VB a_DT model_NN to_TO rank_VB
+-RRB-_-RRB- applied_VBN to_TO the_DT datasets_NNS we_PRP list_VBP in_IN Table_NNP 2_CD ,_, where_WRB we_PRP find_VBP 2_CD clusters_NNS of_IN time_NN stamps_NNS -LRB-_-LRB- -LCB-_-LRB- t1_NN ,_, t2_NN -RCB-_-RRB- and_CC -LCB-_-LRB- t4_NN ,_, t5_NN ,_, t6_NN -RCB-_-RRB- -RRB-_-RRB- and_CC 1_CD abnormal_JJ time_NN stamp_NN -LRB-_-LRB- t3_NN -RRB-_-RRB- ._.
+Therefore_RB ,_, our_PRP$ cluster_NN membership_NN function_NN satisfies_NNS :_: g_NN =_JJ =_JJ -_: =[_NN 1_CD ,_, 1_CD ,_, 3_CD ,_, 2_CD ,_, 2_CD ,_, 2_CD -RRB-_-RRB- -_: =_JJ -_: ′_NN ._.
+For_IN each_DT time_NN cluster_NN as_RB well_RB as_IN the_DT abnormal_JJ time_NN stamp_NN ,_, we_PRP also_RB output_NN a_DT representative_JJ subset_NN of_IN the_DT entity_NN nodes_NNS as_IN its_PRP$ interpretations_NNS ._.
+1_CD Besides_IN the_DT finest_JJS scale_NN ,_, we_PRP might_MD also_RB want_VB to_TO do_VB t_NN
+nformation_NN to_TO refine_VB the_DT graph_NN structure_NN -RRB-_-RRB- can_MD be_VB applied_VBN to_TO other_JJ random_JJ walk-based_JJ measurements_NNS ,_, such_JJ as_IN -LRB-_-LRB- 7_CD ,_, 24_CD -RRB-_-RRB- ._.
+In_IN term_NN of_IN dealing_VBG with_IN the_DT side_NN information_NN on_IN ranking_NN ,_, our_PRP$ work_NN is_VBZ also_RB related_JJ to_TO =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB the_DT goal_NN is_VBZ to_TO use_VB partial_JJ order_NN information_NN to_TO learn_VB the_DT weights_NNS of_IN different_JJ types_NNS of_IN edges_NNS ._.
+In_IN term_NN of_IN computation_NN ,_, the_DT fast_JJ algorithm_NN -LRB-_-LRB- NB_NN LIN_NNP -RRB-_-RRB- for_IN random_JJ walk_NN with_IN restart_VB in_IN -LRB-_-LRB- 25_CD -RRB-_-RRB- is_VBZ most_JJS
+ptimal_JJ ._.
+This_DT suggests_VBZ the_DT goal_NN of_IN learning_VBG edge_NN weights_NNS for_IN a_DT particular_JJ class_NN of_IN queries_NNS ._.
+Several_JJ researchers_NNS have_VBP suggested_VBN schemes_NNS for_IN adjusting_VBG the_DT set_NN of_IN edge_NN weights_NNS using_VBG hill-climbing_JJ methods_NNS =_JJ -_: =[_NN 39_CD ,_, 100_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT group_NN of_IN methods_NNS can_MD be_VB adjusted_VBN from_IN infinite_JJ to_TO finite_JJ graph_NN walks_VBZ ._.
+We_PRP have_VBP adapted_VBN an_DT error_NN backpropagation_NN gradient_NN descent_NN algorithm_NN -LRB-_-LRB- 39_CD -RRB-_-RRB- for_IN tuning_NN the_DT graph_NN weights_NNS in_IN our_PRP$ framework_NN ._.
+A_DT d_NN

@@ -1,0 +1,285 @@
+Building_VBG a_DT distributed_VBN full-text_JJ index_NN for_IN the_DT Web_NN
+each_DT processor_NN ,_, not_RB in_IN terms_NNS of_IN overall_JJ indexing_NN time_NN ._.
+Unfortunately_RB ,_, they_PRP do_VBP not_RB state_VB the_DT underlying_JJ hardware_NN that_IN they_PRP employ_VBP ,_, and_CC as_IN such_JJ their_PRP$ results_NNS are_VBP difficult_JJ to_TO compare_VB to_TO ._.
+Melnik_NNP et_FW al._FW =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: described_VBD a_DT distributed_VBN indexing_NN regime_NN designed_VBN for_IN the_DT Web_NN ,_, with_IN considerations_NNS for_IN updatable_JJ indices_NNS ._.
+However_RB ,_, their_PRP$ experiments_NNS did_VBD not_RB consider_VB efficiency_NN as_IN the_DT number_NN of_IN nodes_NNS is_VBZ increased_VBN ._.
+In_IN
+on_IN retrieval_NN -LRB-_-LRB- IR_NN -RRB-_-RRB- systems_NNS use_VBP inverted_JJ indexes_NNS as_IN the_DT main_JJ data_NNS structure_NN for_IN full-text_JJ indexing_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+There_EX is_VBZ a_DT considerable_JJ body_NN of_IN literature_NN on_IN efficient_JJ ways_NNS of_IN building_VBG inverted_JJ indexes_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 9_CD ,_, 11_CD ,_, 15_CD ,_, 19_CD -RRB-_-RRB- -_: =--RRB-_NN and_CC using_VBG them_PRP to_TO evaluate_VB full-text_JJ queries_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 3_CD ,_, 14_CD ,_, 19_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+In_IN this_DT paper_NN ,_, we_PRP use_VBP an_DT inverted_JJ index_NN structure_NN where_WRB each_DT occurrence_NN of_IN a_DT feature_NN f_FW within_IN a_DT web_NN page_NN p_NN is_VBZ represented_VBN by_IN a_DT posti_NN
+ex_FW that_WDT allows_VBZ quickly_RB determining_VBG which_WDT documents_NNS in_IN the_DT repository_NN contain_VBP a_DT particular_JJ word_NN ._.
+Although_IN text_NN indexers_NNS are_VBP conceptually_RB simple_JJ ,_, scaling_VBG them_PRP to_TO billions_NNS of_IN pages_NNS is_VBZ a_DT challenging_JJ task_NN =_JJ -_: =[_NN 55,74_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Auxiliary_JJ Indexers_NNS :_: Auxiliary_JJ indexers_NNS are_VBP responsible_JJ for_IN constructing_VBG additional_JJ indexes_NNS that_WDT provide_VBP metadata_JJ about_IN the_DT pages_NNS in_IN the_DT repository_NN ,_, used_VBN for_IN ordering_VBG search_NN results_NNS by_IN how_WRB likely_JJ the_DT
+like_IN result_NN merging_JJ and_CC database_NN content_NN discovery_NN ._.
+-LRB-_-LRB- 12_CD -RRB-_-RRB- presents_VBZ a_DT formal_JJ decision_NN model_NN for_IN database_NN selection_NN in_IN networked_JJ IR_NN ._.
+-LRB-_-LRB- 21_CD -RRB-_-RRB- investigates_VBZ different_JJ quality_NN measures_NNS for_IN database_NN selection_NN ._.
+=_SYM -_: =[_NN 13_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: study_NN scalability_NN issues_NNS for_IN a_DT distributed_VBN term_NN index_NN ._.
+GlOSS_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- and_CC CORI_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- are_VBP the_DT most_RBS prominent_JJ distributed_VBN IR_NN systems_NNS ,_, but_CC neither_DT of_IN them_PRP aimed_VBN at_IN very-large-scale_NN ,_, highly_RB dynamic_JJ ,_, self-organ_JJ
+ndexing_VBG on_IN a_DT single_JJ machine_NN is_VBZ well_RB understood_VBN and_CC efficient_JJ algorithms_NNS can_MD be_VB found_VBN in_IN IR_NN textbooks_NNS -LRB-_-LRB- 34_CD ,_, 22_CD ,_, 6_CD -RRB-_-RRB- ._.
+Distributed_VBN indexing_NN has_VBZ received_VBN attention_NN in_IN the_DT research_NN community_NN since_IN the_DT 1990s_CD =_JJ -_: =[_NN 32_CD ,_, 28_CD ,_, 24_CD -RRB-_-RRB- -_: =_JJ -_: and_CC is_VBZ a_DT problem_NN that_IN search_NN engine_NN companies_NNS have_VBP solved_VBN -LRB-_-LRB- 5_CD ,_, 3_CD -RRB-_-RRB- ._.
+However_RB ,_, since_IN companies_NNS are_VBP often_RB hesitant_JJ to_TO publish_VB proprietary_JJ details_NNS ,_, there_EX is_VBZ surprisingly_RB little_JJ published_JJ results_NNS dealing_VBG wi_NN
+We_PRP do_VBP not_RB show_VB the_DT value_NN domain_NN -LRB-_-LRB- INT_NN ,_, CHAR_NN ,_, etc._NN -RRB-_-RRB- of_IN attributes_NNS and_CC types_NNS because_IN they_PRP are_VBP not_RB relevant_JJ here_RB ._.
+Information_NNP about_IN Xplain_NNP ,_, its_PRP$ concepts_NNS ,_, language_NN and_CC applications_NNS can_MD be_VB found_VBN elsewhere_RB =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 6_CD ,_, 7_CD ,_, 12_CD ,_, 14-19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+3_LS ._.
+Index_NN queries_NNS Query_NNP 1_CD :_: Select_NNP the_DT documents_NNS where_WRB the_DT word_NN ``_`` Tjoa_NNP ''_'' occurs_VBZ less_RBR frequently_RB than_IN the_DT word_NN ``_`` Wagner_NNP ''_'' ._.
+Xplain_NNP :_: extend_VB document_NN with_IN T_number_NN =_JJ total_JJ presence_NN its_PRP$ relative_frequency_NN wher_NN
+on_IN retrieval_NN -LRB-_-LRB- IR_NN -RRB-_-RRB- systems_NNS use_VBP inverted_JJ indexes_NNS as_IN the_DT main_JJ data_NNS structure_NN for_IN full-text_JJ indexing_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+There_EX is_VBZ a_DT considerable_JJ body_NN of_IN literature_NN on_IN efficient_JJ ways_NNS of_IN building_VBG inverted_JJ indexes_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 9_CD ,_, 11_CD ,_, 15_CD ,_, 19_CD -RRB-_-RRB- -_: =--RRB-_NN and_CC using_VBG them_PRP to_TO evaluate_VB full-text_JJ queries_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 3_CD ,_, 14_CD ,_, 19_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+In_IN this_DT paper_NN ,_, we_PRP use_VBP an_DT inverted_JJ index_NN structure_NN where_WRB each_DT occurrence_NN of_IN a_DT feature_NN f_FW within_IN a_DT web_NN page_NN p_NN is_VBZ represented_VBN by_IN a_DT posti_NN
+s_NN or_CC more_JJR for_IN common_JJ terms_NNS ,_, is_VBZ not_RB acceptable_JJ ._.
+This_DT basic_JJ problem_NN has_VBZ long_RB been_VBN recognized_VBN by_IN researchers_NNS ,_, and_CC has_VBZ motivated_VBN a_DT lot_NN of_IN work_NN on_IN optimization_NN techniques_NNS including_VBG distributed_VBN computation_NN =_JJ -_: =[_NN 29_CD ,_, 5_CD ,_, 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, index_NN compression_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, caching_NN -LRB-_-LRB- 7_CD ,_, 22_CD -RRB-_-RRB- ,_, and_CC early_JJ termination_NN -LRB-_-LRB- 31_CD ,_, 12_CD -RRB-_-RRB- -LRB-_-LRB- also_RB called_VBN pruning_NN or_CC optimized_VBN top-k_NN processing_NN -RRB-_-RRB- ._.
+In_IN this_DT paper_NN we_PRP focus_VBP on_IN early_JJ termination_NN ,_, which_WDT in_IN a_DT nutshell_NN means_NNS re_VBP
+storage_NN manager_NN ,_, indexer_NN and_CC query_NN processor_NN ;_: in_IN particular_JJ ,_, the_DT authors_NNS focus_VBP on_IN hash_NN -_: and_CC log-based_JJ partitioning_NN for_IN storing_VBG incrementally-updated_JJ vast_JJ repositories_NNS of_IN Web_NN documents_NNS ._.
+The_DT authors_NNS of_IN =_JJ -_: =[_NN 94_CD -RRB-_-RRB- -_: =_SYM -_: also_RB describe_VBP a_DT system_NN for_IN building_VBG a_DT distributed_VBN inverted-index_NN over_IN a_DT large_JJ corpus_NN of_IN Web_NN pages_NNS ,_, for_IN subsequent_JJ analysis_NN and_CC query-processing_NN :_: they_PRP employ_VBP an_DT embedded_JJ distributed_VBN database_NN system_NN ._.
+M_NN
+ling_NN geographically_RB distributed_VBN Web_NN sites_NNS ._.
+There_EX are_VBP a_DT number_NN of_IN information_NN retrieval_NN works_VBZ on_IN peer-to-peer_JJ environments_NNS -LRB-_-LRB- Bender_NNP ,_, Michel_NNP ,_, Triantafillou_NNP ,_, Weikum_NNP ,_, &_CC Zimmer_NNP ,_, 2005_CD -RRB-_-RRB- ,_, distributed_VBN systems_NNS -LRB-_-LRB- =_JJ -_: =_JJ Melnik_NNP ,_, Raghavan_NNP ,_, Yang_NNP ,_, &_CC Garcia-Molina_NNP ,_, 2001_CD -_: =--RRB-_NN ,_, and_CC the_DT grid_NN -LRB-_-LRB- Scholze_NNP ,_, Haya_NNP ,_, Vigen_NNP ,_, &_CC Prazak_NNP ,_, 2004_CD -RRB-_-RRB- ._.
+MINERVA_NNP -LRB-_-LRB- Bender_NNP et_FW al._FW ,_, 2005_CD -RRB-_-RRB- is_VBZ a_DT peer-to-peer_JJ Web_NN search_NN engine_NN ,_, in_IN which_WDT each_DT peer_VBP independently_RB executes_VBZ a_DT Web_NN crawler_NN ._.
+This_DT peer-to-peer_NN sy_NN
+e_LS entire_JJ document_NN collection_NN has_VBZ to_TO be_VB crawled_VBN at_IN periodic_JJ intervals_NNS ,_, and_CC -LRB-_-LRB- 2_LS -RRB-_-RRB- every_DT word_NN in_IN the_DT collection_NN has_VBZ to_TO be_VB scanned_VBN to_TO construct_VB the_DT inverted_JJ file_NN ._.
+Distributed_VBN rebuilding_NN techniques_NNS ,_, such_JJ as_IN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, parallelizes_NNS -LRB-_-LRB- and_CC pipelines_NNS -RRB-_-RRB- the_DT process_NN ,_, but_CC does_VBZ not_RB eliminate_VB the_DT need_NN of_IN scanning_NN every_DT word_NN in_IN every_DT document_NN ._.
+If_IN the_DT magnitude_NN of_IN change_NN is_VBZ small_JJ ,_, scanning_VBG and_CC re-indexing_VBG the_DT words_NNS in_IN documen_NN
+orts_NNS transactions_NNS ,_, locking_VBG ,_, and_CC recovery_NN ._.
+-LRB-_-LRB- 2_LS -RRB-_-RRB- Another_DT merit_NN of_IN this_DT embedded_JJ database_NN is_VBZ that_IN it_PRP is_VBZ linked_VBN -LRB-_-LRB- at_IN compile-time_NN or_CC run-time_NN -RRB-_-RRB- into_IN an_DT application_NN and_CC act_VBP as_IN its_PRP$ persistent_JJ storage_NN manager_NN ._.
+=_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: In_IN our_PRP$ system_NN ,_, a_DT total_JJ training_NN statistic_NN DB_NN is_VBZ established_VBN ,_, which_WDT contains_VBZ the_DT frequency_NN and_CC file_NN numbers_NNS that_IN a_DT word_NN appeared_VBD in_IN each_DT class_NN and_CC all_PDT the_DT training_NN set_NN ._.
+During_IN the_DT same_JJ process_NN ,_, a_DT smal_NN
+ORK_NN -LRB-_-LRB- 3_CD ,_, 30_CD -RRB-_-RRB- provide_VBP a_DT good_JJ overview_NN of_IN inverted_JJ indexing_NN in_IN Web_NN search_NN engines_NNS and_CC IR_NN systems_NNS ._.
+Experimental_JJ studies_NNS and_CC analyses_NNS of_IN various_JJ partitioning_VBG schemes_NNS for_IN an_DT inverted_JJ index_NN are_VBP presented_VBN in_IN =_JJ -_: =[_NN 6_CD ,_, 23_CD ,_, 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT pruning_NN algorithms_VBZ that_IN we_PRP have_VBP presented_VBN in_IN this_DT paper_NN are_VBP independent_JJ of_IN the_DT partitioning_VBG scheme_NN used_VBN ._.
+The_DT works_NNS in_IN -LRB-_-LRB- 1_CD ,_, 5_CD ,_, 7_CD ,_, 20_CD ,_, 27_CD -RRB-_-RRB- are_VBP the_DT most_RBS related_JJ to_TO ours_PRP ,_, as_IN they_PRP describe_VBP pruning_NN tec_NN
+result_NN merging_JJ and_CC database_NN content_NN discovery_NN ._.
+-LRB-_-LRB- 56_CD -RRB-_-RRB- presents_VBZ a_DT formal_JJ decision_NN model_NN for_IN database_NN selection_NN in_IN networked_JJ IR_NN ._.
+-LRB-_-LRB- 93_CD -RRB-_-RRB- investigates_VBZ different_JJ quality_NN measures_NNS for_IN database_NN selection_NN ._.
+-LRB-_-LRB- 65_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 82_CD -RRB-_-RRB- -_: =_JJ -_: study_NN scalability_NN issues_NNS for_IN a_DT distributed_VBN term_NN index_NN ._.
+A_DT good_JJ overview_NN of_IN metasearch_NN techniques_NNS is_VBZ given_VBN by_IN -LRB-_-LRB- 84_CD -RRB-_-RRB- ._.
+-LRB-_-LRB- 168_CD -RRB-_-RRB- discusses_VBZ specific_JJ strategies_NNS to_TO determine_VB potentially_RB useful_JJ local_JJ search_NN engi_NN
+like_IN result_NN merging_JJ and_CC database_NN content_NN discovery_NN ._.
+-LRB-_-LRB- 14_CD -RRB-_-RRB- presents_VBZ a_DT formal_JJ decision_NN model_NN for_IN database_NN selection_NN in_IN networked_JJ IR_NN ._.
+-LRB-_-LRB- 23_CD -RRB-_-RRB- investigates_VBZ different_JJ quality_NN measures_NNS for_IN database_NN selection_NN ._.
+=_SYM -_: =[_NN 15,21_CD -RRB-_-RRB- -_: =_JJ -_: study_NN scalability_NN issues_NNS for_IN a_DT distributed_VBN term_NN index_NN ._.
+GlOSS_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- and_CC CORI_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- are_VBP the_DT most_RBS prominent_JJ distributed_VBN IR_NN systems_NNS ,_, but_CC neither_DT of_IN them_PRP aimed_VBN at_IN very-large-scale_NN ,_, highly_RB dynamic_JJ ,_, self-organ_JJ
+style_NN result_VBP merging_JJ and_CC database_NN content_NN discovery_NN ._.
+-LRB-_-LRB- 11_CD -RRB-_-RRB- presents_VBZ a_DT formal_JJ decision_NN model_NN for_IN database_NN selection_NN in_IN networked_JJ IR_NN ._.
+-LRB-_-LRB- 19_CD -RRB-_-RRB- investigates_VBZ different_JJ quality_NN measures_NNS for_IN database_NN selection_NN ._.
+=_SYM -_: =[_NN 13_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: study_NN scalability_NN issues_NNS for_IN a_DT distributed_VBN term_NN index_NN ._.
+None_NN of_IN the_DT presented_VBN techniques_NNS incorporates_VBZ overlap_VB detection_NN into_IN the_DT selection_NN process_NN ._.
+Estimating_VBG overlap_VBP of_IN sets_NNS has_VBZ been_VBN receiving_VBG increa_NN
+ized_VBN systems_NNS built_VBN on_IN guarantees_NNS unmet_JJ by_IN peer-to-peer_JJ storage_NN ._.
+The_DT general_JJ information_NN retrieval_NN methodologies_NNS outlined_VBN for_IN coordinated_VBN distributed_VBN systems_NNS ,_, on_IN which_WDT much_JJ research_NN has_VBZ been_VBN conducted_VBN =_JJ -_: =[_NN 3_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, are_VBP not_RB directly_RB applicable_JJ ._.
+In_IN peer-to-peer_JJ systems_NNS ,_, basic_JJ one-dimensional_JJ queries_NNS such_JJ as_IN keyword_NN and_CC prefix_NN search_NN are_VBP currently_RB supported_VBN ,_, but_CC in_IN much_RB the_DT same_JJ manner_NN as_IN routing_VBG or_CC messaging_VBG -LRB-_-LRB- se_FW
+style_NN result_VBP merging_JJ and_CC database_NN content_NN discovery_NN ._.
+-LRB-_-LRB- 7_CD -RRB-_-RRB- presents_VBZ a_DT formal_JJ decision_NN model_NN for_IN database_NN selection_NN in_IN networked_JJ IR_NN ._.
+-LRB-_-LRB- 12_CD -RRB-_-RRB- investigates_VBZ different_JJ quality_NN measures_NNS for_IN database_NN selection_NN ._.
+=_SYM -_: =[_NN 13,14_CD -RRB-_-RRB- -_: =_JJ -_: study_NN scalability_NN issues_NNS for_IN a_DT distributed_VBN term_NN index_NN ._.
+None_NN of_IN the_DT presented_VBN techniques_NNS incorporates_VBZ overlap_VB detection_NN into_IN the_DT selection_NN process_NN ._.
+-LRB-_-LRB- 15_CD -RRB-_-RRB- describes_VBZ a_DT permutation-based_JJ technique_NN for_IN eff_NN
+rk_NN ,_, though_IN this_DT only_RB improves_VBZ results_NNS by_IN a_DT constant_JJ factor_NN ._.
+We_PRP investigate_VBP in_IN Subsection_NN 4.1_CD how_WRB cents_NNS These_DT two_CD organizations_NNS are_VBP also_RB sometimes_RB referred_VBN to_TO as_IN vertical_JJ and_CC horizontal_JJ index_NN partitioning_VBG =_JJ -_: =_JJ -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+-_: =_JJ -_: We_PRP avoid_VBP these_DT terms_NNS here_RB as_IN they_PRP tend_VBP to_TO lead_VB to_TO confusion_NN with_IN standard_JJ database_NN terminology_NN ._.
+#_# This_DT problem_NN is_VBZ also_RB known_VBN as_IN the_DT database_NN selection_NN problem_NN in_IN the_DT meta_NN search_NN community_NN -LRB-_-LRB- 33_CD -RRB-_-RRB- ._.
+4sre_NN
+collection_NN of_IN the_DT participating_VBG hosts_NNS ._.
+These_DT include_VBP commercial_JJ information_NN retrieval_NN systems_NNS such_JJ as_IN web_NN search_NN engines_NNS -LRB-_-LRB- e.g._FW Google_NNP ,_, Inktomi_NNP -RRB-_-RRB- as_RB well_RB as_IN P2P_NN models_NNS that_WDT provide_VBP centralized_JJ indexes_NNS =_JJ -_: =[_NN 21,22,33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT techniques_NNS represent_VBP an_DT altogether_RB different_JJ philosophy_NN ,_, and_CC 7sthey_NN are_VBP not_RB directly_RB comparable_JJ ._.
+In_IN general_JJ ,_, one_CD trades_NNS simplicity_NN and_CC robustness_NN with_IN improved_VBN search_NN time_NN and_CC more_RBR expensive_JJ r_NN
+b_NN based_JJ search_NN engine_NN ._.
+Perhaps_RB the_DT most_RBS valuable_JJ paper_NN on_IN this_DT topic_NN is_VBZ by_IN Sergey_NNP Brin_NNP and_CC Lawrence_NNP Page_NNP -LRB-_-LRB- 39_CD -RRB-_-RRB- ,_, the_DT architects_NNS of_IN Google_NNP ._.
+Other_JJ sources_NNS of_IN relevant_JJ information_NN are_VBP -LRB-_-LRB- 40_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 41_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 42_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 43_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT light_NN of_IN the_DT SPIRIT_NN project_NN ,_, we_PRP wish_VBP to_TO experiment_NN with_IN a_DT hybrid_NN searching_VBG mechanism_NN that_WDT is_VBZ a_DT combination_NN of_IN usual_JJ text_NN based_VBN index_NN and_CC the_DT spatial_JJ index_NN ._.
+In_IN order_NN to_TO understand_VB the_DT effectiv_NN
+Index_NN ._.
+Most_JJS IR_NN systems_NNS use_VBP inverted_JJ indexes_NNS as_IN their_PRP$ main_JJ data_NNS structure_NN for_IN full-text_JJ indexing_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+There_EX is_VBZ a_DT considerable_JJ body_NN of_IN literature_NN on_IN efficient_JJ ways_NNS to_TO build_VB inverted_JJ indexes_NNS -LRB-_-LRB- See_NNP e.g._NNP =_SYM -_: =[_NN 1_CD ,_, 3_CD ,_, 10_CD ,_, 13_CD ,_, 16_CD ,_, 21_CD -RRB-_-RRB- -_: =--RRB-_NN and_CC evaluate_VB full-text_JJ queries_NNS using_VBG them_PRP -LRB-_-LRB- See_NNP e.g._NNP -LRB-_-LRB- 5_CD ,_, 15_CD ,_, 21_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+In_IN this_DT paper_NN ,_, we_PRP assume_VBP an_DT inverted_JJ index_NN structure_NN ._.
+The_DT occurrence_NN of_IN a_DT term_NN t_NN within_IN a_DT document_NN d_NN is_VBZ called_VBN a_DT posting_VBG ._.
+The_DT set_NN of_IN
+dex_NN The_DT inverted_JJ index_NN -LRB-_-LRB- sometimes_RB called_VBN inverted_JJ file_NN -RRB-_-RRB- is_VBZ the_DT data_NN structure_NN of_IN choice_NN for_IN full-text_JJ indexing_NN in_IN search_NN engines_NNS -LRB-_-LRB- 2_CD ,_, 25_CD -RRB-_-RRB- ._.
+Algorithms_NNS for_IN building_VBG inverted_JJ indexes_NNS are_VBP widely_RB published_VBN =_JJ -_: =[_NN 3_CD ,_, 5_CD ,_, 15_CD ,_, 18_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ goal_NN is_VBZ to_TO develop_VB a_DT method_NN that_WDT incorporates_VBZ efficient_JJ numeric_JJ search_NN capabilities_NNS into_IN the_DT inverted_JJ index_NN model_NN ._.
+In_IN an_DT inverted_JJ index_NN ,_, each_DT term_NN or_CC field_NN appearing_VBG in_IN the_DT corpus_NN is_VBZ represented_VBN
+control_NN ,_, recovery_NN ,_, caching_NN ,_, index_NN structures_NNS ,_, etc._FW -RRB-_-RRB- ,_, without_IN significant_JJ 2sLayering_NN Loose_JJ Coupling_NN -LRB-_-LRB- or_CC -RRB-_-RRB- Middleware_JJ Integration_NN Extension_NNP Figure_NNP 1_CD :_: Common_JJ integration_NN architectures_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- -LRB-_-LRB- 15_CD -RRB-_-RRB- -LRB-_-LRB- 41_CD -RRB-_-RRB- -LRB-_-LRB- 46_CD -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- =_JJ -_: =[_NN 47_CD -RRB-_-RRB- -_: =-[_NN 20_CD -RRB-_-RRB- -LRB-_-LRB- 38_CD -RRB-_-RRB- -LRB-_-LRB- 39_CD -RRB-_-RRB- -LRB-_-LRB- 57_CD -RRB-_-RRB- -LRB-_-LRB- 19_CD -RRB-_-RRB- -LRB-_-LRB- 42_CD -RRB-_-RRB- -LRB-_-LRB- 23_CD -RRB-_-RRB- -LRB-_-LRB- 56_CD -RRB-_-RRB- -LRB-_-LRB- 60_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- -LRB-_-LRB- 29_CD -RRB-_-RRB- -LRB-_-LRB- 54_CD -RRB-_-RRB- -LRB-_-LRB- 27_CD -RRB-_-RRB- -LRB-_-LRB- 40_CD -RRB-_-RRB- -LRB-_-LRB- 62_CD -RRB-_-RRB- -LRB-_-LRB- 25_CD -RRB-_-RRB- -LRB-_-LRB- 26_CD -RRB-_-RRB- -LRB-_-LRB- 16_CD -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- 45_CD -RRB-_-RRB- -LRB-_-LRB- 13_CD -RRB-_-RRB- -LRB-_-LRB- 44_CD -RRB-_-RRB- -LRB-_-LRB- 31_CD -RRB-_-RRB- -LRB-_-LRB- 33_CD -RRB-_-RRB- -LRB-_-LRB- 18_CD -RRB-_-RRB- -LRB-_-LRB- 17_CD -RRB-_-RRB- -LRB-_-LRB- 35_CD -RRB-_-RRB- -LRB-_-LRB- 20_CD -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- -LRB-_-LRB- 58_CD -RRB-_-RRB- -LRB-_-LRB- 51_CD -RRB-_-RRB- -LRB-_-LRB- 21_CD -RRB-_-RRB- -LRB-_-LRB- 65_CD -RRB-_-RRB- -LRB-_-LRB- 53_CD -RRB-_-RRB- -LRB-_-LRB- 61_CD -RRB-_-RRB- -LRB-_-LRB- 37_CD -RRB-_-RRB- Text_NN Retrieval_NN Relational\/OO_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- -LRB-_-LRB- 32_CD -RRB-_-RRB- -LRB-_-LRB- 30_CD -RRB-_-RRB- -LRB-_-LRB- 24_CD -RRB-_-RRB-
+he_PRP P2P_NN system_NN can_MD be_VB involve_VB more_RBR sophisticated_JJ interactions_NNS ._.
+Other_JJ studies_NNS include_VBP studies_NNS include_VBP understanding_VBG the_DT web-structure_JJ -LRB-_-LRB- 5_CD ,_, 2_CD -RRB-_-RRB- ,_, distributed_VBN crawlers_NNS -LRB-_-LRB- 45_CD -RRB-_-RRB- and_CC ,_, distributed_VBN index_NN structures_NNS =_JJ -_: =[_NN 39_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+2.6_CD Role_NN of_IN agents_NNS We_PRP study_VBD the_DT role_NN of_IN Agency_NNP as_IN it_PRP applies_VBZ to_TO the_DT information_NN dissemination_NN context_NN ._.
+2.6.1_CD Mediation_NNP Mediators_NNPS or_CC broker_NN agents_NNS have_VBP been_VBN explored_VBN in_IN the_DT context_NN mediated_JJ search_NN ._.
+H_NN
+help_NN of_IN a_DT relational_JJ database_NN system_NN ._.
+There_EX are_VBP different_JJ ways_NNS of_IN storing_VBG such_JJ an_DT index_NN in_IN a_DT relational_JJ database_NN ._.
+As_IN the_DT approach_NN is_VBZ similar_JJ to_TO a_DT inverted_JJ list_NN we_PRP can_MD use_VB approaches_NNS of_IN this_DT area_NN e.g._FW =_SYM -_: =_JJ -LRB-_-LRB- MRYGM01_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+Another_DT approach_NN is_VBZ using_VBG index_NN structures_NNS for_IN keyword-based_JJ search_NN in_IN relational_NN -LRB-_-LRB- ACD02_NN ,_, BHN_NNP +_CC 02_CD ,_, HP02_NN -RRB-_-RRB- or_CC XML_NN databases_NNS -LRB-_-LRB- FKM00_NN -RRB-_-RRB- ._.
+For_IN now_RB ,_, we_PRP assume_VBP that_IN the_DT index_NN is_VBZ implemented_VBN as_IN one_CD table_NN with_IN
+re_NN and_CC cache_NN two_CD -LRB-_-LRB- or_CC more_JJR -RRB-_-RRB- result_NN pages_NNS per_IN query_NN ._.
+1.3_CD Index_NN Structure_NN and_CC Query_NNP Processing_NNP Models_NNS Inverted_JJ indices_NNS ,_, or_CC inverted_JJ lists_NNS \/_: les_FW ,_, are_VBP regarded_VBN as_IN the_DT most_RBS widely_RB applied_VBN indexing_NN technique_NN =_JJ -_: =[_NN 18_CD ,_, 8_CD ,_, 20_CD ,_, 17_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC are_VBP believed_VBN to_TO be_VB used_VBN by_IN the_DT major_JJ search_NN engines_NNS ._.
+As_IN search_NN engines_NNS index_NN hundreds_NNS of_IN millions_NNS of_IN Web_NN pages_NNS -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, the_DT size_NN of_IN their_PRP$ inverted_JJ indices_NNS is_VBZ measured_VBN in_IN terabytes_NNS ._.
+Ribeiro-Neto_NNP and_CC
+needed_VBN ._.
+sThese_NN two_CD key_JJ differences_NNS illustrate_VBP the_DT need_NN for_IN new_JJ approaches_NNS compared_VBN to_TO traditional_JJ web_NN crawling_NN ._.
+A_DT pipelined_JJ document_NN indexing_NN infrastructure_NN has_VBZ already_RB been_VBN defined_VBN and_CC analyzed_VBN -LRB-_-LRB- see_VB =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, the_DT same_JJ approach_NN is_VBZ not_RB applicable_JJ for_IN Semantic_JJ Web_NN data_NNS due_JJ to_TO the_DT variety_NN of_IN stages_NNS and_CC different_JJ time_NN and_CC space_NN behavior_NN ._.
+The_DT main_JJ contributions_NNS of_IN this_DT paper_NN are_VBP :_: --_: Following_VBG the_DT gene_NN
+._.
+Inverted_JJ index_NN ._.
+Most_JJS IR_NN systems_NNS use_VBP inverted_JJ indexes_NNS as_IN their_PRP$ main_JJ data_NNS structure_NN for_IN full-text_JJ indexing_NN -LRB-_-LRB- 33_CD -RRB-_-RRB- ._.
+There_EX is_VBZ a_DT considerable_JJ body_NN of_IN literature_NN on_IN efficient_JJ ways_NNS to_TO build_VB inverted_JJ indexes_NNS =_JJ -_: =[_NN 3_CD ,_, 5_CD ,_, 18_CD ,_, 23_CD ,_, 30_CD ,_, 33_CD -RRB-_-RRB- -_: =_JJ -_: and_CC evaluate_VB full-text_JJ queries_NNS using_VBG them_PRP -LRB-_-LRB- 6_CD ,_, 29_CD ,_, 33_CD -RRB-_-RRB- ._.
+In_IN this_DT paper_NN we_PRP assume_VBP an_DT inverted_JJ index_NN structure_NN ._.
+The_DT occurrence_NN of_IN a_DT term_NN t_NN within_IN a_DT document_NN d_NN is_VBZ called_VBN a_DT posting_VBG ._.
+The_DT set_NN of_IN postings_NNS ass_VBP
+the_DT 20sranges_NNS -LRB-_-LRB- a-q_NN -RRB-_-RRB- whereas_IN B_NN could_MD store_VB the_DT inverted_JJ lists_NNS for_IN the_DT remaining_VBG index_NN terms_NNS ._.
+Therefore_RB ,_, a_DT search_NN query_NN that_WDT asks_VBZ for_IN pages_NNS containing_VBG the_DT term_NN ``_`` process_NN ''_'' would_MD only_RB involve_VB A._NN Refere_NN =_JJ -_: =_JJ nce_NN -LRB-_-LRB- 45_CD -RRB-_-RRB- -_: =_SYM -_: describes_VBZ certain_JJ important_JJ characteristics_NNS of_IN the_DT IFL_NNP strategy_NN ,_, such_JJ as_IN resilience_NN to_TO node_NN failures_NNS and_CC reduced_VBN network_NN load_NN ,_, that_WDT make_VBP this_DT organization_NN ideal_NN for_IN the_DT Web_NN search_NN environment_NN ._.
+Perfor_NNP
+e_LS cases_NNS is_VBZ done_VBN by_IN using_VBG Lempel-Ziv_JJ parsing_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+On_IN the_DT issue_NN of_IN improving_VBG scalability_NN and_CC query_NN throughput_NN ,_, research_NN has_VBZ been_VBN done_VBN on_IN building_VBG a_DT distributed_VBN inverted_JJ index_NN over_IN a_DT number_NN of_IN machines_NNS =_JJ -_: =[_NN 4,19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT scheme_NN is_VBZ essential_JJ for_IN commercial_JJ systems_NNS that_WDT handle_VBP very_RB large_JJ scale_NN databases_NNS ._.
+A_DT detailed_JJ survey_NN on_IN the_DT inverted_JJ index_NN can_MD be_VB found_VBN in_IN the_DT paper_NN by_IN Zobel_NNP and_CC Moffat_NNP -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+123Structural_NN opt_VB
+come_VBN unmanageable_JJ ,_, requiring_VBG huge_JJ resources_NNS and_CC taking_VBG days_NNS to_TO complete_VB -LRB-_-LRB- and_CC becoming_VBG more_RBR vulnerable_JJ to_TO system_NN failures_NNS -RRB-_-RRB- ._.
+As_IN a_DT measure_NN of_IN comparison_NN ,_, the_DT 40_CD million_CD page_NN -LRB-_-LRB- 220_CD GB_NN -RRB-_-RRB- WebBase_NN repository_NN -LRB-_-LRB- =_JJ -_: =_JJ Hirai_NNP et_FW al._FW 2000_CD -_: =-]_NN represents_VBZ only_RB about_RB 4_CD %_NN of_IN the_DT estimated_VBN size_NN of_IN the_DT publicly_RB indexable_JJ Web_NN as_IN of_IN January_NNP 2000_CD -LRB-_-LRB- Inktomi_NNP 2000_CD -RRB-_-RRB- ,_, but_CC is_VBZ already_RB larger_JJR than_IN the_DT 100_CD GB_NN very_RB large_JJ TREC-7_NN collection_NN -LRB-_-LRB- Hawking_NN and_CC Craswe_NN
+f_LS entries_NNS 3sfield_NN -RRB-_-RRB- 17_CD ,_, the_DT locations_NNS for_IN a_DT given_VBN term_NN are_VBP not_RB guaranteed_VBN to_TO be_VB in_IN sorted_VBN order_NN ._.
+6_CD These_DT numerical_JJ di_FW #erences_FW are_VBP in_IN turn_NN compressed_VBN using_VBG the_DT ASN_NNP .1_NNP Basic_NNP Encoding_NNP Rules_NNP specification_NN -LRB-_-LRB- =_JJ -_: =_JJ CCITT_NN 1988_CD -_: =-]_CD 12_CD Melnik_NNP et_FW al._FW ._.
+Scheme_NNP Index_NNP size_NN Zig-zag_NN joins_VBZ Hot_JJ updates_NNS single_JJ payload_NN --_: +_CC +_CC full_JJ list_NN +_CC -_: -_: -_: mixed_JJ list_NN +_CC -_: +_CC -_: +_CC -_: Table_NNP 3_CD ._.
+Comparison_NN of_IN storage_NN schemes_NNS where_WRB 3_CD indicates_VBZ the_DT length_NN of_IN the_DT com_NN
+me_FW query_FW processing_NN and_CC retrieval_NN ._.
+However_RB ,_, with_IN a_DT Web-scale_JJ index_NN ,_, index_NN build_VBP time_NN also_RB becomes_VBZ a_DT critical_JJ factor_NN for_IN two_CD reasons_NNS :_: Scale_NNP and_CC growth_NN rate_NN ._.
+The_DT Web_NN is_VBZ so_RB large_JJ and_CC growing_VBG so_RB rapidly_RB -LRB-_-LRB- =_JJ -_: =_JJ Lawrence_NNP and_CC Giles_NNP 1999_CD -_: =_JJ -_: ;_: Inktomi_NNP 2000_CD -RRB-_-RRB- that_IN traditional_JJ build_VB schemes_NNS become_VBP unmanageable_JJ ,_, requiring_VBG huge_JJ resources_NNS and_CC taking_VBG days_NNS to_TO complete_VB -LRB-_-LRB- and_CC becoming_VBG more_RBR vulnerable_JJ to_TO system_NN failures_NNS -RRB-_-RRB- ._.
+As_IN a_DT measure_NN of_IN comparison_NN ,_,
+ng_NN a_DT software_NN pipeline_NN on_IN each_DT indexing_NN node_NN to_TO enhance_VB performance_NN through_IN intra-node_JJ parallelism_NN -LRB-_-LRB- Section_NN 3_CD -RRB-_-RRB- ._.
+--_: We_PRP argue_VBP that_IN the_DT use_NN of_IN an_DT embedded_JJ database_NN system_NN -LRB-_-LRB- such_JJ as_IN The_DT Berkeley_NNP Database_NNP -LRB-_-LRB- =_JJ -_: =_JJ Olson_NNP et_FW al._FW 1999_CD -_: =-]_CD -RRB-_-RRB- for_IN storing_VBG inverted_JJ files_NNS has_VBZ a_DT number_NN of_IN important_JJ advantages_NNS ._.
+We_PRP propose_VBP an_DT appropriate_JJ format_NN for_IN inverted_JJ files_NNS that_WDT makes_VBZ optimal_JJ use_NN of_IN the_DT features_NNS of_IN such_PDT a_DT database_NN system_NN -LRB-_-LRB- Section_NN 4_CD -RRB-_-RRB- ._.
+--_:
+algorithms_NNS for_IN resource_NN scheduling_NN ,_, with_IN applications_NNS to_TO scheduling_NN pipeline_NN stages_NNS ._.
+There_EX has_VBZ been_VBN prior_JJ work_NN on_IN using_VBG relational_JJ or_CC object-oriented_JJ data_NNS stores_NNS to_TO manage_VB and_CC process_VB inverted_JJ files_NNS -LRB-_-LRB- =_JJ -_: =_JJ Blair_NNP 1988_CD -_: =_JJ -_: ;_: Brown_NNP et_FW al._FW 1994_CD ;_: Gorssman_NNP and_CC Driscoll_NNP 1992_CD -RRB-_-RRB- ._.
+In_IN -LRB-_-LRB- Brown_NNP et_FW al._FW 1994_CD -RRB-_-RRB- ,_, the_DT authors_NNS describe_VBP the_DT architecture_NN and_CC performance_NN of_IN an_DT IR_NN system_NN that_WDT uses_VBZ a_DT persistent_JJ object_NN store_NN to_TO manage_VB inverted_JJ f_SYM
+ave_RB traditionally_RB been_VBN two_CD approaches_NNS to_TO storing_VBG and_CC managing_VBG inverted_JJ files_NNS ;_: using_VBG a_DT custom_NN implementation_NN ,_, or_CC by_IN leveraging_VBG existing_VBG relational_JJ or_CC object_NN data_NNS management_NN systems_NNS -LRB-_-LRB- Brown_NNP et_FW al._FW 1994_CD ;_: =_JJ -_: =_JJ Gorssman_NNP and_CC Driscoll_NNP 1992_CD -_: =-]_CD ._.
+The_DT advantage_NN of_IN a_DT custom_NN implementation_NN is_VBZ that_IN it_PRP enables_VBZ very_RB e_SYM #ective_JJ optimizations_NNS tuned_VBN to_TO the_DT specific_JJ operations_NNS on_IN inverted_JJ files_NNS -LRB-_-LRB- e.g._FW ,_, caching_VBG frequently_RB used_VBN inverted_JJ lists_NNS ,_, compressing_VBG
+For_IN example_NN ,_, in_IN Figure_NNP 7_CD ,_, to_TO retrieve_VB locations_NNS for_IN cat_NN starting_VBG at_IN 311_CD ,_, we_PRP do_VBP not_RB have_VB to_TO read_VB the_DT portion_NN of_IN the_DT list_NN for_IN locations_NNS 100-280_CD ._.
+The_DT skipped-list_JJ and_CC random_JJ inverted-list_JJ structures_NNS of_IN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 18_CD -RRB-_-RRB- also_RB provides_VBZ selective_JJ access_NN to_TO portions_NNS of_IN an_DT inverted_JJ list_NN ,_, by_IN diving_NN the_DT inverted_JJ list_NN into_IN blocks_NNS each_DT containing_VBG asxed_JJ number_NN of_IN postings_NNS ._.
+However_RB ,_, those_DT schemes_NNS assume_VBP a_DT custom_NN inver_NN
+us_PRP access_NN methods_NNS have_VBP been_VBN developed_VBN to_TO support_VB e_SYM #cient_JJ search_NN and_CC retrieval_NN over_IN text_NN document_NN collections_NNS ._.
+Examples_NNS include_VBP su_FW #x_FW arrays_NNS -LRB-_-LRB- Manber_NNP and_CC Myers_NNP 1990_CD -RRB-_-RRB- ,_, inverted_JJ files_NNS or_CC inverted_JJ indexes_NNS -LRB-_-LRB- =_JJ -_: =_JJ Salton_NNP 1989_CD -_: =_JJ -_: ;_: Witten_NNP et_FW al._FW 1999_CD -RRB-_-RRB- ,_, and_CC signature_NN files_NNS -LRB-_-LRB- Faloutsos_NNP and_CC Christodoulakis_NNP 1984_CD -RRB-_-RRB- ._.
+Inverted_JJ files_NNS have_VBP traditionally_RB been_VBN the_DT index_NN structure_NN of_IN choice_NN on_IN the_DT Web_NN ._.
+Commercial_JJ search_NN engines_NNS use_VBP custom_NN n_NN
+220_CD GB_NN -RRB-_-RRB- WebBase_NN repository_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- represents_VBZ only_RB about_RB 4_CD %_NN of_IN the_DT estimated_VBN size_NN of_IN the_DT publicly_RB indexable_JJ Web_NN as_IN of_IN January_NNP 2000_CD -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, but_CC is_VBZ already_RB larger_JJR than_IN the_DT 100_CD GB_NN very_RB large_JJ TREC-7_NN collection_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT benchmark_NN for_IN large_JJ IR_NNP systems_NNS ._.
+Rate_NN of_IN change_NN ._.
+Since_IN the_DT content_NN on_IN the_DT Web_NN changes_NNS extremely_RB rapidly_RB -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, there_EX is_VBZ a_DT need_NN to_TO periodically_RB crawl_VB the_DT Web_NN and_CC update_VB the_DT inverted_JJ index_NN ._.
+Indexes_NNS c_NN
+hedule_NN for_IN the_DT di_FW #erent_FW indexing_NN phases_NNS that_WDT will_MD result_VB in_IN minimal_JJ overall_JJ running_NN time_NN -LRB-_-LRB- also_RB called_VBN makespan_NN in_IN the_DT scheduling_NN literature_NN -RRB-_-RRB- ._.
+Our_PRP$ problem_NN di_FW #ers_FW from_IN a_DT typical_JJ job_NN scheduling_NN problem_NN -LRB-_-LRB- =_JJ -_: =_JJ Chakrabarti_NNP and_CC Muthukrishnan_NNP 1996_CD -_: =-]_FW in_FW that_IN we_PRP can_MD vary_VB the_DT sizes_NNS of_IN the_DT incoming_JJ jobs_NNS ,_, i.e._FW ,_, in_IN every_DT loading_VBG phase_NN we_PRP can_MD choose_VB the_DT number_NN of_IN pages_NNS to_TO load_VB ._.
+In_IN the_DT rest_NN of_IN this_DT section_NN ,_, we_PRP describe_VBP how_WRB we_PRP make_VBP e_SYM #ective_JJ use_NN of_IN this_DT
+an_DT inverted_JJ index_NN and_CC not_RB on_IN using_VBG this_DT index_NN to_TO process_VB search_NN queries_NNS ._.
+As_IN a_DT result_NN ,_, we_PRP do_VBP not_RB address_VB issues_NNS such_JJ as_IN ranking_JJ functions_NNS ,_, relevance_NN feedback_NN -LRB-_-LRB- 22_CD ,_, 29_CD -RRB-_-RRB- ,_, and_CC distributed_VBN query_NN processing_NN =_JJ -_: =[_NN 11_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Furthermore_RB ,_, our_PRP$ aim_NN is_VBZ not_RB to_TO construct_VB a_DT feature-rich_JJ inverted_JJ index_NN that_WDT supports_VBZ phrase_NN searching_VBG ,_, approximate_JJ matching_NN ,_, and_CC proximity_NN queries_NNS -LRB-_-LRB- 22_CD ,_, 29_CD -RRB-_-RRB- ._.
+Rather_RB ,_, our_PRP$ studies_NNS are_VBP more_RBR fundamental_JJ ,_,
+is_VBZ complementary_JJ to_TO our_PRP$ strategies_NNS for_IN gathering_VBG statistics_NNS during_IN index_NN construction_NN ._.
+Global_JJ statistics_NNS are_VBP also_RB important_JJ in_IN meta-search_JJ environments_NNS -LRB-_-LRB- Lawrence_NNP and_CC Giles_NNP 1998_CD ;_: Craswell_NNP et_FW al._FW 1999_CD ;_: =_JJ -_: =_JJ Gravano_NNP et_FW al._FW 1997_CD -_: =-]_CD ,_, where_WRB ranked_VBD results_NNS from_IN several_JJ -LRB-_-LRB- possibly_RB autonomous_JJ -RRB-_-RRB- search_NN servers_NNS must_MD be_VB merged_VBN to_TO produce_VB a_DT global_JJ ranking_NN ._.
+For_IN such_JJ environments_NNS ,_, as_IN an_DT alternative_NN to_TO accurate_JJ global_JJ statistics_NNS ,_, Craswell_NNP e_SYM
+-LRB-_-LRB- Hirai_NNP et_FW al._FW 2000_CD -RRB-_-RRB- represents_VBZ only_RB about_RB 4_CD %_NN of_IN the_DT estimated_VBN size_NN of_IN the_DT publicly_RB indexable_JJ Web_NN as_IN of_IN January_NNP 2000_CD -LRB-_-LRB- Inktomi_NNP 2000_CD -RRB-_-RRB- ,_, but_CC is_VBZ already_RB larger_JJR than_IN the_DT 100_CD GB_NN very_RB large_JJ TREC-7_NN collection_NN -LRB-_-LRB- =_JJ -_: =_JJ Hawking_NNP and_CC Craswell_NNP 1998_CD -_: =-]_CD ,_, the_DT benchmark_NN for_IN large_JJ IR_NNP systems_NNS ._.
+Rate_NN of_IN change_NN ._.
+Since_IN the_DT content_NN on_IN the_DT Web_NN changes_NNS extremely_RB rapidly_RB -LRB-_-LRB- Cho_NNP and_CC Garcia-Molina_NNP 2000_CD -RRB-_-RRB- ,_, there_EX is_VBZ a_DT need_NN to_TO periodically_RB crawl_VB the_DT Web_NN and_CC update_VB the_DT
+large_JJ N_NN ,_, the_DT overall_JJ indexing_NN time_NN is_VBZ determined_VBN by_IN the_DT scarcest_JJS resource_NN -LRB-_-LRB- the_DT CPU_NNP ,_, in_IN Figure_NNP 3_CD -RRB-_-RRB- and_CC can_MD be_VB approximated_VBN by_IN Tp_NN =_JJ max_NN -LCB-_-LRB- P_NN N_NN i_LS =_JJ 1_CD l_NN i_FW ,_, P_NN N_NN i_LS =_JJ 1_CD p_NN i_FW ,_, P_NN N_NN i_LS =_JJ 1_CD f_FW i_FW -RCB-_-RRB- ._.
+It_PRP can_MD be_VB shown_VBN -LRB-_-LRB- see_VB =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =--RRB-_NN that_IN Tp_NN is_VBZ minimized_VBN when_WRB all_DT N_NN pipeline_NN executions_NNS use_VBP the_DT same_JJ bu_FW #er_FW size_NN B_NN ,_, where_WRB B_NN =_JJ B1_NN ..._: =_JJ BN_NN =_JJ B_NN total_JJ N_NN ._.
+Let_VB l_NN =_JJ #B_NN ,_, f_FW =_JJ #B_NN ,_, and_CC p_NN =_JJ #B_NN +_CC #B_NN log_NN B_NN be_VB the_DT durations_NNS of_IN the_DT loading_NN ,_, proces_NNS
+community_NN to_TO support_VB ecient_JJ search_NN and_CC retrieval_NN over_IN text_NN document_NN collections_NNS ._.
+Examples_NNS of_IN such_JJ access_NN methods_NNS include_VBP sux_NN arrays_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, invertedsles_NNS or_CC inverted_JJ indexes_NNS -LRB-_-LRB- 22_CD ,_, 29_CD -RRB-_-RRB- ,_, and_CC signaturesles_VBZ =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Invertedsles_NNS have_VBP traditionally_RB been_VBN the_DT index_NN structure_NN of_IN choice_NN on_IN the_DT Web_NN ._.
+They_PRP perform_VBP well_RB for_IN simple_JJ and_CC short_JJ Web_NN search_NN queries_NNS that_WDT typically_RB consist_VBP of_IN conjunctions_NNS of_IN search_NN terms_NNS ._.
+Comme_NN
+._.
+A_DT great_JJ deal_NN of_IN work_NN has_VBZ been_VBN done_VBN on_IN several_JJ other_JJ issues_NNS ,_, relevant_JJ to_TO inverted-index_JJ based_VBN information_NN retrieval_NN ,_, that_WDT have_VBP not_RB been_VBN discussed_VBN in_IN this_DT paper_NN ._.
+Such_JJ issues_NNS include_VBP index_NN compression_NN =_JJ -_: =[_NN 16_CD ,_, 18_CD ,_, 29_CD -RRB-_-RRB- -_: =_JJ -_: ,_, incremental_JJ updates_NNS -LRB-_-LRB- 2_CD ,_, 11_CD ,_, 25_CD ,_, 29_CD ,_, 30_CD -RRB-_-RRB- ,_, and_CC distributed_VBN query_NN performance_NN -LRB-_-LRB- 23_CD ,_, 24_CD -RRB-_-RRB- ._.
+6_CD Conclusions_NNS In_IN this_DT paper_NN ,_, we_PRP addressed_VBD the_DT problem_NN of_IN eciently_RB constructing_VBG inverted_JJ indexes_NNS over_IN large_JJ collec_NN
+ple_NN ,_, in_IN Figure_NNP 7_CD ,_, to_TO retrieve_VB locations_NNS for_IN cat_NN starting_VBG at_IN 311_CD ,_, we_PRP do_VBP not_RB have_VB to_TO read_VB the_DT portion_NN of_IN the_DT list_NN for_IN locations_NNS 100-280_CD ._.
+The_DT skipped-list_JJ and_CC random_JJ inverted-list_JJ structures_NNS of_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: also_RB provides_VBZ selective_JJ access_NN to_TO portions_NNS of_IN an_DT inverted_JJ list_NN ,_, by_IN diving_NN the_DT inverted_JJ list_NN into_IN blocks_NNS each_DT containing_VBG asxed_JJ number_NN of_IN postings_NNS ._.
+However_RB ,_, those_DT schemes_NNS assume_VBP a_DT custom_NN invertedsle_NN im_NN
+a_DT is_VBZ dierent_JJ ._.
+We_PRP also_RB note_VBP that_IN the_DT exponent_NN for_IN our_PRP$ collection_NN of_IN Web_NN pages_NNS seems_VBZ to_TO be_VB larger_JJR -LRB-_-LRB- implying_VBG that_IN the_DT vocabulary_NN grows_VBZ faster_JJR -RRB-_-RRB- than_IN exponents_NNS normally_RB observed_VBN in_IN other_JJ text_NN collections_NNS -LRB-_-LRB- =_JJ -_: =_JJ 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+0_CD 1_CD 2_CD 3_CD 4_CD 5_CD 6_CD 7_CD 8_CD 9_CD 10_CD x_CC 10_CD 0_CD 1_CD 2_CD 3_CD 4_CD 5_CD 6_CD 7_CD x_CC 10_CD 5_CD Number_NN of_IN pages_NNS processed_VBN Best-fit_JJ curve_NN from_IN 5_CD samples_NNS Data_NNP from_IN one_CD of_IN the_DT 5_CD samples_NNS -LRB-_-LRB- 1_CD bar_NN every_DT 5000_CD pages_NNS -RRB-_-RRB- a_DT =_JJ 356.4_CD ,_, b_NN =_JJ 0.66_CD 0_CD 1_CD 2_CD 3_CD 4_CD 5_CD 6_CD 7_CD
+._.
+As_IN a_DT result_NN ,_, we_PRP do_VBP not_RB address_VB issues_NNS such_JJ as_IN ranking_JJ functions_NNS ,_, relevance_NN feedback_NN ,_, query_NN expansion_NN ,_, -LRB-_-LRB- Salton_NNP 1989_CD ;_: Witten_NNP et_FW al._FW 1999_CD -RRB-_-RRB- ,_, and_CC distributed_VBN query_NN processing_NN -LRB-_-LRB- Jeong_NNP and_CC Omiecinski_NNP 1995_CD ;_: =_JJ -_: =_JJ Tomasic_NNP and_CC Garcia-Molina_NNP 1993_CD -_: =_SYM -_: b_LS -RRB-_-RRB- ._.
+Building_VBG a_DT Distributed_VBN Full-text_NN Index_NNP for_IN the_DT Web_NN 3_CD Webpages_NNPS Distributors_NNPS Indexers_NNPS QueryServers_FW Stage1_FW Stage2_NN Intermediateruns_NNP Invertedindex_NNP ..._: ..._: ..._: Fig._NNP 1_CD ._.
+Testbed_JJ architecture_NN We_PRP also_RB wish_VBP
+._.
+INTRODUCTION_NN Various_JJ access_NN methods_NNS have_VBP been_VBN developed_VBN to_TO support_VB e_SYM #cient_JJ search_NN and_CC retrieval_NN over_IN text_NN document_NN collections_NNS ._.
+Examples_NNS include_VBP su_FW #x_FW arrays_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, inverted_JJ files_NNS or_CC inverted_JJ indexes_NNS =_JJ -_: =[_NN 20_CD ,_, 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC signature_NN files_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Inverted_JJ files_NNS have_VBP traditionally_RB been_VBN the_DT index_NN structure_NN of_IN choice_NN on_IN the_DT Web_NN ._.
+Commercial_JJ search_NN engines_NNS use_VBP custom_NN network_NN architectures_NNS and_CC high-performance_JJ hardware_NN to_TO
+ne_NN on_IN several_JJ other_JJ issues_NNS ,_, relevant_JJ to_TO inverted-index_JJ based_VBN information_NN retrieval_NN ,_, that_WDT have_VBP not_RB been_VBN discussed_VBN in_IN this_DT paper_NN ._.
+Such_JJ issues_NNS include_VBP index_NN compression_NN -LRB-_-LRB- 15_CD ,_, 16_CD ,_, 25_CD -RRB-_-RRB- ,_, incremental_JJ updates_NNS =_JJ -_: =[_NN 9_CD ,_, 22_CD ,_, 25_CD ,_, 26_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC distributed_VBN query_NN performance_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+7_CD ._.
+CONCLUSIONS_NNS In_IN this_DT paper_NN we_PRP addressed_VBD the_DT problem_NN of_IN e_SYM #ciently_RB constructing_VBG inverted_JJ indexes_NNS over_IN large_JJ collections_NNS of_IN Web_NN pages_NNS ._.
+We_PRP proposed_VBD a_DT new_JJ pipeli_NN
+x_NN to_TO process_VB search_NN queries_NNS ._.
+As_IN a_DT result_NN ,_, we_PRP do_VBP not_RB address_VB issues_NNS such_JJ as_IN ranking_JJ functions_NNS ,_, relevance_NN feedback_NN ,_, query_NN expansion_NN ,_, -LRB-_-LRB- Salton_NNP 1989_CD ;_: Witten_NNP et_FW al._FW 1999_CD -RRB-_-RRB- ,_, and_CC distributed_VBN query_NN processing_NN -LRB-_-LRB- =_JJ -_: =_JJ Jeong_NNP and_CC Omiecinski_NNP 1995_CD -_: =_JJ -_: ;_: Tomasic_NNP and_CC Garcia-Molina_NNP 1993b_CD -RRB-_-RRB- ._.
+Building_VBG a_DT Distributed_VBN Full-text_NN Index_NNP for_IN the_DT Web_NN 3_CD Webpages_NNPS Distributors_NNPS Indexers_NNPS QueryServers_FW Stage1_FW Stage2_NN Intermediateruns_NNP Invertedindex_NNP ..._: ..._: ..._: Fig._NNP 1_CD ._.
+Te_NN
+retrieval_NN ._.
+However_RB ,_, two_CD factors_NNS make_VBP the_DT development_NN of_IN Web-scale_JJ inverted_JJ index_NN building_NN techniques_NNS a_DT challenging_JJ and_CC important_JJ problem_NN :_: Scale_NNP and_CC Growth_NNP rate_NN The_DT size_NN and_CC rate_NN of_IN growth_NN of_IN the_DT Web_NN =_JJ -_: =[_NN 12_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: require_VB the_DT indexing_NN architecture_NN and_CC implementation_NN to_TO be_VB highly_RB scalable_JJ ,_, much_JJ beyond_IN the_DT requirements_NNS of_IN traditional_JJ 1_CD Despite_IN the_DT fact_NN that_IN the_DT semantic_JJ content_NN of_IN the_DT link_NN structure_NN on_IN the_DT Web_NN i_FW
+t_NN types_NNS of_IN global_JJ statistics_NNS that_WDT may_MD be_VB used_VBN for_IN query_NN processing_NN ._.
+However_RB ,_, their_PRP$ focus_NN is_VBZ on_IN the_DT types_NNS and_CC uses_NNS of_IN these_DT statistics_NNS rather_RB than_IN on_IN the_DT actual_JJ process_NN of_IN collecting_VBG them_PRP ._.
+References_NNS -LRB-_-LRB- =_JJ -_: =_JJ Viles_NNP 1994_CD -_: =-]_CD and_CC -LRB-_-LRB- Viles_NNP and_CC French_NNP 1995_CD -RRB-_-RRB- discuss_VBP maintenance_NN of_IN global_JJ statistics_NNS in_IN a_DT distributed_VBN text_NN index_NN ,_, specifically_RB addressing_VBG the_DT challenges_NNS that_WDT arise_VBP from_IN incremental_JJ updates_NNS ._.
+Their_PRP$ work_NN is_VBZ complement_NN
+hat_NN arise_VB from_IN incremental_JJ updates_NNS ._.
+Their_PRP$ work_NN is_VBZ complementary_JJ to_TO our_PRP$ strategies_NNS for_IN gathering_VBG statistics_NNS during_IN index_NN construction_NN ._.
+Global_JJ statistics_NNS are_VBP also_RB important_JJ in_IN meta-search_JJ environments_NNS -LRB-_-LRB- =_JJ -_: =_JJ Lawrence_NNP and_CC Giles_NNP 1998_CD -_: =_JJ -_: ;_: Craswell_NNP et_FW al._FW 1999_CD ;_: Gravano_NNP et_FW al._FW 1997_CD -RRB-_-RRB- ,_, where_WRB ranked_VBD results_NNS from_IN several_JJ -LRB-_-LRB- possibly_RB autonomous_JJ -RRB-_-RRB- search_NN servers_NNS must_MD be_VB merged_VBN to_TO produce_VB a_DT global_JJ ranking_NN ._.
+For_IN such_JJ environments_NNS ,_, as_IN an_DT alternativ_NN
+uilds_NNS only_RB one_CD such_JJ pair_NN ._.
+Distributed_VBN inverted_JJ index_NN organization_NN ._.
+In_IN a_DT distributed_VBN environment_NN ,_, there_EX are_VBP two_CD basic_JJ strategies_NNS for_IN distributing_VBG the_DT inverted_JJ index_NN over_IN a_DT collection_NN of_IN query_NN servers_NNS -LRB-_-LRB- =_JJ -_: =_JJ Martin_NNP et_FW al._FW 1986_CD -_: =_JJ -_: ;_: Ribeiro-Neto_NNP and_CC Barbosa_NNP 1998_CD ;_: Tomasic_NNP and_CC Garcia-Molina_NNP 1993b_CD -RRB-_-RRB- ._.
+One_CD strategy_NN is_VBZ to_TO partition_NN the_DT document_NN collection_NN so_IN that_IN each_DT query_JJ server_NN is_VBZ responsible_JJ for_IN a_DT disjoint_JJ subset_NN of_IN documents_NNS in_IN t_NN
+ption_NN in_IN our_PRP$ system_NN ._.
+6_CD ._.
+RELATED_NNS WORK_VBP Motivated_VBN by_IN the_DT Web_NN ,_, there_EX has_VBZ been_VBN recent_JJ interest_NN in_IN designing_VBG scalable_JJ techniques_NNS to_TO speed_VB up_RP inverted_JJ index_NN construction_NN using_VBG distributed_VBN architectures_NNS ._.
+In_IN -LRB-_-LRB- =_JJ -_: =_JJ Ribeiro-Neto_NNP et_FW al._FW 1999_CD -_: =-]_CD ,_, the_DT authors_NNS describe_VBP three_CD techniques_NNS to_TO e_SYM #ciently_RB build_VB an_DT inverted_JJ index_NN using_VBG a_DT distributed_VBN architecture_NN ._.
+However_RB ,_, they_PRP focus_VBP on_IN building_NN global_JJ -LRB-_-LRB- partitioning_VBG index_NN by_IN term_NN -RRB-_-RRB- ,_, rather_RB than_IN local_JJ -LRB-_-LRB-
+._.
+As_IN a_DT result_NN ,_, we_PRP do_VBP not_RB address_VB issues_NNS such_JJ as_IN ranking_JJ functions_NNS ,_, relevance_NN feedback_NN ,_, query_NN expansion_NN ,_, -LRB-_-LRB- Salton_NNP 1989_CD ;_: Witten_NNP et_FW al._FW 1999_CD -RRB-_-RRB- ,_, and_CC distributed_VBN query_NN processing_NN -LRB-_-LRB- Jeong_NNP and_CC Omiecinski_NNP 1995_CD ;_: =_JJ -_: =_JJ Tomasic_NNP and_CC Garcia-Molina_NNP 1993_CD -_: =_SYM -_: b_LS -RRB-_-RRB- ._.
+Building_VBG a_DT Distributed_VBN Full-text_NN Index_NNP for_IN the_DT Web_NN 3_CD Webpages_NNPS Distributors_NNPS Indexers_NNPS QueryServers_FW Stage1_FW Stage2_NN Intermediateruns_NNP Invertedindex_NNP ..._: ..._: ..._: Fig._NNP 1_CD ._.
+Testbed_JJ architecture_NN We_PRP also_RB wish_VBP
+t_NN been_VBN discussed_VBN in_IN this_DT paper_NN ._.
+Such_JJ issues_NNS include_VBP index_NN compression_NN -LRB-_-LRB- Mo_NNP #at_NNP and_CC Bell_NNP 1995_CD ;_: Anh_NN and_CC Mo_NN #at_NN 1998_CD ;_: Witten_NNP et_FW al._FW 1999_CD -RRB-_-RRB- ,_, incremental_JJ updates_NNS -LRB-_-LRB- Brown_NNP et_FW al._FW 1994_CD ;_: Jeong_NNP and_CC Omiecinski_NNP 1995_CD ;_: =_JJ -_: =_JJ Tomasic_NNP et_FW al._FW 1994_CD -_: =_JJ -_: ;_: Witten_NNP et_FW al._FW 1999_CD ;_: Zobel_NNP et_FW al._FW 1992_CD -RRB-_-RRB- ,_, and_CC distributed_VBN query_NN performance_NN -LRB-_-LRB- Tomasic_NNP and_CC Garcia-Molina_NNP 1993a_CD ;_: Tomasic_NNP and_CC Garcia-Molina_NNP 1993b_CD -RRB-_-RRB- ._.
+7_CD ._.
+CONCLUSIONS_NNS In_IN this_DT paper_NN we_PRP addressed_VBD the_DT problem_NN of_IN
+g_NN joins_VBZ ,_, and_CC the_DT distribution_NN of_IN the_DT query_NN terms_NNS ._.
+5_CD ._.
+COLLECTING_NN GLOBAL_JJ STATISTICS_NNS Most_RBS text-based_JJ retrieval_NN systems_NNS use_VBP some_DT kind_NN of_IN collection-wide_JJ information_NN to_TO increase_VB e_SYM #ectiveness_NN of_IN retrieval_NN -LRB-_-LRB- =_JJ -_: =_JJ Viles_NNP and_CC French_NNP 1995_CD -_: =-]_CD ._.
+One_CD popular_JJ example_NN is_VBZ the_DT inverse_JJ document_NN frequency_NN -LRB-_-LRB- IDF_NN -RRB-_-RRB- statistics_NNS used_VBN in_IN ranking_JJ functions_NNS ._.
+The_DT IDF_NN of_IN a_DT term_NN is_VBZ the_DT inverse_NN of_IN the_DT number_NN of_IN documents_NNS in_IN the_DT collection_NN that_WDT contain_VBP that_IN ter_NN
+important_JJ ._.
+There_EX have_VBP traditionally_RB been_VBN two_CD approaches_NNS to_TO storing_VBG and_CC managing_VBG inverted_JJ files_NNS ;_: using_VBG a_DT custom_NN implementation_NN ,_, or_CC by_IN leveraging_VBG existing_VBG relational_JJ or_CC object_NN data_NNS management_NN systems_NNS -LRB-_-LRB- =_JJ -_: =_JJ Brown_NNP et_FW al._FW 1994_CD -_: =_JJ -_: ;_: Gorssman_NNP and_CC Driscoll_NNP 1992_CD -RRB-_-RRB- ._.
+The_DT advantage_NN of_IN a_DT custom_NN implementation_NN is_VBZ that_IN it_PRP enables_VBZ very_RB e_SYM #ective_JJ optimizations_NNS tuned_VBN to_TO the_DT specific_JJ operations_NNS on_IN inverted_JJ files_NNS -LRB-_-LRB- e.g._FW ,_, caching_VBG frequently_RB used_VBN
+Zobel_NNP 1996_CD -RRB-_-RRB- ._.
+For_IN example_NN ,_, consider_VB the_DT query_NN green_JJ AND_NNP catchflies_NNS ._.
+The_DT term_NN green_NN occurs_VBZ on_IN the_DT Web_NN in_IN millions_NNS of_IN documents_NNS ,_, whereas_IN catchflies_NNS produces_VBZ only_RB a_DT couple_NN of_IN dozen_NN hits_NNS ._.
+A_DT zig-zag_VBP join_VB -LRB-_-LRB- =_JJ -_: =_JJ Garcia-Molina_NNP et_FW al._FW 2000_CD -_: =-]_NN between_IN the_DT inverted_JJ lists_NNS for_IN green_NN and_CC catchflies_NNS allows_VBZ us_PRP to_TO answer_VB the_DT query_NN without_IN reading_VBG out_RP the_DT complete_JJ inverted_JJ list_NN for_IN green_NN ._.
+The_DT single_JJ payload_NN scheme_NN provides_VBZ the_DT best_JJS support_NN for_IN zi_NN
+l_NN updates_NNS ._.
+Their_PRP$ work_NN is_VBZ complementary_JJ to_TO our_PRP$ strategies_NNS for_IN gathering_VBG statistics_NNS during_IN index_NN construction_NN ._.
+Global_JJ statistics_NNS are_VBP also_RB important_JJ in_IN meta-search_JJ environments_NNS -LRB-_-LRB- Lawrence_NNP and_CC Giles_NNP 1998_CD ;_: =_JJ -_: =_JJ Craswell_NNP et_FW al._FW 1999_CD -_: =_JJ -_: ;_: Gravano_NNP et_FW al._FW 1997_CD -RRB-_-RRB- ,_, where_WRB ranked_VBD results_NNS from_IN several_JJ -LRB-_-LRB- possibly_RB autonomous_JJ -RRB-_-RRB- search_NN servers_NNS must_MD be_VB merged_VBN to_TO produce_VB a_DT global_JJ ranking_NN ._.
+For_IN such_JJ environments_NNS ,_, as_IN an_DT alternative_NN to_TO accurate_JJ global_JJ s_NN
+._.
+A_DT great_JJ deal_NN of_IN work_NN has_VBZ been_VBN done_VBN on_IN several_JJ other_JJ issues_NNS ,_, relevant_JJ to_TO invertedindex_VB based_VBN information_NN retrieval_NN ,_, that_WDT have_VBP not_RB been_VBN discussed_VBN in_IN this_DT paper_NN ._.
+Such_JJ issues_NNS include_VBP index_NN compression_NN -LRB-_-LRB- =_JJ -_: =_JJ Moffat_NNP and_CC Bell_NNP 1995_CD -_: =_JJ -_: ;_: Anh_NNP and_CC Moffat_NNP 1998_CD ;_: Witten_NNP et_FW al._FW 1999_CD -RRB-_-RRB- ,_, incremental_JJ updates_NNS -LRB-_-LRB- Brown_NNP et_FW al._FW 1994_CD ;_: Jeong_NNP and_CC Omiecinski_NNP 1995_CD ;_: Tomasic_NNP et_FW al._FW 1994_CD ;_: Witten_NNP et_FW al._FW 1999_CD ;_: Zobel_NNP et_FW al._FW 1992_CD -RRB-_-RRB- ,_, and_CC distributed_VBN query_NN perfor_NN
+pair_NN ._.
+Distributed_VBN inverted_JJ index_NN organization_NN ._.
+In_IN a_DT distributed_VBN environment_NN ,_, there_EX are_VBP two_CD basic_JJ strategies_NNS for_IN distributing_VBG the_DT inverted_JJ index_NN over_IN a_DT collection_NN of_IN query_NN servers_NNS -LRB-_-LRB- Martin_NNP et_FW al._FW 1986_CD ;_: =_JJ -_: =_JJ Ribeiro-Neto_NNP and_CC Barbosa_NNP 1998_CD -_: =_JJ -_: ;_: Tomasic_NNP and_CC Garcia-Molina_NNP 1993b_CD -RRB-_-RRB- ._.
+One_CD strategy_NN is_VBZ to_TO partition_NN the_DT document_NN collection_NN so_IN that_IN each_DT query_JJ server_NN is_VBZ responsible_JJ for_IN a_DT disjoint_JJ subset_NN of_IN documents_NNS in_IN the_DT collection_NN -LRB-_-LRB- called_VBN local_JJ inv_NN
+files_NNS ,_, Pipelining_NN ,_, Embedded_VBN databases_NNS 1_CD ._.
+INTRODUCTION_NN Various_JJ access_NN methods_NNS have_VBP been_VBN developed_VBN to_TO support_VB e_SYM #cient_JJ search_NN and_CC retrieval_NN over_IN text_NN document_NN collections_NNS ._.
+Examples_NNS include_VBP su_FW #x_FW arrays_NNS -LRB-_-LRB- =_JJ -_: =_JJ Manber_NNP and_CC Myers_NNP 1990_CD -_: =-]_CD ,_, inverted_JJ files_NNS or_CC inverted_JJ indexes_NNS -LRB-_-LRB- Salton_NNP 1989_CD ;_: Witten_NNP et_FW al._FW 1999_CD -RRB-_-RRB- ,_, and_CC signature_NN files_NNS -LRB-_-LRB- Faloutsos_NNP and_CC Christodoulakis_NNP 1984_CD -RRB-_-RRB- ._.
+Inverted_JJ files_NNS have_VBP traditionally_RB been_VBN the_DT index_NN structure_NN of_IN choice_NN
+important_JJ ._.
+There_EX have_VBP traditionally_RB been_VBN two_CD approaches_NNS to_TO storing_VBG and_CC managing_VBG inverted_JJ files_NNS ;_: using_VBG a_DT custom_NN implementation_NN ,_, or_CC by_IN leveraging_VBG existing_VBG relational_JJ or_CC object_NN data_NNS management_NN systems_NNS -LRB-_-LRB- =_JJ -_: =_JJ Brown_NNP et_FW al._FW 1994_CD -_: =_JJ -_: ;_: Gorssman_NNP and_CC Driscoll_NNP 1992_CD -RRB-_-RRB- ._.
+The_DT advantage_NN of_IN a_DT custom_NN implementation_NN is_VBZ that_IN it_PRP enables_VBZ very_RB e_SYM #ective_JJ optimizations_NNS tuned_VBN to_TO the_DT specific_JJ operations_NNS on_IN inverted_JJ files_NNS -LRB-_-LRB- e.g._FW ,_, caching_VBG frequently_RB used_VBN
+n_NN index_NN term_NN -RRB-_-RRB- can_MD be_VB efficiently_RB implemented_VBN using_VBG the_DT access_NN methods_NNS of_IN the_DT data_NNS management_NN system_NN ._.
+Note_VB that_DT many_JJ custom_NN inverted_JJ file_NN structures_NNS ,_, such_JJ as_IN those_DT described_VBN in_IN -LRB-_-LRB- Moffat_NNP and_CC Zobel_NNP 1996_CD ;_: =_JJ -_: =_JJ Anh_NNP and_CC Moffat_NNP 1998_CD -_: =_JJ -_: ;_: Brown_NNP 1995_CD -RRB-_-RRB- ,_, could_MD potentially_RB use_VB database_NN systems_NNS for_IN managing_VBG the_DT opaque_JJ data_NN blocks_NNS of_IN their_PRP$ index_NN ._.
+However_RB ,_, such_JJ implementations_NNS do_VBP not_RB fully_RB exploit_VB the_DT capabilities_NNS of_IN the_DT underlying_VBG system_NN ._.
+le_FW ,_, in_IN Figure_NNP 6_CD ,_, to_TO retrieve_VB locations_NNS for_IN cat_NN starting_VBG at_IN 311_CD ,_, we_PRP do_VBP not_RB have_VB to_TO read_VB the_DT portion_NN of_IN the_DT list_NN for_IN locations_NNS 100_CD --_: 280_CD ._.
+The_DT skipped-list_JJ and_CC random_JJ inverted-list_JJ structures_NNS of_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: also_RB provide_VBP selective_JJ access_NN to_TO portions_NNS of_IN an_DT inverted_JJ list_NN ,_, by_IN dividing_VBG the_DT inverted_JJ list_NN into_IN blocks_NNS each_DT containing_VBG a_DT fixed_JJ number_NN of_IN postings_NNS ._.
+However_RB ,_, those_DT schemes_NNS assume_VBP a_DT custom_NN inverted_JJ fi_NNS
+be_VB e_SYM #ciently_RB implemented_VBN using_VBG the_DT access_NN methods_NNS of_IN the_DT data_NNS management_NN system_NN ._.
+Note_VB that_DT many_JJ custom_NN inverted_JJ file_NN structures_NNS ,_, such_JJ as_IN those_DT described_VBN in_IN -LRB-_-LRB- Mo_NNP #at_NNP and_CC Zobel_NNP 1996_CD ;_: Anh_NN and_CC Mo_NN #at_NN 1998_CD ;_: =_JJ -_: =_JJ Brown_NNP 1995_CD -_: =-]_CD ,_, could_MD potentially_RB use_VB database_NN systems_NNS for_IN managing_VBG the_DT opaque_JJ data_NN blocks_NNS of_IN their_PRP$ index_NN ._.
+However_RB ,_, such_JJ implementations_NNS do_VBP not_RB fully_RB exploit_VB the_DT capabilities_NNS of_IN the_DT underlying_VBG system_NN ._.
+For_IN instance_NN
+t_NN search_NN and_CC retrieval_NN over_IN text_NN document_NN collections_NNS ._.
+Examples_NNS include_VBP su_FW #x_FW arrays_NNS -LRB-_-LRB- Manber_NNP and_CC Myers_NNP 1990_CD -RRB-_-RRB- ,_, inverted_JJ files_NNS or_CC inverted_JJ indexes_NNS -LRB-_-LRB- Salton_NNP 1989_CD ;_: Witten_NNP et_FW al._FW 1999_CD -RRB-_-RRB- ,_, and_CC signature_NN files_NNS -LRB-_-LRB- =_JJ -_: =_JJ Faloutsos_NNP and_CC Christodoulakis_NNP 1984_CD -_: =-]_CD ._.
+Inverted_JJ files_NNS have_VBP traditionally_RB been_VBN the_DT index_NN structure_NN of_IN choice_NN on_IN the_DT Web_NN ._.
+Commercial_JJ search_NN engines_NNS use_VBP custom_NN network_NN architectures_NNS and_CC high-performance_JJ hardware_NN to_TO achieve_VB sub-second_JJ query_NN

@@ -1,0 +1,88 @@
+Logical-shapelets_NNS :_: an_DT expressive_JJ primitive_JJ for_IN time_NN series_NN classification_NN
+Time_NN series_NN shapelets_NNS are_VBP small_JJ ,_, local_JJ patterns_NNS in_IN a_DT time_NN series_NN that_WDT are_VBP highly_RB predictive_JJ of_IN a_DT class_NN and_CC are_VBP thus_RB very_RB useful_JJ features_NNS for_IN building_NN classifiers_NNS and_CC for_IN certain_JJ visualization_NN and_CC summarization_NN tasks_NNS ._.
+While_IN shapelets_NNS were_VBD introduced_VBN only_RB recently_RB ,_, they_PRP have_VBP already_RB seen_VBN significant_JJ adoption_NN and_CC extension_NN in_IN the_DT community_NN ._.
+Despite_IN their_PRP$ immense_JJ potential_NN as_IN a_DT data_NN mining_NN primitive_JJ ,_, there_EX are_VBP two_CD important_JJ limitations_NNS of_IN shapelets_NNS ._.
+First_RB ,_, their_PRP$ expressiveness_NN is_VBZ limited_VBN to_TO simple_JJ binary_JJ presence\/absence_NN questions_NNS ._.
+Second_JJ ,_, even_RB though_IN shapelets_NNS are_VBP computed_VBN offline_JJ ,_, the_DT time_NN taken_VBN to_TO compute_VB them_PRP is_VBZ significant_JJ ._.
+In_IN this_DT work_NN ,_, we_PRP address_VBP the_DT latter_JJ problem_NN by_IN introducing_VBG a_DT novel_JJ algorithm_NN that_WDT finds_VBZ shapelets_NNS in_IN less_JJR time_NN than_IN current_JJ methods_NNS by_IN an_DT order_NN of_IN magnitude_NN ._.
+Our_PRP$ algorithm_NN is_VBZ based_VBN on_IN intelligent_JJ caching_NN and_CC reuse_NN of_IN computations_NNS ,_, and_CC the_DT admissible_JJ pruning_NN of_IN the_DT search_NN space_NN ._.
+Because_IN our_PRP$ algorithm_NN is_VBZ so_RB fast_RB ,_, it_PRP creates_VBZ an_DT opportunity_NN to_TO consider_VB more_RBR expressive_JJ shapelet_NN queries_NNS ._.
+In_IN particular_JJ ,_, we_PRP show_VBP for_IN the_DT first_JJ time_NN an_DT augmented_JJ shapelet_NN representation_NN that_WDT distinguishes_VBZ the_DT data_NNS based_VBN on_IN conjunctions_NNS or_CC disjunctions_NNS of_IN shapelets_NNS ._.
+We_PRP call_VBP our_PRP$ novel_JJ representation_NN Logical-Shapelets_NNS ._.
+We_PRP demonstrate_VBP the_DT efficiency_NN of_IN our_PRP$ approach_NN on_IN the_DT classic_JJ benchmark_NN datasets_NNS used_VBN for_IN these_DT problems_NNS ,_, and_CC show_VBP several_JJ case_NN studies_NNS where_WRB logical_JJ shapelets_NNS significantly_RB outperform_VBP the_DT original_JJ shapelet_NN representation_NN and_CC other_JJ time_NN series_NN classification_NN techniques_NNS ._.
+We_PRP demonstrate_VBP the_DT utility_NN of_IN our_PRP$ ideas_NNS in_IN domains_NNS as_RB diverse_JJ as_IN gesture_NN recognition_NN ,_, robotics_NNS ,_, and_CC biometrics_NNS ._.
+head_NN to_TO signal_VB a_DT score_NN of_IN ``_`` six_CD ._. ''_''
+A_DT complete_JJ list_NN of_IN signals_NNS can_MD be_VB found_VBN in_IN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Researchers_NNS have_VBP recently_RB begun_VBN to_TO attempt_VB to_TO classify_VB these_DT signals_NNS automatically_RB to_TO ease\/remove_VB the_DT task_NN of_IN a_DT scorer_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, a_DT dataset_NN was_VBD collected_VBN in_IN which_WDT two_CD accelerometers_NNS have_VBP been_VBN placed_VBN on_IN both_DT wrists_NNS of_IN four_CD different_JJ umpires_NNS ._.
+The_DT umpires_NNS performed_VBD twelve_CD different_JJ signals_NNS used_VBN in_IN the_DT game_NN of_IN cricket_NN at_IN
+mputed_VBN from_IN these_DT statistics_NNS as_IN µx_NN =_JJ 1_CD ∑_NN 2_CD x_NN and_CC σ_NN m_NN x_NN =_JJ 1_CD ∑_CD 2_CD 2_CD x_CC −_CD µ_NN m_NN x_NN ,_, respectively_RB ._.
+The_DT positive_JJ correlation_NN and_CC the_DT normalized_VBN euclidean_JJ distance_NN between_IN X_NN and_CC Y_NN can_MD then_RB be_VB expressed_VBN as_IN below_IN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+∑_FW xy_FW −_FW mµxµy_NN C_NN -LRB-_-LRB- x_NN ,_, y_NN -RRB-_-RRB- =_JJ mσxσy_NN -LRB-_-LRB- 1_LS -RRB-_-RRB- dist_NN -LRB-_-LRB- x_NN ,_, y_NN -RRB-_-RRB- =_JJ √_NN 2_CD -LRB-_-LRB- 1_CD −_NN C_NN -LRB-_-LRB- x_NN ,_, y_NN -RRB-_-RRB- -RRB-_-RRB- -LRB-_-LRB- 2_LS -RRB-_-RRB- Many_JJ time_NN series_NN data_NNS mining_NN algorithms_NNS -LRB-_-LRB- 1-NN_JJ classification_NN ,_, clustering_NN ,_, density_NN estimation_NN ,_, etc._NN -RRB-_-RRB- require_VBP only_RB the_DT comparison_NN of_IN
+O_NN Robot_NN :_: Surface_NN Detection_NN The_DT SONY_NNP AIBO_NNP Robot_NNP is_VBZ a_DT small_JJ ,_, dog-shaped_JJ ,_, quadruped_JJ robot_NN that_WDT comes_VBZ equipped_VBN with_IN multiple_JJ sensors_NNS ,_, including_VBG a_DT tri-axial_JJ accelerometer_NN ._.
+We_PRP consider_VBP a_DT dataset_NN created_VBN by_IN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: where_WRB measurements_NNS of_IN the_DT accelerometer_NN are_VBP collected_VBN ._.
+In_IN the_DT experimental_JJ setting_NN ,_, the_DT robot_NN walked_VBD on_IN two_CD different_JJ surfaces_NNS :_: carpet_NN and_CC cement_NN ._.
+For_IN simplicity_NN we_PRP consider_VBP only_RB the_DT X-axis_NN readings_NNS ._.
+asses_NNS ,_, repeated_JJ application_NN of_IN shapelets_NNS can_MD be_VB used_VBN -LRB-_-LRB- i.e._FW a_DT decision_NN tree-like_JJ structure_NN -RRB-_-RRB- to_TO predict_VB the_DT class_NN label_NN ._.
+Figure_NN 1_CD shows_VBZ examples_NNS of_IN shapelets_NNS found_VBN in_IN a_DT dataset_NN of_IN accelerometer_NN signals_NNS =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Every_DT time_NN series_NN in_IN the_DT dataset_NN corresponds_VBZ to_TO one_CD of_IN two_CD hand_NN motions_NNS performed_VBN by_IN an_DT actor_NN tracing_VBG a_DT circular_JJ or_CC rectangular_JJ path_NN through_IN the_DT air_NN with_IN an_DT input_NN device_NN ._.
+The_DT shapelet_NN denoted_VBN by_IN P_NN i_LS
+gnals_NNS from_IN recordings_NNS of_IN actors_NNS performing_VBG the_DT motions_NNS -LRB-_-LRB- c_NN -RRB-_-RRB- Examples_NNS of_IN Shapelets_NNS that_WDT describe_VBP each_DT of_IN the_DT motions_NNS ._.
+Time_NN series_NN shapelets_NNS are_VBP generating_VBG increasing_VBG interest_NN among_IN researchers_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- -LRB-_-LRB- 13_CD -RRB-_-RRB- =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: for_IN at_IN least_JJS two_CD reasons_NNS ._.
+First_RB ,_, in_IN many_JJ cases_NNS time_NN series_NN shapelets_NNS can_MD learn_VB the_DT inherent_JJ structure_NN of_IN the_DT data_NNS in_IN a_DT manner_NN that_WDT allows_VBZ intuitive_JJ interpretation_NN ._.
+For_IN example_NN ,_, beyond_IN classifying_VBG ,_, sa_FW
+ometer_NN signals_NNS from_IN recordings_NNS of_IN actors_NNS performing_VBG the_DT motions_NNS -LRB-_-LRB- c_NN -RRB-_-RRB- Examples_NNS of_IN Shapelets_NNS that_WDT describe_VBP each_DT of_IN the_DT motions_NNS ._.
+Time_NN series_NN shapelets_NNS are_VBP generating_VBG increasing_VBG interest_NN among_IN researchers_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 13_CD -RRB-_-RRB- -LRB-_-LRB- 18_CD -RRB-_-RRB- for_IN at_IN least_JJS two_CD reasons_NNS ._.
+First_RB ,_, in_IN many_JJ cases_NNS time_NN series_NN shapelets_NNS can_MD learn_VB the_DT inherent_JJ structure_NN of_IN the_DT data_NNS in_IN a_DT manner_NN that_WDT allows_VBZ intuitive_JJ interpretation_NN ._.
+For_IN example_NN ,_, beyond_IN class_NN
+apelets_NNS as_IN a_DT data_NN mining_NN tool_NN ._.
+For_IN example_NN ,_, -LRB-_-LRB- 18_CD -RRB-_-RRB- uses_VBZ shapelets_NNS on_IN streaming_NN data_NNS as_IN ``_`` early_JJ predictors_NNS ''_'' of_IN a_DT class_NN ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- uses_VBZ an_DT extension_NN of_IN shapelets_NNS in_IN an_DT application_NN in_IN severe_JJ weather_NN prediction_NN ,_, =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: uses_VBZ shapelets_NNS to_TO find_VB representative_JJ prototypes_NNS in_IN a_DT dataset_NN ,_, and_CC -LRB-_-LRB- 5_LS -RRB-_-RRB- use_NN shapelets_NNS to_TO do_VB gesture_NN recognition_NN from_IN accelerometer_NN data_NNS ._.
+However_RB ,_, none_NN of_IN these_DT works_NNS have_VBP considered_VBN the_DT logical_JJ combin_NN
+er_JJR signals_NNS from_IN recordings_NNS of_IN actors_NNS performing_VBG the_DT motions_NNS -LRB-_-LRB- c_NN -RRB-_-RRB- Examples_NNS of_IN Shapelets_NNS that_WDT describe_VBP each_DT of_IN the_DT motions_NNS ._.
+Time_NN series_NN shapelets_NNS are_VBP generating_VBG increasing_VBG interest_NN among_IN researchers_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 18_CD -RRB-_-RRB- for_IN at_IN least_JJS two_CD reasons_NNS ._.
+First_RB ,_, in_IN many_JJ cases_NNS time_NN series_NN shapelets_NNS can_MD learn_VB the_DT inherent_JJ structure_NN of_IN the_DT data_NNS in_IN a_DT manner_NN that_WDT allows_VBZ intuitive_JJ interpretation_NN ._.
+For_IN example_NN ,_, beyond_IN classifyin_NN
+lability_NN and_CC show_VB how_WRB this_DT allows_VBZ us_PRP to_TO define_VB a_DT more_RBR expressive_JJ shapelet_NN representation_NN ._.
+We_PRP introduce_VBP two_CD novel_JJ techniques_NNS to_TO speedup_VB search_NN for_IN shapelets_NNS ._.
+First_RB ,_, we_PRP precompute_VBP sufficient_JJ statistics_NNS =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: to_TO compute_VB the_DT distance_NN -LRB-_-LRB- i.e._FW similarity_NN -RRB-_-RRB- between_IN a_DT shapelet_NN and_CC a_DT subsequence_NN of_IN a_DT time_NN series_NN in_IN amortized_JJ constant_JJ time_NN ._.
+In_IN essence_NN ,_, we_PRP trade_VBP time_NN for_IN space_NN ,_, finding_VBG that_IN a_DT relativity_NN small_JJ increa_NN
+of_IN single_JJ shapelets_NNS that_WDT can_MD not_RB separate_VB the_DT classes_NNS ._.
+Any_DT other_JJ single_JJ shapelet_NN would_MD fail_VB similarly_RB ._.
+-LRB-_-LRB- c_NN -RRB-_-RRB- Two_CD shapelets_NNS connected_VBN by_IN an_DT and_CC operation_NN can_MD separate_VB the_DT classes_NNS ._.
+UCR_NN time_NN series_NN archive_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN brevity_NN the_DT names_NNS and_CC properties_NNS of_IN these_DT datasets_NNS and_CC tables_NNS of_IN time_NN taken_VBN for_IN running_VBG the_DT shapelet_NN algorithms_NNS on_IN these_DT datasets_NNS can_MD be_VB found_VBN at_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Here_RB we_PRP content_JJ ourselves_PRP with_IN a_DT visual_JJ sum_NN
+mple_NN -RRB-_-RRB- ,_, Passgraphs_NNPS are_VBP vulnerable_JJ to_TO ``_`` shoulder-surfing_NN ''_'' as_IN it_PRP is_VBZ easy_JJ for_IN a_DT miscreant_JJ to_TO see_VB and_CC memorize_VB the_DT connection_NN sequence_NN over_IN the_DT shoulder_NN of_IN the_DT user_NN ._.
+To_TO prevent_VB the_DT shoulder-surfing_JJ attack_NN ,_, =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ proposed_VBN methods_NNS involving_VBG pen-pressure_NN ._.
+There_EX are_VBP also_RB methods_NNS based_VBN on_IN other_JJ pen_NN properties_NNS such_JJ as_IN friction_NN ,_, acceleration_NN ,_, etc._NN ._.
+In_IN this_DT case_NN study_NN ,_, we_PRP use_VBP the_DT data_NNS from_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- to_TO see_VB if_IN logical_JJ
+ng_NN of_IN logical_JJ combinations_NNS among_IN the_DT shapelets_NNS is_VBZ possible_JJ ;_: for_IN example_NN ,_, -LRB-_-LRB- S1_NN ,_, τ1_NN -RRB-_-RRB- ∧_NN -LRB-_-LRB- S2_NN ,_, τ2_NN -RRB-_-RRB- ∨_NN -LRB-_-LRB- S3_NN ,_, τ3_NN -RRB-_-RRB- ._.
+However_RB ,_, for_IN the_DT sake_NN of_IN simplicity_NN and_CC to_TO guard_VB against_IN over_IN fitting_JJ with_IN too_RB complex_JJ a_DT model_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP only_RB consider_VBP two_CD cases_NNS ,_, only_RB ∧_CD ,_, and_CC only_RB ∨_CD combinations_NNS ._.
+We_PRP further_RB guard_VBP against_IN overfitting_VBG with_IN too_RB flexible_JJ a_DT model_NN by_IN allowing_VBG only_RB just_RB a_DT single_JJ threshold_NN for_IN both_DT shapelets_NNS ._.
+We_PRP have_VBP alre_NN
+Table_NNP 1_CD :_: The_DT accuracies_NNS of_IN different_JJ algorithms_NNS on_IN the_DT two_CD test_NN sets_NNS ._.
+measures_NNS ._.
+We_PRP also_RB considered_VBD DTW_NNP with_IN the_DT Sakoe-Chiba_NNP band_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, as_IN it_PRP has_VBZ been_VBN shown_VBN to_TO outperform_VB classic_JJ DTW_NN on_IN many_JJ datasets_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT results_NNS are_VBP shown_VBN in_IN table_NN 1_CD ._.
+It_PRP is_VBZ interesting_JJ to_TO consider_VB why_WRB Logical_JJ Shapelets_NNS generalize_VBP the_DT new_JJ data_NNS the_DT best_JJS ._.
+We_PRP conjecture_NN that_IN it_PRP is_VBZ the_DT ability_NN of_IN Logical_JJ Shapelets_NNS to_TO extract_VB just_RB the_DT
+alize_VB the_DT individual_JJ time_NN series_NN using_VBG z-normalization_NN before_IN the_DT actual_JJ distance_NN is_VBZ computed_VBN ._.
+This_DT is_VBZ a_DT critical_JJ step_NN ;_: even_RB tiny_JJ differences_NNS in_IN scale_NN and_CC offset_VBD rapidly_RB swamp_VB any_DT similarity_NN in_IN shape_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN addition_NN ,_, we_PRP normalize_VBP the_DT distances_NNS by_IN dividing_VBG with_IN the_DT length_NN of_IN the_DT time_NN series_NN ._.
+This_DT allows_VBZ comparability_NN of_IN distances_NNS for_IN pairs_NNS of_IN time_NN series_NN of_IN various_JJ lengths_NNS ._.
+We_PRP call_VBP this_DT length-normal_JJ
+Time_NN Warping_NN -LRB-_-LRB- DTW_NN -RRB-_-RRB- because_IN a_DT recent_JJ extensive_JJ comparison_NN of_IN dozens_NNS of_IN time_NN series_NN classification_NN algorithms_NNS ,_, on_IN dozens_NNS of_IN datasets_NNS ,_, strongly_RB suggests_VBZ that_IN 1-NN_NNP DTW_NNP is_VBZ exceptionally_RB difficult_JJ to_TO beat_VB =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Note_VB that_IN the_DT 1-NN_JJ classifier_NN using_VBG DTW_NN is_VBZ less_RBR amenable_JJ for_IN realtime_NN classification_NN of_IN time_NN series_NN since_IN it_PRP requires_VBZ an_DT O_NN -LRB-_-LRB- m_NN 2_CD -RRB-_-RRB- distance_NN measure_NN to_TO be_VB computed_VBN for_IN every_DT instance_NN in_IN the_DT dataset_NN ._.
+In_IN
+ba_IN 94.89_CD %_NN 75.00_CD %_NN Shapelet_NNP 44.89_CD %_NN 48.43_CD %_NN Logical_JJ Shapelet_NNP 95.91_CD %_NN 89.06_CD %_NN Table_NNP 1_CD :_: The_DT accuracies_NNS of_IN different_JJ algorithms_NNS on_IN the_DT two_CD test_NN sets_NNS ._.
+measures_NNS ._.
+We_PRP also_RB considered_VBD DTW_NNP with_IN the_DT Sakoe-Chiba_NNP band_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, as_IN it_PRP has_VBZ been_VBN shown_VBN to_TO outperform_VB classic_JJ DTW_NN on_IN many_JJ datasets_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+The_DT results_NNS are_VBP shown_VBN in_IN table_NN 1_CD ._.
+It_PRP is_VBZ interesting_JJ to_TO consider_VB why_WRB Logical_JJ Shapelets_NNS generalize_VBP the_DT new_JJ data_NNS the_DT best_JJS ._.
+We_PRP conjec_VBP
+21_CD --_: 24_CD ,_, 2011_CD ,_, San_NNP Diego_NNP ,_, California_NNP ,_, USA_NNP ._.
+Copyright_NN 2011_CD ACM_NNP 978-1-4503-0813-7_CD \/_: 11\/08_CD ..._: $_$ 10.00_CD ._.
+1_CD ._.
+INTRODUCTION_NNP Time_NNP series_NN shapelets_NNS were_VBD introduced_VBN in_IN 2009_CD as_IN a_DT primitive_JJ for_IN time_NN series_NN data_NNS mining_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Shapelets_NNS are_VBP small_JJ sequences_NNS that_WDT separate_VBP the_DT time_NN series_NN into_IN two_CD classes_NNS by_IN asking_VBG the_DT question_NN ``_`` Does_VBZ this_DT unknown_JJ object_NN have_VBP a_DT subsequence_NN that_WDT is_VBZ within_IN T_NN of_IN this_DT shapelet_NN ?_. ''_''
+Where_WRB there_EX are_VBP t_NN

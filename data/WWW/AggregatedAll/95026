@@ -1,0 +1,188 @@
+Evaluating_VBG strategies_NNS for_IN similarity_NN search_NN on_IN the_DT web_NN
+Finding_VBG pages_NNS on_IN the_DT Web_NN that_WDT are_VBP similar_JJ to_TO a_DT query_JJ page_NN -LRB-_-LRB- Related_NNP Pages_NNP -RRB-_-RRB- is_VBZ an_DT important_JJ component_NN of_IN modern_JJ search_NN engines_NNS ._.
+A_DT variety_NN of_IN strategies_NNS have_VBP been_VBN proposed_VBN for_IN answering_VBG Related_NNP Pages_NNP queries_NNS ,_, but_CC comparative_JJ evaluation_NN by_IN user_NN studies_NNS is_VBZ expensive_JJ ,_, especially_RB when_WRB large_JJ strategy_NN spaces_NNS must_MD be_VB searched_VBN -LRB-_-LRB- e.g._FW ,_, when_WRB tuning_NN parameters_NNS -RRB-_-RRB- ._.
+We_PRP present_VBP a_DT technique_NN for_IN automatically_RB evaluating_VBG strategies_NNS using_VBG Web_NN hierarchies_NNS ,_, such_JJ as_IN Open_NNP Directory_NNP ,_, in_IN place_NN of_IN user_NN feedback_NN ._.
+We_PRP apply_VBP this_DT evaluation_NN methodology_NN to_TO a_DT mix_NN of_IN document_NN representation_NN strategies_NNS ,_, including_VBG the_DT use_NN of_IN text_NN ,_, anchor-text_NN ,_, and_CC links_NNS ._.
+We_PRP discuss_VBP the_DT relative_JJ advantages_NNS and_CC disadvantages_NNS of_IN the_DT various_JJ approaches_NNS examined_VBN ._.
+Finally_RB ,_, we_PRP describe_VBP how_WRB to_TO efficiently_RB construct_VB a_DT similarity_NN index_NN out_IN of_IN our_PRP$ chosen_JJ strategies_NNS ,_, and_CC provide_VBP sample_NN results_NNS from_IN our_PRP$ index_NN ._.
+yle_NN ranking_NN ._.
+We_PRP also_RB take_VBP inspiration_NN from_IN the_DT passage_NN retrieval_NN and_CC proximity_NN models_NNS and_CC from_IN the_DT area_NN of_IN topic-based_JJ text_NN extraction_NN used_VBN in_IN both_CC the_DT citation_NN analysis_NN and_CC Web_NN retrieval_NN fields_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+In_IN these_DT domains_NNS the_DT goal_NN is_VBZ to_TO identify_VB additional_JJ text_NN from_IN the_DT referencing_VBG document_NN or_CC web_NN page_NN ,_, and_CC associate_VB this_DT text_NN with_IN the_DT document_NN being_VBG referenced_VBN ._.
+The_DT most_RBS common_JJ approach_NN to_TO i_FW
+t_NN the_DT titles_NNS of_IN the_DT pages_NNS ._.
+Furthermore_RB ,_, there_EX are_VBP many_JJ possible_JJ ways_NNS of_IN measuring_VBG ``_`` overlap_VB ''_'' --_: we_PRP might_MD ignore_VB how_WRB often_RB words_NNS appear_VBP in_IN the_DT text_NN ,_, 1This_NN chapter_NN covers_VBZ joint_JJ work_NN we_PRP first_RB presented_VBD in_IN =_JJ -_: =[_NN 38,39_CD -RRB-_-RRB- -_: =_JJ -_: 9CHAPTER_NN 2_CD ._.
+SIMILARITY_NN SEARCH_NN 10_CD or_CC we_PRP might_MD choose_VB to_TO make_VB use_NN of_IN the_DT frequency_NN with_IN which_WDT words_NNS appear_VBP ._.
+Each_DT of_IN these_DT choices_NNS that_IN we_PRP make_VBP for_IN which_WDT indicators_NNS to_TO use_VB to_TO estimate_VB the_DT similarity_NN of_IN
+we_PRP show_VBP that_IN indexing_NN and_CC query_NN evaluation_NN can_MD be_VB very_RB effectively_RB parallelized_VBN to_TO deal_VB with_IN extremely_RB large_JJ repositories_NNS ._.
+Our_PRP$ algorithms_NNS were_VBD tested_VBN on_IN a_DT web_NN crawl_NN with_IN 10M_NN pages_NNS ,_, and_CC the_DT method_NN of_IN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ applied_VBN to_TO numerically_RB compute_VB the_DT overall_JJ quality_NN of_IN our_PRP$ output_NN SimRank_NN scores_NNS ,_, as_IN described_VBN in_IN Section_NN 6_CD ._.
+1.1_CD Algorithms_NNS scaling_VBG to_TO the_DT whole_JJ Web_NN Graph_NN In_IN this_DT section_NN we_PRP declare_VBP the_DT strict_JJ comp_NN
+farms_NNS of_IN a_DT large_JJ sample_NN from_IN the_DT Web_NN ._.
+The_DT data_NNS set_VBD we_PRP used_VBD was_VBD generated_VBN by_IN the_DT Web_NN crawler_NN from_IN the_DT Stanford_NNP WebBase_NNP project_NN -LRB-_-LRB- http:\/\/wwwdiglib.stanford.edu\/∼testbed\/doc2\/WebBase_NN -RRB-_-RRB- ._.
+Some_DT prior_JJ studies_NNS =_JJ -_: =[_NN 8_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: used_VBD the_DT same_JJ data_NNS set_VBN in_IN their_PRP$ experiments_NNS ._.
+The_DT Web_NN crawler_NN ,_, WebVac_NNP ,_, randomly_RB crawls_VBZ up_RP to_TO a_DT depth_NN of_IN 10_CD levels_NNS and_CC fetches_VBZ a_DT maximum_NN of_IN 10_CD thousand_CD pages_NNS per_IN site_NN ._.
+The_DT whole_NN directed_VBD Web_NN graph_NN file_NN
+farms_NNS of_IN a_DT large_JJ sample_NN from_IN the_DT Web_NN ._.
+To_TO test_VB the_DT page_NN farm_NN extraction_NN from_IN the_DT Web_NN ,_, we_PRP used_VBD a_DT data_NN set_NN generated_VBN by_IN the_DT Web_NN crawler_NN ``_`` WebVac_NNP ''_'' from_IN the_DT Stanford_NNP WebBase_NNP project_NN 1_CD ._.
+Some_DT prior_JJ studies_NNS =_JJ -_: =[_NN 41_CD ,_, 42_CD ,_, 45_CD ,_, 67_CD -RRB-_-RRB- -_: =_SYM -_: 1_CD http:\/\/www-diglib.stanford.edu\/∼testbed\/doc2\/WebBasesCHAPTER_NN 4_CD ._.
+PAGE_NN FARM_NN ANALYSIS_NN 30_CD used_VBD the_DT same_JJ data_NNS set_VBN in_IN their_PRP$ experiments_NNS ._.
+The_DT Web_NN crawler_NN randomly_RB crawls_VBZ up_RP to_TO a_DT depth_NN of_IN 10_CD levels_NNS and_CC fet_NN
+rprises_NNS or_CC specialized_JJ corpora_NN ,_, information_NN from_IN link_NN connectivity_NN is_VBZ not_RB as_RB helpful_JJ ,_, as_IN it_PRP is_VBZ possible\/likely_JJ that_IN two_CD pages_NNS share_NN none_NN or_CC only_RB a_DT few_JJ links_NNS in_IN common_NN ._.
+In_IN this_DT case_NN ,_, Haveliwala_NNP et_FW al._FW =_SYM -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: suggest_VBP using_VBG the_DT anchor_NN text_NN and_CC anchor_NN window_NN as_IN additional_JJ features_NNS tohelp_RB learn_VBP about_IN the_DT other_JJ document_NN ._.
+They_PRP suggest_VBP that_IN the_DT words_NNS around_IN the_DT link_NN are_VBP still_RB informative_JJ about_IN the_DT link_NN ,_, and_CC ca_MD
+ottom-k_NN sketches_NNS -LRB-_-LRB- 2_CD ,_, 3_CD -RRB-_-RRB- out_IN of_IN the_DT universe_NN ._.
+In_IN addition_NN ,_, we_PRP introduce_VBP a_DT general_JJ and_CC novel_JJ technique_NN that_WDT utilizes_VBZ our_PRP$ construction_NN ,_, and_CC can_MD be_VB used_VBN to_TO improve_VB many_JJ min-wise_JJ based_JJ algorithms_NNS ,_, such_JJ as_IN =_JJ -_: =[_NN 4_CD ,_, 5_CD ,_, 6_CD ,_, 7_CD ,_, 3_CD ,_, 2_CD ,_, 8_CD ,_, 9_CD ,_, 10_CD ,_, 11_CD ,_, 12_CD ,_, 13_CD ,_, 14_CD ,_, 15_CD ,_, 16_CD ,_, 17_CD ,_, 18_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN an_DT example_NN we_PRP show_VBP how_WRB to_TO apply_VB it_PRP for_IN similarity_NN estimation_NN over_IN data_NNS streams_NNS ,_, and_CC reduce_VB exponentially_RB the_DT run_NN time_NN of_IN the_DT current_JJ known_JJ result_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+In_IN addition_NN ,_, we_PRP also_RB discuss_VBP improvements_NNS of_IN
+essing_VBG by_IN analyzing_VBG the_DT search_NN engine_NN 's_POS logs_NNS of_IN previous_JJ queries_NNS -LRB-_-LRB- submitted_VBN by_IN the_DT 6Journal_NN of_IN Convergence_NNP Information_NNP Technology_NNP Vol_NNP ._.
+2_CD No._NN 3_CD ,_, September_NNP 2007_CD same_JJ user_NN -RRB-_-RRB- ._.
+Likewise_RB ,_, Haveliwala_NNP et_FW al._FW =_SYM -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: investigate_VBP the_DT possibility_NN of_IN finding_VBG a_DT Web_NN page_NN relevant_JJ to_TO a_DT reference_NN Web_NN page_NN ._.
+In_IN their_PRP$ approach_NN ,_, the_DT reference_NN document_NN represented_VBD a_DT positive_JJ example_NN -LRB-_-LRB- they_PRP did_VBD not_RB use_VB negative_JJ examples_NNS -RRB-_-RRB- ._.
+Poin_NN
+ighly_RB similar_JJ documents_NNS ._.
+A_DT number_NN of_IN methods_NNS have_VBP been_VBN applied_VBN to_TO this_DT problem_NN such_JJ duplicate_VBP detection_NN -LRB-_-LRB- exact_JJ similarity_NN -RRB-_-RRB- -LRB-_-LRB- 26_CD ,_, 9_CD ,_, 27_CD -RRB-_-RRB- and_CC document_NN fingerprinting_NN as_RB well_RB as_IN text_NN retrieval_NN techniques_NNS =_JJ -_: =[_NN 17_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+2.5_CD Gathering\/Using_NNP Overlap_NNP Statistics_NNPS Coverage_NNP and_CC overlap_VB statistics_NNS were_VBD first_RB applied_VBN to_TO the_DT relational_JJ model_NN by_IN Nie_NNP and_CC Kambhampati_NNP -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Past_JJ queries_NNS are_VBP used_VBN to_TO probe_VB the_DT sources_NNS and_CC build_VB st_IN
+orithm_NN takes_VBZ one_CD entity_NN from_IN O1_NN and_CC tries_VBZ to_TO find_VB similar_JJ entity_NN in_IN O2_CD ._.
+The_DT similarity_NN mapping_NN process_NN has_VBZ different_JJ levels_NNS as_IN follows_VBZ :_: •_CD Concept-name_JJ similarity_NN with_IN Character-based_JJ Jaccard_NNP measure_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+xa_IN \*_NN xb_NN simx_NN x_NN =_JJ a_DT b_NN x_NN x_NN −_CD x_NN \*_NN x_NN a_DT b_NN a_DT b_NN -LRB-_-LRB- 1_LS -RRB-_-RRB- x_NN where_WRB a_DT \*_NN xb_NN is_VBZ the_DT inner_JJ product_NN of_IN a_DT b_NN and_CC x_NN x_NN ,_, x_NN is_VBZ the_DT Euclidean_JJ norm_NN for_IN the_DT vectors_NNS ._.
+•_NNP •_NNP •_NNP Property_NNP set_VBD similarity_NN with_IN token_JJ based_VBN Jaccard_NN dist_NN
+fference_NN with_IN our_PRP$ approach_NN is_VBZ that_IN we_PRP do_VBP pose_VB no_DT restriction_NN on_IN the_DT type_NN of_IN data_NNS ._.
+Very_RB similar_JJ to_TO our_PRP$ clustering_NN on_IN demand_NN problem_NN ,_, is_VBZ the_DT problem_NN of_IN finding_VBG similar_JJ web_NN pages_NNS of_IN the_DT current_JJ web_NN page_NN =_JJ -_: =[_NN 5_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, the_DT problem_NN mainly_RB focus_VB on_IN finding_VBG good_JJ similarity_NN measures_NNS for_IN web_NN pages_NNS ._.
+Once_RB an_DT appropriate_JJ measure_NN is_VBZ found_VBN ,_, a_DT standard_JJ k-nearest_NN neighbor_NN search_NN is_VBZ performed_VBN ._.
+A_DT further_JJ difference_NN wit_NN
+hashing_VBG -LRB-_-LRB- LSH_NN -RRB-_-RRB- ,_, introduced_VBN by_IN Indyk_NNP and_CC Motwani_NNP -LRB-_-LRB- 34_CD -RRB-_-RRB- ,_, has_VBZ been_VBN employed_VBN in_IN many_JJ domains_NNS ,_, including_VBG indexing_NN high_JJ dimensional_JJ data_NNS and_CC similarity_NN searching_VBG -LRB-_-LRB- 11_CD ,_, 44_CD -RRB-_-RRB- ,_, similarity_NN searching_VBG over_IN web_NN data_NN =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_JJ -_: and_CC in_IN P2P_NN networks_NNS -LRB-_-LRB- 32_CD ,_, 30_CD -RRB-_-RRB- ,_, ranges_VBZ queries_NNS in_IN P2P_NN networks_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, and_CC so_RB forth_RB ._.
+For_IN similarity_NN on_IN sets_NNS based_VBN on_IN Jaccard_NNP index_NN ,_, LSH_NN on_IN a_DT set_VBN s_NN can_MD be_VB performed_VBN as_IN follows_VBZ -LRB-_-LRB- 32_CD ,_, 11_CD -RRB-_-RRB- :_: Pick_VB k_NN ×_CD l_NN random_JJ
+everal_JJ strategies_NNS for_IN the_DT related_JJ page_NN -LRB-_-LRB- query-by-example_JJ -RRB-_-RRB- task_NN in_IN their_PRP$ own_JJ engine_NN by_IN selecting_VBG pages_NNS listed_VBN in_IN the_DT ODP_NN and_CC using_VBG distance_NN in_IN the_DT hierarchy_NN as_IN a_DT measure_NN of_IN how_WRB related_JJ other_JJ pages_NNS are_VBP =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Menczer_NNP used_VBD distance_NN in_IN the_DT ODP_NN hierarchy_NN as_IN a_DT part_NN of_IN an_DT estimate_NN of_IN precision_NN and_CC recall_NN for_IN web_NN search_NN engines_NNS using_VBG TREC_NN homepage-finding_JJ qrels_NNS to_TO bootstrap_VB his_PRP$ evaluation_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+For_IN 30_CD of_IN these_DT
+search_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+The_DT majority_NN of_IN the_DT investigations_NNS employ_VBP a_DT standard_JJ document_NN representation_NN method_NN and_CC analyze_VB the_DT categorization_NN performance_NN with_IN respect_NN to_TO different_JJ clustering_NN algorithms_NNS -LRB-_-LRB- strategies_NNS -RRB-_-RRB- =_JJ -_: =[_NN 12_CD ,_, 42_CD ,_, 11_CD ,_, 37_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Some_DT of_IN the_DT recent_JJ results_NNS are_VBP quoted_VBN in_IN the_DT next_JJ subsection_NN ,_, while_IN the_DT subsections_NNS 2.2_CD and_CC 2.3_CD are_VBP devoted_VBN to_TO approaches_NNS for_IN document_NN space_NN visualization_NN ._.
+2.1_CD Document_NNP Clustering_NNP Let_NNP D_NNP be_VB a_DT set_NN of_IN
+interesting_JJ problem_NN by_IN itself_PRP ._.
+Again_RB in_IN the_DT Web_NN context_NN ,_, the_DT ideas_NNS of_IN ``_`` topical_JJ locality_NN ''_'' provided_VBN by_IN cooccurring_VBG hyperlinks_NNS have_VBP been_VBN used_VBN and_CC studied_VBN in_IN several_JJ works_NNS -LRB-_-LRB- 9_CD ,_, 13_CD ,_, 19_CD -RRB-_-RRB- ._.
+Haveliwala_NNP et_FW al._FW =_SYM -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: show_VBP that_IN using_VBG words_NNS appearing_VBG inside_IN or_CC near_IN an_DT anchor_NN of_IN a_DT hyperlink_NN to_TO represent_VB a_DT linked_VBN Web_NN page_NN is_VBZ most_RBS useful_JJ for_IN similarity_NN search_NN on_IN the_DT Web_NN ._.
+In_IN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, a_DT Web_NN crawl_NN is_VBZ pre-processed_JJ to_TO constr_VB
+orithm_NN takes_VBZ one_CD entity_NN from_IN O1_NN and_CC tries_VBZ to_TO find_VB similar_JJ entity_NN in_IN O2_CD ._.
+The_DT similarity_NN mapping_NN process_NN has_VBZ different_JJ levels_NNS as_IN follows_VBZ :_: •_CD Concept-name_JJ similarity_NN with_IN Character-based_JJ Jaccard_NNP measure_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+simx_FW xb_FW xa_FW \*_NN xb_NN =_JJ a_DT x_NN x_NN −_CD x_NN \*_NN x_NN a_DT b_NN x_NN where_WRB a_DT \*_NN xb_NN is_VBZ the_DT inner_JJ product_NN of_IN a_DT b_NN and_CC x_NN x_NN ,_, x_NN is_VBZ the_DT Euclidean_JJ norm_NN for_IN the_DT vectors_NNS ._.
+a_DT b_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- s_VBZ •_NNP Property_NNP set_VBD similarity_NN with_IN token_JJ based_VBN Jaccard_NNP distance_NN :_:
+b_NN content_NN ._.
+Research_NN on_IN the_DT area_NN of_IN searching_VBG and_CC querying_VBG the_DT Web_NN has_VBZ been_VBN very_RB active_JJ the_DT past_JJ few_JJ years_NNS ,_, and_CC several_JJ methods_NNS for_IN extracting_VBG keywords_NNS that_WDT characterize_VBP Web_NN content_NN have_VBP been_VBN proposed_VBN =_JJ -_: =[_NN 5_CD ,_, 8_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP have_VBP to_TO stress_VB at_IN this_DT point_NN that_IN Web_NN content_NN processing_NN enhances_VBZ it_PRP with_IN semantic_JJ annotations_NNS ._.
+Then_RB ,_, in_IN the_DT context_NN of_IN Web_NN personalization_NN ,_, data_NN mining_NN algorithms_NNS are_VBP applied_VBN to_TO extract_VB relevant_JJ
+nk_IN algorithm_NN ._.
+The_DT first_JJ data_NN set_NN is_VBZ a_DT general_JJ web_NN crawl_NN from_IN Stanford_NNP 's_POS WebBase_NNP project_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+We_PRP used_VBD the_DT data_NNS set_VBN for_IN January_NNP ,_, 2001_CD as_IN this_DT data_NN set_NN has_VBZ been_VBN used_VBN by_IN several_JJ other_JJ researchers_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 14_CD ,_, 15_CD ,_, 19_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+We_PRP downloaded_VBD the_DT link_NN graph_NN ,_, and_CC made_VBD use_NN of_IN the_DT Internet_NNP Archive_NNP -LRB-_-LRB- 18_CD -RRB-_-RRB- to_TO check_VB page_NN content_NN when_WRB necessary_JJ ._.
+The_DT link_NN graph_NN contained_VBD about_IN 65M_NN pages_NNS that_WDT had_VBD a_DT viable_JJ URL_NN string_NN ._.
+We_PRP also_RB download_VBP
+,_, Matias_NNP ,_, and_CC Szegedy_NNP 1996_CD ;_: Broder_NNP 1997_CD ;_: Vempala_NNP 2004_CD -RRB-_-RRB- ._.
+Such_JJ techniques_NNS have_VBP applications_NNS in_IN information_NN retrieval_NN ,_, databases_NNS ,_, and_CC data_NN mining_NN -LRB-_-LRB- Broder_NNP et_FW al._FW 1997_CD ;_: Haveliwala_NNP ,_, Gionis_NNP ,_, and_CC Indyk_NNP 2000_CD ;_: =_JJ -_: =_JJ Haveliwala_NNP et_FW al._FW 2002_CD -_: =--RRB-_NN ._.
+Broder_NNP 's_POS sketches_NNS -LRB-_-LRB- Broder_NNP 1997_CD -RRB-_-RRB- were_VBD originally_RB introduced_VBN to_TO detect_VB duplicate_VB documents_NNS in_IN Web_NN crawls_VBZ ._.
+Many_JJ URLs_NNS point_VBP to_TO the_DT same_JJ -LRB-_-LRB- or_CC nearly_RB the_DT same_JJ -RRB-_-RRB- HTML_NNP blobs_NNS ._.
+Approximate_JJ answers_NNS are_VBP often_RB go_VB
+orm_NN of_IN v_LS ,_, and_CC •_NN indicates_VBZ the_DT scalar_JJ product_NN -RRB-_-RRB- :_: Csim_NN -LRB-_-LRB- v_LS i_LS ,_, v_LS j_NN -RRB-_-RRB- =_JJ -LRB-_-LRB- v_LS i_FW •_FW v_LS j_NN -RRB-_-RRB- \/_: -LRB-_-LRB- |_FW |_FW v_LS i_FW |_FW |_FW ∗_FW |_FW |_FW v_LS j_FW |_FW |_NN -RRB-_-RRB- ._.
+We_PRP build_VBP on_IN this_DT using_VBG a_DT simple_JJ set-based_JJ measure_NN that_WDT has_VBZ been_VBN found_VBN very_RB useful_JJ in_IN Web_NN research_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: :_: The_DT Jaccard_NNP similarity_NN between_IN two_CD sets_NNS A_DT i_FW ,_, A_DT j_NN is_VBZ defined_VBN as_IN Jsim_NNP -LRB-_-LRB- A_NNP i_LS ,_, A_DT j_NN -RRB-_-RRB- =_JJ -LRB-_-LRB- |_NN A_NN i_FW ∩_FW A_DT j_FW |_FW -RRB-_-RRB- \/_: -LRB-_-LRB- |_NN A_NN i_FW ∪_FW A_DT j_FW |_FW -RRB-_-RRB- ._.
+Let_VB C_NN be_VB the_DT corpus_NN and_CC tA_NN a_DT topic_NN identified_VBN with_IN the_DT vector_NN vA._NN ._.
+We_PRP introduce_VBP a_DT num_NN
+greement_NN with_IN semantic_JJ similarity_NN ._.
+An_DT analogous_JJ approach_NN has_VBZ been_VBN used_VBN in_IN the_DT past_NN to_TO evaluate_VB similarity_NN search_NN ,_, but_CC relying_VBG on_IN only_RB the_DT hierarchical_JJ ODP_NN structure_NN as_IN a_DT proxy_NN for_IN semantic_JJ similarity_NN =_JJ -_: =[_NN 7_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Let_VB us_PRP start_VB by_IN introducing_VBG two_CD representative_JJ similarity_NN measures_NNS σc_NN and_CC σℓ_NN based_VBN on_IN textual_JJ content_NN and_CC hyperlinks_NNS ,_, respectively_RB ._.
+Each_DT is_VBZ based_VBN on_IN the_DT TF-IDF_NN vector_NN representation_NN and_CC ``_`` cosine_FW simi_FW
+tators_NNS '_POS label_NN sets_VBZ to_TO the_DT consensus_NN classification_NN ._.
+We_PRP evaluated_VBD similarity_NN with_IN different_JJ measures_NNS ._.
+In_IN the_DT current_JJ paper_NN ,_, we_PRP report_VBP only_RB the_DT results_NNS using_VBG popular_JJ and_CC proven_JJ Jaccard_NNP coefficient_NN ,_, cf._VBP =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP defines_VBZ the_DT similarity_NN between_IN two_CD label_NN sets_NNS A1_NN ,_, A2_NN as_IN :_: sim_NN -LRB-_-LRB- A1_NN ,_, A2_NN -RRB-_-RRB- =_JJ |_NN A1_NN ∩_NN A2_NN |_NN ._.
+-LRB-_-LRB- 2_LS -RRB-_-RRB- |_NN A1_NN ∪_NN A2_NN |_VBD The_DT average_JJ Jaccard_NNP coefficient_NN that_IN we_PRP use_VBP to_TO measure_VB the_DT similarity_NN between_IN two_CD methods_NNS is_VBZ the_DT a_DT
+blog_FW corpora_FW ,_, we_PRP investigated_VBD the_DT degree_NN of_IN similarity_NN of_IN keyphrases_NNS for_IN each_DT pair_NN of_IN corpora_NN C_NN ,_, C_NN ′_NN by_IN investigating_VBG their_PRP$ common_JJ keyphrases_NNS ._.
+We_PRP use_VBP the_DT popular_JJ and_CC proven_JJ Jaccard_NNP coefficient_NN ,_, cf._VBP -LRB-_-LRB- =_JJ -_: =_JJ Haveliwala_NNP et_FW al._FW ,_, 2002_CD -_: =--RRB-_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- sim_NN -LRB-_-LRB- C_NN ,_, C_NN ′_NN -RRB-_-RRB- =_JJ |_CD T_NN -LRB-_-LRB- C_NN -RRB-_-RRB- ∩_CD T_NN -LRB-_-LRB- C_NN ′_NN -RRB-_-RRB- |_FW |_FW T_NN -LRB-_-LRB- C_NN -RRB-_-RRB- ∪_CD T_NN -LRB-_-LRB- C_NN ′_NN ._.
+-LRB-_-LRB- 3_LS -RRB-_-RRB- -RRB-_-RRB- |_CD To_TO concentrate_VB on_IN the_DT most_RBS characteristic_JJ keyphrases_NNS for_IN each_DT corpus_NN ,_, we_PRP also_RB computed_VBD sim_NN for_IN characteristicsFigure_NN 1_CD :_: Syntactic_JJ simila_NN
+measure_VB the_DT similarity_NN between_IN two_CD AV-pairs_NNS as_IN the_DT similarity_NN shown_VBN by_IN their_PRP$ supertuples_NNS ._.
+The_DT supertuples_NNS contain_VBP bags_NN of_IN keywords_NNS for_IN each_DT attribute_NN in_IN the_DT relation_NN ._.
+Hence_RB we_PRP use_VBP Jaccard_NNP Coefficient_NNP =_SYM -_: =[_NN 9_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: with_IN bag_NN semantics_NNS to_TO determine_VB the_DT similarity_NN between_IN two_CD supertuples_NNS ._.
+Unlike_IN pure_JJ text_NN documents_NNS ,_, supertuples_NNS would_MD rarely_RB share_VB keywords_NNS across_IN attributes_NNS ._.
+Moreover_RB all_DT attributes_NNS -LRB-_-LRB- features_NNS -RRB-_-RRB- may_MD n_NN
+,_, up-weighting_JJ extremely_RB rare_JJ words_NNS such_JJ as_IN by_IN tf-idf_JJ scoring_VBG might_MD also_RB be_VB inappropriate_JJ because_IN such_JJ rare_JJ words_NNS would_MD get_VB extremely_RB high_JJ scores_NNS ,_, which_WDT is_VBZ an_DT undesirable_JJ trait_NN in_IN similarity_NN search_NN ._.
+-LRB-_-LRB- =_JJ -_: =_JJ Haveliwala_NNP et_FW al._FW ,_, 2002_CD -_: =--RRB-_NN and_CC others_NNS have_VBP shown_VBN that_IN a_DT ``_`` nonmonotonic_JJ document_NN frequency_NN ''_'' -LRB-_-LRB- NMDF_NN -RRB-_-RRB- weighting_NN can_MD be_VB more_RBR effective_JJ in_IN such_PDT a_DT setting_NN ._.
+Because_IN the_DT frequency_NN of_IN words_NNS in_IN the_DT glosses_NNS is_VBZ distributed_VBN by_IN a_DT power-law_NN ,_,
+purpose_NN of_IN finding_VBG ``_`` related_JJ pages_NNS ''_'' ,_, Dean_NNP and_CC Henzinger_NNP -LRB-_-LRB- 25_CD -RRB-_-RRB- exploited_VBD the_DT linkage_NN structure_NN of_IN the_DT web_NN ._.
+The_DT premise_NN is_VBZ that_IN similar_JJ pages_NNS would_MD have_VB several_JJ incoming_JJ links_NNS in_IN common_NN ._.
+Haveliwala_NNP et_NNP al_NNP =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_JJ -_: point_NN out_RP that_IN the_DT quality_NN of_IN duplicate_VB detection_NN is_VBZ poor_JJ for_IN pages_NNS with_IN very_RB few_JJ incoming_JJ links_NNS ._.
+This_DT can_MD be_VB ameliorated_VBN by_IN taking_VBG anchor_NN text_NN and_CC anchor_NN windows_NNS into_IN account_NN ._.
+d_LS -RRB-_-RRB- Anchor_NNP text_NN ,_, anchor_NN
+single_JJ similarity_NN metric_NN as_IN superior_JJ ._.
+However_RB ,_, Strehl_NNP et_NNP al_NNP ,_, 2000_CD have_VBP observed_VBN that_IN tanimoto_NN coefficient_NN and_CC cosine_NN metric_NN performs_VBZ better_RBR compared_VBN to_TO other_JJ similarity_NN metrics_NNS studied_VBN ._.
+Furthermore_RB ,_, =_JJ -_: =_JJ Haveliwala_NNP et_NNP al_NNP ,_, 2002_CD -_: =_JJ -_: claims_NNS that_WDT tanimoto_VBP coefficient_NN outperforms_VBZ all_DT other_JJ measures_NNS in_IN identifying_VBG similar_JJ words_NNS in_IN documents_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP incorporate_VBP weights_NNS for_IN each_DT of_IN the_DT attributes_NNS in_IN the_DT tanimoto_NN coefficient_NN
+b_NN content_NN ._.
+Research_NN on_IN the_DT area_NN of_IN searching_VBG and_CC querying_VBG the_DT Web_NN has_VBZ been_VBN very_RB active_JJ the_DT past_JJ few_JJ years_NNS ,_, and_CC several_JJ methods_NNS for_IN extracting_VBG keywords_NNS that_WDT characterize_VBP Web_NN content_NN have_VBP been_VBN proposed_VBN =_JJ -_: =[_NN 5_CD ,_, 8_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP have_VBP to_TO stress_VB at_IN this_DT point_NN that_IN Web_NN content_NN processing_NN enhances_VBZ it_PRP with_IN semantic_JJ annotations_NNS ._.
+Then_RB ,_, in_IN the_DT context_NN of_IN Web_NN personalization_NN ,_, data_NN mining_NN algorithms_NNS are_VBP applied_VBN to_TO extract_VB relevant_JJ
+oritative_JJ Web_NN resources_NNS on_IN a_DT range_NN of_IN topics_NNS ._.
+An_DT anchor_NN window_NN approach_NN is_VBZ proposed_VBN in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- to_TO extract_VB implicit_JJ anchor_NN texts_NNS ._.
+Following_VBG this_DT work_NN ,_, anchor_NN windows_NNS were_VBD considered_VBN in_IN some_DT other_JJ tasks_NNS -LRB-_-LRB- 3_LS -RRB-_-RRB- =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =-[_NN 6_CD -RRB-_-RRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Although_IN we_PRP are_VBP inspired_VBN by_IN these_DT ideas_NNS ,_, our_PRP$ work_NN is_VBZ different_JJ because_IN vertical_JJ search_NN objects_NNS have_VBP many_JJ different_JJ properties_NNS from_IN Web_NN pages_NNS ._.
+From_IN the_DT viewpoint_NN of_IN implicit_JJ anchor_NN extraction_NN t_NN
+,_, 8_CD ,_, 26_CD ,_, 18_CD -RRB-_-RRB- ._.
+Here_RB I_PRP am_VBP not_RB asking_VBG how_WRB to_TO classify_VB Web_NN pages_NNS ,_, but_CC rather_RB what_WP the_DT text_NN and_CC links_NNS of_IN a_DT pair_NN of_IN pages_NNS tell_VBP us_PRP about_IN their_PRP$ semantic_JJ relatedness_NN ._.
+Closely_RB related_JJ questions_NNS are_VBP explored_VBN in_IN =_JJ -_: =[_NN 10_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN previous_JJ work_NN -LRB-_-LRB- 33_CD -RRB-_-RRB- I_PRP have_VBP looked_VBN at_IN the_DT decay_NN in_IN content_NN similarity_NN as_IN one_CD crawls_VBZ away_RB from_IN a_DT seed_NN page_NN ,_, showing_VBG that_IN there_EX is_VBZ a_DT strong_JJ negative_JJ correlation_NN between_IN link_NN distance_NN and_CC content_NN simi_NNS
+similarity_NN oe_NN t_NN at_IN any_DT time_NN t._NNP This_NNP is_VBZ the_DT classical_JJ notion_NN of_IN similarity_NN between_IN two_CD sets_NNS ._.
+It_PRP has_VBZ been_VBN useful_JJ in_IN estimating_VBG transitive_JJ closures_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, web_NN page_NN duplicate_VBP detection_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC data_NN mining_NN =_JJ -_: =[_NN 12_CD ,_, 35_CD -RRB-_-RRB- -_: =_JJ -_: ,_, among_IN other_JJ things_NNS ._.
+Rarity_NN ae_NN finds_VBZ many_JJ data_NNS mining_NN applications_NNS ._.
+For_IN example_NN ,_, consider_VB the_DT data_NNS stream_NN of_IN IPaddresses_NNS that_WDT access_VBP any_DT online_JJ service_NN like_IN a_DT search_NN engine_NN ,_, online-store_JJ like_IN Amazon_NNP ,_,
+periments_NNS ._.
+For_IN example_NN ,_, the_DT filtering_VBG subsystem_NN described_VBN in_IN Section_NN 2.4_CD can_MD certainly_RB be_VB evaluated_VBN using_VBG automated_JJ experiments_NNS as_IN demonstrated_VBN at_IN the_DT TREC_NN conferences_NNS -LRB-_-LRB- 63_CD ,_, 141_CD ,_, 71_CD -RRB-_-RRB- ._.
+Haveliwala_NNP et_FW al._FW =_SYM -_: =[_NN 65_CD -RRB-_-RRB- -_: =_JJ -_: ,_, demonstrate_VBP the_DT use_NN of_IN the_DT Open_NNP Directory_NNP Project_NNP -LRB-_-LRB- ODP_NNP -RRB-_-RRB- -LRB-_-LRB- 102_CD -RRB-_-RRB- in_IN the_DT evaluation_NN of_IN various_JJ similarity_NN metrics_NNS for_IN Web_NN documents_NNS ._.
+The_DT ODP_NNP is_VBZ a_DT collaborative_JJ effort_NN whereby_WRB Web_NN pages_NNS on_IN a_DT great_JJ many_JJ t_NN
+marization_NN as_RB well_RB as_IN helps_VBZ them_PRP understand_VB the_DT multi-source_JJ news_NN and_CC reduce_VB the_DT redundancy_NN in_IN information_NN ._.
+It_PRP also_RB meets_VBZ the_DT application_NN demand_NN of_IN finding_VBG related_JJ news_NN articles_NNS based_VBN on_IN users_NNS '_POS query_NN =_JJ -_: =[_NN 5_CD ;_: 11_CD -RRB-_-RRB- -_: =_SYM -_: with_IN even_RB finer_JJR granularity_NN ._.
+The_DT essential_JJ idea_NN of_IN our_PRP$ approach_NN is_VBZ to_TO apply_VB a_DT mutual_JJ reinforcement_NN principle_NN on_IN a_DT pair_NN of_IN news_NN articles_NNS to_TO simultaneously_RB extract_VB two_CD sets_NNS of_IN sentences_NNS ._.
+Each_DT set_NN is_VBZ fr_NN
+classical_JJ textbased_JJ information_NN retrieval_NN tools_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- by_IN simply_RB combining_VBG the_DT similarity_NN scores_NNS ._.
+Alternatively_RB ,_, the_DT similarities_NNS can_MD be_VB extracted_VBN from_IN the_DT anchor_NN texts_NNS referring_VBG to_TO pages_NNS as_IN proposed_VBN by_IN =_JJ -_: =[_NN 8_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recent_JJ years_NNS have_VBP witnessed_VBN a_DT growing_VBG interest_NN in_IN the_DT scalability_NN issue_NN of_IN link-analysis_JJ algorithms_NNS ._.
+Palmer_NNP et_FW al._FW -LRB-_-LRB- 28_CD -RRB-_-RRB- formulated_VBD essentially_RB the_DT same_JJ scalability_NN requirements_NNS that_IN we_PRP will_MD present_VB
+we_PRP show_VBP that_IN indexing_NN and_CC query_NN evaluation_NN can_MD be_VB very_RB effectively_RB parallelized_VBN to_TO deal_VB with_IN extremely_RB large_JJ repositories_NNS ._.
+Our_PRP$ algorithms_NNS were_VBD tested_VBN on_IN a_DT web_NN crawl_NN with_IN 10M_NN pages_NNS ,_, and_CC the_DT method_NN of_IN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ applied_VBN to_TO numerically_RB compute_VB the_DT overall_JJ quality_NN of_IN our_PRP$ output_NN SimRank_NN scores_NNS ,_, as_IN described_VBN in_IN Section_NN 6_CD ._.
+1.1_CD Algorithms_NNS scaling_VBG to_TO the_DT whole_JJ Web_NN Graph_NN In_IN this_DT section_NN we_PRP declare_VBP the_DT strict_JJ comp_NN
+n._NN Thus_RB NCE_NN -LRB-_-LRB- C_NN ′_NN ,_, C_NN -RRB-_-RRB- =_JJ |_NN C_NN ′_FW |_FW |_FW c_NN l_NN ∈_CD 1_CD ′_CD l_NN |_NN ,_, C_NN -RRB-_-RRB- ._.
+NCE_NN values_NNS reported_VBN below_IN are_VBP n_NN ′_NN NCE_NN -LRB-_-LRB- c_NN ′_CD l_NN thus_RB obtained_VBN on_IN the_DT full_JJ set_NN of_IN snippets_NNS returned_VBN by_IN Vivisimo_NNP ._.
+Establishing_VBG the_DT ground_NN truth_NN ._.
+Following_VBG =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP have_VBP made_VBN a_DT series_NN of_IN experiments_NNS using_VBG as_IN input_NN the_DT snippets_NNS resulting_VBG from_IN queries_NNS issued_VBN to_TO the_DT Open_NNP Directory_NNP Project_NNP -LRB-_-LRB- ODP_NNP --_: see_VB Footnote_NNP 6_CD -RRB-_-RRB- ._.
+The_DT ODP_NNP is_VBZ a_DT searchable_JJ Web-based_JJ directory_NN consi_NNS
+nk_IN algorithm_NN ._.
+The_DT first_JJ data_NN set_NN is_VBZ a_DT general_JJ web_NN crawl_NN from_IN Stanford_NNP 's_POS WebBase_NNP project_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+We_PRP used_VBD the_DT data_NNS set_VBN for_IN January_NNP ,_, 2001_CD as_IN this_DT data_NN set_NN has_VBZ been_VBN used_VBN by_IN several_JJ other_JJ researchers_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 14_CD ,_, 15_CD ,_, 19_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+We_PRP downloaded_VBD the_DT link_NN graph_NN ,_, and_CC made_VBD use_NN of_IN the_DT Internet_NNP Archive_NNP -LRB-_-LRB- 18_CD -RRB-_-RRB- to_TO check_VB page_NN content_NN when_WRB necessary_JJ ._.
+The_DT link_NN graph_NN contained_VBD about_IN 65M_NN pages_NNS that_WDT had_VBD a_DT viable_JJ URL_NN string_NN ._.
+We_PRP also_RB download_VBP
+neither_DT Kendall_NNP nor_CC Baggerly_NNP proceeded_VBD significantly_RB beyond_IN simply_RB providing_VBG the_DT definition_NN ._.
+Goodman_NNP and_CC Kruskal_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- proposed_VBD an_DT approach_NN for_IN comparing_VBG partial_JJ rankings_NNS ,_, which_WDT was_VBD recently_RB utilized_VBN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: for_IN evaluating_VBG strategies_NNS for_IN similarity_NN search_NN on_IN the_DT Web_NN ._.
+A_DT serious_JJ disadvantage_NN of_IN Goodman_NNP and_CC Kruskal_NNP 's_POS approach_NN is_VBZ that_IN it_PRP is_VBZ not_RB always_RB defined_VBN -LRB-_-LRB- this_DT problem_NN did_VBD not_RB arise_VB in_IN the_DT application_NN of_IN
+Spearman_FW footrule_FW distances_NNS and_CC Fagin_NNP et_FW al._FW -LRB-_-LRB- 9_CD -RRB-_-RRB- studied_VBD further_JJ properties_NNS of_IN these_DT metrics_NNS ._.
+Goodman_NNP and_CC Kruskal_NNP -LRB-_-LRB- 12_CD -RRB-_-RRB- proposed_VBD an_DT approach_NN for_IN comparing_VBG partial_JJ rankings_NNS ,_, which_WDT was_VBD recently_RB utilized_VBN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: for_IN evaluating_VBG strategies_NNS for_IN similarity_NN search_NN on_IN the_DT Web_NN ._.
+A_DT serious_JJ disadvantage_NN of_IN Goodman_NNP and_CC Kruskal_NNP 's_POS approach_NN is_VBZ that_IN it_PRP is_VBZ not_RB always_RB defined_VBN -LRB-_-LRB- this_DT problem_NN did_VBD not_RB arise_VB in_IN the_DT application_NN of_IN
+illions_NNS of_IN documents_NNS pose_VBP challenges_NNS that_WDT overlap_VBP with_IN the_DT problem_NN of_IN detecting_VBG similar_JJ or_CC identical_JJ data_NNS in_IN file_NN systems_NNS ._.
+Some_DT difficult_JJ problems_NNS in_IN web_NN search_NN include_VBP the_DT detection_NN of_IN related_JJ pages_NNS =_JJ -_: =[_NN 59_CD -RRB-_-RRB- -_: =_JJ -_: and_CC finding_VBG similar_JJ data_NNS in_IN high-dimensional_JJ search_NN spaces_NNS -LRB-_-LRB- 72_CD -RRB-_-RRB- ._.
+The_DT properties_NNS that_WDT make_VBP these_DT techniques_NNS less_RBR suitable_JJ for_IN file_NN system_NN storage_NN systems_NNS are_VBP updates_NNS and_CC indexings_NNS of_IN the_DT corpus_NN that_IN a_DT
+based_VBN on_IN page_NN text_NN ,_, anchor_NN text_NN ,_, or_CC surrounding_VBG hosts_NNS ._.
+Page_NNP text_NN means_VBZ all_DT text_NN present_JJ at_IN the_DT URL_NN ._.
+Anchor_NNP text_NN means_VBZ all_DT text_NN within_IN fifteen_CD words_NNS of_IN inlinks_NNS to_TO the_DT URL_NN -LRB-_-LRB- similar_JJ to_TO Haveliwala_NNP et_FW al._FW =_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Surrounding_VBG hosts_NNS means_VBZ the_DT sites_NNS linked_VBN to_TO and_CC from_IN the_DT URL_NN ,_, as_RB well_RB as_IN the_DT site_NN of_IN the_DT URL_NN itself_PRP ._.
+For_IN both_CC page_NN text_NN and_CC anchor_NN text_NN ,_, our_PRP$ feature_NN representation_NN was_VBD a_DT bag_NN of_IN words_NNS ._.
+We_PRP tokenized_VBD
+greement_NN with_IN semantic_JJ similarity_NN ._.
+An_DT analogous_JJ approach_NN has_VBZ been_VBN used_VBN in_IN the_DT past_NN to_TO evaluate_VB similarity_NN search_NN ,_, but_CC relying_VBG on_IN only_RB the_DT hierarchical_JJ ODP_NN structure_NN as_IN a_DT proxy_NN for_IN semantic_JJ similarity_NN =_JJ -_: =[_NN 9_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Let_VB us_PRP start_VB by_IN introducing_VBG two_CD representative_JJ similarity_NN measures_NNS σc_NN and_CC σℓ_NN based_VBN on_IN textual_JJ content_NN and_CC hyperlinks_NNS ,_, respectively_RB ._.
+Each_DT is_VBZ based_VBN on_IN the_DT TFIDF_NN vector_NN representation_NN and_CC ``_`` cosine_NN simil_NN
+wever_NN ,_, clustering_NN algorithms_NNS are_VBP difficult_JJ to_TO evaluate_VB ._.
+Manual_JJ evaluations_NNS of_IN cluster_NN quality_NN are_VBP time_NN consuming_VBG and_CC usually_RB not_RB well_RB suited_VBN for_IN comparing_VBG across_IN many_JJ different_JJ algorithms_NNS or_CC settings_NNS =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Several_JJ previous_JJ studies_NNS instead_RB use_VBP an_DT automated_JJ evaluation_NN metric_NN based_VBN on_IN comparing_VBG an_DT algorithm_NN 's_POS output_NN with_IN a_DT hierarchical_JJ web_NN directory_NN -LRB-_-LRB- 31_CD ,_, 28_CD -RRB-_-RRB- ._.
+Such_JJ evaluations_NNS are_VBP driven_VBN by_IN the_DT intuition_NN
+ion_NN between_IN the_DT two_CD similarity_NN matrices_NNS ._.
+5_CD As_IN default_NN ,_, we_PRP use_VBP the_DT Jaccard_NNP coefficient_NN ._.
+The_DT Jaccard_NNP coefficient_NN is_VBZ a_DT popular_JJ ,_, proven_JJ ,_, and_CC scalable_JJ method_NN of_IN measuring_VBG similarity_NN between_IN Web_NN documents_NNS -LRB-_-LRB- =_JJ -_: =_JJ Haveliwala_NNP et_FW al._FW ,_, 2002_CD -_: =--RRB-_NN ,_, and_CC it_PRP has_VBZ been_VBN used_VBN in_IN co-citation_NN -LRB-_-LRB- Small_NNP and_CC Greenlee_NNP ,_, 1980_CD -RRB-_-RRB- as_RB well_RB as_IN bibliographic-coupling_JJ -LRB-_-LRB- Bani-Ahmad_JJ et_FW al._FW ,_, 2005_CD -RRB-_-RRB- analyses_NNS ._.
+The_DT resulting_VBG similarity_NN values_NNS are_VBP then_RB derived_VBN from_IN the_DT combin_NN

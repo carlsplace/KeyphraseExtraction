@@ -1,0 +1,113 @@
+Query-time_JJ entity_NN resolution_NN
+The_DT goal_NN of_IN entity_NN resolution_NN is_VBZ to_TO reconcile_VB database_NN references_NNS corresponding_VBG to_TO the_DT same_JJ real-world_JJ entities_NNS ._.
+Given_VBN the_DT abundance_NN of_IN publicly_RB available_JJ databases_NNS where_WRB entities_NNS are_VBP not_RB resolved_VBN ,_, we_PRP motivate_VBP the_DT problem_NN of_IN quickly_RB processing_VBG queries_NNS that_WDT require_VBP resolved_VBN entities_NNS from_IN such_JJ `_`` unclean_JJ '_'' databases_NNS ._.
+We_PRP propose_VBP a_DT two-stage_JJ collective_JJ resolution_NN strategy_NN for_IN processing_VBG queries_NNS ._.
+We_PRP then_RB show_VBP how_WRB it_PRP can_MD be_VB performed_VBN on-the-fly_JJ by_IN adaptively_RB extracting_VBG and_CC resolving_VBG those_DT database_NN references_NNS that_WDT are_VBP the_DT most_RBS helpful_JJ for_IN resolving_VBG the_DT query_NN ._.
+We_PRP validate_VBP our_PRP$ approach_NN on_IN two_CD large_JJ real-world_JJ publication_NN databases_NNS where_WRB we_PRP show_VBP the_DT usefulness_NN of_IN collective_JJ resolution_NN and_CC at_IN the_DT same_JJ time_NN demonstrate_VBP the_DT need_NN for_IN adaptive_JJ strategies_NNS for_IN query_NN processing_NN ._.
+We_PRP then_RB show_VBP how_WRB the_DT same_JJ queries_NNS can_MD be_VB answered_VBN in_IN real_JJ time_NN using_VBG our_PRP$ adaptive_JJ approach_NN while_IN preserving_VBG the_DT gains_NNS of_IN collective_JJ resolution_NN ._.
+that_IN the_DT latter_JJ assumption_NN is_VBZ required_VBN for_IN a_DT reasonable_JJ solution_NN to_TO the_DT distributed_VBN clustering_NN problem_NN and_CC is_VBZ not_RB overly_RB restrictive_JJ ._.
+Indeed_RB ,_, any_DT entity_NN resolution_NN method_NN could_MD give_VB such_JJ association_NN =_JJ -_: =[_NN 3_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Definition_NN 6_CD Problem_NNP Definition_NNP We_PRP define_VBP the_DT problem_NN of_IN heterogeneous_JJ distributed_VBN data_NNS clustering_NN for_IN a_DT clustering_NN algorithm_NN C_NNP ◦_NNP MSEQ_NNP as_IN follows_VBZ ._.
+Let_VB R1_NN R2_NN be_VB the_DT natural_JJ 3_CD join_VBP of_IN R1_NN and_CC R2_NN ._.
+The_DT
+,_, there_EX is_VBZ also_RB the_DT promise_NN that_IN the_DT resolution_NN accuracy_NN can_MD be_VB significantly_RB improved_VBN over_IN traditional_JJ techniques_NNS ._.
+In_IN this_DT article_NN ,_, we_PRP present_VBP a_DT survey_NN of_IN algorithms_NNS we_PRP have_VBP proposed_VBN in_IN earlier_JJR work_NN =_JJ -_: =[_NN 3_CD ,_, 4_CD ,_, 5_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT address_VBP the_DT computational_JJ challenge_NN of_IN collective_JJ resolution_NN and_CC combine_VB attributes_NNS of_IN records_NNS with_IN relational_JJ evidence_NN to_TO improve_VB entity_NN resolution_NN performance_NN ._.
+2_CD Problem_NNP Formulation_NNP In_NNP domains_NNS
+hat_NN are_VBP returned_VBN according_VBG to_TO their_PRP$ entities_NNS ._.
+10sIn_VB this_DT thesis_NN ,_, I_PRP motivate_VBP the_DT problem_NN of_IN query-time_JJ entity_NN resolution_NN and_CC apply_VB collective_JJ resolution_NN techniques_NNS for_IN the_DT problem_NN of_IN answering_VBG queries_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT biggest_JJS issue_NN with_IN this_DT approach_NN is_VBZ the_DT dependency_NN structure_NN of_IN collective_JJ resolution_NN ._.
+In_IN order_NN to_TO reason_VB about_IN the_DT query_NN records_NNS ,_, it_PRP is_VBZ necessary_JJ to_TO reason_VB about_IN their_PRP$ related_JJ records_NNS ,_, which_WDT in_IN
+same_JJ entity_NN -LRB-_-LRB- duplicates_NNS -RRB-_-RRB- ._.
+Record_VB linkage_NN can_MD be_VB used_VBN for_IN data_NNS cleaning_NN -LRB-_-LRB- deduplication_NN -RRB-_-RRB- internally_RB in_IN one_CD database_NN -LRB-_-LRB- survey_NN of_IN several_JJ techniques_NNS in_IN -LRB-_-LRB- 11_CD -RRB-_-RRB- -RRB-_-RRB- and_CC for_IN integrating_VBG data_NNS from_IN multiple_JJ sources_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT contain_VBP extensional_JJ overlap_VBP ._.
+The_DT problem_NN gets_VBZ more_RBR complicated_JJ if_IN schemas_NNS are_VBP unaligned_JJ which_WDT is_VBZ usually_RB the_DT case_NN for_IN schema_NN matching_NN scenarios_NNS ._.
+Record_VB linkage_NN between_IN unaligned_JJ schemas_NNS is_VBZ less_JJR
+th_DT ''_'' and_CC ``_`` D._NNP Smith_NNP ''_'' ,_, refer_VBP to_TO the_DT same_JJ real-world_JJ entity_NN ._.
+This_DT problem_NN arises_VBZ in_IN many_JJ applications_NNS that_WDT integrate_VBP data_NNS from_IN multiple_JJ sources_NNS ._.
+Consequently_RB ,_, numerous_JJ solutions_NNS have_VBP been_VBN developed_VBN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 19_CD ,_, 13_CD ,_, 24_CD ,_, 10_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, see_VB -LRB-_-LRB- 23_CD -RRB-_-RRB- for_IN a_DT recent_JJ tutorial_NN -RRB-_-RRB- ._.
+While_IN much_JJ progress_NN has_VBZ been_VBN made_VBN ,_, the_DT current_JJ solutions_NNS have_VBP largely_RB exploited_VBN only_RB information_NN within_IN the_DT mentions_VBZ ,_, and_CC employed_VBD a_DT single_JJ matching_NN solution_NN ,_, hencef_NN
+,_, 2003_CD -RRB-_-RRB- that_WDT may_MD be_VB used_VBN for_IN unsupervised_JJ entity_NN resolution_NN ._.
+The_DT other_JJ approach_NN uses_VBZ adaptive_JJ supervised_JJ algorithms_NNS that_WDT learn_VBP similarity_NN measures_NNS from_IN labeled_VBN data_NNS -LRB-_-LRB- Tejada_NNP ,_, Knoblock_NNP ,_, &_CC Minton_NNP ,_, 2001_CD ;_: =_JJ -_: =_JJ Bilenko_NNP &_CC Mooney_NNP ,_, 2003_CD -_: =--RRB-_NN ._.
+Resolving_NNP entities_NNS optimally_RB is_VBZ known_VBN to_TO be_VB computationally_RB hard_RB even_RB when_WRB only_JJ attributes_NNS are_VBP considered_VBN -LRB-_-LRB- Cohen_NNP ,_, Kautz_NNP ,_, &_CC McAllester_NNP ,_, 2000_CD -RRB-_-RRB- ._.
+Therefore_RB ,_, efficiency_NN has_VBZ received_VBN a_DT lot_NN of_IN attention_NN i_FW
+r_NN collective_JJ entity_NN resolution_NN ._.
+Figure_NN 2_CD shows_VBZ high-level_JJ pseudo-code_NN for_IN the_DT complete_JJ algorithm_NN ._.
+The_DT algorithm_NN first_RB identifies_VBZ the_DT candidate_NN set_NN of_IN potential_JJ duplicates_NNS using_VBG a_DT `_`` blocking_VBG '_'' approach_NN -LRB-_-LRB- =_JJ -_: =_JJ Hernández_NNP &_CC Stolfo_NNP ,_, 1995_CD -_: =_JJ -_: ;_: Monge_NNP &_CC Elkan_NNP ,_, 1997_CD ;_: McCallum_NNP ,_, Nigam_NNP ,_, &_CC Ungar_NNP ,_, 2000_CD -RRB-_-RRB- ._.
+Next_RB ,_, it_PRP initializes_VBZ the_DT clusters_NNS 1_CD ._.
+Jaccard_NN similarity_NN for_IN two_CD sets_NNS A_NN and_CC B_NN is_VBZ defined_VBN as_IN Jaccard_NN -LRB-_-LRB- A_NN ,_, B_NN -RRB-_-RRB- =_JJ |_NN A_NNP ∩_NNP B_NNP |_NNP |_NNP A_NNP ∪_NNP B_NNP |_NNP 628sQuery-time_NNP Entity_NNP Reso_NNP
+tion_NN ._.
+Figure_NN 2_CD shows_VBZ high-level_JJ pseudo-code_NN for_IN the_DT complete_JJ algorithm_NN ._.
+The_DT algorithm_NN first_RB identifies_VBZ the_DT candidate_NN set_NN of_IN potential_JJ duplicates_NNS using_VBG a_DT `_`` blocking_VBG '_'' approach_NN -LRB-_-LRB- Hernández_NNP &_CC Stolfo_NNP ,_, 1995_CD ;_: =_JJ -_: =_JJ Monge_NNP &_CC Elkan_NNP ,_, 1997_CD -_: =_JJ -_: ;_: McCallum_NNP ,_, Nigam_NNP ,_, &_CC Ungar_NNP ,_, 2000_CD -RRB-_-RRB- ._.
+Next_RB ,_, it_PRP initializes_VBZ the_DT clusters_NNS 1_CD ._.
+Jaccard_NN similarity_NN for_IN two_CD sets_NNS A_NN and_CC B_NN is_VBZ defined_VBN as_IN Jaccard_NN -LRB-_-LRB- A_NN ,_, B_NN -RRB-_-RRB- =_JJ |_NN A_NNP ∩_NNP B_NNP |_NNP |_NNP A_NNP ∪_NNP B_NNP |_NNP 628sQuery-time_NNP Entity_NNP Resolution_NNP Algorithm_NNP RC-E_NN
+en_IN '_'' ._.
+Instead_RB of_IN considering_VBG the_DT attribute_NN similarities_NNS of_IN the_DT related_JJ references_NNS ,_, the_DT collective_JJ entity_NN resolution_NN approach_NN -LRB-_-LRB- Pasula_NN et_FW al._FW ,_, 2003_CD ;_: Bhattacharya_NNP &_CC Getoor_NNP ,_, 2004_CD ;_: Singla_NNP &_CC Domingos_NNP ,_, 2004_CD ;_: =_JJ -_: =_JJ McCallum_NNP &_CC Wellner_NNP ,_, 2004_CD -_: =_JJ -_: ;_: Li_NNP ,_, Morie_NNP ,_, &_CC Roth_NNP ,_, 2005_CD ;_: Dong_NNP et_FW al._FW ,_, 2005_CD ;_: Kalashnikov_NNP et_FW al._FW ,_, 2005_CD -RRB-_-RRB- takes_VBZ into_IN account_NN the_DT resolution_NN decisions_NNS for_IN them_PRP ._.
+In_IN our_PRP$ previous_JJ example_NN ,_, the_DT correct_JJ evidence_NN to_TO use_VB for_IN the_DT pair_NN of_IN refer_VB
+lational_JJ information_NN between_IN database_NN references_NNS to_TO improve_VB 622Query-time_NNP Entity_NNP Resolution_NNP resolution_NN accuracy_NN -LRB-_-LRB- Bhattacharya_NNP &_CC Getoor_NNP ,_, 2004_CD ;_: Singla_NNP &_CC Domingos_NNP ,_, 2004_CD ;_: Dong_NNP ,_, Halevy_NNP ,_, &_CC Madhavan_NNP ,_, 2005_CD ;_: =_JJ -_: =_JJ Ananthakrishna_NNP ,_, Chaudhuri_NNP ,_, &_CC Ganti_NNP ,_, 2002_CD -_: =_JJ -_: ;_: Kalashnikov_NNP ,_, Mehrotra_NNP ,_, &_CC Chen_NNP ,_, 2005_CD -RRB-_-RRB- ._.
+This_DT improvement_NN is_VBZ made_VBN possible_JJ by_IN resolving_VBG related_JJ references_NNS or_CC records_NNS jointly_RB ,_, rather_RB than_IN independently_RB ._.
+Intuitively_RB ,_, this_DT corresponds_VBZ to_TO the_DT notion_NN tha_NN
+used_VBN on_IN the_DT use_NN of_IN additional_JJ relational_JJ information_NN between_IN database_NN references_NNS to_TO improve_VB 622sQuery-time_NNP Entity_NNP Resolution_NNP resolution_NN accuracy_NN -LRB-_-LRB- Bhattacharya_NNP &_CC Getoor_NNP ,_, 2004_CD ;_: Singla_NNP &_CC Domingos_NNP ,_, 2004_CD ;_: =_JJ -_: =_JJ Dong_NNP ,_, Halevy_NNP ,_, &_CC Madhavan_NNP ,_, 2005_CD -_: =_JJ -_: ;_: Ananthakrishna_NNP ,_, Chaudhuri_NNP ,_, &_CC Ganti_NNP ,_, 2002_CD ;_: Kalashnikov_NNP ,_, Mehrotra_NNP ,_, &_CC Chen_NNP ,_, 2005_CD -RRB-_-RRB- ._.
+This_DT improvement_NN is_VBZ made_VBN possible_JJ by_IN resolving_VBG related_JJ references_NNS or_CC records_NNS jointly_RB ,_, rather_RB than_IN independently_RB ._.
+Intui_NNP
+rences_NNS to_TO improve_VB 622sQuery-time_NNP Entity_NNP Resolution_NNP resolution_NN accuracy_NN -LRB-_-LRB- Bhattacharya_NNP &_CC Getoor_NNP ,_, 2004_CD ;_: Singla_NNP &_CC Domingos_NNP ,_, 2004_CD ;_: Dong_NNP ,_, Halevy_NNP ,_, &_CC Madhavan_NNP ,_, 2005_CD ;_: Ananthakrishna_NNP ,_, Chaudhuri_NNP ,_, &_CC Ganti_NNP ,_, 2002_CD ;_: =_JJ -_: =_JJ Kalashnikov_NNP ,_, Mehrotra_NNP ,_, &_CC Chen_NNP ,_, 2005_CD -_: =--RRB-_NN ._.
+This_DT improvement_NN is_VBZ made_VBN possible_JJ by_IN resolving_VBG related_JJ references_NNS or_CC records_NNS jointly_RB ,_, rather_RB than_IN independently_RB ._.
+Intuitively_RB ,_, this_DT corresponds_VBZ to_TO the_DT notion_NN that_IN figuring_VBG out_RP that_IN two_CD records_NNS refer_VBP
+ocused_VBN on_IN traditional_JJ attribute-based_JJ entity_NN resolution_NN ._.
+Extensive_JJ research_NN has_VBZ been_VBN done_VBN on_IN defining_VBG approximate_JJ string_NN similarity_NN measures_NNS -LRB-_-LRB- Monge_NNP &_CC Elkan_NNP ,_, 1996_CD ;_: Navarro_NNP ,_, 2001_CD ;_: Bilenko_NNP et_FW al._FW ,_, 2003_CD ;_: =_JJ -_: =_JJ Chaudhuri_NNP ,_, Ganjam_NNP ,_, Ganti_NNP ,_, &_CC Motwani_NNP ,_, 2003_CD -_: =--RRB-_NN that_WDT may_MD be_VB used_VBN for_IN unsupervised_JJ entity_NN resolution_NN ._.
+The_DT other_JJ approach_NN uses_VBZ adaptive_JJ supervised_JJ algorithms_NNS that_WDT learn_VBP similarity_NN measures_NNS from_IN labeled_VBN data_NNS -LRB-_-LRB- Tejada_NNP ,_, Knoblock_NNP ,_, &_CC Minton_NNP ,_, 2001_CD ;_: Bilenk_NNP
+arity_NN measures_NNS from_IN labeled_VBN data_NNS -LRB-_-LRB- Tejada_NNP ,_, Knoblock_NNP ,_, &_CC Minton_NNP ,_, 2001_CD ;_: Bilenko_NNP &_CC Mooney_NNP ,_, 2003_CD -RRB-_-RRB- ._.
+Resolving_NNP entities_NNS optimally_RB is_VBZ known_VBN to_TO be_VB computationally_RB hard_RB even_RB when_WRB only_JJ attributes_NNS are_VBP considered_VBN -LRB-_-LRB- =_JJ -_: =_JJ Cohen_NNP ,_, Kautz_NNP ,_, &_CC McAllester_NNP ,_, 2000_CD -_: =--RRB-_NN ._.
+Therefore_RB ,_, efficiency_NN has_VBZ received_VBN a_DT lot_NN of_IN attention_NN in_IN attribute-based_JJ data_NNS cleaning_NN ._.
+The_DT goal_NN essentially_RB is_VBZ to_TO avoid_VB irrelevant_JJ and_CC expensive_JJ attribute_NN similarity_NN computations_NNS using_VBG a_DT `_`` blocking_VBG
+._.
+When_WRB relations_NNS between_IN references_NNS are_VBP available_JJ ,_, they_PRP may_MD also_RB be_VB taken_VBN into_IN account_NN for_IN computing_VBG similarities_NNS in_IN the_DT naive_JJ relational_JJ entity_NN resolution_NN approach_NN -LRB-_-LRB- NR_NN -RRB-_-RRB- -LRB-_-LRB- Ananthakrishna_NNP et_FW al._FW ,_, 2002_CD ;_: =_JJ -_: =_JJ Bhattacharya_NNP &_CC Getoor_NNP ,_, 2007_CD -_: =--RRB-_NN ._.
+For_IN computing_VBG similarities_NNS between_IN two_CD references_NNS ,_, this_DT approach_NN additionally_RB considers_VBZ the_DT attributes_NNS of_IN the_DT related_JJ references_NNS when_WRB comparing_VBG the_DT attributes_NNS of_IN their_PRP$ related_JJ references_NNS ._.
+In_IN our_PRP$ ex_FW
+g_NN the_DT attribute_NN similarities_NNS of_IN the_DT related_JJ references_NNS ,_, the_DT collective_JJ entity_NN resolution_NN approach_NN -LRB-_-LRB- Pasula_NN et_FW al._FW ,_, 2003_CD ;_: Bhattacharya_NNP &_CC Getoor_NNP ,_, 2004_CD ;_: Singla_NNP &_CC Domingos_NNP ,_, 2004_CD ;_: McCallum_NNP &_CC Wellner_NNP ,_, 2004_CD ;_: =_JJ -_: =_JJ Li_NNP ,_, Morie_NNP ,_, &_CC Roth_NNP ,_, 2005_CD -_: =_JJ -_: ;_: Dong_NNP et_FW al._FW ,_, 2005_CD ;_: Kalashnikov_NNP et_FW al._FW ,_, 2005_CD -RRB-_-RRB- takes_VBZ into_IN account_NN the_DT resolution_NN decisions_NNS for_IN them_PRP ._.
+In_IN our_PRP$ previous_JJ example_NN ,_, the_DT correct_JJ evidence_NN to_TO use_VB for_IN the_DT pair_NN of_IN references_NNS r1_NN and_CC r8_NN is_VBZ that_IN t_NN
+rmation_NN that_IN ,_, implicitly_RB or_CC explicitly_RB ,_, requires_VBZ knowledge_NN of_IN the_DT resolved_VBN entities_NNS ._.
+For_IN example_NN ,_, we_PRP may_MD query_VB the_DT CiteSeer_NNP database_NN of_IN computer_NN science_NN publications_NNS looking_VBG for_IN books_NNS by_IN `_`` S_NNP Russell_NNP '_POS -LRB-_-LRB- =_JJ -_: =_JJ Pasula_NNP ,_, Marthi_NNP ,_, Milch_NNP ,_, Russell_NNP ,_, &_CC Shpitser_NNP ,_, 2003_CD -_: =--RRB-_NN ._.
+This_DT query_NN would_MD be_VB easy_JJ to_TO answer_VB if_IN all_DT author_NN names_NNS in_IN CiteSeer_NNP were_VBD correctly_RB mapped_VBN to_TO their_PRP$ entities_NNS ._.
+But_CC ,_, unfortunately_RB ,_, this_DT is_VBZ not_RB the_DT case_NN ._.
+According_VBG to_TO CiteSeer_NNP records_NNS ,_, Stuart_NNP Russell_NNP a_DT
+ral_JJ entity_NN resolution_NN problem_NN ._.
+Recent_JJ research_NN has_VBZ focused_VBN on_IN the_DT use_NN of_IN additional_JJ relational_JJ information_NN between_IN database_NN references_NNS to_TO improve_VB 622sQuery-time_NNP Entity_NNP Resolution_NNP resolution_NN accuracy_NN -LRB-_-LRB- =_JJ -_: =_JJ Bhattacharya_NNP &_CC Getoor_NNP ,_, 2004_CD -_: =_JJ -_: ;_: Singla_NNP &_CC Domingos_NNP ,_, 2004_CD ;_: Dong_NNP ,_, Halevy_NNP ,_, &_CC Madhavan_NNP ,_, 2005_CD ;_: Ananthakrishna_NNP ,_, Chaudhuri_NNP ,_, &_CC Ganti_NNP ,_, 2002_CD ;_: Kalashnikov_NNP ,_, Mehrotra_NNP ,_, &_CC Chen_NNP ,_, 2005_CD -RRB-_-RRB- ._.
+This_DT improvement_NN is_VBZ made_VBN possible_JJ by_IN resolving_VBG related_JJ refere_NN
+._.
+Recent_JJ research_NN has_VBZ focused_VBN on_IN the_DT use_NN of_IN additional_JJ relational_JJ information_NN between_IN database_NN references_NNS to_TO improve_VB 622sQuery-time_NNP Entity_NNP Resolution_NNP resolution_NN accuracy_NN -LRB-_-LRB- Bhattacharya_NNP &_CC Getoor_NNP ,_, 2004_CD ;_: =_JJ -_: =_JJ Singla_NNP &_CC Domingos_NNP ,_, 2004_CD -_: =_JJ -_: ;_: Dong_NNP ,_, Halevy_NNP ,_, &_CC Madhavan_NNP ,_, 2005_CD ;_: Ananthakrishna_NNP ,_, Chaudhuri_NNP ,_, &_CC Ganti_NNP ,_, 2002_CD ;_: Kalashnikov_NNP ,_, Mehrotra_NNP ,_, &_CC Chen_NNP ,_, 2005_CD -RRB-_-RRB- ._.
+This_DT improvement_NN is_VBZ made_VBN possible_JJ by_IN resolving_VBG related_JJ references_NNS or_CC records_NNS jointly_RB ,_,
+ne_NN by_IN Fellegi_NNP and_CC Sunter_NNP -LRB-_-LRB- 1969_CD -RRB-_-RRB- ._.
+Others_NNS -LRB-_-LRB- Winkler_NNP ,_, 2002_CD ;_: Ravikumar_NNP &_CC Cohen_NNP ,_, 2004_CD -RRB-_-RRB- have_VBP more_RBR recently_RB built_VBN upon_IN this_DT work_NN ._.
+Adaptive_JJ machine_NN learning_NN approaches_NNS have_VBP been_VBN proposed_VBN for_IN data_NN integration_NN -LRB-_-LRB- =_JJ -_: =_JJ Sarawagi_NNP &_CC Bhamidipaty_NNP ,_, 2002_CD -_: =_JJ -_: ;_: Tejada_NNP et_FW al._FW ,_, 2001_CD -RRB-_-RRB- ,_, where_WRB active_JJ learning_NN requires_VBZ the_DT user_NN to_TO label_VB informative_JJ examples_NNS ._.
+Probabilistic_JJ models_NNS that_WDT use_VBP relationships_NNS for_IN collective_JJ entity_NN resolution_NN have_VBP been_VBN applied_VBN to_TO named_VBN e_SYM
+high-level_JJ pseudo-code_NN for_IN the_DT complete_JJ algorithm_NN ._.
+The_DT algorithm_NN first_RB identifies_VBZ the_DT candidate_NN set_NN of_IN potential_JJ duplicates_NNS using_VBG a_DT `_`` blocking_VBG '_'' approach_NN -LRB-_-LRB- Hernández_NNP &_CC Stolfo_NNP ,_, 1995_CD ;_: Monge_NNP &_CC Elkan_NNP ,_, 1997_CD ;_: =_JJ -_: =_JJ McCallum_NNP ,_, Nigam_NNP ,_, &_CC Ungar_NNP ,_, 2000_CD -_: =--RRB-_NN ._.
+Next_RB ,_, it_PRP initializes_VBZ the_DT clusters_NNS 1_CD ._.
+Jaccard_NN similarity_NN for_IN two_CD sets_NNS A_NN and_CC B_NN is_VBZ defined_VBN as_IN Jaccard_NN -LRB-_-LRB- A_NN ,_, B_NN -RRB-_-RRB- =_JJ |_NN A_NNP ∩_NNP B_NNP |_NNP |_NNP A_NNP ∪_NNP B_NNP |_NNP 628sQuery-time_NNP Entity_NNP Resolution_NNP Algorithm_NNP RC-ER_NNP -LRB-_-LRB- Reference_NNP set_NN R_NN -RRB-_-RRB- 1_CD ._.
+Find_VB simi_NNS
+liation_NN ,_, object_NN consolidation_NN ,_, etc._NN ._.
+Much_JJ of_IN the_DT work_NN has_VBZ focused_VBN on_IN traditional_JJ attribute-based_JJ entity_NN resolution_NN ._.
+Extensive_JJ research_NN has_VBZ been_VBN done_VBN on_IN defining_VBG approximate_JJ string_NN similarity_NN measures_NNS -LRB-_-LRB- =_JJ -_: =_JJ Monge_NNP &_CC Elkan_NNP ,_, 1996_CD -_: =_JJ -_: ;_: Navarro_NNP ,_, 2001_CD ;_: Bilenko_NNP et_FW al._FW ,_, 2003_CD ;_: Chaudhuri_NNP ,_, Ganjam_NNP ,_, Ganti_NNP ,_, &_CC Motwani_NNP ,_, 2003_CD -RRB-_-RRB- that_WDT may_MD be_VB used_VBN for_IN unsupervised_JJ entity_NN resolution_NN ._.
+The_DT other_JJ approach_NN uses_VBZ adaptive_JJ supervised_JJ algorithms_NNS that_WDT learn_VBP
+lidation_NN ,_, etc._NN ._.
+Much_JJ of_IN the_DT work_NN has_VBZ focused_VBN on_IN traditional_JJ attribute-based_JJ entity_NN resolution_NN ._.
+Extensive_JJ research_NN has_VBZ been_VBN done_VBN on_IN defining_VBG approximate_JJ string_NN similarity_NN measures_NNS -LRB-_-LRB- Monge_NNP &_CC Elkan_NNP ,_, 1996_CD ;_: =_JJ -_: =_JJ Navarro_NNP ,_, 2001_CD -_: =_JJ -_: ;_: Bilenko_NNP et_FW al._FW ,_, 2003_CD ;_: Chaudhuri_NNP ,_, Ganjam_NNP ,_, Ganti_NNP ,_, &_CC Motwani_NNP ,_, 2003_CD -RRB-_-RRB- that_WDT may_MD be_VB used_VBN for_IN unsupervised_JJ entity_NN resolution_NN ._.
+The_DT other_JJ approach_NN uses_VBZ adaptive_JJ supervised_JJ algorithms_NNS that_WDT learn_VBP similarity_NN mea_NN
+haudhuri_RB ,_, Ganjam_NNP ,_, Ganti_NNP ,_, &_CC Motwani_NNP ,_, 2003_CD -RRB-_-RRB- that_WDT may_MD be_VB used_VBN for_IN unsupervised_JJ entity_NN resolution_NN ._.
+The_DT other_JJ approach_NN uses_VBZ adaptive_JJ supervised_JJ algorithms_NNS that_WDT learn_VBP similarity_NN measures_NNS from_IN labeled_VBN data_NNS -LRB-_-LRB- =_JJ -_: =_JJ Tejada_NNP ,_, Knoblock_NNP ,_, &_CC Minton_NNP ,_, 2001_CD -_: =_JJ -_: ;_: Bilenko_NNP &_CC Mooney_NNP ,_, 2003_CD -RRB-_-RRB- ._.
+Resolving_NNP entities_NNS optimally_RB is_VBZ known_VBN to_TO be_VB computationally_RB hard_RB even_RB when_WRB only_JJ attributes_NNS are_VBP considered_VBN -LRB-_-LRB- Cohen_NNP ,_, Kautz_NNP ,_, &_CC McAllester_NNP ,_, 2000_CD -RRB-_-RRB- ._.
+Therefore_RB ,_, efficiency_NN has_VBZ recei_VBN
+for_IN the_DT first_JJ two_CD approaches_NNS -LRB-_-LRB- A_DT \*_NN and_CC NR_NN \*_NN -RRB-_-RRB- ._.
+For_IN attribute_NN similarity_NN ,_, we_PRP use_VBP the_DT Soft_JJ TF-IDF_NN with_IN Jaro-Winkler_NN similarity_NN for_IN names_NNS ,_, which_WDT has_VBZ been_VBN shown_VBN to_TO perform_VB the_DT best_JJS for_IN namebased_JJ resolution_NN -LRB-_-LRB- =_JJ -_: =_JJ Bilenko_NNP ,_, Mooney_NNP ,_, Cohen_NNP ,_, Ravikumar_NNP ,_, &_CC Fienberg_NNP ,_, 2003_CD -_: =--RRB-_NN ,_, and_CC TF-IDF_NN similarity_NN for_IN the_DT other_JJ textual_JJ attributes_NNS ._.
+The_DT average_JJ F1_NN scores_NNS over_IN all_DT queries_NNS are_VBP shown_VBN in_IN Table_NNP 1_CD for_IN each_DT algorithm_NN in_IN the_DT two_CD datasets_NNS ._.
+It_PRP shows_VBZ that_IN RC-ER_NN improves_VBZ accuracy_NN sig_NN
+._.
+Recent_JJ research_NN has_VBZ focused_VBN on_IN the_DT use_NN of_IN additional_JJ relational_JJ information_NN between_IN database_NN references_NNS to_TO improve_VB 622Query-time_NNP Entity_NNP Resolution_NNP resolution_NN accuracy_NN -LRB-_-LRB- Bhattacharya_NNP &_CC Getoor_NNP ,_, 2004_CD ;_: =_JJ -_: =_JJ Singla_NNP &_CC Domingos_NNP ,_, 2004_CD -_: =_JJ -_: ;_: Dong_NNP ,_, Halevy_NNP ,_, &_CC Madhavan_NNP ,_, 2005_CD ;_: Ananthakrishna_NNP ,_, Chaudhuri_NNP ,_, &_CC Ganti_NNP ,_, 2002_CD ;_: Kalashnikov_NNP ,_, Mehrotra_NNP ,_, &_CC Chen_NNP ,_, 2005_CD -RRB-_-RRB- ._.
+This_DT improvement_NN is_VBZ made_VBN possible_JJ by_IN resolving_VBG related_JJ references_NNS or_CC records_NNS jointly_RB ,_,
+d_NN `_`` probabilistically_RB safe_JJ '_'' since_IN the_DT closest_JJS tuples_NNS in_IN the_DT database_NN will_MD be_VB retrieved_VBN with_IN high_JJ probability_NN ._.
+This_DT is_VBZ also_RB efficient_JJ since_IN only_RB a_DT small_JJ number_NN of_IN matches_NNS needs_VBZ to_TO be_VB performed_VBN ._.
+Swoosh_NN -LRB-_-LRB- =_JJ -_: =_JJ Benjelloun_NNP ,_, Garcia-Molina_NNP ,_, Su_NNP ,_, &_CC Widom_NNP ,_, 2005_CD -_: =--RRB-_NN has_VBZ recently_RB been_VBN proposed_VBN as_IN a_DT generic_JJ entity_NN resolution_NN framework_NN that_WDT considers_VBZ resolving_VBG and_CC merging_VBG duplicates_NNS as_IN a_DT database_NN operator_NN and_CC the_DT goal_NN is_VBZ to_TO minimize_VB the_DT number_NN of_IN record-level_NN and_CC
+drawback_NN ._.
+Probabilistic_JJ approaches_NNS that_WDT cast_VBP entity_NN resolution_NN as_IN a_DT classification_NN problem_NN have_VBP been_VBN extensively_RB studied_VBN ._.
+The_DT groundwork_NN was_VBD done_VBN by_IN Fellegi_NNP and_CC Sunter_NNP -LRB-_-LRB- 1969_CD -RRB-_-RRB- ._.
+Others_NNS -LRB-_-LRB- Winkler_NNP ,_, 2002_CD ;_: =_JJ -_: =_JJ Ravikumar_NNP &_CC Cohen_NNP ,_, 2004_CD -_: =--RRB-_NN have_VBP more_RBR recently_RB built_VBN upon_IN this_DT work_NN ._.
+Adaptive_JJ machine_NN learning_NN approaches_NNS have_VBP been_VBN proposed_VBN for_IN data_NN integration_NN -LRB-_-LRB- Sarawagi_NNP &_CC Bhamidipaty_NNP ,_, 2002_CD ;_: Tejada_NNP et_FW al._FW ,_, 2001_CD -RRB-_-RRB- ,_, where_WRB active_JJ learning_NN requi_NN

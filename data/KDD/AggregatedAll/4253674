@@ -1,0 +1,192 @@
+Cost-effective_JJ outbreak_NN detection_NN in_IN networks_NNS
+Given_VBN a_DT water_NN distribution_NN network_NN ,_, where_WRB should_MD we_VB place_NN sensors_NNS toquickly_RB detect_VB contaminants_NNS ?_.
+Or_CC ,_, which_WDT blogs_NNS should_MD we_PRP read_VB to_TO avoid_VB missing_VBG important_JJ stories_NNS ?_. ._.
+These_DT seemingly_RB different_JJ problems_NNS share_VBP common_JJ structure_NN :_: Outbreak_NN detection_NN can_MD be_VB modeled_VBN as_IN selecting_NN nodes_NNS -LRB-_-LRB- sensor_NN locations_NNS ,_, blogs_NNS -RRB-_-RRB- in_IN a_DT network_NN ,_, in_IN order_NN to_TO detect_VB the_DT spreading_NN of_IN a_DT virus_NN or_CC information_NN asquickly_RB as_IN possible_JJ ._.
+We_PRP present_VBP a_DT general_JJ methodology_NN for_IN near_JJ optimal_JJ sensor_NN placement_NN in_IN these_DT and_CC related_JJ problems_NNS ._.
+We_PRP demonstrate_VBP that_IN many_JJ realistic_JJ outbreak_NN detection_NN objectives_NNS -LRB-_-LRB- e.g._FW ,_, detection_NN likelihood_NN ,_, population_NN affected_VBN -RRB-_-RRB- exhibit_VBP the_DT property_NN of_IN ``_`` submodularity_NN ''_'' ._.
+We_PRP exploit_VBP submodularity_NN to_TO develop_VB an_DT efficient_JJ algorithm_NN that_IN scales_NNS to_TO large_JJ problems_NNS ,_, achieving_VBG near_IN optimal_JJ placements_NNS ,_, while_IN being_VBG 700_CD times_NNS faster_RBR than_IN a_DT simple_JJ greedy_JJ algorithm_NN ._.
+We_PRP also_RB derive_VBP online_NN bounds_NNS on_IN the_DT quality_NN of_IN the_DT placements_NNS obtained_VBN by_IN any_DT algorithm_NN ._.
+Our_PRP$ algorithms_NNS and_CC bounds_NNS also_RB handle_VBP cases_NNS where_WRB nodes_NNS -LRB-_-LRB- sensor_NN locations_NNS ,_, blogs_NNS -RRB-_-RRB- have_VBP different_JJ costs_NNS ._.
+We_PRP evaluate_VBP our_PRP$ approach_NN on_IN several_JJ large_JJ real-world_JJ problems_NNS ,_, including_VBG a_DT model_NN of_IN a_DT water_NN distribution_NN network_NN from_IN the_DT EPA_NNP ,_, andreal_JJ blog_NN data_NNS ._.
+The_DT obtained_VBN sensor_NN placements_NNS are_VBP provably_RB near_IN optimal_JJ ,_, providing_VBG a_DT constant_JJ fraction_NN of_IN the_DT optimal_JJ solution_NN ._.
+We_PRP show_VBP that_IN the_DT approach_NN scales_NNS ,_, achieving_VBG speedups_NNS and_CC savings_NNS in_IN storage_NN of_IN several_JJ orders_NNS of_IN magnitude_NN ._.
+We_PRP also_RB show_VBP how_WRB the_DT approach_NN leads_VBZ to_TO deeper_JJR insights_NNS in_IN both_DT applications_NNS ,_, answering_VBG multicriteria_JJ trade-off_NN ,_, cost-sensitivity_NN and_CC generalization_NN questions_NNS ._.
+lar_JJ set_NN covering_VBG problem_NN was_VBD first_RB studied_VBN in_IN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+Recently_RB ,_, submodular_JJ optimization_NN has_VBZ been_VBN applied_VBN to_TO several_JJ network_NN deployment_NN problems_NNS ,_, including_VBG placing_VBG sensors_NNS to_TO efficiently_RB detect_VB outbreak_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC to_TO provide_VB robust_JJ observations_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+The_DT former_JJ is_VBZ formulated_VBN as_IN a_DT submodular_JJ maximization_NN problem_NN while_IN the_DT latter_JJ is_VBZ formulated_VBN as_IN a_DT budgeted_VBN submodular_JJ set_NN covering_VBG problem_NN ._.
+VII_NN ._.
+CONCLUSION_NN Ex_FW
+nformation_NN cascade_NN ,_, we_PRP would_MD like_VB to_TO select_VB blogs_NNS that_WDT detect_VBP big_JJ cascades_NNS -LRB-_-LRB- containing_VBG many_JJ nodes_NNS -RRB-_-RRB- as_RB early_RB as_IN possible_JJ -LRB-_-LRB- i.e._FW ,_, we_PRP want_VBP to_TO learn_VB about_IN an_DT important_JJ event_NN before_IN most_JJS other_JJ readers_NNS -RRB-_-RRB- ._.
+In_IN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: it_PRP is_VBZ shown_VBN how_WRB one_PRP can_MD formalize_VB this_DT notion_NN of_IN utility_NN using_VBG a_DT monotone_NN submodular_JJ function_NN that_WDT measures_VBZ the_DT informativeness_NN of_IN a_DT subset_NN of_IN blogs_NNS ._.
+Optimizing_VBG the_DT submodular_JJ function_NN yields_VBZ a_DT small_JJ
+detection_NN --_: selecting_VBG a_DT set_NN of_IN blogs_NNS to_TO read_VB which_WDT link_VBP to_TO most_JJS of_IN the_DT stories_NNS that_WDT propagate_VBP over_IN the_DT blogosphere_NN ._.
+Following_VBG the_DT viral_JJ marketing_NN work_NN of_IN Richardson_NNP and_CC Domingos_NNP -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, Leskovec_NNP et_FW al._FW =_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Kempe_NNP et_FW al._FW -LRB-_-LRB- 8_CD -RRB-_-RRB- provide_VBP efficient_JJ approximate_JJ solutions_NNS to_TO the_DT underlying_JJ optimization_NN problem_NN ._.
+These_DT solutions_NNS ,_, do_VBP not_RB attempt_VB to_TO address_VB the_DT task_NN of_IN assigning_VBG an_DT authority\/influence_NN score_NN to_TO i_FW
+is_VBZ to_TO select_VB a_DT most_RBS cost-effective_JJ sensor_NN solution_NN ._.
+While_IN the_DT regular_JJ greedy_JJ algorithm_NN introduced_VBN in_IN Section_NN 3_CD does_VBZ not_RB apply_VB in_IN the_DT case_NN of_IN non-uniform_JJ cost_NN functions_NNS ,_, we_PRP can_MD use_VB the_DT CELF_NN algorithm_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT variant_NN of_IN the_DT greedy_JJ algorithm_NN that_IN we_PRP developed_VBD for_IN cost-benefit_JJ optimization_NN ,_, to_TO solve_VB this_DT more_RBR general_JJ optimization_NN problem_NN ._.
+For_IN various_JJ choices_NNS of_IN the_DT budget_NN ,_, we_PRP use_VBP the_DT CELF_NN algorithm_NN to_TO op_VB
+ovich_RB ,_, et_FW al._FW ,_, 2004_CD ;_: Havre_NNP ,_, et_FW al._FW ,_, 2000_CD -RRB-_-RRB- ,_, tracking_NN topic_NN flows_NNS -LRB-_-LRB- Adar_NNP &_CC Adamic_NNP ,_, 2005_CD ;_: Adar_NNP ,_, et_FW al._FW ,_, 2004_CD ;_: Leskovec_NNP ,_, et_FW al._FW ,_, 2009_CD -RRB-_-RRB- ,_, and_CC modeling_NN the_DT dynamics_NNS of_IN adoption_NN cascades_NNS -LRB-_-LRB- Gruhl_NNP ,_, et_FW al._FW ,_, 2004_CD ;_: =_JJ -_: =_JJ Leskovec_NNP ,_, et_FW al._FW ,_, 2007_CD -_: =_JJ -_: ,_, 2009_CD -RRB-_-RRB- ._.
+In_IN summary_NN ,_, while_IN network_NN properties_NNS of_IN Twitter_NNP have_VBP not_RB been_VBN studied_VBN extensively_RB ,_, previous_JJ work_NN including_VBG considerable_JJ work_NN on_IN blogging_NN networks_NNS ,_, suggests_VBZ that_IN the_DT active_JJ interaction_NN network_NN
+s_NN property_NN of_IN the_DT model_NN ,_, we_PRP prove_VBP that_IN NETINF_NN infers_VBZ near-optimal_JJ networks_NNS ._.
+We_PRP also_RB speed-up_VBP NETINF_NN algorithm_NN by_IN exploiting_VBG the_DT local_JJ structure_NN of_IN the_DT objective_JJ function_NN and_CC by_IN using_VBG lazy_JJ evaluations_NNS =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ results_NNS on_IN synthetic_JJ datasets_NNS show_VBP that_IN we_PRP can_MD reliably_RB infer_VB the_DT underlying_JJ propagation_NN and_CC influence_NN networks_NNS ,_, regardless_RB of_IN the_DT overall_JJ network_NN structure_NN ._.
+Validation_NN on_IN real_JJ and_CC synthetic_JJ dat_NN
+ces_NNS ,_, resulting_VBG in_IN a_DT small_JJ fraction_NN of_IN the_DT original_JJ size_NN ._.
+Our_PRP$ experiments_NNS show_VBP that_IN preprocessing_VBG greatly_RB reduces_VBZ running_VBG times_NNS both_DT for_IN the_DT saa_NN approach_NN and_CC two_CD greedy_JJ baselines_NNS adapted_VBN from_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP apply_VBP our_PRP$ model_NN to_TO a_DT sustainability_NN problem_NN that_WDT is_VBZ part_NN of_IN an_DT ongoing_JJ collaboration_NN with_IN The_DT Conservation_NNP Fund_NNP to_TO optimize_VB the_DT conservation_NN of_IN land_NN to_TO assist_VB in_IN the_DT recovery_NN of_IN the_DT Red-cockaded_JJ
+r_NN the_DT streaming_NN algorithm_NN remains_VBZ constant_JJ ,_, whereas_IN for_IN the_DT offline_JJ algorithm_NN it_PRP increases_VBZ more_JJR than_IN linearly_RB with_IN the_DT growth_NN of_IN the_DT blogosphere_NN ._.
+5_CD Related_NNP Work_NNP on_IN Weblogs_NNPS In_IN a_DT recent_JJ work_NN on_IN weblogs_NNS =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Leskovec_NNP et_FW al._FW have_VBP addressed_VBN question_NN such_JJ as_IN :_: which_WDT blogs_NNS one_PRP should_MD read_VB to_TO avoid_VB missing_VBG important_JJ stories_NNS ?_.
+The_DT experimental_JJ results_NNS indicate_VBP that_IN ,_, when_WRB the_DT blogs_NNS have_VBP identical_JJ cost_NN ,_, the_DT majo_NN
+strategically_RB placing_VBG sensors_NNS -LRB-_-LRB- Berger-Wolf_NNP et_FW al._FW ,_, 2005_CD ;_: Berry_NNP et_FW al._FW ,_, 2005a_CD ;_: Hart_NNP et_FW al._FW ,_, 2006_CD ;_: Eubank_NNP Definition_NNP 1_CD Let_NNP -LCB-_-LRB- 1_CD ,_, ..._: ,_, T_NN -RCB-_-RRB- be_VB a_DT finite_JJ set_NN of_IN discrete_JJ et_FW al._FW ,_, 2004_CD ;_: Kempe_NNP et_FW al._FW ,_, 2002_CD ;_: =_JJ -_: =_JJ Leskovec_NNP et_FW al._FW ,_, 2007_CD -_: =--RRB-_NN timesteps_NNS ._.
+Let_VB V_NN =_JJ -LCB-_-LRB- 1_CD ,_, ..._: ,_, n_NN -RCB-_-RRB- be_VB a_DT set_NN of_IN individuals_NNS ._.
+have_VBP been_VBN addressed_VBN in_IN the_DT context_NN of_IN various_JJ applica_NN -_: Let_VB Gt_NN =_JJ -LRB-_-LRB- Vt_NNP ,_, Et_NN -RRB-_-RRB- be_VB a_DT graph_NN representing_VBG a_DT snapshot_NN tions_NNS but_CC there_EX has_VBZ been_VBN little_JJ
+Carlo_NNP simulations_NNS of_IN the_DT influence_NN cascade_NN model_NN are_VBP run_VBN for_IN a_DT large_JJ number_NN of_IN times_NNS in_IN order_NN to_TO obtain_VB an_DT accurate_JJ estimate_NN of_IN the_DT influence_NN spread_NN ._.
+Consequently_RB ,_, even_RB with_IN the_DT recent_JJ optimizations_NNS =_JJ -_: =[_NN 14_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT could_MD achieves_VBZ hundreds_NNS of_IN times_NNS speedup_NN ,_, it_PRP still_RB takes_VBZ hours_NNS on_IN a_DT modern_JJ server_NN to_TO select_VB 50_CD seeds_NNS in_IN a_DT moderate_JJ sized_VBN graph_NN -LRB-_-LRB- 15K_NN nodes_NNS and_CC 31K_NN edges_NNS -RRB-_-RRB- while_IN it_PRP becomes_VBZ completely_RB infeasible_JJ fo_NN
+eristics_NNS ,_, such_JJ as_IN power_NN law_NN distributions_NNS ,_, scale-free_JJ properties_NNS ,_, graph_NN evolution_NN ,_, and_CC information_NN cascades_NNS -LRB-_-LRB- e.g._FW -LRB-_-LRB- 9_CD ,_, 2_CD ,_, 1_CD -RRB-_-RRB- -RRB-_-RRB- ,_, and_CC ,_, more_RBR recently_RB ,_, real-world_JJ networks_NNS such_JJ as_IN blogs_NNS and_CC viral_JJ outbreaks_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: and_CC temporal_JJ patterns_NNS in_IN networks_NNS -LRB-_-LRB- e.g._FW -LRB-_-LRB- 3_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+However_RB ,_, these_DT studies_NNS measure_VBP networks_NNS as_IN a_DT function_NN of_IN nodes_NNS and_CC links_NNS rather_RB than_IN a_DT function_NN of_IN the_DT subjective_JJ and_CC individual_JJ relationships_NNS in_IN the_DT net_NN
+ion-level_JJ efficacy_NN of_IN a_DT prophylactic_JJ intervention_NN -LRB-_-LRB- 10_CD --_: 13_CD -RRB-_-RRB- and_CC other_JJ work_NN suggests_VBZ that_IN optimal_JJ placement_NN of_IN sensors_NNS in_IN physical_JJ networks_NNS -LRB-_-LRB- such_JJ as_IN water_NN pumping_VBG stations_NNS -RRB-_-RRB- could_MD detect_VB outbreaks_NNS sooner_RB ._.
+=_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: However_RB ,_, mapping_VBG a_DT whole_JJ network_NN to_TO identify_VB particular_JJ individuals_NNS from_IN whom_WP to_TO collect_VB information_NN is_VBZ costly_JJ ,_, timeconsuming_NN ,_, and_CC often_RB impossible_JJ ,_, especially_RB for_IN large_JJ networks_NNS ._.
+We_PRP therefore_RB explor_VBP
+tforms_NNS for_IN effective_JJ viral_JJ marketing_NN practice_NN ._.
+This_DT further_RB motivates_VBZ the_DT research_NN community_NN to_TO conduct_VB extensive_JJ studies_NNS on_IN various_JJ aspects_NNS of_IN the_DT influence_NN maximization_NN problem_NN -LRB-_-LRB- e.g._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+In_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- Kempe_NNP et_FW al._FW proposed_VBN two_CD basic_JJ stochastic_JJ influence_NN cascade_NN models_NNS ,_, the_DT independent_JJ cascade_NN -LRB-_-LRB- IC_NN -RRB-_-RRB- model_NN and_CC the_DT linear_JJ threshold_NN -LRB-_-LRB- LT_NN -RRB-_-RRB- model_NN ,_, which_WDT are_VBP extracted_VBN from_IN earlier_JJR w_NN
+o_NN find_VB a_DT subset_NN of_IN participants_NNS ,_, P_NN ∗_FW ⊆_FW P_NN ,_, for_IN the_DT campaign_NN such_JJ that_IN the_DT utility_NN of_IN elements_NNS covered_VBN by_IN subset_NN ,_, U_NN -LRB-_-LRB- P_NN ∗_NN -RRB-_-RRB- ,_, is_VBZ maximized_VBN while_IN the_DT cost_NN of_IN the_DT subset_NN ,_, C_NN -LRB-_-LRB- P_NN ∗_NN -RRB-_-RRB- ,_, is_VBZ under_IN a_DT set_VBN budget_NN ,_, B_NN ,_, =_JJ -_: =[_NN 24_CD ,_, 40_CD ,_, 41_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN summary_NN ,_, we_PRP are_VBP solving_VBG the_DT following_VBG optimization_NN problem_NN :_: argmax_NN U_NN -LRB-_-LRB- P_NN ∗_NN -RRB-_-RRB- subject_JJ to_TO C_NN -LRB-_-LRB- P_NN ∗_NN -RRB-_-RRB- ≤_NN B_NN The_DT budget_NN is_VBZ modeled_VBN as_IN the_DT resources_NNS needed_VBN to_TO engage_VB participants_NNS in_IN a_DT campaign_NN ._.
+Each_DT particip_NN
+entrality_NN nodes_NNS Figure_NNP 6_CD :_: Accuracy_NN of_IN top_JJ k_NN ranked_VBD nodes_NNS ._.
+5.2_CD Computing_NNP Node_NNP Centrality_NNP Information_NNP dissemination_NN is_VBZ an_DT active_JJ research_NN area_NN of_IN social_JJ networks_NNS ._.
+Viral_JJ spread_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, influence_NN campaigns_NNS =_JJ -_: =[_NN 4_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC breaking-news_JJ coverage_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- are_VBP all_DT examples_NNS of_IN information_NN dissemination_NN problems_NNS on_IN social_JJ graphs_NNS ._.
+A_DT critical_JJ ,_, but_CC computationally_RB expensive_JJ ,_, metric_JJ necessary_JJ for_IN these_DT applications_NNS is_VBZ node_NN ce_NN
+vity_NN also_RB gives_VBZ intruders_NNS and_CC attackers_NNS better_JJR opportunities_NNS for_IN malicious_JJ spread_NN in_IN the_DT network_NN ,_, whether_IN the_DT spread_NN is_VBZ of_IN a_DT computer_NN virus_NN ,_, of_IN disinformation_NN ,_, or_CC of_IN contamination_NN in_IN the_DT water_NN supply_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Anyone_NN participating_VBG in_IN a_DT networked_JJ system_NN may_MD therefore_RB desire_VB to_TO undertake_VB appropriate_JJ security_NN measures_NNS in_IN order_NN to_TO protect_VB themselves_PRP from_IN such_JJ malicious_JJ influences_NNS ._.
+We_PRP introduce_VBP a_DT Network_NNP Cutti_NNP
+to_TO the_DT optimal_JJ placement_NN of_IN online_JJ content_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+Another_DT application_NN of_IN our_PRP$ work_NN is_VBZ the_DT discovery_NN of_IN the_DT roles_NNS of_IN websites_NNS which_WDT can_MD improve_VB the_DT identification_NN of_IN influential_JJ websites_NNS or_CC Twitter_NNP users_NNS =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP believe_VBP that_IN our_PRP$ approach_NN offers_VBZ a_DT useful_JJ starting_NN point_NN for_IN understanding_VBG the_DT dynamics_NNS in_IN the_DT online_JJ media_NNS and_CC how_WRB the_DT dynamics_NNS of_IN attention_NN evolves_VBZ over_IN time_NN ._.
+Acknowledgment_NN We_PRP thank_VBP Spinn3r_FW fo_FW
+h_NN iteration_NN after_IN removing_VBG the_DT selected_VBN nodes_NNS ._.
+This_DT greedy_JJ approach_NN outperforms_VBZ PageRank_NN ,_, HITS_NN and_CC ranking_NN by_IN number_NN of_IN citations_NNS ,_, and_CC is_VBZ robust_JJ in_IN filtering_VBG splogs_NNS -LRB-_-LRB- spam_NN blogs_NNS -RRB-_-RRB- -LRB-_-LRB- 28_CD -RRB-_-RRB- ._.
+Leskovec_NNP et_FW al._FW =_SYM -_: =[_NN 41_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT submodularity_NN based_VBN approach_NN to_TO identify_VB the_DT most_RBS important_JJ blogs_NNS which_WDT outperforms_VBZ the_DT greedy_JJ approach_NN ._.
+Nakajima_NNP et_FW al._FW -LRB-_-LRB- 49_CD -RRB-_-RRB- attempts_NNS to_TO find_VB agitators_NNS ,_, who_WP stimulate_VBP discussions_NNS ;_: and_CC sum_VB
+utilizing_VBG viral_JJ marketing_NN is_VBZ crucial_JJ ._.
+Motivated_VBN by_IN this_DT background_NN ,_, the_DT research_NN community_NN has_VBZ recently_RB studied_VBN the_DT algorithmic_JJ aspects_NNS of_IN maximizing_VBG influence_NN in_IN social_JJ networks_NNS for_IN viral_JJ marketing_NN -LRB-_-LRB- =_JJ -_: =[_NN 11_CD ,_, 12_CD ,_, 13_CD ,_, 17_CD ,_, 20_CD ,_, 6_CD ,_, 5_CD ,_, 27_CD ,_, 7_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+All_DT these_DT works_NNS are_VBP based_VBN on_IN the_DT two_CD basic_JJ influence_NN cascade_NN models_NNS ,_, namely_RB independent_JJ cascade_NN model_NN and_CC linear_JJ threshold_NN model_NN ,_, originally_RB defined_VBN by_IN Kempe_NNP et_FW al._FW in_IN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, and_CC their_PRP$ extensions_NNS ._.
+T_NN
+he_PRP problem_NN ,_, influence_NN maximization_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, is_VBZ to_TO find_VB a_DT subset_NN of_IN influential_JJ individuals_NNS -LRB-_-LRB- as_IN seeds_NNS -RRB-_-RRB- such_JJ that_IN they_PRP can_MD eventually_RB influence_VB the_DT largest_JJS number_NN of_IN people_NNS in_IN a_DT social_JJ network_NN ._.
+Some_DT greedy_JJ =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =-[_NN 10_CD -RRB-_-RRB- and_CC heuristic_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- -LRB-_-LRB- 2_CD -RRB-_-RRB- methods_NNS are_VBP proposed_VBN to_TO effectively_RB and_CC efficiently_RB solve_VB this_DT problem_NN ._.
+There_EX are_VBP some_DT important_JJ variations_NNS to_TO tackle_VB different_JJ real-world_JJ requirements_NNS ._.
+Leskovec_NNP et_FW al._FW -LRB-_-LRB- 6_CD -RRB-_-RRB- p_NN
+._.
+Thus_RB ,_, a_DT sime_FW ple_FW greedy_JJ optimization_NN can_MD provide_VB us_PRP with_IN a_DT near-optimal_JJ solution_NN ._.
+However_RB ,_, since_IN our_PRP$ set_NN of_IN articles_NNS is_VBZ very_RB large_JJ ,_, a_DT naïve_JJ greedy_JJ approach_NN can_MD be_VB too_RB costly_JJ ._.
+Therefore_RB ,_, we_PRP use_VBP CELF_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT provides_VBZ the_DT same_JJ approximation_NN guarantees_NNS ,_, but_CC uses_VBZ lazy_JJ evaluations_NNS ,_, often_RB leading_VBG to_TO dramatic_JJ speedups_NNS ._.
+3_LS ._.
+TRUST_NN AND_CC PERSONALIZATION_NN Considering_VBG our_PRP$ running_VBG example_NN of_IN PNAS_NN articles_NNS -LRB-_-LRB- Figure_NNP
+0.63_CD of_IN optimal_JJ ._.
+Achieving_VBG better_RBR than_IN -LRB-_-LRB- 1_CD −_FW 1\/e_FW -RRB-_-RRB- OP_NN T_NN is_VBZ known_VBN to_TO be_VB intractable_JJ unless_IN P_NN =_JJ NP_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+In_IN practice_NN ,_, the_DT greedy_JJ algorithm_NN can_MD often_RB perform_VB much_RB better_JJR than_IN this_DT worst_JJS case_NN guarantee_NN -LRB-_-LRB- cf._VBP =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, and_CC will_MD be_VB a_DT central_JJ component_NN in_IN our_PRP$ online_JJ learning_NN algorithm_NN ._.
+3_CD Problem_NNP Formulation_NNP We_PRP propose_VBP the_DT linear_JJ submodular_JJ bandits_NNS problem_NN which_WDT is_VBZ described_VBN in_IN the_DT following_NN ._.
+At_IN each_DT time_NN step_NN t_NN =_JJ 1_CD
+D._NNP Case_NNP Study_NNP IV_NNP :_: Multiple_JJ Weblog_NNP Coverage_NNP The_DT fourth_JJ case_NN study_NN is_VBZ in_IN a_DT very_RB different_JJ application_NN domain_NN ,_, an_DT online_JJ information_NN network_NN rather_RB than_IN a_DT physically_RB connected_VBN sensor_NN network_NN ._.
+Reference_NNP =_SYM -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: studied_VBD the_DT problem_NN of_IN selecting_VBG informative_JJ weblogs_NNS to_TO read_VB on_IN the_DT Internet_NN ._.
+Our_PRP$ approach_NN is_VBZ based_VBN on_IN the_DT intuitive_JJ notion_NN of_IN an_DT information_NN cascade_NN :_: A_DT blogger_NN writes_VBZ a_DT posting_VBG ,_, and_CC ,_, after_IN some_DT time_NN
+Secondly_RB ,_, the_DT O_NN -LRB-_-LRB- nk_NN -RRB-_-RRB- term_NN in_IN Lemma_NNP 2_CD comes_VBZ from_IN the_DT greedy_JJ selection_NN step_NN in_IN steps_NNS 6-12_CD ._.
+Thanks_NNS to_TO the_DT monotonicity_NN of_IN f_FW -LRB-_-LRB- S_NN -RRB-_-RRB- as_IN we_PRP show_VBP in_IN Theorem_NNP 1_CD ,_, we_PRP can_MD use_VB the_DT similar_JJ lazy_JJ evaluation_NN strategy_NN as_IN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: to_TO speed_VB up_RP this_DT process_NN ,_, without_IN sacrificing_VBG the_DT optimization_NN quality_NN ._.
+Space_NNP Complexity_NNP ._.
+The_DT space_NN complexity_NN of_IN the_DT proposed_VBN DRAGON_NNP is_VBZ given_VBN in_IN Lemma_NNP 3_CD ._.
+According_VBG to_TO Lemma_NNP 3_CD ,_, our_PRP$ DRAGON_NNP has_VBZ linear_JJ
+s_NN to_TO estimate_NN σNIR_NN -LRB-_-LRB- S_NN -RRB-_-RRB- is_VBZ slow_JJ ,_, especially_RB when_WRB we_PRP need_VBP to_TO simulate_VB the_DT interfering_VBG propagation_NN of_IN competing_VBG influences_NNS ._.
+Even_RB with_IN powerful_JJ optimization_NN method_NN such_JJ as_IN the_DT lazy_JJ forward_JJ optimization_NN of_IN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: or_CC more_RBR advanced_JJ approach_NN in_IN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, greedy_JJ algorithm_NN still_RB takes_VBZ unacceptable_JJ long_JJ time_NN for_IN large_JJ graphs_NNS of_IN more_JJR than_IN 10k_CD nodes_NNS ._.
+We_PRP address_VBP this_DT efficiency_NN issue_NN in_IN the_DT next_JJ section_NN with_IN our_PRP$ new_JJ algori_NNS
+om_NN bases_NNS ._.
+The_DT fundamental_JJ importance_NN of_IN the_DT work_NN from_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- is_VBZ undisputable_JJ ._.
+However_RB ,_, its_PRP$ simple_JJ greedy_JJ algorithm_NN with_IN Monte-Carlo_NNP simulation_NN estimation_NN makes_VBZ it_PRP extremely_RB inefficient_JJ ._.
+Leskovec_FW et_FW ._.
+al._FW =_SYM -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: further_RB explored_VBD the_DT beauty_NN of_IN the_DT submodularity_NN of_IN the_DT objective_JJ function_NN by_IN pointing_VBG out_RP that_IN if_IN the_DT estimate_NN of_IN the_DT simulation_NN result_NN of_IN a_DT node_NN in_IN previous_JJ rounds_NNS is_VBZ still_RB less_JJR than_IN the_DT current_JJ be_VB
+ly_RB ,_, we_PRP note_VBP that_IN while_IN the_DT naïve_JJ implementation_NN of_IN the_DT Nemhauser_NNP algorithm_NN is_VBZ -LRB-_-LRB- -RRB-_-RRB- ,_, where_WRB is_VBZ profile_NN size_NN and_CC is_VBZ the_DT candidate_NN pool_NN of_IN keywords_NNS ,_, it_PRP can_MD be_VB sped_VBN up_RP dramatically_RB by_IN using_VBG lazy_JJ evaluation_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC empirically_RB can_MD be_VB run_VBN for_IN hundreds_NNS to_TO thousands_NNS of_IN keywords_NNS within_IN the_DT realtime_NN constraints_NNS of_IN modern_JJ ad_NN delivery_NN platforms_NNS ._.
+5_CD ._.
+PROFILE_NNP UTILITY_NNP ESTIMATION_NNP Computing_NNP incremental_JJ keyword_JJ utility_NN
+uting_VBG the_DT spread_NN of_IN a_DT given_VBN seed_NN set_NN carries_VBZ over_RP to_TO our_PRP$ setting_NN ._.
+To_TO mitigate_VB this_DT ,_, we_PRP employ_VBP Monte_NNP Carlo_NNP simulation_NN for_IN estimating_VBG the_DT spread_NN ._.
+Finally_RB ,_, we_PRP adapt_VBP the_DT CELF_NN algorithm_NN of_IN Leskovec_NNP et_FW al._FW =_SYM -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT idea_NN behind_IN CELF_NN is_VBZ that_IN the_DT marginal_JJ gain_NN of_IN a_DT node_NN can_MD not_RB increase_VB in_IN subsequent_JJ iterations_NNS -LRB-_-LRB- due_JJ to_TO submodularity_NN -RRB-_-RRB- and_CC thus_RB the_DT spread_NN of_IN seed_NN sets_NNS is_VBZ computed_VBN in_IN a_DT lazy_JJ forward_JJ manner_NN ,_, speedi_NN
+ximization_NN can_MD be_VB carried_VBN out_RP efficiently_RB through_IN a_DT greedy_JJ procedure_NN ,_, as_IN described_VBN in_IN the_DT celebrated_JJ paper_NN of_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- which_WDT can_MD be_VB accelerated_VBN even_RB further_RBR by_IN a_DT lazy_JJ evaluation_NN procedure_NN as_IN described_VBN in_IN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Consider_VB two_CD sets_NNS of_IN articles_NNS :_: a_DT set_VBN S_NN of_IN ``_`` source_NN ''_'' articles_NNS to_TO be_VB covered_VBN and_CC a_DT set_NN D_NN of_IN articles_NNS chosen_VBN to_TO represent_VB the_DT content_NN described_VBN in_IN S._NNP Given_IN those_DT sets_NNS we_PRP may_MD define_VB a_DT coverage_NN score_NN via_IN
+nd_NN -LRB-_-LRB- 100_CD -RRB-_-RRB- for_IN the_DT full_JJ reports_NNS ._.
+2.1_CD Background_NN :_: The_DT Political_JJ Blogosphere_NN Blogging_NN is_VBZ studied_VBN by_IN computer_NN scientists_NNS who_WP research_VBP large_JJ scale_NN networks_NNS -LRB-_-LRB- both_CC social_JJ and_CC otherwise_RB -RRB-_-RRB- or_CC online_JJ communities_NNS =_JJ -_: =[_NN 57_CD ,_, 3_CD ,_, 58_CD ,_, 39_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Among_IN natural_JJ language_NN processing_NN researchers_NNS ,_, bloggings_NNS or_CC other_JJ user_NN generated_VBN texts_NNS are_VBP particularly_RB important_JJ for_IN sentiment_NN analysis_NN or_CC opinion_NN mining_NN -LRB-_-LRB- 72_CD ,_, 7_CD ,_, 17_CD ,_, 52_CD ,_, 36_CD -RRB-_-RRB- ._.
+Blogging_NN is_VBZ also_RB an_DT im_NN
+problem_NN for_IN a_DT different_JJ family_NN of_IN influence_NN models_NNS ._.
+Part_NN of_IN their_PRP$ contributionwas_NNS to_TO provide_VB approximation_NN algorithms_NNS for_IN the_DT independent_JJ cascade_NN model_NN ,_, which_WDT we_PRP also_RB adopt_VBP in_IN this_DT paper_NN ._.
+Recent_JJ work_NN =_JJ -_: =[_NN 3_CD ,_, 4_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: improves_VBZ the_DT efficiency_NN of_IN influence_NN maximization_NN ._.
+Conceptually_RB ,_, our_PRP$ work_NN can_MD be_VB collocated_VBN with_IN works_NNS on_IN network_NN simplification_NN ,_, the_DT goal_NN of_IN which_WDT is_VBZ to_TO identify_VB subnetworks_NNS that_WDT preserve_VBP properties_NNS
+aluate_VB a_DT large_JJ number_NN of_IN candidates_NNS ._.
+However_RB ,_, many_JJ of_IN those_DT re-evaluations_NNS are_VBP unnecessary_JJ ,_, since_IN the_DT incremental_JJ coverage_NN of_IN a_DT chain_NN can_MD only_RB decrease_VB as_IN our_PRP$ map_NN grows_VBZ larger_JJR ._.
+Therefore_RB ,_, we_PRP use_VBP CELF_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT provides_VBZ the_DT same_JJ approximation_NN guarantees_NNS ,_, but_CC uses_VBZ lazy_JJ evaluations_NNS ,_, often_RB leading_VBG to_TO dramatic_JJ speedups_NNS ._.
+3.3_CD Increasing_VBG connectivity_NN We_PRP now_RB know_VBP how_WRB to_TO find_VB a_DT high-coverage_JJ ,_, coherent_JJ map_NN M0_NN ._.
+as_IN H_NN -LRB-_-LRB- fi_NN -RRB-_-RRB- ,_, the_DT entropy_NN of_IN feature_NN fi_NN across_IN the_DT training_NN images_NNS ._.
+This_DT optimization_NN is_VBZ combinatorial_JJ in_IN nature_NN ,_, and_CC is_VBZ NP-hard_JJ to_TO solve_VB ._.
+Fortunately_RB ,_, the_DT work_NN of_IN Krause_NNP et_FW al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- and_CC Leskovec_NNP et_FW al._FW =_SYM -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: provides_VBZ us_PRP with_IN a_DT computationally_RB feasible_JJ algorithm_NN to_TO solve_VB the_DT problem_NN ._.
+Krause_NNP et_FW al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- showed_VBD mutual_JJ information_NN to_TO be_VB a_DT submodular_JJ function_NN ._.
+A_DT greedy_JJ optimization_NN scheme_NN to_TO maximize_VB submodul_NN
+s._NN Therefore_RB ,_, following_VBG -LRB-_-LRB- 39_CD -RRB-_-RRB- many_JJ researchers_NNS have_VBP focussed_VBN on_IN developing_VBG methods_NNS for_IN improving_VBG the_DT efficiency_NN and_CC scalability_NN of_IN influence_NN maximization_NN algorithms_NNS ,_, as_IN discussed_VBN next_JJ ._.
+Leskovec_NNP et_FW al._FW =_SYM -_: =[_NN 43_CD -RRB-_-RRB- -_: =_SYM -_: study_VB the_DT propagation_NN problem_NN by_IN a_DT different_JJ perspective_NN namely_RB outbreak_NN detection_NN :_: how_WRB to_TO select_VB nodes_NNS in_IN a_DT network_NN in_IN order_NN to_TO detect_VB as_RB quickly_RB as_IN possible_JJ the_DT spread_NN of_IN a_DT virus_NN ?_.
+They_PRP present_VBP a_DT ge_NN
+as_IN H_NN -LRB-_-LRB- fi_NN -RRB-_-RRB- ,_, the_DT entropy_NN of_IN feature_NN fi_NN across_IN the_DT training_NN images_NNS ._.
+This_DT optimization_NN is_VBZ combinatorial_JJ in_IN nature_NN ,_, and_CC is_VBZ NP-hard_JJ to_TO solve_VB ._.
+Fortunately_RB ,_, the_DT work_NN of_IN Krause_NNP et_FW al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- and_CC Leskovec_NNP et_FW al._FW =_SYM -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: provides_VBZ us_PRP with_IN a_DT computationally_RB feasible_JJ algorithm_NN to_TO solve_VB the_DT problem_NN ._.
+Krause_NNP et_FW al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- showed_VBD mutual_JJ information_NN to_TO be_VB a_DT submodular_JJ function_NN ._.
+A_DT greedy_JJ optimization_NN scheme_NN to_TO maximize_VB submodul_NN
+itial_JJ parameter_NN values_NNS θ0_NN ._.
+Sensor_NN placement_NN for_IN outbreak_NN detection_NN ._.
+Another_DT class_NN of_IN examples_NNS are_VBP outbreak_NN detection_NN problems_NNS on_IN graphs_NNS ,_, such_JJ as_IN contamination_NN detection_NN in_IN water_NN distribution_NN networks_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Here_RB ,_, we_PRP are_VBP given_VBN a_DT graph_NN G_NN =_JJ -LRB-_-LRB- V_NN ,_, E_NN -RRB-_-RRB- ,_, and_CC a_DT phenomenon_NN spreading_NN dynamically_RB over_IN the_DT graph_NN ._.
+We_PRP define_VBP a_DT set_NN of_IN intrusion_NN scenarios_NNS I_PRP ;_: each_DT scenario_NN i_FW ∈_FW I_NN models_NNS an_DT outbreak_NN -LRB-_-LRB- e.g._FW ,_, spreading_NN of_IN con_NN
+pling_NN techniques_NNS -LRB-_-LRB- Leskovec_NNP and_CC Faloutsos_NNP ,_, 2006_CD -RRB-_-RRB- ._.
+7sExploiting_VBG the_DT graph_NN structure_NN also_RB helps_VBZ us_PRP improve_VB on_IN various_JJ machine_NN learning_NN tasks_NNS ._.
+For_IN example_NN ,_, in_IN a_DT web_NN search_NN application_NN we_PRP recently_RB showed_VBD -LRB-_-LRB- =_JJ -_: =_JJ Leskovec_NNP et_FW al._FW ,_, 2007_CD -_: =_SYM -_: b_LS -RRB-_-RRB- that_IN by_IN exploiting_VBG the_DT graph_NN structure_NN of_IN the_DT Web_NN one_PRP can_MD predict_VB the_DT quality_NN of_IN the_DT obtained_VBN search_NN results_NNS and_CC the_DT amount_NN of_IN spam_NN web-pages_NNS in_IN the_DT search_NN results_NNS ._.
+Similarly_RB ,_, measurements_NNS and_CC mode_NN
+sers_NNS ._.
+In_IN this_DT case_NN ,_, the_DT cost_NN c_NN -LRB-_-LRB- w_NN -RRB-_-RRB- of_IN each_DT observation_NN would_MD vary_VB ,_, and_CC the_DT system_NN would_MD have_VB a_DT constraint_NN on_IN the_DT budget_NN which_WDT can_MD be_VB spent_VBN on_IN observations_NNS ._.
+An_DT algorithm_NN similar_JJ to_TO the_DT one_NN presented_VBN in_IN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: can_MD be_VB used_VBN to_TO solve_VB this_DT more_RBR complex_JJ optimization_NN problem_NN ._.
+As_IN discussed_VBN in_IN Section_NN 2_CD ,_, we_PRP can_MD employ_VB more_RBR general_JJ user_NN preferences_NNS ,_, such_JJ as_IN a_DT policy_NN that_WDT asserts_VBZ that_IN each_DT user_NN can_MD be_VB queried_VBN only_RB ℓ_SYM
+odes_NNS to_TO detect_VB a_DT spreading_NN process_NN in_IN the_DT network_NN ._.
+Solving_VBG this_DT problem_NN is_VBZ receiving_VBG interest_NN as_IN under_IN this_DT setting_VBG many_JJ real-world_JJ problems_NNS can_MD be_VB modeled_VBN ._.
+A_DT solution_NN to_TO this_DT problem_NN is_VBZ suggested_VBN in_IN =_JJ -_: =[_NN 44_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB they_PRP also_RB apply_VBP their_PRP$ solution_NN to_TO city_NN water_NN pipe_NN networks_NNS and_CC blog_NN networks_NNS ._.
+In_IN the_DT former_JJ we_PRP have_VBP a_DT limited_VBN budget_NN to_TO put_VB some_DT sensors_NNS at_IN some_DT nodes_NNS in_IN the_DT network_NN so_IN that_DT water_NN contaminants_NNS
+edia_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Most_JJS of_IN the_DT attention_NN surrounding_VBG blogs_NNS has_VBZ been_VBN focused_VBN on_IN the_DT link_NN structure_NN among_IN people_NNS and_CC posts_NNS ,_, and_CC on_IN the_DT study_NN of_IN the_DT dynamics_NNS of_IN information_NN flow_NN within_IN these_DT link_NN networks_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 4_CD ,_, 5_CD ,_, 9_CD ,_, 11_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+A_DT good_JJ way_NN to_TO make_VB choices_NNS for_IN user_NN interface_NN design_NN is_VBZ to_TO do_VB needs_NNS assessments_NNS and_CC other_JJ forms_NNS of_IN user_NN research_NN ._.
+One_CD excellent_JJ study_NN of_IN this_DT kind_NN has_VBZ been_VBN done_VBN :_: Mishne_NNP &_CC de_FW Rijke_FW -LRB-_-LRB- 14_CD -RRB-_-RRB- did_VBD an_DT exten_NN
+._.
+In_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- the_DT price_NN of_IN the_DT item_NN subject_JJ to_TO viral_JJ marketing_NN is_VBZ introduced_VBN in_IN the_DT model_NN ,_, leading_VBG to_TO the_DT problem_NN of_IN revenue_NN maximization_NN ._.
+Another_DT related_JJ problem_NN ,_, namely_RB outbreak_NN detection_NN is_VBZ studied_VBN in_IN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: :_: how_WRB to_TO select_VB nodes_NNS in_IN a_DT network_NN in_IN order_NN to_TO detect_VB the_DT spread_NN of_IN a_DT virus_NN as_RB fast_RB as_IN possible_JJ ?_.
+In_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- instead_RB the_DT problem_NN of_IN how_WRB to_TO identify_VB influential_JJ bloggers_NNS is_VBZ studied_VBN ._.
+As_IN discussed_VBN in_IN the_DT intr_NN
+past_NN are_VBP limited_VBN in_IN their_PRP$ ability_NN to_TO influence_VB future_JJ ratings_NNS -LRB-_-LRB- 45_CD -RRB-_-RRB- ._.
+Similarly_RB ,_, there_EX is_VBZ algorithmic_JJ research_NN on_IN networks_NNS that_WDT has_VBZ studied_VBN where_WRB to_TO place_VB detectors_NNS to_TO identify_VB cascades_NNS in_IN the_DT network_NN =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_JJ -_: and_CC how_WRB best_JJS to_TO start_VB cascades_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+While_IN these_DT approaches_NNS provide_VBP a_DT foundation_NN for_IN approaching_VBG cascade_NN mitigation_NN via_IN algorithms_NNS ,_, it_PRP is_VBZ unclear_JJ how_WRB applicable_JJ they_PRP are_VBP to_TO mitigating_VBG cascades_NNS in_IN soc_NN
+d_NN maximum_NN facility_NN location_NN ,_, set_VBN buying_NN ,_, banner_NN ad_NN allocation_NN problem_NN with_IN guaranteed_VBN delivery_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, viral_JJ marketing_NN in_IN social_JJ networks_NNS -LRB-_-LRB- 14_CD ,_, 17_CD -RRB-_-RRB- ,_, and_CC optimal_JJ sensor_NN installation_NN for_IN outbreak_NN detection_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+See_NNP Appendix_NNP A_NNP for_IN the_DT complete_JJ definitions_NNS ._.
+For_IN this_DT class_NN of_IN problems_NNS ,_, we_PRP first_RB present_VBP a_DT hardness_NN result_NN and_CC then_RB give_VB tight_JJ greedy_JJ and_CC LP-based_JJ algorithms_NNS ._.
+Theorem_NNP 2.7_CD ._.
+Let_VB sig_NN =_JJ -LCB-_-LRB- -LRB-_-LRB- qi_FW ,_, αi_FW -RRB-_-RRB- -RCB-_-RRB- be_VB a_DT
+w_NN of_IN information_NN -LRB-_-LRB- Adar_NNP and_CC Adamic_NNP 2005_CD -RRB-_-RRB- ._.
+More_RBR recently_RB ,_, Leskovec_NNP et_FW al._FW developed_VBD algorithms_NNS to_TO identify_VB blogs_NNS which_WDT give_VBP the_DT most_RBS up_RB to_TO date_NN information_NN on_IN stories_NNS that_WDT propagate_VBP in_IN the_DT blogosphere_NN -LRB-_-LRB- =_JJ -_: =_JJ Leskovec_NNP et_FW al._FW 2007_CD -_: =--RRB-_NN ._.
+A_DT few_JJ studies_NNS focused_VBN on_IN the_DT use_NN of_IN blogs_NNS as_IN a_DT social_JJ medium_NN ._.
+Bhagat_NNP et_FW al._FW studied_VBD the_DT demographics_NNS of_IN multiple_JJ blog_NN domains_NNS and_CC characterized_VBD the_DT interaction_NN between_IN blogs_NNS and_CC the_DT web_NN -LRB-_-LRB- Bhagat_NNP et_FW
+eading_VBG to_TO work_VB on_IN viral_JJ marketing_NN -LRB-_-LRB- 108_CD ,_, 94_CD -RRB-_-RRB- ,_, information_NN propagation_NN on_IN blogs_NNS -LRB-_-LRB- 96_CD ,_, 60_CD -RRB-_-RRB- ,_, the_DT transmission_NN of_IN infectious_JJ diseases_NNS or_CC computer_NN viruses_NNS -LRB-_-LRB- 46_CD ,_, 18_CD -RRB-_-RRB- ,_, and_CC the_DT prevention_NN of_IN water_NN contamination_NN =_JJ -_: =[_NN 95_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT mathematical_JJ details_NNS of_IN these_DT models_NNS vary_VBP dramatically_RB ,_, but_CC they_PRP all_DT share_VBP the_DT underlying_VBG assumption_NN that_IN each_DT agent_NN 's_POS current_JJ behavior_NN is_VBZ entirely_RB or_CC largely_RB determined_VBN by_IN the_DT recent_JJ behavior_NN o_NN
+\/_: e_LS of_IN optimal_JJ -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+This_DT solution_NN depends_VBZ on_IN Monte_NNP Carlo_NNP simulations_NNS which_WDT are_VBP computationally_RB intense_JJ ._.
+Work_NNP has_VBZ been_VBN done_VBN on_IN improving_VBG the_DT performance_NN of_IN greedy_JJ algorithms_NNS for_IN influence_NN maximization_NN =_JJ -_: =[_NN 5_CD ,_, 22_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC scalability_NN remains_VBZ a_DT significant_JJ challenge_NN ._.
+In_IN addition_NN to_TO the_DT scale_NN issues_NNS that_WDT are_VBP inherently_RB there_RB ,_, these_DT definitions_NNS of_IN influential_JJ users_NNS ignore_VBP certain_JJ aspects_NNS of_IN the_DT real_JJ social_JJ networks_NNS
+ize_VB the_DT spread_NN of_IN influence_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP study_VBD the_DT efficient_JJ influence_NN maximization_NN from_IN two_CD complementary_JJ directions_NNS ._.
+One_CD is_VBZ to_TO improve_VB the_DT original_JJ greedy_JJ algorithm_NN of_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC its_PRP$ improvement_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: to_TO further_RB reduce_VB its_PRP$ running_VBG time_NN ,_, and_CC the_DT second_JJ is_VBZ to_TO propose_VB new_JJ degree_NN discount_NN heuristics_NNS that_WDT improves_VBZ influence_NN spread_NN ._.
+We_PRP evaluate_VBP our_PRP$ algorithms_NNS by_IN experiments_NNS on_IN two_CD large_JJ academic_JJ collabo_NN
+alue_NN ._.
+Thus_RB ,_, a_DT simple_JJ greedy_JJ optimization_NN can_MD provide_VB us_PRP with_IN a_DT near-optimal_JJ solution_NN ._.
+However_RB ,_, since_IN our_PRP$ set_NN of_IN posts_NNS is_VBZ very_RB large_JJ ,_, a_DT naïve_JJ greedy_JJ approach_NN can_MD be_VB too_RB costly_JJ ._.
+Therefore_RB ,_, we_PRP use_VBP CELF_NN -LRB-_-LRB- =_JJ -_: =_JJ Leskovec_NNP et_FW al._FW ,_, 2007_CD -_: =--RRB-_NN ,_, which_WDT provides_VBZ the_DT same_JJ approximation_NN guarantees_NNS ,_, but_CC uses_VBZ lazy_JJ evaluations_NNS ,_, often_RB leading_VBG to_TO dramatic_JJ speedups_NNS ._.
+3_CD Personalization_NN Thus_RB far_RB ,_, we_PRP have_VBP defined_VBN a_DT global_JJ notion_NN of_IN coverage_NN for_IN the_DT blog_NN

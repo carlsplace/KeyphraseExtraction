@@ -1,0 +1,431 @@
+Discovering_VBG word_NN senses_NNS from_IN text_NN
+Inventories_NNS of_IN manually_RB compiled_VBN dictionaries_NNS usually_RB serve_VBP as_IN a_DT source_NN for_IN word_NN senses_NNS ._.
+However_RB ,_, they_PRP often_RB include_VBP many_JJ rare_JJ senses_NNS while_IN missing_VBG corpus\/domain-specific_JJ senses_NNS ._.
+We_PRP present_VBP a_DT clustering_NN algorithm_NN called_VBN CBC_NNP -LRB-_-LRB- Clustering_NNP By_IN Committee_NNP -RRB-_-RRB- that_WDT automatically_RB discovers_VBZ word_NN senses_NNS from_IN text_NN ._.
+It_PRP initially_RB discovers_VBZ a_DT set_NN of_IN tight_JJ clusters_NNS called_VBD committees_NNS that_WDT are_VBP well_RB scattered_VBN in_IN the_DT similarity_NN space_NN ._.
+The_DT centroid_NN of_IN the_DT members_NNS of_IN a_DT committee_NN is_VBZ used_VBN as_IN the_DT feature_NN vector_NN of_IN the_DT cluster_NN ._.
+We_PRP proceed_VBP by_IN assigning_VBG words_NNS to_TO their_PRP$ most_RBS similar_JJ clusters_NNS ._.
+After_IN assigning_VBG an_DT element_NN to_TO a_DT cluster_NN ,_, we_PRP remove_VBP their_PRP$ overlapping_VBG features_NNS from_IN the_DT element_NN ._.
+This_DT allows_VBZ CBC_NNP to_TO discover_VB the_DT less_RBR frequent_JJ senses_NNS of_IN a_DT word_NN and_CC to_TO avoid_VB discovering_VBG duplicate_VB senses_NNS ._.
+Each_DT cluster_NN that_IN a_DT word_NN belongs_VBZ to_TO represents_VBZ one_CD of_IN its_PRP$ senses_NNS ._.
+We_PRP also_RB present_VBP an_DT evaluation_NN methodology_NN for_IN automatically_RB measuring_VBG the_DT precision_NN and_CC recall_NN of_IN discovered_VBN senses_NNS ._.
+hase_VB a_DT graph_NN clique-set_JJ method_NN is_VBZ used_VBN for_IN generating_VBG initial_JJ categories_NNS ._.
+The_DT approach_NN has_VBZ been_VBN evaluated_VBN on_IN both_CC English_JJ and_CC Russian_JJ corpora_NN ,_, with_IN manual_JJ and_CC automatic_JJ -LRB-_-LRB- using_VBG WordNet_NNP -RRB-_-RRB- assessment_NN ._.
+In_IN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT clustering_NN algorithm_NN called_VBN Clustering_NNP by_IN Committee_NNP is_VBZ presented_VBN which_WDT automatically_RB discovers_VBZ word_NN senses_NNS by_IN clustering_NN words_NNS according_VBG to_TO their_PRP$ distributional_JJ similarity_NN ._.
+Based_VBN on_IN top-k_FW similari_FW
+en_IN shown_VBN to_TO produce_VB more_RBR accurate_JJ results_NNS than_IN feature_NN vectors_NNS at_IN a_DT lower_JJR computational_JJ cost_NN on_IN large_JJ corpora_NN -LRB-_-LRB- Pantel_NN et_FW al._FW ,_, 2004_CD -RRB-_-RRB- ._.
+Most_RBS related_JJ work_NN deals_NNS with_IN discovery_NN of_IN hypernymy_NN -LRB-_-LRB- Hearst_NNP ,_, 1992_CD ;_: =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN and_CC synonymy_NN -LRB-_-LRB- Widdows_NNP and_CC Dorow_NNP ,_, 2002_CD ;_: Davidov_NNP and_CC Rappoport_NNP ,_, 2006_CD -RRB-_-RRB- ._.
+Some_DT studies_NNS deal_VBP with_IN the_DT discovery_NN of_IN more_RBR specific_JJ relation_NN sub-types_NNS ,_, including_VBG inter-verb_JJ relations_NNS -LRB-_-LRB- Chklovski_NNP and_CC Pantel_NNP ,_, 2_CD
+ent_JJ word_NN contexts_NNS as_IN vectors_NNS in_IN some_DT space_NN and_CC use_VB distributional_JJ measures_NNS and_CC clustering_NN in_IN that_DT space_NN ._.
+Pereira_NNP -LRB-_-LRB- 1993_CD -RRB-_-RRB- ,_, Curran_NNP -LRB-_-LRB- 2002_CD -RRB-_-RRB- and_CC Lin_NNP -LRB-_-LRB- 1998_CD -RRB-_-RRB- use_VBP syntactic_JJ features_NNS in_IN the_DT vector_NN definition_NN ._.
+-LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN improves_VBZ on_IN the_DT latter_JJ by_IN clustering_NN by_IN committee_NN ._.
+Caraballo_NN -LRB-_-LRB- 1999_CD -RRB-_-RRB- uses_VBZ conjunction_NN and_CC appositive_JJ annotations_NNS in_IN the_DT vector_NN representation_NN ._.
+Several_JJ studies_NNS avoid_VBP requiring_VBG any_DT syntactic_JJ annotation_NN
+as_IN a_DT task_NN which_WDT ,_, while_IN requiring_VBG contextual_JJ disambiguation_NN ,_, did_VBD not_RB presuppose_VB a_DT specific_JJ sense_NN inventory_NN ._.
+In_IN fact_NN ,_, it_PRP is_VBZ quite_RB possible_JJ to_TO use_VB alternative_JJ representations_NNS of_IN meaning_NN -LRB-_-LRB- Schütze_NNP ,_, 1998_CD ;_: =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+The_DT motivation_NN for_IN a_DT substitution_NN task_NN was_VBD that_IN it_PRP would_MD reflect_VB capabilities_NNS that_WDT might_MD be_VB useful_JJ for_IN natural_JJ language_NN processing_NN tasks_NNS such_JJ as_IN paraphrasing_NN and_CC textual_JJ entailment_NN ,_, while_IN only_JJ focu_NN
+to_TO create_VB an_DT alternative_NN to_TO external_JJ knowledge_NN sources_NNS ._.
+Therefore_RB ,_, clusters_NNS of_IN similar_JJ words_NNS are_VBP usually_RB obtained_VBN solely_RB on_IN the_DT basis_NN of_IN distributional_JJ information_NN -LRB-_-LRB- Grefenstette_NNP ,_, 1994_CD ;_: Schutze_NNP ,_, 1998_CD ;_: =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =_JJ -_: ;_: Dorow_NNP and_CC Widdows_NNP ,_, 2003_CD ;_: Velldal_NNP ,_, 2005_CD -RRB-_-RRB- ._.
+Each_DT word_NN 's_POS representation_NN is_VBZ linked_VBN to_TO a_DT set_NN of_IN contexts_NNS in_IN which_WDT it_PRP occurs_VBZ in_IN a_DT corpus_NN ._.
+Context_NN is_VBZ typically_RB represented_VBN as_IN a_DT feature_NN vector_NN ,_, where_WRB each_DT fe_NN
+ed_VBN for_IN σ_NN =_JJ 0.1_CD ,_, which_WDT we_PRP assumed_VBD as_IN the_DT default_NN value_NN ._.
+A_DT crucial_JJ threshold_NN θElCom_NN --_: it_PRP influences_VBZ the_DT process_NN of_IN assigning_VBG elements_NNS to_TO word_NN groups_NNS in_IN Phase_NN III_CD --_: is_VBZ not_RB overtly_RB named_VBN in_IN the_DT algorithm_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 2_CD -RRB-_-RRB- ;_: the_DT values_NNS applied_VBN to_TO θElCom_NN are_VBP unknown_JJ ._.
+The_DT possibility_NN that_IN θElCom_NN is_VBZ identical_JJ with_IN σ_NN is_VBZ excluded_VBN by_IN the_DT order_NN of_IN steps_NNS :_: 2b_NN comes_VBZ before_IN 2c_NN ._.
+For_IN θT200_NN no_DT other_JJ values_NNS were_VBD tested_VBN but_CC it_PRP is_VBZ
+o_NN cluster_NN lowfrequency_NN predicates_VBZ ._.
+In_IN our_PRP$ experiments_NNS assigning_VBG SP_NN to_TO verb-object_JJ pairs_NNS ,_, we_PRP cluster_VBP all_DT verbs_NNS that_WDT have_VBP less_JJR than_IN 250_CD positive_JJ examples_NNS ,_, using_VBG clusters_NNS generated_VBN by_IN the_DT CBC_NN algorithm_NN -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+For_IN example_NN ,_, the_DT low-frequency_JJ verbs_NNS incarcerate_VBP ,_, parole_NN ,_, and_CC court-martial_NN are_VBP all_DT mapped_VBN to_TO the_DT same_JJ partition_NN ,_, while_IN more-frequent_JJ verbs_NNS like_IN arrest_NN and_CC execute_VB each_DT have_VBP their_PRP$ own_JJ partition_NN ._.
+Ab_NN
+hen_NN stemmed_VBD using_VBG the_DT Porter_NNP Stemming_NNP Algorithm_NNP -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC stopwords_NNS are_VBP removed_VBN ._.
+Note_VB that_IN ,_, although_IN keyword_JJ extraction_NN is_VBZ slow_JJ since_IN Minipar_NNP parsing_NN is_VBZ time-consuming_JJ -LRB-_-LRB- 500_CD words\/second_NN on_IN a_DT normal_JJ PC_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, it_PRP should_MD be_VB done_VBN offline_JJ during_IN web_NN page_NN crawling_VBG by_IN the_DT search_NN engine_NN crawler_NN ,_, therefore_RB the_DT running_VBG time_NN of_IN our_PRP$ approach_NN during_IN query_NN time_NN is_VBZ not_RB affected_VBN ._.
+After_IN text_NN parsing_VBG and_CC stemming_VBG ,_, each_DT
+._.
+Each_DT synset_NN may_MD contain_VB multiple_JJ words_NNS with_IN similar_JJ meaning_NN and_CC each_DT word_NN may_MD exist_VB in_IN multiple_JJ synset_NN indicating_VBG that_IN the_DT word_NN has_VBZ multiple_JJ senses_NNS ._.
+Lin_NNP defines_VBZ the_DT similarity_NN between_IN two_CD senses_NNS as_IN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: :_: 2_CD ×_CD log_NN p_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- simd_NN -LRB-_-LRB- s1_NN ,_, s2_NN -RRB-_-RRB- =_JJ log_NN p_NN -LRB-_-LRB- s1_NN -RRB-_-RRB- +_CC log_NN p_NN -LRB-_-LRB- s2_NN -RRB-_-RRB- where_WRB ,_, p_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- =_JJ count_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- \/_: total_NN ,_, is_VBZ the_DT probability_NN that_IN a_DT randomly_RB selected_VBN word_NN occurs_VBZ in_FW synset_FW s_NN or_CC any_DT synsets_NNS below_IN it_PRP ._.
+total_NN is_VBZ the_DT number_NN
+o_NN locate_VB a_DT word_NN sense_NN in_IN semantic_JJ space_NN ._.
+Word_NN sense_NN and_CC vector_NN space_NN models_NNS have_VBP been_VBN related_VBN in_IN two_CD ways_NNS ._.
+On_IN the_DT one_CD hand_NN ,_, vector_NN space_NN models_NNS have_VBP been_VBN used_VBN for_IN inducing_VBG word_NN senses_NNS -LRB-_-LRB- Schütze_NNP ,_, 1998_CD ;_: =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+The_DT different_JJ meanings_NNS of_IN a_DT word_NN are_VBP obtained_VBN by_IN clustering_NN vectors_NNS ._.
+The_DT clusters_NNS must_MD then_RB be_VB mapped_VBN to_TO an_DT inventory_NN if_IN a_DT standard_JJ WSD_NN dataset_NN is_VBZ used_VBN for_IN evaluation_NN ._.
+In_IN contrast_NN ,_, we_PRP use_VBP sense_NN tag_NN
+f_LS resources_NNS has_VBZ been_VBN developed_VBN and_CC utilized_VBN ,_, including_VBG extensions_NNS to_TO WordNet_NNP -LRB-_-LRB- Moldovan_NNP and_CC Rus_NNP ,_, 2001_CD ;_: Snow_NNP et_FW al._FW ,_, 2006_CD -RRB-_-RRB- and_CC resources_NNS based_VBN on_IN automatic_JJ distributional_JJ similarity_NN methods_NNS -LRB-_-LRB- Lin_NNP ,_, 1998_CD ;_: =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+Recently_RB ,_, Wikipedia_NNP is_VBZ emerging_VBG as_IN a_DT source_NN for_IN extracting_VBG semantic_JJ relationships_NNS -LRB-_-LRB- Suchanek_NNP et_FW al._FW ,_, 2007_CD ;_: Kazama_NNP and_CC Torisawa_NNP ,_, 2007_CD -RRB-_-RRB- ._.
+As_IN of_IN today_NN ,_, only_RB a_DT partial_JJ comparative_JJ picture_NN is_VBZ available_JJ re_NN
+erforms_VBZ the_DT existing_VBG state-of-the-art_JJ results_NNS ._.
+1_CD Introduction_NN Using_VBG word_NN senses_NNS instead_RB of_IN word_NN forms_NNS is_VBZ essential_JJ in_IN many_JJ applications_NNS such_JJ as_IN information_NN retrieval_NN -LRB-_-LRB- IR_NN -RRB-_-RRB- and_CC machine_NN translation_NN -LRB-_-LRB- MT_NN -RRB-_-RRB- =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Word_NN senses_NNS are_VBP a_DT prerequisite_NN for_IN word_NN sense_NN disambiguation_NN -LRB-_-LRB- WSD_NN -RRB-_-RRB- algorithms_NNS ._.
+However_RB ,_, they_PRP are_VBP usually_RB represented_VBN as_IN a_DT fixed-list_NN of_IN definitions_NNS of_IN a_DT manually_RB constructed_VBN lexical_JJ database_NN ._.
+There_EX
+c_NN model_NN ._.
+Experiments_NNS conducted_VBN on_IN 40_CD million_CD web_NN pages_NNS show_VBP that_IN our_PRP$ approach_NN could_MD yield_VB better_JJR results_NNS than_IN alternative_JJ approaches_NNS ._.
+1_CD Introduction_NN Semantic_JJ class_NN construction_NN -LRB-_-LRB- Lin_NNP and_CC Pantel_NNP ,_, 2001_CD ;_: =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =_JJ -_: ;_: Pasca_NNP ,_, 2004_CD ;_: Shinzato_NNP and_CC Torisawa_NNP ,_, 2005_CD ;_: Ohshima_NNP et_FW al._FW ,_, 2006_CD -RRB-_-RRB- tries_VBZ to_TO discover_VB the_DT peer_VBP or_CC sibling_NN relationship_NN among_IN terms_NNS or_CC phrases_NNS by_IN organizing_VBG them_PRP into_IN semantic_JJ classes_NNS ._.
+For_IN example_NN ,_, -LCB-_-LRB- red_JJ ,_,
+n_NN use_NN in_IN English_NNP today_NN ,_, albeit_IN without_IN manuallysupplied_JJ labels_NNS ._.
+Unsupervised_JJ approaches_NNS to_TO WSD_NNP use_VB clustering_NN techniques_NNS to_TO group_NN instances_NNS of_IN words_NNS into_IN clusters_NNS that_WDT correspond_VBP to_TO different_JJ senses_NNS -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+While_IN such_JJ systems_NNS are_VBP more_RBR general_JJ than_IN supervised_JJ and_CC dictionarybased_JJ approaches_NNS in_IN that_IN they_PRP can_MD handle_VB any_DT word_NN type_NN and_CC word_NN sense_NN ,_, they_PRP have_VBP lagged_VBN behind_IN other_JJ approaches_NNS in_IN terms_NNS of_IN accurac_NN
+consumidores_NNS ,_, consommateurs_NNS ,_, l’euro_NN ,_, crois_NN ,_, s_NNS '_POS agit_NN ,_, moeda_NN ,_, pouvoir_NN ,_, currency_NN 5.1_CD Single_JJ Language_NN Distributional_JJ Similarity_NN :_: The_DT basic_JJ idea_NN is_VBZ that_IN words_NNS are_VBP similar_JJ if_IN they_PRP occur_VBP in_IN a_DT similar_JJ context_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Hence_RB ,_, one_PRP could_MD build_VB a_DT graph_NN as_IN outlined_VBN in_IN Section_NN 2.2_CD with_IN edges_NNS only_RB between_IN words_NNS which_WDT exceed_VBP a_DT level_NN of_IN proximity_NN ._.
+Lexical_JJ Similarity_NN :_: For_IN interpolation_NN between_IN words_NNS one_PRP could_MD use_VB a_DT distrib_NN
+ures_VBZ requires_VBZ significant_JJ effort_NN ._.
+One_CD underutilized_VBD resource_NN for_IN descriptive_JJ features_NNS are_VBP existing_VBG semantically_RB related_JJ word_NN lists_NNS -LRB-_-LRB- SRWLs_NNS -RRB-_-RRB- ,_, generated_VBD both_CC manually_RB -LRB-_-LRB- Fellbaum_NNP ,_, 1998_CD -RRB-_-RRB- and_CC automatically_RB -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+Consider_VB the_DT following_VBG named_VBN entity_NN recognition_NN -LRB-_-LRB- NER_NN -RRB-_-RRB- example_NN :_: His_PRP$ father_NN was_VBD rushed_VBN to_TO -LRB-_-LRB- Westlake_NNP Hospital_NNP -RRB-_-RRB- ORG_NNP ,_, an_DT arm_NN of_IN -LRB-_-LRB- Resurrection_NNP Health_NNP Care_NNP -RRB-_-RRB- ORG_NNP ,_, in_IN west_NN suburban_JJ -LRB-_-LRB- Chicagoland_NNP -RRB-_-RRB- LOC_NNP ._.
+For_IN such_JJ
+gorithms_NNS in_IN sections_NNS 3_CD and_CC 4_CD ._.
+Finally_RB ,_, after_IN explaining_VBG the_DT experimental_JJ results_NNS in_IN section_NN 5_CD ,_, conclusions_NNS are_VBP presented_VBN in_IN section_NN 6_CD ._.
+2_CD Collocation_NN and_CC Senses_VBZ 2.1_CD Impractical_JJ Senses_NNS in_IN Dictionary_NNP In_IN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, senses_NNS in_IN dictionary_NN -_: especially_RB in_IN WordNet_NNP -_: sometimes_RB do_VBP not_RB contain_VB the_DT senses_NNS appearing_VBG in_IN the_DT corpus_NN ._.
+Further_RB ,_, some_DT senses_NNS in_IN the_DT corpus_NN so_RB not_RB appear_VB in_IN the_DT manual_JJ dictionary_NN ._.
+This_DT means_VBZ that_IN
+t_NN ''_'' has_VBZ better_JJR power_NN of_IN discrimination_NN than_IN frequent_JJ terms_NNS like_IN ``_`` hard_JJ ''_'' ,_, the_DT infrequent_JJ but_CC important_JJ term_NN should_MD be_VB given_VBN more_JJR weight_NN ._.
+This_DT can_MD be_VB done_VBN using_VBG measures_NNS like_IN pointwise_JJ mutual_JJ information_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: or_CC termfrequency_NN x_NN inverse_JJ document_NN frequency_NN -LRB-_-LRB- tf_NN x_NN idf_NN -RRB-_-RRB- ._.
+This_DT paper_NN mainly_RB uses_VBZ the_DT pointwise_JJ mutual_JJ information_NN for_IN the_DT representation_NN of_IN the_DT feature_NN vectors_NNS ._.
+Figure_NN 3_CD shows_VBZ an_DT example_NN of_IN term_NN freq_NN
+to_TO the_DT t-score_NN ,_, as_IN a_DT kind_NN of_IN fail_VB safe_JJ mechanism_NN for_IN our_PRP$ systems_NNS overall_RB ._.
+In_IN addition_NN ,_, pmi_NN has_VBZ a_DT fairly_RB significant_JJ history_NN of_IN use_NN in_IN identifying_VBG collocations_NNS and_CC features_NNS for_IN other_JJ NLP_NN tasks_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN -RRB-_-RRB- ,_, and_CC so_IN it_PRP seemed_VBD like_IN a_DT credible_JJ candidate_NN ._.
+pmi_NN has_VBZ a_DT well_RB known_VBN bias_NN towards_IN identifying_VBG words_NNS that_WDT only_RB occur_VBP together_RB ,_, and_CC tends_VBZ to_TO prefer_VB less_RBR frequent_JJ word_NN pairs_NNS ,_, and_CC this_DT is_VBZ why_WRB it_PRP diverges_VBZ
+ance_NN ,_, the_DT first_JJ 10_CD concepts_NNS in_IN Figure_NNP 2_CD belong_VBP to_TO the_DT category_NN company_NN ._.
+Previous_JJ approaches_NNS to_TO concept_NN discovery_NN use_VBP little_JJ prior_JJ knowledge_NN ,_, clustering_NN noun_NN phrases_NNS based_VBN on_IN co-occurrence_NN statistics_NNS -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+In_IN comparison_NN ,_, ConceptResolver_NNP uses_VBZ a_DT knowledgerich_JJ approach_NN ._.
+In_IN addition_NN to_TO the_DT extracted_VBN relations_NNS ,_, ConceptResolver_NNP takes_VBZ as_IN input_NN two_CD other_JJ sources_NNS of_IN information_NN :_: an_DT ontology_NN ,_, and_CC a_DT small_JJ numbe_NN
+introduction_NN into_IN the_DT NLP_NN community_NN -LRB-_-LRB- Church_NNP and_CC Hanks_NNP ,_, 1990_CD -RRB-_-RRB- ,_, it_PRP has_VBZ been_VBN used_VBN in_IN order_NN to_TO tackle_VB or_CC improve_VB upon_IN several_JJ NLP_NN problems_NNS ,_, including_VBG collocation_NN extraction_NN -LRB-_-LRB- ibid_NN ._. -RRB-_-RRB-
+and_CC word_NN space_NN models_NNS -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+In_IN its_PRP$ original_JJ form_NN ,_, it_PRP is_VBZ restricted_JJ to_TO the_DT analysis_NN of_IN two-way_JJ co-occurrences_NNS ._.
+NLP_NN problems_NNS ,_, however_RB ,_, need_MD not_RB be_VB restricted_JJ to_TO two-way_JJ co-occurrences_NNS ;_: often_RB ,_, a_DT particular_JJ problem_NN can_MD be_VB more_JJR na_TO
+give_VB a_DT summary_NN description_NN of_IN our_PRP$ implementation_NN of_IN that_DT system_NN ._.
+Refer_NN to_TO the_DT original_JJ paper_NN for_IN more_JJR details_NNS ._.
+166cific_JJ implementation_NN ,_, we_PRP select_VBP a_DT set_NN of_IN positive_JJ examples_NNS from_IN the_DT CBC_NN repository_NN -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+CBC_NNP is_VBZ a_DT word_NN clustering_NN algorithm_NN that_IN groups_NNS instances_NNS appearing_VBG in_IN similar_JJ textual_JJ contexts_NNS ._.
+By_IN manually_RB analyzing_VBG the_DT cluster_NN members_NNS in_IN the_DT repository_NN created_VBN by_IN CBC_NNP ,_, it_PRP is_VBZ easy_JJ to_TO pickup_NN the_DT
+were_VBD not_RB good_JJ enough_RB for_IN practical_JJ purposes_NNS ._.
+\*_SYM University_NNP of_IN Mainz_NNP ,_, rapp@mail.fask.uni-mainz.de_NN ._.
+This_DT research_NN was_VBD supported_VBN by_IN the_DT DFG_NNP ._.
+A_DT recent_JJ attempt_NN to_TO sense_NN induction_NN was_VBD made_VBN by_IN Pantel_NNP and_CC Lin_NNP =_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP clustered_VBD the_DT words_NNS in_IN a_DT large_JJ corpus_NN using_VBG a_DT clustering_NN algorithm_NN relying_VBG on_IN a_DT mutual_JJ information-based_JJ distance_NN measure_NN ._.
+Since_IN their_PRP$ algorithm_NN allows_VBZ a_DT word_NN to_TO belong_VB to_TO more_JJR than_IN one_CD cluster_NN
+02_CD ;_: Korhonen_NNP et_FW al._FW ,_, 2003_CD ;_: Schulte_NNP im_NNP Walde_NNP ,_, 2006_CD ;_: Joanis_NNP et_FW al._FW ,_, 2008_CD ;_: Sun_NNP and_CC Korhonen_NNP ,_, 2009_CD -RRB-_-RRB- ._.
+Similar_JJ methods_NNS were_VBD also_RB applied_VBN to_TO acquisition_NN of_IN noun_NN classes_NNS from_IN corpus_JJ data_NNS -LRB-_-LRB- Rooth_NNP et_FW al._FW ,_, 1999_CD ;_: =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =_JJ -_: ;_: Bergsma_NNP et_FW al._FW ,_, 2008_CD -RRB-_-RRB- ._.
+We_PRP adopt_VBP a_DT recent_JJ verb_NN clustering_NN approach_NN of_IN Sun_NNP and_CC Korhonen_NNP -LRB-_-LRB- 2009_CD -RRB-_-RRB- ,_, who_WP used_VBD rich_JJ syntactic_JJ and_CC semantic_JJ features_NNS extracted_VBN using_VBG a_DT shallow_JJ parser_NN and_CC a_DT clustering_NN method_NN s_NN
+hods_NNS to_TO tackle_VB language_NN 's_POS ambiguity_NN ,_, ranging_VBG from_IN coarser-grained_JJ sense_NN inventories_NNS -LRB-_-LRB- Hovy_NNP et_FW al._FW ,_, 2006_CD -RRB-_-RRB- and_CC graded_VBN sense_NN assignment_NN -LRB-_-LRB- Erk_NN and_CC McCarthy_NNP ,_, 2009_CD -RRB-_-RRB- ,_, over_IN word_NN sense_NN induction_NN -LRB-_-LRB- Schütze_NNP ,_, 1998_CD ;_: =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =_JJ -_: ;_: Agirre_NNP et_FW al._FW ,_, 2006_CD -RRB-_-RRB- ,_, to_TO the_DT computation_NN of_IN individual_JJ word_NN meaning_NN in_IN context_NN -LRB-_-LRB- Erk_NN and_CC Padó_NN ,_, 2008_CD ;_: Thater_NNP et_FW al._FW ,_, 2010_CD ;_: Dinu_NNP and_CC Lapata_NNP ,_, 2010_CD -RRB-_-RRB- ._.
+This_DT research_NN inscribes_VBZ itself_PRP in_IN the_DT same_JJ line_NN of_IN th_DT
+n_NN texts_NNS ,_, without_IN need_NN for_IN classified_JJ training_NN data_NNS ._.
+In_IN a_DT monolingual_JJ context_NN ,_, this_DT is_VBZ done_VBN by_IN clustering_VBG the_DT instances_NNS of_IN polysemous_JJ words_NNS in_IN text_NN corpora_NN according_VBG to_TO their_PRP$ distributional_JJ similarity_NN =_JJ -_: =[_NN 9_CD ,_, 10_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN a_DT bi-lingual_JJ -LRB-_-LRB- and_CC multi-lingual_JJ -RRB-_-RRB- context_NN ,_, the_DT senses_NNS of_IN polysemous_JJ words_NNS are_VBP usually_RB identified_VBN by_IN considering_VBG their_PRP$ translation_NN equivalents_NNS -LRB-_-LRB- TEs_NNS -RRB-_-RRB- as_IN sense_NN indicators_NNS -LRB-_-LRB- 12_CD ,_, 13_CD ,_, 14_CD -RRB-_-RRB- ._.
+These_DT senseind_NN
+t_NN here_RB ._.
+In_IN our_PRP$ experiments_NNS ,_, we_PRP adopt_VBP a_DT highly_RB scalable_JJ Map-Reduce_NNP implementation_NN of_IN the_DT hard-clustering_JJ version_NN of_IN Clustering_NN by_IN Committee_NNP -LRB-_-LRB- CBC_NNP -RRB-_-RRB- ,_, a_DT state-of-the-art_JJ clustering_NN algorithm_NN presented_VBN in_IN -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+Context_NNP Feature_NNP Space_NNP ._.
+The_DT basic_JJ hypothesis_NN for_IN the_DT context_NN feature_NN space_NN ,_, is_VBZ that_IN an_DT entity_NN can_MD be_VB effectively_RB represented_VBN by_IN the_DT set_NN of_IN contexts_NNS in_IN which_WDT it_PRP appears_VBZ in_IN queries_NNS ._.
+This_DT allows_VBZ to_TO cap_VB
+lationship_NN between_IN terms_NNS ,_, which_WDT has_VBZ wide_JJ applications_NNS in_IN natural_JJ language_NN processing_NN and_CC web_NN search_NN ,_, has_VBZ been_VBN a_DT hot_JJ topic_NN nowadays_RB ._.
+This_DT paper_NN focuses_VBZ on_IN corpus-based_JJ semantic_JJ class_NN mining_NN -LRB-_-LRB- Lin_NNP 1998_CD ;_: =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP 2002_CD -_: =_JJ -_: ;_: Pasca_NNP 2004_CD ;_: Shinzato_NNP and_CC Torisawa_NNP ,_, 2005_CD ;_: Ohshima_NNP ,_, et_FW al._FW ,_, 2006_CD ;_: Zhang_NNP et_FW al._FW ,_, 2009_CD -RRB-_-RRB- ,_, where_WRB peer_VBP terms_NNS -LRB-_-LRB- or_CC coordinate_JJ terms_NNS -RRB-_-RRB- are_VBP discovered_VBN from_IN a_DT corpus_NN ._.
+Existing_VBG approaches_NNS to_TO semantic_JJ class_NN mining_NN
+een_VB ``_`` make_VB ''_'' and_CC ``_`` earn_VB ''_'' ,_, since_IN only_RB a_DT fraction_NN of_IN ``_`` make_VB ''_'' occurrences_NNS have_VBP the_DT same_JJ meaning_NN of_IN ``_`` earn_VB ''_'' ._.
+PMI_NNP has_VBZ a_DT well-known_JJ problem_NN that_IN it_PRP tends_VBZ to_TO over-emphasize_VB the_DT association_NN of_IN low_JJ frequency_NN words_NNS =_JJ -_: =[_NN 30_CD ,_, 31_CD ,_, 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP conjecture_NN that_IN the_DT fact_NN that_IN more_RBR frequent_JJ content_NN words_NNS tend_VBP to_TO have_VB more_JJR senses_NNS ,_, as_IN shown_VBN in_IN Figure_NNP 4_CD ,_, is_VBZ an_DT important_JJ cause_NN for_IN PMI_NNP 's_POS frequency_NN bias_NN ._.
+More_RBR frequent_JJ words_NNS are_VBP disadvantaged_JJ in_IN
+here_RB has_VBZ been_VBN much_JJ research_NN on_IN measuring_VBG the_DT similarity_NN of_IN individual_JJ concepts_NNS -LRB-_-LRB- Lesk_NNP ,_, 1969_CD ;_: Church_NNP and_CC Hanks_NNP ,_, 1989_CD ;_: Dunning_NNP ,_, 1993_CD ;_: Smadja_NNP ,_, 1993_CD ;_: Resnik_NNP ,_, 1995_CD ;_: Landauer_NNP and_CC Dumais_NNP ,_, 1997_CD ;_: Turney_NNP ,_, 2001_CD ;_: =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ,_, there_EX has_VBZ been_VBN relatively_RB little_JJ work_NN on_IN measuring_VBG the_DT similarity_NN of_IN semantic_JJ relationships_NNS between_IN concepts_NNS -LRB-_-LRB- Vanderwende_NNP ,_, 1994_CD ;_: Rosario_NNP and_CC Hearst_NNP ,_, 2001_CD ;_: Rosario_NNP et_FW al._FW ,_, 2002_CD ;_: Nastase_NNP and_CC Szpakowi_NNP
+llustrates_VBZ our_PRP$ overall_JJ approach_NN ._.
+We_PRP implemented_VBD the_DT components_NNS indicated_VBD with_IN heavy_JJ borders_NNS ._.
+We_PRP borrow_VBP language-independent_JJ clustering_NN software_NN -LRB-_-LRB- LaTaT_NN -RRB-_-RRB- to_TO produce_VB word_NN clusters_NNS for_IN the_DT two_CD languages_NNS -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+2_CD We_PRP also_RB assume_VBP the_DT existence_NN of_IN an_DT IR_NN system_NN to_TO produce_VB comparable_JJ ,_, domain-specific_JJ documents_NNS from_IN a_DT set_NN of_IN automatically-extracted_JJ query_NN terms_NNS ._.
+The_DT entire_JJ process_NN consists_VBZ of_IN two_CD phases_NNS ._.
+The_DT fir_NN
+re_IN n_NN is_VBZ the_DT number_NN of_IN elements_NNS to_TO be_VB clustered_VBN ,_, cef_NN is_VBZ the_DT frequency_NN count_NN of_IN word_NN e_SYM in_IN grammatical_JJ context_NN f_FW ,_, and_CC N_NN is_VBZ the_DT total_JJ frequency_NN count_NN of_IN all_DT features_NNS of_IN all_DT words_NNS ._.
+3.2_CD Phase_NN II_CD Following_VBG -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP 2002_CD -_: =--RRB-_NN ,_, a_DT committee_NN for_IN each_DT semantic_JJ class_NN is_VBZ constructed_VBN ._.
+A_DT committee_NN is_VBZ a_DT set_NN of_IN representative_JJ elements_NNS that_WDT unambiguously_RB describe_VBP the_DT members_NNS of_IN a_DT possible_JJ class_NN ._.
+For_IN example_NN ,_, in_IN one_CD of_IN our_PRP$ experimen_NNS
+ough_NN for_IN practical_JJ purposes_NNS ._.
+\*_SYM University_NNP of_IN Mainz_NNP ,_, rapp@mail.fask.uni-mainz.de_NN ._.
+This_DT research_NN was_VBD supported_VBN by_IN the_DT DFG_NNP ._.
+Reinhard_NNP Rapp_NNP \*_NN A_NN recent_JJ attempt_NN to_TO sense_NN induction_NN was_VBD made_VBN by_IN Pantel_NNP and_CC Lin_NNP =_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP clustered_VBD the_DT words_NNS in_IN a_DT large_JJ corpus_NN using_VBG a_DT clustering_NN algorithm_NN relying_VBG on_IN a_DT mutual_JJ information-based_JJ distance_NN measure_NN ._.
+Since_IN their_PRP$ algorithm_NN allows_VBZ a_DT word_NN to_TO belong_VB to_TO more_JJR than_IN one_CD cluster_NN
+e_LS is_VBZ a_DT synset_NN ._.
+A_DT synset_NN contains_VBZ words_NNS with_IN same_JJ sense_NN and_CC a_DT word_NN can_MD occur_VB in_IN different_JJ synsets_NNS indicating_VBG that_IN the_DT word_NN has_VBZ multiple_JJ senses_NNS ._.
+Lin_NNP defines_VBZ the_DT similarity_NN between_IN two_CD senses_NNS in_IN Wordnet_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: as_IN :_: 2_CD ×_CD log_NN p_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- simd_NN -LRB-_-LRB- s1_NN ,_, s2_NN -RRB-_-RRB- =_JJ log_NN p_NN -LRB-_-LRB- s1_NN -RRB-_-RRB- +_CC log_NN p_NN -LRB-_-LRB- s2_NN -RRB-_-RRB- where_WRB ,_, p_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- =_JJ count_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- \/_: total_NN ,_, is_VBZ the_DT probability_NN of_IN a_DT randomly_RB selected_VBN word_NN occurring_VBG in_FW synset_FW s_NN or_CC any_DT synsets_NNS below_IN it_PRP ._.
+total_NN is_VBZ the_DT n_NN
+;_: d_LS -RRB-_-RRB- =_JJ w_FW ′_FW PMI_NN -LRB-_-LRB- w_NN ∈_NN C_NN ′_NN ,_, b_NN -RRB-_-RRB- PMI_NN -LRB-_-LRB- w_NN ′_NN ,_, d_NN -RRB-_-RRB- w_FW ′_FW PMI_NN -LRB-_-LRB- w_NN ′_NN ,_, b_NN -RRB-_-RRB- 2_CD w_FW ′_FW PMI_NN -LRB-_-LRB- w_NN ′_NN ,_, d_NN -RRB-_-RRB- 2_CD -LRB-_-LRB- 3.22_CD -RRB-_-RRB- The_DT outcome_NN is_VBZ a_DT value_NN from_IN zero_CD to_TO one_CD where_WRB values_NNS closer_RBR to_TO one_CD indicate_VBP greater_JJR similarity_NN ._.
+Pantel_NN =_JJ -_: =[_NN 78_CD -RRB-_-RRB- -_: =_SYM -_: used_VBD the_DT cosine_NN of_IN pointwise_JJ mutual_JJ information_NN to_TO uncover_VB word_NN sense_NN from_IN text_NN ._.
+L1_NN norm_NN In_IN this_DT method_NN ,_, the_DT conditional_JJ probability_NN of_IN each_DT word_NN w_FW ′_FW i_FW in_IN C_NNP given_VBN b_NN -LRB-_-LRB- and_CC d_NN -RRB-_-RRB- is_VBZ computed_VBN ._.
+The_DT accumulat_NN
+traint_NN ._.
+It_PRP reduces_VBZ significantly_RB the_DT system_NN 's_POS ability_NN to_TO make_VB generalizations_NNS ._.
+Second_JJ ,_, other_JJ methods_NNS discover_VBP word_NN senses_NNS by_IN clustering_NN words_NNS according_VBG to_TO the_DT similarity_NN of_IN their_PRP$ whole_JJ distributions_NNS -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP 2002_CD -_: =_JJ -_: ;_: Lin_NNP and_CC Pantel_NNP 2001_CD -RRB-_-RRB- ._.
+These_DT 131sComputational_JJ Linguistics_NNP Volume_NNP 31_CD ,_, Number_NNP 1_CD methods_NNS ,_, then_RB ,_, follow_VBP both_CC the_DT absolute_JJ view_NN on_IN word_NN similarity_NN and_CC Harris_NNP 's_POS distributional_JJ hypothesis_NN ,_, which_WDT we_PRP introdu_VBP
+of_IN different_JJ approaches_NNS to_TO WSI_NNP has_VBZ been_VBN proposed_VBN so_RB far_RB ._.
+They_PRP are_VBP all_DT based_VBN on_IN co-occurrence_NN statistics_NNS ,_, albeit_IN using_VBG different_JJ context_NN representations_NNS such_JJ as_IN co-occurrence_NN of_IN words_NNS within_IN phrases_NNS -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =_JJ -_: ;_: Dorow_NNP and_CC Widdows_NNP ,_, 2003_CD ;_: Velldal_NNP ,_, 2005_CD -RRB-_-RRB- ,_, bigrams_NNS -LRB-_-LRB- Schütze_NNP ,_, 1998_CD ;_: Neill_NNP ,_, 2002_CD ;_: Udani_NNP et_FW al._FW ,_, 2005_CD -RRB-_-RRB- ,_, small_JJ windows_NNS around_IN a_DT word_NN -LRB-_-LRB- Gauch_NNP and_CC Futrelle_NNP ,_, 1993_CD -RRB-_-RRB- ,_, or_CC larger_JJR contexts_NNS such_JJ as_IN sentences_NNS -LRB-_-LRB- Borda_NN
+e_LS vector_NN of_IN any_DT of_IN n_NN 's_POS other_JJ senses_NNS '_POS parent_NN concepts_NNS ,_, but_CC are_VBP not_RB in_IN n_NN 's_POS parent_NN concept_NN feature_NN vector_NN ._.
+Output_NN :_: A_DT disambiguated_JJ feature_NN vector_NN for_IN each_DT leaf_NN node_NN n._NN Figure_NN 4_CD ._.
+Coup_NN phase_NN ._.
+application_NN -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP 2002_CD -_: =--RRB-_NN ,_, CBC_NNP discovered_VBD a_DT flat_JJ list_NN of_IN coarse_JJ concepts_NNS ._.
+In_IN the_DT finer_NN grained_VBD concept_NN hierarchy_NN of_IN WordNet_NNP ,_, there_EX are_VBP many_JJ fewer_JJR children_NNS for_IN each_DT concept_NN so_IN we_PRP expect_VBP to_TO have_VB more_JJR difficulty_NN finding_VBG committ_NN
+context_NN is_VBZ defined_VBN as_IN a_DT single_JJ populated_JJ syntactic_JJ relation_NN ,_, in_IN line_NN with_IN the_DT way_NN context_NN is_VBZ typically_RB defined_VBN in_IN the_DT distributional_JJ similarity_NN literature_NN -LRB-_-LRB- Grefenstette_NNP ,_, 1994_CD ;_: Lin_NNP ,_, 1998_CD ;_: Dagan_NNP ,_, 2000_CD ;_: =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+For_IN example_NN ,_, cook_NN and_CC prepare_VB both_DT occur_VBP in_IN the_DT context_NN -LRB-_-LRB- lunch_NN ,_, object_NN −_NN 1_CD -RRB-_-RRB- with_IN a_DT certain_JJ frequency_NN ._.
+3_CD Whereas_IN two_CD lexical_JJ items_NNS may_MD not_RB be_VB distributionally_RB similar_JJ overall_NN ,_, in_IN a_DT particular_JJ contex_NN
+n_NN of_IN semantic_JJ classes_NNS can_MD take_VB a_DT variety_NN of_IN approaches_NNS ,_, but_CC often_RB uses_VBZ corpus_NN methods_NNS and_CC the_DT Distributional_NNP Hypothesis_NNP -LRB-_-LRB- Harris_NNP 1964_CD -RRB-_-RRB- to_TO automatically_RB cluster_VB similar_JJ entities_NNS into_IN classes_NNS ,_, e.g._FW CBC_NNP -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP 2002_CD -_: =--RRB-_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP experiment_NN with_IN two_CD sets_NNS of_IN semantic_JJ classes_NNS ,_, one_CD from_IN WordNet_NNP and_CC one_CD from_IN CBC_NNP ._.
+Another_DT thread_NN related_JJ to_TO our_PRP$ work_NN includes_VBZ extracting_VBG from_IN text_NN corpora_NN paraphrases_NNS -LRB-_-LRB- Barzilay_NNP and_CC
+not_RB have_VB those_DT -LRB-_-LRB- Case_NNP 2_CD -RRB-_-RRB- ._.
+For_IN a_DT word_NN in_IN Case_NNP 2_CD ,_, we_PRP use_VBP a_DT clustering_NN algorithms_VBZ CBC_NNP -LRB-_-LRB- Clustering_NNP By_IN Committee_NNP -RRB-_-RRB- to_TO predict_VB the_DT closest_JJS -LRB-_-LRB- most_RBS reasonable_JJ -RRB-_-RRB- frame_NN of_IN undefined_JJ word_NN from_IN existing_VBG frames_NNS ._.
+CBC_NN -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN was_VBD developed_VBN based_VBN on_IN the_DT distributional_JJ hypothesis_NN -LRB-_-LRB- Harris_NNP ,_, 1954_CD -RRB-_-RRB- that_IN words_NNS which_WDT occur_VBP in_IN the_DT same_JJ contexts_NNS tend_VBP to_TO be_VB similar_JJ ._.
+Using_VBG CBC_NNP ,_, for_IN example_NN ,_, our_PRP$ clustering_NN module_NN computes_VBZ lexical_JJ sim_NN
+iations_NNS between_IN words_NNS and_CC local_JJ contexts_NNS ._.
+To_TO avoid_VB this_DT problem_NN ,_, a_DT more_RBR recent_JJ approach_NN tried_VBD to_TO limit_VB the_DT information_NN contained_VBN in_IN the_DT centroids_NNS by_IN introducing_VBG a_DT process_NN of_IN ``_`` clustering_NN by_IN committee_NN ''_'' =_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Thescentroid_NN of_IN a_DT cluster_NN is_VBZ constructed_VBN by_IN taking_VBG into_IN account_NN only_RB a_DT subset_NN of_IN the_DT cluster_NN members_NNS ._.
+This_DT subset_NN ,_, called_VBN ``_`` committee_NN ''_'' ,_, contains_VBZ the_DT more_RBR representative_JJ members_NNS -LRB-_-LRB- prototypes_NNS -RRB-_-RRB- of_IN a_DT clas_NNS
+the_DT target_NN word_NN will_MD be_VB compared_VBN to_TO the_DT clusters_NNS and_CC the_DT most_RBS similar_JJ cluster_NN will_MD be_VB selected_VBN as_IN its_PRP$ sense_NN ._.
+Most_JJS of_IN the_DT unsupervised_JJ WSD_NN work_NN has_VBZ been_VBN based_VBN on_IN the_DT vector_NN space_NN model_NN -LRB-_-LRB- Schütze_NNP ,_, 1998_CD ;_: =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =_JJ -_: ;_: Purandare_NNP and_CC Pedersen_NNP ,_, 2004_CD -RRB-_-RRB- ,_, where_WRB each_DT example_NN is_VBZ represented_VBN by_IN a_DT vector_NN of_IN features_NNS -LRB-_-LRB- e.g._FW the_DT words_NNS occurring_VBG in_IN the_DT context_NN -RRB-_-RRB- ._.
+Recently_RB ,_, Véronis_NNP -LRB-_-LRB- Véronis_NNP ,_, 2004_CD -RRB-_-RRB- has_VBZ 1_CD Unsupervised_JJ WSD_NN approache_NN
+mation_NN with_IN some_DT other_JJ word_NN ,_, w._NN Given_VBD a_DT context_NN C_NN fw0_NN 1_CD ;_: w0_NN 2_CD ;_: ..._: ;_: w0_NN ng_NN ,_, w1_NN and_CC w2_NN are_VBP considered_VBN semantically_RB similar_JJ if_IN they_PRP are_VBP both_DT likely_JJ to_TO co-occur_VB with_IN the_DT words_NNS in_FW C._FW We_PRP apply_VBP a_DT method_NN -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN that_WDT computes_VBZ the_DT cosine_NN distance_NN between_IN the_DT two_CD partial_JJ mutual_JJ information_NN -LRB-_-LRB- PMI_NN -RRB-_-RRB- vectors_NNS corresponding_VBG to_TO w1_NN and_CC w2_NN :_: disðw1_NN ;_: w2Þ_NN P_NN w_NN 1_CD 02CPMIðw0_NN ;_: w1ÞPMIðw0_NN ;_: w2Þ_NN ffiffiffiffiffiffiffiffiffiffif_NN
+th_DT -LCB-_-LRB- p_NN -LRB-_-LRB- w_NN |_CD θ_NN -RRB-_-RRB- -RCB-_-RRB- -RRB-_-RRB- or_CC a_DT candidate_NN label_NN ._.
+Each_DT edge_NN between_IN a_DT label_NN and_CC a_DT topical_JJ term_NN is_VBZ then_RB weighted_VBN with_IN the_DT pointwise_JJ mutual_JJ information_NN PMI_NN -LRB-_-LRB- w_NN ,_, l_NN |_NN C_NN -RRB-_-RRB- ,_, which_WDT is_VBZ often_RB used_VBN to_TO measure_VB semantic_JJ associations_NNS =_JJ -_: =[_NN 7_CD ,_, 15_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Thus_RB the_DT weight_NN of_IN each_DT node_NN indicates_VBZ the_DT importance_NN of_IN the_DT term_NN to_TO this_DT topic_NN ,_, while_IN the_DT weight_NN of_IN each_DT edge_NN indicates_VBZ how_WRB strongly_RB the_DT label_NN and_CC the_DT term_NN are_VBP semantically_RB associated_VBN ._.
+The_DT scoring_VBG
+iations_NNS between_IN words_NNS and_CC local_JJ contexts_NNS ._.
+To_TO avoid_VB this_DT problem_NN ,_, a_DT more_RBR recent_JJ approach_NN tried_VBD to_TO limit_VB the_DT information_NN contained_VBN in_IN the_DT centroids_NNS by_IN introducing_VBG a_DT process_NN of_IN ``_`` clustering_NN by_IN committee_NN ''_'' =_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT centroid_NN of_IN a_DT cluster_NN is_VBZ constructed_VBN by_IN taking_VBG into_IN account_NN only_RB a_DT subset_NN of_IN the_DT cluster_NN members_NNS ._.
+This_DT subset_NN ,_, called_VBN ``_`` committee_NN ''_'' ,_, contains_VBZ the_DT more_RBR representative_JJ members_NNS -LRB-_-LRB- prototypes_NNS -RRB-_-RRB- of_IN a_DT clas_NNS
+s_NN -LRB-_-LRB- Lesk_NNP ,_, 1969_CD ;_: Church_NNP and_CC Hanks_NNP ,_, 1989_CD ;_: Ruge_NNP ,_, 1992_CD ;_: Dunning_NNP ,_, 1993_CD ;_: Smadja_NNP ,_, 1993_CD ;_: Resnik_NNP ,_, 1995_CD ;_: Landauer_NNP and_CC Dumais_NNP ,_, 1997_CD ;_: Jiang_NNP and_CC Conrath_NNP ,_, 1997_CD ;_: Lin_NNP ,_, 1998a_CD ;_: Turney_NNP ,_, 2001_CD ;_: Budanitsky_NNP and_CC Hirst_NNP ,_, 2001_CD ;_: =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =_JJ -_: ;_: Banerjee_NNP and_CC Pedersen_NNP ,_, 2003_CD -RRB-_-RRB- ._.
+When_WRB two_CD words_NNS have_VBP a_DT high_JJ degree_NN of_IN attributional_JJ similarity_NN ,_, we_PRP call_VBP them_PRP synonyms_NNS ._.
+Applications_NNS for_IN measures_NNS of_IN attributional_JJ similarity_NN include_VBP the_DT following_NN :_: •_CD rec_NN
+translation_NN equivalents_NNS from_IN a_DT bilingual_JJ corpus_NN and_CC a_DT bilingual_JJ dictionary_NN ._.
+To_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, there_EX are_VBP two_CD preceding_JJ research_NN papers_NNS on_IN word_NN sense_NN acquisition_NN -LRB-_-LRB- Fukumoto_NNP and_CC Tsujii_NNP ,_, 1994_CD ;_: =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+Both_DT proposed_VBN distributional_JJ word_NN clustering_NN algorithms_NNS that_WDT are_VBP characterized_VBN by_IN their_PRP$ capabilities_NNS to_TO produce_VB overlapping_VBG clusters_NNS ._.
+According_VBG to_TO their_PRP$ algorithms_NNS ,_, a_DT polysemous_JJ word_NN is_VBZ assigned_VBN to_TO
+presented_VBN by_IN a_DT vector_NN of_IN features_NNS -LRB-_-LRB- e.g._FW the_DT words_NNS occurring_VBG in_IN the_DT context_NN -RRB-_-RRB- ,_, and_CC the_DT induced_VBN senses_NNS are_VBP either_CC clusters_NNS of_IN examples_NNS -LRB-_-LRB- Schütze_NNP ,_, 1998_CD ;_: Purandare_NNP and_CC Pedersen_NNP ,_, 2004_CD -RRB-_-RRB- or_CC clusters_NNS of_IN words_NNS -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+Recently_RB ,_, Véronis_NNP -LRB-_-LRB- Véronis_NNP ,_, 2004_CD -RRB-_-RRB- has_VBZ proposed_VBN HyperLex_NNP ,_, an_DT application_NN of_IN graph_NN models_NNS to_TO WSD_NNP based_VBN on_IN the_DT small-world_JJ properties_NNS of_IN cooccurrence_NN graphs_NNS ._.
+Graph-based_JJ methods_NNS have_VBP gained_VBN attention_NN
+lo_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- used_VBD a_DT clustering_NN technique_NN to_TO extract_VB hyponym_NN relations_NNS from_IN newspaper_NN corpus_NN ._.
+Similar_JJ method_NN was_VBD also_RB used_VBN by_IN Pantel_NN and_CC Ravichandran_NN -LRB-_-LRB- 51_CD -RRB-_-RRB- ._.
+They_PRP used_VBD Clustering_NN by_IN Committee_NN -LRB-_-LRB- CBC_NN -RRB-_-RRB- algorithm_NN =_JJ -_: =[_NN 50_CD -RRB-_-RRB- -_: =_SYM -_: to_TO extract_VB clusters_NNS of_IN nouns_NNS belonging_VBG to_TO the_DT same_JJ class_NN ._.
+Cederberg_NNP and_CC Widdows_NNP -LRB-_-LRB- 11_CD -RRB-_-RRB- use_VBP Latent_JJ Semantic_JJ Ananlysis_NN and_CC noun_NN co-ordination_NN -LRB-_-LRB- co-occurrence_NN -RRB-_-RRB- technique_NN to_TO extract_VB Hyponyms_NNP from_IN a_DT newspape_NN
+there_EX is_VBZ a_DT significant_JJ literature_NN on_IN measuring_VBG word_NN similarity_NN in_IN large_JJ text_NN copora_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, we_PRP simply_RB adopt_VB the_DT approach_NN of_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- which_WDT appears_VBZ to_TO work_VB well_RB in_IN many_JJ different_JJ scenarios_NNS -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO measure_VB word_NN similarity_NN ,_, we_PRP first_JJ construct_NN a_DT feature_NN vector_NN for_IN each_DT word_NN ¨_NN ,_, which_WDT consists_VBZ of_IN the_DT pointwise_JJ mutual_JJ information_NN between_IN ¨_NN and_CC a_DT ``_`` context_NN ''_'' ._.
+Each_DT context_NN corresponds_VBZ to_TO a_DT n_NN
+ories_NNS ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- word_NN senses_NNS in_IN WordNet_NNP 1.7_CD -LRB-_-LRB- Fellbaum_NN 1998_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 3_LS -RRB-_-RRB- manually_RB constructed_VBN word_NN lists_NNS related_VBN to_TO specific_JJ categories_NNS of_IN interest_NN ,_, and_CC -LRB-_-LRB- 4_LS -RRB-_-RRB- automatically_RB generated_VBD semantically_RB similar_JJ word_NN lists_NNS -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP 2002_CD -_: =--RRB-_NN ._.
+Our_PRP$ experimental_JJ study_NN focuses_VBZ on_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- testing_VBG the_DT performance_NN of_IN the_DT classifier_NN in_IN classifying_VBG questions_NNS into_IN coarse_JJ and_CC fine_JJ classes_NNS ,_, and_CC -LRB-_-LRB- 2_LS -RRB-_-RRB- comparing_VBG the_DT contribution_NN of_IN different_JJ syntactic_NN and_CC
+proaches_NNS that_WDT traverse_VBP corpora_NN to_TO establish_VB connections_NNS between_IN concepts_NNS based_VBN on_IN word_NN collocations_NNS ,_, the_DT incidence_NN of_IN errors_NNS is_VBZ not_RB negligible_JJ -LRB-_-LRB- Kilgarriff_NNP and_CC Tugwell_NNP ,_, 2001_CD -RRB-_-RRB- ,_, -LRB-_-LRB- Lin_NNP and_CC Pantel_NNP ,_, 2002_CD -RRB-_-RRB- ,_, -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+In_IN our_PRP$ system_NN ,_, user_NN feedback_NN will_MD help_VB produce_VB accurate_JJ results_NNS ,_, and_CC we_PRP will_MD extract_VB knowledge_NN tailored_VBN to_TO the_DT user_NN 's_POS interests_NNS ._.
+The_DT knowledge_NN acquisition_NN systems_NNS that_IN we_PRP have_VBP considered_VBN suggest_VBP th_DT
+,_, both_DT -LRB-_-LRB- Brill_NNP and_CC Resnik_NNP ,_, 1994_CD -RRB-_-RRB- and_CC -LRB-_-LRB- Krymolowski_NNP and_CC Roth_NNP ,_, 1998_CD -RRB-_-RRB- were_VBD able_JJ to_TO show_VB small_JJ improvements_NNS by_IN using_VBG Wordnet_NNP semantic_JJ classes_NNS to_TO augment_VB the_DT raw_JJ representation_NN of_IN sentences_NNS ._.
+Lin_NNP and_CC Pantel_NNP -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN have_VBP done_VBN several_JJ works_NNS on_IN acquiring_VBG semantic_JJ classes_NNS and_CC using_VBG the_DT acquired_VBN information_NN but_CC ,_, in_IN most_JJS cases_NNS ,_, this_DT was_VBD not_RB done_VBN in_IN a_DT classification_NN framework_NN ._.
+The_DT semantic_JJ classes_NNS acquired_VBN by_IN them_PRP wi_FW
+range_NN from_IN multiple_JJ sequence_NN alignment_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, to_TO gene_NN expression_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, to_TO galaxy_NN formation_NN -LRB-_-LRB- 56_CD -RRB-_-RRB- ._.
+Clustering_NN is_VBZ one_CD of_IN the_DT most_RBS widely_RB used_VBN tools_NNS in_IN data_NN mining_NN -LRB-_-LRB- 38_CD ,_, 58_CD -RRB-_-RRB- and_CC natural_JJ language_NN processing_NN =_JJ -_: =[_NN 53_CD ,_, 48_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Other_JJ applications_NNS include_VBP image_NN registration_NN ,_, protein-protein_JJ interaction_NN networks_NNS and_CC VLSI_NNP circuit_NN design_NN ._.
+A_DT Google_NNP Scholar_NNP search_NN for_IN ``_`` clustering_NN ''_'' brings_VBZ up_RP 379,000_CD hits_NNS ._.
+There_EX are_VBP many_JJ formaliza_NNS
+various_JJ kinds_NNS of_IN lexical_JJ relations_NNS ,_, synonyms_NNS are_VBP used_VBN in_IN a_DT broad_JJ range_NN of_IN applications_NNS such_JJ as_IN query_NN expansion_NN for_IN information_NN retrieval_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC automatic_JJ thesaurus_NN construction_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+Various_JJ methods_NNS =_JJ -_: =[_NN 7,10_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN proposed_VBN for_IN automatic_JJ synonym_NN acquisition_NN ._.
+They_PRP are_VBP often_RB based_VBN on_IN the_DT distributional_JJ hypothesis_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, which_WDT states_VBZ that_IN semantically_RB similar_JJ words_NNS share_VBP similar_JJ contexts_NNS ,_, and_CC they_PRP can_MD be_VB r_NN
+her_PRP$ resources_NNS so_RB as_IN to_TO improve_VB word_NN sense_NN discrimination_NN ._.
+In_IN addition_NN to_TO dictionary_NN glosses_NNS ,_, we_PRP also_RB plan_VBP to_TO incorporate_VB classes_NNS of_IN words_NNS that_WDT are_VBP discovered_VBN via_IN other_JJ unsupervised_JJ techniques_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =_JJ -LRB-_-LRB- PL02_NN -RRB-_-RRB- -_: =--RRB-_NN ._.
+7_CD Conclusion_NN There_EX may_MD be_VB situations_NNS when_WRB an_DT unsupervised_JJ learning_NN approach_NN to_TO word_NN sense_NN discrimination_NN does_VBZ not_RB have_VB sufficient_JJ training_NN data_NNS from_IN which_WDT to_TO learn_VB a_DT truly_RB discriminating_VBG set_NN of_IN fea_NN
+their_PRP$ classes_NNS '_POS hierarchy_NN ,_, which_WDT naturally_RB corresponds_VBZ to_TO an_DT ontology_JJ taxonomy_NN ._.
+25s4_NN ._.
+AUTONOMOUS_NNP ACQUISITION_NNP OF_IN ONTOLOGIES_NNP IN_IN OLE_NNP The_DT approach_NN is_VBZ somehow_RB similar_JJ to_TO work_NN presented_VBN by_IN Lin_NNP and_CC Pantel_NNP in_IN =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =_SYM -_: in_IN the_DT context_NN of_IN automatic_JJ extraction_NN of_IN senses_NNS from_IN a_DT text_NN ,_, although_IN we_PRP rather_RB discover_VBP relations_NNS between_IN groups_NNS of_IN words_NNS than_IN their_PRP$ senses_NNS ._.
+Because_IN of_IN extensive_JJ exploitation_NN of_IN the_DT provided_VBN data_NNS -LRB-_-LRB-
+,_, i.e._FW ,_, the_DT minimum_JJ number_NN of_IN edges_NNS that_IN separate_JJ A_NNP and_CC B_NNP -LRB-_-LRB- Rada_NNP et_FW al._FW ,_, 1989_CD -RRB-_-RRB- ._.
+-LRB-_-LRB- 2_LS -RRB-_-RRB- Corpus_NNP statistics_NNS empirically_RB model_VBP the_DT context-dependence_JJ characteristics_NNS of_IN word_NN meaning_NN in_IN text_NN -LRB-_-LRB- e.g._FW ,_, Lin_NNP ,_, 1998_CD ;_: =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =_JJ -_: ;_: Thelen_NNP and_CC Riloff_NNP ,_, 2002_CD ;_: Terra_NNP and_CC Clarke_NNP ,_, 2003_CD -RRB-_-RRB- ._.
+Three_CD statistics_NNS are_VBP commonly_RB employed_VBN to_TO model_VB the_DT similarity_NN of_IN words_NNS -LRB-_-LRB- Higgins_NNP ,_, 2004_CD -RRB-_-RRB- :_: Topicality_NN assumption_NN :_: similar_JJ words_NNS tend_VBP to_TO have_VB the_DT same_JJ
+t_NN it_PRP represents_VBZ for_IN domains_NNS of_IN applicationssuch_NN as_IN Natural_NNP Language_NNP Processing_NNP or_CC Bioinformatics_NNP ._.
+PoBOC_NN -LRB-_-LRB- Pole-Based_JJ Overlapping_JJ Clustering_NN -RRB-_-RRB- -LRB-_-LRB- Cleuziou_NNP et_FW al._FW ,_, 2004_CD -RRB-_-RRB- and_CC CBC_NN -LRB-_-LRB- Clustering_NN By_IN Committees_NNS -RRB-_-RRB- -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN are_VBP two_CD clustering_NN algorithms_NNS suitable_JJ for_IN the_DT word_NN clustering_NN task_NN ._.
+They_PRP both_DT proceed_VBP by_IN first_RB constructing_VBG tight_JJ clusters_NNS 9_CD and_CC then_RB assigning_VBG residual_JJ objects_NNS to_TO their_PRP$ most_RBS similar_JJ tight_JJ clusters_NNS
+ses_NNS ._.
+3_CD The_DT Method_NN The_DT AWS_NN method_NN is_VBZ based_VBN on_IN the_DT observation_NN that_IN it_PRP is_VBZ frequently_RB possible_JJ to_TO guess_VB the_DT meaning_NN of_IN an_DT unknown_JJ word_NN from_IN its_PRP$ context_NN ._.
+For_IN example_NN ,_, consider_VB these_DT sentences_NNS -LRB-_-LRB- taken_VBN from_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =--RRB-_NN :_: A_DT bottle_NN of_IN tezgüno_NN is_VBZ on_IN the_DT table_NN ._.
+Everyone_NN likes_NN tezgüno_NN ._.
+Tezgüno_NNP makes_VBZ you_PRP drunk_JJ ._.
+We_PRP make_VBP tezgüno_NN out_IN of_IN corn_NN ._.
+It_PRP is_VBZ a_DT reasonable_JJ guess_NN that_IN the_DT word_NN ``_`` tezgüno_NN ''_'' refers_VBZ to_TO an_DT alcoholic_JJ beverage_NN ._.
+e_LS vector_NN of_IN any_DT of_IN n_NN 's_POS other_JJ senses_NNS '_POS parent_NN concepts_NNS ,_, but_CC are_VBP not_RB in_IN n_NN 's_POS parent_NN concept_NN feature_NN vector_NN ._.
+Output_NN :_: A_DT disambiguated_JJ feature_NN vector_NN for_IN each_DT leaf_NN node_NN n._NN Figure_NN 4_CD ._.
+Coup_NN phase_NN ._.
+application_NN -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP 2002_CD -_: =--RRB-_NN ,_, CBC_NNP discovered_VBD a_DT flat_JJ list_NN of_IN coarse_JJ concepts_NNS ._.
+In_IN the_DT finer_NN grained_VBD concept_NN hierarchy_NN of_IN WordNet_NNP ,_, there_EX are_VBP many_JJ fewer_JJR children_NNS for_IN each_DT concept_NN so_IN we_PRP expect_VBP to_TO have_VB more_JJR difficulty_NN finding_VBG committ_NN
+us_PRP Work_NNP There_EX have_VBP been_VBN several_JJ approaches_NNS to_TO automatically_RB discovering_VBG lexico-semantic_JJ information_NN from_IN text_NN -LRB-_-LRB- Hearst_NNP 1992_CD ;_: Riloff_NNP and_CC Shepherd_NNP 1997_CD ;_: Riloff_NNP and_CC Jones_NNP 1999_CD ;_: Berland_NNP and_CC Charniak_NNP 1999_CD ;_: =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP 2002_CD -_: =_JJ -_: ;_: Fleischman_NNP et_FW al._FW 2003_CD ;_: Girju_NNP et_FW al._FW 2003_CD -RRB-_-RRB- ._.
+One_CD approach_NN constructs_NNS automatic_JJ thesauri_NN by_IN computing_VBG the_DT similarity_NN between_IN words_NNS based_VBN on_IN their_PRP$ distribution_NN in_IN a_DT corpus_NN -LRB-_-LRB- Hindle_NN 1990_CD ;_: Lin_NNP 1998_CD -RRB-_-RRB- ._.
+The_DT
+lt_NN in_IN different_JJ solutions_NNS to_TO word_NN sense_NN learning_NN ._.
+One_CD interpretation_NN strategy_NN is_VBZ to_TO treat_VB a_DT word_NN sense_NN as_IN a_DT set_NN of_IN synonyms_NNS like_IN synset_NN in_IN WordNet_NNP ._.
+The_DT committee_NN based_VBD word_NN sense_NN discovery_NN algorithm_NN -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN followed_VBD this_DT strategy_NN ,_, which_WDT treated_VBD senses_NNS as_IN clusters_NNS of_IN words_NNS occurring_VBG in_IN similar_JJ contexts_NNS ._.
+Their_PRP$ algorithm_NN initially_RB discovered_VBD tight_JJ clusters_NNS called_VBD committees_NNS by_IN grouping_VBG top_JJ n_NN words_NNS similar_JJ
+om_FW corpora_FW ._.
+Each_DT sense_NN is_VBZ defined_VBN by_IN a_DT list_NN of_IN words_NNS that_WDT is_VBZ not_RB restricted_JJ to_TO synonyms_NNS or_CC hyperonyms_NNS ._.
+The_DT work_NN done_VBN in_IN this_DT area_NN can_MD be_VB divided_VBN into_IN three_CD main_JJ trends_NNS ._.
+The_DT first_JJ one_CD ,_, represented_VBN by_IN -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ,_, is_VBZ not_RB focused_VBN on_IN the_DT problem_NN of_IN discovering_VBG word_NN senses_NNS :_: its_PRP$ main_JJ objective_NN is_VBZ to_TO build_VB classes_NNS of_IN equivalent_JJ words_NNS from_IN a_DT distributionalist_NN viewpoint_NN ,_, hence_RB to_TO gather_VB words_NNS that_WDT are_VBP mainly_RB synony_JJ
+orithms_NNS have_VBP been_VBN experimented_VBN with_IN these_DT problems_NNS -LRB-_-LRB- Dagan_NNP et_FW al._FW ,_, 1999_CD ;_: Lee_NNP ,_, 1997_CD ;_: Weeds_NNS et_FW al._FW ,_, 2004_CD -RRB-_-RRB- ._.
+Similarity_NN between_IN words_NNS was_VBD also_RB used_VBN as_IN a_DT metric_NN in_IN a_DT distributional_JJ clustering_NN algorithm_NN in_IN -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ,_, and_CC it_PRP shows_VBZ that_IN functionally_RB similar_JJ words_NNS can_MD be_VB grouped_VBN together_RB and_CC even_RB separated_VBN to_TO smaller_JJR groups_NNS based_VBN on_IN their_PRP$ senses_NNS ._.
+At_IN a_DT Xin_NNP Li_NNP and_CC Dan_NNP Roth_NNP Department_NNP of_IN Computer_NNP Science_NNP University_NNP o_NN
+us_PRP Work_NNP There_EX have_VBP been_VBN several_JJ approaches_NNS to_TO automatically_RB discovering_VBG lexico-semantic_JJ information_NN from_IN text_NN -LRB-_-LRB- Hearst_NNP 1992_CD ;_: Riloff_NNP and_CC Shepherd_NNP 1997_CD ;_: Riloff_NNP and_CC Jones_NNP 1999_CD ;_: Berland_NNP and_CC Charniak_NNP 1999_CD ;_: =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP 2002_CD -_: =_JJ -_: ;_: Fleischman_NNP et_FW al._FW 2003_CD ;_: Girju_NNP et_FW al._FW 2003_CD -RRB-_-RRB- ._.
+One_CD approach_NN constructs_NNS automatic_JJ thesauri_NN by_IN computing_VBG the_DT similarity_NN between_IN words_NNS based_VBN on_IN their_PRP$ distribution_NN in_IN a_DT corpus_NN -LRB-_-LRB- Hindle_NN 1990_CD ;_: Lin_NNP 1998_CD -RRB-_-RRB- ._.
+The_DT
+synset_NN ._.
+A_DT synset_NN contains_VBZ words_NNS with_IN same_JJ sense_NN and_CC a_DT word_NN can_MD occur_VB in_IN different_JJ synsets_NNS indicating_VBG that_IN the_DT word_NN has_VBZ multiple_JJ senses_NNS ._.
+Lin_NNP et_FW al._FW define_VB the_DT similarity_NN between_IN two_CD senses_NNS in_IN Wordnet_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: as_IN :_: simd_NN -LRB-_-LRB- s1_NN ,_, s2_NN -RRB-_-RRB- =_JJ 2_CD ×_CD log_NN p_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- log_VBP p_NN -LRB-_-LRB- s1_NN -RRB-_-RRB- +_CC log_NN p_NN -LRB-_-LRB- s2_NN -RRB-_-RRB- where_WRB p_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- =_JJ count_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- \/_: total_NN ,_, is_VBZ the_DT probability_NN of_IN a_DT randomly_RB selected_VBN word_NN occurring_VBG in_IN the_DT synset_NN s_NN or_CC any_DT sub_NN synsets_NNS of_IN it_PRP ._.
+Total_NNP is_VBZ the_DT numbe_NN
+and_CC relations_NNS is_VBZ to_TO harvest_VB semantic_JJ knowledge_NN from_IN texts_NNS ._.
+These_DT techniques_NNS have_VBP been_VBN largely_RB explored_VBN and_CC today_NN they_PRP achieve_VBP reasonable_JJ accuracy_NN ._.
+Harvested_VBN lexical_JJ resources_NNS ,_, such_JJ as_IN concept_NN lists_NNS -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ,_, facts_NNS -LRB-_-LRB- Etzioni_NNP et_FW al._FW ,_, 2002_CD -RRB-_-RRB- and_CC semantic_JJ relations_NNS -LRB-_-LRB- Pantel_NNP and_CC Pennacchiotti_NNP ,_, 2006_CD -RRB-_-RRB- could_MD be_VB then_RB successfully_RB used_VBN in_IN different_JJ frameworks_NNS and_CC applications_NNS ._.
+The_DT state_NN of_IN the_DT art_NN technology_NN for_IN re_NN
+ted_VBN by_IN ∆_NN ._.
+For_IN example_NN ,_, for_IN text_NN documents_NNS the_DT features_NNS might_MD be_VB a_DT mutual_JJ information_NN measure_NN based_VBN on_IN associations_NNS of_IN occurrences_NNS of_IN Ngrams_NNP among_IN documents_NNS in_IN the_DT corpus_NN ,_, as_IN in_IN -LRB-_-LRB- Lin_NNP and_CC Pantel_NNP ,_, 2002_CD ,_, =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =-]_CD ,_, or_CC they_PRP may_MD be_VB simple_JJ word-frequency_NN counts_NNS ._.
+For_IN computer_NN network_NN flows_VBZ ,_, the_DT features_NNS might_MD be_VB packet_NN interarrival_JJ times_NNS ,_, packet_NN sizes_NNS ,_, or_CC header_NN flag_NN indications_NNS ._.
+Next_RB ,_, we_PRP want_VBP to_TO Denoise_VB the_DT curr_NN
+ithm_NN ..._: ..._: ..._: ._. ._.
+87_CD is5_NN Related_NNP Work_NNP 98_CD 5.1_CD Finding_VBG Sets_NNS of_IN Related_JJ Words_NNS ..._: ..._: ..._: ..._: ..._: ..._: ..._: 98_CD 5.1.1_CD CBC_NN -LRB-_-LRB- Clustering_NN By_IN Committee_NN =_JJ -_: =[_NN 7_CD ,_, 8_CD -RRB-_-RRB- -_: =--RRB-_NN ..._: ..._: ..._: ..._: ..._: 98_CD 5.1.2_CD Automatic_NNP Construction_NNP of_IN a_DT hypernym-labeled_JJ noun_NN hierarchy_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ..._: ..._: 99_CD 5.2_CD Sentiment_NN Classification_NN ..._: ..._: ..._:
+ssification_NN ,_, it_PRP mostly_RB ignores_VBZ the_DT structural_JJ information_NN that_WDT is_VBZ given_VBN by_IN syntax_NN and_CC also_RB the_DT consistent_JJ patterns_NNS of_IN word_NN sense_NN distinctions_NNS ,_, such_JJ as_IN metonymy_NN ._.
+Exceptions_NNS are_VBP work_NN by_IN Lin_NNP -LRB-_-LRB- see_VB ,_, e.g._FW ,_, =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN and_CC Pado_NN and_CC Lapata_NN -LRB-_-LRB- 2003_CD -RRB-_-RRB- where_WRB models_NNS are_VBP constructed_VBN over_IN syntactically_RB parsed_VBN data_NNS :_: this_DT is_VBZ the_DT sort_NN of_IN line_NN that_IN we_PRP propose_VBP to_TO pursue_VB ._.
+2_CD ._.
+Overview_NN of_IN proposal_NN The_DT proposal_NN here_RB is_VBZ to_TO develop_VB a_DT
+nd_NN retrieval_NN -LRB-_-LRB- Buckley_NNP et_FW al._FW ,_, 1995_CD ;_: Vechtomova_NNP and_CC Robertson_NNP ,_, 2000_CD ;_: Xu_NNP and_CC Croft_NNP ,_, 2000_CD -RRB-_-RRB- ,_, lexical_JJ selection_NN ,_, automatic_JJ correction_NN of_IN word_NN errors_NNS in_IN text_NN and_CC discovering_VBG word_NN senses_NNS directly_RB from_IN text_NN -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+A_DT word_NN similarity_NN measure_NN is_VBZ also_RB used_VBN for_IN language_NN modeling_NN by_IN grouping_VBG similar_JJ words_NNS into_IN classes_NNS -LRB-_-LRB- Brown_NNP et_FW al._FW ,_, 1992_CD -RRB-_-RRB- ._.
+In_IN databases_NNS ,_, word_NN similarity_NN can_MD be_VB used_VBN to_TO solve_VB semantic_JJ heterogeneity_NN ,_,
+various_JJ kinds_NNS of_IN lexical_JJ relations_NNS ,_, synonyms_NNS are_VBP used_VBN in_IN a_DT broad_JJ range_NN of_IN applications_NNS such_JJ as_IN query_NN expansion_NN for_IN information_NN retrieval_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC automatic_JJ thesaurus_NN construction_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+Various_JJ methods_NNS =_JJ -_: =[_NN 7_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN proposed_VBN for_IN automatic_JJ synonym_NN acquisition_NN ._.
+They_PRP are_VBP often_RB based_VBN on_IN the_DT distributional_JJ hypothesis_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, which_WDT states_VBZ that_IN semantically_RB similar_JJ words_NNS share_VBP similar_JJ contexts_NNS ,_, and_CC they_PRP can_MD be_VB r_NN
+ssertation_NN ,_, and_CC the_DT inverse_JJ document_NN frequency_NN -LRB-_-LRB- IDF_NN -RRB-_-RRB- based_VBN on_IN the_DT entire_JJ VT-ETD_NN computer_NN science_NN 61scollection_NN -LRB-_-LRB- about_RB 200_CD documents_NNS -RRB-_-RRB- ._.
+Another_DT possibility_NN is_VBZ to_TO compute_VB the_DT weighted_JJ mutual_JJ information_NN =_JJ -_: =[_NN 89_CD -RRB-_-RRB- -_: =_SYM -_: for_IN each_DT relation_NN ,_, and_CC only_RB keep_VB the_DT most_RBS highly_RB weighted_JJ relations_NNS ._.
+5.2.1_CD Example_NNP of_IN English_NNP automatic_JJ concept_NN maps_NNS Below_IN I_PRP present_VBP some_DT automatically_RB generated_VBN concept_NN maps_NNS of_IN chapters_NNS of_IN dissertat_NN
+luding_VBG both_CC ambiguous_JJ and_CC non-ambiguous_JJ nouns_NNS ,_, twice_RB that_DT of_IN previous_JJ algorithms_NNS ._.
+1_CD INTRODUCTION_NN Arguably_RB ,_, the_DT most_RBS difficult_JJ part_NN of_IN the_DT task_NN of_IN acquiring_VBG lexical_JJ and_CC ontological_JJ knowledge_NN from_IN text_NN =_JJ -_: =[_NN 2_CD ,_, 68_CD ,_, 13_CD ,_, 16_CD ,_, 18_CD ,_, 23_CD ,_, 24_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ the_DT identification_NN of_IN a_DT word_NN 's_POS senses_NNS --_: i.e._FW trying_VBG to_TO discover_VB that_IN a_DT word_NN such_JJ as_IN palm_NN can_MD be_VB used_VBN to_TO express_VB both_CC the_DT concept_NN ``_`` the_DT inner_JJ surface_NN of_IN the_DT hand_NN ''_'' -LRB-_-LRB- WordNet_NNP 2_CD sense_NN 1_CD -RRB-_-RRB- ,_, henceforth_JJ palm1_NN
+clustering_NN -LRB-_-LRB- e.g._FW ,_, EM_NN -RRB-_-RRB- ,_, but_CC non-hierarchical_JJ hard-clustering_NN is_VBZ prevalent_JJ -LRB-_-LRB- for_IN a_DT good_JJ discussion_NN ,_, see_VB -LRB-_-LRB- Maedche_NNP and_CC Staab_NNP 2002_CD ;_: Manning_NNP and_CC Schuetze_NNP ,_, 1999_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+3_CD The_DT best_JJS of_IN the_DT clustering_NN algorithms_NNS in_IN -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN achieves_VBZ an_DT F_NN of_IN about_RB 60_CD %_NN ._.
+While_IN the_DT vectorial_JJ representations_NNS used_VBN in_IN this_DT work_NN do_VBP capture_VB relational_JJ information_NN ,_, the_DT relations_NNS in_IN question_NN are_VBP purely_RB syntactic_JJ --_: subject_NN ,_, object_NN ,_, adjunct_NN ,_, noun_NN mod_NN
+ation_NN Theoretic_NNP Model_NNP Informative_JJ elements_NNS are_VBP modeled_VBN in_IN SIfT_NN using_VBG an_DT information_NN theoretic_JJ measure_NN called_VBN mutual_JJ information_NN ._.
+Similar_JJ columns_NNS are_VBP discovered_VBN using_VBG a_DT clustering_NN algorithm_NN called_VBD CBC_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN any_DT clustering_NN application_NN ,_, the_DT critical_JJ step_NN is_VBZ representing_VBG the_DT data_NNS such_JJ that_IN elements_NNS group_NN together_RB according_VBG to_TO our_PRP$ desired_VBN output_NN ._.
+For_IN example_NN ,_, if_IN we_PRP want_VBP to_TO cluster_VB medical_JJ patients_NNS accor_NN
+uency_NN counts_NNS ,_, but_CC then_RB applied_VBD their_PRP$ WSD_NN to_TO the_DT SENSEVAL2_NN lexical_JJ sample_NN data_NNS ._.
+There_EX has_VBZ been_VBN some_DT related_JJ work_NN on_IN using_VBG automatic_JJ thesauruses_NNS for_IN discovering_VBG word_NN senses_NNS from_IN corpora_NN ._.
+Pantel_NNP and_CC Lin_NNP =_SYM -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT work_NN the_DT lists_NNS of_IN neighbors_NNS are_VBP themselves_PRP clustered_VBN to_TO bring_VB out_RP the_DT various_JJ senses_NNS of_IN the_DT word_NN ._.
+They_PRP evaluate_VBP using_VBG the_DT lin_NN measure_NN described_VBN above_RB in_IN section_NN 3.2_CD to_TO determine_VB the_DT precisi_NN
+algorithms_NNS using_VBG different_JJ distributional_JJ similarity_NN or_CC dissimilarity_NN measures_NNS :_: cosine_NN ,_, α-skew_NN divergence_NN -LRB-_-LRB- Lee_NNP ,_, 1999_CD -RRB-_-RRB- 4_CD ,_, and_CC Lin_NNP 's_POS similarity_NN -LRB-_-LRB- Lin_NNP ,_, 1998_CD -RRB-_-RRB- ._.
+•_NNP The_NNP CBC_NNP algorithm_NN -LRB-_-LRB- Lin_NNP and_CC Pantel_NNP ,_, 2002_CD ;_: =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+5.3_CD Evaluation_NN procedure_NN All_PDT the_DT nouns_NNS in_IN the_DT data_NNS set_VBN were_VBD clustered_VBN by_IN the_DT proposed_JJ and_CC baseline_JJ systems_NNS ._.
+5_CD For_IN the_DT mixture_NN models_NNS and_CC K-means_NNS ,_, the_DT number_NN of_IN clusters_NNS was_VBD set_VBN to_TO 1,000_CD ._.
+The_DT parame_NN
+similarity_NN measures_NNS compare_VBP a_DT pair_NN of_IN weighted_JJ context_NN feature_NN vectors_NNS that_WDT characterize_VBP two_CD words_NNS -LRB-_-LRB- Church_NNP and_CC Hanks_NNP ,_, 1990_CD ;_: Ruge_NNP ,_, 1992_CD ;_: Pereira_NNP et_FW al._FW ,_, 1993_CD ;_: Grefenstette_NNP ,_, 1994_CD ;_: Lee_NNP ,_, 1997_CD ;_: Lin_NNP ,_, 1998_CD ;_: =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =_JJ -_: ;_: Weeds_NNS and_CC Weir_NNP ,_, 2003_CD -RRB-_-RRB- ._.
+As_IN it_PRP turns_VBZ out_RP ,_, distributional_JJ similarity_NN captures_VBZ a_DT somewhat_RB loose_JJ notion_NN of_IN semantic_JJ similarity_NN -LRB-_-LRB- see_VB Table_NNP 1_CD -RRB-_-RRB- ._.
+It_PRP does_VBZ not_RB ensure_VB that_IN the_DT meaning_NN of_IN one_CD word_NN is_VBZ preserved_VBN
+t_NN drive_NN 25_CD 35_CD 10_CD noun_NN modifier_NN ticket_NN 10_CD 12_CD 0_CD Output_NN Word_NN :_: <closest word>_FW <score>_FW -LRB-_-LRB- 2nd_JJ closest_JJS -RRB-_-RRB- <score>_NN ..._: coach_NN :_: train_NN 0.171_CD bus_NN 0.166_CD player_NN 0.149_CD captain_NN 0.131_CD car_NN 0.131_CD Grouping_NN similar_JJ words_NNS -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =-]_CD McCarthy_NNP ,_, Navigli_NNP A_NNP Lexical_NNP Substitution_NN TaskOutline_NNP Outline_NNP Background_NNP Inventories_NNS of_IN Word_NNP Meaning_NNP Lexical_NNP Substitution_NN Conclusions_NNS Motivation_NN Task_NNP Set_NNP Up_IN Results_NNS Post-Hoc_VBP Evaluation_NN 1_CD Background_NN
+iven_FW query_FW ,_, the_DT search_NN engine_NN sorts_NNS the_DT matching_JJ documents_NNS in_IN order_NN of_IN decreasing_VBG cosine_NN ._.
+The_DT VSM_NNP approach_NN has_VBZ also_RB been_VBN used_VBN to_TO measure_VB the_DT attributional_JJ similarity_NN of_IN words_NNS -LRB-_-LRB- Lesk_NNP ,_, 1969_CD ;_: Ruge_NNP ,_, 1992_CD ;_: =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+Pantel_NNP and_CC Lin_NNP -LRB-_-LRB- 2002_CD -RRB-_-RRB- clustered_VBD 11sComputational_JJ Linguistics_NNP Volume_NNP 1_CD ,_, Number_NN 1_CD words_NNS according_VBG to_TO their_PRP$ attributional_JJ similarity_NN ,_, as_IN measured_VBN by_IN a_DT VSM_NN ._.
+Their_PRP$ algorithm_NN is_VBZ able_JJ to_TO discover_VB the_DT diff_NN
+e_LS context_NN dissimilarity_NN indicates_VBZ the_DT existence_NN of_IN sense_NN distinctions_NNS ._.
+Lexical_JJ context_NN constitutes_VBZ thus_RB a_DT valuable_JJ source_NN of_IN semantic_JJ information_NN ,_, exploited_VBN in_IN various_JJ sense_NN induction_NN -LRB-_-LRB- Schütze_NNP ,_, 1998_CD ;_: =_JJ -_: =_JJ Pantel_NNP &_CC Lin_NNP ,_, 2002_CD -_: =_JJ -_: ;_: Véronis_NNP ,_, 2004_CD ;_: Purandare_NNP &_CC Pedersen_NNP ,_, 2004_CD -RRB-_-RRB- and_CC WSD_NN methods_NNS -LRB-_-LRB- Lesk_NNP ,_, 1986_CD ;_: Brown_NNP et_FW al._FW ,_, 1991_CD ;_: Kaji_NNP &_CC Morimoto_NNP ,_, 2002_CD -RRB-_-RRB- ._.
+According_VBG to_TO assumption_NN -LRB-_-LRB- c_NN -RRB-_-RRB- ,_, in_IN the_DT case_NN of_IN a_DT word_NN correspondence_NN in_IN a_DT parallel_JJ co_NN
+r_NN ,_, their_PRP$ performance_NN is_VBZ largely_RB influenced_VBN by_IN the_DT types_NNS of_IN features_NNS used_VBN ._.
+The_DT common_JJ types_NNS of_IN features_NNS include_VBP contextual_JJ -LRB-_-LRB- Lin_NNP ,_, 1998_CD -RRB-_-RRB- ,_, co-occurrence_NN -LRB-_-LRB- Yang_NNP and_CC Callan_NNP ,_, 2008_CD -RRB-_-RRB- ,_, and_CC syntactic_JJ dependency_NN -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =_JJ -_: ;_: Pantel_NNP and_CC Ravichandran_NNP ,_, 2004_CD -RRB-_-RRB- ._.
+So_RB far_RB there_EX is_VBZ no_DT systematic_JJ study_NN on_IN which_WDT features_NNS are_VBP the_DT best_JJS for_IN automatic_JJ taxonomy_NN induction_NN under_IN various_JJ conditions_NNS ._.
+This_DT paper_NN presents_VBZ a_DT metric-based_JJ taxon_NN
+ures_VBZ requires_VBZ significant_JJ effort_NN ._.
+One_CD underutilized_VBD resource_NN for_IN descriptive_JJ features_NNS are_VBP existing_VBG semantically_RB related_JJ word_NN lists_NNS -LRB-_-LRB- SRWLs_NNS -RRB-_-RRB- ,_, generated_VBD both_CC manually_RB -LRB-_-LRB- Fellbaum_NNP ,_, 1998_CD -RRB-_-RRB- and_CC automatically_RB -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+Consider_VB the_DT following_VBG named_VBN entity_NN recognition_NN -LRB-_-LRB- NER_NN -RRB-_-RRB- example_NN :_: His_PRP$ father_NN was_VBD rushed_VBN to_TO -LRB-_-LRB- Westlake_NNP Hospital_NNP -RRB-_-RRB- ORG_NNP ,_, an_DT arm_NN of_IN -LRB-_-LRB- Resurrection_NNP Health_NNP Care_NNP -RRB-_-RRB- ORG_NNP ,_, in_IN west_NN suburban_JJ -LRB-_-LRB- Chicagoland_NNP -RRB-_-RRB- LOC_NNP ._.
+For_IN such_JJ
+stances_NNS of_IN relations_NNS ._.
+The_DT approaches_NNS are_VBP known_VBN for_IN their_PRP$ high_JJ accuracy_NN in_IN discovering_VBG relations_NNS ._.
+However_RB they_PRP can_MD not_RB find_VB relations_NNS which_WDT do_VBP not_RB explicitly_RB appear_VB in_IN text_NN ._.
+Clustering-based_JJ approaches_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =-[_NN 7_CD -RRB-_-RRB- hierarchically_RB cluster_NN terms_NNS based_VBN on_IN similarities_NNS of_IN their_PRP$ meanings_NNS usually_RB represented_VBN by_IN a_DT vector_NN of_IN features_NNS ._.
+The_DT approaches_NNS complement_VBP pattern-based_JJ approaches_NNS by_IN their_PRP$ ability_NN to_TO discover_VB re_NN
+on_IN no_DT labeled_JJ data_NNS and_CC use_VBP either_RB bootstrapped_VBN class-specific_JJ extraction_NN patterns_NNS -LRB-_-LRB- Etzioni_NNP et_FW al._FW 2005_CD -RRB-_-RRB- to_TO find_VB new_JJ elements_NNS of_IN a_DT given_VBN class_NN -LRB-_-LRB- for_IN targeted_VBN extraction_NN -RRB-_-RRB- or_CC corpusbased_JJ term_NN similarity_NN -LRB-_-LRB- =_JJ -_: =_JJ Pantel_NNP and_CC Lin_NNP 2002_CD -_: =--RRB-_NN to_TO find_VB term_NN clusters_NNS -LRB-_-LRB- in_IN an_DT open_JJ extraction_NN framework_NN -RRB-_-RRB- ._.
+Finally_RB ,_, semi-supervised_JJ methods_NNS have_VBP shown_VBN great_JJ promise_NN for_IN identifying_VBG and_CC labeling_VBG entities_NNS -LRB-_-LRB- Riloff_NNP and_CC Shepherd_NNP 1997_CD ;_: Riloff_NNP and_CC Jones_NNP 1_CD
+ame_NN contexts_NNS tend_VBP to_TO be_VB similar_JJ ._.
+This_DT is_VBZ known_VBN as_IN the_DT Distributional_JJ Hypothesis_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+There_EX have_VBP been_VBN many_JJ approaches_NNS to_TO compute_VB the_DT similarity_NN between_IN words_NNS based_VBN on_IN their_PRP$ distribution_NN in_IN a_DT corpus_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =-[_NN 12_CD -RRB-_-RRB- ._.
+The_DT output_NN of_IN these_DT programs_NNS is_VBZ a_DT ranked_VBN list_NN of_IN similar_JJ words_NNS to_TO each_DT word_NN ._.
+For_IN example_NN ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- outputs_VBZ the_DT following_JJ similar_JJ words_NNS for_IN wine_NN and_CC suit_NN :_: wine_NN :_: beer_NN ,_, white_JJ wine_NN ,_, red_JJ wine_NN ,_, Chardonnay_NNP
+ng_NN ,_, evaluation_NN ,_, machine_NN learning_NN ._.
+1_CD ._.
+INTRODUCTION_NN Using_VBG word_NN senses_NNS versus_CC word_NN forms_NNS is_VBZ useful_JJ in_IN many_JJ applications_NNS such_JJ as_IN information_NN retrieval_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, machine_NN translation_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC question-answering_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN previous_JJ approaches_NNS ,_, word_NN senses_NNS are_VBP usually_RB defined_VBN using_VBG a_DT manually_RB constructed_VBN lexicon_NN ._.
+There_EX are_VBP several_JJ disadvantages_NNS associated_VBN with_IN these_DT word_NN senses_NNS ._.
+First_RB ,_, manually_RB created_VBN lexicons_NNS ofte_VBP
+ds_JJ -RRB-_-RRB- ,_, the_DT frequency_NN counts_NNS of_IN the_DT synsets_NNS in_IN the_DT lower_JJR part_NN of_IN the_DT WordNet_NNP hierarchy_NN are_VBP very_RB sparse_JJ ._.
+We_PRP smooth_VBP the_DT probabilities_NNS by_IN assuming_VBG that_IN all_DT siblings_NNS are_VBP equally_RB likely_RB given_VBN the_DT parent_NN ._.
+Lin_NNP =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: defined_VBN the_DT similarity_NN between_IN two_CD WordNet_NNP synsets_NNS s1_NN and_CC s2_NN as_IN :_: sim_NN -LRB-_-LRB- s_NN ,_, s_NNS -RRB-_-RRB- 1_CD 2_CD ×_CD log_NN P_NN -LRB-_-LRB- -RRB-_-RRB- s_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- +_CC log_NN P_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- 2_CD =_JJ -LRB-_-LRB- 4_LS -RRB-_-RRB- log_NN P_NN where_WRB s_NN is_VBZ the_DT most_RBS specific_JJ synset_NN that_WDT subsumes_VBZ s_NN 1_CD and_CC s_NN 2_CD ._.
+For_IN exam_NN
+other_JJ alcoholic_JJ beverages_NNS tend_VBP to_TO occur_VB in_IN the_DT same_JJ contexts_NNS as_IN tezgüno_NN ._.
+The_DT intuition_NN is_VBZ that_IN words_NNS that_WDT occur_VBP in_IN the_DT same_JJ contexts_NNS tend_VBP to_TO be_VB similar_JJ ._.
+This_DT is_VBZ known_VBN as_IN the_DT Distributional_JJ Hypothesis_NN =_JJ -_: =_JJ -LRB-_-LRB- 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX have_VBP been_VBN many_JJ approaches_NNS to_TO compute_VB the_DT similarity_NN between_IN words_NNS based_VBN on_IN their_PRP$ distribution_NN in_IN a_DT corpus_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+The_DT output_NN of_IN these_DT programs_NNS is_VBZ a_DT ranked_VBN list_NN of_IN similar_JJ words_NNS to_TO each_DT wor_NN
+e_LS same_JJ contexts_NNS tend_VBP to_TO be_VB similar_JJ ._.
+This_DT is_VBZ known_VBN as_IN the_DT Distributional_JJ Hypothesis_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+There_EX have_VBP been_VBN many_JJ approaches_NNS to_TO compute_VB the_DT similarity_NN between_IN words_NNS based_VBN on_IN their_PRP$ distribution_NN in_IN a_DT corpus_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =-[_NN 8_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+The_DT output_NN of_IN these_DT programs_NNS is_VBZ a_DT ranked_VBN list_NN of_IN similar_JJ words_NNS to_TO each_DT word_NN ._.
+For_IN example_NN ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- outputs_VBZ the_DT following_JJ similar_JJ words_NNS for_IN wine_NN and_CC suit_NN :_: wine_NN :_: beer_NN ,_, white_JJ wine_NN ,_, red_JJ wine_NN ,_, Chardon_NNP
+is_VBZ high_JJ when_WRB both_CC precision_NN and_CC recall_NN are_VBP high_JJ ._.
+6_CD ._.
+EXPERIMENTAL_JJ RESULTS_NNS In_IN this_DT section_NN ,_, we_PRP describe_VBP our_PRP$ experimental_JJ setup_NN and_CC present_JJ evaluation_NN results_NNS of_IN our_PRP$ system_NN ._.
+6.1_CD Setup_NN We_PRP used_VBD Minipar_NNP 2_CD =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT broad-coverage_JJ English_NNP parser_NN ,_, to_TO parse_VB about_IN 1GB_NN -LRB-_-LRB- 144M_NN words_NNS -RRB-_-RRB- of_IN newspaper_NN text_NN from_IN the_DT TREC_NN collection_NN -LRB-_-LRB- 1988_CD AP_NNP Newswire_NNP ,_, 1989-90_CD LA_NNP Times_NNP ,_, and_CC 1991_CD San_NNP Jose_NNP Mercury_NNP -RRB-_-RRB- at_IN a_DT speed_NN of_IN about_IN 500_CD wo_MD
+is_VBZ high_JJ when_WRB both_CC precision_NN and_CC recall_NN are_VBP high_JJ ._.
+6_CD ._.
+EXPERIMENTAL_JJ RESULTS_NNS In_IN this_DT section_NN ,_, we_PRP describe_VBP our_PRP$ experimental_JJ setup_NN and_CC present_JJ evaluation_NN results_NNS of_IN our_PRP$ system_NN ._.
+6.1_CD Setup_NN We_PRP used_VBD Minipar_NNP 2_CD =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT broad-coverage_JJ English_NNP parser_NN ,_, to_TO parse_VB about_IN 1GB_NN -LRB-_-LRB- 144M_NN words_NNS -RRB-_-RRB- of_IN newspaper_NN text_NN from_IN the_DT TREC_NN collection_NN -LRB-_-LRB- 1988_CD AP_NNP Newswire_NNP ,_, 1989-90_CD LA_NNP Times_NNP ,_, and_CC 1991_CD San_NNP Jose_NNP Mercury_NNP -RRB-_-RRB- at_IN a_DT speed_NN of_IN about_IN 500_CD wo_MD
+tor_NN :_: F_NN F_NN c_NN c_NN -LRB-_-LRB- w_NN -RRB-_-RRB- -LRB-_-LRB- w_NN -RRB-_-RRB- +_CC ⎛_CD min_NN ⎜_FW ⎜_FW ×_FW ⎝_FW 1_CD ⎛_CD min_NN ⎜_NNP ⎜_NNP ⎝_NNP N_NNP ⎞_NNP ⎟_NNP ⎠_NNP ⎞_NNP ⎟_NNP ⎠_NNP ∑_NNP Fi_NNP -LRB-_-LRB- w_NN -RRB-_-RRB- ,_, ∑_NN Fc_NN -LRB-_-LRB- j_NN -RRB-_-RRB- i_FW j_FW ∑_FW F_NN -LRB-_-LRB- -RRB-_-RRB- -LRB-_-LRB- -RRB-_-RRB- ⎟_FW i_FW w_NN ,_, ∑_NN Fcj_NN +_CC 1_CD i_FW j_FW We_PRP compute_VBP the_DT similarity_NN between_IN two_CD words_NNS =_JJ -_: =_JJ wi_NN and_CC wj_NN using_VBG the_DT cosine_NN coefficient_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- of_IN their_PRP$ -_: =_JJ -_: mutual_JJ information_NN vectors_NNS :_: sim_NN -LRB-_-LRB- w_NN ,_, w_NN -RRB-_-RRB- i_FW j_FW =_JJ ∑_CD c_NN ∑_CD c_NN mi_FW mi_FW wic_FW 2_CD wic_JJ ×_NN mi_FW ×_FW ∑_FW c_NN w_NN jc_FW mi_FW 2_CD w_NN jc_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- -LRB-_-LRB- 3_LS -RRB-_-RRB- s4_NN ._.
+ALGORITHM_NN CBC_NN consists_VBZ of_IN three_CD phases_NNS ._.
+In_IN Phase_NN I_NN ,_, we_PRP compute_VBP each_DT element_NN 's_POS top_NN
+unterbalances_VBZ the_DT quadratic_JJ running_VBG time_NN of_IN average-link_NN to_TO make_VB Buckshot_NNP efficient_JJ :_: O_NN -LRB-_-LRB- K_NN ×_NN T_NN ×_CD n_NN +_CC nlogn_NN -RRB-_-RRB- ._.
+The_DT parameters_NNS K_NN and_CC T_NN are_VBP usually_RB considered_VBN to_TO be_VB small_JJ numbers_NNS ._.
+CBC_NNP is_VBZ a_DT descendent_NN of_IN UNICO_NN =_JJ -_: =_JJ N_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT also_RB uses_VBZ small_JJ and_CC tight_JJ clusters_NNS to_TO construct_VB initial_JJ centroids_NNS ._.
+We_PRP compare_VBP them_PRP in_IN Section_NNP 4.4_CD after_IN presenting_VBG the_DT CBC_NNP algorithm_NN ._.
+3_LS ._.
+WORD_NN SIMILARITY_NN Following_VBG -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, we_PRP represent_VBP each_DT word_NN
+y_NN defined_VBN using_VBG a_DT manually_RB constructed_VBN lexicon_NN ._.
+There_EX are_VBP several_JJ disadvantages_NNS associated_VBN with_IN these_DT word_NN senses_NNS ._.
+First_RB ,_, manually_RB created_VBN lexicons_NNS often_RB contain_VBP rare_JJ senses_NNS ._.
+For_IN example_NN ,_, WordNet_NNP 1.5_CD =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -LRB-_-LRB- he_PRP -_: =_SYM -_: reon_NN referred_VBN to_TO as_IN WordNet_NNP -RRB-_-RRB- included_VBD a_DT sense_NN of_IN computer_NN that_WDT means_VBZ `_`` the_DT person_NN who_WP computes_VBZ '_'' ._.
+Using_VBG WordNet_NNP to_TO expand_VB queries_NNS to_TO an_DT information_NN retrieval_NN system_NN ,_, the_DT expansion_NN of_IN computer_NN Permis_NN
+that_IN iteratively_RB assigns_VBZ each_DT element_NN to_TO one_CD of_IN K_NN clusters_NNS according_VBG to_TO the_DT centroid_NN closest_JJS to_TO it_PRP and_CC recomputes_VBZ the_DT centroid_NN of_IN each_DT cluster_NN as_IN the_DT average_NN of_IN the_DT cluster_NN 's_POS elements_NNS ._.
+Dubes_NNP and_CC Jain_NNP =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: showed_VBD that_IN K-means_NNS is_VBZ inferior_JJ to_TO agglomerative_JJ hierarchical_JJ algorithms_NNS ._.
+However_RB ,_, K-means_NNS has_VBZ complexity_NN O_NN -LRB-_-LRB- K_NN ×_NN T_NN ×_CD n_NN -RRB-_-RRB- and_CC is_VBZ efficient_JJ for_IN many_JJ clustering_NN tasks_NNS ._.
+Because_IN the_DT initial_JJ centroids_NNS are_VBP random_JJ
+d_NN sense_NN discovery_NN ,_, clustering_NN ,_, evaluation_NN ,_, machine_NN learning_NN ._.
+1_CD ._.
+INTRODUCTION_NN Using_VBG word_NN senses_NNS versus_CC word_NN forms_NNS is_VBZ useful_JJ in_IN many_JJ applications_NNS such_JJ as_IN information_NN retrieval_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, machine_NN translation_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: and_CC question-answering_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+In_IN previous_JJ approaches_NNS ,_, word_NN senses_NNS are_VBP usually_RB defined_VBN using_VBG a_DT manually_RB constructed_VBN lexicon_NN ._.
+There_EX are_VBP several_JJ disadvantages_NNS associated_VBN with_IN these_DT word_NN senses_NNS ._.
+First_RB ,_, ma_FW
+contexts_NNS tend_VBP to_TO be_VB similar_JJ ._.
+This_DT is_VBZ known_VBN as_IN the_DT Distributional_JJ Hypothesis_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+There_EX have_VBP been_VBN many_JJ approaches_NNS to_TO compute_VB the_DT similarity_NN between_IN words_NNS based_VBN on_IN their_PRP$ distribution_NN in_IN a_DT corpus_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT output_NN of_IN these_DT programs_NNS is_VBZ a_DT ranked_VBN list_NN of_IN similar_JJ words_NNS to_TO each_DT word_NN ._.
+For_IN example_NN ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- outputs_VBZ the_DT following_JJ similar_JJ words_NNS for_IN wine_NN and_CC suit_NN :_: wine_NN :_: beer_NN ,_, white_JJ wine_NN ,_, red_JJ wine_NN ,_, Chardonnay_NNP ,_, ch_NN
+erimentation_NN ._.
+Keywords_NNP Word_NNP sense_NN discovery_NN ,_, clustering_NN ,_, evaluation_NN ,_, machine_NN learning_NN ._.
+1_CD ._.
+INTRODUCTION_NN Using_VBG word_NN senses_NNS versus_CC word_NN forms_NNS is_VBZ useful_JJ in_IN many_JJ applications_NNS such_JJ as_IN information_NN retrieval_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, machine_NN translation_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC question-answering_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+In_IN previous_JJ approaches_NNS ,_, word_NN senses_NNS are_VBP usually_RB defined_VBN using_VBG a_DT manually_RB constructed_VBN lexicon_NN ._.
+There_EX are_VBP several_JJ disadvantages_NNS associated_VBN with_IN the_DT
+the_DT probability_NN that_IN a_DT randomly_RB selected_VBN noun_NN refers_VBZ to_TO an_DT instance_NN of_IN s_NN or_CC any_DT synset_NN below_IN it_PRP ._.
+These_DT probabilities_NNS are_VBP not_RB included_VBN in_IN WordNet_NNP ._.
+We_PRP use_VBP the_DT frequency_NN counts_NNS of_IN synsets_NNS in_IN the_DT SemCor_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: corpus_NN to_TO estimate_VB them_PRP ._.
+Since_IN SemCor_NNP is_VBZ a_DT fairly_RB small_JJ corpus_NN -LRB-_-LRB- 200K_NN 1_CD WordNet_NNP also_RB contains_VBZ other_JJ semantic_JJ relationships_NNS such_JJ as_IN meronyms_NNS -LRB-_-LRB- part-whole_JJ relationships_NNS -RRB-_-RRB- and_CC antonyms_NNS ,_, however_RB we_PRP do_VBP not_RB u_VB
+computes_VBZ this_DT similarity_NN as_IN the_DT average_JJ similarity_NN between_IN all_DT pairs_NNS of_IN elements_NNS across_IN clusters_NNS ._.
+The_DT complexity_NN of_IN these_DT algorithms_NNS is_VBZ O_NN -LRB-_-LRB- n_NN 2_CD logn_NN -RRB-_-RRB- ,_, where_WRB n_NN is_VBZ the_DT number_NN of_IN elements_NNS to_TO be_VB clustered_VBN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Chameleon_NNP is_VBZ a_DT hierarchical_JJ algorithm_NN that_WDT employs_VBZ dynamic_JJ modeling_NN to_TO improve_VB clustering_NN quality_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+When_WRB merging_VBG two_CD clusters_NNS ,_, one_PRP might_MD consider_VB the_DT sum_NN of_IN the_DT similarities_NNS between_IN pairs_NNS of_IN elem_NN
+._.
+Because_IN the_DT initial_JJ centroids_NNS are_VBP randomly_RB selected_VBN ,_, the_DT resulting_VBG clusters_NNS vary_VBP in_IN quality_NN ._.
+Some_DT sets_NNS of_IN initial_JJ centroids_NNS lead_VBP to_TO poor_JJ convergence_NN rates_NNS or_CC poor_JJ cluster_NN quality_NN ._.
+Bisecting_VBG K-means_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT variation_NN of_IN K-means_NNS ,_, begins_VBZ with_IN a_DT set_NN containing_VBG one_CD large_JJ cluster_NN consisting_VBG of_IN every_DT element_NN and_CC iteratively_RB picks_VBZ the_DT largest_JJS cluster_NN in_IN the_DT set_NN ,_, splits_VBZ it_PRP into_IN two_CD clusters_NNS and_CC replaces_VBZ it_PRP b_SYM
+Hybrid_NN clustering_NN algorithms_NNS combine_VBP hierarchical_JJ and_CC partitional_JJ algorithms_NNS in_IN an_DT attempt_NN to_TO have_VB the_DT high_JJ quality_NN of_IN hierarchical_JJ algorithms_NNS with_IN the_DT efficiency_NN of_IN partitional_JJ algorithms_NNS ._.
+Buckshot_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: addresses_VBZ the_DT problem_NN of_IN randomly_RB selecting_VBG initial_JJ centroids_NNS in_IN K-means_NNS by_IN combining_VBG it_PRP with_IN average-link_JJ clustering_NN ._.
+Cutting_VBG et_FW al._FW claim_VBP its_PRP$ clusters_NNS are_VBP comparable_JJ in_IN quality_NN to_TO hierarchical_JJ algo_NN
+complexity_NN of_IN these_DT algorithms_NNS is_VBZ O_NN -LRB-_-LRB- n_NN 2_CD logn_NN -RRB-_-RRB- ,_, where_WRB n_NN is_VBZ the_DT number_NN of_IN elements_NNS to_TO be_VB clustered_VBN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Chameleon_NNP is_VBZ a_DT hierarchical_JJ algorithm_NN that_WDT employs_VBZ dynamic_JJ modeling_NN to_TO improve_VB clustering_NN quality_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+When_WRB merging_VBG two_CD clusters_NNS ,_, one_PRP might_MD consider_VB the_DT sum_NN of_IN the_DT similarities_NNS between_IN pairs_NNS of_IN elements_NNS across_IN the_DT clusters_NNS -LRB-_-LRB- e.g._FW average-link_JJ clustering_NN -RRB-_-RRB- ._.
+A_DT drawback_NN of_IN this_DT approach_NN is_VBZ that_IN the_DT existe_NN
+t_NN the_DT true_JJ recall_NN ,_, it_PRP does_VBZ provide_VB a_DT relative_JJ ranking_NN of_IN the_DT algorithms_NNS used_VBN to_TO construct_VB the_DT pool_NN of_IN target_NN senses_NNS ._.
+The_DT overall_JJ recall_NN is_VBZ the_DT average_JJ recall_NN of_IN all_DT words_NNS ._.
+5.4_CD F-measure_NN The_DT F-measure_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: combines_VBZ precision_NN and_CC recall_NN aspects_NNS :_: RP_NN F_NN =_JJ R_NN +_CC P_NN 2_CD where_WRB R_NN is_VBZ the_DT recall_NN and_CC P_NN is_VBZ the_DT precision_NN ._.
+F_NN weights_NNS low_JJ values_NNS of_IN precision_NN and_CC recall_NN more_RBR heavily_RB than_IN higher_JJR values_NNS ._.
+It_PRP is_VBZ high_JJ when_WRB both_DT
+xistence_NN of_IN a_DT single_JJ pair_NN of_IN very_RB similar_JJ elements_NNS might_MD unduly_RB cause_VB the_DT merger_NN of_IN two_CD clusters_NNS ._.
+An_DT alternative_NN considers_VBZ the_DT number_NN of_IN pairs_NNS of_IN elements_NNS whose_WP$ similarity_NN exceeds_VBZ a_DT certain_JJ threshold_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, this_DT may_MD cause_VB undesirable_JJ mergers_NNS when_WRB there_EX are_VBP a_DT large_JJ number_NN of_IN pairs_NNS whose_WP$ similarities_NNS barely_RB exceed_VBP the_DT threshold_NN ._.
+Chameleon_NN clustering_NN combines_VBZ the_DT two_CD approaches_NNS ._.
+K-means_FW clusterin_FW

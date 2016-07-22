@@ -1,0 +1,162 @@
+Online_JJ modeling_NN of_IN proactive_JJ moderation_NN system_NN for_IN auction_NN fraud_NN detection_NN
+We_PRP consider_VBP the_DT problem_NN of_IN building_VBG online_JJ machine-learned_JJ models_NNS for_IN detecting_VBG auction_NN frauds_NNS in_IN e-commence_NN web_NN sites_NNS ._.
+Since_IN the_DT emergence_NN of_IN the_DT world_NN wide_JJ web_NN ,_, online_JJ shopping_NN and_CC online_NN auction_NN have_VBP gained_VBN more_JJR and_CC more_JJR popularity_NN ._.
+While_IN people_NNS are_VBP enjoying_VBG the_DT benefits_NNS from_IN online_JJ trading_NN ,_, criminals_NNS are_VBP also_RB taking_VBG advantages_NNS to_TO conduct_VB fraudulent_JJ activities_NNS against_IN honest_JJ parties_NNS to_TO obtain_VB illegal_JJ profit_NN ._.
+Hence_RB proactive_JJ fraud-detection_JJ moderation_NN systems_NNS are_VBP commonly_RB applied_VBN in_IN practice_NN to_TO detect_VB and_CC prevent_VB such_JJ illegal_JJ and_CC fraud_NN activities_NNS ._.
+Machine-learned_JJ models_NNS ,_, especially_RB those_DT that_WDT are_VBP learned_VBN online_NN ,_, are_VBP able_JJ to_TO catch_VB frauds_NNS more_RBR efficiently_RB and_CC quickly_RB than_IN human-tuned_JJ rule-based_JJ systems_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP an_DT online_JJ probit_NN model_NN framework_NN which_WDT takes_VBZ online_NN feature_NN selection_NN ,_, coefficient_NN bounds_NNS from_IN human_JJ knowledge_NN and_CC multiple_JJ instance_NN learning_VBG into_IN account_NN simultaneously_RB ._.
+By_IN empirical_JJ experiments_NNS on_IN a_DT real-world_JJ online_NN auction_NN fraud_NN detection_NN data_NNS we_PRP show_VBP that_IN this_DT model_NN can_MD potentially_RB detect_VB more_JJR frauds_NNS and_CC significantly_RB reduce_VB customer_NN complaints_NNS compared_VBN to_TO several_JJ baseline_NN models_NNS and_CC the_DT human-tuned_JJ rule-based_JJ system_NN ._.
+eputation_NN system_NN and_CC also_RB the_DT challenges_NNS for_IN the_DT modern_JJ reputation_NN systems_NNS to_TO elicit_VB user_NN feedback_NN ._.
+Other_JJ representative_JJ work_NN connecting_VBG reputation_NN systems_NNS with_IN online_JJ auction_NN fraud_NN detection_NN include_VBP =_JJ -_: =[_NN 32_CD ,_, 17_CD ,_, 28_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB the_DT last_JJ work_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- introduced_VBD a_DT Markov_NNP random_JJ field_NN model_NN with_IN a_DT belief_NN propagation_NN algorithm_NN for_IN the_DT user_NN reputation_NN ._.
+Other_JJ than_IN reputation_NN systems_NNS ,_, machine_NN learned_VBD models_NNS havebeen_RB applied_VBN to_TO
+ays_NNS in_IN the_DT order_NN of_IN O_NN -LRB-_-LRB- δ_NN k_NN -RRB-_-RRB- ,_, i.e._FW the_DT smaller_JJR δ_NN is_VBZ ,_, the_DT more_RBR dynamic_JJ the_DT model_NN becomes_VBZ ._.
+δ_NN can_MD be_VB learned_VBN via_IN cross-validation_NN ._.
+This_DT online_JJ modeling_NN technique_NN has_VBZ been_VBN commonly_RB used_VBN in_IN literature_NN -LRB-_-LRB- see_VB =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 37_CD -RRB-_-RRB- for_IN example_NN -RRB-_-RRB- ._.
+In_IN practice_NN ,_, for_IN simplicity_NN we_PRP let_VBD Σ0_NN =_JJ σ_NN 2_CD 0I_NN and_CC Σt_NN +1_NN =_JJ diag_NN -LRB-_-LRB- ˆ_FW Σt_FW -RRB-_-RRB- \/_: δ_NN to_TO ignore_VB the_DT covariance_NN among_IN the_DT coefficients_NNS of_IN βt_NN ._.
+Besides_IN the_DT probit_JJ link_NN function_NN used_VBN in_IN this_DT pap_NN
+tems_NNS ,_, machine_NN learned_VBD models_NNS havebeen_RB applied_VBD tomoderation_NN systems_NNS for_IN monitoringand_NN detecting_VBG fraud_NN ._.
+-LRB-_-LRB- 7_CD -RRB-_-RRB- proposed_VBN to_TO train_VB simple_JJ decision_NN trees_NNS to_TO select_VB good_JJ sets_NNS of_IN features_NNS and_CC make_VB predictions_NNS ._.
+=_SYM -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: 673WWW_NN 2012_CD --_: Session_NN :_: Security_NN 2_CD April_NNP 16_CD --_: 20_CD ,_, 2012_CD ,_, Lyon_NNP ,_, France_NNP developed_VBD another_DT simple_JJ approach_NN that_WDT uses_VBZ social_JJ network_NN analysis_NN and_CC decision_NN trees_NNS ._.
+-LRB-_-LRB- 38_CD -RRB-_-RRB- proposed_VBD an_DT offline_JJ logistic_JJ regression_NN
+odel_NN has_VBZ to_TO be_VB updated_VBN according_VBG to_TO the_DT data_NNS and_CC make_VB predictions_NNS and_CC servings_NNS for_IN the_DT next_JJ batch_NN ._.
+The_DT concept_NN of_IN online_JJ modeling_NN has_VBZ been_VBN applied_VBN to_TO many_JJ areas_NNS ,_, such_JJ as_IN stock_NN price_NN forecasting_NN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, web_NN content_NN optimization_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, and_CC web_NN spam_NN detection_NN -LRB-_-LRB- e.g._FW -LRB-_-LRB- 9_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Compared_VBN to_TO offline_JJ models_NNS ,_, online_JJ learning_NN usually_RB requires_VBZ much_RB lighter_JJR computation_NN and_CC memory_NN load_NN ;_: hence_RB it_PRP can_MD be_VB widely_RB used_VBN i_LS
+features_NNS ,_, propershrinkage_NN on_IN the_DT regression_NN coefficients_NNS is_VBZ usually_RB required_VBN to_TO avoid_VB over-fitting_JJ ._.
+For_IN instance_NN ,_, two_CD common_JJ shrinkage_NN methods_NNS are_VBP L2_NN penalty_NN -LRB-_-LRB- ridge_NN regression_NN -RRB-_-RRB- and_CC L1_NN penalty_NN -LRB-_-LRB- Lasso_NN -RRB-_-RRB- =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Also_RB ,_, experts_NNS often_RB want_VBP to_TO monitor_VB the_DT importance_NN of_IN the_DT rules_NNS so_IN that_IN they_PRP can_MD make_VB appropriate_JJ adjustments_NNS -LRB-_-LRB- e.g._FW change_NN rules_NNS or_CC add_VB new_JJ rules_NNS -RRB-_-RRB- ._.
+However_RB ,_, the_DT fraudulent_JJ sellers_NNS change_VBP their_PRP$ behav_NN
+le_DT selection_NN simultaneously_RB ._.
+Representative_JJ work_NN includes_VBZ decision_NN trees_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, random_JJ forests_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, gradient_NN boosting_VBG -LRB-_-LRB- 15_CD -RRB-_-RRB- and_CC Bayesian_JJ additive_JJ regression_NN trees_NNS -LRB-_-LRB- BART_NNP -RRB-_-RRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Online_JJ modeling_NN -LRB-_-LRB- learning_NN -RRB-_-RRB- =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: considers_VBZ the_DT scenario_NN that_IN the_DT input_NN is_VBZ given_VBN one_CD piece_NN at_IN a_DT time_NN ,_, and_CC when_WRB receiving_VBG a_DT batch_NN of_IN input_NN the_DT model_NN has_VBZ to_TO be_VB updated_VBN according_VBG to_TO the_DT data_NNS and_CC make_VB predictions_NNS and_CC servings_NNS for_IN the_DT nex_NN
+and_CC servings_NNS for_IN the_DT next_JJ batch_NN ._.
+The_DT concept_NN of_IN online_JJ modeling_NN has_VBZ been_VBN applied_VBN to_TO many_JJ areas_NNS ,_, such_JJ as_IN stock_NN price_NN forecasting_NN -LRB-_-LRB- e.g._FW -LRB-_-LRB- 22_CD -RRB-_-RRB- -RRB-_-RRB- ,_, web_NN content_NN optimization_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, and_CC web_NN spam_NN detection_NN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Compared_VBN to_TO offline_JJ models_NNS ,_, online_JJ learning_NN usually_RB requires_VBZ much_RB lighter_JJR computation_NN and_CC memory_NN load_NN ;_: hence_RB it_PRP can_MD be_VB widely_RB used_VBN in_IN real-time_JJ systems_NNS with_IN continuous_JJ support_NN of_IN inputs_NNS ._.
+For_IN online_NN
+ion_NN moderation_NN system_NN ,_, which_WDT essentially_RB evolves_VBZ dynamically_RB over_IN time_NN ._.
+We_PRP propose_VBP a_DT Bayesian_JJ probit_NN online_NN model_NN frameworkfor_NN thebinaryresponse_NN ._.
+Weapplythestochastic_JJ search_NN variable_JJ selection_NN -LRB-_-LRB- SSVS_NN -RRB-_-RRB- =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT well-known_JJ technique_NN in_IN statistical_JJ literature_NN ,_, to_TO handle_VB the_DT dynamic_JJ evolution_NN of_IN the_DT feature_NN importance_NN in_IN a_DT principled_JJ way_NN ._.
+Note_VB that_IN we_PRP are_VBP not_RB aware_JJ of_IN any_DT previous_JJ work_NN that_WDT tries_VBZ to_TO embed_VB S_NN
+People_NNS then_RB either_RB use_VB Markov_NNP Chain_NNP Monte_NNP Carlo_NNP to_TO sample_NN models_NNS from_IN the_DT model_NN space_NN and_CC apply_VB Bayesian_JJ model_NN averaging_NN -LRB-_-LRB- 36_CD -RRB-_-RRB- ,_, or_CC do_VB a_DT stochastic_JJ search_NN in_IN the_DT model_NN space_NN to_TO find_VB the_DT posterior_JJ mode_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Among_IN non-linear_JJ models_NNS ,_, tree_NN models_NNS usually_RB handles_VBZ the_DT non-linearity_JJ and_CC variable_JJ selection_NN simultaneously_RB ._.
+Representative_JJ work_NN includes_VBZ decision_NN trees_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, random_JJ forests_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, gradient_NN boosting_VBG
+those_DT in_IN the_DT previous_JJ sections_NNS ._.
+3_LS ._.
+RELATED_NNS WORK_VBP Online_JJ auction_NN fraud_NN is_VBZ always_RB recognized_VBN as_IN an_DT important_JJ issue_NN ._.
+There_EX are_VBP articles_NNS on_IN websites_NNS to_TO teach_VB people_NNS how_WRB to_TO avoid_VB online_JJ auction_NN fraud_NN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 35_CD ,_, 14_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+-LRB-_-LRB- 10_CD -RRB-_-RRB- categorizes_VBZ auction_NN fraud_NN into_IN several_JJ types_NNS and_CC proposes_VBZ strategies_NNS to_TO fightthem_NN ._.
+Reputationsystemsare_JJ usedextensivelybywebsites_NNS to_TO detect_VB auction_NN frauds_NNS ,_, although_IN many_JJ of_IN them_PRP use_VBP naive_JJ appr_NN
+ther_NN expert_NN investigation_NN while_IN keeping_VBG their_PRP$ workload_NN at_IN a_DT reasonable_JJ level_NN ._.
+The_DT moderation_NN system_NN using_VBG machine-learned_JJ models_NNS is_VBZ proventoimprovefrauddetectionsignificantlyoverthehumantuned_JJ weights_NNS =_JJ -_: =[_NN 38_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- 38_CD -RRB-_-RRB- the_DT authors_NNS considered_VBD the_DT scenario_NN of_IN building_VBG offline_JJ models_NNS by_IN using_VBG the_DT previous_JJ 30_CD days_NNS data_NNS to_TO serve_VB the_DT next_JJ day_NN ._.
+Since_IN the_DT response_NN is_VBZ binary_JJ -LRB-_-LRB- fraud_NN or_CC non-fraud_JJ -RRB-_-RRB- and_CC the_DT scoring_VBG fun_NN
+the_DT posterior_JJ mode_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Among_IN non-linear_JJ models_NNS ,_, tree_NN models_NNS usually_RB handles_VBZ the_DT non-linearity_JJ and_CC variable_JJ selection_NN simultaneously_RB ._.
+Representative_JJ work_NN includes_VBZ decision_NN trees_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, random_JJ forests_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, gradient_NN boosting_VBG -LRB-_-LRB- 15_CD -RRB-_-RRB- and_CC Bayesian_JJ additive_JJ regression_NN trees_NNS -LRB-_-LRB- BART_NNP -RRB-_-RRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Online_JJ modeling_NN -LRB-_-LRB- learning_NN -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- considers_VBZ the_DT scenario_NN that_IN the_DT input_NN is_VBZ given_VBN one_CD piece_NN at_IN a_DT time_NN ,_, and_CC when_WRB receiving_VBG a_DT batc_NN
+pportvectormachine_NN -LRB-_-LRB- SVM_NN -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC decision_NN trees_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+Feature_NN selection_NN for_IN regression_NN models_NNS is_VBZ often_RB done_VBN through_IN introducing_VBG penalties_NNS on_IN the_DT coefficients_NNS ._.
+Typical_JJ penalties_NNS include_VBP ridge_NN regression_NN =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- L2_NN penalty_NN -RRB-_-RRB- and_CC Lasso_NNP -LRB-_-LRB- 33_CD -RRB-_-RRB- -LRB-_-LRB- L1_NN penalty_NN -RRB-_-RRB- ._.
+Compared_VBN to_TO ridge_VB regression_NN ,_, Lasso_NNP shrinks_VBZ the_DT unnecessary_JJ coefficients_NNS to_TO zero_VB instead_RB of_IN small_JJ values_NNS ,_, which_WDT provides_VBZ both_CC intuition_NN and_CC good_JJ performance_NN ._.
+being_VBG 0_CD -RRB-_-RRB- and_CC compute_VB the_DT marginal_JJ posterior_NN probably_RB of_IN the_DT model_NN given_VBN data_NNS ._.
+People_NNS then_RB either_RB use_VB Markov_NNP Chain_NNP Monte_NNP Carlo_NNP to_TO sample_NN models_NNS from_IN the_DT model_NN space_NN and_CC apply_VB Bayesian_JJ model_NN averaging_NN =_JJ -_: =[_NN 36_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC do_VB a_DT stochastic_JJ search_NN in_IN the_DT model_NN space_NN to_TO find_VB the_DT posterior_JJ mode_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Among_IN non-linear_JJ models_NNS ,_, tree_NN models_NNS usually_RB handles_VBZ the_DT non-linearity_JJ and_CC variable_JJ selection_NN simultaneously_RB ._.
+Representa_NN
+edding_NN of_IN SSVS_NN to_TO the_DT online_JJ modeling_NN is_VBZ more_RBR principled_JJ ._.
+Multipleinstancelearning_JJ ,_, whichhandlesthetrainingdata_JJ with_IN bags_NN of_IN instances_NNS that_WDT are_VBP labeled_VBN positive_JJ or_CC negative_JJ ,_, is_VBZ originally_RB proposed_VBN by_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Many_JJ papers_NNS has_VBZ been_VBN published_VBN in_IN the_DT application_NN area_NN of_IN image_NN classification_NN such_JJ as_IN -LRB-_-LRB- 25_CD ,_, 24_CD -RRB-_-RRB- ._.
+The_DT logistic_JJ regression_NN framework_NN of_IN multiple_JJ instance_NN learning_NN is_VBZ presented_VBN in_IN -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, and_CC the_DT SVM_NN fra_NN
+he_PRP order_NN of_IN O_NN -LRB-_-LRB- δ_NN k_NN -RRB-_-RRB- ,_, i.e._FW the_DT smaller_JJR δ_NN is_VBZ ,_, the_DT more_RBR dynamic_JJ the_DT model_NN becomes_VBZ ._.
+δ_NN can_MD be_VB learned_VBN via_IN cross-validation_NN ._.
+This_DT online_JJ modeling_NN technique_NN has_VBZ been_VBN commonly_RB used_VBN in_IN literature_NN -LRB-_-LRB- see_VB -LRB-_-LRB- 1_LS -RRB-_-RRB- and_CC =_JJ -_: =[_NN 37_CD -RRB-_-RRB- -_: =_SYM -_: for_IN example_NN -RRB-_-RRB- ._.
+In_IN practice_NN ,_, for_IN simplicity_NN we_PRP let_VBD Σ0_NN =_JJ σ_NN 2_CD 0I_NN and_CC Σt_NN +1_NN =_JJ diag_NN -LRB-_-LRB- ˆ_FW Σt_FW -RRB-_-RRB- \/_: δ_NN to_TO ignore_VB the_DT covariance_NN among_IN the_DT coefficients_NNS of_IN βt_NN ._.
+Besides_IN the_DT probit_JJ link_NN function_NN used_VBN in_IN this_DT paper_NN ,_, anoth_NN
+there_EX are_VBP nt_NN observations_NNS ._.
+Let_VB us_PRP denote_VB the_DT i-th_JJ binary_JJ observation_NN as_IN yit_NN ._.
+If_IN yit_NN =_JJ 1_CD ,_, the_DT case_NN is_VBZ fraud_NN ;_: otherwise_RB it_PRP is_VBZ non-fraud_JJ ._.
+Let_VB the_DT feature_NN set_NN of_IN case_NN i_FW at_IN time_NN t_NN be_VB xit_VBN ._.
+The_DT probit_NN model_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: can_MD be_VB written_VBN as_IN P_NN -LRB-_-LRB- yit_NN =_JJ 1_CD |_CD xit_NN ,_, βt_NN -RRB-_-RRB- =_JJ Φ_NN -LRB-_-LRB- x_NN ′_FW itβt_FW -RRB-_-RRB- ,_, -LRB-_-LRB- 1_LS -RRB-_-RRB- where_WRB Φ_NN -LRB-_-LRB- ·_NN -RRB-_-RRB- is_VBZ the_DT cumulative_JJ distribution_NN function_NN of_IN the_DT standardnormal_JJ distributionN_NN -LRB-_-LRB- 0,1_NN -RRB-_-RRB- ,_, andβt_NN is_VBZ theunknown_JJ regression_NN coefficient_NN vector_NN a_DT
+I_PRP and_CC Σt_FW +1_FW =_JJ diag_NN -LRB-_-LRB- ˆ_FW Σt_FW -RRB-_-RRB- \/_: δ_NN to_TO ignore_VB the_DT covariance_NN among_IN the_DT coefficients_NNS of_IN βt_NN ._.
+Besides_IN the_DT probit_JJ link_NN function_NN used_VBN in_IN this_DT paper_NN ,_, another_DT common_JJ link_NN function_NN for_IN the_DT binary_JJ response_NN is_VBZ logistic_JJ =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN logistic_JJ regression_NN seems_VBZ more_RBR often_RB used_VBN in_IN practice_NN ,_, there_EX does_VBZ not_RB exist_VB a_DT conjugate_NN prior_JJ for_IN the_DT coefficient_NN βt_NN hence_RB the_DT posterior_NN of_IN βt_NN always_RB does_VBZ not_RB have_VB a_DT closed_JJ form_NN ;_: therefore_RB
+categorizes_VBZ auction_NN fraud_NN into_IN several_JJ types_NNS and_CC proposes_VBZ strategies_NNS to_TO fightthem_NN ._.
+Reputationsystemsare_JJ usedextensivelybywebsites_NNS to_TO detect_VB auction_NN frauds_NNS ,_, although_IN many_JJ of_IN them_PRP use_VBP naive_JJ approaches_NNS ._.
+=_SYM -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: summarized_VBN several_JJ key_JJ properties_NNS of_IN a_DT good_JJ reputation_NN system_NN and_CC also_RB the_DT challenges_NNS for_IN the_DT modern_JJ reputation_NN systems_NNS to_TO elicit_VB user_NN feedback_NN ._.
+Other_JJ representative_JJ work_NN connecting_VBG reputation_NN system_NN
+2_CD via_IN N_NN ∑_NN -LRB-_-LRB- β_NN -LRB-_-LRB- k_NN -RRB-_-RRB- k_NN =_JJ 1_CD jt_FW −_FW ˆ_FW µjt_FW -RRB-_-RRB- 21_CD -LRB-_-LRB- β_NN -LRB-_-LRB- k_NN -RRB-_-RRB- jt_FW ̸_FW =_JJ 0_CD -RRB-_-RRB- 2_CD ˆ_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- We_PRP find_VBP the_DT optimal_JJ solution_NN to_TO equation_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- by_IN alternatively_RB fitting_JJ -LRB-_-LRB- µjt_FW |_FW ˆ_FW σjt_FW ˆ_NN 2_CD -RRB-_-RRB- and_CC -LRB-_-LRB- σjt_FW ˆ_FW 2_CD |_CD µjt_NN -RRB-_-RRB- ˆ_CD to_TO maximize_VB the_DT function_NN using_VBG =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT online_JJ modeling_NN component_NN is_VBZ the_DT same_JJ as_IN that_DT in_IN Section_NN 2.2_CD ._.
+σjt_NN 2_CD -RRB-_-RRB- ._.
+2.4_CD Multiple_JJ Instance_NNP Learning_NNP When_WRB we_PRP look_VBP at_IN the_DT procedure_NN of_IN expert_NN labeling_NN in_IN the_DT moderation_NN system_NN ,_, we_PRP noticed_VBD that_IN e_SYM
+e_LS previous_JJ sections_NNS ._.
+3_LS ._.
+RELATED_NNS WORK_VBP Online_JJ auction_NN fraud_NN is_VBZ always_RB recognized_VBN as_IN an_DT important_JJ issue_NN ._.
+There_EX are_VBP articles_NNS on_IN websites_NNS to_TO teach_VB people_NNS how_WRB to_TO avoid_VB online_JJ auction_NN fraud_NN -LRB-_-LRB- e.g._FW -LRB-_-LRB- 35_CD ,_, 14_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+=_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: categorizes_VBZ auction_NN fraud_NN into_IN several_JJ types_NNS and_CC proposes_VBZ strategies_NNS to_TO fightthem_NN ._.
+Reputationsystemsare_JJ usedextensivelybywebsites_NNS to_TO detect_VB auction_NN frauds_NNS ,_, although_IN many_JJ of_IN them_PRP use_VBP naive_JJ approaches_NNS ._.
+βjt_NN being_VBG exactly_RB 0_CD ,_, and_CC with_IN prior_JJ probability_NN 1_CD −_FW p0jt_FW ,_, βjt_NN is_VBZ drawn_VBN from_IN a_DT Gaussian_JJ distribution_NN with_IN mean_NN µjt_NN and_CC variance_NN σ_NN 2_CD jt_NN ._.
+Such_JJ prior_JJ is_VBZ called_VBN the_DT ``_`` spike_NN and_CC slab_NN ''_'' prior_RB in_IN the_DT literature_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: but_CC how_WRB to_TO embed_VB it_PRP to_TO online_JJ modeling_NN has_VBZ never_RB been_VBN explored_VBN before_RB ._.
+Model_NNP fitting_NN ._.
+Let_VB β_FW −_FW j_NN ,_, t_NN be_VB the_DT vector_NN βt_NN excluding_VBG βjt_NN ._.
+The_DT model_NN fitting_JJ procedure_NN for_IN this_DT model_NN is_VBZ again_RB through_IN Gibbssampli_NNP
+les_FW the_DT non-linearity_JJ and_CC variable_JJ selection_NN simultaneously_RB ._.
+Representative_JJ work_NN includes_VBZ decision_NN trees_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, random_JJ forests_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, gradient_NN boosting_VBG -LRB-_-LRB- 15_CD -RRB-_-RRB- and_CC Bayesian_JJ additive_JJ regression_NN trees_NNS -LRB-_-LRB- BART_NNP -RRB-_-RRB- =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Online_JJ modeling_NN -LRB-_-LRB- learning_NN -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- considers_VBZ the_DT scenario_NN that_IN the_DT input_NN is_VBZ given_VBN one_CD piece_NN at_IN a_DT time_NN ,_, and_CC when_WRB receiving_VBG a_DT batch_NN of_IN input_NN the_DT model_NN has_VBZ to_TO be_VB updated_VBN according_VBG to_TO the_DT data_NNS and_CC make_VB pred_VBN
+used_VBN in_IN real-time_JJ systems_NNS with_IN continuous_JJ support_NN of_IN inputs_NNS ._.
+For_IN online_JJ feature_NN selection_NN ,_, representative_NN applied_VBD work_NN include_VBP -LRB-_-LRB- 11_CD -RRB-_-RRB- for_IN the_DT problem_NN of_IN object_NN tracking_NN in_IN computer_NN vision_NN research_NN ,_, and_CC =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: for_IN content-based_JJ image_NN retrieval_NN ._.
+Both_DT approaches_NNS are_VBP simple_JJ while_IN in_FW thispaper_FW the_DT embedding_NN of_IN SSVS_NN to_TO the_DT online_JJ modeling_NN is_VBZ more_RBR principled_JJ ._.
+Multipleinstancelearning_NN ,_, whichhandlesthetrainingdata_NN
+field_NN model_NN with_IN a_DT belief_NN propagation_NN algorithm_NN for_IN the_DT user_NN reputation_NN ._.
+Other_JJ than_IN reputation_NN systems_NNS ,_, machine_NN learned_VBD models_NNS havebeen_RB applied_VBD tomoderation_NN systems_NNS for_IN monitoringand_NN detecting_VBG fraud_NN ._.
+=_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBN to_TO train_VB simple_JJ decision_NN trees_NNS to_TO select_VB good_JJ sets_NNS of_IN features_NNS and_CC make_VB predictions_NNS ._.
+-LRB-_-LRB- 23_CD -RRB-_-RRB- 673WWW_NN 2012_CD --_: Session_NN :_: Security_NN 2_CD April_NNP 16_CD --_: 20_CD ,_, 2012_CD ,_, Lyon_NNP ,_, France_NNP developed_VBD another_DT simple_JJ approach_NN
+eputation_NN system_NN and_CC also_RB the_DT challenges_NNS for_IN the_DT modern_JJ reputation_NN systems_NNS to_TO elicit_VB user_NN feedback_NN ._.
+Other_JJ representative_JJ work_NN connecting_VBG reputation_NN systems_NNS with_IN online_JJ auction_NN fraud_NN detection_NN include_VBP =_JJ -_: =[_NN 32_CD ,_, 17_CD ,_, 28_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB the_DT last_JJ work_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- introduced_VBD a_DT Markov_NNP random_JJ field_NN model_NN with_IN a_DT belief_NN propagation_NN algorithm_NN for_IN the_DT user_NN reputation_NN ._.
+Other_JJ than_IN reputation_NN systems_NNS ,_, machine_NN learned_VBD models_NNS havebeen_RB applied_VBN to_TO
+equires_NNS much_RB lighter_JJR computation_NN and_CC memory_NN load_NN ;_: hence_RB it_PRP can_MD be_VB widely_RB used_VBN in_IN real-time_JJ systems_NNS with_IN continuous_JJ support_NN of_IN inputs_NNS ._.
+For_IN online_JJ feature_NN selection_NN ,_, representative_NN applied_VBD work_NN include_VBP =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: for_IN the_DT problem_NN of_IN object_NN tracking_NN in_IN computer_NN vision_NN research_NN ,_, and_CC -LRB-_-LRB- 21_CD -RRB-_-RRB- for_IN content-based_JJ image_NN retrieval_NN ._.
+Both_DT approaches_NNS are_VBP simple_JJ while_IN in_FW thispaper_FW the_DT embedding_NN of_IN SSVS_NN to_TO the_DT online_JJ modeling_NN
+eputation_NN system_NN and_CC also_RB the_DT challenges_NNS for_IN the_DT modern_JJ reputation_NN systems_NNS to_TO elicit_VB user_NN feedback_NN ._.
+Other_JJ representative_JJ work_NN connecting_VBG reputation_NN systems_NNS with_IN online_JJ auction_NN fraud_NN detection_NN include_VBP =_JJ -_: =[_NN 32_CD ,_, 17_CD ,_, 28_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB the_DT last_JJ work_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- introduced_VBD a_DT Markov_NNP random_JJ field_NN model_NN with_IN a_DT belief_NN propagation_NN algorithm_NN for_IN the_DT user_NN reputation_NN ._.
+Other_JJ than_IN reputation_NN systems_NNS ,_, machine_NN learned_VBD models_NNS havebeen_RB applied_VBN to_TO
+e_LS often_RB used_VBN in_IN practice_NN ,_, there_EX does_VBZ not_RB exist_VB a_DT conjugate_NN prior_JJ for_IN the_DT coefficient_NN βt_NN hence_RB the_DT posterior_NN of_IN βt_NN always_RB does_VBZ not_RB have_VB a_DT closed_JJ form_NN ;_: therefore_RB approximation_NN is_VBZ commonly_RB applied_VBN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Probit_NN model_NN through_IN data_NNS augmentation_NN ,_, on_IN the_DT other_JJ hand_NN ,_, allows_VBZ us_PRP to_TO sample_NN the_DT posterior_NN of_IN βt_NN through_IN Gibbs_NNP sampling_NN without_IN any_DT approximation_NN ._.
+It_PRP also_RB allows_VBZ us_PRP to_TO plug-in_JJ more_RBR complicated_JJ te_NN
+lesthetrainingdata_NN with_IN bags_NN of_IN instances_NNS that_WDT are_VBP labeled_VBN positive_JJ or_CC negative_JJ ,_, is_VBZ originally_RB proposed_VBN by_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+Many_JJ papers_NNS has_VBZ been_VBN published_VBN in_IN the_DT application_NN area_NN of_IN image_NN classification_NN such_JJ as_IN =_JJ -_: =[_NN 25_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT logistic_JJ regression_NN framework_NN of_IN multiple_JJ instance_NN learning_NN is_VBZ presented_VBN in_IN -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, and_CC the_DT SVM_NN framework_NN is_VBZ presented_VBN in_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+4_LS ._.
+EXPERIMENTS_NNS Weconductourexperimentsonareal_JJ onlineauction_NN fraud_NN det_NN
+published_VBN in_IN the_DT application_NN area_NN of_IN image_NN classification_NN such_JJ as_IN -LRB-_-LRB- 25_CD ,_, 24_CD -RRB-_-RRB- ._.
+The_DT logistic_JJ regression_NN framework_NN of_IN multiple_JJ instance_NN learning_NN is_VBZ presented_VBN in_IN -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, and_CC the_DT SVM_NN framework_NN is_VBZ presented_VBN in_IN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4_LS ._.
+EXPERIMENTS_NNS Weconductourexperimentsonareal_JJ onlineauction_NN fraud_NN detection_NN data_NNS set_VBP collected_VBN from_IN a_DT major_JJ Asian_JJ website_NN ._.
+We_PRP consider_VBP the_DT following_JJ online_JJ models_NNS :_: •_CD ON-PROB_NN is_VBZ the_DT online_JJ probit_NN reg_NN
+lesthetrainingdata_NN with_IN bags_NN of_IN instances_NNS that_WDT are_VBP labeled_VBN positive_JJ or_CC negative_JJ ,_, is_VBZ originally_RB proposed_VBN by_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+Many_JJ papers_NNS has_VBZ been_VBN published_VBN in_IN the_DT application_NN area_NN of_IN image_NN classification_NN such_JJ as_IN =_JJ -_: =[_NN 25_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT logistic_JJ regression_NN framework_NN of_IN multiple_JJ instance_NN learning_NN is_VBZ presented_VBN in_IN -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, and_CC the_DT SVM_NN framework_NN is_VBZ presented_VBN in_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+4_LS ._.
+EXPERIMENTS_NNS Weconductourexperimentsonareal_JJ onlineauction_NN fraud_NN det_NN
+._.
+Among_IN non-linear_JJ models_NNS ,_, tree_NN models_NNS usually_RB handles_VBZ the_DT non-linearity_JJ and_CC variable_JJ selection_NN simultaneously_RB ._.
+Representative_JJ work_NN includes_VBZ decision_NN trees_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, random_JJ forests_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, gradient_NN boosting_VBG =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Bayesian_JJ additive_JJ regression_NN trees_NNS -LRB-_-LRB- BART_NNP -RRB-_-RRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Online_JJ modeling_NN -LRB-_-LRB- learning_NN -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- considers_VBZ the_DT scenario_NN that_IN the_DT input_NN is_VBZ given_VBN one_CD piece_NN at_IN a_DT time_NN ,_, and_CC when_WRB receiving_VBG a_DT batch_NN of_IN input_NN the_DT model_NN has_VBZ
+fraud_NN detection_NN problem_NN as_IN a_DT binary_JJ classification_NN problem_NN ._.
+The_DT most_RBS frequently_RB used_VBN models_NNS for_IN binary_JJ classification_NN include_VBP logistic_JJ regression_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, probitregression_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, supportvectormachine_NN -LRB-_-LRB- SVM_NN -RRB-_-RRB- =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: and_CC decision_NN trees_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+Feature_NN selection_NN for_IN regression_NN models_NNS is_VBZ often_RB done_VBN through_IN introducing_VBG penalties_NNS on_IN the_DT coefficients_NNS ._.
+Typical_JJ penalties_NNS include_VBP ridge_NN regression_NN -LRB-_-LRB- 34_CD -RRB-_-RRB- -LRB-_-LRB- L2_NN penalty_NN -RRB-_-RRB- and_CC Lasso_NN
+pecified_VBN vector_NN of_IN lower_JJR bounds_NNS -LRB-_-LRB- i.e._FW for_IN feature_NN j_NN ,_, Tj_NN =_JJ 0_CD if_IN we_PRP force_VBP its_PRP$ weight_NN to_TO be_VB non-negative_JJ ;_: otherwise_RB Tj_NN =_JJ −_FW ∞_FW -RRB-_-RRB- ._.
+All_PDT the_DT above_JJ offline_JJ models_NNS can_MD be_VB fitted_VBN via_IN the_DT standard_JJ L-BFGS_NN algorithm_NN =_JJ -_: =[_NN 39_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT section_NN is_VBZ organized_VBN as_IN follows_VBZ ._.
+In_IN Section_NN 4.1_CD we_PRP first_RB introduce_VB the_DT data_NNS and_CC describe_VBP the_DT general_JJ settings_NNS of_IN the_DT models_NNS ._.
+In_IN Section_NN 4.2_CD we_PRP describe_VBP the_DT evaluation_NN metric_NN for_IN this_DT experiment_NN
+m_NN as_IN a_DT binary_JJ classification_NN problem_NN ._.
+The_DT most_RBS frequently_RB used_VBN models_NNS for_IN binary_JJ classification_NN include_VBP logistic_JJ regression_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, probitregression_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, supportvectormachine_NN -LRB-_-LRB- SVM_NN -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC decision_NN trees_NNS =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Feature_NN selection_NN for_IN regression_NN models_NNS is_VBZ often_RB done_VBN through_IN introducing_VBG penalties_NNS on_IN the_DT coefficients_NNS ._.
+Typical_JJ penalties_NNS include_VBP ridge_NN regression_NN -LRB-_-LRB- 34_CD -RRB-_-RRB- -LRB-_-LRB- L2_NN penalty_NN -RRB-_-RRB- and_CC Lasso_NNP -LRB-_-LRB- 33_CD -RRB-_-RRB- -LRB-_-LRB- L1_NN penalty_NN -RRB-_-RRB- ._.
+Com_NNP
+line_NN modeling_NN ._.
+Similar_JJ to_TO -LRB-_-LRB- 38_CD -RRB-_-RRB- ,_, we_PRP consider_VBP the_DT expert_JJ knowledge_NN to_TO bound_VBD the_DT rule-based_JJ coefficients_NNS to_TO be_VB positive_JJ ._.
+Finally_RB ,_, we_PRP consider_VBP to_TO combine_VB this_DT online_JJ model_NN with_IN multiple_JJ instance_NN learning_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT gives_VBZ even_RB better_JJR empirical_JJ performance_NN ._.
+We_PRP report_VBP the_DT performance_NN of_IN all_PDT the_DT above_JJ models_NNS through_IN extensive_JJ experiments_NNS using_VBG fraud_NN detection_NN datasets_NNS from_IN a_DT major_JJ online_JJ auction_NN website_NN in_IN Asi_NN
+e_LS the_DT auction_NN fraud_NN rate_NN is_VBZ generally_RB very_RB low_JJ -LRB-_-LRB- -LRB-_-LRB- 1_CD %_NN -RRB-_-RRB- ,_, the_DT data_NN becomes_VBZ quite_RB imbalanced_JJ and_CC it_PRP is_VBZ well-known_JJ that_IN in_IN such_JJ scenario_NN even_RB fitting_JJ simple_JJ logistic_JJ regression_NN becomes_VBZ a_DT difficult_JJ problem_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Therefore_RB ,_, unless_IN we_PRP use_VBP a_DT large_JJ amount_NN of_IN historical_JJ training_NN data_NNS ,_, offline_JJ models_NNS tend_VBP to_TO be_VB fairly_RB unstable_JJ ._.
+For_IN example_NN ,_, in_IN -LRB-_-LRB- 38_CD -RRB-_-RRB- ,_, 30_CD days_NNS of_IN training_NN data_NNS with_IN around_IN 5_CD million_CD samples_NNS are_VBP used_VBN

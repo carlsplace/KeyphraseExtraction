@@ -1,0 +1,90 @@
+Fast_JJ nearest-neighbor_JJ search_NN in_IN disk-resident_JJ graphs_NNS
+Link_NN prediction_NN ,_, personalized_JJ graph_NN search_NN ,_, fraud_NN detection_NN ,_, and_CC many_JJ such_JJ graph_NN mining_NN problems_NNS revolve_VBP around_IN the_DT computation_NN of_IN the_DT most_JJS ``_`` similar_JJ ''_'' k_NN nodes_NNS to_TO a_DT given_VBN query_NN node_NN ._.
+One_CD widely_RB used_VBN class_NN of_IN similarity_NN measures_NNS is_VBZ based_VBN on_IN random_JJ walks_VBZ on_IN graphs_NNS ,_, e.g._FW ,_, personalized_JJ pagerank_NN ,_, hitting_VBG and_CC commute_NN times_NNS ,_, and_CC simrank_NN ._.
+There_EX are_VBP two_CD fundamental_JJ problems_NNS associated_VBN with_IN these_DT measures_NNS ._.
+First_RB ,_, existing_VBG online_JJ algorithms_NNS typically_RB examine_VBP the_DT local_JJ neighborhood_NN of_IN the_DT query_NN node_NN which_WDT can_MD become_VB significantly_RB slower_JJR whenever_WRB high-degree_JJ nodes_NNS are_VBP encountered_VBN -LRB-_-LRB- a_DT common_JJ phenomenon_NN in_IN real-world_JJ graphs_NNS -RRB-_-RRB- ._.
+We_PRP prove_VBP that_IN turning_VBG high_JJ degree_NN nodes_NNS into_IN sinks_NNS results_VBZ in_IN only_RB a_DT small_JJ approximation_NN error_NN ,_, while_IN greatly_RB improving_VBG running_VBG times_NNS ._.
+The_DT second_JJ problem_NN is_VBZ that_DT of_IN computing_NN similarities_NNS at_IN query_NN time_NN when_WRB the_DT graph_NN is_VBZ too_RB large_JJ to_TO be_VB memory-resident_JJ ._.
+The_DT obvious_JJ solution_NN is_VBZ to_TO split_VB the_DT graph_NN into_IN clusters_NNS of_IN nodes_NNS and_CC store_VB each_DT cluster_NN on_IN a_DT disk_NN page_NN ;_: ideally_RB random_JJ walks_VBZ will_MD rarely_RB cross_VB cluster_NN boundaries_NNS and_CC cause_NN page-faults_NNS ._.
+Our_PRP$ contributions_NNS here_RB are_VBP twofold_JJ :_: -LRB-_-LRB- a_LS -RRB-_-RRB- we_PRP present_VBP an_DT efficient_JJ deterministic_JJ algorithm_NN to_TO find_VB the_DT k_NN closest_JJS neighbors_NNS -LRB-_-LRB- in_IN terms_NNS of_IN personalized_JJ pagerank_NN -RRB-_-RRB- of_IN any_DT query_NN node_NN in_IN such_JJ a_DT clustered_VBN graph_NN ,_, and_CC -LRB-_-LRB- b_LS -RRB-_-RRB- we_PRP develop_VBP a_DT clustering_NN algorithm_NN -LRB-_-LRB- RWDISK_NN -RRB-_-RRB- that_WDT uses_VBZ only_RB sequential_JJ sweeps_NNS over_IN data_NNS files_NNS ._.
+Empirical_JJ results_NNS on_IN several_JJ large_JJ publicly_RB available_JJ graphs_NNS like_IN DBLP_NNP ,_, Citeseer_NNP and_CC Live-Journal_NNP -LRB-_-LRB- ~_NNP 90_CD M_NN edges_NNS -RRB-_-RRB- demonstrate_VBP that_IN turning_VBG high_JJ degree_NN nodes_NNS into_IN sinks_NNS not_RB only_RB improves_VBZ running_VBG time_NN of_IN RWDISK_NN by_IN a_DT factor_NN of_IN 3_CD but_CC also_RB boosts_VBZ link_NN prediction_NN accuracy_NN by_IN a_DT factor_NN of_IN 4_CD on_IN average_NN ._.
+We_PRP also_RB show_VBP that_IN RWDISK_NN returns_NNS more_RBR desirable_JJ -LRB-_-LRB- high_JJ conductance_NN and_CC small_JJ size_NN -RRB-_-RRB- clusters_NNS than_IN the_DT popular_JJ clustering_NN algorithm_NN METIS_NN ,_, while_IN requiring_VBG much_RB less_JJR memory_NN ._.
+Finally_RB our_PRP$ deterministic_JJ algorithm_NN for_IN computing_NN nearest_IN neighbors_NNS incurs_VBZ far_RB fewer_JJR page-faults_NNS -LRB-_-LRB- factor_NN of_IN 5_CD -RRB-_-RRB- than_IN actually_RB simulating_VBG random_JJ walks_VBZ ._.
+r_NN the_DT reachability_NN queries_NNS ._.
+Chierichetti_NNP et_NNP al_NNP -LRB-_-LRB- 12_CD -RRB-_-RRB- explored_VBD link_NN reciprocity_NN for_IN adjacency_NN queries_NNS ._.
+Aggarwal_NNP et_FW al_FW -LRB-_-LRB- 5_CD -RRB-_-RRB- proposed_VBN using_VBG edge_NN sampling_NN to_TO handle_VB graph_NN connectivity_NN queries_NNS ._.
+Sarkar_NNP et_NNP al_NNP =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: explored_VBD the_DT clustering_NN properties_NNS to_TO proximity_NN queries_NNS on_IN graphs_NNS ._.
+Maserra_NNP et_NNP al_NNP -LRB-_-LRB- 27_CD -RRB-_-RRB- proposed_VBD a_DT Eulerian_JJ data_NN structure_NN for_IN neighborhood_NN queries_NNS ._.
+Despite_IN of_IN their_PRP$ success_NN ,_, there_EX are_VBP two_CD major_JJ limita_NNS
+int_NN of_IN our_PRP$ method_NN ._.
+Other_JJ ranking_JJ methods_NNS on_IN graphs_NNS include_VBP HITS_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, electricity-based_JJ methods_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, etc._NN ._.
+There_EX also_RB exist_VBP a_DT lot_NN of_IN work_NN to_TO speed-up_VB the_DT computation_NN of_IN personalized_JJ PageRank_NN ,_, such_JJ as_IN =_JJ -_: =[_NN 37_CD ,_, 33_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP is_VBZ worth_JJ pointing_VBG out_RP that_IN all_PDT these_DT fast_JJ algorithms_NNS can_MD be_VB naturally_RB plugged_VBN into_IN the_DT proposed_VBN DRAGON_NNP to_TO gain_VB further_JJ savings_NNS in_IN computational_JJ time_NN ._.
+103410_CD 20_CD 30_CD 40_CD 50_CD 60_CD 70_CD 80_CD 90_CD 100_CD 1_CD 1_CD 1_CD 1_CD A_NN
+systems_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- etc._NN ._.
+We_PRP would_MD use_VB the_DT following_JJ variation_NN of_IN hitting_VBG time_NN ._.
+Note_VB that_IN this_DT is_VBZ closer_JJR to_TO the_DT original_JJ hitting_VBG time_NN definition_NN ,_, and_CC is_VBZ different_JJ from_IN the_DT generalized_JJ hitting_VBG time_NN defined_VBN in_IN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Consider_VB a_DT random_JJ walk_NN which_WDT ,_, once_RB started_VBN from_IN i_FW stops_VBZ if_IN node_NN j_NN is_VBZ encountered_VBN ,_, or_CC with_IN probability_NN α_NN ._.
+The_DT expected_JJ time_NN to_TO hit_VB node_NN j_NN in_IN this_DT process_NN is_VBZ defined_VBN as_IN the_DT α_NN discounted_JJ hitting_VBG time_NN f_SYM
+a_DT machine_NN which_WDT is_VBZ running_VBG other_JJ applications_NNS ,_, and_CC in_IN which_WDT there_EX are_VBP occasional_JJ user_NN queries_NNS to_TO the_DT graph_NN ._.
+A_DT good_JJ example_NN of_IN this_DT third_JJ case_NN is_VBZ the_DT problem_NN of_IN searching_VBG personal_JJ information_NN networks_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT integrates_VBZ the_DT user_NN 's_POS personal_JJ information_NN with_IN information_NN from_IN the_DT Web_NN and_CC hence_RB needs_VBZ to_TO be_VB performed_VBN on_IN the_DT user_NN 's_POS own_JJ machine_NN for_IN privacy_NN preservation_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Is_VBZ there_EX an_DT intuitive_JJ represent_VBP
+thms_NNS for_IN computing_VBG them_PRP locally_RB -LRB-_-LRB- 3_CD ,_, 5_CD -RRB-_-RRB- ,_, off-line_JJ -LRB-_-LRB- 12_CD ,_, 9_CD ,_, 17_CD -RRB-_-RRB- ,_, and_CC from_IN streaming_NN data_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- etc._FW 2DISCOUNTED_FW HITTING_FW TIME_NN ._.
+Hitting_VBG time_NN in_IN random_JJ walks_VBZ is_VBZ a_DT well-studied_JJ measure_NN in_IN probability_NN theory_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Hitting_VBG times_NNS and_CC other_JJ local_JJ variations_NNS of_IN it_PRP has_VBZ been_VBN used_VBN as_IN a_DT proximity_NN measure_NN for_IN link_NN prediction_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, recommender_NN systems_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, query_NN suggestion_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, manipulation_NN resistant_JJ reputation_NN system_NN
+-LRB-_-LRB- a_LS -RRB-_-RRB- the_DT clusters_NNS should_MD have_VB low_JJ conductance_NN ,_, and_CC -LRB-_-LRB- b_LS -RRB-_-RRB- they_PRP should_MD fit_VB in_IN disk-sized_JJ pages_NNS ._.
+Now_RB ,_, the_DT graph_NN conductance_NN φ_NN measures_VBZ the_DT average_JJ number_NN of_IN times_NNS a_DT random_JJ walk_NN can_MD escape_VB outside_IN a_DT cluster_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC each_DT such_JJ escape_NN requires_VBZ the_DT loading_NN of_IN one_CD new_JJ cluster_NN ,_, causing_VBG an_DT average_NN of_IN m_NN page-faults_NNS -LRB-_-LRB- m_NN =_JJ 1_CD if_IN each_DT cluster_NN fits_VBZ inside_IN one_CD page_NN -RRB-_-RRB- ._.
+Thus_RB ,_, φ_FW ·_FW m_NN is_VBZ the_DT average_JJ number_NN of_IN page-faults_NNS incur_VBP
+ques_NNS -RRB-_-RRB- rely_VBP on_IN finding_NN nearest_IN neighbors_NNS in_IN large_JJ graphs_NNS ,_, where_WRB ``_`` nearness_NN ''_'' is_VBZ defined_VBN using_VBG graphtheoretic_JJ measure_NN of_IN similarity_NN ._.
+A_DT widely_RB applied_VBN class_NN of_IN measures_NNS are_VBP based_VBN on_IN random_JJ walks_VBZ on_IN graphs_NNS =_JJ -_: =[_NN 5_CD ,_, 15_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: ;_: examples_NNS include_VBP personalized_JJ pagerank_NN ,_, hitting_VBG time_NN and_CC commute_NN time_NN ,_, simrank_NN ,_, etc._NN ._.
+Yet_RB ,_, there_EX are_VBP limitations_NNS to_TO what_WP we_PRP can_MD do_VB when_WRB graphs_NNS become_VBP enormous_JJ ._.
+Some_DT algorithms_NNS ,_, such_JJ as_IN streaming_NN algo_NN
+in_IN random_JJ walks_VBZ is_VBZ a_DT well-studied_JJ measure_NN in_IN probability_NN theory_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Hitting_VBG times_NNS and_CC other_JJ local_JJ variations_NNS of_IN it_PRP has_VBZ been_VBN used_VBN as_IN a_DT proximity_NN measure_NN for_IN link_NN prediction_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, recommender_NN systems_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, query_NN suggestion_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, manipulation_NN resistant_JJ reputation_NN systems_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- etc._NN ._.
+We_PRP would_MD use_VB the_DT following_JJ variation_NN of_IN hitting_VBG time_NN ._.
+Note_VB that_IN this_DT is_VBZ closer_JJR to_TO the_DT original_JJ hitting_VBG time_NN definition_NN ,_, and_CC
+been_VBN shown_VBN to_TO have_VB empirical_JJ benefits_NNS in_FW keyword_FW search_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, link_NN prediction_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, fighting_VBG spam_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ;_: there_EX has_VBZ been_VBN an_DT extensive_JJ literature_NN on_IN algorithms_NNS for_IN computing_VBG them_PRP locally_RB -LRB-_-LRB- 3_CD ,_, 5_CD -RRB-_-RRB- ,_, off-line_JJ =_JJ -_: =[_NN 12_CD ,_, 9_CD ,_, 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC from_IN streaming_NN data_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- etc._FW 2DISCOUNTED_FW HITTING_FW TIME_NN ._.
+Hitting_VBG time_NN in_IN random_JJ walks_VBZ is_VBZ a_DT well-studied_JJ measure_NN in_IN probability_NN theory_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Hitting_VBG times_NNS and_CC other_JJ local_JJ variations_NNS of_IN it_PRP has_VBZ been_VBN
+ques_NNS -RRB-_-RRB- rely_VBP on_IN finding_NN nearest_IN neighbors_NNS in_IN large_JJ graphs_NNS ,_, where_WRB ``_`` nearness_NN ''_'' is_VBZ defined_VBN using_VBG graphtheoretic_JJ measure_NN of_IN similarity_NN ._.
+A_DT widely_RB applied_VBN class_NN of_IN measures_NNS are_VBP based_VBN on_IN random_JJ walks_VBZ on_IN graphs_NNS =_JJ -_: =[_NN 5_CD ,_, 15_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: ;_: examples_NNS include_VBP personalized_JJ pagerank_NN ,_, hitting_VBG time_NN and_CC commute_NN time_NN ,_, simrank_NN ,_, etc._NN ._.
+Yet_RB ,_, there_EX are_VBP limitations_NNS to_TO what_WP we_PRP can_MD do_VB when_WRB graphs_NNS become_VBP enormous_JJ ._.
+Some_DT algorithms_NNS ,_, such_JJ as_IN streaming_NN algo_NN
+Hitting_VBG times_NNS and_CC other_JJ local_JJ variations_NNS of_IN it_PRP has_VBZ been_VBN used_VBN as_IN a_DT proximity_NN measure_NN for_IN link_NN prediction_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, recommender_NN systems_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, query_NN suggestion_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, manipulation_NN resistant_JJ reputation_NN systems_NNS =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: etc._NN ._.
+We_PRP would_MD use_VB the_DT following_JJ variation_NN of_IN hitting_VBG time_NN ._.
+Note_VB that_IN this_DT is_VBZ closer_JJR to_TO the_DT original_JJ hitting_VBG time_NN definition_NN ,_, and_CC is_VBZ different_JJ from_IN the_DT generalized_JJ hitting_VBG time_NN defined_VBN in_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Consid_NNP
+artitioning_VBG nor_CC one_CD specific_JJ proximity_NN measure_NN ._.
+Another_DT broad_JJ class_NN of_IN algorithms_NNS estimate_VBP the_DT similarity_NN between_IN the_DT query_NN node_NN and_CC other_JJ nodes_NNS by_IN examining_VBG local_JJ neighborhoods_NNS around_IN the_DT query_NN node_NN =_JJ -_: =[_NN 3_CD ,_, 2_CD ,_, 5_CD ,_, 17_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT intuition_NN is_VBZ that_IN in_IN order_NN to_TO compute_VB nearest_IN neighbors_NNS ,_, hopefully_RB one_PRP would_MD not_RB need_VB to_TO look_VB too_RB far_RB away_RB from_IN the_DT query_NN node_NN ._.
+However_RB ,_, one_CD fundamental_JJ computational_JJ issue_NN with_IN these_DT techniques_NNS
+,_, must_MD make_VB passes_NNS over_IN the_DT entire_JJ dataset_NN to_TO answer_VB any_DT query_NN ;_: this_DT can_MD be_VB prohibitively_RB expensive_JJ in_IN online_NN settings_NNS ._.
+Others_NNS perform_VBP clever_JJ preprocessing_NN so_IN that_IN queries_NNS can_MD be_VB answered_VBN efficiently_RB =_JJ -_: =[_NN 9_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB these_DT algorithms_NNS store_NN information_NN which_WDT can_MD be_VB used_VBN for_IN computing_VBG a_DT specific_JJ similarity_NN measure_NN -LRB-_-LRB- e.g._FW ,_, personalized_JJ pagerank_NN for_IN -LRB-_-LRB- 9_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+This_DT paper_NN introduces_VBZ analysis_NN and_CC algorithms_NNS which_WDT tr_VBP
+artitioning_VBG nor_CC one_CD specific_JJ proximity_NN measure_NN ._.
+Another_DT broad_JJ class_NN of_IN algorithms_NNS estimate_VBP the_DT similarity_NN between_IN the_DT query_NN node_NN and_CC other_JJ nodes_NNS by_IN examining_VBG local_JJ neighborhoods_NNS around_IN the_DT query_NN node_NN =_JJ -_: =[_NN 3_CD ,_, 2_CD ,_, 5_CD ,_, 17_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT intuition_NN is_VBZ that_IN in_IN order_NN to_TO compute_VB nearest_IN neighbors_NNS ,_, hopefully_RB one_PRP would_MD not_RB need_VB to_TO look_VB too_RB far_RB away_RB from_IN the_DT query_NN node_NN ._.
+However_RB ,_, one_CD fundamental_JJ computational_JJ issue_NN with_IN these_DT techniques_NNS
+ques_NNS -RRB-_-RRB- rely_VBP on_IN finding_NN nearest_IN neighbors_NNS in_IN large_JJ graphs_NNS ,_, where_WRB ``_`` nearness_NN ''_'' is_VBZ defined_VBN using_VBG graphtheoretic_JJ measure_NN of_IN similarity_NN ._.
+A_DT widely_RB applied_VBN class_NN of_IN measures_NNS are_VBP based_VBN on_IN random_JJ walks_VBZ on_IN graphs_NNS =_JJ -_: =[_NN 5_CD ,_, 15_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: ;_: examples_NNS include_VBP personalized_JJ pagerank_NN ,_, hitting_VBG time_NN and_CC commute_NN time_NN ,_, simrank_NN ,_, etc._NN ._.
+Yet_RB ,_, there_EX are_VBP limitations_NNS to_TO what_WP we_PRP can_MD do_VB when_WRB graphs_NNS become_VBP enormous_JJ ._.
+Some_DT algorithms_NNS ,_, such_JJ as_IN streaming_NN algo_NN
+eterministic_JJ algorithm_NN over_IN vanilla_NN Monte_NNP Carlo_NNP simulations_NNS ;_: and_CC finally_RB the_DT finer_JJ quality_NN of_IN clusters_NNS returned_VBN by_IN our_PRP$ clustering_NN algorithm_NN compared_VBN to_TO a_DT popular_JJ in-memory_JJ clustering_NN algorithm_NN METIS_NN -LRB-_-LRB- =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+The_DT paper_NN is_VBZ organized_VBN as_IN follows_VBZ :_: in_IN section_NN 3.1_CD we_PRP theoretically_RB show_VBP the_DT effect_NN of_IN high_JJ degree_NN nodes_NNS on_IN personalized_JJ pagerank_NN -LRB-_-LRB- PPV_NN -RRB-_-RRB- ._.
+We_PRP also_RB show_VBP the_DT same_JJ for_IN discounted_JJ hitting_VBG times_NNS by_IN present_NN
+ng_NN personal_JJ information_NN networks_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, which_WDT integrates_VBZ the_DT user_NN 's_POS personal_JJ information_NN with_IN information_NN from_IN the_DT Web_NN and_CC hence_RB needs_VBZ to_TO be_VB performed_VBN on_IN the_DT user_NN 's_POS own_JJ machine_NN for_IN privacy_NN preservation_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Is_VBZ there_EX an_DT intuitive_JJ representation_NN of_IN a_DT disk-resident_JJ graph_NN such_JJ that_IN any_DT random_JJ walk_NN based_VBN measure_NN can_MD be_VB easily_RB computed_VBN from_IN this_DT representation_NN ?_.
+The_DT obvious_JJ solution_NN is_VBZ to_TO split_VB the_DT graph_NN into_IN
+well-studied_JJ measure_NN in_IN probability_NN theory_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Hitting_VBG times_NNS and_CC other_JJ local_JJ variations_NNS of_IN it_PRP has_VBZ been_VBN used_VBN as_IN a_DT proximity_NN measure_NN for_IN link_NN prediction_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, recommender_NN systems_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, query_NN suggestion_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, manipulation_NN resistant_JJ reputation_NN systems_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- etc._NN ._.
+We_PRP would_MD use_VB the_DT following_JJ variation_NN of_IN hitting_VBG time_NN ._.
+Note_VB that_IN this_DT is_VBZ closer_JJR to_TO the_DT original_JJ hitting_VBG time_NN definition_NN ,_, and_CC is_VBZ different_JJ from_IN the_DT
+,_, must_MD make_VB passes_NNS over_IN the_DT entire_JJ dataset_NN to_TO answer_VB any_DT query_NN ;_: this_DT can_MD be_VB prohibitively_RB expensive_JJ in_IN online_NN settings_NNS ._.
+Others_NNS perform_VBP clever_JJ preprocessing_NN so_IN that_IN queries_NNS can_MD be_VB answered_VBN efficiently_RB =_JJ -_: =[_NN 9_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB these_DT algorithms_NNS store_NN information_NN which_WDT can_MD be_VB used_VBN for_IN computing_VBG a_DT specific_JJ similarity_NN measure_NN -LRB-_-LRB- e.g._FW ,_, personalized_JJ pagerank_NN for_IN -LRB-_-LRB- 9_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+This_DT paper_NN introduces_VBZ analysis_NN and_CC algorithms_NNS which_WDT tr_VBP
+ression_NN techniques_NNS can_MD be_VB applied_VBN to_TO fit_VB the_DT graphs_NNS into_IN main_JJ memory_NN ,_, but_CC there_EX are_VBP at_IN least_JJS three_CD settings_NNS where_WRB this_DT might_MD not_RB work_VB ._.
+First_JJ ,_, social_JJ networks_NNS are_VBP far_RB less_RBR compressible_JJ than_IN Web_NN graphs_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Second_JJ ,_, decompression_NN might_MD lead_VB to_TO an_DT unacceptable_JJ increase_NN in_IN query_NN response_NN time_NN ._.
+Third_RB ,_, even_RB if_IN a_DT graph_NN could_MD be_VB compressed_VBN down_RP to_TO a_DT gigabyte_NN -LRB-_-LRB- comfortable_JJ main_JJ memory_NN size_NN in_IN 2009_CD -RRB-_-RRB- it_PRP is_VBZ undesi_JJ

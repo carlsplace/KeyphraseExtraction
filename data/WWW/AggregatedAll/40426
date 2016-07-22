@@ -1,0 +1,372 @@
+Extrapolation_NN methods_NNS for_IN accelerating_VBG PageRank_NNP computations_NNS
+We_PRP present_VBP a_DT novel_JJ algorithm_NN for_IN the_DT fast_JJ computation_NN of_IN PageRank_NNP ,_, a_DT hyperlink-based_JJ estimate_NN of_IN the_DT ''_'' importance_NN ''_'' of_IN Web_NN pages_NNS ._.
+The_DT original_JJ PageRank_NN algorithm_NN uses_VBZ the_DT Power_NNP Method_NNP to_TO compute_VB successive_JJ iterates_NNS that_WDT converge_VBP to_TO the_DT principal_JJ eigenvector_NN of_IN the_DT Markov_NNP matrix_NN representing_VBG the_DT Web_NN link_NN graph_NN ._.
+The_DT algorithm_NN presented_VBN here_RB ,_, called_VBN Quadratic_JJ Extrapolation_NN ,_, accelerates_VBZ the_DT convergence_NN of_IN the_DT Power_NNP Method_NNP by_IN periodically_RB subtracting_VBG off_RP estimates_NNS of_IN the_DT nonprincipal_JJ eigenvectors_NNS from_IN the_DT current_JJ iterate_NN of_IN the_DT Power_NNP Method_NNP ._.
+In_IN Quadratic_NNP Extrapolation_NNP ,_, we_PRP take_VBP advantage_NN of_IN the_DT fact_NN that_IN the_DT first_JJ eigenvalue_NN of_IN a_DT Markov_NNP matrix_NN is_VBZ known_VBN to_TO be_VB 1_CD to_TO compute_VB the_DT nonprincipal_JJ eigenvectors_NNS using_VBG successive_JJ iterates_NNS of_IN the_DT Power_NNP Method_NNP ._.
+Empirically_RB ,_, we_PRP show_VBP that_IN using_VBG Quadratic_JJ Extrapolation_NN speeds_NNS up_IN PageRank_NN computation_NN by_IN 25-300_CD %_NN on_IN a_DT Web_NN graph_NN of_IN 80_CD million_CD nodes_NNS ,_, with_IN minimal_JJ overhead_NN ._.
+Our_PRP$ contribution_NN is_VBZ useful_JJ to_TO the_DT PageRank_NNP community_NN and_CC the_DT numerical_JJ linear_JJ algebra_NN community_NN in_IN general_JJ ,_, as_IN it_PRP is_VBZ a_DT fast_JJ method_NN for_IN determining_VBG the_DT dominant_JJ eigenvector_NN of_IN a_DT matrix_NN that_WDT is_VBZ too_RB large_JJ for_IN standard_JJ fast_JJ methods_NNS to_TO be_VB practical_JJ ._.
+ativeness_NN metrics_NNS of_IN the_DT entire_JJ authoritativeness_NN matrix_NN is_VBZ calculated_VBN ,_, the_DT iterative_JJ process_NN of_IN boosting_VBG the_DT authoritativeness_NN is_VBZ performed_VBN ._.
+Similar_JJ to_TO the_DT methodology_NN used_VBN in_IN the_DT PageRank_NNP algorithm_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, it_PRP is_VBZ desirable_JJ to_TO instill_VB more_JJR authority_NN to_TO an_DT author_NN who_WP is_VBZ referenced_VBN by_IN another_DT author_NN of_IN high_JJ authority_NN ._.
+Thus_RB ,_, if_IN one_CD author_NN is_VBZ considered_VBN a_DT leading_VBG authority_NN ,_, deemed_VBN so_RB by_IN the_DT authoritativenes_NNS
+s_NN from_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- suggest_VBP a_DT fast_JJ convergence_NN of_IN that_DT sort_NN of_IN algorithm_NN applied_VBN to_TO portions_NNS of_IN the_DT Web_NN graph_NN ._.
+Remark_NN There_EX are_VBP lot_NN of_IN methods_NNS to_TO improve_VB the_DT convergence_NN of_IN that_DT sort_NN of_IN iterative_JJ computation_NN =_JJ -_: =[_NN 3_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT purpose_NN of_IN this_DT paper_NN is_VBZ not_RB to_TO optimize_VB this_DT part_NN of_IN the_DT computation_NN ,_, so_IN we_PRP only_RB give_VBP the_DT basic_JJ Jacobi_NNP method_NN ._.
+Interest_NN of_IN our_PRP$ method_NN One_NN could_MD wonder_VB why_WRB not_RB keeping_VBG the_DT average_JJ hits_NNS per_IN page_NN
+section_NN 4_CD ,_, the_DT PageRanking_NN task_NN boils_VBZ down_RP to_TO a_DT large_JJ ,_, sparse_JJ ,_, linear_JJ solve_VBP ;_: a_DT problem_NN for_IN which_WDT there_EX are_VBP many_JJ rival_JJ methods_NNS ._.
+Identifying_VBG promising_JJ alternatives_NNS to_TO Jacobi_NNP is_VBZ a_DT current_JJ research_NN theme_NN =_JJ -_: =[_NN 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Iterative_JJ methods_NNS are_VBP natural_JJ ,_, since_IN last_JJ month_NN 's_POS rankings_NNS offer_VBP a_DT good_JJ starting_NN approximation_NN for_IN this_DT month_NN 's_POS ,_, but_CC issues_NNS such_JJ as_IN the_DT optimal_JJ choice_NN of_IN d_NN and_CC the_DT effect_NN of_IN the_DT terminating_VBG criterio_NN
+4_LS ._.
+COMPUTING_NNP PAGERANK_NNP BY_NNP POWER_NNP EXTRAPOLATION_NNP 67_CD A_DT practical_JJ extrapolation_NN method_NN for_IN accelerating_VBG the_DT computation_NN of_IN PageRank_NNP ,_, called_VBD Quadratic_NNP Extrapolation_NNP ,_, was_VBD first_RB presented_VBN by_IN Kamvar_NNP et_FW al._FW in_IN =_JJ -_: =[_NN 47_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+That_DT work_NN assumed_VBD that_IN none_NN of_IN the_DT nonprincipal_JJ eigenvalues_NNS of_IN the_DT Web_NN link_NN matrix_NN were_VBD known_VBN ._.
+By_IN deriving_VBG the_DT eigenvalues_NNS of_IN the_DT link_NN matrix_NN ,_, we_PRP construct_VBP here_RB a_DT simpler_JJR and_CC more_RBR effective_JJ extrapol_NN
+od_NN to_TO converge_VB is_VBZ of_IN the_DT order_NN log_NN c_NN nnz_NN -LRB-_-LRB- P_NN -RRB-_-RRB- ,_, where_WRB nnz_NN -LRB-_-LRB- P_NN -RRB-_-RRB- is_VBZ the_DT number_NN of_IN non-zero_JJ elements_NNS of_IN the_DT matrix_NN P_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+We_PRP note_VBP that_IN the_DT relative_JJ error_NN decreases_VBZ uniformly_RB for_IN all_DT pages_NNS ._.
+Several_JJ proposals_NNS =_JJ -_: =[_NN 8_CD ,_, 11_CD ,_, 12_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- see_VB also_RB an_DT extensive_JJ survey_NN paper_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- -RRB-_-RRB- have_VBP recently_RB been_VBN put_VBN forward_RB to_TO accelerate_VB the_DT power_NN iteration_NN algorithm_NN ._.
+In_IN contrast_NN ,_, here_RB we_PRP study_VBP Monte_NNP Carlo_NNP -LRB-_-LRB- MC_NNP -RRB-_-RRB- type_NN methods_NNS for_IN the_DT PageRank_NN computa_NN
+oposed_VBN an_DT efficient_JJ computation_NN approach_NN for_IN PageRank_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- using_VBG a_DT block_NN based_VBN technique_NN using_VBG efficient_JJ i\/o_NN computation_NN ._.
+Improvisations_NNS for_IN such_JJ I\/O_NN efficient_JJ methods_NNS -LRB-_-LRB- 7,8_CD -RRB-_-RRB- and_CC accelerated_JJ convergence_NN =_JJ -_: =[_NN 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: for_IN PageRank_NNP have_VBP also_RB been_VBN well_RB studied_VBN ._.
+The_DT various_JJ issues_NNS related_VBN to_TO PageRank_NN computation_NN have_VBP been_VBN extensively_RB covered_VBN in_IN recent_JJ surveys_NNS -LRB-_-LRB- 11_CD ,_, 12_CD -RRB-_-RRB- ._.
+In_IN this_DT paper_NN our_PRP$ contribution_NN is_VBZ two_CD fold_NN ._.
+Firs_NNS
+x_NN has_VBZ recently_RB received_VBN much_JJ attention_NN within_IN the_DT web_NN community_NN for_IN its_PRP$ possible_JJ applications_NNS to_TO rank_VB aggregation_NN -LRB-_-LRB- 16_CD ,_, 15_CD ,_, 13_CD -RRB-_-RRB- and_CC for_IN determining_VBG the_DT convergence_NN speed_NN in_IN the_DT computation_NN of_IN PageRank_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Kendall_NNP 's_POS τ_NN is_VBZ usually_RB defined_VBN as_IN follows_VBZ 4_CD :_: Definition_NN 1_CD -LRB-_-LRB- -LRB-_-LRB- 23_CD -RRB-_-RRB- -RRB-_-RRB- Let_NNP ri_NNP ,_, si_NNP ∈_NNP R_NNP -LRB-_-LRB- i_LS =_JJ 1_CD ,_, 2_CD ,_, ..._: ,_, n_NN -RRB-_-RRB- be_VB two_CD lists_NNS of_IN rank_NN values_NNS ._.
+Given_VBN a_DT pair_NN of_IN distinct_JJ indices_NNS 1_CD ≤_FW i_FW ,_, j_FW ≤_FW n_NN ,_, we_PRP say_VBP that_IN the_DT pair_NN is_VBZ
+andard_FW PageRank_FW Definition_NN PageRank_NN computation_NN for_IN the_DT ranking_NN of_IN hypertext-linked_JJ web_NN pages_NNS was_VBD originally_RB outlined_VBN by_IN Page_NNP and_CC Brin_NNP -LRB-_-LRB- 1_CD ,_, 2_CD -RRB-_-RRB- ._.
+Their_PRP$ approach_NN was_VBD subsequently_RB amended_VBN by_IN Kamvar_NNP et_FW al._FW =_SYM -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT alternative_JJ formulation_NN of_IN PageRank_NNP and_CC its_PRP$ computation_NN is_VBZ now_RB generally_RB regarded_VBN as_IN providing_VBG the_DT standard_JJ PageRank_NN definition_NN -LRB-_-LRB- 17_CD ,_, 18_CD -RRB-_-RRB- ._.
+The_DT standard_JJ conceptual_JJ model_NN of_IN PageRank_NN is_VBZ called_VBN the_DT
+for_IN cc-TLDs_NN -LRB-_-LRB- e.g._FW ,_, ebay_NN ._.
+co._FW uk_FW ,_, det.wa.edu_NN ._.
+au_IN -RRB-_-RRB- ._.
+We_PRP use_VBP a_DT comprehensive_JJ list_NN of_IN custom_NN rules_NNS for_IN identifying_VBG PLDs_NNS ,_, which_WDT have_VBP been_VBN compiled_VBN as_IN part_NN of_IN our_PRP$ ongoing_JJ DNS_NN project_NN ._.
+While_IN computing_VBG PageRank_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, BlockRank_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, or_CC SiteRank_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 30_CD -RRB-_-RRB- is_VBZ a_DT potential_JJ solution_NN to_TO the_DT spam_NN problem_NN ,_, Fig._NNP 4_CD ._.
+crawling_VBG threads_NNS STAR_NN new_JJ URLs_NNS check_VBP +_CC update_VBP PLD_NN links_NN robots-check_NN queue_NN Q_NNP R_NNP Operation_NNP of_IN STAR_NNP ._.
+DRUM_NN URL_NN
+to_TO converge_VB is_VBZ of_IN the_DT order_NN log_NN c_NN nnz_NN -LRB-_-LRB- P_NN -RRB-_-RRB- ,_, where_WRB nnz_NN -LRB-_-LRB- P_NN -RRB-_-RRB- is_VBZ the_DT number_NN of_IN non-zero_JJ elements_NNS of_IN the_DT matrix_NN P_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+We_PRP note_VBP that_IN the_DT relative_JJ error_NN decreases_VBZ uniformly_RB for_IN all_DT pages_NNS ._.
+Several_JJ proposals_NNS =_JJ -_: =[_NN 8_CD ,_, 11_CD ,_, 12_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- see_VB also_RB an_DT extensive_JJ survey_NN paper_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- -RRB-_-RRB- have_VBP recently_RB been_VBN put_VBN forward_RB to_TO accelerate_VB the_DT power_NN iteration_NN algorithm_NN ._.
+In_IN contrast_NN ,_, here_RB we_PRP study_VBP Monte_NNP Carlo_NNP -LRB-_-LRB- MC_NNP -RRB-_-RRB- type_NN methods_NNS for_IN the_DT PageRank_NN computa_NN
+s_NN from_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- suggest_VBP a_DT fast_JJ convergence_NN of_IN that_DT sort_NN of_IN algorithm_NN applied_VBN to_TO portions_NNS of_IN the_DT Web_NN graph_NN ._.
+Remark_NN There_EX are_VBP lot_NN of_IN methods_NNS to_TO improve_VB the_DT convergence_NN of_IN that_DT sort_NN of_IN iterative_JJ computation_NN =_JJ -_: =[_NN 3_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT purpose_NN of_IN this_DT paper_NN is_VBZ not_RB to_TO optimize_VB this_DT part_NN of_IN the_DT computation_NN ,_, so_IN we_PRP only_RB give_VBP the_DT basic_JJ Jacobi_NNP method_NN ._.
+Interest_NN of_IN our_PRP$ method_NN One_NN could_MD wonder_VB why_WRB not_RB keeping_VBG the_DT average_JJ hits_NNS per_IN page_NN
+awls_NNS of_IN the_DT Web_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+In_IN addition_NN to_TO the_DT question_NN of_IN how_WRB to_TO compute_VB the_DT ranking_NN in_IN different_JJ distributed_VBN architectures_NNS ,_, many_JJ methods_NNS for_IN speeding_VBG up_RP the_DT original_JJ PageRank_NNP algorithm_NN have_VBP been_VBN proposed_VBN =_JJ -_: =[_NN 8_CD ,_, 13_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, BlockRank_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- makes_VBZ use_NN of_IN the_DT block_NN structure_NN of_IN Web_NN data_NNS ,_, but_CC it_PRP is_VBZ still_RB a_DT centralized_JJ algorithm_NN to_TO compute_VB the_DT PageRank_NNP ,_, which_WDT is_VBZ radically_RB different_JJ from_IN our_PRP$ decentralized_VBN approac_NN
+ines_NNS ._.
+The_DT problem_NN of_IN comparing_VBG the_DT top_JJ t_NN lists_NNS of_IN different_JJ ranking_JJ algorithms_NNS has_VBZ been_VBN extensively_RB studied_VBN by_IN the_DT web-search_JJ community_NN for_IN measuring_VBG the_DT speed_NN of_IN convergence_NN in_IN PageRank_NNP computations_NNS =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT distortion_NN of_IN PageRank_NN encodings_NNS -LRB-_-LRB- 20_CD -RRB-_-RRB- and_CC the_DT quality_NN of_IN rank-aggregation_NN methods_NNS -LRB-_-LRB- 16_CD ,_, 14_CD ,_, 15_CD ,_, 12_CD -RRB-_-RRB- ._.
+Let_VB T_NN u_NN t_NN denote_VBP the_DT set_NN of_IN pages_NNS having_VBG the_DT t_NN highest_JJS personalized_VBN PageRank_NN values_NNS in_IN the_DT vec_NN
+ful_NN in_IN minimizing_VBG the_DT delay_NN between_IN the_DT completion_NN of_IN a_DT new_JJ Web_NN crawl_NN and_CC the_DT generation_NN of_IN an_DT updated_VBN search_NN index_NN ._.
+To_TO improve_VB on_IN the_DT above_JJ running_NN times_NNS ,_, we_PRP use_VBP a_DT scheme_NN introduced_VBN by_IN Kamvar_NNP et_FW al._FW =_SYM -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: to_TO accelerate_VB PageRank_NN computations_NNS by_IN using_VBG successive_JJ iterates_NNS to_TO approximate_JJ and_CC subtract_VB out_RP the_DT nonprincipal_JJ eigenvectors_NNS from_IN the_DT current_JJ iterate_NN ._.
+Intuitively_RB ,_, during_IN the_DT iterative_JJ computation_NN ,_,
+ethods_NNS to_TO accelerate_VB and_CC parallelize_VB these_DT computations_NNS are_VBP important_JJ ._.
+Various_JJ methods_NNS to_TO accelerate_VB the_DT simple_JJ power_NN iterations_NNS process_NN have_VBP already_RB been_VBN developed_VBN ,_, including_VBG an_DT extrapolation_NN method_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT block-structure_JJ method_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, and_CC an_DT adaptive_JJ method_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Traditionally_RB ,_, PageRank_NNP has_VBZ been_VBN computed_VBN as_IN the_DT principle_JJ eigenvector_NN of_IN a_DT Markov_NNP chain_NN probability_NN transition_NN matrix_NN ._.
+In_IN this_DT paper_NN we_PRP c_SYM
+,_, it_PRP is_VBZ easily_RB computed_VBN by_IN an_DT iterative_JJ algorithm_NN or_CC by_IN a_DT series_NN of_IN matrix_NN operations_NNS -LRB-_-LRB- 39_CD ,_, 25_CD -RRB-_-RRB- ._.
+For_IN larger_JJR graphs_NNS ,_, we_PRP can_MD utilize_VB similar_JJ techniques_NNS to_TO those_DT proposed_VBN for_IN the_DT PageRank_NNP citation_NN metric_NN =_JJ -_: =[_NN 30_CD ,_, 17_CD ,_, 19_CD -RRB-_-RRB- ._.
+For_IN our_PRP$ experiments_NNS ,_, we_PRP c_SYM -_: =_JJ -_: ompute_JJ potential_JJ gain_NN using_VBG the_DT reciprocal_JJ function_NN ,_, Ü_NNP Üs_NNP ._.
+When_WRB restricted_VBN to_TO a_DT maximum_JJ depth_NN of_IN traversal_NN ,_, Ñ_NN Ü_NN the_DT naive_JJ algorithm_NN takes_VBZ time_NN proportional_JJ to_TO Ç_NN Ñ_NN Ü_NN
+h_NN recursively_RB determines_VBZ the_DT importance_NN of_IN a_DT web_NN page_NN by_IN the_DT importance_NN of_IN all_PDT the_DT pages_NNS pointing_VBG to_TO it_PRP ._.
+Although_IN improvements_NNS for_IN a_DT centralized_JJ computation_NN of_IN PageRank_NN have_VBP been_VBN researched_VBN in_IN detail_NN =_JJ -_: =[_NN 1,5,9,11,12,16,13,18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, approaches_NNS on_IN distributing_VBG it_PRP over_IN several_JJ computers_NNS have_VBP caught_VBN researchers_NNS '_POS attention_NN only_RB recently_RB ._.
+In_IN this_DT paper_NN we_PRP introduce_VBP a_DT new_JJ approach_NN to_TO computing_VBG the_DT exact_JJ PageRank_NN in_IN a_DT parallel_JJ fashion_NN
+ween_NN pages_NNS ,_, for_IN example_NN ,_, page_NN P1_NN points_NNS to_TO page_NN P2_NN and_CC P4_NN ._.
+To_TO avoid_VB rank_NN sink_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC guarantee_NN convergence_NN of_IN iteration_NN ,_, we_PRP can_MD add_VB a_DT complete_JJ set_NN of_IN virtual_JJ edges_NNS between_IN every_DT pair_NN of_IN pages_NNS 1_CD ,_, as_IN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ done_VBN ._.
+These_DT virtual_JJ edges_NNS are_VBP denoted_VBN in_IN Fig_NN .2_NN by_IN dashed_VBN lines_NNS with_IN double_JJ arrows_NNS ._.
+Afferent_JJ links_NNS -LRB-_-LRB- edges_NNS pointed_VBN from_IN pages_NNS in_IN other_JJ groups_NNS to_TO pages_NNS of_IN this_DT 1_CD Not_RB limit_NN to_TO page_NN pairs_NNS inside_IN the_DT g_NN
+sured_VBD the_DT rates_NNS of_IN convergence_NN of_IN the_DT PageRank_NNP and_CC Adaptive_NNP PageRank_NNP using_VBG the_DT L1_NN norm_NN of_IN the_DT residual_JJ vector_NN ;_: i.e._FW ,_, |_FW |_FW Ax_NN -LRB-_-LRB- k_NN -RRB-_-RRB- −_CD x_NN -LRB-_-LRB- k_NN -RRB-_-RRB- |_FW |_FW 1_CD ._.
+We_PRP describe_VBP why_WRB the_DT L1_NN residual_JJ is_VBZ an_DT appropriate_JJ measure_NN in_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4_LS ._.
+Distribution_NN of_IN Convergence_NNP Rates_NNP Table_NNP I_NNP and_CC Figure_NNP 1_CD show_NN convergence_NN statistics_NNS for_IN the_DT pages_NNS in_IN the_DT STANFORD.EDU_NN dataset_NN ._.
+We_PRP say_VBP that_IN the_DT PageRank_FW xi_FW of_IN page_NN i_FW has_VBZ converged_VBN when_WRB |_CD x_NN -LRB-_-LRB- k_NN +1_CD -RRB-_-RRB- i_FW −_FW
+-RRB-_-RRB- ·_FW d_FW return_NN t_NN ∗_CD end_NN Figure_NNP 5_CD :_: The_DT TrustRank_NNP algorithm_NN ._.
+tage_NN is_VBZ important_JJ since_IN substantial_JJ effort_NN has_VBZ been_VBN spent_VBN on_IN making_VBG PakeRank_NNP computations_NNS efficient_JJ with_IN very_RB large_JJ data_NNS sets_NNS -LRB-_-LRB- for_IN instance_NN ,_, see_VBP =_JJ -_: =[_NN 5_CD ,_, 8_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+4.3_CD The_DT TrustRank_NN Algorithm_NN Function_NN TrustRank_NN ,_, shown_VBN in_IN Figure_NNP 5_CD ,_, computes_VBZ trust_NN scores_NNS for_IN a_DT web_NN graph_NN ._.
+We_PRP explain_VBP the_DT algorithm_NN by_IN walking_VBG through_IN its_PRP$ execution_NN on_IN Figure_NNP 2_CD ._.
+The_DT input_NN to_TO the_DT alg_NN
+to_TO the_DT stochastic_JJ transition_NN matrix_NN ._.
+The_DT matrix_NN corresponds_VBZ to_TO the_DT web_NN link_NN graph_NN ;_: in_IN making_VBG stochastic_JJ ,_, there_EX are_VBP standard_JJ techniques_NNS for_IN dealing_VBG with_IN web_NN pages_NNS with_IN no_DT outgoing_JJ links_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Furthermore_RB ,_, the_DT web_NN graph_NN has_VBZ been_VBN empirically_RB shown_VBN to_TO contain_VB many_JJ irreducible_JJ closed_JJ subsets_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, so_IN that_IN Theorem_NNP 2_CD holds_VBZ for_IN the_DT matrix_NN used_VBN by_IN Google_NNP ._.
+Theorem_NN 1_CD has_VBZ implications_NNS for_IN the_DT rate_NN
+atrix_VB C._NNP PageRank_NNP algorithm_NN -LRB-_-LRB- see_VB -LRB-_-LRB- 26_CD -RRB-_-RRB- -RRB-_-RRB- has_VBZ both_CC propagation_NN and_CC attenuation_NN properties_NNS we_PRP need_VBP ,_, furthermore_RB thanks_NNS to_TO significant_JJ research_NN efforts_NNS we_PRP can_MD compute_VB PageRank_NNP in_IN a_DT very_RB efficient_JJ way_NN -LRB-_-LRB- see_VB =_JJ -_: =[_NN 27_CD ,_, 28_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Consider_VB a_DT generic_JJ graph_NN G_NN =_JJ -LRB-_-LRB- V_NN ,_, E_NN -RRB-_-RRB- ,_, where_WRB V_NN is_VBZ the_DT set_NN of_IN nodes_NNS connected_VBN by_IN directed_JJ links_NNS in_IN E_NN ,_, the_DT classic_JJ PageRank_NN algorithm_NN computes_VBZ an_DT importance_NN score_NN P_NN R_NN -LRB-_-LRB- n_NN -RRB-_-RRB- for_IN every_DT node_NN n_NN ∈_NN V_NN according_VBG
+ete_VB Web_NN graph_NN ._.
+It_PRP is_VBZ inherently_RB difficult_JJ to_TO decompose_VB as_IN it_PRP would_MD be_VB required_VBN for_IN a_DT distributed_VBN computation_NN in_IN a_DT peer-to-peer_JJ architecture_NN ._.
+1.2_CD ._.
+SiteRank_NNP for_IN Computation_NNP Distribution_NN Various_JJ methods_NNS =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN proposed_VBN to_TO speed_VB up_RP the_DT computation_NN of_IN PageRank_NN by_IN either_CC more_RBR efficient_JJ implementations_NNS or_CC the_DT application_NN of_IN optimized_VBN numerical_JJ algorithms_NNS ._.
+However_RB ,_, all_PDT these_DT attempts_NNS have_VBP a_DT limited_VBN po_NN
+ithms_NNS inspired_VBN by_IN HITS_NNS include_VBP SALSA_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, Randomized_NNP HITS_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, and_CC PHITS_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, to_TO name_VB a_DT few_JJ ._.
+Query-independent_JJ link-based_JJ ranking_NN algorithms_NNS inspired_VBN by_IN PageRank_NN include_VBP TrafficRank_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, BlockRank_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC TrustRank_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, and_CC many_JJ others_NNS ._.
+Another_DT line_NN of_IN research_NN is_VBZ concerned_VBN with_IN analyzing_VBG the_DT mathematical_JJ properties_NNS of_IN HITS_NNP and_CC PageRank_NNP ._.
+For_IN example_NN ,_, Borodin_NNP et_FW al._FW -LRB-_-LRB- 3_CD -RRB-_-RRB- investigated_VBD various_JJ theor_NN
+owever_NN :_: B_NN is_VBZ not_RB itself_PRP stochastic_JJ ,_, and_CC u_NN is_VBZ not_RB a_DT distribution_NN ,_, so_RB z_SYM -LRB-_-LRB- B_NN ,_, u_NN ,_, α_NN -RRB-_-RRB- does_VBZ not_RB admit_VB a_DT stochastic_JJ interpretation_NN ._.
+In_IN particular_JJ ,_, algorithms_NNS that_WDT are_VBP commonly_RB used_VBN to_TO compute_VB r_NN -LRB-_-LRB- −_NN ,_, −_NN ,_, −_NN -RRB-_-RRB- ,_, like_IN =_JJ -_: =[_NN 11_CD ,_, 7_CD ,_, 21_CD ,_, 18_CD ,_, 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, can_MD not_RB in_IN general_JJ be_VB applied_VBN to_TO this_DT case_NN ._.
+However_RB ,_, by_IN Theorem_NNP 6_CD ,_, the_DT matrix_NN B_NN admits_VBZ a_DT positive_JJ eigenvector_NN associated_VBN with_IN the_DT eigenvalue_NN 1_CD and_CC this_DT allows_VBZ us_PRP to_TO proceed_VB as_IN follows_VBZ ._.
+It_PRP is_VBZ possible_JJ
+s_NN recently_RB received_VBD much_JJ attention_NN within_IN the_DT web_NN community_NN for_IN its_PRP$ possible_JJ applications_NNS to_TO rank_VB aggregation_NN -LRB-_-LRB- 13_CD ,_, 14_CD ,_, 15_CD ,_, 16_CD -RRB-_-RRB- and_CC for_IN determining_VBG the_DT convergence_NN speed_NN in_IN the_DT computation_NN of_IN PageRank_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Here_RB we_PRP follow_VBP exactly_RB the_DT definition_NN given_VBN in_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+In_IN Figure_NNP 2_CD we_PRP show_VBP the_DT values_NNS of_IN Kendall_NNP 's_POS τ_NN -LRB-_-LRB- in_IN dependence_NN of_IN α_NN -RRB-_-RRB- for_IN weakly_RB and_CC strongly_RB preferential_JJ PageRank_NNP where_WRB the_DT preference_NN distributio_NN
+loyed_VBN ,_, for_IN each_DT node_NN i_FW ,_, its_PRP$ rank_NN is_VBZ calculated_VBN as_IN follows_VBZ :_: Rk_NN -LRB-_-LRB- i_LS -RRB-_-RRB- =_JJ -LRB-_-LRB- j_FW ∈_FW ini_FW m_NN ∈_FW outj_FW d_NN W_NN -LRB-_-LRB- j_NN ,_, m_NN -RRB-_-RRB- ∗_NN W_NN -LRB-_-LRB- j_NN ,_, i_LS -RRB-_-RRB- ∗_FW Rk_FW −_NN 1_CD -LRB-_-LRB- j_NN -RRB-_-RRB- -RRB-_-RRB- +_CC mink_NN 4_CD ._.
+Between_IN every_DT fifth_JJ iteration_NN The_DT algorithm_NN uses_VBZ quadratic_JJ extrapolation_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: between_IN every_DT fifth_JJ iteration_NN to_TO speed_VB up_RP convergence_NN ._.
+s5_NN ._.
+End_NN of_IN iterations_NNS After_IN each_DT iteration_NN ,_, the_DT l1_NN norm_NN of_IN the_DT residual_JJ is_VBZ calculated_VBN ,_, which_WDT is_VBZ the_DT summation_NN of_IN the_DT absolute_JJ change_NN of_IN each_DT valu_NN
+rtance_NN of_IN the_DT pages_NNS containing_VBG those_DT hyperlinks_NNS ._.
+PageRank_NN values_NNS are_VBP usually_RB computed_VBN in_IN an_DT off-line_JJ manner_NN ,_, during_IN a_DT large-scale_JJ iterative_JJ computation_NN on_IN the_DT entire_JJ web_NN graph_NN ._.
+Several_JJ recent_JJ studies_NNS =_JJ -_: =[_NN 3_CD ,_, 10_CD ,_, 13_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP looked_VBN at_IN ways_NNS to_TO optimize_VB this_DT computation_NN ,_, which_WDT may_MD take_VB many_JJ hours_NNS on_IN a_DT typical_JJ workstation_NN for_IN large_JJ graphs_NNS ._.
+However_RB ,_, there_EX are_VBP some_DT situations_NNS in_IN which_WDT a_DT global_JJ computation_NN on_IN the_DT entire_JJ g_NN
+and_CC normal_JJ form_NN -RRB-_-RRB- support_NN for_IN other_JJ ,_, different_JJ parallelism_NN exploitation_NN patterns\/skeletons_NNS ._.
+Several_JJ papers_NNS are_VBP related_VBN to_TO PageRank_NNP Algorithm_NNP ,_, Haveliwala_NNP -LRB-_-LRB- 18_CD -RRB-_-RRB- explores_VBZ memory-efficient_JJ computation_NN ,_, in_IN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Kamvar_NNP et_FW al._FW discuss_VB some_DT methods_NNS for_IN accelerating_VBG PageRank_NN calculation_NN and_CC in_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- Gleich_NNP ,_, Zhukov_NNP and_CC Berkhin_NNP demonstrate_VBP that_IN linear_JJ system_NN iterations_NNS converge_VBP faster_RBR than_IN the_DT simple_JJ power_NN method_NN
+Since_IN the_DT PageRank_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC HITS_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- algorithms_NNS were_VBD published_VBN ,_, a_DT large_JJ number_NN of_IN papers_NNS on_IN improvements_NNS ,_, variations_NNS ,_, and_CC speed-up_NN of_IN the_DT algorithms_NNS have_VBP appeared_VBN in_IN literature_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- 5_CD -RRB-_-RRB- -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- -LRB-_-LRB- 11_CD -RRB-_-RRB- =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =-[_NN 15_CD -RRB-_-RRB- ._.
+Many_JJ applications_NNS of_IN the_DT algorithms_NNS have_VBP also_RB been_VBN reported_VBN ,_, in_IN both_CC Web_NN search_NN and_CC research_NN publication_NN search_NN ,_, e.g._FW ,_, Web_NN resource_NN discovery_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, search_NN considering_VBG both_DT hyperlinks_NNS and_CC page_NN
+anced_JJ methods_NNS for_IN computing_NN eigenvectors_NNS are_VBP out_IN of_IN the_DT scope_NN due_JJ to_TO the_DT size_NN of_IN the_DT matrix_NN ._.
+However_RB ,_, other_JJ approaches_NNS are_VBP being_VBG investigated_VBN ,_, including_VBG adaptive_JJ techniques_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, extrapolation_NN methods_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC partitions_NNS of_IN the_DT matrix_NN according_VBG to_TO groups_NNS of_IN pages_NNS with_IN no_DT outlinks_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, all_DT of_IN them_PRP with_IN the_DT purpose_NN of_IN speeding_VBG up_RP convergence_NN by_IN a_DT certain_JJ factor_NN ._.
+These_DT and_CC other_JJ new_JJ methods_NNS do_VBP not_RB compet_VB
+to_TO 1_CD ._.
+The_DT Power_NNP Method_NNP converges_VBZ more_RBR and_CC more_RBR slowly_RB -LRB-_-LRB- 14_CD -RRB-_-RRB- as_IN α_FW →_FW 1_CD −_NN ,_, a_DT fact_NN that_WDT also_RB influences_VBZ the_DT other_JJ methods_NNS used_VBN to_TO compute_VB PageRank_NNP -LRB-_-LRB- which_WDT are_VBP often_RB themselves_PRP variants_NNS of_IN the_DT Power_NN Method_NN =_JJ -_: =[_NN 22_CD ,_, 13_CD ,_, 11_CD ,_, 21_CD ,_, 18_CD ,_, 17_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Indeed_RB ,_, the_DT number_NN of_IN iterations_NNS required_VBN could_MD in_IN general_JJ be_VB bounded_VBN using_VBG the_DT separation_NN between_IN the_DT first_JJ and_CC the_DT second_JJ eigenvalue_NN ,_, but_CC unfortunately_RB the_DT separation_NN can_MD be_VB abysmally_RB small_JJ if_IN α_NN
+zation_NN at_IN query_NN time_NN ._.
+Second_RB ,_, it_PRP creates_VBZ a_DT large_JJ computation_NN task_NN for_IN the_DT web_NN search_NN server_NN ,_, which_WDT we_PRP believe_VBP would_MD be_VB more_RBR appropriately_RB to_TO perform_VB on_IN the_DT client_NN ._.
+Other_JJ work_NN on_IN PageRank_NN acceleration_NN =_JJ -_: =[_NN 20_CD ,_, 23_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: focuses_VBZ on_IN using_VBG the_DT full_JJ webgraph_JJ data_NNS in_IN the_DT most_RBS effective_JJ manner_NN for_IN global_JJ PageRank_NN ._.
+Our_PRP$ ideas_NNS focus_VB on_IN using_VBG less_RBR webgraph_JJ data_NNS to_TO quickly_RB compute_VB an_DT approximation_NN to_TO personal_JJ PageRank_NN ._.
+An_DT alte_NN
+he_PRP following_VBG updating_VBG formulae_FW ˜_FW j_NN =_JJ j_NN +_CC 1_CD ˜_NN 1_CD =_JJ 1_CD −_CD k_NN 1_CD k_NN 1_CD −_NN k_NN 1_CD c_NN 1_CD +_CC k_NN k1_NN 1_CD k_NN 1_CD c_NN k1_NN +1_CD k_NN k1_FW i_FW =_JJ 2_CD zij_FW −_FW z1j_NN 1_CD +_CC c_NN k_NN 1_CD k1_FW +1_FW i_FW =_JJ 2_CD zi1_NN −_FW z11_FW k1_FW +1_FW i_FW =_JJ 2_CD zi1_FW −_FW z11_NN ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, j_NN =_JJ 2_CD ,_, ,_, n_NN =_JJ -_: =-LRB-_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: Proof_NN ._.
+Applying_VBG the_DT Sherman-Morrison-Woodbury_NNP updating_VBG formula_NN -LRB-_-LRB- Ref_NN ._.
+-LRB-_-LRB- 6_CD -RRB-_-RRB- -RRB-_-RRB- to_TO -LRB-_-LRB- I_PRP −_VBP c_NN P_NN -RRB-_-RRB- −_NN 1_CD ,_, we_PRP can_MD write_VB -LRB-_-LRB- I_PRP −_VBP c_NN P_NN -RRB-_-RRB- −_CD 1_CD =_JJ -LRB-_-LRB- I_PRP −_VBP cP_NN -RRB-_-RRB- −_NN 1_CD +_CC c_NN -LRB-_-LRB- I_NN −_CD cP_NN -RRB-_-RRB- −_FW 1e1u_FW T_NN -LRB-_-LRB- I_PRP −_VBP cP_NN -RRB-_-RRB- −_CD 1_CD 1_CD −_FW cuT_FW -LRB-_-LRB- I_PRP −_VBP cP_NN -RRB-_-RRB- −_NN 1_CD e1sDownlo_NN
+ub_IN Stanford_NNP University_NNP Abstract_NNP ._.
+We_PRP present_VBP a_DT novel_JJ technique_NN for_IN speeding_VBG up_RP the_DT computation_NN of_IN PageRank_NNP ,_, a_DT hyperlink-based_JJ estimate_NN of_IN the_DT ``_`` importance_NN ''_'' of_IN Web_NN pages_NNS ,_, based_VBN on_IN the_DT ideas_NNS presented_VBN in_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT original_JJ PageRank_NN algorithm_NN uses_VBZ the_DT Power_NNP Method_NNP to_TO compute_VB successive_JJ iterates_NNS that_WDT converge_VBP to_TO the_DT principal_JJ eigenvector_NN of_IN the_DT Markov_NNP matrix_NN representing_VBG the_DT Web_NN link_NN graph_NN ._.
+The_DT algorithm_NN pr_NN
+of_IN dangling_VBG nodes_NNS increases_NNS ._.
+Many_JJ other_JJ algorithms_NNS have_VBP been_VBN proposed_VBN for_IN computing_VBG PageRank_NNP ,_, including_VBG classical_JJ iterative_JJ methods_NNS -LRB-_-LRB- 1_CD ,_, 4_CD ,_, 30_CD -RRB-_-RRB- ,_, Krylov_NNP subspace_NN methods_NNS -LRB-_-LRB- 13_CD ,_, 14_CD -RRB-_-RRB- ,_, extrapolation_NN methods_NNS =_JJ -_: =[_NN 5_CD ,_, 6_CD ,_, 20_CD ,_, 26_CD ,_, 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC aggregation\/disaggregation_NN methods_NNS -LRB-_-LRB- 8_CD ,_, 22_CD ,_, 31_CD -RRB-_-RRB- see_VBP also_RB the_DT survey_NN papers_NNS -LRB-_-LRB- 2_CD ,_, 28_CD -RRB-_-RRB- and_CC the_DT book_NN -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+Our_PRP$ algorithm_NN is_VBZ faster_RBR than_IN the_DT power_NN method_NN applied_VBN to_TO the_DT full_JJ Google_NNP matrix_NN G_NN ,_, but_CC retain_VBP
+od_RB ,_, mainly_RB because_IN more_RBR advanced_JJ methods_NNS are_VBP out_IN of_IN the_DT scope_NN due_JJ to_TO the_DT size_NN of_IN the_DT matrix_NN ._.
+However_RB ,_, other_JJ approaches_NNS are_VBP being_VBG investigated_VBN ,_, including_VBG adaptive_JJ techniques_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, extrapolation_NN methods_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC partitions_NNS of_IN the_DT matrix_NN according_VBG to_TO groups_NNS of_IN pages_NNS with_IN no_DT outlinks_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, all_DT of_IN them_PRP with_IN the_DT purpose_NN of_IN speeding_VBG up_RP convergence_NN by_IN a_DT certain_JJ factor_NN ._.
+These_DT and_CC other_JJ new_JJ methods_NNS do_VBP not_RB compet_VB
+entally_RB and_CC will_MD be_VB further_RB discussed_VBN in_IN section_NN 5.4.1_CD ._.
+3.2_CD Power_NNP Method_NNP To_TO calculate_VB the_DT dominant_JJ eigenvector_NN of_IN a_DT stochastic_JJ matrix_NN A_NN -LRB-_-LRB- i.e._FW -LRB-_-LRB- αP_NN +_CC -LRB-_-LRB- 1_CD −_NN α_NN -RRB-_-RRB- E_NN -RRB-_-RRB- T_NN in_IN Eqn_NN ._.
+3_LS -RRB-_-RRB- ,_, we_PRP adopted_VBD the_DT Power_NNP Method_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT iteratively_RB applies_VBZ x_NN -LRB-_-LRB- k_NN -RRB-_-RRB- =_JJ Ax_NN -LRB-_-LRB- k_NN −_NN 1_CD -RRB-_-RRB- until_IN x_NN -LRB-_-LRB- k_NN -RRB-_-RRB- converges_VBZ ._.
+Note_VB that_DT x_NN -LRB-_-LRB- k_NN -RRB-_-RRB- needs_VBZ to_TO be_VB normalized_VBN by_IN its_PRP$ 1-norm_NN -LRB-_-LRB- |_FW |_FW ·_FW |_FW |_FW 1_LS -RRB-_-RRB- to_TO make_VB sure_JJ that_IN it_PRP adds_VBZ up_IN to_TO 1_CD ._.
+Applying_VBG this_DT method_NN iteratively_RB can_MD r_NN
+nite_JJ precision_NN ._.
+Since_IN Brin_NNP and_CC Page_NNP 's_POS original_JJ formulation_NN of_IN the_DT PageRank_NN problem_NN ,_, much_JJ work_NN has_VBZ been_VBN done_VBN by_IN the_DT scientific_JJ community_NN to_TO propose_VB and_CC investigate_VB improvements_NNS over_IN this_DT algorithm_NN ._.
+In_IN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: an_DT extrapolation_NN method_NN is_VBZ presented_VBN ,_, which_WDT accelerates_VBZ convergence_NN by_IN calculating_VBG and_CC then_RB subtracting_VBG off_RP estimates_NNS of_IN the_DT contributions_NNS of_IN the_DT second_JJ and_CC third_JJ eigenvectors_NNS ._.
+Analysis_NN of_IN the_DT eigens_NNS
+ently_RB ._.
+In_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- Gyongyi_NNP et_FW al._FW use_VBP the_DT trust_NN vector_NN to_TO combat_NN spam_NN ._.
+In_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- topic_NN specific_JJ PageRank_NN vectors_NNS are_VBP calculated_VBN and_CC in_IN -LRB-_-LRB- 29_CD -RRB-_-RRB- topic_NN specific_JJ TrustRank_NN values_NNS are_VBP calculated_VBN to_TO combat_VB spam_NN ._.
+In_IN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: Haveliwala_FW et_FW al._FW present_VBP an_DT accelerated_JJ method_NN of_IN calculating_VBG PageRank_NNP ._.
+Abiteboul_NNP et_FW al._FW present_VBP an_DT online_JJ adaptive_JJ page_NN importance_NN computation_NN algorithm_NN ,_, which_WDT is_VBZ a_DT slight_JJ variation_NN of_IN the_DT PageRank_NN
+rue_NN link_NN structure_NN ,_, but_CC ,_, along_IN with_IN slower_JJR convergence_NN ,_, sensitivity_NN issues_NNS begin_VBP to_TO surface_VB in_IN the_DT sense_NN that_IN slightly_RB different_JJ values_NNS for_IN α_NN near_IN 1_CD can_MD produce_VB significantly_RB different_JJ PageRanks_NNP ._.
+15_CD ._.
+=_SYM -_: =_JJ -LRB-_-LRB- KHM03a_NN -RRB-_-RRB- -_: =_SYM -_: The_DT power_NN method_NN can_MD be_VB substantially_RB accelerated_VBN by_IN a_DT quadratic_JJ extrapolation_NN technique_NN similar_JJ to_TO Aitken_NNP 's_POS ∆_NN 2_CD method_NN ,_, and_CC there_EX is_VBZ reason_NN to_TO believe_VB that_IN Google_NNP has_VBZ adopted_VBN this_DT procedure_NN ._.
+17s16_NN ._.
+Google_NNP chose_VBD c_NN =_JJ 0.85_CD ,_, which_WDT insures_VBZ a_DT good_JJ rate_NN of_IN convergence_NN ._.
+Anyway_RB ,_, since_IN the_DT computation_NN of_IN the_DT pagerank_NN vector_NN can_MD take_VB several_JJ days_NNS ,_, various_JJ methods_NNS for_IN their_PRP$ acceleration_NN have_VBP been_VBN proposed_VBN =_JJ -_: =[_NN 7,2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT vector_NN r_NN =_JJ limc_FW →_FW 1_CD rc_NN is_VBZ uniquely_RB determined_VBN as_IN the_DT limit_NN ,_, when_WRB c_NN tends_VBZ to_TO 1_CD ,_, of_IN the_DT family_NN of_IN vectors_NNS rc_NN ._.
+However_RB ,_, it_PRP is_VBZ just_RB one_CD of_IN the_DT infinitely_RB many_JJ solutions_NNS of_IN P_NN T_NN r_NN =_JJ r_NN ,_, r_NN ≥_NN 0_CD ,_, -LRB-_-LRB- r_NN ,_, e_LS -RRB-_-RRB- =_JJ
+Now_RB looking_VBG at_IN -LRB-_-LRB- 1.2_CD -RRB-_-RRB- ,_, a_DT basic_JJ PageRank_NN is_VBZ a_DT nonnegative_JJ left_JJ eigenvector_NN y_NN of_IN G_NN associated_VBN to_TO the_DT dominating_VBG eigenvalue_NN 1_CD normalized_VBD so_RB that_IN ‖_FW y_FW ‖_FW l1_NN =_JJ yT_NN e_SYM =_JJ 1_CD ,_, e_LS being_VBG the_DT vector_NN of_IN all_DT ones_NNS -LRB-_-LRB- see_VB e.g._FW =_SYM -_: =[_NN 30_CD ,_, 23_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Since_IN the_DT matrix_NN G_NN is_VBZ nonnegative_JJ and_CC has_VBZ row_NN sum_NN equal_JJ to_TO 1_CD it_PRP is_VBZ clear_JJ that_IN a_DT -LRB-_-LRB- canonical_JJ -RRB-_-RRB- right_JJ eigenvector_NN related_VBN to_TO 1_CD is_VBZ e_SYM and_CC that_IN all_PDT the_DT other_JJ eigenvalues_NNS are_VBP in_FW modulus_FW at_IN most_RBS equal_JJ to_TO 1_CD ._.
+6_CD -RRB-_-RRB- addressed_VBD the_DT personalization_NN of_IN PageRank_NN scores_NNS by_IN segmenting_VBG the_DT graph_NN into_IN subgraphs_NNS and_CC precalculating_VBG scores_NNS on_IN the_DT subsets_NNS enabling_VBG on_IN the_DT fly_NN combination_NN of_IN scores_NNS ._.
+Yet_RB another_DT recent_JJ study_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: involves_VBZ accelerating_VBG PageRank_NNP computations_NNS by_IN inserting_VBG intermediate_JJ steps_NNS ,_, trying_VBG to_TO eliminate_VB first_RB two_CD highest_JJS non-principal_JJ eigenvectors_NNS faster_RBR ._.
+Note_VB that_DT ,_, our_PRP$ extension_NN ,_, UPR_NNP ,_, is_VBZ orthogonal_JJ to_TO t_NN
+constant_JJ modifications_NNS of_IN the_DT Web_NN structure_NN ,_, Google_NNP regularly_RB updates_NNS its_PRP$ PageRank_NNP ._.
+According_VBG to_TO publicly_RB available_JJ information_NN Google_NNP uses_VBZ power_NN iterations_NNS to_TO compute_VB the_DT PageRank_NNP ._.
+Several_JJ proposals_NNS =_JJ -_: =[_NN 1_CD ,_, 5_CD ,_, 7_CD ,_, 9_CD ,_, 10_CD ,_, 13_CD ,_, 14_CD ,_, 15_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- see_VB also_RB an_DT extensive_JJ survey_NN paper_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- -RRB-_-RRB- have_VBP recently_RB been_VBN put_VBN forward_RB to_TO accelerate_VB the_DT PageRank_NNP computation_NN ._.
+This_DT research_NN direction_NN can_MD be_VB regarded_VBN as_IN a_DT system_NN point_NN of_IN view_NN ._.
+On_IN contrary_NN ,_, here_RB w_NN
+dely_RB interested_VBN and_CC studied_VBN by_IN many_JJ Web_NN IR_NN researchers_NNS ._.
+Many_JJ studies_NNS mainly_RB focus_VB on_IN finding_VBG an_DT efficient_JJ way_NN to_TO compute_VB the_DT PageRank_NNP scores_NNS of_IN a_DT very_RB large_JJ web_NN graph_NN ._.
+To_TO mention_VB a_DT few_JJ ,_, Kamvar_NNP et_FW al._FW =_SYM -_: =[_NN 6_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBN adaptive_JJ and_CC extrapolation_NN methods_NNS to_TO accelerate_VB the_DT computation_NN ._.
+Haveliwala_NN and_CC Kamvar_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- detected_VBD the_DT spammers_NNS ,_, and_CC improved_VBD the_DT convergent_JJ rate_NN ,_, by_IN examining_VBG the_DT second_JJ eigenvalue_NN ._.
+Kamva_NN
+ema_NN ._.
+However_RB ,_, none_NN of_IN these_DT works_NNS exploits_VBZ the_DT link_NN structure_NN to_TO provide_VB keyword-specific_JJ ranking_NN ._.
+Furthermore_RB ,_, they_PRP ignore_VBP the_DT schema_NN semantics_NNS when_WRB computing_VBG the_DT scores_NNS ._.
+Performance_NNP ._.
+A_DT set_NN of_IN works_NNS =_JJ -_: =[_NN 18_CD ,_, 11_CD ,_, 23_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP tackled_VBN the_DT problem_NN of_IN improving_VBG the_DT performance_NN of_IN the_DT original_JJ PageRank_NNP algorithm_NN ._.
+-LRB-_-LRB- 18_CD ,_, 11_CD -RRB-_-RRB- present_JJ algorithms_NNS to_TO improve_VB the_DT calculation_NN of_IN a_DT global_JJ PageRank_NN ._.
+Jeh_NNP and_CC Widom_NNP -LRB-_-LRB- 23_CD -RRB-_-RRB- present_VBP a_DT met_VBN
+Rank_NNP algorithm_NN -LRB-_-LRB- see_VB -LRB-_-LRB- 29_CD -RRB-_-RRB- -RRB-_-RRB- has_VBZ both_CC the_DT propagation_NN and_CC the_DT attenuation_NN properties_NNS that_IN we_PRP need_VBP ,_, furthermore_RB thanks_NNS to_TO significant_JJ research_NN efforts_NNS we_PRP can_MD compute_VB PageRank_NNP in_IN a_DT very_RB efficient_JJ way_NN -LRB-_-LRB- see_VB =_JJ -_: =[_NN 30_CD ,_, 31_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Consider_VB a_DT generic_JJ graph_NN G_NN =_JJ -LRB-_-LRB- V_NN ,_, E_NN -RRB-_-RRB- ,_, where_WRB V_NN is_VBZ the_DT set_NN of_IN nodes_NNS connected_VBN by_IN directed_JJ links_NNS in_IN E_NN ,_, the_DT classic_JJ PageRank_NN algorithm_NN computes_VBZ an_DT importance_NN score_NN P_NN R_NN -LRB-_-LRB- n_NN -RRB-_-RRB- for_IN every_DT node_NN n_NN ∈_NN V_NN according_VBG
+to_TO the_DT n_NN ×_CD n_NN stochastic_JJ transition_NN matrix_NN AT_NNP ._.
+The_DT matrix_NN P_NN corresponds_VBZ to_TO the_DT web_NN link_NN graph_NN ;_: in_IN making_VBG P_NN stochastic_JJ ,_, there_EX are_VBP standard_JJ techniques_NNS for_IN dealing_VBG with_IN web_NN pages_NNS with_IN no_DT outgoing_JJ links_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT strongest_JJS implication_NN of_IN this_DT result_NN has_VBZ to_TO do_VB with_IN the_DT stability_NN of_IN PageRank_NN ._.
+A_DT proof_NN of_IN stability_NN of_IN PageRank_NN is_VBZ given_VBN in_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, but_CC we_PRP show_VBP a_DT tighter_JJR stability_NN bound_VBD here_RB ._.
+Imagine_VB that_IN the_DT Goog_NNP
+this_DT dramatic_JJ growth_NN of_IN the_DT world-wide_JJ web_NN ,_, it_PRP is_VBZ almost_RB infeasible_JJ to_TO compute_VB PageRank_NNP scores_NNS for_IN the_DT whole_JJ web_NN in_IN memory_NN ._.
+Efficient_JJ centralized_JJ computation_NN of_IN PageRank_NN algorithm_NN has_VBZ been_VBN studied_VBN in_IN =_JJ -_: =[_NN 17_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+An_DT adaptive_JJ method_NN is_VBZ exploited_VBN in_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- where_WRB pages_NNS already_RB converged_VBN are_VBP not_RB recomputed_VBN in_IN a_DT new_JJ iteration_NN ._.
+Another_DT extrapolation_NN method_NN is_VBZ exploited_VBN in_IN -LRB-_-LRB- 19_CD -RRB-_-RRB- where_WRB the_DT higher_JJR terms_NNS in_IN ranking_JJ vecto_NN
+trix_NN takes_VBZ days_NNS -LRB-_-LRB- 31_CD -RRB-_-RRB- and_CC requires_VBZ a_DT very_RB large_JJ configuration_NN of_IN computational_JJ and_CC storage_NN servers_NNS ._.
+These_DT issues_NNS have_VBP led_VBN to_TO several_JJ recent_JJ studies_NNS on_IN methods_NNS for_IN accelerating_VBG computation_NN of_IN pageranks_NN =_JJ -_: =[_NN 22_CD ,_, 2_CD ,_, 21_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: through_IN improvements_NNS in_IN the_DT computational_JJ algorithms_NNS ._.
+The_DT approach_NN defined_VBN and_CC described_VBN in_IN this_DT paper_NN does_VBZ not_RB require_VB a_DT web_NN crawl_NN ,_, uses_VBZ the_DT unused_JJ processing_NN power_NN of_IN the_DT hosts_NNS storing_VBG the_DT document_NN
+ortance_NN of_IN the_DT pages_NNS containing_VBG those_DT hyperlinks_NNS ._.
+PageRank_NN values_NNS are_VBP usually_RB computed_VBN in_IN an_DT off-line_JJ manner_NN ,_, during_IN a_DT largescale_JJ iterative_JJ computation_NN on_IN the_DT entire_JJ web_NN graph_NN ._.
+Several_JJ recent_JJ studies_NNS =_JJ -_: =[_NN 3_CD ,_, 10_CD ,_, 13_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP looked_VBN at_IN ways_NNS to_TO optimize_VB this_DT computation_NN ,_, which_WDT may_MD take_VB many_JJ hours_NNS on_IN a_DT typical_JJ workstation_NN for_IN large_JJ graphs_NNS ._.
+However_RB ,_, there_EX are_VBP some_DT situations_NNS in_IN which_WDT a_DT global_JJ computation_NN on_IN the_DT entire_JJ g_NN
+ne_NN of_IN them_PRP uniformly_RB --_: is_VBZ liable_JJ to_TO reach_VB a_DT dead_JJ end_NN or_CC to_TO cycle_NN ._.
+To_TO avoid_VB this_DT ,_, it_PRP is_VBZ common_JJ to_TO jump_VB occasionally_RB to_TO a_DT page_NN chosen_VBN uniformly_RB at_IN random_JJ ._.
+Adding_VBG jumps_NNS in_IN this_DT way_NN is_VBZ known_VBN as_IN teleporting_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT search_NN engine_NN Google_NNP uses_VBZ just_RB such_JJ an_DT algorithm_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+Our_PRP$ results_NNS apply_VBP directly_RB to_TO the_DT case_NN of_IN teleporting_VBG on_IN a_DT ring_NN lattice_NN and_CC quantify_VB ,_, in_IN terms_NNS of_IN the_DT teleporting_NN parameter_NN ,_, the_DT expected_VBN n_NN
+al_FW for_IN accelerated_VBN convergence_NN using_VBG traditional_JJ iterative_JJ techniques_NNS ._.
+To_TO this_DT end_NN ,_, an_DT example_NN application_NN involves_VBZ removing_VBG dangling_VBG node_NN and_CC teleportation_NN entries_NNS from_IN the_DT principal_JJ PageRank_NN matrix_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4_LS ._.
+ASYNCHRONOUS_JJ ITERATIONS_NNS FOR_IN TRANSIENT_NN AND_CC PASSAGE_NN TIMES_VBZ It_PRP can_MD be_VB shown_VBN that_IN the_DT calculation_NN of_IN passage-time_JJ and_CC transient_JJ distributions_NNS in_IN CTMCs_NNS and_CC SMPs_NNS -LRB-_-LRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 2_LS -RRB-_-RRB- -RRB-_-RRB- is_VBZ a_DT fixed-point_JJ problem_NN o_NN
+close_RB to_TO 1_CD ._.
+The_DT Power_NNP Method_NNP converges_VBZ more_RBR and_CC more_RBR slowly_RB -LRB-_-LRB- 9_CD -RRB-_-RRB- as_IN α_FW →_FW 1_CD −_NN ,_, a_DT fact_NN that_WDT also_RB influences_VBZ the_DT other_JJ methods_NNS used_VBN to_TO compute_VB PageRank_NNP -LRB-_-LRB- which_WDT are_VBP ,_, after_IN all_DT ,_, variants_NNS of_IN the_DT Power_NN Method_NN =_JJ -_: =[_NN 17_CD ,_, 7_CD ,_, 6_CD ,_, 15_CD ,_, 11_CD ,_, 10_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Indeed_RB ,_, the_DT number_NN of_IN iterations_NNS required_VBN could_MD in_IN general_JJ be_VB bounded_VBN using_VBG the_DT separation_NN between_IN the_DT first_JJ and_CC the_DT second_JJ eigenvalue_NN ,_, but_CC unfortunately_RB the_DT separation_NN can_MD be_VB abysmally_RB small_JJ if_IN α_NN
+s_NN for_IN cc-TLDs_NN -LRB-_-LRB- e.g._FW ,_, ebay_NN ._.
+co._FW uk_FW ,_, det.wa.edu_NN ._.
+au_IN -RRB-_-RRB- ._.
+We_PRP use_VBP a_DT comprehensive_JJ list_NN of_IN custom_NN rules_NNS for_IN identifying_VBG PLDs_NNS ,_, which_WDT have_VBP been_VBN compiled_VBN as_IN part_NN of_IN our_PRP$ ongoing_JJ DNS_NN project_NN ._.
+While_IN computing_VBG PageRank_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, BlockRank_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, or_CC SiteRank_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 30_CD -RRB-_-RRB- is_VBZ a_DT potential_JJ solution_NN to_TO the_DT spam_NN problem_NN ,_, crawling_VBG threads_NNS STAR_NN new_JJ URLs_NNS check_VBP +_CC update_VBP PLD_NN links_NN robots-check_NN queue_NN Q_NNP R_NNP Fig._NNP 4_CD ._.
+Operation_NN of_IN STAR_NN ._.
+DRUM_NN URL_NN
+to_TO 1_CD ._.
+The_DT Power_NNP Method_NNP converges_VBZ more_RBR and_CC more_RBR slowly_RB -LRB-_-LRB- 15_CD -RRB-_-RRB- as_IN α_FW →_FW 1_CD −_NN ,_, a_DT fact_NN that_WDT also_RB influences_VBZ the_DT other_JJ methods_NNS used_VBN to_TO compute_VB PageRank_NNP -LRB-_-LRB- which_WDT are_VBP often_RB themselves_PRP variants_NNS of_IN the_DT Power_NN Method_NN =_JJ -_: =[_NN 22_CD ,_, 14_CD ,_, 12_CD ,_, 18_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Indeed_RB ,_, the_DT number_NN of_IN iterations_NNS required_VBN could_MD in_IN general_JJ be_VB bounded_VBN using_VBG the_DT separation_NN between_IN the_DT first_JJ and_CC the_DT second_JJ eigenvalue_NN ,_, but_CC unfortunately_RB the_DT separation_NN can_MD be_VB abysmally_RB small_JJ if_IN α_NN
+on_IN takes_VBZ less_JJR than_IN 5_CD seconds_NNS ._.
+Therefore_RB ,_, the_DT computation_NN of_IN RWR_NN scales_NNS well_RB with_IN the_DT database_NN size_NN ._.
+Fortunately_RB ,_, MAGIC_NN is_VBZ modular_JJ and_CC can_MD continue_VB improve_VB its_PRP$ performance_NN by_IN including_VBG the_DT best_JJS module_NN =_JJ -_: =[_NN 19_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: for_IN fast_JJ RWR_NN computation_NN ._.
+10sInput_NN :_: 1_CD ._.
+GMAGIC_NNP :_: a_DT MAGIC_NN graph_NN with_IN N_NN nodes_NNS -LRB-_-LRB- nodes_NNS are_VBP numbered_VBN from_IN 1_CD to_TO N_NN -RRB-_-RRB- ._.
+2_CD ._.
+R_NN :_: a_DT set_NN of_IN restart_VB nodes_NNS ._.
+-LRB-_-LRB- Let_NNP |_NNP R_NNP |_NNP be_VB the_DT size_NN of_IN R._NNP -RRB-_-RRB- 3_CD ._.
+c_NN :_: the_DT restart_VB probability_NN ._.
+Ou_NN
+many_JJ of_IN these_DT focus_NN on_IN numerical_JJ linear_JJ algebra_NN techniques_NNS ._.
+A_DT Gauss-Seidel_NNP algorithm_NN is_VBZ discussed_VBN in_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- where_WRB the_DT most_RBS recent_JJ component_NN values_NNS of_IN the_DT PageRank_NN vector_NN are_VBP used_VBN in_IN the_DT computation_NN ._.
+In_IN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, one_CD periodically_RB subtracts_VBZ away_RB approximation_NN of_IN the_DT sub-dominant_JJ eigenvectors_NNS to_TO accelerate_VB convergence_NN ._.
+It_PRP is_VBZ noted_VBN in_IN -LRB-_-LRB- 11_CD -RRB-_-RRB- that_IN when_WRB sorted_VBN by_IN url_NN ,_, the_DT Google_NNP matrix_NN has_VBZ a_DT block_NN structure_NN ;_: hence_RB ,_,
+differ_VBP from_IN our_PRP$ work_NN in_IN that_DT our_PRP$ node_NN selection_NN algorithms_NNS do_VBP not_RB use_VB -LRB-_-LRB- or_CC have_VB access_NN to_TO -RRB-_-RRB- global_JJ PageRank_NN values_NNS ._.
+Many_JJ algorithmic_JJ improvements_NNS for_IN computing_VBG exact_JJ PageRank_NN values_NNS have_VBP been_VBN proposed_VBN =_JJ -_: =[_NN 9_CD ,_, 10_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+If_IN such_JJ algorithms_NNS are_VBP used_VBN to_TO compute_VB the_DT global_JJ PageRanks_NNP of_IN our_PRP$ local_JJ domain_NN ,_, they_PRP would_MD all_DT require_VB O_NN -LRB-_-LRB- N_NN -RRB-_-RRB- computation_NN ,_, storage_NN ,_, and_CC bandwidth_NN ,_, where_WRB N_NN is_VBZ the_DT size_NN of_IN the_DT global_JJ domain_NN ._.
+This_DT is_VBZ in_IN
+x_NN has_VBZ recently_RB received_VBN much_JJ attention_NN within_IN the_DT web_NN community_NN for_IN its_PRP$ possible_JJ applications_NNS to_TO rank_VB aggregation_NN -LRB-_-LRB- 13_CD ,_, 12_CD ,_, 10_CD -RRB-_-RRB- and_CC for_IN determining_VBG the_DT convergence_NN speed_NN in_IN the_DT computation_NN of_IN PageRank_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Kendall_NNP 's_POS τ_NN is_VBZ usually_RB defined_VBN as_IN follows_VBZ 3_CD :_: Definition_NN 1_CD -LRB-_-LRB- -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, pages_NNS 34_CD --_: 36_CD -RRB-_-RRB- Let_NNP ri_NNP ,_, si_NNP ∈_NNP R_NNP -LRB-_-LRB- i_LS =_JJ 1_CD ,_, 2_CD ,_, ..._: ,_, n_NN -RRB-_-RRB- be_VB two_CD rankings_NNS ._.
+Given_VBN a_DT pair_NN of_IN distinct_JJ indices_NNS 1_CD ≤_FW i_FW ,_, j_FW ≤_FW n_NN ,_, we_PRP say_VBP that_IN the_DT pa_NN
+mized_VBN by_IN reading_VBG chunks_NNS of_IN the_DT transition_NN matrix_NN into_IN memory_NN ._.
+Extrapolation_NN methods_NNS with_IN a_DT higher_JJR degree_NN of_IN efficiency_NN may_MD also_RB be_VB used_VBN in_IN the_DT computation_NN of_IN the_DT principal_JJ eigenvector_NN of_IN the_DT matrix_NN S_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4.3_CD Evaluation_NN The_DT process_NN of_IN evaluation_NN consists_VBZ of_IN two_CD parts_NNS :_: The_DT first_JJ part_NN deals_NNS with_IN comparison_NN of_IN the_DT ranks_NNS of_IN the_DT pages_NNS and_CC the_DT second_JJ with_IN their_PRP$ categorizations_NNS ._.
+The_DT ranks_NNS obtained_VBN by_IN our_PRP$ me_PRP
+uadratic_JJ extrapolation_NN ,_, similar_JJ to_TO Aitken_NNP 's_POS ∆_NN 2_CD method_NN ,_, to_TO speed_VB convergence_NN to_TO the_DT PageRank_NN vector_NN ._.
+The_DT results_NNS show_VBP speedups_NNS of_IN 50_CD --_: 300_CD %_NN over_IN the_DT basic_JJ power_NN method_NN ,_, with_IN minimal_JJ additional_JJ overhead_NN =_JJ -_: =[_NN 36_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT same_JJ group_NN of_IN researchers_NNS have_VBP also_RB developed_VBN a_DT BlockRank_NNP algorithm_NN that_WDT uses_VBZ aggregation_NN methods_NNS to_TO empirically_RB achieve_VB speedups_NNS of_IN a_DT factor_NN of_IN 2_CD -LRB-_-LRB- 35_CD -RRB-_-RRB- ._.
+One_CD final_JJ algorithm_NN uses_VBZ an_DT adaptive_JJ meth_NN
+onal_JJ overhead_NN by_IN up_IN to_TO 30_CD %_NN ._.
+Using_VBG Quadratic_NNP Extrapolation_NNP ,_, Sepandar_NNP D._NNP Kamvar_NNP et_FW al._FW -LRB-_-LRB- KHMG03_NN -RRB-_-RRB- again_RB speed_VB 54sup_JJ PageRank_NN computations_NNS by_IN between_IN 25_CD and_CC 300_CD %_NN and_CC introduce_VB their_PRP$ BlockRank_NNP algorithm_NN in_IN =_JJ -_: =_JJ -LRB-_-LRB- KHMG_NN -RRB-_-RRB- -_: =_JJ -_: ,_, to_TO exploit_VB host_NN structures_NNS ._.
+A_DT local_JJ PageRank_NN vector_NN is_VBZ computed_VBN for_IN each_DT host_NN ,_, giving_VBG the_DT relative_JJ importance_NN of_IN pages_NNS within_IN a_DT host_NN ,_, and_CC is_VBZ then_RB used_VBN to_TO provide_VB an_DT approximation_NN of_IN the_DT standard_JJ Pag_NN
+there_EX are_VBP various_JJ techniques_NNS available_JJ that_IN reduce_VB this_DT opreration_NN complexity_NN and_CC processing_NN time_NN ._.
+We_PRP review_VBP several_JJ relevant_JJ examples_NNS that_WDT pertain_VBP to_TO the_DT Personalized_NNP PageRank_NNP paradigm_NN ._.
+Kamvar_FW et-al_FW =_SYM -_: =[_NN 69_CD -RRB-_-RRB- -_: =_SYM -_: suggested_VBD the_DT technique_NN of_IN quadratic_JJ extrapolation_NN that_WDT is_VBZ applied_VBN periodically_RB to_TO enhance_VB the_DT convergence_NN of_IN PageRank_NN using_VBG the_DT simple_JJ power_NN iteration_NN method_NN -LRB-_-LRB- i.e._FW ,_, iterative_JJ matrix_NN multiplication_NN -RRB-_-RRB- ._.
+method_NN ._.
+Once_RB again_RB ,_, as_IN in_IN Section_NNP 5.1_CD ,_, the_DT size_NN of_IN the_DT document_NN collection_NN under_IN consideration_NN may_MD be_VB huge_JJ ,_, in_IN which_WDT case_NN ,_, each_DT iteration_NN is_VBZ very_RB costly_JJ ,_, sometimes_RB taking_VBG several_JJ hours_NNS to_TO a_DT few_JJ days_NNS =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC hence_RB ,_, early_RB stopping_VBG is_VBZ desirable_JJ ._.
+The_DT page_NN rank_NN vectors_NNS produced_VBN by_IN consecutive_JJ iterations_NNS are_VBP compared_VBN to_TO see_VB if_IN near_JJ convergence_NN is_VBZ attained_VBN ._.
+In_IN some_DT instances_NNS ,_, the_DT computation_NN is_VBZ performed_VBN
+rity_NN flow_NN problem_NN as_IN the_DT maximization_NN of_IN the_DT electric_JJ current_NN between_IN the_DT nodes_NNS ,_, where_WRB each_DT edge_NN of_IN the_DT data_NNS graph_NN is_VBZ represented_VBN by_IN an_DT electric_JJ resistor_NN ._.
+Performance_NNP :_: A_DT set_NN of_IN works_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP tackled_VBN the_DT problem_NN of_IN improving_VBG the_DT performance_NN of_IN the_DT original_JJ PageRank_NNP algorithm_NN ._.
+-LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- present_JJ algorithms_NNS to_TO improve_VB the_DT calculation_NN of_IN a_DT global_JJ PageRank_NN ._.
+Jeh_NNP and_CC Widom_NNP -LRB-_-LRB- 16_CD -RRB-_-RRB- present_VBP a_DT me_PRP
+abilities_NNS for_IN reaching_VBG a_DT particular_JJ node_NN on_IN a_DT random_JJ walk_NN of_IN the_DT graph_NN ._.
+This_DT probability_NN is_VBZ referred_VBN to_TO as_IN a_DT page_NN 's_POS PageRank_NN ._.
+This_DT dissertation_NN uses_VBZ an_DT implementation_NN of_IN the_DT Power_NNP method_NN described_VBN in_IN =_JJ -_: =[_NN 44_CD -RRB-_-RRB- -_: =_SYM -_: to_TO calculate_VB the_DT PageRank_NN of_IN each_DT file_NN in_IN the_DT relation_NN graph_NN ._.
+Unfortunately_RB ,_, Google_NNP 's_POS method_NN of_IN merging_JJ content_NN search_NN results_VBZ with_IN PageRank_NN is_VBZ not_RB clearly_RB documented_VBN 2_CD ,_, thus_RB I_PRP implemented_VBD three_CD pos_NNS
+eigenvector_NN describes_VBZ the_DT probabilities_NNS for_IN reaching_VBG a_DT particular_JJ node_NN on_IN a_DT random_JJ walk_NN of_IN the_DT graph_NN ._.
+This_DT probability_NN is_VBZ referred_VBN to_TO as_IN a_DT page_NN 's_POS PageRank_NN ._.
+Within_IN Connections_NNP ,_, we_PRP use_VBP the_DT Power_NNP Method_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: to_TO calculate_VB the_DT PageRank_NN of_IN each_DT file_NN in_IN the_DT relation-graph_NN ._.
+Unfortunately_RB ,_, Google_NNP 's_POS method_NN of_IN merging_JJ content_NN search_NN results_VBZ with_IN PageRank_NN is_VBZ not_RB documented_VBN ,_, thus_RB we_PRP implemented_VBD three_CD possible_JJ uses_NNS
+algorithm_NN is_VBZ quite_RB expensive_JJ in_IN terms_NNS of_IN both_CC time_NN and_CC space_NN ._.
+In_IN the_DT literature_NN ,_, for_IN efficient_JJ PageRank_NNP computation_NN ,_, -LRB-_-LRB- 1_LS -RRB-_-RRB- algorithmic\/numeric_JJ optimizations_NNS that_WDT try_VBP to_TO reduce_VB the_DT number_NN of_IN iterations_NNS =_JJ -_: =[_NN 6,7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- I\/O_NN efficient_JJ out-of-core_JJ algorithms_NNS for_IN decreasing_VBG the_DT duration_NN of_IN an_DT iteration_NN -LRB-_-LRB- 5_CD ,_, 4_CD -RRB-_-RRB- ,_, and_CC -LRB-_-LRB- 3_LS -RRB-_-RRB- some_DT architectural_JJ improvements_NNS such_JJ as_IN parallel_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC peer-to-peer_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- PageRank_NN computation_NN ar_NN
+Google_NNP chooses_VBZ c_NN =_JJ 0.85_CD ,_, which_WDT insures_VBZ a_DT good_JJ rate_NN of_IN convergence_NN ._.
+Anyway_RB ,_, since_IN the_DT computation_NN of_IN the_DT PageRank_NN vector_NN can_MD take_VB several_JJ days_NNS ,_, various_JJ methods_NNS for_IN their_PRP$ acceleration_NN have_VBP been_VBN proposed_VBN =_JJ -_: =[_NN 12_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT vector_NN ˜r_NN =_JJ limc_FW →_FW 1_CD rc_NN is_VBZ uniquely_RB determined_VBN as_IN the_DT limit_NN ,_, when_WRB c_NN tends_VBZ to_TO 1_CD ,_, of_IN the_DT family_NN of_IN vectors_NNS rc_NN ._.
+However_RB ,_, it_PRP is_VBZ just_RB one_CD of_IN the_DT infinitely_RB many_JJ solutions_NNS of_IN P_NN T_NN r_NN =_JJ r_NN ,_, r_NN ≥_NN 0_CD ,_, -LRB-_-LRB- r_NN ,_, e_LS -RRB-_-RRB- =_JJ
+ortation_NN vector_NN ._.
+Just_RB like_IN the_DT dangling_VBG node_NN vector_NN u_NN ,_, v_LS is_VBZ a_DT probability_NN vector_NN ._.
+See_VB -LRB-_-LRB- 9_CD -RRB-_-RRB- for_IN a_DT discussion_NN about_IN the_DT impact_NN of_IN setting_VBG u_NN ̸_NN =_JJ v._CC It_PRP is_VBZ common_JJ practice_NN to_TO set_VB u_NN =_JJ v_LS in_IN the_DT PageRank_NNP model_NN =_JJ -_: =[_NN 22_CD ,_, 26_CD ,_, 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT PageRank_NN vector_NN is_VBZ defined_VBN as_IN the_DT vector_NN satisfying_JJ x_NN =_JJ Ax_NN with_IN A_NN defined_VBN in_IN -LRB-_-LRB- 2.1_CD -RRB-_-RRB- ._.
+We_PRP note_VBP that_IN in_IN general_JJ ,_, for_IN nonnegative_JJ v_LS ,_, primitivity_NN and_CC irreducibility_NN are_VBP not_RB needed_VBN to_TO ensure_VB the_DT unique_JJ
+nce_NN ._.
+For_IN real-world_JJ ,_, Web-scale_JJ performance_NN measurements_NNS ,_, we_PRP used_VBD the_DT LARGEWEB_NN link_NN graph_NN ,_, generated_VBN from_IN a_DT large_JJ crawl_NN of_IN the_DT Web_NN that_WDT had_VBD been_VBN created_VBN by_IN the_DT Stanford_NNP WebBase_NNP project_NN in_IN January_NNP 2001_CD =_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+LARGEWEB_NN contains_VBZ roughly_RB 80M_NN nodes_NNS ,_, with_IN close_JJ to_TO a_DT billion_CD links_NNS ,_, and_CC requires_VBZ 3.6_CD GB_NN of_IN storage_NN ._.
+Both_DT link_NN graphs_NNS are_VBP stored_VBN using_VBG an_DT adjacency_NN list_NN representation_NN ,_, with_IN pages_NNS represented_VBN as_IN 4-byt_NN
+transition_NN probabilities_NNS ,_, to_TO all_DT nodes_NNS ,_, creating_VBG a_DT complete_JJ -LRB-_-LRB- and_CC thus_RB strongly_RB connected_VBN -RRB-_-RRB- transition_NN graph_NN ._.
+In_IN matrix_NN notation_NN ,_, we_PRP construct_VBP the_DT irreducible_JJ Markov_NNP matrix_NN A_NN as_IN follows_VBZ :_: E_NN =_JJ ~_CD p_NN \_NNP Theta_NNP =_SYM -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -1_CD \_CD Thetan_NN =_JJ \_CD Theta_NNP 1_CD n_NN n_NN \_FW Thetan_FW if_IN ~_CD p_NN is_VBZ the_DT uniform_JJ distribution_NN A_NN =_JJ cM_NN 0_CD +_CC -LRB-_-LRB- 1_CD \_NN Gamma_NN c_NN -RRB-_-RRB- E_NN In_IN terms_NNS of_IN the_DT random_JJ walk_NN ,_, the_DT effect_NN of_IN E_NN is_VBZ as_IN follows_VBZ ._.
+At_IN each_DT time_NN step_NN ,_, with_IN probability_NN -LRB-_-LRB- 1_CD \_FW Gamma_FW c_NN -RRB-_-RRB- ,_,
+b_NN graph_NN ,_, so_IN that_IN back-links_NNS for_IN pages_NNS ,_, rather_RB than_IN forward-links_NNS ,_, are_VBP stored_VBN consecutively_RB ._.
+The_DT myriad_JJ of_IN multigrid_JJ methods_NNS are_VBP also_RB applicable_JJ to_TO this_DT problem_NN ._.
+For_IN a_DT review_NN of_IN multigrid_JJ methods_NNS ,_, see_VBP =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+8.2_CD PageRank_NNP Seminal_NNP algorithms_NNS for_IN graph_NN analysis_NN for_IN Web-search_NN were_VBD introduced_VBN by_IN Page_NNP et_FW al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- -LRB-_-LRB- PageRank_NN -RRB-_-RRB- and_CC Kleinberg_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- HITS_NN -RRB-_-RRB- ._.
+Much_JJ additional_JJ work_NN has_VBZ beendone_VBN on_IN improving_VBG these_DT algor_NN
+at_IN a_DT surfer_NN visiting_VBG a_DT dangling_JJ page_NN -LRB-_-LRB- i.e._FW ,_, a_DT page_NN with_IN no_DT outlinks_NNS -RRB-_-RRB- randomly_RB jumps_VBZ to_TO another_DT page_NN in_IN the_DT next_JJ time_NN step_NN ,_, using_VBG the_DT distribution_NN given_VBN by_IN ~_NN p._NN By_IN the_DT Ergodic_NNP Theorem_NNP for_IN Markov_NNP chains_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT Markov_NNP chain_NN defined_VBN by_IN M_NN 0_CD has_VBZ a_DT unique_JJ stationary_JJ probability_NN distribution_NN if_IN M_NN 0_CD is_VBZ aperiodic_JJ and_CC irreducible_JJ ;_: the_DT former_NN holds_VBZ for_IN the_DT Markov_NNP chain_NN induced_VBN by_IN the_DT Web_NN graph_NN ._.
+The_DT latter_NN holds_VBZ
+applicable_JJ to_TO this_DT problem_NN ._.
+For_IN a_DT review_NN of_IN multigrid_JJ methods_NNS ,_, see_VB -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+8.2_CD PageRank_NNP Seminal_NNP algorithms_NNS for_IN graph_NN analysis_NN for_IN Web-search_NN were_VBD introduced_VBN by_IN Page_NNP et_FW al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- -LRB-_-LRB- PageRank_NN -RRB-_-RRB- and_CC Kleinberg_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- HITS_NNS -RRB-_-RRB- ._.
+Much_JJ additional_JJ work_NN has_VBZ beendone_VBN on_IN improving_VBG these_DT algorithms_NNS and_CC extending_VBG them_PRP to_TO new_JJ search_NN and_CC text_NN mining_NN tasks_NNS -LRB-_-LRB- 4_CD ,_, 6_CD ,_, 18_CD ,_, 3_CD ,_, 19_CD ,_, 11_CD -RRB-_-RRB- ._.
+More_RBR applicable_JJ to_TO our_PRP$ work_NN are_VBP several_JJ papers_NNS wh_VBP
+search_NN were_VBD introduced_VBN by_IN Page_NNP et_FW al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- -LRB-_-LRB- PageRank_NN -RRB-_-RRB- and_CC Kleinberg_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- HITS_NN -RRB-_-RRB- ._.
+Much_JJ additional_JJ work_NN has_VBZ beendone_VBN on_IN improving_VBG these_DT algorithms_NNS and_CC extending_VBG them_PRP to_TO new_JJ search_NN and_CC text_NN mining_NN tasks_NNS =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 18_CD ,_, 3_CD ,_, 19_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+More_RBR applicable_JJ to_TO our_PRP$ work_NN are_VBP several_JJ papers_NNS which_WDT discuss_VBP the_DT computation_NN of_IN PageRank_NNP itself_PRP -LRB-_-LRB- 10,2_CD ,_, 13_CD -RRB-_-RRB- ._.
+Haveliwala_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- explores_VBZ memory-efficient_JJ computation_NN ,_, and_CC suggests_VBZ using_VBG induced_VBN orderings_NNS
+y_NN is_VBZ performed_VBN as_IN in_IN Algorithm_NNP 1_CD ,_, the_DT matrix_NN M_NN is_VBZ so_RB sparse_JJ that_IN the_DT matrix-vector_NN multiply_VBP is_VBZ essentially_RB O_NN -LRB-_-LRB- n_NN -RRB-_-RRB- ._.
+In_IN particular_JJ ,_, the_DT average_JJ outdegree_NN of_IN pages_NNS on_IN the_DT Web_NN has_VBZ been_VBN found_VBN to_TO be_VB around_IN 7_CD =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+On_IN our_PRP$ datasets_NNS ,_, we_PRP observed_VBD an_DT average_NN of_IN around_IN 8_CD outlinks_NNS per_IN page_NN ._.
+It_PRP should_MD be_VB noted_VBN that_IN if_IN 2_CD is_VBZ close_JJ to_TO 1_CD ,_, then_RB the_DT power_NN method_NN is_VBZ slow_JJ to_TO converge_VB ,_, because_IN n_NN must_MD be_VB large_JJ beforesn_NN 2_CD is_VBZ cl_NN
+search_NN were_VBD introduced_VBN by_IN Page_NNP et_FW al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- -LRB-_-LRB- PageRank_NN -RRB-_-RRB- and_CC Kleinberg_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- HITS_NN -RRB-_-RRB- ._.
+Much_JJ additional_JJ work_NN has_VBZ beendone_VBN on_IN improving_VBG these_DT algorithms_NNS and_CC extending_VBG them_PRP to_TO new_JJ search_NN and_CC text_NN mining_NN tasks_NNS =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 18_CD ,_, 3_CD ,_, 19_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+More_RBR applicable_JJ to_TO our_PRP$ work_NN are_VBP several_JJ papers_NNS which_WDT discuss_VBP the_DT computation_NN of_IN PageRank_NNP itself_PRP -LRB-_-LRB- 10,2_CD ,_, 13_CD -RRB-_-RRB- ._.
+Haveliwala_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- explores_VBZ memory-efficient_JJ computation_NN ,_, and_CC suggests_VBZ using_VBG induced_VBN orderings_NNS
+~_FW u_FW 2_CD ._.
+What_WP is_VBZ interesting_JJ here_RB is_VBZ that_IN this_DT is_VBZ equivalent_JJ to_TO performing_VBG a_DT second-order_JJ epsilon_NN acceleration_NN algorithm_NN on_IN each_DT component_NN of_IN the_DT iterate_FW ~_FW x_NN -LRB-_-LRB- k_NN -RRB-_-RRB- ._.
+The_DT epsilon_NN algorithm_NN is_VBZ introduced_VBN in_IN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+0.001_CD 0.01_CD 0.1_CD 1_CD 0_CD 50 100 150 200_CD #_# of_IN iterations_NNS No_NNP Extrapolation_NNP Aitken_NNP Extrapolation_NNP Figure_NNP 2_CD :_: Comparison_NN of_IN convergence_NN rate_NN for_IN unaccelerated_JJ Power_NNP Method_NNP and_CC Aitken_NNP Extrapolation_NNP on_IN the_DT STANFO_NN
+terates_FW ~_FW x_NN -LRB-_-LRB- k_NN -RRB-_-RRB- that_WDT converge_VBP to_TO the_DT principal_JJ eigenvector_NN ~_FW u_FW 1_CD ,_, it_PRP is_VBZ straightforward_JJ to_TO use_VB Quadratic_JJ Extrapolation_NN in_IN conjunction_NN with_IN other_JJ methods_NNS for_IN accelerating_VBG PageRank_NNP ,_, such_JJ as_IN Gauss-Seidel_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+7_CD ._.
+MEASURES_NNS OF_IN CONVERGENCE_NN In_IN this_DT section_NN ,_, we_PRP present_VBP empirical_JJ results_NNS demonstrating_VBG the_DT suitability_NN of_IN the_DT L1_NN residual_JJ ,_, even_RB in_IN the_DT context_NN of_IN measuring_VBG convergence_NN of_IN induced_VBN document_NN rankings_NNS ._.
+mproving_VBG these_DT algorithms_NNS and_CC extending_VBG them_PRP to_TO new_JJ search_NN and_CC text_NN mining_NN tasks_NNS -LRB-_-LRB- 4_CD ,_, 6_CD ,_, 18_CD ,_, 3_CD ,_, 19_CD ,_, 11_CD -RRB-_-RRB- ._.
+More_RBR applicable_JJ to_TO our_PRP$ work_NN are_VBP several_JJ papers_NNS which_WDT discuss_VBP the_DT computation_NN of_IN PageRank_NNP itself_PRP =_JJ -_: =[_NN 10,2_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Haveliwala_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- explores_VBZ memory-efficient_JJ computation_NN ,_, and_CC suggests_VBZ using_VBG induced_VBN orderings_NNS ,_, rather_RB than_IN residuals_NNS ,_, to_TO measure_VB convergence_NN ._.
+Arasu_NNP et_FW al._FW -LRB-_-LRB- 2_LS -RRB-_-RRB- uses_VBZ the_DT Gauss-Seidel_NNP method_NN to_TO speed_VB up_RP c_NN
+y_NN to_TO reduce_VB the_DT lag_NN time_NN from_IN when_WRB a_DT new_JJ crawl_NN is_VBZ completed_VBN to_TO when_WRB that_DT crawl_NN can_MD be_VB made_VBN available_JJ for_IN searching_VBG ._.
+Furthermore_RB ,_, recent_JJ approaches_NNS to_TO personalized_JJ and_CC topic-sensitive_JJ PageRank_NN schemes_NNS =_JJ -_: =[_NN 11_CD ,_, 19_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: require_VB computing_VBG many_JJ PageRank_NNP vectors_NNS ,_, each_DT biased_VBN towards_IN certain_JJ types_NNS of_IN pages_NNS ._.
+These_DT approaches_NNS intensify_VBP the_DT need_NN for_IN faster_JJR methods_NNS for_IN computing_VBG PageRank_NNP ._.
+Eigenvaluecomputation_NNP is_VBZ a_DT well-stu_NN
+l_NN is_VBZ a_DT good_JJ measure_NN for_IN the_DT convergence_NN of_IN query-result_JJ rankings_NNS ._.
+nodes_NNS -LRB-_-LRB- u_NN ;_: v_LS -RRB-_-RRB- 2_CD U_NNP \_NNP Theta_NNP U_NNP ._.
+An_DT analysis_NN of_IN various_JJ measures_NNS based_VBN on_IN Kendall_NNP 's_POS -_: for_IN comparing_VBG top-k_NN lists_NNS is_VBZ given_VBN by_IN Fagin_NNP et_FW al._FW in_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO measure_VB the_DT convergence_NN of_IN PageRank_NN iterations_NNS in_IN terms_NNS of_IN induced_VBN rank_NN orders_NNS ,_, we_PRP measured_VBD the_DT KDist_NN distance_NN between_IN the_DT induced_VBN rankings_NNS for_IN the_DT top_JJ 1,000_CD results_NNS ,_, averaged_VBD across_IN 86_CD test_NN quer_NN
+y_NN to_TO reduce_VB the_DT lag_NN time_NN from_IN when_WRB a_DT new_JJ crawl_NN is_VBZ completed_VBN to_TO when_WRB that_DT crawl_NN can_MD be_VB made_VBN available_JJ for_IN searching_VBG ._.
+Furthermore_RB ,_, recent_JJ approaches_NNS to_TO personalized_JJ and_CC topic-sensitive_JJ PageRank_NN schemes_NNS =_JJ -_: =[_NN 11_CD ,_, 19_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: require_VB computing_VBG many_JJ PageRank_NNP vectors_NNS ,_, each_DT biased_VBN towards_IN certain_JJ types_NNS of_IN pages_NNS ._.
+These_DT approaches_NNS intensify_VBP the_DT need_NN for_IN faster_JJR methods_NNS for_IN computing_VBG PageRank_NNP ._.
+Eigenvaluecomputation_NNP is_VBZ a_DT well-stu_NN
+search_NN were_VBD introduced_VBN by_IN Page_NNP et_FW al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- -LRB-_-LRB- PageRank_NN -RRB-_-RRB- and_CC Kleinberg_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- HITS_NN -RRB-_-RRB- ._.
+Much_JJ additional_JJ work_NN has_VBZ beendone_VBN on_IN improving_VBG these_DT algorithms_NNS and_CC extending_VBG them_PRP to_TO new_JJ search_NN and_CC text_NN mining_NN tasks_NNS =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 18_CD ,_, 3_CD ,_, 19_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+More_RBR applicable_JJ to_TO our_PRP$ work_NN are_VBP several_JJ papers_NNS which_WDT discuss_VBP the_DT computation_NN of_IN PageRank_NNP itself_PRP -LRB-_-LRB- 10,2_CD ,_, 13_CD -RRB-_-RRB- ._.
+Haveliwala_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- explores_VBZ memory-efficient_JJ computation_NN ,_, and_CC suggests_VBZ using_VBG induced_VBN orderings_NNS
+search_NN were_VBD introduced_VBN by_IN Page_NNP et_FW al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- -LRB-_-LRB- PageRank_NN -RRB-_-RRB- and_CC Kleinberg_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- HITS_NN -RRB-_-RRB- ._.
+Much_JJ additional_JJ work_NN has_VBZ beendone_VBN on_IN improving_VBG these_DT algorithms_NNS and_CC extending_VBG them_PRP to_TO new_JJ search_NN and_CC text_NN mining_NN tasks_NNS =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 18_CD ,_, 3_CD ,_, 19_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+More_RBR applicable_JJ to_TO our_PRP$ work_NN are_VBP several_JJ papers_NNS which_WDT discuss_VBP the_DT computation_NN of_IN PageRank_NNP itself_PRP -LRB-_-LRB- 10,2_CD ,_, 13_CD -RRB-_-RRB- ._.
+Haveliwala_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- explores_VBZ memory-efficient_JJ computation_NN ,_, and_CC suggests_VBZ using_VBG induced_VBN orderings_NNS
+by_IN 50-300_CD %_NN on_IN a_DT Web_NN graph_NN of_IN 80_CD million_CD nodes_NNS ,_, with_IN minimal_JJ overhead_NN ._.
+1_CD ._.
+INTRODUCTION_NN The_DT PageRank_NNP algorithm_NN for_IN determining_VBG the_DT ``_`` importance_NN ''_'' of_IN Web_NN pages_NNS has_VBZ become_VBN a_DT central_JJ technique_NN in_IN W_NN =_JJ -_: =_JJ eb_NN search_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT core_NN of_IN the_DT PageRank_NNP algorithm_NN involves_VBZ computing_VBG the_DT principal_JJ eigenvector_NN of_IN the_DT Markov_NNP matrix_NN representing_VBG the_DT hyperlink_NN structure_NN of_IN the_DT Web_NN ._.
+As_IN the_DT Web_NN graph_NN is_VBZ very_RB large_JJ ,_, containing_VBG over_IN
+spam_NN is_VBZ increased_VBN ,_, and_CC pages_NNS can_MD achieve_VB unfairly_RB high_JJ rankings_NNS ._.
+In_IN the_DT extreme_JJ case_NN ,_, for_IN a_DT teleport_NN probability_NN of_IN 1_CD \_FW Gamma_FW c_NN =_JJ 1_CD ,_, the_DT assignment_NN of_IN rank_NN to_TO pages_NNS becomes_VBZ uniform_JJ ._.
+Chakrabarti_NNP et_FW al._FW =_SYM -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: suggest_VBP that_IN c_NN should_MD be_VB tuned_VBN based_VBN on_IN the_DT connectivity_NN of_IN topics_NNS on_IN the_DT Web_NN ._.
+Such_JJ tuning_NN has_VBZ generally_RB not_RB been_VBN possible_JJ ,_, as_IN the_DT convergence_NN of_IN PageRank_NN slows_VBZ down_RB dramatically_RB for_IN small_JJ values_NNS of_IN
+the_DT other_JJ steps_NNS in_IN this_DT algorithm_NN are_VBP either_CC O_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- or_CC O_NN -LRB-_-LRB- n_NN -RRB-_-RRB- operations_NNS ._.
+Since_IN Y_NN is_VBZ an_DT n_NN \_NNP Theta_NNP 2_CD matrix_NN ,_, we_PRP can_MD do_VB the_DT least-squares_NNS solution_NN cheaply_RB in_IN just_RB 2_CD iterations_NNS of_IN the_DT Gram-Schmidt_NNP algorithm_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Therefore_RB ,_, fl_NN 1_CD and_CC fl_NN 2_CD can_MD be_VB computed_VBN in_IN O_NN -LRB-_-LRB- n_NN -RRB-_-RRB- operations_NNS ._.
+While_IN a_DT presentation_NN Gram-Schmidt_NN is_VBZ outside_JJ of_IN the_DT scope_NN of_IN this_DT paper_NN ,_, we_PRP show_VBP in_IN Algorithm_NN 7_CD how_WRB to_TO apply_VB Gram-Schmidt_NNP to_TO solve_VB for_IN -LRB-_-LRB- f_SYM
+e._VB It_PRP should_MD be_VB noted_VBN that_IN if_IN 2_CD is_VBZ close_JJ to_TO 1_CD ,_, then_RB the_DT power_NN method_NN is_VBZ slow_JJ to_TO converge_VB ,_, because_IN n_NN must_MD be_VB large_JJ before_IN n_NN 2_CD is_VBZ close_JJ to_TO 0_CD ,_, and_CC vice_NN versa_RB ._.
+3.3_CD Results_NNS and_CC Discussion_NN As_IN we_PRP show_VBP in_IN -LRB-_-LRB- 1_CD =_JJ -_: =_JJ 2_CD -_: =-]_CD ,_, the_DT eigengap_NN 1_CD j2_NN j_NN for_IN the_DT Web_NN Markov_NNP matrix_NN A_NN is_VBZ given_VBN exactly_RB by_IN the_DT teleport_NN probability_NN 1_CD c._NN Thus_RB ,_, when_WRB the_DT teleport_NN probability_NN is_VBZ large_JJ ,_, and_CC the_DT personalization_NN vectors_NNS ~_VBP v_LS is_VBZ uniform_JJ over_IN all_DT
+y_NN to_TO reduce_VB the_DT lag_NN time_NN from_IN when_WRB a_DT new_JJ crawl_NN is_VBZ completed_VBN to_TO when_WRB that_DT crawl_NN can_MD be_VB made_VBN available_JJ for_IN searching_VBG ._.
+Furthermore_RB ,_, recent_JJ approaches_NNS to_TO personalized_JJ and_CC topic-sensitive_JJ PageRank_NN schemes_NNS =_JJ -_: =[_NN 11_CD ,_, 19_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: require_VB computing_VBG many_JJ PageRank_NNP vectors_NNS ,_, each_DT biased_VBN towards_IN certain_JJ types_NNS of_IN pages_NNS ._.
+These_DT approaches_NNS intensify_VBP the_DT need_NN for_IN faster_JJR methods_NNS for_IN computing_VBG PageRank_NNP ._.
+Eigenvaluecomputation_NNP is_VBZ a_DT well-stu_NN

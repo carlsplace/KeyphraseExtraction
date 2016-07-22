@@ -1,0 +1,78 @@
+Targeted_VBN disambiguation_NN of_IN ad-hoc_JJ ,_, homogeneous_JJ sets_NNS of_IN named_VBN entities_NNS
+In_IN many_JJ entity_NN extraction_NN applications_NNS ,_, the_DT entities_NNS to_TO be_VB recognized_VBN are_VBP constrained_VBN to_TO be_VB from_IN a_DT list_NN of_IN ``_`` target_NN entities_NNS ''_'' ._.
+In_IN many_JJ cases_NNS ,_, these_DT target_NN entities_NNS are_VBP -LRB-_-LRB- i_LS -RRB-_-RRB- ad-hoc_JJ ,_, i.e._FW ,_, do_VBP not_RB exist_VB in_IN a_DT knowledge_NN base_NN and_CC -LRB-_-LRB- ii_LS -RRB-_-RRB- homogeneous_JJ -LRB-_-LRB- e.g._FW ,_, all_PDT the_DT entities_NNS are_VBP IT_NNP companies_NNS -RRB-_-RRB- ._.
+We_PRP study_VBD the_DT following_JJ novel_JJ disambiguation_NN problem_NN in_IN this_DT unique_JJ setting_NN :_: given_VBN the_DT candidate_NN mentions_VBZ of_IN all_PDT the_DT target_NN entities_NNS ,_, determine_VB which_WDT ones_NNS are_VBP true_JJ mentions_VBZ of_IN a_DT target_NN entity_NN ._.
+Prior_JJ techniques_NNS only_RB consider_VBP target_NN entities_NNS present_JJ in_IN a_DT knowledge_NN base_NN and\/or_CC having_VBG a_DT rich_JJ set_NN of_IN attributes_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP develop_VBP novel_JJ techniques_NNS that_WDT require_VBP no_DT knowledge_NN about_IN the_DT entities_NNS except_IN their_PRP$ names_NNS ._.
+Our_PRP$ main_JJ insight_NN is_VBZ to_TO leverage_NN the_DT homogeneity_NN constraint_NN and_CC disambiguate_VB the_DT candidate_NN mentions_VBZ collectively_RB across_IN all_DT documents_NNS ._.
+We_PRP propose_VBP a_DT graph-based_JJ model_NN ,_, called_VBN MentionRank_NNP ,_, for_IN that_DT purpose_NN ._.
+Furthermore_RB ,_, if_IN additional_JJ knowledge_NN is_VBZ available_JJ for_IN some_DT or_CC all_DT of_IN the_DT entities_NNS ,_, our_PRP$ model_NN can_MD leverage_NN it_PRP to_TO further_RB improve_VB quality_NN ._.
+Our_PRP$ experiments_NNS demonstrate_VBP the_DT effectiveness_NN of_IN our_PRP$ model_NN ._.
+To_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, this_DT is_VBZ the_DT first_JJ work_NN on_IN targeted_VBN entity_NN disambiguation_NN for_IN ad-hoc_JJ entities_NNS ._.
+here_RB domain_NN representativeness_NN is_VBZ high_JJ -RRB-_-RRB- ,_, and_CC MentionRank_NNP +_CC VirtualNode_NNP outperforms_VBZ it_PRP by_IN around_IN 10_CD %_NN otherwise_RB ._.
+6_CD ._.
+RELATED_NNS WORK_VBP Named_VBN entity_NN disambiguation_NN has_VBZ been_VBN extensively_RB studied_VBN in_IN the_DT literature_NN =_JJ -_: =[_NN 5_CD ,_, 9_CD ,_, 17_CD ,_, 18_CD ,_, 8_CD ,_, 15_CD ,_, 14_CD ,_, 12_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT prior_JJ work_NN can_MD be_VB classified_VBN into_IN two_CD broad_JJ categories_NNS :_: •_CD Independent_JJ mention_NN disambiguation_NN where_WRB each_DT mention_NN is_VBZ mapped_VBN to_TO a_DT knowledge_NN base_NN entity_NN independently_RB ._.
+The_DT main_JJ idea_NN is_VBZ to_TO compare_VB th_DT
+oupling_NN ,_, and_CC occurrence_NN to_TO refer_VB to_TO a_DT specific_JJ occurrence_NN ._.
+The_DT same_JJ entity_NN can_MD have_VB multiple_JJ name_NN variants_NNS ,_, like_IN HP_NNP and_CC Hewlett-Packard_NNP ._.
+If_IN the_DT variants_NNS are_VBP known_VBN -LRB-_-LRB- e.g._FW ,_, using_VBG a_DT entity_NN synonym_NN module_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, the_DT candidate_NN mention_NN identification_NN component_NN will_MD identify_VB more_JJR candidate_NN mentions_VBZ of_IN each_DT entity_NN ._.
+However_RB ,_, this_DT is_VBZ orthogonal_JJ to_TO our_PRP$ problem_NN because_IN our_PRP$ problem_NN takes_VBZ the_DT candidate_NN mentions_VBZ as_IN i_FW
+n_NN this_DT paper_NN ,_, when_WRB we_PRP refer_VBP to_TO disambiguation_NN ,_, we_PRP imply_VBP TED_NNP ._.
+Prior_JJ work_NN and_CC limitations_NNS :_: Previous_JJ ``_`` entity_NN linking_VBG ''_'' techniques_NNS mostly_RB focus_VB on_IN entities_NNS present_JJ in_IN a_DT knowledge_NN base_NN like_IN DBpedia_NN or_CC YAGO_NN =_JJ -_: =[_NN 5_CD ,_, 9_CD ,_, 17_CD ,_, 18_CD ,_, 8_CD ,_, 15_CD ,_, 14_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT main_JJ idea_NN is_VBZ to_TO consider_VB the_DT ``_`` context_NN ''_'' -LRB-_-LRB- i.e._FW ,_, surrounding_VBG words_NNS -RRB-_-RRB- of_IN the_DT candidate_NN mention_NN and_CC compare_VB it_PRP ,_, by_IN some_DT similarity_NN measure_NN ,_, to_TO text_NN metadata_NN associated_VBN with_IN the_DT entityintheknowledge_NN base_NN
+n_NN this_DT paper_NN ,_, when_WRB we_PRP refer_VBP to_TO disambiguation_NN ,_, we_PRP imply_VBP TED_NNP ._.
+Prior_JJ work_NN and_CC limitations_NNS :_: Previous_JJ ``_`` entity_NN linking_VBG ''_'' techniques_NNS mostly_RB focus_VB on_IN entities_NNS present_JJ in_IN a_DT knowledge_NN base_NN like_IN DBpedia_NN or_CC YAGO_NN =_JJ -_: =[_NN 5_CD ,_, 9_CD ,_, 17_CD ,_, 18_CD ,_, 8_CD ,_, 15_CD ,_, 14_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT main_JJ idea_NN is_VBZ to_TO consider_VB the_DT ``_`` context_NN ''_'' -LRB-_-LRB- i.e._FW ,_, surrounding_VBG words_NNS -RRB-_-RRB- of_IN the_DT candidate_NN mention_NN and_CC compare_VB it_PRP ,_, by_IN some_DT similarity_NN measure_NN ,_, to_TO text_NN metadata_NN associated_VBN with_IN the_DT entityintheknowledge_NN base_NN
+entical_JJ ._.
+Otherwise_RB -LRB-_-LRB- e.g._FW ,_, two_CD IT_NNP companies_NNS in_IN the_DT list_NN named_VBN ``_`` Apple_NNP ''_'' -RRB-_-RRB- ,_, TED_NNP does_VBZ not_RB disambiguate_VB among_IN them_PRP ._.
+One_CD can_MD separate_VB them_PRP in_IN target_NN domains_NNS of_IN finer_NN granularity_NN ,_, or_CC apply_VB existing_VBG techniques_NNS =_JJ -_: =[_NN 16_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: on_IN the_DT results_NNS of_IN TED_NNP ._.
+In_IN an_DT extended_JJ setting_NN of_IN TED_NNP in_IN Section_NNP 4_CD ,_, we_PRP allow_VBP additional_JJ prior_JJ knowledge_NN from_IN users_NNS as_IN input_NN such_JJ as_IN entity_NN attributes_NNS and_CC reference_NN pages_NNS for_IN some_DT entities_NNS ._.
+A_DT wellengin_NN
+s_NN to_TO identify_VB the_DT entities_NNS referenced_VBN in_IN database_NN records_NNS as_IN opposed_VBN to_TO text_NN documents_NNS ._.
+Recently_RB collective_JJ algorithms_NNS to_TO exploit_VB interdependencies_NNS among_IN references_NNS in_IN this_DT setting_NN have_VBP been_VBN proposed_VBN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+7_CD ._.
+CONCLUSIONS_NNS In_IN this_DT paper_NN ,_, we_PRP study_VBD the_DT novel_JJ problem_NN of_IN targeted_VBN disambiguation_NN of_IN ad-hoc_JJ ,_, homogeneous_JJ sets_NNS of_IN entities_NNS ._.
+We_PRP develop_VBP a_DT novel_JJ graph-based_JJ model_NN MentionRank_NNP to_TO address_VB the_DT challenge_NN
+udy_NN -LRB-_-LRB- 5_CD ,_, 9_CD -RRB-_-RRB- ,_, we_PRP define_VBP the_DT context_NN cijx_NN as_IN a_DT short_JJ snippet_NN of_IN l_NN words_NNS before_IN and_CC l_NN words_NNS after_IN the_DT x-th_JJ occurrence_NN of_IN si_FW in_FW document_NN dj_NN ._.
+We_PRP use_VBP a_DT simple_JJ but_CC effective_JJ measure_NN ,_, tf-idf_JJ cosine_NN similarity_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, as_IN the_DT basis_NN of_IN comparing_VBG two_CD pieces_NNS of_IN context_NN ._.
+Other_JJ features_NNS and_CC alternative_JJ similarity_NN measures_NNS ,_, like_IN those_DT summarized_VBN in_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, can_MD also_RB be_VB used_VBN in_IN our_PRP$ model_NN ._.
+We_PRP explore_VBP several_JJ variants_NNS of_IN tf-id_NN
+entical_JJ ._.
+Otherwise_RB -LRB-_-LRB- e.g._FW ,_, two_CD IT_NNP companies_NNS in_IN the_DT list_NN named_VBN ``_`` Apple_NNP ''_'' -RRB-_-RRB- ,_, TED_NNP does_VBZ not_RB disambiguate_VB among_IN them_PRP ._.
+One_CD can_MD separate_VB them_PRP in_IN target_NN domains_NNS of_IN finer_NN granularity_NN ,_, or_CC apply_VB existing_VBG techniques_NNS =_JJ -_: =[_NN 16_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: on_IN the_DT results_NNS of_IN TED_NNP ._.
+In_IN an_DT extended_JJ setting_NN of_IN TED_NNP in_IN Section_NNP 4_CD ,_, we_PRP allow_VBP additional_JJ prior_JJ knowledge_NN from_IN users_NNS as_IN input_NN such_JJ as_IN entity_NN attributes_NNS and_CC reference_NN pages_NNS for_IN some_DT entities_NNS ._.
+A_DT wellengin_NN
+efinition_NN 1_CD -LRB-_-LRB- Targeted_JJ Entity_NN Disambiguation_NN -RRB-_-RRB- ._.
+Given_VBN input_NN of_IN a_DT target_NN entity_NN set_NN E_NN =_JJ -LCB-_-LRB- e1_NN ,_, ..._: ,_, en_IN -RCB-_-RRB- ,_, a_DT document_NN set_NN D_NN =_JJ -LCB-_-LRB- d1_NN ,_, ..._: ,_, dm_NN -RCB-_-RRB- and_CC candidate_NN mentions_VBZ R_NN =_JJ -LCB-_-LRB- -LRB-_-LRB- ei_FW ,_, dj_NN -RRB-_-RRB- |_FW ei_FW ∈_NN E_NN ,_, dj_FW ∈_FW D_NN -RCB-_-RRB- ,_, output_NN score_NN rij_FW ∈_FW =_SYM -_: =[_FW 0,1_FW -RRB-_-RRB- -_: =_SYM -_: for_IN every_DT candidate_NN mention_NN -LRB-_-LRB- ei_FW ,_, dj_NN -RRB-_-RRB- ∈_NNP R._NNP Note_VB that_IN TED_NNP disambiguates_VBZ at_IN the_DT target_NN domain_NN level_NN and_CC not_RB at_IN the_DT target_NN entity_NN level_NN ._.
+If_IN the_DT names_NNS of_IN target_NN entities_NNS are_VBP all_DT distinct_JJ ,_, the_DT two_CD are_VBP ident_JJ
+tribute_NN names_NNS or_CC values_NNS in_IN a_DT document_NN near_IN a_DT mention_NN indicates_VBZ reference_NN to_TO a_DT target_NN entity_NN ._.
+Therefore_RB ,_, one_PRP can_MD concatenate_VB these_DT attribute_NN names_NNS and_CC values_NNS to_TO create_VB a_DT pseudo_NN ``_`` representative_JJ document_NN ''_'' =_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP refer_VBP to_TO both_CC the_DT reference_NN pages_NNS from_IN the_DT knowledge_NN base_NN and_CC the_DT pseudo_JJ representative_JJ documents_NNS as_IN authentic_JJ documents_NNS ._.
+The_DT TED_NNP problem_NN can_MD be_VB extended_VBN to_TO allow_VB an_DT authentic_JJ document_NN set_VBN -LCB-_-LRB- ai_VB |_CD 1_CD
+n_NN this_DT paper_NN ,_, when_WRB we_PRP refer_VBP to_TO disambiguation_NN ,_, we_PRP imply_VBP TED_NNP ._.
+Prior_JJ work_NN and_CC limitations_NNS :_: Previous_JJ ``_`` entity_NN linking_VBG ''_'' techniques_NNS mostly_RB focus_VB on_IN entities_NNS present_JJ in_IN a_DT knowledge_NN base_NN like_IN DBpedia_NN or_CC YAGO_NN =_JJ -_: =[_NN 5_CD ,_, 9_CD ,_, 17_CD ,_, 18_CD ,_, 8_CD ,_, 15_CD ,_, 14_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT main_JJ idea_NN is_VBZ to_TO consider_VB the_DT ``_`` context_NN ''_'' -LRB-_-LRB- i.e._FW ,_, surrounding_VBG words_NNS -RRB-_-RRB- of_IN the_DT candidate_NN mention_NN and_CC compare_VB it_PRP ,_, by_IN some_DT similarity_NN measure_NN ,_, to_TO text_NN metadata_NN associated_VBN with_IN the_DT entityintheknowledge_NN base_NN
+n_NN this_DT paper_NN ,_, when_WRB we_PRP refer_VBP to_TO disambiguation_NN ,_, we_PRP imply_VBP TED_NNP ._.
+Prior_JJ work_NN and_CC limitations_NNS :_: Previous_JJ ``_`` entity_NN linking_VBG ''_'' techniques_NNS mostly_RB focus_VB on_IN entities_NNS present_JJ in_IN a_DT knowledge_NN base_NN like_IN DBpedia_NN or_CC YAGO_NN =_JJ -_: =[_NN 5_CD ,_, 9_CD ,_, 17_CD ,_, 18_CD ,_, 8_CD ,_, 15_CD ,_, 14_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT main_JJ idea_NN is_VBZ to_TO consider_VB the_DT ``_`` context_NN ''_'' -LRB-_-LRB- i.e._FW ,_, surrounding_VBG words_NNS -RRB-_-RRB- of_IN the_DT candidate_NN mention_NN and_CC compare_VB it_PRP ,_, by_IN some_DT similarity_NN measure_NN ,_, to_TO text_NN metadata_NN associated_VBN with_IN the_DT entityintheknowledge_NN base_NN
+n_NN be_VB rewritten_VBN as_IN r_NN =_JJ Mr_NN where_WRB r_NN is_VBZ the_DT ranking_JJ score_NN vector_NN and_CC M_NN is_VBZ a_DT Markov_NNP matrix_NN that_WDT is_VBZ stochastic_JJ ,_, irreducible_JJ ,_, and_CC aperiodic_JJ ._.
+Therefore_RB ,_, a_DT power_NN method_NN is_VBZ guaranteed_VBN to_TO converge_VB akin_JJ PageRank_NN =_JJ -_: =[_NN 4_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+MentionRank_NNP is_VBZ different_JJ from_IN standard_JJ PageRank_NN and_CC its_PRP$ variation_NN on_IN weighted_JJ and_CC undirected_JJ graph_NN in_IN many_JJ aspects_NNS ._.
+First_RB of_IN all_DT ,_, the_DT mentions_VBZ can_MD be_VB grouped_VBN by_IN the_DT entities_NNS corresponding_VBG to_TO the_DT men_NNS
+n_NN this_DT paper_NN ,_, when_WRB we_PRP refer_VBP to_TO disambiguation_NN ,_, we_PRP imply_VBP TED_NNP ._.
+Prior_JJ work_NN and_CC limitations_NNS :_: Previous_JJ ``_`` entity_NN linking_VBG ''_'' techniques_NNS mostly_RB focus_VB on_IN entities_NNS present_JJ in_IN a_DT knowledge_NN base_NN like_IN DBpedia_NN or_CC YAGO_NN =_JJ -_: =[_NN 5_CD ,_, 9_CD ,_, 17_CD ,_, 18_CD ,_, 8_CD ,_, 15_CD ,_, 14_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT main_JJ idea_NN is_VBZ to_TO consider_VB the_DT ``_`` context_NN ''_'' -LRB-_-LRB- i.e._FW ,_, surrounding_VBG words_NNS -RRB-_-RRB- of_IN the_DT candidate_NN mention_NN and_CC compare_VB it_PRP ,_, by_IN some_DT similarity_NN measure_NN ,_, to_TO text_NN metadata_NN associated_VBN with_IN the_DT entityintheknowledge_NN base_NN
+ate_VBD mentions_VBZ are_VBP obtained_VBN by_IN a_DT separate_JJ component_NN that_WDT identifies_VBZ occurrences_NNS of_IN the_DT entity_NN names_NNS in_IN the_DT documents_NNS ._.
+An_DT entity_NN name_NN can_MD appear_VB in_IN a_DT document_NN multiple_JJ times_NNS ._.
+Following_VBG standard_JJ practice_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP assume_VBP that_IN all_DT occurrences_NNS of_IN a_DT name_NN inside_IN a_DT document_NN refer_VB to_TO the_DT same_JJ entity_NN -LRB-_-LRB- e.g._FW ,_, occurrences_NNS of_IN the_DT string_NN ``_`` Apple_NNP ''_'' in_IN a_DT single_JJ document_NN either_CC all_DT refer_VBP to_TO the_DT IT_NNP company_NN or_CC all_DT refer_VBP to_TO t_NN
+n_NN this_DT paper_NN ,_, when_WRB we_PRP refer_VBP to_TO disambiguation_NN ,_, we_PRP imply_VBP TED_NNP ._.
+Prior_JJ work_NN and_CC limitations_NNS :_: Previous_JJ ``_`` entity_NN linking_VBG ''_'' techniques_NNS mostly_RB focus_VB on_IN entities_NNS present_JJ in_IN a_DT knowledge_NN base_NN like_IN DBpedia_NN or_CC YAGO_NN =_JJ -_: =[_NN 5_CD ,_, 9_CD ,_, 17_CD ,_, 18_CD ,_, 8_CD ,_, 15_CD ,_, 14_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT main_JJ idea_NN is_VBZ to_TO consider_VB the_DT ``_`` context_NN ''_'' -LRB-_-LRB- i.e._FW ,_, surrounding_VBG words_NNS -RRB-_-RRB- of_IN the_DT candidate_NN mention_NN and_CC compare_VB it_PRP ,_, by_IN some_DT similarity_NN measure_NN ,_, to_TO text_NN metadata_NN associated_VBN with_IN the_DT entityintheknowledge_NN base_NN
+n_NN this_DT paper_NN ,_, when_WRB we_PRP refer_VBP to_TO disambiguation_NN ,_, we_PRP imply_VBP TED_NNP ._.
+Prior_JJ work_NN and_CC limitations_NNS :_: Previous_JJ ``_`` entity_NN linking_VBG ''_'' techniques_NNS mostly_RB focus_VB on_IN entities_NNS present_JJ in_IN a_DT knowledge_NN base_NN like_IN DBpedia_NN or_CC YAGO_NN =_JJ -_: =[_NN 5_CD ,_, 9_CD ,_, 17_CD ,_, 18_CD ,_, 8_CD ,_, 15_CD ,_, 14_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT main_JJ idea_NN is_VBZ to_TO consider_VB the_DT ``_`` context_NN ''_'' -LRB-_-LRB- i.e._FW ,_, surrounding_VBG words_NNS -RRB-_-RRB- of_IN the_DT candidate_NN mention_NN and_CC compare_VB it_PRP ,_, by_IN some_DT similarity_NN measure_NN ,_, to_TO text_NN metadata_NN associated_VBN with_IN the_DT entityintheknowledge_NN base_NN
+ssigned_VBN entities_NNS =_JJ -_: =[_NN 15_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Coherence_NN between_IN a_DT pair_NN of_IN entities_NNS is_VBZ computed_VBN using_VBG the_DT knowledge_NN base_NN ,_, e.g._FW ,_, based_VBN on_IN the_DT number_NN of_IN common_JJ Wikipedia_NNP pages_NNS that_WDT link_VBP to_TO Wiki_NNP pages_NNS of_IN these_DT two_CD entities_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+While_IN some_DT approaches_NNS model_VBP the_DT interdependence_NN as_IN sum_NN of_IN their_PRP$ pair-wise_JJ dependencies_NNS -LRB-_-LRB- 18_CD ,_, 15_CD -RRB-_-RRB- ,_, more_RBR recent_JJ techniques_NNS model_VBP the_DT global_JJ interdependence_NN -LRB-_-LRB- 14_CD ,_, 12_CD -RRB-_-RRB- ._.
+These_DT studiesconsideronlyentitiespr_NN

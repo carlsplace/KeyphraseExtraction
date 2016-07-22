@@ -1,0 +1,115 @@
+Autonomous_JJ resource_NN provisioning_VBG for_IN multi-service_JJ web_NN applications_NNS
+Dynamic_NNP resource_NN provisioning_VBG aims_NNS at_IN maintaining_VBG the_DT end-to-end_JJ response_NN time_NN of_IN a_DT web_NN application_NN within_IN a_DT pre-defined_JJ SLA_NNP ._.
+Although_IN the_DT topic_NN has_VBZ been_VBN well_RB studied_VBN for_IN monolithic_JJ applications_NNS ,_, provisioning_VBG resources_NNS for_IN applications_NNS composed_VBN of_IN multiple_JJ services_NNS remains_VBZ a_DT challenge_NN ._.
+When_WRB the_DT SLA_NNP is_VBZ violated_VBN ,_, one_PRP must_MD decide_VB which_WDT service_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- should_MD be_VB reprovisioned_VBN for_IN optimal_JJ effect_NN ._.
+We_PRP propose_VBP to_TO assign_VB an_DT SLA_NNP only_RB to_TO the_DT front-end_JJ service_NN ._.
+Other_JJ services_NNS are_VBP not_RB given_VBN any_DT particular_JJ response_NN time_NN objectives_NNS ._.
+Services_NNPS are_VBP autonomously_RB responsible_JJ for_IN their_PRP$ own_JJ provisioning_VBG operations_NNS and_CC collaboratively_RB negotiate_VB performance_NN objectives_NNS with_IN each_DT other_JJ to_TO decide_VB the_DT provisioning_VBG service_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- ._.
+We_PRP demonstrate_VBP through_IN extensive_JJ experiments_NNS that_IN our_PRP$ system_NN can_MD add\/remove\/shift_VB both_DT servers_NNS and_CC caches_NNS within_IN an_DT entire_JJ multi-service_JJ application_NN under_IN varying_VBG workloads_NNS to_TO meet_VB the_DT SLA_NNP target_NN and_CC improve_VB resource_NN utilization_NN ._.
+multiservice_JJ Web_NN applications_NNS ,_, where_WRB Web_NN applications_NNS are_VBP not_RB only_RB constructed_VBN as_IN a_DT sequence_NN of_IN tiers_NNS but_CC can_MD also_RB consist_VB of_IN multiple_JJ services_NNS interacting_VBG with_IN each_DT otherin_NN a_DT directed_JJ acyclic_JJ graph_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT works_NNS however_RB assume_VBP that_IN the_DT underlying_JJ provisioning_VBG machines_NNS are_VBP homogeneous_JJ ._.
+This_DT is_VBZ a_DT reasonable_JJ assumption_NN in_IN mediumscale_JJ environments_NNS such_JJ as_IN cluster_NN computers_NNS ._.
+However_RB ,_, in_IN Cloud_NNP computi_NNS
+uired_JJ number_NN of_IN servers_NNS per_IN service_NN can_MD be_VB derived_VBN ._.
+This_DT model_NN considers_VBZ that_IN each_DT server_NN has_VBZ a_DT fixed_VBN maximum_NN capacity_NN ,_, approach_NN basically_RB equivalent_JJ to_TO assigning_VBG an_DT SLA_NN to_TO each_DT service_NN ._.
+As_IN proved_VBN in_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, this_DT can_MD lead_VB to_TO resources_NNS wasting_VBG and_CC over-provisioning_NN ._.
+Studies_NNS presented_VBN in_IN -LRB-_-LRB- 6_CD -RRB-_-RRB- focus_NN on_IN multi-service_JJ web_NN applications_NNS designed_VBN as_IN directed_JJ acyclic_JJ graphs_NNS ._.
+They_PRP consider_VBP that_IN only_RB the_DT front-end_NN
+ng_NN is_VBZ another_DT direction_NN for_IN improving_VBG the_DT Web_NN performance_NN ._.
+While_IN not_RB directly_RB related_JJ ,_, our_PRP$ work_NN was_VBD partially_RB inspired_VBN by_IN the_DT work_NN of_IN dynamic_JJ resource_NN provisioning_VBG between_IN multiple_JJ dependent_JJ services_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Intuitively_RB ,_, allocating_VBG more_JJR resource_NN to_TO the_DT back-end_JJ server_NN may_MD improve_VB the‘ServiceTime_NN '_'' ,_, whileputtingmorefront-endserverscloser_JJ totheclientsmayreducetheRTT_NN ._.
+Althoughourapproachdoes_NNS not_RB realloca_NN
+can_MD be_VB represented_VBN as_IN a_DT directed_JJ acyclic_JJ graph_NN ._.
+Thus_RB ,_, we_PRP need_VBP a_DT provisioning_VBG algorithm_NN that_WDT is_VBZ able_JJ to_TO provide_VB very_RB good_JJ performance_NN for_IN arbitrary_JJ complex_NN applications_NNS ._.
+We_PRP chose_VBD the_DT one_NN presented_VBN in_IN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT dynamic_JJ resource_NN provisioning_VBG algorithm_NN for_IN service_NN based_JJ web_NN applications_NNS claims_VBZ that_IN a_DT service_NN level_NN agreement_NN -LRB-_-LRB- SLA_NN -RRB-_-RRB- should_MD only_RB be_VB assigned_VBN to_TO the_DT front-end_JJ service_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Based_VBN on_IN this_DT assum_NN
+iving_VBG a_DT performance_NN objective_NN only_RB to_TO the_DT frontend_NN services_NNS ,_, and_CC making_VBG the_DT other_JJ components_NNS negotiate_VBP the_DT most_RBS efficient_JJ use_NN of_IN resources_NNS so_IN that_IN the_DT global_JJ performance_NN is_VBZ maintained_VBN at_IN minimum_JJ cost_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+ConPaaS_NN will_MD exploit_VB its_PRP$ global_JJ knowledge_NN of_IN each_DT application_NN 's_POS service_NN composition_NN to_TO guarantee_VB performance_NN using_VBG as_IN few_JJ resources_NNS as_IN possible_JJ ._.
+3.3_CD Cloud_NN heterogeneity_NN The_DT performance_NN of_IN virtual_JJ in_IN
+a_DT web_NN application_NN needs_VBZ for_IN service_NN ,_, also_RB contribute_VBP to_TO optimal_JJ capacity_NN provisioning_VBG ._.
+Recent_JJ works_NNS on_IN cloud_NN network_NN provisioning_VBG have_VBP accounted_VBN for_IN parameters_NNS like_IN scheduling_NN and_CC multi-tier_JJ services_NNS =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC do_VBP not_RB provide_VB any_DT analytical_JJ results_NNS on_IN the_DT impact_NN of_IN these_DT parameters_NNS on_IN optimally_RB provisioned_VBN capacity_NN ,_, nor_CC do_VBP they_PRP evaluate_VB the_DT optimal_JJ provisioned_JJ capacity_NN ._.
+In_IN contrast_NN with_IN existing_VBG approa_NN
+i-service_NN application_NN 1_CD ._.
+INTRODUCTION_NN Major_JJ web_NN sites_NNS such_JJ as_IN Amazon.com_NNP and_CC eBay_NNP are_VBP not_RB designed_VBN as_IN monolithic_JJ 3-tier_JJ applications_NNS but_CC as_IN a_DT complex_JJ group_NN of_IN independent_JJ services_NNS querying_VBG each_DT other_JJ =_JJ -_: =[_NN 5_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT service_NN is_VBZ a_DT self-contained_JJ application_NN providing_VBG elementary_JJ functionality_NN ,_, such_JJ as_IN a_DT database_NN holding_VBG customer_NN information_NN or_CC an_DT application_NN serving_VBG search_NN requests_NNS ._.
+Web_NN pages_NNS delivered_VBN to_TO the_DT us_PRP
+multi-tier_JJ and_CC multi-service_JJ web_NN applications_NNS ._.
+Finally_RB ,_, Section_NN 5_CD concludes_VBZ ._.
+2_CD ._.
+RELATED_NNS WORK_VBP Many_JJ research_NN efforts_NNS address_NN resource_NN provisioning_VBG for_IN single-tier_NN -LRB-_-LRB- 1_CD ,_, 4_CD -RRB-_-RRB- or_CC multi-tier_JJ Web_NN applications_NNS =_JJ -_: =[_NN 7_CD ,_, 10_CD ,_, 12_CD ,_, 14_CD ,_, 15_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Some_DT of_IN them_PRP only_RB model_VBP the_DT most_RBS constrained_VBN tier_NN of_IN the_DT web_NN application_NN -LRB-_-LRB- 10_CD ,_, 17_CD -RRB-_-RRB- ,_, or_CC considerably_RB simplify_VB the_DT operation_NN model_NN of_IN each_DT tier_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Others_NNS model_VBP the_DT interactions_NNS across_IN tiers_NNS and_CC thus_RB
+rom_VB these_DT works_NNS ._.
+Few_JJ works_NNS address_NN provisioning_VBG in_IN multi-service_JJ applications_NNS ._.
+Wu_NNP et_FW al._FW model_NN workflow_NN patterns_NNS within_IN multiservice_JJ applications_NNS to_TO predict_VB future_JJ workloads_NNS of_IN each_DT service_NN component_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One_CD can_MD derive_VB the_DT number_NN of_IN required_VBN servers_NNS per_IN service_NN ._.
+However_RB ,_, this_DT model_NN assumes_VBZ that_IN each_DT server_NN has_VBZ a_DT fixed_VBN maximum_NN capacity_NN ,_, which_WDT we_PRP consider_VBP as_RB largely_RB equivalent_JJ to_TO assigning_VBG an_DT SLA_NN to_TO e_SYM
+may_MD possibly_RB employ_VB one_CD or_CC more_JJR machines_NNS as_IN caches_NNS that_WDT intercept_VBP incoming_JJ requests_NNS before_IN accessing_VBG the_DT service_NN itself_PRP ._.
+We_PRP use_VBP consistent_JJ hashing_VBG to_TO distribute_VB cached_JJ objects_NNS across_IN multiple_JJ caches_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT means_VBZ in_IN particular_JJ that_IN increasing_VBG the_DT number_NN of_IN caches_NNS attached_VBN to_TO a_DT service_NN generates_VBZ the_DT same_JJ hit_NN rate_NN as_IN increasing_VBG the_DT storage_NN space_NN of_IN a_DT single_JJ cache_NN ._.
+We_PRP assume_VBP that_IN some_DT machines_NNS are_VBP al_FW
+n_NN 4_CD evaluates_VBZ its_PRP$ performance_NN for_IN both_CC multi-tier_JJ and_CC multi-service_JJ web_NN applications_NNS ._.
+Finally_RB ,_, Section_NN 5_CD concludes_VBZ ._.
+2_CD ._.
+RELATED_NNS WORK_VBP Many_JJ research_NN efforts_NNS address_NN resource_NN provisioning_VBG for_IN single-tier_NN =_JJ -_: =[_NN 1_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: or_CC multi-tier_JJ Web_NN applications_NNS -LRB-_-LRB- 7_CD ,_, 10_CD ,_, 12_CD ,_, 14_CD ,_, 15_CD ,_, 17_CD -RRB-_-RRB- ._.
+Some_DT of_IN them_PRP only_RB model_VBP the_DT most_RBS constrained_VBN tier_NN of_IN the_DT web_NN application_NN -LRB-_-LRB- 10_CD ,_, 17_CD -RRB-_-RRB- ,_, or_CC considerably_RB simplify_VB the_DT operation_NN model_NN of_IN each_DT tier_NN -LRB-_-LRB- 7_CD
+multi-tier_JJ and_CC multi-service_JJ web_NN applications_NNS ._.
+Finally_RB ,_, Section_NN 5_CD concludes_VBZ ._.
+2_CD ._.
+RELATED_NNS WORK_VBP Many_JJ research_NN efforts_NNS address_NN resource_NN provisioning_VBG for_IN single-tier_NN -LRB-_-LRB- 1_CD ,_, 4_CD -RRB-_-RRB- or_CC multi-tier_JJ Web_NN applications_NNS =_JJ -_: =[_NN 7_CD ,_, 10_CD ,_, 12_CD ,_, 14_CD ,_, 15_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Some_DT of_IN them_PRP only_RB model_VBP the_DT most_RBS constrained_VBN tier_NN of_IN the_DT web_NN application_NN -LRB-_-LRB- 10_CD ,_, 17_CD -RRB-_-RRB- ,_, or_CC considerably_RB simplify_VB the_DT operation_NN model_NN of_IN each_DT tier_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Others_NNS model_VBP the_DT interactions_NNS across_IN tiers_NNS and_CC thus_RB
+l_NN assumes_VBZ that_IN each_DT server_NN has_VBZ a_DT fixed_VBN maximum_NN capacity_NN ,_, which_WDT we_PRP consider_VBP as_RB largely_RB equivalent_JJ to_TO assigning_VBG an_DT SLA_NN to_TO each_DT service_NN ._.
+A_DT related_JJ topic_NN is_VBZ to_TO decide_VB when_WRB resources_NNS should_MD be_VB provisioned_VBN =_JJ -_: =[_NN 15_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT issue_NN there_EX is_VBZ that_IN provisioning_VBG resources_NNS takes_VBZ time_NN so_RB advance_JJ planning_NN is_VBZ necessary_JJ ._.
+However_RB ,_, as_IN virtualization_NN is_VBZ increasingly_RB applied_VBN to_TO provision_NN web_NN applications_NNS ,_, allocating_VBG new_JJ resources_NNS
+multi-tier_JJ and_CC multi-service_JJ web_NN applications_NNS ._.
+Finally_RB ,_, Section_NN 5_CD concludes_VBZ ._.
+2_CD ._.
+RELATED_NNS WORK_VBP Many_JJ research_NN efforts_NNS address_NN resource_NN provisioning_VBG for_IN single-tier_NN -LRB-_-LRB- 1_CD ,_, 4_CD -RRB-_-RRB- or_CC multi-tier_JJ Web_NN applications_NNS =_JJ -_: =[_NN 7_CD ,_, 10_CD ,_, 12_CD ,_, 14_CD ,_, 15_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Some_DT of_IN them_PRP only_RB model_VBP the_DT most_RBS constrained_VBN tier_NN of_IN the_DT web_NN application_NN -LRB-_-LRB- 10_CD ,_, 17_CD -RRB-_-RRB- ,_, or_CC considerably_RB simplify_VB the_DT operation_NN model_NN of_IN each_DT tier_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Others_NNS model_VBP the_DT interactions_NNS across_IN tiers_NNS and_CC thus_RB
+multi-tier_JJ and_CC multi-service_JJ web_NN applications_NNS ._.
+Finally_RB ,_, Section_NN 5_CD concludes_VBZ ._.
+2_CD ._.
+RELATED_NNS WORK_VBP Many_JJ research_NN efforts_NNS address_NN resource_NN provisioning_VBG for_IN single-tier_NN -LRB-_-LRB- 1_CD ,_, 4_CD -RRB-_-RRB- or_CC multi-tier_JJ Web_NN applications_NNS =_JJ -_: =[_NN 7_CD ,_, 10_CD ,_, 12_CD ,_, 14_CD ,_, 15_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Some_DT of_IN them_PRP only_RB model_VBP the_DT most_RBS constrained_VBN tier_NN of_IN the_DT web_NN application_NN -LRB-_-LRB- 10_CD ,_, 17_CD -RRB-_-RRB- ,_, or_CC considerably_RB simplify_VB the_DT operation_NN model_NN of_IN each_DT tier_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Others_NNS model_VBP the_DT interactions_NNS across_IN tiers_NNS and_CC thus_RB
+ase_NN or_CC decrease_NN ._.
+We_PRP first_RB present_VBP the_DT model_NN itself_PRP ,_, then_RB discuss_VB its_PRP$ parameterization_NN ._.
+3.2.1_CD Performance_NNP model_NN We_PRP model_VBP a_DT single-core_JJ machine_NN as_IN an_DT M\/M\/1_NN \/_: PS_NN queue_NN ,_, which_WDT is_VBZ widely_RB adopted_VBN in_IN practice_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Similarly_RB ,_, multi-core_JJ machines_NNS distribute_VBP their_PRP$ load_NN evenly_RB on_IN each_DT CPU_NNP core_NN ._.
+Consequently_RB ,_, we_PRP use_VBP an_DT M\/M\/n_NN \/_: PS_NN queue_NN to_TO capture_VB the_DT performance_NN of_IN an_DT n-core_NN machine_NN ._.
+We_PRP assume_VBP that_IN all_DT CPU_NNP cores_NNS of_IN
+-LRB-_-LRB- s_NNS -RRB-_-RRB- to_TO provision_NN rather_RB than_IN when_WRB ._.
+Finally_RB ,_, Almeida_NNP et_FW al._FW aim_NN to_TO determine_VB short-term_JJ resource_NN demands_NNS and_CC long-term_JJ capacity_NN requirements_NNS for_IN multiple_JJ applications_NNS sharing_VBG a_DT common_JJ set_NN of_IN resources_NNS =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, this_DT problem_NN is_VBZ different_JJ from_IN ours_PRP :_: the_DT problem_NN there_EX is_VBZ to_TO arbitrate_VB between_IN multiple_JJ disjoint_NN applications_NNS competing_VBG for_IN the_DT same_JJ resources_NNS ._.
+We_PRP take_VBP a_DT different_JJ approach_NN where_WRB resources_NNS
+multi-tier_JJ and_CC multi-service_JJ web_NN applications_NNS ._.
+Finally_RB ,_, Section_NN 5_CD concludes_VBZ ._.
+2_CD ._.
+RELATED_NNS WORK_VBP Many_JJ research_NN efforts_NNS address_NN resource_NN provisioning_VBG for_IN single-tier_NN -LRB-_-LRB- 1_CD ,_, 4_CD -RRB-_-RRB- or_CC multi-tier_JJ Web_NN applications_NNS =_JJ -_: =[_NN 7_CD ,_, 10_CD ,_, 12_CD ,_, 14_CD ,_, 15_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Some_DT of_IN them_PRP only_RB model_VBP the_DT most_RBS constrained_VBN tier_NN of_IN the_DT web_NN application_NN -LRB-_-LRB- 10_CD ,_, 17_CD -RRB-_-RRB- ,_, or_CC considerably_RB simplify_VB the_DT operation_NN model_NN of_IN each_DT tier_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Others_NNS model_VBP the_DT interactions_NNS across_IN tiers_NNS and_CC thus_RB
+i-service_NN application_NN 1_CD ._.
+INTRODUCTION_NN Major_JJ web_NN sites_NNS such_JJ as_IN Amazon.com_NNP and_CC eBay_NNP are_VBP not_RB designed_VBN as_IN monolithic_JJ 3-tier_JJ applications_NNS but_CC as_IN a_DT complex_JJ group_NN of_IN independent_JJ services_NNS querying_VBG each_DT other_JJ =_JJ -_: =[_NN 5_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT service_NN is_VBZ a_DT self-contained_JJ application_NN providing_VBG elementary_JJ functionality_NN ,_, such_JJ as_IN a_DT database_NN holding_VBG customer_NN information_NN or_CC an_DT application_NN serving_VBG search_NN requests_NNS ._.
+Web_NN pages_NNS delivered_VBN to_TO the_DT us_PRP
+cache_NN -LRB-_-LRB- n_NN -RRB-_-RRB- +_CC -LRB-_-LRB- 1_CD −_NN pn_NN -RRB-_-RRB- R_NN -LRB-_-LRB- m_NN -RRB-_-RRB- where_WRB R_NN -LRB-_-LRB- m_NN -RRB-_-RRB- is_VBZ the_DT response_NN time_NN of_IN the_DT backend_JJ server_NN across_IN m_NN CPU_NNP cores_NNS ,_, Scache_NNP is_VBZ the_DT cache_NN service_NN time_NN ,_, which_WDT is_VBZ identical_JJ to_TO the_DT cache_NN response_NN time_NN based_VBN on_IN Little_NNP 's_POS Law_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC pn_NN is_VBZ the_DT expected_VBN cache_NN hit_VBD ratio_NN with_IN n_NN nodes_NNS ._.
+3.2.2_CD Model_NNP parameterization_NN Most_NNP of_IN the_DT model_NN parameters_NNS can_MD be_VB measured_VBN offline_JJ or_CC monitored_JJ at_IN runtime_NN ._.
+For_IN example_NN ,_, the_DT request_NN rate_NN can_MD be_VB m_NN
+n_NN 4_CD evaluates_VBZ its_PRP$ performance_NN for_IN both_CC multi-tier_JJ and_CC multi-service_JJ web_NN applications_NNS ._.
+Finally_RB ,_, Section_NN 5_CD concludes_VBZ ._.
+2_CD ._.
+RELATED_NNS WORK_VBP Many_JJ research_NN efforts_NNS address_NN resource_NN provisioning_VBG for_IN single-tier_NN =_JJ -_: =[_NN 1_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: or_CC multi-tier_JJ Web_NN applications_NNS -LRB-_-LRB- 7_CD ,_, 10_CD ,_, 12_CD ,_, 14_CD ,_, 15_CD ,_, 17_CD -RRB-_-RRB- ._.
+Some_DT of_IN them_PRP only_RB model_VBP the_DT most_RBS constrained_VBN tier_NN of_IN the_DT web_NN application_NN -LRB-_-LRB- 10_CD ,_, 17_CD -RRB-_-RRB- ,_, or_CC considerably_RB simplify_VB the_DT operation_NN model_NN of_IN each_DT tier_NN -LRB-_-LRB- 7_CD
+multi-tier_JJ and_CC multi-service_JJ web_NN applications_NNS ._.
+Finally_RB ,_, Section_NN 5_CD concludes_VBZ ._.
+2_CD ._.
+RELATED_NNS WORK_VBP Many_JJ research_NN efforts_NNS address_NN resource_NN provisioning_VBG for_IN single-tier_NN -LRB-_-LRB- 1_CD ,_, 4_CD -RRB-_-RRB- or_CC multi-tier_JJ Web_NN applications_NNS =_JJ -_: =[_NN 7_CD ,_, 10_CD ,_, 12_CD ,_, 14_CD ,_, 15_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Some_DT of_IN them_PRP only_RB model_VBP the_DT most_RBS constrained_VBN tier_NN of_IN the_DT web_NN application_NN -LRB-_-LRB- 10_CD ,_, 17_CD -RRB-_-RRB- ,_, or_CC considerably_RB simplify_VB the_DT operation_NN model_NN of_IN each_DT tier_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Others_NNS model_VBP the_DT interactions_NNS across_IN tiers_NNS and_CC thus_RB
+,_, as_IN virtualization_NN is_VBZ increasingly_RB applied_VBN to_TO provision_NN web_NN applications_NNS ,_, allocating_VBG new_JJ resources_NNS becomes_VBZ much_RB faster_JJR :_: on-the-fly_JJ cloning_NN of_IN hundreds_NNS of_IN virtual_JJ machine_NN can_MD happen_VB within_IN sub-second_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN contrast_NN ,_, we_PRP focus_VBP on_IN selecting_NN which_WDT service_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- to_TO provision_NN rather_RB than_IN when_WRB ._.
+Finally_RB ,_, Almeida_NNP et_FW al._FW aim_NN to_TO determine_VB short-term_JJ resource_NN demands_NNS and_CC long-term_JJ capacity_NN requirements_NNS for_IN multip_NN

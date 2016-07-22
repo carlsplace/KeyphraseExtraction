@@ -1,0 +1,109 @@
+Data_NN quality_NN in_IN web_NN archiving_NN
+Web_NN archives_NNS preserve_VBP the_DT history_NN of_IN Web_NN sites_NNS and_CC have_VBP high_JJ long-term_JJ value_NN for_IN media_NNS and_CC business_NN analysts_NNS ._.
+Such_JJ archives_NNS are_VBP maintained_VBN by_IN periodically_RB re-crawling_JJ entire_JJ Web_NN sites_NNS of_IN interest_NN ._.
+From_IN an_DT archivist_NN 's_POS point_NN of_IN view_NN ,_, the_DT ideal_JJ case_NN to_TO ensure_VB highest_JJS possible_JJ data_NNS quality_NN of_IN the_DT archive_NN would_MD be_VB to_TO ``_`` freeze_VB ''_'' the_DT complete_JJ contents_NNS of_IN an_DT entire_JJ Web_NN site_NN during_IN the_DT time_NN span_NN of_IN crawling_VBG and_CC capturing_VBG the_DT site_NN ._.
+Of_IN course_NN ,_, this_DT is_VBZ practically_RB infeasible_JJ ._.
+To_TO comply_VB with_IN the_DT politeness_NN specification_NN of_IN a_DT Web_NN site_NN ,_, the_DT crawler_NN needs_VBZ to_TO pause_VB between_IN subsequent_JJ http_NN requests_NNS in_IN order_NN to_TO avoid_VB unduly_RB high_JJ load_NN on_IN the_DT site_NN 's_POS http_JJ server_NN ._.
+As_IN a_DT consequence_NN ,_, capturing_VBG a_DT large_JJ Web_NN site_NN may_MD span_VB hours_NNS or_CC even_RB days_NNS ,_, which_WDT increases_VBZ the_DT risk_NN that_IN contents_NNS collected_VBN so_RB far_RB are_VBP incoherent_JJ with_IN the_DT parts_NNS that_WDT are_VBP still_RB to_TO be_VB crawled_VBN ._.
+This_DT paper_NN introduces_VBZ a_DT model_NN for_IN identifying_VBG coherent_JJ sections_NNS of_IN an_DT archive_NN and_CC ,_, thus_RB ,_, measuring_VBG the_DT data_NNS quality_NN in_IN Web_NN archiving_NN ._.
+Additionally_RB ,_, we_PRP present_VBP a_DT crawling_VBG strategy_NN that_WDT aims_VBZ to_TO ensure_VB archive_NN coherence_NN by_IN minimizing_VBG the_DT diffusion_NN of_IN Web_NN site_NN captures_VBZ ._.
+Preliminary_JJ experiments_NNS demonstrate_VBP the_DT usefulness_NN of_IN the_DT model_NN and_CC the_DT effectiveness_NN of_IN the_DT strategy_NN ._.
+rove_NN archive_NN navigation_NN ._.
+Section_NN 7_CD presents_VBZ preliminary_JJ results_NNS ._.
+Section_NN 8_CD concludes_VBZ ._.
+2_CD Related_NNP Works_NNP In_IN recent_JJ years_NNS ,_, there_EX has_VBZ been_VBN an_DT increasing_VBG interest_NN in_IN improving_VBG coherence_NN of_IN web_NN archives_NNS ._.
+In_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, authors_NNS propose_VBP a_DT crawling_VBG strategy_NN to_TO improve_VB coherenceof_NN crawled_VBD sites_NNS ._.
+However_RB ,_, they_PRP do_VBP not_RB mention_VB in_IN which_WDT order_NN sites_NNS should_MD be_VB visited_VBN ._.
+In_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, they_PRP present_VBP visualization_NN strategies_NNS to_TO help_VB
+resources_NNS are_VBP usually_RB limited_JJ -LRB-_-LRB- storage_NN space_NN ,_, bandwidth_NN ,_, site_NN politenessrules_NNS ,_, etc._NN -RRB-_-RRB- ._.
+The_DT quality_NN of_IN web_NN archives_NNS can_MD be_VB assessed_VBN by_IN various_JJ measures_NNS such_JJ as_IN freshness_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, sharpness_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, coherence_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_JJ -_: ,_, etc._NN ._.
+Among_IN those_DT measures_NNS ,_, completeness_NN appears_VBZ to_TO be_VB the_DT most_RBS relevant_JJ ._.
+Completeness_NN is_VBZ the_DT ability_NN of_IN the_DT archive_NN to_TO contain_VB the_DT largest_JJS amount_NN of_IN page_NN versions_NNS ._.
+To_TO maintain_VB a_DT complete_JJ archive_NN -LRB-_-LRB- co_NN
+t_NN changes_NNS in_IN the_DT page_NN -LRB-_-LRB- e.g._FW advertisements_NNS ,_, decoration_NN ,_, etc._NN -RRB-_-RRB- can_MD be_VB ignored_VBN and_CC useful_JJ information_NN is_VBZ captured_VBN by_IN a_DT single_JJ crawl_NN ,_, maximizing_VBG the_DT use_NN of_IN resources_NNS ._.
+Up_IN to_TO now_RB ,_, most_RBS crawling_JJ strategies_NNS =_JJ -_: =[_NN 5_CD ,_, 13_CD ,_, 10_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: do_VBP not_RB consider_VB the_DT importance_NN of_IN changes_NNS that_WDT have_VBP occurred_VBN between_IN versions_NNS ._.
+They_PRP consider_VBP the_DT crawl_NN useful_JJ even_RB if_IN the_DT captured_VBN version_NN is_VBZ almost_RB equal_JJ to_TO the_DT previous_JJ one_CD ._.
+Moreover_RB ,_, they_PRP estimate_VBP
+LATED_NNS WORK_VBP The_DT Web_NN is_VBZ a_DT continuously_RB evolving_VBG network_NN of_IN contents_NNS and_CC an_DT interconnecting_JJ link_NN structure_NN ,_, which_WDT requires_VBZ developing_VBG strategies_NNS for_IN adopting_VBG to_TO change_VB in_IN content_NN ,_, size_NN ,_, topology_NN and_CC use_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Hence_RB ,_, the_DT Web_NN might_MD not_RB be_VB understood_VBN in_IN a_DT holistic_JJ approach_NN of_IN a_DT single_JJ discipline_NN ,_, but_CC needs_VBZ to_TO be_VB best_RB investigated_VBN in_IN a_DT combined_JJ approach_NN with_IN methodologies_NNS adopted_VBN from_IN various_JJ disciplines_NNS ._.
+In_IN
+from_IN a_DT single_JJ discipline_NN ._.
+Primarily_RB ,_, research_NN is_VBZ focused_VBN on_IN improving_VBG the_DT efficiency_NN of_IN crawlers_NNS for_IN Web_NN indexing_NN in_IN search_NN engines_NNS or_CC crawler_NN development_NN in_IN general_JJ ._.
+The_DT contribution_NN of_IN Pant_JJ et_FW al._FW =_SYM -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: describes_VBZ the_DT technical_JJ process_NN involved_VBN in_IN Web_NN crawling_NN ._.
+A_DT quite_RB technical_JJ overview_NN on_IN the_DT Heritrix_NNP crawler_NN is_VBZ given_VBN by_IN Mohr_NNP et_FW al._FW ._.
+However_RB ,_, they_PRP do_VBP not_RB address_VB the_DT issue_NN of_IN coherence_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+B._FW E._FW B_NN
+sciplines_NNS ._.
+In_IN this_DT aspect_NN ,_, ongoing_JJ research_NN in_IN the_DT field_NN of_IN Web_NN science_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- tries_VBZ to_TO incorporate_VB approaches_NNS from_IN various_JJ disciplines_NNS ,_, such_JJ as_IN algorithmics_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, data_NN mining_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, physics_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, sociology_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: and_CC media_NNS theory_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+However_RB ,_, related_JJ research_NN is_VBZ up_IN to_TO now_RB mostly_RB confined_VBN to_TO approaches_NNS originating_VBG from_IN a_DT single_JJ discipline_NN ._.
+Primarily_RB ,_, research_NN is_VBZ focused_VBN on_IN improving_VBG the_DT efficiency_NN of_IN crawler_NN
+d_NN present_JJ an_DT algorithm_NN that_WDT obtains_VBZ more_RBR relevant_JJ pages_NNS -LRB-_-LRB- according_VBG to_TO their_PRP$ definition_NN -RRB-_-RRB- first_RB ._.
+In_IN a_DT subsequent_JJ study_NN Cho_NNP and_CC Garcia-Molina_NNP describe_VBP the_DT development_NN of_IN an_DT effective_JJ incremental_JJ crawler_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP aim_VBP at_IN improving_VBG the_DT collection_NN 's_POS freshness_NN by_IN bringing_VBG in_IN new_JJ pages_NNS in_IN a_DT more_RBR timely_JJ manner_NN ._.
+Into_NNP the_DT same_JJ direction_NN head_VBP their_PRP$ studies_NNS on_IN effective_JJ page_NN refresh_NN policies_NNS for_IN Web_NN crawlers_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+coherence_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+B._NNP E._NNP Brewington_NNP and_CC G._NNP Cybenko_NNP -LRB-_-LRB- 3_CD -RRB-_-RRB- analyze_VBP changes_NNS of_IN Web_NN sites_NNS and_CC draw_NN conclusions_NNS about_IN how_WRB often_RB they_PRP must_MD be_VB reindexed_VBN ._.
+The_DT issue_NN of_IN crawl_NN efficiency_NN is_VBZ addressed_VBN by_IN Cho_NNP et_FW al._FW =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP state_VBP that_IN the_DT design_NN of_IN a_DT good_JJ crawler_NN is_VBZ important_JJ for_IN many_JJ reasons_NNS -LRB-_-LRB- e.g._FW ordering_VBG and_CC frequency_NN of_IN URLs_NNS to_TO be_VB visited_VBN -RRB-_-RRB- and_CC present_VBP an_DT algorithm_NN that_WDT obtains_VBZ more_RBR relevant_JJ pages_NNS -LRB-_-LRB- according_VBG to_TO
+process_NN involved_VBN in_IN Web_NN crawling_NN ._.
+A_DT quite_RB technical_JJ overview_NN on_IN the_DT Heritrix_NNP crawler_NN is_VBZ given_VBN by_IN Mohr_NNP et_FW al._FW ._.
+However_RB ,_, they_PRP do_VBP not_RB address_VB the_DT issue_NN of_IN coherence_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+B._NNP E._NNP Brewington_NNP and_CC G._NNP Cybenko_NNP =_SYM -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: analyze_VB changes_NNS of_IN Web_NN sites_NNS and_CC draw_NN conclusions_NNS about_IN how_WRB often_RB they_PRP must_MD be_VB reindexed_VBN ._.
+The_DT issue_NN of_IN crawl_NN efficiency_NN is_VBZ addressed_VBN by_IN Cho_NNP et_FW al._FW -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+They_PRP state_VBP that_IN the_DT design_NN of_IN a_DT good_JJ crawler_NN is_VBZ
+ffective_JJ page_NN refresh_NN policies_NNS for_IN Web_NN crawlers_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Here_RB ,_, they_PRP introduce_VBP a_DT poisson_NN process_NN based_VBN change_NN model_NN of_IN data_NNS sources_NNS ._.
+In_IN another_DT study_NN ,_, they_PRP estimated_VBD the_DT frequency_NN of_IN change_NN of_IN online_JJ data_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN that_DT purpose_NN ,_, they_PRP developed_VBD several_JJ frequency_NN estimators_NNS in_IN order_NN to_TO improve_VB Web_NN crawlers_NNS and_CC Web_NN caches_NNS ._.
+In_IN a_DT similar_JJ direction_NN goes_VBZ research_NN of_IN Olston_NNP and_CC Pandey_NNP -LRB-_-LRB- 18_CD -RRB-_-RRB- who_WP propose_VBP a_DT recrawl_NN sc_NN
+t_NN et_FW al._FW -LRB-_-LRB- 19_CD -RRB-_-RRB- describes_VBZ the_DT technical_JJ process_NN involved_VBN in_IN Web_NN crawling_NN ._.
+A_DT quite_RB technical_JJ overview_NN on_IN the_DT Heritrix_NNP crawler_NN is_VBZ given_VBN by_IN Mohr_NNP et_FW al._FW ._.
+However_RB ,_, they_PRP do_VBP not_RB address_VB the_DT issue_NN of_IN coherence_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+B._NNP E._NNP Brewington_NNP and_CC G._NNP Cybenko_NNP -LRB-_-LRB- 3_CD -RRB-_-RRB- analyze_VBP changes_NNS of_IN Web_NN sites_NNS and_CC draw_NN conclusions_NNS about_IN how_WRB often_RB they_PRP must_MD be_VB reindexed_VBN ._.
+The_DT issue_NN of_IN crawl_NN efficiency_NN is_VBZ addressed_VBN by_IN Cho_NNP et_FW al._FW -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+They_PRP state_VBP
+from_IN various_JJ disciplines_NNS ._.
+In_IN this_DT aspect_NN ,_, ongoing_JJ research_NN in_IN the_DT field_NN of_IN Web_NN science_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- tries_VBZ to_TO incorporate_VB approaches_NNS from_IN various_JJ disciplines_NNS ,_, such_JJ as_IN algorithmics_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, data_NN mining_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, physics_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, sociology_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC media_NNS theory_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+However_RB ,_, related_JJ research_NN is_VBZ up_IN to_TO now_RB mostly_RB confined_VBN to_TO approaches_NNS originating_VBG from_IN a_DT single_JJ discipline_NN ._.
+Primarily_RB ,_, research_NN is_VBZ focused_VBN on_IN improving_VBG the_DT effic_NN
+ch_NN with_IN methodologies_NNS adopted_VBN from_IN various_JJ disciplines_NNS ._.
+In_IN this_DT aspect_NN ,_, ongoing_JJ research_NN in_IN the_DT field_NN of_IN Web_NN science_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- tries_VBZ to_TO incorporate_VB approaches_NNS from_IN various_JJ disciplines_NNS ,_, such_JJ as_IN algorithmics_NNS =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, data_NNS mining_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, physics_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, sociology_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC media_NNS theory_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+However_RB ,_, related_JJ research_NN is_VBZ up_IN to_TO now_RB mostly_RB confined_VBN to_TO approaches_NNS originating_VBG from_IN a_DT single_JJ discipline_NN ._.
+Primarily_RB ,_, research_NN is_VBZ
+-LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+They_PRP aim_VBP at_IN improving_VBG the_DT collection_NN 's_POS freshness_NN by_IN bringing_VBG in_IN new_JJ pages_NNS in_IN a_DT more_RBR timely_JJ manner_NN ._.
+Into_NNP the_DT same_JJ direction_NN head_VBP their_PRP$ studies_NNS on_IN effective_JJ page_NN refresh_NN policies_NNS for_IN Web_NN crawlers_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Here_RB ,_, they_PRP introduce_VBP a_DT poisson_NN process_NN based_VBN change_NN model_NN of_IN data_NNS sources_NNS ._.
+In_IN another_DT study_NN ,_, they_PRP estimated_VBD the_DT frequency_NN of_IN change_NN of_IN online_JJ data_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+For_IN that_DT purpose_NN ,_, they_PRP developed_VBD several_JJ frequ_NN
+gies_NNS adopted_VBN from_IN various_JJ disciplines_NNS ._.
+In_IN this_DT aspect_NN ,_, ongoing_JJ research_NN in_IN the_DT field_NN of_IN Web_NN science_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- tries_VBZ to_TO incorporate_VB approaches_NNS from_IN various_JJ disciplines_NNS ,_, such_JJ as_IN algorithmics_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, data_NN mining_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, physics_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, sociology_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC media_NNS theory_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+However_RB ,_, related_JJ research_NN is_VBZ up_IN to_TO now_RB mostly_RB confined_VBN to_TO approaches_NNS originating_VBG from_IN a_DT single_JJ discipline_NN ._.
+Primarily_RB ,_, research_NN is_VBZ focused_VBN on_IN improv_NN
+of_IN change_NN of_IN online_JJ data_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+For_IN that_DT purpose_NN ,_, they_PRP developed_VBD several_JJ frequency_NN estimators_NNS in_IN order_NN to_TO improve_VB Web_NN crawlers_NNS and_CC Web_NN caches_NNS ._.
+In_IN a_DT similar_JJ direction_NN goes_VBZ research_NN of_IN Olston_NN and_CC Pandey_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: who_WP propose_VBP a_DT recrawl_NN schedule_NN based_VBN on_IN information_NN longevity_NN in_IN order_NN to_TO achieve_VB good_JJ freshness_NN ._.
+Another_DT study_NN about_IN crawling_VBG strategies_NNS is_VBZ presented_VBN by_IN Najork_NNP and_CC Wiener_NNP -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+They_PRP have_VBP found_VBN out_RP t_NN
+ect_RB ,_, ongoing_JJ research_NN in_IN the_DT field_NN of_IN Web_NN science_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- tries_VBZ to_TO incorporate_VB approaches_NNS from_IN various_JJ disciplines_NNS ,_, such_JJ as_IN algorithmics_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, data_NN mining_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, physics_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, sociology_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC media_NNS theory_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, related_JJ research_NN is_VBZ up_IN to_TO now_RB mostly_RB confined_VBN to_TO approaches_NNS originating_VBG from_IN a_DT single_JJ discipline_NN ._.
+Primarily_RB ,_, research_NN is_VBZ focused_VBN on_IN improving_VBG the_DT efficiency_NN of_IN crawlers_NNS for_IN Web_NN indexing_NN in_IN
+ch_NN in_IN order_NN to_TO enhance_VB the_DT likeliness_NN to_TO retrieve_VB important_JJ pages_NNS first_RB ._.
+Research_NN on_IN improving_VBG the_DT scalability_NN of_IN a_DT Web_NN crawler_NN in_IN order_NN to_TO crawl_VB 6_CD billion_CD pages_NNS and_CC beyond_IN is_VBZ presented_VBN by_IN Lee_NNP et_FW al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Their_PRP$ findings_NNS show_VBP that_IN changing_VBG the_DT BFS_NNS crawling_VBG order_NN and_CC designing_VBG low-overhead_JJ disk-based_JJ data_NNS structures_NNS increase_VBP the_DT efficiency_NN of_IN large-scale_JJ crawlers_NNS ._.
+A_DT dedicated_JJ survey_NN about_IN the_DT evolution_NN
+h_NN of_IN Olston_NNP and_CC Pandey_NNP -LRB-_-LRB- 18_CD -RRB-_-RRB- who_WP propose_VBP a_DT recrawl_NN schedule_NN based_VBN on_IN information_NN longevity_NN in_IN order_NN to_TO achieve_VB good_JJ freshness_NN ._.
+Another_DT study_NN about_IN crawling_VBG strategies_NNS is_VBZ presented_VBN by_IN Najork_NN and_CC Wiener_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP have_VBP found_VBN out_RP that_IN breadth-first_JJ search_NN downloads_NNS hot_JJ pages_NNS first_RB ,_, but_CC also_RB that_IN the_DT average_JJ quality_NN of_IN the_DT pages_NNS decreases_VBZ over_IN time_NN ._.
+Therefore_RB ,_, they_PRP suggest_VBP performing_VBG strict_JJ breadth-first_JJ s_NN
+oach_NN of_IN a_DT single_JJ discipline_NN ,_, but_CC needs_VBZ to_TO be_VB best_RB investigated_VBN in_IN a_DT combined_JJ approach_NN with_IN methodologies_NNS adopted_VBN from_IN various_JJ disciplines_NNS ._.
+In_IN this_DT aspect_NN ,_, ongoing_JJ research_NN in_IN the_DT field_NN of_IN Web_NN science_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: tries_VBZ to_TO incorporate_VB approaches_NNS from_IN various_JJ disciplines_NNS ,_, such_JJ as_IN algorithmics_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, data_NN mining_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, physics_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, sociology_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC media_NNS theory_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+However_RB ,_, related_JJ research_NN is_VBZ up_IN to_TO now_RB mostly_RB c_NN
+low-overhead_JJ disk-based_JJ data_NNS structures_NNS increase_VBP the_DT efficiency_NN of_IN large-scale_JJ crawlers_NNS ._.
+A_DT dedicated_JJ survey_NN about_IN the_DT evolution_NN and_CC dynamics_NNS of_IN wikis_NN as_IN social_JJ networks_NNS is_VBZ done_VBN by_IN Klamma_NN and_CC Haasler_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Interesting_JJ in_IN this_DT paper_NN is_VBZ the_DT disclosure_NN of_IN social_JJ networks_NNS based_VBN on_IN the_DT hierarchical_JJ structure_NN of_IN important_JJ and_CC unimportant_JJ nodes_NNS ._.
+Summarizing_VBG ,_, before_IN mentioned_VBN related_JJ research_NN depicts_VBZ some_DT of_IN
+,_, Madrid_NNP ,_, Spain_NNP ._.
+Copyright_NN 2009_CD ACM_NNP 978-1-60558-488-1_CD \/_: 09\/04_CD ..._: $_$ 5.00_CD ._.
+the_DT work_NN of_IN the_DT Internet_NNP Archive_NNP ,_, but_CC national_JJ libraries_NNS and_CC national_JJ archives_NNS also_RB have_VBP specialized_VBN activities_NNS along_IN these_DT lines_NNS =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Capturing_VBG the_DT history_NN of_IN digitally_RB born_VBN information_NN and_CC preserving_VBG the_DT cultural_JJ and_CC political_JJ zeitgeist_NN of_IN an_DT era_NN offers_VBZ a_DT potential_JJ gold_NN mine_NN for_IN all_DT kinds_NNS of_IN media_NNS and_CC business_NN analysts_NNS ,_, such_JJ as_IN p_NN

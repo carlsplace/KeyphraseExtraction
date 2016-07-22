@@ -1,0 +1,94 @@
+Mapping-driven_JJ XML_NN transformation_NN
+Clio_NNP is_VBZ an_DT existing_VBG schema-mapping_NN tool_NN that_WDT provides_VBZ user-friendly_JJ means_NNS to_TO manage_VB and_CC facilitate_VB the_DT complex_JJ task_NN of_IN transformation_NN and_CC integration_NN of_IN heterogeneous_JJ data_NNS such_JJ as_IN XML_NN over_IN the_DT Web_NN or_CC in_IN XML_NN databases_NNS ._.
+By_IN means_NNS of_IN mappings_NNS from_IN source_NN to_TO target_NN schemas_NNS ,_, Clio_NNP can_MD help_VB users_NNS conveniently_RB establish_VBP the_DT precise_JJ semantics_NNS of_IN data_NNS transformation_NN and_CC integration_NN ._.
+In_IN this_DT paper_NN we_PRP study_VBD the_DT problem_NN of_IN how_WRB to_TO efficiently_RB implement_VB such_JJ data_NNS transformation_NN -LRB-_-LRB- i.e._FW ,_, generating_VBG target_NN data_NNS from_IN the_DT source_NN data_NNS based_VBN on_IN schema_NN mappings_NNS -RRB-_-RRB- ._.
+We_PRP present_VBP a_DT three-phase_JJ framework_NN for_IN high-performance_JJ XML-to-XML_NN transformation_NN based_VBN on_IN schema_NN mappings_NNS ,_, and_CC discuss_VB methodologies_NNS and_CC algorithms_NNS for_IN implementing_VBG these_DT phases_NNS ._.
+In_IN particular_JJ ,_, we_PRP elaborate_VBP on_IN novel_JJ techniques_NNS such_JJ as_IN streamed_VBN extraction_NN of_IN mapped_VBN source_NN values_NNS and_CC scalable_JJ disk-based_JJ merging_JJ of_IN overlapping_VBG data_NNS -LRB-_-LRB- including_VBG duplicate_VB elimination_NN -RRB-_-RRB- ._.
+We_PRP compare_VBP our_PRP$ transformation_NN framework_NN with_IN alternative_JJ methods_NNS such_JJ as_IN using_VBG XQuery_NN or_CC SQL\/XML_NN provided_VBN by_IN current_JJ commercial_JJ databases_NNS ._.
+The_DT results_NNS demonstrate_VBP that_IN the_DT three-phase_JJ framework_NN -LRB-_-LRB- although_IN as_RB simple_JJ as_IN it_PRP is_VBZ -RRB-_-RRB- is_VBZ highly_RB scalable_JJ and_CC outperforms_VBZ the_DT alternative_JJ methods_NNS by_IN orders_NNS of_IN magnitude_NN ._.
+59593-654-7_CD \/_: 07\/0005_CD ._.
+1063_CD as_IN XML_NN publishing_NN -RRB-_-RRB- are_VBP special_JJ cases_NNS of_IN XML-to-XML_NN transformation_NN ._.
+Writing_VBG data_NNS transformation_NN programs_NNS manually_RB -LRB-_-LRB- even_RB in_IN highlevel_JJ languages_NNS such_JJ as_IN XQuery_NN ,_, XSLT_NN or_CC SQL\/XML_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT is_VBZ a_DT SQL_NNP extension_NN for_IN publishing_NN tables_NNS as_IN XML_NN -RRB-_-RRB- is_VBZ often_RB timeconsuming_JJ and_CC error-prone_JJ ._.
+This_DT is_VBZ because_IN a_DT typical_JJ data_NN transformation_NN task_NN may_MD involve_VB restructuring_NN ,_, cleansing_VBG and_CC grouping_VBG of_IN
+schema_NN -LRB-_-LRB- the_DT output_NN of_IN the_DT transformation_NN -RRB-_-RRB- ._.
+Another_DT example_NN of_IN a_DT system_NN that_WDT is_VBZ focused_VBN on_IN the_DT high-level_JJ specification_NN and_CC generation_NN of_IN data_NNS transformation_NN and_CC data_NN integration_NN applications_NNS is_VBZ Rondo_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT generic_JJ platform_NN for_IN managing_VBG and_CC manipulating_VBG models_NNS ._.
+As_IN in_IN Clio_NNP ,_, mappings_NNS are_VBP specified_VBN by_IN using_VBG logical_JJ constraints_NNS ._.
+Other_JJ examples_NNS include_VBP Piazza_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB- and_CC HePToX_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, which_WDT are_VBP also_RB based_VBN on_IN m_NN
+h_NN level_NN :_: •_VB The_DT variable_JJ $_$ x1_FW iterates_FW over_IN the_DT sequence_NN of_IN distinct_JJ author_NN values_NNS ._.
+All_PDT the_DT items_NNS in_IN the_DT sequence_NN returned_VBN by_IN the_DT function_NN distinct-values_NNS are_VBP literal_JJ strings_NNS with_IN the_DT tags_NNS stripped_VBD off_RP =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+1069_CD •_NN The_DT variable_JJ $_$ x2_FW iterates_FW over_IN the_DT sequence_NN of_IN distinct_JJ booktitles_NNS for_IN which_WDT the_DT corresponding_JJ inproceedings_NNS element_NN has_VBZ at_IN least_JJS one_CD author_NN with_IN the_DT value_NN $_$ x1_CD ._.
+This_DT correctly_RB implements_VBZ the_DT
+,_, can_MD do_VB tuple_JJ extraction_NN for_IN multiple_JJ set-path_JJ expressions_NNS together_RB -LRB-_-LRB- like_IN outerjoins_NNS in_IN relational_JJ databases_NNS -RRB-_-RRB- ._.
+XML_NN Merging_NN and_CC Aggregation_NN XML_NN merging_JJ is_VBZ also_RB studied_VBN in_IN the_DT context_NN of_IN XML_NN archiving_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP note_VBP that_IN part_NN of_IN the_DT algorithm_NN in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- shares_NNS similarity_NN with_IN the_DT sort-based_JJ algorithm_NN presented_VBN in_IN this_DT paper_NN ._.
+However_RB ,_, their_PRP$ focus_NN was_VBD on_IN reducing_VBG the_DT size_NN of_IN the_DT resulting_VBG XML_NN archive_NN and_CC did_VBD
+languages_NNS and_CC more_RBR intuitive_JJ graphical_JJ user_NN interfaces_NNS -LRB-_-LRB- GUI_NN -RRB-_-RRB- for_IN users_NNS to_TO specify_VB transformation_NN semantics_NNS in_IN convenient_JJ ways_NNS ._.
+One_CD of_IN the_DT earliest_JJS examples_NNS in_IN this_DT direction_NN is_VBZ our_PRP$ own_JJ 1_CD Clio_NN system_NN =_JJ -_: =[_NN 18_CD ,_, 19_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT can_MD be_VB used_VBN to_TO create_VB mappings_NNS from_IN a_DT source_NN schema_NN to_TO a_DT target_NN schema_NN for_IN data_NN migration_NN purposes_NNS ._.
+The_DT tool_NN includes_VBZ a_DT schema_NN matching_NN component_NN whose_WP$ role_NN is_VBZ to_TO establish_VB ,_, semi-automatically_RB ,_,
+ate_VBD trees_NNS ,_, in_IN XQuery_NN ,_, one_NN has_VBZ to_TO use_VB the_DT distinct-values_JJ scalar-function_NN in_IN a_DT carefully_RB crafted_VBN way_NN so_IN that_IN the_DT structure_NN of_IN the_DT data_NN is_VBZ not_RB lost_VBN -LRB-_-LRB- see_VB ,_, as_IN an_DT example_NN ,_, query_NN Q4_NN in_IN the_DT XQuery_NN Use_NN Cases_NNS =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+If_IN the_DT data_NNS to_TO be_VB merged_VBN is_VBZ coming_VBG from_IN multiple_JJ sources_NNS ,_, the_DT resulting_VBG query_NN is_VBZ further_RB complicated_VBN ._.
+The_DT size_NN of_IN an_DT XQuery_NN query_NN that_WDT correctly_RB implements_VBZ a_DT schema_NN mapping_NN can_MD ,_, in_IN fact_NN ,_, be_VB prohibi_VBN
+languages_NNS and_CC more_RBR intuitive_JJ graphical_JJ user_NN interfaces_NNS -LRB-_-LRB- GUI_NN -RRB-_-RRB- for_IN users_NNS to_TO specify_VB transformation_NN semantics_NNS in_IN convenient_JJ ways_NNS ._.
+One_CD of_IN the_DT earliest_JJS examples_NNS in_IN this_DT direction_NN is_VBZ our_PRP$ own_JJ 1_CD Clio_NN system_NN =_JJ -_: =[_NN 18_CD ,_, 19_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT can_MD be_VB used_VBN to_TO create_VB mappings_NNS from_IN a_DT source_NN schema_NN to_TO a_DT target_NN schema_NN for_IN data_NN migration_NN purposes_NNS ._.
+The_DT tool_NN includes_VBZ a_DT schema_NN matching_NN component_NN whose_WP$ role_NN is_VBZ to_TO establish_VB ,_, semi-automatically_RB ,_,
+sily_RB lead_VB to_TO large_JJ programs_NNS -LRB-_-LRB- queries_NNS -RRB-_-RRB- that_WDT are_VBP hard_JJ to_TO comprehend_VB and_CC often_RB hide_VB the_DT semantics_NNS of_IN the_DT transformation_NN ._.
+Maintaining_VBG the_DT transformations_NNS correctly_RB ,_, for_IN example_NN as_IN database_NN schemas_NNS evolve_VBP =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, can_MD also_RB be_VB a_DT potential_JJ problem_NN ._.
+As_IN a_DT result_NN ,_, it_PRP is_VBZ desirable_JJ to_TO have_VB tools_NNS to_TO assist_VB such_JJ data_NNS transformation_NN tasks_NNS ._.
+We_PRP have_VBP recently_RB seen_VBN research_NN aiming_VBG to_TO provide_VB high-level_JJ mapping_NN languages_NNS an_DT
+languages_NNS and_CC more_RBR intuitive_JJ graphical_JJ user_NN interfaces_NNS -LRB-_-LRB- GUI_NN -RRB-_-RRB- for_IN users_NNS to_TO specify_VB transformation_NN semantics_NNS in_IN convenient_JJ ways_NNS ._.
+One_CD of_IN the_DT earliest_JJS examples_NNS in_IN this_DT direction_NN is_VBZ our_PRP$ own_JJ 1_CD Clio_NN system_NN =_JJ -_: =[_NN 18_CD ,_, 19_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT can_MD be_VB used_VBN to_TO create_VB mappings_NNS from_IN a_DT source_NN schema_NN to_TO a_DT target_NN schema_NN for_IN data_NN migration_NN purposes_NNS ._.
+The_DT tool_NN includes_VBZ a_DT schema_NN matching_NN component_NN whose_WP$ role_NN is_VBZ to_TO establish_VB ,_, semi-automatically_RB ,_,
+ery_NN either_CC at_IN the_DT algebraic_JJ level_NN or_CC the_DT physical_JJ operator_NN level_NN -LRB-_-LRB- 7_CD ,_, 10_CD -RRB-_-RRB- ._.
+In_IN general_JJ ,_, detecting_VBG a_DT ``_`` group_NN by_IN pattern_NN ''_'' from_IN a_DT complex_JJ XQuery_NN is_VBZ very_RB difficult_JJ and_CC often_RB results_VBZ in_IN a_DT poor_JJ execution_NN plan_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX has_VBZ been_VBN a_DT proposal_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- to_TO extend_VB the_DT XQuery_NN syntax_NN to_TO include_VB explicit_JJ grouping_VBG operations_NNS such_JJ as_IN ``_`` group_NN by_IN ''_'' ._.
+We_PRP note_VBP that_IN the_DT target_NN application_NN for_IN these_DT works_NNS is_VBZ XML_NN OLAP_NN instead_RB of_IN the_DT h_NN
+8_CD -RRB-_-RRB- ._.
+Popa_NNP et_FW al._FW extended_VBD it_PRP in_IN -LRB-_-LRB- 19_CD -RRB-_-RRB- so_IN that_IN the_DT source_NN ,_, the_DT target_NN ,_, or_CC both_DT ,_, can_MD be_VB XML_NN ._.
+In_IN a_DT nutshell_NN ,_, the_DT schema_NN mappings_NNS in_IN Clio_NNP can_MD be_VB represented_VBN as_IN a_DT set_NN of_IN tgds_NNS -LRB-_-LRB- tuple-generating_JJ dependencies_NNS -RRB-_-RRB- =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP explain_VBP tgds_NNS with_IN two_CD examples_NNS ._.
+sWWW_NN 2007_CD \/_: Track_NNP :_: XML_NN and_CC Web_NN Data_NN Session_NN :_: Querying_VBG and_CC Transforming_VBG XML_NN EXAMPLE_NN 1_CD ._.
+Consider_VB the_DT scenario_NN described_VBN graphically_RB in_IN Figure_NNP 1_CD -LRB-_-LRB- a_DT -RRB-_-RRB- ,_, where_WRB we_PRP map_VBP from_IN
+nd_NN data_NNS integration_NN applications_NNS is_VBZ Rondo_NNP -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, a_DT generic_JJ platform_NN for_IN managing_VBG and_CC manipulating_VBG models_NNS ._.
+As_IN in_IN Clio_NNP ,_, mappings_NNS are_VBP specified_VBN by_IN using_VBG logical_JJ constraints_NNS ._.
+Other_JJ examples_NNS include_VBP Piazza_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: and_CC HePToX_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, which_WDT are_VBP also_RB based_VBN on_IN mappings_NNS but_CC focus_VB on_IN query_NN rewriting_VBG for_IN data_NNS integration_NN ,_, instead_RB of_IN data_NNS transformation_NN ._.
+In_IN addition_NN to_TO the_DT research_NN prototypes_NNS ,_, many_JJ industry_NN tools_NNS such_JJ as_IN
+t_NN template_NN -LRB-_-LRB- left_NN -RRB-_-RRB- for_IN Example_NN 1_CD and_CC the_DT corresponding_JJ XML_NN fragment_NN for_IN t1_NN from_IN Table_NNP 1_CD used_VBN for_IN merging_VBG can_MD be_VB individually_RB defined_VBN based_VBN on_IN application_NN semantics_NNS via_IN parameterized_JJ grouping_VBG functions_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ merging_JJ techniques_NNS -LRB-_-LRB- described_VBN in_IN the_DT next_JJ section_NN -RRB-_-RRB- can_MD be_VB extended_VBN to_TO deal_VB with_IN such_JJ scenarios_NNS as_RB well_RB ._.
+name_NN ``_`` A1_NN ''_'' author_NN conf_jnl_FW cname_FW pub_NN ``_`` ICDE_NN ''_'' title_NN ``_`` T2_NN ''_'' AuthorDB_FW conf_jnl_FW cname_FW ``_`` VLDB_NN ''_'' pub_NN t_NN
+ion_NN applications_NNS is_VBZ Rondo_NNP -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, a_DT generic_JJ platform_NN for_IN managing_VBG and_CC manipulating_VBG models_NNS ._.
+As_IN in_IN Clio_NNP ,_, mappings_NNS are_VBP specified_VBN by_IN using_VBG logical_JJ constraints_NNS ._.
+Other_JJ examples_NNS include_VBP Piazza_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB- and_CC HePToX_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT are_VBP also_RB based_VBN on_IN mappings_NNS but_CC focus_VB on_IN query_NN rewriting_VBG for_IN data_NNS integration_NN ,_, instead_RB of_IN data_NNS transformation_NN ._.
+In_IN addition_NN to_TO the_DT research_NN prototypes_NNS ,_, many_JJ industry_NN tools_NNS such_JJ as_IN IBM_NNP Rational_JJ D_NN
+cus_NN was_VBD on_IN reducing_VBG the_DT size_NN of_IN the_DT resulting_VBG XML_NN archive_NN and_CC did_VBD not_RB report_VB results_NNS on_IN the_DT performance_NN of_IN execution_NN ._.
+In_IN fact_NN ,_, our_PRP$ performance_NN improvement_NN benefits_NNS from_IN additional_JJ techniques_NNS ._.
+NEXSORT_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: sorts_NNS the_DT sibling_NN elements_NNS of_IN an_DT XML_NN data_NN tree_NN based_VBN on_IN a_DT given_VBN user_NN criterion_NN ._.
+It_PRP uses_VBZ a_DT bottom-up_JJ approach_NN so_IN that_IN the_DT I\/O_NN cost_NN for_IN sorting_NN is_VBZ almost_RB linear_JJ to_TO the_DT data_NNS size_NN ._.
+NEXSORT_NN is_VBZ different_JJ f_SYM
+ines_VBZ tree_NN nodes_NNS from_IN different_JJ parent_NN tree_NN nodes_NNS ._.
+XML_NN OLAP_NN There_EX is_VBZ research_NN on_IN providing_VBG better_JJR support_NN for_IN grouping_VBG operations_NNS in_IN XQuery_NN either_CC at_IN the_DT algebraic_JJ level_NN or_CC the_DT physical_JJ operator_NN level_NN =_JJ -_: =[_NN 7_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN general_JJ ,_, detecting_VBG a_DT ``_`` group_NN by_IN pattern_NN ''_'' from_IN a_DT complex_JJ XQuery_NN is_VBZ very_RB difficult_JJ and_CC often_RB results_VBZ in_IN a_DT poor_JJ execution_NN plan_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+There_EX has_VBZ been_VBN a_DT proposal_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- to_TO extend_VB the_DT XQuery_NN syntax_NN to_TO includ_VB
+-LRB-_-LRB- version_NN 8.7_CD -RRB-_-RRB- 6_CD ._.
+Their_PRP$ performance_NN for_IN the_DT tested_VBN transformation_NN queries_NNS is_VBZ no_RB better_JJR than_IN the_DT two_CD commercial_JJ databases_NNS that_IN we_PRP tested_VBD ._.
+We_PRP are_VBP also_RB aware_JJ of_IN other_JJ XQuery_NN engines_NNS such_JJ as_IN the_DT BEA\/SQRL_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT we_PRP did_VBD not_RB test_VB ._.
+However_RB none_NN of_IN the_DT XQuery_NN engines_NNS we_PRP know_VBP provides_VBZ a_DT deep-union_JJ operation_NN ._.
+We_PRP stress_VBP that_IN our_PRP$ results_NNS by_IN no_DT means_NNS imply_VBP that_IN the_DT commercial_JJ databases_NNS provide_VBP poor_JJ support_NN for_IN
+approach_NN is_VBZ that_IN ,_, we_PRP start_VBP from_IN XML_NN ,_, obtain_VB flattened_VBN tuples_NNS -LRB-_-LRB- Extract_NN -RRB-_-RRB- ,_, transform_VB them_PRP to_TO XML_NN fragments_NNS -LRB-_-LRB- Transform_NN -RRB-_-RRB- ,_, and_CC ,_, finally_RB ,_, merge_VBP the_DT obtained_VBN results_NNS -LRB-_-LRB- Merge_NN -RRB-_-RRB- ._.
+XML_NN Value_NN Extraction_NN TurboXPath_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: can_MD process_VB XML_NN pattern_NN queries_NNS with_IN multiple_JJ extraction_NN nodes_NNS ._.
+It_PRP supports_VBZ a_DT wider_JJR class_NN of_IN pattern_NN queries_NNS and_CC can_MD only_RB process_VB one_CD pattern_NN at_IN a_DT time_NN ._.
+Our_PRP$ algorithm_NN for_IN set-path_JJ expressions_NNS is_VBZ desi_NN
+._.
+com_NN 5_CD http:\/\/monetdb.cwi.nl\/XQuery_NN 6_CD http:\/\/saxon.sourceforge.netsWWW_NN 2007_CD \/_: Track_NNP :_: XML_NN and_CC Web_NN Data_NN Session_NN :_: Querying_VBG and_CC Transforming_VBG XML_NN 7_CD ._.
+RELATED_NNS WORK_VBP XML_NN Publishing_NNP SilkRoute_NNP -LRB-_-LRB- 11_CD -RRB-_-RRB- and_CC XPeranto_NN =_JJ -_: =[_NN 6_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP prototype_NN systems_NNS that_WDT publish_VBP object-relational_JJ data_NNS as_IN XML_NN using_VBG views_NNS and_CC query_JJ composition_NN techniques_NNS ._.
+One_CD major_JJ focus_NN is_VBZ the_DT composition_NN of_IN user_NN queries_NNS -LRB-_-LRB- such_JJ as_IN XQuery_NN or_CC XML-QL_NN -RRB-_-RRB- with_IN the_DT X_NN
+p_NN :_: \/_: \/_: www.softwareag.com_NN 5_CD http:\/\/monetdb.cwi.nl\/XQuery_NN 6_CD http:\/\/saxon.sourceforge.netsWWW_NN 2007_CD \/_: Track_NNP :_: XML_NN and_CC Web_NN Data_NN Session_NN :_: Querying_VBG and_CC Transforming_VBG XML_NN 7_CD ._.
+RELATED_NNS WORK_VBP XML_NN Publishing_NNP SilkRoute_NNP =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: and_CC XPeranto_NN -LRB-_-LRB- 6_CD ,_, 20_CD -RRB-_-RRB- are_VBP prototype_NN systems_NNS that_WDT publish_VBP object-relational_JJ data_NNS as_IN XML_NN using_VBG views_NNS and_CC query_JJ composition_NN techniques_NNS ._.
+One_CD major_JJ focus_NN is_VBZ the_DT composition_NN of_IN user_NN queries_NNS -LRB-_-LRB- such_JJ as_IN XQuery_NN
+._.
+com_NN 5_CD http:\/\/monetdb.cwi.nl\/XQuery_NN 6_CD http:\/\/saxon.sourceforge.netsWWW_NN 2007_CD \/_: Track_NNP :_: XML_NN and_CC Web_NN Data_NN Session_NN :_: Querying_VBG and_CC Transforming_VBG XML_NN 7_CD ._.
+RELATED_NNS WORK_VBP XML_NN Publishing_NNP SilkRoute_NNP -LRB-_-LRB- 11_CD -RRB-_-RRB- and_CC XPeranto_NN =_JJ -_: =[_NN 6_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP prototype_NN systems_NNS that_WDT publish_VBP object-relational_JJ data_NNS as_IN XML_NN using_VBG views_NNS and_CC query_JJ composition_NN techniques_NNS ._.
+One_CD major_JJ focus_NN is_VBZ the_DT composition_NN of_IN user_NN queries_NNS -LRB-_-LRB- such_JJ as_IN XQuery_NN or_CC XML-QL_NN -RRB-_-RRB- with_IN the_DT X_NN
+ines_VBZ tree_NN nodes_NNS from_IN different_JJ parent_NN tree_NN nodes_NNS ._.
+XML_NN OLAP_NN There_EX is_VBZ research_NN on_IN providing_VBG better_JJR support_NN for_IN grouping_VBG operations_NNS in_IN XQuery_NN either_CC at_IN the_DT algebraic_JJ level_NN or_CC the_DT physical_JJ operator_NN level_NN =_JJ -_: =[_NN 7_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN general_JJ ,_, detecting_VBG a_DT ``_`` group_NN by_IN pattern_NN ''_'' from_IN a_DT complex_JJ XQuery_NN is_VBZ very_RB difficult_JJ and_CC often_RB results_VBZ in_IN a_DT poor_JJ execution_NN plan_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+There_EX has_VBZ been_VBN a_DT proposal_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- to_TO extend_VB the_DT XQuery_NN syntax_NN to_TO includ_VB

@@ -1,0 +1,210 @@
+Identifying_VBG link_NN farm_NN spam_NN pages_NNS
+With_IN the_DT increasing_VBG importance_NN of_IN search_NN in_IN guiding_VBG today_NN 's_POS web_NN traffic_NN ,_, more_JJR and_CC more_JJR effort_NN has_VBZ been_VBN spent_VBN to_TO create_VB search_NN engine_NN spam_NN ._.
+Since_IN link_NN analysis_NN is_VBZ one_CD of_IN the_DT most_RBS important_JJ factors_NNS in_IN current_JJ commercial_JJ search_NN engines_NNS '_POS ranking_NN systems_NNS ,_, new_JJ kinds_NNS of_IN spam_NN aiming_VBG at_IN links_NNS have_VBP appeared_VBN ._.
+Building_NN link_NN farms_NNS is_VBZ one_CD technique_NN that_WDT can_MD deteriorate_VB link-based_JJ ranking_NN algorithms_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP present_VBP algorithms_NNS for_IN detecting_VBG these_DT link_NN farms_NNS automatically_RB by_IN first_RB generating_VBG a_DT seed_NN set_NN based_VBN on_IN the_DT common_JJ link_NN set_VBN between_IN incoming_JJ and_CC outgoing_JJ links_NNS of_IN Web_NN pages_NNS and_CC then_RB expanding_VBG it_PRP ._.
+Links_NNP between_IN identified_VBN pages_NNS are_VBP re-weighted_JJ ,_, providing_VBG a_DT modified_VBN web_NN graph_NN to_TO use_VB in_IN ranking_JJ page_NN importance_NN ._.
+Experimental_JJ results_NNS show_VBP that_IN we_PRP can_MD identify_VB most_JJS link_NN farm_NN spam_NN pages_NNS and_CC the_DT final_JJ ranking_NN results_NNS are_VBP improved_VBN for_IN almost_RB all_DT tested_VBN queries_NNS ._.
+search_NN engine_NN spiders_NNS and_CC human_JJ users_NNS ._.
+One_CD of_IN the_DT most_RBS prominent_JJ boosting_VBG techniques_NNS are_VBP link_NN farms_NNS ,_, and_CC multiple_JJ researchers_NNS have_VBP presented_VBN techniques_NNS for_IN detecting_VBG them_PRP ._.
+For_IN example_NN ,_, Wu_NNP and_CC Davison_NNP =_SYM -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP an_DT algorithm_NN that_WDT generates_VBZ a_DT graph_NN of_IN a_DT link_NN farm_NN from_IN an_DT initial_JJ seed_NN and_CC propagates_VBZ badness_NN values_NNS through_IN this_DT graph_NN ._.
+This_DT information_NN can_MD then_RB be_VB used_VBN with_IN common_JJ ,_, link-based_JJ ranking_NN alg_NN
+ain_NN ._.
+1_CD ._.
+INTRODUCTION_NN The_DT problem_NN of_IN Web_NN spam_NN continues_VBZ to_TO plague_VB search_NN engines_NNS ._.
+The_DT importance_NN of_IN link-based_JJ ranking_NN algorithms_NNS has_VBZ led_VBN spammers_NNS to_TO develop_VB complex_JJ link_NN structures_NNS such_JJ as_IN spam_NN farms_NNS =_JJ -_: =[_NN 19_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: in_IN order_NN to_TO fool_VB Pagerank_NN and_CC related_JJ algorithms_NNS ._.
+The_DT increasing_VBG commercial_JJ influence_NN of_IN the_DT Web_NN has_VBZ motivated_VBN spam_NN page_NN developers_NNS to_TO devise_VB pages_NNS in_IN such_PDT a_DT way_NN as_IN to_TO become_VB artificially_RB relevant_JJ to_TO
+gate_NN the_DT trust_NN to_TO other_JJ locally_RB reachable_JJ sites_NNS ._.
+SpamRank_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- measures_VBZ the_DT amount_NN of_IN undeserved_JJ PageRank_NN by_IN analyzing_VBG the_DT backlinks_NNS of_IN a_DT site_NN ._.
+There_EX are_VBP other_JJ algorithms_NNS that_WDT try_VBP to_TO identify_VB link_NN farms_NNS =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, link_NN spam_NN alliances_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC spam_NN sites_NNS using_VBG web_NN topology_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+TrustRank_NNP is_VBZ the_DT most_RBS widely_RB known_VBN proposed_JJ method_NN but_CC suffers_VBZ from_IN biases_NNS where_WRB the_DT human_JJ selected_JJ set_NN of_IN trustworthy_JJ sites_NNS may_MD favor_VB †_NN
+c_NN permission_NN and\/or_CC a_DT fee_NN ._.
+Copyright_NN 200X_FW ACM_FW X-XXXXX-XX-X_NN \/_: XX\/XX_NN ..._: $_$ 5.00_CD ._.
+tion_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, security_NN ,_, and_CC virus_NN propagation_NN ._.
+It_PRP is_VBZ important_JJ in_IN all_PDT the_DT above_JJ applications_NNS to_TO spot_VB anomalies_NNS and_CC outliers_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =-[_NN 13_CD -RRB-_-RRB- -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+Anomaly_RB detection_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- is_VBZ tightly_RB connected_VBN to_TO patterns_NNS :_: if_IN most_JJS of_IN the_DT nodes_NNS in_IN our_PRP$ network_NN closely_RB follow_VBP a_DT power-law_NN ,_, then_RB the_DT few_JJ deviations_NNS that_WDT do_VBP exist_VB are_VBP probably_RB outliers_NNS ._.
+Several_JJ p_NN
+etection_NN ._.
+In_IN web_NN spam_NN detection_NN one_CD seeks_VBZ to_TO find_VB arrays_NNS of_IN linked_VBN fraudulent_JJ web_NN pages_NNS ,_, so-called_JJ link_NN farms_NNS ,_, that_WDT deteriorate_VBP the_DT performance_NN of_IN search_NN engines_NNS by_IN manipulating_VBG search_NN results_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =_JJ Wu_NNP and_CC Davison_NNP ,_, 2005_CD -_: =_JJ -_: ;_: Drost_NNP and_CC Scheffer_NNP ,_, 2005_CD ;_: Castillo_NNP et_FW al._FW ,_, 2006_CD -RRB-_-RRB- ._.
+Besides_IN being_VBG densely_RB linked_VBN ,_, these_DT web_NN pages_NNS share_VBP an_DT important_JJ property_NN :_: they_PRP are_VBP generated_VBN automatically_RB according_VBG to_TO templates_NNS ._.
+Hence_RB ,_, a_DT promisi_NN
+artificially_RB inflating_VBG a_DT site_NN 's_POS popularity_NN ,_, i.e._FW ,_, by_IN increasing_VBG the_DT number_NN of_IN fake_JJ links_NNS pointing_VBG to_TO it_PRP ._.
+Luckily_RB ,_, ways_NNS to_TO detect_VB and_CC contain_VB such_JJ approaches_NNS appear_VBP to_TO be_VB quite_RB successful_JJ -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+On_IN the_DT other_JJ side_NN ,_, an_DT entire_JJ new_JJ industry_NN ,_, i.e._FW ,_, search_NN engine_NN optimization_NN -LRB-_-LRB- SEO_NN -RRB-_-RRB- -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 19_CD -RRB-_-RRB- -RRB-_-RRB- ,_, is_VBZ booming_VBG ._.
+Such_JJ companies_NNS and_CC experts_NNS claim_VBP to_TO be_VB capable_JJ of_IN improving_VBG a_DT web_NN page_NN 's_POS rank_NN by_IN und_NN
+o_NN account_NN the_DT evaluations_NNS of_IN a_DT few_JJ seed_NN pages_NNS by_IN human_JJ editors_NNS ,_, employees_NNS of_IN a_DT search_NN engine_NN ,_, is_VBZ presented_VBN in_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Techniques_NNS for_IN identifying_VBG automatically_RB link_VBP farms_NNS of_IN spam_NN pages_NNS were_VBD presented_VBN in_IN =_JJ -_: =[_NN 38_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT comprehensive_JJ treatment_NN on_IN social_JJ networks_NNS is_VBZ presented_VBN in_IN -LRB-_-LRB- 36_CD -RRB-_-RRB- ._.
+The_DT connection_NN between_IN the_DT Web_NN and_CC social_JJ networks_NNS was_VBD explicitly_RB noted_VBN in_IN -LRB-_-LRB- 24_CD ,_, 31_CD -RRB-_-RRB- and_CC implicitly_RB used_VBN in_IN -LRB-_-LRB- 4_CD ,_, 22_CD -RRB-_-RRB- ._.
+In_IN fact_NN ,_, Kleinb_NNP
+o_NN account_NN the_DT evaluations_NNS of_IN a_DT few_JJ seed_NN pages_NNS by_IN human_JJ editors_NNS ,_, employees_NNS of_IN a_DT search_NN engine_NN ,_, is_VBZ presented_VBN in_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Techniques_NNS for_IN identifying_VBG automatically_RB link_VBP farms_NNS of_IN spam_NN pages_NNS were_VBD presented_VBN in_IN =_JJ -_: =[_NN 45_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+A_DT comprehensive_JJ treatment_NN on_IN social_JJ networks_NNS is_VBZ presented_VBN in_IN -LRB-_-LRB- 43_CD -RRB-_-RRB- ._.
+The_DT connection_NN between_IN the_DT Web_NN and_CC social_JJ networks_NNS was_VBD explicitly_RB noted_VBN in_IN -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 38_CD -RRB-_-RRB- and_CC implicitly_RB used_VBN in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+In_IN fac_NN
+le_FW to_TO link_VB farming_VBG on_IN the_DT Internet_NNP to_TO attack_VB the_DT PageRank_NNP ._.
+However_RB ,_, extensive_JJ amount_NN of_IN work_NN has_VBZ already_RB been_VBN done_VBN to_TO identify_VB and_CC neutralize_VB such_JJ attacks_NNS on_IN social_JJ reputation_NN schemes_NNS ._.
+Solutions_NNPS like_IN =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_SYM -_: can_MD be_VB used_VBN orthogonally_RB in_IN LENS_NN for_IN protection_NN against_IN trust_NN farming_NN ._.
+Human_JJ spamming_NN using_VBG GK_NN selection_NN stage_NN 3_CD :_: Stage_NN 3_CD of_IN GK_NN Selection_NN protocol_NN allows_VBZ new_JJ users_NNS to_TO send_VB emails_NNS to_TO complete_VB stranger_NN
+efer_NN to_TO this_DT process_NN of_IN reciprocal_JJ exchange_NN of_IN links_NNS between_IN unrelated_JJ users_NNS to_TO gain_VB influence_NN in_IN the_DT network_NN as_IN link_NN farming_NN ._.
+While_IN link_NN farming_NN in_IN the_DT Web_NN graph_NN has_VBZ been_VBN well_RB studied_VBN and_CC understood_VBN =_JJ -_: =[_NN 8,14,30_CD -RRB-_-RRB- -_: =_JJ -_: ,_, there_EX is_VBZ no_DT existing_VBG work_NN on_IN link_NN farming_NN in_IN the_DT Twitter_NNP social_JJ network_NN to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ._.
+Furthermore_RB ,_, unlike_IN the_DT Web_NN ,_, where_WRB a_DT link_NN from_IN web_NN page_NN A_NN to_TO web-page_JJ B_NN implies_VBZ that_IN B_NN 's_POS content_NN
+have_VBP been_VBN proposed_VBN ._.
+Some_DT are_VBP based_VBN on_IN the_DT content_NN of_IN the_DT pages_NNS -LRB-_-LRB- 15_CD ,_, 5_CD ,_, 21_CD -RRB-_-RRB- ,_, some_DT are_VBP based_VBN on_IN the_DT presence_NN of_IN cloaking_NN -LRB-_-LRB- 25_CD ,_, 27_CD -RRB-_-RRB- ,_, while_IN some_DT others_NNS are_VBP based_VBN on_IN the_DT link_NN structure_NN leading_VBG to_TO the_DT pages_NNS =_JJ -_: =[_NN 26_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT SEO_NNP attacks_NNS that_WDT we_VBP study_NN in_IN this_DT paper_NN are_VBP different_JJ from_IN traditional_JJ ones_NNS in_IN that_IN attackers_NNS leverage_NN a_DT large_JJ number_NN of_IN compromised_VBN servers_NNS ._.
+Since_IN these_DT servers_NNS were_VBD originally_RB legitimate_JJ and_CC t_NN
+which_WDT consist_VBP of_IN specially_RB crafted_VBN webpages_NNS with_IN inflated_JJ relevance_NN to_TO a_DT set_NN of_IN target_NN search_NN terms_NNS ._.
+Attempts_NNS to_TO counter_RB blackhat_VB SEO_NNP have_VBP been_VBN proposed_VBN mainly_RB in_IN the_DT information_NN retrieval_NN community_NN =_JJ -_: =[_NN 18_CD ,_, 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC with_IN very_RB limited_JJ success_NN against_IN the_DT recent_JJ surge_NN of_IN blackhat_FW SEO_FW adopters_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+In_IN the_DT meantime_NN ,_, blackhat_NN SEO_NN has_VBZ not_RB captured_VBN sufficient_JJ attention_NN from_IN the_DT security_NN community_NN ,_, perhaps_RB because_IN
+ructural_JJ patterns_NNS ._.
+In_IN the_DT experiment_NN results_NNS ,_, they_PRP claimed_VBD to_TO have_VB identified_VBN 31_CD clusters_NNS ,_, each_DT of_IN which_WDT appears_VBZ to_TO be_VB a_DT spam_NN ring_NN ._.
+Elsewhere_RB ,_, we_PRP present_VBP a_DT different_JJ method_NN for_IN finding_VBG link_NN farm_NN spam_NN =_JJ -_: =[_NN 36_CD -RRB-_-RRB- -_: =_JJ -_: ,_, in_IN which_WDT an_DT automated_JJ method_NN is_VBZ used_VBN to_TO select_VB a_DT seed_NN set_NN of_IN bad_JJ pages_NNS -LRB-_-LRB- spam_NN pages_NNS -RRB-_-RRB- which_WDT are_VBP then_RB expanded_VBN to_TO include_VB others_NNS that_WDT link_VBP to_TO enough_RB known_VBN bad_JJ pages_NNS ._.
+Our_PRP$ current_JJ approach_NN is_VBZ additionall_NN
+proposed_VBN topical_JJ link_NN analysis_NN algorithm_NN ._.
+Comparisons_NNS are_VBP conducted_VBN among_IN PageRank_NN schemes_NNS and_CC HITS_NN schemes_NNS separately_RB ._.
+4.1_CD Data_NN Collections_NNS In_IN their_PRP$ work_NN on_IN link_NN spam_NN identification_NN ,_, Wu_NNP and_CC Davison_NNP =_SYM -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: selected_VBN twenty_CD queries_NNS from_IN those_DT used_VBN by_IN previ_NN -LRB-_-LRB- a_NN -RRB-_-RRB- A_NN web_NN made_VBN up_RP of_IN 6_CD nodes_NNS content_NN vector_NN authority_NN vector_NN global_JJ node_NN A_NN S_NN B_NN A_NN S_NN B_NN auth_NN ._.
+1_CD 0.2_CD 0.7_CD 0.1_CD 0.019_CD 0.065_CD 0.009_CD 0.093_CD 2_CD 0.2_CD 0.4_CD 0.4_CD 0.019_CD 0_CD ._.
+all_DT seed_NN of_IN known_JJ spam_NN sources_NNS ,_, we_PRP adopt_VBP a_DT propagation_NN approach_NN that_WDT relies_VBZ on_IN an_DT inverse_JJ PageRankstyle_NN model_NN to_TO assign_VB a_DT spam_NN proximity_NN value_NN to_TO every_DT source_NN in_IN the_DT Web_NN graph_NN ,_, similar_JJ to_TO the_DT BadRank_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_JJ -_: approach_NN for_IN assigning_VBG in_IN essence_NN a_DT ``_`` negative_JJ ''_'' PageRank_NN value_NN to_TO spam_NN ._.
+First_RB ,_, we_PRP reverse_VBP the_DT links_NNS in_IN the_DT original_JJ source_NN graph_NN GS_NN =_JJ 〈_CD S_NN ,_, LS_NN 〉_CD so_IN that_IN we_PRP have_VBP a_DT new_JJ inverted_JJ source_NN graph_NN G_NN ′_NN S_NN =_JJ 〈_CD S_NN ,_, L_NN ′_NN
+SP_NN Laboratory_NNP Dept._NNP of_IN Electronic_NNP Engineering_NNP Tsinghua_NNP University_NNP Beijing_NNP ,_, 100084_CD ,_, P.R._NN China_NNP fengg03@mails.tsinghua.edu.cn_NN defined_VBN as_IN a_DT research_NN issue_NN and_CC several_JJ methods_NNS have_VBP been_VBN proposed_VBN -LRB-_-LRB- 1_LS -RRB-_-RRB- -LRB-_-LRB- 2_CD -RRB-_-RRB- -LRB-_-LRB- 3_LS -RRB-_-RRB- =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =-[_CD 5_CD -RRB-_-RRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+Anti-spam_NN is_VBZ a_DT challenging_JJ task_NN ,_, because_IN new_JJ spam_NN techniques_NNS are_VBP being_VBG developed_VBN continuously_RB while_IN anti-spam_JJ methods_NNS are_VBP usually_RB created_VBN only_RB based_VBN on_IN those_DT known_JJ spamming_JJ techn_NN
+inks_NNS ,_, aimed_VBN at_IN affecting_VBG the_DT outcome_NN of_IN a_DT link-based_JJ ranking_NN algorithm_NN ._.
+Methods_NNS for_IN the_DT detection_NN of_IN link-based_JJ spam_NN rely_VBP on_IN automatic_JJ classifiers_NNS -LRB-_-LRB- 16_CD ,_, 5_CD -RRB-_-RRB- ,_, propagating_VBG trust_NN or_CC distrust_VB through_IN links_NN =_JJ -_: =[_NN 21_CD ,_, 32_CD -RRB-_-RRB- -_: =_JJ -_: ,_, detecting_VBG anomalous_JJ behavior_NN of_IN link-based_JJ ranking_JJ algorithms_NNS -LRB-_-LRB- 35_CD ,_, 2_CD -RRB-_-RRB- ,_, or_CC removing_VBG links_NNS that_WDT look_VBP suspicious_JJ for_IN some_DT reason_NN -LRB-_-LRB- 15_CD ,_, 7_CD -RRB-_-RRB- ._.
+Content_NN spam_NN is_VBZ done_VBN by_IN maliously_RB crafting_VBG the_DT content_NN of_IN Web_NN p_NN
+checked_VBN ._.
+If_IN the_DT distribution_NN does_VBZ n't_RB follow_VB a_DT typical_JJ pattern_NN ,_, the_DT page_NN will_MD be_VB penalized_VBN ._.
+Acharya_NNP et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- first_RB publicly_RB proposed_VBN using_VBG historical_JJ data_NNS to_TO identify_VB link_NN spam_NN pages_NNS ._.
+Wu_NNP and_CC Davison_NNP =_SYM -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: used_VBD the_DT intersection_NN of_IN the_DT incoming_JJ and_CC outgoing_JJ link_NN sets_NNS plus_CC a_DT propagation_NN step_NN to_TO detect_VB link_NN farms_NNS ._.
+Mishne_FW et_FW al._FW -LRB-_-LRB- 20_CD -RRB-_-RRB- employed_VBD a_DT language_NN model_NN to_TO detect_VB comment_NN spam_NN ._.
+Drost_NNP and_CC Scheffer_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB-
+meaningless_JJ nonsense_NN ._.
+Another_DT problem_NN with_IN negative_JJ weights_NNS is_VBZ that_IN if_IN negative_JJ inlinks_NNS lower_JJR ranking_NN ,_, it_PRP is_VBZ possible_JJ to_TO raise_VB own_JJ ranking_NN by_IN creating_VBG negative_JJ outlinks_NNS toward_IN competing_VBG nodes_NNS ._.
+BadRank_NN =_JJ -_: =_JJ -LRB-_-LRB- WuD05_NN -RRB-_-RRB- -_: =_JJ -_: algorithm_NN solves_VBZ this_DT by_IN inverting_VBG the_DT direction_NN of_IN calculation_NN -_: a_DT node_NN 's_POS ranking_NN is_VBZ lowered_VBN ,_, if_IN it_PRP has_VBZ nodes_NNS with_IN negative_JJ weights_NNS as_IN outlinked_JJ nodes_NNS ._.
+The_DT ParentPenalty_NN algorithm_NN -LRB-_-LRB- WuD05_NN -RRB-_-RRB- is_VBZ a_DT variat_NN
+tness_NN of_IN PageSim_NN by_IN showing_VBG that_IN PageSim_NNP is_VBZ resistant_JJ to_TO link_VB farm_NN ,_, which_WDT is_VBZ a_DT commonly_RB used_VBN link_NN spamming_VBG technique_NN ._.
+A_DT link_NN farm_NN is_VBZ a_DT network_NN of_IN web_NN pages_NNS which_WDT are_VBP densely_RB connected_VBN with_IN each_DT other_JJ =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP aims_VBZ to_TO boost_VB the_DT ranking_NN of_IN target_NN web_NN pages_NNS ._.
+It_PRP is_VBZ true_JJ that_IN setting_VBG up_RP sophisticated_JJ link_NN structures_NNS within_IN a_DT link_NN farm_NN does_VBZ not_RB improve_VB the_DT total_JJ PageRank_NN of_IN the_DT link_NN farm_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, which_WDT is_VBZ denot_VBN
+in_IN prior_JJ work_NN ,_, namely_RB the_DT nepotistic_JJ links_NNS -LRB-_-LRB- also_RB called_VBN spam_NN links_NNS -RRB-_-RRB- ,_, i.e._FW ,_, the_DT links_NNS intentionally_RB created_VBN to_TO artificially_RB boost_VB the_DT rank_NN of_IN some_DT given_VBN set_NN of_IN pages_NNS ,_, usually_RB referred_VBN to_TO as_IN spam_NN pages_NNS =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN fact_NN ,_, given_VBN the_DT importance_NN of_IN search_NN engines_NNS in_IN modern_JJ society_NN ,_, many_JJ online_JJ organizations_NNS currently_RB attempt_VBP to_TO artificially_RB increase_VB their_PRP$ rank_NN ,_, since_IN a_DT higher_JJR rank_NN implies_VBZ more_JJR users_NNS visiting_VBG th_DT
+at_IN are_VBP created_VBN and_CC then_RB discarded_VBN when_WRB they_PRP become_VBP useless_JJ ._.
+Using_VBG spam_NN accounts_NNS is_VBZ a_DT creatively_JJ way_NN of_IN leveraging_VBG the_DT zero-cost_JJ nature_NN of_IN identities_NNS in_IN Maze_NN ._.
+This_DT strategy_NN is_VBZ similar_JJ to_TO the_DT link_NN spam_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: problem_NN in_IN search_NN engines_NNS using_VBG page_NN rank_NN to_TO sort_VB results_NNS ._.
+Why_WRB would_MD a_DT Maze_NN user_NN use_VBP this_DT strategy_NN rather_RB than_IN just_RB using_VBG a_DT single_JJ machine_NN to_TO restart_VB with_IN new_JJ identities_NNS ,_, or_CC whitewash_NN ?_.
+One_CD possible_JJ r_NN
+Although_IN the_DT problems_NNS posed_VBN by_IN Web_NN spam_NN have_VBP been_VBN widely_RB acknowledged_VBN ,_, we_PRP believe_VBP research_NN progress_NN has_VBZ been_VBN limited_VBN by_IN the_DT lack_NN of_IN a_DT publicly_RB available_JJ Web_NN spam_NN corpus_NN ._.
+In_IN previous_JJ Web_NN spam_NN research_NN =_JJ -_: =[_NN 2_CD ,_, 6_CD ,_, 7_CD ,_, 9_CD ,_, 10_CD ,_, 11_CD ,_, 13_CD ,_, 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, proposed_VBN solutions_NNS have_VBP been_VBN evaluated_VBN on_IN relatively_RB CEAS_JJ 2006_CD -_: Third_NNP Conference_NNP on_IN Email_NNP and_CC Anti-Spam_NNP ,_, July_NNP 27-28_CD ,_, 2006_CD ,_, Mountain_NNP View_NNP ,_, California_NNP USA_NNP James_NNP Caverlee_NNP College_NNP of_IN Computing_NNP Georgia_NNP
+iven_VB the_DT extremal_JJ nature_NN of_IN the_DT optimal_JJ link_NN structure_NN ,_, it_PRP is_VBZ not_RB surprising_JJ that_IN their_PRP$ conclusion_NN is_VBZ very_RB close_JJ to_TO the_DT correct_JJ answer_NN ._.
+Moreover_RB ,_, those_DT special_JJ spam_NN farm_NN structures_NNS are_VBP easy_JJ to_TO detect_VB =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT spammer_NN can_MD deviate_VB from_IN the_DT optimal_JJ spam_NN farm_NN structure_NN to_TO disguise_VB the_DT spam_NN farm_NN ._.
+Unfortunately_RB ,_, this_DT problem_NN was_VBD not_RB well_RB addressed_VBN in_IN -LRB-_-LRB- 2_CD ,_, 7_CD -RRB-_-RRB- ._.
+Adali_FW et_FW ._.
+al._FW -LRB-_-LRB- 18_CD -RRB-_-RRB- studied_VBD the_DT optimal_JJ link_NN stru_NN
+given_VBN the_DT extremal_JJ nature_NN of_IN the_DT optimal_JJ link_NN structure_NN ,_, it_PRP is_VBZ not_RB surprising_JJ that_IN their_PRP$ conclusion_NN is_VBZ very_RB close_JJ to_TO the_DT correct_JJ answer_NN ._.
+Moreover_RB ,_, the_DT optimal_JJ spam_NN farm_NN structures_NNS are_VBP easy_JJ to_TO detect_VB =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT spammer_NN can_MD deviate_VB from_IN the_DT optimal_JJ spam_NN farm_NN structure_NN to_TO disguise_VB the_DT spam_NN farm_NN ._.
+Unfortunately_RB ,_, this_DT problem_NN was_VBD not_RB well_RB addressed_VBN in_IN -LRB-_-LRB- 3_CD ,_, 8_CD -RRB-_-RRB- ._.
+Adali_FW et_FW ._.
+al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- studied_VBD the_DT optimal_JJ link_NN stru_NN
+a_DT page_NN to_TO the_DT page_NN that_IN users_NNS actually_RB see_VBP ._.
+The_DT link_NN connections_NNS among_IN spam_NN pages_NNS has_VBZ been_VBN used_VBN for_IN propagating_VBG the_DT ``_`` non-spam_JJ ''_'' label_NN in_IN TrustRank_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, or_CC for_IN propagating_VBG the_DT ``_`` spam_NN ''_'' label_NN in_IN BadRank_NN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC for_IN propagating_VBG both_DT -LRB-_-LRB- 29_CD ,_, 6_CD -RRB-_-RRB- ._.
+In_IN contrast_NN ,_, the_DT detection_NN of_IN Web_NN spam_NN presented_VBN in_IN this_DT paper_NN is_VBZ based_VBN on_IN smoothing_VBG the_DT predictions_NNS obtained_VBN by_IN a_DT classification_NN system_NN ,_, and_CC not_RB on_IN propagating_VBG the_DT
+of_IN trusted_VBN sites_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, statistical_JJ analysis_NN of_IN Web_NN properties_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, the_DT identification_NN of_IN nepotistic_JJ links_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, and_CC several_JJ attempts_NNS to_TO propagate_VB a_DT ``_`` bad_JJ ''_'' rank_NN to_TO pages_NNS based_VBN on_IN linking_VBG patterns_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+VI_NNP ._.
+CONCLUSION_NN We_PRP have_VBP proposed_VBN a_DT parameterized_JJ framework_NN for_IN sourcecentric_JJ link_NN analysis_NN ,_, explored_VBD several_JJ critical_JJ parameters_NNS ,_, and_CC conducted_VBD the_DT first_JJ large-scale_JJ comparative_JJ study_NN of_IN sourcecentri_NN
+he_PRP spam_VBD filter_NN ._.
+Since_IN no_DT algorithms_NNS of_IN how_WRB to_TO calculate_VB E_NN -LRB-_-LRB- A_NN -RRB-_-RRB- and_CC how_WRB to_TO combine_VB BadRank_NNP values_NNS with_IN other_JJ ranking_JJ methods_NNS such_JJ as_IN PageRank_NN are_VBP given_VBN ,_, we_PRP can_MD not_RB tell_VB the_DT effectiveness_NN of_IN this_DT approach_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ algorithm_NN has_VBZ similar_JJ philosophy_NN to_TO BadRank_NNP ,_, but_CC we_PRP give_VBP the_DT E_NN -LRB-_-LRB- A_NN -RRB-_-RRB- value_NN and_CC adjust_VB some_DT parameters_NNS of_IN its_PRP$ formula_NN ._.
+Besides_IN ,_, as_IN we_PRP have_VBP a_DT large_JJ data_NNS set_VBN with_IN a_DT large_JJ list_NN of_IN black_JJ web_NN pages_NNS ,_, we_PRP c_NN
+are_VBP inspired_VBN by_IN this_DT work_NN ._.
+Another_DT example_NN of_IN such_PDT a_DT machine_NN learning_NN approach_NN is_VBZ -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+Another_DT direction_NN of_IN web_NN spam_NN research_NN has_VBZ studied_VBN link_NN spam_NN in_IN terms_NNS of_IN trust_NN and_CC distrust_VB propagation_NN ._.
+Work_NN in_IN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: first_RB finds_VBZ a_DT seed_NN set_NN of_IN spam_NN pages_NNS ,_, and_CC then_RB expands_VBZ it_PRP to_TO neighboring_JJ pages_NNS in_IN the_DT graph_NN ._.
+The_DT TrustRank_NNP approach_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- proposes_VBZ to_TO propagate_VB trust_NN from_IN good_JJ sites_NNS ._.
+BadRank_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- is_VBZ the_DT idea_NN of_IN propa_NN
+ing_NN with_IN Web_NN spam_NN include_VBP the_DT statistical_JJ analysis_NN of_IN Web_NN properties_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, the_DT identification_NN of_IN nepotistic_JJ links_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, and_CC several_JJ attempts_NNS to_TO propagate_VB a_DT ``_`` bad_JJ ''_'' rank_NN to_TO pages_NNS based_VBN on_IN linking_VBG patterns_NNS =_JJ -_: =[_NN 2_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Several_JJ researchers_NNS have_VBP studied_VBN collusive_JJ linking_VBG arrangements_NNS with_IN respect_NN to_TO PageRank_NNP ,_, including_VBG -LRB-_-LRB- 1_LS -RRB-_-RRB- and_CC -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Several_JJ researchers_NNS have_VBP suggested_VBN identifying_VBG and_CC penalizing_VBG pages_NNS that_WDT derive_VBP a_DT la_FW
+on_IN heavily_RB interlinked_JJ groups_NNS of_IN pages_NNS ._.
+Collusion_NNP is_VBZ an_DT efficient_JJ way_NN to_TO improve_VB PageRank_NN score_NN ,_, and_CC it_PRP is_VBZ indeed_RB frequently_RB used_VBN by_IN spammers_NNS ._.
+Gibson_NNP et_FW al._FW -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, Zhang_NNP et_FW al._FW -LRB-_-LRB- 16_CD -RRB-_-RRB- and_CC Wu_NNP and_CC Davison_NNP =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: present_JJ efficient_JJ algorithms_NNS for_IN collusion_NN detection_NN ._.
+However_RB ,_, certain_JJ reputable_JJ pages_NNS are_VBP colluding_VBG as_RB well_RB ,_, so_IN it_PRP is_VBZ expected_VBN that_IN the_DT number_NN of_IN false_JJ positives_NNS returned_VBN by_IN the_DT proposed_VBN algorithms_NNS
+h_NN some_DT knowledge_NN of_IN how_WRB search_NN engines_NNS function_NN ,_, it_PRP is_VBZ possible_JJ to_TO manipulate_VB the_DT results_NNS of_IN a_DT search_NN engine_NN by_IN adding_VBG keywords_NNS to_TO the_DT content_NN or_CC by_IN creating_VBG links_NNS from_IN other_JJ pages_NNS to_TO the_DT target_NN page_NN =_JJ -_: =[_NN 35_CD ,_, 15_CD ,_, 16_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT use_NN of_IN such_JJ techniques_NNS ,_, called_VBN search_NN engine_NN spam_NN -LRB-_-LRB- 28_CD ,_, 17_CD -RRB-_-RRB- ,_, can_MD lead_VB to_TO inappropriately_RB high_JJ rankings_NNS for_IN the_DT target_NN pages_NNS -LRB-_-LRB- degrading_VBG the_DT query_NN results_NNS -RRB-_-RRB- ._.
+While_IN the_DT content_NN owner_NN benefits_NNS from_IN th_DT
+ve_IN link-based_JJ ranking_JJ algorithms_NNS to_TO be_VB robust_JJ against_IN link_NN spamming_NN ._.
+Various_JJ ranking_JJ algorithms_NNS are_VBP proposed_VBN and_CC tested_VBN on_IN real_JJ web_NN data_NNS in_IN -LRB-_-LRB- 4_CD ,_, 9_CD ,_, 11_CD -RRB-_-RRB- ._.
+There_EX have_VBP also_RB been_VBN some_DT link-based_JJ approaches_NNS =_JJ -_: =[_NN 15_CD ,_, 17_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: that_IN extract_NN link_NN spam_NN using_VBG some_DT graph_NN theoretical_JJ notions_NNS such_JJ as_IN biconnected_JJ components_NNS and_CC commonality_NN of_IN neighbors_NNS ._.
+As_RB far_RB as_IN we_PRP know_VBP ,_, there_EX has_VBZ been_VBN no_DT study_NN investigating_VBG the_DT distribution_NN of_IN l_NN
+sources_NNS with_IN the_DT sole_JJ purpose_NN of_IN hosting_VBG profitable_JJ context_NN based_VBN advertisements_NNS or_CC functioning_VBG as_IN doorways_NNS ._.
+The_DT second_JJ ,_, and_CC better_RB understood_VBN form_NN ,_, is_VBZ to_TO create_VB false_JJ blogs_NNS ,_, that_WDT realize_VBP a_DT link_NN farm_NN =_JJ -_: =[_NN 84_CD -RRB-_-RRB- -_: =_SYM -_: intended_VBN to_TO unjustifiably_RB increase_VB the_DT ranking_NN of_IN affiliated_JJ sites_NNS ._.
+Figure_NN I._NN 3_CD shows_VBZ a_DT post_NN from_IN a_DT splog_NN ,_, obtained_VBN by_IN querying_VBG the_DT index_NN of_IN a_DT popular_JJ blog_NN search_NN engine_NN ._.
+As_IN shown_VBN ,_, it_PRP -LRB-_-LRB- i_LS -RRB-_-RRB- displays_VBZ ads_NNS
+in_IN the_DT top_JJ results_NNS as_IN ranked_VBN by_IN PageRank_NNP ,_, HITS_NNP and_CC Indegree_NNP heuristic_NN ._.
+From_IN this_DT graph_NN we_PRP can_MD observe_VB that_IN the_DT indegree_NN and_CC HITS_NN based_VBN heuristics_NNS were_VBD subject_JJ to_TO being_VBG easily_RB spammed_VBN ._.
+As_IN described_VBN in_IN =_JJ -_: =[_NN 65_CD -RRB-_-RRB- -_: =_SYM -_: the_DT HITS_NNP algorithm_NN is_VBZ susceptible_JJ to_TO spamming_NN and_CC this_DT is_VBZ particularly_RB true_JJ in_IN presence_NN of_IN Tightly_FW Knit_FW Communities_NNS which_WDT have_VBP been_VBN proposed_VBN by_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC also_RB studied_VBN by_IN -LRB-_-LRB- 41_CD -RRB-_-RRB- ._.
+Other_JJ variations_NNS of_IN the_DT H_NN
+hich_NN finds_VBZ non-spam_JJ pages_NNS by_IN following_VBG links_NNS from_IN an_DT initial_JJ seed_NN of_IN trusted_VBN pages_NNS ;_: Benczúr_NNP et_FW al._FW -LRB-_-LRB- BCS05_NN -RRB-_-RRB- show_VBP how_WRB to_TO penalize_VB pages_NNS that_WDT have_VBP ``_`` suspiciously_RB ''_'' increased_VBD their_PRP$ PageRank_NN ._.
+Wu_NNP and_CC Davison_NNP =_SYM -_: =_JJ -LRB-_-LRB- WD05_NN -RRB-_-RRB- -_: =_JJ -_: and_CC Gyöngyi_NNP and_CC Garcia-Molina_NNP -LRB-_-LRB- GG05a_NN -RRB-_-RRB- study_NN how_WRB to_TO detect_VB link_NN farms_NNS -LRB-_-LRB- i.e._FW sites_NNS exchanging_VBG links_NNS for_IN mutual_JJ benefit_NN -RRB-_-RRB- ._.
+In_IN -LRB-_-LRB- FMN04_NN -RRB-_-RRB- Fetterly_NNP et_FW al._FW showed_VBD ways_NNS of_IN identifying_VBG link_NN spam_NN based_VBN on_IN diversi_NNS
+tal_NN of_IN the_DT center_NN peer_VB ._.
+We_PRP call_VBP these_DT leaf-peers_NNS spam_VBP accounts_NNS ,_, since_IN they_PRP are_VBP created_VBN and_CC then_RB discarded_VBN when_WRB they_PRP expend_VBP their_PRP$ initial_JJ point_NN allocations2_NN ._.
+This_DT strategy_NN is_VBZ similar_JJ to_TO the_DT link_NN spam_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: problem_NN in_IN search_NN engines_NNS using_VBG page_NN rank_NN to_TO sort_VB results_NNS ._.
+One_CD might_MD ask_VB why_WRB a_DT user_NN would_MD prefer_VB this_DT strategy_NN to_TO performing_VBG whitewashing_NN -LRB-_-LRB- restarting_VBG with_IN new_JJ identities_NNS -RRB-_-RRB- ._.
+One_CD explanation_NN is_VBZ that_IN use_NN
+ree_NN of_IN its_PRP$ neighbors_NNS -RRB-_-RRB- ,_, the_DT maximum_JJ PageRank_NN of_IN the_DT site_NN ,_, the_DT standard_JJ deviation_NN of_IN PageRank_NN of_IN the_DT neighbors_NNS etc._NN 4.4_CD Diffusing_NN Trustworthiness_NN and_CC Suspicion_NN Among_IN the_DT SEO_NNP community_NN ,_, it_PRP is_VBZ believed_VBN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: that_IN some_DT search_NN engines_NNS -LRB-_-LRB- most_RBS notably_RB ,_, Google_NNP -RRB-_-RRB- are_VBP using_VBG a_DT link-spam_JJ detection_NN algorithm_NN known_VBN as_IN BadRank_NNP ._.
+This_DT algorithm_NN starts_VBZ from_IN a_DT set_NN of_IN pages_NNS marked_VBN as_IN ``_`` bad_JJ ''_'' and_CC uses_VBZ a_DT technique_NN similar_JJ to_TO P_NN
+algorithm_NN to_TO make_VB eigenvector-based_JJ ranking_JJ algorithms_NNS less_RBR vulnerable_JJ to_TO noisy_JJ information_NN ._.
+Fetterly_NNP et_FW al._FW -LRB-_-LRB- 6_CD -RRB-_-RRB- also_RB proposed_VBN approaches_NNS that_WDT can_MD detect_VB spam_NN by_IN statistical_JJ analysis_NN ._.
+Wu_NNP and_CC Davison_NNP =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT two-step_JJ algorithm_NN to_TO identify_VB link_NN farms_NNS ._.
+The_DT first_JJ step_NN generates_VBZ a_DT seed_NN set_NN based_VBN on_IN the_DT size_NN of_IN the_DT intersection_NN of_IN in-link_JJ and_CC out-links_JJ of_IN web_NN pages_NNS ._.
+The_DT second_JJ step_NN expands_VBZ the_DT seed_NN
+he_PRP top_JJ results_NNS as_IN ranked_VBN by_IN PageRank_NNP ,_, HITS_NNP and_CC the_DT Indegree_NNP heuristic_NN ._.
+From_IN this_DT graph_NN we_PRP can_MD observe_VB that_IN the_DT indegree_NN and_CC HITS_NN based_VBN heuristics_NNS were_VBD subject_JJ to_TO being_VBG easily_RB spammed_VBN ._.
+As_IN described_VBN in_IN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: the_DT HITS_NNP algorithm_NN is_VBZ susceptible_JJ to_TO spamming_NN and_CC this_DT is_VBZ particularly_RB true_JJ in_IN the_DT presence_NN of_IN Tightly_FW Knit_FW Communities_NNS -LRB-_-LRB- TKC_NN -RRB-_-RRB- ._.
+This_DT phenomenon_NN was_VBD originally_RB proposed_VBN by_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC also_RB studied_VBN by_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+from_IN other_JJ blogs_NNS and_CC news_NN sources_NNS with_IN the_DT sole_JJ purpose_NN of_IN hosting_VBG profitable_JJ context_NN based_VBN advertisements_NNS ._.
+The_DT second_JJ ,_, and_CC better_RB understood_VBN form_NN ,_, is_VBZ to_TO create_VB false_JJ blogs_NNS ,_, that_WDT realize_VBP a_DT link_NN farm_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: intended_VBN to_TO unjusti_FW ∗_FW This_DT work_NN is_VBZ supported_VBN by_IN NSF_NN Awards_NNS NSF-ITR-IIS0326460_NN and_CC NSF-ITR-IDM-0219649_NN Copyright_NN is_VBZ held_VBN by_IN the_DT author\/owner_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- ._.
+WWW2006_NNP ,_, May_NNP 22_CD --_: 26_CD ,_, 2006_CD ,_, Edinburgh_NNP ,_, UK_NNP ._. ._.
+Pranam_NNP Kolari_NNP
+ines_NNS -RRB-_-RRB- ._.
+The_DT main_JJ challenge_NN is_VBZ to_TO identify_VB features_NNS that_WDT are_VBP predictive_JJ of_IN web_NN spam_NN and_CC can_MD thus_RB be_VB used_VBN as_IN inputs_NNS to_TO the_DT classifier_NN ._.
+Many_JJ such_JJ features_NNS have_VBP been_VBN proposed_VBN ,_, including_VBG hyperlink_NN features_NNS =_JJ -_: =[_NN 16_CD ,_, 17_CD ,_, 50_CD ,_, 116_CD -RRB-_-RRB- -_: =_JJ -_: ,_, term_NN and_CC phrase_NN frequency_NN -LRB-_-LRB- 97_CD -RRB-_-RRB- ,_, DNS_NN lookup_NN statistics_NNS -LRB-_-LRB- 59_CD -RRB-_-RRB- ,_, and_CC HTML_NNP markup_NN structure_NN -LRB-_-LRB- 114_CD -RRB-_-RRB- ._.
+Combined_NNP ,_, these_DT features_NNS tend_VBP to_TO be_VB quite_RB effective_JJ ,_, although_IN web_NN spam_NN detection_NN is_VBZ a228_NN Avoiding_VBG Proble_NNP
+etterly_RB et_FW al._FW -LRB-_-LRB- 5_CD -RRB-_-RRB- used_VBD statistical_JJ analysis_NN to_TO detect_VB link_NN spam_NN ._.
+Features_NNS like_IN in-degrees_NNS and_CC out-degrees_NNS are_VBP used_VBN to_TO conduct_VB the_DT analysis_NN ,_, and_CC outliers_NNS are_VBP marked_JJ as_IN spam_NN candidates_NNS ._.
+Wu_NNP and_CC Davison_NNP =_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT supervised_JJ learning_NN algorithm_NN which_WDT starts_VBZ with_IN a_DT seed_NN set_NN of_IN link_NN spam_NN pages_NNS ,_, and_CC then_RB identifies_VBZ other_JJ link_NN spam_NN pages_NNS using_VBG links_NNS to_TO and_CC from_IN the_DT seed_NN set_NN ._.
+Recently_RB ,_, Gyöngyi_NNP et_FW al._FW -LRB-_-LRB- 7_CD -RRB-_-RRB-
+is_VBZ generated_VBN only_RB by_IN manually_RB selected_VBN trusted_VBN web_NN pages_NNS ._.
+The_DT manual_JJ selection_NN of_IN trusted_VBN pages_NNS ,_, however_RB ,_, creates_VBZ a_DT perceptive_JJ bias_NN as_IN unknown_JJ and_CC remote_JJ websites_NNS become_VBP less_RBR visible_JJ ._.
+Wu_NNP and_CC Davison_NNP =_SYM -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: study_VB a_DT simple_JJ heutistic_NN that_WDT discovers_VBZ some_DT link_NN farms_NNS :_: pages_NNS which_WDT have_VBP many_JJ inlinks_NNS and_CC outlinks_NNS whose_WP$ domains_NNS match_NN are_VBP collected_VBN as_IN candidate_NN pages_NNS ._.
+They_PRP use_VBP a_DT paopagationsstrategy_NN ,_, and_CC remove_VB e_SYM
+hich_NN finds_VBZ non-spam_JJ pages_NNS by_IN following_VBG links_NNS from_IN an_DT initial_JJ seed_NN set_NN of_IN trusted_VBN pages_NNS ._.
+Benczúr_NNP et_FW al._FW -LRB-_-LRB- 4_CD -RRB-_-RRB- show_VBP how_WRB to_TO penalize_VB pages_NNS that_WDT have_VBP ``_`` suspiciously_RB ''_'' increased_VBD their_PRP$ PageRank_NN ._.
+Wu_NNP and_CC Davison_NNP =_SYM -_: =[_NN 29_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Gyöngyi_NNP and_CC Garcia-Molina_NNP -LRB-_-LRB- 12_CD -RRB-_-RRB- study_NN how_WRB to_TO detect_VB link_NN farms_NNS -LRB-_-LRB- i.e._FW sites_NNS exchanging_VBG links_NNS for_IN mutual_JJ benefit_NN -RRB-_-RRB- ._.
+In_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- we_PRP showed_VBD ways_NNS of_IN identifying_VBG link_NN spam_NN based_VBN on_IN divergence_NN of_IN sites_NNS from_IN po_NN
+checked_VBN ._.
+If_IN the_DT distribution_NN does_VBZ n't_RB follow_VB a_DT typical_JJ pattern_NN ,_, the_DT page_NN will_MD be_VB penalized_VBN ._.
+Acharya_NNP et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- first_RB publicly_RB proposed_VBN using_VBG historical_JJ data_NNS to_TO identify_VB link_NN spam_NN pages_NNS ._.
+Wu_NNP and_CC Davison_NNP =_SYM -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: used_VBD the_DT intersection_NN of_IN the_DT incoming_JJ and_CC outgoing_JJ link_NN sets_NNS plus_CC a_DT propagation_NN step_NN to_TO detect_VB link_NN farms_NNS ._.
+Mishne_FW et_FW al._FW -LRB-_-LRB- 20_CD -RRB-_-RRB- employed_VBD a_DT language_NN model_NN to_TO detect_VB comment_NN spam_NN ._.
+Drost_NNP and_CC Scheffer_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB-
+ses_NNS have_VBP focused_VBN on_IN protecting_VBG human_JJ users_NNS by_IN identifying_VBG Web_NN pages_NNS that_WDT skew_VBP search_NN engine_NN rankings_NNS through_IN link_NN or_CC content_NN manipulations_NNS ._.
+Representative_JJ examples_NNS of_IN this_DT research_NN include_VBP link-based_JJ =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 5_CD ,_, 6_CD ,_, 7_CD ,_, 16_CD ,_, 29_CD -RRB-_-RRB- -_: =_JJ -_: and_CC content-based_JJ -LRB-_-LRB- 11_CD ,_, 22_CD ,_, 27_CD -RRB-_-RRB- analysis_NN techniques_NNS ._.
+Although_IN these_DT analysis_NN techniques_NNS effectively_RB identify_VBP certain_JJ types_NNS of_IN Web_NN spam_NN ,_, the_DT techniques_NNS need_VBP to_TO download_VB and_CC inspect_VB the_DT content_NN associat_NN
+view_NN spam_NN is_VBZ similar_JJ to_TO Web_NN page_NN spam_NN ._.
+In_IN the_DT context_NN of_IN Web_NN search_NN ,_, due_JJ to_TO the_DT economic_JJ and\/or_CC publicity_NN value_NN of_IN the_DT rank_JJ position_NN of_IN a_DT page_NN returned_VBN by_IN a_DT search_NN engine_NN ,_, Web_NN page_NN spam_NN is_VBZ widespread_JJ =_JJ -_: =[_NN 3_CD ,_, 5_CD ,_, 10_CD ,_, 12_CD ,_, 16_CD ,_, 24_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Web_NN page_NN spam_NN refers_VBZ to_TO the_DT use_NN of_IN ``_`` illegitimate_JJ means_NNS ''_'' to_TO boost_VB the_DT rank_JJ positions_NNS of_IN some_DT target_NN pages_NNS in_IN search_NN engines_NNS -LRB-_-LRB- 10_CD ,_, 18_CD -RRB-_-RRB- ._.
+In_IN the_DT context_NN of_IN reviews_NNS ,_, the_DT problem_NN is_VBZ similar_JJ ,_, but_CC also_RB quite_RB
+search_NN engine_NN spiders_NNS and_CC human_JJ users_NNS ._.
+One_CD of_IN the_DT most_RBS prominent_JJ boosting_VBG techniques_NNS are_VBP link_NN farms_NNS ,_, and_CC multiple_JJ researchers_NNS have_VBP presented_VBN techniques_NNS for_IN detecting_VBG them_PRP ._.
+For_IN example_NN ,_, Wu_NNP and_CC Davison_NNP =_SYM -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP an_DT algorithm_NN that_WDT generates_VBZ a_DT graph_NN of_IN a_DT link_NN farm_NN from_IN an_DT initial_JJ seed_NN and_CC propagates_VBZ badness_NN values_NNS through_IN this_DT graph_NN ._.
+This_DT information_NN can_MD then_RB be_VB used_VBN with_IN common_JJ ,_, link-based_JJ ranking_NN alg_NN
+nerating_VBG pages_NNS by_IN developing_VBG tools_NNS to_TO find_VB invalid_JJ links_NNS ,_, to_TO automatically_RB correct_VB links_NNS that_WDT lead_VBP to_TO file_VB not_RB found_VBN errors_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC to_TO find_VB irrelevant_JJ -LRB-_-LRB- and_CC possibly_RB annoying_JJ or_CC offensive_JJ -RRB-_-RRB- spam_NN pages_NNS =_JJ -_: =[_NN 12_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, none_NN consider_VBP that_IN the_DT link_NN context_NN changes_NNS over_IN time_NN ._.
+That_DT is_VBZ ,_, the_DT two_CD end_NN points_NNS of_IN a_DT link_NN may_MD change_VB in_IN different_JJ ``_`` directions_NNS ''_'' rendering_VBG the_DT link_NN inappropriate_JJ ._.
+Therefore_RB ,_, in_IN this_DT paper_NN
+o_NN take_VB into_IN account_NN the_DT evaluations_NNS of_IN a_DT few_JJ seed_NN pages_NNS by_IN human_JJ editors_NNS ,_, employees_NNS of_IN a_DT search_NN engine_NN ,_, is_VBZ presented_VBN in_IN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Techniques_NNS for_IN identifying_VBG link_NN farms_NNS of_IN spam_NN pages_NNS were_VBD also_RB presented_VBN in_IN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recently_RB ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- have_VBP introduced_VBN heuristics_NNS to_TO detect_VB spam_NN through_IN statistical_JJ content_NN analysis_NN ,_, while_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- have_VBP devised_VBN methods_NNS to_TO deal_VB with_IN redirection_NN spam_NN ._.
+It_PRP should_MD be_VB noted_VBN that_IN in_IN most_JJS of_IN the_DT a_DT

@@ -1,0 +1,101 @@
+Nonlinear_JJ adaptive_JJ distance_NN metric_JJ learning_NN for_IN clustering_NN
+A_DT good_JJ distance_NN metric_NN is_VBZ crucial_JJ for_IN many_JJ data_NNS mining_NN tasks_NNS ._.
+To_TO learn_VB a_DT metric_NN in_IN the_DT unsupervised_JJ setting_NN ,_, most_RBS metric_JJ learning_NN algorithms_NNS project_VBP observed_VBN data_NNS to_TO a_DT low-dimensional_JJ manifold_NN ,_, where_WRB geometric_JJ relationships_NNS such_JJ as_IN pairwise_JJ distances_NNS are_VBP preserved_JJ ._.
+It_PRP can_MD be_VB extended_VBN to_TO the_DT nonlinear_JJ case_NN by_IN applying_VBG the_DT kernel_NN trick_NN ,_, which_WDT embeds_VBZ the_DT data_NNS into_IN a_DT feature_NN space_NN by_IN specifying_VBG the_DT kernel_NN function_NN that_WDT computes_VBZ the_DT dot_NN products_NNS between_IN data_NNS points_NNS in_IN the_DT feature_NN space_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT novel_JJ unsupervised_JJ Nonlinear_JJ Adaptive_JJ Metric_NNP Learning_NNP algorithm_NN ,_, called_VBN NAML_NNP ,_, which_WDT performs_VBZ clustering_NN and_CC distance_NN metric_NN learning_VBG simultaneously_RB ._.
+NAML_NN firstmaps_NNS the_DT data_NNS to_TO a_DT high-dimensional_JJ space_NN through_IN a_DT kernel_NN function_NN ;_: then_RB applies_VBZ a_DT linear_JJ projection_NN to_TO find_VB a_DT low-dimensional_JJ manifold_NN where_WRB the_DT separability_NN of_IN the_DT data_NN is_VBZ maximized_VBN ;_: and_CC finally_RB performs_VBZ clustering_NN in_IN the_DT low-dimensional_JJ space_NN ._.
+The_DT performance_NN of_IN NAML_NN depends_VBZ on_IN the_DT selection_NN of_IN the_DT kernel_NN function_NN and_CC the_DT projection_NN ._.
+We_PRP show_VBP that_IN the_DT joint_JJ kernel_NN learning_NN ,_, dimensionality_NN reduction_NN ,_, and_CC clustering_NN can_MD be_VB formulated_VBN as_IN a_DT trace_NN maximization_NN problem_NN ,_, which_WDT can_MD be_VB solved_VBN via_IN an_DT iterative_JJ procedure_NN in_IN the_DT EM_NN framework_NN ._.
+Experimental_JJ results_NNS demonstrated_VBD the_DT efficacy_NN of_IN the_DT proposed_VBN algorithm_NN ._.
+eliver_JJR satisfactory_JJ results_NNS ,_, findinga_JJ good_JJ distance_NN metric_NN for_IN the_DT problem_NN at_IN hand_NN often_RB plays_VBZ a_DT very_RB crucial_JJ role_NN ._.
+As_IN such_JJ ,_, metric_JJ learning_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- has_VBZ received_VBN much_JJ attention_NN in_IN the_DT research_NN community_NN =_JJ -_: =[_NN 12_CD ,_, 25_CD ,_, 5_CD ,_, 22_CD ,_, 8_CD ,_, 26_CD ,_, 6_CD ,_, 7_CD ,_, 27_CD ,_, 29_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Many_JJ metric_JJ learning_NN methods_NNS have_VBP been_VBN proposed_VBN ._.
+From_IN the_DT perspective_NN of_IN the_DT underlying_VBG learning_NN paradigm_NN ,_, these_DT methods_NNS can_MD be_VB grouped_VBN into_IN three_CD categories_NNS ,_, namely_RB ,_, supervised_JJ metric_JJ learning_NN ,_, uns_NNS
+both_CC labeled_JJ and_CC unlabeled_JJ data_NNS ,_, while_IN our_PRP$ approach_NN is_VBZ entirely_RB unsupervised_JJ ._.
+Finally_RB ,_, most_RBS closely_RB related_JJ to_TO our_PRP$ approach_NN are_VBP LDA-kmeans_JJ -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC nonlinear_JJ adaptive_JJ distance_NN metric_JJ learning_NN -LRB-_-LRB- NAML_NN -RRB-_-RRB- =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT algorithms_NNS perform_VBP data_NNS projection_NN and_CC clustering_NN steps_NNS iteratively_RB to_TO enhance_VB cluster_NN quality_NN until_IN convergence_NN ._.
+In_FW LDA-k-means_FW ,_, both_DT of_IN these_DT steps_NNS are_VBP carried_VBN out_RP in_IN the_DT original_JJ space_NN to_TO o_NN
+ork_NN ,_, termed_VBN the_DT multiple_JJ kernel_NN learning_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, learns_VBZ a_DT linear_JJ combination_NN of_IN base_NN kernels_NNS with_IN the_DT different_JJ weights_NNS ,_, which_WDT will_MD be_VB estimated_VBN simultaneously_RB in_IN the_DT inference_NN process_NN ,_, e.g._FW ,_, see_VB -LRB-_-LRB- 34_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 41_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+Our_PRP$ proposed_VBN method_NN ,_, which_WDT will_MD be_VB described_VBN later_RB ,_, also_RB belongs_VBZ to_TO this_DT framework_NN ._.
+In_IN -LRB-_-LRB- 34_CD -RRB-_-RRB- ,_, the_DT algorithm_NN tries_VBZ to_TO find_VB a_DT maximum_JJ margin_NN hyperplane_NN to_TO cluster_VB data_NNS -LRB-_-LRB- restricted_JJ to_TO the_DT binary-c_NN
+the_DT constraint_NN information_NN -LRB-_-LRB- class_NN label_NN -RRB-_-RRB- ,_, distance_NN metric_JJ learning_NN algorithms_NNS fall_VBP into_IN two_CD categories_NNS :_: supervised_JJ distance_NN metric_JJ learning_NN -LRB-_-LRB- 26_CD ,_, 31_CD ,_, 32_CD ,_, 35_CD -RRB-_-RRB- and_CC unsupervised_JJ distance_NN metric_JJ learning_NN =_JJ -_: =[_NN 4_CD ,_, 10_CD ,_, 17_CD ,_, 23_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT performance_NN of_IN unsupervised_JJ learning_NN algorithms_NNS ,_, such_JJ as_IN K-means_NNS is_VBZ largely_RB dependent_JJ on_IN the_DT pairwise_JJ similarity_NN ,_, which_WDT is_VBZ commonly_RB determined_VBN via_IN a_DT pre-specified_JJ distance_NN metric_NN ._.
+However_RB ,_, learn_VB
+Let_VB F_NN ∈_NN Ê_NN n_NN ×_CD k_NN be_VB the_DT cluster_NN indicator_NN matrix_NN defined_VBN as_IN follows_VBZ :_: 1_CD if_IN xi_FW ∈_FW Cj_NN F_NN =_JJ -LCB-_-LRB- fi_FW ,_, j_NN -RCB-_-RRB- n_NN ×_CD k_NN ,_, where_WRB fi_NN ,_, j_NN =_JJ ._.
+-LRB-_-LRB- 9_CD -RRB-_-RRB- 0_CD otherwise_RB The_DT weighted_JJ cluster_NN indicator_NN matrix_NN L_NN =_JJ -LRB-_-LRB- L1_NN ,_, L2_NN ,_, ·_FW ·_FW ·_NN ,_, LK_NN -RRB-_-RRB- is_VBZ defined_VBN as_IN =_JJ -_: =[_NN 7_CD ,_, 9_CD -RRB-_-RRB- -_: =_JJ -_: :_: where_WRB the_DT i-th_JJ column_NN of_IN L_NN is_VBZ given_VBN by_IN L_NN =_JJ F_NN -LRB-_-LRB- F_NN T_NN F_NN -RRB-_-RRB- −_CD 1_CD 2_CD ,_, -LRB-_-LRB- 10_CD -RRB-_-RRB- ni_FW Þ_FW ß_FW Li_NNP =-LRB-_NNP 0_CD ,_, ..._: ,0_CD ,_, 1_CD ,_, ..._: ,1_CD ,_, 0_CD ,_, ..._: ,0_CD -RRB-_-RRB- T_NN \/_: n_NN 1_CD 2_CD i_LS ._.
+-LRB-_-LRB- 11_CD -RRB-_-RRB- With_IN the_DT weighted_JJ cluster_NN indicator_NN matrix_NN L_NN ,_, the_DT Sum_NN of_IN Squared_FW Intra_FW -_:
+,_, which_WDT maximizes_VBZ F_NN ∗_NN 1_CD -LRB-_-LRB- G_NN -RRB-_-RRB- ,_, is_VBZ given_VBN by_IN minimizing_VBG the_DT following_VBG objective_NN function_NN :_: F2_NN -LRB-_-LRB- G_NN -RRB-_-RRB- =_JJ traceL_NN T_NN 1_CD I_NN +_CC λ_NN G_NN −_NN 1_CD L_NN ._.
+-LRB-_-LRB- 28_CD -RRB-_-RRB- The_DT minimization_NN of_IN F2_NN -LRB-_-LRB- G_NN -RRB-_-RRB- can_MD be_VB solved_VBN by_IN gradient_NN descent_NN methods_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, the_DT computation_NN of_IN its_PRP$ gradient_NN is_VBZ expensive_JJ for_IN each_DT iteration_NN ._.
+Following_VBG the_DT recent_JJ work_NN in_IN -LRB-_-LRB- 36_CD -RRB-_-RRB- ,_, we_PRP can_MD show_VB that_IN this_DT minimization_NN problem_NN can_MD besformulated_VBN as_IN a_DT Quadratically_NNP Constrain_NNP
+ints_NNS in_IN the_DT feature_NN space_NN ._.
+One_CD of_IN the_DT central_JJ issues_NNS in_IN kernel_NN methods_NNS is_VBZ the_DT selection_NN -LRB-_-LRB- learning_NN -RRB-_-RRB- of_IN a_DT good_JJ kernel_NN function_NN ._.
+The_DT problem_NN of_IN kernel_NN learning_NN has_VBZ been_VBN an_DT active_JJ area_NN of_IN recent_JJ research_NN =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 13_CD ,_, 16_CD ,_, 18_CD ,_, 20_CD ,_, 21_CD ,_, 28_CD ,_, 33_CD ,_, 37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT novel_JJ aspect_NN of_IN the_DT proposed_VBN approach_NN in_IN comparison_NN with_IN these_DT approaches_NNS is_VBZ that_IN NAML_NN does_VBZ not_RB use_VB any_DT class_NN label_NN ._.
+In_IN -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, generalized_JJ maximum_NN margin_NN clustering_NN was_VBD proposed_VBN for_IN simultaneous_JJ
+linear_JJ transformation_NN W_NN ∈_NN Ê_NN m_NN ×_CD l_NN ._.
+Thus_RB ,_, each_DT xi_NN in_IN the_DT m-dimensional_JJ space_NN is_VBZ mapped_VBN to_TO a_DT vector_NN ˆxi_NN in_IN the_DT l-dimensional_JJ space_NN as_IN follows_VBZ :_: xi_FW ∈_FW Ê_NN m_NN →_FW ˆxi_FW =_JJ W_NN T_NN xi_FW ∈_FW Ê_NN l_NN -LRB-_-LRB- l_NN -LRB-_-LRB- m_NN -RRB-_-RRB- ._.
+-LRB-_-LRB- 1_LS -RRB-_-RRB- It_PRP has_VBZ been_VBN shown_VBN =_JJ -_: =[_NN 8_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: that_IN for_IN most_JJS high-dimensional_JJ data_NNS sets_NNS ,_, almost_RB all_DT low_JJ dimensional_JJ projections_NNS are_VBP nearly_RB normal_JJ ._.
+That_DT is_VBZ ,_, for_IN large_JJ m_NN the_DT projected_VBN data_NNS -LCB-_-LRB- ˆxi_NNS -RCB-_-RRB- n_NN i_LS =_JJ 1_CD is_VBZ expected_VBN to_TO be_VB nearly_RB normal_JJ ._.
+In_IN this_DT case_NN ,_,
+the_DT constraint_NN information_NN -LRB-_-LRB- class_NN label_NN -RRB-_-RRB- ,_, distance_NN metric_JJ learning_NN algorithms_NNS fall_VBP into_IN two_CD categories_NNS :_: supervised_JJ distance_NN metric_JJ learning_NN -LRB-_-LRB- 26_CD ,_, 31_CD ,_, 32_CD ,_, 35_CD -RRB-_-RRB- and_CC unsupervised_JJ distance_NN metric_JJ learning_NN =_JJ -_: =[_NN 4_CD ,_, 10_CD ,_, 17_CD ,_, 23_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT performance_NN of_IN unsupervised_JJ learning_NN algorithms_NNS ,_, such_JJ as_IN K-means_NNS is_VBZ largely_RB dependent_JJ on_IN the_DT pairwise_JJ similarity_NN ,_, which_WDT is_VBZ commonly_RB determined_VBN via_IN a_DT pre-specified_JJ distance_NN metric_NN ._.
+However_RB ,_, learn_VB
+ing_NN to_TO the_DT largest_JJS q_NN eigenvalues_NNS ._.
+This_DT completes_VBZ the_DT proof_NN of_IN the_DT theorem_NN ._.
+It_PRP is_VBZ worth_JJ noting_VBG that_IN the_DT above_JJ trace_NN maximization_NN problem_NN is_VBZ similar_JJ to_TO the_DT well-known_JJ linear_NN discriminant_NN analysis_NN -LRB-_-LRB- LDA_NN -RRB-_-RRB- =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, they_PRP are_VBP fundamentally_RB different_JJ ,_, as_IN SK1_NN is_VBZ different_JJ from_IN the_DT so-called_JJ between-class_JJ scatter_NN matrix_NN in_IN LDA_NNP ,_, due_JJ to_TO the_DT spectral_JJ relaxation_NN in_IN L._NNP 3.3_CD The_DT computation_NN of_IN G_NN for_IN given_VBN Q_NNP and_CC L_NN
+ints_NNS in_IN the_DT feature_NN space_NN ._.
+One_CD of_IN the_DT central_JJ issues_NNS in_IN kernel_NN methods_NNS is_VBZ the_DT selection_NN -LRB-_-LRB- learning_NN -RRB-_-RRB- of_IN a_DT good_JJ kernel_NN function_NN ._.
+The_DT problem_NN of_IN kernel_NN learning_NN has_VBZ been_VBN an_DT active_JJ area_NN of_IN recent_JJ research_NN =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 13_CD ,_, 16_CD ,_, 18_CD ,_, 20_CD ,_, 21_CD ,_, 28_CD ,_, 33_CD ,_, 37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT novel_JJ aspect_NN of_IN the_DT proposed_VBN approach_NN in_IN comparison_NN with_IN these_DT approaches_NNS is_VBZ that_IN NAML_NN does_VBZ not_RB use_VB any_DT class_NN label_NN ._.
+In_IN -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, generalized_JJ maximum_NN margin_NN clustering_NN was_VBD proposed_VBN for_IN simultaneous_JJ
+ints_NNS in_IN the_DT feature_NN space_NN ._.
+One_CD of_IN the_DT central_JJ issues_NNS in_IN kernel_NN methods_NNS is_VBZ the_DT selection_NN -LRB-_-LRB- learning_NN -RRB-_-RRB- of_IN a_DT good_JJ kernel_NN function_NN ._.
+The_DT problem_NN of_IN kernel_NN learning_NN has_VBZ been_VBN an_DT active_JJ area_NN of_IN recent_JJ research_NN =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 13_CD ,_, 16_CD ,_, 18_CD ,_, 20_CD ,_, 21_CD ,_, 28_CD ,_, 33_CD ,_, 37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT novel_JJ aspect_NN of_IN the_DT proposed_VBN approach_NN in_IN comparison_NN with_IN these_DT approaches_NNS is_VBZ that_IN NAML_NN does_VBZ not_RB use_VB any_DT class_NN label_NN ._.
+In_IN -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, generalized_JJ maximum_NN margin_NN clustering_NN was_VBD proposed_VBN for_IN simultaneous_JJ
+ints_NNS in_IN the_DT feature_NN space_NN ._.
+One_CD of_IN the_DT central_JJ issues_NNS in_IN kernel_NN methods_NNS is_VBZ the_DT selection_NN -LRB-_-LRB- learning_NN -RRB-_-RRB- of_IN a_DT good_JJ kernel_NN function_NN ._.
+The_DT problem_NN of_IN kernel_NN learning_NN has_VBZ been_VBN an_DT active_JJ area_NN of_IN recent_JJ research_NN =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 13_CD ,_, 16_CD ,_, 18_CD ,_, 20_CD ,_, 21_CD ,_, 28_CD ,_, 33_CD ,_, 37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT novel_JJ aspect_NN of_IN the_DT proposed_VBN approach_NN in_IN comparison_NN with_IN these_DT approaches_NNS is_VBZ that_IN NAML_NN does_VBZ not_RB use_VB any_DT class_NN label_NN ._.
+In_IN -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, generalized_JJ maximum_NN margin_NN clustering_NN was_VBD proposed_VBN for_IN simultaneous_JJ
+between_IN data_NNS points_NNS from_IN the_DT same_JJ class_NN under_IN the_DT metric_NN is_VBZ small_JJ ._.
+The_DT metric_NN improves_VBZ the_DT separability_NN of_IN the_DT data_NNS and_CC enhances_VBZ the_DT performance_NN of_IN classifiers_NNS ,_, such_JJ as_IN K-Nearest-Neighbor_NN -LRB-_-LRB- K-NN_NN -RRB-_-RRB- ._.
+In_IN =_JJ -_: =[_NN 9_CD ,_, 19_CD ,_, 37_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT linear_JJ projection_NN is_VBZ performed_VBN to_TO learn_VB the_DT distance_NN metric_NN for_IN clustering_NN ,_, which_WDT assumes_VBZ linear_JJ separability_NN of_IN the_DT data_NNS as_IN in_IN -LRB-_-LRB- 26_CD ,_, 32_CD -RRB-_-RRB- ._.
+However_RB ,_, many_JJ real-world_JJ applications_NNS may_MD involve_VB data_NNS wit_NN
+linear_JJ transformation_NN W_NN ∈_NN Ê_NN m_NN ×_CD l_NN ._.
+Thus_RB ,_, each_DT xi_NN in_IN the_DT m-dimensional_JJ space_NN is_VBZ mapped_VBN to_TO a_DT vector_NN ˆxi_NN in_IN the_DT l-dimensional_JJ space_NN as_IN follows_VBZ :_: xi_FW ∈_FW Ê_NN m_NN →_FW ˆxi_FW =_JJ W_NN T_NN xi_FW ∈_FW Ê_NN l_NN -LRB-_-LRB- l_NN -LRB-_-LRB- m_NN -RRB-_-RRB- ._.
+-LRB-_-LRB- 1_LS -RRB-_-RRB- It_PRP has_VBZ been_VBN shown_VBN =_JJ -_: =[_NN 8_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: that_IN for_IN most_JJS high-dimensional_JJ data_NNS sets_NNS ,_, almost_RB all_DT low_JJ dimensional_JJ projections_NNS are_VBP nearly_RB normal_JJ ._.
+That_DT is_VBZ ,_, for_IN large_JJ m_NN the_DT projected_VBN data_NNS -LCB-_-LRB- ˆxi_NNS -RCB-_-RRB- n_NN i_LS =_JJ 1_CD is_VBZ expected_VBN to_TO be_VB nearly_RB normal_JJ ._.
+In_IN this_DT case_NN ,_,
+ints_NNS in_IN the_DT feature_NN space_NN ._.
+One_CD of_IN the_DT central_JJ issues_NNS in_IN kernel_NN methods_NNS is_VBZ the_DT selection_NN -LRB-_-LRB- learning_NN -RRB-_-RRB- of_IN a_DT good_JJ kernel_NN function_NN ._.
+The_DT problem_NN of_IN kernel_NN learning_NN has_VBZ been_VBN an_DT active_JJ area_NN of_IN recent_JJ research_NN =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 13_CD ,_, 16_CD ,_, 18_CD ,_, 20_CD ,_, 21_CD ,_, 28_CD ,_, 33_CD ,_, 37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT novel_JJ aspect_NN of_IN the_DT proposed_VBN approach_NN in_IN comparison_NN with_IN these_DT approaches_NNS is_VBZ that_IN NAML_NN does_VBZ not_RB use_VB any_DT class_NN label_NN ._.
+In_IN -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, generalized_JJ maximum_NN margin_NN clustering_NN was_VBD proposed_VBN for_IN simultaneous_JJ
+ints_NNS in_IN the_DT feature_NN space_NN ._.
+One_CD of_IN the_DT central_JJ issues_NNS in_IN kernel_NN methods_NNS is_VBZ the_DT selection_NN -LRB-_-LRB- learning_NN -RRB-_-RRB- of_IN a_DT good_JJ kernel_NN function_NN ._.
+The_DT problem_NN of_IN kernel_NN learning_NN has_VBZ been_VBN an_DT active_JJ area_NN of_IN recent_JJ research_NN =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 13_CD ,_, 16_CD ,_, 18_CD ,_, 20_CD ,_, 21_CD ,_, 28_CD ,_, 33_CD ,_, 37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT novel_JJ aspect_NN of_IN the_DT proposed_VBN approach_NN in_IN comparison_NN with_IN these_DT approaches_NNS is_VBZ that_IN NAML_NN does_VBZ not_RB use_VB any_DT class_NN label_NN ._.
+In_IN -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, generalized_JJ maximum_NN margin_NN clustering_NN was_VBD proposed_VBN for_IN simultaneous_JJ
+ficient_JJ θi_NN for_IN the_DT i-th_NN kernel_NN Gi_NN is_VBZ given_VBN by_IN the_DT dual_JJ variable_NN corresponding_VBG to_TO the_DT i-th_NN constraint_NN in_IN Eq_NN ._.
+-LRB-_-LRB- 29_CD -RRB-_-RRB- divided_VBN by_IN ri_NN ._.
+Note_VB that_IN the_DT general-purpose_JJ optimization_NN software_NN packages_NNS like_IN MOSEK_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: also_RB report_VBP the_DT dual_JJ variables_NNS by_IN solving_VBG the_DT dual_JJ problem_NN ._.
+3.4_CD The_DT Main_NNP Algorithm_NNP Based_VBN on_IN the_DT discussion_NN described_VBN above_IN ,_, we_PRP propose_VBP to_TO develop_VB an_DT iterative_JJ algorithm_NN ,_, called_VBN NAML_NNP ,_, for_IN Nonlinear_JJ Ad_NN
+the_DT constraint_NN information_NN -LRB-_-LRB- class_NN label_NN -RRB-_-RRB- ,_, distance_NN metric_JJ learning_NN algorithms_NNS fall_VBP into_IN two_CD categories_NNS :_: supervised_JJ distance_NN metric_JJ learning_NN -LRB-_-LRB- 26_CD ,_, 31_CD ,_, 32_CD ,_, 35_CD -RRB-_-RRB- and_CC unsupervised_JJ distance_NN metric_JJ learning_NN =_JJ -_: =[_NN 4_CD ,_, 10_CD ,_, 17_CD ,_, 23_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT performance_NN of_IN unsupervised_JJ learning_NN algorithms_NNS ,_, such_JJ as_IN K-means_NNS is_VBZ largely_RB dependent_JJ on_IN the_DT pairwise_JJ similarity_NN ,_, which_WDT is_VBZ commonly_RB determined_VBN via_IN a_DT pre-specified_JJ distance_NN metric_NN ._.
+However_RB ,_, learn_VB
+between_IN data_NNS points_NNS from_IN the_DT same_JJ class_NN under_IN the_DT metric_NN is_VBZ small_JJ ._.
+The_DT metric_NN improves_VBZ the_DT separability_NN of_IN the_DT data_NNS and_CC enhances_VBZ the_DT performance_NN of_IN classifiers_NNS ,_, such_JJ as_IN K-Nearest-Neighbor_NN -LRB-_-LRB- K-NN_NN -RRB-_-RRB- ._.
+In_IN =_JJ -_: =[_NN 9_CD ,_, 19_CD ,_, 37_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT linear_JJ projection_NN is_VBZ performed_VBN to_TO learn_VB the_DT distance_NN metric_NN for_IN clustering_NN ,_, which_WDT assumes_VBZ linear_JJ separability_NN of_IN the_DT data_NNS as_IN in_IN -LRB-_-LRB- 26_CD ,_, 32_CD -RRB-_-RRB- ._.
+However_RB ,_, many_JJ real-world_JJ applications_NNS may_MD involve_VB data_NNS wit_NN
+-RRB-_-RRB- i_LS =_JJ 1_CD is_VBZ the_DT class_NN covariance_NN matrix_NN of_IN the_DT original_JJ data_NNS in_IN X._NNP For_IN high-dimensional_JJ data_NNS ,_, the_DT estimation_NN of_IN the_DT covariance_NN matrix_NN in_IN Eq_NN ._.
+-LRB-_-LRB- 5_CD -RRB-_-RRB- is_VBZ often_RB not_RB reliable_JJ ._.
+Thus_RB ,_, the_DT regularization_NN technique_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ applied_VBN to_TO improve_VB the_DT estimation_NN as_IN follows_VBZ :_: S_NN =_JJ 1_CD n_NN -LRB-_-LRB- xi_FW −_FW μ_FW -RRB-_-RRB- -LRB-_-LRB- xi_FW −_FW μ_FW -RRB-_-RRB- n_NN T_NN +_CC λIm_NN ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- i_LS =_JJ 1_CD where_WRB Im_NN is_VBZ the_DT identity_NN matrix_NN of_IN size_NN m_NN and_CC λ_NN -RRB-_-RRB- 0isa_NN regularization_NN parameter_NN ._.
+sUnder_VB this_DT new_JJ distance_NN me_PRP
+g_NN MOSEK_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+All_DT experiments_NNS were_VBD conducted_VBN on_IN a_DT PENTIUM_NNP IV_NNP 2.4_CD G_NN PC_NN with_IN 1.5_CD GB_NN RAM_NNP ._.
+We_PRP test_VBP the_DT distance_NN metric_JJ learning_NN algorithms_NNS and_CC Kmeans_NNS on_IN eight_CD benchmark_JJ data_NNS sets_NNS ._.
+They_PRP are_VBP six_CD UCI_NNP data_NNS sets_VBZ =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: :_: iris_NN ,_, lymph_NN ,_, promoter_NN ,_, satimage_NN ,_, solar_JJ ,_, wine_NN ,_, and_CC two_CD image_NN data_NNS sets_NNS :_: AR03P_NN 1_CD and_CC ORL10P_NN 2_CD ._.
+SinceMOSEK_NN gives_VBZ memory_NN overflow_NN error_NN when_WRB the_DT number_NN of_IN instances_NNS is_VBZ large_JJ ,_, for_IN the_DT satimage_JJ data_NN set_NN ,_,

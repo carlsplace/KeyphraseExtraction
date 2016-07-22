@@ -1,0 +1,467 @@
+SemTag_NN and_CC seeker_NN :_: bootstrapping_VBG the_DT semantic_JJ web_NN via_IN automated_JJ semantic_JJ annotation_NN
+This_DT paper_NN describes_VBZ Seeker_NNP ,_, a_DT platform_NN for_IN large-scale_JJ text_NN analytics_NNS ,_, and_CC SemTag_NNP ,_, an_DT application_NN written_VBN on_IN the_DT platform_NN to_TO perform_VB automated_JJ semantic_JJ tagging_NN of_IN large_JJ corpora_NN ._.
+We_PRP apply_VBP SemTag_NNP to_TO a_DT collection_NN of_IN approximately_RB 264_CD million_CD web_NN pages_NNS ,_, and_CC generate_VBP approximately_RB 434_CD million_CD automatically_RB disambiguated_VBN semantic_JJ tags_NNS ,_, published_VBN to_TO the_DT web_NN as_IN a_DT label_NN bureau_NN providing_VBG metadata_NN regarding_VBG the_DT 434_CD million_CD annotations_NNS ._.
+To_TO our_PRP$ knowledge_NN ,_, this_DT is_VBZ the_DT largest_JJS scale_NN semantic_JJ tagging_VBG effort_NN to_TO date_NN ._.
+We_PRP describe_VBP the_DT Seeker_NNP platform_NN ,_, discuss_VBP the_DT architecture_NN of_IN the_DT SemTag_NNP application_NN ,_, describe_VBP a_DT new_JJ disambiguation_NN algorithm_NN specialized_VBN to_TO support_VB ontological_JJ disambiguation_NN of_IN large-scale_JJ data_NNS ,_, evaluate_VBP the_DT algorithm_NN ,_, and_CC present_VB our_PRP$ final_JJ results_NNS with_IN information_NN about_IN acquiring_VBG and_CC making_VBG use_NN of_IN the_DT semantic_JJ tags_NNS ._.
+We_PRP argue_VBP that_IN automated_JJ large_JJ scale_NN semantic_JJ tagging_NN of_IN ambiguous_JJ content_NN can_MD bootstrap_VB and_CC accelerate_VB the_DT creation_NN of_IN the_DT semantic_JJ web_NN ._.
+uch_NN as_IN ontology_NN alignment_NN -LRB-_-LRB- reconciling_VBG ontologies_NNS that_WDT describe_VBP overlapping_VBG domains_NNS -RRB-_-RRB- -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, ontology_NN extraction_NN -LRB-_-LRB- extracting_VBG ontologies_NNS from_IN ,_, e.g._FW ,_, text_NN -RRB-_-RRB- -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, and_CC the_DT automated_JJ annotation_NN of_IN both_DT text_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: and_CC images_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+A_DT particularly_RB interesting_JJ development_NN has_VBZ been_VBN the_DT growth_NN of_IN Web_NN 2.0_CD applications_NNS --_: this_DT has_VBZ shown_VBN how_WRB it_PRP might_MD be_VB possible_JJ for_IN user_NN communities_NNS to_TO collaboratively_RB annotate_VB web_NN content_NN
+matched_VBN to_TO specific_JJ text_NN corpora_NN -LRB-_-LRB- Alani_NNP &_CC Brewster_NNP ,_, 2006_CD ;_: Brewster_NNP ,_, Alani_NNP ,_, Dasmahapatra_NNP ,_, &_CC Wilks_NNP ,_, 2004_CD -RRB-_-RRB- ,_, and_CC systems_NNS for_IN tagging_VBG documents_NNS with_IN semantic_JJ concepts_NNS using_VBG word-level_JJ matching_NN techniques_NNS -LRB-_-LRB- =_JJ -_: =_JJ Dill_NNP et_FW al._FW ,_, 2003_CD -_: =--RRB-_NN ._.
+Our_PRP$ work_NN is_VBZ broader_JJR in_IN scope_NN in_IN that_IN we_PRP propose_VBP general-purpose_JJ probabilistic_JJ models_NNS that_WDT combine_VBP concepts_NNS and_CC topics_NNS within_IN a_DT single_JJ framework_NN ,_, allowing_VBG us_PRP to_TO use_VB the_DT data_NNS to_TO make_VB inferences_NNS about_IN
+ames_NNS ''_'' of_IN entity_NN relationships_NNS ._.
+For_IN example_NN ,_, if_IN a_DT ``_`` found_VBN ''_'' relation_NN between_IN Jerry_NNP Yang_NNP and_CC Yahoo_NNP !_.
+was_VBD not_RB detected_VBN during_IN the_DT extractionphase_NN ,_, suchinformation_NN is_VBZ lost_VBN andcouldnotbequeried_JJ ._.
+Some_DT systems_NNS =_JJ -_: =[_NN 25_CD ,_, 17_CD ,_, 14_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: explicitly_RB encode_VBP entities_NNS and_CC their_PRP$ relations_NNS -LRB-_-LRB- and_CC general_JJ knowledge_NN -RRB-_-RRB- in_IN RDF_NNP ,_, the_DT W3C_NN recommendation_NN of_IN datamodel_NN for_IN Semantic_JJ Web_NN ._.
+They_PRP can_MD thus_RB leverage_NN the_DT rich_JJ expressiveness_NN of_IN query_NN languages_NNS
+pt-searching_JJ rather_RB than_IN keyword-searching_JJ -LRB-_-LRB- 1_LS -RRB-_-RRB- ;_: custom_NN web_NN page_NN generation_NN for_IN the_DT visually-impaired_JJ -LRB-_-LRB- 16_CD -RRB-_-RRB- ;_: using_VBG information_NN in_IN different_JJ contexts_NNS ,_, depending_VBG on_IN the_DT needs_NNS and_CC viewpoint_NN of_IN 48_CD the_DT user_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ;_: and_CC question-answering_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+In_IN this_DT system_NN ,_, concepts_NNS are_VBP extracted_VBN based_VBN on_IN a_DT quite_RB comprehensive_JJ knowledge_NN base_NN ._.
+This_DT knowledge_NN base_NN includes_VBZ a_DT Basic_JJ Knowledge_NN Base_NN including_VBG a_DT quite_RB complete_JJ set_NN
+-LRB-_-LRB- 15_CD ,_, 26_CD ,_, 14_CD ,_, 27_CD -RRB-_-RRB- ,_, schema_NN inference_NN from_IN HTML_NNP documents_NNS -LRB-_-LRB- 8_CD ,_, 2_CD -RRB-_-RRB- ,_, wrapper_NN construction_NN -LRB-_-LRB- 17_CD ,_, 7_CD ,_, 25_CD -RRB-_-RRB- ,_, record_NN boundary_NN detection_NN in_IN HTML_NNP documents_NNS -LRB-_-LRB- 12_CD ,_, 11_CD ,_, 10_CD ,_, 4_CD -RRB-_-RRB- ,_, and_CC semantic_JJ annotation_NN of_IN HTML_NNP documents_NNS =_JJ -_: =[_NN 18_CD ,_, 19_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: However_RB ,_, our_PRP$ approach_NN departs_VBZ from_IN all_PDT the_DT related_JJ works_NNS above_IN in_IN several_JJ respects_NNS ._.
+Firstly_RB ,_, our_PRP$ main_JJ focus_NN is_VBZ on_IN template-based_JJ content-rich_JJ HTML_NNP documents_NNS ._.
+Unlike_IN the_DT proposed_VBN approaches_NNS for_IN XML_NN sc_NN
+y_FW Gautam_FW Pant_FW et_FW al_FW -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+There_EX are_VBP also_RB other_JJ papers_NNS on_IN automated_JJ semantic_JJ annotations_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+``_`` SemTag_NNP and_CC Seeker_NNP :_: Bootstrapping_VBG the_DT semantic_JJ web_NN via_IN automated_JJ semantic_JJ annotations_NNS ''_'' =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: talks_NNS about_IN automation_NN of_IN web_NN page_NN annotations_NNS ._.
+``_`` Mining_NNP the_DT link_NN structure_NN of_IN semantic_JJ web_NN ''_'' ,_, by_IN Souman_NNP Chakrabarti_NNP et_FW al._FW -LRB-_-LRB- 12_CD -RRB-_-RRB- talks_NNS about_IN HITS_NN algorithm_NN which_WDT takes_VBZ advantage_NN of_IN the_DT hubs_NNS in_IN some_DT fie_NN
+understandable_JJ to_TO both_DT humans_NNS and_CC machines_NNS ._.
+A_DT stream_NN of_IN Web_NN applications_NNS with_IN rich_JJ content_NN ,_, generated_VBN by_IN users_NNS ,_, have_VBP emerged_VBN and_CC include_VBP Web_NN blogs_NNS -LRB-_-LRB- 39_CD -RRB-_-RRB- ,_, social_JJ annotations_NNS -LRB-_-LRB- a.k.a_JJ social_JJ bookmarking_NN -RRB-_-RRB- =_JJ -_: =[_NN 22_CD ,_, 67_CD ,_, 80_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC Web_NN social_JJ networks_NNS -LRB-_-LRB- 90_CD -RRB-_-RRB- ._.
+This_DT research_NN addresses_VBZ two_CD important_JJ topics_NNS in_IN content-based_JJ social_JJ network_NN analysis_NN :_: discovery_NN of_IN latent_JJ communities_NNS -LRB-_-LRB- 39_CD ,_, 90_CD -RRB-_-RRB- and_CC analysis_NN of_IN social_JJ annotations_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+y_NN discuss_VBP the_DT main_JJ classes_NNS of_IN related_JJ works_NNS ._.
+Tools_NNS for_IN annotating_VBG web_NN pages_NNS Several_JJ works_NNS propose_VBP frameworks_NNS that_WDT let_VBP users_NNS semantically_RB annotate_VBP web-pages_NNS either_CC manually_RB -LRB-_-LRB- 9_CD -RRB-_-RRB- or_CC -LRB-_-LRB- semi_NNS -_: -RRB-_-RRB- automatically_RB =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- see_VB -LRB-_-LRB- 12_CD -RRB-_-RRB- for_IN a_DT survey_NN of_IN such_JJ systems_NNS -RRB-_-RRB- ._.
+However_RB ,_, they_PRP focus_VBP solely_RB on_IN storing_VBG and_CC querying_VBG annotations_NNS and_CC they_PRP do_VBP not_RB consider_VB the_DT problem_NN of_IN simultaneously_RB querying_VBG structured_JJ data_NNS and_CC the_DT annotat_NN
+r_NN approaches_NNS for_IN precision_NN ,_, leaving_VBG little_JJ flexibility_NN for_IN users_NNS with_IN use_NN cases_NNS where_WRB recall_NN is_VBZ important_JJ ,_, or_CC they_PRP have_VBP not_RB evaluated_VBN the_DT applicability_NN of_IN their_PRP$ approaches_NNS with_IN more_RBR general_JJ use_NN cases_NNS =_JJ -_: =[_NN 10_CD ,_, 6_CD ,_, 7_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+SemTag_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- was_VBD the_DT first_JJ Web-scale_JJ named_VBN entity_NN disambiguation_NN system_NN ._.
+They_PRP used_VBD metadata_NN associated_VBN with_IN each_DT entity_NN in_IN an_DT entity_NN catalog_NN derived_VBN from_IN TAP_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- as_IN context_NN for_IN disambiguation_NN ._.
+SemTa_NN
+tructured_JJ data_NNS corresponding_VBG to_TO specified_VBN semantics_NNS -LRB-_-LRB- i.e._FW ,_, vertical_JJ attributes_NNS -RRB-_-RRB- ._.
+Tobetterleveragesematicinformation_NNP ,_, aseriesofresearch_JJ efforts_NNS have_VBP been_VBN dedicated_VBN to_TO content_NN analysis_NN of_IN web_NN pages_NNS ._.
+In_IN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, keyword_JJ distributions_NNS are_VBP learned_VBN from_IN an_DT existing_VBG knowledge_NN base_NN and_CC used_VBN to_TO annotate_VB web_NN pages_NNS ._.
+Besides_IN prior_JJ knowledge_NN ,_, machine_NN learning_NN techniques_NNS are_VBP also_RB utilized_VBN ._.
+For_IN instance_NN ,_, Zhu_NNP et_FW al._FW -LRB-_-LRB- 19_CD ,_,
+y_NN discuss_VBP the_DT main_JJ classes_NNS of_IN related_JJ works_NNS ._.
+Tools_NNS for_IN annotating_VBG web_NN pages_NNS Several_JJ works_NNS propose_VBP frameworks_NNS that_WDT let_VBP users_NNS semantically_RB annotate_VBP web-pages_NNS either_CC manually_RB -LRB-_-LRB- 9_CD -RRB-_-RRB- or_CC -LRB-_-LRB- semi_NNS -_: -RRB-_-RRB- automatically_RB =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- see_VB -LRB-_-LRB- 12_CD -RRB-_-RRB- for_IN a_DT survey_NN of_IN such_JJ systems_NNS -RRB-_-RRB- ._.
+However_RB ,_, they_PRP focus_VBP solely_RB on_IN storing_VBG and_CC querying_VBG annotations_NNS and_CC they_PRP do_VBP not_RB consider_VB the_DT problem_NN of_IN simultaneously_RB querying_VBG structured_JJ data_NNS and_CC the_DT annotat_NN
+e_LS same_JJ article_NN you_PRP are_VBP reading_VBG ._.
+3_LS ._.
+RELATED_NNS WORK_VBP As_IN our_PRP$ workflow_NN starts_VBZ with_IN automatic_JJ annotation_NN of_IN unstructured_JJ text_NN coming_VBG from_IN news_NN articles_NNS ,_, our_PRP$ inspiration_NN comes_VBZ mainly_RB from_IN two_CD projects_NNS ._.
+SemTag_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: developed_VBN in_IN IBM_NNP Almaden_NNP Research_NNP Center_NNP introduces_VBZ the_DT idea_NN of_IN automated_JJ semantic_JJ annotations_NNS ._.
+They_PRP show_VBP it_PRP is_VBZ applicable_JJ in_IN the_DT large_JJ scale_NN as_RB well_RB ._.
+SemTag_NNP was_VBD applied_VBN to_TO a_DT collection_NN of_IN 264_CD millio_NNS
+ocation_NN ,_, Disambiguation_NN and_CC Extraction_NN from_IN Text_NN It_PRP is_VBZ often_RB useful_JJ to_TO be_VB able_JJ to_TO locate_VB concepts_NNS in_IN textual_JJ resources_NNS ._.
+In_IN annotating_VBG documents_NNS ,_, suggestions_NNS for_IN annotations_NNS can_MD be_VB found_VBN from_IN the_DT text_NN =_JJ -_: =[_NN 21_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN web_NN 6_CD http:\/\/www.museosuomi.fi\/_NN 7_CD http:\/\/demo.seco.tkk.fi\/orava\/_NN 8_CD http:\/\/demo.seco.tkk.fi\/veturi\/_NN 9_CD http:\/\/demo.seco.tkk.fi\/suomifi\/sbrowsing_NN ,_, on_IN the_DT other_JJ hand_NN ,_, semantic_JJ content_NN can_MD be_VB linked_VBN t_NN
+limitations_NNS --_: clearly_RB understood_VBN by_IN the_DT target_NN users_NNS ._.
+With_IN our_PRP$ work_NN ,_, we_PRP aim_VBP to_TO create_VB an_DT efficient_JJ ,_, robust_JJ ,_, and_CC scalable_JJ architecture_NN for_IN automatic_JJ semantic_JJ annotation_NN -LRB-_-LRB- also_RB called_VBN ``_`` semantic_JJ tagging_NN ''_'' =_SYM -_: =[_NN 27_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, and_CC to_TO implement_VB this_DT architecture_NN in_IN a_DT component-based_JJ platform_NN for_IN semantic-based_JJ indexing_NN and_CC retrieval_NN over_IN large_JJ document_NN collections_NNS ._.
+What_WP is_VBZ considered_VBN our_PRP$ central_JJ innovative_JJ contribution_NN is_VBZ
+orms_NNS information_NN extraction_NN based_VBN on_IN GATE_NN ._.
+Essentially_RB ,_, KIM_NNP recognizes_VBZ entities_NNS in_IN the_DT text_NN with_IN respect_NN to_TO the_DT KIM_NNP ontology_NN ,_, and_CC adds_VBZ new_JJ instances_NNS where_WRB they_PRP do_VBP not_RB already_RB exist_VB ._.
+The_DT SemTag_NNP system_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: performs_VBZ large-scale_JJ semantic_JJ annotation_NN with_IN respect_NN to_TO the_DT TAP_NN ontology_NN ._.
+It_PRP first_RB performs_VBZ a_DT lookup_NN phase_NN annotating_VBG all_DT possible_JJ mentions_VBZ of_IN instances_NNS from_IN the_DT TAP_NN ontology_NN ,_, and_CC then_RB performs_VBZ disa_NN
+ITALL_NNP 's_POS redundancy-based_JJ extraction_NN task_NN is_VBZ easier_JJR than_IN Froogle_NNP and_CC Flipdog_NNP 's_POS task_NN of_IN extracting_VBG ``_`` rare_JJ ''_'' facts_NNS each_DT of_IN which_WDT only_RB appears_VBZ on_IN a_DT single_JJ Web_NN page_NN ._.
+Semantic_JJ tagging_NN systems_NNS ,_, notably_RB SemTag_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, perform_VB a_DT task_NN that_WDT is_VBZ complementary_JJ to_TO that_DT of_IN KNOWITALL_NN ._.
+SemTag_NNP starts_VBZ with_IN the_DT TAP_NN knowledge_NN base_NN and_CC computes_VBZ semantic_JJ tags_NNS for_IN a_DT large_JJ number_NN of_IN Web_NN pages_NNS ._.
+KNOWITALL_NNP 's_POS task_NN is_VBZ to_TO automatically_RB
+-RRB-_-RRB- =_JJ F_NN -LRB-_-LRB- o_NN ,_, t_NN -RRB-_-RRB- ._.
+m_NN -LRB-_-LRB- t_NN -RRB-_-RRB- is_VBZ the_DT meaning_NN of_IN term_NN t._VBP The_DT function_NN F_NN acts_VBZ as_IN the_DT membership_NN function_NN of_IN m_NN -LRB-_-LRB- t_NN -RRB-_-RRB- ._.
+Depending_VBG on_IN the_DT context_NN ,_, the_DT function_NN F_NN may_MD be_VB computed_VBN automatically_RB -LRB-_-LRB- e.g._FW ,_, for_IN text_NN we_PRP may_MD have_VB =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, for_IN images_NNS we_PRP may_MD have_VB an_DT automated_VBN image_NN annotation_NN -LRB-_-LRB- classification_NN -RRB-_-RRB- tool_NN ,_, as_IN e.g._FW -LRB-_-LRB- 9_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Note_VB that_IN the_DT function_NN F_NN will_MD be_VB a_DT source_NN for_IN fassertions_NNS of_IN the_DT form_NN 〈_NN -LRB-_-LRB- o_NN ,_, t_NN -RRB-_-RRB- :_: F_NN ≥_NN F_NN -LRB-_-LRB- o_NN ,_, t_NN -RRB-_-RRB- 〉_NN -LRB-_-LRB- see_VB -LRB-_-LRB- 23_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+In_IN p_NN
+aking_VBG it_PRP more_RBR suitable_JJ for_IN practical_JJ ,_, largerscale_JJ applications_NNS ._.
+Current_JJ approaches_NNS to_TO ontology_JJ population_NN are_VBP based_VBN on_IN various_JJ techniques_NNS ;_: e.g._FW automated_VBN pattern_NN recognition_NN and_CC extraction_NN on_IN the_DT Web_NN =_JJ -_: =[_NN 5_CD ,_, 8_CD -RRB-_-RRB- -_: =_JJ -_: and_CC web_NN mining_NN algorithms_NNS relying_VBG on_IN information_NN redundancy_NN -LRB-_-LRB- 2_CD ,_, 3_CD -RRB-_-RRB- ._.
+Moreover_RB ,_, research_NN into_IN abstract_JJ infrastructures_NNS for_IN the_DT semantic_JJ web_NN and_CC into_IN specialized_JJ tools_NNS for_IN expert_NN knowledge_NN engineers_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB-
+ated_VBN that_IN lightweight_JJ tagging_NN systems_NNS are_VBP useful_JJ and_CC practical_JJ ._.
+Metadata_NNP is_VBZ also_RB available_JJ in_IN RSS_NNP and_CC ATOM_NNP feeds_VBZ ,_, while_IN some_DT use_VBP the_DT Dublin_NNP Core_NNP ontology_NN ._.
+Some_DT NLP_NN and_CC statistical_JJ tools_NNS such_JJ as_IN SemTag_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: and_CC the_DT TAP_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- project_NN aim_NN to_TO generate_VB semantically_RB annotated_JJ pages_NNS from_IN already_RB existing_VBG documents_NNS on_IN the_DT web_NN ._.
+Using_VBG OntoSem_NNP in_IN the_DT SemNews_NNP framework_NN we_PRP have_VBP been_VBN able_JJ to_TO demonstrate_VB the_DT potential_NN
+sis_NN ._.
+However_RB ,_, a_DT sophisticated_JJ querying_VBG system_NN is_VBZ not_RB provided_VBN ,_, nor_CC is_VBZ a_DT method_NN to_TO perform_VB large_JJ scale_NN data_NN analysis_NN ._.
+A_DT preliminary_JJ version_NN of_IN this_DT paper_NN appeared_VBD in_IN the_DT 2003_CD World_NNP Wide_NN Web_NN Conference_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: and_CC a_DT more_RBR detailed_JJ description_NN of_IN the_DT infrastructure_NN can_MD be_VB found_VBN in_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Other_JJ components_NNS that_WDT are_VBP used_VBN in_IN the_DT Seeker_NNP system_NN were_VBD further_RB described_VBN in_IN -LRB-_-LRB- 2_CD ,_, 19_CD -RRB-_-RRB- ._.
+3_CD SemTag_NN :_: A_DT Semantic_JJ Tagger_NN Consider_VB
+rithms_NNS we_PRP propose_VBP in_IN this_DT paper_NN generate_VB keywords_NNS that_WDT not_RB necessarily_RB appear_VB literally_RB on_IN the_DT Web_NN page_NN ,_, but_CC are_VBP in_IN its_PRP$ context_NN ,_, while_IN also_RB reflecting_VBG the_DT personal_JJ interests_NNS of_IN the_DT user_NN ._.
+Dill_NNP et_NNP ._.
+al._FW =_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: present_VB a_DT platform_NN for_IN large-scale_JJ text_NN analytics_NNS and_CC automatic_JJ semantic_JJ tagging_NN ._.
+The_DT system_NN spots_VBZ known_JJ terms_NNS in_IN a_DT Web_NN page_NN and_CC relates_VBZ it_PRP to_TO existing_VBG instances_NNS of_IN a_DT given_VBN ontology_NN ._.
+The_DT strength_NN of_IN
+to_TO making_VBG it_PRP suitable_JJ for_IN practical_JJ ,_, larger-scale_JJ applications_NNS ._.
+Current_JJ approaches_NNS to_TO ontology_JJ population_NN are_VBP based_VBN on_IN various_JJ techniques_NNS ;_: e.g._FW automated_VBN pattern_NN recognition_NN and_CC extraction_NN on_IN the_DT Web_NN =_JJ -_: =[_NN 5_CD ,_, 8_CD -RRB-_-RRB- -_: =_JJ -_: and_CC web_NN mining_NN algorithms_NNS relying_VBG on_IN information_NN redundancy_NN -LRB-_-LRB- 2_CD ,_, 3_CD -RRB-_-RRB- ._.
+These_DT techniques_NNS are_VBP often_RB considered_VBN as_IN a_DT part_NN of_IN `_`` back-office_JJ support_NN '_'' and_CC are_VBP usually_RB hidden_VBN from_IN the_DT users_NNS and_CC user-facing_JJ inte_NN
+cal_JJ organization_NN of_IN the_DT corresponding_JJ document_NN 's_POS content_NN ._.
+Assigning_VBG semantic_JJ labels_NNS to_TO the_DT elements_NNS of_IN this_DT logical_JJ organization_NN results_VBZ in_IN semantic_JJ annotation_NN of_IN the_DT page_NN ._.
+In_IN contrast_NN to_TO other_JJ works_NNS =_JJ -_: =[_NN 25_CD ,_, 33_CD ,_, 58_CD ,_, 39_CD ,_, 32_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT use_VBP domain_NN ontologies_NNS for_IN semantic_JJ labeling_NN ,_, we_PRP have_VBP used_VBN a_DT more_RBR scalable_JJ learning-based_JJ approach_NN ._.
+Observe_VB from_IN Figures_NNS 1_CD -LRB-_-LRB- a_DT -RRB-_-RRB- and_CC -LRB-_-LRB- b_LS -RRB-_-RRB- that_IN there_EX is_VBZ consistency_NN in_IN presentation_NN of_IN semantic_JJ concep_NN
+al._FW ,_, 2001_CD -RRB-_-RRB- ;_: custom_NN Web_NN page_NN generation_NN for_IN the_DT visually-impaired_JJ -LRB-_-LRB- Yesilada_NNP ,_, Harper_NNP ,_, Goble_NNP ,_, &_CC Stevens_NNP ,_, 2004_CD -RRB-_-RRB- ;_: using_VBG information_NN in_IN different_JJ contexts_NNS ,_, depending_VBG on_IN the_DT needs_NNS and_CC viewpoint_NN of_IN the_DT user_NN -LRB-_-LRB- =_JJ -_: =_JJ Dill_NNP et_FW al._FW ,_, 2003_CD -_: =--RRB-_NN ;_: and_CC question-answering_JJ -LRB-_-LRB- Kogut_NNP &_CC Holmes_NNP ,_, 2001_CD -RRB-_-RRB- ._.
+71s6_FW .1.1_FW Semantic_NNP Annotation_NNP for_IN General_NNP Text-based_JJ Documents_NNS Manual_JJ annotation_NN can_MD be_VB done_VBN using_VBG tools_NNS such_JJ as_IN Semantic_NNP Word_NNP -LRB-_-LRB- Tallis_NNP ,_, 2003_CD -RRB-_-RRB- ,_, which_WDT pr_VBP
+ept_NN ._.
+The_DT core_NN principle_NN is_VBZ called_VBN ``_`` disambiguation_NN by_IN maximal_JJ evidence_NN ''_'' -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, and_CC is_VBZ similar_JJ to_TO the_DT approach_NN used_VBN by_IN Armadillo_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, which_WDT uses_VBZ multiple_JJ web_NN services_NNS to_TO find_VB evidence_NN ._.
+3.7_CD SemTag_FW SemTag_FW =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ the_DT semantic_JJ annotation_NN component_NN of_IN a_DT comprehensive_JJ platform_NN ,_, called_VBN Seeker_NNP ,_, for_IN performing_VBG large-scale_JJ annotation_NN of_IN web_NN pages_NNS ._.
+SemTag_NNP performs_VBZ annotation_NN in_IN three_CD passes_NNS :_: Spotting_VBG ,_, Learning_NNP ,_, an_DT
+ktors.org\/akt\/_NN -RRB-_-RRB- ,_, which_WDT emphasizes_VBZ the_DT database_NN aspect_NN of_IN an_DT ontology_NN and_CC its_PRP$ corresponding_JJ knowledge_NN base_NN ._.
+sThis_NN is_VBZ similar_JJ to_TO the_DT SemTag_NNP approach_NN to_TO large-scale_JJ semantic_JJ tagging_NN for_IN the_DT Semantic_JJ Web_NN -LRB-_-LRB- =_JJ -_: =_JJ Dill_NNP et_FW al._FW ,_, 2003_CD -_: =--RRB-_NN ,_, but_CC the_DT emphasis_NN of_IN our_PRP$ approach_NN is_VBZ somewhat_RB different_JJ ._.
+We_PRP focus_VBP here_RB on_IN an_DT unsupervised_JJ approach_NN to_TO concept_NN tagging_NN as_IN a_DT necessary_JJ prerequisite_NN for_IN further_JJ information_NN extraction_NN and_CC more_JJR complex_NN
+within_IN the_DT text_NN ,_, which_WDT is_VBZ not_RB the_DT case_NN with_IN posts_NNS ._.
+Also_RB ,_, the_DT wrapper_NN induction_NN methods_NNS use_VBP supervised_VBN machine_NN learning_VBG instead_RB of_IN unsupervised_JJ methods_NNS ._.
+The_DT most_RBS similar_JJ system_NN to_TO ours_PRP is_VBZ the_DT SemTag_NNP -LRB-_-LRB- =_JJ -_: =_JJ Dill_NNP et_FW al._FW 2003_CD -_: =--RRB-_NN system_NN ,_, which_WDT first_RB identifies_VBZ tokens_NNS of_IN interest_NN in_IN the_DT text_NN ,_, and_CC then_RB labels_VBZ them_PRP using_VBG the_DT TAP_NN taxonomy_NN ,_, which_WDT is_VBZ similar_JJ to_TO our_PRP$ exploitation_NN of_IN reference_NN sets_NNS ._.
+However_RB ,_, there_EX are_VBP a_DT few_JJ key_JJ diffe_NN
+n_NN be_VB made_VBN more_RBR precise_JJ because_IN it_PRP is_VBZ possible_JJ to_TO refer_VB to_TO objects_NNS and_CC properties_NNS in_IN the_DT schema_NN unambiguously_RB ._.
+We_PRP have_VBP some_DT experience_NN with_IN transformations_NNS of_IN annotations_NNS ._.
+For_IN instance_NN ,_, the_DT IBM_NNP SemTag_NNP =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: project_NN uses_VBZ Annotea_NNP annotations_NNS to_TO present_VB their_PRP$ automatically_RB created_VBN corpora_NN of_IN 434_CD million_CD automatically_RB disambiguated_VBN semantic_JJ tags_NNS in_IN the_DT context_NN of_IN the_DT tagged_VBN documents_NNS ._.
+Accessibility_NN evaluati_NNS
+the_DT past_JJ years_NNS ._.
+Both_CC semi-automatic_JJ -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC automatic_JJ techniques_NNS and_CC tools_NNS have_VBP been_VBN developed_VBN and_CC significant_JJ work_NN continues_VBZ -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Various_JJ tools_NNS exist_VBP ,_, including_VBG Cream_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, Semagix_NNP Freedom_NNP 4_CD ,_, SemTag_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, etc._NN ._.
+Semagix_NNP Freedom_NNP has_VBZ typically_RB been_VBN used_VBN to_TO populate_VB ontologies_NNS that_WDT average_VBP more_JJR than_IN one_CD million_CD instances_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+SemTag_NNP ,_, part_NN of_IN IBM_NNP 's_POS WebFountain_NNP project_NN ,_, has_VBZ used_VBN a_DT smaller_JJR ontology_NN but_CC has_VBZ d_NN
+halowski_FW et_FW al._FW -LRB-_-LRB- 11_CD -RRB-_-RRB- utilise_VBP secondary_JJ sources_NNS to_TO determine_VB equivalences_NNS ._.
+A_DT recent_JJ survey_NN summarising_VBG many_JJ of_IN duplicate_VB record_NN detection_NN methods_NNS can_MD be_VB found_VBN in_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+The_DT SemTag_NNP effort_NN as_IN described_VBN in_IN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: assigns_VBZ identifiers_NNS to_TO Web_NN pages_NNS ._.
+The_DT authors_NNS describe_VBP a_DT simple_JJ algorithm_NN to_TO disambiguate_VB entities_NNS and_CC provide_VBP a_DT large-scale_JJ effort_NN at_IN tagging_VBG and_CC assigning_VBG topic_NN URIs_NNS to_TO web_NN pages_NNS ._.
+In_IN contrast_NN ,_, we_PRP u_VBP
+ntic_JJ web_NN initiative_NN -LRB-_-LRB- from_IN about_IN 2000_CD -RRB-_-RRB- ._.
+While_IN the_DT initial_JJ concept_NN of_IN semantic_JJ web_NN assumed_VBD manual_JJ creation_NN of_IN knowledge_NN annotations_NNS ,_, most_RBS recent_JJ research_NN efforts_NNS are_VBP aimed_VBN towards_IN large-scale_JJ automated_JJ =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: or_CC at_IN least_JJS semiautomated_VBN -LRB-_-LRB- 10_CD -RRB-_-RRB- annotation_NN of_IN websites_NNS ._.
+This_DT makes_VBZ the_DT rich_JJ variety_NN of_IN website_NN data_NNS structures_NNS such_JJ as_IN HTML_NNP trees_NNS or_CC link_NN topologies_NNS ,_, as_RB well_RB as_IN the_DT processes_NNS of_IN their_PRP$ analysis_NN ,_, primor_NN
+ible_JJ ._.
+A._NNP Dingli_NNP et_FW al._FW -LRB-_-LRB- 6_CD -RRB-_-RRB- proposed_VBD a_DT methodology_NN for_IN learning_VBG to_TO automatically_RB annotate_VB domain-specific_JJ information_NN from_IN large_JJ repositories_NNS ,_, requiring_VBG a_DT minimal_JJ user_NN intervention_NN ._.
+Dill_NNP ,_, Eiron_NNP et_FW al._FW =_SYM -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT combination_NN of_IN two_CD tools_NNS respectively_RB named_VBN ``_`` SemTag_NNP ''_'' and_CC ``_`` Seeker_NNP ''_'' for_IN enabling_VBG the_DT initial_JJ semantic_JJ web_NN bootstrap_NN by_IN means_NNS of_IN automatic_JJ semantic_JJ annotation_NN ._.
+They_PRP applied_VBD their_PRP$ platform_NN to_TO
+ber_NN of_IN ways_NNS ,_, on_IN a_DT variety_NN of_IN devices_NNS ._.
+Is_VBZ it_PRP possible_JJ to_TO bring_VB this_DT sense_NN of_IN immediacy_NN and_CC relevance_NN that_WDT are_VBP the_DT hallmark_NN of_IN blogs_NNS to_TO the_DT web_NN as_IN a_DT whole_NN ?_.
+We_PRP have_VBP created_VBN a_DT system_NN using_VBG the_DT WebFountain_NN =_JJ -_: =[_NN 15_CD ,_, 24_CD -RRB-_-RRB- -_: =_JJ -_: platform_NN to_TO provide_VB Web_NN Scale_NNP RSS_NNP feeds_VBZ ._.
+Built_VBN on_IN top_NN of_IN this_DT system_NN we_PRP have_VBP explored_VBN several_JJ applications_NNS which_WDT utilize_VBP these_DT feeds_VBZ in_IN a_DT number_NN of_IN user_NN scenarios_NNS ._.
+In_IN addition_NN ,_, we_PRP address_VBP some_DT of_IN the_DT
+tly_RB merge_VB or_CC create_VB an_DT equivalence_JJ mapping_NN between_IN differently_RB identified_VBN resources_NNS that_WDT ,_, in_IN fact_NN ,_, describe_VBP the_DT same_JJ entity_NN ._.
+Many_JJ attempts_NNS have_VBP been_VBN made_VBN at_IN various_JJ forms_NNS of_IN this_DT problem_NN ,_, for_IN example_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+In_IN the_DT process_NN of_IN finding_VBG commonly_RB shared_VBN knowledge_NN we_PRP identify_VBP resources_NNS that_WDT belong_VBP to_TO both_DT knowledgebases_NNS and_CC create_VB an_DT equivalence_JJ mapping_NN between_IN them_PRP ._.
+Each_DT of_IN these_DT resources_NNS is_VBZ called_VBN a_DT
+entially_RB a_DT manual_JJ process_NN ,_, possibly_RB aided_VBN by_IN acquisition_NN software_NN -LRB-_-LRB- see_VB for_IN instance_NN Annotea_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+The_DT fully_RB automatic_JJ generation_NN of_IN metadata_NN is_VBZ hardly_RB addressed_VBN in_IN the_DT literature_NN ,_, with_IN few_JJ exceptions_NNS =_JJ -_: =[_NN 10_CD ,_, 18_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT representative_JJ work_NN is_VBZ the_DT Semtag_NNP system_NN described_VBN in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- which_WDT ``_`` tags_NNS ''_'' web_NN pages_NNS with_IN terms_NNS from_IN a_DT standard_JJ ontology_NN ,_, thanks_NNS to_TO text_NN analysis_NN techniques_NNS ._.
+This_DT is_VBZ different_JJ --_: and_CC essentially_RB comple_VBP
+._.
+It_PRP extracts_VBZ concepts_NNS and_CC instances_NNS from_IN semi-structured_JJ data_NNS over_IN source_NN interface_NN and_CC data_NN pages_NNS ,_, while_IN KYLIN_NN handles_VBZ both_CC semi-structured_JJ and_CC unstructured_JJ data_NNS in_IN Wikipedia_NNP ._.
+The_DT SemTag_NNP and_CC Seeker_NNP =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: systems_NNS perform_VBP automated_JJ semantic_JJ tagging_NN of_IN large_JJ corpora_NN ._.
+They_PRP use_VBP the_DT TAP_NN knowledge_NN base_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- as_IN the_DT standard_JJ ontology_NN ,_, and_CC use_VB it_PRP to_TO match_VB instances_NNS on_IN the_DT Web_NN ._.
+In_IN contrast_NN ,_, KYLIN_NN does_VBZ n't_RB assume_VB
+een_NN used_VBN for_IN interactive_JJ annotation_NN of_IN Web_NN pages_NNS -LRB-_-LRB- Heflin_NNP et_FW al._FW 2003_CD ;_: Kahan_NNP et_FW al._FW 2001_CD -RRB-_-RRB- ._.
+More_RBR automated_JJ approaches_NNS combine_VBP them_PRP with_IN linguistic_JJ analysis_NN -LRB-_-LRB- Popov_NNP et_FW al._FW 2003_CD -RRB-_-RRB- ,_, segmentation_NN heuristics_NNS -LRB-_-LRB- =_JJ -_: =_JJ Dill_NNP et_FW al._FW 2003_CD -_: =-]_CD ,_, and_CC machine_NN learning_NN techniques_NNS -LRB-_-LRB- Cimiano_NNP et_FW al._FW 2004_CD ;_: Hammond_NNP et_FW al._FW 2002_CD -RRB-_-RRB- ._.
+Our_PRP$ semantic_JJ analysis_NN technique_NN is_VBZ an_DT extension_NN of_IN our_PRP$ previous_JJ work_NN -LRB-_-LRB- Mukherjee_NNP et_FW al._FW 2005_CD -RRB-_-RRB- and_CC ,_, in_IN contrast_NN to_TO all_PDT the_DT
+rithms_NNS we_PRP propose_VBP in_IN this_DT paper_NN generate_VB keywords_NNS that_WDT not_RB necessarily_RB appear_VB literally_RB on_IN the_DT Web_NN page_NN ,_, but_CC are_VBP in_IN its_PRP$ context_NN ,_, while_IN also_RB reflecting_VBG the_DT personal_JJ interests_NNS of_IN the_DT user_NN ._.
+Dill_NNP et_NNP ._.
+al._FW =_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: present_VB a_DT platform_NN for_IN large-scale_JJ text_NN analytics_NNS and_CC automatic_JJ semantic_JJ tagging_NN ._.
+The_DT system_NN spots_VBZ known_JJ terms_NNS in_IN a_DT Web_NN page_NN and_CC relates_VBZ it_PRP to_TO existing_VBG instances_NNS of_IN a_DT given_VBN ontology_NN ._.
+The_DT strength_NN of_IN
+k_NN on_IN automatic_JJ annotation_NN with_IN minimum_JJ human_JJ efforts_NNS ._.
+They_PRP either_CC extract_NN metadata_NN from_IN the_DT web_NN site_NN 's_POS underlying_JJ databases_NNS -LRB-_-LRB- 12_CD -RRB-_-RRB- or_CC analyze_VB text_NN content_NN within_IN the_DT web_NN pages_NNS using_VBG learning_NN algorithms_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: and\/or_CC NLP_NN techniques_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Most_JJS of_IN these_DT methods_NNS uses_VBZ a_DT pre-defined_JJ ontology_NN as_IN the_DT semantic_JJ model_NN for_IN the_DT annotations_NNS ._.
+The_DT manual_JJ and_CC semi-automatic_JJ methods_NNS usually_RB requires_VBZ the_DT user_NN be_VB familiar_JJ wit_NN
+the_DT semantic_JJ Web_NN vision_NN 2_CD ,_, there_EX is_VBZ significant_JJ interest_NN and_CC ongoing_JJ research_NN in_IN automatically_RB extracting_VBG and_CC representing_VBG semantic_JJ metadata_NN as_IN annotations_NNS to_TO both_DT documents_NNS and_CC services_NNS on_IN the_DT Web_NN =_JJ -_: =[_NN 9_CD ,_, 13_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Several_JJ communities_NNS -LRB-_-LRB- e.g._FW ,_, Gene_NNP Ontology_NNP Consortium_NNP ,_, Federal_NNP Aviation_NNP Administration_NNP -LRB-_-LRB- Aviation_NNP Ontology_NNP -RRB-_-RRB- ,_, Molecular_JJ Biology_NNP Ontology_NNP Working_NNP Group_NNP ,_, just_RB to_TO name_VB a_DT few_JJ -RRB-_-RRB- ,_, are_VBP also_RB coming_VBG together_RB to_TO e_SYM
+vision_NN of_IN the_DT Semantic_JJ Web_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, there_EX is_VBZ significant_JJ interest_NN and_CC ongoing_JJ work_NN ,_, in_IN automatically_RB extracting_VBG and_CC representing_VBG the_DT metadata_NN as_IN semantic_JJ annotations_NNS to_TO documents_NNS and_CC services_NNS on_IN the_DT Web_NN =_JJ -_: =[_FW 18,8,7_FW -RRB-_-RRB- -_: =_SYM -_: ._.
+Several_JJ communities_NNS such_JJ as_IN the_DT Gene_NNP Ontology_NNP Consortium_NNP ,_, Federal_NNP Aviation_NNP Administration_NNP -LRB-_-LRB- Aviation_NNP Ontol1_NN This_DT work_NN is_VBZ funded_VBN by_IN NSF-ITR-IDM_NN Award_NN #_# 0219649_CD titled_VBN ``_`` Semantic_NNP Association_NNP Identificat_NNP
+ted_VBN that_IN light-weight_JJ tagging_NN systems_NNS are_VBP useful_JJ and_CC practical_JJ ._.
+Metadata_NNP is_VBZ also_RB available_JJ in_IN RSS_NNP and_CC ATOM_NNP feeds_VBZ ,_, while_IN some_DT use_VBP the_DT Dublin_NNP Core_NNP ontology_NN ._.
+Some_DT NLP_NN and_CC statistical_JJ tools_NNS such_JJ as_IN SemTag_NN =_JJ -_: =[_NN 49_CD -RRB-_-RRB- -_: =_JJ -_: and_CC the_DT TAP_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- project_NN August_NNP 12_CD ,_, 2007_CD DRAFTsFinal_NN version_NN to_TO appear_VB ,_, International_NNP Journal_NNP on_IN Semantic_JJ Web_NN and_CC Information_NNP Systems_NNP ,_, 3_CD -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, 2007_CD ._.
+-LRB-_-LRB- http:\/\/www.igi-pub.com\/_NN -RRB-_-RRB- 22_CD Fig._NNP 5_CD ._.
+Fact_NN repository_NN
+s_NNS do_VBP exactly_RB what_WP we_PRP are_VBP looking_VBG for_IN :_: they_PRP associate_VBP them_PRP with_IN an_DT entity_NN ._.
+We_PRP use_VBP these_DT links_NNS as_IN training_NN set_VBN for_IN a_DT simple_JJ but_CC effective_JJ learning_NN algorithm_NN ,_, which_WDT essentially_RB follows_VBZ the_DT approach_NN from_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN a_DT nutshell_NN ,_, the_DT approach_NN proceeds_VBZ in_IN two_CD phases_NNS :_: a_DT training_NN phase_NN ,_, and_CC a_DT disambiguation_NN phase_NN ._.
+In_IN the_DT training_NN phase_NN ,_, we_PRP compute_VBP ,_, for_IN each_DT word_NN or_CC phrase_NN that_WDT is_VBZ linked_VBN at_IN least_JJS 10_CD times_NNS to_TO a_DT par_NN
+cture_NN and_CC evolution_NN of_IN blogs_NNS were_VBD explored_VBN in_IN -LRB-_-LRB- 16_CD ,_, 17_CD ,_, 18_CD ,_, 1_CD -RRB-_-RRB- ._.
+3_LS ._.
+DATA_NNP SOURCES_NNP In_IN this_DT section_NN we_PRP describe_VBP the_DT various_JJ data_NNS used_VBN in_IN our_PRP$ experiments_NNS ._.
+3.1_CD Online_NNP postings_NNS data_NNS IBM_NNP 's_POS WebFountain_NNP project_NN =_JJ -_: =[_NN 13_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: maintains_VBZ large_JJ collections_NNS of_IN online_NN material_NN ,_, including_VBG postings_NNS from_IN approximately_RB 300K_CD blogs_NNS ._.
+Approximately_RB 200K_JJ postings_NNS arrivesinto_VBP the_DT system_NN per_IN day_NN ._.
+The_DT system_NN also_RB contains_VBZ just_RB under_IN three_CD
+approaches_NNS since_IN it_PRP performs_VBZ extraction_NN without_IN the_DT assumption_NN that_IN the_DT object_NN instance_NN pages_NNS should_MD be_VB template_NN driven_VBN ._.
+2.4_CD Ontology-based_JJ approaches_NNS Ontology-based_JJ approaches_NNS -LRB-_-LRB- Embley_NNP et_FW al._FW ,_, 1998_CD ;_: =_JJ -_: =_JJ Dill_NNP et_FW al._FW ,_, 2003_CD -_: =_JJ -_: ;_: Hong_NNP and_CC Clark_NNP ,_, 2001_CD -RRB-_-RRB- require_VBP fully_RB developed_VBN domain_NN ontology_NN and_CC utilise_NN matching_NN and_CC disambiguation_NN algorithms_NNS to_TO locate_VB and_CC extract_VB the_DT entities_NNS and_CC relationships_NNS of_IN interest_NN ._.
+On_IN the_DT other_JJ hand_NN ,_,
+nformation_NN from_IN multiple_JJ repositories_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, combination_NN of_IN structured_JJ and_CC unstructured_JJ information_NN analysis_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, ontology-based_JJ text_NN analytics_NNS that_WDT address_VBP semantic_JJ heterogeneity_NN and_CC disambiguation_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =-[_CD 9_CD -RRB-_-RRB- ,_, and_CC machine_NN learning_NN approaches_VBZ to_TO evolve_VB semantics_NNS and_CC knowledge_NN discovery_NN from_IN text_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+However_RB ,_, none_NN of_IN the_DT existing_VBG techniques_NNS in_IN isolation_NN address_NN the_DT bigger_JJR problem_NN which_WDT is_VBZ the_DT abili_NN
+literatures_NNS such_JJ as_IN automatic_JJ annotation_NN and_CC query_NN expansion_NN are_VBP needed_VBN ._.
+Automated_NNP annotation_NN include_VBP extra_JJ information_NN associated_VBN with_IN a_DT particular_JJ point_NN in_IN a_DT document_NN or_CC other_JJ piece_NN of_IN information_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT is_VBZ usually_RB being_VBG achieved_VBN through_IN the_DT use_NN of_IN a_DT natural_JJ language_NN toolkit_NN ,_, where_WRB the_DT toolkit_NN will_MD automatically_RB annotate_VB words_NNS that_WDT has_VBZ additional_JJ meaning_NN or_CC information_NN available_JJ to_TO it_PRP ._.
+Query_FW Ex_FW
+notations_NNS are_VBP especially_RB important_JJ for_IN multimedia_NNS data_NNS ,_, as_IN non_JJ textual_JJ data_NNS has_VBZ a_DT very_RB opaque_JJ relationship_NN with_IN computers_NNS ._.
+Some_DT examples_NNS of_IN annotation_NN of_IN textual_NN and_CC multimedia_NNS data_NNS are_VBP presented_VBN in_IN -LRB-_-LRB- =_JJ -_: =_JJ Dill_NNP et_FW al._FW ,_, 2003_CD -_: =_JJ -_: ;_: Hammond_NNP et_FW al._FW ,_, 2002_CD -RRB-_-RRB- ,_, and_CC -LRB-_-LRB- Jin_NNP et_FW al._FW ,_, 2005_CD -RRB-_-RRB- respectively_RB ._.
+Ontologies_NNS are_VBP central_JJ to_TO realizing_VBG the_DT Semantic_JJ Web_NN and_CC Semantic_JJ Geospatial_JJ Web_NN ,_, as_IN they_PRP formally_RB specify_VBP concepts_NNS and_CC their_PRP$ relationship_NN
+balance_VB the_DT selection_NN pressure_NN ._.
+Too_RB strong_JJ pressure_NN leads_VBZ to_TO premature_JJ convergence_NN ._.
+On_IN the_DT other_JJ hand_NN ,_, too_RB low_JJ pressure_NN leads_VBZ to_TO very_RB slow_JJ convergence_NN ._.
+We_PRP choose_VBP the_DT widely_RB used_VBN tournament_NN selection_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: as_IN the_DT selection_NN operator_NN ._.
+Tournament_NN selection_NN can_MD consider_VB fine-tuning_NN the_DT selective_JJ pressure_NN by_IN increasing_VBG or_CC decreasing_VBG the_DT tournament_NN size_NN ._.
+In_IN addition_NN ,_, tournament_NN selection_NN is_VBZ easy_JJ to_TO implement_VB
+d_NN tools_NNS have_VBP been_VBN developed_VBN and_CC significant_JJ work_NN continues_VBZ -LRB-_-LRB- Vargas-Vera02_NN -RRB-_-RRB- ._.
+Various_JJ tools_NNS exist_VBP ,_, including_VBG Cream_NN 6s_NNS -LRB-_-LRB- Handshuh03_NN -RRB-_-RRB- ,_, S-Cream_NN -LRB-_-LRB- Handschuh02_NN -RRB-_-RRB- ,_, Semagix_NNP Freedom_NNP toolkit_NN -LRB-_-LRB- Hammond02_NN -RRB-_-RRB- ,_, and_CC SemTag_NN =_JJ -_: =_JJ -LRB-_-LRB- Dill03_NN -RRB-_-RRB- -_: =_JJ -_: ,_, etc._NN ._.
+Semagix_NNP Freedom_NNP has_VBZ typically_RB been_VBN used_VBN to_TO populate_VB ontologies_NNS that_WDT average_VBP more_JJR than_IN one_CD million_CD instances_NNS -LRB-_-LRB- Sheth03b_NN -RRB-_-RRB- and_CC can_MD process_VB over_IN a_DT million_CD documents_NNS per_IN day_NN per_IN server_NN ,_, while_IN SemTag_NNP ,_,
+is_VBZ to_TO learn_VB the_DT extension_NN of_IN certain_JJ concepts_NNS such_JJ as_IN actors_NNS ,_, cities_NNS etc._NN and_CC thus_RB their_PRP$ task_NN quite_RB different_JJ to_TO ours_PRP ,_, we_PRP do_VBP not_RB give_VB any_DT quantitative_JJ comparison_NN ._.
+Another_DT interesting_JJ system_NN is_VBZ SemTag_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT also_RB automatically_RB annotates_VBZ web_NN pages_NNS ._.
+Though_IN its_PRP$ results_NNS are_VBP certainly_RB impressive_JJ ,_, it_PRP is_VBZ important_JJ to_TO note_VB that_IN SemTag_NNP actually_RB only_RB performs_VBZ the_DT task_NN of_IN disambiguating_VBG entities_NNS appearing_VBG in_IN
+few_JJ ontologies_NNS and_CC tagged_VBN documents_NNS exist_VBP in_IN comparison_NN to_TO the_DT huge_JJ amount_NN of_IN domains_NNS and_CC documents_NNS that_WDT exist_VBP on_IN the_DT Web_NN ._.
+Several_JJ strategies_NNS are_VBP being_VBG exploited_VBN to_TO bootstrap_VB the_DT SW_NN :_: machine_NN learning_NN =_JJ -_: =[_NN 1,2,3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, NLP_NN techniques_NNS -LRB-_-LRB- 4,5_CD -RRB-_-RRB- ,_, semantic_JJ services_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, lifting_VBG existing_VBG metadata_NN -LRB-_-LRB- 7,8,9,10,11,12_CD -RRB-_-RRB- ,_, etc._NN ._.
+These_DT strategies_NNS have_VBP different_JJ advantages_NNS according_VBG to_TO the_DT type_NN of_IN documents_NNS or_CC domains_NNS :_: while_IN machine_NN
+s_NN as_IN one_PRP can_MD not_RB yet_RB expect_VBP that_IN Web_NN documents_NNS are_VBP already_RB sufficiently_RB semantically_RB annotated_JJ ._.
+Some_DT of_IN them_PRP ,_, for_IN instance_NN ,_, rely_VBP on_IN the_DT redundancy_NN of_IN information_NN on_IN the_DT Web_NN and_CC use_VB statistical_JJ methods_NNS =_JJ -_: =[_NN 7_CD ,_, 4_CD ,_, 3_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, others_NNS use_VBP natural_JJ language_NN processing_NN -LRB-_-LRB- NLP_NN -RRB-_-RRB- techniques_NNS -LRB-_-LRB- 19_CD ,_, 20_CD -RRB-_-RRB- to_TO extract_VB the_DT required_JJ knowledge_NN from_IN unstructured_JJ documents_NNS ._.
+It_PRP has_VBZ also_RB been_VBN shown_VBN that_IN domain_NN ontologies_NNS can_MD be_VB useful_JJ to_TO support_VB
+the_DT Semantic_JJ Web_NN requires_VBZ automatic_JJ annotation_NN of_IN documents_NNS according_VBG to_TO a_DT reference_NN ontology_NN :_: all_DT textual_JJ references_NNS must_MD be_VB resolved_VBN to_TO the_DT right_JJ concepts_NNS and_CC event_NN structures_NNS in_IN the_DT ontology_NN -LRB-_-LRB- see_VB =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Named-entity_JJ classification_NN ,_, co-reference_NN determination_NN ,_, and_CC acronym_NN expansion_NN can_MD also_RB be_VB cast_VBN as_IN WSD_NN problems_NNS for_IN proper_JJ names_NNS ._.
+WSD_NN is_VBZ only_RB beginning_VBG to_TO be_VB applied_VBN in_IN these_DT areas_NNS ._.
+Since_IN its_PRP$ incep_NN
+g_NN time_NN ._.
+In_IN the_DT state_NN of_IN the_DT art_NN we_PRP can_MD find_VB several_JJ interesting_JJ proposals_NNS ,_, like_IN for_IN example_NN :_: SEAN_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, a_DT system_NN for_IN automatic_JJ semantic_JJ annotation_NN of_IN content-rich_JJ template-based_JJ HTML_NNP documents_NNS ;_: SemTag_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: designed_VBN to_TO provide_VB automatic_JJ semantic_JJ annotation_NN of_IN large_JJ amounts_NNS of_IN documents_NNS ,_, using_VBG information_NN obtained_VBN from_IN TAP_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- knowledge_NN base_NN ;_: Annotea_NNP -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, a_DT manual_NN ,_, annotation_NN system_NN which_WDT allows_VBZ users_NNS d_NN
+tual_JJ data_NNS on_IN the_DT portal_NN could_MD be_VB annotated_JJ ,_, and_CC names_NNS be_VB linked_VBN to_TO the_DT community_NN members_NNS '_POS FOAF_NN descriptions_NNS directly_RB ._.
+A_DT number_NN of_IN other_JJ projects_NNS aim_VBP in_IN a_DT direction_NN similar_JJ to_TO Geco_NNP ._.
+SemTag_NNP and_CC Seeker_NNP -LRB-_-LRB- =_JJ -_: =_JJ Dill_NNP et_FW al._FW ,_, 2003_CD -_: =--RRB-_NN proposes_VBZ a_DT fully_RB integrated_VBN platform_NN for_IN text-classification_NN and_CC semantic_JJ tagging_NN of_IN web_NN pages_NNS ,_, with_IN the_DT purpose_NN of_IN providing_VBG a_DT label_NN bureau_NN to_TO bootstrap_VB the_DT creation_NN of_IN the_DT semantic_JJ web_NN ._.
+Web_NN pages_NNS
+isting_VBG W3C_NN recommendations_NNS ,_, implemented_VBN using_VBG the_DT RDF_NNP Annotation_NNP Schema_NNP -LRB-_-LRB- 33_CD -RRB-_-RRB- --_: a_DT simple_JJ and_CC straightforward_JJ approach_NN ,_, suitable_JJ for_IN the_DT Annofolio_NNP ._.
+Other_JJ ,_, similar_JJ tools_NNS that_IN where_WRB considered_VBN was_VBD Semtag_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Melita_NNP -LRB-_-LRB- 11_CD -RRB-_-RRB- and_CC S-Cream_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+All_DT three_CD with_IN a_DT focus_NN on_IN automation_NN or_CC semi-automation_NN that_WDT makes_VBZ them_PRP more_RBR complex_JJ to_TO manage_VB ._.
+The_DT basic_JJ idea_NN is_VBZ to_TO start_VB out_RP with_IN a_DT resource_NN containing_VBG structural_JJ mar_FW
+Global_NNP Wordnet_NNP Association_NNP 19_CD ._.
+However_RB ,_, in_IN ontology-based_JJ information_NN extraction_NN ,_, terms_NNS are_VBP to_TO be_VB tagged_VBN primarily_RB with_IN ontology_NN classes_NNS from_IN relevant_JJ ontologies_NNS -LRB-_-LRB- see_VB e.g._FW -LRB-_-LRB- Erdmann00_NN -RRB-_-RRB- ,_, -LRB-_-LRB- Maedche02_NN -RRB-_-RRB- ,_, =_JJ -_: =_JJ -LRB-_-LRB- Dill03_NN -RRB-_-RRB- -_: =_JJ -_: ;_: -LRB-_-LRB- Alani03_NN -RRB-_-RRB- ,_, -LRB-_-LRB- Lopez04_NN -RRB-_-RRB- ,_, -LRB-_-LRB- Müller04_NN -RRB-_-RRB- ,_, -LRB-_-LRB- Buitelaar06_NN -RRB-_-RRB- -RRB-_-RRB- ._.
+Ontologically_RB described_VBN information_NN is_VBZ a_DT basic_JJ requirement_NN for_IN more_RBR complex_JJ processing_NN tasks_NNS such_JJ as_IN reasoning_NN and_CC discourse_NN analysis_NN ._.
+More_RBR in_FW parti_FW
+nowledge_JJ representation_NN system_NN PARKA_NN ,_, d_NN -RRB-_-RRB- the_DT PIQ_NNP -LRB-_-LRB- PARKA_NNP Interface_NNP for_IN Queries_NNPS -RRB-_-RRB- and_CC e_LS -RRB-_-RRB- the_DT SHOE_NN search_NN engine_NN ._.
+-LRB-_-LRB- Semi_NNP -_: -RRB-_-RRB- automatic_JJ annotation_NN systems_NNS :_: These_DT include_VBP systems_NNS such_JJ as_IN AeroDAML_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, SemTag_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, SCREAM_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, PANKOW_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, C-PANKOW_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, KIM_NNP -LRB-_-LRB- 25_CD -RRB-_-RRB- and_CC MnM_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+These_DT systems_NNS fundamentally_RB make_VBP use_NN of_IN NLP_NN -LRB-_-LRB- natural_JJ language_NN processing_NN -RRB-_-RRB- techniques_NNS to_TO extract_VB references_NNS in_IN the_DT text_NN to_TO certain_JJ conc_NN
+vision_NN of_IN the_DT Semantic_JJ Web_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, there_EX is_VBZ significant_JJ interest_NN and_CC ongoing_JJ work_NN ,_, in_IN automatically_RB extracting_VBG and_CC representing_VBG the_DT metadata_NN as_IN semantic_JJ annotations_NNS to_TO documents_NNS and_CC services_NNS on_IN the_DT Web_NN =_JJ -_: =[_NN 2,3,4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Several_JJ communities_NNS such_JJ as_IN the_DT Gene_NNP Ontology_NNP Consortium_NNP ,_, Federal_NNP Aviation_NNP Administration_NNP -LRB-_-LRB- Aviation_NNP Ontology_NNP -RRB-_-RRB- ,_, Molecular_JJ Biology_NNP Ontology_NNP Working_NNP Group_NNP ,_, Stanford_NNP University_NNP 's_POS Knowledge_NN SystemssCRISM_NN
+fifty_CD ontologies_NNS -RRB-_-RRB- have_VBP demonstrated_VBN capabilities_NNS for_IN building_VBG large_JJ populated_JJ ontologies_NNS ._.
+Additionally_RB ,_, metadata_NN extraction_NN and_CC annotation_NN in_IN web_NN pages_NNS has_VBZ been_VBN addressed_VBN earlier_RBR and_CC proven_JJ scalable_NN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =-[_NN 32_CD -RRB-_-RRB- -LRB-_-LRB- 44_CD -RRB-_-RRB- ._.
+We_PRP expect_VBP two_CD critical_JJ elements_NNS to_TO be_VB present_JJ in_IN populated_JJ ontologies_NNS ._.
+First_RB ,_, the_DT ontology_NN must_MD contain_VB named_VBN entities_NNS ._.
+Some_DT populated_JJ ontologies_NNS have_VBP few_JJ or_CC no_DT named_VBN entities_NNS ._.
+For_IN example_NN ,_,
+of_IN information_NN such_JJ as_IN phone_NN number_NN or_CC street_NN address_NN rather_RB than_IN seeking_VBG to_TO capture_VB all_DT information_NN present_JJ in_IN the_DT text_NN ._.
+A_DT similar_JJ use_NN of_IN a_DT language_NN ontology_NN is_VBZ seen_VBN in_IN the_DT Semtag_NNP and_CC Seeker_NNP project_NN =_JJ -_: =_JJ -LRB-_-LRB- Dill03_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT information_NN created_VBN by_IN the_DT Semtag_NNP portion_NN of_IN the_DT project_NN is_VBZ then_RB used_VBN by_IN seeker_NN to_TO index_NN the_DT information_NN and_CC allowing_VBG for_IN speedy_JJ retrieval_NN ._.
+Here_RB the_DT TAP_NN ontology_NN is_VBZ used_VBN to_TO allow_VB entity_NN recognit_NN
+ging_NN has_VBZ been_VBN used_VBN in_IN a_DT variety_NN of_IN other_JJ systems_NNS ,_, but_CC what_WP I_PRP call_VBP here_RB semantic_JJ tagging_NN ,_, although_IN closely_RB related_JJ to_TO some_DT of_IN the_DT existing_VBG approaches_NNS ,_, indeed_RB differs_VBZ considerably_RB ._.
+In_IN 2003_CD ,_, Dill_NNP et_FW al._FW =_SYM -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: developed_VBD a_DT system_NN called_VBN SemTag_NNP ,_, which_WDT was_VBD automatically_RB generating_VBG semantic_JJ tags_NNS out_IN of_IN the_DT content_NN of_IN web_NN pages_NNS ._.
+This_DT approach_NN is_VBZ different_JJ from_IN RichTags_NNP 's_POS ,_, where_WRB the_DT semantic_JJ tags_NNS are_VBP created_VBN by_IN
+ocation_NN ,_, Disambiguation_NN and_CC Extraction_NN from_IN Text_NN It_PRP is_VBZ often_RB useful_JJ to_TO be_VB able_JJ to_TO locate_VB concepts_NNS in_IN textual_JJ resources_NNS ._.
+In_IN annotating_VBG documents_NNS ,_, suggestions_NNS for_IN annotations_NNS can_MD be_VB found_VBN from_IN the_DT text_NN =_JJ -_: =[_NN 21_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN web_NN 7_CD http:\/\/www.museosuomi.fi\/_NN 8_CD http:\/\/demo.seco.tkk.fi\/orava\/_NN 9_CD http:\/\/demo.seco.tkk.fi\/veturi\/_NN 10_CD http:\/\/demo.seco.tkk.fi\/suomifi\/sbrowsing_NN ,_, on_IN the_DT other_JJ hand_NN ,_, semantic_JJ content_NN can_MD be_VB linked_VBN
+also_RB impossible_JJ to_TO annotate_VB the_DT semantic_JJ tags_NNS to_TO existing_VBG enormous_JJ information_NN on_IN the_DT Internet_NN ._.
+There_EX are_VBP some_DT researches_VBZ about_IN automatic_JJ annotation_NN with_IN AI_NN techniques_NNS and_CC natural_JJ language_NN processing_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: however_RB their_PRP$ effects_NNS are_VBP still_RB unclear_JJ ._.
+In_IN our_PRP$ approach_NN ,_, we_PRP use_VBP a_DT lightweight_JJ metadata_NN format_NN that_WDT is_VBZ RDF_NN Site_NN Summary_NN :_: RSS_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- to_TO activate_VB the_DT information_NN flow_NN and_CC its_PRP$ activities_NNS ._.
+RSS_NN is_VBZ one_CD of_IN the_DT
+ces_NNS ._.
+This_DT involves_VBZ two_CD well-recognized_JJ ,_, critical_JJ enabling_VBG capabilities_NNS --_: ontology_NN generation_NN -LRB-_-LRB- Maedche_NNP &_CC Staab_NNP ,_, 2001_CD ;_: Omelayenko_NNP ,_, 2001_CD -RRB-_-RRB- and_CC automated_JJ resource_NN annotation_NN -LRB-_-LRB- Hammond_NNP ,_, Sheth_NNP ,_, &_CC Kochut_NNP ,_, 2002_CD ;_: =_JJ -_: =_JJ Dill_NNP et_FW al._FW ,_, 2003_CD -_: =_JJ -_: ;_: Handschuh_NNP ,_, Staab_NNP ,_, &_CC Ciravegna_NNP ,_, 2002_CD ;_: Patil_NNP ,_, Oundhakar_NNP ,_, Sheth_NNP ,_, &_CC Verma_NNP ,_, 2004_CD -RRB-_-RRB- ,_, which_WDT should_MD be_VB complemented_VBN by_IN an_DT appropriate_JJ computational_JJ approach_NN such_JJ as_IN reasoning_NN or_CC query_NN processing_NN ._.
+We_PRP use_VBP a_DT co_NN
+eb_NN -LRB-_-LRB- LHL01_NN -RRB-_-RRB- ,_, there_EX is_VBZ significant_JJ interest_NN and_CC ongoing_JJ work_NN ,_, in_IN automatically_RB extracting_VBG and_CC representing_VBG the_DT metadata_NN as_IN semantic_JJ annotations_NNS to_TO documents_NNS and_CC services_NNS on_IN the_DT Web_NN -LRB-_-LRB- -LRB-_-LRB- SFJCM02_NN -RRB-_-RRB- ,_, -LRB-_-LRB- HSK02_NN -RRB-_-RRB- ,_, =_JJ -_: =_JJ -LRB-_-LRB- Dill03_NN -RRB-_-RRB- -_: =--RRB-_NN ._.
+Several_JJ communities_NNS such_JJ as_IN the_DT Gene_NNP Ontology_NNP Consortium_NNP ,_, Federal_NNP Aviation_NNP Administration_NNP -LRB-_-LRB- Aviation_NNP Ontology_NNP -RRB-_-RRB- ,_, Molecular_JJ Biology_NNP Ontology_NNP Working_NNP Group_NNP ,_, Stanford_NNP University_NNP 's_POS Knowledge_NNP Systems_NNPS Lab_NN
+y_NN management_NN systems_NNS and_CC knowledge_NN bases_NNS have_VBP been_VBN used_VBN for_IN interactive_JJ annotation_NN of_IN Web_NN pages_NNS -LRB-_-LRB- 14_CD ,_, 16_CD -RRB-_-RRB- ._.
+More_RBR automated_JJ approaches_NNS combine_VBP them_PRP with_IN linguistic_JJ analysis_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, segmentation_NN heuristics_NNS =_JJ -_: =[_NN 10_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC machine_NN learning_NN techniques_NNS -LRB-_-LRB- 9_CD ,_, 13_CD -RRB-_-RRB- ._.
+Our_PRP$ semantic_JJ analysis_NN technique_NN is_VBZ an_DT extension_NN of_IN our_PRP$ previous_JJ work_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- and_CC ,_, in_IN contrast_NN to_TO all_PDT the_DT above_JJ ,_, does_VBZ not_RB depend_VB on_IN rich_JJ domain_NN information_NN ._.
+Inst_NNP
+levant_JJ sentences_NNS and_CC trains_NNS a_DT CRF_NNP model_NN for_IN extractions_NNS ._.
+ONTOLOGY-DRIVEN_NNP INFORMATION_NNP EXTRACTION_NNP :_: There_EX have_VBP been_VBN a_DT lot_NN of_IN work_NN on_IN leveraging_VBG ontology_NN for_IN information_NN extraction_NN ._.
+The_DT SemTag_NNP and_CC Seeker_NNP =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: systems_NNS perform_VBP automated_JJ semantic_JJ tagging_NN of_IN large_JJ corpora_NN ._.
+They_PRP use_VBP the_DT TAP_NN knowledge_NN base_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- as_IN the_DT standard_JJ ontology_NN ,_, and_CC match_VB it_PRP with_IN instances_NNS on_IN the_DT Web_NN ._.
+PANKOW_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- queries_VBZ Google_NNP with_IN onto_IN
+collaborated_VBD with_IN ConnectingMe_NN in_IN the_DT ontology_NN and_CC repository_JJ development_NN ._.
+Some_DT tools_NNS for_IN data_NNS extraction_NN and_CC conversion_NN are_VBP shared_VBN between_IN our_PRP$ two_CD projects_NNS ._.
+Semantic_JJ markup_NN and_CC annotation_NN of_IN web_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: and_CC media_NNS -LRB-_-LRB- 3_LS -RRB-_-RRB- data_NN is_VBZ a_DT topic_NN of_IN active_JJ research_NN ._.
+Our_PRP$ research_NN is_VBZ related_JJ to_TO the_DT mobile_JJ media_NNS data_NNS annotation_NN ._.
+There_EX has_VBZ been_VBN a_DT lot_NN of_IN research_NN on_IN ontology_NN creation_NN tools_NNS ._.
+We_PRP used_VBD one_CD of_IN such_JJ tool_NN --_: Pr_NN
+ns_NNS to_TO IE_NN and_CC II_CD research_NN ._.
+One_CD direction_NN develops_VBZ IE_NN and_CC II_CD techniques_NNS to_TO turn_VB the_DT whole_JJ Web_NN -LRB-_-LRB- or_CC a_DT significant_JJ portion_NN of_IN it_PRP -RRB-_-RRB- into_IN a_DT structured_JJ database_NN ._.
+Recent_JJ examples_NNS include_VBP KnowItAll_NNP -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, SemTag_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC WebFountain_NNP -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+These_DT works_NNS have_VBP either_RB focused_VBN on_IN scaling_NN to_TO Web_NN scale_NN ,_, or_CC relied_VBN heavily_RB on_IN the_DT redundancy_NN of_IN the_DT Web_NN ,_, which_WDT is_VBZ not_RB always_RB available_JJ in_IN a_DT Web_NN community_NN ._.
+Another_DT important_JJ dir_NN
+8_CD -RRB-_-RRB- ._.
+However_RB ,_, fully_RB manual_JJ approaches_NNS do_VBP not_RB scale_VB well_RB for_IN large_JJ information_NN systems_NNS ._.
+There_EX are_VBP a_DT couple_NN of_IN automatic_JJ annotation_NN systems_NNS ,_, as_RB well_RB ._.
+These_DT include_VBP the_DT KIM_NNP system_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, the_DT SemTag_NNP system_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC the_DT system_NN of_IN Vallet_NNP et_FW al_FW -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Unfortunately_RB ,_, they_PRP do_VBP not_RB exploit_VB the_DT full_JJ ontology_NN structure_NN ,_, but_CC use_VBP only_JJ labels_NNS of_IN ontology_JJ elements_NNS -LRB-_-LRB- the_DT KIM_NNP system_NN -RRB-_-RRB- or_CC exploit_VB only_RB the_DT concept_NN taxonomy_NN in_IN
+1_LS -RRB-_-RRB- is_VBZ to_TO make_VB the_DT Web_NN resources_NNS understandable_JJ to_TO both_DT humans_NNS and_CC machines_NNS ._.
+This_DT has_VBZ motivated_VBN a_DT stream_NN of_IN new_JJ Web_NN applications_NNS including_VBG Web_NN blogs_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, social_JJ annotations_NNS -LRB-_-LRB- a.k.a_JJ social_JJ bookmarking_NN -RRB-_-RRB- =_JJ -_: =[_NN 4_CD ,_, 3_CD ,_, 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC Web_NN social_JJ networks_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Research_NN in_IN Web_NN blogs_NNS and_CC social_JJ networks_NNS has_VBZ been_VBN especially_RB focused_VBN on_IN discovering_VBG the_DT latent_JJ communities_NNS -LRB-_-LRB- 10_CD ,_, 22_CD -RRB-_-RRB- ,_, detecting_VBG topics_NNS from_IN temporal_JJ text_NN streams_NNS -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_,
+rly_RB -LRB-_-LRB- 9_CD -RRB-_-RRB- -RRB-_-RRB- combine_VBP wrapper_NN generation_NN and_CC a_DT virtual_JJ integration_NN approach_NN ,_, whereas_IN we_PRP use_VBP a_DT data_NN warehousing_NN approach_NN and_CC therefore_RB need_VBP scalable_JJ index_NN structures_NNS ._.
+SemTag_NN -LRB-_-LRB- Semantic_JJ Annotations_NNS with_IN TAP_NN -RRB-_-RRB- =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: perform_VB mostly_RB text_NN analysis_NN on_IN documents_NNS ,_, albeit_IN on_IN a_DT very_RB large_JJ scale_NN ._.
+In_IN contrast_NN ,_, we_PRP extract_VBP structured_JJ information_NN from_IN documents_NNS and_CC XML_NN sources_NNS ,_, and_CC combine_VB the_DT information_NN with_IN RDF_NN files_NNS avai_VBP
+n_NN their_PRP$ proliferation_NN and_CC management_NN -LRB-_-LRB- 63_CD -RRB-_-RRB- ._.
+Ontologies_NNS can_MD be_VB used_VBN for_IN manual_JJ or_CC automatic_JJ creation_NN of_IN semantically_RB interlinked_JJ metadata_NN -LRB-_-LRB- as_IN exemplified_VBN by_IN the_DT semantic_JJ annotation_NN efforts_NNS described_VBN in_IN =_JJ -_: =[_NN 32_CD ,_, 28_CD -RRB-_-RRB- -_: =_JJ -_: ,_, among_IN others_NNS -RRB-_-RRB- ._.
+11sIn_VB the_DT remaining_VBG chapters_NNS of_IN this_DT thesis_NN we_PRP show_VBP that_IN Web_NN text_NN can_MD be_VB used_VBN to_TO enrich_VB ontologies_NNS in_IN a_DT number_NN of_IN ways_NNS :_: by_IN extracting_VBG subclasses_NNS ,_, features_NNS and_CC related_JJ concepts_NNS for_IN giv_NN
+osed_VBD a_DT slightly_RB more_RBR constraining_VBG notion_NN of_IN annotation_NN -_: it_PRP shifted_VBD from_IN being_VBG generic_JJ information_NN related_VBN to_TO -LRB-_-LRB- a_DT portion_NN of_IN -RRB-_-RRB- a_DT document_NN ,_, to_TO being_VBG a_DT formal_JJ description_NN of_IN the_DT information_NN within_IN it_PRP ._.
+In_IN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: the_DT authors_NNS present_VBP a_DT platform_NN -LRB-_-LRB- Seeker_NN -RRB-_-RRB- ,_, and_CC an_DT application_NN -LRB-_-LRB- SemTag_NN -RRB-_-RRB- built_VBN upon_IN it_PRP ,_, that_WDT were_VBD designed_VBN to_TO scale_VB up_RP to_TO annotation_NN for_IN the_DT whole_JJ web_NN ._.
+SemTag_NNP relies_VBZ on_IN a_DT fixed_JJ ontology_NN ,_, namely_RB TAP_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_,
+ill_RB to_TO be_VB proven_VBN ._.
+5_CD Related_JJ Work_NN Related_JJ work_NN to_TO VIeWs_NNS exists_VBZ in_IN various_JJ respects_NNS ,_, i.e._FW on_IN the_DT level_NN of_IN semanticbased_JJ indexing_NN and_CC hyperlinking_NN -LRB-_-LRB- e.g._FW -LRB-_-LRB- Pustejovsky_NNP et_FW al._FW ,_, 1997_CD -RRB-_-RRB- ,_, -LRB-_-LRB- Carr_NNP et_FW al._FW ,_, 2001_CD -RRB-_-RRB- ,_, -LRB-_-LRB- =_JJ -_: =_JJ Dill_NNP et_FW al._FW ,_, 2003_CD -_: =-]_CD -RRB-_-RRB- ,_, information_NN extraction_NN and_CC hyperlinking_NN -LRB-_-LRB- e.g._FW -LRB-_-LRB- Busemann_NNP et_FW al._FW ,_, 2003_CD -RRB-_-RRB- ,_, -LRB-_-LRB- Popov_NNP et_FW al._FW ,_, 2003_CD -RRB-_-RRB- ,_, -LRB-_-LRB- Basili_NNP et_FW al._FW ,_, 2004_CD -RRB-_-RRB- -RRB-_-RRB- ,_, and_CC ontologies_NNS as_IN user_NN models_NNS -_: in_IN hyperlinking_NN -LRB-_-LRB- e.g._FW -LRB-_-LRB- Maedche_NNP et_FW al._FW ,_, 2002_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+not_RB the_DT case_NN with_IN posts_NNS ._.
+Also_RB ,_, beyond_IN exploiting_VBG regular_JJ structure_NN ,_, the_DT wrapper_NN induction_NN methods_NNS use_VBP supervised_VBN machine_NN learning_VBG instead_RB of_IN unsupervised_JJ methods_NNS ._.
+The_DT system_NN closest_JJS to_TO ours_PRP is_VBZ SemTag_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT first_RB identifies_VBZ tokens_NNS of_IN interest_NN in_IN the_DT text_NN ,_, and_CC then_RB labels_VBZ them_PRP using_VBG the_DT TAP_NN taxonomy_NN ,_, which_WDT is_VBZ similar_JJ to_TO our_PRP$ reference_NN sets_NNS ._.
+This_DT taxonomy_NN is_VBZ carefully_RB crafted_VBN ,_, which_WDT gives_VBZ it_PRP good_JJ ac_NN
+It_PRP performs_VBZ similarity_NN inference_NN using_VBG description_NN logic_NN reasoning_NN ._.
+This_DT reasoning_NN provides_VBZ a_DT mean_NN of_IN disambiguation_NN through_IN equality_NN ,_, specialization_NN ,_, overlapping_VBG ,_, and_CC disjoint_NN relationships_NNS ._.
+Seeker_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ one_CD of_IN the_DT largest_JJS ,_, in_IN terms_NNS of_IN scale_NN ,_, semantic_JJ tagging_VBG efforts_NNS to_TO date_NN ._.
+It_PRP is_VBZ a_DT text_NN analysis_NN engine_NN used_VBN mainly_RB for_IN web_NN annotation_NN ._.
+It_PRP performs_VBZ automatic_JJ entity_NN disambiguation_NN using_VBG a_DT technique_NN
+g_NN time_NN ._.
+In_IN the_DT state_NN of_IN the_DT art_NN we_PRP can_MD find_VB several_JJ interesting_JJ proposals_NNS ,_, like_IN for_IN example_NN :_: SEAN_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, a_DT system_NN for_IN automatic_JJ semantic_JJ annotation_NN of_IN content-rich_JJ templatebased_JJ HTML_NNP documents_NNS ;_: SemTag_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: designed_VBN to_TO provide_VB automatic_JJ semantic_JJ annotation_NN of_IN large_JJ amounts_NNS of_IN documents_NNS ,_, using_VBG information_NN obtained_VBN from_IN TAP_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- knowledge_NN base_NN ;_: Annotea_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, a_DT manual_NN ,_, annotation_NN system_NN which_WDT allows_VBZ users_NNS
+and_CC tagged_VBN documents_NNS -LRB-_-LRB- ``_`` SW_NN islands_NNS ''_'' -RRB-_-RRB- exist_VBP in_IN comparison_NN to_TO the_DT huge_JJ amount_NN of_IN domains_NNS and_CC documents_NNS that_WDT exist_VBP on_IN the_DT Web_NN ._.
+Several_JJ strategies_NNS are_VBP being_VBG exploited_VBN to_TO bootstrap_VB the_DT SW_NN :_: machine_NN learning_NN =_JJ -_: =[_NN 1,2,3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, NLP_NN techniques_NNS -LRB-_-LRB- 4,5_CD -RRB-_-RRB- ,_, semantic_JJ services_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, reengineering_VBG existing_VBG metadata_NN -LRB-_-LRB- 7,8,9,10,11,12_CD -RRB-_-RRB- ,_, etc._NN ._.
+These_DT -LRB-_-LRB- non-mutually_RB exclusive_JJ -RRB-_-RRB- strategies_NNS have_VBP different_JJ advantages_NNS according_VBG to_TO the_DT type_NN of_IN docum_NN
+a_DT variety_NN of_IN natural_JJ language_NN processing_NN -LRB-_-LRB- NLP_NN -RRB-_-RRB- ,_, information_NN extraction_NN -LRB-_-LRB- IE_NN -RRB-_-RRB- ,_, and_CC statistical_JJ language_NN modeling_NN techniques_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 4_CD --_: 6_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+A_DT well-known_JJ semantic_JJ annotation_NN system_NN of_IN this_DT type_NN is_VBZ SemTag_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT was_VBD built_VBN to_TO annotate_VB entity-rich_JJ web_NN pages_NNS on_IN a_DT large_JJ scale_NN ._.
+The_DT main_JJ difference_NN between_IN this_DT past_JJ work_NN and_CC our_PRP$ approach_NN is_VBZ that_IN we_PRP map_VBP all_DT words_NNS in_IN a_DT document_NN ,_, not_RB just_RB entities_NNS ,_, onto_IN a_DT set_VBN o_NN
+ation_NN methods_NNS have_VBP been_VBN successfully_RB applied_VBN to_TO ontology_JJ population_NN ,_, as_IN SSI_NNP -LRB-_-LRB- structural_JJ semantic_JJ interconnections_NNS -RRB-_-RRB- -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, a_DT general_JJ purpose_NN disambiguator_NN also_RB useful_JJ for_IN Semantic_JJ Web_NN tasks_NNS ;_: and_CC SemTag_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, an_DT application_NN to_TO perform_VB automated_JJ semantic_JJ tagging_NN of_IN large_JJ corpora_NN ._.
+In_IN spite_NN of_IN the_DT great_JJ interest_NN of_IN these_DT works_NNS ,_, some_DT of_IN them_PRP need_VBP costly_JJ preprocessing_VBG tasks_NNS -LRB-_-LRB- thus_RB limiting_VBG generalization_NN -RRB-_-RRB- ,_, and_CC
+matched_VBN to_TO specific_JJ text_NN corpora_NN -LRB-_-LRB- Brewster_NNP ,_, Alani_NNP ,_, Dasmahapatra_NNP ,_, &_CC Wilks_NNP ,_, 2004_CD ;_: Alani_NNP &_CC Brewster_NNP ,_, 2006_CD -RRB-_-RRB- ,_, and_CC systems_NNS for_IN tagging_VBG documents_NNS with_IN semantic_JJ concepts_NNS using_VBG word-level_JJ matching_NN techniques_NNS -LRB-_-LRB- =_JJ -_: =_JJ Dill_NNP et_FW al_FW ,_, 2003_CD -_: =--RRB-_NN ._.
+Our_PRP$ work_NN is_VBZ broader_JJR in_IN scope_NN in_IN that_IN we_PRP propose_VBP general-purpose_JJ 35probabilistic_JJ models_NNS that_WDT combine_VBP concepts_NNS and_CC topics_NNS within_IN a_DT single_JJ framework_NN ,_, allowing_VBG us_PRP to_TO use_VB the_DT data_NNS to_TO make_VB inferences_NNS ab_IN
+execute_VB the_DT query_NN ._.
+In_IN all_DT of_IN these_DT approaches_NNS ,_, the_DT data_NN is_VBZ fetched_VBN dynamically_RB from_IN the_DT network_NN on_IN a_DT lazy_JJ basis_NN ,_, and_CC therefore_RB ,_, runtime_NN performance_NN is_VBZ heavily_RB penalized_VBN ._.
+The_DT Stanford_NNP WebBase_NNP project_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, while_IN targeting_VBG a_DT system_NN that_WDT allows_VBZ easy_JJ sequential_JJ and_CC random_JJ access_NN to_TO a_DT copy_NN of_IN the_DT web_NN ,_, does_VBZ not_RB provide_VB the_DT same_JJ prototyping_NN and_CC development_NN environment_NN Seeker_NNP does_VBZ ._.
+Specifically_RB ,_, it_PRP lacks_VBZ the_DT
+been_VBN suggested_VBN in_IN this_DT area_NN ,_, however_RB since_IN this_DT is_VBZ not_RB the_DT direct_JJ focus_NN of_IN this_DT paper_NN ,_, we_PRP omit_VBP these_DT here_RB ._.
+The_DT interested_JJ reader_NN is_VBZ referred_VBN to_TO the_DT survey_NN by_IN Broder_NNP and_CC Henzinger_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Several_JJ authors_NNS =_JJ -_: =[_NN 1_CD ,_, 15_CD ,_, 4_CD ,_, 33_CD ,_, 25_CD -RRB-_-RRB- des_FW -_: =_JJ -_: cribe_JJ relational_JJ approaches_NNS to_TO web_NN analysis_NN ._.
+In_IN this_DT model_NN ,_, data_NNS on_IN the_DT web_NN is_VBZ seen_VBN as_IN a_DT collection_NN of_IN relations_NNS -LRB-_-LRB- for_IN instance_NN ,_, the_DT ``_`` points_NNS to_TO ''_'' relation_NN -RRB-_-RRB- each_DT of_IN which_WDT are_VBP realized_VBN by_IN a_DT function_NN a_DT
+ws_IN users_NNS to_TO mark_VB up_RP pages_NNS in_IN SHOE_NN guided_VBN by_IN ontologies_NNS available_JJ locally_RB or_CC via_IN a_DT URL_NN ._.
+These_DT marked_VBD up_RP pages_NNS can_MD be_VB reasoned_VBN about_IN by_IN SHOE-aware_JJ tools_NNS such_JJ as_IN SHOE_NN Search_VB ._.
+Such_JJ tools_NNS are_VBP described_VBN in_IN =_JJ -_: =[_NN 4_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+AeroDAML_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- is_VBZ an_DT interesting_JJ tools_NNS which_WDT takes_VBZ an_DT ontology_NN and_CC automatically_RB produces_VBZ a_DT semantically_RB marked_VBN up_RP page_NN which_WDT can_MD then_RB be_VB checked_VBN by_IN a_DT human_JJ ._.
+More_RBR recently_RB ,_, there_EX have_VBP been_VBN efforts_NNS to_TO
+ic_JJ fail-over_NN to_TO backup_VB services_NNS -RRB-_-RRB- ,_, and_CC efficient_JJ multiple_JJ programming_NN language_NN support_NN -LRB-_-LRB- due_JJ to_TO integration_NN and_CC performance_NN issues_NNS -RRB-_-RRB- ._.
+As_IN a_DT result_NN we_PRP choose_VBP to_TO base_VB our_PRP$ network_NN services_NNS on_IN Vinci_NNP -LRB-_-LRB- 2_LS -RRB-_-RRB- a_DT SOAP_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ --_: derived_VBN package_NN designed_VBN for_IN higher_JJR performance_NN intra-net_JJ applications_NNS ._.
+Vinci_NNP uses_VBZ a_DT lightly_RB encoded_VBN XML_NN -LRB-_-LRB- employing_VBG the_DT xtalk_NN protocol_NN -RRB-_-RRB- over_IN raw_JJ TCP_NN sockets_NNS to_TO provide_VB the_DT required_VBN RPC_NNP rate_NN ._.
+It_PRP inclu_VBP
+uming_JJ and_CC error-prone_JJ task_NN ._.
+A_DT number_NN of_IN annotation_NN tools_NNS for_IN producing_VBG semantic_JJ markups_NNS exist_VBP ._.
+Protege-2000_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- is_VBZ a_DT tool_NN which_WDT supports_VBZ the_DT creation_NN of_IN ontologies_NNS for_IN the_DT semantic_JJ web_NN ._.
+OntoAnnotate_NN =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT framework_NN for_IN the_DT semantic_JJ web_NN ,_, includes_VBZ tools_NNS for_IN both_CC manual_JJ and_CC semi-automatic_JJ annotation_NN of_IN pages_NNS ._.
+Annotea_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- provides_VBZ RDFbased_JJ markup_NN but_CC it_PRP does_VBZ not_RB support_VB information_NN extraction_NN nor_CC is_VBZ i_FW
+contains_VBZ not_RB only_RB a_DT positional_JJ text_NN index_NN of_IN the_DT web_NN ,_, but_CC also_RB additional_JJ document_NN annotations_NNS generated_VBN by_IN miners_NNS ._.
+The_DT indexer_NN is_VBZ fed_VBN documents_NNS as_IN a_DT stream_NN of_IN tokens_NNS ,_, similar_JJ to_TO the_DT MultiText_NNP model_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT allows_VBZ us_PRP to_TO achieve_VB high_JJ performance_NN during_IN indexing_NN due_JJ to_TO the_DT simple_JJ data_NN model_NN ._.
+For_IN flexibility_NN ,_, each_DT token_JJ that_WDT is_VBZ indexed_VBN can_MD have_VB arbitrary_JJ attribute_NN data_NNS associated_VBN with_IN it_PRP ._.
+Analysis_NN a_DT
+ting_NN techniques_NNS have_VBP been_VBN suggested_VBN in_IN this_DT area_NN ,_, however_RB since_IN this_DT is_VBZ not_RB the_DT direct_JJ focus_NN of_IN this_DT paper_NN ,_, we_PRP omit_VBP these_DT here_RB ._.
+The_DT interested_JJ reader_NN is_VBZ referred_VBN to_TO the_DT survey_NN by_IN Broder_NNP and_CC Henzinger_NNP =_SYM -_: =[_NN 8_CD -RRB-_-RRB- ._.
+Se_SYM -_: =_JJ -_: veral_JJ authors_NNS -LRB-_-LRB- 1_CD ,_, 15_CD ,_, 4_CD ,_, 33_CD ,_, 25_CD -RRB-_-RRB- describe_VBP relational_JJ approaches_NNS to_TO web_NN analysis_NN ._.
+In_IN this_DT model_NN ,_, data_NNS on_IN the_DT web_NN is_VBZ seen_VBN as_IN a_DT collection_NN of_IN relations_NNS -LRB-_-LRB- for_IN instance_NN ,_, the_DT ``_`` points_NNS to_TO ''_'' relation_NN -RRB-_-RRB- each_DT o_NN
+focus_NN of_IN SemTag_NNP is_VBZ detecting_VBG the_DT occurrence_NN of_IN particular_JJ entities_NNS in_IN web_NN pages_NNS ._.
+One_CD of_IN the_DT critical_JJ steps_NNS in_IN this_DT process_NN is_VBZ that_DT of_IN resolving_VBG ambiguities_NNS ._.
+This_DT is_VBZ an_DT area_NN with_IN a_DT rich_JJ body_NN of_IN work_NN -LRB-_-LRB- =_JJ -_: =[_NN 40_CD ,_, 32_CD ,_, 21_CD ,_, 26_CD ,_, 29_CD -RRB-_-RRB- -_: =--RRB-_NN from_IN the_DT language_NN understanding_NN community_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP present_VBP results_NNS of_IN SemTag_NNP using_VBG the_DT TAP_NN knowledge_NN base_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+TAP_NN is_VBZ a_DT shallow_JJ knowledge_NN base_NN that_WDT contains_VBZ a_DT broad_JJ range_NN of_IN lexical_JJ and_CC t_NN
+been_VBN suggested_VBN in_IN this_DT area_NN ,_, however_RB since_IN this_DT is_VBZ not_RB the_DT direct_JJ focus_NN of_IN this_DT paper_NN ,_, we_PRP omit_VBP these_DT here_RB ._.
+The_DT interested_JJ reader_NN is_VBZ referred_VBN to_TO the_DT survey_NN by_IN Broder_NNP and_CC Henzinger_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Several_JJ authors_NNS =_JJ -_: =[_NN 1_CD ,_, 15_CD ,_, 4_CD ,_, 33_CD ,_, 25_CD -RRB-_-RRB- des_FW -_: =_JJ -_: cribe_JJ relational_JJ approaches_NNS to_TO web_NN analysis_NN ._.
+In_IN this_DT model_NN ,_, data_NNS on_IN the_DT web_NN is_VBZ seen_VBN as_IN a_DT collection_NN of_IN relations_NNS -LRB-_-LRB- for_IN instance_NN ,_, the_DT ``_`` points_NNS to_TO ''_'' relation_NN -RRB-_-RRB- each_DT of_IN which_WDT are_VBP realized_VBN by_IN a_DT function_NN a_DT
+owever_RB ,_, as_IN reported_VBN in_IN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, even_RB with_IN the_DT machine_NN assistance_NN ,_, this_DT is_VBZ an_DT arduous_JJ ,_, time_NN consuming_NN and_CC error-prone_JJ task_NN ._.
+A_DT number_NN of_IN annotation_NN tools_NNS for_IN producing_VBG semantic_JJ markups_NNS exist_VBP ._.
+Protege-2000_NN =_SYM -_: =[_NN 28_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT tool_NN which_WDT supports_VBZ the_DT creation_NN of_IN ontologies_NNS for_IN the_DT semantic_JJ web_NN ._.
+OntoAnnotate_NN -LRB-_-LRB- 34_CD -RRB-_-RRB- ,_, a_DT framework_NN for_IN the_DT semantic_JJ web_NN ,_, includes_VBZ tools_NNS for_IN both_CC manual_JJ and_CC semi-automatic_JJ annotation_NN of_IN pages_NNS ._.
+A_DT
+focus_NN of_IN SemTag_NNP is_VBZ detecting_VBG the_DT occurrence_NN of_IN particular_JJ entities_NNS in_IN web_NN pages_NNS ._.
+One_CD of_IN the_DT critical_JJ steps_NNS in_IN this_DT process_NN is_VBZ that_DT of_IN resolving_VBG ambiguities_NNS ._.
+This_DT is_VBZ an_DT area_NN with_IN a_DT rich_JJ body_NN of_IN work_NN -LRB-_-LRB- =_JJ -_: =[_NN 40_CD ,_, 32_CD ,_, 21_CD ,_, 26_CD ,_, 29_CD -RRB-_-RRB- -_: =--RRB-_NN from_IN the_DT language_NN understanding_NN community_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP present_VBP results_NNS of_IN SemTag_NNP using_VBG the_DT TAP_NN knowledge_NN base_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+TAP_NN is_VBZ a_DT shallow_JJ knowledge_NN base_NN that_WDT contains_VBZ a_DT broad_JJ range_NN of_IN lexical_JJ and_CC t_NN
+algorithms_NNS and_CC new_JJ semantic_JJ repositories_NNS become_VBP available_JJ ._.
+And_CC it_PRP can_MD perform_VB operations_NNS that_WDT are_VBP only_RB possible_JJ in_IN the_DT presence_NN of_IN many_JJ tags_NNS ,_, such_JJ as_IN automated_JJ alias_NNS discovery_NN ._.
+More_RBR recent_JJ work_NN ,_, e.g._FW =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT combines_VBZ natural_JJ language_NN understanding_NN with_IN learning_VBG to_TO automatically_RB generate_VB annotations_NNS for_IN specific_JJ domains_NNS is_VBZ similar_JJ in_IN spirit_NN to_TO SemTag_NNP ._.
+The_DT current_JJ focus_NN of_IN SemTag_NNP is_VBZ detecting_VBG the_DT oc_NN
+y_NN -LRB-_-LRB- automatic_JJ fail-over_NN to_TO backup_VB services_NNS -RRB-_-RRB- ,_, and_CC efficient_JJ multiple_JJ programming_NN language_NN support_NN -LRB-_-LRB- due_JJ to_TO integration_NN and_CC performance_NN issues_NNS -RRB-_-RRB- ._.
+As_IN a_DT result_NN we_PRP choose_VBP to_TO base_VB our_PRP$ network_NN services_NNS on_IN Vinci_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: a_DT SOAP_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- -_: derived_VBN package_NN designed_VBN for_IN higher_JJR performance_NN intra-net_JJ applications_NNS ._.
+Vinci_NNP uses_VBZ a_DT lightly_RB encoded_VBN XML_NN -LRB-_-LRB- employing_VBG thextalk_NN protocol_NN -RRB-_-RRB- over_IN raw_JJ TCP_NN sockets_NNS to_TO provide_VB the_DT required_VBN RPC_NNP rate_NN ._.
+-LRB-_-LRB- 7_CD -RRB-_-RRB- provides_VBZ an_DT adequate_JJ language_NN for_IN representing_VBG the_DT annotations_NNS it_PRP generates_VBZ ._.
+We_PRP expect_VBP that_IN in_IN the_DT future_NN ,_, as_IN SemTag_NNP 's_POS level_NN of_IN understanding_NN improves_VBZ ,_, we_PRP will_MD have_VB to_TO use_VB more_RBR advanced_JJ language_NN =_JJ -_: =_JJ s_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- -_: =_JJ -_: and_CC move_VB towards_IN OWL_NN -LRB-_-LRB- 38_CD -RRB-_-RRB- ._.
+SemTag_NNP is_VBZ built_VBN on_IN the_DT Seeker_NNP platform_NN for_IN large_JJ scale_NN text_NN analytics_NNS ._.
+The_DT explosive_JJ growth_NN of_IN the_DT web_NN ,_, and_CC the_DT difficulty_NN of_IN performing_VBG complex_JJ data_NN analysis_NN tasks_NNS on_IN unst_NN
+he_PRP difficulty_NN that_IN human_JJ judges_NNS have_VBP in_IN coming_VBG to_TO a_DT single_JJ unambiguous_JJ conclusion_NN about_IN a_DT particular_JJ spot_NN ._.
+4.1.1_CD Evaluation_NN and_CC human_JJ judgments_NNS As_IN is_VBZ well_RB known_VBN from_IN research_NN in_IN Knowledge_NN Acquisition_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC more_RBR recently_RB from_IN studies_NNS of_IN manual_JJ semantic_JJ tagging_NN of_IN documents_NNS ,_, there_EX are_VBP many_JJ cases_NNS where_WRB different_JJ people_NNS choose_VBP different_JJ terms_NNS from_IN an_DT ontology_NN with_IN which_WDT to_TO tag_VB a_DT phrase_NN or_CC a_DT document_NN ._.
+T_NN
+then_RB be_VB checked_VBN by_IN a_DT human_JJ ._.
+More_RBR recently_RB ,_, there_EX have_VBP been_VBN efforts_NNS to_TO automate_VB some_DT of_IN these_DT tasks_NNS using_VBG machine_NN learning_NN as_IN a_DT palliative_JJ measure_NN ._.
+The_DT principal_JJ tool_NN is_VBZ ``_`` wrapping_VBG ''_'' -LRB-_-LRB- see_VB ,_, for_IN instan_NN =_JJ -_: =_JJ ce_NN ,_, -LRB-_-LRB- 18_CD ,_, 20_CD ,_, 10_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+-_: =_SYM -_: These_DT systems_NNS try_VBP and_CC extract_VBP detailed_JJ structural_JJ data_NNS out_IN of_IN the_DT pages_NNS and_CC require_VB significant_JJ training_NN before_IN they_PRP can_MD be_VB productive_JJ ._.
+Furthermore_RB ,_, such_JJ systems_NNS do_VBP n't_RB work_VB against_IN common_JJ shared_VBN on_IN
+then_RB be_VB checked_VBN by_IN a_DT human_JJ ._.
+More_RBR recently_RB ,_, there_EX have_VBP been_VBN efforts_NNS to_TO automate_VB some_DT of_IN these_DT tasks_NNS using_VBG machine_NN learning_NN as_IN a_DT palliative_JJ measure_NN ._.
+The_DT principal_JJ tool_NN is_VBZ ``_`` wrapping_VBG ''_'' -LRB-_-LRB- see_VB ,_, for_IN instan_NN =_JJ -_: =_JJ ce_NN ,_, -LRB-_-LRB- 18_CD ,_, 20_CD ,_, 10_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+-_: =_SYM -_: These_DT systems_NNS try_VBP and_CC extract_VBP detailed_JJ structural_JJ data_NNS out_IN of_IN the_DT pages_NNS and_CC require_VB significant_JJ training_NN before_IN they_PRP can_MD be_VB productive_JJ ._.
+Furthermore_RB ,_, such_JJ systems_NNS do_VBP n't_RB work_VB against_IN common_JJ shared_VBN on_IN
+then_RB be_VB checked_VBN by_IN a_DT human_JJ ._.
+More_RBR recently_RB ,_, there_EX have_VBP been_VBN efforts_NNS to_TO automate_VB some_DT of_IN these_DT tasks_NNS using_VBG machine_NN learning_NN as_IN a_DT palliative_JJ measure_NN ._.
+The_DT principal_JJ tool_NN is_VBZ ``_`` wrapping_VBG ''_'' -LRB-_-LRB- see_VB ,_, for_IN instan_NN =_JJ -_: =_JJ ce_NN ,_, -LRB-_-LRB- 18_CD ,_, 20_CD ,_, 10_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+-_: =_SYM -_: These_DT systems_NNS try_VBP and_CC extract_VBP detailed_JJ structural_JJ data_NNS out_IN of_IN the_DT pages_NNS and_CC require_VB significant_JJ training_NN before_IN they_PRP can_MD be_VB productive_JJ ._.
+Furthermore_RB ,_, such_JJ systems_NNS do_VBP n't_RB work_VB against_IN common_JJ shared_VBN on_IN
+cludes_NNS tools_NNS for_IN both_CC manual_JJ and_CC semi-automatic_JJ annotation_NN of_IN pages_NNS ._.
+Annotea_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- provides_VBZ RDFbased_JJ markup_NN but_CC it_PRP does_VBZ not_RB support_VB information_NN extraction_NN nor_CC is_VBZ it_PRP linked_VBN to_TO an_DT ontology_JJ server_NN ._.
+SHOE_NN ,_, =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: was_VBD one_CD the_DT earliest_JJS systems_NNS for_IN adding_VBG semantic_JJ annotations_NNS to_TO web_NN pages_NNS ._.
+SHOE_NN Knowledge_NN Annotator_NN allows_VBZ users_NNS to_TO mark_VB up_RP pages_NNS in_IN SHOE_NN guided_VBN by_IN ontologies_NNS available_JJ locally_RB or_CC via_IN a_DT URL_NN ._.
+These_DT ma_FW
+0_CD Harry_NNP Road_NNP San_NNP Jose_NNP ,_, CA_NNP 95120_CD Ontological_JJ support_NN for_IN the_DT semantic_JJ web_NN is_VBZ an_DT active_JJ area_NN of_IN both_CC research_NN and_CC business_NN development_NN ,_, but_CC not_RB the_DT focus_NN of_IN this_DT paper_NN ._.
+Instead_RB ,_, we_PRP use_VBP the_DT TAP_NN ontology_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: in_IN our_PRP$ experiments_NNS ._.
+In_IN partial_JJ support_NN of_IN the_DT second_JJ class_NN of_IN data_NNS ,_, document_NN annotations_NNS ,_, it_PRP is_VBZ expected_VBN that_IN enterprises_NNS will_MD make_VB business_NN data_NNS available_JJ in_IN Semantic_JJ Web_NN formats_NNS -LRB-_-LRB- RDF_NN ,_, XML_NN ,_, or_CC OWL_NN -RRB-_-RRB- ._.
+focus_NN of_IN SemTag_NNP is_VBZ detecting_VBG the_DT occurrence_NN of_IN particular_JJ entities_NNS in_IN web_NN pages_NNS ._.
+One_CD of_IN the_DT critical_JJ steps_NNS in_IN this_DT process_NN is_VBZ that_DT of_IN resolving_VBG ambiguities_NNS ._.
+This_DT is_VBZ an_DT area_NN with_IN a_DT rich_JJ body_NN of_IN work_NN -LRB-_-LRB- =_JJ -_: =[_NN 40_CD ,_, 32_CD ,_, 21_CD ,_, 26_CD ,_, 29_CD -RRB-_-RRB- -_: =--RRB-_NN from_IN the_DT language_NN understanding_NN community_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP present_VBP results_NNS of_IN SemTag_NNP using_VBG the_DT TAP_NN knowledge_NN base_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+TAP_NN is_VBZ a_DT shallow_JJ knowledge_NN base_NN that_WDT contains_VBZ a_DT broad_JJ range_NN of_IN lexical_JJ and_CC t_NN
+been_VBN suggested_VBN in_IN this_DT area_NN ,_, however_RB since_IN this_DT is_VBZ not_RB the_DT direct_JJ focus_NN of_IN this_DT paper_NN ,_, we_PRP omit_VBP these_DT here_RB ._.
+The_DT interested_JJ reader_NN is_VBZ referred_VBN to_TO the_DT survey_NN by_IN Broder_NNP and_CC Henzinger_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Several_JJ authors_NNS =_JJ -_: =[_NN 1_CD ,_, 15_CD ,_, 4_CD ,_, 33_CD ,_, 25_CD -RRB-_-RRB- des_FW -_: =_JJ -_: cribe_JJ relational_JJ approaches_NNS to_TO web_NN analysis_NN ._.
+In_IN this_DT model_NN ,_, data_NNS on_IN the_DT web_NN is_VBZ seen_VBN as_IN a_DT collection_NN of_IN relations_NNS -LRB-_-LRB- for_IN instance_NN ,_, the_DT ``_`` points_NNS to_TO ''_'' relation_NN -RRB-_-RRB- each_DT of_IN which_WDT are_VBP realized_VBN by_IN a_DT function_NN a_DT
+anguage_NN for_IN representing_VBG the_DT annotations_NNS it_PRP generates_VBZ ._.
+We_PRP expect_VBP that_IN in_IN the_DT future_NN ,_, as_IN SemTag_NNP 's_POS level_NN of_IN understanding_NN improves_VBZ ,_, we_PRP will_MD have_VB to_TO use_VB more_RBR advanced_JJ languages_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- and_CC move_VB towards_IN OW_NN =_JJ -_: =_JJ L_NN -LRB-_-LRB- 38_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+SemTag_NNP is_VBZ built_VBN on_IN the_DT Seeker_NNP platform_NN for_IN large_JJ scale_NN text_NN analytics_NNS ._.
+The_DT explosive_JJ growth_NN of_IN the_DT web_NN ,_, and_CC the_DT difficulty_NN of_IN performing_VBG complex_JJ data_NN analysis_NN tasks_NNS on_IN unstructured_JJ data_NNS ,_, has_VBZ led_VBN to_TO
+pages_NNS in_IN SHOE_NN guided_VBN by_IN ontologies_NNS available_JJ locally_RB or_CC via_IN a_DT URL_NN ._.
+These_DT marked_VBD up_RP pages_NNS can_MD be_VB reasoned_VBN about_IN by_IN SHOE-aware_JJ tools_NNS such_JJ as_IN SHOE_NN Search_VB ._.
+Such_JJ tools_NNS are_VBP described_VBN in_IN -LRB-_-LRB- 36_CD ,_, 19_CD -RRB-_-RRB- ._.
+AeroDAML_NN =_SYM -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ an_DT interesting_JJ tools_NNS which_WDT takes_VBZ an_DT ontology_NN and_CC automatically_RB produces_VBZ a_DT semantically_RB marked_VBN up_RP page_NN which_WDT can_MD then_RB be_VB checked_VBN by_IN a_DT human_JJ ._.
+More_RBR recently_RB ,_, there_EX have_VBP been_VBN efforts_NNS to_TO automate_VB some_DT
+orpora_NN ._.
+We_PRP apply_VBP SemTag_NNP to_TO a_DT collection_NN of_IN approximately_RB 264_CD million_CD web_NN pages_NNS ,_, and_CC generate_VBP approximately_RB 434_CD million_CD automatically_RB disambiguated_VBN semantic_JJ tags_NNS ,_, published_VBN to_TO the_DT web_NN as_IN a_DT label_NN bureau_NN =_JJ -_: =[_NN 37_CD -RRB-_-RRB- -_: =_SYM -_: providing_VBG metadata_NN regarding_VBG the_DT 434_CD million_CD annotations_NNS ._.
+To_TO our_PRP$ knowledge_NN ,_, this_DT is_VBZ the_DT largest_JJS scale_NN semantic_JJ tagging_VBG effort_NN to_TO date_NN ,_, and_CC demonstrates_VBZ the_DT viability_NN of_IN bootstrapping_VBG a_DT web_NN scale_NN sema_NN
+ws_IN users_NNS to_TO mark_VB up_RP pages_NNS in_IN SHOE_NN guided_VBN by_IN ontologies_NNS available_JJ locally_RB or_CC via_IN a_DT URL_NN ._.
+These_DT marked_VBD up_RP pages_NNS can_MD be_VB reasoned_VBN about_IN by_IN SHOE-aware_JJ tools_NNS such_JJ as_IN SHOE_NN Search_VB ._.
+Such_JJ tools_NNS are_VBP described_VBN in_IN =_JJ -_: =[_NN 36_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+AeroDAML_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- is_VBZ an_DT interesting_JJ tools_NNS which_WDT takes_VBZ an_DT ontology_NN and_CC automatically_RB produces_VBZ a_DT semantically_RB marked_VBN up_RP page_NN which_WDT can_MD then_RB be_VB checked_VBN by_IN a_DT human_JJ ._.
+More_RBR recently_RB ,_, there_EX have_VBP been_VBN efforts_NNS to_TO
+focus_NN of_IN SemTag_NNP is_VBZ detecting_VBG the_DT occurrence_NN of_IN particular_JJ entities_NNS in_IN web_NN pages_NNS ._.
+One_CD of_IN the_DT critical_JJ steps_NNS in_IN this_DT process_NN is_VBZ that_DT of_IN resolving_VBG ambiguities_NNS ._.
+This_DT is_VBZ an_DT area_NN with_IN a_DT rich_JJ body_NN of_IN work_NN -LRB-_-LRB- =_JJ -_: =[_NN 40_CD ,_, 32_CD ,_, 21_CD ,_, 26_CD ,_, 29_CD -RRB-_-RRB- -_: =--RRB-_NN from_IN the_DT language_NN understanding_NN community_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP present_VBP results_NNS of_IN SemTag_NNP using_VBG the_DT TAP_NN knowledge_NN base_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+TAP_NN is_VBZ a_DT shallow_JJ knowledge_NN base_NN that_WDT contains_VBZ a_DT broad_JJ range_NN of_IN lexical_JJ and_CC t_NN
+tations_NNS should_MD be_VB available_JJ to_TO other_JJ annotators_NNS ,_, to_TO allow_VB for_IN more_RBR complex_JJ observations_NNS to_TO be_VB created_VBN incrementally_RB ._.
+This_DT requirement_NN of_IN shared_JJ annotation_NN is_VBZ not_RB unlike_IN the_DT blackboard_NN system_NN approach_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- ._.
+Mo_NN -_: =_JJ -_: dularity_JJ Various_JJ types_NNS of_IN annotations_NNS require_VBP differing_VBG methodologies_NNS ._.
+The_DT architecture_NN needs_VBZ to_TO support_VB the_DT ``_`` plugging_VBG in_IN ''_'' different_JJ approaches_NNS ,_, as_RB well_RB as_IN the_DT switching_NN to_TO newer_JJR ,_, better_RBR implement_VB
+olving_VBG ambiguities_NNS ._.
+This_DT is_VBZ an_DT area_NN with_IN a_DT rich_JJ body_NN of_IN work_NN -LRB-_-LRB- -LRB-_-LRB- 40_CD ,_, 32_CD ,_, 21_CD ,_, 26_CD ,_, 29_CD -RRB-_-RRB- -RRB-_-RRB- from_IN the_DT language_NN understanding_NN community_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP present_VBP results_NNS of_IN SemTag_NNP using_VBG the_DT TAP_NN knowledge_NN base_NN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+TAP_NN is_VBZ a_DT shallow_JJ knowledge_NN base_NN that_WDT contains_VBZ a_DT broad_JJ range_NN of_IN lexical_JJ and_CC taxonomic_JJ information_NN about_IN popular_JJ objects_NNS like_IN :_: Music_NN ,_, movies_NNS ,_, authors_NNS ,_, sports_NNS ,_, autos_NNS ,_, health_NN ,_, etc._NN ._.
+We_PRP used_VBD the_DT TAP_NN knowe_NN
+ws_IN users_NNS to_TO mark_VB up_RP pages_NNS in_IN SHOE_NN guided_VBN by_IN ontologies_NNS available_JJ locally_RB or_CC via_IN a_DT URL_NN ._.
+These_DT marked_VBD up_RP pages_NNS can_MD be_VB reasoned_VBN about_IN by_IN SHOE-aware_JJ tools_NNS such_JJ as_IN SHOE_NN Search_VB ._.
+Such_JJ tools_NNS are_VBP described_VBN in_IN =_JJ -_: =[_NN 36_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+AeroDAML_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- is_VBZ an_DT interesting_JJ tools_NNS which_WDT takes_VBZ an_DT ontology_NN and_CC automatically_RB produces_VBZ a_DT semantically_RB marked_VBN up_RP page_NN which_WDT can_MD then_RB be_VB checked_VBN by_IN a_DT human_JJ ._.
+More_RBR recently_RB ,_, there_EX have_VBP been_VBN efforts_NNS to_TO
+focus_NN of_IN SemTag_NNP is_VBZ detecting_VBG the_DT occurrence_NN of_IN particular_JJ entities_NNS in_IN web_NN pages_NNS ._.
+One_CD of_IN the_DT critical_JJ steps_NNS in_IN this_DT process_NN is_VBZ that_DT of_IN resolving_VBG ambiguities_NNS ._.
+This_DT is_VBZ an_DT area_NN with_IN a_DT rich_JJ body_NN of_IN work_NN -LRB-_-LRB- =_JJ -_: =[_NN 40_CD ,_, 32_CD ,_, 21_CD ,_, 26_CD ,_, 29_CD -RRB-_-RRB- -_: =--RRB-_NN from_IN the_DT language_NN understanding_NN community_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP present_VBP results_NNS of_IN SemTag_NNP using_VBG the_DT TAP_NN knowledge_NN base_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+TAP_NN is_VBZ a_DT shallow_JJ knowledge_NN base_NN that_WDT contains_VBZ a_DT broad_JJ range_NN of_IN lexical_JJ and_CC t_NN
+been_VBN suggested_VBN in_IN this_DT area_NN ,_, however_RB since_IN this_DT is_VBZ not_RB the_DT direct_JJ focus_NN of_IN this_DT paper_NN ,_, we_PRP omit_VBP these_DT here_RB ._.
+The_DT interested_JJ reader_NN is_VBZ referred_VBN to_TO the_DT survey_NN by_IN Broder_NNP and_CC Henzinger_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Several_JJ authors_NNS =_JJ -_: =[_NN 1_CD ,_, 15_CD ,_, 4_CD ,_, 33_CD ,_, 25_CD -RRB-_-RRB- des_FW -_: =_JJ -_: cribe_JJ relational_JJ approaches_NNS to_TO web_NN analysis_NN ._.
+In_IN this_DT model_NN ,_, data_NNS on_IN the_DT web_NN is_VBZ seen_VBN as_IN a_DT collection_NN of_IN relations_NNS -LRB-_-LRB- for_IN instance_NN ,_, the_DT ``_`` points_NNS to_TO ''_'' relation_NN -RRB-_-RRB- each_DT of_IN which_WDT are_VBP realized_VBN by_IN a_DT function_NN a_DT
+tivity_NN of_IN a_DT human_JJ ontologist_NN or_CC annotator_NN rather_RB than_IN on_IN fully_RB automated_VBN methods_NNS ._.
+Such_JJ systems_NNS have_VBP the_DT advantage_NN that_IN humans_NNS can_MD provide_VB extremely_RB fine-grained_JJ semantic_JJ tags_NNS ._.
+However_RB ,_, as_IN reported_VBN in_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, even_RB with_IN the_DT machine_NN assistance_NN ,_, this_DT is_VBZ an_DT arduous_JJ ,_, time_NN consuming_NN and_CC error-prone_JJ task_NN ._.
+A_DT number_NN of_IN annotation_NN tools_NNS for_IN producing_VBG semantic_JJ markups_NNS exist_VBP ._.
+Protege-2000_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- is_VBZ a_DT tool_NN which_WDT suppor_VBP
+ool_NN which_WDT supports_VBZ the_DT creation_NN of_IN ontologies_NNS for_IN the_DT semantic_JJ web_NN ._.
+OntoAnnotate_NN -LRB-_-LRB- 34_CD -RRB-_-RRB- ,_, a_DT framework_NN for_IN the_DT semantic_JJ web_NN ,_, includes_VBZ tools_NNS for_IN both_CC manual_JJ and_CC semi-automatic_JJ annotation_NN of_IN pages_NNS ._.
+Annotea_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: provides_VBZ RDFbased_JJ markup_NN but_CC it_PRP does_VBZ not_RB support_VB information_NN extraction_NN nor_CC is_VBZ it_PRP linked_VBN to_TO an_DT ontology_JJ server_NN ._.
+SHOE_NN ,_, -LRB-_-LRB- 14_CD -RRB-_-RRB- was_VBD one_CD the_DT earliest_JJS systems_NNS for_IN adding_VBG semantic_JJ annotations_NNS to_TO web_NN pages_NNS ._.
+S_NN
+been_VBN suggested_VBN in_IN this_DT area_NN ,_, however_RB since_IN this_DT is_VBZ not_RB the_DT direct_JJ focus_NN of_IN this_DT paper_NN ,_, we_PRP omit_VBP these_DT here_RB ._.
+The_DT interested_JJ reader_NN is_VBZ referred_VBN to_TO the_DT survey_NN by_IN Broder_NNP and_CC Henzinger_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Several_JJ authors_NNS =_JJ -_: =[_NN 1_CD ,_, 15_CD ,_, 4_CD ,_, 33_CD ,_, 25_CD -RRB-_-RRB- des_FW -_: =_JJ -_: cribe_JJ relational_JJ approaches_NNS to_TO web_NN analysis_NN ._.
+In_IN this_DT model_NN ,_, data_NNS on_IN the_DT web_NN is_VBZ seen_VBN as_IN a_DT collection_NN of_IN relations_NNS -LRB-_-LRB- for_IN instance_NN ,_, the_DT ``_`` points_NNS to_TO ''_'' relation_NN -RRB-_-RRB- each_DT of_IN which_WDT are_VBP realized_VBN by_IN a_DT function_NN a_DT

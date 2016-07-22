@@ -1,0 +1,89 @@
+Fast_JJ dynamic_JJ reranking_NN in_IN large_JJ graphs_NNS
+In_IN this_DT paper_NN we_PRP consider_VBP the_DT problem_NN of_IN re-ranking_JJ search_NN results_NNS by_IN incorporating_VBG user_NN feedback_NN ._.
+We_PRP present_VBP a_DT graph_NN theoretic_JJ measure_NN for_IN discriminating_VBG irrelevant_JJ results_NNS from_IN relevant_JJ results_NNS using_VBG a_DT few_JJ labeled_JJ examples_NNS provided_VBN by_IN the_DT user_NN ._.
+The_DT key_JJ intuition_NN is_VBZ that_IN nodes_NNS relatively_RB closer_JJR -LRB-_-LRB- in_IN graph_NN topology_NN -RRB-_-RRB- to_TO the_DT relevant_JJ nodes_NNS than_IN the_DT irrelevant_JJ nodes_NNS are_VBP more_RBR likely_JJ to_TO be_VB relevant_JJ ._.
+We_PRP present_VBP a_DT simple_JJ sampling_NN algorithm_NN to_TO evaluate_VB this_DT measure_NN at_IN specific_JJ nodes_NNS of_IN interest_NN ,_, and_CC an_DT efficient_JJ branch_NN and_CC bound_VBD algorithm_NN to_TO compute_VB the_DT top_JJ k_NN nodes_NNS from_IN the_DT entire_JJ graph_NN under_IN this_DT measure_NN ._.
+On_IN quantifiable_JJ prediction_NN tasks_NNS the_DT introduced_VBN measure_NN outperforms_VBZ other_JJ diffusion-based_JJ proximity_NN measures_NNS which_WDT take_VBP only_RB the_DT positive_JJ relevance_NN feedback_NN into_IN account_NN ._.
+On_IN the_DT Entity-Relation_NN graph_NN built_VBN from_IN the_DT authors_NNS and_CC papers_NNS of_IN the_DT entire_JJ DBLP_NN citation_NN corpus_NN -LRB-_-LRB- 1.4_CD million_CD nodes_NNS and_CC 2.2_CD million_CD edges_NNS -RRB-_-RRB- our_PRP$ branch_NN and_CC bound_VBD algorithm_NN takes_VBZ about_RB 1.5_CD seconds_NNS to_TO retrieve_VB the_DT top_JJ 10_CD nodes_NNS w.r.t._VBP this_DT measure_NN with_IN 10_CD labeled_JJ nodes_NNS ._.
+rch_NN ._.
+The_DT second_JJ approach_NN is_VBZ quadratic_JJ in_IN the_DT number_NN of_IN entities_NNS to_TO be_VB ranked_VBN and_CC is_VBZ not_RB appropriate_JJ for_IN quick_JJ reranking_NN ._.
+Harmonic_JJ functions_NNS for_IN graph-based_JJ semi-supervised_JJ learning_NN were_VBD introduced_VBN in_IN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Given_VBN a_DT few_JJ positive_JJ and_CC negative_JJ labels_NNS the_DT harmonic_JJ function_NN value_NN at_IN any_DT node_NN is_VBZ simply_RB the_DT probability_NN of_IN hitting_VBG a_DT positive_JJ label_NN before_IN a_DT negative_JJ label_NN ._.
+Variations_NNS of_IN the_DT same_JJ measure_NN have_VBP al_FW
+l_NN for_IN computing_VBG harmonic_JJ functions_NNS either_CC involves_VBZ sparse_JJ solvers_NNS for_IN graph_NN Laplacians_NNS or_CC iterative_JJ matrix_NN operations_NNS ._.
+There_EX are_VBP algorithms_NNS which_WDT solve_VBP undirected_JJ graph_NN Laplacians_NNS in_IN near-linear_JJ time_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB these_DT results_NNS do_VBP not_RB apply_VB to_TO directed_JJ graphs_NNS ._.
+The_DT main_JJ reason_NN these_DT approaches_NNS are_VBP not_RB applicable_JJ to_TO dynamic_JJ reranking_NN is_VBZ that_IN they_PRP are_VBP computed_VBN once_RB for_IN the_DT entire_JJ graph_NN with_IN static_JJ positi_NNS
+label_NN before_IN a_DT negative_JJ label_NN ._.
+Variations_NNS of_IN the_DT same_JJ measure_NN have_VBP also_RB been_VBN successfully_RB used_VBN for_IN web-spam_JJ detection_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, automated_JJ image_NN colorization_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC image_NN segmentation_NN with_IN user_NN feedback_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Similar_JJ to_TO much_JJ spreading_NN activation_NN work_NN ,_, the_DT main_JJ intuition_NN is_VBZ that_IN nodes_NNS close_RB in_IN the_DT graph_NN topology_NN will_MD have_VB similar_JJ labels_NNS ._.
+The_DT standard_JJ tool_NN for_IN computing_VBG harmonic_JJ functions_NNS either_CC involves_VBZ s_NN
+is_VBZ feedback_NN ?_.
+Since_IN these_DT networks_NNS are_VBP very_RB large_JJ ,_, the_DT algorithm_NN has_VBZ to_TO be_VB extremely_RB fast_JJ and_CC memory_NN efficient_JJ ._.
+One_CD solution_NN would_MD be_VB to_TO compute_VB a_DT proximity_NN measure_NN from_IN the_DT relevant_JJ nodes_NNS ._.
+TrustRank_NN -LRB-_-LRB- =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =--RRB-_NN uses_VBZ personalized_JJ pagerank_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- from_IN the_DT trusted_VBN nodes_NNS to_TO discriminate_VB between_IN good_JJ and_CC spammy_JJ nodes_NNS in_IN the_DT web_NN ._.
+Recent_JJ work_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- on_IN ranking_NN refinement_NN uses_VBZ boosting_VBG to_TO learn_VB the_DT new_JJ ranking_NN function_NN
+s_NN simply_RB the_DT probability_NN of_IN hitting_VBG a_DT positive_JJ label_NN before_IN a_DT negative_JJ label_NN ._.
+Variations_NNS of_IN the_DT same_JJ measure_NN have_VBP also_RB been_VBN successfully_RB used_VBN for_IN web-spam_JJ detection_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, automated_JJ image_NN colorization_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC image_NN segmentation_NN with_IN user_NN feedback_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Similar_JJ to_TO much_JJ spreading_NN activation_NN work_NN ,_, the_DT main_JJ intuition_NN is_VBZ that_IN nodes_NNS close_RB in_IN the_DT graph_NN topology_NN will_MD have_VB similar_JJ labels_NNS ._.
+The_DT standard_JJ tool_NN for_IN
+s_NNS are_VBP very_RB large_JJ ,_, the_DT algorithm_NN has_VBZ to_TO be_VB extremely_RB fast_JJ and_CC memory_NN efficient_JJ ._.
+One_CD solution_NN would_MD be_VB to_TO compute_VB a_DT proximity_NN measure_NN from_IN the_DT relevant_JJ nodes_NNS ._.
+TrustRank_NN -LRB-_-LRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- -RRB-_-RRB- uses_VBZ personalized_JJ pagerank_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: from_IN the_DT trusted_VBN nodes_NNS to_TO discriminate_VB between_IN good_JJ and_CC spammy_JJ nodes_NNS in_IN the_DT web_NN ._.
+Recent_JJ work_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- on_IN ranking_NN refinement_NN uses_VBZ boosting_VBG to_TO learn_VB the_DT new_JJ ranking_JJ function_NN simultaneously_RB from_IN the_DT base_NN ra_NN
+rmonic_JJ function_NN value_NN at_IN any_DT node_NN is_VBZ simply_RB the_DT probability_NN of_IN hitting_VBG a_DT positive_JJ label_NN before_IN a_DT negative_JJ label_NN ._.
+Variations_NNS of_IN the_DT same_JJ measure_NN have_VBP also_RB been_VBN successfully_RB used_VBN for_IN web-spam_JJ detection_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, automated_JJ image_NN colorization_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC image_NN segmentation_NN with_IN user_NN feedback_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Similar_JJ to_TO much_JJ spreading_NN activation_NN work_NN ,_, the_DT main_JJ intuition_NN is_VBZ that_IN nodes_NNS close_RB in_IN the_DT graph_NN topology_NN will_MD have_VB sim_NN
+e_LS reset_NN to_TO this_DT starting_VBG distribution_NN with_IN a_DT small_JJ teleportation_NN probability_NN ._.
+In_IN pagerank_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- this_DT distribution_NN is_VBZ uniform_JJ over_IN all_DT webpages_NNS ._.
+In_IN content-based_JJ keyword_JJ search_NN applications_NNS in_IN databases_NNS =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: this_DT distribution_NN is_VBZ over_IN the_DT documents_NNS containing_VBG the_DT searched_VBN keywords_NNS ._.
+In_IN TrustRank_NNP this_DT distribution_NN contains_VBZ a_DT selected_VBN set_NN of_IN reputable_JJ web-pages_NNS ._.
+Harmonic_JJ ranking_NN has_VBZ been_VBN successfully_RB used_VBN fo_NN
+s_NN for_IN graph_NN Laplacians_NNS ._.
+There_EX has_VBZ been_VBN much_JJ work_NN on_IN near-linear-time_JJ solvers_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- for_IN undirected_JJ graph_NN Laplacians_NNS ._.
+Recently_RB a_DT linear-work_JJ parallel_JJ algorithm_NN was_VBD proposed_VBN for_IN solving_VBG planar_JJ Laplacians_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Unfortunately_RB these_DT do_VBP not_RB even_RB apply_VB to_TO our_PRP$ directed_JJ graph_NN setting_NN ._.
+There_EX have_VBP been_VBN a_DT number_NN of_IN learning_VBG algorithms_NNS to_TO aid_VB spam_NN detection_NN in_IN the_DT web_NN ,_, which_WDT is_VBZ an_DT extremely_RB important_JJ task_NN ._.
+These_DT alg_NN
+rack_NN :_: Data_NNP Mining_NNP \/_: Session_NN :_: Graph_NNP Algorithms_NNPS The_DT authors_NNS show_VBP that_IN user-feedback_NN considerably_RB improves_VBZ the_DT performance_NN of_IN the_DT base-ranking_JJ algorithm_NN ._.
+A_DT straight-forward_JJ use_NN of_IN the_DT RankBoost_NNP algorithm_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: on_IN the_DT weak_JJ learners_NNS '_POS ranking_NN will_MD give_VB rise_NN to_TO an_DT O_NN -LRB-_-LRB- n_NN 4_CD -RRB-_-RRB- algorithm_NN ._.
+However_RB the_DT authors_NNS reduce_VBP the_DT complexity_NN of_IN the_DT algorithm_NN to_TO O_NN -LRB-_-LRB- n_NN 2_CD -RRB-_-RRB- ,_, i.e._FW quadratic_JJ in_IN the_DT number_NN of_IN instances_NNS to_TO rank_VB ._.
+Note_VB th_DT
+be_VB to_TO compute_VB a_DT proximity_NN measure_NN from_IN the_DT relevant_JJ nodes_NNS ._.
+TrustRank_NN -LRB-_-LRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- -RRB-_-RRB- uses_VBZ personalized_JJ pagerank_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- from_IN the_DT trusted_VBN nodes_NNS to_TO discriminate_VB between_IN good_JJ and_CC spammy_JJ nodes_NNS in_IN the_DT web_NN ._.
+Recent_JJ work_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: on_IN ranking_JJ refinement_NN uses_VBZ boosting_VBG to_TO learn_VB the_DT new_JJ ranking_JJ function_NN simultaneously_RB from_IN the_DT base_NN ranking_NN function_NN and_CC the_DT user_NN feedback_NN ._.
+The_DT problem_NN with_IN the_DT first_JJ approach_NN is_VBZ that_IN it_PRP does_VBZ not_RB take_VB
+e_LS Markov_NNP chain_NN defined_VBN on_IN the_DT graph_NN which_WDT is_VBZ biased_VBN towards_IN a_DT set_NN of_IN nodes_NNS ._.
+At_IN each_DT step_NN the_DT random_JJ walk_NN can_MD be_VB reset_JJ to_TO this_DT starting_VBG distribution_NN with_IN a_DT small_JJ teleportation_NN probability_NN ._.
+In_IN pagerank_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: this_DT distribution_NN is_VBZ uniform_JJ over_IN all_DT webpages_NNS ._.
+In_IN content-based_JJ keyword_JJ search_NN applications_NNS in_IN databases_NNS -LRB-_-LRB- 3_LS -RRB-_-RRB- this_DT distribution_NN is_VBZ over_IN the_DT documents_NNS containing_VBG the_DT searched_VBN keywords_NNS ._.
+In_IN TrustRank_NNP th_DT
+m_NN Computing_NNP functions_VBZ over_IN a_DT graph_NN using_VBG neighborhood_NN expansion_NN has_VBZ been_VBN used_VBN by_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- for_IN computing_VBG nearest_JJS neighbors_NNS in_IN hitting_VBG time_NN to_TO a_DT node_NN ,_, or_CC for_IN efficient_JJ computation_NN of_IN personalized_JJ pagerank_NN -LRB-_-LRB- =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+We_PRP use_VBP a_DT technique_NN similar_JJ to_TO the_DT first_JJ approach_NN to_TO compute_VB top_JJ k_NN nodes_NNS in_FW f_FW values_NNS ._.
+Here_RB is_VBZ the_DT main_JJ intuition_NN behind_IN the_DT algorithm_NN ._.
+We_PRP maintain_VBP a_DT neighborhood_NN around_IN the_DT labeled_JJ points_NNS ._.
+At_IN any_DT ti_NN
+ly_RB considered_VBN the_DT nodes_NNS ranked_VBN by_IN the_DT hitting_VBG time_NN from_IN the_DT merged_JJ author_NN node_NN ._.
+In_IN a_DT web-search_NN setting_VBG the_DT user_NN will_MD be_VB asked_VBN to_TO label_VB these_DT nodes_NNS ._.
+Note_VB that_IN this_DT is_VBZ an_DT active_JJ learning_NN heuristic_NN ._.
+In_IN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: the_DT authors_NNS mention_VBP three_CD desirable_JJ properties_NNS of_IN an_DT effective_JJ active_JJ learning_NN strategy_NN for_IN relevance_NN feedback_NN in_IN information_NN retrieval_NN ._.
+Let_VB us_PRP denote_VB the_DT set_NN of_IN feedback_NN nodes_NNS as_IN F_NN ._.
+F_NN should_MD be_VB :_: 1_CD ._.
+detection_NN in_IN the_DT web_NN ,_, which_WDT is_VBZ an_DT extremely_RB important_JJ task_NN ._.
+These_DT algorithms_NNS can_MD be_VB roughly_RB divided_VBN into_IN two_CD classes_NNS :_: content-based_JJ methods_NNS ,_, and_CC graph_NN based_JJ approaches_NNS ._.
+The_DT content-based_JJ approaches_NNS -LRB-_-LRB- =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =--RRB-_NN focus_NN on_IN the_DT content_NN of_IN the_DT webpage_NN ,_, e.g._FW number_NN of_IN words_NNS in_IN the_DT page_NN and_CC page_NN title_NN ,_, amount_NN of_IN anchor_NN text_NN ,_, fraction_NN of_IN visible_JJ content_JJ etc._NN to_TO separate_VB a_DT spam-page_NN from_IN a_DT non-spam_JJ page_NN ._.
+Graph-base_NN
+rmonic_JJ rank_NN is_VBZ very_RB similar_JJ to_TO our_PRP$ formulation_NN ._.
+Other_JJ approaches_NNS include_VBP algorithms_NNS which_WDT combine_VBP both_DT of_IN the_DT above_JJ ,_, i.e._FW classify_VBP the_DT spam_NN pages_NNS using_VBG content_NN and_CC graphbased_JJ features_NNS ._.
+The_DT authors_NNS in_IN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: optimize_VB an_DT objective_JJ function_NN which_WDT minimizes_VBZ the_DT error_NN on_IN the_DT labeled_JJ examples_NNS with_IN an_DT additional_JJ constraint_NN of_IN regularizing_VBG the_DT function_NN over_IN the_DT graph_NN Laplacian_NN ._.
+The_DT idea_NN is_VBZ to_TO penalize_VB unsmooth_NN
+f_LS W_NN to_TO the_DT words_NNS in_IN its_PRP$ title_NN ,_, a_DT total_JJ weight_NN of_IN P_NN to_TO the_DT papers_NNS it_PRP cites_VBZ and_CC A_NN to_TO the_DT authors_NNS on_IN it_PRP ._.
+We_PRP use_VBP an_DT inverse_JJ frequency_NN scheme_NN for_IN the_DT paper-to-word_JJ link_NN weight_NN ._.
+The_DT details_NNS can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP set_VBD W_NN =_JJ 1_CD ;_: A_NN =_JJ 10_CD and_CC P_NN =_JJ 10_CD so_IN that_IN the_DT word_NN layer_NN to_TO paper_NN layer_NN connection_NN is_VBZ almost_RB directed_VBN ._.
+The_DT leaf_NN nodes_NNS are_VBP augmented_VBN with_IN a_DT self_NN loop_NN ,_, with_IN the_DT same_JJ weight_NN as_IN its_PRP$ single_JJ edge_NN ._.
+6.1_CD Exper_NN
+lity_NN that_IN a_DT random_JJ walk_NN from_IN i_FW will_MD not_RB hit_VB any_DT label_NN in_IN T_NN steps_NNS ._.
+35WWW_CD 2009_CD MADRID_NNP !_.
+5.2_CD The_DT Branch_NNP and_CC Bound_VBD Algorithm_NNP Computing_NNP functions_VBZ over_IN a_DT graph_NN using_VBG neighborhood_NN expansion_NN has_VBZ been_VBN used_VBN by_IN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: for_IN computing_VBG nearest_JJS neighbors_NNS in_IN hitting_VBG time_NN to_TO a_DT node_NN ,_, or_CC for_IN efficient_JJ computation_NN of_IN personalized_JJ pagerank_NN -LRB-_-LRB- -LRB-_-LRB- 5_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+We_PRP use_VBP a_DT technique_NN similar_JJ to_TO the_DT first_JJ approach_NN to_TO compute_VB top_JJ k_NN nodes_NNS in_IN f_FW va_FW

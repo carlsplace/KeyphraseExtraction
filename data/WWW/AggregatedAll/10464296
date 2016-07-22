@@ -1,0 +1,86 @@
+Dtwiki_NNP :_: a_DT disconnection_NN and_CC intermittency_NN tolerant_JJ wiki_NNS
+Wikis_NNP have_VBP proven_VBN to_TO be_VB a_DT valuable_JJ tool_NN for_IN collaboration_NN and_CC content_NN generation_NN on_IN the_DT web_NN ._.
+Simple_JJ semantics_NNS and_CC ease-of-use_JJ make_NN wiki_NN systems_NNS well_RB suited_VBN for_IN meeting_VBG many_JJ emerging_VBG region_NN needs_NNS in_IN the_DT areas_NNS of_IN education_NN ,_, collaboration_NN and_CC local_JJ content_NN generation_NN ._.
+Despite_IN their_PRP$ usefulness_NN ,_, current_JJ wiki_NN software_NN does_VBZ not_RB work_VB well_RB in_IN the_DT network_NN environments_NNS found_VBN in_IN emerging_VBG regions_NNS ._.
+For_IN example_NN ,_, it_PRP is_VBZ common_JJ to_TO have_VB long-lasting_JJ network_NN partitions_NNS due_JJ to_TO cost_NN ,_, power_NN and_CC poor_JJ connectivity_NN ._.
+Network_NNP partitions_NNS make_VBP a_DT traditional_JJ centralized_JJ wiki_NN architecture_NN unusable_JJ due_JJ to_TO the_DT unavailability_NN of_IN the_DT central_JJ server_NN ._.
+Existing_VBG solutions_NNS towards_IN addressing_VBG connectivity_NN problems_NNS include_VBP web-caching_JJ proxies_NNS and_CC snapshot_NN distribution_NN ._.
+While_IN proxies_NNS and_CC snapshots_NNS allow_VBP wiki_NN data_NNS to_TO be_VB read_VBN while_IN disconnected_VBN ,_, they_PRP prevent_VBP users_NNS from_IN contributing_VBG updates_NNS back_RB to_TO the_DT wiki_NN ._.
+In_IN this_DT paper_NN we_PRP detail_NN the_DT design_NN and_CC implementation_NN of_IN DTWiki_NN ,_, a_DT wiki_NN system_NN which_WDT explicitly_RB addresses_VBZ the_DT problem_NN of_IN operating_VBG a_DT wiki_NN system_NN in_IN an_DT intermittent_JJ environment_NN ._.
+The_DT DTWiki_NN system_NN is_VBZ able_JJ to_TO cope_VB with_IN long-lasting_JJ partitions_NNS and_CC bad_JJ connectivity_NN while_IN providing_VBG the_DT functionality_NN of_IN popular_JJ wiki_NN software_NN such_JJ as_IN MediaWiki_NN and_CC TWiki_NN ._.
+raditional_JJ version_NN control_NN systems_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- are_VBP mainly_RB used_VBN for_IN source_NN code_NN tracking_NN in_IN which_WDT a_DT source_NN repository_NN maintains_VBZ and_CC merges_VBZ newly_RB committed_VBN changes_NNS ._.
+Recent_JJ decentralized_VBN version_NN control_NN systems_NNS =_JJ -_: =[_NN 9_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: replicate_VB documents_NNS on_IN multiple_JJ sites_NNS to_TO improve_VB availability_NN and_CC scalability_NN ._.
+In_IN these_DT systems_NNS ,_, concurrent_JJ update_VBP conflicts_NNS will_MD be_VB presented_VBN to_TO users_NNS for_IN manual_JJ resolution_NN ._.
+These_DT systems_NNS do_VBP not_RB tar_NN
+y_NN ,_, the_DT Integrator_NNP sends_VBZ the_DT necessary_JJ patches_NNS to_TO be_VB sure_JJ that_IN all_DT copies_NNS remain_VBP consistent_JJ ._.
+4_LS ._.
+Related_JJ Work_NN Few_JJ decentralized_JJ wiki_NN engines_NNS have_VBP been_VBN proposed_VBN such_JJ as_IN DistriWiki_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, Wooki_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, DTWiki_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Piki_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, RepliWiki_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- or_CC the_DT transactional_JJ system_NN described_VBN in_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+These_DT approaches_NNS have_VBP one_CD or_CC more_JJR of_IN the_DT following_JJ drawbacks_NNS :_: they_PRP require_VBP that_IN the_DT wiki_NN content_NN is_VBZ fully_RB replicated_VBN on_IN every_DT p_NN
+nfrastructure_NN ._.
+Existing_VBG aproaches_NNS to_TO deploy_VB a_DT collaborative_JJ system_NN on_IN a_DT distribted_JJ network_NN include_VBP Wooki_NNP -LRB-_-LRB- 33_CD -RRB-_-RRB- ,_, DistriWiki_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, RepliWiki_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, Distributed_VBN Version_NNP Control_NNP systems_NNS -LRB-_-LRB- 1_CD ,_, 11_CD ,_, 37_CD -RRB-_-RRB- ,_, DTWiki_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Piki_NNP -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+Several_JJ drawback_NN prevent_VBP these_DT systems_NNS from_IN being_VBG used_VBN in_IN our_PRP$ target_NN scenario_NN ._.
+They_PRP either_RB require_VBP total_JJ replication_NN of_IN content_NN ,_, requiring_VBG all_DT wiki_JJ pages_NNS are_VBP replicated_VBN at_IN all_DT nodes_NNS ,_, o_NN
+and_CC navigation_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, it_PRP is_VBZ not_RB easy_JJ to_TO find_VB information_NN in_IN wikis_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+They_PRP have_VBP also_RB scalability_NN ,_, availability_NN and_CC performance_NN problems_NNS -LRB-_-LRB- 3_CD ,_, 4_CD -RRB-_-RRB- and_CC they_PRP do_VBP not_RB support_VB offline_JJ works_NNS and_CC atomic_JJ changes_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO overcome_VB these_DT limitations_NNS ,_, wiki_NN systems_NNS have_VBP evolved_VBN in_IN two_CD different_JJ ways_NNS :_: semantic_JJ wikis_NN and_CC peer-to-peer_NN wikis_NN ._.
+Semantic_NNP Wikis_NNP Semantic_NNP wikis_NNS are_VBP a_DT new_JJ generation_NN of_IN collaborative_JJ editing_NN too_RB
+the_DT industrialized_JJ world_NN ._.
+Many_JJ information_NN communications_NNS and_CC technology_NN -LRB-_-LRB- ICT_NN -RRB-_-RRB- for_IN development_NN programs_NNS seek_VBP to_TO address_VB this_DT issue_NN with_IN a_DT local_JJ content_NN generation_NN effort_NN using_VBG website_NN creation_NN tools_NNS =_JJ -_: =[_NN 2_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Training_NN is_VBZ needed_VBN to_TO become_VB proficient_JJ in_IN website_NN authoring_NN ._.
+Wikis_NNP are_VBP well_RB suited_VBN to_TO fill_VB this_DT niche_NN because_IN they_PRP combine_VBP both_DT content_JJ creation_NN and_CC content_NN sharing_NN into_IN a_DT tool_NN that_WDT is_VBZ easy_JJ to_TO use_VB ._.
+the_DT content_NN generated_VBN in_IN existing_VBG online_JJ wikis_NN ._.
+Many_JJ educationally-focused_JJ non-governmental_JJ organizations_NNS -LRB-_-LRB- NGOs_NNS -RRB-_-RRB- distribute_VBP snapshots_NNS of_IN Wikipedia_NNP content_NN as_IN part_NN of_IN their_PRP$ digital_JJ classroom_NN material_NN ._.
+=_SYM -_: =[_NN 28_CD ,_, 15_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: Although_IN snapshots_NNS are_VBP useful_JJ ,_, they_PRP result_VBP in_IN a_DT unidirectional_JJ flow_NN of_IN information_NN ._.
+A_DT wiki_NN that_WDT has_VBZ a_DT bidirectional_JJ information_NN flow_NN would_MD allow_VB local_JJ student_NN discussions_NNS to_TO connect_VB with_IN the_DT wider_JJR co_NN
+stigate_NN shared_VBD intermittently_RB connected_VBN hypertext_NN systems_NNS ._.
+The_DT concept_NN of_IN revisions_NNS and_CC concurrent_JJ edit_NN management_NN is_VBZ similar_JJ to_TO the_DT functionality_NN of_IN version_NN control_NN systems_NNS such_JJ as_IN CVS_NNP and_CC Mercurial_NNP =_SYM -_: =[_NN 25_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT allow_VBP disconnected_VBN locals_NNS edits_NNS and_CC resolution_NN of_IN conflicts_NNS cause_NN by_IN remote_JJ users_NNS ._.
+The_DT difference_NN is_VBZ that_IN our_PRP$ use_NN of_IN the_DT DTN_NNP and_CC TierStore_NNP software_NN architecture_NN allows_VBZ us_PRP to_TO handle_VB arbitrary_JJ ne_NN
+ause_FW wiki_FW software_NN ranges_NNS in_IN implementation_NN size_NN from_IN a_DT two-hundred_JJ byte_NN shell_NN script_NN to_TO full-blown_JJ content-management_NN systems_NNS ,_, we_PRP took_VBD the_DT top_JJ five_CD wikis_NNS as_IN referenced_VBN by_IN the_DT popular_JJ wiki_NN website_NN c2_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: as_IN a_DT basis_NN for_IN determining_VBG the_DT key_JJ functionality_NN needed_VBN for_IN wiki_NN software_NN ._.
+The_DT methodology_NN used_VBN by_IN c2_NN to_TO rank_VB wiki_JJ engines_NNS is_VBZ to_TO compare_VB Google_NNP search_NN hit_VBD counts_NNS for_IN each_DT of_IN the_DT wiki_NN engines_NNS ._.
+We_PRP are_VBP
+e.g._FW presentation_NN and_CC search_NN ,_, are_VBP functions_NNS that_WDT can_MD be_VB implemented_VBN with_IN the_DT information_NN available_JJ locally_RB with_IN no_DT need_NN for_IN distributed_VBN state_NN ._.
+We_PRP build_VBP on_IN the_DT work_NN of_IN Delay-tolerant_JJ Networking_NN -LRB-_-LRB- DTN_NN -RRB-_-RRB- =_JJ -_: =[_NN 3_CD ,_, 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT provides_VBZ a_DT messaging_NN layer_NN that_WDT handles_VBZ intermittency_NN and_CC disconnection_NN ,_, manages_VBZ communications_NNS links_NNS as_IN they_PRP go_VBP up_RB and_CC down_RB ,_, and_CC provides_VBZ durable_JJ storage_NN for_IN messages_NNS in_IN transit_NN ._.
+On_IN top_NN of_IN DT_NN
+DTWiki_NN provides_VBZ wiki_NN functionality_NN for_IN arbitrary_JJ combination_NN of_IN network_NN topologies_NNS and_CC intermittency_NN ._.
+With_IN regard_NN to_TO flexible_JJ use_NN of_IN network_NN topology_NN ,_, the_DT DTWiki_NN system_NN is_VBZ related_JJ to_TO the_DT Lotus_NNP Notes_NNP =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Bayou_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- peerto-peer_JJ groupware_NN systems_NNS ._.
+Both_DT systems_NNS predate_VBP the_DT modern_JJ conception_NN of_IN wikis_NN ._.
+Lotus_NNP Notes_NNP has_VBZ similar_JJ structure_NN and_CC goals_NNS ._.
+The_DT central_JJ data_NN structure_NN of_IN the_DT Lotus_NNP system_NN is_VBZ the_DT note_NN
+a_DT DTN_NNP ._.
+Once_RB the_DT underlying_VBG network_NN routing_VBG has_VBZ been_VBN established_VBN ,_, wiki_NN content_NN is_VBZ transparently_RB shared_VBN among_IN DTWiki_NN hosts_NNS ._.
+Finally_RB we_PRP note_VBP that_IN using_VBG a_DT external_JJ synchronization_NN mechanism_NN such_JJ as_IN rsync_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: to_TO keep_VB wiki_NN databases_NNS in_IN each_DT partition_NN up_IN to_TO date_NN does_VBZ not_RB work_VB well_RB because_IN it_PRP is_VBZ not_RB integrated_VBN into_IN the_DT wiki_NN semantics_NNS nor_CC does_VBZ it_PRP handle_VB concurrent_JJ update_VBP conflicts_NNS ._.
+Also_RB ,_, replacing_VBG the_DT underly_NN
+scenarios_NNS ,_, users_NNS are_VBP able_JJ to_TO communicate_VB within_IN the_DT local_JJ net-work_NN ,_, but_CC can_MD not_RB always_RB reach_VB the_DT Internet_NNP ._.
+More_RBR esoteric_JJ examples_NNS include_VBP locations_NNS serviced_VBN by_IN ``_`` sneaker_NN net_NN ''_'' or_CC a_DT mechanical_JJ backhaul_NN =_JJ -_: =[_NN 19_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Despite_IN wiki_NN 's_POS centralized_JJ provenance_NN ,_, the_DT basic_JJ wiki_NN data_NNS model_NN is_VBZ a_DT good_JJ candidate_NN for_IN intermittent_JJ networks_NNS and_CC disconnected_VBN operation_NN ._.
+Wiki_NNP systems_NNS already_RB have_VBP to_TO handle_VB the_DT possibility_NN of_IN conf_NN
+scenarios_NNS ,_, users_NNS are_VBP able_JJ to_TO communicate_VB within_IN the_DT local_JJ net-work_NN ,_, but_CC can_MD not_RB always_RB reach_VB the_DT Internet_NNP ._.
+More_RBR esoteric_JJ examples_NNS include_VBP locations_NNS serviced_VBN by_IN ``_`` sneaker_NN net_NN ''_'' or_CC a_DT mechanical_JJ backhaul_NN =_JJ -_: =[_NN 19_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Despite_IN wiki_NN 's_POS centralized_JJ provenance_NN ,_, the_DT basic_JJ wiki_NN data_NNS model_NN is_VBZ a_DT good_JJ candidate_NN for_IN intermittent_JJ networks_NNS and_CC disconnected_VBN operation_NN ._.
+Wiki_NNP systems_NNS already_RB have_VBP to_TO handle_VB the_DT possibility_NN of_IN conf_NN
+ilable_JJ when_WRB the_DT hosts_NNS are_VBP disconnected_VBN ._.
+WWWOFFLE_NN -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, NOFFLE_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC OfflineIMAP_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, are_VBP respectively_RB ,_, proxies_NNS which_WDT provide_VBP clients_NNS cached_VBD offline_JJ access_NN for_IN HTTP_NNP ,_, NEWS_NNP and_CC IMAP_NNP servers_NNS ._.
+The_DT TEK_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: project_NN is_VBZ a_DT web_NN caching_NN proxy_NN which_WDT has_VBZ been_VBN designedPages_FW 600 500 400 300_FW 200_CD 100_CD 0_CD 0_CD 20_CD 40_CD 60 80 100 120_CD Days_NNPS Updates_NNPS Conflicts_NNPS Figure_NNP 5_CD :_: The_DT average_JJ number_NN of_IN pages_NNS updates_NNS and_CC conflicts_NNS that_WDT oc_VBP
+bed_NN in_IN Section_NN 2_CD is_VBZ implemented_VBN in_IN DTWiki_NN ._.
+3.1_CD TierStore_NN TierStore_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- is_VBZ a_DT file_NN system_NN for_IN building_NN distributed_VBN ,_, delay-tolerant_JJ applications_NNS ._.
+TierStore_NNP uses_VBZ the_DT Delay-Tolerant_JJ Networking_NN -LRB-_-LRB- DTN_NN -RRB-_-RRB- stack_VBP =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: for_IN network_NN transport_NN ,_, which_WDT enables_VBZ the_DT file_NN system_NN to_TO be_VB robust_JJ across_IN intermittent_JJ connectivity_NN and_CC to_TO work_VB over_IN diverse_JJ kinds_NNS of_IN network_NN connectivity_NN ._.
+The_DT abstraction_NN that_IN TierStore_NNP presents_VBZ to_TO t_NN
+ides_FW wiki_FW functionality_NN for_IN arbitrary_JJ combination_NN of_IN network_NN topologies_NNS and_CC intermittency_NN ._.
+With_IN regard_NN to_TO flexible_JJ use_NN of_IN network_NN topology_NN ,_, the_DT DTWiki_NN system_NN is_VBZ related_JJ to_TO the_DT Lotus_NNP Notes_NNP -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, Bayou_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: peerto-peer_JJ groupware_NN systems_NNS ._.
+Both_DT systems_NNS predate_VBP the_DT modern_JJ conception_NN of_IN wikis_NN ._.
+Lotus_NNP Notes_NNP has_VBZ similar_JJ structure_NN and_CC goals_NNS ._.
+The_DT central_JJ data_NN structure_NN of_IN the_DT Lotus_NNP system_NN is_VBZ the_DT note_NN ,_, which_WDT is_VBZ a_DT
+oom_NN use_NN ,_, and_CC personal_JJ use_NN by_IN others_NNS ._.
+WWW_NN 2008_CD ,_, April_NNP 21_CD --_: 25_CD ,_, 2008_CD ,_, Beijing_NNP ,_, China_NNP ._.
+ACM_NN 978-1-60558-085-2_CD \/_: 08\/04_CD ._.
+which_WDT the_DT users_NNS can_MD participate_VB in_IN writing_VBG Wikipedia_NNP articles_NNS ._.
+The_DT popularity_NN of_IN ``_`` wikis_NN ''_'' =_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: as_IN website_NN content_NN management_NN software_NN also_RB speaks_VBZ to_TO the_DT usefulness_NN of_IN the_DT medium_NN ._.
+Generally_RB speaking_VBG ,_, wikis_NNS have_VBP proven_VBN to_TO be_VB an_DT excellent_JJ tool_NN for_IN collaboration_NN and_CC content_NN generation_NN ._.
+Several_JJ asp_NN
+e.g._FW presentation_NN and_CC search_NN ,_, are_VBP functions_NNS that_WDT can_MD be_VB implemented_VBN with_IN the_DT information_NN available_JJ locally_RB with_IN no_DT need_NN for_IN distributed_VBN state_NN ._.
+We_PRP build_VBP on_IN the_DT work_NN of_IN Delay-tolerant_JJ Networking_NN -LRB-_-LRB- DTN_NN -RRB-_-RRB- =_JJ -_: =[_NN 3_CD ,_, 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT provides_VBZ a_DT messaging_NN layer_NN that_WDT handles_VBZ intermittency_NN and_CC disconnection_NN ,_, manages_VBZ communications_NNS links_NNS as_IN they_PRP go_VBP up_RB and_CC down_RB ,_, and_CC provides_VBZ durable_JJ storage_NN for_IN messages_NNS in_IN transit_NN ._.
+On_IN top_NN of_IN DT_NN
+TierStore\/DTN_NN ,_, which_WDT is_VBZ the_DT file_NN system_NN platform_NN we_PRP used_VBD to_TO construct_VB DTWiki_NN ._.
+We_PRP then_RB describe_VBP how_WRB each_DT component_NN of_IN a_DT wiki_NN as_IN described_VBN in_IN Section_NN 2_CD is_VBZ implemented_VBN in_IN DTWiki_NN ._.
+3.1_CD TierStore_NN TierStore_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT file_NN system_NN for_IN building_NN distributed_VBN ,_, delay-tolerant_JJ applications_NNS ._.
+TierStore_NNP uses_VBZ the_DT Delay-Tolerant_JJ Networking_NN -LRB-_-LRB- DTN_NN -RRB-_-RRB- stack_VBP -LRB-_-LRB- 5_CD -RRB-_-RRB- for_IN network_NN transport_NN ,_, which_WDT enables_VBZ the_DT file_NN system_NN to_TO be_VB robust_JJ

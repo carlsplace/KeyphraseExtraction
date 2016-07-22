@@ -1,0 +1,408 @@
+Improving_NN recommendation_NN lists_NNS through_IN topic_NN diversification_NN
+In_IN this_DT work_NN we_PRP present_VBP topic_NN diversification_NN ,_, a_DT novel_JJ method_NN designed_VBN to_TO balance_VB and_CC diversify_VB personalized_JJ recommendation_NN lists_NNS in_IN order_NN to_TO reflect_VB the_DT user_NN 's_POS complete_JJ spectrum_NN of_IN interests_NNS ._.
+Though_IN being_VBG detrimental_JJ to_TO average_JJ accuracy_NN ,_, we_PRP show_VBP that_IN our_PRP$ method_NN improves_VBZ user_NN satisfaction_NN with_IN recommendation_NN lists_NNS ,_, in_IN particular_JJ for_IN lists_NNS generated_VBN using_VBG the_DT common_JJ item-based_JJ collaborative_JJ filtering_VBG algorithm_NN ._.
+Our_PRP$ work_NN builds_VBZ upon_IN prior_JJ research_NN on_IN recommender_NN systems_NNS ,_, looking_VBG at_IN properties_NNS of_IN recommendation_NN lists_NNS as_IN entities_NNS in_IN their_PRP$ own_JJ right_NN rather_RB than_IN specifically_RB focusing_VBG on_IN the_DT accuracy_NN of_IN individual_JJ recommendations_NNS ._.
+We_PRP introduce_VBP the_DT intra-list_JJ similarity_NN metric_NN to_TO assess_VB the_DT topical_JJ diversity_NN of_IN recommendation_NN lists_NNS and_CC the_DT topic_NN diversification_NN approach_NN for_IN decreasing_VBG the_DT intra-list_JJ similarity_NN ._.
+We_PRP evaluate_VBP our_PRP$ method_NN using_VBG book_NN recommendation_NN data_NNS ,_, including_VBG offline_JJ analysis_NN on_IN 361_CD ,_, !_.
+,_, 349_CD ratings_NNS and_CC an_DT online_JJ study_NN involving_VBG more_JJR than_IN 2_CD ,_, !_.
+,_, 100_CD subjects_NNS ._.
+ch_NN movie_NN -LRB-_-LRB- such_JJ as_IN genre_NN ,_, director_NN ,_, etc._NN -RRB-_-RRB- ._.
+Typically_RB ,_, a_DT heuristic_NN distance_NN formula_NN is_VBZ defined_VBN on_IN the_DT set_NN of_IN attributes_NNS in_IN order_NN to_TO allow_VB the_DT system_NN to_TO quantify_VB the_DT distance_NN between_IN a_DT pair_NN of_IN items_NNS ._.
+In_IN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, diversity_NN is_VBZ measured_VBN based_VBN on_IN a_DT specific_JJ attribute_NN of_IN the_DT item_NN which_WDT is_VBZ defined_VBN by_IN the_DT taxonomy_NN in_IN which_WDT the_DT item_NN is_VBZ classified_VBN ._.
+This_DT can_MD also_RB be_VB considered_VBN as_IN attribute-based_JJ since_IN the_DT classificat_NN
+sity_NN in_IN social_JJ networks_NNS has_VBZ been_VBN investigated_VBN by_IN Lemire_NNP et_FW al._FW -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Also_RB in_IN the_DT domain_NN of_IN recommendation_NN engines_NNS some_DT approaches_NNS to_TO enhance_VB the_DT diversity_NN of_IN the_DT results_NNS were_VBD proposed_VBN ._.
+Ziegler_NNP et_FW al._FW =_SYM -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP a_DT technique_NN to_TO diversify_VB top-N_JJ lists_NNS of_IN recommendation_NN engines_NNS and_CC observe_VB in_IN a_DT user_NN study_NN that_IN user_NN satisfaction_NN is_VBZ improved_VBN even_RB though_IN the_DT average_JJ accuracy_NN of_IN the_DT lists_NNS is_VBZ deteriorated_JJ ._.
+An_DT
+ell_NN and_CC Goldstein_NNP proposed_VBD to_TO re-rank_VB retrieved_VBN documents_NNS ,_, and_CC use_VBP the_DT Maximal_JJ Marginal_JJ Relevance_NN -LRB-_-LRB- MMR_NN -RRB-_-RRB- criterion_NN to_TO reduce_VB redundancy_NN ._.
+The_DT criterion_NN has_VBZ been_VBN applied_VBN to_TO the_DT recommendation_NN problem_NN in_IN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN text_NN retrieval_NN ,_, the_DT MMR_NNP criterion_NN has_VBZ also_RB been_VBN employed_VBN in_IN a_DT risk_NN framework_NN to_TO address_VB the_DT subtopic_JJ retrieval_NN problem_NN -LRB-_-LRB- 9,20_CD -RRB-_-RRB- ._.
+But_CC nonetheless_RB ,12_NNP J._NNP Wang_NNP when_WRB coming_VBG to_TO the_DT practical_JJ algorithms_NNS ,_,
+t_NN tries_VBZ to_TO maximize_VB the_DT likelihood_NN of_IN finding_VBG a_DT relevant_JJ document_NN in_IN the_DT top-k_JJ positions_NNS given_VBN the_DT categorical_JJ information_NN of_IN the_DT queries_NNS and_CC documents_NNS ._.
+Other_JJ works_NNS on_IN topical_JJ diversification_NN include_VBP =_JJ -_: =[_NN 18_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+-LRB-_-LRB- 20_CD ,_, 19_CD -RRB-_-RRB- propose_VBP a_DT risk_NN minimization_NN framework_NN for_IN information_NN retrieval_NN that_WDT allows_VBZ a_DT user_NN to_TO define_VB an_DT arbitrary_JJ loss_NN function_NN over_IN the_DT set_NN of_IN returned_VBN documents_NNS ._.
+-LRB-_-LRB- 17_CD -RRB-_-RRB- proposed_VBD a_DT method_NN for_IN divers_NNS
+lar_JJ biology_NN ;_: this_DT concept_NN allows_VBZ cells_NNS -LRB-_-LRB- i._NN e_SYM ,_, recommendation_NN lists_NNS -RRB-_-RRB- to_TO maintain_VB their_PRP$ internal_JJ composition_NN of_IN substances_NNS -LRB-_-LRB- i.e._FW ,_, topics_NNS -RRB-_-RRB- at_IN required_VBN levels_NNS -LRB-_-LRB- i.e._FW ,_, gauging_VBG accuracy_NN versus_CC dissimilarity_NN -RRB-_-RRB- =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+5_CD Empirical_JJ Analysis_NN We_PRP conducted_VBD offline_JJ evaluations_NNS to_TO understand_VB the_DT ramifications_NNS of_IN topic_NN diversification_NN on_IN accuracy_NN metrics_NNS ,_, and_CC online_JJ analysis_NN to_TO investigate_VB how_WRB our_PRP$ method_NN affects_VBZ actual_JJ u_NN
+mation_NN about_IN their_PRP$ search_NN topic_NN ._.
+Therefore_RB ,_, recently_RB ,_, result_NN diversification_NN has_VBZ attracted_VBN considerable_JJ attention_NN as_IN a_DT means_NN of_IN enhancing_VBG user_NN satisfaction_NN in_IN recommender_NN systems_NNS and_CC web_NN search_NN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 18_CD ,_, 14_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+We_PRP argue_VBP that_IN diversification_NN could_MD also_RB be_VB employed_VBN in_IN the_DT context_NN of_IN publish\/subscribe_NN systems_NNS to_TO improve_VB the_DT overall_JJ quality_NN of_IN notifications_NNS delivered_VBN to_TO users_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP tackle_VBP the_DT pro_NN
+e_LS score_NN ._.
+6_CD ._.
+RELATED_NNS WORK_VBP There_EX are_VBP several_JJ previous_JJ papers_NNS that_WDT utilized_VBD the_DT web_NN obtaining_VBG ratings_NNS where_WRB no_DT publicly_RB available_JJ user-item_JJ ratings_NNS datasets_NNS exist_VBP ._.
+For_IN example_NN ,_, the_DT Book-Crossing_NNP dataset_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: contains_VBZ book_NN ratings_NNS collected_VBN from_IN a_DT social_JJ network_NN dedicated_VBN to_TO discussions_NNS of_IN books_NNS 5_CD ._.
+Users_NNS of_IN this_DT network_NN provide_VBP lists_NNS of_IN books_NNS they_PRP like_VBP ._.
+We_PRP expect_VBP that_IN this_DT dataset_NN is_VBZ less_RBR noisy_JJ than_IN most_JJS
+de_IN disregarding_VBG items_NNS if_IN they_PRP are_VBP too_RB similar_JJ to_TO something_NN the_DT user_NN has_VBZ already_RB seen_VBN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, or_CC simple_JJ metrics_NNS to_TO measure_VB novelty_NN and_CC serendipity_NN based_VBN on_IN the_DT average_JJ popularity_NN of_IN the_DT recommended_VBN items_NNS =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN fact_NN ,_, recommenders_NNS that_WDT appropriately_RB discount_VBP popularity_NN may_MD increase_VB total_JJ sales_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+Generally_RB speaking_VBG ,_, the_DT most_RBS popular_JJ items_NNS in_IN the_DT collection_NN are_VBP the_DT ones_NNS with_IN higher_JJR probability_NN that_IN a_DT gi_NN
+able_JJ attention_NN as_IN a_DT means_NN of_IN counteracting_VBG the_DT over-specialization_NN problem_NN ,_, i.e._FW the_DT retrieval_NN of_IN too_RB homogeneous_JJ results_NNS in_IN recommender_NN systems_NNS and_CC web_NN search_NN ,_, thus_RB enhancing_VBG user_NN satisfaction_NN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 20_CD ,_, 16_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Consider_VB ,_, for_IN example_NN ,_, a_DT user_NN who_WP wants_VBZ to_TO buy_VB a_DT car_NN and_CC submits_VBZ a_DT related_JJ web_NN search_NN query_NN ._.
+A_DT diverse_JJ result_NN ,_, i.e._FW a_DT result_NN containing_VBG various_JJ brands_NNS and_CC models_NNS with_IN different_JJ horsepower_NN and_CC other_JJ
+predictive_JJ accuracy_NN or_CC precision_NN and_CC recall_NN related_JJ measures_NNS correlate_VBP directly_RB with_IN interestingness_NN for_IN a_DT system_NN 's_POS end_NN users_NNS ._.
+As_IN such_JJ various_JJ authors_NNS proposed_VBN and_CC argued_VBN for_IN new_JJ evaluation_NN measures_VBZ =_JJ -_: =[_NN 22_CD ,_, 21_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Ziegler_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- has_VBZ analyzed_VBN the_DT effect_NN of_IN diversity_NN with_IN respect_NN to_TO user_NN satisfaction_NN and_CC introduced_VBN topic_NN diversification_NN and_CC intra-list_JJ similarity_NN as_IN concepts_NNS for_IN the_DT recommender_NN system_NN community_NN ._.
+Z_NN
+s_NN does_VBZ not_RB necessarily_RB imply_VB good_JJ recommendations_NNS ._.
+Those_DT recommendations_NNS are_VBP likely_JJ to_TO recommend_VB ordinary_JJ items_NNS that_IN users_NNS are_VBP already_RB aware_JJ of_IN ._.
+Although_IN other_JJ factors_NNS ,_, such_JJ as_IN novelty_NN or_CC serendipity_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN proposed_VBN for_IN use_NN in_IN evaluating_VBG recommender_NN systems_NNS ,_, it_PRP is_VBZ difficult_JJ to_TO measure_VB them_PRP quantitatively_RB ._.
+The_DT recommendation_NN effect_NN estimated_VBN with_IN our_PRP$ model_NN can_MD be_VB used_VBN to_TO evaluate_VB the_DT recommende_NN
+it_PRP seems_VBZ that_IN in_IN order_NN to_TO please_VB users_NNS ,_, the_DT system_NN only_RB needs_VBZ to_TO have_VB a_DT ``_`` minimal_JJ ''_'' recommendation_NN quality_NN ,_, which_WDT should_MD of_IN course_NN take_VBP into_IN account_NN elements_NNS such_JJ as_IN novelty_NN -LRB-_-LRB- or_CC diversity_NN ,_, as_IN shown_VBN in_IN =_JJ -_: =[_NN 14_CD ,_, 9_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+But_CC in_IN order_NN to_TO get_VB users_NNS to_TO go_VB further_RBR in_IN the_DT acceptance_NN process_NN and_CC actually_RB buy_VB songs_NNS ,_, the_DT system_NN 's_POS recommendation_NN accuracy_NN seems_VBZ crucial_JJ ,_, whilst_IN maintaining_VBG an_DT easy_JJ to_TO use_VB system_NN ._.
+We_PRP believe_VBP th_DT
+uired_VBN by_IN Last_JJ ._.
+fm_NN ._.
+We_PRP focused_VBD on_IN the_DT 100_CD most_RBS listened-to_JJ artists_NNS ._.
+We_PRP used_VBD a_DT random_JJ subset_NN of_IN the_DT data_NNS and_CC reduced_VBD the_DT problem_NN to_TO ``_`` listened-to_JJ ''_'' or_CC ``_`` did_VBD not_RB listen-to_JJ ._. ''_''
+The_DT Book_NNP Crossing_NNP -LRB-_-LRB- Book_NNP -RRB-_-RRB- dataset_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: consists_VBZ of_IN a_DT users_NNS rating_NN of_IN how_WRB much_JJ they_PRP liked_VBD a_DT book_NN ._.
+We_PRP considered_VBD the_DT 500_CD most_RBS frequently_RB rated_VBN book_NN ._.
+We_PRP reduced_VBD the_DT problem_NN to_TO ``_`` rated_VBN ''_'' or_CC ``_`` not_RB rated_VBN ''_'' and_CC considered_VBN all_DT people_NNS who_WP rated_VBD more_JJR t_NN
+including_VBG movies_NNS ,_, credit_NN card_NN transactions_NNS ,_, and_CC others_NNS using_VBG metrics_NNS such_JJ as_IN hit_NN rate_NN ._.
+In_IN addition_NN to_TO these_DT cross-validation_NN experiments_NNS several_JJ studies_NNS with_IN real_JJ users_NNS were_VBD performed_VBN ._.
+Ziegler_NNP et_FW al_FW =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: showed_VBD how_WRB topic_NN diversification_NN in_IN the_DT recommended_VBN set_NN increases_VBZ book_NN recommendation_NN quality_NN as_IN perceived_VBN by_IN users_NNS ._.
+Recommendation_NN explanation_NN role_NN has_VBZ been_VBN recognized_VBN and\/or_CC used_VBN in_IN -LRB-_-LRB- 3_CD ,_, 17_CD ,_, 9_CD -RRB-_-RRB- ._.
+Cos_NNP
+y_NN metrics_NNS such_JJ as_IN mean_JJ average_JJ error_NN -LRB-_-LRB- MAE_NN -RRB-_-RRB- ,_, precision_NN and_CC recall_NN ,_, can_MD only_RB partially_RB evaluate_VB a_DT recommender_NN system_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- ._.
+User_NN satisfaction_NN ,_, and_CC derivatives_NNS thereof_RB such_JJ as_IN serendipity_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, diversity_NN =_JJ -_: =[_NN 39_CD -RRB-_-RRB- -_: =_JJ -_: and_CC trust_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- are_VBP increasingly_RB seen_VBN as_IN important_JJ ._.
+This_DT paper_NN aims_VBZ to_TO provide_VB a_DT systematic_JJ overview_NN on_IN the_DT open_JJ question_NN of_IN what_WP makes_VBZ a_DT good_JJ explanation_NN ,_, and_CC surveys_NNS existing_VBG approaches_NNS ._.
+Copyright_NN c_NN ○_NN
+2_CD 3_CD 4_CD 5_CD 6_CD Figure_NNP 21_CD ._.
+Clustering_NN quality_NN for_IN CF_NN based_JJ recommendation_NN ._.
+X-axis_NN represents_VBZ six_CD bases_NNS and_CC y-axis_NN is_VBZ mean_JJ absolute_JJ error_NN -LRB-_-LRB- MAE_NN -RRB-_-RRB- ._.
+Additionally_RB we_PRP consider_VBP a_DT subset_NN of_IN a_DT data_NN set_NN ,_, BookCrossing_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, from_IN a_DT CF_NN based_VBN book_NN recommendation_NN system_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+Its_PRP$ size_NN is_VBZ 6,838_CD by_IN 5,642_CD and_CC there_EX are_VBP 90,613_CD non-zero_JJ elements_NNS ._.
+Likewise_RB ,_, I_NN ,_, K_NN ,_, and_CC L_NN are_VBP all_DT set_VBN to_TO 10_CD ._.
+Figure_NN 22_CD and_CC Figure_NNP 23_CD report_NN the_DT runtim_NN
+ng_NN ,_, they_PRP could_MD be_VB generated_VBN via_IN LSI_NNP and_CC being_VBG used_VBN for_IN further_JJ improvements_NNS of_IN the_DT final_JJ ranking_NN ._.
+Ziegler_NNP et_FW al._FW show_VBP that_IN topic_NN diversification_NN can_MD greatly_RB increase_VB the_DT usefulness_NN of_IN recommendations_NNS =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Co-reference_NN has_VBZ been_VBN applied_VBN on_IN the_DT citation_NN graph_NN and_CC is_VBZ thus_RB on_IN document_NN level_NN ,_, but_CC as_RB mentioned_VBN ,_, in_IN linguistics_NNS similar_JJ attempts_NNS have_VBP been_VBN undertaken_VBN on_IN the_DT word_NN level_NN ._.
+With_IN co-word_NN analyzes_VBZ rel_NN
+._.
+In_IN order_NN to_TO improve_VB user_NN satisfaction_NN ,_, the_DT top_JJ N_NN search_NN results_NNS are_VBP either_RB ranked_VBN by_IN diversity_NN -LRB-_-LRB- 1_CD ,_, 4_CD ,_, 9_CD ,_, 7_CD -RRB-_-RRB- or_CC diversified_VBN by_IN clustering_VBG them_PRP according_VBG to_TO the_DT different_JJ diversity_NN dimensions_NNS covered_VBD =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Clustering_NN of_IN search_NN results_NNS is_VBZ be_VB done_VBN within_IN the_DT search_NN engines_NNS Newssift_NNP and_CC Fairspin_NNP 2_CD ._.
+Within_IN Newssift_NNP ,_, content_NN from_IN major_JJ news_NN and_CC business_NN sources_NNS are_VBP grouped_VBN into_IN high-level_JJ categories_NNS such_JJ
+ime_NN ._.
+Best_NN viewed_VBN in_IN color_NN ._.
+Diversity_NN ._.
+It_PRP is_VBZ now_RB widely_RB recognized_VBN that_IN diversity_NN is_VBZ a_DT highly_RB desired_VBN property_NN in_IN many_JJ data_NNS mining_NN tasks_NNS ,_, such_JJ as_IN expertise_NN and_CC legal_JJ search_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- ,_, recommendation_NN system_NN =_JJ -_: =[_NN 43_CD -RRB-_-RRB- -_: =_JJ -_: ,_, blog_NN filtering_VBG -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, document_NN summarization_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, etc._NN ._.
+It_PRP is_VBZ a_DT powerful_JJ tool_NN to_TO address_VB the_DT uncertainty_NN and_CC ambiguity_NN ;_: and\/or_CC to_TO cover_VB the_DT different_JJ aspects_NNS of_IN an_DT information_NN need_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+For_IN the_DT graph_NN -_:
+tree_NN ._.
+However_RB ,_, the_DT algorithms_NNS are_VBP not_RB suitable_JJ for_IN unstructured_JJ search_NN such_JJ as_IN web_NN search_NN ._.
+In_IN recommendation_NN ,_, diversity_NN also_RB is_VBZ a_DT problem_NN which_WDT is_VBZ very_RB similar_JJ to_TO the_DT retrieval_NN system_NN ._.
+Ziegler_NNP et_FW al._FW =_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: improved_VBN recommendation_NN system_NN through_IN involving_VBG topic_NN diversification_NN ._.
+They_PRP reviewed_VBD the_DT main_JJ metrics_NNS of_IN evaluation_NN in_IN recommendation_NN systems_NNS and_CC designed_VBN their_PRP$ metrics_NNS which_WDT involve_VBP diversification_NN
+aining_VBG acceptable_JJ retrieval_NN performance_NN ._.
+Zeigler_NNP studied_VBD topic_NN diversification_NN to_TO balance_VB and_CC diversify_VB personalized_JJ recommendation_NN lists_NNS in_IN order_NN to_TO reflect_VB the_DT user_NN 's_POS complete_JJ spectrum_NN of_IN interests_NNS =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN their_PRP$ system_NN is_VBZ detrimental_JJ to_TO average_JJ accuracy_NN ,_, they_PRP show_VBP that_IN the_DT method_NN improves_VBZ user_NN satisfaction_NN with_IN recommendation_NN lists_NNS ,_, in_IN particular_JJ for_IN lists_NNS generated_VBN using_VBG the_DT common_JJ itembased_JJ
+ook_NN flows_NNS ,_, such_JJ as_IN direction_NN ,_, speed_NN and_CC length_NN ._.
+Book_NNP Rating_NNP Similar_JJ to_TO other_JJ online_JJ book_NN websites_NNS ,_, such_JJ as_IN Amazon_NNP 1_CD and_CC Goodreads_NNP 2_CD ,_, Bookcrossing_NNP also_RB has_VBZ the_DT function_NN of_IN rating_NN books_NNS ._.
+Ziegler_NNP et_FW al._FW =_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: used_VBD 1,157,112_CD ratings_NNS they_PRP crawled_VBD from_IN Bookcrossing_NNP to_TO evaluate_VB their_PRP$ topic_NN diversification_NN recommendation_NN method_NN ._.
+However_RB our_PRP$ study_NN focuses_VBZ on_IN the_DT difference_NN between_IN ratings_NNS in_IN Bookcrossing_NNP and_CC th_DT
+approaches_NNS to_TO IR_NN diversification_NN in_IN the_DT literature_NN state_NN the_DT diversification_NN goal_NN as_IN the_DT maximization_NN of_IN some_DT objective_JJ function_NN that_WDT reflects_VBZ the_DT degree_NN of_IN diversity_NN of_IN a_DT set_NN of_IN retrieved_VBN documents_NNS =_JJ -_: =[_NN 1,3,5,12,19,20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT maximization_NN is_VBZ found_VBN to_TO be_VB an_DT NPhard_NN problem_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, the_DT solution_NN to_TO which_WDT is_VBZ commonly_RB approximated_VBN by_IN a_DT greedy_JJ algorithm_NN ._.
+The_DT algorithm_NN uses_VBZ itself_PRP an_DT objective_JJ function_NN -LRB-_-LRB- not_RB necessarily_RB the_DT same_JJ
+n_NN the_DT IR_NNP field_NN as_IN a_DT means_NN to_TO address_VB query_NN ambiguity_NN and_CC underspecification_NN in_FW adhoc_FW IR_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Recommendation_NN diversity_NN is_VBZ also_RB an_DT active_JJ research_NN topic_NN in_IN the_DT Recommender_NNP Systems_NNPS -LRB-_-LRB- RS_NN -RRB-_-RRB- area_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN general_JJ terms_NNS ,_, and_CC most_RBS particularly_RB in_IN common_JJ practical_JJ scenarios_NNS ,_, recommendation_NN can_MD be_VB seen_VBN as_IN an_DT IR_NN task_NN ._.
+Interestingly_RB ,_, the_DT diversity_NN issue_NN has_VBZ been_VBN stated_VBN and_CC addressed_VBN quite_RB differently_RB in_IN
+able_JJ contribution_NN to_TO the_DT area_NN ._.
+Other_JJ topics_NNS that_WDT were_VBD not_RB covered_VBN in_IN this_DT chapter_NN ,_, but_CC are_VBP nevertheless_RB interesting_JJ research_NN directions_NNS ,_, concern_NN ,_, for_IN example_NN ,_, recommendations_NNS '_POS novelty_NN and_CC serendipity_NN =_JJ -_: =[_NN 44_CD -RRB-_-RRB- -_: =_JJ -_: ,_, i.e._FW ,_, tags_NNS ,_, users_NNS and\/or_CC resources_NNS that_WDT are_VBP potentially_RB interesting_JJ but_CC not_RB obvious_JJ ;_: modeling_NN social_JJ wisdom_NN for_IN recommendations_NNS -LRB-_-LRB- 40_CD ,_, 29_CD -RRB-_-RRB- ,_, i.e._FW ,_, explicit_JJ friendship_NN 17_CD http:\/\/www.grouplens.org\/_NN 18_CD Th_NN
+or_CC a_DT fee_NN ._.
+RecSys_NNP '_POS 11_CD ,_, October_NNP 23_CD --_: 27_CD ,_, 2011_CD ,_, Chicago_NNP ,_, Illinois_NNP ,_, USA_NNP ._.
+Copyright_NN 2011_CD ACM_NNP 978-1-4503-0683-6_CD \/_: 11\/10_CD ..._: $_$ 10.00_CD ._.
+in_IN the_DT recommendation_NN models_NNS ,_, algorithms_NNS ,_, theories_NNS ,_, and_CC evaluation_NN methodologies_NNS =_JJ -_: =[_NN 7,11,20,22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT context_NN ,_, we_PRP identify_VBP the_DT consolidation_NN of_IN a_DT set_NN of_IN sound_NN ,_, well_RB understood_VBN evaluation_NN methodologies_NNS and_CC metrics_NNS as_IN a_DT key_JJ issue_NN to_TO foster_VB progress_NN in_IN this_DT direction_NN ._.
+Despite_IN the_DT raise_NN of_IN inter_NN
+ctice_NN ,_, however_RB ,_, many_JJ recommender_NN systems_NNS do_VBP not_RB carry_VB such_JJ semantic_JJ information_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+But_CC even_RB when_WRB they_PRP do_VBP ,_, it_PRP is_VBZ not_RB always_RB clear_JJ how_WRB to_TO define_VB item_NN diversity_NN based_VBN on_IN the_DT given_VBN semantic_JJ information_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, some_DT movies_NNS of_IN the_DT same_JJ director\/leading_NN actor_NN may_MD indeed_RB be_VB similar_JJ ,_, whereas_IN others_NNS may_MD not_RB ._.
+To_TO overcome_VB this_DT difficulty_NN ,_, DiRec_NN takes_VBZ a_DT different_JJ approach_NN ,_, inspired_VBN by_IN work_NN on_IN Collabor_NNP
+od_IN based_VBN diversification_NN objective_NN for_IN finding_VBG relevant_JJ documents_NNS given_VBN the_DT categorical_JJ information_NN of_IN queries_NNS and_CC documents_NNS ._.
+Other_JJ papers_NNS on_IN topical_JJ diversification_NN and_CC information_NN retrieval_NN include_VBP =_JJ -_: =[_NN 21_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Vee_NNP et_NNP al_NNP -LRB-_-LRB- 17_CD -RRB-_-RRB- consider_VBP diversification_NN for_IN online_JJ shopping_NN ,_, while_IN Drosou_NNP and_CC Pitoura_NNP -LRB-_-LRB- 5_CD ,_, 6_CD -RRB-_-RRB- have_VBP done_VBN work_NN on_IN diversity_NN over_IN continuous_JJ data_NNS such_JJ as_IN in_IN the_DT context_NN of_IN publish\/subscribe_NN systems_NNS ._.
+Div_NN
+der_NN systems_NNS ,_, user_NN experience_NN ,_, user-centric_JJ evaluation_NN 1_CD ._.
+INTRODUCTION_NN Until_IN recently_RB ,_, the_DT field_NN of_IN recommender_NN systems_NNS primarily_RB focused_VBD on_IN testing_NN and_CC improving_VBG the_DT accuracy_NN of_IN prediction_NN algorithms_NNS =_JJ -_: =[_NN 2,8,17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Increasingly_RB ,_, industry_NN and_CC academic_JJ researchers_NNS agree_VBP that_IN the_DT ultimate_JJ goal_NN of_IN recommenders_NNS is_VBZ to_TO help_VB users_NNS make_VB better_JJR decisions_NNS ,_, and_CC that_IN high_JJ accuracy_NN in_IN itself_PRP does_VBZ not_RB guarantee_VB this_DT aim_NN -LRB-_-LRB- 8,9_CD
+ode_VB overlapping_VBG inside_IN each_DT sector_NN ,_, and_CC the_DT node_NN distance_NN to_TO its_PRP$ center_NN ._.
+Layouting_VBG a_DT sector_NN with_IN n_NN nodes_NNS requires_VBZ O_NN -LRB-_-LRB- n_NN ·_NN log_NN -LRB-_-LRB- n_NN -RRB-_-RRB- -RRB-_-RRB- operations_NNS ._.
+Fig._NN 2_CD -LRB-_-LRB- b_NN -RRB-_-RRB- shows_VBZ the_DT wheel_NN view_NN of_IN the_DT Book-Crossing_JJ dataset_NN =_JJ -_: =_JJ -LRB-_-LRB- ZMKL05_NN -RRB-_-RRB- -_: =_SYM -_: which_WDT breaks_VBZ down_RP ratings_NNS on_IN 270,170_CD books_NNS -LRB-_-LRB- the_DT rows_NNS -RRB-_-RRB- by_IN country_NN -LRB-_-LRB- the_DT columns_NNS -RRB-_-RRB- ._.
+To_TO simplify_VB the_DT view_NN ,_, only_RB eight_CD countries_NNS are_VBP included_VBN -LRB-_-LRB- Fig._FW 2a_FW -RRB-_-RRB- ._.
+The_DT thresholds_NNS are_VBP set_VBN to_TO Tr_NN =_JJ 0.15_CD and_CC Ts_NN =_JJ 12_CD ._.
+The_DT
+cases_NNS ,_, users_NNS prefer_VBP a_DT list_NN of_IN diverse_JJ results_NNS to_TO a_DT list_NN of_IN similar_JJ or_CC near-duplicated_JJ results_NNS ._.
+Previous_JJ works_NNS have_VBP investigated_VBN result_NN diversification_NN in_IN various_JJ applications_NNS ,_, such_JJ as_IN recommendation_NN =_JJ -_: =[_NN 26_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, online_JJ shopping_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, query_NN suggestion_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, personalized_JJ search_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, mining_NN top_JJ stories_NNS in_IN the_DT blogosphere_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, and_CC image_NN retrieval_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Recently_RB ,_, the_DT problem_NN of_IN improving_VBG search_NN result_NN diversit_NN
+Lens_NNP andBookCrossing_NN dataset_NN -RRB-_-RRB- for_IN our_PRP$ experiments_NNS ._.
+The_DT MovieLens_NNP dataset_NN -LRB-_-LRB- http:\/\/www.grouplens.org\/data\/_NN -RRB-_-RRB- consists_VBZ of_IN 100,000_CD ratings_NNS -LRB-_-LRB- 1-5_CD -RRB-_-RRB- by_IN 943_CD users_NNS on_IN 1682_CD movies_NNS whereas_IN the_DT BookCrossing_NNP dataset_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: consists_VBZ of_IN 269392_CD explicit_JJ ratings_NNS -LRB-_-LRB- 1-10_CD -RRB-_-RRB- by_IN 47034_CD users_NNS for_IN 133438_CD books_NNS ._.
+We_PRP also_RB created_VBD 10_CD subsets_NNS -LRB-_-LRB- Movie1-Movie10_NN -RRB-_-RRB- of_IN the_DT MovieLens_NNP dataset_NN each_DT containing_VBG a_DT fraction_NN -LRB-_-LRB- 10-100_CD %_NN -RRB-_-RRB- of_IN the_DT total_JJ ratin_NN
+Keywords_NNS :_: Personalized_VBN web_NN search_NN ,_, Result_NN diversity_NN 1_CD ._.
+INTRODUCTION_NN Personalizing_VBG search_NN results_NNS for_IN individual_JJ users_NNS is_VBZ increasingly_RB being_VBG recognized_VBN as_IN an_DT important_JJ future_JJ direction_NN for_IN web_NN search_NN =_JJ -_: =[_NN 3_CD ,_, 5_CD ,_, 6_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Providing_VBG results_NNS specific_JJ to_TO individual_JJ users_NNS is_VBZ particularly_RB important_JJ because_IN different_JJ users_NNS expect_VBP different_JJ information_NN even_RB given_VBN the_DT same_JJ query_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+One_CD proposed_JJ approach_NN involves_VBZ providing_VBG
+es_VBZ diversity_NN for_IN content-based_JJ recommenders_NNS ,_, e.g._FW -LRB-_-LRB- 4_CD --_: 6_CD -RRB-_-RRB- ._.
+It_PRP is_VBZ only_RB now_RB that_IN we_PRP are_VBP seeing_VBG the_DT first_JJ work_NN that_WDT attempts_VBZ to_TO improve_VB the_DT diversity_NN of_IN the_DT items_NNS recommended_VBN by_IN collaborative_JJ recommenders_NNS =_JJ -_: =[_NN 3_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP hypothesise_VBP that_IN a_DT direct_JJ concern_NN for_IN diversity_NN may_MD be_VB important_JJ ,_, especially_RB in_IN conversational_JJ collaborative_JJ systems_NNS :_: diverse_JJ recommendations_NNS increase_VBP the_DT chances_NNS of_IN positive_JJ feedback_NN -LRB-_-LRB- where_WRB an_DT i_FW
+isfaction_NN ,_, applied_VBN to_TO item-based_JJ and_CC user-based_JJ collaborative_JJ filtering_VBG ,_, found_VBD that_IN it_PRP had_VBD a_DT positive_JJ effect_NN on_IN overall_JJ satisfaction_NN even_RB though_IN accuracy_NN of_IN the_DT recommendations_NNS was_VBD affected_VBN adversely_RB =_JJ -_: =[_NN 102_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT study_NN further_RB concluded_VBD that_IN introducing_VBG diversity_NN affects_VBZ user_NN satisfaction_NN to_TO a_DT greater_JJR extent_NN when_WRB item-based_JJ collaborative_NN filtering_VBG is_VBZ used_VBN ,_, while_IN it_PRP has_VBZ no_DT measurable_JJ affect_NN on_IN user-based_JJ
+ntly_RB the_DT need_NN to_TO include_VB more_RBR diversified_JJ items_NNS in_IN the_DT result_NN list_NN has_VBZ been_VBN recognized_VBN ._.
+Methods_NNS have_VBP been_VBN developed_VBN to_TO address_VB users_NNS '_POS potentially_RB unstated_JJ preferences_NNS -LRB-_-LRB- 6,17_CD -RRB-_-RRB- ,_, to_TO cover_VB topic_NN diversity_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, to_TO propose_VB possible_JJ tradeoffs_NNS a_DT user_NN may_MD be_VB prepared_VBN to_TO accept_VB -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, and_CC to_TO allow_VB faster_JJR navigation_NN to_TO the_DT target_NN choice_NN by_IN critiquing_VBG the_DT proposed_VBN items_NNS -LRB-_-LRB- 3,11,20_CD -RRB-_-RRB- ._.
+These_DT related_JJ works_NNS have_VBP led_VBN us_PRP t_NN
+on_IN of_IN recommendation_NN algorithms_NNS through_IN top-N_JJ measures_NNS has_VBZ been_VBN addressed_VBN before_IN -LRB-_-LRB- 12_CD ,_, 13_CD -RRB-_-RRB- ._.
+All_DT of_IN these_DT approaches_NNS rely_VBP on_IN the_DT use_NN of_IN the_DT well-known_JJ precision_NN and_CC recall_NN measures_NNS ._.
+Ziegler_NNP et_FW al._FW show_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: that_IN evaluating_VBG recommender_NN algorithms_NNS through_IN top-N_JJ lists_NNS measures_NNS does_VBZ not_RB map_VB directly_RB to_TO the_DT user_NN 's_POS utility_NN function_NN ._.
+However_RB ,_, it_PRP does_VBZ address_VB some_DT of_IN the_DT limitations_NNS of_IN the_DT more_RBR commonly_RB accepte_VB
+including_VBG movies_NNS ,_, credit_NN card_NN transactions_NNS ,_, and_CC others_NNS using_VBG metrics_NNS such_JJ as_IN hit_NN rate_NN ._.
+In_IN addition_NN to_TO these_DT cross-validation_NN experiments_NNS several_JJ studies_NNS with_IN real_JJ users_NNS were_VBD performed_VBN ._.
+Ziegler_NNP et_FW al_FW =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: showed_VBD how_WRB topic_NN diversification_NN in_IN the_DT recommended_VBN set_NN increases_VBZ book_NN recommendation_NN quality_NN as_IN perceived_VBN by_IN users_NNS ._.
+Recommendation_NN explanation_NN role_NN has_VBZ been_VBN recognized_VBN and\/or_CC used_VBN in_IN -LRB-_-LRB- 3_CD ,_, 17_CD ,_, 9_CD -RRB-_-RRB- ._.
+Cos_NNP
+disadvantage_NN is_VBZ that_IN the_DT system_NN does_VBZ not_RB respond_VB to_TO the_DT user_NN 's_POS subsequent_JJ ratings_NNS ._.
+Another_DT disadvantage_NN is_VBZ the_DT potential_NN for_IN presenting_VBG similar_JJ items_NNS sequentially_RB ,_, referred_VBN to_TO as_IN the_DT portfolio_NN effect_NN =_JJ -_: =[_NN 21_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, in_IN Jester_NNP ,_, our_PRP$ joke_NN recommender_NN system_NN ,_, a_DT user_NN who_WP rates_VBZ a_DT Chuck_NNP Norris_NNP joke_NN highly_RB might_MD then_RB be_VB recommended_VBN several_JJ more_JJR Chuck_NNP Norris_NNP jokes_NNS ._.
+In_IN humor_NN ,_, as_IN in_IN many_JJ other_JJ contexts_NNS like_IN m_NN
+a_DT greedy_JJ algorithm_NN ,_, which_WDT only_RB exploits_VBZ the_DT model_NN of_IN users_NNS '_POS interests_NNS ,_, the_DT proposed_VBN algorithm_NN takes_VBZ into_IN account_NN exploration_NN ,_, i.e._FW ,_, it_PRP discovers_VBZ user_NN potential_JJ interests_NNS through_IN topic_NN diversification_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN addition_NN ,_, the_DT exploration_NN nature_NN of_IN this_DT algorithm_NN also_RB makes_VBZ it_PRP adapt_VB quickly_RB to_TO user_NN interest_NN drift_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- as_RB well_RB ._.
+In_IN the_DT following_NN ,_, we_PRP will_MD give_VB an_DT overview_NN of_IN the_DT related_JJ work_NN and_CC identify_VB our_PRP$
+en_IN proposed_VBN -LRB-_-LRB- 6_CD ,_, 28_CD ,_, 75_CD -RRB-_-RRB- ._.
+Furthermore_RB ,_, both_DT in_IN the_DT case_NN of_IN collaborative_JJ and_CC content-based_JJ filtering_VBG ,_, various_JJ approaches_NNS have_VBP been_VBN explored_VBN to_TO integrate_VB ontological_JJ domain_NN knowledge_NN with_IN user_NN profiles_NNS =_JJ -_: =[_NN 77_CD ,_, 45_CD ,_, 122_CD ,_, 145_CD ,_, 139_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT presence_NN of_IN a_DT domain_NN ontology_NN ,_, the_DT user_NN profiles_NNS may_MD actually_RB reflect_VB the_DT structure_NN of_IN the_DT domain_NN ,_, and_CC thus_RB may_MD require_VB a_DT more_RBR complex_JJ representation_NN than_IN the_DT flat_JJ representations_NNS used_VBN in_IN sta_NN
+s_NN does_VBZ not_RB necessarily_RB imply_VB good_JJ recommendations_NNS ._.
+Those_DT recommendations_NNS are_VBP likely_JJ to_TO recommend_VB ordinary_JJ items_NNS that_IN users_NNS are_VBP already_RB aware_JJ of_IN ._.
+Although_IN other_JJ factors_NNS ,_, such_JJ as_IN novelty_NN or_CC serendipity_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN proposed_VBN for_IN use_NN in_IN evaluating_VBG recommender_NN systems_NNS ,_, it_PRP is_VBZ difficult_JJ to_TO measure_VB them_PRP quantitatively_RB ._.
+The_DT recommendation_NN effect_NN estimated_VBN with_IN our_PRP$ model_NN can_MD be_VB used_VBN to_TO evaluate_VB the_DT recommende_NN
+musician_NN 's_POS judgments_NNS and_CC classifications_NNS -RRB-_-RRB- or_CC collaborative-filtered_JJ -LRB-_-LRB- i.e._FW based_VBN on_IN the_DT musical_JJ taste_NN of_IN other_JJ members_NNS of_IN the_DT same_JJ VC_NN -RRB-_-RRB- and_CC are_VBP usually_RB integrated_VBN through_IN a_DT search_NN engine_NN or_CC a_DT playlist_NN =_JJ -_: =[_NN 8_CD ,_, 15_CD ,_, 17_CD ,_, 36_CD ,_, 45_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recommender_NN systems_NNS are_VBP very_RB interesting_JJ for_IN the_DT research_NN of_IN promotion_NN possibilities_NNS of_IN young_JJ and_CC not_RB yet_RB established_VBN musicians_NNS as_IN every_DT user_NN can_MD use_VB them_PRP as_IN a_DT very_RB powerful_JJ and_CC efficient_JJ tool_NN to_TO di_FW
+._.
+com_NN book_NN taxonomy_NN exhibits_VBZ a_DT tree_NN structure_NN ,_, which_WDT complies_VBZ with_IN our_PRP$ formal_JJ model_NN in_IN Section_NNP 4.1.1_CD ._.
+More_RBR statistical_JJ information_NN describing_VBG the_DT All_NNP Consuming_NNP and_CC Amazon.com_NNP datasets_NNS is_VBZ given_VBN in_IN Ref_NNP ._.
+=_SYM -_: =[_NN 64_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Epinions_NNP is_VBZ dealt_VBN with_IN in_IN Ref_NNP ._.
+-LRB-_-LRB- 39_CD -RRB-_-RRB- ._.
+4.2_CD ._.
+Similarity_NN computation_NN In_IN order_NN to_TO analyze_VB interactions_NNS between_IN trust_NN and_CC user_NN similarity_NN ,_, we_PRP need_VBP mathematical_JJ models_NNS indicating_VBG how_WRB to_TO compute_VB similarity_NN ._.
+recommendations_NNS that_WDT are_VBP restricted_JJ to_TO what_WP they_PRP have_VBP specified_VBN in_IN their_PRP$ preference_NN models_NNS ._.
+However_RB ,_, several_JJ researchers_NNS have_VBP developed_VBN techniques_NNS to_TO overcome_VB this_DT limitation_NN by_IN considering_VBG diversity_NN =_JJ -_: =[_NN 9_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: or_CC proposing_VBG attractive_JJ items_NNS that_IN users_NNS did_VBD not_RB specify_VB -LRB-_-LRB- called_VBN suggestion_NN techniques_NNS -RRB-_-RRB- -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+3.2_CD Collaborative_NNP Filtering_NNP Technology_NNP Rather_NNP than_IN computing_VBG the_DT similarity_NN of_IN items_NNS ,_, the_DT collaborative_JJ f_SYM
+rnals_NNS -LRB-_-LRB- Ziegler_NNP and_CC Lausen_NNP ,_, 2005_CD -RRB-_-RRB- ._.
+Results_NNS of_IN Chapter_NN 3_CD have_VBP been_VBN published_VBN in_IN -LRB-_-LRB- Ziegler_NNP ,_, Lausen_NNP ,_, and_CC Schmidt-Thieme_NNP ,_, 2004_CD ;_: Ziegler_NNP ,_, Schmidt-Thieme_NNP ,_, and_CC Lausen_NNP ,_, 2004_CD -RRB-_-RRB- ,_, and_CC Chapter_NN 4_CD largely_RB relates_VBZ to_TO -LRB-_-LRB- =_JJ -_: =_JJ Ziegler_NNP et_FW al._FW ,_, 2005_CD -_: =-]_CD ._.
+The_DT contents_NNS of_IN Chapter_NNP 5_CD have_VBP appeared_VBN in_IN -LRB-_-LRB- Ziegler_NNP and_CC Lausen_NNP ,_, 2004c_CD -RRB-_-RRB- and_CC have_VBP been_VBN extended_VBN in_IN -LRB-_-LRB- Ziegler_NNP and_CC Lausen_NNP ,_, 2005_CD -RRB-_-RRB- ._.
+Portions_NNS of_IN Chapter_NN 6_CD are_VBP documented_VBN in_IN -LRB-_-LRB- Ziegler_NN and_CC 7sChapter_NN 1_CD Introdu_NN
+cs_NNS of_IN interest_NN ,_, which_WDT might_MD not_RB have_VB been_VBN browsed_VBN explicitly_RB ._.
+More_RBR recently_RB ,_, it_PRP has_VBZ been_VBN shown_VBN that_IN topic_NN diversity_NN in_IN recommendation_NN via_IN the_DT use_NN of_IN an_DT ontology_NN can_MD increase_VB recommendation_NN usefulness_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP define_VBP a_DT novel_JJ similarity_NN measure_NN called_VBN Ontology_NNP Structure_NN based_VBN Similarity_NN -LRB-_-LRB- OSS_NN -RRB-_-RRB- ._.
+It_PRP is_VBZ based_VBN on_IN assigning_VBG concepts_NNS in_IN the_DT ontology_NN an_DT a-priori_NN score_NN -LRB-_-LRB- APS_NN -RRB-_-RRB- ,_, and_CC computing_VBG the_DT rel_NN
+heir_NN corresponding_JJ referrals_NNS into_IN the_DT DMOZ_NN taxonomy_NN ._.
+These_DT N_NN referrals_NNS are_VBP then_RB used_VBN to_TO build_VB a_DT semantic_JJ fingerprint_NN of_IN each_DT query_NN ,_, according_VBG to_TO the_DT probabilistic_JJ score_NN propagation_NN scheme_NN proposed_VBN in_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+The_DT closer_JJR one_CD given_VBN search_NN result_NN to_TO the_DT top_JJ rank_NN ,_, the_DT higher_JJR its_PRP$ impact_NN on_IN the_DT semantic_JJ profile_NN 2_CD ._.
+The_DT latter_JJ feature_NN of_IN our_PRP$ approach_NN is_VBZ based_VBN on_IN the_DT hypothesis_NN that_IN top_JJ results_NNS ar_IN
+.00_CD -RRB-_-RRB- of_IN 100_CD jokes_NNS from_IN 73,496_CD users_NNS ._.
+•_NNP Book_NNP crossing_VBG datasets_NNS -LRB-_-LRB- http:\/\/www.informatik.unifreiburg.de\/_NN cziegler\/BX_NN \/_: -RRB-_-RRB- --_: the_DT Book_NNP Crossing_NNP -LRB-_-LRB- BX_NNP -RRB-_-RRB- dataset_NN was_VBD collected_VBN by_IN Ziegler_NNP ,_, McNee_NNP ,_, Konstan_NNP and_CC Lausen_NNP =_SYM -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: from_IN the_DT Book-Crossing_NNP community_NN ._.
+It_PRP contains_VBZ 1,149,780_CD ratings_NNS -LRB-_-LRB- from_IN a_DT scale_NN of_IN 1-10_CD -RRB-_-RRB- of_IN 271,379_CD books_NNS from_IN 278,858_CD users_NNS ._.
+Most_JJS research_NN experiments_NNS are_VBP mainly_RB based_VBN on_IN these_DT three_CD domains_NNS of_IN data_NNS ._.
+Keywords_NNS :_: Personalized_VBN web_NN search_NN ,_, Result_NN diversity_NN 1_CD ._.
+INTRODUCTION_NN Personalizing_VBG search_NN results_NNS for_IN individual_JJ users_NNS is_VBZ increasingly_RB being_VBG recognized_VBN as_IN an_DT important_JJ future_JJ direction_NN for_IN web_NN search_NN =_JJ -_: =[_NN 3_CD ,_, 5_CD ,_, 6_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Providing_VBG results_NNS specific_JJ to_TO individual_JJ users_NNS is_VBZ particularly_RB important_JJ because_IN different_JJ users_NNS expect_VBP different_JJ information_NN even_RB given_VBN the_DT same_JJ query_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+One_CD proposed_JJ approach_NN involves_VBZ providing_VBG
+need_VB to_TO cover_VB as_IN many_JJ topics_NNS as_IN possible_JJ ._.
+This_DT has_VBZ not_RB been_VBN addressed_VBN satisfactorily_RB in_IN the_DT past_NN ,_, despite_IN the_DT fact_NN that_DT diversity_NN as_IN a_DT measurement_NN has_VBZ been_VBN applied_VBN to_TO various_JJ related_JJ problems_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- -LRB-_-LRB- 11_CD -RRB-_-RRB- =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO fulfill_VB our_PRP$ goal_NN on_IN extracting_VBG topic_NN phrases_NNS which_WDT are_VBP diverse_JJ enough_RB to_TO cover_VB the_DT topics_NNS in_IN a_DT collection_NN of_IN text_NN ,_, we_PRP employ_VBP both_CC information_NN theory_NN and_CC latent_JJ semantic_JJ analysis_NN -LRB-_-LRB- LSA_NN -RRB-_-RRB- -LRB-_-LRB- 13_CD -RRB-_-RRB- in_FW thi_FW
+e-business_NN -LRB-_-LRB- such_JJ as_IN Amazon.com_NN and_CC google.com_NN -RRB-_-RRB- ,_, e-learning_NN and_CC so_RB on_RB ._.
+The_DT problem_NN of_IN personalized_VBN recommending_VBG according_VBG to_TO personal_JJ needs_NNS has_VBZ been_VBN studied_VBN extensively_RB -LRB-_-LRB- 2_CD -RRB-_-RRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- -LRB-_-LRB- 13_CD -RRB-_-RRB- -LRB-_-LRB- 16_CD -RRB-_-RRB- -LRB-_-LRB- 26_CD -RRB-_-RRB- -LRB-_-LRB- 42_CD -RRB-_-RRB- -LRB-_-LRB- 47_CD -RRB-_-RRB- =_JJ -_: =[_NN 49_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Two_CD fundamental_JJ major_JJ paradigms_NNS have_VBP emerged_VBN ._.
+In_IN the_DT content-based_JJ recommendation_NN paradigm_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- 13_CD -RRB-_-RRB- -LRB-_-LRB- 21_CD -RRB-_-RRB- -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, one_CD tries_VBZ to_TO -_: 49_CD -_: recommend_VB ``_`` pages_NNS ''_'' that_WDT are_VBP similar_JJ to_TO those_DT ones_NNS the_DT user_NN was_VBD inter_NN
+sfaction_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Characterizing_VBG diversity_NN is_VBZ one_CD step_NN in_IN a_DT complete_JJ recommendation_NN system_NN ._.
+Previous_JJ work_NN describes_VBZ approaches_NNS ,_, for_IN example_NN ,_, to_TO bias_NN recommendations_NNS to_TO encourage_VB choices_NNS in_IN new_JJ directions_NNS =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Music_NN is_VBZ a_DT more_RBR difficult_JJ problem_NN than_IN text_NN retrieval_NN because_IN each_DT user_NN consumes_VBZ dozens_NNS of_IN recordings_NNS in_IN a_DT single_JJ sitting_VBG ._.
+Not_RB only_RB do_VBP we_PRP want_VB to_TO specify_VB new_JJ directions_NNS but_CC we_PRP want_VBP to_TO know_VB how_WRB far_JJ t_NN
+this_DT method_NN is_VBZ commonly_RB used_VBN in_IN web_NN search_NN engines_NNS :_: in_IN order_NN to_TO show_VB k_NN results_NNS to_TO the_DT user_NN ,_, first_RB retrieve_VB c_NN ×_CD k_NN results_NNS -LRB-_-LRB- for_IN some_DT c_NN -RRB-_-RRB- 1_CD -RRB-_-RRB- and_CC then_RB pick_VB a_DT diverse_JJ subset_NN from_IN these_DT results_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Usually_RB ,_, c_NN ×_CD k_NN is_VBZ much_RB smaller_JJR than_IN the_DT total_JJ number_NN of_IN results_NNS ,_, so_IN it_PRP is_VBZ more_RBR efficient_JJ than_IN the_DT previous_JJ method_NN ._.
+However_RB ,_, while_IN this_DT method_NN works_VBZ well_RB in_IN web_NN search_NN where_WRB there_EX are_VBP few_JJ duplicate_VB o_NN
+gories_NNS ._.
+Such_JJ taxonomies_NNS have_VBP been_VBN used_VBN both_DT to_TO improve_VB recommendation_NN performance_NN -LRB-_-LRB- Ziegler_NNP ,_, Lausen_NNP ,_, and_CC Schmidt-Thieme_NNP 2004_CD -RRB-_-RRB- and_CC to_TO increase_VB the_DT diversity_NN of_IN items_NNS presented_VBN in_IN a_DT recommendation_NN list_NN -LRB-_-LRB- =_JJ -_: =_JJ Ziegler_NNP et_FW al._FW 2005_CD -_: =--RRB-_NN ,_, both_DT of_IN which_WDT would_MD be_VB useful_JJ ._.
+Improving_NN user_NN profiles_NNS is_VBZ also_RB likely_JJ to_TO help_VB ._.
+SuggestBot_NNP ignores_VBZ ``_`` noise_NN ''_'' edits_VBZ in_IN an_DT adhoc_JJ way_NN ,_, by_IN trying_VBG to_TO remove_VB edits_NNS that_WDT are_VBP marked_JJ as_IN reverting_VBG vandalism_NN ._.
+Wi_NN
+iously_RB ._.
+The_DT simplest_JJS method_NN is_VBZ commonly_RB used_VBN in_IN search_NN engines_NNS :_: in_IN order_NN to_TO show_VB k_NN results_NNS to_TO the_DT user_NN ,_, first_RB retrieve_VB f_FW ×_FW k_NN results_NNS -LRB-_-LRB- for_IN some_DT f_LS -RRB-_-RRB- 1_LS -RRB-_-RRB- and_CC then_RB pick_VB a_DT diverse_JJ subset_NN from_IN these_DT results_NNS =_JJ -_: =[_NN 4_CD ,_, 16_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Usually_RB ,_, f_FW ×_FW k_NN is_VBZ much_RB less_JJR than_IN the_DT total_JJ number_NN of_IN results_NNS ,_, so_IN it_PRP is_VBZ more_RBR efficient_JJ than_IN the_DT previous_JJ method_NN ._.
+While_IN this_DT method_NN works_VBZ well_RB in_IN web_NN search_NN ,_, where_WRB there_EX are_VBP few_JJ duplicate_VBP or_CC near-dupl_JJ
+ly_FW dissimilarfrom_FW each_DT other_JJ in_IN order_NN to_TO provide_VB for_IN good_JJ adaptability_NN of_IN the_DT neural_JJ network_NN to_TO the_DT active_JJ user_NN ai_VBP 's_POS preferences_NNS ._.
+We_PRP propose_VBP an_DT approach_NN similar_JJ to_TO the_DT topic_NN diversification_NN framework_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO this_DT end_NN ,_, the_DT following_VBG procedure_NN for_IN input_NN node_NN selection_NN is_VBZ suggested_VBN :_: --_: Weed_VBD out_RP all_DT users_NNS with_IN less_JJR than_IN X_NN ratings_NNS ._.
+We_PRP hence_RB obtain_VB M_NN -RRB-_-RRB- I_PRP tentative_JJ input_NN neurons_NNS that_WDT may_MD later_RB become_VB input_NN l_NN
+udy_NN or_CC to_TO carry_VB out_RP live_JJ testing_NN online_NN and_CC examine_VB users_NNS '_POS click_VBP through_IN data_NNS ._.
+There_EX are_VBP several_JJ studies_NNS that_WDT have_VBP been_VBN done_VBN before_RB to_TO this_DT effect_NN and_CC interested_JJ readers_NNS are_VBP referred_VBN to_TO those_DT studies_NNS =_JJ -_: =[_NN 17_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: to_TO learn_VB more_RBR about_IN the_DT benefits_NNS of_IN explanation_NN and_CC diversification_NN for_IN recommendations_NNS ._.
+We_PRP are_VBP also_RB in_IN the_DT process_NN of_IN initiating_VBG online_JJ bucket_NN testing_NN with_IN del._FW icio_FW ._.
+us_PRP ._.
+6_CD ._.
+RELATED_NNS WORK_VBP The_DT notion_NN of_IN
+An_DT example_NN of_IN group_NN hit-highlighting_NN ._.
+Terms_NNS from_IN a_DT participant_NN 's_POS query_NN are_VBP shown_VBN in_IN bold_JJ ,_, and_CC terms_NNS from_IN the_DT group_NN 's_POS other_JJ queries_NNS are_VBP underlined_VBN ._.
+recommender_NN techniques_NNS such_JJ as_IN topic_NN diversification_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT aim_VBP to_TO present_VB a_DT user_NN with_IN a_DT diverse_JJ ,_, rather_RB than_IN focused_VBN ,_, set_VBN of_IN items_NNS ._.
+Understanding_VBG the_DT impact_NN of_IN this_DT choice_NN on_IN group_NN dynamics_NNS is_VBZ left_VBN to_TO future_JJ work_NN ._.
+Group_NNP Hit-Highlighting_NNP Hit-highlighti_NN
+ecommendation_NN systems_NNS ,_, from_IN Amazon_NNP to_TO MediaUnbound_NNP and_CC gathered_VBD qualitative_JJ and_CC quantitative_JJ data_NNS ._.
+The_DT report_NN does_VBZ n't_RB describe_VB the_DT tests_NNS ,_, the_DT questions_NNS ,_, how_WRB the_DT data_NNS was_VBD analyzed_VBN ,_, etc._NN ._.
+Ziegler_NNP et_FW al._FW =_SYM -_: =[_NN 231_CD -RRB-_-RRB- -_: =_JJ -_: showed_VBD how_WRB topic_NN diversification_NN in_IN the_DT recommended_VBN set_NN increases_VBZ recommendation_NN quality_NN as_IN perceived_VBN by_IN users_NNS ._.
+Also_RB ,_, the_DT reliability_NN of_IN recommendations_NNS ,_, as_IN perceived_VBN by_IN users_NNS ,_, can_MD be_VB improved_VBN by_IN exp_NN
+ned_VBN in_IN the_DT ‗_NN Chance_NN `_`` section_NN ,_, researchers_NNS in_IN this_DT space_NN have_VBP already_RB considered_VBN some_DT of_IN this_DT work_NN -LRB-_-LRB- e.g._FW ,_, serendipity_NN measures_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, less_RBR popular_JJ items_NNS -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, and_CC diversification_NN of_IN recommendation_NN lists_NNS =_JJ -_: =[_NN 45_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Our_PRP$ work_NN here_RB is_VBZ to_TO push_VB on_IN the_DT differences_NNS and_CC uncover_VB potential_JJ design_NN opportunities_NNS ._.
+In_IN the_DT following_JJ section_NN we_PRP consider_VBP how_WRB we_PRP can_MD use_VB the_DT attributes_NNS of_IN serendipity_NN for_IN enhancing_VBG our_PRP$ existing_VBG
+on_IN of_IN recommendation_NN algorithms_NNS through_IN top-N_JJ measures_NNS has_VBZ been_VBN addressed_VBN before_IN -LRB-_-LRB- 12_CD ,_, 13_CD -RRB-_-RRB- ._.
+All_DT of_IN these_DT approaches_NNS rely_VBP on_IN the_DT use_NN of_IN the_DT well-known_JJ precision_NN and_CC recall_NN measures_NNS ._.
+Ziegler_NNP et_FW al._FW show_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: that_IN evaluating_VBG recommender_NN algorithms_NNS through_IN top-N_JJ lists_NNS measures_NNS does_VBZ not_RB map_VB directly_RB to_TO the_DT user_NN 's_POS utility_NN function_NN ._.
+However_RB ,_, it_PRP does_VBZ address_VB some_DT of_IN the_DT limitations_NNS of_IN the_DT more_RBR commonly_RB accepte_VB
+arch_NN community_NN recognizes_VBZ that_IN the_DT problems_NNS with_IN current_JJ evaluation_NN methods_NNS and_CC measures_NNS must_MD be_VB addressed_VBN -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+In_IN response_NN to_TO this_DT ,_, new_JJ and_CC modified_JJ metrics_NNS have_VBP started_VBN to_TO appear_VB in_IN the_DT literature_NN =_JJ -_: =[_NN 11_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+-LRB-_-LRB- 11_CD -RRB-_-RRB- introduces_VBZ a_DT modified_VBN precision_NN ,_, whereby_WRB any_DT recommendation_NN generated_VBN which_WDT is_VBZ not_RB rated_VBN by_IN the_DT test_NN user_NN counts_VBZ negatively_RB towards_IN the_DT result_NN ._.
+-LRB-_-LRB- 19_CD -RRB-_-RRB- introduced_VBD the_DT Intra-List_NNP Similarity_NNP Metric_NNP
+ics_NNS ._.
+Since_IN minimal_JJ improvements_NNS to_TO accuracy_NN bear_NN little_JJ meaning_NN to_TO the_DT end_NN user_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, other_JJ metrics_NNS are_VBP worth_JJ considering_VBG ,_, like_IN temporal_JJ diversity_NN ._.
+While_IN diversity_NN has_VBZ been_VBN explored_VBN in_IN the_DT static_JJ case_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, one_PRP may_MD be_VB interested_JJ in_IN measuring_VBG the_DT extent_NN that_IN users_NNS are_VBP recommended_VBN the_DT same_JJ items_NNS repeatedly_RB over_IN time_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+To_TO explore_VB this_DT facet_NN of_IN recommendations_NNS ,_, we_PRP defined_VBD the_DT diversity_NN between_IN two_CD top_JJ -_:
+ification_NN are_VBP attribute-based_JJ -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, i.e._FW ,_, the_DT diversity_NN of_IN the_DT recommended_VBN list_NN is_VBZ defined_VBN by_IN how_WRB much_JJ each_DT item_NN in_IN the_DT list_NN differs_VBZ from_IN the_DT others_NNS in_IN terms_NNS of_IN their_PRP$ attribute_NN values_NNS ._.
+For_IN example_NN ,_, in_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, diversity_NN is_VBZ measured_VBN based_VBN on_IN specific_JJ attributes_NNS of_IN each_DT item_NN ,_, which_WDT is_VBZ defined_VBN by_IN the_DT taxonomy_NN in_IN which_WDT the_DT item_NN is_VBZ classified_VBN ._.
+In_IN Yahoo_NNP !_.
+Movies1_NN ,_, recommended_VBD 1_CD http:\/\/movies.yahoo.com\/_NN movies_NNS a_DT
+e_LS identical_JJ to_TO the_DT ones_NNS used_VBN in_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Finally_RB ,_, the_DT last_JJ two_CD datasets_NNS used_VBN in_IN our_PRP$ experiments_NNS are_VBP based_VBN on_IN the_DT BookCrossing_NN dataset_NN -LRB-_-LRB- available_JJ from_IN http:\/\/www.informatik.uni-freiburg.de\/~cziegler\/BX\/_NN -RRB-_-RRB- =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+From_IN this_DT dataset_NN built_VBD a_DT transactional_JJ dataset_NN that_WDT contained_VBD 92,005_CD records_NNS and_CC 14,172_CD inner_NN and_CC leaf_NN categories_NNS ._.
+We_PRP then_RB cut_VBD the_DT dataset_NN at_IN the_DT second_JJ and_CC third_JJ concept_NN level_NN and_CC obtained_VBD two_CD dat_NN
+ndipity_NN should_MD be_VB used_VBN to_TO assess_VB the_DT quality_NN of_IN recommendations_NNS ._.
+Collaborative_JJ filtering_VBG systems_NNS have_VBP promoted_VBN novelty_NN and_CC serendipity_NN by_IN helping_VBG users_NNS uncover_VB less_RBR popular_JJ -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC more_RBR diverse_JJ items_NNS =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Though_IN participants_NNS are_VBP often_RB able_JJ to_TO talk_VB about_IN past_JJ experiences_NNS of_IN --_: chance_NN encountering_VBG ‖_NN -LRB-_-LRB- 2,4_CD -RRB-_-RRB- ,_, it_PRP is_VBZ hard_JJ to_TO identify_VB ,_, induce_VB or_CC study_VB serendipity_NN ._.
+To_TO combat_VB this_DT in_IN our_PRP$ research_NN ,_, rather_RB than_IN try_VB
+,_, where_WRB providing_VBG highly_RB accurate_JJ recommendations_NNS -LRB-_-LRB- i.e._FW ,_, items_NNS the_DT user_NN is_VBZ sure_JJ to_TO like_VB -RRB-_-RRB- may_MD not_RB be_VB as_RB satisfying_JJ to_TO the_DT user_NN as_IN lowering_VBG the_DT accuracy_NN but_CC providing_VBG a_DT wider_JJR breadth_NN of_IN recommendations_NNS =_JJ -_: =[_NN 130_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Outside_JJ of_IN recommender_NN systems_NNS ,_, we_PRP are_VBP not_RB aware_JJ of_IN research_NN on_IN how_WRB personalization_NN impacts_VBZ breadth_NN of_IN experience_NN ._.
+By_IN introducing_VBG awareness_NN as_IN a_DT 12novel_JJ evaluation_NN metric_NN ,_, this_DT dissertation_NN address_NN
+on_IN predictions_NNS wi_NN ._.
+Note_VB that_DT function_NN Pw_FW i_FW is_VBZ injective_JJ and_CC reflects_VBZ recommendation_NN ranking_NN in_IN descending_VBG order_NN ,_, giving_VBG highest_JJS predictions_NNS first_RB ._.
+2.2_CD Item-based_JJ Collaborative_NNP Filtering_NNP Item-based_JJ CF_NN =_JJ -_: =[_NN 13_CD ,_, 26_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ been_VBN gaining_VBG momentum_NN over_IN the_DT last_JJ five_CD years_NNS by_IN virtue_NN of_IN favorable_JJ computational_JJ complexity_NN characteristics_NNS and_CC the_DT ability_NN to_TO decouple_VB the_DT model_NN computation_NN process_NN from_IN actual_JJ prediction_NN mak_NN
+y_NN more_RBR facile_JJ to_TO collect_VB ,_, their_PRP$ usage_NN implies_VBZ adding_VBG noise_NN to_TO the_DT collected_VBN information_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+2.1_CD User-based_JJ Collaborative_NNP Filtering_NNP User-based_JJ CF_NN has_VBZ been_VBN explored_VBN in-depth_JJ during_IN the_DT last_JJ ten_CD years_NNS =_JJ -_: =[_NN 29_CD ,_, 24_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: and_CC represents_VBZ the_DT most_RBS popular_JJ recommendation_NN algorithm_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, owing_VBG to_TO its_PRP$ compelling_JJ simplicity_NN and_CC excellent_JJ quality_NN of_IN recommendations_NNS ._.
+CF_NN operates_VBZ on_IN a_DT set_NN of_IN users_NNS A_NN =_JJ -LCB-_-LRB- a1_NN ,_, a2_NN ,_, ..._: ,_, an_DT -RCB-_-RRB- ,_, a_DT s_NN
+history_NN of_IN purchase_NN ,_, and_CC demographic_JJ information_NN ._.
+Many_JJ of_IN the_DT most_RBS successful_JJ systems_NNS make_VBP use_NN of_IN collaborative_JJ filtering_VBG -LRB-_-LRB- 27_CD ,_, 8_CD ,_, 11_CD -RRB-_-RRB- ,_, and_CC numerous_JJ commercial_JJ systems_NNS ,_, e.g._FW ,_, Amazon.com_NNP 's_POS recommender_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, exploit_VB ∗_NN Researched_VBN while_IN at_IN GroupLens_NNP Research_NNP in_IN Minneapolis_NNP ._.
+Copyright_NN is_VBZ held_VBN by_IN the_DT International_NNP World_NNP Wide_NN Web_NN Conference_NN Committee_NN -LRB-_-LRB- IW3C2_NN -RRB-_-RRB- ._.
+Distribution_NN of_IN these_DT papers_NNS is_VBZ limited_VBN to_TO classr_VB
+sting_VBG accuracy_NN metrics_NNS in_IN their_PRP$ efforts_NNS to_TO capture_VB user_NN satisfaction_NN ._.
+•_NNP Accuracy_NNP versus_CC satisfaction_NN ._.
+There_EX have_VBP been_VBN several_JJ efforts_NNS in_IN the_DT past_NN arguing_VBG that_IN ``_`` accuracy_NN does_VBZ not_RB tell_VB the_DT whole_JJ story_NN ''_'' =_SYM -_: =[_NN 4_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Nevertheless_RB ,_, no_DT evidence_NN has_VBZ been_VBN given_VBN to_TO show_VB that_IN some_DT aspects_NNS of_IN actual_JJ user_NN satisfaction_NN reach_NN beyond_IN accuracy_NN ._.
+We_PRP close_VBP this_DT gap_NN and_CC provide_VB analysis_NN from_IN large-scale_JJ online_NN and_CC offline_FW evalu_FW
+ts_NNS ,_, generally_RB supposing_VBG binary_JJ preferences_NNS ._.
+3.1.1_CD Predictive_JJ Accuracy_NN Metrics_NNS Predictive_JJ accuracy_NN metrics_NNS measure_VB how_WRB close_JJ predicted_VBN ratings_NNS come_VBP to_TO true_JJ user_NN ratings_NNS ._.
+Most_RBS prominent_JJ and_CC widely_RB used_VBN =_JJ -_: =[_NN 29_CD ,_, 11_CD ,_, 3_CD ,_, 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, mean_VB absolute_JJ error_NN -LRB-_-LRB- MAE_NN -RRB-_-RRB- represents_VBZ an_DT efficient_JJ means_NN to_TO measure_VB the_DT statistical_JJ accuracy_NN of_IN predictions_NNS wi_NN -LRB-_-LRB- bk_NN -RRB-_-RRB- for_IN sets_VBZ Bi_NN of_IN products_NNS :_: |_CD E_NN |_NN =_JJ b_NN k_NN ∈_NN B_NN i_FW |_FW ri_FW -LRB-_-LRB- bk_NN -RRB-_-RRB- −_FW wi_FW -LRB-_-LRB- bk_NN -RRB-_-RRB- |_CD |_CD Bi_NNP |_NNP Related_NNP to_TO MAE_NNP ,_, me_PRP
+mendations_NNS of_IN products_NNS they_PRP will_MD appreciate_VB ,_, based_VBN on_IN their_PRP$ past_JJ preferences_NNS ,_, history_NN of_IN purchase_NN ,_, and_CC demographic_JJ information_NN ._.
+Many_JJ of_IN the_DT most_RBS successful_JJ systems_NNS make_VBP use_NN of_IN collaborative_JJ filtering_VBG =_JJ -_: =[_NN 27_CD ,_, 8_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC numerous_JJ commercial_JJ systems_NNS ,_, e.g._FW ,_, Amazon.com_NNP 's_POS recommender_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, exploit_VBP ∗_NNP Researched_NNP while_IN at_IN GroupLens_NNP Research_NNP in_IN Minneapolis_NNP ._.
+Copyright_NN is_VBZ held_VBN by_IN the_DT International_NNP World_NNP Wide_NN Web_NN Conferenc_NN
+t_NN ,_, penalizing_VBG incorrect_JJ recommendations_NNS less_RBR severely_RB the_DT further_RBR down_IN the_DT list_NN they_PRP occur_VBP ._.
+Penalty_NN decreases_VBZ with_IN exponential_JJ decay_NN ._.
+-LRB-_-LRB- 2_LS -RRB-_-RRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- 24_CD Other_JJ popular_JJ decision-support_JJ metrics_NNS include_VBP ROC_NN =_JJ -_: =[_NN 28_CD ,_, 18_CD ,_, 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT ``_`` receiver_NN operating_NN characteristic_NN ''_'' ._.
+ROC_NN measures_VBZ the_DT extent_NN to_TO which_WDT an_DT information_NN filtering_VBG system_NN is_VBZ able_JJ to_TO successfully_RB distinguish_VB between_IN signal_NN and_CC noise_NN ._.
+Less_RBR frequently_RB used_VBN ,_, NDPM_NN -LRB-_-LRB- 2_CD -RRB-_-RRB-
+y_NN more_RBR facile_JJ to_TO collect_VB ,_, their_PRP$ usage_NN implies_VBZ adding_VBG noise_NN to_TO the_DT collected_VBN information_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+2.1_CD User-based_JJ Collaborative_NNP Filtering_NNP User-based_JJ CF_NN has_VBZ been_VBN explored_VBN in-depth_JJ during_IN the_DT last_JJ ten_CD years_NNS =_JJ -_: =[_NN 29_CD ,_, 24_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: and_CC represents_VBZ the_DT most_RBS popular_JJ recommendation_NN algorithm_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, owing_VBG to_TO its_PRP$ compelling_JJ simplicity_NN and_CC excellent_JJ quality_NN of_IN recommendations_NNS ._.
+CF_NN operates_VBZ on_IN a_DT set_NN of_IN users_NNS A_NN =_JJ -LCB-_-LRB- a1_NN ,_, a2_NN ,_, ..._: ,_, an_DT -RCB-_-RRB- ,_, a_DT s_NN
+ence_NN ,_, their_PRP$ recommending_VBG appears_VBZ far_RB too_RB obvious_JJ and_CC of_IN little_JJ help_NN to_TO the_DT shopper_NN ._.
+Novelty_NN and_CC serendipity_NN metrics_NNS thus_RB measure_VBP the_DT ``_`` nonobviousness_NN ''_'' of_IN recommendations_NNS made_VBN ,_, avoiding_VBG ``_`` cherrypicking_VBG ''_'' =_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN some_DT simple_JJ measure_NN of_IN serendipity_NN ,_, take_VB the_DT average_JJ popularity_NN of_IN recommended_JJ items_NNS ._.
+Lower_NNP scores_NNS obtained_VBN denote_VBP higher_JJR serendipity_NN ._.
+3.3_CD Intra-List_JJ Similarity_NN We_PRP present_VBP a_DT new_JJ metric_NN that_WDT inte_VBP
+le_FW and_CC may_MD influence_VB the_DT new_JJ ranking_NN ._.
+4.4_CD Osmotic_JJ Pressure_NN Analogy_NN The_DT effect_NN of_IN dissimilarity_NN bears_VBZ traits_NNS similar_JJ to_TO that_DT of_IN osmotic_JJ pressure_NN and_CC selective_JJ permeability_NN known_VBN from_IN molecular_JJ biology_NN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Steady_JJ insertion_NN of_IN products_NNS bo_NN ,_, taken_VBN from_IN one_CD specific_JJ area_NN of_IN interest_NN do_VBP ,_, into_IN the_DT recommendation_NN list_NN equates_VBZ to_TO the_DT passing_NN of_IN molecules_NNS from_IN one_CD specific_JJ substance_NN through_IN the_DT cell_NN membrane_NN i_FW
+._.
+Reasons_NNS for_IN negative_JJ ramifications_NNS on_IN user_NN satisfaction_NN implied_VBN by_IN portfolio_NN effects_NNS are_VBP well-understood_JJ and_CC have_VBP been_VBN studied_VBN extensively_RB in_IN economics_NNS ,_, termed_VBN ``_`` law_NN of_IN diminishing_VBG marginal_JJ returns_NNS ''_'' =_SYM -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT law_NN describes_VBZ effects_NNS of_IN saturation_NN that_WDT steadily_RB decrease_VBP the_DT incremental_JJ utility_NN of_IN products_NNS p_NN when_WRB acquired_VBN or_CC consumed_VBN over_RB and_CC over_RB again_RB ._.
+For_IN example_NN ,_, suppose_VB you_PRP are_VBP offered_VBN your_PRP$ favorite_NN
+ts_NNS ,_, generally_RB supposing_VBG binary_JJ preferences_NNS ._.
+3.1.1_CD Predictive_JJ Accuracy_NN Metrics_NNS Predictive_JJ accuracy_NN metrics_NNS measure_VB how_WRB close_JJ predicted_VBN ratings_NNS come_VBP to_TO true_JJ user_NN ratings_NNS ._.
+Most_RBS prominent_JJ and_CC widely_RB used_VBN =_JJ -_: =[_NN 29_CD ,_, 11_CD ,_, 3_CD ,_, 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, mean_VB absolute_JJ error_NN -LRB-_-LRB- MAE_NN -RRB-_-RRB- represents_VBZ an_DT efficient_JJ means_NN to_TO measure_VB the_DT statistical_JJ accuracy_NN of_IN predictions_NNS wi_NN -LRB-_-LRB- bk_NN -RRB-_-RRB- for_IN sets_VBZ Bi_NN of_IN products_NNS :_: |_CD E_NN |_NN =_JJ b_NN k_NN ∈_NN B_NN i_FW |_FW ri_FW -LRB-_-LRB- bk_NN -RRB-_-RRB- −_FW wi_FW -LRB-_-LRB- bk_NN -RRB-_-RRB- |_CD |_CD Bi_NNP |_NNP Related_NNP to_TO MAE_NNP ,_, me_PRP
+ion_NN General_JJ Terms_NNS Algorithms_NNS ,_, Experimentation_NN ,_, Human_JJ Factors_NNS ,_, Measurement_NN Keywords_NNS Collaborative_JJ filtering_VBG ,_, diversification_NN ,_, accuracy_NN ,_, recommender_NN systems_NNS ,_, metrics_NNS 1_CD ._.
+INTRODUCTION_NNP Recommender_NNP systems_NNS =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: intend_VBP to_TO provide_VB people_NNS with_IN recommendations_NNS of_IN products_NNS they_PRP will_MD appreciate_VB ,_, based_VBN on_IN their_PRP$ past_JJ preferences_NNS ,_, history_NN of_IN purchase_NN ,_, and_CC demographic_JJ information_NN ._.
+Many_JJ of_IN the_DT most_RBS successful_JJ systems_NNS
+t_NN ,_, penalizing_VBG incorrect_JJ recommendations_NNS less_RBR severely_RB the_DT further_RBR down_IN the_DT list_NN they_PRP occur_VBP ._.
+Penalty_NN decreases_VBZ with_IN exponential_JJ decay_NN ._.
+-LRB-_-LRB- 2_LS -RRB-_-RRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- 24_CD Other_JJ popular_JJ decision-support_JJ metrics_NNS include_VBP ROC_NN =_JJ -_: =[_NN 28_CD ,_, 18_CD ,_, 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT ``_`` receiver_NN operating_NN characteristic_NN ''_'' ._.
+ROC_NN measures_VBZ the_DT extent_NN to_TO which_WDT an_DT information_NN filtering_VBG system_NN is_VBZ able_JJ to_TO successfully_RB distinguish_VB between_IN signal_NN and_CC noise_NN ._.
+Less_RBR frequently_RB used_VBN ,_, NDPM_NN -LRB-_-LRB- 2_CD -RRB-_-RRB-
+cerning_VBG the_DT structure_NN of_IN genre_NN classification_NN inherent_JJ to_TO these_DT domains_NNS ._.
+For_IN instance_NN ,_, Amazon.com_NNP 's_POS classification_NN taxonomy_NN for_IN books_NNS is_VBZ more_RBR deeply_RB nested_JJ ,_, though_IN smaller_JJR ,_, than_IN its_PRP$ movie_NN counterpart_NN =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Bear_NN in_IN mind_NN that_IN the_DT structure_NN of_IN these_DT taxonomies_NNS severely_RB affects_VBZ the_DT taxonomy-based_JJ similarity_NN measure_NN c_NN ∗_NN ,_, which_WDT lies_VBZ at_IN the_DT very_JJ heart_NN of_IN the_DT topic_NN diversification_NN method_NN ._.
+Another_DT interesting_JJ
+the_DT highest_JJS quality_NN ranking_NN possible_JJ ,_, also_RB known_VBN as_IN the_DT ``_`` rank_JJ aggregation_NN problem_NN ''_'' -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Most_JJS approaches_NNS use_VBP variations_NNS of_IN the_DT ``_`` linear_JJ combination_NN of_IN score_NN ''_'' model_NN -LRB-_-LRB- LC_NN -RRB-_-RRB- ,_, described_VBN by_IN Vogt_NNP and_CC Cottrell_NNP =_SYM -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT LC_NN model_NN effectively_RB resembles_VBZ our_PRP$ scheme_NN for_IN merging_VBG the_DT original_JJ ,_, accuracy-based_JJ ranking_NN with_IN the_DT current_JJ dissimilarity_NN ranking_NN ,_, but_CC is_VBZ more_RBR general_JJ and_CC does_VBZ not_RB address_VB the_DT diversity_NN issue_NN ._.
+F_NN
+metrics_NNS such_JJ as_IN precision\/recall_NN or_CC mean_VB absolute_JJ error_NN ._.
+Now_RB research_NN has_VBZ reached_VBN the_DT point_NN where_WRB going_VBG beyond_IN pure_JJ accuracy_NN and_CC toward_IN real_JJ user_NN experience_NN becomes_VBZ indispensable_JJ for_IN further_JJ advances_NNS =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT work_NN looks_VBZ specifically_RB at_IN impacts_NNS of_IN recommendation_NN lists_NNS ,_, regarding_VBG them_PRP as_IN entities_NNS in_IN their_PRP$ own_JJ right_NN rather_RB than_IN mere_JJ aggregations_NNS of_IN single_JJ and_CC independent_JJ suggestions_NNS ._.
+1.1_CD Contributions_NNS
+9_CD -RRB-_-RRB- ,_, the_DT ``_`` receiver_NN operating_NN characteristic_NN ''_'' ._.
+ROC_NN measures_VBZ the_DT extent_NN to_TO which_WDT an_DT information_NN filtering_VBG system_NN is_VBZ able_JJ to_TO successfully_RB distinguish_VB between_IN signal_NN and_CC noise_NN ._.
+Less_RBR frequently_RB used_VBN ,_, NDPM_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: compares_VBZ two_CD different_JJ ,_, weakly_RB ordered_VBN rankings_NNS ._.
+3.2_CD Beyond_NNP Accuracy_NNP Though_NNP accuracy_NN metrics_NNS are_VBP an_DT important_JJ facet_NN of_IN usefulness_NN ,_, there_EX are_VBP traits_NNS of_IN user_NN satisfaction_NN they_PRP are_VBP unable_JJ to_TO capture_VB ._.
+Ho_NNP
+diversity_NN issue_NN ._.
+Fagin_NNP et_FW al._FW -LRB-_-LRB- 7_CD -RRB-_-RRB- propose_VBP metrics_NNS for_IN measuring_VBG the_DT distance_NN between_IN top-N_JJ lists_NNS ,_, i.e._FW ,_, inter-list_JJ similarity_NN metrics_NNS ,_, in_IN order_NN to_TO evaluate_VB the_DT quality_NN of_IN merged_JJ ranks_NNS ._.
+Oztekin_NNP et_FW al._FW =_SYM -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: extend_VB the_DT linear_JJ combination_NN approach_NN by_IN proposing_VBG rank_NN combination_NN models_NNS that_WDT also_RB incorporate_VBP content-based_JJ features_NNS in_IN order_NN to_TO identify_VB the_DT most_RBS relevant_JJ topics_NNS ._.
+More_RBR related_JJ to_TO our_PRP$ idea_NN of_IN cre_NN
+mendations_NNS of_IN products_NNS they_PRP will_MD appreciate_VB ,_, based_VBN on_IN their_PRP$ past_JJ preferences_NNS ,_, history_NN of_IN purchase_NN ,_, and_CC demographic_JJ information_NN ._.
+Many_JJ of_IN the_DT most_RBS successful_JJ systems_NNS make_VBP use_NN of_IN collaborative_JJ filtering_VBG =_JJ -_: =[_NN 27_CD ,_, 8_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC numerous_JJ commercial_JJ systems_NNS ,_, e.g._FW ,_, Amazon.com_NNP 's_POS recommender_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, exploit_VBP ∗_NNP Researched_NNP while_IN at_IN GroupLens_NNP Research_NNP in_IN Minneapolis_NNP ._.
+Copyright_NN is_VBZ held_VBN by_IN the_DT International_NNP World_NNP Wide_NN Web_NN Conferenc_NN
+purchasing_VBG or_CC mentioning_VBG of_IN an_DT item_NN counts_VBZ as_IN an_DT expression_NN of_IN appreciation_NN ._.
+While_IN implicit_JJ ratings_NNS are_VBP generally_RB more_RBR facile_JJ to_TO collect_VB ,_, their_PRP$ usage_NN implies_VBZ adding_VBG noise_NN to_TO the_DT collected_VBN information_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+2.1_CD User-based_JJ Collaborative_NNP Filtering_NNP User-based_JJ CF_NN has_VBZ been_VBN explored_VBN in-depth_JJ during_IN the_DT last_JJ ten_CD years_NNS -LRB-_-LRB- 29_CD ,_, 24_CD ,_, 14_CD -RRB-_-RRB- and_CC represents_VBZ the_DT most_RBS popular_JJ recommendation_NN algorithm_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, owing_VBG to_TO its_PRP$ com_NN
+ation_NN ,_, ai_VBP 's_POS residual_JJ slice_NN -LRB-_-LRB- Ri_FW \_FW R_NN x_NN i_LS -RRB-_-RRB- is_VBZ retained_VBN and_CC not_RB used_VBN for_IN prediction_NN ._.
+This_DT slice_NN ,_, denoted_VBN T_NN x_NN i_FW ,_, constitutes_VBZ the_DT test_NN set_NN ,_, i.e._FW ,_, those_DT products_NNS the_DT recommenders_NNS intend_VBP to_TO predict_VB ._.
+Sarwar_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: presents_VBZ an_DT adapted_VBN variant_NN of_IN recall_NN ,_, recording_VBG the_DT percentage_NN of_IN test_NN set_NN products_NNS b_NN ∈_CD T_NN x_NN i_FW occurring_VBG in_IN recommendation_NN list_NN P_NN x_SYM i_FW with_IN respect_NN to_TO the_DT overall_JJ number_NN of_IN test_NN set_NN products_NNS |_CD T_NN x_NN i_FW |_FW :_:
+y_NN more_RBR facile_JJ to_TO collect_VB ,_, their_PRP$ usage_NN implies_VBZ adding_VBG noise_NN to_TO the_DT collected_VBN information_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+2.1_CD User-based_JJ Collaborative_NNP Filtering_NNP User-based_JJ CF_NN has_VBZ been_VBN explored_VBN in-depth_JJ during_IN the_DT last_JJ ten_CD years_NNS =_JJ -_: =[_NN 29_CD ,_, 24_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: and_CC represents_VBZ the_DT most_RBS popular_JJ recommendation_NN algorithm_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, owing_VBG to_TO its_PRP$ compelling_JJ simplicity_NN and_CC excellent_JJ quality_NN of_IN recommendations_NNS ._.
+CF_NN operates_VBZ on_IN a_DT set_NN of_IN users_NNS A_NN =_JJ -LCB-_-LRB- a1_NN ,_, a2_NN ,_, ..._: ,_, an_DT -RCB-_-RRB- ,_, a_DT s_NN
+el_NN effectively_RB resembles_VBZ our_PRP$ scheme_NN for_IN merging_VBG the_DT original_JJ ,_, accuracy-based_JJ ranking_NN with_IN the_DT current_JJ dissimilarity_NN ranking_NN ,_, but_CC is_VBZ more_RBR general_JJ and_CC does_VBZ not_RB address_VB the_DT diversity_NN issue_NN ._.
+Fagin_NNP et_FW al._FW =_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP metrics_NNS for_IN measuring_VBG the_DT distance_NN between_IN top-N_JJ lists_NNS ,_, i.e._FW ,_, inter-list_JJ similarity_NN metrics_NNS ,_, in_IN order_NN to_TO evaluate_VB the_DT quality_NN of_IN merged_JJ ranks_NNS ._.
+Oztekin_NNP et_FW al._FW -LRB-_-LRB- 21_CD -RRB-_-RRB- extend_VBP the_DT linear_JJ combinatio_NN
+ion_NN c_NN ∗_NN :_: 2_CD B_NN ×_NN 2_CD B_NN →_NN -LRB-_-LRB- −_NN 1_CD ,_, +1_CD -RRB-_-RRB- ,_, quantifying_VBG the_DT similarity_NN between_IN two_CD product_NN sets_NNS ,_, forms_VBZ an_DT essential_JJ part_NN of_IN topic_NN diversification_NN ._.
+We_PRP instantiate_VBP c_NN ∗_CD with_IN our_PRP$ metric_NN for_IN taxonomy-driven_JJ filtering_VBG =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_JJ -_: ,_, though_IN other_JJ content-based_JJ similarity_NN measures_NNS may_MD appear_VB likewise_RB suitable_JJ ._.
+Our_PRP$ metric_NN computes_VBZ the_DT similarity_NN between_IN product_NN sets_NNS based_VBN upon_IN their_PRP$ classification_NN ._.
+Each_DT product_NN belongs_VBZ to_TO one_CD or_CC m_NN
+mendations_NNS of_IN products_NNS they_PRP will_MD appreciate_VB ,_, based_VBN on_IN their_PRP$ past_JJ preferences_NNS ,_, history_NN of_IN purchase_NN ,_, and_CC demographic_JJ information_NN ._.
+Many_JJ of_IN the_DT most_RBS successful_JJ systems_NNS make_VBP use_NN of_IN collaborative_JJ filtering_VBG =_JJ -_: =[_NN 27_CD ,_, 8_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC numerous_JJ commercial_JJ systems_NNS ,_, e.g._FW ,_, Amazon.com_NNP 's_POS recommender_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, exploit_VBP ∗_NNP Researched_NNP while_IN at_IN GroupLens_NNP Research_NNP in_IN Minneapolis_NNP ._.
+Copyright_NN is_VBZ held_VBN by_IN the_DT International_NNP World_NNP Wide_NN Web_NN Conferenc_NN
+pic_RB ,_, may_MD be_VB of_IN little_JJ use_NN for_IN the_DT user_NN ,_, even_RB though_IN this_DT list_NN 's_POS average_JJ accuracy_NN might_MD be_VB high_JJ ._.
+The_DT issue_NN has_VBZ been_VBN perceived_VBN by_IN other_JJ researchers_NNS before_RB ,_, coined_VBN ``_`` portfolio_NN effect_NN ''_'' by_IN Ali_NNP and_CC van_NNP Stam_NNP =_SYM -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP believesthat_VBP item-based_JJ CF_NN systems_NNS in_IN particular_JJ are_VBP susceptible_JJ to_TO that_DT effect_NN ._.
+Reports_NNS from_IN the_DT item-based_JJ TV_NN recommender_NN TiVo_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, as_RB well_RB as_IN personal_JJ experiences_NNS with_IN Amazon.com_NNP 's_POS recommender_NN
+into_IN consideration_NN both_CC the_DT accuracy_NN of_IN suggestions_NNS made_VBN ,_, and_CC the_DT user_NN 's_POS extent_NN of_IN interest_NN in_IN specific_JJ topics_NNS ._.
+Analyses_NNS of_IN topic_NN diversification_NN 's_POS implications_NNS on_IN user-based_JJ -LRB-_-LRB- 11_CD ,_, 22_CD -RRB-_-RRB- and_CC item-based_JJ =_JJ -_: =[_NN 26_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: collaborative_JJ filtering_VBG are_VBP provided_VBN ._.
+1_CD The_DT term_NN ``_`` active_JJ user_NN ''_'' refers_VBZ to_TO the_DT person_NN for_IN whom_WP recommendations_NNS are_VBP made_VBN ._.
+s_NN •_CD Intra-list_JJ similarity_NN metric_NN ._.
+Regarding_VBG diversity_NN as_IN an_DT important_JJ ingredient_NN t_NN
+rate_NN content-based_JJ features_NNS in_IN order_NN to_TO identify_VB the_DT most_RBS relevant_JJ topics_NNS ._.
+More_RBR related_JJ to_TO our_PRP$ idea_NN of_IN creating_VBG lists_NNS that_WDT represent_VBP the_DT whole_JJ plethora_NN of_IN the_DT user_NN 's_POS topic_NN interests_NNS ,_, Kummamuru_NNP et_FW al._FW =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: present_VB their_PRP$ clustering_NN scheme_NN that_IN groups_NNS search_VBP results_NNS into_IN clusters_NNS of_IN related_JJ topics_NNS ._.
+The_DT user_NN can_MD then_RB conveniently_RB browse_VB topic_NN folders_NNS relevant_JJ to_TO his_PRP$ search_NN interest_NN ._.
+The_DT commercially_RB avail_NN
+to_TO capture_VB ._.
+However_RB ,_, non-accuracy_JJ metrics_NNS have_VBP largely_RB been_VBN denied_VBN major_JJ research_NN interest_NN so_RB far_RB ._.
+3.2.1_CD Coverage_NNP Among_IN all_DT non-accuracy_JJ evaluation_NN metrics_NNS ,_, coverage_NN has_VBZ been_VBN the_DT most_RBS frequently_RB used_VBN =_JJ -_: =[_NN 11_CD ,_, 19_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Coverage_NNP measures_VBZ the_DT percentage_NN of_IN elements_NNS part_NN of_IN the_DT problem_NN domain_NN for_IN which_WDT predictions_NNS can_MD be_VB made_VBN ._.
+3.2.2_CD Novelty_NNP and_CC Serendipity_NNP Some_DT recommenders_NNS produce_VBP highly_RB accurate_JJ results_NNS that_WDT are_VBP st_IN
+._.
+Our_PRP$ novel_JJ method_NN takes_VBZ into_IN consideration_NN both_CC the_DT accuracy_NN of_IN suggestions_NNS made_VBN ,_, and_CC the_DT user_NN 's_POS extent_NN of_IN interest_NN in_IN specific_JJ topics_NNS ._.
+Analyses_NNS of_IN topic_NN diversification_NN 's_POS implications_NNS on_IN user-based_JJ =_JJ -_: =[_NN 11_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: and_CC item-based_JJ -LRB-_-LRB- 26_CD ,_, 5_CD -RRB-_-RRB- collaborative_JJ filtering_VBG are_VBP provided_VBN ._.
+1_CD The_DT term_NN ``_`` active_JJ user_NN ''_'' refers_VBZ to_TO the_DT person_NN for_IN whom_WP recommendations_NNS are_VBP made_VBN ._.
+s_NN •_CD Intra-list_JJ similarity_NN metric_NN ._.
+Regarding_VBG diversity_NN as_IN an_DT
+is_VBZ the_DT merging_JJ of_IN several_JJ top-N_JJ lists_NNS into_IN one_CD single_JJ top-N_JJ list_NN ._.
+Intuitively_RB ,_, this_DT merged_JJ top-N_JJ list_NN should_MD reflect_VB the_DT highest_JJS quality_NN ranking_NN possible_JJ ,_, also_RB known_VBN as_IN the_DT ``_`` rank_JJ aggregation_NN problem_NN ''_'' =_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS approaches_NNS use_VBP variations_NNS of_IN the_DT ``_`` linear_JJ combination_NN of_IN score_NN ''_'' model_NN -LRB-_-LRB- LC_NN -RRB-_-RRB- ,_, described_VBN by_IN Vogt_NNP and_CC Cottrell_NNP -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+The_DT LC_NN model_NN effectively_RB resembles_VBZ our_PRP$ scheme_NN for_IN merging_VBG the_DT original_NN ,_, accuracy_NN -_:
+into_IN consideration_NN both_CC the_DT accuracy_NN of_IN suggestions_NNS made_VBN ,_, and_CC the_DT user_NN 's_POS extent_NN of_IN interest_NN in_IN specific_JJ topics_NNS ._.
+Analyses_NNS of_IN topic_NN diversification_NN 's_POS implications_NNS on_IN user-based_JJ -LRB-_-LRB- 11_CD ,_, 22_CD -RRB-_-RRB- and_CC item-based_JJ =_JJ -_: =[_NN 26_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: collaborative_JJ filtering_VBG are_VBP provided_VBN ._.
+1_CD The_DT term_NN ``_`` active_JJ user_NN ''_'' refers_VBZ to_TO the_DT person_NN for_IN whom_WP recommendations_NNS are_VBP made_VBN ._.
+s_NN •_CD Intra-list_JJ similarity_NN metric_NN ._.
+Regarding_VBG diversity_NN as_IN an_DT important_JJ ingredient_NN t_NN

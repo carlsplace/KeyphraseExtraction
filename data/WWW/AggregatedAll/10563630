@@ -1,0 +1,218 @@
+Earthquake_NNP shakes_VBZ Twitter_NNP users_NNS :_: real-time_JJ event_NN detection_NN by_IN social_JJ sensors_NNS
+Twitter_NNP ,_, a_DT popular_JJ microblogging_NN service_NN ,_, has_VBZ received_VBN much_JJ attention_NN recently_RB ._.
+An_DT important_JJ characteristic_NN of_IN Twitter_NNP is_VBZ its_PRP$ real-time_JJ nature_NN ._.
+For_IN example_NN ,_, when_WRB an_DT earthquake_NN occurs_VBZ ,_, people_NNS make_VBP many_JJ Twitter_NNP posts_NNS -LRB-_-LRB- tweets_NNS -RRB-_-RRB- related_JJ to_TO the_DT earthquake_NN ,_, which_WDT enables_VBZ detection_NN of_IN earthquake_NN occurrence_NN promptly_RB ,_, simply_RB by_IN observing_VBG the_DT tweets_NNS ._.
+As_IN described_VBN in_IN this_DT paper_NN ,_, we_PRP investigate_VBP the_DT real-time_JJ interaction_NN of_IN events_NNS such_JJ as_IN earthquakes_NNS in_IN Twitter_NNP and_CC propose_VBP an_DT algorithm_NN to_TO monitor_VB tweets_NNS and_CC to_TO detect_VB a_DT target_NN event_NN ._.
+To_TO detect_VB a_DT target_NN event_NN ,_, we_PRP devise_VBP a_DT classifier_NN of_IN tweets_NNS based_VBN on_IN features_NNS such_JJ as_IN the_DT keywords_NNS in_IN a_DT tweet_NN ,_, the_DT number_NN of_IN words_NNS ,_, and_CC their_PRP$ context_NN ._.
+Subsequently_RB ,_, we_PRP produce_VBP a_DT probabilistic_JJ spatiotemporal_JJ model_NN for_IN the_DT target_NN event_NN that_WDT can_MD find_VB the_DT center_NN and_CC the_DT trajectory_NN of_IN the_DT event_NN location_NN ._.
+We_PRP consider_VBP each_DT Twitter_NNP user_NN as_IN a_DT sensor_NN and_CC apply_VB Kalman_NNP filtering_VBG and_CC particle_NN filtering_VBG ,_, which_WDT are_VBP widely_RB used_VBN for_IN location_NN estimation_NN in_IN ubiquitous\/pervasive_JJ computing_NN ._.
+The_DT particle_NN filter_NN works_VBZ better_RBR than_IN other_JJ comparable_JJ methods_NNS for_IN estimating_VBG the_DT centers_NNS of_IN earthquakes_NNS and_CC the_DT trajectories_NNS of_IN typhoons_NNS ._.
+As_IN an_DT application_NN ,_, we_PRP construct_VBP an_DT earthquake_NN reporting_NN system_NN in_IN Japan_NNP ._.
+Because_IN of_IN the_DT numerous_JJ earthquakes_NNS and_CC the_DT large_JJ number_NN of_IN Twitter_NNP users_NNS throughout_IN the_DT country_NN ,_, we_PRP can_MD detect_VB an_DT earthquake_NN with_IN high_JJ probability_NN -LRB-_-LRB- 96_CD %_NN of_IN earthquakes_NNS of_IN Japan_NNP Meteorological_NNP Agency_NNP -LRB-_-LRB- JMA_NNP -RRB-_-RRB- seismic_JJ intensity_NN scale_NN 3_CD or_CC more_JJR are_VBP detected_VBN -RRB-_-RRB- merely_RB by_IN monitoring_VBG tweets_NNS ._.
+Our_PRP$ system_NN detects_VBZ earthquakes_NNS promptly_RB and_CC sends_VBZ e-mails_NNS to_TO registered_JJ users_NNS ._.
+Notification_NN is_VBZ delivered_VBN much_RB faster_RBR than_IN the_DT announcements_NNS that_WDT are_VBP broadcast_VBN by_IN the_DT JMA_NNP ._.
+that_IN a_DT topic_NN has_VBZ become_VBN ``_`` news_NN ''_'' ._.
+To_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, the_DT only_JJ other_JJ paper_NN that_WDT considers_VBZ the_DT use_NN of_IN Twitter_NNP for_IN inferring_VBG non-social_JJ phenomena_NNS is_VBZ Sakaki_NNP et_FW al._FW 's_POS study_NN of_IN Earthquake_NNP sensing_VBG =_JJ -_: =[_NN 36_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Their_PRP$ recent_JJ paper_NN describes_VBZ techniques_NNS for_IN inferring_VBG the_DT epicenter_NN of_IN earthquakes_NNS and_CC the_DT trajectories_NNS of_IN typhoons_NNS based_VBN on_IN tweet_NN geo-location_NN ._.
+However_RB ,_, most_JJS of_IN the_DT complexity_NN in_IN their_PRP$ application_NN
+s_NN on_IN the_DT stock_NN market_NN ._.
+In_IN such_JJ cases_NNS ,_, content_NN updates_NNS may_MD contain_VB actionable_JJ information_NN that_WDT is_VBZ useful_JJ only_RB if_IN delivered_VBN in_IN real-time_JJ ,_, especially_RB in_IN emergency_NN scenarios_NNS such_JJ as_IN earthquake_NN monitoring_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Google_NNP Alerts_NNP ,_, a_DT content_NN monitoring_NN service_NN ,_, automatically_RB notifies_VBZ users_NNS when_WRB there_EX are_VBP new_JJ Google_NNP results_NNS for_IN a_DT set_NN of_IN keywords_NNS ._.
+It_PRP delivers_VBZ updates_NNS through_IN e-mails_NNS -LRB-_-LRB- text_NN and_CC HTML_NNP -RRB-_-RRB- ,_, and_CC RSS_NNP feeds_VBZ ._.
+a_DT simple_JJ peak_NN detection_NN technique_NN that_WDT works_VBZ well_RB in_IN practice_NN ,_, and_CC we_PRP believe_VBP that_IN many_JJ of_IN the_DT proposed_VBN techniques_NNS can_MD be_VB used_VBN in_IN place_NN ._.
+Event_NN detection_NN :_: Event_NN detection_NN has_VBZ been_VBN studied_VBN in_IN the_DT past_NN =_JJ -_: =[_NN 7_CD ,_, 11_CD ,_, 16_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Many_JJ of_IN those_DT works_NNS focus_VBP on_IN the_DT problem_NN of_IN detecting_VBG events_NNS from_IN documents_NNS based_VBN on_IN language_NN patterns_NNS ,_, with_IN the_DT emphasis_NN on_IN extracting_VBG location_NN and_CC time_NN information_NN about_IN the_DT events_NNS ._.
+Perhaps_RB the_DT cl_NN
+._.
+$_$ 10.00_CD ._.
+Sofus_FW A._FW Macskassy_NNP Fetch_NNP Technologies_NNPS 841_CD Apollo_NNP St._NNP ,_, Ste_NNP 400_CD El_NNP Segundo_NNP ,_, CA_NNP 90245_CD sofmac@fetch.com_NN mechanism_NN for_IN language_NN learning_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, and_CC even_RB for_IN detecting_VBG natural_JJ disasters_NNS in_IN real-time_JJ =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP focus_VBP on_IN discovering_VBG the_DT topics_NNS of_IN interest_NN for_IN a_DT particular_JJ Twitter_NNP user_NN ._.
+This_DT allows_VBZ for_IN clustering_NN and_CC search_NN of_IN Twitter_NNP users_NNS based_VBN upon_IN their_PRP$ interests_NNS ._.
+Specifically_RB ,_, we_PRP aim_VBP t_NN
+sts_VBZ all_DT over_IN the_DT world_NN ,_, by_IN analyzing_VBG the_DT spatial_JJ distribution_NN of_IN millions_NNS of_IN geotagged_JJ pictures_NNS posted_VBN on_IN Flickr_NNP ._.
+Results_NNS are_VBP in_IN accord_NN with_IN commonsense_JJ opinions_NNS and_CC with_IN travel_NN books_NNS suggestions_NNS ._.
+In_IN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, it_PRP is_VBZ demonstrated_VBN that_IN Twitter_NNP ,_, thanks_NNS to_TO its_PRP$ real-time_JJ nature_NN ,_, could_MD effectively_RB act_VB as_IN a_DT seismometer_NN for_IN the_DT detection_NN of_IN earthquakes_NNS ,_, simply_RB by_IN observing_VBG user_NN tweets_NNS ._.
+More_RBR in_IN general_JJ ,_, the_DT abilit_NN
+an_DT help_NN estimate_VB the_DT presence_NN of_IN visitors_NNS -LRB-_-LRB- 15_CD ,_, 18_CD -RRB-_-RRB- ._.
+More_RBR recently_RB ,_, researchers_NNS have_VBP started_VBN looking_VBG at_IN user_NN activity_NN in_IN social_JJ networks_NNS as_IN another_DT source_NN of_IN social_JJ interactions_NNS which_WDT can_MD be_VB leveraged_VBN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Crowdsourcing_VBG :_: Crowdsourcing_NNP has_VBZ emerged_VBN as_IN a_DT powerful_JJ model_NN to_TO problemsolving_NN by_IN outsourcing_VBG tasks_NNS to_TO a_DT large_JJ group_NN of_IN people_NNS ,_, as_IN engagingly_RB articulated_VBN in_IN -LRB-_-LRB- 37_CD -RRB-_-RRB- ._.
+PeopleNet_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- was_VBD an_DT early_JJ system_NN
+r_NN persistent_JJ news_NN ''_'' -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+The_DT fact_NN that_IN Twitter_NNP echoes_NNS news_NN stories_NNS from_IN traditional_JJ media_NNS can_MD be_VB exploited_VBN to_TO use_VB Twitter_NNP ,_, e.g._NNP to_TO track_VB epidemics_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, detect_VB news_NN events_NNS -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, geolocate_VBP such_JJ events_NNS =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC find_VB controversial_JJ emerging_VBG controversial_JJ topics_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+Recently_RB Mathioudakis_NNPS and_CC Koudas_NNPS -LRB-_-LRB- 18_CD -RRB-_-RRB- described_VBD an_DT on-line_JJ monitoring_NN system_NN to_TO perform_VB trend_NN detection_NN over_IN the_DT Twitter_NNP stream_NN ._.
+In_IN this_DT pa_NN
+thy_NN than_IN traditional_JJ news_NN websites_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- except_IN for_IN politics_NNS and_CC tourism_NN ._.
+Credibility_NN Analysis_NNP for_IN Twitter_NNP :_: Twitter_NNP has_VBZ been_VBN used_VBN for_IN tracking_NN epidemics_NNS ,_, detecting_VBG news_NN events_NNS ,_, geolocating_VBG such_JJ events_NNS =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, finding_VBG emerging_VBG controversial_JJ topics_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, locating_VBG wildfires_NNS ,_, hurricanes_NNS ,_, floods_NNS ,_, earthquakes_NNS ,_, etc._FW ._.
+However_RB ,_, users_NNS often_RB do_VBP not_RB believe_VB in_IN tweets_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- because_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- often_RB people_NNS have_VBP not_RB even_RB met_VB th_DT
+a_DT new_JJ view_NN of_IN bursty_JJ patterns_NNS ._.
+Besides_IN traditional_JJ text_NN documents_NNS like_IN news_NN articles_NNS and_CC research_NN publications_NNS ,_, event_NN detection_NN is_VBZ also_RB studied_VBN in_IN those_DT new_JJ social_JJ media_NNS like_IN Twitter_NNP and_CC Flickr_NNP -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Becker_NNP et_FW al._FW -LRB-_-LRB- 2_CD -RRB-_-RRB- explored_VBD a_DT variety_NN of_IN techniques_NNS for_IN learning_VBG multifeature_JJ similarity_NN metrics_NNS for_IN social_JJ media_NNS documents_NNS to_TO detect_VB events_NNS ._.
+In_IN -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, Sakaki_FW et_FW al._FW proposed_VBD an_DT algorithm_NN to_TO monitor_VB t_NN
+etworks_NNS during_IN disaster_NN outbreaks_NNS have_VBP been_VBN rarely_RB addressed_VBN in_IN the_DT research_NN literature_NN ._.
+Sakaki_FW et_FW al._FW proposed_VBD a_DT system_NN that_WDT analyzes_VBZ Twitter_NNP users_NNS '_POS posts_NNS to_TO detect_VB earthquake_NN or_CC typhoon_NN occurrences_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Their_PRP$ work_NN emphasizes_VBZ the_DT value_NN of_IN the_DT information_NN transiting_VBG through_IN social_JJ medias_NNS and_CC their_PRP$ system_NN successfully_RB detects_VBZ and_CC estimates_VBZ in_IN real_JJ time_NN the_DT position_NN of_IN earthquakes_NNS from_IN only_JJ short_JJ text_NN
+h_NN efforts_NNS focused_VBD on_IN characterizing_VBG or_CC analyzing_VBG content_NN from_IN individual_JJ events_NNS on_IN Twitter_NNP -LRB-_-LRB- Diakopoulos_NNP ,_, Naaman_NNP ,_, &_CC Kivran-Swaine_NNP ,_, 2010_CD ;_: Nagarajan_NNP ,_, Gomadam_NNP ,_, Sheth_NNP ,_, Ranabahu_NNP ,_, Mutharaju_NNP ,_, &_CC Jadhav_NNP ,_, 2009_CD ;_: =_JJ -_: =_JJ Sakaki_NNP ,_, Okazaki_NNP ,_, &_CC Matsuo_NNP ,_, 2010_CD -_: =_JJ -_: ;_: Starbird_NNP et_FW al._FW ,_, 2010_CD ;_: Shamma_NNP ,_, Kennedy_NNP ,_, &_CC Churchill_NNP ,_, 2010_CD ;_: Yardi_NNP &_CC boyd_NN ,_, 2010_CD -RRB-_-RRB- ._.
+Other_JJ research_NN efforts_NNS have_VBP addressed_VBN the_DT problem_NN of_IN detecting_VBG and_CC identifying_VBG trends_NNS in_IN Twitter_NNP and_CC other_JJ JOURNAL_NN OF_IN
+ons_NNS ._.
+Furthermore_RB ,_, millions_NNS of_IN individual_JJ users_NNS are_VBP sharing_VBG the_DT information_NN they_PRP discover_VBP over_IN Twitter_NNP ,_, making_VBG it_PRP an_DT important_JJ source_NN of_IN breaking_JJ news_NN during_IN emergencies_NNS like_IN revolutions_NNS and_CC disasters_NNS =_JJ -_: =[_NN 17,23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recent_JJ estimates_NNS suggest_VBP that_IN 200_CD million_CD active_JJ Twitter_NNP users_NNS post_VBP 150_CD million_CD tweets_NNS -LRB-_-LRB- messages_NNS -RRB-_-RRB- containing_VBG more_JJR than_IN 23_CD million_CD URLs_NNS -LRB-_-LRB- links_NNS to_TO web_NN pages_NNS -RRB-_-RRB- daily_RB -LRB-_-LRB- 3,28_CD -RRB-_-RRB- ._.
+As_IN the_DT information_NN shared_JJ ov_NN
+f_LS intended_JJ disaster_NN ._.
+Egypt_NNP simply_RB disappeared_VBD from_IN the_DT net_JJ -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Apart_RB from_IN networking_VBG technology_NN ,_, others_NNS are_VBP looking_VBG at_IN the_DT good_JJ use_NN of_IN the_DT Internet_NN during_IN disasters_NNS ,_, such_JJ as_IN Twitter_NN behavior_NN analysis_NN =_JJ -_: =[_NN 13_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+So_RB far_RB ,_, we_PRP have_VBP heard_VBN numerous_JJ initial_JJ estimates_NNS of_IN damage_NN and_CC recovery_NN in_IN Japan_NNP -LRB-_-LRB- 4_CD ,_, 15_CD -RRB-_-RRB- ._.
+There_EX are_VBP some_DT reports_NNS on_IN the_DT Internet_NN ,_, but_CC few_JJ have_VBP analysis_NN combiningtraffic_JJ data_NNS with_IN routing_VBG data_NNS ._.
+It_PRP is_VBZ
+f_LS event_NN content_NN that_IN they_PRP can_MD handle_VB ._.
+Most_RBS related_JJ research_NN relies_VBZ on_IN known_JJ event_NN content_NN in_IN the_DT form_NN of_IN manually_RB selected_VBN terms_NNS -LRB-_-LRB- e.g._FW ,_, ``_`` earthquake_NN ,_, ''``_CD shaking_VBG ''_'' for_IN an_DT earthquake_NN -RRB-_-RRB- to_TO describe_VB the_DT event_NN =_JJ -_: =[_NN 21_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT terms_NNS are_VBP used_VBN to_TO identify_VB social_JJ media_NNS documents_NNS ,_, with_IN the_DT assumption_NN that_IN documents_NNS containing_VBG these_DT select_JJ terms_NNS will_MD also_RB contain_VB information_NN about_IN the_DT event_NN ._.
+Unfortunately_RB ,_, manually_RB selec_NN
+recommendation_NN setting_NN ._.
+Microblogs_NNS have_VBP also_RB been_VBN exploited_VBN for_IN the_DT purpose_NN of_IN event_NN and_CC trend_NN detection_NN ._.
+Sakaki_FW et_FW al._FW propose_VBP semantic_JJ analysis_NN of_IN tweets_NNS to_TO detect_VB earthquakes_NNS in_IN Japan_NNP in_IN realtime_NN -LRB-_-LRB- =_JJ -_: =_JJ Sakaki_FW et_FW al._FW 2010_CD -_: =--RRB-_NN ._.
+A_DT more_RBR general_JJ approach_NN to_TO automatically_RB detect_VB events_NNS and_CC summarize_VB trends_NNS by_IN analyzing_VBG tweets_NNS is_VBZ presented_VBN by_IN Sharifi_FW et_FW al._FW -LRB-_-LRB- 2010_CD -RRB-_-RRB- ._.
+Another_DT work_NN on_IN trend_NN detection_NN is_VBZ Schedl_NNP -LRB-_-LRB- 2011_CD -RRB-_-RRB- ,_, where_WRB Schedl_NNP
+at_IN it_PRP is_VBZ real_JJ time_NN ._.
+Whenever_RB some_DT event_NN takes_VBZ place_NN ,_, people_NNS make_VBP many_JJ tweets_NNS about_IN it_PRP in_IN real-time_JJ ._.
+There_EX are_VBP a_DT number_NN of_IN studies_NNS exploiting_VBG this_DT realtime_NN nature_NN of_IN tweets_NNS ._.
+For_IN example_NN Sakaki_NNP et_FW al._FW ,_, =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, describe_VBP faster_JJR generation_NN of_IN earthquake_NN reports_NNS by_IN using_VBG tweets_NNS as_IN sensors_NNS than_IN the_DT traditional_JJ broadcast_NN system_NN ._.
+Qiu_FW et_FW ._.
+al._FW ,_, -LRB-_-LRB- 19_CD -RRB-_-RRB- have_VBP concluded_VBN that_DT twitter_NN can_MD be_VB a_DT complimentary_JJ source_NN of_IN info_NN
+een_NN used_VBN to_TO detect_VB and_CC notify_VB registered_JJ users_NNS of_IN earthquakes_NNS in_IN Japan_NNP by_IN applying_VBG Twitter_NNP to_TO a_DT probabilistic_JJ spatiotemporal_JJ model_NN for_IN events_NNS that_WDT can_MD find_VB the_DT center_NN and_CC trajectory_NN of_IN event_NN location_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Experiments_NNS in_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- suggest_VBP that_IN Twitter_NNP provides_VBZ a_DT suitable_JJ open_JJ publish-subscribe_JJ infrastructure_NN for_IN using_VBG sensors_NNS and_CC smart_JJ phones_NNS ._.
+A_DT crowd-sourcing_JJ system_NN architecture_NN over_IN Twitter_NNP was_VBD designed_VBN
+considers_VBZ the_DT time_NN dimension_NN ,_, and_CC as_IN a_DT result_NN ,_, the_DT results_NNS are_VBP sorted_VBN by_IN time_NN ._.
+By_IN studying_VBG the_DT users_NNS '_POS behavior_NN in_IN the_DT microblogging_NN systems_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, more_RBR sophisticated_JJ ranking_JJ schemes_NNS ,_, such_JJ as_IN -LRB-_-LRB- 23_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, were_VBD proposed_VBN ._.
+However_RB ,_, most_RBS ranking_JJ schemes_NNS are_VBP too_RB complex_JJ and_CC therefore_RB too_RB expensive_JJ and_CC time_NN consuming_NN ._.
+They_PRP are_VBP precomputed_VBN in_IN an_DT offline_JJ manner_NN ._.
+To_TO address_VB this_DT problem_NN ,_, in_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, noisy_JJ tweets_NNS
+nd_NN to_TO have_VB an_DT influence_NN on_IN querying_VBG behavior_NN ._.
+For_IN example_NN ,_, almost_RB immediate_JJ detection_NN of_IN earthquakes_NNS in_IN Japan_NNP can_MD be_VB performed_VBN with_IN very_RB high_JJ confidence_NN by_IN tracking_VBG the_DT micro-blogging_JJ service_NN Twitter_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN fact_NN ,_, a_DT service_NN based_VBN on_IN Twitter_NNP sent_VBD alerts_VBZ within_IN 20_CD seconds_NNS of_IN the_DT events_NNS ,_, compared_VBN to_TO 6_CD minutes_NNS by_IN the_DT Japan_NNP Meteorological_NNP Agency_NNP ._.
+Earthquakes_NNS could_MD also_RB be_VB localized_VBN by_IN considering_VBG the_DT prop_VBP
+on_IN has_VBZ been_VBN confirmed_VBN from_IN our_PRP$ observations_NNS of_IN the_DT data_NNS that_IN the_DT immediate_JJ post-event_JJ interval_NN has_VBZ a_DT lesser_JJR number_NN tweets_NNS than_IN the_DT non-event_JJ intervals_NNS ._.
+The_DT same_JJ assumption_NN is_VBZ also_RB proved_VBN in_IN the_DT study_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT feature_NN is_VBZ marked_VBN the_DT same_JJ way_NN as_IN the_DT tweet_JJ volume_NN feature_NN ._.
+3_LS ._.
+Evaluation_NN and_CC Results_NNS Our_PRP$ evaluation_NN started_VBD with_IN the_DT dataset_NN DGT_NN which_WDT is_VBZ manually_RB labeled_VBN both_DT for_IN players_NNS and_CC interesting_JJ even_RB
+nkaranarayanan_NN ,_, 2011_CD ;_: Phelan_NNP ,_, McCarthy_NNP ,_, &_CC Smyth_NNP ,_, 2009_CD -RRB-_-RRB- ,_, identifying_VBG crowded_JJ places_NNS -LRB-_-LRB- Fujisaka_NNP ,_, Lee_NNP ,_, &_CC Sumiya_NNP ,_, 2010_CD -RRB-_-RRB- ,_, predicting_VBG future_JJ citations_NNS -LRB-_-LRB- Eysenbach_NNP ,_, 2011_CD -RRB-_-RRB- or_CC even_RB identifying_VBG earthquake_NN sites_NNS -LRB-_-LRB- =_JJ -_: =_JJ Sakaki_NNP ,_, Okazaki_NNP ,_, &_CC Matsuo_NNP ,_, 2010_CD -_: =--RRB-_NN ._.
+Nevertheless_RB ,_, although_IN some_DT articles_NNS have_VBP studied_VBN aspects_NNS of_IN trending_VBG topics_NNS -LRB-_-LRB- Naaman_NNP et_FW al._FW ,_, 2011_CD ;_: Thelwall_NNP ,_, Buckley_NNP ,_, &_CC Paltoglou_NNP ,_, 2011_CD -RRB-_-RRB- ,_, none_NN have_VBP conducted_VBN an_DT international_JJ comparison_NN or_CC identifi_NNS
+patterns_NNS ._.
+Semantic_JJ analysis_NN of_IN social_JJ content_NN has_VBZ been_VBN intensively_RB investigated_VBN in_IN recent_JJ years_NNS ._.
+It_PRP has_VBZ been_VBN shown_VBN that_IN information_NN derived_VBN from_IN social_JJ media_NNS ,_, such_JJ as_IN Tweets_NNS ,_, can_MD help_VB event_NN detection_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, news_NN recommendation_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- and_CC public_JJ health_NN applications_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+Yet_RB ,_, the_DT models_NNS can_MD be_VB significantly_RB enriched_VBN by_IN directly_RB considering_VBG the_DT temporal_JJ sequence_NN of_IN the_DT topics_NNS in_IN the_DT Twitter_NNP stream_NN ,_, instead_RB
+h_NN efforts_NNS focused_VBD on_IN characterizing_VBG or_CC analyzing_VBG content_NN from_IN individual_JJ events_NNS on_IN Twitter_NNP -LRB-_-LRB- Diakopoulos_NNP ,_, Naaman_NNP ,_, &_CC Kivran-Swaine_NNP ,_, 2010_CD ;_: Nagarajan_NNP ,_, Gomadam_NNP ,_, Sheth_NNP ,_, Ranabahu_NNP ,_, Mutharaju_NNP ,_, &_CC Jadhav_NNP ,_, 2009_CD ;_: =_JJ -_: =_JJ Sakaki_NNP ,_, Okazaki_NNP ,_, &_CC Matsuo_NNP ,_, 2010_CD -_: =_JJ -_: ;_: Starbird_NNP et_FW al._FW ,_, 2010_CD ;_: Shamma_NNP ,_, Kennedy_NNP ,_, &_CC Churchill_NNP ,_, 2010_CD ;_: Yardi_NNP &_CC boyd_NN 2010_CD -RRB-_-RRB- ._.
+Other_JJ research_NN efforts_NNS have_VBP addressed_VBN the_DT problem_NN of_IN detecting_VBG and_CC identifying_VBG trends_NNS in_IN Twitter_NNP and_CC other_JJ SAS_NNP data_NNS ._.
+``_`` B_NN
+-LRB-_-LRB- 20_CD -RRB-_-RRB- in_IN which_WDT a_DT distributed_VBN architecture_NN is_VBZ proposed_VBN and_CC the_DT contents_NNS are_VBP aggregated_VBN ._.
+Jensen_NNP et_FW al._FW analyzed_VBN more_JJR than_IN 150_CD thousand_CD tweets_NNS ,_, particularly_RB those_DT mentioning_VBG brands_NNS in_IN corporate_JJ accounts_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN contrast_NN to_TO the_DT small_JJ number_NN of_IN academic_JJ studies_NNS of_IN Twitter_NNP ,_, many_JJ Twitter_NNP applications_NNS exist_VBP ._.
+Some_DT are_VBP used_VBN for_IN analyses_NNS of_IN Twitter_NNP data_NNS ._.
+For_IN example_NN ,_, Tweettronics_NNP 16_CD provides_VBZ an_DT analysis_NN of_IN twee_NN
+nt_NN ,_, and_CC soon_RB after_IN that_DT if_IN user_NN A_NN makes_VBZ a_DT tweet_NN about_IN an_DT event_NN ,_, then_RB we_PRP consider_VBP the_DT information_NN flows_VBZ from_IN B_NN to_TO A_NN 10_CD ._.
+This_DT is_VBZ the_DT similar_JJ definition_NN to_TO other_JJ studies_NNS of_IN information_NN diffusion_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 15_CD ,_, 16_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+We_PRP can_MD understand_VB that_IN ,_, in_IN the_DT case_NN of_IN earthquakes_NNS and_CC typhoons_NNS ,_, very_RB little_JJ information_NN diffusion_NN takes_VBZ place_NN on_IN Twitter_NNP ._.
+On_IN the_DT other_JJ hand_NN ,_, the_DT release_NN of_IN a_DT new_JJ game_NN illustrates_VBZ the_DT scale_NN and_CC rap_NN
+rstanding_VBG interaction_NN in_IN Twitter_NNP -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+Recently_RB ,_, boyd_NN et_FW al._FW investigated_VBN retweet_NN activity_NN ,_, which_WDT is_VBZ the_DT Twitter-equivalent_NN of_IN e-mail_JJ forwarding_NN ,_, where_WRB users_NNS post_VBP messages_NNS originally_RB posted_VBN by_IN others_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Twitter_NNP is_VBZ categorized_VBN as_IN a_DT micro-blogging_JJ service_NN ._.
+Microblogging_VBG is_VBZ a_DT form_NN of_IN blogging_NN that_WDT allows_VBZ users_NNS to_TO send_VB brief_JJ text_NN updates_NNS or_CC micromedia_NNS such_JJ as_IN photographs_NNS or_CC audio_JJ clips_NNS ._.
+Microblogging_VBG s_NN
+✓_FW ✏_FW Dear_NNP Alice_NNP ,_, We_PRP have_VBP just_RB detected_VBN an_DT earthquake_NN around_IN Chiba_NNP ._.
+Please_VB take_VB care_NN ._.
+Toretter_NNP Alert_NNP System_NNP ✒_NNP Figure_NNP 12_CD :_: Sample_NN alert_NN e-mail_JJ ._.
+users_NNS and_CC manually_RB classified_VBN messages_NNS into_IN nine_CD categories_NNS =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT numerous_JJ categories_NNS are_VBP ''_'' Me_PRP now_RB ''_'' and_CC ''_'' Statements_NNP and_CC Random_NNP Thoughts_NNPS ''_'' ;_: statements_NNS about_IN current_JJ events_NNS corresponding_VBG to_TO this_DT category_NN ._.
+Some_DT studies_NNS attempt_VBP to_TO show_VB applications_NNS of_IN Twitter_NNP :_: Borau_NNP
+works_NNS have_VBP targeted_VBN collaborative_JJ bookmarking_VBG data_NNS ,_, as_IN Flickr_NNP does_VBZ ,_, from_IN a_DT spatiotemporal_JJ perspective_NN :_: Serdyukov_NNP et_FW al._FW investigated_VBN generic_JJ methods_NNS for_IN placing_VBG photographs_NNS on_IN Flickr_NNP on_IN the_DT world_NN map_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP used_VBD a_DT language_NN model_NN to_TO place_NN photos_NNS ,_, and_CC showed_VBD that_IN they_PRP can_MD effectively_RB estimate_VB the_DT language_NN model_NN through_IN analyses_NNS of_IN annotations_NNS by_IN users_NNS ._.
+Rattenbury_NNP et_FW al._FW -LRB-_-LRB- 22_CD -RRB-_-RRB- specifically_RB examined_VBD th_DT
+e.g._FW -LRB-_-LRB- 23_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Various_JJ attempts_NNS have_VBP also_RB been_VBN made_VBN to_TO produce_VB shortterm_JJ forecasts_NNS to_TO realize_VB an_DT earthquake_NN warning_NN system_NN by_IN observing_VBG electromagnetic_JJ emissions_NNS from_IN ground-based_JJ sensors_NNS and_CC satellites_NNS =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Other_JJ precursor_NN signals_NNS such_JJ as_IN ionospheric_JJ changes_NNS ,_, infrared_JJ luminescence_NN ,_, and_CC air-conductivity_JJ change_NN ,_, along_IN with_IN traditional_JJ monitoring_NN of_IN movements_NNS of_IN the_DT earth_NN 's_POS crust_NN ,_, are_VBP investigated_VBN ._.
+In_IN Jap_NN
+''_'' ;_: statements_NNS about_IN current_JJ events_NNS corresponding_VBG to_TO this_DT category_NN ._.
+Some_DT studies_NNS attempt_VBP to_TO show_VB applications_NNS of_IN Twitter_NNP :_: Borau_NNP et_FW al._FW tried_VBD to_TO use_VB Twitter_NNP to_TO teach_VB English_NNP to_TO Englishlanguage_NNP learners_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Ebner_NNP et_FW al._FW investigated_VBD the_DT applicability_NN of_IN Twitter_NNP for_IN educational_JJ purposes_NNS ,_, i.e._FW mobile_JJ learning_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+The_DT integration_NN of_IN the_DT Semantic_JJ Web_NN and_CC microblogging_NN was_VBD described_VBN in_IN a_DT previous_JJ study_NN -LRB-_-LRB- 20_CD
+s_NN of_IN Twitter_NNP :_: Borau_NNP et_FW al._FW tried_VBD to_TO use_VB Twitter_NNP to_TO teach_VB English_NNP to_TO Englishlanguage_JJ learners_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Ebner_NNP et_FW al._FW investigated_VBD the_DT applicability_NN of_IN Twitter_NNP for_IN educational_JJ purposes_NNS ,_, i.e._FW mobile_JJ learning_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT integration_NN of_IN the_DT Semantic_JJ Web_NN and_CC microblogging_NN was_VBD described_VBN in_IN a_DT previous_JJ study_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- in_IN which_WDT a_DT distributed_VBN architecture_NN is_VBZ proposed_VBN and_CC the_DT contents_NNS are_VBP aggregated_VBN ._.
+Jensen_NNP et_FW al._FW analyzed_VBN m_NN
+es_NNS have_VBP investigated_VBN Twitter_NNP ._.
+Aside_RB from_IN the_DT studies_NNS introduced_VBN in_IN Section_NN 1_CD ,_, several_JJ others_NNS have_VBP been_VBN done_VBN ._.
+Grosseck_FW et_FW al._FW investigated_VBN indicators_NNS such_JJ as_IN the_DT influence_NN and_CC trust_NN related_JJ to_TO Twitter_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Krishnamurthy_NNP et_FW al._FW crawled_VBD nearly_RB 100,000_CD Twitter_NNP users_NNS and_CC examined_VBD the_DT number_NN of_IN users_NNS each_DT user_NN follows_VBZ ,_, in_IN addition_NN to_TO the_DT number_NN of_IN users_NNS following_VBG them_PRP ._.
+Naaman_NNP et_FW al._FW analyzed_VBN contents_NNS of_IN me_PRP
+ention_NN recently_RB ._.
+It_PRP is_VBZ an_DT online_JJ social_JJ network_NN used_VBN by_IN millions_NNS of_IN people_NNS around_IN the_DT world_NN to_TO stay_VB connected_VBN to_TO their_PRP$ friends_NNS ,_, family_NN members_NNS and_CC co-workers_NNS through_IN their_PRP$ computers_NNS and_CC mobile_JJ phones_NNS =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Twitter_NNP asks_VBZ one_CD question_NN ,_, ''_'' What_WP are_VBP you_PRP doing_VBG ?_. ''_''
+Answers_NNS must_MD be_VB fewer_JJR than_IN 140_CD characters_NNS ._.
+A_DT status_NN update_VBP message_NN ,_, called_VBD a_DT tweet_NN ,_, is_VBZ often_RB used_VBN as_IN a_DT message_NN to_TO friends_NNS and_CC colleagues_NNS ._.
+A_DT user_NN can_MD
+eets_NNS on_IN world_NN earthquake_NN information_NN ,_, but_CC it_PRP is_VBZ not_RB useful_JJ for_IN prediction_NN or_CC early_JJ warning_NN ._.
+Vast_JJ amounts_NNS of_IN work_NN have_VBP been_VBN done_VBN on_IN intermediateterm_JJ earthquake_NN prediction_NN in_IN the_DT seismology_NN field_NN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Various_JJ attempts_NNS have_VBP also_RB been_VBN made_VBN to_TO produce_VB shortterm_JJ forecasts_NNS to_TO realize_VB an_DT earthquake_NN warning_NN system_NN by_IN observing_VBG electromagnetic_JJ emissions_NNS from_IN ground-based_JJ sensors_NNS and_CC satellites_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Othe_NNP
+nt_NN ,_, and_CC soon_RB after_IN that_DT if_IN user_NN A_NN makes_VBZ a_DT tweet_NN about_IN an_DT event_NN ,_, then_RB we_PRP consider_VBP the_DT information_NN flows_VBZ from_IN B_NN to_TO A_NN 10_CD ._.
+This_DT is_VBZ the_DT similar_JJ definition_NN to_TO other_JJ studies_NNS of_IN information_NN diffusion_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 15_CD ,_, 16_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+We_PRP can_MD understand_VB that_IN ,_, in_IN the_DT case_NN of_IN earthquakes_NNS and_CC typhoons_NNS ,_, very_RB little_JJ information_NN diffusion_NN takes_VBZ place_NN on_IN Twitter_NNP ._.
+On_IN the_DT other_JJ hand_NN ,_, the_DT release_NN of_IN a_DT new_JJ game_NN illustrates_VBZ the_DT scale_NN and_CC rap_NN
+particle_NN filters_NNS ._.
+The_DT SIS_NNP algorithm_NN consists_VBZ of_IN recursive_JJ propagation_NN of_IN the_DT weights_NNS and_CC support_NN points_NNS as_IN each_DT measurement_NN is_VBZ received_VBN sequentially_RB ._.
+We_PRP use_VBP a_DT more_RBR advanced_JJ algorithm_NN with_IN resampling_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP employ_VBP weight_NN distribution_NN Dw_NN -LRB-_-LRB- x_NN ,_, y_NN -RRB-_-RRB- which_WDT is_VBZ obtained_VBN from_IN twitter_NN user_NN distribution_NN to_TO take_VB into_IN consideration_NN the_DT biases_NNS of_IN user_NN locations_NNS 8_CD The_DT alogorithm_NN is_VBZ shown_VBN in_IN Algo_NNP ._.
+1_CD ._.
+3.3_CD Information_NNP
+et_CC is_VBZ actually_RB referring_VBG to_TO an_DT actual_JJ earthquake_NN occurrence_NN ,_, which_WDT is_VBZ denoted_VBN as_IN a_DT positive_JJ class_NN ._.
+To_TO classify_VB a_DT tweet_NN into_IN a_DT positive_JJ class_NN or_CC a_DT negative_JJ class_NN ,_, we_PRP use_VBP a_DT support_NN vector_NN machine_NN -LRB-_-LRB- SVM_NN -RRB-_-RRB- =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT is_VBZ a_DT widely_RB used_VBN machine-learning_JJ algorithm_NN ._.
+By_IN preparing_VBG positive_JJ and_CC negative_JJ examples_NNS as_IN a_DT training_NN set_NN ,_, we_PRP can_MD produce_VB a_DT model_NN to_TO classify_VB tweets_NNS automatically_RB into_IN positive_JJ and_CC negative_JJ c_NN
+Flickr_NNP on_IN the_DT world_NN map_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+They_PRP used_VBD a_DT language_NN model_NN to_TO place_NN photos_NNS ,_, and_CC showed_VBD that_IN they_PRP can_MD effectively_RB estimate_VB the_DT language_NN model_NN through_IN analyses_NNS of_IN annotations_NNS by_IN users_NNS ._.
+Rattenbury_NNP et_FW al._FW =_SYM -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: specifically_RB examined_VBD the_DT problem_NN of_IN extracting_VBG place_NN and_CC event_NN semantics_NNS for_IN tags_NNS that_WDT are_VBP assigned_VBN to_TO photographs_NNS on_IN Flickr_NNP ._.
+They_PRP proposed_VBD scale-structure_NN identification_NN ,_, which_WDT is_VBZ a_DT burst-detection_NN
+he_PRP world_NN 2_CD ._.
+Some_DT studies_NNS have_VBP investigated_VBN Twitter_NNP :_: Java_NNP et_FW al._FW analyzed_VBN Twitter_NNP as_RB early_RB as_IN 2007_CD ._.
+They_PRP described_VBD the_DT social_JJ network_NN of_IN Twitter_NNP users_NNS and_CC investigated_VBD the_DT motivation_NN of_IN Twitter_NNP users_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+B._NNP Huberman_NNP et_FW al._FW analyzed_VBN more_JJR than_IN 300_CD thousand_CD users_NNS ._.
+They_PRP discovered_VBD that_IN the_DT relation_NN between_IN friends_NNS -LRB-_-LRB- defined_VBN as_IN a_DT person_NN to_TO whom_WP a_DT user_NN has_VBZ directed_VBN posts_NNS using_VBG an_DT ''_'' @_SYM ''_'' symbol_NN -RRB-_-RRB- is_VBZ the_DT key_NN to_TO
+educed_VBN to_TO detecting_VBG an_DT object_NN and_CC its_PRP$ location_NN from_IN sensor_NN readings_NNS ._.
+Estimating_VBG an_DT object_NN 's_POS location_NN is_VBZ arguably_RB the_DT most_RBS fundamental_JJ sensing_VBG task_NN in_IN many_JJ ubiquitous_JJ and_CC pervasive_JJ computing_NN scenarios_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Figure_NN 3_CD presents_VBZ an_DT illustration_NN of_IN the_DT correspondence_NN between_IN sensory_JJ data_NNS detection_NN and_CC tweet_NN processing_NN ._.
+The_DT motivations_NNS are_VBP the_DT same_JJ for_IN both_DT cases_NNS :_: to_TO detect_VB a_DT target_NN event_NN ._.
+Observation_NN by_IN sen_NN
+thesis_NN tracking_NN ,_, grid-based_JJ ,_, and_CC topological_JJ approaches_NNS ,_, and_CC particle_NN filters_NNS ._.
+Hightower_NNP and_CC Borriello_NNP made_VBD a_DT study_NN of_IN applying_VBG particle_NN filters_NNS to_TO location_NN sensors_NNS deployed_VBN throughout_IN a_DT lab_NN building_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+More_JJR than_IN 16_CD http:\/\/www.tweettronics.com_NN 17_CD http:\/\/web2express.org30_NN lab_NN residents_NNS were_VBD tracked_VBN ;_: their_PRP$ locations_NNS were_VBD estimated_VBN accurately_RB using_VBG the_DT particle_NN filter_NN approach_NN ._.
+7_CD ._.
+DISCUSSION_NN We_PRP plan_VBP
+do_VB in_IN our_PRP$ study_NN ._.
+Various_JJ studies_NNS have_VBP been_VBN made_VBN of_IN the_DT analysis_NN of_IN web_NN data_NNS -LRB-_-LRB- except_IN for_IN Twitter_NNP -RRB-_-RRB- particularly_RB addressing_VBG the_DT spatial_JJ aspect_NN :_: The_DT most_RBS relevant_JJ study_NN to_TO ours_PRP is_VBZ one_CD by_IN Backstrom_NNP et_FW al._FW =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP use_VBP queries_NNS with_IN location_NN -LRB-_-LRB- obtained_VBN by_IN IP_NNP addresses_NNS -RRB-_-RRB- ,_, and_CC develop_VB a_DT probabilistic_JJ framework_NN for_IN quantifying_VBG spatial_JJ variation_NN ._.
+The_DT model_NN is_VBZ based_VBN on_IN a_DT decomposition_NN of_IN the_DT surface_NN of_IN the_DT earth_NN
+e_LS in_IN an_DT environment_NN where_WRB sensors_NNS are_VBP placed_VBN ._.
+Through_IN infrared_JJ communication_NN or_CC a_DT WiFi_NN signal_NN ,_, the_DT user_NN location_NN is_VBZ estimated_VBN as_IN providing_VBG location-based_JJ services_NNS such_JJ as_IN navigation_NN and_CC museum_NN guides_NNS =_JJ -_: =[_NN 9_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP apply_VBP Kalman_NNP filters_NNS and_CC particle_NN filters_NNS ,_, which_WDT are_VBP widely_RB used_VBN for_IN location_NN estimation_NN in_IN ubiquitous\/pervasive_JJ computing_NN ._.
+As_IN an_DT application_NN ,_, we_PRP develop_VBP an_DT earthquake_NN reporting_NN system_NN using_VBG Japa_NN
+,_, we_PRP target_VBP event_NN detection_NN ._.
+An_DT event_NN is_VBZ an_DT arbitrary_JJ classification_NN of_IN a_DT space\/time_NN region_NN ._.
+An_DT event_NN might_MD have_VB actively_RB participating_VBG agents_NNS ,_, passive_JJ factors_NNS ,_, products_NNS ,_, and_CC a_DT location_NN in_IN space\/time_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP target_VBP events_NNS such_JJ as_IN earthquakes_NNS ,_, typhoons_NNS ,_, and_CC traffic_NN jams_NNS ,_, which_WDT are_VBP visible_JJ through_IN tweets_NNS ._.
+These_DT events_NNS have_VBP several_JJ properties_NNS :_: i_LS -RRB-_-RRB- they_PRP are_VBP of_IN large_JJ scale_NN -LRB-_-LRB- many_JJ users_NNS experience_VBP the_DT event_NN -RRB-_-RRB-
+-LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Ebner_NNP et_FW al._FW investigated_VBD the_DT applicability_NN of_IN Twitter_NNP for_IN educational_JJ purposes_NNS ,_, i.e._FW mobile_JJ learning_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+The_DT integration_NN of_IN the_DT Semantic_JJ Web_NN and_CC microblogging_NN was_VBD described_VBN in_IN a_DT previous_JJ study_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: in_IN which_WDT a_DT distributed_VBN architecture_NN is_VBZ proposed_VBN and_CC the_DT contents_NNS are_VBP aggregated_VBN ._.
+Jensen_NNP et_FW al._FW analyzed_VBN more_JJR than_IN 150_CD thousand_CD tweets_NNS ,_, particularly_RB those_DT mentioning_VBG brands_NNS in_IN corporate_JJ accounts_NNS -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+e_LS in_IN an_DT environment_NN where_WRB sensors_NNS are_VBP placed_VBN ._.
+Through_IN infrared_JJ communication_NN or_CC a_DT WiFi_NN signal_NN ,_, the_DT user_NN location_NN is_VBZ estimated_VBN as_IN providing_VBG location-based_JJ services_NNS such_JJ as_IN navigation_NN and_CC museum_NN guides_NNS =_JJ -_: =[_NN 9_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP apply_VBP Kalman_NNP filters_NNS and_CC particle_NN filters_NNS ,_, which_WDT are_VBP widely_RB used_VBN for_IN location_NN estimation_NN in_IN ubiquitous\/pervasive_JJ computing_NN ._.
+As_IN an_DT application_NN ,_, we_PRP develop_VBP an_DT earthquake_NN reporting_NN system_NN using_VBG Japa_NN
+an_DT 300_CD thousand_CD users_NNS ._.
+They_PRP discovered_VBD that_IN the_DT relation_NN between_IN friends_NNS -LRB-_-LRB- defined_VBN as_IN a_DT person_NN to_TO whom_WP a_DT user_NN has_VBZ directed_VBN posts_NNS using_VBG an_DT ''_'' @_SYM ''_'' symbol_NN -RRB-_-RRB- is_VBZ the_DT key_NN to_TO understanding_NN interaction_NN in_IN Twitter_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recently_RB ,_, boyd_NN et_FW al._FW investigated_VBN retweet_NN activity_NN ,_, which_WDT is_VBZ the_DT Twitter-equivalent_NN of_IN e-mail_JJ forwarding_NN ,_, where_WRB users_NNS post_VBP messages_NNS originally_RB posted_VBN by_IN others_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+Twitter_NNP is_VBZ categorized_VBN as_IN a_DT micr_NN
+search_NN query_NN earthquake_NN when_WRB they_PRP experience_VBP an_DT earthquake_NN ._.
+Therefore_RB ,_, our_PRP$ approach_NN complements_VBZ their_PRP$ work_NN ._.
+Similarly_RB to_TO our_PRP$ work_NN ,_, Mei_NNP et_FW al._FW targeted_VBN blogs_NNS and_CC analyzed_VBD their_PRP$ spatiotemporal_JJ patterns_NNS =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP presented_VBD examples_NNS for_IN Hurricane_NNP Katrina_NNP ,_, Hurricane_NNP Rita_NNP ,_, and_CC iPod_NNP Nano_NNP ._.
+The_DT motivation_NN of_IN that_DT study_NN is_VBZ similar_JJ to_TO ours_PRP ,_, but_CC Twitter_NNP data_NNS are_VBP more_RBR time-sensitive_JJ ;_: our_PRP$ study_NN examines_VBZ even_RB more_JJR

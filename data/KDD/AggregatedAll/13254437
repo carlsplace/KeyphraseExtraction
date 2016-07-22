@@ -1,0 +1,83 @@
+Multiple_JJ domain_NN user_NN personalization_NN
+Content_NN personalization_NN is_VBZ a_DT key_JJ tool_NN in_IN creating_VBG attractive_JJ websites_NNS ._.
+Synergies_NNS can_MD be_VB obtained_VBN by_IN integrating_VBG personalization_NN between_IN several_JJ Internet_NNP properties_NNS ._.
+In_IN this_DT paper_NN we_PRP propose_VBP a_DT hierarchical_JJ Bayesian_JJ model_NN to_TO address_VB these_DT issues_NNS ._.
+Our_PRP$ model_NN allows_VBZ the_DT integration_NN of_IN multiple_JJ properties_NNS without_IN changing_VBG the_DT overall_JJ structure_NN ,_, which_WDT makes_VBZ it_PRP easily_RB extensible_JJ across_IN large_JJ Internet_NNP portals_NNS ._.
+It_PRP relies_VBZ at_IN its_PRP$ lowest_JJS level_NN on_IN Latent_JJ Dirichlet_NNP Allocation_NNP ,_, while_IN making_VBG use_NN of_IN latent_JJ side_NN features_NNS for_IN cross-property_JJ integration_NN ._.
+We_PRP demonstrate_VBP the_DT efficiency_NN of_IN our_PRP$ approach_NN by_IN analyzing_VBG data_NNS from_IN several_JJ properties_NNS of_IN a_DT major_JJ Internet_NN portal_NN ._.
+sampler_NN is_VBZ to_TO sample_NN the_DT topic_NN of_IN each_DT new_JJ word_NN from_IN a_DT uniform_JJ distribution_NN ._.
+However_RB ,_, this_DT results_VBZ in_IN slow_JJ convergence_NN ._.
+A_DT more_RBR effective_JJ way_NN of_IN initializing_VBG the_DT sampler_NN is_VBZ to_TO perform_VB online_JJ sampling_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+That_DT is_VBZ ,_, the_DT topic_NN of_IN each_DT new_JJ word_NN is_VBZ sampled_VBN by_IN conditioning_NN on_IN all_PDT the_DT words_NNS seen_VBN so_RB far_RB ._.
+This_DT procedure_NN is_VBZ easy_JJ when_WRB performed_VBN on_IN a_DT single_JJ machine_NN ,_, but_CC is_VBZ extremely_RB complex_JJ to_TO implement_VB in_IN a_DT dis_NN
+refore_RB perform_VB collapsed_JJ sampling_NN in_IN a_DT similar_JJ manner_NN as_IN in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- by_IN integrating_VBG out_RP θ_NN and_CC ϕ_NN ,_, and_CC sampling_NN z._NN In_IN addition_NN we_PRP sample_NN x_NN using_VBG Langevin_NNP diffusion_NN ._.
+The_DT λ_NN parameter_NN is_VBZ optimized_VBN using_VBG L-BFGS_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP describe_VBP -LRB-_-LRB- the_DT rather_RB technical_JJ -RRB-_-RRB- details_NNS below_IN ._.
+They_PRP are_VBP not_RB essential_JJ to_TO understanding_VBG the_DT experiments_NNS but_CC they_PRP matter_VBP for_IN the_DT purpose_NN of_IN reproducibility_NN of_IN the_DT results_NNS ._.
+After_IN integrating_VBG over_IN θ_NN
+,_, ϕ_NN -RRB-_-RRB- k_NN u_FW i_FW ∈_FW Wu_NNP Large_JJ scale_NN inference_NN for_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- presents_VBZ a_DT significant_JJ challenge_NN and_CC there_EX are_VBP only_RB few_JJ published_VBN results_NNS on_IN how_WRB to_TO apply_VB LDA_NNP to_TO millions_NNS of_IN instances_NNS -LRB-_-LRB- i.e._FW users_NNS -RRB-_-RRB- ._.
+We_PRP use_VBP the_DT approach_NN of_IN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: for_IN distributed_VBN collapsed_JJ inference_NN and_CC build_VB on_IN this_DT framework_NN ._.
+Before_IN going_VBG into_IN details_NNS regarding_VBG large_JJ scale_NN estimation_NN let_VB us_PRP extend_VB -LRB-_-LRB- 2_CD -RRB-_-RRB- in_IN the_DT spirit_NN of_IN Figure_NNP 3_CD ._.
+4.2_CD Upstream_NN Coupling_NN The_DT key_NN
+the_DT topic_NN -_: -RRB-_-RRB- word_NN distributions_NNS -LRB-_-LRB- low_JJ β_NN 's_POS allow_VB more_JJR variability_NN of_IN words_NNS across_IN topics_NNS -RRB-_-RRB- ._.
+The_DT typical_JJ inference_NN procedure_NN used_VBN is_VBZ the_DT collapsed_JJ Gibbs_NNP Sampler_NNP described_VBN in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- where_WRB θ_NN is_VBZ integrated_VBN out_RP ._.
+=_SYM -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: describes_VBZ an_DT equivalent_JJ sampler_NN which_WDT is_VBZ significantly_RB faster_RBR through_IN careful_JJ choice_NN of_IN data_NNS structures_NNS and_CC creative_JJ rearrangement_NN of_IN the_DT conditional_JJ probabilities_NNS ._.
+2.2_CD Dirichlet_NNP Multinomial_NNP Regressi_NNP
+TION_IN The_DT rapid_JJ growth_NN of_IN the_DT World_NNP Wide_NN Web_NN results_VBZ in_IN a_DT tremendous_JJ amount_NN of_IN information_NN available_JJ to_TO people_NNS ._.
+To_TO prevent_VB information_NN overload_NN ,_, many_JJ collaborative_JJ filtering_VBG and_CC recommendation_NN systems_NNS =_JJ -_: =[_NN 1_CD ,_, 19_CD ,_, 8_CD ,_, 3_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN developed_VBN to_TO filter_NN the_DT information_NN stream_NN and_CC display_NN only_RB information_NN the_DT user_NN may_MD be_VB interested_JJ in_IN ._.
+Such_JJ methods_NNS have_VBP been_VBN successfully_RB deployed_VBN in_IN various_JJ settings_NNS ranging_VBG from_IN movies_NNS -LRB-_-LRB-
+TION_IN The_DT rapid_JJ growth_NN of_IN the_DT World_NNP Wide_NN Web_NN results_VBZ in_IN a_DT tremendous_JJ amount_NN of_IN information_NN available_JJ to_TO people_NNS ._.
+To_TO prevent_VB information_NN overload_NN ,_, many_JJ collaborative_JJ filtering_VBG and_CC recommendation_NN systems_NNS =_JJ -_: =[_NN 1_CD ,_, 19_CD ,_, 8_CD ,_, 3_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN developed_VBN to_TO filter_NN the_DT information_NN stream_NN and_CC display_NN only_RB information_NN the_DT user_NN may_MD be_VB interested_JJ in_IN ._.
+Such_JJ methods_NNS have_VBP been_VBN successfully_RB deployed_VBN in_IN various_JJ settings_NNS ranging_VBG from_IN movies_NNS -LRB-_-LRB-
+approach_NN such_JJ as_IN Latent_JJ Dirichlet_NN Allocation_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+In_IN this_DT paper_NN we_PRP propose_VBP a_DT flexible_JJ model_NN that_WDT addresses_VBZ all_DT of_IN these_DT concerns_NNS in_IN a_DT principled_JJ fashion_NN ,_, namely_RB by_IN means_NNS of_IN directed_JJ graphical_JJ models_NNS =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Its_PRP$ main_JJ structure_NN is_VBZ given_VBN in_IN the_DT diagram_NN of_IN Figure_NNP 3_CD ._.
+There_EX are_VBP two_CD basic_JJ use_NN cases_NNS for_IN such_JJ a_DT model_NN ._.
+In_IN the_DT first_JJ use_NN case_NN ,_, each_DT domain_NN already_RB has_VBZ an_DT existing_VBG personalization_NN system_NN ._.
+This_DT model_NN
+could_MD be_VB either_CC a_DT browser_NN cookie_NN or_CC registered_VBN Yahoo_NNP !_.
+id_NN ._.
+No_DT personally_RB identifiable_JJ user_NN information_NN was_VBD available_JJ in_IN the_DT data_NNS analyzed_VBN ._.
+feature_NN based_JJ methods_NNS have_VBP been_VBN developed_VBN that_WDT performs_VBZ well_RB =_JJ -_: =[_NN 13_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT solution_NN to_TO the_DT cold-start_JJ problem_NN by_IN combining_VBG user_NN information_NN across_IN multiple_JJ domains_NNS -LRB-_-LRB- properties_NNS -RRB-_-RRB- ._.
+We_PRP construct_VBP a_DT hierarchical_JJ Bayesian_JJ model_NN which_WDT integrates_VBZ recommen_NNS
+._.
+While_IN β_NN is_VBZ the_DT ``_`` smoothness_NN ''_'' of_IN the_DT topic_NN -_: -RRB-_-RRB- word_NN distributions_NNS -LRB-_-LRB- low_JJ β_NN 's_POS allow_VB more_JJR variability_NN of_IN words_NNS across_IN topics_NNS -RRB-_-RRB- ._.
+The_DT typical_JJ inference_NN procedure_NN used_VBN is_VBZ the_DT collapsed_JJ Gibbs_NNP Sampler_NNP described_VBN in_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: where_WRB θ_NN is_VBZ integrated_VBN out_RP ._.
+-LRB-_-LRB- 20_CD -RRB-_-RRB- describes_VBZ an_DT equivalent_JJ sampler_NN which_WDT is_VBZ significantly_RB faster_RBR through_IN careful_JJ choice_NN of_IN data_NNS structures_NNS and_CC creative_JJ rearrangement_NN of_IN the_DT conditional_JJ probabilities_NNS ._.
+2_CD ._.
+could_MD be_VB either_CC a_DT browser_NN cookie_NN or_CC registered_VBN Yahoo_NNP !_.
+id_NN ._.
+No_DT personally_RB identifiable_JJ user_NN information_NN was_VBD available_JJ in_IN the_DT data_NNS analyzed_VBN ._.
+feature_NN based_JJ methods_NNS have_VBP been_VBN developed_VBN that_WDT performs_VBZ well_RB =_JJ -_: =[_NN 13_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT solution_NN to_TO the_DT cold-start_JJ problem_NN by_IN combining_VBG user_NN information_NN across_IN multiple_JJ domains_NNS -LRB-_-LRB- properties_NNS -RRB-_-RRB- ._.
+We_PRP construct_VBP a_DT hierarchical_JJ Bayesian_JJ model_NN which_WDT integrates_VBZ recommen_NNS
+torization_NN model_NN along_IN the_DT lines_NNS of_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- which_WDT replaces_VBZ the_DT discrete_JJ set_NN of_IN topics_NNS by_IN a_DT continuous_JJ -LRB-_-LRB- low_JJ dimensional_JJ -RRB-_-RRB- factorization_NN ._.
+•_VB We_PRP could_MD employ_VB a_DT factorization_NN akin_JJ to_TO the_DT Indian_JJ Buffet_NN Process_VBP =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT uses_VBZ a_DT binary_JJ latent_JJ variable_JJ representation_NN instead_RB of_IN a_DT finite_JJ -LRB-_-LRB- sparse_JJ -RRB-_-RRB- set_NN of_IN topics_NNS ._.
+Also_RB ,_, since_IN the_DT model_NN places_VBZ no_DT restriction_NN on_IN the_DT number_NN of_IN domains_NNS it_PRP can_MD personalize_VB over_RB ,_, the_DT model_NN
+``_`` ``_`` +_CC Ψ_NN dlgt_NN x_NN T_NN ''_'' ''_'' ``_`` ``_`` u_FW λd_FW ,_, td_NN +_CC nt_NN |_NNP du_NNP −_NNP Ψ_NNP dlgt_NN x_NN T_NN ''''_CD u_NN λd_NN ,_, td_IN #_# This_DT equation_NN allows_VBZ us_PRP to_TO sample_NN each_DT xu_NN ,_, k_NN using_VBG a_DT Langevin_NNP Diffusion_NNP sampler_NN ._.
+4.4_CD Langevin_NNP Sampler_NNP The_NNP Langevin_NNP Diffusion_NNP sampler_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ essentially_RB a_DT MetropolisHastings_NNP sampler_NN with_IN a_DT Gaussian_JJ proposal_NN shifted_VBN in_IN the_DT direction_NN of_IN the_DT gradient_NN :_: Where_WRB the_DT current_JJ value_NN of_IN xu_NN ,_, k_NN is_VBZ x_NN t_NN u_NN ,_, k_NN -LRB-_-LRB- sample_NN value_NN at_IN time_NN t_NN -RRB-_-RRB- ,_, we_PRP propose_VBP the_DT new_JJ
+tlook_NN towards_IN more_RBR advanced_JJ user_NN modeling_NN techniques_NNS ._.
+2_CD ._.
+BACKGROUND_NN Latent_JJ variable_JJ graphical_JJ models_NNS have_VBP found_VBN great_JJ success_NN in_IN text_NN analysis_NN applications_NNS ;_: of_IN which_WDT Latent_JJ Dirichlet_NNP Allocation_NNP -LRB-_-LRB- LDA_NNP -RRB-_-RRB- =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ probably_RB the_DT most_RBS well_RB known_VBN model_NN ._.
+we_PRP provide_VBP a_DT brief_JJ overview_NN of_IN LDA_NN here_RB since_IN our_PRP$ proposed_VBN model_NN has_VBZ LDA_NNP as_IN a_DT sub-model_NN ._.
+2.1_CD Latent_JJ Dirichlet_NNP Allocation_NNP Latent_JJ Dirichlet_NN Allocation_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- aims_VBZ to_TO
+TION_IN The_DT rapid_JJ growth_NN of_IN the_DT World_NNP Wide_NN Web_NN results_VBZ in_IN a_DT tremendous_JJ amount_NN of_IN information_NN available_JJ to_TO people_NNS ._.
+To_TO prevent_VB information_NN overload_NN ,_, many_JJ collaborative_JJ filtering_VBG and_CC recommendation_NN systems_NNS =_JJ -_: =[_NN 1_CD ,_, 19_CD ,_, 8_CD ,_, 3_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN developed_VBN to_TO filter_NN the_DT information_NN stream_NN and_CC display_NN only_RB information_NN the_DT user_NN may_MD be_VB interested_JJ in_IN ._.
+Such_JJ methods_NNS have_VBP been_VBN successfully_RB deployed_VBN in_IN various_JJ settings_NNS ranging_VBG from_IN movies_NNS -LRB-_-LRB-
+scribes_VBZ an_DT equivalent_JJ sampler_NN which_WDT is_VBZ significantly_RB faster_RBR through_IN careful_JJ choice_NN of_IN data_NNS structures_NNS and_CC creative_JJ rearrangement_NN of_IN the_DT conditional_JJ probabilities_NNS ._.
+2.2_CD Dirichlet_NN Multinomial_JJ Regression_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: provides_VBZ an_DT extension_NN to_TO the_DT LDA_NNP model_NN called_VBD the_DT Dirichlet_NNP Multinomial_JJ Regression_NN -LRB-_-LRB- DMR_NN -RRB-_-RRB- model_NN which_WDT allows_VBZ conditioning_NN on_IN arbitrary_JJ document_NN features_NNS ._.
+For_IN instance_NN ,_, we_PRP could_MD learn_VB a_DT topic_NN model_NN whi_NN
+could_MD permit_VB the_DT model_NN to_TO provide_VB cross-domain_JJ personalization_NN into_IN unusual_JJ domains_NNS such_JJ as_IN personalized_JJ spam_NN filtering_VBG ._.
+•_VB We_PRP could_MD use_VB a_DT Gaussian_JJ latent_JJ matrix_NN factorization_NN model_NN along_IN the_DT lines_NNS of_IN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT replaces_VBZ the_DT discrete_JJ set_NN of_IN topics_NNS by_IN a_DT continuous_JJ -LRB-_-LRB- low_JJ dimensional_JJ -RRB-_-RRB- factorization_NN ._.
+•_VB We_PRP could_MD employ_VB a_DT factorization_NN akin_JJ to_TO the_DT Indian_NNP Buffet_NNP Process_VB -LRB-_-LRB- 6_CD -RRB-_-RRB- which_WDT uses_VBZ a_DT binary_JJ latent_JJ variable_NN
+use-case_NN for_IN the_DT barrier_NN is_VBZ to_TO ``_`` wait_VB ''_'' for_IN all_DT processors_NNS to_TO complete_VB a_DT particular_JJ task_NN ,_, before_IN going_VBG on_RP to_TO the_DT next_JJ task_NN ._.
+We_PRP implement_VBP a_DT version_NN of_IN the_DT sense-reversing_JJ barrier_NN algorithm_NN described_VBN in_IN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT distributed_VBN sum_NN function_NN -LRB-_-LRB- or_CC more_RBR generally_RB also_RB known_VBN as_IN reduce_VB or_CC fold_VB -RRB-_-RRB- simply_RB collects_VBZ and_CC aggregates_NNS a_DT value_NN posted_VBN by_IN each_DT machine_NN ._.
+Each_DT machine_NN p_NN calls_VBZ the_DT sum_NN function_NN with_IN a_DT particular_JJ v_LS
+TION_IN The_DT rapid_JJ growth_NN of_IN the_DT World_NNP Wide_NN Web_NN results_VBZ in_IN a_DT tremendous_JJ amount_NN of_IN information_NN available_JJ to_TO people_NNS ._.
+To_TO prevent_VB information_NN overload_NN ,_, many_JJ collaborative_JJ filtering_VBG and_CC recommendation_NN systems_NNS =_JJ -_: =[_NN 1_CD ,_, 19_CD ,_, 8_CD ,_, 3_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN developed_VBN to_TO filter_NN the_DT information_NN stream_NN and_CC display_NN only_RB information_NN the_DT user_NN may_MD be_VB interested_JJ in_IN ._.
+Such_JJ methods_NNS have_VBP been_VBN successfully_RB deployed_VBN in_IN various_JJ settings_NNS ranging_VBG from_IN movies_NNS -LRB-_-LRB-
+TION_IN The_DT rapid_JJ growth_NN of_IN the_DT World_NNP Wide_NN Web_NN results_VBZ in_IN a_DT tremendous_JJ amount_NN of_IN information_NN available_JJ to_TO people_NNS ._.
+To_TO prevent_VB information_NN overload_NN ,_, many_JJ collaborative_JJ filtering_VBG and_CC recommendation_NN systems_NNS =_JJ -_: =[_NN 1_CD ,_, 19_CD ,_, 8_CD ,_, 3_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN developed_VBN to_TO filter_NN the_DT information_NN stream_NN and_CC display_NN only_RB information_NN the_DT user_NN may_MD be_VB interested_JJ in_IN ._.
+Such_JJ methods_NNS have_VBP been_VBN successfully_RB deployed_VBN in_IN various_JJ settings_NNS ranging_VBG from_IN movies_NNS -LRB-_-LRB-

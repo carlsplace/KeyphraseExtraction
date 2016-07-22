@@ -1,0 +1,145 @@
+Highlighting_VBG disputed_JJ claims_NNS on_IN the_DT web_NN
+We_PRP describe_VBP Dispute_NNP Finder_NNP ,_, a_DT browser_NN extension_NN that_WDT alerts_VBZ a_DT user_NN when_WRB information_NN they_PRP read_VBP online_NN is_VBZ disputed_VBN by_IN a_DT source_NN that_IN they_PRP might_MD trust_VB ._.
+Dispute_NNP Finder_NNP examines_VBZ the_DT text_NN on_IN the_DT page_NN that_IN the_DT user_NN is_VBZ browsing_VBG and_CC highlights_VBZ any_DT phrases_NNS that_WDT resemble_VBP known_JJ disputed_JJ claims_NNS ._.
+If_IN a_DT user_NN clicks_VBZ on_IN a_DT highlighted_VBN phrase_NN then_RB Dispute_NNP Finder_NNP shows_VBZ them_PRP a_DT list_NN of_IN articles_NNS that_WDT support_VBP other_JJ points_NNS of_IN view_NN ._.
+Dispute_NNP Finder_NNP builds_VBZ a_DT database_NN of_IN known_JJ disputed_JJ claims_NNS by_IN crawling_VBG web_NN sites_NNS that_WDT already_RB maintain_VBP lists_NNS of_IN disputed_JJ claims_NNS ,_, and_CC by_IN allowing_VBG users_NNS to_TO enter_VB claims_NNS that_IN they_PRP believe_VBP are_VBP disputed_VBN ._.
+Dispute_NNP Finder_NNP identifies_VBZ snippets_NNS that_WDT make_VBP known_JJ disputed_JJ claims_NNS by_IN running_VBG a_DT simple_JJ textual_JJ entailment_NN algorithm_NN inside_IN the_DT browser_NN extension_NN ,_, referring_VBG to_TO a_DT cached_JJ local_JJ copy_NN of_IN the_DT claim_NN database_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP explain_VBP the_DT design_NN of_IN Dispute_NNP Finder_NNP ,_, and_CC the_DT trade-offs_NNS between_IN the_DT various_JJ design_NN decisions_NNS that_IN we_PRP explored_VBD ._.
+e_LS strings_NNS that_WDT appear_VBP to_TO make_VB a_DT well-formed_JJ unambiguous_JJ claim_NN ._.
+We_PRP believe_VBP that_IN this_DT corpus_NN of_IN disputed_JJ claims_NNS will_MD be_VB useful_JJ for_IN many_JJ purposes_NNS ._.
+We_PRP are_VBP currently_RB using_VBG it_PRP as_IN part_NN of_IN our_PRP$ Dispute_NNP Finder_NNP =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: project_NN to_TO automatically_RB highlight_VB phrases_NNS on_IN web_NN pages_NNS that_WDT are_VBP disputed_VBN by_IN other_JJ sources_NNS ._.
+We_PRP are_VBP also_RB exploring_VBG other_JJ applications_NNS of_IN this_DT corpus_NN ,_, including_VBG automatically_RB detecting_VBG disputed_JJ claims_NNS
+at_IN there_EX is_VBZ scope_NN to_TO use_VB more_RBR sophisticated_JJ algorithms_NNS ,_, particularly_RB as_IN processor_NN speeds_NNS improve_VBP ._.
+Other_JJ authors_NNS have_VBP used_VBN similar_JJ algorithms_NNS to_TO find_VB repeated_JJ information_NN on_IN the_DT web_NN ._.
+Kolak_NN and_CC Schilit_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_JJ -_: look_NN for_IN passages_NNS places_NNS where_WRB one_CD book_NN quotes_VBZ another_DT ,_, qSign_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- looks_VBZ for_IN places_NNS where_WRB one_CD blog_NN has_VBZ quoted_VBN another_DT ,_, and_CC duplicate-detection_NN is_VBZ often_RB used_VBN to_TO clean_VB up_RP web_NN searches_NNS -LRB-_-LRB- 40_CD -RRB-_-RRB- ._.
+MemeTracker_NN
+important_JJ claims_NNS made_VBN in_IN the_DT document_NN ._.
+Entity_NN Workspace_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- uses_VBZ entity_NN extraction_NN algorithms_NNS to_TO allow_VB an_DT intelligence_NN analyst_NN to_TO easily_RB mark_VB up_RP a_DT source_NN document_NN with_IN facts_NNS extracted_VBN from_IN it_PRP ._.
+Cohere_NN =_JJ -_: =[_NN 38_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT web_NN based_VBN argumentation_NN tool_NN that_WDT allows_VBZ people_NNS to_TO connect_VB ideas_NNS together_RB using_VBG arbitrary_JJ verbs_NNS such_JJ as_IN ``_`` is_VBZ an_DT example_NN of_IN ''_'' ,_, ``_`` supports_VBZ ''_'' ,_, or_CC ``_`` challenges_NNS ''_'' ._.
+An_DT idea_NN can_MD contain_VB a_DT link_NN to_TO a_DT web_NN page_NN
+being_VBG either_CC liberal_JJ or_CC conservative_JJ and_CC encourages_VBZ readers_NNS to_TO read_VB what_WP the_DT other_JJ side_NN is_VBZ thinking_VBG ._.
+Newstrust_NNP allows_VBZ users_NNS to_TO rate_VB news_NN articles_NNS for_IN quality_NN and_CC objectivity_NN ._.
+On_IN Wikipedia_NNP ,_, WikiTrust_NNP =_SYM -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: highlights_VBZ passages_NNS on_IN Wikipedia_NNP that_WDT are_VBP statistically_RB likely_JJ to_TO be_VB reverted_VBN ,_, based_VBN on_IN how_WRB recently_RB they_PRP were_VBD written_VBN and_CC the_DT track-record_NN of_IN the_DT author_NN ,_, Wiki_NNP Dashboard_NNP -LRB-_-LRB- 25_CD -RRB-_-RRB- creates_VBZ a_DT visualization_NN
+is_VBZ far_RB from_IN being_VBG state_NN of_IN the_DT art_NN and_CC many_JJ more_RBR sophisticated_JJ textual_JJ entailment_NN algorithms_NNS exist_VBP ._.
+Modern_NNP approaches_NNS include_VBP treating_VBG the_DT sentence_NN as_IN a_DT logical_JJ formula_NN and_CC attempting_VBG a_DT logical_JJ proof_NN =_JJ -_: =[_NN 2_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, parsing_VBG each_DT phrase_NN into_IN a_DT syntax_NN tree_NN and_CC using_VBG syntax_NN heuristics_NNS -LRB-_-LRB- 39_CD -RRB-_-RRB- ,_, inferring_VBG inference_NN rules_NNS that_WDT can_MD transform_VB one_CD sentence_NN into_IN another_DT while_IN preserving_VBG meaning_NN -LRB-_-LRB- 28_CD ,_, 10_CD ,_, 3_CD -RRB-_-RRB- ,_, and_CC using_VBG Bayesi_NNS
+web_NN pages_NNS ._.
+ReframeIt.com_NN ,_, ShiftSpace.org_NN and_CC SpinSpotter.com_NN allow_VBP a_DT user_NN to_TO manually_RB annotate_VB a_DT web_NN site_NN that_IN they_PRP disagree_VBP with_IN ,_, overlaying_VBG their_PRP$ own_JJ opinions_NNS on_IN top_NN of_IN existing_VBG content_NN ._.
+Videolyzer_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: allows_VBZ users_NNS to_TO comment_VB on_IN disputed_JJ claims_NNS in_IN video_JJ clips_NNS ._.
+There_EX are_VBP many_JJ other_JJ web_NN annotation_NN tools_NNS ,_, including_VBG Google_NNP SideWiki_NNP ,_, Annotea_NNP -LRB-_-LRB- 23_CD -RRB-_-RRB- and_CC ScreenCrayons_NNS -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, each_DT of_IN which_WDT presents_VBZ a_DT differen_NN
+ture_NN over_IN an_DT existing_VBG hypertext_NN document_NN ._.
+In_IN the_DT case_NN of_IN Dispute_NNP Finder_NNP ,_, the_DT links_NNS are_VBP from_IN disputed_JJ claims_NNS to_TO information_NN about_IN those_DT claims_NNS ._.
+Dispute_NNP Finder_NNP also_RB has_VBZ some_DT similarity_NN to_TO tagging_VBG tools_NNS =_JJ -_: =[_NN 30_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Tagging_NN tools_NNS allow_VBP users_NNS to_TO collectively_RB categorize_VB information_NN by_IN associating_VBG it_PRP with_IN a_DT user-created_JJ set_NN of_IN tags_NNS ._.
+In_IN the_DT case_NN of_IN Dispute_NNP Finder_NNP ,_, the_DT tags_NNS are_VBP disputed_JJ claims_NNS ,_, and_CC the_DT tagged_VBN entiti_NNS
+y_NN as_IN processor_NN speeds_NNS improve_VBP ._.
+Other_JJ authors_NNS have_VBP used_VBN similar_JJ algorithms_NNS to_TO find_VB repeated_JJ information_NN on_IN the_DT web_NN ._.
+Kolak_NNP and_CC Schilit_NNP -LRB-_-LRB- 26_CD -RRB-_-RRB- look_NN for_IN passages_NNS places_NNS where_WRB one_CD book_NN quotes_VBZ another_DT ,_, qSign_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: looks_VBZ for_IN places_NNS where_WRB one_CD blog_NN has_VBZ quoted_VBN another_DT ,_, and_CC duplicate-detection_NN is_VBZ often_RB used_VBN to_TO clean_VB up_RP web_NN searches_NNS -LRB-_-LRB- 40_CD -RRB-_-RRB- ._.
+MemeTracker_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- looks_VBZ for_IN phrases_NNS shared_VBN by_IN multiple_JJ news_NN stories_NNS ,_, accounting_VBG
+._.
+On_IN Wikipedia_NNP ,_, WikiTrust_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- highlights_VBZ passages_NNS on_IN Wikipedia_NNP that_WDT are_VBP statistically_RB likely_JJ to_TO be_VB reverted_VBN ,_, based_VBN on_IN how_WRB recently_RB they_PRP were_VBD written_VBN and_CC the_DT track-record_NN of_IN the_DT author_NN ,_, Wiki_JJ Dashboard_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: creates_VBZ a_DT visualization_NN of_IN the_DT edit_JJ history_NN of_IN a_DT Wikipedia_NNP article_NN that_WDT lets_VBZ a_DT user_NN see_VB how_WRB contentious_JJ it_PRP is_VBZ ,_, and_CC WikiScanner_NNP ._.
+virgil_NN ._.
+gr_NN finds_VBZ cases_NNS where_WRB a_DT Wikipedia_NNP edit_NN has_VBZ been_VBN made_VBN by_IN someone_NN wi_NN
+mpting_VBG a_DT logical_JJ proof_NN -LRB-_-LRB- 2_CD ,_, 5_CD -RRB-_-RRB- ,_, parsing_VBG each_DT phrase_NN into_IN a_DT syntax_NN tree_NN and_CC using_VBG syntax_NN heuristics_NNS -LRB-_-LRB- 39_CD -RRB-_-RRB- ,_, inferring_VBG inference_NN rules_NNS that_WDT can_MD transform_VB one_CD sentence_NN into_IN another_DT while_IN preserving_VBG meaning_NN =_JJ -_: =[_NN 28_CD ,_, 10_CD ,_, 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC using_VBG Bayesian_JJ inference_NN to_TO infer_VB whether_IN one_CD phrase_NN looks_VBZ like_IN the_DT kind_NN of_IN phrase_NN that_WDT would_MD have_VB included_VBN each_DT word_NN in_IN the_DT other_JJ phrase_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Tools_NNS such_JJ as_IN AuContraire_NN -LRB-_-LRB- 34_CD -RRB-_-RRB- focus_NN specifically_RB
+TV_NN news_NN ,_, while_IN most_JJS people_NNS say_VBP they_PRP want_VBP to_TO receive_VB information_NN ``_`` without_IN a_DT point_NN of_IN view_NN ''_'' ,_, the_DT sites_NNS people_NNS actually_RB trust_NN are_VBP often_RB those_DT that_WDT share_VBP the_DT person_NN 's_POS own_JJ point_NN of_IN view_NN ._.
+Similarly_RB ,_, Manjou_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_JJ -_: reports_NNS that_IN people_NNS tend_VBP to_TO measure_VB the_DT credibility_NN of_IN a_DT source_NN based_VBN on_IN how_WRB well_RB it_PRP fits_VBZ with_IN what_WP they_PRP already_RB believe_VBP to_TO be_VB true_JJ ._.
+As_IN a_DT consequence_NN ,_, there_EX may_MD be_VB little_JJ point_NN showing_VBG liberal_JJ source_NN
+ative_JJ points_NNS of_IN view_NN that_WDT are_VBP supported_VBN by_IN sources_NNS that_IN they_PRP trust_VBP ._.
+This_DT has_VBZ lead_VBN to_TO a_DT growing_VBG set_NN of_IN tools_NNS that_WDT aim_VBP to_TO help_VB users_NNS deal_VB with_IN disputed_VBN and_CC biased_VBN information_NN ._.
+According_VBG to_TO Pew_NNP Research_NNP =_SYM -_: =[_NN 33_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT substantial_JJ proportion_NN of_IN people_NNS regularly_RB get_VBP information_NN from_IN sources_NNS that_IN they_PRP do_VBP not_RB fully_RB trust_NN ._.
+Their_PRP$ 2008_CD survey_NN found_VBD that_IN 33_CD %_NN of_IN Democrats_NNS regularly_RB watch_VBP Fox_NNP News_NNP ,_, and_CC yet_RB only_RB 19_CD %_NN belie_VBP
+e_LS it_PRP is_VBZ not_RB disputed_VBN ,_, since_IN the_DT level_NN of_IN dispute_NN is_VBZ a_DT function_NN of_IN the_DT articles_NNS that_WDT disagree_VBP ._.
+Flagging_NNP is_VBZ currently_RB moderated_VBN manually_RB ._.
+An_DT alternative_JJ approach_NN would_MD be_VB to_TO use_VB Contradiction_NN Detection_NN =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_SYM -_: to_TO find_VB frequently_RB repeated_VBN statements_NNS that_WDT appear_VBP to_TO contradict_VB statements_NNS from_IN trusted_VBN sources_NNS ._.
+Unfortunately_RB at_IN the_DT time_NN of_IN writing_NN ,_, Contradiction_NN Detection_NN does_VBZ not_RB seem_VB to_TO be_VB robust_JJ enough_RB for_IN u_NN
+en_IN the_DT user_NN clicks_VBZ on_IN a_DT snippet_NN that_WDT makes_VBZ a_DT disputed_JJ claim_NN ,_, Dispute_NNP Finder_NNP shows_VBZ them_PRP a_DT simple_JJ user-editable_JJ argumentation_NN graph_NN ._.
+This_DT graph_NN is_VBZ inspired_VBN by_IN IBIS_NN 4_CD tools_NNS such_JJ as_IN gIBIS_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, Compendium_NN =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Zeno_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, Cohere_NNP -LRB-_-LRB- 38_CD -RRB-_-RRB- ,_, and_CC Debategraph.org_NN ._.
+Each_DT claim_NN is_VBZ linked_VBN to_TO claims_NNS that_WDT represent_VBP alternative_JJ points_NNS of_IN view_NN ,_, and_CC claims_NNS that_WDT support_VBP that_IN point_NN of_IN view_NN ._.
+Each_DT claim_NN also_RB has_VBZ a_DT list_NN of_IN artic_JJ
+made_VBN by_IN someone_NN with_IN a_DT conflict_NN of_IN interest_NN ._.
+These_DT tools_NNS have_VBP a_DT similar_JJ aim_NN to_TO Dispute_NNP Finder_NNP ,_, but_CC are_VBP limited_VBN to_TO Wikipedia_NNP ._.
+More_RBR generally_RB ,_, Dispute_NNP Finder_NNP is_VBZ an_DT example_NN of_IN an_DT Open_NNP Hypermedia_NNP system_NN =_JJ -_: =[_NN 6_CD ,_, 41_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Like_IN other_JJ Open_NNP Hypermedia_NNP systems_NNS ,_, Dispute_NNP Finder_NNP lays_VBZ an_DT additional_JJ link_NN structure_NN over_IN an_DT existing_VBG hypertext_NN document_NN ._.
+In_IN the_DT case_NN of_IN Dispute_NNP Finder_NNP ,_, the_DT links_NNS are_VBP from_IN disputed_JJ claims_NNS to_TO informa_VB
+different_JJ paragraphs_NNS ._.
+Several_JJ Sensemaking_NN ,_, Decision_NN Support_NN ,_, and_CC Argumentation_NN tools_NNS allow_VBP a_DT user_NN to_TO annotate_VB a_DT document_NN with_IN structured_JJ information_NN that_IN they_PRP may_MD then_RB share_VB with_IN other_JJ users_NNS ._.
+TRELLIS_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: helps_VBZ a_DT user_NN annotate_VB the_DT rationale_NN for_IN their_PRP$ decisions_NNS and_CC opinions_NNS by_IN annotating_VBG source_NN documents_NNS with_IN the_DT facts_NNS that_IN they_PRP extracted_VBD from_IN them_PRP ,_, and_CC connecting_VBG these_DT facts_NNS into_IN a_DT decision_NN graph_NN ._.
+Cla_NN
+clicks_NNS on_IN a_DT snippet_NN that_WDT makes_VBZ a_DT disputed_JJ claim_NN ,_, Dispute_NNP Finder_NNP shows_VBZ them_PRP a_DT simple_JJ user-editable_JJ argumentation_NN graph_NN ._.
+This_DT graph_NN is_VBZ inspired_VBN by_IN IBIS_NN 4_CD tools_NNS such_JJ as_IN gIBIS_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, Compendium_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- ,_, Zeno_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Cohere_NNP -LRB-_-LRB- 38_CD -RRB-_-RRB- ,_, and_CC Debategraph.org_NN ._.
+Each_DT claim_NN is_VBZ linked_VBN to_TO claims_NNS that_WDT represent_VBP alternative_JJ points_NNS of_IN view_NN ,_, and_CC claims_NNS that_WDT support_VBP that_IN point_NN of_IN view_NN ._.
+Each_DT claim_NN also_RB has_VBZ a_DT list_NN of_IN articles_NNS that_WDT ar_VBP
+s_NN purpose_NN ._.
+In_IN future_JJ work_NN ,_, we_PRP hope_VBP to_TO automatically_RB find_VB disputed_JJ claims_NNS on_IN the_DT web_NN by_IN looking_VBG for_IN phrases_NNS like_IN ``_`` falsely_RB claimed_VBD that_IN X_NN ''_'' --_: a_DT similar_JJ techniques_NNS to_TO that_DT used_VBN by_IN Hearst_NNP to_TO find_VB hyponyms_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC then_RB use_VB context_NN to_TO help_VB determine_VB which_WDT phrases_NNS are_VBP likely_JJ to_TO be_VB making_VBG the_DT same_JJ claim_NN ._.
+Figure_NN 6_CD :_: Bulk_NN page_NN marking_VBG and_CC server-side_JJ classification_NN :_: classifier_NN guesses_NNS are_VBP shown_VBN below_IN the_DT choice_NN
+ntence_NN into_IN another_DT while_IN preserving_VBG meaning_NN -LRB-_-LRB- 28_CD ,_, 10_CD ,_, 3_CD -RRB-_-RRB- ,_, and_CC using_VBG Bayesian_JJ inference_NN to_TO infer_VB whether_IN one_CD phrase_NN looks_VBZ like_IN the_DT kind_NN of_IN phrase_NN that_WDT would_MD have_VB included_VBN each_DT word_NN in_IN the_DT other_JJ phrase_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Tools_NNS such_JJ as_IN AuContraire_NN -LRB-_-LRB- 34_CD -RRB-_-RRB- focus_NN specifically_RB on_IN detecting_VBG contradictions_NNS ._.
+Several_JJ tools_NNS rely_VBP on_IN an_DT underlying_VBG information_NN extraction_NN tool_NN such_JJ as_IN TextRunner_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+While_IN Dispute_NNP Finder_NNP would_MD alm_VB
+made_VBN by_IN someone_NN with_IN a_DT conflict_NN of_IN interest_NN ._.
+These_DT tools_NNS have_VBP a_DT similar_JJ aim_NN to_TO Dispute_NNP Finder_NNP ,_, but_CC are_VBP limited_VBN to_TO Wikipedia_NNP ._.
+More_RBR generally_RB ,_, Dispute_NNP Finder_NNP is_VBZ an_DT example_NN of_IN an_DT Open_NNP Hypermedia_NNP system_NN =_JJ -_: =[_NN 6_CD ,_, 41_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Like_IN other_JJ Open_NNP Hypermedia_NNP systems_NNS ,_, Dispute_NNP Finder_NNP lays_VBZ an_DT additional_JJ link_NN structure_NN over_IN an_DT existing_VBG hypertext_NN document_NN ._.
+In_IN the_DT case_NN of_IN Dispute_NNP Finder_NNP ,_, the_DT links_NNS are_VBP from_IN disputed_JJ claims_NNS to_TO informa_VB
+know_VB a_DT good_JJ solution_NN for_IN this_DT problem_NN ,_, but_CC we_PRP believe_VBP it_PRP is_VBZ an_DT interesting_JJ area_NN for_IN further_JJ research_NN ._.
+Other_JJ researchers_NNS have_VBP looked_VBN at_IN ways_NNS to_TO determine_VB what_WP sources_NNS a_DT user_NN will_MD trust_VB ._.
+BJ_NNP Fogg_NNP et_FW al_FW =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: found_VBD that_IN the_DT most_RBS important_JJ factor_NN was_VBD whether_IN a_DT web_NN site_NN had_VBD a_DT professional-looking_JJ design_NN ._.
+Gill_NNP and_CC Arts_NNP -LRB-_-LRB- 14_CD -RRB-_-RRB- identified_VBN on_IN a_DT different_JJ set_NN of_IN factors_NNS ,_, including_VBG topic_NN -LRB-_-LRB- a_DT medical_JJ site_NN may_MD not_RB be_VB
+-LRB-_-LRB- 37_CD ,_, 36_CD -RRB-_-RRB- applies_VBZ a_DT similar_JJ approach_NN to_TO scholarly_JJ papers_NNS ,_, allowing_VBG a_DT user_NN to_TO make_VB up_RP a_DT paper_NN with_IN logical_JJ subject-verb-object_JJ triples_NNS describing_VBG important_JJ claims_NNS made_VBN in_IN the_DT document_NN ._.
+Entity_NN Workspace_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: uses_VBZ entity_NN extraction_NN algorithms_NNS to_TO allow_VB an_DT intelligence_NN analyst_NN to_TO easily_RB mark_VB up_RP a_DT source_NN document_NN with_IN facts_NNS extracted_VBN from_IN it_PRP ._.
+Cohere_NNP -LRB-_-LRB- 38_CD -RRB-_-RRB- is_VBZ a_DT web_NN based_VBN argumentation_NN tool_NN that_WDT allows_VBZ people_NNS t_NN
+s_NN problem_NN ._.
+Our_PRP$ client_NN side_NN entailment_NN method_NN uses_VBZ a_DT simple_JJ Local_NNP Lexical_NNP Matching_NNP -LRB-_-LRB- LLM_NNP -RRB-_-RRB- algorithm_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, similar_JJ to_TO those_DT that_WDT are_VBP often_RB used_VBN as_IN a_DT baseline_NN to_TO which_WDT other_JJ algorithms_NNS are_VBP often_RB compared_VBN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ implementation_NN divides_VBZ the_DT page_NN into_IN sentences_NNS ,_, strips_NNS out_IN stopwords_NNS ,_, applies_VBZ a_DT regular_JJ expression_NN stemmer_NN ,_, and_CC then_RB looks_VBZ for_IN sentences_NNS that_WDT contain_VBP all_PDT the_DT non_JJ stop-words_NNS contained_VBN in_IN one_CD of_IN t_NN
+is_VBZ far_RB from_IN being_VBG state_NN of_IN the_DT art_NN and_CC many_JJ more_RBR sophisticated_JJ textual_JJ entailment_NN algorithms_NNS exist_VBP ._.
+Modern_NNP approaches_NNS include_VBP treating_VBG the_DT sentence_NN as_IN a_DT logical_JJ formula_NN and_CC attempting_VBG a_DT logical_JJ proof_NN =_JJ -_: =[_NN 2_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, parsing_VBG each_DT phrase_NN into_IN a_DT syntax_NN tree_NN and_CC using_VBG syntax_NN heuristics_NNS -LRB-_-LRB- 39_CD -RRB-_-RRB- ,_, inferring_VBG inference_NN rules_NNS that_WDT can_MD transform_VB one_CD sentence_NN into_IN another_DT while_IN preserving_VBG meaning_NN -LRB-_-LRB- 28_CD ,_, 10_CD ,_, 3_CD -RRB-_-RRB- ,_, and_CC using_VBG Bayesi_NNS
+d_NN each_DT word_NN in_IN the_DT other_JJ phrase_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Tools_NNS such_JJ as_IN AuContraire_NN -LRB-_-LRB- 34_CD -RRB-_-RRB- focus_NN specifically_RB on_IN detecting_VBG contradictions_NNS ._.
+Several_JJ tools_NNS rely_VBP on_IN an_DT underlying_VBG information_NN extraction_NN tool_NN such_JJ as_IN TextRunner_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN Dispute_NNP Finder_NNP would_MD almost_RB certainly_RB improve_VB its_PRP$ precision_NN and_CC recall_NN if_IN it_PRP used_VBD a_DT more_RBR sophisticated_JJ algorithm_NN ,_, LLM_NNP has_VBZ the_DT advantage_NN of_IN being_VBG simple_JJ enough_RB to_TO run_VB efficiently_RB inside_IN a_DT user_NN '_''
+ilment_NN algorithms_NNS exist_VBP ._.
+Modern_NNP approaches_NNS include_VBP treating_VBG the_DT sentence_NN as_IN a_DT logical_JJ formula_NN and_CC attempting_VBG a_DT logical_JJ proof_NN -LRB-_-LRB- 2_CD ,_, 5_CD -RRB-_-RRB- ,_, parsing_VBG each_DT phrase_NN into_IN a_DT syntax_NN tree_NN and_CC using_VBG syntax_NN heuristics_NNS =_JJ -_: =[_NN 39_CD -RRB-_-RRB- -_: =_JJ -_: ,_, inferring_VBG inference_NN rules_NNS that_WDT can_MD transform_VB one_CD sentence_NN into_IN another_DT while_IN preserving_VBG meaning_NN -LRB-_-LRB- 28_CD ,_, 10_CD ,_, 3_CD -RRB-_-RRB- ,_, and_CC using_VBG Bayesian_JJ inference_NN to_TO infer_VB whether_IN one_CD phrase_NN looks_VBZ like_IN the_DT kind_NN of_IN phrase_NN th_DT
+top_NN of_IN existing_VBG content_NN ._.
+Videolyzer_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- allows_VBZ users_NNS to_TO comment_VB on_IN disputed_JJ claims_NNS in_IN video_JJ clips_NNS ._.
+There_EX are_VBP many_JJ other_JJ web_NN annotation_NN tools_NNS ,_, including_VBG Google_NNP SideWiki_NNP ,_, Annotea_NNP -LRB-_-LRB- 23_CD -RRB-_-RRB- and_CC ScreenCrayons_NN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_JJ -_: ,_, each_DT of_IN which_WDT presents_VBZ a_DT different_JJ combination_NN of_IN features_NNS ,_, and_CC most_JJS of_IN which_WDT could_MD be_VB used_VBN to_TO annotate_VB disputed_JJ content_NN ._.
+There_EX are_VBP two_CD key_JJ differences_NNS between_IN Dispute_NNP Finder_NNP and_CC these_DT annotation_NN to_TO
+tation_NN graph_NN :_: When_WRB the_DT user_NN clicks_VBZ on_IN a_DT snippet_NN that_WDT makes_VBZ a_DT disputed_JJ claim_NN ,_, Dispute_NNP Finder_NNP shows_VBZ them_PRP a_DT simple_JJ user-editable_JJ argumentation_NN graph_NN ._.
+This_DT graph_NN is_VBZ inspired_VBN by_IN IBIS_NN 4_CD tools_NNS such_JJ as_IN gIBIS_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Compendium_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- ,_, Zeno_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, Cohere_NNP -LRB-_-LRB- 38_CD -RRB-_-RRB- ,_, and_CC Debategraph.org_NN ._.
+Each_DT claim_NN is_VBZ linked_VBN to_TO claims_NNS that_WDT represent_VBP alternative_JJ points_NNS of_IN view_NN ,_, and_CC claims_NNS that_WDT support_VBP that_IN point_NN of_IN view_NN ._.
+Each_DT claim_NN also_RB ha_VBP
+their_PRP$ own_JJ opinions_NNS on_IN top_NN of_IN existing_VBG content_NN ._.
+Videolyzer_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- allows_VBZ users_NNS to_TO comment_VB on_IN disputed_JJ claims_NNS in_IN video_JJ clips_NNS ._.
+There_EX are_VBP many_JJ other_JJ web_NN annotation_NN tools_NNS ,_, including_VBG Google_NNP SideWiki_NNP ,_, Annotea_NNP =_SYM -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: and_CC ScreenCrayons_NNS -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, each_DT of_IN which_WDT presents_VBZ a_DT different_JJ combination_NN of_IN features_NNS ,_, and_CC most_JJS of_IN which_WDT could_MD be_VB used_VBN to_TO annotate_VB disputed_JJ content_NN ._.
+There_EX are_VBP two_CD key_JJ differences_NNS between_IN Dispute_NNP Finder_NNP
+e_LS browser_NN extension_NN ._.
+3.2.1_CD Textual_JJ Entailment_NN Detecting_VBG entailment_NN between_IN texts_NNS is_VBZ a_DT semantic_JJ analysis_NN problem_NN ._.
+Our_PRP$ client_NN side_NN entailment_NN method_NN uses_VBZ a_DT simple_JJ Local_NNP Lexical_NNP Matching_NNP -LRB-_-LRB- LLM_NNP -RRB-_-RRB- algorithm_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, similar_JJ to_TO those_DT that_WDT are_VBP often_RB used_VBN as_IN a_DT baseline_NN to_TO which_WDT other_JJ algorithms_NNS are_VBP often_RB compared_VBN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Our_PRP$ implementation_NN divides_VBZ the_DT page_NN into_IN sentences_NNS ,_, strips_NNS out_IN stopwords_NNS ,_, applies_VBZ a_DT regular_JJ expre_NN
+rchers_NNS have_VBP looked_VBN at_IN ways_NNS to_TO determine_VB what_WP sources_NNS a_DT user_NN will_MD trust_VB ._.
+BJ_NNP Fogg_NNP et_FW al_FW -LRB-_-LRB- 12_CD -RRB-_-RRB- found_VBD that_IN the_DT most_RBS important_JJ factor_NN was_VBD whether_IN a_DT web_NN site_NN had_VBD a_DT professional-looking_JJ design_NN ._.
+Gill_NNP and_CC Arts_NNP =_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: identified_VBN on_IN a_DT different_JJ set_NN of_IN factors_NNS ,_, including_VBG topic_NN -LRB-_-LRB- a_DT medical_JJ site_NN may_MD not_RB be_VB trusted_VBN for_IN advice_NN on_IN car_NN repair_NN -RRB-_-RRB- ,_, popularity_NN -LRB-_-LRB- does_VBZ everyone_NN else_JJ use_NN this_DT -RRB-_-RRB- and_CC authority_NN ._.
+4_LS ._.
+USER_NN STUDIES_NNS We_PRP gath_VBP
+gure_NN 11_CD :_: Choose_VB how_WRB to_TO connect_VB an_DT article_NN with_IN a_DT claim_NN ._.
+users_NNS had_VBD difficulty_NN creating_VBG well_RB structured_VBN argumentation_NN graphs_NNS ,_, as_IN we_PRP outline_VBP in_IN Section_NN 4_CD ._.
+This_DT result_NN is_VBZ consistent_JJ with_IN previous_JJ studies_NNS =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Another_DT point_NN in_IN favor_NN of_IN using_VBG a_DT simple_JJ list_NN of_IN sources_NNS is_VBZ that_IN most_JJS of_IN the_DT users_NNS we_PRP talked_VBD to_TO seemed_VBD to_TO be_VB more_RBR interested_JJ in_IN who_WP disputed_VBD a_DT claim_NN ,_, rather_RB than_IN what_WP their_PRP$ argument_NN was_VBD ._.
+For_IN example_NN
+isagree_NN with_IN what_WP they_PRP are_VBP reading_VBG ._.
+There_EX are_VBP also_RB several_JJ tools_NNS that_WDT find_VBP pages_NNS written_VBN about_IN the_DT same_JJ topic_NN with_IN different_JJ slants_NNS ,_, rather_RB than_IN looking_VBG at_IN the_DT specific_JJ claims_NNS a_DT page_NN makes_VBZ ._.
+News_NN Cube_NN =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: automatically_RB finds_VBZ articles_NNS that_WDT present_VBP different_JJ aspects_NNS of_IN the_DT same_JJ news_NN story_NN ._.
+The_DT intention_NN is_VBZ that_IN by_IN reading_VBG several_JJ such_JJ aspects_NNS ,_, the_DT user_NN will_MD encounter_VB several_JJ different_JJ ways_NNS of_IN looking_VBG at_IN
+mpting_VBG a_DT logical_JJ proof_NN -LRB-_-LRB- 2_CD ,_, 5_CD -RRB-_-RRB- ,_, parsing_VBG each_DT phrase_NN into_IN a_DT syntax_NN tree_NN and_CC using_VBG syntax_NN heuristics_NNS -LRB-_-LRB- 39_CD -RRB-_-RRB- ,_, inferring_VBG inference_NN rules_NNS that_WDT can_MD transform_VB one_CD sentence_NN into_IN another_DT while_IN preserving_VBG meaning_NN =_JJ -_: =[_NN 28_CD ,_, 10_CD ,_, 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC using_VBG Bayesian_JJ inference_NN to_TO infer_VB whether_IN one_CD phrase_NN looks_VBZ like_IN the_DT kind_NN of_IN phrase_NN that_WDT would_MD have_VB included_VBN each_DT word_NN in_IN the_DT other_JJ phrase_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Tools_NNS such_JJ as_IN AuContraire_NN -LRB-_-LRB- 34_CD -RRB-_-RRB- focus_NN specifically_RB
+look_VB for_IN passages_NNS places_NNS where_WRB one_CD book_NN quotes_VBZ another_DT ,_, qSign_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- looks_VBZ for_IN places_NNS where_WRB one_CD blog_NN has_VBZ quoted_VBN another_DT ,_, and_CC duplicate-detection_NN is_VBZ often_RB used_VBN to_TO clean_VB up_RP web_NN searches_NNS -LRB-_-LRB- 40_CD -RRB-_-RRB- ._.
+MemeTracker_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: looks_VBZ for_IN phrases_NNS shared_VBN by_IN multiple_JJ news_NN stories_NNS ,_, accounting_VBG for_IN minor_JJ variations_NNS ,_, and_CC uses_VBZ this_DT to_TO track_VB the_DT way_NN that_IN news_NN flows_VBZ between_IN traditional_JJ news_NN sources_NNS and_CC blogs_NNS ._.
+The_DT authors_NNS of_IN MemeTrack_NN
+ser_NN annotate_VBP the_DT rationale_NN for_IN their_PRP$ decisions_NNS and_CC opinions_NNS by_IN annotating_VBG source_NN documents_NNS with_IN the_DT facts_NNS that_IN they_PRP extracted_VBD from_IN them_PRP ,_, and_CC connecting_VBG these_DT facts_NNS into_IN a_DT decision_NN graph_NN ._.
+ClaimSpotter_NN =_SYM -_: =[_NN 37_CD ,_, 36_CD -RRB-_-RRB- -_: =_SYM -_: applies_VBZ a_DT similar_JJ approach_NN to_TO scholarly_JJ papers_NNS ,_, allowing_VBG a_DT user_NN to_TO make_VB up_RP a_DT paper_NN with_IN logical_JJ subject-verb-object_JJ triples_NNS describing_VBG important_JJ claims_NNS made_VBN in_IN the_DT document_NN ._.
+Entity_NN Workspace_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- uses_VBZ
+laim_NN will_MD be_VB highlighted_VBN on_IN every_DT web_NN page_NN on_IN which_WDT Dispute_NNP Finder_NNP 's_POS algorithms_NNS determine_VBP that_IN the_DT claim_NN appears_VBZ ._.
+The_DT closest_JJS annotation_NN system_NN to_TO Dispute_NNP Finder_NNP in_IN this_DT respect_NN is_VBZ perhaps_RB SparTag_NNP ._.
+us_PRP =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT uses_VBZ an_DT SHA_NNP hash_VBP to_TO attach_VB an_DT annotation_NN to_TO an_DT exact_JJ paragraph_NN ,_, irrespective_RB of_IN where_WRB it_PRP appears_VBZ on_IN the_DT web_NN ;_: however_RB a_DT claim_NN may_MD be_VB written_VBN in_IN many_JJ different_JJ ways_NNS ,_, and_CC be_VB part_NN of_IN many_JJ differen_NNS
+and_CC Schilit_NNP -LRB-_-LRB- 26_CD -RRB-_-RRB- look_NN for_IN passages_NNS places_NNS where_WRB one_CD book_NN quotes_VBZ another_DT ,_, qSign_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- looks_VBZ for_IN places_NNS where_WRB one_CD blog_NN has_VBZ quoted_VBN another_DT ,_, and_CC duplicate-detection_NN is_VBZ often_RB used_VBN to_TO clean_VB up_RP web_NN searches_NNS =_JJ -_: =[_NN 40_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+MemeTracker_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- looks_VBZ for_IN phrases_NNS shared_VBN by_IN multiple_JJ news_NN stories_NNS ,_, accounting_VBG for_IN minor_JJ variations_NNS ,_, and_CC uses_VBZ this_DT to_TO track_VB the_DT way_NN that_IN news_NN flows_VBZ between_IN traditional_JJ news_NN sources_NNS and_CC blogs_NNS ._.
+The_DT au_NN

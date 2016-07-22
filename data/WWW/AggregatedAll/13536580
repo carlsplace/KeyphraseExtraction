@@ -1,0 +1,94 @@
+Nearest-neighbor_JJ caching_NN for_IN content-match_JJ applications_NNS
+Motivated_VBN by_IN contextual_JJ advertising_NN systems_NNS and_CC other_JJ web_NN applications_NNS involving_VBG efficiency-accuracy_NN tradeoffs_NNS ,_, we_PRP study_VBD similarity_NN caching_NN ._.
+Here_RB ,_, a_DT cache_NN hit_NN is_VBZ said_VBN to_TO occur_VB if_IN the_DT requested_VBN item_NN is_VBZ similar_JJ but_CC not_RB necessarily_RB equal_JJ to_TO some_DT cached_VBN item_NN ._.
+We_PRP study_VBD two_CD objectives_NNS that_WDT dictate_VBP the_DT efficiency-accuracy_NN tradeoff_NN and_CC provide_VB our_PRP$ caching_VBG policies_NNS for_IN these_DT objectives_NNS ._.
+By_IN conducting_VBG extensive_JJ experiments_NNS on_IN real_JJ data_NNS we_PRP show_VBP similarity_NN caching_NN can_MD significantly_RB improve_VB the_DT efficiency_NN of_IN contextual_JJ advertising_NN systems_NNS ,_, with_IN minimal_JJ impact_NN on_IN accuracy_NN ._.
+Inspired_VBN by_IN the_DT above_JJ ,_, we_PRP propose_VBP a_DT simple_JJ generative_JJ model_NN that_WDT embodies_VBZ two_CD fundamental_JJ characteristics_NNS of_IN page_NN requests_NNS arriving_VBG to_TO advertising_NN systems_NNS ,_, namely_RB ,_, long-range_JJ dependences_NNS and_CC similarities_NNS ._.
+We_PRP provide_VBP theoretical_JJ bounds_NNS on_IN the_DT gains_NNS of_IN similarity_NN caching_NN in_IN this_DT model_NN and_CC demonstrate_VBP these_DT gains_NNS empirically_RB by_IN fitting_NN the_DT actual_JJ data_NNS to_TO the_DT model_NN ._.
+s_NN for_IN popular_JJ queries_NNS is_VBZ fetched_VBN from_IN the_DT cache_NN ,_, rather_RB than_IN being_VBG recomputed_VBN every_DT time_NN the_DT query_NN is_VBZ issued_VBN ._.
+In_IN web_NN search_NN applications_NNS result_VBP caching_NN has_VBZ been_VBN extensively_RB studied_VBN ,_, see_VB ,_, for_IN example_NN ,_, =_JJ -_: =[_NN 8_CD ,_, 14_CD ,_, 15_CD ,_, 17_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: ;_: and_CC it_PRP is_VBZ safe_JJ to_TO say_VB that_IN all_DT modern_JJ search_NN engines_NNS use_VBP some_DT form_NN of_IN result_NN caching_NN ._.
+In_IN the_DT theoretical_JJ community_NN ,_, this_DT kind_NN of_IN a_DT caching_NN problem_NN serves_VBZ as_IN a_DT cornerstone_NN of_IN competitive_JJ analysis_NN the_DT
+ch_NN setting_NN ,_, is_VBZ to_TO develop_VB caching_NN policies_NNS that_WDT can_MD judiciously_RB take_VB advantage_NN of_IN the_DT freedom_NN to_TO provide_VB an_DT approximate_JJ answer_NN ;_: this_DT is_VBZ the_DT focus_NN of_IN our_PRP$ work_NN ._.
+We_PRP study_VBP policies_NNS for_IN similarity_NN caching_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB a_DT cache_NN hit_NN is_VBZ said_VBN to_TO occur_VB if_IN the_DT requested_VBN item_NN is_VBZ similar_JJ but_CC not_RB necessarily_RB equal_JJ to_TO some_DT cached_VBN item_NN ._.
+Conventional_JJ caching_NN -LRB-_-LRB- i.e._FW ,_, exact_JJ caching_NN -RRB-_-RRB- is_VBZ not_RB very_RB effective_JJ in_IN such_JJ approximat_NN
+tain_NN items_NNS from_IN this_DT 100K_CD log_NN only_RB ._. -RRB-_-RRB-
+This_DT is_VBZ the_DT well-known_JJ k-center_NN problem_NN that_WDT is_VBZ NPhard_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Hence_RB ,_, we_PRP use_VBP the_DT farthest_JJS point_NN heuristic_NN ,_, an_DT approximation_NN algorithm_NN known_VBN for_IN the_DT k-center_NN problem_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Under_IN this_DT heuristic_NN ,_, the_DT cache_NN is_VBZ constructed_VBN one_CD by_IN one_CD ._.
+We_PRP start_VBP with_IN a_DT random_JJ item_NN in_IN the_DT cache_NN ._.
+Then_RB at_IN each_DT step_NN ,_, we_PRP select_VBP that_IN item_NN from_IN the_DT 100K_CD items_NNS that_WDT has_VBZ the_DT minimum_JJ maximum_NN similarit_NN
+counts_NNS of_IN how_WRB many_JJ times_NNS each_DT cache_NN item_NN was_VBD hit_VBN in_IN the_DT past_NN and_CC evicts_VBZ the_DT least_JJS frequently_RB used_VBN item_NN when_WRB needed_VBN ._.
+Several_JJ variants_NNS of_IN lfu_NN have_VBP been_VBN proposed_VBN to_TO deal_VB with_IN its_PRP$ different_JJ shortcomings_NNS =_JJ -_: =[_NN 1_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, it_PRP may_MD happen_VB in_IN lfu_NN that_IN certain_JJ items_NNS occur_VBP in_IN a_DT burst_NN to_TO accumulate_VB such_JJ high_JJ frequency_NN counts_VBZ that_IN they_PRP never_RB get_VBP evicted_VBN from_IN the_DT cache_NN ._.
+Window-lfu_JJ deals_NNS with_IN this_DT by_IN counting_VBG the_DT
+s_NN policy_NN ._.
+Our_PRP$ proposed_VBN caching_NN policies_NNS -LRB-_-LRB- in_IN Sections_NNS 3.3_CD and_CC 3.4_CD -RRB-_-RRB- assume_VB each_DT cache_NN item_NN to_TO be_VB of_IN uniform_JJ cost_NN and_CC utility_NN ._.
+Extending_VBG it_PRP for_IN non-uniform_JJ functions_NNS ,_, as_IN done_VBN for_IN conventional_JJ caching_NN in_IN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, is_VBZ a_DT part_NN of_IN our_PRP$ future_JJ work_NN ._.
+3.5_CD LSH_NN realization_NN As_IN discussed_VBN in_IN Section_NN 3.3_CD ,_, a_DT hit-or-miss_JJ determination_NN in_IN similarity_NN caching_NN requires_VBZ to_TO solve_VB a_DT nearest-neighbor_JJ problem_NN in_IN high-dimensional_JJ spac_NN
+of_IN a_DT caching_NN problem_NN serves_VBZ as_IN a_DT cornerstone_NN of_IN competitive_JJ analysis_NN theory_NN ._.
+The_DT well_RB known_VBN caching_NN schemes_NNS ,_, e.g._FW LRU_NNP ,_, LFU_NNP ,_, have_VBP been_VBN analyzed_VBN and_CC the_DT limits_NNS on_IN their_PRP$ performance_NN are_VBP well_RB understood_VBN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+At_IN first_JJ glance_NN ,_, similarity_NN caching_NN may_MD look_VB like_IN a_DT variation_NN on_IN a_DT clustering_NN problem_NN --_: the_DT goal_NN is_VBZ to_TO find_VB a_DT set_NN of_IN points_NNS that_WDT best_RB represent_VBP the_DT incoming_JJ queries_NNS ._.
+What_WP makes_VBZ this_DT problem_NN differen_NN
+stone_NN of_IN an_DT effective_JJ similarity_NN caching_NN strategy_NN ._.
+The_DT problem_NN has_VBZ a_DT rich_JJ history_NN ,_, see_VBP for_IN example_NN the_DT survey_NN by_IN Indyk_NNP -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, and_CC the_DT references_NNS therein_RB ._.
+In_IN this_DT work_NN we_PRP use_VBP Locality_NN Sensitive_JJ Hashing_NN =_JJ -_: =[_NN 7_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: to_TO solve_VB the_DT nearest_JJS neighbor_NN problem_NN ,_, and_CC demonstrate_VB its_PRP$ effectiveness_NN against_IN exhaustive_JJ search_NN ._.
+3_LS ._.
+SIMILARITY_NNP CACHING_NNP We_PRP first_RB briefly_RB describe_VBP the_DT basic_JJ principles_NNS behind_IN caching_NN ._.
+To_TO avoid_VB ambig_NN
+s_NN for_IN popular_JJ queries_NNS is_VBZ fetched_VBN from_IN the_DT cache_NN ,_, rather_RB than_IN being_VBG recomputed_VBN every_DT time_NN the_DT query_NN is_VBZ issued_VBN ._.
+In_IN web_NN search_NN applications_NNS result_VBP caching_NN has_VBZ been_VBN extensively_RB studied_VBN ,_, see_VB ,_, for_IN example_NN ,_, =_JJ -_: =[_NN 8_CD ,_, 14_CD ,_, 15_CD ,_, 17_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: ;_: and_CC it_PRP is_VBZ safe_JJ to_TO say_VB that_IN all_DT modern_JJ search_NN engines_NNS use_VBP some_DT form_NN of_IN result_NN caching_NN ._.
+In_IN the_DT theoretical_JJ community_NN ,_, this_DT kind_NN of_IN a_DT caching_NN problem_NN serves_VBZ as_IN a_DT cornerstone_NN of_IN competitive_JJ analysis_NN the_DT
+s_NN for_IN popular_JJ queries_NNS is_VBZ fetched_VBN from_IN the_DT cache_NN ,_, rather_RB than_IN being_VBG recomputed_VBN every_DT time_NN the_DT query_NN is_VBZ issued_VBN ._.
+In_IN web_NN search_NN applications_NNS result_VBP caching_NN has_VBZ been_VBN extensively_RB studied_VBN ,_, see_VB ,_, for_IN example_NN ,_, =_JJ -_: =[_NN 8_CD ,_, 14_CD ,_, 15_CD ,_, 17_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: ;_: and_CC it_PRP is_VBZ safe_JJ to_TO say_VB that_IN all_DT modern_JJ search_NN engines_NNS use_VBP some_DT form_NN of_IN result_NN caching_NN ._.
+In_IN the_DT theoretical_JJ community_NN ,_, this_DT kind_NN of_IN a_DT caching_NN problem_NN serves_VBZ as_IN a_DT cornerstone_NN of_IN competitive_JJ analysis_NN the_DT
+s_NN for_IN popular_JJ queries_NNS is_VBZ fetched_VBN from_IN the_DT cache_NN ,_, rather_RB than_IN being_VBG recomputed_VBN every_DT time_NN the_DT query_NN is_VBZ issued_VBN ._.
+In_IN web_NN search_NN applications_NNS result_VBP caching_NN has_VBZ been_VBN extensively_RB studied_VBN ,_, see_VB ,_, for_IN example_NN ,_, =_JJ -_: =[_NN 8_CD ,_, 14_CD ,_, 15_CD ,_, 17_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: ;_: and_CC it_PRP is_VBZ safe_JJ to_TO say_VB that_IN all_DT modern_JJ search_NN engines_NNS use_VBP some_DT form_NN of_IN result_NN caching_NN ._.
+In_IN the_DT theoretical_JJ community_NN ,_, this_DT kind_NN of_IN a_DT caching_NN problem_NN serves_VBZ as_IN a_DT cornerstone_NN of_IN competitive_JJ analysis_NN the_DT
+Caching_NNP has_VBZ long_RB been_VBN recognized_VBN as_IN a_DT critical_JJ component_NN in_IN high_JJ performance_NN applications_NNS ._.
+Indeed_RB ,_, most_JJS applications_NNS utilize_VBP caching_VBG on_IN many_JJ levels_NNS ,_, and_CC multi-level_JJ schemes_NNS have_VBP recently_RB been_VBN studied_VBN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT closest_JJS form_NN of_IN caching_NN to_TO Track_NNP :_: Search_VB \/_: Session_NN :_: Caching_NN and_CC Indices_NNS this_DT work_NN is_VBZ result_NN caching_NN ._.
+In_IN this_DT framework_NN the_DT set_NN of_IN results_NNS for_IN popular_JJ queries_NNS is_VBZ fetched_VBN from_IN the_DT cache_NN ,_, rather_RB th_DT
+size_NN of_IN the_DT cache_NN such_JJ that_IN all_DT 100K_CD page_NN requests_NNS are_VBP covered_VBN by_IN the_DT items_NNS in_IN the_DT cache_NN ._.
+-LRB-_-LRB- The_DT cache_NN can_MD contain_VB items_NNS from_IN this_DT 100K_CD log_NN only_RB ._. -RRB-_-RRB-
+This_DT is_VBZ the_DT well-known_JJ k-center_NN problem_NN that_WDT is_VBZ NPhard_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Hence_RB ,_, we_PRP use_VBP the_DT farthest_JJS point_NN heuristic_NN ,_, an_DT approximation_NN algorithm_NN known_VBN for_IN the_DT k-center_NN problem_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+Under_IN this_DT heuristic_NN ,_, the_DT cache_NN is_VBZ constructed_VBN one_CD by_IN one_CD ._.
+We_PRP start_VBP with_IN a_DT random_JJ item_NN in_IN
+est_NN point_NN in_IN the_DT cache_NN ._.
+Solving_VBG the_DT nearest_JJS neighbor_NN problem_NN efficiently_RB is_VBZ a_DT keystone_NN of_IN an_DT effective_JJ similarity_NN caching_NN strategy_NN ._.
+The_DT problem_NN has_VBZ a_DT rich_JJ history_NN ,_, see_VBP for_IN example_NN the_DT survey_NN by_IN Indyk_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC the_DT references_NNS therein_RB ._.
+In_IN this_DT work_NN we_PRP use_VBP Locality_NNP Sensitive_NNP Hashing_NNP -LRB-_-LRB- 7_CD ,_, 13_CD -RRB-_-RRB- to_TO solve_VB the_DT nearest_JJS neighbor_NN problem_NN ,_, and_CC demonstrate_VB its_PRP$ effectiveness_NN against_IN exhaustive_JJ search_NN ._.
+3_LS ._.
+SIMILARITY_NN C_NN
+stone_NN of_IN an_DT effective_JJ similarity_NN caching_NN strategy_NN ._.
+The_DT problem_NN has_VBZ a_DT rich_JJ history_NN ,_, see_VBP for_IN example_NN the_DT survey_NN by_IN Indyk_NNP -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, and_CC the_DT references_NNS therein_RB ._.
+In_IN this_DT work_NN we_PRP use_VBP Locality_NN Sensitive_JJ Hashing_NN =_JJ -_: =[_NN 7_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: to_TO solve_VB the_DT nearest_JJS neighbor_NN problem_NN ,_, and_CC demonstrate_VB its_PRP$ effectiveness_NN against_IN exhaustive_JJ search_NN ._.
+3_LS ._.
+SIMILARITY_NNP CACHING_NNP We_PRP first_RB briefly_RB describe_VBP the_DT basic_JJ principles_NNS behind_IN caching_NN ._.
+To_TO avoid_VB ambig_NN
+counts_NNS of_IN how_WRB many_JJ times_NNS each_DT cache_NN item_NN was_VBD hit_VBN in_IN the_DT past_NN and_CC evicts_VBZ the_DT least_JJS frequently_RB used_VBN item_NN when_WRB needed_VBN ._.
+Several_JJ variants_NNS of_IN lfu_NN have_VBP been_VBN proposed_VBN to_TO deal_VB with_IN its_PRP$ different_JJ shortcomings_NNS =_JJ -_: =[_NN 1_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, it_PRP may_MD happen_VB in_IN lfu_NN that_IN certain_JJ items_NNS occur_VBP in_IN a_DT burst_NN to_TO accumulate_VB such_JJ high_JJ frequency_NN counts_VBZ that_IN they_PRP never_RB get_VBP evicted_VBN from_IN the_DT cache_NN ._.
+Window-lfu_JJ deals_NNS with_IN this_DT by_IN counting_VBG the_DT
+r_NN each_DT feature_NN the_DT index_NN has_VBZ a_DT posting_VBG list_NN containing_VBG the_DT identifiers_NNS of_IN ads_NNS that_WDT have_VBP the_DT feature_NN ._.
+To_TO determine_VB relevant_JJ ads_NNS for_IN a_DT page_NN request_NN ,_, the_DT system_NN probes_NNS the_DT index_NN using_VBG the_DT WAND_NNP algorithm_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT has_VBZ been_VBN designed_VBN to_TO minimize_VB the_DT number_NN of_IN index_NN operations_NNS required_VBN for_IN answering_VBG long_JJ queries_NNS ,_, as_IN is_VBZ typically_RB the_DT case_NN for_IN content-match_JJ systems_NNS ._.
+We_PRP simulate_VBP a_DT cache_NN on_IN this_DT request_NN log_NN in_IN
+en_IN two_CD vector-valued_JJ keys_NNS x_NN =_JJ -LRB-_-LRB- x1_NN ,_, ..._: -RRB-_-RRB- and_CC y_NN =_JJ -LRB-_-LRB- y1_NN ,_, ..._: -RRB-_-RRB- :_: sim_NN -LRB-_-LRB- x_NN ,_, y_NN -RRB-_-RRB- =_JJ P_NN i_LS :_: ¬_NN -LRB-_-LRB- x_NN min_NN -LRB-_-LRB- xi_NN ,_, yi_NN -RRB-_-RRB- \/_: max_NN -LRB-_-LRB- xi_NN ,_, yi_NN -RRB-_-RRB- ._.
+i_LS =_JJ yi_NN =_JJ 0_CD -RRB-_-RRB- It_PRP is_VBZ well-known_JJ that_IN min-wise_JJ independent_JJ hash_JJ functions_NNS can_MD be_VB used_VBN in_IN this_DT case_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN Section_NN 4.4.3_CD we_PRP show_VBP how_WRB LSH_NN significantly_RB reduces_VBZ the_DT computation_NN cost_NN of_IN hit-or-miss_JJ determination_NN while_IN degrading_VBG the_DT performance_NN negligibly_RB ._.
+444WWW_CD 2009_CD MADRID_NNP !_.
+4_LS ._.
+EXPERIMENTS_NNS In_IN this_DT secti_NN
+s_NN for_IN popular_JJ queries_NNS is_VBZ fetched_VBN from_IN the_DT cache_NN ,_, rather_RB than_IN being_VBG recomputed_VBN every_DT time_NN the_DT query_NN is_VBZ issued_VBN ._.
+In_IN web_NN search_NN applications_NNS result_VBP caching_NN has_VBZ been_VBN extensively_RB studied_VBN ,_, see_VB ,_, for_IN example_NN ,_, =_JJ -_: =[_NN 8_CD ,_, 14_CD ,_, 15_CD ,_, 17_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: ;_: and_CC it_PRP is_VBZ safe_JJ to_TO say_VB that_IN all_DT modern_JJ search_NN engines_NNS use_VBP some_DT form_NN of_IN result_NN caching_NN ._.
+In_IN the_DT theoretical_JJ community_NN ,_, this_DT kind_NN of_IN a_DT caching_NN problem_NN serves_VBZ as_IN a_DT cornerstone_NN of_IN competitive_JJ analysis_NN the_DT
+n_NN similar_JJ search_NN results_NNS ._.
+The_DT second_JJ application_NN is_VBZ in_IN content-based_JJ image_NN search_NN ,_, where_WRB it_PRP may_MD suffice_VB to_TO show_VB a_DT cached_JJ image_NN that_WDT is_VBZ similar_JJ to_TO a_DT query_JJ image_NN ;_: independent_JJ of_IN our_PRP$ work_NN ,_, Falchi_NNP et_FW al._FW =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: recently_RB studied_VBN similarity_NN caching_NN in_IN this_DT context_NN ._.
+Our_PRP$ contributions_NNS ._.
+In_IN this_DT paper_NN we_PRP study_VBD similarity_NN caching_NN in_IN content-match_JJ systems_NNS ._.
+We_PRP study_VBD two_CD objectives_NNS that_WDT dictate_VBP the_DT efficiency_NN --_: accurac_NN
+vious_JJ request_NN logs_NNS and_CC keeping_VBG the_DT most_RBS frequent_JJ items_NNS in_IN the_DT cache_NN to_TO hit_VB as_IN many_JJ future_JJ requests_NNS as_IN possible_JJ ._.
+Previous_JJ studies_NNS have_VBP shown_VBN that_IN for_IN certain_JJ Web_NN applications_NNS static_JJ caching_NN works_VBZ well_RB =_JJ -_: =[_NN 2_CD ,_, 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, thereby_RB motivating_VBG us_PRP to_TO compare_VB it_PRP with_IN dynamic_JJ caching_NN ._.
+The_DT comparison_NN is_VBZ done_VBN for_IN different_JJ similarity_NN thresholds_NNS ._.
+For_IN this_DT experiment_NN we_PRP took_VBD the_DT first_JJ 2_CD million_CD requests_NNS from_IN the_DT log_NN ._.
+We_PRP put_VBD th_DT

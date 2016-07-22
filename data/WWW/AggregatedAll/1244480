@@ -1,0 +1,121 @@
+Algorithms_NNS and_CC programming_NN models_NNS for_IN efficient_JJ representation_NN of_IN XML_NN for_IN Internet_NNP applications_NNS
+stead_NN of_IN strings_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+Best_NN results_NNS are_VBP achieved_VBN by_IN applying_VBG heuristics_NNS to_TO select_VB the_DT best_JJS Millau_NNP compression_NN and_CC tokenization_NN algorithm_NN based_VBN on_IN the_DT content_NN size_NN ,_, well-formedness_NN and_CC DTD_NN availability_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4_LS ._.
+XML_NN MESSAGING_NN SECURITY_NN Security_NN has_VBZ in_IN recent_JJ years_NNS become_VBP the_DT standard_JJ problem_NN in_IN various_JJ networking_VBG systems_NNS ._.
+Security_NN has_VBZ been_VBN identified_VBN quite_RB early_RB as_IN a_DT potential_JJ problem_NN in_IN XML_NN based_VBN systems_NNS
+1.0_CD syntax_NN would_MD certainly_RB be_VB required_VBN by_IN every_DT implementation_NN ,_, it_PRP would_MD be_VB possible_JJ to_TO cleanly_RB identify_VB alternative_JJ representations_NNS of_IN XML_NN ,_, such_JJ as_IN the_DT Millau_NNP XML_NN encoding_NN by_IN Girardot_NNP and_CC Sundaresan_NNP =_SYM -_: =[_NN 10_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN the_DT majority_NN of_IN XML_NN users_NNS is_VBZ satisfied_VBN with_IN XML_NN 1.0_CD syntax_NN ,_, some_DT users_NNS in_IN high-volume_JJ and\/or_CC high-speed_JJ application_NN areas_NNS have_VBP serious_JJ problems_NNS dealing_VBG with_IN the_DT verbose_JJ XML_NN 1.0_CD syntax_NN ,_, and_CC wou_NN
+es_NNS from_IN the_DT original_JJ XML_NN document_NN that_WDT have_VBP been_VBN destroyed_VBN by_IN switching_NN between_IN different_JJ models_NNS ._.
+Several_JJ other_JJ XML-conscious_JJ compression_NN strategies_NNS have_VBP been_VBN developed_VBN ,_, including_VBG XPRESS_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, Millau_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, XML-XPress_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, Exalt_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, XComp_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, and_CC XCQ_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+3_CD AXECHOP_NN This_DT section_NN provides_VBZ a_DT detailed_JJ description_NN of_IN the_DT compression_NN and_CC decompression_NN routines_NNS used_VBN in_IN AXECHOP_NNP ._.
+Subsequently_RB ,_, the_DT architec_NN
+ilable_JJ implementation_NN ;_: the_DT compressors_NNS in_IN this_DT section_NN did_VBD not_RB have_VB such_JJ an_DT implementation_NN available_JJ ._.
+Some_DT of_IN these_DT are_VBP analyzed_VBN in_IN previous_JJ studies_NNS -LRB-_-LRB- 9_CD ,_, 34_CD ,_, 47_CD -RRB-_-RRB- ,_, such_JJ as_IN AXECHOP_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, BOX_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, Millau_NN =_JJ -_: =[_NN 20_CD ,_, 41_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC XCOMP_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+We_PRP attempted_VBD to_TO include_VB Efficient_JJ XML_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- in_IN this_DT study_NN ,_, but_CC did_VBD not_RB receive_VB a_DT response_NN to_TO our_PRP$ requests_NNS to_TO do_VB so_RB ._.
+However_RB ,_, since_IN the_DT time_NN of_IN this_DT study_NN ,_, the_DT EXIWG_NN selected_VBN Efficient_JJ
+ession_NN ._.
+We_PRP present_VBP a_DT qualitative_JJ analysis_NN of_IN eight_CD representative_JJ XML-conscious_JJ compression_NN technologies_NNS as_IN follows_VBZ ._.
+The_DT unqueriable_JJ compression_NN includes_VBZ XMill_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, XMLPPM_NN ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- SCA_NN -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, and_CC Millau_NNP =_SYM -_: =[_NN 42_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT queriable_JJ compression_NN includes_VBZ XGrind_NN -LRB-_-LRB- 46_CD -RRB-_-RRB- ,_, XMLZip_NN -LRB-_-LRB- 53_CD -RRB-_-RRB- ,_, XPress_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- and_CC XML_NN Skeleton_NN Compression_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+All_DT of_IN these_DT compression_NN technologies_NNS are_VBP known_VBN to_TO the_DT community_NN ,_, which_WDT contains_VBZ interestin_NN
+Architecture_NNP Figure_NNP 1_CD shows_VBZ the_DT architecture_NN of_IN the_DT Compression_NNP Engine_NNP ._.
+This_DT architecture_NN is_VBZ used_VBN for_IN realizing_VBG the_DT DSP_NNP technique_NN ._.
+The_DT ideas_NNS used_VBN in_IN DSP_NNP are_VBP -LRB-_-LRB- 1_LS -RRB-_-RRB- to_TO extract_VB the_DT structural_JJ information_NN =_JJ -_: =[_NN 2_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: from_IN the_DT input_NN XML_NN document_NN that_WDT can_MD not_RB be_VB inferred_VBN from_IN a_DT given_VBN DTD_NNP during_IN the_DT parsing_NN process_NN ,_, and_CC -LRB-_-LRB- 2_LS -RRB-_-RRB- to_TO group_VB the_DT data_NNS elements_NNS in_IN the_DT document_NN based_VBN on_IN their_PRP$ corresponding_JJ tree_NN paths_NNS in_IN the_DT DTD_NN
+a_DT custom_NN binary_JJ format_NN ,_, for_IN example_NN -RRB-_-RRB- ._.
+Compression_NN of_IN XML_NN has_VBZ been_VBN studied_VBN from_IN a_DT variety_NN of_IN perspectives_NNS ._.
+Some_DT researchers_NNS aim_VBP to_TO achieve_VB minimal_JJ size_NN -LRB-_-LRB- 1_CD ,_, 4_CD ,_, 13_CD -RRB-_-RRB- ,_, others_NNS focus_VBP on_IN efficient_JJ streaming_NN =_JJ -_: =[_NN 9_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: --_: a_DT balance_NN between_IN bandwidth_NN and_CC encode\/decode_NN times_NNS --_: and_CC still_RB others_NNS answer_VBP XML_NN queries_NNS directly_RB from_IN compressed_VBN representations_NNS -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+Following_VBG Levene_NNP and_CC Wood_NNP -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, we_PRP study_VBD how_WRB the_DT document_NN ty_NN
+compression_NN and_CC query_NN over_IN XML_NN data_NNS ._.
+6s2_FW .2.1_FW XML_NN Compression_NN There_EX have_VBP been_VBN several_JJ proposals_NNS for_IN XML_NN specific_JJ compression_NN formats_NNS including_VBG XMill_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, XGrind_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, XPRESS_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, WBXML_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, Millau_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: and_CC XCQ_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+XMill_NN XMill_NN does_VBZ n't_RB propose_VB a_DT new_JJ compression_NN algorithm_NN but_CC a_DT framework_NN in_IN which_WDT existing_VBG algorithm_NN can_MD be_VB leveraged_VBN to_TO compress_VB XML_NN data_NNS ._.
+XMill_NN incorporates_VBZ and_CC combines_VBZ the_DT existing_VBG c_NN
+ary_JJ format_NN ,_, for_IN example_NN -RRB-_-RRB- ._.
+Compression_NN of_IN XML_NN has_VBZ been_VBN studied_VBN from_IN a_DT variety_NN of_IN perspectives_NNS ._.
+Some_DT researchers_NNS aim_VBP to_TO achieve_VB minimal_JJ size_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, others_NNS focus_VBP on_IN efficient_JJ streaming_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: --_: a_DT balance_NN between_IN bandwidth_NN and_CC encode\/decode_NN times_NNS --_: and_CC still_RB others_NNS answer_VBP XML_NN queries_NNS directly_RB from_IN compressed_VBN representations_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+Representations_NNS that_WDT support_VBP queries_NNS are_VBP necessarily_RB larger_JJR t_NN
+o_NN pay_VB the_DT extra_JJ cost_NN of_IN consuming_VBG more_JJR storage_NN space_NN and_CC computational_JJ resources_NNS to_TO store_NN and_CC process_NN XML_NN data_NNS ._.
+In_IN recent_JJ years_NNS ,_, many_JJ XML-specific_JJ compression_NN systems_NNS have_VBP been_VBN proposed_VBN and_CC developed_VBN =_JJ -_: =[_NN 2_CD ,_, 7_CD ,_, 11_CD ,_, 29_CD ,_, 31_CD ,_, 35_CD ,_, 42_CD ,_, 45_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, these_DT systems_NNS either_CC do_VBP not_RB make_VB effective_JJ use_NN of_IN the_DT information_NN provided_VBN by_IN a_DT Document_NNP Type_NN Definition_NN -LRB-_-LRB- DTD_NN -RRB-_-RRB- associated_VBN with_IN an_DT XML_NN document_NN -LRB-_-LRB- 2_CD ,_, 7_CD ,_, 11_CD ,_, 31_CD ,_, 35_CD ,_, 45_CD -RRB-_-RRB- ,_, or_CC do_VBP not_RB support_VB the_DT
+is_VBZ section_NN will_MD introduce_VB some_DT of_IN the_DT other_JJ efforts_NNS in_IN binary_JJ XML_NN area_NN ._.
+They_PRP give_VBP interesting_JJ ideas_NNS on_IN the_DT topic_NN ._.
+Some_DT approaches_NNS from_IN these_DT projects_NNS will_MD be_VB used_VBN in_IN the_DT new_JJ format_NN ._.
+6.1_CD Millau_NNP Millau_NNP =_SYM -_: =[_NN 28_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT system_NN for_IN efficient_JJ encoding_NN and_CC streaming_NN of_IN XML_NN structures_NNS using_VBG a_DT binary_JJ XML_NN format_NN ._.
+It_PRP extends_VBZ WBXML_NNP -LRB-_-LRB- from_IN WAP_NN -RRB-_-RRB- with_IN separation_NN of_IN structure_NN and_CC content_NN ._.
+The_DT structure_NN part_NN contains_VBZ the_DT enc_NN
+and_CC SOAP_NN ._.
+sSeveral_NN works_NNS have_VBP looked_VBN at_IN optimizing_VBG XML_NN processing_NN ._.
+Sundaresan_NNP et_FW al._FW have_VBP proposed_VBN a_DT compression_NN technique_NN that_WDT considers_VBZ the_DT structural_JJ part_NN and_CC the_DT text_NN of_IN an_DT XML_NN document_NN separately_RB =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP have_VBP also_RB developed_VBN a_DT technique_NN to_TO quantify_VB the_DT characteristics_NNS of_IN a_DT document_NN based_VBN on_IN the_DT schema_NN and_CC the_DT document_NN itself_PRP and_CC determine_VB the_DT most_RBS appropriate_JJ compression_NN algorithms_NNS for_IN the_DT docum_NN
+ressing_VBG small_JJ fragments_NNS individually_RB ._.
+It_PRP also_RB requires_VBZ that_IN the_DT binary_JJ document_NN be_VB converted_VBN to_TO its_PRP$ original_JJ textual_JJ form_NN before_IN use_NN ,_, requiring_VBG both_CC additional_JJ processing_NN power_NN and_CC memory_NN ._.
+Millau_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: --_: An_DT extension_NN of_IN the_DT WAP_NNP Forum_NNP 's_POS WBXML_NN to_TO generic_JJ XML_NN documents_NNS with_IN the_DT addition_NN of_IN content_NN compression_NN ._.
+Millau_NNP allows_VBZ the_DT binary_JJ document_NN to_TO be_VB processed_VBN via_IN both_CC the_DT standard_JJ DOM_NN and_CC SAX_NN APIs_NNS wit_NN
+with_IN veryslittle_JJ overhead_NN compared_VBN to_TO binary_JJ message_NN formats_NNS ._.
+•_NNP Millau_NNP ._.
+Millau_NNP is_VBZ a_DT system_NN that_WDT implements_VBZ an_DT XML_NN compression_NN algorithm_NN based_VBN on_IN the_DT WAP_NNP binary_JJ XML_NN format_NN -LRB-_-LRB- Girardot_NNP &_CC Sundaresan_NNP 2000_CD ,_, =_JJ -_: =_JJ Sundaresan_NNP &_CC Moussa_NNP 2001_CD -_: =--RRB-_NN ._.
+It_PRP provides_VBZ both_DT DOM_NNP and_CC SAX_NNP programming_NN interfaces_NNS for_IN encoding_VBG and_CC decoding_VBG XML_NN documents_NNS directly_RB to_TO and_CC from_IN the_DT compressed_VBN binary_JJ form_NN ._.
+8_CD Comparison_NN of_IN SOAP_NNP and_CC FIX_NNP When_WRB evaluating_VBG web_NN service_NN
+Lconscious_JJ compression_NN technologies_NNS have_VBP been_VBN recently_RB proposed_VBN -LRB-_-LRB- cf._VBP see_VB our_PRP$ recent_JJ survey_NN in_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+These_DT technologies_NNS are_VBP able_JJ to_TO achieve_VB good_JJ compression_NN performance_NN ._.
+They_PRP include_VBP XMill_NN and_CC Millau_NN =_JJ -_: =[_NN 10_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, these_DT systems_NNS are_VBP solely_RB optimized_VBN for_IN better_JJR compression_NN but_CC do_VBP not_RB support_VB querying_VBG of_IN the_DT compressed_VBN data_NNS ._.
+The_DT more_RBR recently_RB proposed_VBN XML_NN compressors_NNS ,_, such_JJ as_IN XGrind_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, XPress_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, s_NN
+haracter_NN level_NN ._.
+In_IN adaptive_JJ extensions_NNS -LRB-_-LRB- like_IN in_IN LZ77_NN -RRB-_-RRB- the_DT system_NN slowly_RB learns_VBZ correlations_NNS between_IN adjacent_JJ pairs_NNS ,_, triples_NNS ,_, quadruples_VBZ of_IN characters_NNS to_TO improve_VB upon_IN the_DT compression_NN ._.
+Other_JJ algorithms_NNS =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: use_NN words_NNS instead_RB of_IN characters_NNS ._.
+In_IN -LRB-_-LRB- 19_CD -RRB-_-RRB- a_DT complete_JJ offline_JJ dictionary_NN is_VBZ inferred_VBN to_TO optimize_VB the_DT choice_NN of_IN phrases_NNS for_IN optimization_NN ._.
+As_IN for_IN XML_NN ,_, the_DT Wireless_NNP Application_NN Protocol_NNP Forum_NNP -LRB-_-LRB- 9_CD -RRB-_-RRB- has_VBZ prop_VB
+e_LS of_IN prototypical_JJ applications_NNS we_PRP built_VBD using_VBG our_PRP$ system_NN ._.
+In_IN section_NN 10_CD we_PRP draw_VBP conclusions_NNS and_CC chalk_NN out_RP path_NN for_IN future_JJ work_NN ._.
+2_CD ._.
+RELATED_NNS WORK_VBP Lossless_JJ data_NNS compression_NN is_VBZ a_DT mature_JJ field_NN of_IN research_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: mainly_RB based_VBN on_IN Claude_NNP Shannon_NNP 's_POS information_NN theory_NN that_IN there_EX is_VBZ a_DT direct_JJ correlation_NN between_IN the_DT probability_NN of_IN occurrence_NN of_IN assymbol_NN and_CC the_DT bits_NNS needed_VBN to_TO encode_VB it_PRP ._.
+Huffman_NN coding_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- achieves_VBZ
+that_WDT occur_VBP in_IN a_DT dictionary_NN ._.
+If_IN a_DT match_NN is_VBZ found_VBN an_DT index_NN into_IN the_DT dictionary_NN is_VBZ output_NN instead_RB of_IN the_DT code_NN for_IN that_DT symbol_NN ._.
+The_DT longer_JJR the_DT match_NN ,_, the_DT better_JJR the_DT compression_NN ratio_NN ._.
+In_IN LZ77_NN compression_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, for_IN example_NN ,_, the_DT dictionary_NN consists_VBZ of_IN all_PDT the_DT strings_NNS in_IN a_DT window_NN into_IN the_DT previously_RB read_VBN input_NN stream_NN ._.
+The_DT deflate_JJ algorithm_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- uses_VBZ a_DT combination_NN of_IN the_DT LZ77_NN compression_NN and_CC the_DT Huffman_NNP coding_NN
+research_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- mainly_RB based_VBN on_IN Claude_NNP Shannon_NNP 's_POS information_NN theory_NN that_IN there_EX is_VBZ a_DT direct_JJ correlation_NN between_IN the_DT probability_NN of_IN occurrence_NN of_IN assymbol_NN and_CC the_DT bits_NNS needed_VBN to_TO encode_VB it_PRP ._.
+Huffman_NN coding_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: achieves_VBZ the_DT minimum_JJ amount_NN of_IN redundancy_NN possible_JJ in_IN a_DT fixed_JJ set_NN of_IN variable_JJ length_NN codes_NNS ._.
+It_PRP uses_VBZ statistical_JJ modeling_NN to_TO encode_VB symbols_NNS using_VBG the_DT probability_NN of_IN the_DT symbol_NN 's_POS occurrence_NN ._.
+A_DT dictiona_NN
+ngs_NNS in_IN a_DT window_NN into_IN the_DT previously_RB read_VBN input_NN stream_NN ._.
+The_DT deflate_JJ algorithm_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- uses_VBZ a_DT combination_NN of_IN the_DT LZ77_NN compression_NN and_CC the_DT Huffman_NNP coding_NN ._.
+It_PRP is_VBZ used_VBN in_IN popular_JJ compression_NN programs_NNS like_IN GZIP_NN =_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: or_CC ZLIB_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+These_DT text_NN compression_NN algorithms_NNS perform_VBP compression_NN at_IN the_DT character_NN level_NN ._.
+In_IN adaptive_JJ extensions_NNS -LRB-_-LRB- like_IN in_IN LZ77_NN -RRB-_-RRB- the_DT system_NN slowly_RB learns_VBZ correlations_NNS between_IN adjacent_JJ pairs_NNS ,_, triples_NNS ,_,
+ion_NN we_PRP discuss_VBP work_NN in_IN text_NN data_NNS compression_NN and_CC XML_NN compression_NN ._.
+In_IN section_NN 3_CD we_PRP introduce_VBP our_PRP$ system_NN ._.
+In_IN sections_NNS 4_CD and_CC 5_CD we_PRP discuss_VBP various_JJ improvements_NNS to_TO the_DT core_NN compression_NN algorithm_NN in_IN Millau_NNP =_SYM -_: =[_NN 22_CD -RRB-_-RRB- -_: =-[_NN 23_CD -RRB-_-RRB- ._.
+In_IN section_NN 5_CD ,_, specifically_RB ,_, we_PRP discuss_VBP the_DT Differential_JJ DTD_NN Tree_NN Compression_NN Algorithm_NN that_WDT performs_VBZ compression_NN based_VBN upon_IN the_DT differential_JJ information_NN between_IN the_DT document_NN and_CC its_PRP$ schema_NN ._.
+In_IN s_NN
+ML_NN document_NN tree_NN ._.
+Typical_JJ DOM_NN implementations_NNS are_VBP inmemory_JJ tree_NN based_VBN -LRB-_-LRB- which_WDT means_VBZ that_IN the_DT whole_JJ XML_NN tree_NN is_VBZ constructed_VBN in_IN memory_NN for_IN full_JJ processing_NN -RRB-_-RRB- ,_, though_IN variants_NNS like_IN Lazy_NNP DOM_NNP ,_, Persistent_JJ DOM_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP emerged_VBN that_WDT take_VBP load_NN documents_NNS into_IN memory_NN in_IN a_DT delayed_VBN fashion_NN ._.
+In_IN addition_NN to_TO DOM_NNP ,_, Simple_JJ API_NN for_IN XML_NN -LRB-_-LRB- SAX_NN -RRB-_-RRB- provides_VBZ a_DT programming_NN interface_NN that_WDT enables_VBZ streaming_NN XML_NN and_CC is_VBZ event-driven_JJ ._.
+I_PRP
+ne_NN or_CC several_JJ bytes_NNS encode_VBP a_DT tag_NN according_VBG to_TO its_PRP$ occurrence_NN frequency_NN ._.
+The_DT 128_CD most_RBS frequent_JJ tags_NNS will_MD be_VB encoded_VBN with_IN a_DT single_JJ byte_NN ._.
+The_DT format_NN of_IN these_DT bytes_NNS is_VBZ similar_JJ to_TO the_DT byte_NN format_NN of_IN UTF-8_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT frequency_NN of_IN the_DT element_NN occurrence_NN can_MD be_VB obtained_VBN either_CC by_IN pre-processing_VBG the_DT document_NN to_TO identify_VB the_DT element_NN frequency_NN and_CC assigning_VBG smaller_JJR tokens_NNS for_IN the_DT most_RBS frequent_JJ ones_NNS ._.
+Alternatively_RB
+he_PRP operators_NNS ,_, among_IN other_JJ measures_NNS ._.
+We_PRP introduce_VBP novel_JJ algorithms_NNS to_TO perform_VB compression_NN and_CC relate_VB the_DT performances_NNS to_TO this_DT quantification_NN ._.
+Other_JJ XML-related_JJ compression_NN research_NN work_NN includes_VBZ Xmill_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+XMill_NN uses_VBZ binary_JJ encoding_NN for_IN structure_NN and_CC for_IN content_NN and_CC performs_VBZ structure_NN and_CC content_NN separation_NN ._.
+Additionally_RB ,_, it_PRP takes_VBZ user_NN input_NN hints_NNS to_TO perform_VB efficient_JJ encoding_NN ._.
+XMill_NN performs_VBZ well_RB for_IN
+tter_NN compression_NN ._.
+To_TO be_VB compliant_JJ with_IN the_DT XML_NN standards_NNS ,_, it_PRP defines_VBZ APIs_NNS equivalent_JJ to_TO the_DT tree_NN model_NN of_IN DOM_NNP -LRB-_-LRB- Document_NNP Object_NNP Model_NNP -RRB-_-RRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC the_DT event_NN and_CC streaming_NN model_NN of_IN SAX_NN -LRB-_-LRB- Simple_JJ API_NN for_IN XML_NN -RRB-_-RRB- =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: to_TO work_VB with_IN encoded_VBN XML_NN documents_NNS ._.
+This_DT paper_NN discusses_VBZ new_JJ algorithms_NNS for_IN efficiently_RB encoding_VBG XML_NN documents_NNS in_IN our_PRP$ system_NN ._.
+It_PRP also_RB discusses_VBZ quantification_NN of_IN XML_NN documents_NNS and_CC their_PRP$ schema_NN with_IN t_NN
+we_PRP discuss_VBP work_NN in_IN text_NN data_NNS compression_NN and_CC XML_NN compression_NN ._.
+In_IN section_NN 3_CD we_PRP introduce_VBP our_PRP$ system_NN ._.
+In_IN sections_NNS 4_CD and_CC 5_CD we_PRP discuss_VBP various_JJ improvements_NNS to_TO the_DT core_NN compression_NN algorithm_NN in_IN Millau_NNP -LRB-_-LRB- 22_CD -RRB-_-RRB- =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN section_NN 5_CD ,_, specifically_RB ,_, we_PRP discuss_VBP the_DT Differential_JJ DTD_NN Tree_NN Compression_NN Algorithm_NN that_WDT performs_VBZ compression_NN based_VBN upon_IN the_DT differential_JJ information_NN between_IN the_DT document_NN and_CC its_PRP$ schema_NN ._.
+In_FW secti_FW
+ndow_NN into_IN the_DT previously_RB read_VBN input_NN stream_NN ._.
+The_DT deflate_JJ algorithm_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- uses_VBZ a_DT combination_NN of_IN the_DT LZ77_NN compression_NN and_CC the_DT Huffman_NNP coding_NN ._.
+It_PRP is_VBZ used_VBN in_IN popular_JJ compression_NN programs_NNS like_IN GZIP_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- or_CC ZLIB_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT text_NN compression_NN algorithms_NNS perform_VBP compression_NN at_IN the_DT character_NN level_NN ._.
+In_IN adaptive_JJ extensions_NNS -LRB-_-LRB- like_IN in_IN LZ77_NN -RRB-_-RRB- the_DT system_NN slowly_RB learns_VBZ correlations_NNS between_IN adjacent_JJ pairs_NNS ,_, triples_NNS ,_, quadruples_VBZ

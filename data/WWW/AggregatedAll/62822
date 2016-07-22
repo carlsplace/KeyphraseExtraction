@@ -1,0 +1,462 @@
+A_DT large-scale_JJ study_NN of_IN the_DT evolution_NN of_IN web_NN pages_NNS
+How_WRB fast_JJ does_VBZ the_DT web_NN change_NN ?_.
+Does_VBZ most_JJS of_IN the_DT content_NN remain_VBP unchanged_JJ once_IN it_PRP has_VBZ been_VBN authored_VBN ,_, or_CC are_VBP the_DT documents_NNS continuously_RB updated_VBN ?_.
+Do_VBP pages_NNS change_VB a_DT little_JJ or_CC a_DT lot_NN ?_.
+Is_VBZ the_DT extent_NN of_IN change_NN correlated_VBD to_TO any_DT other_JJ property_NN of_IN the_DT page_NN ?_.
+All_DT of_IN these_DT questions_NNS are_VBP of_IN interest_NN to_TO those_DT who_WP mine_VBP the_DT web_NN ,_, including_VBG all_PDT the_DT popular_JJ search_NN engines_NNS ,_, but_CC few_JJ studies_NNS have_VBP been_VBN performed_VBN to_TO date_NN to_TO answer_VB them_PRP ._.
+One_CD notable_JJ exception_NN is_VBZ a_DT study_NN by_IN Cho_NNP and_CC Garcia-Molina_NNP ,_, who_WP crawled_VBD a_DT set_NN of_IN 720,000_CD pages_NNS on_IN a_DT daily_JJ basis_NN over_IN four_CD months_NNS ,_, and_CC counted_VBN pages_NNS as_IN having_VBG changed_VBN if_IN their_PRP$ MD5_NN checksum_NN changed_VBD ._.
+They_PRP found_VBD that_IN 40_CD %_NN of_IN all_DT web_NN pages_NNS in_IN their_PRP$ set_NN changed_VBD within_IN a_DT week_NN ,_, and_CC 23_CD %_NN of_IN those_DT pages_NNS that_WDT fell_VBD into_IN the_DT ._.
+com_NN domain_NN changed_VBD daily_RB ._.
+This_DT paper_NN expands_VBZ on_IN Cho_NNP and_CC Garcia-Molina_NNP 's_POS study_NN ,_, both_CC in_IN terms_NNS of_IN coverage_NN and_CC in_IN terms_NNS of_IN sensitivity_NN to_TO change_VB ._.
+We_PRP crawled_VBD a_DT set_NN of_IN 150,836,209_CD HTML_NNP pages_NNS once_RB every_DT week_NN ,_, over_IN a_DT span_NN of_IN 11_CD weeks_NNS ._.
+For_IN each_DT page_NN ,_, we_PRP recorded_VBD a_DT checksum_NN of_IN the_DT page_NN ,_, and_CC a_DT feature_NN vector_NN of_IN the_DT words_NNS on_IN the_DT page_NN ,_, plus_CC various_JJ other_JJ data_NNS such_JJ as_IN the_DT page_NN length_NN ,_, the_DT HTTP_NNP status_NN code_NN ,_, etc._NN ._.
+Moreover_RB ,_, we_PRP pseudo-randomly_RB selected_VBD 0.1_CD %_NN of_IN all_DT of_IN our_PRP$ URLs_NNS ,_, and_CC saved_VBD the_DT full_JJ text_NN of_IN each_DT download_NN of_IN the_DT corresponding_JJ pages_NNS ._.
+After_IN completion_NN of_IN the_DT crawl_NN ,_, we_PRP analyzed_VBD the_DT degree_NN of_IN change_NN of_IN each_DT page_NN ,_, and_CC investigated_VBN which_WDT factors_NNS are_VBP correlated_VBN with_IN change_NN intensity_NN ._.
+We_PRP found_VBD that_IN the_DT average_JJ degree_NN of_IN change_NN varies_VBZ widely_RB across_IN top-level_JJ domains_NNS ,_, and_CC that_IN larger_JJR pages_NNS change_VBP more_RBR often_RB and_CC more_RBR severely_RB than_IN smaller_JJR ones_NNS ._.
+This_DT paper_NN describes_VBZ the_DT crawl_NN and_CC the_DT data_NNS transformations_NNS we_PRP performed_VBD on_IN the_DT logs_NNS ,_, and_CC presents_VBZ some_DT statistical_JJ observations_NNS on_IN the_DT degree_NN of_IN change_NN of_IN different_JJ classes_NNS of_IN pages_NNS ._.
+that_IN most_JJS web_NN pages_NNS have_VBP one_CD or_CC more_JJR images_NNS embedded_VBN in_IN them_PRP thus_RB contributing_VBG to_TO a_DT higher_JJR ratio_NN of_IN images_NNS to_TO HTML_NNP resources_NNS but_CC still_RB supporting_VBG the_DT intuitive_JJ impression_NN that_IN the_DT web_NN is_VBZ largely_RB HTML_NNP =_SYM -_: =[_NN 4_CD ,_, 5_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+With_IN regard_NN to_TO website_NN size_NN and_CC content_NN ,_, a_DT 2004_CD report_NN on_IN the_DT composition_NN of_IN various_JJ national_JJ domains_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- showed_VBD a_DT wide_JJ range_NN of_IN average_JJ number_NN of_IN pages_NNS per_IN site_NN ,_, with_IN a_DT low_NN of_IN 52_CD -LRB-_-LRB- Spain_NNP -RRB-_-RRB- to_TO a_DT high_JJ
+._.
+Like_IN other_JJ file_NN format_NN transitions_NNS ,_, its_PRP$ success_NN will_MD depend_VB at_IN least_JJS in_IN part_NN on_IN consumer_NN adoption_NN rates_NNS ._.
+On_IN the_DT web_NN ,_, HTML_NNP exists_VBZ alongside_IN XHTML_NN and_CC dynamic_JJ content_NN generation_NN tools_NNS like_IN Javascript_NN =_JJ -_: =[_NN 51_CD ,_, 111_CD -RRB-_-RRB- -_: =_JJ -_: ;_: content_NN presentation_NN techniques_NNS for_IN web_NN clients_NNS continue_VBP to_TO evolve_VB ._.
+How_WRB does_VBZ a_DT browser_NN recognize_VB what_WP to_TO do_VB with_IN the_DT content_NN it_PRP receives_VBZ ?_.
+Web_NN servers_NNS and_CC browsers_NNS use_VBP the_DT Multipurpose_NNP Internet_NNP Mail_NNP
+Internet_NNP Archive_NNP ,_, estimates_VBZ that_IN web_NN pages_NNS have_VBP an_DT average_JJ life_NN expectancy_NN of_IN only_RB 100_CD days_NNS -LRB-_-LRB- 174_CD -RRB-_-RRB- ,_, and_CC a_DT 2003_CD study_NN found_VBD that_IN two_CD percent_NN of_IN the_DT Web_NN disappeared_VBD from_IN its_PRP$ current_JJ location_NN every_DT week_NN =_JJ -_: =[_NN 57_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Link_NN rot_NN has_VBZ had_VBN a_DT significantly_RB negative_JJ impact_NN on_IN scholarly_JJ literature_NN which_WDT regularly_RB cites_VBZ web_NN resources_NNS ._.
+In_IN one_CD of_IN the_DT earliest_JJS URL_NN persistence_NN studies_NNS of_IN scholarly_JJ literature_NN -LRB-_-LRB- 77_CD -RRB-_-RRB- ,_, one-third_JJ o_NN
+death_NN and_CC decay_NN ._.
+Determining_VBG whether_IN a_DT URL_NN is_VBZ dead_JJ or_CC alive_JJ is_VBZ quite_RB easy_JJ ,_, at_IN least_JJS in_IN a_DT first_JJ approximation_NN -LRB-_-LRB- see_VB below_IN -RRB-_-RRB- ,_, and_CC in_IN fact_NN ,_, it_PRP is_VBZ known_VBN that_IN web_NN pages_NNS disappear_VBP at_IN a_DT rate_NN of_IN 0.25-0_CD .5_CD %_NN \/_: week_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB determining_VBG whether_IN a_DT page_NN has_VBZ been_VBN abandoned_VBN it_PRP is_VBZ much_RB more_RBR difficult_JJ ._.
+Our_PRP$ main_JJ 1_CD Neon_NN highlighting_VBG by_IN under-age_JJ patrons_NNS does_VBZ not_RB count_VB ._.
+sgoal_NN in_IN this_DT paper_NN is_VBZ to_TO start_VB understanding_NN and_CC qu_NN
+istribution_NN ._.
+Vallamsetty_NNP et_FW al._FW -LRB-_-LRB- 21_CD -RRB-_-RRB- found_VBD that_IN e-commerce_NN workloads_NNS exhibit_VBP a_DT higher_JJR degree_NN of_IN selfsimilarity_NN than_IN general_JJ Web_NN workloads_NNS -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+The_DT evolution_NN of_IN the_DT Web_NN was_VBD studied_VBN by_IN Fetterly_NNP et_FW al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP observed_VBD that_IN the_DT frequency_NN and_CC degree_NN of_IN change_NN of_IN a_DT Web_NN page_NN were_VBD strongly_RB related_JJ to_TO document_NN size_NN and_CC past_JJ changes_NNS were_VBD a_DT sound_JJ indicator_NN of_IN future_JJ changes_NNS ._.
+The_DT results_NNS of_IN the_DT work_NN have_VBP imp_VBN
+s_NN we_PRP want_VBP to_TO categorize_VB ._.
+Furthermore_RB ,_, even_RB if_IN we_PRP did_VBD train_VB our_PRP$ classifier_NN on_IN such_JJ data_NNS ,_, it_PRP would_MD need_VB constant_JJ re-tuning_NN and_CC corrections_NNS in_IN the_DT future_NN due_JJ to_TO the_DT constantly_RB changing_VBG nature_NN of_IN the_DT web_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One_CD way_NN to_TO tackle_VB this_DT is_VBZ to_TO employ_VB editors_NNS to_TO classify_VB resources_NNS ,_, which_WDT is_VBZ not_RB economically_RB attractive_JJ ._.
+An_DT alternative_JJ approach_NN is_VBZ to_TO use_VB volunteer_NN editors_NNS ,_, but_CC the_DT state_NN of_IN DMOZ_NN shows_VBZ that_IN this_DT do_VBP
+h_NN essentially_RB means_VBZ trying_VBG to_TO exploit_VB search_NN engine_NN algorithms_NNS by_IN providing_VBG content_NN ``_`` they_PRP like_VBP ''_'' ,_, to_TO the_DT detriment_NN of_IN human_JJ users_NNS ._.
+Search_VB engine_NN spam_NN has_VBZ thus_RB become_VBN a_DT major_JJ source_NN of_IN digital_JJ garbage_NN -LRB-_-LRB- =_JJ -_: =_JJ Fetterly_NNP et_FW al._FW 2003_CD -_: =_JJ -_: ,_, Győngyi_NNP &_CC GarciaMolina_NNP 2005_CD ,_, Győngyi_NNP et_FW al._FW 2006_CD -RRB-_-RRB- ;_: as_IN a_DT consequence_NN ,_, a_DT large_JJ part_NN of_IN development_NN efforts_NNS are_VBP now_RB targeted_VBN at_IN adversarial_JJ information_NN retrieval_NN -LRB-_-LRB- Fetterly_JJ 2007_CD -RRB-_-RRB- ._.
+The_DT proliferation_NN of_IN t_NN
+ver_RB ,_, all_PDT these_DT pages_NNS that_WDT exist_VBP on_IN the_DT WWW_NNP are_VBP neither_DT static_JJ nor_CC stable_JJ ,_, but_CC they_PRP form_VBP a_DT continuously_RB changing_VBG system_NN ._.
+The_DT results_NNS from_IN the_DT studies_NNS of_IN Cho_NNP and_CC Garcia_NNP -_: Molina_NNP -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC Fetterly_NNP et_FW al._FW =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: prove_VB that_IN a_DT huge_JJ number_NN of_IN web_NN pages_NNS change_VBP on_IN a_DT weekly_JJ or_CC even_RB on_IN a_DT daily_JJ base_NN ._.
+The_DT mechanisms_NNS that_WDT were_VBD invented_VBN to_TO make_VB Web_NN seem_VBP less_RBR chaotic_JJ need_NN information_NN and_CC waste_VB a_DT great_JJ amount_NN of_IN time_NN in_IN
+cy_NN lead_NN or_CC lag_NN behind_RB mentions_VBZ in_IN both_CC traditional_JJ media_NNS and_CC blogs_NNS ._.
+Other_JJ researchers_NNS have_VBP described_VBN characteristics_NNS of_IN Web_NN content_NN dynamics_NNS and_CC user_NN interaction_NN with_IN dynamic_JJ content_NN ._.
+Fetterly_NNP et_FW al._FW =_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Ntoulas_NNP et_FW al._FW -LRB-_-LRB- 23_CD -RRB-_-RRB- conducted_VBD large-scale_JJ analyses_NNS of_IN the_DT extent_NN to_TO which_WDT Web_NN content_NN changes_NNS over_IN time_NN ,_, and_CC examined_VBD the_DT implications_NNS for_IN Web_NN crawling_VBG policy_NN and_CC more_RBR generally_RB for_IN search_NN engine_NN
+has_VBZ been_VBN so_RB successful_JJ and_CC suggest_VBP new_JJ ways_NNS of_IN dealing_VBG with_IN it_PRP ._.
+Finally_RB ,_, we_PRP present_VBP a_DT framework_NN for_IN the_DT long-term_JJ approach_NN to_TO web_NN spam_NN ._.
+Background_NN ._.
+Web_NN spamming_NN has_VBZ received_VBN a_DT lot_NN of_IN attention_NN lately_RB =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 10_CD ,_, 11_CD ,_, 15_CD ,_, 17_CD ,_, 18_CD ,_, 20_CD ,_, 23_CD ,_, 26_CD ,_, 27_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT first_JJ papers_NNS to_TO raise_VB the_DT issue_NN were_VBD -LRB-_-LRB- 27_CD ,_, 18_CD -RRB-_-RRB- ._.
+The_DT spammers_NNS '_POS success_NN was_VBD noted_VBN in_IN -LRB-_-LRB- 2_CD ,_, 9_CD ,_, 10_CD ,_, 11_CD ,_, 19_CD -RRB-_-RRB- .1_CD Web_NN Spam_NN ,_, Propaganda_NN and_CC Search_VB Engine_NNP Rankings_NNPS 3_CD Characteristics_NNS of_IN spamming_VBG sites_NNS based_VBN
+ering_VBG spamming_JJ networks_NNS automatically_RB ._.
+Finally_RB ,_, we_PRP discuss_VBP a_DT general_JJ framework_NN for_IN the_DT long-term_JJ approach_NN to_TO web_NN spam_NNP A._NNP Background_NNP Web_NN spamming_NN has_VBZ received_VBN a_DT lot_NN of_IN attention_NN lately_RB -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 32_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+The_DT first_JJ papers_NNS to_TO raise_VB the_DT issue_NN were_VBD -LRB-_-LRB- 32_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+The_DT spammers_NNS '_POS success_NN was_VBD noted_VBN in_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Web_NN search_NN was_VBD explained_VBN in_IN
+ork_VB This_DT section_NN gives_VBZ a_DT short_JJ overview_NN of_IN work_NN that_WDT is_VBZ related_JJ to_TO the_DT rank_NN synopses_NNS presented_VBN in_IN this_DT paper_NN ._.
+The_DT Web_NN 's_POS dynamics_NNS have_VBP attracted_VBN significant_JJ attention_NN recently_RB ._.
+Two_CD large-scale_JJ studies_NNS =_JJ -_: =[_NN 20_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: examined_VBD the_DT evolution_NN of_IN its_PRP$ content_NN and_CC link_NN structure_NN ._.
+Ntoulas_FW et_FW al._FW -LRB-_-LRB- 29_CD -RRB-_-RRB- observed_VBN for_IN the_DT link_NN structure_NN that_IN as_RB much_JJ as_IN 25_CD %_NN of_IN new_JJ links_NNS are_VBP created_VBN every_DT week_NN ,_, and_CC that_IN 80_CD %_NN of_IN links_NNS are_VBP replac_JJ
+h_NN random_JJ duration_NN ._.
+This_DT means_VBZ that_IN any_DT Oi_NN ;_: t_NN is_VBZ represented_VBN as_IN a_DT random_JJ variable_NN that_WDT can_MD only_RB be_VB retrieved_VBN after_IN Oi_NN has_VBZ been_VBN accessed_VBN at_IN crawler_NN run_VBP t._NNP This_NNP approach_NN is_VBZ similar_JJ to_TO the_DT the_DT approach_NN in_IN =_JJ -_: =[_NN 16_CD ,_, 17_CD ,_, 18_CD ,_, 11_CD ,_, 19_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN addition_NN to_TO the_DT environment_NN in_IN these_DT approaces_NNS ,_, each_DT Oi_NN in_IN our_PRP$ environment_NN has_VBZ di_FW erent_FW behavior_NN when_WRB located_VBN in_IN di_FW erent_FW Pj_NN ._.
+It_PRP is_VBZ noticable_JJ that_IN in_IN this_DT environment_NN ,_, an_DT Oj_NN will_MD always_RB have_VB a_DT pe_NN
+Datasets_NNS and_CC Memory_NN Bottlenecks_NNS In_IN the_DT context_NN of_IN search_NN ,_, a_DT standard_JJ procedure_NN to_TO represent_VB documents_NNS -LRB-_-LRB- e.g._FW ,_, Web_NN pages_NNS -RRB-_-RRB- is_VBZ to_TO use_VB w-shingles_NNS -LRB-_-LRB- i.e._FW ,_, w_NN contiguous_JJ words_NNS -RRB-_-RRB- ,_, where_WRB w_FW ≥_FW 5_CD in_IN several_JJ studies_NNS =_JJ -_: =[_NN 6,7,14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT procedure_NN can_MD generate_VB datasets_NNS of_IN extremely_RB high_JJ dimensions_NNS ._.
+For_IN example_NN ,_, suppose_VB we_PRP only_RB consider_VBP 10_CD 5_CD common_JJ English_NNP words_NNS ._.
+Using_VBG w_NN =_JJ 5_CD may_MD require_VB the_DT size_NN of_IN dictionary_NN Ω_NN to_TO be_VB D_NN =_JJ |_FW Ω_FW |_NN =_JJ 1_CD
+quality_NN of_IN the_DT data_NNS supplied_VBN through_IN the_DT Sitemaps_NNP protocol_NN ,_, and_CC how_WRB it_PRP differs_VBZ from_IN that_DT available_JJ through_IN Discovery_NNP crawl_NN ._.
+Much_RB has_VBZ gone_VBN into_IN examining_VBG the_DT web_NN through_IN crawl_NN and_CC through_IN random_JJ walks_VBZ =_JJ -_: =[_NN 10_CD ,_, 13_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ paper_NN offers_VBZ an_DT alternative_JJ view_NN of_IN the_DT web_NN through_IN Sitemaps_NNP data_NNS ._.
+3_LS ._.
+SITEMAPS_NNP PROTOCOL_NNP Sitemaps_NNP files_NNS are_VBP XML_NN files_NNS with_IN a_DT list_NN of_IN URLs_NNS with_IN additional_JJ metadata_NN ,_, as_IN shown_VBN in_IN the_DT example_NN below_IN ._.
+s_VBZ no_DT take_NN into_IN account_NN word_NN distribution_NN and_CC related_JJ aspects_NNS ,_, thus_RB making_VBG it_PRP less_RBR suitable_JJ for_IN our_PRP$ purpose_NN ._.
+In_IN the_DT context_NN of_IN web_NN warehouses_NNS ,_, studies_NNS of_IN evolution_NN of_IN web_NN pages_NNS like_IN those_DT presented_VBN in_IN =_JJ -_: =[_NN 2_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: can_MD give_VB us_PRP some_DT hints_NNS on_IN useful_JJ parameters_NNS to_TO use_VB for_IN creating_VBG collections_NNS reflecting_VBG that_DT area_NN ._.
+3_CD Document_NNP and_CC time_NN models_NNS In_IN our_PRP$ work_NN we_PRP use_VBP the_DT same_JJ data_NNS and_CC time_NN model_NN as_IN is_VBZ used_VBN in_IN the_DT V2_NN docum_NN
+ndard_JJ version_NN of_IN the_DT shingling_VBG algorithm_NN ,_, we_PRP discuss_VBP the_DT basic_JJ steps_NNS for_IN those_DT not_RB familiar_JJ with_IN the_DT technique_NN ._.
+For_IN a_DT more_RBR detailed_JJ description_NN of_IN this_DT shingling_VBG algorithm_NN ,_, please_VBP consult_VB -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+First_RB every_DT message_NN 's_POS rendered_VBN content_NN was_VBD tokenized_VBN into_IN a_DT collection_NN of_IN words_NNS ,_, where_WRB a_DT word_NN is_VBZ defined_VBN as_IN an_DT uninterrupted_JJ series_NN of_IN alphanumeric_JJ characters_NNS ._.
+Then_RB ,_, for_IN every_DT message_NN ,_, we_PRP created_VBD a_DT
+spectrum_NN in_IN both_DT types_NNS of_IN content_NN and_CC volume_NN of_IN traffic_NN ._.
+Since_IN my_PRP$ goal_NN is_VBZ to_TO design_VB robust_JJ extration_NN algorithms_NNS ,_, I_PRP analyze_VBP the_DT changes_NNS in_IN the_DT structure_NN of_IN webpages_NNS not_RB the_DT content_NN ._.
+Previous_JJ analyses_NNS =_JJ -_: =[_NN 64_CD ,_, 27_CD -RRB-_-RRB- -_: =_SYM -_: of_IN changes_NNS on_IN the_DT Web_NN were_VBD motivated_VBN by_IN search_NN ,_, caching_NN ,_, and_CC indexing_NN applications_NNS and_CC as_IN such_JJ focused_VBN on_IN changes_NNS of_IN the_DT content_NN of_IN webpages_NNS rather_RB than_IN their_PRP$ structure_NN ._.
+Ntoulas_FW et_FW al._FW -LRB-_-LRB- 64_CD -RRB-_-RRB- found_VBD tha_NN
+rch_NN engines_NNS ,_, much_JJ of_IN the_DT human-generated_JJ content_NN is_VBZ available_JJ electronically_RB over_IN the_DT Web_NN ._.
+This_DT content_NN is_VBZ constantly_RB evolving_VBG with_IN additions_NNS ,_, deletions_NNS and_CC modifications_NNS occurring_VBG at_IN very_RB high_JJ rates_NNS =_JJ -_: =[_NN 5_CD ,_, 12_CD ,_, 13_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Search_VB engines_NNS continuously_RB crawl_VBP and_CC index_NN the_DT Web_NN to_TO keep_VB up_RP with_IN its_PRP$ latest_JJS state_NN ._.
+There_EX is_VBZ a_DT growing_VBG awareness_NN ,_, however_RB ,_, that_IN this_DT singleminded_JJ pursuit_NN for_IN the_DT latest_JJS state_NN of_IN the_DT Web_NN results_VBZ in_IN
+of_IN a_DT search_NN engine_NN ,_, so_IN that_IN we_PRP can_MD get_VB a_DT better_JJR understanding_NN on_IN how_WRB search_NN engines_NNS should_MD cope_VB with_IN the_DT evolving_VBG Web_NN ._.
+A_DT number_NN of_IN existing_JJ studies_NNS have_VBP already_RB investigated_VBN the_DT evolution_NN of_IN the_DT Web_NN =_JJ -_: =[_NN 19_CD ,_, 9_CD ,_, 23_CD ,_, 15_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN some_DT parts_NNS of_IN our_PRP$ study_NN have_VBP commonalities_NNS with_IN the_DT existing_VBG work_NN ,_, we_PRP believe_VBP that_IN the_DT following_JJ aspects_NNS make_VBP our_PRP$ study_NN unique_JJ ,_, revealing_VBG new_JJ and_CC important_JJ details_NNS of_IN the_DT evolving_VBG Web_NN ._.
+•_NNP Link_NNP -_:
+sional_JJ data_NNS are_VBP often_RB binary_JJ For_IN duplicate_VBP detection_NN in_IN the_DT context_NN of_IN Web_NN crawling\/search_NN ,_, each_DT document_NN can_MD be_VB represented_VBN as_IN a_DT set_NN of_IN w-shingles_NN -LRB-_-LRB- w_NN contiguous_JJ words_NNS -RRB-_-RRB- ;_: w_NN =_JJ 5_CD or_CC 7_CD in_IN several_JJ studies_NNS =_JJ -_: =[_NN 3_CD ,_, 4_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Normally_RB only_RB the_DT abscence\/presence_NN -LRB-_-LRB- 0\/1_CD -RRB-_-RRB- information_NN is_VBZ used_VBN ,_, as_IN a_DT w-shingle_NN rarely_RB occurs_VBZ more_RBR than_IN once_RB in_IN a_DT page_NN if_IN w_FW ≥_FW 5_CD ._.
+The_DT total_JJ number_NN of_IN shingles_NNS is_VBZ commonly_RB set_VBN to_TO be_VB |_FW Ω_FW |_NN =_JJ 2_CD 64_CD ;_: and_CC thu_NN
+ch_NN entry_NN of_IN a_DT 3x3_NN matrix_NN :_: Etag_NNP changed_VBD Etag_NNP unchanged_JJ Etag_NN missing_VBG Datestamp_NNP changed_VBD Datestamp_NNP unchanged_JJ Datestamp_NNP missing_VBG 1_CD Other_JJ research_NN has_VBZ found_VBN average_JJ sizes_NNS of_IN 15000_CD --_: 33000_CD bytes_NNS for_IN web_NN pag_NN =_JJ -_: =_JJ es_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- -_: =-[_NN 3_CD -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+The_DT small_JJ number_NN found_VBN here_RB may_MD indicate_VB that_IN front_JJ pages_NNS frequently_RB are_VBP small_JJ compared_VBN to_TO content_JJ pages_NNS ._.
+8sDET_FW KONGELIGE_FW BIBLIOTEK_NN For_IN each_DT entry_NN ,_, a_DT scheme_NN must_MD decide_VB whether_IN to_TO download_VB or_CC
+developed_VBD metrics_NNS to_TO characterize_VB the_DT degree_NN of_IN page_NN change_NN ,_, rather_RB than_IN studying_VBG the_DT existence_NN or_CC frequency_NN of_IN change_NN ._.
+A_DT recent_JJ and_CC large-scale_JJ study_NN on_IN the_DT Web_NN page_NN dynamics_NNS was_VBD by_IN Fetterly_NNP et_FW al._FW =_SYM -_: =[_NN 40_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN their_PRP$ study_NN ,_, 151_CD million_CD Web_NN pages_NNS were_VBD crawled_VBN once_RB a_DT week_NN for_IN eleven_NNS weeks_NNS ._.
+A_DT number_NN of_IN significant_JJ findings_NNS are_VBP stated_VBN as_IN follows_VBZ :_: 1_CD ._.
+88_CD %_NN of_IN pages_NNS were_VBD still_RB available_JJ during_IN the_DT final_JJ crawl_NN ,_,
+ategies_NNS ._.
+The_DT authors_NNS also_RB described_VBD the_DT architecture_NN of_IN a_DT incremental_JJ crawler_NN able_JJ to_TO keep_VB up_RP the_DT index_NN with_IN the_DT evolving_VBG Web_NN ._.
+Other_JJ studies_NNS of_IN the_DT temporal_JJ evolution_NN of_IN Web_NN graphs_NNS include_VBP -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Most_JJS of_IN them_PRP traced_VBD a_DT set_NN of_IN pages_NNS in_IN order_NN to_TO compile_VB some_DT statistics_NNS about_IN the_DT frequency_NN and_CC rate_NN of_IN the_DT changed_VBN pages_NNS and_CC the_DT percentage_NN of_IN pages_NNS that_WDT are_VBP deleted_VBN or_CC created_VBN every_DT year_NN ._.
+The_DT
+distance_NN to_TO measure_VB the_DT degree_NN of_IN web_NN page_NN changes_NNS ._.
+Broder_NNP et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- defined_VBD the_DT shingling_NN metric_NN and_CC tried_VBD to_TO cluster_VB web_NN pages_NNS that_WDT have_VBP the_DT similar_JJ contents_NNS using_VBG the_DT metric_NN ,_, and_CC Fetterly_NNP et_FW al._FW =_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: used_VBD the_DT shingling_VBG metric_NN to_TO investigate_VB how_WRB web_NN pages_NNS evolve_VBP ._.
+Kwon_NNP et_FW al._FW -LRB-_-LRB- 8_CD -RRB-_-RRB- showed_VBD that_IN each_DT of_IN the_DT existing_VBG change_NN metrics_NNS often_RB represents_VBZ the_DT same_JJ change_NN of_IN web_NN pages_NNS differently_RB ,_, and_CC proposed_VBN
+flooding_NN techniques_NNS -_: as_IN practiced_VBN on_IN news_NN groups_NNS and_CC forums_NNS -_: to_TO provide_VB an_DT additional_JJ measure_NN of_IN protection_NN ._.
+7.1.6_CD Ostensive_JJ Associations_NNS Information_NNP spaces_NNS like_IN the_DT Internet_NN are_VBP extremely_RB volatile_JJ =_JJ -_: =[_NN 36_CD ,_, 64_CD ,_, 97_CD ,_, 63_CD ,_, 104_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT content_NN of_IN a_DT hypertext_NN document_NN that_WDT formed_VBD part_NN of_IN a_DT recorded_JJ association_NN can_MD change_VB over_IN time_NN ,_, so_IN that_IN the_DT associations_NNS to_TO which_WDT it_PRP belonged_VBD -_: though_IN valid_JJ at_IN the_DT time_NN -_: should_MD no_RB longer_RB apply_VB
+tions_NNS ,_, namely_RB perturbations_NNS of_IN the_DT hubs_NNS or_CC high_JJ PageRank_NN pages_NNS ._.
+In_IN fact_NN ,_, this_DT paints_NNS a_DT much_RB more_RBR realistic_JJ picture_NN as_IN these_DT are_VBP the_DT most_RBS likely_JJ to_TO change_VB and_CC most_RBS frequently_RB changing_VBG pages_NNS on_IN the_DT Web_NN =_JJ -_: =[_NN 48_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT fourth_JJ group_NN of_IN researchers_NNS recently_RB joined_VBD the_DT stability_NN discussion_NN ._.
+Lempel_NNP and_CC Moran_NNP ,_, the_DT inventors_NNS of_IN the_DT SALSA_NN algorithm_NN -LRB-_-LRB- 75_CD -RRB-_-RRB- ,_, have_VBP added_VBN a_DT further_JJ distinction_NN to_TO the_DT definition_NN of_IN stability_NN ._.
+al_FW if_IN they_PRP shared_VBD at_IN least_JJS 75_CD %_NN of_IN their_PRP$ shingles_NNS of_IN size_NN 10_CD ._.
+Shingling_NN -LRB-_-LRB- as_IN proposed_VBN by_IN Broder_NNP et_FW al._FW -LRB-_-LRB- 3_CD -RRB-_-RRB- -RRB-_-RRB- is_VBZ a_DT popular_JJ method_NN for_IN quantifying_VBG similarity_NN of_IN text_NN documents_NNS when_WRB word-order_NN is_VBZ important_JJ =_JJ -_: =[_NN 2_CD ,_, 11_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP did_VBD not_RB use_VB any_DT image_NN similarity_NN metrics_NNS ._.
+We_PRP were_VBD able_JJ to_TO recover_VB more_JJR than_IN 90_CD %_NN of_IN the_DT original_JJ resources_NNS from_IN a_DT quarter_NN of_IN the_DT 24_CD websites_NNS ._.
+For_IN three_CD quarters_NNS of_IN the_DT websites_NNS we_PRP recovered_VBD more_JJR t_NN
+._.
+The_DT estimation_NN for_IN the_DT parameter_NN in_IN this_DT case_NN is_VBZ :_: #_# cents_NNS ¡_CD -LRB-_-LRB- 1.5_CD -RRB-_-RRB- There_EX have_VBP been_VBN many_JJ large-scale_JJ studies_NNS about_IN web_NN dynamics_NNS in_IN 1997_CD -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, 1999_CD -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, 2000_CD -LRB-_-LRB- 10_CD ,_, 11_CD -RRB-_-RRB- and_CC a_DT recent_JJ study_NN in_IN 2003_CD =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+An_DT important_JJ motivation_NN for_IN them_PRP is_VBZ determining_VBG an_DT optimal_JJ scheduling_NN policy_NN for_IN a_DT web_NN crawler_NN ,_, as_IN in_IN the_DT works_NNS by_IN Cho_NN -LRB-_-LRB- 13_CD ,_, 16_CD ,_, 14_CD ,_, 15_CD -RRB-_-RRB- and_CC Coffman_NNP -LRB-_-LRB- 17_CD -RRB-_-RRB- ;_: in_IN this_DT area_NN ,_, there_EX are_VBP some_DT proposals_NNS for_IN c_NN
+s_NN gigantic_JJ and_CC desires_NNS a_DT huge_JJ amount_NN of_IN computation_NN ._.
+First_RB ,_, the_DT target_NN of_IN web_NN search_NN is_VBZ moving_VBG :_: the_DT content_NN of_IN a_DT website_NN is_VBZ changing_VBG within_IN a_DT week_NN for_IN 30_CD %_NN or_CC 40_CD %_NN of_IN the_DT websites_NNS -LRB-_-LRB- Fetterly_NNP et_NNP al_NNP ,_, 2004_CD =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+A_DT crawler_NN is_VBZ the_DT algorithm_NN that_IN a_DT search_NN engine_NN uses_VBZ to_TO collect_VB websites_NNS into_IN its_PRP$ database_NN to_TO answer_VB queries_NNS ._.
+Without_IN the_DT website_NN population_NN indexed_VBD ,_, one_PRP can_MD not_RB easily_RB carry_VB out_RP a_DT random_JJ sampling_NN
+em_RB ,_, we_PRP only_RB picked_VBD pages_NNS browsed_VBN within_IN the_DT last_JJ week_NN ._.
+For_IN the_DT annotation_NN ,_, we_PRP chose_VBD two_CD input_NN pages_NNS per_IN each_DT category_NN :_: small_JJ -LRB-_-LRB- below_IN 4_CD KB_NN -RRB-_-RRB- ,_, medium_NN -LRB-_-LRB- between_IN 4_CD KB_NN and_CC 32_CD KB_NN -RRB-_-RRB- ,_, and_CC large_JJ -LRB-_-LRB- more_JJR than_IN 32_CD KB_NN -RRB-_-RRB- =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN total_NN ,_, 96_CD pages_NNS were_VBD used_VBN as_IN input_NN over_IN the_DT entire_JJ experiment_NN ,_, and_CC over_IN 2,000_CD resulted_VBN annotations_NNS were_VBD graded_VBN ._.
+Algorithms_NNS ._.
+We_PRP applied_VBD our_PRP$ three_CD approaches_NNS for_IN keyword_JJ extraction_NN and_CC annotation_NN t_NN
+icate_JJ Web_NN content_NN -LRB-_-LRB- 2_CD ,_, 10_CD ,_, 37_CD -RRB-_-RRB- and_CC how_WRB to_TO measure_VB differences_NNS between_IN text_NN documents_NNS -LRB-_-LRB- 4_CD ,_, 36_CD -RRB-_-RRB- ._.
+Work_NN related_JJ to_TO measuring_VBG observed_VBN web_NN page_NN change_NN rates_NNS and_CC their_PRP$ effects_NNS on_IN SEs_NNS have_VBP also_RB been_VBN performed_VBN =_JJ -_: =[_NN 6_CD ,_, 17_CD ,_, 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT body_NN of_IN work_NN proposes_VBZ software_NN that_WDT runs_VBZ on_IN web_NN servers_NNS to_TO increase_VB web_NN crawling_VBG efficiency_NN -LRB-_-LRB- 3_CD ,_, 19_CD ,_, 26_CD ,_, 38_CD -RRB-_-RRB- ._.
+Estimates_NNS of_IN SE_NN coverage_NN of_IN the_DT indexable_JJ Web_NN have_VBP been_VBN performed_VBN most_RBS recently_RB in_IN -LRB-_-LRB- 18_CD -RRB-_-RRB-
+many_JJ days_NNS each_DT URL_NN was_VBD accessible_JJ to_TO derive_VB its_PRP$ lifespan_NN ._.
+Fetterly_NNP et_FW al._FW studied_VBD the_DT evolution_NN of_IN web_NN pages_NNS by_IN executing_VBG weekly_NN crawls_VBZ of_IN a_DT set_NN of_IN 150_CD million_CD URLs_NNS gathered_VBN from_IN the_DT Yahoo_NNP !_.
+home_NN page_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT study_NN spanned_VBD 11_CD weeks_NNS in_IN 2002_CD ._.
+The_DT authors_NNS focused_VBD on_IN identifying_VBG characteristics_NNS that_WDT may_MD determine_VB the_DT frequency_NN and_CC degree_NN of_IN change_NN of_IN a_DT page_NN ._.
+The_DT contents_NNS referenced_VBN by_IN each_DT URL_NN were_VBD compa_NN
+f_LS web_NN documents_NNS ._.
+The_DT results_NNS are_VBP summarized_VBN in_IN this_DT section_NN as_IN motivation_NN for_IN our_PRP$ landmark-diff_JJ index_NN update_VBP method_NN ._.
+Detailed_JJ results_NNS can_MD be_VB found_VBN in_IN -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Other_JJ than_IN scale_NN ,_, our_PRP$ analysis_NN differs_VBZ from_IN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: in_IN that_DT our_PRP$ distance_NN measure_NN for_IN two_CD documents_NNS is_VBZ based_VBN on_IN exact_JJ edit_NN distance_NN whereas_IN a_DT shingle-based_JJ approximate_JJ similarity_NN measure_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- is_VBZ used_VBN in_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Because_IN our_PRP$ landmark-diff_JJ index_NN update_VBP metho_NN
+1_LS -RRB-_-RRB- ._.
+Unfortunately_RB ,_, historical_JJ data_NNS for_IN most_JJS web_NN resources_NNS is_VBZ not_RB available_JJ and_CC the_DT lifetime_NN of_IN URLs_NNS that_WDT reference_VBP pages_NNS is_VBZ short_JJ because_IN new_JJ URLs_NNS are_VBP permanently_RB being_VBG created_VBN while_IN others_NNS disappear_VBP =_JJ -_: =[_NN 17_CD ,_, 39_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT elimination_NN of_IN duplicates_NNS at_IN storage_NN level_NN after_IN a_DT crawl_NN is_VBZ terminated_VBN can_MD be_VB executed_VBN in_IN batch_NN by_IN finding_VBG and_CC deleting_VBG duplicates_NNS ._.
+However_RB ,_, disk_NN IO_NN operations_NNS are_VBP expensive_JJ and_CC this_DT approach_NN im_NN
+of_IN document_NN AsDoc_NN A_NN 2_CD Related_JJ Research_NN t_NN T_NN Version_NN 1_CD Version_NN 2_CD Version_NN 3_CD Version_NN 4_CD Summary_NN of_IN document_NN A_NN Fig._NN 2_CD ._.
+Temporal_JJ summarization_NN of_IN a_DT web_NN document_NN Studies_NNS of_IN the_DT characteristics_NNS of_IN the_DT Web_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =-[_NN 14_CD -RRB-_-RRB- have_VBP revealed_VBN that_IN the_DT Web_NN is_VBZ a_DT highly_RB dynamic_JJ environment_NN and_CC attempted_VBD to_TO estimate_VB the_DT frequencies_NNS of_IN web_NN page_NN changes_NNS or_CC to_TO predict_VB updating_VBG patterns_NNS ._.
+A_DT growing_VBG number_NN of_IN web_NN sites_NNS are_VBP adoptin_NN
+investigated_VBN URL_NN caching_NN techniques_NNS to_TO improve_VB its_PRP$ detection_NN of_IN visited_VBN URLs_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+Mercator_NNP was_VBD used_VBN to_TO study_VB the_DT content_NN of_IN the_DT web_NN ,_, detect_VB hazardous_JJ situations_NNS and_CC study_VB the_DT evolution_NN of_IN web_NN pages_NNS =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Boldi_FW et_FW al._FW presented_VBD the_DT Ubicrawler_NNP ,_, giving_VBG special_JJ attention_NN to_TO its_PRP$ fault_NN tolerance_NN and_CC scalability_NN features_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+It_PRP was_VBD used_VBN to_TO determine_VB the_DT structural_JJ properties_NNS of_IN the_DT African_JJ web_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Castil_NN
+s_NN implications_NNS ._.
+Their_PRP$ method_NN gathered_VBD pages_NNS according_VBG to_TO their_PRP$ change_NN frequencies_NNS ._.
+-LRB-_-LRB- 7_CD ,_, 8_CD -RRB-_-RRB- are_VBP mainly_RB about_IN how_WRB to_TO make_VB the_DT collections_NNS of_IN pages_NNS current_JJ or_CC synchronize_VB a_DT database_NN to_TO improve_VB freshness_NN ._.
+=_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ some_DT complementary_JJ work_NN of_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, which_WDT performed_VBD a_DT more_RBR detailed_JJ and_CC longer_JJR track_NN in_IN the_DT evolution_NN of_IN web_NN ._.
+-LRB-_-LRB- 10_CD -RRB-_-RRB- is_VBZ one_CD of_IN our_PRP$ former_JJ jobs_NNS ,_, which_WDT characterized_VBD the_DT temporal_JJ locality_NN for_IN the_DT change_NN o_NN
+ly_RB 3_CD %_NN of_IN unavailable_JJ objects_NNS -LRB-_-LRB- linkrot_NN -RRB-_-RRB- ._.
+However_RB ,_, they_PRP warn_VBP that_IN these_DT media_NNS are_VBP more_RBR stable_JJ than_IN the_DT rest_NN of_IN the_DT World_NNP Wide_NN Web_NN and_CC that_IN their_PRP$ results_NNS have_VBP to_TO be_VB considered_VBN carefully_RB ._.
+Fetterly_NNP et_FW al._FW =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, continuing_VBG with_IN the_DT work_NN of_IN Cho_NNP and_CC García-Molina_NNP -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, studied_VBD the_DT evolution_NN and_CC persistence_NN of_IN 150_CD million_CD pages_NNS for_IN 11_CD weeks_NNS and_CC found_VBD that_IN the_DT larger_JJR pages_NNS change_VBP more_RBR often_RB and_CC more_RBR deeply_RB than_IN
+orative_JJ search_NN ,_, Web_NN information_NN retrieval_NN 1_CD Introduction_NN and_CC Background_NN Centralized_JJ search_NN engines_NNS have_VBP difficulty_NN with_IN coverage_NN of_IN the_DT Web_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- because_IN the_DT Web_NN is_VBZ large_JJ ,_, fast-growing_JJ and_CC fastchanging_NN =_JJ -_: =[_NN 3_CD ,_, 4_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Further_RB ,_, various_JJ biases_NNS introduced_VBN to_TO address_VB the_DT needs_NNS of_IN the_DT ``_`` average_JJ ''_'' user_NN imply_VBP diminished_VBN effectiveness_NN in_IN satisfying_VBG many_JJ atypical_JJ search_NN needs_NNS ._.
+We_PRP identify_VBP the_DT above_JJ limitations_NNS as_IN problems_NNS o_NN
+ts_NNS :_: CSEs_NNS preprocess_VBP the_DT search_NN by_IN crawling_VBG Web_NN contents_NNS and_CC building_VBG the_DT corresponding_JJ indices_NNS ._.
+Usually_RB ,_, the_DT crawled_VBN contents_NNS and_CC indices_NNS are_VBP outdated_VBN as_IN Web_NN pages_NNS are_VBP being_VBG updated_VBN from_IN time_NN to_TO time_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT freshness_NN of_IN indices_NNS depends_VBZ on_IN the_DT crawling_VBG strategy_NN ._.
+Take_VB Google_NNP as_IN an_DT example_NN ,_, there_EX are_VBP often_RB some_DT dead_JJ and_CC outdated_JJ links_NNS in_IN search_NN results_NNS ._.
+3_LS -RRB-_-RRB- No_NNP Control_NNP over_IN Information_NNP Shared_NNP :_: CSEs_NNS craw_VBP
+nge_NN behavior_NN of_IN web_NN databases_NNS using_VBG the_DT Cox_NN proportional_JJ hazard_NN model_NN ._.
+This_DT model_NN was_VBD then_RB used_VBN for_IN designing_VBG the_DT optimal_JJ scheduling_NN algorithm_NN for_IN summary_NN updates_NNS ._.
+Lim_NNP et_FW al._FW -LRB-_-LRB- 20_CD -RRB-_-RRB- and_CC Fetterly_NNP et_FW al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: presented_VBN pioneer_NN measurements_NNS of_IN the_DT degree_NN of_IN change_NN of_IN web_NN pages_NNS over_IN time_NN ,_, where_WRB change_NN was_VBD measured_VBN using_VBG the_DT edit_NN distance_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- or_CC the_DT number_NN of_IN changed_JJ ``_`` shingles_NNS ''_'' -LRB-_-LRB- 13_CD -RRB-_-RRB- overssuccessive_JJ versions_NNS
+Lister_NN queries_NNS were_VBD also_RB used_VBN for_IN producing_VBG three_CD different_JJ crawling_VBG policies_NNS which_WDT were_VBD evaluated_VBN for_IN efficiency_NN ._.
+Growth_NN ,_, change_NN and_CC decay_NN patterns_NNS in_IN the_DT Web_NN have_VBP been_VBN researched_VBN for_IN over_IN a_DT decade_NN =_JJ -_: =[_NN 5_CD ,_, 11_CD ,_, 12_CD ,_, 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT number_NN of_IN studies_NNS have_VBP examined_VBN link_NN rot_NN in_IN regards_VBZ to_TO general_JJ web_NN pages_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 3_CD ,_, 20_CD -RRB-_-RRB- -RRB-_-RRB- ,_, academic_JJ citations_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 21_CD -RRB-_-RRB- -RRB-_-RRB- and_CC digital_JJ libraries_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 30_CD -RRB-_-RRB- -RRB-_-RRB- ,_, and_CC several_JJ studies_NNS have_VBP examined_VBN find_VB
+aggregate_NN of_IN all_DT URLs_NNS and_CC hyperlinks_NNS encountered_VBN during_IN that_DT period_NN ._.
+One_CD of_IN the_DT few_JJ large-scale_JJ crawling_NN studies_NNS that_WDT allows_VBZ for_IN an_DT examination_NN of_IN inferred_VBN Web_NN graphs_NNS over_IN time_NN is_VBZ by_IN Fetterly_NNP et_FW al._FW =_SYM -_: =[_NN 45_CD -RRB-_-RRB- -_: =_JJ -_: ,_, who_WP fetched_VBD over_IN 150_CD million_CD web_NN pages_NNS per_IN week_NN for_IN a_DT period_NN of_IN 10_CD weeks_NNS in_IN late_JJ 2002_CD ._.
+There_EX are_VBP currently_RB no_DT known_JJ Web_NN crawlers_NNS that_WDT can_MD account_VB for_IN the_DT fact_NN that_IN the_DT structure_NN that_IN they_PRP examine_VBP is_VBZ
+18_CD -RRB-_-RRB- ._.
+More_RBR recently_RB ,_, attention_NN has_VBZ turned_VBN to_TO evolutionary_JJ properties_NNS of_IN the_DT corpus_NN ._.
+In_IN this_DT evolutionary_JJ model_NN ,_, researchers_NNS have_VBP considered_VBN the_DT growth_NN of_IN the_DT web_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, the_DT rates_NNS of_IN page_NN and_CC link_NN churn_VBP =_JJ -_: =[_NN 8_CD ,_, 14_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT rates_NNS of_IN duplicate_VB evolution_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, and_CC the_DT change_NN rates_NNS of_IN individual_JJ pages_NNS -LRB-_-LRB- 3_CD ,_, 5_CD ,_, 14_CD ,_, 22_CD -RRB-_-RRB- ._.
+Parallel_JJ to_TO this_DT line_NN of_IN work_NN ,_, there_EX has_VBZ been_VBN a_DT significant_JJ body_NN of_IN work_NN on_IN refreshing_VBG already-discove_JJ
+at_IN information_NN on_IN the_DT web_NN is_VBZ very_RB volatile_JJ and_CC elusive_JJ or_CC `_`` ephemeral_JJ '_'' ,_, as_IN researchers_NNS in_IN the_DT web_NN archiving_VBG community_NN call_VB it_PRP ._.
+It_PRP was_VBD estimated_VBN that_IN web_NN pages_NNS disappear_VBP at_IN a_DT rate_NN of_IN 0.25-0_CD .5_CD %_NN per_IN week_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: or_CC ~_CD 12-23_CD %_NN per_IN year_NN ,_, and_CC that_IN about_IN half_NN out_IN of_IN all_DT pages_NNS that_WDT are_VBP still_RB available_JJ after_IN one_CD year_NN occur_VBP at_IN least_JJS minor_JJ changes_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+This_DT means_VBZ that_IN during_IN the_DT time_NN between_IN researcher_NN A_NN performing_VBG re_NN
+he_PRP actual_JJ value_NN of_IN such_JJ hyperlinks_NNS ._.
+Lastly_RB ,_, spam_NN trackback_NN ,_, splog_NN -LRB-_-LRB- an_DT automatically_RB generated_VBN spam_NN blog_NN -RRB-_-RRB- ,_, and_CC other_JJ spam_NN techniques_NNS currently_RB pose_VBP threat_NN to_TO the_DT effectiveness_NN of_IN link-based_JJ algorithms_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN general_JJ ,_, the_DT link_NN analysis_NN approach_NN is_VBZ still_RB useful_JJ ,_, but_CC we_PRP believe_VBP that_IN it_PRP needs_VBZ to_TO be_VB complemented_VBN by_IN another_DT reliable_JJ metric_NN ._.
+2.2_CD Social_NNP Bookmarking_NNP Manually_RB filtered_VBD page_NN collections_NNS are_VBP usua_NN
+the_DT information_NN kept_VBD and_CC schedule_NN refreshment_NN operations_NNS ._.
+Fetterly_NNP et_FW al._FW observed_VBN a_DT set_NN of_IN web_NN pages_NNS for_IN 11_CD weeks_NNS and_CC observed_VBD that_IN the_DT age_NN of_IN a_DT content_NN is_VBZ a_DT good_JJ predictor_NN of_IN its_PRP$ future_JJ persistence_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT study_NN ,_, we_PRP analyzed_VBD persistence_NN for_IN a_DT longer_JJR period_NN of_IN time_NN to_TO model_VB persistence_NN for_IN older_JJR contents_NNS ._.
+The_DT definition_NN of_IN a_DT boundary_NN for_IN deciding_VBG if_IN a_DT content_NN has_VBZ changed_VBN enough_RB to_TO imply_VB its_PRP$ ref_NN
+web_NN page_NN sizes_NNS that_WDT were_VBD crawled_VBN in_IN our_PRP$ experiment_NN ._.
+We_PRP found_VBD that_IN as_RB much_JJ as_IN 53_CD %_NN of_IN all_DT observed_VBN pages_NNS are_VBP between_IN 16_CD Kbytes_NNS and_CC 64_CD Kbytes_NNS in_IN size_NN ,_, which_WDT are_VBP approximately_RB twice_RB bigger_JJR than_IN the_DT study_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: in_IN 2004_CD where_WRB 66.3_CD %_NN of_IN all_PDT the_DT ob298_FW 정보처리학회논문지D_FW 제14-D권_NN 제3호_CD -LRB-_-LRB- 2007.6_CD -RRB-_-RRB- served_VBD pages_NNS were_VBD between_IN 4_CD Kbytes_NNS and_CC 32_CD Kbytes_NNS ._.
+It_PRP is_VBZ interesting_JJ to_TO note_VB that_IN the_DT study_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- in_IN 1999_CD reported_VBD that_IN 80_CD %_NN of_IN all_PDT th_DT
+M_NN Classification_NN Keywords_NNS H5_NN .4_NN ._.
+Information_NN interfaces_NNS and_CC presentation_NN :_: Hypertext\/Hypermedia_NN :_: User_NN issues_NNS ._.
+General_JJ Terms_NNS Design_NNP ,_, Human_NNP Factors_NNS ,_, Measurement_NNP INTRODUCTION_NNP Web_NN content_NN changes_VBZ regularly_RB =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: and_CC the_DT content_NN that_IN people_NNS revisit_VBP is_VBZ particularly_RB likely_JJ to_TO change_VB -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+While_IN Web_NN users_NNS have_VBP a_DT general_JJ awareness_NN of_IN this_DT fact_NN ,_, exactly_RB how_WRB the_DT content_NN with_IN which_WDT they_PRP interact_VBP changes_NNS may_MD not_RB be_VB ob_IN
+ATION_NNP Centralized_NNP search_NN engines_NNS have_VBP difficulties_NNS in_IN achieving_VBG good_JJ coverage_NN of_IN the_DT Web_NN -LRB-_-LRB- Lawrence_NNP &_CC Giles_NNP ,_, 1999_CD -RRB-_-RRB- because_IN the_DT Web_NN is_VBZ large_JJ ,_, fast-growing_JJ and_CC fast-changing_JJ -LRB-_-LRB- Brewington_NNP &_CC Cybenko_NNP ,_, 2000_CD ;_: =_JJ -_: =_JJ Fetterly_NNP et_FW al._FW ,_, 2003_CD -_: =_JJ -_: ;_: Ntoulas_NNP et_FW al._FW ,_, 2004_CD -RRB-_-RRB- ._.
+Further_RB ,_, various_JJ biases_NNS introduced_VBN to_TO address_VB the_DT needs_NNS of_IN the_DT ``_`` average_JJ ''_'' user_NN imply_VBP diminished_VBN effectiveness_NN in_IN satisfying_VBG many_JJ atypical_JJ search_NN needs_NNS ._.
+Examples_NNS of_IN bias_NN include_VBP
+to_TO come_VB ,_, is_VBZ an_DT even_RB richer_JJR source_NN of_IN information_NN and_CC latent_JJ knowledge_NN ._.
+It_PRP captures_VBZ the_DT evolution_NN of_IN digitally_RB born_VBN content_NN and_CC also_RB reflects_VBZ the_DT near-term_JJ history_NN of_IN our_PRP$ society_NN ,_, economy_NN ,_, and_CC science_NN =_JJ -_: =[_NN 56_CD ,_, 101_CD ,_, 20_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Web_NN archiving_NN is_VBZ done_VBN by_IN the_DT Internet_NNP Archive_NNP -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, with_IN a_DT current_JJ corpus_NN of_IN more_JJR than_IN 2_CD Petabytes_NNS and_CC a_DT Terabyte_NN of_IN daily_JJ growth_NN ,_, and_CC ,_, to_TO a_DT smaller_JJR extent_NN ,_, some_DT national_JJ libraries_NNS in_IN Europe_NNP ._.
+These_DT
+documentation_NN ''_'' ,_, and_CC navigational_JJ queries_NNS of_IN long-lived_JJ URLs_NNS ,_, e.g._FW ``_`` CNN_NNP ''_'' ,_, this_DT delay_NN does_VBZ not_RB matter_VB much_JJ ._.
+However_RB ,_, the_DT Web_NN changes_NNS rapidly_RB ._.
+According_VBG to_TO the_DT experiments_NNS performed_VBN by_IN Fretterly_NNP et_FW al._FW =_SYM -_: =[_NN 36_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Ntoulas_NNP et_FW al._FW -LRB-_-LRB- 54_CD -RRB-_-RRB- ,_, 15_CD %_NN −_CD 25_CD %_NN of_IN web_NN pages_NNS change_VBP at_IN least_JJS once_RB each_DT week_NN ._.
+Searching_NN information_NN on_IN frequently_RB updated_VBN pages_NNS will_MD fail_VB using_VBG an_DT obsolete_JJ index_NN ._.
+In_IN this_DT thesis_NN we_PRP consider_VBP a_DT diffe_NN
+s_VBZ no_DT take_NN into_IN account_NN word_NN distribution_NN and_CC related_JJ aspects_NNS ,_, thus_RB making_VBG it_PRP less_RBR suitable_JJ for_IN our_PRP$ purpose_NN ._.
+In_IN the_DT context_NN of_IN web_NN warehouses_NNS ,_, studies_NNS of_IN evolution_NN of_IN web_NN pages_NNS like_IN those_DT presented_VBN in_IN =_JJ -_: =[_NN 2,4_CD -RRB-_-RRB- -_: =_SYM -_: can_MD give_VB us_PRP guidelines_NNS on_IN useful_JJ parameters_NNS to_TO use_VB for_IN creating_VBG collections_NNS reflecting_VBG that_DT area_NN ._.
+3_CD Document_NNP and_CC time_NN models_NNS In_IN our_PRP$ work_NN we_PRP use_VBP the_DT same_JJ data_NNS and_CC time_NN model_NN as_IN is_VBZ used_VBN in_IN the_DT V2_NN docum_NN
+18_CD -RRB-_-RRB- ._.
+More_RBR recently_RB ,_, attention_NN has_VBZ turned_VBN to_TO evolutionary_JJ properties_NNS of_IN the_DT corpus_NN ._.
+In_IN this_DT evolutionary_JJ model_NN ,_, researchers_NNS have_VBP considered_VBN the_DT growth_NN of_IN the_DT web_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, the_DT rates_NNS of_IN page_NN and_CC link_NN churn_VBP =_JJ -_: =[_NN 8_CD ,_, 14_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT rates_NNS of_IN duplicate_VB evolution_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, and_CC the_DT change_NN rates_NNS of_IN individual_JJ pages_NNS -LRB-_-LRB- 3_CD ,_, 5_CD ,_, 14_CD ,_, 22_CD -RRB-_-RRB- ._.
+Parallel_JJ to_TO this_DT line_NN of_IN work_NN ,_, there_EX has_VBZ been_VBN a_DT significant_JJ body_NN of_IN work_NN on_IN refreshing_VBG already-discove_JJ
+and_CC hidden_JJ content_NN ,_, this_DT deep_JJ Web_NN is_VBZ an_DT Within_IN :_: 30_CD mi_FW important_JJ yet_CC largely_RB unexplored_JJ frontier_NN for_IN information_NN search_NN ._.
+While_IN we_PRP have_VBP understood_VBN the_DT surface_NN Web_NN relatively_RB well_RB ,_, with_IN various_JJ surveys_NNS =_JJ -_: =[_NN 3_CD ,_, 7_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, how_WRB is_VBZ the_DT deep_JJ Web_NN different_JJ ?_.
+This_DT article_NN reports_VBZ our_PRP$ survey_NN of_IN the_DT deep_JJ Web_NN ,_, studying_VBG the_DT scale_NN ,_, subject_JJ distribution_NN ,_, search-engine_JJ coverage_NN ,_, and_CC other_JJ access_NN characteristics_NNS of_IN online_NN database_NN
+,_, as_IN discussed_VBN above_IN ,_, further_RB pushes_VBZ the_DT boundaries_NNS of_IN practicality_NN ._.
+Note_VB that_DT computer_NN science_NN researchers_NNS are_VBP able_JJ to_TO orchestrate_VB massive_JJ web_NN classification_NN exercises_NNS through_IN automated_JJ means_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =_JJ Fetterly_NNP ,_, Manasse_NNP ,_, Najork_NNP ,_, &_CC Wiener_NNP ,_, 2003_CD -_: =--RRB-_NN but_CC this_DT is_VBZ unsuitable_JJ because_IN of_IN the_DT typically_RB high_JJ error_NN rate_NN ;_: classification_NN exercises_NNS would_MD have_VB to_TO be_VB conducted_VBN to_TO assess_VB the_DT error_NN rates_NNS ,_, which_WDT would_MD defeat_VB the_DT point_NN of_IN the_DT automation_NN ._.
+The_DT va_NN
+99-02\/1999_CD -06_CD 128_CD 720.000_CD Baeza-Yates_NNS -LRB-_-LRB- 25_CD -RRB-_-RRB- 2000-01\/2001_CD -06_CD 2_CD 732.500_CD Chien_NN -LRB-_-LRB- 44_CD -RRB-_-RRB- 2000-05\/2000_CD -11_CD 2_CD 61,000,000_CD Ntoulas_NNS -LRB-_-LRB- 122_CD -RRB-_-RRB- 2002-10\/2003_CD -11_CD 51_CD 4,400,000_CD Gomes_NNS -LRB-_-LRB- 67_CD -RRB-_-RRB- 2002-11\/2005_CD -07_CD 8_CD 6,200,000_CD Fetterly_NN =_JJ -_: =[_NN 57_CD -RRB-_-RRB- -_: =_SYM -_: 2002-11\/2002_CD -12_CD 11_CD 151,000,000_CD Table_NNP 3_CD :_: Studies_NNS on_IN Web_NN Dynamics_NNP for_IN example_NN ,_, compute_VB page_NN change_NN -LRB-_-LRB- e.g._FW hash_FW values_NNS ,_, shingling_VBG -RRB-_-RRB- ._.
+4_CD Web_NN Information_NNP Retrieval_NNP The_DT growth_NN of_IN the_DT web_NN as_IN a_DT popular_JJ communic_NN
+-LRB-_-LRB- MB03_NN -RRB-_-RRB- 500_CD scholarly_JJ publica_NN -LRB-_-LRB- GS96_NN -RRB-_-RRB- tions_NNS Half-life_NN ≈_CD 4.5_CD years_NNS 2,500_CD pages_NNS ,_, Average_JJ lifespan_NN ≈_NN 50_CD days_NNS university_NN Website_NN Median_JJ age_NN ≈_NN 150_CD days_NNS -LRB-_-LRB- Spi03_NN -RRB-_-RRB- 4,200_CD scholarly_JJ publica_NN -LRB-_-LRB- Cho00_NN -RRB-_-RRB- -LRB-_-LRB- DFKM97_NN -RRB-_-RRB- -LRB-_-LRB- NCO04_NN -RRB-_-RRB- =_JJ -_: =_JJ -LRB-_-LRB- FMNW03_NN -RRB-_-RRB- -_: =_JJ -_: tions_NNS Half-life_NN ≈_CD 4_CD years_NNS 720,000_CD pages_NNS ,_, Average_JJ lifespan_NN ≈_NN 60_CD --_: 240_CD days_NNS popular_JJ sites_NNS 40_CD %_NN of_IN pages_NNS in.com_NNP change_VB every_DT day_NN 50_CD %_NN of_IN pages_NNS in_IN ._.
+edu_NN and_CC ._.
+gov_NN remain_VBP the_DT same_JJ for_IN 4_CD months_NNS 950,000_CD pages_NNS A_NN
+em_RB ,_, we_PRP only_RB picked_VBD pages_NNS browsed_VBN within_IN the_DT last_JJ week_NN ._.
+For_IN the_DT annotation_NN ,_, we_PRP chose_VBD two_CD input_NN pages_NNS per_IN each_DT category_NN :_: small_JJ -LRB-_-LRB- below_IN 4_CD KB_NN -RRB-_-RRB- ,_, medium_NN -LRB-_-LRB- between_IN 4_CD KB_NN and_CC 32_CD KB_NN -RRB-_-RRB- ,_, and_CC large_JJ -LRB-_-LRB- more_JJR than_IN 32_CD KB_NN -RRB-_-RRB- =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN total_NN ,_, 96_CD pages_NNS were_VBD used_VBN as_IN input_NN over_IN the_DT entire_JJ experiment_NN ,_, and_CC over_IN 2,000_CD resulted_VBN annotations_NNS were_VBD graded_VBN ._.
+Algorithms_NNS ._.
+We_PRP applied_VBD our_PRP$ three_CD approaches_NNS for_IN keyword_JJ extraction_NN and_CC annotation_NN t_NN
+ing_NN patterns_NNS of_IN social_JJ interaction_NN within_IN a_DT population_NN has_VBZ been_VBN addressed_VBN in_IN a_DT wide_JJ range_NN applications_NNS including_VBG :_: disease_NN modeling_NN -LRB-_-LRB- 29_CD ,_, 28_CD ,_, 43_CD ,_, 56_CD ,_, 66_CD ,_, 65_CD ,_, 77_CD -RRB-_-RRB- ,_, the_DT web_NN and_CC other_JJ information_NN networks_NNS =_JJ -_: =[_NN 5_CD ,_, 27_CD ,_, 30_CD ,_, 50_CD ,_, 54_CD ,_, 57_CD ,_, 72_CD ,_, 75_CD ,_, 86_CD -RRB-_-RRB- -_: =_JJ -_: ,_, cultural_JJ and_CC information_NN transmission_NN -LRB-_-LRB- 8_CD ,_, 17_CD ,_, 19_CD ,_, 22_CD ,_, 45_CD ,_, 89_CD ,_, 90_CD ,_, 94_CD -RRB-_-RRB- ,_, intelligence_NN and_CC surveillance_NN -LRB-_-LRB- 1_CD ,_, 8_CD ,_, 55_CD ,_, 63_CD ,_, 62_CD -RRB-_-RRB- ,_, business_NN management_NN -LRB-_-LRB- 12_CD ,_, 21_CD ,_, 73_CD ,_, 74_CD -RRB-_-RRB- ,_, scientific_JJ collaborations_NNS -LRB-_-LRB- 7_CD ,_, 15_CD ,_, 14_CD ,_, 6_CD
+ange_VB and_CC compare_VB the_DT efficiency_NN of_IN different_JJ crawling_VBG strategies_NNS ._.
+The_DT authors_NNS also_RB described_VBD the_DT architecture_NN of_IN a_DT incremental_JJ crawler_NN able_JJ to_TO keep_VB up_RP the_DT index_NN with_IN the_DT evolving_VBG web_NN ._.
+Fetterly_NNP et_FW al._FW =_SYM -_: =_JJ -LRB-_-LRB- FMNW03_NN -RRB-_-RRB- -_: =_SYM -_: expanded_VBD the_DT work_NN of_IN -LRB-_-LRB- CGM00_NN -RRB-_-RRB- both_CC in_IN terms_NNS of_IN coverage_NN and_CC sensitivity_NN to_TO changes_NNS ._.
+They_PRP found_VBD out_RP that_IN good_JJ predictors_NNS of_IN future_JJ changes_NNS in_IN the_DT web_NN are_VBP the_DT top-level_JJ domain_NN pages_NNS ,_, and_CC relate_VB document_NN
+scholarly_JJ publications_NNS ,_, in_IN 4_CD years_NNS about_IN 50_CD %_NN of_IN the_DT links_NNS are_VBP no_RB longer_RB valid_JJ -LRB-_-LRB- Spinellis_NNP ,_, 2003_CD -RRB-_-RRB- ._.
+Other_JJ studies_NNS focus_VBP in_IN Web_NN page_NN changes_NNS :_: in_IN a_DT large-scale_JJ study_NN of_IN 150_CD million_CD pages_NNS during_IN 10_CD weeks_NNS -LRB-_-LRB- =_JJ -_: =_JJ Fetterly_NNP et_FW al._FW ,_, 2003_CD -_: =--RRB-_NN ,_, 65_CD %_NN of_IN the_DT pages_NNS did_VBD not_RB change_VB at_IN all_DT ,_, while_IN 30_CD %_NN of_IN the_DT pages_NNS had_VBD only_RB minor_JJ changes_NNS and_CC 5_CD %_NN changed_VBD substantially_RB ._.
+It_PRP is_VBZ also_RB known_VBN than_IN the_DT ._.
+com_NN domain_NN is_VBZ more_RBR dynamic_JJ than_IN ._.
+edu_NN and_CC ._.
+gov_NN -LRB-_-LRB- Cho_NN ,_, 20_CD
+ge_NN pattern_NN of_IN blogs_NNS and_CC the_DT emergence_NN of_IN bursty_JJ communities_NNS in_IN the_DT blogspace_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+Structural_JJ properties_NNS of_IN different_JJ snapshots_NNS of_IN the_DT world-wide_JJ web_NN graph_NN was_VBD studied_VBN by_IN Fetterly_NNP et_NNP al_NNP and_CC Cho_NNP et_FW al_FW =_JJ -_: =[_NN 14_CD ,_, 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recently_RB ,_, Leskovec_NNP ,_, Kleinberg_NNP ,_, and_CC Faloutsos_NNP -LRB-_-LRB- 22_CD -RRB-_-RRB- considered_VBN citation_NN graphs_NNS and_CC showed_VBD that_IN these_DT exhibit_NN densification_NN and_CC shrinking_NN diameters_NNS over_IN time_NN ._.
+A_DT parallel_JJ body_NN of_IN work_NN is_VBZ concerned_VBN with_IN
+content_NN of_IN webpages_NNS rather_RB than_IN their_PRP$ structure_NN ._.
+Ntoulas_FW et_FW al._FW -LRB-_-LRB- 12_CD -RRB-_-RRB- collected_VBD weekly_JJ snapshots_NNS of_IN 150_CD websites_NNS for_IN one_CD year_NN and_CC measured_VBD the_DT evolution_NN of_IN content_NN and_CC link_NN structure_NN ._.
+Fetterly_NNP et_FW al._FW =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: collected_VBN weekly_JJ snapshots_NNS of_IN 150_CD million_CD webpages_NNS for_IN 11_CD weeks_NNS and_CC measured_JJ degree_NN of_IN change_NN across_IN different_JJ classes_NNS of_IN webpages_NNS ._.
+Ntoulas_FW et_FW al._FW found_VBD that_IN most_JJS webpages_NNS change_VBP very_RB little_JJ ,_, and_CC tha_NN
+selection_NN of_IN differences_NNS that_WDT can_MD be_VB exploited_VBN to_TO distinguish_VB different_JJ types_NNS of_IN web_NN pages_NNS ._.
+s3_NNP .1_NNP Power_NNP Law_NNP Distribution_NN The_DT distribution_NN of_IN the_DT nodes_NNS '_POS indegree_NN in_IN social_JJ networks_NNS is_VBZ power_NN law_NN governed_VBD =_JJ -_: =[_NN 12_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Intuitively_RB speaking_VBG this_DT means_VBZ ,_, that_IN a_DT large_JJ proportion_NN of_IN nodes_NNS have_VBP few_JJ links_NNS pointing_VBG to_TO them_PRP whereas_IN there_EX are_VBP only_RB a_DT few_JJ pages_NNS that_WDT attract_VBP large_JJ amounts_NNS of_IN links_NNS ._.
+The_DT indegree_JJ distribution_NN of_IN
+elated_JJ documents_NNS ._.
+Many_JJ works_NNS have_VBP explored_VBN measures_NNS of_IN Web_NN documents_NNS ``_`` from_IN a_DT search_NN engine_NN perspective_NN ''_'' -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+It_PRP has_VBZ been_VBN found_VBN out_RP that_IN usually_RB Web_NN documents_NNS change_VBP trivially_RB or_CC in_IN their_PRP$ markup_NN only_RB =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+On_IN the_DT other_JJ hand_NN ,_, news_NN pages_NNS containing_VBG ``_`` breaking_JJ news_NN ''_'' change_VB their_PRP$ content_NN frequently_RB and_CC significantly_RB ._.
+This_DT update_VBP heterogeneity_NN severely_RB impacts_VBZ Web_NN content_NN management_NN systems_NNS -LRB-_-LRB- WCMS_NNS -RRB-_-RRB- ,_, which_WDT sh_VBP
+tabases_NNS and_CC hidden_JJ content_NN ,_, this_DT deep_JJ Web_NN is_VBZ an_DT important_JJ yet_CC largely-unexplored_JJ frontier_NN for_IN information_NN search_NN --_: While_IN we_PRP have_VBP understood_VBN the_DT surface_NN Web_NN relatively_RB well_RB ,_, with_IN various_JJ surveys_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 3_CD ,_, 4_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, how_WRB is_VBZ the_DT deep_JJ Web_NN different_JJ ?_.
+This_DT article_NN reports_VBZ our_PRP$ survey_NN of_IN the_DT deep_JJ Web_NN ,_, studying_VBG the_DT scale_NN ,_, subject_JJ distribution_NN ,_, search-engine_JJ coverage_NN ,_, and_CC other_JJ access_NN characteristics_NNS of_IN online_NN database_NN
+e-indexing_NN of_IN pages_NNS -LRB-_-LRB- see_VB e.g._NNP Page_NNP et_FW al._FW -LRB-_-LRB- 32_CD -RRB-_-RRB- on_IN PageRank_NN and_CC the_DT excellent_JJ review_NN by_IN Florescu_NNP ,_, Levy_NNP and_CC Mendelzon_NNP -LRB-_-LRB- 17_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Several_JJ studies_NNS have_VBP considered_VBN the_DT rate_NN of_IN change_NN of_IN pages_NNS on_IN the_DT net_JJ -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 12_CD ,_, 16_CD ,_, 6_CD ,_, 36_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Notably_RB ,_, Cho_NNP and_CC Garcia-Molina_NNP -LRB-_-LRB- 9_CD -RRB-_-RRB- studied_VBD the_DT frequency_NN of_IN change_NN of_IN a_DT web_NN page_NN across_IN the_DT entire_JJ web_NN as_RB well_RB as_IN per_IN domain_NN ._.
+Table_NNP 1_CD summarizes_VBZ their_PRP$ observations_NNS ._.
+Time_NN between_IN overall_JJ updates_NNS %_NN c_NN
+eleted_VBN every_DT day_NN ,_, and_CC the_DT content_NN of_IN existing_VBG pages_NNS changes_NNS quite_RB frequently_RB ._.
+A_DT recent_JJ study_NN found_VBD that_IN within_IN a_DT single_JJ week_NN ,_, the_DT content_NN in_IN over_IN 20_CD %_NN ofsWeb_NN pages_NNS will_MD undergo_VB some_DT non-trivial_JJ change_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Consequently_RB ,_, snapshots_NNS of_IN the_DT Web_NN taken_VBN several_JJ weeks_NNS apart_RB may_MD give_VB rise_NN to_TO very_RB different_JJ indices_NNS ._.
+Thus_RB ,_, Qrels_NNS may_MD rapidly_RB become_VB stale_JJ ,_, with_IN new_JJ pages_NNS replacing_VBG old_JJ ones_NNS as_IN the_DT most_RBS appropriate_JJ
+Rank_NNP -_: Change_NNP for_IN the_DT Web_NN Graph_NN 3_CD the_DT probability_NN values_NNS produced_VBN by_IN the_DT PageRank_NNP algorithm_NN decay_NN according_VBG to_TO a_DT power_NN law_NN ,_, and_CC they_PRP incorporate_VBP this_DT into_IN a_DT model_NN of_IN how_WRB the_DT web_NN evolves_VBZ ._.
+Finally_RB ,_, in_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: the_DT authors_NNS study_VBP the_DT way_NN web_NN changes_NNS putting_VBG emphasis_NN on_IN the_DT content_NN ,_, leaving_VBG out_RP the_DT structural_JJ change_NN of_IN the_DT web_NN which_WDT reflects_VBZ essentially_RB the_DT evolution_NN of_IN pages_NNS importance_NN ._.
+In_IN this_DT paper_NN we_PRP addr_VBP
+the_DT lifetime_NN of_IN web_NN pages_NNS ._.
+They_PRP estimated_VBD the_DT frequency_NN of_IN web_NN page_NN modifications_NNS ,_, and_CC showed_VBD that_IN the_DT results_NNS were_VBD useful_JJ for_IN web_NN crawlers_NNS to_TO determine_VB the_DT timing_NN of_IN further_RB crawls_VBZ ._.
+Fetterly_NNP et_FW al._FW =_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: extended_VBD these_DT studies_NNS by_IN crawling_VBG a_DT set_NN of_IN 150_CD million_CD pages_NNS once_RB every_DT week_NN ,_, and_CC showed_VBD various_JJ statistics_NNS for_IN changes_NNS in_IN the_DT pages_NNS ._.
+Since_IN they_PRP focused_VBD on_IN the_DT changes_NNS in_IN the_DT pages_NNS ,_, their_PRP$ results_NNS we_PRP
+ation_NN approach_NN -LRB-_-LRB- using_VBG a_DT union-find_JJ data_NN structure_NN -RRB-_-RRB- had_VBD a_DT run_NN time_NN that_WDT was_VBD almost_RB linear_JJ in_IN the_DT number_NN of_IN documents_NNS ._.
+3_CD In_IN on-going_JJ work_NN by_IN Fetterly_NNP ,_, et_FW al._FW ,_, the_DT authors_NNS study_VBP the_DT evolution_NN of_IN the_DT Web_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC come_VBN to_TO harness_NN experimental_JJ collections_NNS of_IN 151_CD million_CD and_CC 96_CD million_CD Web_NN pages_NNS and_CC identify_VBP the_DT distribution_NN of_IN duplicates_NNS therein_RB ,_, i.e._FW ,_, via_IN short_JJ five-token_JJ syntactic_JJ -LRB-_-LRB- non-linguistic_JJ -RRB-_-RRB- phrases_NNS
+eous_JJ ._.
+General_JJ Terms_NNS Measurement_NN ,_, Algorithms_NNS ,_, Experimentation_NN ._.
+Keywords_NNS Web_NN characterization_NN ,_, web_NN pages_NNS ,_, web_NN spam_NN ,_, data_NN mining_NN ,_, content_NN duplication_NN ._.
+1_CD ._.
+INTRODUCTION_NN Two_CD years_NNS ago_RB ,_, we_PRP conducted_VBD a_DT study_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: on_IN the_DT evolution_NN of_IN web_NN pages_NNS ._.
+In_IN the_DT course_NN of_IN that_DT study_NN ,_, we_PRP crawled_VBD a_DT set_NN of_IN 151_CD million_CD web_NN pages_NNS once_RB every_DT week_NN ,_, for_IN a_DT total_NN of_IN 11_CD weeks_NNS ,_, and_CC measured_VBD how_WRB much_JJ each_DT page_NN changed_VBD from_IN one_CD week_NN t_NN
+s_NN consistent_JJ with_IN the_DT way_NN in_IN which_WDT typical_JJ search_NN engines_NNS treat_VBP documents_NNS -LRB-_-LRB- with_IN the_DT exception_NN of_IN phrase_NN matching_NN -RRB-_-RRB- ._.
+In_IN contrast_NN ,_, the_DT shingles_NNS metric_NN -LRB-_-LRB- which_WDT we_PRP used_VBD in_IN Section_NNP 3.3.3_CD ;_: it_PRP is_VBZ also_RB used_VBN by_IN =_JJ -_: =_JJ -LRB-_-LRB- FMN03_NN -RRB-_-RRB- -_: =--RRB-_NN is_VBZ highly_RB sensitive_JJ to_TO the_DT exact_JJ order_NN of_IN terms_NNS ._.
+The_DT distribution_NN of_IN TF_NN ._.
+IDF_FW cosine_FW distance_NN for_IN all_DT changes_NNS is_VBZ shown_VBN in_IN Figure_NNP 3.11_CD ._.
+To_TO ensure_VB proper_JJ comparability_NN across_IN multiple_JJ weeks_NNS whose_WP$ snapsh_NN
+e_LS mode_NN of_IN access_NN for_IN one_CD or_CC both_DT of_IN the_DT following_JJ two_CD reasons_NNS ._.
+First_RB ,_, most_JJS information_NN posted_VBD on_IN the_DT Web_NN is_VBZ not_RB made_VBN available_JJ forever_RB ,_, and_CC may_MD disappear_VB or_CC be_VB replaced_VBN by_IN new_JJ information_NN at_IN any_DT time_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT aspect_NN presents_VBZ a_DT challenge_NN ,_, especially_RB for_IN applications_NNS in_IN which_WDT historical_JJ information_NN is_VBZ of_IN interest_NN ._.
+Second_JJ ,_, many_JJ applications_NNS require_VBP automated_JJ synthesis_NN of_IN information_NN from_IN multiple_JJ dynam_NN
+ics_NNS of_IN web_NN documents_NNS ._.
+The_DT results_NNS are_VBP summarized_VBN in_IN this_DT section_NN as_IN motivation_NN for_IN our_PRP$ landmark-diff_JJ index_NN update_VBP method_NN ._.
+Other_JJ than_IN scale_NN ,_, our_PRP$ analysis_NN differs_VBZ from_IN the_DT study_NN done_VBN by_IN Fetterly_NNP et_FW al._FW =_SYM -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: in_IN that_DT our_PRP$ distance_NN measure_NN for_IN two_CD documents_NNS is_VBZ based_VBN on_IN exact_JJ edit_NN distance_NN whereas_IN Fetterly_NNP et_FW al._FW have_VBP used_VBN a_DT shingle-based_JJ -LRB-_-LRB- 10_CD -RRB-_-RRB- approximate_JJ similarity_NN measure_NN ._.
+Because_IN our_PRP$ landmark-diff_JJ index_NN u_NN
+s_NN Contents_NNS :_: Vol_NN ._.
+9_CD -LRB-_-LRB- 2005_CD -RRB-_-RRB- :_: Paper_NN 2_CD ._.
+Expectations_NNS versus_CC reality_NN -_: ..._: Página_NNP 2_CD de_IN 26_CD search_NN tools_NNS ._.
+Some_DT Web_NN studies_NNS are_VBP conducted_VBN by_IN researchers_NNS working_VBG at_IN search_NN engines_NNS -LRB-_-LRB- e.g._FW Broder_NNP et_FW al._FW ,_, 2000_CD or_CC =_JJ -_: =_JJ Fetterly_NNP et_FW al._FW ,_, 2004_CD -_: =--RRB-_NN ,_, thus_RB they_PRP can_MD crawl_VB the_DT Web_NN or_CC access_NN data_NNS from_IN the_DT search_NN engine_NN 's_POS database_NN ._.
+Other_JJ researchers_NNS can_MD either_RB envy_VB the_DT lucky_JJ and_CC resourceful_JJ ones_NNS or_CC can_MD turn_VB to_TO freely_RB available_JJ information_NN retrieval_NN
+s_NNS it_PRP must_MD have_VB some_DT notion_NN of_IN the_DT update_VBP behaviors_NNS of_IN the_DT data_NNS sources_NNS which_WDT it_PRP monitors_VBZ ._.
+This_DT problem_NN has_VBZ been_VBN the_DT origin_NN of_IN several_JJ larger_JJR and_CC smaller_JJR scale_NN studies_NNS on_IN how_WRB the_DT web_NN evolves_VBZ over_IN time_NN =_JJ -_: =[_NN 13_CD ,_, 14_CD ,_, 2_CD ,_, 15_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: and_CC whether_IN the_DT update_VBP patterns_NNS of_IN web_NN pages_NNS could_MD be_VB modeled_VBN mathematically_RB through_IN a_DT unified_JJ model_NN ._.
+The_DT findings_NNS in_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- suggested_VBD that_IN the_DT update_VBP patterns_NNS of_IN web_NN pages_NNS followed_VBD a_DT memoryless_JJ Poisson_NN
+the_DT key_JJ points_NNS ._.
+2_CD ._.
+RELATED_JJ RESEARCH_NN The_DT dynamics_NNS of_IN the_DT Web_NN has_VBZ been_VBN measured_VBN in_IN a_DT series_NN of_IN experiments_NNS in_IN which_WDT vast_JJ quantities_NNS of_IN Web_NN pages_NNS were_VBD analyzed_VBN and_CC compared_VBN over_IN a_DT certain_JJ period_NN of_IN time_NN =_JJ -_: =[_NN 4,6,15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT results_NNS showed_VBD that_IN the_DT Web_NN is_VBZ a_DT very_RB dynamic_JJ environment_NN in_IN which_WDT changes_NNS continuously_RB occur_VBP in_IN both_CC the_DT content_NN and_CC the_DT link_NN topology_NN ._.
+While_IN ,_, it_PRP has_VBZ been_VBN revealed_VBN that_IN many_JJ new_JJ pages_NNS are_VBP conti_VBN
+current_JJ events_NNS ,_, trends_NNS and_CC other_JJ issues_NNS of_IN volatile_JJ temporal_JJ nature_NN ._.
+On_IN the_DT other_JJ hand_NN ,_, university_NN sites_NNS ,_, which_WDT have_VBP been_VBN reported_VBN to_TO change_VB less_RBR frequently_RB than_IN pages_NNS on_IN the_DT “.com_NN ''_'' top_JJ level_NN domain_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, can_MD be_VB crawled_VBN less_RBR often_RB ._.
+Finally_RB ,_, we_PRP envision_VBP a_DT more_RBR realistic_JJ random_JJ surfer_NN model_NN based_VBN on_IN the_DT site_NN type_NN ._.
+While_IN current_JJ random_JJ surfing_NN models_NNS assume_VBP a_DT uniform_JJ stochastic_JJ behavior_NN across_IN all_DT Web_NN p_NN
+the_DT proportion_NN of_IN spam_NN pages_NNS in_IN our_PRP$ sample_NN is_VBZ somewhat_RB higher_JJR than_IN in_IN previous_JJ studies_NNS -LRB-_-LRB- 23_CD ,_, 18_CD -RRB-_-RRB- ._.
+We_PRP attribute_VBP this_DT to_TO the_DT denser_JJR web_NN graph_NN and_CC the_DT known_JJ notoriousness_NN of_IN spammers_NNS over_IN the_DT ._.
+de_IN domain_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Because_IN of_IN the_DT abundance_NN of_IN pages_NNS from_IN the_DT eBay_NNP ._.
+de_IN domain_NN --_: 0.8_CD M_NN pages_NNS in_IN the_DT dataset_NN --_: and_CC due_JJ to_TO the_DT misuse_NN of_IN its_PRP$ affiliation_NN program_NN ,_, we_PRP decided_VBD to_TO treat_VB pages_NNS from_IN eBay_NNP ._.
+de_IN as_IN a_DT separate_JJ subcat_NN
+page_NN features_NNS over_IN 429_CD million_CD pages_NNS ._.
+They_PRP find_VBP that_IN many_JJ outliers_NNS in_IN several_JJ features_NNS are_VBP link_NN spam_NN ._.
+Pages_NNP that_WDT change_VBP frequently_RB and_CC clusters_NNS of_IN near-identical_JJ pages_NNS are_VBP also_RB more_RBR likely_JJ to_TO be_VB spam_NN =_JJ -_: =[_NN 12_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP conclude_VBP that_IN experiments_NNS should_MD be_VB conducted_VBN to_TO reveal_VB whether_IN these_DT features_NNS can_MD be_VB used_VBN by_IN a_DT machine_NN learning_NN method_NN ._.
+Similarly_RB ,_, Broder_NNP et_FW al._FW -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC Bharat_NNP et_FW al._FW -LRB-_-LRB- 3_CD -RRB-_-RRB- analyze_VBP large_JJ amounts_NNS
++_CC 1_CD ._.
+The_DT window_NN -LRB-_-LRB- shingle_NN -RRB-_-RRB- size_NN is_VBZ fixed_VBN ,_, for_IN example_NN 30_CD bytes_NNS ._.
+Each_DT shingle_NN -LRB-_-LRB- substring_NN -RRB-_-RRB- is_VBZ fingerprinted_VBN fshingle_NN -LRB-_-LRB- Wi_NN -RRB-_-RRB- ._.
+Rabin_NN fingerprinting_NN by_IN random_JJ polynomials_NNS -LRB-_-LRB- 127_CD -RRB-_-RRB- is_VBZ commonly_RB used_VBN for_IN shingling_VBG =_JJ -_: =[_NN 15_CD ,_, 46_CD -RRB-_-RRB- -_: =_JJ -_: ,_, using_VBG a_DT fingerprint_NN size_NN such_JJ as_IN 32_CD bits_NNS to_TO avoid_VB collisions_NNS across_IN millions_NNS of_IN objects_NNS ._.
+Computing_NNP ,_, collecting_VBG ,_, and_CC creating_VBG a_DT subset_NN from_IN all_DT features_NNS would_MD use_VB a_DT large_JJ amount_NN of_IN temporary_JJ space_NN ,_, s_NN
+t_NN flux_NN -_: new_JJ pages_NNS and_CC websites_NNS appear_VBP daily_JJ ,_, and_CC old_JJ pages_NNS and_CC sites_NNS disappear_VBP almost_RB as_RB quickly_RB ._.
+One_CD study_NN estimates_VBZ that_IN about_IN two_CD percent_NN of_IN the_DT Web_NN disappears_VBZ from_IN its_PRP$ current_JJ location_NN every_DT week_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN Web_NN users_NNS have_VBP become_VBN accustomed_JJ to_TO seeing_VBG the_DT infamous_JJ ``_`` 404_CD Not_RB Found_JJ ''_'' page_NN ,_, they_PRP are_VBP more_RBR taken_VBN aback_RB when_WRB they_PRP own_VBP ,_, are_VBP responsible_JJ for_IN ,_, or_CC have_VBP come_VBN to_TO rely_VB on_IN the_DT missing_VBG material_NN ._.
+Web_NN
+tracks_VBZ DOM_NNP elements_NNS by_IN their_PRP$ rendered_VBN x_NN and_CC y_NN coordinates_VBZ ._.
+This_DT structure_NN allows_VBZ us_PRP to_TO quickly_RB find_VB which_WDT elements_NNS are_VBP clicked_VBN or_CC selected_VBN ._.
+RELATED_NNS WORK_VBP Research_NNP on_IN the_DT evolution_NN of_IN change_NN on_IN the_DT Web_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: indicates_VBZ both_CC a_DT high_JJ rate_NN of_IN change_NN and_CC large_JJ variance_NN in_IN the_DT degree_NN of_IN change_NN ._.
+After_IN changing_VBG ,_, information_NN on_IN the_DT Web_NN generally_RB vanishes_VBZ for_IN all_DT intents_NNS and_CC purposes_NNS ._.
+Even_RB archive_NN systems_NNS like_IN the_DT
+clusively_RB through_IN the_DT compression_NN of_IN its_PRP$ data_NNS structures_NNS ._.
+Thus_RB ,_, it_PRP does_VBZ not_RB cause_VB any_DT data_NNS loss_NN ._.
+New_JJ web_NN documents_NNS are_VBP created_VBN at_IN a_DT high_JJ rate_NN and_CC the_DT posting_VBG lists_NNS of_IN the_DT indexes_NNS tend_VBP to_TO grow_VB rapidly_RB =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Several_JJ inverted_JJ indexes_NNS of_IN crawls_VBZ performed_VBN throughout_IN time_NN can_MD be_VB merged_VBN together_RB by_IN associating_VBG a_DT time_NN span_NN to_TO each_DT posting_VBG and_CC merging_VBG the_DT postings_NNS holding_VBG similar_JJ meta-data_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Without_IN affecti_NNS
+collected_VBN pages_NNS observed_VBN over_IN an_DT average_JJ interval_NN of_IN 37_CD days_NNS and_CC used_VBD the_DT recording_NN of_IN the_DT last-modified_JJ timestamp_NN and_CC the_DT downloading_VBG time_NN of_IN Web_NN pages_NNS to_TO study_VB their_PRP$ rate_NN of_IN change_NN ._.
+Fetterly_NNP et_FW al._FW =_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: crawled_VBD on_IN a_DT weekly_JJ basis_NN a_DT set_NN of_IN 150_CD million_CD URLs_NNS obtained_VBN from_IN the_DT Yahoo_NNP !_.
+home_NN page_NN ,_, spanning_VBG a_DT time_NN interval_NN of_IN 11_CD weeks_NNS in_IN 2002_CD ._.
+This_DT work_NN aimed_VBN at_IN studying_VBG the_DT frequency_NN and_CC the_DT degree_NN of_IN chang_NN
+y_VB the_DT networked_JJ agents_NNS ._.
+Introduction_NN Centralized_JJ search_NN engines_NNS can_MD not_RB cover_VB the_DT entire_JJ Web_NN -LRB-_-LRB- Lawrence_NNP &_CC Giles_NNP 1999_CD -RRB-_-RRB- because_IN it_PRP is_VBZ too_RB large_JJ ,_, fast-growing_JJ and_CC fast-changing_JJ -LRB-_-LRB- Brewington_NNP &_CC Cybenko_NNP 2000_CD ;_: =_JJ -_: =_JJ Fetterly_NNP et_FW al._FW 2003_CD -_: =_JJ -_: ;_: Ntoulas_NNP ,_, Cho_NNP ,_, &_CC Olston_NNP 2004_CD -RRB-_-RRB- ._.
+As_IN a_DT result_NN ,_, current_NN centralized_VBD search_NN engine_NN focus_NN on_IN ``_`` important_JJ ''_'' portions_NNS of_IN the_DT Web_NN ._.
+However_RB ,_, the_DT notion_NN of_IN importance_NN is_VBZ highly_RB subjective_JJ :_: the_DT biases_NNS that_WDT are_VBP int_NN
+r_NN detail_NN ._.
+We_PRP conclude_VBP with_IN a_DT discussion_NN of_IN future_JJ work_NN and_CC potential_JJ applications_NNS .2_NN ._.
+RELATED_NNS WORK_VBP Characterizing_VBG the_DT amount_NN of_IN change_NN on_IN the_DT Web_NN has_VBZ been_VBN of_IN considerable_JJ interest_NN to_TO researchers_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+For_IN example_NN ,_, Cho_NNP and_CC Garcia-Molina_NNP -LRB-_-LRB- 4_CD -RRB-_-RRB- crawled_VBD 720,000_CD pages_NNS once_RB a_DT day_NN for_IN a_DT period_NN of_IN four_CD months_NNS and_CC looked_VBD at_IN how_WRB the_DT pages_NNS changed_VBD ._.
+Ntoulas_NNP ,_, Cho_NNP ,_, and_CC Olston_NNP -LRB-_-LRB- 14_CD -RRB-_-RRB- s_NN
+erson_NN visits_NNS and_CC highlights_VBZ any_DT changes_NNS to_TO a_DT page_NN when_WRB they_PRP return_VBP to_TO it_PRP ._.
+Previous_JJ research_NN suggests_VBZ that_IN people_NNS return_VB to_TO content_NN on_IN the_DT Web_NN regularly_RB -LRB-_-LRB- 2_CD ,_, 22_CD ,_, 23_CD -RRB-_-RRB- ._.
+Web_NN content_NN also_RB changes_VBZ regularly_RB =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC the_DT content_NN people_NNS revisit_VBP is_VBZ particularly_RB likely_JJ to_TO change_VB -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Although_IN changes_NNS affect_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, drive_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, and_CC interfere_VB -LRB-_-LRB- 21_CD ,_, 23_CD -RRB-_-RRB- with_IN people_NNS 's_POS revisits_NNS ,_, Web_NN browsers_NNS do_VBP not_RB support_VB a_DT historical_JJ
+mic_JJ and_CC static_JJ pages_NNS ,_, and_CC the_DT relationship_NN between_IN the_DT two_CD ._.
+2.1_CD Changes_NNS in_IN Content_NNP over_IN Time_NNP Characterizing_VBG the_DT amount_NN of_IN change_NN on_IN the_DT Web_NN has_VBZ been_VBN of_IN considerable_JJ interest_NN to_TO researchers_NNS -LRB-_-LRB- -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 27_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Numerous_JJ previous_JJ studies_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 24_CD -RRB-_-RRB- -RRB-_-RRB- have_VBP found_VBN that_IN Web_NN content_NN change_NN occurs_VBZ relatively_RB infrequently_RB ,_, and_CC identified_VBD trends_NNS in_IN the_DT change_NN that_WDT does_VBZ occur_VB ._.
+Fo_NN
+ing_IN the_DT similarity_NN of_IN destination_NN Web_NN pages_NNS ._.
+Our_PRP$ verification_NN focuses_VBZ on_IN polymorphic_JJ URLs_NNS generated_VBN using_VBG the_DT Nov_NNP 2006_CD dataset_NN ._.
+We_PRP crawled_VBD all_PDT the_DT corresponding_JJ Web_NN pages_NNS 5_CD and_CC applied_JJ text_NN shingling_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: to_TO generate_VB 20_CD hash_JJ values_NNS -LRB-_-LRB- shingles_NNS -RRB-_-RRB- for_IN each_DT Web_NN page_NN ._.
+Note_VB that_IN the_DT shingling_VBG process_NN strips_NNS common_JJ HTML_NNP headers_NNS and_CC tags_NNS ._.
+Figure_NN 11_CD -LRB-_-LRB- a_DT -RRB-_-RRB- shows_VBZ the_DT average_NN -LRB-_-LRB- favg_NN -RRB-_-RRB- and_CC maximum_NN -LRB-_-LRB- fmax_NN -RRB-_-RRB- number_NN of_IN Web_NN pa_NN
+ords_NNS which_WDT URLs_NNS have_VBP been_VBN seen_VBN and_CC adds_VBZ any_DT unseen_JJ URLs_NNS to_TO a_DT structure_NN called_VBN the_DT frontier_NN ._.
+After_IN an_DT initial_JJ crawl_NN ,_, there_EX is_VBZ the_DT problem_NN of_IN maintaining_VBG the_DT corpus_NN ,_, since_IN pages_NNS are_VBP continually_RB updated_VBN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, created_VBN -LRB-_-LRB- 16_CD -RRB-_-RRB- and_CC deleted_VBN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+One_CD option_NN would_MD be_VB to_TO start_VB crawling_VBG again_RB from_IN seeds_NNS ,_, although_IN completely_RB throwing_VBG away_RP the_DT old_JJ pages_NNS and_CC link_NN graphinformation_NN may_MD not_RB be_VB the_DT most_RBS efficient_JJ -LRB-_-LRB- or_CC eff_NN
+asurements_NNS Keywords_NNS :_: Link_NN analysis_NN ,_, Web_NN decay_NN ,_, ODP_NN ,_, web_NN archives_NNS 1_CD ._.
+INTRODUCTION_NN The_DT Web_NN is_VBZ in_IN constant_JJ flux_NN ._.
+Page_NNP content_NN and_CC links_NNS are_VBP changed_VBN ,_, added_VBD ,_, and_CC removed_VBN from_IN the_DT Web_NN on_IN a_DT continuous_JJ basis_NN =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 5_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT presents_VBZ a_DT significant_JJ challenge_NN to_TO the_DT fundamental_JJ technology_NN of_IN the_DT web_NN --_: hypertext_NN --_: as_IN the_DT target_NN of_IN a_DT link_NN ,_, if_IN it_PRP exists_VBZ at_IN all_DT ,_, is_VBZ often_RB not_RB the_DT same_JJ as_IN when_WRB the_DT link_NN was_VBD first_RB created_VBN ._.
+About_IN
+rk_NN for_IN the_DT long-term_JJ approach_NN to_TO web_NN spam_NN ._.
+1.1_CD Background_NN Web_NN spamming_NN has_VBZ received_VBN a_DT lot_NN of_IN attention_NN lately_RB -LRB-_-LRB- Bharat_NNP et_FW al._FW ,_, 2000_CD ;_: Bharat_NNP et_FW al._FW ,_, 2001_CD ;_: Bianchini_NNP et_FW al._FW ,_, 2003_CD ;_: Fetterly_NNP et_FW al._FW ,_, 2004_CD ;_: =_JJ -_: =_JJ Fetterly_NNP et_FW al._FW ,_, 2003_CD -_: =_JJ -_: ;_: Gyöngyi_NNP et_FW al._FW ,_, 2004_CD ;_: Henzinger_NNP ,_, 2001_CD ;_: Henzinger_NNP et_FW al._FW ,_, 2002_CD ;_: Introna_NNP and_CC Nissenbaum_NNP ,_, 2000_CD ;_: Kumar_NNP et_FW al._FW ,_, 1999_CD ;_: Lynch_NNP ,_, 2001_CD ;_: Marchiori_NNP ,_, 1997_CD ;_: Pringle_NNP et_FW al._FW ,_, 1998_CD -RRB-_-RRB- ._.
+The_DT first_JJ papers_NNS to_TO raise_VB the_DT is_VBZ
+hes_NNS to_TO ranking_JJ dynamic_JJ documents_NNS are_VBP complementary_JJ and_CC both_DT yield_NN significant_JJ performance_NN gains_NNS ._.
+2_CD ._.
+RELATED_NNS WORK_VBP Several_JJ studies_NNS have_VBP described_VBN characteristics_NNS of_IN dynamic_JJ web_NN content_NN ._.
+Fetterly_NNP et_FW al._FW =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: conducted_VBD a_DT large_JJ scale_NN exploration_NN of_IN the_DT frequency_NN and_CC amount_NN of_IN change_NN of_IN approximately_RB 150_CD million_CD web_NN pages_NNS over_IN a_DT ten_CD week_NN period_NN ._.
+To_TO measure_VB the_DT amount_NN of_IN page_NN change_NN ,_, the_DT authors_NNS use_VBP Broder_NNP e_SYM
+at_IN at_IN least_JJS two_CD of_IN the_DT six_CD supershingles_NNS will_MD agree_VB for_IN documents_NNS that_WDT are_VBP 95_CD %_NN or_CC more_RBR similar_JJ ._.
+Retaining_VBG the_DT supershingles_NNS will_MD be_VB useful_JJ in_IN the_DT future_NN ,_, should_MD we_PRP try_VB to_TO discover_VB approximate_JJ mirrors_VBZ =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: and_CC investigate_VB their_PRP$ update_VB frequency_NN ._.
+The_DT match_NN count_NN ,_, when_WRB non-negative_JJ ,_, indicates_VBZ how_WRB many_JJ of_IN the_DT 84_CD pre-image_JJ pairs_NNS matched_VBN between_IN the_DT two_CD documents_NNS ._.
+If_IN the_DT document_NN fingerprint_NN matches_VBZ as_RB well_RB
+to_TO links_NNS will_MD accompanied_VBN by_IN changes_NNS to_TO the_DT corresponding_JJ anchor_NN text_NN ,_, which_WDT is_VBZ part_NN of_IN the_DT indexable_JJ text_NN ._.
+Next_RB ,_, it_PRP computes_VBZ a_DT 64-bit_JJ checksum_NN of_IN each_DT shingle_NN ,_, using_VBG Rabin_NNP 's_POS fingerprinting_VBG algorithm_NN =_JJ -_: =[_NN 3_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP call_VBP these_DT fingerprints_NNS the_DT ``_`` pre-images_NNS ''_'' ._.
+Next_RB ,_, the_DT module_NN applies_VBZ 84_CD different_JJ -LRB-_-LRB- randomly_RB selected_VBN but_CC fixed_VBN thereafter_RB -RRB-_-RRB- one-to-one_JJ functions_NNS to_TO each_DT pre-image_NN ._.
+For_IN each_DT function_NN ,_, we_PRP retain_VBP the_DT p_NN
+to_TO links_NNS will_MD accompanied_VBN by_IN changes_NNS to_TO the_DT corresponding_JJ anchor_NN text_NN ,_, which_WDT is_VBZ part_NN of_IN the_DT indexable_JJ text_NN ._.
+Next_RB ,_, it_PRP computes_VBZ a_DT 64-bit_JJ checksum_NN of_IN each_DT shingle_NN ,_, using_VBG Rabin_NNP 's_POS fingerprinting_VBG algorithm_NN =_JJ -_: =[_NN 3_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP call_VBP these_DT fingerprints_NNS the_DT ``_`` pre-images_NNS ''_'' ._.
+Next_RB ,_, the_DT module_NN applies_VBZ 84_CD different_JJ -LRB-_-LRB- randomly_RB selected_VBN but_CC fixed_VBN thereafter_RB -RRB-_-RRB- one-to-one_JJ functions_NNS to_TO each_DT pre-image_NN ._.
+For_IN each_DT function_NN ,_, we_PRP retain_VBP the_DT p_NN
+within_IN a_DT day_NN ,_, and_CC that_IN it_PRP took_VBD 11_CD days_NNS for_IN half_NN of_IN all.com_NNP pages_NNS to_TO have_VB changed_VBN ._.
+By_IN contrast_NN ,_, it_PRP took_VBD four_CD months_NNS -LRB-_-LRB- the_DT duration_NN of_IN their_PRP$ study_NN -RRB-_-RRB- for_IN half_NN of_IN the_DT ._.
+gov_NN pages_NNS to_TO have_VB changed_VBN ._.
+Sun_NNP et_FW al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: conducted_VBD a_DT study_NN on_IN the_DT efficacy_NN of_IN web_NN anonymizers_NNS ._.
+As_IN part_NN of_IN that_DT study_NN ,_, they_PRP drew_VBD a_DT set_NN of_IN 100,000_CD web_NN pages_NNS from_IN the_DT Open_NNP Directory_NNP listing_NN ,_, and_CC crawled_VBD each_DT page_NN twice_RB ,_, with_IN the_DT second_JJ retriev_NN
+a_DT mining_NN ._.
+Finally_RB ,_, we_PRP draw_VBP some_DT conclusions_NNS and_CC offer_NN avenues_NNS of_IN future_JJ work_NN ._.
+1_CD ._.
+Related_NNP Work_NNP This_NNP paper_NN is_VBZ an_DT extended_JJ version_NN of_IN our_PRP$ earlier_JJR paper_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+It_PRP expands_VBZ on_IN a_DT study_NN by_IN Cho_NN and_CC GarciaMolina_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT authors_NNS of_IN that_DT study_NN downloaded_VBD 720,000_CD pages_NNS drawn_VBN from_IN 270_CD ``_`` popular_JJ ''_'' web_NN servers_NNS -LRB-_-LRB- not_RB exceeding_VBG 3,000_CD pages_NNS per_IN server_NN -RRB-_-RRB- on_IN a_DT daily_JJ basis_NN over_IN the_DT course_NN of_IN four_CD months_NNS ,_, and_CC retained_VBD the_DT MD5_NN c_NN
+a_DT change_NN in_IN HREF_NN links_NNS ,_, and_CC over_IN 50_CD %_NN of_IN them_PRP experienced_VBD a_DT change_NN in_IN IMG_NNP links_NNS ._.
+Brewington_NNP and_CC Cybenko_NNP ,_, who_WP built_VBD a_DT web_NN clipping_JJ service_NN ,_, leveraged_VBD this_DT service_NN to_TO study_VB the_DT change_NN rate_NN of_IN web_NN pages_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP did_VBD so_RB by_IN recording_VBG the_DT last-modified_JJ time_NN stamp_NN ,_, the_DT time_NN of_IN download_NN ,_, and_CC various_JJ stylistic_JJ attributes_NNS -LRB-_-LRB- number_NN of_IN images_NNS ,_, links_NNS ,_, tables_NNS ,_, etc_NN -RRB-_-RRB- of_IN each_DT downloaded_VBN HTML_NNP page_NN ._.
+Their_PRP$ service_NN downl_NN
+times_NNS larger_JJR than_IN ,_, say_VB ,_, the_DT one_NN used_VBN by_IN Cho_NNP and_CC Garcia-Molina_NNP -RRB-_-RRB- ._.
+Second_RB ,_, we_PRP used_VBD a_DT different_JJ and_CC more_RBR fine-grained_JJ similarity_NN metric_JJ than_IN any_DT of_IN the_DT other_JJ studies_NNS ,_, based_VBN on_IN syntactic_JJ document_NN sketches_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Third_RB ,_, we_PRP selected_VBD our_PRP$ pages_NNS based_VBN on_IN a_DT breadth-first_JJ crawl_NN ,_, which_WDT removed_VBD some_DT of_IN the_DT bias_NN inherent_JJ in_IN the_DT other_JJ studies_NNS -LRB-_-LRB- although_IN breadthfirst_NN crawling_NN is_VBZ known_VBN to_TO be_VB biased_VBN towards_IN pages_NNS with_IN hig_NN
+embedded_JJ images_NNS ,_, not_RB contents_NNS ._.
+Copyright_NN c_NN ○_NN 2003_CD John_NNP Wiley_NNP &_CC Sons_NNP ,_, Ltd._NNP ._.
+Softw_NNP ._.
+Pract_NNP ._.
+Exper_NNP ._.
+2003_CD ;_: 1:1_CD --_: 1_CD Prepared_VBN using_VBG speauth_NN ._.
+clssA_NN LARGE-SCALE_NN STUDY_NN OF_IN THE_DT EVOLUTION_NN OF_IN WEB_NNP PAGES_NNP 3_CD Douglis_NNP et_FW al._FW =_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: studied_VBD a_DT web_NN trace_NN consisting_VBG of_IN 950,000_CD records_NNS -LRB-_-LRB- each_DT record_NN representing_VBG a_DT web_NN access_NN -RRB-_-RRB- collected_VBN over_IN 17_CD days_NNS at_IN the_DT gateway_NN between_IN AT&T_NNP Labs_NNPS --_: Research_NNP and_CC the_DT Internet_NN ._.
+They_PRP recorded_VBD the_DT ``_`` last-mo_NN
+ttempts_NNS to_TO maintain_VB a_DT fresh_JJ index_NN by_IN crawling_VBG over_IN 3_CD billion_CD pages_NNS once_RB Received_VBD 3_CD July_NNP 2003_CD Copyright_NNP c_NN ○_NN 2003_CD John_NNP Wiley_NNP &_CC Sons_NNP ,_, Ltd._NNP ._.
+Revised_VBN 31_CD July_NNP 2003_CD Accepted_NNP 28_CD July_NNP 2003s2_NNP D._NNP FETTERLY_NNP a_DT month_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, with_IN more_RBR frequent_JJ crawls_VBZ of_IN hand-selected_JJ sites_NNS that_WDT are_VBP known_VBN to_TO change_VB more_RBR often_RB ._.
+In_IN addition_NN ,_, it_PRP offers_VBZ access_NN to_TO cached_JJ copies_NNS of_IN pages_NNS ,_, to_TO obviate_VB problems_NNS arising_VBG from_IN some_DT of_IN the_DT crawled_VBN UR_NN
+e_LS rate_NN should_MD be_VB just_RB one_CD of_IN several_JJ factors_NNS that_WDT determine_VBP the_DT frequency_NN at_IN which_WDT a_DT URL_NN is_VBZ crawled_VBN ._.
+Other_JJ factors_NNS to_TO consider_VB include_VBP the_DT ``_`` quality_NN ''_'' of_IN a_DT page_NN -LRB-_-LRB- e.g._FW as_IN measured_VBN by_IN the_DT PageRank_NN metric_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+We_PRP have_VBP done_VBN some_DT limited_JJ experiments_NNS with_IN the_DT sampled_VBN full_JJ text_NN documents_NNS to_TO investigate_VB some_DT of_IN our_PRP$ more_JJR perplexing_JJ results_NNS ._.
+These_DT experiments_NNS helped_VBD us_PRP in_IN uncovering_VBG a_DT source_NN of_IN pollution_NN in_IN our_PRP$
+selected_VBN our_PRP$ pages_NNS based_VBN on_IN a_DT breadth-first_JJ crawl_NN ,_, which_WDT removed_VBD some_DT of_IN the_DT bias_NN inherent_JJ in_IN the_DT other_JJ studies_NNS -LRB-_-LRB- although_IN breadthfirst_NN crawling_NN is_VBZ known_VBN to_TO be_VB biased_VBN towards_IN pages_NNS with_IN high_JJ PageRank_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+∗_CD Fourth_JJ and_CC finally_RB ,_, we_PRP retained_VBD the_DT full_JJ text_NN of_IN 0.1_CD %_NN of_IN all_DT downloaded_VBN pages_NNS ,_, a_DT sample_NN set_NN that_WDT is_VBZ comparable_JJ in_IN size_NN to_TO the_DT set_NN of_IN pages_NNS summarized_VBN by_IN other_JJ studies_NNS ._.
+2_CD ._.
+Experimental_JJ Setup_NNP Our_NNP e_SYM
+connection_NN ._.
+The_DT machines_NNS were_VBD located_JJ at_IN the_DT Palo_NNP Alto_NNP Internet_NNP Exchange_NNP ,_, a_DT peering_VBG point_NN for_IN 12_CD Telcos_NNPS and_CC 20_CD major_JJ and_CC about_RB 130_CD minor_JJ ISPs_NNS ._.
+We_PRP conducted_VBD these_DT crawls_VBZ using_VBG the_DT Mercator_NNP web_NN crawler_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Mercator_NNP is_VBZ both_DT fast_RB and_CC highly_RB configurable_JJ ,_, making_VBG it_PRP a_DT suitable_JJ tool_NN for_IN our_PRP$ purposes_NNS ._.
+We_PRP seeded_VBD crawl_NN 1_CD with_IN the_DT Yahoo_NNP !_.
+home_NN page_NN ._.
+We_PRP restricted_VBD ourselves_PRP to_TO content_NN retrievable_JJ using_VBG HTTP_NN ,_, ign_NN

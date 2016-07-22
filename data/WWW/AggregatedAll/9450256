@@ -1,0 +1,216 @@
+Using_VBG static_JJ analysis_NN for_IN Ajax_NNP intrusion_NN detection_NN
+We_PRP present_VBP a_DT static_JJ control-flow_NN analysis_NN for_IN JavaScript_NNP programs_NNS running_VBG in_IN a_DT web_NN browser_NN ._.
+Our_PRP$ analysis_NN tackles_VBZ numerous_JJ challenges_NNS posed_VBN by_IN modern_JJ web_NN applications_NNS including_VBG asynchronous_JJ communication_NN ,_, frameworks_NNS ,_, and_CC dynamic_JJ code_NN generation_NN ._.
+We_PRP use_VBP our_PRP$ analysis_NN to_TO extract_VB a_DT model_NN of_IN expected_VBN client_NN behavior_NN as_IN seen_VBN from_IN the_DT server_NN ,_, and_CC build_VB an_DT intrusion-prevention_JJ proxy_NN for_IN the_DT server_NN :_: the_DT proxy_NN intercepts_VBZ client_NN requests_NNS and_CC disables_VBZ those_DT that_WDT do_VBP not_RB meet_VB the_DT expected_VBN behavior_NN ._.
+We_PRP insert_VBP random_JJ asynchronous_JJ requests_NNS to_TO foil_NN mimicry_NN attacks_NNS ._.
+Finally_RB ,_, we_PRP evaluate_VBP our_PRP$ technique_NN against_IN several_JJ real_JJ applications_NNS and_CC show_VBP that_IN it_PRP protects_VBZ against_IN an_DT attack_NN in_IN a_DT widely-used_JJ web_NN application_NN ._.
+tic_JJ analysis_NN on_IN it_PRP ,_, rejecting_VBG everything_NN that_WDT does_VBZ not_RB match_VB a_DT static_JJ analysis_NN policy_NN -LRB-_-LRB- 3_CD ,_, 13_CD -RRB-_-RRB- ._.
+Static_JJ analysis_NN techniques_NNS currently_RB struggle_VBP with_IN mechanisms_NNS for_IN intercepting_VBG dynamically_RB injected_VBN code_NN =_JJ -_: =[_NN 3_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT CONSCRIPT_NNP more_RBR cleanly_RB exposes_VBZ ,_, as_IN show_NN below_IN ._.
+Recall_VB that_IN in_IN the_DT case_NN of_IN script_NN interception_NN advice_NN ,_, the_DT policy_NN is_VBZ designed_VBN to_TO return_VB the_DT code_NN that_IN the_DT JavaScript_NNP interpreter_NN will_MD proceed_VB to_TO
+ack_NN traces_NNS to_TO the_DT server_NN ,_, and_CC the_DT server_NN could_MD check_VB the_DT traces_NNS for_IN any_DT properties_NNS it_PRP desires_NNS ._.
+Or_CC the_DT server_NN could_MD build_VB a_DT model_NN of_IN proper_JJ client_NN behavior_NN and_CC flag_NN behavioral_JJ violations_NNS of_IN this_DT model_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN they_PRP are_VBP valuable_JJ ,_, these_DT techniques_NNS only_RB provide_VBP a_DT partial_JJ enforcement_NN of_IN integrity_NN ._.
+Feasibility_NN of_IN our_PRP$ approach_NN ._.
+In_IN general_JJ ,_, replicating_VBG the_DT clientside_NN component_NN running_VBG in_IN JavaScript_NNP on_IN the_DT
+cially_RB true_JJ in_IN cases_NNS where_WRB JavaScript_NNP has_VBZ a_DT familiar_JJ syntax_NN but_CC an_DT unconventional_JJ semantics_NNS ._.
+Duetoitspopularityandshortcomings_NNS ,_, companiesandresearchershavetried_VBN to_TO tame_JJ JavaScript_NN via_IN program_NN analyses_NNS =_JJ -_: =[_NN 4,9,10,13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, sub-language_JJ -LRB-_-LRB- 5,7,17_CD -RRB-_-RRB- ,_, and_CC more_JJR ._.
+These_DT works_NNS claim_VBP but_CC do_VBP not_RB demonstrate_VB soundness_NN ,_, partly_RB because_IN we_PRP lackatractableaccountofthelanguage_NN ._.
+TheJavaScriptstandard_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- iscapacious_JJ and_CC informal_JJ ,_, while_IN one_CD
+Java_NNP applets_NNS ,_, rather_RB than_IN bugs_NNS in_IN Java-based_JJ web_NN applications_NNS ._.
+Another_DT direction_NN of_IN research_NN deals_NNS with_IN protection_NN of_IN web_NN service_NN components_NNS against_IN malicious_JJ and\/or_CC compromised_VBN clients_NNS ._.
+Guha_NNP et_FW al._FW =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: employ_VB static_JJ analysis_NN on_IN JavaScript_NNP client_NN code_NN in_IN order_NN to_TO extract_VB an_DT expected_JJ client_NN behavior_NN as_IN seen_VBN by_IN the_DT server_NN ._.
+The_DT server_NN is_VBZ then_RB protected_VBN by_IN a_DT proxy_NN that_WDT filters_VBZ possibly_RB malicious_JJ clients_NNS
+ferent_JJ variants_NNS of_IN the_DT analysis_NN ._.
+Jang_NNP and_CC Choe_NNP -LRB-_-LRB- Jang_NNP and_CC Choe_NNP 2009_CD -RRB-_-RRB- handles_VBZ only_RB a_DT simple_JJ subset_NN of_IN JavaScript_NNP ._.
+Control_NN flow_NN analysis_NN for_IN dynamic_JJ languages_NNS has_VBZ been_VBN used_VBN for_IN Ajax_NNP intrusion_NN detection_NN -LRB-_-LRB- =_JJ -_: =_JJ Guha_NNP et_FW al._FW 2009_CD -_: =--RRB-_NN ._.
+In_IN that_DT work_NN ,_, an_DT interprocedural_JJ CFG_NN for_IN a_DT JavaScript_NNP program_NN is_VBZ constructed_VBN usingk-CFA_NN and_CC then_RB transformed_VBN into_IN a_DT request_NN graph_NN to_TO build_VB an_DT intrusion-detection_JJ proxy_NN for_IN the_DT server_NN that_IN the_DT progr_NN
+nt_NN resource_NN for_IN Rails_NNPS security_NN in_IN particular_JJ is_VBZ -LRB-_-LRB- 36_CD -RRB-_-RRB- ._.
+Much_JJ research_NN on_IN web-application_NN security_NN has_VBZ focused_VBN on_IN settings_NNS where_WRB applications_NNS are_VBP untrusted_JJ ,_, and_CC users_NNS must_MD be_VB protected_VBN from_IN applications_NNS =_JJ -_: =[_NN 16_CD ,_, 38_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN contrast_NN ,_, applications_NNS are_VBP not_RB considered_VBN inherently_RB malicious_JJ in_IN our_PRP$ setting_NN --_: we_PRP assume_VBP that_IN some_DT users_NNS may_MD be_VB malicious_JJ ,_, and_CC we_PRP care_VBP about_IN verifying_VBG that_IN applications_NNS and_CC other_JJ users_NNS are_VBP protect_VB
+r_NN scripting_NN languages_NNS have_VBP come_VBN into_IN the_DT focus_NN of_IN research_NN on_IN static_JJ program_NN analysis_NN ,_, partly_RB because_IN of_IN their_PRP$ challenging_JJ dynamic_JJ nature_NN ._.
+These_DT works_NNS range_VBP from_IN analysis_NN for_IN security_NN vulnerabilities_NNS =_JJ -_: =[_NN 9_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: to_TO static_JJ type_NN inference_NN -LRB-_-LRB- 1,8,15,27_CD -RRB-_-RRB- ._.
+We_PRP concentrate_VBP on_IN the_DT latter_JJ category_NN ,_, aiming_VBG to_TO develop_VB program_NN analyses_NNS that_WDT can_MD compensate_VB for_IN the_DT lack_NN of_IN static_JJ type_NN checking_NN in_IN these_DT languages_NNS ._.
+The_DT interp_NN
+d_NN from_IN applications_NNS ._.
+Thus_RB ,_, client-side_JJ defenses_NNS have_VBP been_VBN studied_VBN -LRB-_-LRB- 36_CD ,_, 41_CD ,_, 55_CD -RRB-_-RRB- ,_, and_CC there_EX has_VBZ been_VBN important_JJ progress_NN on_IN browser_NN security_NN -LRB-_-LRB- 4_CD ,_, 10_CD ,_, 29_CD ,_, 52_CD ,_, 69_CD -RRB-_-RRB- ,_, and_CC on_IN JavaScript_NNP security_NN in_IN particular_JJ =_JJ -_: =[_NN 4_CD ,_, 30_CD ,_, 44_CD ,_, 45_CD ,_, 55_CD ,_, 69_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN contrast_NN ,_, applications_NNS are_VBP not_RB considered_VBN inherently_RB malicious_JJ in_IN our_PRP$ setting_NN --_: we_PRP assume_VBP that_IN some_DT users_NNS may_MD be_VB malicious_JJ ,_, and_CC we_PRP care_VBP about_IN verifying_VBG that_IN applications_NNS and_CC other_JJ users_NNS are_VBP protect_VB
+esources_NNS would_MD make_VB these_DT attempts_NNS more_RBR reliable_JJ ._.
+Recent_JJ proposals_NNS have_VBP suggested_VBN that_IN application-specific_JJ policies_NNS can_MD be_VB generated_VBN without_IN requiring_VBG the_DT author_NN to_TO write_VB code_NN ._.
+For_IN example_NN ,_, a_DT static_JJ =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: or_CC dynamic_JJ analysis_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- can_MD be_VB used_VBN to_TO determine_VB acceptable_JJ interaction_NN patterns_NNS which_WDT a_DT developer_NN then_RB simply_RB audits_NN ._.
+Given_VBN the_DT flexibility_NN of_IN JavaScript_NNP ,_, reliabile_JJ enforcement_NN in_IN these_DT intrusion_NN d_NN
+de_IN of_IN the_DT outsourced_JJ computation,specificallyeitheranon-deterministicfinite-stateautomatonorapush-downautomatonthatmirrorstheflowof_NN control_NN in_IN the_DT executable_JJ ._.
+A_DT more_RBR recent_JJ example_NN is_VBZ work_NN byGuhaetal_NN ._.
+=_SYM -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: :_: throughstaticanalysisoftheclientportionofAjaxwebapplications_NN -LRB-_-LRB- HTMLandJavaScript_NN -RRB-_-RRB- ,_, their_PRP$ systemconstructsacontrol-flowgraphfortheclientthatdescribes_NNS the_DT sequencesof_NN URLs_NNS that_IN the_DT client-side_JJ program_NN ca_MD
+idea_NN has_VBZ also_RB been_VBN used_VBN in_IN a_DT semi-automated_JJ approach_NN to_TO state-based_JJ testing_NN by_IN Marchetto_NNP et_FW al._FW -LRB-_-LRB- 14_CD ,_, 15_CD -RRB-_-RRB- ._.
+Static_JJ analysis_NN for_IN JavaScript_NNP has_VBZ emerged_VBN as_IN a_DT complementary_JJ technique_NN for_IN detecting_VBG errors_NNS =_JJ -_: =[_NN 8_CD ,_, 9_CD ,_, 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, however_RB this_DT direction_NN of_IN work_NN is_VBZ still_RB at_IN an_DT early_JJ stage_NN ._.
+The_DT dynamic_JJ nature_NN of_IN JavaScript_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, such_JJ as_IN runtime_NN code_NN generation_NN with_IN eval_NN and_CC runtime_NN HTML_NNP parsing_VBG with_IN innerHTML_NN ,_, makes_VBZ it_PRP difficul_JJ
+isolating_VBG application-data_NN from_IN protocol_NN overhead_NN ,_, better_JJR control_NN in_IN respect_NN to_TO outgoing_JJ data_NNS can_MD be_VB guaranteed_VBN ._.
+--_: Shriram_NNP Krishnamurthi_NNP presented_VBD work_NN on_IN control_NN flow_NN enforcement_NN in_IN Web_NN applications_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT presented_VBN technique_NN is_VBZ built_VBN around_IN the_DT correlation_NN between_IN client-side_JJ events_NNS and_CC resulting_VBG HTTP_NN requests_NNS ._.
+Through_IN an_DT analysis_NN of_IN the_DT behavior_NN of_IN the_DT application_NN this_DT correlation_NN can_MD be_VB establ_VBN
+ies_NNS information_NN flow_NN analysis_NN to_TO avoid_VB information_NN leak_NN ._.
+Wassermann_NNP and_CC Su_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- apply_VBP taint_NN analysis_NN and_CC string_NN analysis_NN to_TO perform_VB input_NN check_NN in_IN order_NN to_TO detect_VB the_DT XSS_NN vulnerabilities_NNS ._.
+Guha_NNP et_FW al._FW =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: use_VB static_JJ analysis_NN to_TO extract_VB a_DT model_NN of_IN expected_VBN user_NN behavior_NN to_TO detect_VB Ajax_NNP intrusion_NN ._.
+Our_PRP$ analysis_NN is_VBZ also_RB static_JJ but_CC aims_VBZ at_IN a_DT different_JJ problem_NN ._.
+Data_NN Race_NN Detection_NN and_CC Atomicity_NN Violation_NN ._.
+Th_NN
+lattice_NN must_MD have_VB finite_JJ height_NN -RRB-_-RRB- ,_, thus_RB abstraction_NN is_VBZ necessary_JJ ._.
+A_DT simple_JJ approach_NN is_VBZ to_TO represent_VB all_DT HTML_NNP objects_NNS as_IN one_CD abstract_JJ object_NN ._.
+This_DT is_VBZ essentially_RB what_WP is_VBZ done_VBN in_IN other_JJ program_NN analyses_NNS =_JJ -_: =[_NN 7,8_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT perform_VBP a_DT less_RBR detailed_JJ analysis_NN than_IN what_WP we_PRP aim_VBP for_IN ._.
+To_TO preserve_VB the_DT inheritance_NN relationships_NNS between_IN the_DT DOM_NNP objects_NNS ,_, we_PRP choose_VBP an_DT abstraction_NN where_WRB all_DT constructor_NN objects_NNS and_CC prototype_NN obj_NN
+web_NN applications_NNS ,_, specifically_RB on_IN serverside_NN code_NN -LRB-_-LRB- 7_CD ,_, 33_CD ,_, 36_CD ,_, 39_CD --_: 41_CD ,_, 44_CD ,_, 66_CD ,_, 68_CD -RRB-_-RRB- but_CC also_RB more_RBR recently_RB on_IN JavaScriptA_NNP Systematic_NNP Analysis_NNP of_IN XSS_NNP Sanitization_NNP in_IN Web_NN Application_NN Frameworks_NNS 165_CD code_NN =_JJ -_: =[_NN 8_CD ,_, 27_CD ,_, 49_CD ,_, 50_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT works_NNS have_VBP underscored_VBN the_DT two_CD main_JJ causes_NNS of_IN XSS_NN vulnerabilities_NNS :_: identifying_VBG untrusted_JJ data_NNS at_IN output_NN and_CC errors_NNS in_IN sanitization_NN by_IN applications_NNS ._.
+There_EX have_VBP been_VBN three_CD kinds_NNS of_IN defenses_NNS :_: pur_NN
+thors_NNS acknowledge_VBP that_IN it_PRP is_VBZ unsound_JJ ,_, and_CC Chugh_NNP et_FW al._FW do_VBP not_RB provide_VB a_DT proof_NN of_IN soundness_NN for_IN their_PRP$ flow_NN analysis_NN ._.
+Our_PRP$ type_NN system_NN and_CC analysis_NN are_VBP proven_JJ sound_NN ._.
+Other_JJ static_JJ analyses_NNS for_IN JavaScript_NN =_JJ -_: =[_NN 16_CD ,_, 21_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP not_RB specifically_RB designed_VBN to_TO encode_VB and_CC check_VB security_NN ._.
+Type_NN Systems_NNP Our_NNP type_NN checker_NN is_VBZ based_VBN on_IN that_DT of_IN Guha_NNP ,_, et_FW al._FW -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Theirs_NNP has_VBZ a_DT restrictive_JJ type_NN system_NN for_IN objects_NNS that_IN we_PRP fully_RB replace_VB
+ion_NN may_MD combine_VB code_NN from_IN multiple_JJ languages_NNS and_CC frameworks_NNS ,_, and_CC -LRB-_-LRB- 2_LS -RRB-_-RRB- client-side_JJ languages_NNS such_JJ as_IN JavaScript_NNP are_VBP notoriously_RB difficult_JJ to_TO analyze_VB statically_RB due_JJ to_TO the_DT presence_NN of_IN dynamic_JJ constructs_NNS =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Prior_JJ work_NN has_VBZ shown_VBN that_IN dynamic_JJ invariants_NNS can_MD be_VB used_VBN in_IN general-purpose_JJ programs_NNS for_IN testing_NN and_CC error_NN detection_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+However_RB ,_, there_EX has_VBZ been_VBN relatively_RB little_JJ work_NN on_IN deriving_VBG dynamic_NN
+workflows_NNS ._.
+Swaddler_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- first_RB learns_VBZ internal_JJ states_NNS of_IN web_NN applications_NNS ,_, and_CC then_RB detects_VBZ abnormal_JJ state_NN violations_NNS at_IN critical_JJ points_NNS ._.
+Targeting_NN the_DT detection_NN of_IN Ajax_NNP intrusion_NN attacks_NNS ,_, Guha_NNP et_FW al._FW =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: leverage_NN static_JJ analysis_NN on_IN client-side_JJ JavaScript_NNP code_NN to_TO infer_VB expected_VBN server-side_JJ behavior_NN ._.
+To_TO detect_VB multi-module_JJ vulnerabilities_NNS ,_, MiMoSA_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- takes_VBZ into_IN account_NN the_DT interactions_NNS of_IN different_JJ web_NN
+en_IN -LRB-_-LRB- 28_CD -RRB-_-RRB- address_VBP the_DT same_JJ problem_NN ,_, and_CC present_VB a_DT static_JJ analysis_NN algorithm_NN based_VBN on_IN symbolic_JJ evaluation_NN to_TO handle_VB dynamic_JJ features_NNS of_IN PHP_NNP ._.
+While_IN the_DT above_JJ papers_NNS focus_VBP on_IN server-side_JJ code_NN ,_, Guha_NNP et_FW al._FW =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: present_VB a_DT static_JJ control-flow_NN analysis_NN for_IN client-side_JJ JavaScript_NNP code_NN to_TO handle_VB dynamic_JJ code_NN generation_NN ._.
+Maffeis_NNP and_CC Taly_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB- study_NN methods_NNS for_IN filtering_VBG and_CC rewriting_VBG JavaScript_NNP code_NN to_TO address_VB si_IN
+en_IN -LRB-_-LRB- 28_CD -RRB-_-RRB- address_VBP the_DT same_JJ problem_NN ,_, and_CC present_VB a_DT static_JJ analysis_NN algorithm_NN based_VBN on_IN symbolic_JJ evaluation_NN to_TO handle_VB dynamic_JJ features_NNS of_IN PHP_NNP ._.
+While_IN the_DT above_JJ papers_NNS focus_VBP on_IN server-side_JJ code_NN ,_, Guha_NNP et_FW al._FW =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: present_VB a_DT static_JJ control-flow_NN analysis_NN for_IN client-side_JJ JavaScript_NNP code_NN to_TO handle_VB dynamic_JJ code_NN generation_NN ._.
+Maffeis_NNP and_CC Taly_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB- study_NN methods_NNS for_IN filtering_VBG and_CC rewriting_VBG JavaScript_NNP code_NN to_TO address_VB si_IN
+analysis_NN techniques_NNS for_IN JavaScript_NNP code_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- ,_, particularly_RB to_TO statically_RB ensure_VB compliance_NN with_IN site-specific_JJ policies_NNS and_CC to_TO ensure_VB the_DT integrity_NN of_IN client-side_JJ JavaScript_NNP code_NN of_IN a_DT web_NN application_NN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP plan_VBP to_TO explore_VB whether_IN Sabre_NNP can_MD leverage_NN similar_JJ static_JJ analysis_NN techniques_NNS to_TO reduce_VB the_DT runtime_NN overhead_NN of_IN information_NN flow_NN tracking_NN for_IN JSEs_NNS ._.
+However_RB ,_, we_PRP expect_VBP that_IN performing_VBG such_JJ analysi_NNS
+e_LS generate_VB request_NN graphs_NNS from_IN control-flow_JJ graphs_NNS ._. -RRB-_-RRB-
+A_DT control_NN flow_NN analysis_NN for_IN JavaScript_NNP must_MD account_VB for_IN higher-order_JJ functions_NNS and_CC ,_, similarly_RB ,_, method_NN dispatch_VBP ._.
+We_PRP use_VBP the_DT uniform_JJ k-CFA_NN algorithm_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT is_VBZ an_DT established_JJ technique_NN for_IN higher-order_JJ control_NN flow_NN analyses_NNS ._.
+CFA_NNP models_NNS a_DT program_NN 's_POS functions_NNS as_IN abstract_JJ values_NNS ._.
+Expressions_NNS in_IN a_DT program_NN are_VBP mapped_VBN to_TO sets_NNS of_IN abstract_JJ values_NNS ._.
+Collect_VB
+nous_JJ calls_NNS ._.
+However_RB ,_, such_JJ an_DT attempt_NN would_MD require_VB sophisticated_JJ program_NN transformations_NNS to_TO preserve_VB semantics_NNS ,_, and_CC the_DT authors_NNS do_VBP not_RB discuss_VB this_DT ._.
+Intrusion_NN detection_NN systems_NNS for_IN web_NN servers_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =--RRB-_NN work_NN with_IN http_JJ and_CC lower-level_JJ abstractions_NNS ,_, sometimes_RB incorporating_VBG models_NNS of_IN server_NN mechanics_NNS such_JJ as_IN database_NN and_CC filesystem_NN accesses_NNS ._.
+Our_PRP$ work_NN models_NNS application-level_JJ semantics_NNS and_CC is_VBZ thus_RB comp_NN
+ave_NN found_VBD it_PRP unreasonable_JJ to_TO repeatedly_RB click_VB through_IN ``_`` guard_NN pages_NNS ''_'' ._.
+Our_PRP$ technique_NN is_VBZ thus_RB well-matched_JJ with_IN the_DT Ajax_NNP architecture_NN ._.
+-LRB-_-LRB- We_PRP discuss_VBP a_DT related_JJ technique_NN ,_, the_DT insertion_NN of_IN null_JJ system_NN calls_VBZ =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, in_FW §_FW 9_CD ._. -RRB-_-RRB-
+Client_NNP Program_NNP Mutation_NN ._.
+We_PRP decide_VBP where_WRB to_TO insert_VB random_JJ requests_NNS by_IN examining_VBG the_DT request_NN graph_NN produced_VBN by_IN our_PRP$ analysis_NN ._.
+The_DT analysis_NN maintains_VBZ a_DT mapping_NN between_IN the_DT request_NN graph_NN and_CC the_DT
+ven_VBN informal_JJ modularity_NN boundaries_NNS -LRB-_-LRB- such_JJ as_IN web_NN pages_NNS -RRB-_-RRB- help_VBP enormously_RB ._.
+It_PRP should_MD ,_, therefore_RB ,_, be_VB possible_JJ to_TO employ_VB modular_JJ flow-analyses_NNS that_WDT have_VBP been_VBN effective_JJ for_IN other_JJ dynamicallytyped_JJ languages_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: in_IN this_DT context_NN .11_CD ._.
+ACKNOWLEDGEMENTS_NNS We_PRP thank_VBP Spiridon_NNP Eliopoulos_NNP and_CC Brendan_NNP Hickey_NNP ,_, who_WP helped_VBD implement_VB the_DT program_NN analysis_NN ._.
+David_NNP Brumley_NNP ,_, Mihai_NNP Christodorescu_NNP ,_, Larry_NNP Koved_NNP ,_, Michael_NNP Steiner_NNP ,_, Da_NN
+quests_NNS -LRB-_-LRB- §_NN 6_CD -RRB-_-RRB- :_: this_DT requires_VBZ the_DT attacker_NN to_TO determine_VB the_DT guard_NN requests_NNS corresponding_VBG to_TO both_DT searching_VBG and_CC setting_VBG permissions_NNS ._.
+We_PRP conjecture_NN this_DT requires_VBZ the_DT attack_NN to_TO contain_VB program_NN differencing_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT technique_NN that_WDT is_VBZ difficult_JJ to_TO implement_VB effectively_RB for_IN modern_JJ languages_NNS ._.
+Run-Time_JJ Overhead_NN ._.
+The_DT run-time_JJ overhead_NN --_: introduced_VBN by_IN the_DT proxy_NN --_: is_VBZ minimal_JJ ;_: even_RB our_PRP$ prototype_NN ,_, unoptimized_JJ proxy_NN induce_VBP
+also_RB faces_VBZ several_JJ problems_NNS ,_, such_JJ as_IN false-positives_NNS and_CC the_DT need_NN for_IN good_JJ test_NN inputs_NNS -LRB-_-LRB- that_WDT reflect_VBP system_NN changes_NNS over_IN time_NN -RRB-_-RRB- ._.
+Other_JJ systems_NNS use_VBP a_DT model_NN of_IN calls_NNS constructed_VBN through_IN static_JJ analysis_NN =_JJ -_: =[_NN 33_CD ,_, 7_CD ,_, 12_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT systems_NNS all_DT address_NN operating_VBG system_NN monitoring_NN ,_, where_WRB the_DT operating_NN system_NN -LRB-_-LRB- corresponding_VBG to_TO our_PRP$ server_NN -RRB-_-RRB- ,_, monitor_NN ,_, and_CC application_NN -LRB-_-LRB- corresponding_VBG to_TO our_PRP$ browser_NN client_NN -RRB-_-RRB- all_DT run_NN on_IN the_DT same_JJ ma_NN
+ection_NN in_IN operating_NN systems_NNS ;_: our_PRP$ technique_NN is_VBZ similar_JJ ,_, except_IN it_PRP deals_VBZ with_IN remote_JJ requests_NNS instead_RB ._.
+Some_DT system_NN call_NN monitors_VBZ use_NN training_NN on_IN dynamic_JJ examples_NNS to_TO obtain_VB the_DT model_NN of_IN calls_NNS to_TO enforce_VB =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Training_NN has_VBZ advantages_NNS but_CC ,_, as_IN Gates_NNP and_CC Taylor_NNP -LRB-_-LRB- 10_CD -RRB-_-RRB- indicate_VBP ,_, also_RB faces_VBZ several_JJ problems_NNS ,_, such_JJ as_IN false-positives_NNS and_CC the_DT need_NN for_IN good_JJ test_NN inputs_NNS -LRB-_-LRB- that_WDT reflect_VBP system_NN changes_NNS over_IN time_NN -RRB-_-RRB- ._.
+Other_JJ
+o_NN this_DT graph_NN constitutes_VBZ a_DT potential_JJ attack_NN ._.
+Our_PRP$ tool_NN can_MD prevent_VB many_JJ common_JJ cross-site_JJ scripting_NN -LRB-_-LRB- xss_NN -RRB-_-RRB- and_CC cross-site_JJ request_NN forgery_NN -LRB-_-LRB- csrf_NN -RRB-_-RRB- attacks_NNS ._.
+Our_PRP$ work_NN is_VBZ inspired_VBN by_IN that_DT of_IN Wagner_NNP and_CC Dean_NNP =_SYM -_: =[_NN 33_CD -RRB-_-RRB- -_: =_JJ -_: and_CC others_NNS -LRB-_-LRB- see_VB §_CD 9_CD -RRB-_-RRB- ,_, who_WP used_VBD program_NN analysis_NN to_TO build_VB system_NN call_NN monitors_NNS and_CC intrusion_NN detectors_NNS ._.
+We_PRP share_VBP the_DT following_JJ strengths_NNS and_CC weaknesses_NNS with_IN that_DT line_NN of_IN research_NN :_: we_PRP obtain_VBP a_DT monitor_NN a_DT
+avoiding_VBG prototype_NN hijacking_NN attacks_NNS would_MD be_VB more_RBR robust_JJ if_IN implemented_VBN as_IN BrowserShield_NNP rewriting_VBG rules_NNS ._.
+Static_JJ analyses_NNS have_VBP been_VBN applied_VBN to_TO detect_VB vulnerabilities_NNS in_IN server-side_JJ web_NN applications_NNS =_JJ -_: =[_NN 1_CD ,_, 6_CD ,_, 19_CD ,_, 22_CD ,_, 34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT complement_VBP our_PRP$ client-centric_JJ approach_NN ._.
+These_DT efforts_NNS handle_VBP only_RB the_DT procedural_JJ subset_NN of_IN php_NN -LRB-_-LRB- Balzarotti_NNP et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- manually_RB transform_VB the_DT objects_NNS they_PRP encounter_VBP -RRB-_-RRB- ._.
+In_IN contrast_NN ,_, JavaScript_NNP is_VBZ
+avoiding_VBG prototype_NN hijacking_NN attacks_NNS would_MD be_VB more_RBR robust_JJ if_IN implemented_VBN as_IN BrowserShield_NNP rewriting_VBG rules_NNS ._.
+Static_JJ analyses_NNS have_VBP been_VBN applied_VBN to_TO detect_VB vulnerabilities_NNS in_IN server-side_JJ web_NN applications_NNS =_JJ -_: =[_NN 1_CD ,_, 6_CD ,_, 19_CD ,_, 22_CD ,_, 34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT complement_VBP our_PRP$ client-centric_JJ approach_NN ._.
+These_DT efforts_NNS handle_VBP only_RB the_DT procedural_JJ subset_NN of_IN php_NN -LRB-_-LRB- Balzarotti_NNP et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- manually_RB transform_VB the_DT objects_NNS they_PRP encounter_VBP -RRB-_-RRB- ._.
+In_IN contrast_NN ,_, JavaScript_NNP is_VBZ
+avoiding_VBG prototype_NN hijacking_NN attacks_NNS would_MD be_VB more_RBR robust_JJ if_IN implemented_VBN as_IN BrowserShield_NNP rewriting_VBG rules_NNS ._.
+Static_JJ analyses_NNS have_VBP been_VBN applied_VBN to_TO detect_VB vulnerabilities_NNS in_IN server-side_JJ web_NN applications_NNS =_JJ -_: =[_NN 1_CD ,_, 6_CD ,_, 19_CD ,_, 22_CD ,_, 34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT complement_VBP our_PRP$ client-centric_JJ approach_NN ._.
+These_DT efforts_NNS handle_VBP only_RB the_DT procedural_JJ subset_NN of_IN php_NN -LRB-_-LRB- Balzarotti_NNP et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- manually_RB transform_VB the_DT objects_NNS they_PRP encounter_VBP -RRB-_-RRB- ._.
+In_IN contrast_NN ,_, JavaScript_NNP is_VBZ
+result_NN ._.
+success_NN and_CC result_NN ._.
+sessionId_NN -RRB-_-RRB- ,_, the_DT analysis_NN adds_VBZ the_DT field_NN to_TO the_DT indeterminate_JJ object_NN ,_, and_CC populates_VBZ it_PRP with_IN a_DT fresh_JJ indeterminate_JJ value_NN ._.
+This_DT is_VBZ effectively_RB a_DT very_RB lightweight_JJ shape_NN analysis_NN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+json_NN strings_NNS represent_VBP syntactic_JJ values_NNS containing_VBG only_JJ fields_NNS ,_, not_RB methods_NNS ;_: the_DT resulting_VBG objects_NNS can_MD be_VB treated_VBN like_IN any_DT other_JJ object_NN ._.
+The_DT soundness_NN of_IN this_DT technique_NN depends_VBZ on_IN assuming_VBG that_IN the_DT
+Our_PRP$ system_NN only_RB monitors_VBZ clients_NNS '_POS requests_NNS ,_, not_RB control_NN flow_NN events_NNS ._.
+However_RB ,_, it_PRP may_MD be_VB possible_JJ to_TO adapt_VB their_PRP$ technique_NN to_TO monitor_VB control_NN flow_NN events_NNS in_IN the_DT browser_NN ._.
+AjaxScope_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, BrowserShield_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC CoreScript_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- secure_JJ browsers_NNS from_IN known_JJ vulnerabilities_NNS by_IN rewriting_VBG html_NN and_CC JavaScript_NN ._.
+The_DT JavaScript_NNP rewriting_VBG we_PRP use_VBP for_IN inserting_VBG random_JJ requests_NNS -LRB-_-LRB- §_NN 6_CD -RRB-_-RRB- is_VBZ a_DT simpler_JJR transformation_NN and_CC su_NN
+tubs_NNS exist_VBP only_RB during_IN analysis_NN and_CC their_PRP$ Request_NNP nodes_NNS should_MD not_RB be_VB guarded_VBN ._.
+The_DT source_NN mapping_NN identifies_VBZ nodes_NNS that_WDT come_VBP from_IN stubs_NNS ,_, so_IN we_PRP can_MD avoid_VB this_DT ._.
+Prototype_NNP Hijacking_NNP ._.
+Prototype_NN hijacking_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT way_NN to_TO modify_VB the_DT behavior_NN of_IN any_DT JavaScript_NNP method_NN ,_, including_VBG xhr_NN ._.
+An_DT attacker_NN could_MD use_VB it_PRP to_TO alter_VB xhr_NN to_TO record_VB all_DT requests_NNS ,_, and_CC thereby_RB discover_VB how_WRB we_PRP have_VBP inserted_VBN random_JJ asynchronous_JJ gu_NN
+except_IN it_PRP deals_VBZ with_IN remote_JJ requests_NNS instead_RB ._.
+Some_DT system_NN call_NN monitors_VBZ use_NN training_NN on_IN dynamic_JJ examples_NNS to_TO obtain_VB the_DT model_NN of_IN calls_NNS to_TO enforce_VB -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+Training_NN has_VBZ advantages_NNS but_CC ,_, as_IN Gates_NNP and_CC Taylor_NNP =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: indicate_VBP ,_, also_RB faces_VBZ several_JJ problems_NNS ,_, such_JJ as_IN false-positives_NNS and_CC the_DT need_NN for_IN good_JJ test_NN inputs_NNS -LRB-_-LRB- that_WDT reflect_VBP system_NN changes_NNS over_IN time_NN -RRB-_-RRB- ._.
+Other_JJ systems_NNS use_VBP a_DT model_NN of_IN calls_NNS constructed_VBN through_IN static_JJ
+an_DT external_JJ monitor_NN ._.
+Our_PRP$ system_NN only_RB monitors_VBZ clients_NNS '_POS requests_NNS ,_, not_RB control_NN flow_NN events_NNS ._.
+However_RB ,_, it_PRP may_MD be_VB possible_JJ to_TO adapt_VB their_PRP$ technique_NN to_TO monitor_VB control_NN flow_NN events_NNS in_IN the_DT browser_NN ._.
+AjaxScope_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, BrowserShield_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, and_CC CoreScript_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- secure_JJ browsers_NNS from_IN known_JJ vulnerabilities_NNS by_IN rewriting_VBG html_NN and_CC JavaScript_NN ._.
+The_DT JavaScript_NNP rewriting_VBG we_PRP use_VBP for_IN inserting_VBG random_JJ requests_NNS -LRB-_-LRB- §_NN 6_CD -RRB-_-RRB- is_VBZ a_DT simpler_JJR t_NN
+avoiding_VBG prototype_NN hijacking_NN attacks_NNS would_MD be_VB more_RBR robust_JJ if_IN implemented_VBN as_IN BrowserShield_NNP rewriting_VBG rules_NNS ._.
+Static_JJ analyses_NNS have_VBP been_VBN applied_VBN to_TO detect_VB vulnerabilities_NNS in_IN server-side_JJ web_NN applications_NNS =_JJ -_: =[_NN 1_CD ,_, 6_CD ,_, 19_CD ,_, 22_CD ,_, 34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT complement_VBP our_PRP$ client-centric_JJ approach_NN ._.
+These_DT efforts_NNS handle_VBP only_RB the_DT procedural_JJ subset_NN of_IN php_NN -LRB-_-LRB- Balzarotti_NNP et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- manually_RB transform_VB the_DT objects_NNS they_PRP encounter_VBP -RRB-_-RRB- ._.
+In_IN contrast_NN ,_, JavaScript_NNP is_VBZ
+also_RB faces_VBZ several_JJ problems_NNS ,_, such_JJ as_IN false-positives_NNS and_CC the_DT need_NN for_IN good_JJ test_NN inputs_NNS -LRB-_-LRB- that_WDT reflect_VBP system_NN changes_NNS over_IN time_NN -RRB-_-RRB- ._.
+Other_JJ systems_NNS use_VBP a_DT model_NN of_IN calls_NNS constructed_VBN through_IN static_JJ analysis_NN =_JJ -_: =[_NN 33_CD ,_, 7_CD ,_, 12_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT systems_NNS all_DT address_NN operating_VBG system_NN monitoring_NN ,_, where_WRB the_DT operating_NN system_NN -LRB-_-LRB- corresponding_VBG to_TO our_PRP$ server_NN -RRB-_-RRB- ,_, monitor_NN ,_, and_CC application_NN -LRB-_-LRB- corresponding_VBG to_TO our_PRP$ browser_NN client_NN -RRB-_-RRB- all_DT run_NN on_IN the_DT same_JJ ma_NN
+ly_RB transform_VB the_DT objects_NNS they_PRP encounter_VBP -RRB-_-RRB- ._.
+In_IN contrast_NN ,_, JavaScript_NNP is_VBZ inherently_RB object-oriented_JJ and_CC higher-order_JJ ,_, which_WDT makes_VBZ objects_NNS unavoidable_JJ and_CC analysis_NN significantly_RB harder_RBR ._.
+Jhala_NNP and_CC Majumdar_NNP =_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: provide_VBP a_DT detailed_JJ model_NN of_IN interprocedural_JJ analysis_NN of_IN asynchronous_JJ programs_NNS ,_, but_CC for_IN first-order_JJ programs_NNS ._.
+In_IN contrast_NN ,_, Self_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- is_VBZ another_DT dynamically-typed_JJ ,_, prototype-based_JJ language_NN ,_, but_CC its_PRP$ mos_NNS
+tors_NNS clients_NNS '_POS requests_NNS ,_, not_RB control_NN flow_NN events_NNS ._.
+However_RB ,_, it_PRP may_MD be_VB possible_JJ to_TO adapt_VB their_PRP$ technique_NN to_TO monitor_VB control_NN flow_NN events_NNS in_IN the_DT browser_NN ._.
+AjaxScope_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, BrowserShield_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, and_CC CoreScript_NN =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =_JJ -_: secure_JJ browsers_NNS from_IN known_JJ vulnerabilities_NNS by_IN rewriting_VBG html_NN and_CC JavaScript_NN ._.
+The_DT JavaScript_NNP rewriting_VBG we_PRP use_VBP for_IN inserting_VBG random_JJ requests_NNS -LRB-_-LRB- §_NN 6_CD -RRB-_-RRB- is_VBZ a_DT simpler_JJR transformation_NN and_CC sufficient_JJ for_IN our_PRP$ purp_NN
+ams_RB ,_, but_CC for_IN first-order_JJ programs_NNS ._.
+In_IN contrast_NN ,_, Self_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- is_VBZ another_DT dynamically-typed_JJ ,_, prototype-based_JJ language_NN ,_, but_CC its_PRP$ most_RBS sophisticated_JJ analysis_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- relies_VBZ heavily_RB on_IN dynamic_JJ feedback_NN ._.
+Swift\/Jif_NN =_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: gives_VBZ developers_NNS guarantees_NNS about_IN information_NN flow_NN security_NN ._.
+It_PRP assumes_VBZ applications_NNS are_VBP written_VBN in_IN Java_NNP augmented_VBD with_IN information_NN flow_NN checks_NNS ,_, and_CC uses_VBZ the_DT gwt_NN to_TO compile_VB these_DT to_TO JavaScript_NNP ._.
+This_DT
+ot_NN account_NN for_IN the_DT use_NN of_IN browser_NN operations_NNS such_JJ as_IN the_DT Back_NNP button_NN ._.
+Prior_JJ work_NN on_IN verifying_VBG server-based_JJ applications_NNS that_WDT shows_VBZ how_WRB to_TO extend_VB a_DT control-flow_JJ model_NN to_TO accommodate_VB browser_NN operations_NNS =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ compatible_JJ with_IN the_DT techniques_NNS in_IN this_DT paper_NN ._.
+As_IN we_PRP discussed_VBD in_IN §_NN 3.1_CD ,_, we_PRP do_VBP not_RB model_VB actions_NNS such_JJ as_IN disabling_VBG an_DT event-handler_NN by_IN disabling_VBG the_DT associated_VBN dom_NN element_NN ._.
+Because_IN programs_NNS do_VBP disab_VB
+avoiding_VBG prototype_NN hijacking_NN attacks_NNS would_MD be_VB more_RBR robust_JJ if_IN implemented_VBN as_IN BrowserShield_NNP rewriting_VBG rules_NNS ._.
+Static_JJ analyses_NNS have_VBP been_VBN applied_VBN to_TO detect_VB vulnerabilities_NNS in_IN server-side_JJ web_NN applications_NNS =_JJ -_: =[_NN 1_CD ,_, 6_CD ,_, 19_CD ,_, 22_CD ,_, 34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT complement_VBP our_PRP$ client-centric_JJ approach_NN ._.
+These_DT efforts_NNS handle_VBP only_RB the_DT procedural_JJ subset_NN of_IN php_NN -LRB-_-LRB- Balzarotti_NNP et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- manually_RB transform_VB the_DT objects_NNS they_PRP encounter_VBP -RRB-_-RRB- ._.
+In_IN contrast_NN ,_, JavaScript_NNP is_VBZ
+-_: level_NN abstractions_NNS ,_, sometimes_RB incorporating_VBG models_NNS of_IN server_NN mechanics_NNS such_JJ as_IN database_NN and_CC filesystem_NN accesses_NNS ._.
+Our_PRP$ work_NN models_NNS application-level_JJ semantics_NNS and_CC is_VBZ thus_RB complementary_JJ ._.
+Sharif_FW et_FW ._.
+al._FW =_SYM -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: prove_VBP that_IN intrusion_NN detection_NN systems_NNS that_WDT monitor_VBP control_NN flow_NN are_VBP strictly_RB more_RBR precise_JJ than_IN system_NN call_NN monitors_NNS ._.
+They_PRP discuss_VBP a_DT technique_NN for_IN monitoring_NN control_NN flow_NN events_NNS with_IN an_DT external_JJ moni_NN
+s_NN unavoidable_JJ and_CC analysis_NN significantly_RB harder_RBR ._.
+Jhala_NNP and_CC Majumdar_NNP -LRB-_-LRB- 17_CD -RRB-_-RRB- provide_VBP a_DT detailed_JJ model_NN of_IN interprocedural_JJ analysis_NN of_IN asynchronous_JJ programs_NNS ,_, but_CC for_IN first-order_JJ programs_NNS ._.
+In_IN contrast_NN ,_, Self_NN =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ another_DT dynamically-typed_JJ ,_, prototype-based_JJ language_NN ,_, but_CC its_PRP$ most_RBS sophisticated_JJ analysis_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- relies_VBZ heavily_RB on_IN dynamic_JJ feedback_NN ._.
+Swift\/Jif_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- gives_VBZ developers_NNS guarantees_NNS about_IN information_NN flow_NN se_FW
+also_RB faces_VBZ several_JJ problems_NNS ,_, such_JJ as_IN false-positives_NNS and_CC the_DT need_NN for_IN good_JJ test_NN inputs_NNS -LRB-_-LRB- that_WDT reflect_VBP system_NN changes_NNS over_IN time_NN -RRB-_-RRB- ._.
+Other_JJ systems_NNS use_VBP a_DT model_NN of_IN calls_NNS constructed_VBN through_IN static_JJ analysis_NN =_JJ -_: =[_NN 33_CD ,_, 7_CD ,_, 12_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT systems_NNS all_DT address_NN operating_VBG system_NN monitoring_NN ,_, where_WRB the_DT operating_NN system_NN -LRB-_-LRB- corresponding_VBG to_TO our_PRP$ server_NN -RRB-_-RRB- ,_, monitor_NN ,_, and_CC application_NN -LRB-_-LRB- corresponding_VBG to_TO our_PRP$ browser_NN client_NN -RRB-_-RRB- all_DT run_NN on_IN the_DT same_JJ ma_NN
+of_IN interprocedural_JJ analysis_NN of_IN asynchronous_JJ programs_NNS ,_, but_CC for_IN first-order_JJ programs_NNS ._.
+In_IN contrast_NN ,_, Self_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- is_VBZ another_DT dynamically-typed_JJ ,_, prototype-based_JJ language_NN ,_, but_CC its_PRP$ most_RBS sophisticated_JJ analysis_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: relies_VBZ heavily_RB on_IN dynamic_JJ feedback_NN ._.
+Swift\/Jif_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- gives_VBZ developers_NNS guarantees_NNS about_IN information_NN flow_NN security_NN ._.
+It_PRP assumes_VBZ applications_NNS are_VBP written_VBN in_IN Java_NNP augmented_VBD with_IN information_NN flow_NN checks_NNS ,_, and_CC
+3.2_CD Structured_NNP Data_NNP An_NNP xhr_NN object_NN sends_VBZ and_CC receives_VBZ data_NNS as_IN strings_NNS ,_, which_WDT are_VBP usually_RB serialized_VBN forms_NNS of_IN structured_JJ data_NNS ._.
+In_IN principle_NN ,_, a_DT sophisticated_JJ analysis_NN can_MD recover_VB some_DT of_IN this_DT structure_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN practice_NN ,_, developers_NNS know_VBP what_WP marshalling_VBG techniques_NNS their_PRP$ applications_NNS use_VBP ._.
+Therefore_RB ,_, we_PRP ask_VBP the_DT users_NNS of_IN our_PRP$ analysis_NN to_TO tell_VB us_PRP how_WRB data_NNS is_VBZ marshalled_VBN ,_, and_CC we_PRP specialize_VBP the_DT analysis_NN to_TO obta_VB
+nted_VBN with_IN a_DT defense_NN in_IN Firefox_NNP and_CC Safari_NNP and_CC have_VBP found_VBN it_PRP to_TO be_VB effective_JJ against_IN simple_JJ attacks_NNS ._.
+It_PRP is_VBZ based_VBN on_IN the_DT observation_NN that_IN major_JJ browsers_NNS parse_VB and_CC execute_VB scripts_NNS in_IN the_DT <head>_NN in_IN order_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT means_VBZ that_IN the_DT first_JJ execution_NN of_IN the_DT first_JJ <head>_NN script_NN can_MD not_RB be_VB corrupted_VBN by_IN other_JJ scripts_NNS ,_, and_CC can_MD access_VB the_DT uncorrupted_JJ xhr_NN prototype_NN ._.
+Our_PRP$ defense_NN modifies_VBZ the_DT first_JJ script_NN to_TO store_VB away_RP
+ur_NN analysis_NN to_TO applications_NNS that_WDT use_VBP JavaScript_NNP frameworks_NNS to_TO alleviate_VB this_DT problem_NN ._.
+An_DT alternative_NN is_VBZ to_TO treat_VB JavaScript_NNP as_IN the_DT target_NN language_NN for_IN a_DT compiler_NN ,_, such_JJ as_IN the_DT Google_NNP Web_NN Toolkit_NN -LRB-_-LRB- gwt_NN -RRB-_-RRB- =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Program_NN analyses_NNS often_RB have_VBP implicit_JJ assumptions_NNS about_IN the_DT structure_NN of_IN programs_NNS that_WDT are_VBP biased_VBN by_IN expectations_NNS of_IN what_WP humans_NNS normally_RB write_VBP ._.
+Thus_RB ,_, they_PRP tend_VBP to_TO be_VB brittle_JJ in_IN the_DT face_NN of_IN machine-g_NN

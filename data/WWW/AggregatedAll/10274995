@@ -1,0 +1,115 @@
+Towards_IN context-aware_JJ search_NN by_IN learning_VBG a_DT very_RB large_JJ variable_JJ length_NN hidden_JJ markov_NN model_NN from_IN search_NN logs_NNS
+Capturing_VBG the_DT context_NN of_IN a_DT user_NN 's_POS query_NN from_IN the_DT previous_JJ queries_NNS and_CC clicks_NNS in_IN the_DT same_JJ session_NN may_MD help_VB understand_VB the_DT user_NN 's_POS information_NN need_NN ._.
+A_DT context-aware_JJ approach_NN to_TO document_VB re-ranking_JJ ,_, query_JJ suggestion_NN ,_, and_CC URL_NN recommendation_NN may_MD improve_VB users_NNS '_POS search_NN experience_NN substantially_RB ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT general_JJ approach_NN to_TO context-aware_JJ search_NN ._.
+To_TO capture_VB contexts_NNS of_IN queries_NNS ,_, we_PRP learn_VBP a_DT variable_JJ length_NN Hidden_NNP Markov_NNP Model_NNP -LRB-_-LRB- vlHMM_NN -RRB-_-RRB- from_IN search_NN sessions_NNS extracted_VBN from_IN log_NN data_NNS ._.
+Although_IN the_DT mathematical_JJ model_NN is_VBZ intuitive_JJ ,_, how_WRB to_TO learn_VB a_DT large_JJ vlHMM_NN with_IN millions_NNS of_IN states_NNS from_IN hundreds_NNS of_IN millions_NNS of_IN search_NN sessions_NNS poses_VBZ a_DT grand_JJ challenge_NN ._.
+We_PRP develop_VBP a_DT strategy_NN for_IN parameter_NN initialization_NN in_IN vlHMM_NN learning_NN which_WDT can_MD greatly_RB reduce_VB the_DT number_NN of_IN parameters_NNS to_TO be_VB estimated_VBN in_IN practice_NN ._.
+We_PRP also_RB devise_VBP a_DT method_NN for_IN distributed_VBN vlHMM_NN learning_VBG under_IN the_DT map-reduce_JJ model_NN ._.
+We_PRP test_VBP our_PRP$ approach_NN on_IN a_DT real_JJ data_NN set_NN consisting_VBG of_IN 1.8_CD billion_CD queries_NNS ,_, 2.6_CD billion_CD clicks_NNS ,_, and_CC 840_CD million_CD search_NN sessions_NNS ,_, and_CC evaluate_VB the_DT effectiveness_NN of_IN the_DT vlHMM_NN learned_VBD from_IN the_DT real_JJ data_NNS on_IN three_CD search_NN applications_NNS :_: document_NN re-ranking_NN ,_, query_NN suggestion_NN ,_, and_CC URL_NN recommendation_NN ._.
+The_DT experimental_JJ results_NNS show_VBP that_IN our_PRP$ approach_NN is_VBZ both_CC effective_JJ and_CC efficient_JJ ._.
+aches_NNS to_TO query_VB understanding_NN often_RB rely_VBP on_IN explicit_JJ ,_, implicit_JJ ,_, or_CC pseudo_JJ relevance_NN feedback_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 14_CD ,_, 18_CD ,_, 20_CD -RRB-_-RRB- -RRB-_-RRB- or_CC user_NN profiles_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 7_CD ,_, 19_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+In_IN terms_NNS of_IN modeling_NN contexts_NNS of_IN queries_NNS ,_, Bai_FW et_FW al._FW =_SYM -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: constructed_VBD a_DT language_NN model_NN using_VBG the_DT context_NN both_CC around_IN and_CC within_IN a_DT query_NN ._.
+Although_IN these_DT techniques_NNS are_VBP helpful_JJ to_TO understand_VB users_NNS '_POS search_NN intent_NN ,_, they_PRP do_VBP not_RB use_VB search_NN log_NN data_NNS and_CC do_VBP not_RB pro_JJ
+those_DT pairs_NNS as_IN suggestions_NNS for_IN each_DT other_JJ ._.
+Fonseca_NNP et_FW al._FW -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC Jones_NNP et_FW al._FW -LRB-_-LRB- 15_CD -RRB-_-RRB- extracted_VBD adjacent_JJ queries_NNS in_IN sessions_NNS for_IN query_NN expansion_NN and_CC query_NN substitution_NN ,_, respectively_RB ._.
+Beeferman_NNP et_FW al._FW =_SYM -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Wenet_FW al._FW -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, and_CC Baeza-Yates_NNP et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- applied_VBD various_JJ clustering_NN algorithms_NNS to_TO find_VB similar_JJ queries_NNS from_IN click-through_JJ data_NNS and_CC used_VBD them_PRP as_IN candidates_NNS in_IN query_NN suggestion_NN ._.
+Those_DT studies_NNS can_MD be_VB
+meter_NN initialization_NN in_IN vlHMM_NN learning_NN which_WDT can_MD greatly_RB reduce_VB the_DT number_NN of_IN parameters_NNS to_TO be_VB estimated_VBN in_IN practice_NN ._.
+We_PRP also_RB devise_VBP a_DT method_NN for_IN distributed_VBN vlHMM_NN learning_VBG under_IN the_DT map-reduce_JJ model_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Once_RB the_DT vlHMM_NN is_VBZ trained_JJ offline_NN ,_, it_PRP can_MD be_VB used_VBN online_JJ to_TO support_VB contextaware_NN search_NN in_IN various_JJ applications_NNS such_JJ as_IN document_NN reranking_NN ,_, query_NN suggestion_NN ,_, and_CC URL_NN recommendation_NN ._.
+We_PRP make_VBP the_DT foll_NN
+he_PRP vlHMM_NN approach_NN is_VBZ a_DT general_JJ model_NN which_WDT can_MD be_VB used_VBN to_TO support_VB context-aware_JJ search_NN in_IN various_JJ applications_NNS simultaneously_RB ._.
+HMMs_NNS have_VBP been_VBN widely_RB used_VBN in_IN various_JJ domains_NNS such_JJ as_IN speech_NN recognition_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: and_CC bioinformatics_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+In_IN -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, Wang_NNP et_FW al._FW developed_VBD the_DT notion_NN of_IN vlHMMs_NN and_CC applied_VBD a_DT vlHMM_NN to_TO mine_VB four_CD kinds_NNS of_IN interesting_JJ patterns_NNS from_IN 3D_NN motion_NN capture_NN data_NNS ._.
+We_PRP use_VBP a_DT vlHMM_NN to_TO model_NN query_NN
+port_NN the_DT experimental_JJ results_NNS ._.
+The_DT paper_NN is_VBZ concluded_VBN in_IN Section_NN 7_CD ._.
+2_CD ._.
+RELATED_NNS WORK_VBP Traditional_JJ approaches_NNS to_TO query_VB understanding_NN often_RB rely_VBP on_IN explicit_JJ ,_, implicit_JJ ,_, or_CC pseudo_JJ relevance_NN feedback_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 14_CD ,_, 18_CD ,_, 20_CD -RRB-_-RRB- -_: =--RRB-_NN or_CC user_NN profiles_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 7_CD ,_, 19_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+In_IN terms_NNS of_IN modeling_NN contexts_NNS of_IN queries_NNS ,_, Bai_NNP et_FW al._FW -LRB-_-LRB- 3_CD -RRB-_-RRB- constructed_VBD a_DT language_NN model_NN using_VBG the_DT context_NN both_CC around_IN and_CC within_IN a_DT query_NN ._.
+Although_IN these_DT techniques_NNS ar_IN
+sers_NNS '_POS search_NN sessions_NNS instead_RB of_IN learning_VBG an_DT optimized_VBN set_NN of_IN contexts_NNS ._.
+The_DT training_NN of_IN HMMs_NNS has_VBZ also_RB been_VBN well_RB studied_VBN in_IN the_DT literature_NN ._.
+The_DT classical_JJ learning_NN algorithm_NN is_VBZ the_DT Baum-Welch_JJ algorithm_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT is_VBZ essentially_RB an_DT EM_NN algorithm_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+However_RB ,_, the_DT existing_VBG methods_NNS can_MD not_RB be_VB scaled_VBN up_RP to_TO huge_JJ log_NN data_NNS because_IN of_IN their_PRP$ high_JJ computational_JJ complexity_NN ._.
+Recently_RB ,_, parallel_NN and_CC distributed_VBN train_NN
+er_NN is_VBZ concluded_VBN in_IN Section_NN 7_CD ._.
+2_CD ._.
+RELATED_NNS WORK_VBP Traditional_JJ approaches_NNS to_TO query_VB understanding_NN often_RB rely_VBP on_IN explicit_JJ ,_, implicit_JJ ,_, or_CC pseudo_JJ relevance_NN feedback_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 14_CD ,_, 18_CD ,_, 20_CD -RRB-_-RRB- -RRB-_-RRB- or_CC user_NN profiles_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 7_CD ,_, 19_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+In_IN terms_NNS of_IN modeling_NN contexts_NNS of_IN queries_NNS ,_, Bai_NNP et_FW al._FW -LRB-_-LRB- 3_CD -RRB-_-RRB- constructed_VBD a_DT language_NN model_NN using_VBG the_DT context_NN both_CC around_IN and_CC within_IN a_DT query_NN ._.
+Although_IN these_DT techniques_NNS are_VBP helpful_JJ to_TO understand_VB users_NNS '_POS se_FW
+Fonseca_NNP et_FW al._FW -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC Jones_NNP et_FW al._FW -LRB-_-LRB- 15_CD -RRB-_-RRB- extracted_VBD adjacent_JJ queries_NNS in_IN sessions_NNS for_IN query_NN expansion_NN and_CC query_NN substitution_NN ,_, respectively_RB ._.
+Beeferman_NNP et_FW al._FW -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, Wenet_FW al._FW -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, and_CC Baeza-Yates_NNP et_FW al._FW =_SYM -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: applied_JJ various_JJ clustering_NN algorithms_NNS to_TO find_VB similar_JJ queries_NNS from_IN click-through_JJ data_NNS and_CC used_VBD them_PRP as_IN candidates_NNS in_IN query_NN suggestion_NN ._.
+Those_DT studies_NNS can_MD be_VB regarded_VBN as_IN initiatives_NNS to_TO model_VB partial_JJ co_NN
+suggestions_NNS for_IN each_DT other_JJ ._.
+Fonseca_NNP et_FW al._FW -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC Jones_NNP et_FW al._FW -LRB-_-LRB- 15_CD -RRB-_-RRB- extracted_VBD adjacent_JJ queries_NNS in_IN sessions_NNS for_IN query_NN expansion_NN and_CC query_NN substitution_NN ,_, respectively_RB ._.
+Beeferman_NNP et_FW al._FW -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, Wenet_FW al._FW =_SYM -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC Baeza-Yates_NNP et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- applied_VBD various_JJ clustering_NN algorithms_NNS to_TO find_VB similar_JJ queries_NNS from_IN click-through_JJ data_NNS and_CC used_VBD them_PRP as_IN candidates_NNS in_IN query_NN suggestion_NN ._.
+Those_DT studies_NNS can_MD be_VB regarded_VBN as_IN ini_NN
+ne1_FW vlHMM_FW Figure_NNP 5_CD :_: The_DT effectiveness_NN of_IN re-ranking_NN by_IN the_DT vlHMM_NN and_CC Bbaseline1_NN on_IN -LRB-_-LRB- a_LS -RRB-_-RRB- Test0_NN and_CC -LRB-_-LRB- b_LS -RRB-_-RRB- Test1_NN ._.
+The_DT existing_VBG re-ranking_JJ methods_NNS either_CC do_VBP not_RB consider_VB the_DT click-through_JJ information_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =--RRB-_NN or_CC combine_VB clickthrough_JJ information_NN with_IN other_JJ features_NNS such_JJ as_IN document_NN text_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 25_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+It_PRP is_VBZ not_RB meaningful_JJ to_TO make_VB a_DT direct_JJ comparison_NN between_IN our_PRP$ method_NN and_CC those_DT existing_VBG methods_NNS ._.
+We_PRP use_VBP a_DT b_NN
+ks_IN Figure_NNP 1_CD :_: Graphical_JJ structure_NN of_IN the_DT vlHMM_NN ._.
+Modeling_NN query_NN contexts_NNS by_IN mining_NN search_NN sessions_NNS is_VBZ a_DT fundamental_JJ and_CC challenging_JJ problem_NN ._.
+Although_IN some_DT progress_NN has_VBZ been_VBN made_VBN by_IN the_DT previous_JJ studies_NNS =_JJ -_: =[_NN 6_CD ,_, 15_CD ,_, 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, most_JJS of_IN them_PRP only_RB consider_VBP correlations_NNS within_IN query_NN pairs_NNS ._.
+Such_JJ a_DT method_NN can_MD not_RB capture_VB well_RB the_DT contexts_NNS exemplified_VBN in_IN Example_NNP 1_CD which_WDT are_VBP carried_VBN by_IN a_DT series_NN of_IN queries_NNS and_CC clicks_NNS ._.
+Moreover_RB ,_, eac_NN
+0_CD and_CC -LRB-_-LRB- b_LS -RRB-_-RRB- Test1_NN ._.
+The_DT existing_VBG re-ranking_JJ methods_NNS either_CC do_VBP not_RB consider_VB the_DT click-through_JJ information_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 24_CD -RRB-_-RRB- -RRB-_-RRB- or_CC combine_VB clickthrough_JJ information_NN with_IN other_JJ features_NNS such_JJ as_IN document_NN text_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+It_PRP is_VBZ not_RB meaningful_JJ to_TO make_VB a_DT direct_JJ comparison_NN between_IN our_PRP$ method_NN and_CC those_DT existing_VBG methods_NNS ._.
+We_PRP use_VBP a_DT baseline_NN -LRB-_-LRB- denoted_VBN by_IN Baseline1_NN -RRB-_-RRB- which_WDT purely_RB relies_VBZ on_IN click-through_JJ data_NNS ,_, i.e._FW ,_, to_TO re-rank_VB
+an_DT optimized_VBN set_NN of_IN contexts_NNS ._.
+The_DT training_NN of_IN HMMs_NNS has_VBZ also_RB been_VBN well_RB studied_VBN in_IN the_DT literature_NN ._.
+The_DT classical_JJ learning_NN algorithm_NN is_VBZ the_DT Baum-Welch_JJ algorithm_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, which_WDT is_VBZ essentially_RB an_DT EM_NN algorithm_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, the_DT existing_VBG methods_NNS can_MD not_RB be_VB scaled_VBN up_RP to_TO huge_JJ log_NN data_NNS because_IN of_IN their_PRP$ high_JJ computational_JJ complexity_NN ._.
+Recently_RB ,_, parallel_NN and_CC distributed_VBN training_NN of_IN very_RB large_JJ machine_NN learning_NN models_NNS h_NN
+ry_FW sparse_FW in_IN the_DT log_NN data_NNS ,_, the_DT coverage_NN of_IN the_DT vlHMM_NN and_CC the_DT percentage_NN of_IN recognized_VBN contexts_NNS are_VBP not_RB high_JJ ._.
+In_IN fact_NN ,_, we_PRP can_MD simply_RB expand_VB the_DT vlHMM_NN learned_VBD from_IN log_NN data_NNS by_IN building_VBG a_DT language_NN model_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: for_IN each_DT state_NN based_VBN on_IN the_DT document_NN text_NN of_IN the_DT URLs_NNS in_IN U._NNP In_NNP this_DT way_NN ,_, the_DT ability_NN of_IN the_DT vlHMM_NN to_TO generalize_VB to_TO unknown_JJ queries_NNS and_CC URLs_NNS will_MD be_VB greatly_RB enhanced_VBN ,_, and_CC the_DT coverage_NN as_RB well_RB as_IN the_DT p_NN
+ommendation_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP modeling_NN query_NN contexts_NNS by_IN a_DT variable_JJ length_NN Hidden_NNP Markov_NNP Model_NNP -LRB-_-LRB- vlHMM_NNP for_IN short_JJ -RRB-_-RRB- for_IN context-aware_JJ search_NN ._.
+As_IN well_RB recognized_VBN by_IN many_JJ previous_JJ studies_NNS such_JJ as_IN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT user_NN often_RB raises_VBZ multiple_JJ queries_NNS and_CC conducts_VBZ multiple_JJ rounds_NNS of_IN interaction_NN with_IN a_DT search_NN engine_NN for_IN an_DT information_NN need_NN ._.
+For_IN instance_NN ,_, in_IN Example_NNP 1_CD ,_, Ada_NN may_MD decompose_VB her_PRP$ general_JJ search_NN task_NN ,_,
+processing_NN ,_, the_DT resulting_VBG data_NN set_NN still_RB keeps_VBZ 51.1_CD %_NN of_IN the_DT original_JJ query_NN occurrences_NNS ,_, 51.7_CD %_NN of_IN the_DT original_JJ URL_NN clicks_NNS ,_, and_CC 52_CD %_NN of_IN the_DT original_JJ user_NN sessions_NNS ._.
+As_IN shown_VBN in_IN many_JJ previous_JJ works_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, this_DT is_VBZ because_IN the_DT query_NN occurrences_NNS and_CC URL_NN clicks_NNS in_IN search_NN logs_NNS follow_VBP the_DT power_NN law_NN distribution_NN ._.
+6.2_CD Efficiency_NN of_IN Training_VBG the_DT vlHMM_NN To_TO determine_VB the_DT number_NN of_IN states_NNS and_CC assign_VB initial_JJ para_NN
+ks_IN Figure_NNP 1_CD :_: Graphical_JJ structure_NN of_IN the_DT vlHMM_NN ._.
+Modeling_NN query_NN contexts_NNS by_IN mining_NN search_NN sessions_NNS is_VBZ a_DT fundamental_JJ and_CC challenging_JJ problem_NN ._.
+Although_IN some_DT progress_NN has_VBZ been_VBN made_VBN by_IN the_DT previous_JJ studies_NNS =_JJ -_: =[_NN 6_CD ,_, 15_CD ,_, 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, most_JJS of_IN them_PRP only_RB consider_VBP correlations_NNS within_IN query_NN pairs_NNS ._.
+Such_JJ a_DT method_NN can_MD not_RB capture_VB well_RB the_DT contexts_NNS exemplified_VBN in_IN Example_NNP 1_CD which_WDT are_VBP carried_VBN by_IN a_DT series_NN of_IN queries_NNS and_CC clicks_NNS ._.
+Moreover_RB ,_, eac_NN
+eneral_JJ model_NN which_WDT can_MD be_VB used_VBN to_TO support_VB context-aware_JJ search_NN in_IN various_JJ applications_NNS simultaneously_RB ._.
+HMMs_NNS have_VBP been_VBN widely_RB used_VBN in_IN various_JJ domains_NNS such_JJ as_IN speech_NN recognition_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- and_CC bioinformatics_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, Wang_NNP et_FW al._FW developed_VBD the_DT notion_NN of_IN vlHMMs_NN and_CC applied_VBD a_DT vlHMM_NN to_TO mine_VB four_CD kinds_NNS of_IN interesting_JJ patterns_NNS from_IN 3D_NN motion_NN capture_NN data_NNS ._.
+We_PRP use_VBP a_DT vlHMM_NN to_TO model_VB query_JJ contexts_NNS in_IN this_DT paper_NN ._.
+hite_VB et_FW al._FW -LRB-_-LRB- 23_CD -RRB-_-RRB- proposed_VBN mining_NN popularly_RB visited_VBD web_NN sites_NNS from_IN browsing_VBG logs_NNS and_CC recommending_VBG to_TO a_DT user_NN the_DT web_NN sites_NNS frequently_RB visited_VBN by_IN other_JJ users_NNS with_IN similar_JJ information_NN needs_NNS ._.
+Huang_NNP et_FW al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: mined_VBN query_NN pairs_NNS frequently_RB co-occurring_JJ in_IN search_NN sessions_NNS ,_, 192WWW_NN 2009_CD MADRID_NNP !_.
+and_CC used_VBD the_DT queries_NNS in_IN those_DT pairs_NNS as_IN suggestions_NNS for_IN each_DT other_JJ ._.
+Fonseca_NNP et_FW al._FW -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC Jones_NNP et_FW al._FW -LRB-_-LRB- 15_CD -RRB-_-RRB- extract_NN
+to_TO huge_JJ log_NN data_NNS because_IN of_IN their_PRP$ high_JJ computational_JJ complexity_NN ._.
+Recently_RB ,_, parallel_NN and_CC distributed_VBN training_NN of_IN very_RB large_JJ machine_NN learning_NN models_NNS has_VBZ attracted_VBN much_JJ interest_NN ._.
+For_IN example_NN ,_, Chu_NNP et_FW al._FW =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: applied_VBD the_DT map-reduce_JJ programming_NN model_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- to_TO a_DT variety_NN of_IN learning_VBG algorithms_NNS ._.
+However_RB ,_, how_WRB to_TO train_VB a_DT very_RB large_JJ HMM_NN from_IN huge_JJ log_NN data_NNS remains_VBZ a_DT challenging_JJ open_JJ problem_NN ._.
+Track_NNP :_: Data_NNP Mining_NNP \/_: Se_NN
+port_NN the_DT experimental_JJ results_NNS ._.
+The_DT paper_NN is_VBZ concluded_VBN in_IN Section_NN 7_CD ._.
+2_CD ._.
+RELATED_NNS WORK_VBP Traditional_JJ approaches_NNS to_TO query_VB understanding_NN often_RB rely_VBP on_IN explicit_JJ ,_, implicit_JJ ,_, or_CC pseudo_JJ relevance_NN feedback_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 14_CD ,_, 18_CD ,_, 20_CD -RRB-_-RRB- -_: =--RRB-_NN or_CC user_NN profiles_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 7_CD ,_, 19_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+In_IN terms_NNS of_IN modeling_NN contexts_NNS of_IN queries_NNS ,_, Bai_NNP et_FW al._FW -LRB-_-LRB- 3_CD -RRB-_-RRB- constructed_VBD a_DT language_NN model_NN using_VBG the_DT context_NN both_CC around_IN and_CC within_IN a_DT query_NN ._.
+Although_IN these_DT techniques_NNS ar_IN
+port_NN the_DT experimental_JJ results_NNS ._.
+The_DT paper_NN is_VBZ concluded_VBN in_IN Section_NN 7_CD ._.
+2_CD ._.
+RELATED_NNS WORK_VBP Traditional_JJ approaches_NNS to_TO query_VB understanding_NN often_RB rely_VBP on_IN explicit_JJ ,_, implicit_JJ ,_, or_CC pseudo_JJ relevance_NN feedback_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 14_CD ,_, 18_CD ,_, 20_CD -RRB-_-RRB- -_: =--RRB-_NN or_CC user_NN profiles_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 7_CD ,_, 19_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+In_IN terms_NNS of_IN modeling_NN contexts_NNS of_IN queries_NNS ,_, Bai_NNP et_FW al._FW -LRB-_-LRB- 3_CD -RRB-_-RRB- constructed_VBD a_DT language_NN model_NN using_VBG the_DT context_NN both_CC around_IN and_CC within_IN a_DT query_NN ._.
+Although_IN these_DT techniques_NNS ar_IN
+ks_IN Figure_NNP 1_CD :_: Graphical_JJ structure_NN of_IN the_DT vlHMM_NN ._.
+Modeling_NN query_NN contexts_NNS by_IN mining_NN search_NN sessions_NNS is_VBZ a_DT fundamental_JJ and_CC challenging_JJ problem_NN ._.
+Although_IN some_DT progress_NN has_VBZ been_VBN made_VBN by_IN the_DT previous_JJ studies_NNS =_JJ -_: =[_NN 6_CD ,_, 15_CD ,_, 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, most_JJS of_IN them_PRP only_RB consider_VBP correlations_NNS within_IN query_NN pairs_NNS ._.
+Such_JJ a_DT method_NN can_MD not_RB capture_VB well_RB the_DT contexts_NNS exemplified_VBN in_IN Example_NNP 1_CD which_WDT are_VBP carried_VBN by_IN a_DT series_NN of_IN queries_NNS and_CC clicks_NNS ._.
+Moreover_RB ,_, eac_NN
+del_DT which_WDT can_MD be_VB used_VBN to_TO support_VB context-aware_JJ search_NN in_IN various_JJ applications_NNS simultaneously_RB ._.
+HMMs_NNS have_VBP been_VBN widely_RB used_VBN in_IN various_JJ domains_NNS such_JJ as_IN speech_NN recognition_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- and_CC bioinformatics_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+In_IN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Wang_NNP et_FW al._FW developed_VBD the_DT notion_NN of_IN vlHMMs_NN and_CC applied_VBD a_DT vlHMM_NN to_TO mine_VB four_CD kinds_NNS of_IN interesting_JJ patterns_NNS from_IN 3D_NN motion_NN capture_NN data_NNS ._.
+We_PRP use_VBP a_DT vlHMM_NN to_TO model_VB query_JJ contexts_NNS in_IN this_DT paper_NN ._.
+Our_PRP$ appro_NN

@@ -1,0 +1,95 @@
+Three-level_JJ caching_NN for_IN efficient_JJ query_NN processing_NN in_IN large_JJ Web_NN search_NN engines_NNS
+Large_JJ web_NN search_NN engines_NNS have_VBP to_TO answer_VB thousands_NNS of_IN queries_NNS per_IN second_NN with_IN interactive_JJ response_NN times_NNS ._.
+Due_JJ to_TO the_DT sizes_NNS of_IN the_DT data_NNS sets_NNS involved_VBN ,_, often_RB in_IN the_DT range_NN of_IN multiple_JJ terabytes_NNS ,_, a_DT single_JJ query_NN may_MD require_VB the_DT processing_NN of_IN hundreds_NNS of_IN megabytes_NNS or_CC more_JJR of_IN index_NN data_NNS ._.
+To_TO keep_VB up_RP with_IN this_DT immense_JJ workload_NN ,_, large_JJ search_NN engines_NNS employ_VBP clusters_NNS of_IN hundreds_NNS or_CC thousands_NNS of_IN machines_NNS ,_, and_CC a_DT number_NN of_IN techniques_NNS such_JJ as_IN caching_NN ,_, index_NN compression_NN ,_, and_CC index_NN and_CC query_NN pruning_NN are_VBP used_VBN to_TO improve_VB scalability_NN ._.
+In_IN particular_JJ ,_, two-level_JJ caching_NN techniques_NNS cache_NN results_NNS of_IN repeated_JJ identical_JJ queries_NNS at_IN the_DT frontend_NN ,_, while_IN index_NN data_NNS for_IN frequently_RB used_VBN query_NN terms_NNS are_VBP cached_VBN in_IN each_DT node_NN at_IN a_DT lower_JJR level_NN ._.
+We_PRP propose_VBP and_CC evaluate_VBP a_DT three-level_JJ caching_NN scheme_NN that_WDT adds_VBZ an_DT intermediate_JJ level_NN of_IN caching_NN for_IN additional_JJ performance_NN gains_NNS ._.
+This_DT intermediate_JJ level_NN attempts_NNS to_TO exploit_VB frequently_RB occurring_VBG pairs_NNS of_IN terms_NNS by_IN caching_VBG intersections_NNS or_CC projections_NNS of_IN the_DT corresponding_JJ inverted_JJ lists_NNS ._.
+We_PRP propose_VBP and_CC study_VBP several_JJ offline_JJ and_CC online_JJ algorithms_NNS for_IN the_DT resulting_VBG weighted_JJ caching_NN problem_NN ,_, which_WDT turns_VBZ out_RP to_TO be_VB surprisingly_RB rich_JJ in_IN structure_NN ._.
+Our_PRP$ experimental_JJ evaluation_NN based_VBN on_IN a_DT large_JJ web_NN crawl_NN and_CC real_JJ search_NN engine_NN query_NN log_NN shows_VBZ significant_JJ performance_NN gains_NNS for_IN the_DT best_JJS schemes_NNS ,_, both_CC in_IN isolation_NN and_CC in_IN combination_NN with_IN the_DT other_JJ caching_NN levels_NNS ._.
+We_PRP also_RB observe_VBP that_IN a_DT careful_JJ selection_NN of_IN cache_NN admission_NN and_CC eviction_NN policies_NNS is_VBZ crucial_JJ for_IN best_JJS overall_JJ performance_NN ._.
+equent_JJ queries_NNS and_CC the_DT dynamic_JJ part_NN handles_VBZ replacement_NN techniques_NNS like_IN LRU_NNP or_CC LFU_NNP ._.
+With_IN this_DT ,_, SDC_NNP achieved_VBD a_DT hit_NN ratio_NN higher_JJR than_IN 30_CD %_NN in_IN experiments_NNS conducted_VBN on_IN a_DT log_NN from_IN Altavista_NNP ._.
+Long_NNP and_CC Suel_NNP =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: showed_VBD that_IN upon_IN storing_VBG pairs_NNS of_IN frequent_JJ terms_NNS determined_VBN by_IN the_DT co-occurrence_NN in_IN the_DT query_NN logs_NNS ,_, it_PRP is_VBZ possible_JJ to_TO increase_VB the_DT hit_NN ratio_NN ._.
+For_IN those_DT ,_, the_DT authors_NNS proposed_VBD putting_VBG the_DT pairs_NNS of_IN freq_NN
+d_NN to_TO map_VB between_IN a_DT token_JJ in_IN a_DT query_NN and_CC the_DT size_NN of_IN its_PRP$ postings_NNS list_NN as_IN specified_VBN in_IN Y_NN -LRB-_-LRB- j_NN -RRB-_-RRB- ._.
+The_DT distribution_NN for_IN the_DT number_NN of_IN tokens_NNS in_IN a_DT query_NN is_VBZ dependent_JJ on_IN the_DT usage_NN of_IN the_DT system_NN being_VBG modelled_VBN =_JJ -_: =[_NN 7_CD ,_, 8_CD -RRB-_-RRB- -_: =_JJ -_: and_CC it_PRP is_VBZ skewed_JJ depending_VBG on_IN the_DT types_NNS of_IN caching_NN being_VBG used_VBN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+We_PRP use_VBP a_DT distribution_NN derived_VBN from_IN the_DT `_`` result_NN caching_NN '_POS portion_NN of_IN Figure_NNP 6.2_CD in_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- as_IN specified_VBN in_IN Chart_NNP 1_CD ._.
+Fraction_NN of_IN Queries_NNS 0_CD ._.
+or_CC example_NN ,_, with_IN about_RB 7.5_CD million_CD pages_NNS per_IN node_NN ,_, the_DT total_JJ size_NN of_IN the_DT inverted_JJ lists_NNS traversed_VBN by_IN the_DT average_JJ query_NN is_VBZ more_JJR than_IN 10_CD MB_NN per_IN node_NN even_RB after_IN careful_JJ compression_NN of_IN the_DT inverted_JJ lists_NNS =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT presents_VBZ a_DT major_JJ performance_NN bottleneck_NN ,_, and_CC a_DT number_NN of_IN techniques_NNS have_VBP been_VBN developed_VBN to_TO overcome_VB this_DT ._.
+Massive_JJ Parallelism_NN :_: First_JJ ,_, all_DT major_JJ engines_NNS are_VBP based_VBN on_IN large_JJ clusters_NNS of_IN hundreds_NNS o_NN
+he_PRP pre-aggregation_JJ techniques_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- first_JJ preaggregate_NN the_DT intersections_NNS of_IN the_DT lists_NNS and_CC then_RB simultaneously_RB process_VB the_DT intersection_NN list_NN and_CC the_DT term_NN lists_NNS to_TO speed_VB up_RP the_DT retrieval_NN ._.
+Interestingly_RB ,_, =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: also_RB uses_VBZ the_DT intersection_NN lists_NNS as_IN an_DT intermediate_JJ level_NN of_IN a_DT three-level_JJ caching_NN structure_NN to_TO speed_VB up_RP query_NN processing_NN ._.
+However_RB ,_, the_DT intersection_NN lists_NNS in_IN -LRB-_-LRB- 16_CD ,_, 18_CD -RRB-_-RRB- do_VBP not_RB contain_VB the_DT position_NN info_NN
+fficiency_NN by_IN sacrificing_VBG the_DT search_NN quality_NN since_IN the_DT discarded_VBN indexes_NNS will_MD never_RB be_VB checked_VBN against_IN the_DT query_NN ._.
+Another_DT well-studied_JJ way_NN to_TO achieve_VB retrieval_NN efficiency_NN is_VBZ pre-aggregation_JJ techniques_NNS =_JJ -_: =[_NN 11_CD ,_, 18_CD ,_, 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT first_RB create_VBP additional_JJ short_JJ lists_NNS ,_, e.g._FW ,_, the_DT intersections_NNS of_IN some_DT lists_NNS ,_, and_CC then_RB exploit_VB such_JJ lists_NNS to_TO speed_VB up_RP the_DT retrieval_NN process_NN ._.
+Finally_RB ,_, the_DT early_JJ termination_NN strategies_NNS are_VBP also_RB af_IN
+ar_NN phrases_NNS in_IN the_DT corpus_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- -RRB-_-RRB- ,_, to_TO avoid_VB generating_VBG a_DT large_JJ number_NN of_IN new_JJ ,_, potentially_RB useless_JJ posting_VBG lists_NNS ._.
+While_IN these_DT drawbacks_NNS may_MD be_VB lightened_VBN by_IN caching_VBG solutions_NNS to_TO store_VB paired_JJ posting_VBG lists_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, even_RB in_IN this_DT case_NN ,_, there_EX is_VBZ always_RB a_DT relative_JJ consumption_NN of_IN disk_NN or_CC memory_NN resources_NNS ._.
+Instead_RB ,_, the_DT pair_NN posting_VBG lists_NNS can_MD be_VB built_VBN dynamically_RB ._.
+Given_VBN two_CD single_JJ term_NN iterators_NNS on_IN postings_NNS lists_NNS ,_, th_DT
+,_, the_DT application_NN is_VBZ able_JJ to_TO support_VB dynamic_JJ query_NN evaluation_NN based_VBN on_IN cache_NN contents_NNS ._.
+-LRB-_-LRB- 16_CD -RRB-_-RRB- exploits_VBZ the_DT opportunity_NN to_TO combine_VB the_DT previously_RB addressed_VBN two_CD caching_NN types_NNS in_IN the_DT search_NN engine_NN TodoBR_NN ._.
+=_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: found_VBN it_PRP is_VBZ often_RB observed_VBN that_IN large_JJ web_NN search_NN engines_NNS are_VBP related_JJ to_TO multiple_JJ data_NNS sources_NNS ._.
+Hence_RB ,_, a_DT new_JJ intermediate_JJ level_NN is_VBZ added_VBN to_TO cache_NN intersections_NNS or_CC projections_NNS of_IN the_DT frequently_RB occurre_JJ
+engines_NNS cache_NN query_NN results_NNS -LRB-_-LRB- Markatos_NNP ,_, 2001_CD ;_: Fagni_NNP et_FW al._FW ,_, 2006_CD ;_: Lempel_NNP &_CC Moran_NNP ,_, 2003_CD ;_: Ozcan_NNP ,_, Altingovde_NNP ,_, &_CC Ulusoy_NNP ,_, 2008c_CD -RRB-_-RRB- or_CC posting_VBG lists_NNS for_IN query_NN terms_NNS ,_, or_CC both_DT -LRB-_-LRB- Baeza-Yates_NNP ,_, &_CC Saint-Jean_NNP ,_, 2003_CD ;_: =_JJ -_: =_JJ Long_NNP &_CC Suel_NNP ,_, 2005_CD -_: =_JJ -_: ;_: Baeza-Yates_NNP et_FW al._FW ,_, 2007_CD -RRB-_-RRB- ._.
+Caching_VBG the_DT posting_VBG lists_NNS may_MD lead_VB to_TO higher_JJR cache_NN hit_NN ratios_NNS simply_RB because_IN the_DT same_JJ query_NN terms_NNS may_MD appear_VB in_IN several_JJ different_JJ queries_NNS -LRB-_-LRB- e.g._FW ,_, see_VB Baeza-Yates_NNP et_FW al._FW ,_, 20_CD
+Caching_NNP has_VBZ long_RB been_VBN recognized_VBN as_IN a_DT critical_JJ component_NN in_IN high_JJ performance_NN applications_NNS ._.
+Indeed_RB ,_, most_JJS applications_NNS utilize_VBP caching_VBG on_IN many_JJ levels_NNS ,_, and_CC multi-level_JJ schemes_NNS have_VBP recently_RB been_VBN studied_VBN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT closest_JJS form_NN of_IN caching_NN to_TO Track_NNP :_: Search_VB \/_: Session_NN :_: Caching_NN and_CC Indices_NNS this_DT work_NN is_VBZ result_NN caching_NN ._.
+In_IN this_DT framework_NN the_DT set_NN of_IN results_NNS for_IN popular_JJ queries_NNS is_VBZ fetched_VBN from_IN the_DT cache_NN ,_, rather_RB th_DT
+pare_VB LRU_NNP with_IN several_JJ other_JJ caching_NN policies_NNS and_CC show_VBP that_IN there_EX are_VBP in_IN fact_NN much_RB better_JJR list_NN caching_NN policies_NNS than_IN LRU_NNP for_IN typical_JJ search_NN engine_NN query_NN traces_NNS under_IN our_PRP$ model_NN ._.
+Finally_RB ,_, recent_JJ work_NN in_IN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: proposes_VBZ a_DT three-level_JJ caching_NN scheme_NN that_IN inserts_NNS an_DT additional_JJ level_NN of_IN caching_NN between_IN result_NN caching_NN and_CC list_NN caching_NN ;_: we_PRP do_VBP not_RB consider_VB this_DT scheme_NN here_RB ._.
+3_LS ._.
+CONTRIBUTIONS_NNS OF_IN THIS_NNP PAPER_NNP We_PRP study_VBD
+nt_NN amounts_NNS of_IN internalqualitytestingthatinvolvesissuinglarge_NN numbers_NNS of_IN queries_NNS ._.
+Common_JJ query_NN processing_NN optimizations_NNS ,_, such_JJ as_IN index_NN tiering_NN and_CC early_JJ termination_NN -LRB-_-LRB- 26_CD ,_, 23_CD -RRB-_-RRB- and_CC indexing_NN of_IN subqueries_NNS =_JJ -_: =[_NN 24_CD ,_, 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, use_VB queries_NNS to_TO determine_VB the_DT best_JJS index_NN organization_NN ._.
+Data_NN mining_NN operations_NNS may_MD issue_VB queries_NNS for_IN various_JJ tasks_NNS such_JJ as_IN tuning_NN of_IN ad_NN matching_JJ mechanisms_NNS and_CC of_IN crawl_NN policies_NNS ,_, or_CC filtering_VBG and_CC clas_NNS
+unts_NNS of_IN internal_JJ quality_NN testing_NN that_WDT involves_VBZ issuing_VBG large_JJ numbers_NNS of_IN queries_NNS ._.
+Common_JJ query_NN processing_NN optimizations_NNS ,_, such_JJ as_IN index_NN tiering_NN and_CC early_JJ termination_NN -LRB-_-LRB- 26_CD ,_, 23_CD -RRB-_-RRB- and_CC indexing_NN of_IN subqueries_NNS =_JJ -_: =[_NN 24_CD ,_, 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, use_VB queries_NNS to_TO determine_VB the_DT best_JJS index_NN organization_NN ._.
+Data_NN mining_NN operations_NNS may_MD issue_VB queries_NNS for_IN various_JJ tasks_NNS such_JJ as_IN tuning_NN of_IN ad_NN matching_JJ mechanisms_NNS and_CC of_IN crawl_NN policies_NNS ,_, or_CC filtering_VBG and_CC clas_NNS
+rmation_NN retrieval_NN systems_NNS are_VBP :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- early_JJ termination_NN while_IN evaluating_VBG postings_NNS list_NN for_IN topk_NN queries_NNS and_CC -LRB-_-LRB- 2_LS -RRB-_-RRB- combining_VBG postings_NNS list_VBP together_RB into_IN one_CD shorter_JJR lists_NNS using_VBG intersection_NN -LRB-_-LRB- as_IN proposed_VBN in_IN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB intersection_NN postings_NNS list_NN were_VBD cached_VBN to_TO speed_VB up_RP query_JJ evaluation_NN -RRB-_-RRB- ._.
+The_DT contribution_NN of_IN this_DT work_NN is_VBZ to_TO combine_VB these_DT two_CD techniques_NNS using_VBG a_DT rigorous_JJ theoretical_JJ analysis_NN ._.
+In_IN addition_NN ,_, they_PRP
+ey_NN do_VBP not_RB support_VB learnable_JJ proximity_NN scores_NNS ,_, type_NN containment_NN or_CC selftuning_NN indexes_NNS that_WDT exploit_VBP the_DT query_JJ distribution_NN ._.
+Earlier_JJR IR_NN systems_NNS have_VBP exploited_VBN query_NN skew_VB in_IN index-pruning_JJ -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC caching_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: to_TO achieve_VB impressive_JJ reduction_NN of_IN IR_NN index_NN sizes_NNS and_CC query_NN times_NNS ,_, but_CC do_VBP not_RB consider_VB queries_NNS involving_VBG a_DT type_NN hierarchy_NN ._.
+2_CD ._.
+SYSTEM_NNP ARCHITECTURE_NNP Figure_NNP 1_CD shows_VBZ our_PRP$ system_NN architecture_NN ._.
+The_DT system_NN in_IN
+nk_NN -LRB-_-LRB- normalized_VBN -RRB-_-RRB- Fig._NNP 2_CD ._.
+Query_JJ frequency_NN distributions_NNS ._.
+Using_VBG multiple_JJ levels_NNS of_IN caches_NNS for_IN storing_VBG query_JJ results_NNS and_CC postings_NNS of_IN query_NN terms_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- or_CC even_RB intersections_NNS of_IN posting_VBG lists_NNS for_IN query_NN terms_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: result_NN in_IN improved_VBN hit_NN ratio_NN values_NNS -LRB-_-LRB- the_DT hit_NN ratio_NN is_VBZ the_DT total_JJ number_NN of_IN hits_NNS over_IN the_DT total_JJ query_JJ volume_NN -RRB-_-RRB- ._.
+In_IN this_DT work_NN we_PRP focus_VBP on_IN caching_NN of_IN query_NN results_NNS and_CC we_PRP do_VBP not_RB consider_VB the_DT problem_NN of_IN ca_MD
+pare_VB LRU_NNP with_IN several_JJ other_JJ caching_NN policies_NNS and_CC show_VBP that_IN there_EX are_VBP in_IN fact_NN much_RB better_JJR list_NN caching_NN policies_NNS than_IN LRU_NNP for_IN typical_JJ search_NN engine_NN query_NN traces_NNS under_IN our_PRP$ model_NN ._.
+Finally_RB ,_, recent_JJ work_NN in_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: proposes_VBZ a_DT three-level_JJ caching_NN scheme_NN that_IN inserts_NNS an_DT additional_JJ level_NN of_IN caching_NN between_IN result_NN caching_NN and_CC list_NN caching_NN ;_: we_PRP do_VBP not_RB consider_VB this_DT scheme_NN here_RB ._.
+3_LS ._.
+CONTRIBUTIONS_NNS OF_IN THIS_NNP PAPER_NNP We_PRP study_VBD
+SMZ01_NN -RRB-_-RRB- ._.
+There_EX have_VBP also_RB been_VBN proposed_VBN multi-level_JJ caching_NN schemes_NNS where_WRB we_PRP can_MD cache_NN both_CC lists_NNS and_CC results_NNS -LRB-_-LRB- SMZ01_NN -RRB-_-RRB- ,_, or_CC we_PRP can_MD cache_NN lists_NNS ,_, results_NNS and_CC projection_NN lists_NNS -LRB-_-LRB- i.e._FW pairs_NNS of_IN frequent_JJ terms_NNS -RRB-_-RRB- =_JJ -_: =_JJ -LRB-_-LRB- LS05_NN -RRB-_-RRB- -_: =_SYM -_: to_TO improve_VB query_NN response_NN times_NNS ._.
+Determining_VBG which_WDT parts_NNS of_IN an_DT index_NN to_TO cache_NN is_VBZ ,_, in_IN principle_NN ,_, similar_JJ to_TO pruning_NN an_DT index_NN to_TO keep_VB the_DT most_RBS important_JJ postings_NNS ._.
+In_IN this_DT dissertation_NN ,_, we_PRP showed_VBD how_WRB a_DT
+thus_RB increasing_VBG the_DT overall_JJ throughput_NN ._.
+Baeza-Yates_NNP and_CC Saint-Jean_NNP propose_VBP a_DT three-level_JJ index_NN organization_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Long_NNP and_CC Suel_NNP propose_VBP a_DT caching_NN system_NN structured_VBD according_VBG to_TO three_CD different_JJ levels_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT intermediate_JJ level_NN contains_VBZ frequently_RB occurring_VBG pairs_NNS of_IN terms_NNS and_CC stores_NNS the_DT intersections_NNS of_IN the_DT corresponding_JJ inverted_JJ lists_NNS ._.
+These_DT last_JJ two_CD papers_NNS are_VBP related_JJ to_TO ours_PRP in_IN that_IN they_PRP exploit_VBP d_NN
+equent_JJ queries_NNS and_CC the_DT dynamic_JJ part_NN handles_VBZ replacement_NN techniques_NNS like_IN LRU_NNP or_CC LFU_NNP ._.
+With_IN this_DT ,_, SDC_NNP achieved_VBD a_DT hit_NN ratio_NN higher_JJR than_IN 30_CD %_NN in_IN experiments_NNS conducted_VBN on_IN a_DT log_NN from_IN Altavista_NNP ._.
+Long_NNP and_CC Suel_NNP =_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP shown_VBN that_IN upon_IN storing_VBG pairs_NNS of_IN frequent_JJ terms_NNS determined_VBN by_IN the_DT co-occurrence_NN in_IN the_DT query_NN logs_NNS ,_, it_PRP is_VBZ possible_JJ to_TO better_RB increase_VB the_DT hit_NN ratio_NN ._.
+For_IN those_DT ,_, the_DT authors_NNS proposed_VBD putting_VBG the_DT pa_NN
+t_NN of_IN results_NNS caching_VBG and_CC static_JJ caching_NN of_IN posting_VBG lists_NNS in_IN the_DT context_NN of_IN Web_NN search_NN engine_NN architecture_NN ._.
+The_DT impact_NN of_IN compression_NN on_IN caching_NN efficiency_NN is_VBZ addressed_VBN in_IN -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Finally_RB ,_, Long_NNP and_CC Suel_NNP =_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: introduce_VB a_DT 3-level_JJ caching_NN architecture_NN that_WDT includes_VBZ on-disk_JJ caching_NN of_IN the_DT posting_VBG lists_NNS for_IN popular_JJ term_NN combinations_NNS ._.
+Index_NN pruning_NN reduces_VBZ significantly_RB the_DT fraction_NN of_IN the_DT index_NN needed_VBN for_IN que_NN
+h_NN dynamic_NN ,_, Method_NN B_NN pruning_NN ,_, as_IN that_DT combination_NN has_VBZ been_VBN shown_VBN to_TO be_VB both_CC efficient_JJ and_CC effective_JJ -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+2.2_CD Caching_NN Several_JJ papers_NNS examine_VBP improving_VBG search_NN engine_NN throughput_NN by_IN caching_VBG inverted_JJ lists_NNS =_JJ -_: =[_NN 7_CD ,_, 11_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+With_IN the_DT exception_NN of_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, these_DT approaches_NNS either_CC cache_NN full_JJ inverted_JJ lists_NNS ,_, or_CC cache_NN intersected_VBD inverted_JJ lists_NNS on_IN disk_NN ._.
+Saraiva_FW et_FW al._FW apply_VB pruning_NN to_TO their_PRP$ inverted_JJ lists_NNS prior_RB to_TO caching_NN ,_, whi_NN
+th_DT their_PRP$ aggregated_JJ relevance_NN score_NN ;_: in_IN other_JJ words_NNS ,_, it_PRP represent_VBP intersections_NNS of_IN lists_NNS ._.
+Using_VBG pre-computed_JJ intersection_NN lists_NNS has_VBZ been_VBN shown_VBN to_TO improve_VB the_DT performance_NN oflarge-scale_JJ search_NN engines_NNS =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT intersection_NN lists_NNS ,_, however_RB ,_, take_VB up_RP additional_JJ space_NN dictating_VBG a_DT cost-benefit_JJ trade-off_NN ,_, and_CC careful_JJ strategies_NNS have_VBP been_VBN proposed_VBN to_TO select_VB the_DT pairs_NNS of_IN terms_NNS for_IN which_WDT intersection_NN lists_NNS sh_VBP
+equent_JJ queries_NNS and_CC the_DT dynamic_JJ part_NN handles_VBZ replacement_NN techniques_NNS like_IN LRU_NNP or_CC LFU_NNP ._.
+With_IN this_DT ,_, SDC_NNP achieved_VBD a_DT hit_NN ratio_NN higher_JJR than_IN 30_CD %_NN in_IN experiments_NNS conducted_VBN on_IN a_DT log_NN from_IN Altavista_NNP ._.
+Long_NNP and_CC Suel_NNP =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: showed_VBD that_IN upon_IN storing_VBG pairs_NNS of_IN frequent_JJ terms_NNS determined_VBN by_IN the_DT co-occurrence_NN in_IN the_DT query_NN logs_NNS ,_, it_PRP is_VBZ possible_JJ to_TO increase_VB the_DT hit_NN ratio_NN ._.
+For_IN those_DT ,_, the_DT authors_NNS proposed_VBD putting_VBG the_DT pairs_NNS of_IN freq_NN

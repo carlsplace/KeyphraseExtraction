@@ -1,0 +1,90 @@
+Connections_NNP between_IN the_DT lines_NNS :_: augmenting_VBG social_JJ networks_NNS with_IN text_NN
+Network_NNP data_NNS is_VBZ ubiquitous_JJ ,_, encoding_VBG collections_NNS of_IN relationships_NNS between_IN entities_NNS such_JJ as_IN people_NNS ,_, places_NNS ,_, genes_NNS ,_, or_CC corporations_NNS ._.
+While_IN many_JJ resources_NNS for_IN networks_NNS of_IN interesting_JJ entities_NNS are_VBP emerging_VBG ,_, most_JJS of_IN these_DT can_MD only_RB annotate_VB connections_NNS in_IN a_DT limited_JJ fashion_NN ._.
+Although_IN relationships_NNS between_IN entities_NNS are_VBP rich_JJ ,_, it_PRP is_VBZ impractical_JJ to_TO manually_RB devise_VB complete_JJ characterizations_NNS of_IN these_DT relationships_NNS for_IN every_DT pair_NN of_IN entities_NNS on_IN large_JJ ,_, real-world_JJ corpora_NN ._.
+In_IN this_DT paper_NN we_PRP present_VBP a_DT novel_JJ probabilistic_JJ topic_NN model_NN to_TO analyze_VB text_NN corpora_NN and_CC infer_VB descriptions_NNS of_IN its_PRP$ entities_NNS and_CC of_IN relationships_NNS between_IN those_DT entities_NNS ._.
+We_PRP develop_VBP variational_JJ methods_NNS for_IN performing_VBG approximate_JJ inference_NN on_IN our_PRP$ model_NN and_CC demonstrate_VBP that_IN our_PRP$ model_NN can_MD be_VB practically_RB deployed_VBN on_IN large_JJ corpora_NNS such_JJ as_IN Wikipedia_NNP ._.
+We_PRP show_VBP qualitatively_RB and_CC quantitatively_RB that_IN our_PRP$ model_NN can_MD construct_VB and_CC annotate_VB graphs_NNS of_IN relationships_NNS and_CC make_VB useful_JJ predictions_NNS ._.
+re_VB as_RB well_RB as_IN corresponding_JJ annotations_NNS based_VBN on_IN a_DT complicated_JJ generative_JJ process_NN ._.
+The_DT model_NN complexity_NN and_CC scalability_NN hinder_VBP its_PRP$ application_NN to_TO group_NN profiling_NN in_IN large-scale_JJ networks_NNS ._.
+Chang_NNP et_FW al._FW =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP NUBBI_NNP -LRB-_-LRB- Networks_NNP Uncovered_NNP By_IN Bayesian_NNP Inference_NNP -RRB-_-RRB- to_TO infer_VB descriptions_NNS of_IN its_PRP$ entities_NNS and_CC of_IN relationships_NNS between_IN these_DT entities_NNS from_IN a_DT text_NN corpora_NN ._.
+The_DT probabilistic_JJ topic_NN model_NN assumes_VBZ t_NN
+ature_NN vectors_NNS ._.
+Data_NNS of_IN this_DT sort_NN ,_, referred_VBN to_TO as_IN relational_JJ data_NNS 1_CD -LRB-_-LRB- 10_CD ,_, 20_CD -RRB-_-RRB- ,_, can_MD be_VB found_VBN in_IN such_JJ diverse_JJ application_NN areas_NNS as_IN web_NN mining_NN -LRB-_-LRB- 3_CD ,_, 17_CD ,_, 23_CD ,_, 24_CD -RRB-_-RRB- ,_, bioinformatics_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, social_JJ network_NN analysis_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC so_RB on_RB ._.
+On_IN one_CD hand_NN ,_, the_DT link_NN structure_NN among_IN instances_NNS 1_CD In_IN this_DT paper_NN ,_, we_PRP use_VBP document_NN classification_NN as_IN a_DT running_VBG example_NN for_IN relational_JJ data_NN analysis_NN ._.
+Hence_RB ,_, for_IN convenience_NN of_IN illustration_NN ,_,
+le_FW to_TO predict_VB links_NNS using_VBG texts_NNS '_POS content_NN ._.
+The_DT authors_NNS have_VBP also_RB developed_VBN a_DT method_NN to_TO uncover_VB the_DT relationships_NNS encoded_VBN in_IN a_DT collection_NN of_IN texts_NNS using_VBG an_DT approach_NN based_VBN on_IN a_DT probabilistic_JJ topic_NN model_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT allows_VBZ inferring_VBG descriptions_NNS of_IN the_DT network_NN 's_POS elements_NNS ._.
+Kemp_NNP et_FW al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- have_VBP presented_VBN an_DT approach_NN to_TO cluster_VB one_CD or_CC more_JJR sets_NNS of_IN entities_NNS and_CC discover_VB the_DT relationships_NNS between_IN clusters_NNS tha_NN
+modeling_NN ._.
+As_IN a_DT result_NN ,_, LDA_NNP has_VBZ been_VBN extended_VBN in_IN a_DT variety_NN of_IN ways_NNS ,_, and_CC in_IN particular_JJ for_IN social_JJ networks_NNS and_CC social_JJ media_NNS ,_, a_DT number_NN of_IN extensions_NNS to_TO LDA_NNP have_VBP been_VBN proposed_VBN ._.
+For_IN example_NN ,_, Chang_NNP et_FW al._FW =_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT novel_JJ probabilistic_JJ topic_NN model_NN to_TO analyze_VB text_NN corpora_NN and_CC infer_VB descriptions_NNS of_IN the_DT entities_NNS and_CC of_IN relationships_NNS between_IN those_DT entities_NNS on_IN Wikipedia_NNP ._.
+McCallum_NNP et_FW al._FW -LRB-_-LRB- 10_CD -RRB-_-RRB- proposed_VBD a_DT mod_NN
+otic_JJ relationship_NN ._.
+We_PRP also_RB demonstrate_VBP a_DT method_NN to_TO perform_VB approximate_JJ inference_NN in_IN the_DT model_NN using_VBG a_DT collapsed_JJ Gibbs_NNP sampler_NN since_IN exact_JJ inference_NN in_IN the_DT joint_JJ model_NN in_IN intractable_JJ ._.
+The_DT Nubbi_NNP model_NN -LRB-_-LRB- =_JJ -_: =_JJ Chang_NNP et_FW al._FW ,_, 2009_CD -_: =--RRB-_NN tackles_VBZ a_DT related_JJ problem_NN where_WRB entity_NN relations_NNS are_VBP discovered_VBN from_IN textual_JJ data_NNS ._.
+The_DT Topic-Link_JJ LDA_NN model_NN -LRB-_-LRB- Liu_NNP et_FW al._FW ,_, 2009_CD -RRB-_-RRB- deals_NNS with_IN another_DT related_JJ problem_NN of_IN modelingBlock-LDA_NN :_: Jointly_RB model_NN
+erved_VBN text_NN data_NNS ._.
+Topic_NN modeling_NN is_VBZ then_RB used_VBN to_TO infer_VB this_DT structure_NN from_IN the_DT data_NNS by_IN using_VBG Bayesian_JJ inference_NN ._.
+Our_PRP$ approach_NN draws_VBZ from_IN two_CD streams_NNS of_IN prior_JJ extensions_NNS to_TO topic_NN modeling_NN :_: Chang_NNP et_FW al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: took_VBD topic_NN modeling_NN to_TO the_DT network_NN text_NN analysis_NN level_NN :_: they_PRP perform_VBP topic_NN modeling_NN on_IN the_DT bag_NN of_IN words_NNS that_WDT surround_VBP the_DT pairs_NNS of_IN nodes_NNS in_IN text_NN data_NNS that_WDT form_VBP links_NNS in_IN order_NN to_TO suggest_VB link_NN labels_NNS ._.
+heterogeneous_JJ networks_NNS ,_, e.g._FW ,_, the_DT text_NN and_CC links_NNS ,_, to_TO detect_VB communities_NNS ,_, to_TO analyze_VB Figure_NNP 12_CD :_: Topic_JJ distributions_NNS of_IN authors_NNS and_CC influence_VB the_DT evolution_NN of_IN networks_NNS and_CC to_TO model_VB relational_JJ learning_NN =_JJ -_: =[_NN 32_CD ,_, 2_CD ,_, 34_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Besides_IN ,_, some_DT researchers_NNS studied_VBD the_DT problem_NN of_IN information_NN diffusion_NN over_IN networks_NNS -LRB-_-LRB- 16_CD ,_, 11_CD -RRB-_-RRB- ._.
+Link_NN Influence_NN Analysis_NNP Link_NNP influence_NN analysis_NN has_VBZ attracted_VBN tremendous_JJ interests_NNS from_IN both_CC academic_JJ a_DT
+proach_NN is_VBZ to_TO incorporate_VB some_DT supervision_NN into_IN the_DT model_NN so_IN that_IN the_DT learned_VBN topics_NNS are_VBP designed_VBN to_TO match_VB labels_NNS determined_VBN in_IN advance_NN ._.
+Labeled_VBN LDA_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- and_CC the_DT similar_JJ network-entity_JJ discovery_NN model_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =--RRB-_NN provide_VBP one_CD promising_JJ avenue_NN toward_IN a_DT solution_NN when_WRB some_DT document-level_JJ label_NN information_NN is_VBZ available_JJ ._.
+Like_IN ,_, LDA_NNP ,_, Labeled_NNP LDA_NNP treats_VBZ each_DT document_NN as_IN a_DT mixture_NN of_IN topics_NNS ,_, and_CC each_DT word_NN is_VBZ drawn_VBN fro_NN
+hat_NN jobs_NNS were_VBD commissioned_VBN and_CC trace_VB the_DT evolution_NN of_IN different_JJ categories_NNS of_IN abuse_NN jobs_NNS over_IN time_NN ._.
+We_PRP hope_VBP to_TO probe_VB the_DT social_JJ network_NN of_IN buyers_NNS and_CC bidders_NNS by_IN developing_VBG an_DT extension_NN of_IN LDA_NN such_JJ as_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT extension_NN would_MD not_RB only_RB model_VB the_DT identities_NNS of_IN those_DT who_WP post_VBP and_CC respond_VBP to_TO abuse_VB job_NN solicitations_NNS ,_, but_CC also_RB the_DT connections_NNS between_IN them_PRP ._.
+Even_RB more_RBR recently_RB ,_, the_DT demand_NN for_IN large-scale_JJ app_NN
+n_NN better_JJR model_NN the_DT language_NN used_VBN to_TO describe_VB relationships_NNS ._.
+Finally_RB ,_, while_IN other_JJ models_NNS have_VBP also_RB leveraged_VBN the_DT machinery_NN of_IN LDA_NNP to_TO understand_VB ensembles_NNS of_IN entities_NNS and_CC the_DT words_NNS associated_VBN with_IN them_PRP =_JJ -_: =[_NN 4_CD ,_, 24_CD ,_, 27_CD -RRB-_-RRB- -_: =_JJ -_: these_DT models_NNS only_RB learn_VBP hidden_JJ topics_NNS for_IN individual_JJ entities_NNS ._.
+Nubbi_NNP models_NNS individual_JJ entities_NNS and_CC pairs_NNS of_IN entities_NNS distinctly_RB ._.
+By_IN controlling_VBG for_IN features_NNS of_IN individual_JJ entities_NNS and_CC explicitly_RB rel_NN
+f_LS distributions_NNS over_IN the_DT latent_JJ variables_NNS indexed_VBN by_IN free_JJ variational_JJ parameters_NNS ._.
+Those_DT parameters_NNS are_VBP then_RB fit_JJ to_TO be_VB close_JJ to_TO the_DT true_JJ posterior_NN ,_, where_WRB closeness_NN is_VBZ measured_VBN by_IN relative_JJ entropy_NN ._.
+See_VB =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: α_FW θ_FW α_FW ψ_FW α_FW π_FW θ_FW e_LS ''_'' θ_NN e_SYM '_POS θ_NN e_SYM ψ_FW e_LS ,_, e_SYM '_POS π_NN e_SYM ,_, e_SYM '_'' ..._: z_SYM z_SYM z_SYM η_FW θ_FW z_SYM c_NN η_NN ψ_NN N_NN e_SYM ''_'' w_NN N_NN e_SYM '_POS w_NN N_NN e_SYM w_FW β_FW θ_FW K_NN θ_NN w_NN N_NN e_SYM ,_, e_SYM '_POS M_NN β_FW ψ_FW K_NN ψ_NN N_NN entity_NN contexts_NNS K_NN θ_NN entity_NN topics_NNS M_NN pair_NN contexts_NNS K_NN ψ_NN relationship_NN topics_NNS Figure_NNP 3_CD :_: A_DT
+about_IN relationships_NNS ,_, but_CC this_DT information_NN is_VBZ out_IN of_IN reach_NN for_IN traditional_JJ network_NN analysis_NN techniques_NNS ._.
+We_PRP develop_VBP Networks_NNP Uncovered_NNP By_IN Bayesian_NNP Inference_NNP -LRB-_-LRB- Nubbi_NNP -RRB-_-RRB- ,_, a_DT probabilistic_JJ topic_NN model_NN of_IN text_NN =_JJ -_: =[_NN 5_CD ,_, 12_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: with_IN hidden_JJ variables_NNS that_WDT represent_VBP the_DT patterns_NNS of_IN word_NN use_NN which_WDT describes_VBZ the_DT relationships_NNS in_IN the_DT text_NN ._.
+Given_VBN a_DT collection_NN of_IN documents_NNS ,_, Nubbi_NNP reveals_VBZ the_DT hidden_JJ network_NN of_IN relationships_NNS that_WDT is_VBZ
+large_JJ body_NN of_IN relationship_NN information_NN encoded_VBN in_IN collections_NNS of_IN free_JJ text_NN ._.
+Previous_JJ work_NN in_IN this_DT vein_NN has_VBZ used_VBN either_CC pattern-based_JJ approaches_NNS or_CC co-occurrence_NN methods_NNS ._.
+The_DT pattern-based_JJ approaches_NNS =_JJ -_: =[_NN 1_CD ,_, 9_CD ,_, 21_CD ,_, 29_CD -RRB-_-RRB- -_: =_JJ -_: and_CC syntax_NN based_VBN approaches_NNS -LRB-_-LRB- 3_CD ,_, 14_CD -RRB-_-RRB- require_VBP patterns_NNS or_CC parsers_NNS which_WDT are_VBP meticulously_RB handcrafted_VBN ,_, often_RB fragile_JJ ,_, and_CC typically_RB need_VBP several_JJ examples_NNS of_IN desired_VBN relationships_NNS limiting_VBG the_DT type_NN of_IN re_NN
+red_NN ._.
+In_IN contrast_NN ,_, Nubbi_NNP makes_VBZ minimal_JJ assumptions_NNS about_IN the_DT input_NN text_NN ,_, and_CC is_VBZ thus_RB practical_JJ for_IN languages_NNS and_CC non-linguistic_JJ data_NNS where_WRB parsing_NN is_VBZ not_RB available_JJ or_CC applicable_JJ ._.
+Co-occurrence_NN methods_NNS =_JJ -_: =[_NN 7_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: also_RB make_VBP minimal_JJ assumptions_NNS ._.
+However_RB ,_, because_IN Nubbi_NNP draws_VBZ on_IN topic_NN modeling_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, it_PRP is_VBZ able_JJ to_TO uncover_VB hidden_JJ and_CC semantically_RB meaningful_JJ groupings_NNS of_IN relationships_NNS ._.
+Through_IN the_DT distinction_NN between_IN
+red_NN ._.
+In_IN contrast_NN ,_, Nubbi_NNP makes_VBZ minimal_JJ assumptions_NNS about_IN the_DT input_NN text_NN ,_, and_CC is_VBZ thus_RB practical_JJ for_IN languages_NNS and_CC non-linguistic_JJ data_NNS where_WRB parsing_NN is_VBZ not_RB available_JJ or_CC applicable_JJ ._.
+Co-occurrence_NN methods_NNS =_JJ -_: =[_NN 7_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: also_RB make_VBP minimal_JJ assumptions_NNS ._.
+However_RB ,_, because_IN Nubbi_NNP draws_VBZ on_IN topic_NN modeling_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, it_PRP is_VBZ able_JJ to_TO uncover_VB hidden_JJ and_CC semantically_RB meaningful_JJ groupings_NNS of_IN relationships_NNS ._.
+Through_IN the_DT distinction_NN between_IN
+oded_VBN in_IN collections_NNS of_IN free_JJ text_NN ._.
+Previous_JJ work_NN in_IN this_DT vein_NN has_VBZ used_VBN either_CC pattern-based_JJ approaches_NNS or_CC co-occurrence_NN methods_NNS ._.
+The_DT pattern-based_JJ approaches_NNS -LRB-_-LRB- 1_CD ,_, 9_CD ,_, 21_CD ,_, 29_CD -RRB-_-RRB- and_CC syntax_NN based_JJ approaches_NNS =_JJ -_: =[_NN 3_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: require_VB patterns_NNS or_CC parsers_NNS which_WDT are_VBP meticulously_RB handcrafted_VBN ,_, often_RB fragile_JJ ,_, and_CC typically_RB need_VBP several_JJ examples_NNS of_IN desired_VBN relationships_NNS limiting_VBG the_DT type_NN of_IN relationships_NNS that_WDT can_MD be_VB discovered_VBN ._.
+large_JJ body_NN of_IN relationship_NN information_NN encoded_VBN in_IN collections_NNS of_IN free_JJ text_NN ._.
+Previous_JJ work_NN in_IN this_DT vein_NN has_VBZ used_VBN either_CC pattern-based_JJ approaches_NNS or_CC co-occurrence_NN methods_NNS ._.
+The_DT pattern-based_JJ approaches_NNS =_JJ -_: =[_NN 1_CD ,_, 9_CD ,_, 21_CD ,_, 29_CD -RRB-_-RRB- -_: =_JJ -_: and_CC syntax_NN based_VBN approaches_NNS -LRB-_-LRB- 3_CD ,_, 14_CD -RRB-_-RRB- require_VBP patterns_NNS or_CC parsers_NNS which_WDT are_VBP meticulously_RB handcrafted_VBN ,_, often_RB fragile_JJ ,_, and_CC typically_RB need_VBP several_JJ examples_NNS of_IN desired_VBN relationships_NNS limiting_VBG the_DT type_NN of_IN re_NN
+overing_VBG and_CC understanding_VBG network_NN data_NNS hidden_VBN in_IN plain_JJ text_NN ._.
+Analyzing_VBG networks_NNS of_IN entities_NNS has_VBZ a_DT substantial_JJ history_NN -LRB-_-LRB- 34_CD -RRB-_-RRB- ;_: recent_JJ work_NN has_VBZ focused_VBN in_IN particular_JJ on_IN clustering_NN and_CC community_NN structure_NN =_JJ -_: =[_NN 2_CD ,_, 6_CD ,_, 11_CD ,_, 18_CD ,_, 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, deriving_VBG models_NNS for_IN social_JJ networks_NNS -LRB-_-LRB- 15_CD ,_, 16_CD ,_, 19_CD ,_, 32_CD -RRB-_-RRB- ,_, and_CC applying_VBG these_DT analyses_NNS to_TO predictive_JJ applications_NNS -LRB-_-LRB- 35_CD -RRB-_-RRB- ._.
+Latent_JJ variable_JJ approaches_NNS to_TO modeling_NN social_JJ networks_NNS with_IN associated_VBN text_NN have_VBP al_FW
+oded_VBN in_IN collections_NNS of_IN free_JJ text_NN ._.
+Previous_JJ work_NN in_IN this_DT vein_NN has_VBZ used_VBN either_CC pattern-based_JJ approaches_NNS or_CC co-occurrence_NN methods_NNS ._.
+The_DT pattern-based_JJ approaches_NNS -LRB-_-LRB- 1_CD ,_, 9_CD ,_, 21_CD ,_, 29_CD -RRB-_-RRB- and_CC syntax_NN based_JJ approaches_NNS =_JJ -_: =[_NN 3_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: require_VB patterns_NNS or_CC parsers_NNS which_WDT are_VBP meticulously_RB handcrafted_VBN ,_, often_RB fragile_JJ ,_, and_CC typically_RB need_VBP several_JJ examples_NNS of_IN desired_VBN relationships_NNS limiting_VBG the_DT type_NN of_IN relationships_NNS that_WDT can_MD be_VB discovered_VBN ._.
+about_IN relationships_NNS ,_, but_CC this_DT information_NN is_VBZ out_IN of_IN reach_NN for_IN traditional_JJ network_NN analysis_NN techniques_NNS ._.
+We_PRP develop_VBP Networks_NNP Uncovered_NNP By_IN Bayesian_NNP Inference_NNP -LRB-_-LRB- Nubbi_NNP -RRB-_-RRB- ,_, a_DT probabilistic_JJ topic_NN model_NN of_IN text_NN =_JJ -_: =[_NN 5_CD ,_, 12_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: with_IN hidden_JJ variables_NNS that_WDT represent_VBP the_DT patterns_NNS of_IN word_NN use_NN which_WDT describes_VBZ the_DT relationships_NNS in_IN the_DT text_NN ._.
+Given_VBN a_DT collection_NN of_IN documents_NNS ,_, Nubbi_NNP reveals_VBZ the_DT hidden_JJ network_NN of_IN relationships_NNS that_WDT is_VBZ
+overing_VBG and_CC understanding_VBG network_NN data_NNS hidden_VBN in_IN plain_JJ text_NN ._.
+Analyzing_VBG networks_NNS of_IN entities_NNS has_VBZ a_DT substantial_JJ history_NN -LRB-_-LRB- 34_CD -RRB-_-RRB- ;_: recent_JJ work_NN has_VBZ focused_VBN in_IN particular_JJ on_IN clustering_NN and_CC community_NN structure_NN =_JJ -_: =[_NN 2_CD ,_, 6_CD ,_, 11_CD ,_, 18_CD ,_, 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, deriving_VBG models_NNS for_IN social_JJ networks_NNS -LRB-_-LRB- 15_CD ,_, 16_CD ,_, 19_CD ,_, 32_CD -RRB-_-RRB- ,_, and_CC applying_VBG these_DT analyses_NNS to_TO predictive_JJ applications_NNS -LRB-_-LRB- 35_CD -RRB-_-RRB- ._.
+Latent_JJ variable_JJ approaches_NNS to_TO modeling_NN social_JJ networks_NNS with_IN associated_VBN text_NN have_VBP al_FW
+there_EX are_VBP no_DT distinguished_JJ pair_NN topics_NNS ;_: all_DT words_NNS are_VBP explained_VBN by_IN the_DT topics_NNS associated_VBN with_IN individuals_NNS ._.
+We_PRP use_VBP the_DT bootstrap_NN method_NN to_TO create_VB held-out_JJ data_NNS sets_NNS and_CC compute_VB predictive_JJ probability_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Figure_NN 4_CD shows_VBZ the_DT average_JJ predictive_JJ log_NN likelihood_NN for_IN the_DT three_CD approaches_NNS ._.
+The_DT results_NNS for_IN Nubbi_NNP are_VBP plotted_VBN as_IN a_DT function_NN of_IN the_DT total_JJ number_NN of_IN topics_NNS K_NN =_JJ Kθ_NN +_CC Kψ_NN ._.
+The_DT results_NNS for_IN LDA_NN and_CC auth_NN
+200X_FW ACM_FW X-XXXXX-XX-X_NN \/_: XX\/XX_NN ..._: $_$ 5.00_CD ._.
+for_IN suggesting_VBG new_JJ relationships_NNS between_IN entities_NNS ,_, characterizing_VBG new_JJ relationships_NNS ,_, and_CC quantifying_VBG global_JJ properties_NNS of_IN naturally_RB occurring_VBG network_NN structures_NNS =_JJ -_: =[_NN 2_CD ,_, 6_CD ,_, 32_CD ,_, 34_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Many_JJ corpora_NN of_IN network_NN data_NNS have_VBP emerged_VBN in_IN recent_JJ years_NNS ._.
+Examples_NNS of_IN such_JJ data_NNS include_VBP social_JJ networks_NNS ,_, such_JJ as_IN LinkedIn_NNP or_CC Facebook_NNP ,_, and_CC citation_NN networks_NNS ,_, such_JJ as_IN CiteSeer_NNP ,_, Rexa_NNP ,_, or_CC JSTOR_NN ._.
+Other_JJ

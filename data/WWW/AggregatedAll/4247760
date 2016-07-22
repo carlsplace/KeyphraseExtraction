@@ -1,0 +1,158 @@
+Consistency-preserving_JJ caching_NN of_IN dynamic_JJ database_NN content_NN
+With_IN the_DT growing_VBG use_NN of_IN dynamic_JJ web_NN content_NN generated_VBN from_IN relational_JJ databases_NNS ,_, traditional_JJ caching_NN solutions_NNS for_IN through_IN put_NN and_CC latency_NN improvements_NNS are_VBP ineffective_JJ ._.
+We_PRP describe_VBP a_DT middleware_JJ layer_NN called_VBN Ganesh_NNP that_WDT reduces_VBZ the_DT volume_NN of_IN data_NNS transmitted_VBN without_IN semantic_JJ interpretation_NN of_IN queries_NNS or_CC results_NNS ._.
+It_PRP achieves_VBZ this_DT reduction_NN through_IN the_DT use_NN of_IN cryptographic_JJ hashing_VBG to_TO detect_VB similarities_NNS with_IN previous_JJ results_NNS ._.
+These_DT benefits_NNS do_VBP not_RB require_VB any_DT compromise_NN of_IN the_DT strict_JJ consistency_NN semantics_NNS provided_VBN by_IN the_DT back-end_JJ database_NN ._.
+Further_RB ,_, Ganesh_NNP does_VBZ not_RB require_VB modifications_NNS to_TO applications_NNS ,_, web_NN servers_NNS ,_, or_CC database_NN servers_NNS ,_, and_CC works_VBZ with_IN closed-source_JJ applications_NNS and_CC databases_NNS ._.
+Using_VBG two_CD bench_NN marks_NNS representative_NN of_IN dynamic_JJ web_NN sites_NNS ,_, measurements_NNS of_IN our_PRP$ prototype_NN show_VBP that_IN it_PRP can_MD increase_VB end-to-end_JJ throughput_NN by_IN as_RB much_JJ as_IN two_CD fold_NN for_IN non-data_JJ intensive_JJ applications_NNS and_CC by_IN as_RB much_JJ as_IN ten_CD fold_NN for_IN dataintensive_JJ ones_NNS ._.
+lications_NNS of_IN this_DT idea_NN span_VBP a_DT wide_JJ range_NN of_IN storage_NN systems_NNS ._.
+Examples_NNS include_VBP peer-to-peer_JJ backup_NN of_IN personal_JJ computing_NN files_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, storage-efficient_JJ archiving_NN of_IN data_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, and_CC finding_VBG similar_JJ files_NNS =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Spring_NN and_CC Wetherall_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- apply_VBP similar_JJ principles_NNS at_IN the_DT network_NN level_NN ._.
+Using_VBG synchronized_VBN caches_NNS at_IN both_DT ends_NNS of_IN a_DT network_NN link_NN ,_, duplicated_JJ data_NNS is_VBZ replaced_VBN by_IN smaller_JJR tokens_NNS for_IN transmission_NN and_CC
+l_NN choice_NN depends_VBZ on_IN many_JJ factors_NNS such_JJ as_IN the_DT contents_NNS of_IN the_DT query_NN 's_POS result_NN ,_, the_DT history_NN of_IN recent_JJ results_NNS ,_, and_CC the_DT cache_NN management_NN algorithm_NN ._.
+When_WRB an_DT object_NN is_VBZ opaque_JJ ,_, the_DT use_NN of_IN Rabin_NN fingerprints_NNS =_JJ -_: =[_NN 8_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: to_TO detect_VB common_JJ data_NNS between_IN two_CD objects_NNS has_VBZ been_VBN successfully_RB shown_VBN in_IN the_DT past_NN by_IN systems_NNS such_JJ as_IN LBFS_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- and_CC CASPER_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- ._.
+Rabin_NN fingerprinting_NN uses_VBZ a_DT sliding_VBG window_NN over_IN the_DT data_NNS to_TO compute_VB a_DT r_NN
+o_NN find_VB two_CD inputs_NNS that_WDT hash_VBP to_TO the_DT same_JJ output_NN ._.
+The_DT functions_NNS are_VBP also_RB assumed_VBN to_TO be_VB one-way_JJ ;_: that_DT is_VBZ ,_, finding_VBG an_DT input_NN that_WDT results_VBZ in_IN a_DT specific_JJ output_NN is_VBZ computationally_RB infeasible_JJ ._.
+Menezes_NNP et_FW al._FW =_SYM -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: provide_VB more_JJR details_NNS about_IN these_DT assumptions_NNS ._.
+The_DT above_JJ assumptions_NNS allow_VBP hash-based_JJ systems_NNS to_TO assume_VB that_IN collisions_NNS do_VBP not_RB occur_VB ._.
+Hence_RB ,_, they_PRP are_VBP able_JJ to_TO treat_VB the_DT hash_NN of_IN a_DT data_NN item_NN as_IN its_PRP$ uniqu_NN
+tives_NNS in_IN distributed_VBN systems_NNS ._.
+8.1_CD Caching_NNP Dynamic_NNP Content_NNP At_IN the_DT database_NN layer_NN ,_, a_DT number_NN of_IN systems_NNS have_VBP advocated_VBN middletier_JJ caching_NN where_WRB parts_NNS of_IN the_DT database_NN are_VBP replicated_VBN at_IN the_DT edge_NN or_CC server_NN =_JJ -_: =[_NN 3_CD ,_, 4_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT systems_NNS either_CC cache_NN entire_JJ tables_NNS in_IN what_WP is_VBZ essentially_RB a_DT replicated_VBN database_NN or_CC use_NN materialized_VBD views_NNS from_IN previous_JJ query_JJ replies_NNS -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+They_PRP require_VBP tight_JJ integration_NN with_IN the_DT back-end_JJ dat_NN
+tency_NN requirements_NNS of_IN many_JJ eBusiness_NN applications_NNS such_JJ as_IN banking_NN ,_, finance_NN ,_, and_CC online_NN retailing_NN -LRB-_-LRB- 38_CD -RRB-_-RRB- ._.
+Thus_RB ,_, the_DT back-end_JJ database_NN is_VBZ usually_RB located_JJ far_RB from_IN many_JJ sets_NNS of_IN first_JJ and_CC second-tier_JJ nodes_NNS =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT absence_NN of_IN both_CC caching_NN and_CC replication_NN ,_, WAN_NNP bandwidth_NN can_MD easily_RB become_VB a_DT limiting_VBG factor_NN in_IN the_DT performance_NN and_CC scalability_NN of_IN data-intensive_JJ applications_NNS ._.
+2.2_CD Hash-Based_NNP Systems_NNP Ganesh_NNP 's_POS f_SYM
+narayanan_VB Carnegie_NNP Mellon_NNP University_NNP -LCB-_-LRB- ntolia,satya}@cs.cmu.edu_NNP late_RB the_DT client_NN from_IN bursty_JJ loads_NNS ._.
+Previous_JJ attempts_NNS in_IN caching_VBG dynamic_JJ database_NN content_NN have_VBP generally_RB weakened_VBN transactional_JJ semantics_NNS =_JJ -_: =[_NN 3_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: or_CC required_VBN application_NN modifications_NNS -LRB-_-LRB- 15_CD ,_, 34_CD -RRB-_-RRB- ._.
+We_PRP report_VBP on_IN a_DT new_JJ solution_NN that_WDT takes_VBZ the_DT form_NN of_IN a_DT databaseagnostic_JJ middleware_NN layer_NN called_VBN Ganesh_NNP ._.
+Ganesh_NNP makes_VBZ no_DT effort_NN to_TO semantically_RB interpret_VB
+xisting_VBG module_NN structure_NN ._.
+These_DT conditions_NNS are_VBP easily_RB met_VBN in_IN our_PRP$ context_NN because_IN of_IN the_DT popularity_NN of_IN Java_NNP as_IN the_DT programming_NN language_NN for_IN eBusiness_NN systems_NNS ._.
+The_DT Java_NNP Database_NN Connectivity_NN -LRB-_-LRB- JDBC_NN -RRB-_-RRB- API_NN =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: allows_VBZ Java_NNP applications_NNS to_TO access_VB a_DT wide_JJ variety_NN of_IN databases_NNS and_CC even_RB other_JJ tabular_JJ data_NNS repositories_NNS such_JJ as_IN flat_JJ files_NNS ._.
+Access_NN to_TO these_DT data_NNS sources_NNS is_VBZ provided_VBN by_IN JDBC_NN drivers_NNS that_WDT translate_VBP bet_NN
+ier_NN in_IN Section_NN 2_CD ._.
+Successful_JJ applications_NNS of_IN this_DT idea_NN span_VBP a_DT wide_JJ range_NN of_IN storage_NN systems_NNS ._.
+Examples_NNS include_VBP peer-to-peer_JJ backup_NN of_IN personal_JJ computing_NN files_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, storage-efficient_JJ archiving_NN of_IN data_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC finding_VBG similar_JJ files_NNS -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Spring_NN and_CC Wetherall_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- apply_VBP similar_JJ principles_NNS at_IN the_DT network_NN level_NN ._.
+Using_VBG synchronized_VBN caches_NNS at_IN both_DT ends_NNS of_IN a_DT network_NN link_NN ,_, duplicated_JJ data_NNS is_VBZ replaced_VBN by_IN smal_NN
+atabases_NNS can_MD be_VB easily_RB replicated_VBN in_IN a_DT LAN_NNP ,_, this_DT is_VBZ infeasible_JJ in_IN a_DT WAN_NNP because_IN of_IN the_DT difficult_JJ task_NN of_IN simultaneously_RB providing_VBG strong_JJ consistency_NN ,_, availability_NN ,_, and_CC tolerance_NN to_TO network_NN partitions_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN a_DT result_NN ,_, databases_NNS tend_VBP to_TO be_VB centralized_VBN to_TO meet_VB the_DT strong_JJ consistency_NN requirements_NNS of_IN many_JJ eBusiness_NN applications_NNS such_JJ as_IN banking_NN ,_, finance_NN ,_, and_CC online_NN retailing_NN -LRB-_-LRB- 38_CD -RRB-_-RRB- ._.
+Thus_RB ,_, the_DT back-end_JJ datab_NN
+n_NN cryptographic_JJ hashing_VBG ,_, as_IN discussed_VBN earlier_RBR in_IN Section_NNP 2_CD ._.
+Successful_JJ applications_NNS of_IN this_DT idea_NN span_VBP a_DT wide_JJ range_NN of_IN storage_NN systems_NNS ._.
+Examples_NNS include_VBP peer-to-peer_JJ backup_NN of_IN personal_JJ computing_NN files_VBZ =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, storage-efficient_JJ archiving_NN of_IN data_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, and_CC finding_VBG similar_JJ files_NNS -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Spring_NN and_CC Wetherall_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- apply_VBP similar_JJ principles_NNS at_IN the_DT network_NN level_NN ._.
+Using_VBG synchronized_VBN caches_NNS at_IN both_DT ends_NNS of_IN a_DT network_NN
+ders_NNS for_IN detecting_VBG similarity_NN ._.
+The_DT most_RBS aggressive_JJ use_NN of_IN hash-based_JJ techniques_NNS is_VBZ by_IN systems_NNS that_WDT use_VBP hashes_NNS as_IN the_DT primary_JJ identifiers_NNS for_IN objects_NNS in_IN persistent_JJ storage_NN ._.
+Storage_NN systems_NNS such_JJ as_IN CFS_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: and_CC PAST_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- that_WDT have_VBP been_VBN built_VBN using_VBG distributed_VBN hash_JJ tables_NNS fall_VBP into_IN this_DT category_NN ._.
+Single_JJ Instance_NNP Storage_NNP -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC Venti_NNP -LRB-_-LRB- 29_CD -RRB-_-RRB- are_VBP other_JJ examples_NNS of_IN such_JJ systems_NNS ._.
+As_IN discussed_VBN in_IN Section_NN 2.2_CD ,_, t_NN
+satya}@cs.cmu.edu_NN late_RB the_DT client_NN from_IN bursty_JJ loads_NNS ._.
+Previous_JJ attempts_NNS in_IN caching_VBG dynamic_JJ database_NN content_NN have_VBP generally_RB weakened_VBN transactional_JJ semantics_NNS -LRB-_-LRB- 3_CD ,_, 4_CD -RRB-_-RRB- or_CC required_VBN application_NN modifications_NNS =_JJ -_: =[_NN 15_CD ,_, 34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP report_VBP on_IN a_DT new_JJ solution_NN that_WDT takes_VBZ the_DT form_NN of_IN a_DT databaseagnostic_JJ middleware_NN layer_NN called_VBN Ganesh_NNP ._.
+Ganesh_NNP makes_VBZ no_DT effort_NN to_TO semantically_RB interpret_VB the_DT contents_NNS of_IN queries_NNS or_CC their_PRP$ results_NNS ._.
+Inste_NN
+heir_NN results_NNS ._.
+Instead_RB ,_, it_PRP relies_VBZ exclusively_RB on_IN cryptographic_JJ hashing_VBG to_TO detect_VB similarities_NNS with_IN previous_JJ results_NNS ._.
+Hash-based_JJ similarity_NN detection_NN has_VBZ seen_VBN increasing_VBG use_NN in_IN distributed_VBN file_NN systems_NNS =_JJ -_: =[_NN 26_CD ,_, 36_CD ,_, 37_CD -RRB-_-RRB- -_: =_SYM -_: for_IN improving_VBG performance_NN on_IN low-bandwidth_JJ networks_NNS ._.
+However_RB ,_, these_DT techniques_NNS have_VBP not_RB been_VBN used_VBN for_IN relational_JJ databases_NNS ._.
+Unlike_IN previous_JJ approaches_NNS that_WDT use_VBP generic_JJ methods_NNS to_TO detect_VB similarity_NN ,_, G_NN
+imary_JJ identifiers_NNS for_IN objects_NNS in_IN persistent_JJ storage_NN ._.
+Storage_NN systems_NNS such_JJ as_IN CFS_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC PAST_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- that_WDT have_VBP been_VBN built_VBN using_VBG distributed_VBN hash_JJ tables_NNS fall_VBP into_IN this_DT category_NN ._.
+Single_JJ Instance_NN Storage_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Venti_NNP -LRB-_-LRB- 29_CD -RRB-_-RRB- are_VBP other_JJ examples_NNS of_IN such_JJ systems_NNS ._.
+As_IN discussed_VBN in_IN Section_NN 2.2_CD ,_, the_DT use_NN of_IN cryptographic_JJ hashes_NNS for_IN addressing_VBG persistent_JJ data_NNS represents_VBZ a_DT deeper_JJR level_NN of_IN faith_NN in_IN their_PRP$ collision-re_NN
+l_NN choice_NN depends_VBZ on_IN many_JJ factors_NNS such_JJ as_IN the_DT contents_NNS of_IN the_DT query_NN 's_POS result_NN ,_, the_DT history_NN of_IN recent_JJ results_NNS ,_, and_CC the_DT cache_NN management_NN algorithm_NN ._.
+When_WRB an_DT object_NN is_VBZ opaque_JJ ,_, the_DT use_NN of_IN Rabin_NN fingerprints_NNS =_JJ -_: =[_NN 8_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: to_TO detect_VB common_JJ data_NNS between_IN two_CD objects_NNS has_VBZ been_VBN successfully_RB shown_VBN in_IN the_DT past_NN by_IN systems_NNS such_JJ as_IN LBFS_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- and_CC CASPER_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- ._.
+Rabin_NN fingerprinting_NN uses_VBZ a_DT sliding_VBG window_NN over_IN the_DT data_NNS to_TO compute_VB a_DT r_NN
+narayanan_VB Carnegie_NNP Mellon_NNP University_NNP -LCB-_-LRB- ntolia,satya}@cs.cmu.edu_NNP late_RB the_DT client_NN from_IN bursty_JJ loads_NNS ._.
+Previous_JJ attempts_NNS in_IN caching_VBG dynamic_JJ database_NN content_NN have_VBP generally_RB weakened_VBN transactional_JJ semantics_NNS =_JJ -_: =[_NN 3_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: or_CC required_VBN application_NN modifications_NNS -LRB-_-LRB- 15_CD ,_, 34_CD -RRB-_-RRB- ._.
+We_PRP report_VBP on_IN a_DT new_JJ solution_NN that_WDT takes_VBZ the_DT form_NN of_IN a_DT databaseagnostic_JJ middleware_NN layer_NN called_VBN Ganesh_NNP ._.
+Ganesh_NNP makes_VBZ no_DT effort_NN to_TO semantically_RB interpret_VB
+e_LS database_NN are_VBP replicated_VBN at_IN the_DT edge_NN or_CC server_NN -LRB-_-LRB- 3_CD ,_, 4_CD ,_, 20_CD -RRB-_-RRB- ._.
+These_DT systems_NNS either_CC cache_NN entire_JJ tables_NNS in_IN what_WP is_VBZ essentially_RB a_DT replicated_VBN database_NN or_CC use_NN materialized_VBD views_NNS from_IN previous_JJ query_NN replies_VBZ =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP require_VBP tight_JJ integration_NN with_IN the_DT back-end_JJ database_NN to_TO ensure_VB a_DT time_NN bound_VBN on_IN the_DT propagation_NN of_IN updates_NNS ._.
+These_DT systems_NNS are_VBP also_RB usually_RB targeted_VBN towards_IN workloads_NNS that_WDT do_VBP not_RB require_VB strict_JJ c_NN
+heir_NN results_NNS ._.
+Instead_RB ,_, it_PRP relies_VBZ exclusively_RB on_IN cryptographic_JJ hashing_VBG to_TO detect_VB similarities_NNS with_IN previous_JJ results_NNS ._.
+Hash-based_JJ similarity_NN detection_NN has_VBZ seen_VBN increasing_VBG use_NN in_IN distributed_VBN file_NN systems_NNS =_JJ -_: =[_NN 26_CD ,_, 36_CD ,_, 37_CD -RRB-_-RRB- -_: =_SYM -_: for_IN improving_VBG performance_NN on_IN low-bandwidth_JJ networks_NNS ._.
+However_RB ,_, these_DT techniques_NNS have_VBP not_RB been_VBN used_VBN for_IN relational_JJ databases_NNS ._.
+Unlike_IN previous_JJ approaches_NNS that_WDT use_VBP generic_JJ methods_NNS to_TO detect_VB similarity_NN ,_, G_NN
+ed_IN moving_VBG web_NN page_NN assembly_NN to_TO the_DT clients_NNS to_TO optimize_VB content_NN delivery_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+While_IN Ganesh_NNP is_VBZ not_RB used_VBN at_IN the_DT presentation_NN layer_NN ,_, the_DT same_JJ principles_NNS have_VBP been_VBN applied_VBN in_FW Duplicate_FW Transfer_NN Detection_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: to_TO increase_VB web_NN cache_NN efficiency_NN as_RB well_RB as_IN for_IN web_NN access_NN across_IN bandwidth_NN limited_JJ links_NNS -LRB-_-LRB- 33_CD -RRB-_-RRB- ._.
+1200_CD 1600_CD 8.2_CD Hash-based_JJ Systems_NNPS The_DT past_JJ few_JJ years_NNS have_VBP seen_VBN the_DT emergence_NN of_IN many_JJ systems_NNS that_WDT exploi_VBP
+serve_VB as_IN a_DT codeword_NN for_IN a_DT much_RB larger_JJR data_NNS item_NN in_IN permanent_JJ storage_NN or_CC network_NN transmission_NN ._.
+The_DT assumption_NN that_IN collisions_NNS are_VBP so_RB rare_JJ as_IN to_TO be_VB effectively_RB non-existent_JJ has_VBZ recently_RB come_VBN under_IN fire_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, as_IN explained_VBN by_IN Black_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, we_PRP believe_VBP that_IN these_DT issues_NNS do_VBP not_RB form_VB a_DT concern_NN for_IN Ganesh_NNP ._.
+All_DT communication_NN is_VBZ between_IN trusted_VBN parts_NNS of_IN the_DT system_NN and_CC an_DT adversary_NN has_VBZ no_DT way_NN to_TO force_VB Ganes_NNP
+ot_IN used_VBN at_IN the_DT presentation_NN layer_NN ,_, the_DT same_JJ principles_NNS have_VBP been_VBN applied_VBN in_FW Duplicate_FW Transfer_NN Detection_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- to_TO increase_VB web_NN cache_NN efficiency_NN as_RB well_RB as_IN for_IN web_NN access_NN across_IN bandwidth_NN limited_JJ links_NN =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+1200_CD 1600_CD 8.2_CD Hash-based_JJ Systems_NNPS The_DT past_JJ few_JJ years_NNS have_VBP seen_VBN the_DT emergence_NN of_IN many_JJ systems_NNS that_WDT exploit_VBP hash-based_JJ techniques_NNS ._.
+At_IN the_DT heart_NN of_IN all_PDT these_DT systems_NNS is_VBZ the_DT idea_NN of_IN detecting_VBG similarity_NN
+a_DT wide_JJ range_NN of_IN storage_NN systems_NNS ._.
+Examples_NNS include_VBP peer-to-peer_JJ backup_NN of_IN personal_JJ computing_NN files_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, storage-efficient_JJ archiving_NN of_IN data_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, and_CC finding_VBG similar_JJ files_NNS -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Spring_NN and_CC Wetherall_NN =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =_SYM -_: apply_VB similar_JJ principles_NNS at_IN the_DT network_NN level_NN ._.
+Using_VBG synchronized_VBN caches_NNS at_IN both_DT ends_NNS of_IN a_DT network_NN link_NN ,_, duplicated_JJ data_NNS is_VBZ replaced_VBN by_IN smaller_JJR tokens_NNS for_IN transmission_NN and_CC then_RB restored_VBD at_IN the_DT remote_JJ
+iers_NNS except_IN the_DT database_NN should_MD be_VB offloaded_VBN to_TO the_DT edge_NN ._.
+Our_PRP$ evaluation_NN of_IN Ganesh_NNP has_VBZ shown_VBN that_IN it_PRP would_MD benefit_VB these_DT scenarios_NNS ._.
+To_TO improve_VB database_NN scalability_NN ,_, C-JDBC_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, SSS_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, and_CC Ganymed_NNP =_SYM -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: also_RB advocate_VBP the_DT use_NN of_IN an_DT interposition-based_JJ architecture_NN to_TO transparently_RB cluster_VB and_CC replicate_VB databases_NNS at_IN the_DT middleware_JJ level_NN ._.
+The_DT approaches_NNS of_IN these_DT architectures_NNS and_CC Ganesh_NNP are_VBP complementa_NN
+architecture_NN in_IN which_WDT all_DT tiers_NNS except_IN the_DT database_NN should_MD be_VB offloaded_VBN to_TO the_DT edge_NN ._.
+Our_PRP$ evaluation_NN of_IN Ganesh_NNP has_VBZ shown_VBN that_IN it_PRP would_MD benefit_VB these_DT scenarios_NNS ._.
+To_TO improve_VB database_NN scalability_NN ,_, C-JDBC_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, SSS_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, and_CC Ganymed_NNP -LRB-_-LRB- 28_CD -RRB-_-RRB- also_RB advocate_VBP the_DT use_NN of_IN an_DT interposition-based_JJ architecture_NN to_TO transparently_RB cluster_VB and_CC replicate_VB databases_NNS at_IN the_DT middleware_JJ level_NN ._.
+The_DT approaches_NNS of_IN these_DT architecture_NN
+ting_NN similarity_NN ._.
+The_DT most_RBS aggressive_JJ use_NN of_IN hash-based_JJ techniques_NNS is_VBZ by_IN systems_NNS that_WDT use_VBP hashes_NNS as_IN the_DT primary_JJ identifiers_NNS for_IN objects_NNS in_IN persistent_JJ storage_NN ._.
+Storage_NN systems_NNS such_JJ as_IN CFS_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC PAST_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT have_VBP been_VBN built_VBN using_VBG distributed_VBN hash_JJ tables_NNS fall_VBP into_IN this_DT category_NN ._.
+Single_JJ Instance_NNP Storage_NNP -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC Venti_NNP -LRB-_-LRB- 29_CD -RRB-_-RRB- are_VBP other_JJ examples_NNS of_IN such_JJ systems_NNS ._.
+As_IN discussed_VBN in_IN Section_NN 2.2_CD ,_, the_DT use_NN of_IN cryp_NN
+heir_NN results_NNS ._.
+Instead_RB ,_, it_PRP relies_VBZ exclusively_RB on_IN cryptographic_JJ hashing_VBG to_TO detect_VB similarities_NNS with_IN previous_JJ results_NNS ._.
+Hash-based_JJ similarity_NN detection_NN has_VBZ seen_VBN increasing_VBG use_NN in_IN distributed_VBN file_NN systems_NNS =_JJ -_: =[_NN 26_CD ,_, 36_CD ,_, 37_CD -RRB-_-RRB- -_: =_SYM -_: for_IN improving_VBG performance_NN on_IN low-bandwidth_JJ networks_NNS ._.
+However_RB ,_, these_DT techniques_NNS have_VBP not_RB been_VBN used_VBN for_IN relational_JJ databases_NNS ._.
+Unlike_IN previous_JJ approaches_NNS that_WDT use_VBP generic_JJ methods_NNS to_TO detect_VB similarity_NN ,_, G_NN
+ure_NN in_IN which_WDT all_DT tiers_NNS except_IN the_DT database_NN should_MD be_VB offloaded_VBN to_TO the_DT edge_NN ._.
+Our_PRP$ evaluation_NN of_IN Ganesh_NNP has_VBZ shown_VBN that_IN it_PRP would_MD benefit_VB these_DT scenarios_NNS ._.
+To_TO improve_VB database_NN scalability_NN ,_, C-JDBC_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, SSS_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC Ganymed_NNP -LRB-_-LRB- 28_CD -RRB-_-RRB- also_RB advocate_VBP the_DT use_NN of_IN an_DT interposition-based_JJ architecture_NN to_TO transparently_RB cluster_VB and_CC replicate_VB databases_NNS at_IN the_DT middleware_JJ level_NN ._.
+The_DT approaches_NNS of_IN these_DT architectures_NNS and_CC Gane_NN
+._.
+The_DT machines_NNS were_VBD connected_VBN by_IN a_DT switched_VBN gigabit_NN Ethernet_NNP network_NN ._.
+As_IN shown_VBN in_IN Figure_NNP 5_CD ,_, the_DT front-end_JJ web_NN and_CC application_NN server_NN was_VBD separated_VBN from_IN the_DT proxy_NN and_CC database_NN server_NN by_IN a_DT NetEm_NN router_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT router_NN allowed_VBD us_PRP to_TO control_VB the_DT bandwidth_NN and_CC latency_NN settings_NNS on_IN the_DT network_NN ._.
+The_DT NetEm_NN router_NN is_VBZ a_DT standard_JJ PC_NN with_IN two_CD network_NN cards_NNS running_VBG the_DT Linux_NNP Traffic_NNP Control_NNP and_CC Network_NNP Emulation_NNP
+data_NNS item_NN in_IN permanent_JJ storage_NN or_CC network_NN transmission_NN ._.
+The_DT assumption_NN that_IN collisions_NNS are_VBP so_RB rare_JJ as_IN to_TO be_VB effectively_RB non-existent_JJ has_VBZ recently_RB come_VBN under_IN fire_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+However_RB ,_, as_IN explained_VBN by_IN Black_NNP =_SYM -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP believe_VBP that_IN these_DT issues_NNS do_VBP not_RB form_VB a_DT concern_NN for_IN Ganesh_NNP ._.
+All_DT communication_NN is_VBZ between_IN trusted_VBN parts_NNS of_IN the_DT system_NN and_CC an_DT adversary_NN has_VBZ no_DT way_NN to_TO force_VB Ganesh_NNP to_TO accept_VB invalid_JJ data_NNS ._.
+Further_RB ,_, G_NN
+eriments_NNS are_VBP presented_VBN in_IN Sections_NNS 5_CD ,_, 6_CD ,_, and_CC 7_CD ._.
+4.1_CD Benchmarks_NNPS Our_PRP$ evaluation_NN is_VBZ based_VBN on_IN two_CD benchmarks_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- that_WDT have_VBP been_VBN widely_RB used_VBN by_IN other_JJ researchers_NNS to_TO evaluate_VB various_JJ aspects_NNS of_IN multi-tier_JJ =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: and_CC eBusiness_NN architectures_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+The_DT first_JJ benchmark_NN ,_, BBOARD_NN ,_, is_VBZ modeled_VBN after_IN Slashdot_NNP ,_, a_DT technology-oriented_JJ news_NN site_NN ._.
+The_DT second_JJ benchmark_NN ,_, AUCTION_NN ,_, is_VBZ modeled_VBN after_IN eBay_NNP ,_, an_DT online_JJ auction_NN site_NN ._.
+ree_NN trials_NNS ._.
+The_DT maximum_JJ standard_JJ deviation_NN for_IN throughput_NN and_CC response_NN time_NN was_VBD 9.8_CD %_NN and_CC 11.9_CD %_NN of_IN the_DT corresponding_JJ mean_NN ._.
+Figure_NN 6_CD :_: BBOARD_NNP Benchmark_NNP -_: Throughput_NNP and_CC Average_NNP Response_NNP Time_NNP other_JJ tasks_NNS =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Based_VBN on_IN these_DT numbers_NNS ,_, increasing_VBG the_DT number_NN of_IN test_NN clients_NNS makes_VBZ the_DT Native_JJ system_NN unusable_JJ ._.
+Ganesh_NNP at_IN 5_CD Mb\/s_NNS ,_, however_RB ,_, delivers_VBZ a_DT twofold_JJ improvement_NN with_IN 400_CD test_NN clients_NNS and_CC a_DT fivefold_RB improve_VB
+satya}@cs.cmu.edu_NN late_RB the_DT client_NN from_IN bursty_JJ loads_NNS ._.
+Previous_JJ attempts_NNS in_IN caching_VBG dynamic_JJ database_NN content_NN have_VBP generally_RB weakened_VBN transactional_JJ semantics_NNS -LRB-_-LRB- 3_CD ,_, 4_CD -RRB-_-RRB- or_CC required_VBN application_NN modifications_NNS =_JJ -_: =[_NN 15_CD ,_, 34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP report_VBP on_IN a_DT new_JJ solution_NN that_WDT takes_VBZ the_DT form_NN of_IN a_DT databaseagnostic_JJ middleware_NN layer_NN called_VBN Ganesh_NNP ._.
+Ganesh_NNP makes_VBZ no_DT effort_NN to_TO semantically_RB interpret_VB the_DT contents_NNS of_IN queries_NNS or_CC their_PRP$ results_NNS ._.
+Inste_NN
+disk_NN of_IN the_DT database_NN server_NN or_CC proxy_NN is_VBZ the_DT limiting_VBG factor_NN ._.
+A_DT previous_JJ study_NN has_VBZ shown_VBN that_IN approximately_RB 50_CD %_NN of_IN the_DT wide-area_JJ Internet_NNP bottlenecks_NNS observed_VBN had_VBD an_DT available_JJ bandwidth_NN under_IN 10_CD Mb\/s_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Based_VBN on_IN this_DT work_NN ,_, we_PRP focus_VBP our_PRP$ evaluation_NN on_IN the_DT WAN_NNP bandwidth_NN of_IN 5_CD Mb\/s_NNS with_IN 66_CD ms_NNS of_IN round-trip_JJ latency_NN ,_, representative_NN of_IN severely_RB constrained_VBN network_NN paths_NNS ,_, and_CC 20_CD Mb\/s_NNS with_IN 33_CD ms_NNS of_IN round-tri_NN
+ance_NN to_TO network_NN partitions_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+As_IN a_DT result_NN ,_, databases_NNS tend_VBP to_TO be_VB centralized_VBN to_TO meet_VB the_DT strong_JJ consistency_NN requirements_NNS of_IN many_JJ eBusiness_NN applications_NNS such_JJ as_IN banking_NN ,_, finance_NN ,_, and_CC online_NN retailing_NN =_JJ -_: =[_NN 38_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Thus_RB ,_, the_DT back-end_JJ database_NN is_VBZ usually_RB located_JJ far_RB from_IN many_JJ sets_NNS of_IN first_JJ and_CC second-tier_JJ nodes_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+In_IN the_DT absence_NN of_IN both_CC caching_NN and_CC replication_NN ,_, WAN_NNP bandwidth_NN can_MD easily_RB become_VB a_DT limiting_VBG facto_JJ
+s_NN 5_CD ,_, 6_CD ,_, and_CC 7_CD ._.
+4.1_CD Benchmarks_NNPS Our_PRP$ evaluation_NN is_VBZ based_VBN on_IN two_CD benchmarks_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- that_WDT have_VBP been_VBN widely_RB used_VBN by_IN other_JJ researchers_NNS to_TO evaluate_VB various_JJ aspects_NNS of_IN multi-tier_JJ -LRB-_-LRB- 27_CD -RRB-_-RRB- and_CC eBusiness_NN architectures_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT first_JJ benchmark_NN ,_, BBOARD_NN ,_, is_VBZ modeled_VBN after_IN Slashdot_NNP ,_, a_DT technology-oriented_JJ news_NN site_NN ._.
+The_DT second_JJ benchmark_NN ,_, AUCTION_NN ,_, is_VBZ modeled_VBN after_IN eBay_NNP ,_, an_DT online_JJ auction_NN site_NN ._.
+In_IN both_DT benchmarks_NNS ,_, most_RBS conten_JJ
+ely_RB caching_VBG different_JJ parts_NNS of_IN generated_VBN web_NN pages_NNS ._.
+While_IN fragment-based_JJ caching_NN works_VBZ at_IN the_DT edge_NN ,_, a_DT recent_JJ proposal_NN has_VBZ proposed_VBN moving_VBG web_NN page_NN assembly_NN to_TO the_DT clients_NNS to_TO optimize_VB content_NN delivery_NN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN Ganesh_NNP is_VBZ not_RB used_VBN at_IN the_DT presentation_NN layer_NN ,_, the_DT same_JJ principles_NNS have_VBP been_VBN applied_VBN in_FW Duplicate_FW Transfer_NN Detection_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- to_TO increase_VB web_NN cache_NN efficiency_NN as_RB well_RB as_IN for_IN web_NN access_NN across_IN bandw_NN

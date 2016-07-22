@@ -1,0 +1,237 @@
+Application_NN specific_JJ data_NNS replication_NN for_IN edge_NN services_NNS
+The_DT emerging_VBG edge_NN services_NNS architecture_NN promises_VBZ to_TO improve_VB the_DT availability_NN and_CC performance_NN of_IN web_NN services_NNS by_IN replicating_VBG servers_NNS at_IN geographically_RB distributed_VBN sites_NNS ._.
+A_DT key_JJ challenge_NN in_IN such_JJ systems_NNS is_VBZ data_NN replication_NN and_CC consistency_NN so_IN that_DT edge_NN server_NN code_NN can_MD manipulate_VB shared_JJ data_NNS without_IN incurring_VBG the_DT availability_NN and_CC performance_NN penalties_NNS that_WDT would_MD be_VB incurred_VBN by_IN accessing_VBG a_DT traditional_JJ centralized_JJ database_NN ._.
+This_DT paper_NN explores_VBZ using_VBG a_DT distributed_VBN object_NN architecture_NN to_TO build_VB an_DT edge_NN service_NN system_NN for_IN an_DT e-commerce_NN application_NN ,_, an_DT online_JJ bookstore_NN represented_VBN by_IN the_DT TPC-W_NN benchmark_NN ._.
+We_PRP take_VBP advantage_NN of_IN application_NN specific_JJ semantics_NNS to_TO design_VB distributed_VBN objects_NNS to_TO manage_VB a_DT specific_JJ subset_NN of_IN shared_VBN information_NN using_VBG simple_JJ and_CC effective_JJ consistency_NN models_NNS ._.
+Our_PRP$ experimental_JJ results_NNS show_VBP that_IN by_IN slightly_RB relaxing_JJ consistency_NN within_IN individual_JJ distributed_VBN objects_NNS ,_, we_PRP can_MD build_VB an_DT edge_NN service_NN system_NN that_WDT is_VBZ highly_RB available_JJ and_CC efficient_JJ ._.
+For_IN example_NN ,_, in_IN one_CD experiment_NN we_PRP find_VBP that_IN our_PRP$ object-based_JJ edge_NN server_NN system_NN provides_VBZ a_DT factor_NN of_IN five_CD improvement_NN in_IN response_NN time_NN over_IN a_DT traditional_JJ centralized_JJ cluster_NN architecture_NN and_CC a_DT factor_NN of_IN nine_CD improvement_NN over_IN an_DT edge_NN service_NN system_NN that_WDT distributes_VBZ code_NN but_CC retains_VBZ a_DT centralized_JJ database_NN ._.
+it_PRP can_MD limit_VB the_DT expensive_JJ pre-adaptation_JJ tasks_NNS to_TO the_DT most_RBS popular_JJ resources_NNS of_IN theworking_VBG set_NN ._.
+Content_NN replication_NN strategies_NNS are_VBP widely_RB used_VBN in_IN the_DT contextofgeographicallydistributedinfrastructures_NN =_JJ -_: =[_NN 23,14_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Replicating_VBG resources_NNS from_IN some_DT central_JJ server_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- to_TO thenodesofthedistributedinfrastructureimprovesthescalability_NN ,_, limits_VBZ the_DT risk_NN of_IN bottlenecks_NNS and_CC reduces_VBZ networkrelateddelays_NNS ._.
+Thehotsetidentifica_NN
+ctures_NNS and_CC algorithms_NNS that_WDT take_VBP into_IN account_NN both_CC performance_NN and_CC privacy_NN requirements_NNS ,_, because_IN performance_NN and_CC privacy_NN issues_NNS have_VBP been_VBN typically_RB addressed_VBN separately_RB in_IN literature_NN -LRB-_-LRB- for_IN example_NN ,_, see_VBP =_JJ -_: =[_NN 31_CD ,_, 22_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: for_IN performance_NN and_CC -LRB-_-LRB- 19_CD ,_, 12_CD -RRB-_-RRB- for_IN privacy_NN -RRB-_-RRB- ._.
+Through_IN a_DT prototype_NN namely_RB Distributed_VBN Architecture_NNP for_IN Mobile_NNP Web-based_JJ Services_NNP -LRB-_-LRB- DAMWS_NNP -RRB-_-RRB- ,_, we_PRP demonstrate_VBP that_IN the_DT performance_NN -_: and_CC privacy-aware_JJ infrastruc_NN
+nformation_NN among_IN untrustworthy_JJ nodes_NNS ._.
+The_DT importance_NN of_IN providing_VBG security_NN and_CC consistency_NN by_IN controlling_VBG information_NN replication_NN has_VBZ been_VBN pointed_VBN out_RP recently_RB in_IN the_DT field_NN of_IN distributed_VBN Web_NN systems_NNS =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN the_DT study_NN does_VBZ not_RB focus_VB on_IN Web_NN content_NN adaptation_NN but_CC is_VBZ more_RBR directed_JJ towards_IN generation_NN of_IN dynamic_JJ Web_NN content_NN ,_, this_DT study_NN confirms_VBZ our_PRP$ concern_NN for_IN security_NN and_CC consistency_NN guarantee_NN whi_NN
+nformation_NN among_IN untrustworthy_JJ nodes_NNS ._.
+The_DT importance_NN of_IN providing_VBG security_NN and_CC consistency_NN by_IN controlling_VBG information_NN replication_NN has_VBZ been_VBN pointed_VBN out_RP recently_RB in_IN the_DT field_NN of_IN distributed_VBN Web_NN systems_NNS =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN the_DT study_NN does_VBZ not_RB focus_VB on_IN Web_NN content_NN adaptation_NN but_CC is_VBZ more_RBR directed_JJ towards_IN generation_NN of_IN dynamic_JJ Web_NN content_NN ,_, this_DT study_NN confirms_VBZ our_PRP$ concern_NN for_IN security_NN and_CC consistency_NN guarantee_NN whi_NN
+ternet_NN ,_, and_CC therefore_RB can_MD not_RB be_VB used_VBN for_IN Web_NN applications_NNS ._.
+Very_RB few_JJ research_NN has_VBZ been_VBN conducted_VBN on_IN providing_VBG both_CC scalability_NN and_CC high_JJ availability_NN to_TO dynamic_JJ Web_NN applications_NNS ._.
+A_DT notable_JJ exception_NN is_VBZ =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT proposes_VBZ to_TO tailor_VB the_DT replication_NN to_TO the_DT specific_JJ data_NN access_NN patterns_NNS of_IN the_DT application_NN ._.
+Although_IN this_DT approach_NN allows_VBZ to_TO provide_VB good_JJ scalability_NN and_CC availability_NN ,_, it_PRP requires_VBZ significant_JJ
+clients_NNS are_VBP allowed_VBN to_TO access_VB in_IN order_NN to_TO circumvent_VB difficult_JJ consistency_NN problems_NNS ._.
+Similar_JJ results_NNS have_VBP been_VBN reported_VBN by_IN Leff_NNP et_FW al._FW -LRB-_-LRB- 18_CD -RRB-_-RRB- in_IN the_DT case_NN of_IN Java-based_JJ systems_NNS ,_, and_CC distributed_VBN objects_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+5.3.3_FW Example_FW 3_CD :_: Decentralized_NNP Wikipedia_NNP As_IN a_DT final_JJ example_NN ,_, consider_VB the_DT increasingly_RB popular_JJ Wikipedia_NNP system_NN ._.
+This_DT system_NN is_VBZ currently_RB organized_VBN in_IN a_DT near-centralized_JJ fashion_NN by_IN which_WDT traffic_NN is_VBZ
+upport_NN full_JJ replication_NN ,_, but_CC UDI_NNP queries_NNS are_VBP not_RB performed_VBN using_VBG distributed_VBN transactions_NNS ;_: rather_RB ,_, the_DT updates_NNS are_VBP performed_VBN on_IN a_DT master_NN and_CC then_RB the_DT update_VBP logs_NNS are_VBP propagated_VBN to_TO the_DT slave_NN nodes_NNS ._.
+In_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT application_NN programmers_NNS can_MD choose_VB the_DT data_NNS replication_NN and_CC distribution_NN strategies_NNS ,_, but_CC choosing_VBG such_JJ strategies_NNS efficiently_RB is_VBZ not_RB easy_JJ for_IN an_DT application_NN programmer_NN ._.
+Partial_JJ replication_NN is_VBZ st_IN
+ident_JJ web_NN servers_NNS like_IN khttpd_NN -LRB-_-LRB- 7_CD ,_, 12_CD -RRB-_-RRB- that_WDT are_VBP able_JJ to_TO load-balance_JJ dynamic_JJ requests_NNS across_IN multiple_JJ remote_JJ machines_NNS ._.
+For_IN highly_RB reliable_JJ servers_NNS ,_, data_NNS replication_NN or_CC mirroring_NN have_VBP been_VBN shown_VBN useful_JJ =_JJ -_: =[_NN 9_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO handle_VB multi-media_JJ applications_NNS or_CC remote_JJ data_NNS visualization_NN ,_, kernel-resident_JJ data_NNS filtering_VBG -LRB-_-LRB- 11_CD -RRB-_-RRB- can_MD reduce_VB the_DT memory_NN loads_NNS imposed_VBN by_IN such_JJ large-data_JJ applications_NNS ,_, and_CC QoS_NN management_NN actions_NNS i_LS
+order_NN of_IN magnitude_NN compared_VBN to_TO full_JJ replication_NN for_IN nodes_NNS that_IN only_JJ care_NN about_IN a_DT subset_NN of_IN the_DT system_NN 's_POS data_NNS ._.
+1_CD Introduction_NN Data_NN replication_NN is_VBZ a_DT fundamental_JJ technique_NN for_IN improving_VBG the_DT performanc_NN =_JJ -_: =_JJ e_LS -LRB-_-LRB- 3_CD ,_, 11_CD ,_, 14_CD ,_, 30_CD ,_, 33_CD ,_, 39_CD -RRB-_-RRB- -_: =_JJ -_: ,_, availability_NN -LRB-_-LRB- 7_CD ,_, 14_CD ,_, 22_CD ,_, 43_CD -RRB-_-RRB- ,_, ubiquity_NN -LRB-_-LRB- 21_CD ,_, 31_CD -RRB-_-RRB- ,_, persistence_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, and_CC managability_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- of_IN a_DT broad_JJ range_NN of_IN large-scale_JJ distributed_VBN systems_NNS such_JJ as_IN personal_JJ file_NN systems_NNS -LRB-_-LRB- 21_CD ,_, 31_CD -RRB-_-RRB- ,_, web_NN service_NN replic_JJ
+that_IN the_DT potential_JJ downsides_NNS ,_, in_IN particular_JJ change_NN in_FW abort_FW rate_NN of_IN update_VB transactions_NNS ,_, are_VBP limited_JJ ._.
+1_CD ._.
+Introduction_NN There_EX is_VBZ increasing_VBG interest_NN in_IN replicating_VBG the_DT generation_NN of_IN dynamic_JJ Web_NN content_NN =_JJ -_: =[_NN 2_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: for_IN many_JJ Web_NN services_NNS to_TO achieve_VB efficiency_NN and_CC fault_NN tolerance_NN ._.
+The_DT user_NN 's_POS request_NN is_VBZ executed_VBN on_IN a_DT ``_`` nearby_JJ ''_'' replica_NN ,_, thereby_RB avoiding_VBG long_JJ roundtrip_NN delays_NNS and_CC distributing_VBG the_DT load_NN over_IN the_DT replic_JJ
+ther_JJ hand_NN is_VBZ better_RB achieved_VBN by_IN using_VBG data_NNS replication_NN techniques_NNS that_WDT introduce_VBP relaxed_VBN consistency_NN by_IN leverage_NN locality_NN and_CC frequency_NN and_CC rely_VB on_IN reconciliation_NN techniques_NNS to_TO resolve_VB data_NN conflicts_NNS =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT design_NN of_IN the_DT framework_NN streamlines_VBZ the_DT integration_NN of_IN order_NN delegation_NN and_CC reconciliation_NN techniques_NNS resulting_VBG into_IN a_DT consistent_JJ interface_NN for_IN typical_JJ ebusiness_NN applications_NNS ._.
+It_PRP might_MD be_VB argued_VBN
+recent_JJ years_NNS due_JJ to_TO the_DT large_JJ and_CC growing_VBG economic_JJ impact_NN of_IN such_JJ sites_NNS ._.
+Most_RBS previous_JJ research_NN on_IN scaling_VBG dynamic_JJ content_NN sites_NNS through_IN either_CC dynamic_JJ content_NN caching_NN -LRB-_-LRB- 9_CD ,_, 10_CD -RRB-_-RRB- ,_, or_CC content_NN replication_NN =_JJ -_: =[_NN 15_CD ,_, 34_CD ,_, 40_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ focused_VBN on_IN specialized_JJ ,_, per-application_JJ solutions_NNS ,_, which_WDT require_VBP site_NN administrator_NN or_CC user_NN intervention_NN ._.
+In_IN particular_JJ ,_, dynamic_JJ content_NN caching_NN typically_RB requires_VBZ specifying_VBG page_NN fragments_NNS throu_VBP
+vated_VBN by_IN the_DT idea_NN of_IN moving_VBG data_NNS and_CC application_NN closer_RBR to_TO users_NNS ,_, researchers_NNS have_VBP proposed_VBN several_JJ variants_NNS of_IN edge_NN caching_NN depending_VBG upon_IN how_WRB much_JJ of_IN the_DT application_NN is_VBZ offloaded_VBN to_TO the_DT edge_NN caches_VBZ =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Yuan_NNP et_FW al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- present_VBP an_DT in-depth_JJ evaluation_NN of_IN these_DT variants_NNS studying_VBG the_DT pros_NNS and_CC cons_NNS of_IN each_DT approach_NN ._.
+However_RB ,_, very_RB few_JJ of_IN the_DT current_JJ edge_NN caching_NN techniques_NNS promote_VBP cooperation_NN among_IN the_DT
+of_IN many_JJ higher-level_JJ frameworks_NNS ._.
+In_IN the_DT simplest_JJS form_NN ,_, a_DT proxy_NN is_VBZ a_DT static_JJ system_NN that_WDT performs_VBZ processing_NN on_IN data_NNS as_IN it_PRP passes_VBZ through_IN the_DT network_NN ._.
+Dynamic_NNP proxy_NN architectures_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC edge_NN services_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: can_MD load_VB functionality_NN on_IN demand_NN to_TO support_VB adaptation_NN for_IN network_NN load_NN and_CC device_NN heterogeneity_NN ._.
+Our_PRP$ design_NN for_IN a_DT general_JJ remote_JJ execution_NN service_NN enables_VBZ edge_NN services_NNS to_TO be_VB deployed_VBN dynamically_RB ._.
+H_NN
+this_DT trend_NN very_RB well_RB ,_, by_IN migrating_VBG the_DT presentation_NN tier_NN to_TO the_DT edge_NN server_NN ,_, and_CC keeping_VBG the_DT business_NN logic_NN and_CC database_NN access_NN in_IN the_DT original_JJ server_NN ._.
+This_DT has_VBZ been_VBN exploited_VBN in_IN the_DT recent_JJ study_NN in_IN =_JJ -_: =[_NN 19_CD ,_, 47_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Examples_NNS of_IN this_DT method_NN are_VBP vMatrix_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, IBM_NNP Websphere_NNP -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, Active_JJ Cache_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, Gemini_NNP -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, Proxy_NN +_CC -LRB-_-LRB- 48_CD -RRB-_-RRB- ,_, and_CC SEE_VB -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+Function_NN caching_NN makes_VBZ content_NN delivery_NN closely_RB coupled_VBN with_IN Web_NN application_NN d_NN
+dance-based_JJ approach_NN ,_, require_VBP tight_JJ integration_NN with_IN the_DT database_NN to_TO ensure_VB timely_JJ propagation_NN of_IN updates_NNS and_CC are_VBP usually_RB targeted_VBN towards_IN workloads_NNS that_WDT do_VBP not_RB require_VB strict_JJ consistency_NN ._.
+Gao_NNP et_FW al._FW =_SYM -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP using_VBG a_DT distributed_VBN object_NN replication_NN architecture_NN where_WRB the_DT data_NN store_NN 's_POS consistency_NN requirements_NNS are_VBP adapted_VBN on_IN a_DT per-application_JJ basis_NN ._.
+These_DT solutions_NNS require_VBP substantial_JJ developer_NN resou_NN
+satya}@cs.cmu.edu_NN late_RB the_DT client_NN from_IN bursty_JJ loads_NNS ._.
+Previous_JJ attempts_NNS in_IN caching_VBG dynamic_JJ database_NN content_NN have_VBP generally_RB weakened_VBN transactional_JJ semantics_NNS -LRB-_-LRB- 3_CD ,_, 4_CD -RRB-_-RRB- or_CC required_VBN application_NN modifications_NNS =_JJ -_: =[_NN 15_CD ,_, 34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP report_VBP on_IN a_DT new_JJ solution_NN that_WDT takes_VBZ the_DT form_NN of_IN a_DT databaseagnostic_JJ middleware_NN layer_NN called_VBN Ganesh_NNP ._.
+Ganesh_NNP makes_VBZ no_DT effort_NN to_TO semantically_RB interpret_VB the_DT contents_NNS of_IN queries_NNS or_CC their_PRP$ results_NNS ._.
+Inste_NN
+eneral-case_JJ wide-area_JJ network_NN replication_NN ,_, it_PRP is_VBZ possible_JJ to_TO provide_VB nearly_RB optimal_JJ behavior_NN for_IN specific_JJ objects_NNS by_IN taking_VBG advantage_NN of_IN a_DT given_VBN application_NN 's_POS workload_NN characteristics_NNS ._.
+The_DT authors_NNS of_IN =_JJ -_: =[_NN 54_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP an_DT object-based_JJ edge_NN server_NN architecture_NN with_IN a_DT consistency_NN model_NN that_WDT takes_VBZ advantage_NN of_IN service_NN access_NN patterns_NNS typical_JJ for_IN e-Commerce_NN retail_JJ applications_NNS ._.
+They_PRP design_VBP data_NNS consistency_NN mode_NN
+a}@cs.cmu.edu_NN 311_CD late_RB the_DT client_NN from_IN bursty_JJ loads_NNS ._.
+Previous_JJ attempts_NNS in_IN caching_VBG dynamic_JJ database_NN content_NN have_VBP generally_RB weakened_VBN transactional_JJ semantics_NNS -LRB-_-LRB- 3_CD ,_, 4_CD -RRB-_-RRB- or_CC required_VBN application_NN modifications_NNS =_JJ -_: =[_NN 15_CD ,_, 34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP report_VBP on_IN a_DT new_JJ solution_NN that_WDT takes_VBZ the_DT form_NN of_IN a_DT databaseagnostic_JJ middleware_NN layer_NN called_VBN Ganesh_NNP ._.
+Ganesh_NNP makes_VBZ no_DT effort_NN to_TO semantically_RB interpret_VB the_DT contents_NNS of_IN queries_NNS or_CC their_PRP$ results_NNS ._.
+Inste_NN
+fficult_NN because_IN queries_NNS can_MD potentially_RB span_VB data_NNS items_NNS which_WDT are_VBP stored_VBN at_IN different_JJ servers_NNS ._.
+Current_NNP partially_RB replicated_VBD solutions_NNS rely_VB on_IN either_CC active_JJ participation_NN of_IN the_DT application_NN programmer_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: or_CC on_IN one_CD special_JJ server_NN holding_VBG the_DT full_JJ database_NN to_TO execute_VB complex_JJ queries_NNS -LRB-_-LRB- and_CC thereby_RB becoming_VBG the_DT new_JJ throughput_NN bottleneck_NN -RRB-_-RRB- -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+This_DT paper_NN presents_VBZ GlobeTP_NN ,_, a_DT database_NN replication_NN system_NN tha_NN
+mprovement_NN in_IN comparison_NN to_TO simple_JJ or_CC non-replicated_JJ approaches_NNS ._.
+As_IN such_JJ ,_, our_PRP$ work_NN improves_VBZ upon_IN other_JJ research_NN demonstrating_VBG that_IN application-specific_JJ replication_NN improves_VBZ performance_NN as_RB well_RB -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+In_IN particular_JJ ,_, we_PRP argue_VBP that_IN there_EX is_VBZ often_RB no_DT compelling_JJ reason_NN to_TO adapt_VB the_DT logical_JJ design_NN of_IN an_DT application_NN in_IN order_NN to_TO support_VB replication_NN ._.
+By_IN automatically_RB partitioning_VBG and_CC replicating_VBG an_DT appl_NN
+ss_NN logic_NN ,_, and_CC a_DT database_NN tier_NN -LRB-_-LRB- 77_CD -RRB-_-RRB- ._.
+Several_JJ projects_NNS study_VBP the_DT offloading_NN of_IN different_JJ parts_NNS of_IN these_DT tiers_NNS to_TO the_DT M.D._NNP Dikaiakos_NNP \/_: Computer_NNP Networks_NNP 45_CD -LRB-_-LRB- 2004_CD -RRB-_-RRB- 421_CD --_: 447_CD 437_CD intermediary_JJ infrastructure_NN =_JJ -_: =[_NN 10,41,77_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO this_DT end_NN ,_, they_PRP adapt_VBP techniques_NNS applied_VBN previously_RB in_IN the_DT performance_NN enhancement_NN of_IN dynamic-content_JJ generation_NN at_IN origin_NN Web_NN servers_NNS ;_: for_IN example_NN ,_, through_IN the_DT specification_NN of_IN Web-pages_NNS as_IN struc_NN
+e_LS believe_VBP that_IN TRIP_NN can_MD be_VB used_VBN as_IN a_DT building_NN block_NN for_IN services_NNS such_JJ as_IN file_NN systems_NNS ,_, distributed_VBN databases_NNS ,_, publisher\/subscriber_NN systems_NNS ,_, and_CC applications_NNS that_WDT use_VBP per-object-customized_JJ consistency_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT paper_NN evaluates_VBZ the_DT TRIP_NN middleware_NN using_VBG both_CC trace-based_JJ simulation_NN and_CC evaluation_NN of_IN an_DT implementation_NN ._.
+Our_PRP$ simulations_NNS use_VBP access\/update_NN traces_NNS obtained_VBN for_IN a_DT highly_RB accessed_VBN sporting_VBG and_CC e_SYM
+CORBA_FW middleware_FW -LRB-_-LRB- 70_CD -RRB-_-RRB- ._.
+Run-time_JJ approaches_NNS to_TO application-specific_JJ optimizations_NNS have_VBP also_RB focused_VBN on_IN data_NNS replication_NN for_IN edge_NN services_NNS ,_, i.e._FW ,_, replicating_VBG servers_NNS at_IN geographically_RB distributed_VBN sites_NNS =_JJ -_: =[_NN 41_CD -RRB-_-RRB- -_: =_JJ -_: ,_, optimizing_VBG web_NN services_NNS utilizing_VBG reflective_JJ techniques_NNS encapsulated_VBN in_IN the_DT request_NN metadata_NN -LRB-_-LRB- 85_CD -RRB-_-RRB- ,_, and_CC improving_VBG algorithms_NNS for_IN event_NN ordering_VBG within_IN component_NN middleware_NN by_IN making_VBG use_NN of_IN applicatio_NN
+s_NN ,_, but_CC either_CC do_VBP not_RB replicate_VB the_DT application_NN data_NNS or_CC cache_NN them_PRP at_IN the_DT replica_NN servers_NNS ._.
+This_DT limits_VBZ the_DT system_NN performance_NN as_IN all_DT write_VBP requests_NNS need_VBP to_TO be_VB forwarded_VBN to_TO a_DT single_JJ remote_JJ location_NN ._.
+In_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: the_DT authors_NNS propose_VBP an_DT application-specific_JJ edge_NN service_NN architecture_NN ,_, where_WRB the_DT application_NN itself_PRP is_VBZ supposed_VBN to_TO take_VB care_NN of_IN its_PRP$ own_JJ replication_NN ._.
+In_IN such_PDT a_DT system_NN ,_, access_NN to_TO the_DT shared_JJ data_NNS is_VBZ abs_FW
+centralized_VBN database_NN ._.
+We_PRP use_VBP a_DT distributed_VBN object_NN architecture_NN to_TO build_VB an_DT edge_NN service_NN data_NNS replication_NN system_NN for_IN an_DT e-commerce_NN application_NN ,_, the_DT TPC-W_NN benchmark_NN ,_, which_WDT simulates_VBZ an_DT online_JJ bookstore_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP take_VBP advantage_NN of_IN application_NN specific_JJ semantics_NNS to_TO design_VB distributed_VBN objects_NNS that_IN each_DT manages_VBZ a_DT specific_JJ subset_NN of_IN shared_VBN information_NN using_VBG simple_JJ and_CC effective_JJ consistency_NN models_NNS ._.
+Our_PRP$ experim_NN
+ion_NN tier_NN and_CC business_NN logic_NN tier_NN be_VB pushed_VBN to_TO the_DT edge_NN server_NN and_CC communicate_VBP with_IN the_DT remaining_VBG application_NN at_IN the_DT origin_NN server_NN when_WRB necessary_JJ via_IN the_DT application_NN offload_FW runtime_FW engine_NN ._.
+Gao_NNP et_FW al._FW =_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBN to_TO take_VB advantage_NN of_IN application_NN semantics_NNS to_TO replicate_VB some_DT data_NNS objects_NNS to_TO the_DT edge_NN server_NN and_CC observed_VBD significant_JJ performance_NN improvement_NN while_IN maintaining_VBG reasonable_JJ consistency_NN ._.
+This_DT i_LS
+of_IN many_JJ higher-level_JJ frameworks_NNS ._.
+In_IN the_DT simplest_JJS form_NN ,_, a_DT proxy_NN is_VBZ a_DT static_JJ system_NN that_WDT performs_VBZ processing_NN on_IN data_NNS as_IN it_PRP passes_VBZ through_IN the_DT network_NN ._.
+Dynamic_NNP proxy_NN architectures_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC edge_NN services_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: can_MD load_VB functionality_NN on_IN demand_NN to_TO support_VB adaptation_NN for_IN network_NN load_NN and_CC device_NN heterogeneity_NN ._.
+Our_PRP$ design_NN for_IN a_DT general_JJ remote_JJ execution_NN service_NN enables_VBZ edge_NN services_NNS to_TO be_VB deployed_VBN dynamically_RB ._.
+H_NN
+ase_NN transactions_NNS -RRB-_-RRB- ._.
+In_IN contrast_NN ,_, our_PRP$ proposal_NN also_RB relies_VBZ to_TO a_DT certain_JJ extent_NN on_IN partial_JJ data_NNS replication_NN ,_, but_CC at_IN a_DT much_JJ finer_NN granularity_NN which_WDT allows_VBZ one_CD to_TO reduce_VB the_DT data_NNS placement_NN constraints_NNS ._.
+In_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT authors_NNS propose_VBP an_DT edge_NN computing_NN infrastructure_NN where_WRB the_DT application_NN programmers_NNS can_MD choose_VB the_DT best_JJS suited_VBN data_NNS replication_NN and_CC distribution_NN strategies_NNS for_IN the_DT different_JJ parts_NNS of_IN application_NN
+ark_NN ._.
+Section_NN 8_CD concludes_VBZ this_DT paper_NN ._.
+2_CD ._.
+USE_NN CASES_VBZ The_DT need_NN for_IN different_JJ consistency_NN levels_NNS is_VBZ easily_RB identifiable_JJ in_IN a_DT variety_NN of_IN applications_NNS and_CC was_VBD already_RB studied_VBN in_IN different_JJ contexts_NNS -LRB-_-LRB- e.g._FW ,_, in_IN =_JJ -_: =[_NN 11_CD ,_, 12_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+In_IN the_DT following_NN we_PRP present_VBP potential_JJ use_NN cases_NNS in_IN which_WDT Consistency_NN Rationing_NN could_MD be_VB applied_VBN ._.
+Web_NN shop_NN ._.
+Assume_VB a_DT conventional_JJ Web_NN shop_NN built_VBN on_IN top_NN of_IN a_DT cloud_NN storage_NN service_NN ._.
+A_DT typical_JJ Web_NN shop_NN
+esign_NN of_IN thesobject_NN by_IN eliminating_VBG the_DT need_NN to_TO ensure_VB reliable_JJ message_NN delivery_NN at_IN the_DT object_NN level_NN ._.
+Gribble_NNP uses_VBZ distributed_VBN objects_NNS as_IN building_NN blocks_NNS for_IN providing_VBG cluster_NN services_NNS on_IN the_DT Internet_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+He_PRP employs_VBZ the_DT general_JJ distributed_VBN object_NN approach_NN to_TO hide_VB behind_IN objects_NNS the_DT implementation_NN complexity_NN of_IN availability_NN ,_, performance_NN ,_, scalability_NN ,_, and_CC consistency_NN and_CC provide_VBP a_DT simple_JJ interface_NN to_TO p_NN
+n_NN network_NN failures_NNS are_VBP considered_VBN ,_, end-to-end_JJ service_NN availability_NN is_VBZ often_RB as_RB low_JJ as_IN two-9_NN 's_POS -LRB-_-LRB- 99_CD %_NN -RRB-_-RRB- ,_, meaning_VBG that_IN an_DT average_JJ web_NN client_NN can_MD not_RB contact_VB an_DT average_JJ web_NN server_NN for_IN about_RB 15_CD minutes_NNS a_DT day_NN =_JJ -_: =[_NN 15_CD ,_, 28_CD ,_, 44_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Furthermore_RB ,_, despite_IN that_DT Internet_NN web_NN server_NN response_NN times_NNS have_VBP been_VBN improved_VBN ,_, human_JJ factors_NNS studies_NNS suggest_VBP that_IN human_JJ productivity_NN improves_VBZ more_JJR than_IN linearly_RB as_IN computer_NN systems_NNS response_NN times_NNS
+ations_NNS may_MD prefer_VB to_TO deny_VB service_NN rather_RB than_IN serve_VB bad_JJ data_NNS ._.
+To_TO extend_VB our_PRP$ catalog_NN object_NN to_TO support_VB such_JJ functionality_NN ,_, we_PRP could_MD add_VB a_DT new_JJ parameter_NN in_IN the_DT write_VB operation_NN to_TO specify_VB a_DT lease_NN period_NN =_JJ -_: =[_NN 40_CD -RRB-_-RRB- -_: =_SYM -_: for_IN each_DT update_VBP ._.
+Of_IN course_NN such_PDT a_DT feature_NN is_VBZ a_DT reduction_NN in_IN availability_NN because_IN servers_NNS may_MD be_VB forced_VBN to_TO deny_VB service_NN rather_RB than_IN serving_VBG stale_JJ data_NNS ._.
+3_LS ._.
+Bandwidth_NN constrained_VBD update_VB :_: Applications_NNS th_DT
+dge_NN services_NNS model_NN works_VBZ as_IN follows_VBZ ._.
+Clients_NNS use_VBP HTTP_NNP to_TO access_VB services_NNS through_IN edge_NN servers_NNS that_WDT are_VBP located_JJ near_IN them_PRP ._.
+A_DT number_NN of_IN suitable_JJ mechanisms_NNS for_IN directing_VBG clients_NNS to_TO nearby_JJ servers_NNS exist_VBP =_JJ -_: =[_NN 1_CD ,_, 6_CD ,_, 16_CD ,_, 35_CD ,_, 41_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC these_DT mechanisms_NNS are_VBP orthogonal_JJ to_TO our_PRP$ design_NN ._.
+The_DT HTTP_NNP front-end_NN passes_VBZ user_NN requests_NNS to_TO business_NN logic_NN units_NNS for_IN processing_NN and_CC forwards_RB replies_VBZ from_IN the_DT business_NN logic_NN units_NNS -LRB-_-LRB- e.g._FW servlets_FW ,_, c_NN
+dge_NN services_NNS model_NN works_VBZ as_IN follows_VBZ ._.
+Clients_NNS use_VBP HTTP_NNP to_TO access_VB services_NNS through_IN edge_NN servers_NNS that_WDT are_VBP located_JJ near_IN them_PRP ._.
+A_DT number_NN of_IN suitable_JJ mechanisms_NNS for_IN directing_VBG clients_NNS to_TO nearby_JJ servers_NNS exist_VBP =_JJ -_: =[_NN 1_CD ,_, 6_CD ,_, 16_CD ,_, 35_CD ,_, 41_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC these_DT mechanisms_NNS are_VBP orthogonal_JJ to_TO our_PRP$ design_NN ._.
+The_DT HTTP_NNP front-end_NN passes_VBZ user_NN requests_NNS to_TO business_NN logic_NN units_NNS for_IN processing_NN and_CC forwards_RB replies_VBZ from_IN the_DT business_NN logic_NN units_NNS -LRB-_-LRB- e.g._FW servlets_FW ,_, c_NN
+WWW2003_NN ,_, May_NNP 20_CD --_: 24_CD ,_, 2003_CD ,_, Budapest_NNP ,_, Hungary_NNP ._.
+ACM_NN xxx_NN ._.
+Arun_NNP Iyengar_NNP IBM_NNP T.J._NNP Watson_NNP Research_NNP Center_NNP P.O._NNP Box_NNP 704_CD Yorktown_NNP Heights_NNP ,_, NY_NNP 10598_CD aruni@watson.ibm.com_NN cution_NN at_IN edge_NN servers_NNS have_VBP been_VBN built_VBN =_JJ -_: =[_NN 2_CD ,_, 5_CD ,_, 8_CD ,_, 35_CD ,_, 38_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC the_DT core_NN challenge_NN ,_, dynamic_JJ data_NNS distribution_NN and_CC consistency_NN ,_, still_RB remains_VBZ ._.
+The_DT data_NNS on_IN which_WDT edge_NN servers_NNS operate_VBP must_MD be_VB consistently_RB replicated_VBN for_IN the_DT edge_NN servers_NNS to_TO correctly_RB deliver_VB the_DT
+ty_NN and_CC improve_VB latency_NN while_IN scalability_NN of_IN throughput_NN is_VBZ improved_VBN with_IN cluster_NN technology_NN ._.
+The_DT throughput_NN of_IN our_PRP$ distributed_VBN TPC-W_NN bookstore_NN system_NN is_VBZ competitive_JJ with_IN that_DT of_IN other_JJ academic_JJ systems_NNS =_JJ -_: =[_NN 3_CD ,_, 18_CD ,_, 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+If_IN we_PRP assume_VBP that_IN a_DT typical_JJ Pentium_NN III_CD machine_NN costs_NNS roughly_RB $_$ 800_CD ,_, the_DT price\/performance_NN cost_NN of_IN our_PRP$ system_NN is_VBZ roughly_RB 250_CD -LRB-_-LRB- $_$ \/_: WIPS_NNP -RRB-_-RRB- ,_, which_WDT falls_VBZ in_IN the_DT range_NN of_IN published_VBN standard_NN industry_NN TPC-W_NN pe_NN
+e_LS edge_NN services_NNS as_RB well_RB as_IN by_IN technology_NN trends_NNS ._.
+When_WRB making_VBG trade-offs_NNS ,_, we_PRP consider_VBP the_DT fact_NN that_IN technology_NN trends_NNS reduce_VBP the_DT cost_NN of_IN computer_NN resources_NNS while_IN making_VBG human_JJ time_NN relatively_RB expensive_JJ =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Therefore_RB ,_, we_PRP are_VBP willing_JJ to_TO trade_VB hardware_NN resources_NNS ,_, such_JJ as_IN network_NN bandwidth_NN and_CC disk_NN space_NN ,_, for_IN better_JJR system_NN availability_NN and_CC shorter_JJR latency_NN for_IN users_NNS as_RB well_RB as_IN design_NN simplicity_NN and_CC better_JJR
+d_NN objects_NNS interposes_VBZ between_IN business_NN logic_NN and_CC the_DT local_JJ database_NN to_TO control_VB data_NNS access_NN ._.
+They_PRP also_RB communicate_VBP with_IN other_JJ instances_NNS of_IN the_DT distributed_VBN objects_NNS through_IN the_DT persistent_JJ messaging_NN layer_NN =_JJ -_: =[_NN 14_CD ,_, 22_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: to_TO manage_VB data_NNS replication_NN and_CC consistency_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP demonstrate_VBP that_IN the_DT edge_NN services_NNS architecture_NN is_VBZ feasible_JJ for_IN the_DT TPC-W_NN benchmark_NN -LRB-_-LRB- 34_CD -RRB-_-RRB- ,_, which_WDT represents_VBZ an_DT online_JJ bookstore_NN with_IN funct_NN
+nternet_NN web_NN server_NN response_NN times_NNS have_VBP been_VBN improved_VBN ,_, human_JJ factors_NNS studies_NNS suggest_VBP that_IN human_JJ productivity_NN improves_VBZ more_JJR than_IN linearly_RB as_IN computer_NN systems_NNS response_NN times_NNS fall_VBP in_IN the_DT sub-second_JJ range_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Many_JJ systems_NNS for_IN business_NN logic_NN -LRB-_-LRB- code_NN -RRB-_-RRB- distribution_NN and_CC exeThis_NN work_NN was_VBD supported_VBN in_IN part_NN by_IN the_DT Texas_NNP Advanced_NNP Research_NNP Program_NNP and_CC an_DT IBM_NNP University_NNP Partnership_NNP Award_NN ._.
+Dahlin_NNP was_VBD also_RB supported_VBN b_NN
+chmark_NN in_IN this_DT study_NN ,_, we_PRP speculate_VBP that_IN similar_JJ techniques_NNS might_MD also_RB apply_VB to_TO a_DT broader_JJR range_NN of_IN applications_NNS ._.
+Some_DT consistency_NN optimizations_NNS we_PRP exploit_VBP are_VBP similar_JJ to_TO some_DT proposed_VBN in_IN previous_JJ work_NN =_JJ -_: =[_NN 25_CD ,_, 26_CD ,_, 32_CD ,_, 36_CD ,_, 42_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC our_PRP$ emphasis_NN is_VBZ on_IN how_WRB to_TO integrate_VB these_DT ideas_NNS and_CC effectively_RB apply_VB them_PRP to_TO make_VB an_DT important_JJ class_NN of_IN applications_NNS work_VBP ._.
+In_IN the_DT rest_NN of_IN the_DT paper_NN ,_, we_PRP first_RB present_VBP the_DT background_NN information_NN
+d_NN objects_NNS interposes_VBZ between_IN business_NN logic_NN and_CC the_DT local_JJ database_NN to_TO control_VB data_NNS access_NN ._.
+They_PRP also_RB communicate_VBP with_IN other_JJ instances_NNS of_IN the_DT distributed_VBN objects_NNS through_IN the_DT persistent_JJ messaging_NN layer_NN =_JJ -_: =[_NN 14_CD ,_, 22_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: to_TO manage_VB data_NNS replication_NN and_CC consistency_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP demonstrate_VBP that_IN the_DT edge_NN services_NNS architecture_NN is_VBZ feasible_JJ for_IN the_DT TPC-W_NN benchmark_NN -LRB-_-LRB- 34_CD -RRB-_-RRB- ,_, which_WDT represents_VBZ an_DT online_JJ bookstore_NN with_IN funct_NN
+consistency_NN requirements_NNS ._.
+Vahdat_NNP et_FW al._FW build_VB the_DT TPC-W_NN benchmark_NN on_IN top_NN of_IN TACT_NN to_TO demonstrate_VB the_DT feasibility_NN of_IN using_VBG TACT_NN as_IN a_DT database_NN middleware_NN for_IN traditional_JJ ,_, SQL-based_JJ database_NN applications_NNS =_JJ -_: =[_NN 37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP evaluate_VBP both_CC the_DT performance_NN benefit_NN and_CC consistency_NN costs_NNS of_IN continuous_JJ consistency_NN for_IN their_PRP$ TPC-W_NN implementation_NN across_IN a_DT variety_NN of_IN replication_NN scenarios_NNS and_CC consistency_NN bounds_NNS ._.
+Both_DT Bayou_NNP
+an_DT large_JJ scale_NN replication_NN to_TO hundreds_NNS or_CC thousands_NNS of_IN edge_NN servers_NNS ._.
+Recent_JJ work_NN has_VBZ suggested_VBN that_IN moderate_JJ scale_NN replication_NN provides_VBZ better_JJR availability_NN when_WRB consistency_NN constraints_NNS are_VBP considered_VBN =_JJ -_: =[_NN 43_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT discover_VBP simplifies_VBZ the_DT design_NN of_IN distributed_VBN objects_NNS because_IN the_DT replication_NN is_VBZ not_RB at_IN a_DT large_JJ scale_NN ._.
+We_PRP have_VBP bypassed_VBN a_DT number_NN of_IN potentially_RB attempting_VBG optimization_NN options_NNS for_IN each_DT distribu_NN
+is_VBZ well_RB understood_VBN for_IN traditional_JJ caching_NN ,_, where_WRB all_DT updates_NNS are_VBP made_VBN at_IN a_DT central_JJ server_NN ,_, replication_NN and_CC consistency_NN for_IN edge_NN servers_NNS that_WDT can_MD both_DT read_VB and_CC write_VB data_NNS is_VBZ more_RBR challenging_JJ ._.
+Brewer_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: suggests_VBZ that_IN there_EX is_VBZ a_DT fundamental_JJ CAP_NN dilemma_NN for_IN data_NNS replication_NN in_IN large_JJ scale_NN systems_NNS :_: systems_NNS can_MD not_RB simultaneously_RB achieve_VB both_DT high_JJ Consistency_NN and_CC high_JJ Availability_NN if_IN are_VBP subject_JJ to_TO netwo_NN
+used_VBN for_IN replication_NN of_IN web_NN services_NNS with_IN a_DT rich_JJ mix_NN of_IN reads_VBZ and_CC writes_VBZ ._.
+The_DT goal_NN of_IN this_DT project_NN is_VBZ to_TO build_VB an_DT edge_NN service_NN replication_NN architecture_NN using_VBG application-specific_JJ distributed_VBN objects_NNS =_JJ -_: =[_NN 36_CD -RRB-_-RRB- -_: =_SYM -_: for_IN e-commerce_NN applications_NNS ._.
+Standard_JJ e-commerce_NN implementations_NNS allow_VBP business_NN logic_NN -LRB-_-LRB- e.g._FW servlets_FW ,_, Enterprise_NNP Java_NNP Beans_NNP ,_, or_CC CGI_NNP programs_NNS -RRB-_-RRB- to_TO access_VB the_DT central_JJ databases_NNS directly_RB ._.
+In_IN the_DT case_NN whe_NN
+chmark_NN in_IN this_DT study_NN ,_, we_PRP speculate_VBP that_IN similar_JJ techniques_NNS might_MD also_RB apply_VB to_TO a_DT broader_JJR range_NN of_IN applications_NNS ._.
+Some_DT consistency_NN optimizations_NNS we_PRP exploit_VBP are_VBP similar_JJ to_TO some_DT proposed_VBN in_IN previous_JJ work_NN =_JJ -_: =[_NN 25_CD ,_, 26_CD ,_, 32_CD ,_, 36_CD ,_, 42_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC our_PRP$ emphasis_NN is_VBZ on_IN how_WRB to_TO integrate_VB these_DT ideas_NNS and_CC effectively_RB apply_VB them_PRP to_TO make_VB an_DT important_JJ class_NN of_IN applications_NNS work_VBP ._.
+In_IN the_DT rest_NN of_IN the_DT paper_NN ,_, we_PRP first_RB present_VBP the_DT background_NN information_NN
+et_CC of_IN priorities_NNS are_VBP the_DT consistency_NN and_CC simplicity_NN of_IN the_DT system_NN ._.
+Good_JJ consistency_NN is_VBZ a_DT high_JJ priority_NN because_IN a_DT key_JJ challenge_NN in_IN any_DT relaxed_VBN consistency_NN system_NN is_VBZ reasoning_NN about_IN subtle_JJ corner_NN cases_NNS =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC good_JJ consistency_NN makes_VBZ this_DT reasoning_NN more_RBR straightforward_JJ for_IN system_NN designers_NNS ._.
+We_PRP emphasize_VBP simplicity_NN throughout_IN our_PRP$ design_NN so_IN we_PRP can_MD easily_RB understand_VB and_CC tune_VB system_NN performance_NN and_CC thereby_RB
+9_CD -RRB-_-RRB- develop_VBP an_DT approach_NN for_IN consistently_RB caching_VBG dynamic_JJ Web_NN data_NNS that_WDT became_VBD a_DT critical_JJ component_NN of_IN the_DT 1998_CD Olympic_NNP Winter_NNP Games_NNPS Web_NN site_NN ._.
+But_CC it_PRP concerns_VBZ only_RB the_DT single_JJ writer_NN case_NN ._.
+Arlitt_FW et_FW al._FW =_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: studied_VBD the_DT scalability_NN of_IN a_DT large_JJ online_JJ shopping_NN system_NN by_IN performing_VBG workload_NN characterization_NN ,_, and_CC they_PRP conclude_VBP that_IN linear_JJ scalability_NN is_VBZ not_RB always_RB adequate_JJ in_IN case_NN of_IN workload_NN bursts_NNS ._.
+They_PRP su_VBP
+._.
+Updates_NNS can_MD take_VB place_NN on_IN any_DT edge_NN server_NN without_IN having_VBG to_TO lock_VB the_DT targeted_VBN record_NN ._.
+Access_NN locality_NN and_CC rapid_JJ besteffort_JJ propagation_NN of_IN all_DT updates_NNS to_TO all_DT locations_NNS reduce_VBP the_DT number_NN of_IN conflicts_NNS =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC rare_JJ update_VBP conflicts_NNS are_VBP satisfactorily_RB resolved_VBN by_IN simple_JJ per-field_JJ reconciliation_NN rules_NNS ._.
+Our_PRP$ decision_NN to_TO replicate_VB all_DT profile_JJ records_NNS on_IN all_DT edge_NN servers_NNS maximizes_VBZ availability_NN ,_, optimizes_NNS re_VBP
+rvice_NN infrastructure_NN information_NN such_JJ as_IN program_NN or_CC configuration_NN updates_NNS ._.
+Similar_JJ behavior_NN can_MD also_RB be_VB found_VBN in_IN other_JJ applications_NNS such_JJ as_IN IBM_NNP 's_POS geographically-distributed_JJ sporting_VBG and_CC event_NN service_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, traditional_JJ web_NN caching_NN ,_, edge-server_JJ content_NN assembly_NN ,_, dynamic_JJ data_NNS caching_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC personalization_NN ._.
+Note_VB that_IN different_JJ workloads_NNS may_MD benefit_VB from_IN additional_JJ features_NNS or_CC optimizations_NNS than_IN we_PRP choo_VBP
+An_DT update_VBP from_IN the_DT backend_JJ server_NN must_MD be_VB seen_VBN at_IN some_DT future_JJ time_NN by_IN all_DT edge_NN servers_NNS ,_, who_WP retrieve_VBP a_DT set_NN of_IN values_NNS corresponding_VBG to_TO keys_NNS ._.
+For_IN correctness_NN ,_, the_DT system_NN must_MD guarantee_VB FIFO_NN consistency_NN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- aka_JJ PRAM_NN consistency_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- -RRB-_-RRB- in_IN which_WDT writes_VBZ by_IN the_DT backend_NN are_VBP seen_VBN by_IN each_DT edge_NN server_NN in_IN the_DT order_NN they_PRP were_VBD issued_VBN ._.
+Enforcing_VBG FIFO_NN consistency_NN guarantees_NNS that_WDT ,_, for_IN example_NN ,_, if_IN the_DT backend_JJ server_NN c_NN
+atabase_NN ._.
+1_CD ._.
+INTRODUCTION_NN The_DT emerging_VBG edge_NN services_NNS architecture_NN for_IN providing_VBG web_NN services_NNS processes_VBZ client_NN requests_NNS at_IN a_DT collection_NN of_IN edge_NN servers_NNS distributed_VBN across_IN the_DT network_NN and_CC near_IN end_NN users_NNS =_JJ -_: =[_NN 1_CD ,_, 5_CD ,_, 8_CD ,_, 35_CD ,_, 38_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT approach_NN minimizes_VBZ communication_NN across_IN the_DT wide_JJ area_NN network_NN during_IN the_DT processing_NN of_IN client_NN requests_NNS in_IN order_NN to_TO improve_VB service_NN availability_NN and_CC latency_NN ._.
+Improving_NN availability_NN and_CC latency_NN i_FW
+profile_NN object_NN represents_VBZ the_DT user_NN profile_NN information_NN in_IN our_PRP$ system_NN ._.
+It_PRP takes_VBZ advantage_NN of_IN low_JJ concurrency_NN of_IN access_NN to_TO each_DT record_NN on_IN multiple_JJ nodes_NNS ,_, as_RB well_RB as_IN field-specific_JJ reconciliation_NN rules_NNS =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT inventory_NN and_CC bestseller-list_JJ objects_NNS are_VBP used_VBN for_IN tracking_VBG a_DT bookstore_NN 's_POS inventory_NN and_CC best_JJS seller_NN lists_NNS ._.
+In_IN the_DT case_NN of_IN inventory_NN ,_, the_DT object_NN exploits_VBZ the_DT fact_NN that_IN edge_NN servers_NNS care_VBP about_IN whe_NN
+r_NN behavior_NN can_MD also_RB be_VB found_VBN in_IN other_JJ applications_NNS such_JJ as_IN IBM_NNP 's_POS geographically-distributed_JJ sporting_VBG and_CC event_NN service_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, traditional_JJ web_NN caching_NN ,_, edge-server_JJ content_NN assembly_NN ,_, dynamic_JJ data_NNS caching_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: and_CC personalization_NN ._.
+Note_VB that_IN different_JJ workloads_NNS may_MD benefit_VB from_IN additional_JJ features_NNS or_CC optimizations_NNS than_IN we_PRP choose_VBP for_IN the_DT TPC-W_NN catalog_NN object_NN ._.
+In_IN the_DT design_NN of_IN our_PRP$ prototype_NN ,_, we_PRP considered_VBD but_CC
+ty_NN and_CC improve_VB latency_NN while_IN scalability_NN of_IN throughput_NN is_VBZ improved_VBN with_IN cluster_NN technology_NN ._.
+The_DT throughput_NN of_IN our_PRP$ distributed_VBN TPC-W_NN bookstore_NN system_NN is_VBZ competitive_JJ with_IN that_DT of_IN other_JJ academic_JJ systems_NNS =_JJ -_: =[_NN 3_CD ,_, 18_CD ,_, 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+If_IN we_PRP assume_VBP that_IN a_DT typical_JJ Pentium_NN III_CD machine_NN costs_NNS roughly_RB $_$ 800_CD ,_, the_DT price\/performance_NN cost_NN of_IN our_PRP$ system_NN is_VBZ roughly_RB 250_CD -LRB-_-LRB- $_$ \/_: WIPS_NNP -RRB-_-RRB- ,_, which_WDT falls_VBZ in_IN the_DT range_NN of_IN published_VBN standard_NN industry_NN TPC-W_NN pe_NN
+the_DT underlying_VBG FIFO\/PRAM_NN propagation_NN of_IN updates_NNS to_TO provide_VB stronger_JJR semantics_NNS such_JJ as_IN casual_JJ consistency_NN -LRB-_-LRB- which_WDT may_MD require_VB more_RBR complex_JJ communication_NN mechanisms_NNS such_JJ as_IN Bayou_NNP 's_POS log_NN exchange_NN protocol_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =--RRB-_NN or_CC sequential_JJ consistency_NN -LRB-_-LRB- which_WDT may_MD require_VB locking_VBG -RRB-_-RRB- ._.
+Quorum_NNP based_VBN solutions_NNS such_JJ as_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- could_MD also_RB be_VB explored_VBN ._.
+2_CD ._.
+The_DT ``_`` reconciliation_NN rules_NNS ''_'' currently_RB hand-coded_JJ in_IN the_DT profile_NN object_NN logic_NN migh_NN
+chmark_NN in_IN this_DT study_NN ,_, we_PRP speculate_VBP that_IN similar_JJ techniques_NNS might_MD also_RB apply_VB to_TO a_DT broader_JJR range_NN of_IN applications_NNS ._.
+Some_DT consistency_NN optimizations_NNS we_PRP exploit_VBP are_VBP similar_JJ to_TO some_DT proposed_VBN in_IN previous_JJ work_NN =_JJ -_: =[_NN 25_CD ,_, 26_CD ,_, 32_CD ,_, 36_CD ,_, 42_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC our_PRP$ emphasis_NN is_VBZ on_IN how_WRB to_TO integrate_VB these_DT ideas_NNS and_CC effectively_RB apply_VB them_PRP to_TO make_VB an_DT important_JJ class_NN of_IN applications_NNS work_VBP ._.
+In_IN the_DT rest_NN of_IN the_DT paper_NN ,_, we_PRP first_RB present_VBP the_DT background_NN information_NN
+atabase_NN ._.
+1_CD ._.
+INTRODUCTION_NN The_DT emerging_VBG edge_NN services_NNS architecture_NN for_IN providing_VBG web_NN services_NNS processes_VBZ client_NN requests_NNS at_IN a_DT collection_NN of_IN edge_NN servers_NNS distributed_VBN across_IN the_DT network_NN and_CC near_IN end_NN users_NNS =_JJ -_: =[_NN 1_CD ,_, 5_CD ,_, 8_CD ,_, 35_CD ,_, 38_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT approach_NN minimizes_VBZ communication_NN across_IN the_DT wide_JJ area_NN network_NN during_IN the_DT processing_NN of_IN client_NN requests_NNS in_IN order_NN to_TO improve_VB service_NN availability_NN and_CC latency_NN ._.
+Improving_NN availability_NN and_CC latency_NN i_FW
+server_NN must_MD be_VB seen_VBN at_IN some_DT future_JJ time_NN by_IN all_DT edge_NN servers_NNS ,_, who_WP retrieve_VBP a_DT set_NN of_IN values_NNS corresponding_VBG to_TO keys_NNS ._.
+For_IN correctness_NN ,_, the_DT system_NN must_MD guarantee_VB FIFO_NN consistency_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- -LRB-_-LRB- aka_JJ PRAM_NN consistency_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =--RRB-_NN in_IN which_WDT writes_VBZ by_IN the_DT backend_NN are_VBP seen_VBN by_IN each_DT edge_NN server_NN in_IN the_DT order_NN they_PRP were_VBD issued_VBN ._.
+Enforcing_VBG FIFO_NN consistency_NN guarantees_NNS that_WDT ,_, for_IN example_NN ,_, if_IN the_DT backend_JJ server_NN creates_VBZ an_DT object_NN and_CC then_RB u_NN
+n_NN network_NN failures_NNS are_VBP considered_VBN ,_, end-to-end_JJ service_NN availability_NN is_VBZ often_RB as_RB low_JJ as_IN two-9_NN 's_POS -LRB-_-LRB- 99_CD %_NN -RRB-_-RRB- ,_, meaning_VBG that_IN an_DT average_JJ web_NN client_NN can_MD not_RB contact_VB an_DT average_JJ web_NN server_NN for_IN about_RB 15_CD minutes_NNS a_DT day_NN =_JJ -_: =[_NN 15_CD ,_, 28_CD ,_, 44_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Furthermore_RB ,_, despite_IN that_DT Internet_NN web_NN server_NN response_NN times_NNS have_VBP been_VBN improved_VBN ,_, human_JJ factors_NNS studies_NNS suggest_VBP that_IN human_JJ productivity_NN improves_VBZ more_JJR than_IN linearly_RB as_IN computer_NN systems_NNS response_NN times_NNS
+dge_NN services_NNS model_NN works_VBZ as_IN follows_VBZ ._.
+Clients_NNS use_VBP HTTP_NNP to_TO access_VB services_NNS through_IN edge_NN servers_NNS that_WDT are_VBP located_JJ near_IN them_PRP ._.
+A_DT number_NN of_IN suitable_JJ mechanisms_NNS for_IN directing_VBG clients_NNS to_TO nearby_JJ servers_NNS exist_VBP =_JJ -_: =[_NN 1_CD ,_, 6_CD ,_, 16_CD ,_, 35_CD ,_, 41_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC these_DT mechanisms_NNS are_VBP orthogonal_JJ to_TO our_PRP$ design_NN ._.
+The_DT HTTP_NNP front-end_NN passes_VBZ user_NN requests_NNS to_TO business_NN logic_NN units_NNS for_IN processing_NN and_CC forwards_RB replies_VBZ from_IN the_DT business_NN logic_NN units_NNS -LRB-_-LRB- e.g._FW servlets_FW ,_, c_NN
+distributed_VBN applications_NNS require_VBP a_DT mechanism_NN to_TO atomically_RB update_VB multiple_JJ objects_NNS ._.
+For_IN example_NN ,_, it_PRP may_MD be_VB desirable_JJ to_TO atomically_RB update_VB several_JJ component_NN parts_NNS that_WDT are_VBP assembled_VBN into_IN a_DT single_JJ page_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Given_VBN the_DT support_NN of_IN transactional_JJ updates_NNS provided_VBN by_IN most_JJS persistent_JJ messaging_NN layers_NNS ,_, it_PRP should_MD be_VB straightforward_JJ to_TO modify_VB the_DT catalog_NN object_NN to_TO support_VB atomic_JJ multi-object_JJ operations_NNS -LRB-_-LRB- read\/wri_NNS
+consistency_NN -LRB-_-LRB- which_WDT may_MD require_VB more_RBR complex_JJ communication_NN mechanisms_NNS such_JJ as_IN Bayou_NNP 's_POS log_NN exchange_NN protocol_NN -LRB-_-LRB- 29_CD -RRB-_-RRB- -RRB-_-RRB- or_CC sequential_JJ consistency_NN -LRB-_-LRB- which_WDT may_MD require_VB locking_VBG -RRB-_-RRB- ._.
+Quorum_NNP based_VBN solutions_NNS such_JJ as_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: could_MD also_RB be_VB explored_VBN ._.
+2_CD ._.
+The_DT ``_`` reconciliation_NN rules_NNS ''_'' currently_RB hand-coded_JJ in_IN the_DT profile_NN object_NN logic_NN might_MD be_VB made_VBN more_RBR general_JJ by_IN ,_, for_IN instance_NN ,_, providing_VBG an_DT interface_NN on_IN a_DT read\/write_NN object_NN to_TO sp_NN
+atabase_NN ._.
+1_CD ._.
+INTRODUCTION_NN The_DT emerging_VBG edge_NN services_NNS architecture_NN for_IN providing_VBG web_NN services_NNS processes_VBZ client_NN requests_NNS at_IN a_DT collection_NN of_IN edge_NN servers_NNS distributed_VBN across_IN the_DT network_NN and_CC near_IN end_NN users_NNS =_JJ -_: =[_NN 1_CD ,_, 5_CD ,_, 8_CD ,_, 35_CD ,_, 38_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT approach_NN minimizes_VBZ communication_NN across_IN the_DT wide_JJ area_NN network_NN during_IN the_DT processing_NN of_IN client_NN requests_NNS in_IN order_NN to_TO improve_VB service_NN availability_NN and_CC latency_NN ._.
+Improving_NN availability_NN and_CC latency_NN i_FW

@@ -1,0 +1,112 @@
+Finding_VBG low-entropy_JJ sets_NNS and_CC trees_NNS from_IN binary_JJ data_NNS
+The_DT discovery_NN of_IN subsets_NNS with_IN special_JJ properties_NNS from_IN binary_JJ data_NNS hasbeen_VBP one_CD of_IN the_DT key_JJ themes_NNS in_IN pattern_NN discovery_NN ._.
+Pattern_NN classes_NNS suchas_VBP frequent_JJ itemsets_NNS stress_VBP the_DT co-occurrence_NN of_IN the_DT value_NN 1_CD in_IN the_DT data_NNS ._.
+While_IN this_DT choice_NN makes_VBZ sense_NN in_IN the_DT context_NN of_IN sparse_JJ binary_JJ data_NNS ,_, it_PRP disregards_VBZ potentially_RB interesting_JJ subsets_NNS of_IN attributes_NNS that_WDT have_VBP some_DT other_JJ type_NN of_IN dependency_NN structure_NN ._.
+We_PRP consider_VBP the_DT problem_NN of_IN finding_VBG all_DT subsets_NNS of_IN attributes_NNS that_WDT have_VBP low_JJ complexity_NN ._.
+The_DT complexity_NN is_VBZ measured_VBN by_IN either_CC the_DT entropy_NN of_IN the_DT projection_NN of_IN the_DT data_NNS on_IN the_DT subset_NN ,_, or_CC the_DT entropy_NN of_IN the_DT data_NNS for_IN the_DT subset_NN when_WRB modeled_VBN using_VBG a_DT Bayesian_JJ tree_NN ,_, with_IN downward_JJ or_CC upward_JJ pointing_VBG edges_NNS ._.
+We_PRP show_VBP that_IN the_DT entropy_NN measure_NN on_IN sets_NNS has_VBZ a_DT monotonicity_NN property_NN ,_, and_CC thus_RB a_DT levelwise_JJ approach_NN can_MD find_VB all_DT low-entropy_JJ itemsets_NNS ._.
+We_PRP also_RB show_VBP that_IN the_DT tree-based_JJ measures_NNS are_VBP bounded_VBN above_RB by_IN the_DT entropy_NN of_IN the_DT corresponding_JJ itemset_NN ,_, allowing_VBG similar_JJ algorithms_NNS to_TO be_VB used_VBN for_IN finding_VBG low-entropy_JJ trees_NNS ._.
+We_PRP describe_VBP algorithms_NNS for_IN finding_VBG all_DT subsets_NNS satisfying_VBG an_DT entropy_JJ condition_NN ._.
+We_PRP give_VBP an_DT extensive_JJ empirical_JJ evaluation_NN of_IN the_DT performance_NN of_IN the_DT methods_NNS both_CC on_IN synthetic_NN and_CC on_IN real_JJ data_NNS ._.
+We_PRP also_RB discuss_VBP the_DT search_NN for_IN high-entropy_JJ subsets_NNS and_CC the_DT computation_NN of_IN the_DT Vapnik-Chervonenkis_NNP dimension_NN of_IN the_DT data_NNS ._.
+ure_NN for_IN sets_NNS of_IN attributes_NNS -LRB-_-LRB- or_CC items_NNS -RRB-_-RRB- and_CC efficient_JJ algorithms_NNS have_VBP been_VBN proposed_VBN to_TO mine_VB the_DT maximally_RB informative_JJ k-itemsets_NNS as_IN in_IN -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+Algorithms_NNS have_VBP been_VBN proposed_VBN to_TO find_VB low-entropy_JJ sets_NNS as_IN in_IN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: where_WRB they_PRP introduced_VBD two_CD kinds_NNS of_IN low_JJ entropy_NN trees_NNS and_CC discussed_VBD their_PRP$ properties_NNS ._.
+In_IN the_DT NIFS_NN method_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- ,_, the_DT authors_NNS explore_VBP the_DT problem_NN of_IN finding_VBG nonredundant_JJ high_JJ order_NN correlations_NNS in_IN binary_JJ
+ormative_JJ patterns_NNS ,_, typically_RB in_IN the_DT order_NN of_IN tens_NNS of_IN patterns_NNS ,_, that_WDT are_VBP both_DT readable_JJ and_CC provide_VB intuitive_JJ descriptions_NNS of_IN the_DT data_NNS ._.
+The_DT method_NN is_VBZ inspired_VBN by_IN two_CD recent_JJ approaches_NNS :_: low-entropy_JJ sets_NNS =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: and_CC the_DT MDL-based_JJ method_NN KRIMP_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+569_CD Copyright_NNP ©_NNP by_IN SIAM_NNP ._.
+Unauthorized_JJ reproduction_NN of_IN this_DT article_NN is_VBZ prohibited.LE-Set_NN 1_CD Species_NNP ..._: Felis_NNP Sylvestris_NNP Microt_NNP ._.
+Arvalis_NNP Microt_NNP ._.
+Subter_NN ._.
+Mustela_FW Pu_FW
+t_NN is_VBZ to_TO some_DT extent_NN paralleled_VBN by_IN our_PRP$ sequence_NN of_IN itemset_NN pattern_NN classes_NNS ._.
+Closer_JJR to_TO our_PRP$ approach_NN are_VBP Knobbe_NNP and_CC Ho_NNP 's_POS maximally_RB informative_JJ k-itemsets_NNS ,_, i.e._FW ,_, itemsets_NNS with_IN as_RB high_JJ entropysas_NNS possible_JJ =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT difference_NN to_TO our_PRP$ high-entropy_JJ itemsets_NNS is_VBZ that_IN Knobbe_NNP and_CC Ho_NNP avoid_VB the_DT trivial_JJ result_NN of_IN the_DT full_JJ itemset_NN by_IN restricting_VBG their_PRP$ itemsets_NNS to_TO have_VB a_DT fixed_VBN number_NN k_NN of_IN elements_NNS ,_, whereas_IN we_PRP define_VBP s_NNS
+every_DT node_NN has_VBZ at_IN most_JJS one_CD parent_NN ._.
+The_DT best_JJS D-tree_NN can_MD be_VB computed_VBN fast_RB even_RB for_IN very_RB large_JJ data_NNS sets_NNS ._.
+They_PRP have_VBP also_RB been_VBN called_VBN Bayes_NNP trees_NNS ,_, Markov_NNP trees_NNS -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, dependence_NN trees_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, andChow-Liutrees_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, butanimportantdistinctionisthat_NN we_PRP do_VBP not_RB attempt_VB to_TO model_VB the_DT complete_JJ joint_JJ distribution_NN but_CC to_TO find_VB interesting_JJ local_JJ patterns_NNS ._.
+In_IN other_JJ words_NNS ,_, a_DT Dtree_NNP is_VBZ the_DT Chow-Liu_NNP tree_NN for_IN some_DT subset_NN of_IN the_DT
+mset_NN mining_NN ._.
+Morishita_NNP and_CC Sese_NNP have_VBP presented_VBN a_DT branch-and-bound_JJ method_NN for_IN finding_VBG association_NN rules_NNS like_IN X_NN ⇒_NN Y_NN where_WRB the_DT itemsets_NNS X_NN and_CC Y_NN are_VBP not_RB required_VBN to_TO have_VB high_JJ support_NN but_CC high_JJ correlation_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP also_RB count_VBP those_DT data_NNS rows_NNS where_WRB X_NN and_CC Y_NN appearcompletely,whereasourentropy-basedmethodcounts_NNS arbitrary_JJ combinations_NNS ._.
+Similar_JJ strategies_NNS have_VBP been_VBN employed_VBN by_IN Zimmermann_NNP et_FW al._FW -LRB-_-LRB- 24_CD ,_, 5_CD -RRB-_-RRB- ._.
+In_IN -LRB-_-LRB- 5_CD -RRB-_-RRB-
+y_NN ,_, however_RB ,_, consider_VB only_RB all-1s_FW itemsets_FW ._.
+In_IN real-valued_JJ data_NNS ,_, the_DT task_NN of_IN finding_VBG interesting_JJ subsets_NNS has_VBZ been_VBN addressed_VBN by_IN research_NN areas_NNS such_JJ as_IN subspace_NN clustering_NN -LRB-_-LRB- 20_CD ,_, 1_CD -RRB-_-RRB- and_CC projection_NN pursuit_NN =_JJ -_: =[_NN 9_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Another_DT method_NN somewhat_RB related_JJ to_TO our_PRP$ task_NN is_VBZ the_DT problem_NN of_IN learning_VBG the_DT structure_NN of_IN a_DT Bayesian_JJ network_NN ._.
+This_DT problem_NN is_VBZ computationally_RB challenging_JJ ,_, and_CC the_DT main_JJ methods_NNS are_VBP probabilistic_JJ -LRB-_-LRB- 7_CD ,_, 13_CD
+y_NN ,_, however_RB ,_, consider_VB only_RB all-1s_FW itemsets_FW ._.
+In_IN real-valued_JJ data_NNS ,_, the_DT task_NN of_IN finding_VBG interesting_JJ subsets_NNS has_VBZ been_VBN addressed_VBN by_IN research_NN areas_NNS such_JJ as_IN subspace_NN clustering_NN -LRB-_-LRB- 20_CD ,_, 1_CD -RRB-_-RRB- and_CC projection_NN pursuit_NN =_JJ -_: =[_NN 9_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Another_DT method_NN somewhat_RB related_JJ to_TO our_PRP$ task_NN is_VBZ the_DT problem_NN of_IN learning_VBG the_DT structure_NN of_IN a_DT Bayesian_JJ network_NN ._.
+This_DT problem_NN is_VBZ computationally_RB challenging_JJ ,_, and_CC the_DT main_JJ methods_NNS are_VBP probabilistic_JJ -LRB-_-LRB- 7_CD ,_, 13_CD
+by_IN Siebes_NNP et_FW al._FW -LRB-_-LRB- 22_CD ,_, 23_CD -RRB-_-RRB- ._.
+They_PRP ,_, however_RB ,_, consider_VB only_RB all-1s_FW itemsets_FW ._.
+In_IN real-valued_JJ data_NNS ,_, the_DT task_NN of_IN finding_VBG interesting_JJ subsets_NNS has_VBZ been_VBN addressed_VBN by_IN research_NN areas_NNS such_JJ as_IN subspace_NN clustering_NN =_JJ -_: =[_NN 20_CD ,_, 1_CD -RRB-_-RRB- -_: =_JJ -_: and_CC projection_NN pursuit_NN -LRB-_-LRB- 9_CD ,_, 15_CD -RRB-_-RRB- ._.
+Another_DT method_NN somewhat_RB related_JJ to_TO our_PRP$ task_NN is_VBZ the_DT problem_NN of_IN learning_VBG the_DT structure_NN of_IN a_DT Bayesian_JJ network_NN ._.
+This_DT problem_NN is_VBZ computationally_RB challenging_JJ ,_, and_CC the_DT main_JJ m_NN
+lso_FW Bayes_FW nets_NNS ,_, but_CC simpler_JJR than_IN U-trees_NNS as_IN every_DT node_NN has_VBZ at_IN most_JJS one_CD parent_NN ._.
+The_DT best_JJS D-tree_NN can_MD be_VB computed_VBN fast_RB even_RB for_IN very_RB large_JJ data_NNS sets_NNS ._.
+They_PRP have_VBP also_RB been_VBN called_VBN Bayes_NNP trees_NNS ,_, Markov_NNP trees_NNS =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, dependence_NN trees_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, andChow-Liutrees_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, butanimportantdistinctionisthat_NN we_PRP do_VBP not_RB attempt_VB to_TO model_VB the_DT complete_JJ joint_JJ distribution_NN but_CC to_TO find_VB interesting_JJ local_JJ patterns_NNS ._.
+In_IN other_JJ words_NNS ,_, a_DT Dtree_NN
+Pattern_NN discovery_NN is_VBZ the_DT subarea_NN of_IN data_NNS mining_VBG concerned_JJ withfindingcombinationsofvariablesthatareinsomesense_NN locally_RB interesting_JJ ._.
+The_DT archetypical_JJ example_NN is_VBZ the_DT pattern_NN class_NN of_IN frequent_JJ itemsets_NNS =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC it_PRP sometimes_RB seems_VBZ that_IN this_DT is_VBZ the_DT only_JJ such_JJ class_NN that_WDT attracts_VBZ significant_JJ research_NN ._.
+Permission_NN to_TO make_VB digital_JJ or_CC hard_JJ copies_NNS of_IN all_DT or_CC part_NN of_IN this_DT work_NN for_IN personal_JJ or_CC classroom_NN use_NN is_VBZ gra_NN
+emsets_NNS compared_VBN to_TO the_DT less_RBR flexible_JJ trees_NNS is_VBZ that_IN they_PRP are_VBP not_RB as_RB easily_RB interpreted_VBN ._.
+From_IN another_DT viewpoint_NN ,_, there_EX is_VBZ a_DT continuum_NN from_IN frequent_JJ itemsets_NNS via_IN fragments_NNS of_IN order_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC the_DT trees_NNS of_IN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: to_TO U-trees_NNS ,_, where_WRB each_DT pattern_NN class_NN has_VBZ more_JJR structure_NN than_IN the_DT previous_JJ one_CD ._.
+sSoftware_NNP Engineering_NNP Project_NNP Scientific_NNP Writing_VBG Maturity_NNP Test_NNP Theory_NNP of_IN Computation_NNP Probability_NNP Theory_NNP 1_CD Figure_NNP 1_CD :_: An_DT ex_FW
+ntropy_JJ threshold_NN ɛ_NN ,_, an_DT itemset_NN X_NN is_VBZ a_DT low-entropy_JJ set_NN in_IN D_NN if_IN H_NN -LRB-_-LRB- X_NN -RRB-_-RRB- ≤_FW ɛ_FW ._.
+Low-entropy_JJ sets_NNS have_VBP a_DT monotonicity_NN property_NN like_IN that_DT of_IN frequent_JJ itemsets_NNS ,_, which_WDT allows_VBZ us_PRP to_TO use_VB e.g._FW the_DT levelwise_NN search_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: to_TO find_VB low-entropy_JJ sets_NNS ._.
+Proposition_NN 2_CD ._.
+For_IN all_DT datasets_NNS D_NNP ,_, for_IN all_PDT A_DT ∈_NN X_NN and_CC X_NN =_JJ ∅_CD ._.
+H_NN -LRB-_-LRB- X_NN -RRB-_-RRB- ≥_NN H_NN -LRB-_-LRB- X_NN \_NN A_NN -RRB-_-RRB- Proof_NNP ._.
+H_NN -LRB-_-LRB- X_NN -RRB-_-RRB- =_JJ H_NN -LRB-_-LRB- X_NN \_NN A_NN -RRB-_-RRB- +_CC H_NN -LRB-_-LRB- A_NN |_NN X_NN \_NN A_NN -RRB-_-RRB- ≥_NN H_NN -LRB-_-LRB- X_NN \_NN A_NN -RRB-_-RRB- with_IN equality_NN holding_VBG only_RB when_WRB H_NN -LRB-_-LRB- A_NN |_NN X_NN
+correlation_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+They_PRP also_RB count_VBP those_DT data_NNS rows_NNS where_WRB X_NN and_CC Y_NN appearcompletely,whereasourentropy-basedmethodcounts_NNS arbitrary_JJ combinations_NNS ._.
+Similar_JJ strategies_NNS have_VBP been_VBN employed_VBN by_IN Zimmermann_NNP et_FW al._FW =_SYM -_: =[_NN 24_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- they_PRP describe_VBP a_DT sequence_NN of_IN graph_NN pattern_NN classes_NNS that_WDT is_VBZ to_TO some_DT extent_NN paralleled_VBN by_IN our_PRP$ sequence_NN of_IN itemset_NN pattern_NN classes_NNS ._.
+Closer_JJR to_TO our_PRP$ approach_NN are_VBP Knobbe_NNP and_CC Ho_NNP 's_POS maximally_RB informativ_JJ
+thus_RB avoid_VB having_VBG to_TO specify_VB an_DT extra_JJ parameter_NN ._.
+Another_DT information-theoretically_RB motivated_JJ approach_NN is_VBZ to_TO select_VB itemsets_NNS that_WDT can_MD be_VB used_VBN to_TO compress_VB the_DT data_NNS ,_, recently_RB introduced_VBN by_IN Siebes_FW et_FW al._FW =_SYM -_: =[_NN 22_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP ,_, however_RB ,_, consider_VB only_RB all-1s_FW itemsets_FW ._.
+In_IN real-valued_JJ data_NNS ,_, the_DT task_NN of_IN finding_VBG interesting_JJ subsets_NNS has_VBZ been_VBN addressed_VBN by_IN research_NN areas_NNS such_JJ as_IN subspace_NN clustering_NN -LRB-_-LRB- 20_CD ,_, 1_CD -RRB-_-RRB- and_CC projection_NN pur_NN
+scores_NNS of_IN the_DT patterns_NNS found_VBN from_IN the_DT course_NN data_NNS set_VBN against_IN the_DT scores_NNS of_IN patterns_NNS obtained_VBN form_VBP 10_CD randomized_JJ course_NN data_NNS set_VBP instances_NNS ._.
+For_IN this_DT we_PRP use_VBP the_DT swap_NN randomization_NN method_NN described_VBN in_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT method_NN preserves_VBZ the_DT row_NN and_CC column_NN margins_NNS of_IN the_DT given_VBN dataset_NN ,_, but_CC obscures_VBZ the_DT internal_JJ dependencies_NNS of_IN the_DT data_NNS ._.
+The_DT idea_NN is_VBZ that_IN if_IN thesAI_NNP Languages_NNP Artificial_NNP Intelligence_NNP Java_NNP programmin_NN
+thus_RB avoid_VB having_VBG to_TO specify_VB an_DT extra_JJ parameter_NN ._.
+Another_DT information-theoretically_RB motivated_JJ approach_NN is_VBZ to_TO select_VB itemsets_NNS that_WDT can_MD be_VB used_VBN to_TO compress_VB the_DT data_NNS ,_, recently_RB introduced_VBN by_IN Siebes_FW et_FW al._FW =_SYM -_: =[_NN 22_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP ,_, however_RB ,_, consider_VB only_RB all-1s_FW itemsets_FW ._.
+In_IN real-valued_JJ data_NNS ,_, the_DT task_NN of_IN finding_VBG interesting_JJ subsets_NNS has_VBZ been_VBN addressed_VBN by_IN research_NN areas_NNS such_JJ as_IN subspace_NN clustering_NN -LRB-_-LRB- 20_CD ,_, 1_CD -RRB-_-RRB- and_CC projection_NN pur_NN
+9_CD ,_, 15_CD -RRB-_-RRB- ._.
+Another_DT method_NN somewhat_RB related_JJ to_TO our_PRP$ task_NN is_VBZ the_DT problem_NN of_IN learning_VBG the_DT structure_NN of_IN a_DT Bayesian_JJ network_NN ._.
+This_DT problem_NN is_VBZ computationally_RB challenging_JJ ,_, and_CC the_DT main_JJ methods_NNS are_VBP probabilistic_JJ =_JJ -_: =[_NN 7_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: ;_: the_DT best_JJS current_JJ exact_JJ algorithms_NNS are_VBP of_IN order_NN O_NN -LRB-_-LRB- n2_NN n_NN -RRB-_-RRB- -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+The_DT key_JJ difference_NN between_IN Bayesian_JJ network_NN structure_NN learning_NN and_CC our_PRP$ approach_NN is_VBZ that_IN we_PRP seek_VBP interesting_JJ subsets_NNS of_IN the_DT data_NNS ,_, not_RB com_NN
+m_NN of_IN learning_VBG the_DT structure_NN of_IN a_DT Bayesian_JJ network_NN ._.
+This_DT problem_NN is_VBZ computationally_RB challenging_JJ ,_, and_CC the_DT main_JJ methods_NNS are_VBP probabilistic_JJ -LRB-_-LRB- 7_CD ,_, 13_CD -RRB-_-RRB- ;_: the_DT best_JJS current_JJ exact_JJ algorithms_NNS are_VBP of_IN order_NN O_NN -LRB-_-LRB- n2_NN n_NN -RRB-_-RRB- =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT key_JJ difference_NN between_IN Bayesian_JJ network_NN structure_NN learning_NN and_CC our_PRP$ approach_NN is_VBZ that_IN we_PRP seek_VBP interesting_JJ subsets_NNS of_IN the_DT data_NNS ,_, not_RB complete_JJ models_NNS ;_: also_RB ,_, of_IN course_NN ,_, weinvestigateonlyfullyconnectedo_NN
+pler_NN than_IN U-trees_NNS as_IN every_DT node_NN has_VBZ at_IN most_JJS one_CD parent_NN ._.
+The_DT best_JJS D-tree_NN can_MD be_VB computed_VBN fast_RB even_RB for_IN very_RB large_JJ data_NNS sets_NNS ._.
+They_PRP have_VBP also_RB been_VBN called_VBN Bayes_NNP trees_NNS ,_, Markov_NNP trees_NNS -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, dependence_NN trees_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, andChow-Liutrees_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, butanimportantdistinctionisthat_NN we_PRP do_VBP not_RB attempt_VB to_TO model_VB the_DT complete_JJ joint_JJ distribution_NN but_CC to_TO find_VB interesting_JJ local_JJ patterns_NNS ._.
+In_IN other_JJ words_NNS ,_, a_DT Dtree_NNP is_VBZ the_DT Chow-Liu_NNP tree_NN
+9_CD ,_, 15_CD -RRB-_-RRB- ._.
+Another_DT method_NN somewhat_RB related_JJ to_TO our_PRP$ task_NN is_VBZ the_DT problem_NN of_IN learning_VBG the_DT structure_NN of_IN a_DT Bayesian_JJ network_NN ._.
+This_DT problem_NN is_VBZ computationally_RB challenging_JJ ,_, and_CC the_DT main_JJ methods_NNS are_VBP probabilistic_JJ =_JJ -_: =[_NN 7_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: ;_: the_DT best_JJS current_JJ exact_JJ algorithms_NNS are_VBP of_IN order_NN O_NN -LRB-_-LRB- n2_NN n_NN -RRB-_-RRB- -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+The_DT key_JJ difference_NN between_IN Bayesian_JJ network_NN structure_NN learning_NN and_CC our_PRP$ approach_NN is_VBZ that_IN we_PRP seek_VBP interesting_JJ subsets_NNS of_IN the_DT data_NNS ,_, not_RB com_NN
+by_IN Siebes_NNP et_FW al._FW -LRB-_-LRB- 22_CD ,_, 23_CD -RRB-_-RRB- ._.
+They_PRP ,_, however_RB ,_, consider_VB only_RB all-1s_FW itemsets_FW ._.
+In_IN real-valued_JJ data_NNS ,_, the_DT task_NN of_IN finding_VBG interesting_JJ subsets_NNS has_VBZ been_VBN addressed_VBN by_IN research_NN areas_NNS such_JJ as_IN subspace_NN clustering_NN =_JJ -_: =[_NN 20_CD ,_, 1_CD -RRB-_-RRB- -_: =_JJ -_: and_CC projection_NN pursuit_NN -LRB-_-LRB- 9_CD ,_, 15_CD -RRB-_-RRB- ._.
+Another_DT method_NN somewhat_RB related_JJ to_TO our_PRP$ task_NN is_VBZ the_DT problem_NN of_IN learning_VBG the_DT structure_NN of_IN a_DT Bayesian_JJ network_NN ._.
+This_DT problem_NN is_VBZ computationally_RB challenging_JJ ,_, and_CC the_DT main_JJ m_NN
+correlation_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+They_PRP also_RB count_VBP those_DT data_NNS rows_NNS where_WRB X_NN and_CC Y_NN appearcompletely,whereasourentropy-basedmethodcounts_NNS arbitrary_JJ combinations_NNS ._.
+Similar_JJ strategies_NNS have_VBP been_VBN employed_VBN by_IN Zimmermann_NNP et_FW al._FW =_SYM -_: =[_NN 24_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- they_PRP describe_VBP a_DT sequence_NN of_IN graph_NN pattern_NN classes_NNS that_WDT is_VBZ to_TO some_DT extent_NN paralleled_VBN by_IN our_PRP$ sequence_NN of_IN itemset_NN pattern_NN classes_NNS ._.
+Closer_JJR to_TO our_PRP$ approach_NN are_VBP Knobbe_NNP and_CC Ho_NNP 's_POS maximally_RB informativ_JJ
+back_RB to_TO low-entropy_JJ itemsets_NNS compared_VBN to_TO the_DT less_RBR flexible_JJ trees_NNS is_VBZ that_IN they_PRP are_VBP not_RB as_RB easily_RB interpreted_VBN ._.
+From_IN another_DT viewpoint_NN ,_, there_EX is_VBZ a_DT continuum_NN from_IN frequent_JJ itemsets_NNS via_IN fragments_NNS of_IN order_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: and_CC the_DT trees_NNS of_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- to_TO U-trees_NNS ,_, where_WRB each_DT pattern_NN class_NN has_VBZ more_JJR structure_NN than_IN the_DT previous_JJ one_CD ._.
+sSoftware_NNP Engineering_NNP Project_NNP Scientific_NNP Writing_VBG Maturity_NNP Test_NNP Theory_NNP of_IN Computation_NNP Probability_NNP Th_NN
+data_NNS ._.
+This_DT corresponds_VBZ to_TO projecting_VBG the_DT data_NNS to_TO the_DT columns_NNS of_IN X_NN and_CC discarding_VBG duplicate_VB rows_NNS ._.
+If_IN there_EX is_VBZ a_DT set_NN X_NN such_JJ that_IN all_PDT the_DT 2_CD |_CD X_NN |_NN combinations_NNS occur_VBP ,_, then_RB the_DT Vapnik-Chervonenkis_NNP dimension_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: of_IN the_DT data_NN is_VBZ at_IN least_JJS |_CD X_NN |_NN ._.
+The_DT property_NN of_IN all_DT 2_CD |_CD X_NN |_NN combinations_NNS occurring_VBG is_VBZ downwards_RB closed_VBN ,_, so_IN the_DT levelwise_JJ algorithm_NN can_MD be_VB used_VBN ._.
+Such_JJ sets_NNS X_NN are_VBP in_IN a_DT way_NN maximally_RB diverse_JJ in_IN a_DT combinatoria_NN

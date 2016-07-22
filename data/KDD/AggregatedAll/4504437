@@ -1,0 +1,57 @@
+Finding_VBG similar_JJ files_NNS in_IN large_JJ document_NN repositories_NNS
+Hewlett-Packard_NNP has_VBZ many_JJ millions_NNS of_IN technical_JJ support_NN documents_NNS in_IN a_DT variety_NN of_IN collections_NNS ._.
+As_IN part_NN of_IN content_NN management_NN ,_, such_JJ collections_NNS are_VBP periodically_RB merged_VBN and_CC groomed_VBN ._.
+In_IN the_DT process_NN ,_, it_PRP becomes_VBZ important_JJ to_TO identify_VB and_CC weed_NN out_RP support_NN documents_NNS that_WDT are_VBP largely_RB duplicates_NNS of_IN newer_JJR versions_NNS ._.
+Doing_VBG so_RB improves_VBZ the_DT quality_NN of_IN the_DT collection_NN ,_, eliminates_VBZ chaff_NN from_IN search_NN results_NNS ,_, and_CC improves_VBZ customer_NN satisfaction_NN ._.
+The_DT technical_JJ challenge_NN is_VBZ that_IN through_IN workflow_NN and_CC human_JJ processes_NNS ,_, the_DT knowledge_NN of_IN which_WDT documents_NNS are_VBP related_VBN is_VBZ often_RB lost_VBN ._.
+We_PRP required_VBD a_DT method_NN that_WDT could_MD identify_VB similar_JJ documents_NNS based_VBN on_IN their_PRP$ content_NN alone_RB ,_, without_IN relying_VBG on_IN metadata_NN ,_, which_WDT may_MD be_VB corrupt_JJ or_CC missing_JJ ._.
+We_PRP present_VBP an_DT approach_NN for_IN finding_VBG similar_JJ files_NNS that_IN scales_NNS up_IN to_TO large_JJ document_NN repositories_NNS ._.
+It_PRP is_VBZ based_VBN on_IN chunking_VBG the_DT byte_NN stream_NN to_TO find_VB unique_JJ signatures_NNS that_WDT may_MD be_VB shared_VBN in_IN multiple_JJ files_NNS ._.
+An_DT analysis_NN of_IN the_DT file-chunk_JJ graph_NN yields_VBZ clusters_NNS of_IN related_JJ files_NNS ._.
+An_DT optional_JJ bipartite_JJ graph_NN partitioning_VBG algorithm_NN can_MD be_VB applied_VBN to_TO greatly_RB increase_VB scalability_NN ._.
+ribe_VB the_DT deduplication_NN process_NN in_IN more_JJR detail_NN ._.
+A_DT block_NN diagram_NN of_IN the_DT process_NN can_MD be_VB found_VBN in_IN Figure_NNP 1_CD ._.
+3.1_CD Chunking_VBG and_CC segmenting_VBG Content-based_JJ chunking_NN has_VBZ been_VBN studied_VBN at_IN length_NN in_IN the_DT literature_NN =_JJ -_: =[_NN 1_CD ,_, 16_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP use_VBP our_PRP$ Two-Threshold_JJ TwoDivisor_NN -LRB-_-LRB- TTTD_NN -RRB-_-RRB- chunking_VBG algorithm_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- to_TO subdivide_VB the_DT incoming_JJ data_NNS stream_NN into_IN chunks_NNS ._.
+TTTD_NN produces_VBZ variable-sized_JJ chunks_NNS with_IN smaller_JJR size_NN variation_NN than_IN other_JJ chunk_NN
+Data_NN deduplication_NN identifies_VBZ and_CC eliminates_VBZ duplicate_VB data_NNS ._.
+Storage_NN space_NN requirements_NNS can_MD be_VB reduced_VBN by_IN a_DT factor_NN of_IN 10_CD to_TO 20_CD or_CC more_JJR when_WRB backup_JJ data_NNS is_VBZ deduplicated_VBN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Chunk-based_JJ deduplication_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: --_: -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, a_DT popular_JJ deduplication_NN technique_NN ,_, first_RB divides_VBZ input_NN data_NNS streams_NNS into_IN fixed_JJ or_CC variable-length_JJ chunks_NNS ._.
+Typical_JJ chunk_NN sizes_NNS are_VBP 4_CD to_TO 8_CD kB_NN ._.
+A_DT cryptographic_JJ hash_NN or_CC chunk_NN ID_NN of_IN each_DT chunk_NN is_VBZ use_NN
+strain_NN changes_NNS from_IN a_DT localized_JJ edit_NN to_TO a_DT limited_JJ number_NN of_IN chunks_NNS ._.
+Applications_NNS of_IN CDC_NNP include_VBP network_NN filesystems_NNS of_IN several_JJ types_NNS -LRB-_-LRB- 2_CD ,_, 27_CD -RRB-_-RRB- ,_, spaceoptimized_JJ archival_NN of_IN collections_NNS of_IN reference_NN files_NNS =_JJ -_: =[_NN 9_CD ,_, 14_CD ,_, 37_CD -RRB-_-RRB- -_: =_JJ -_: ,_, as_RB well_RB as_IN file_NN synchronization_NN -LRB-_-LRB- 32_CD ,_, 15_CD -RRB-_-RRB- ._.
+By_IN using_VBG special_JJ rolling_NN window_NN functions_NNS in_IN innermost_JJ loops_NNS ,_, the_DT baseline_JJ CDC_NNP algorithms_NNS can_MD operate_VB very_RB quickly_RB ._.
+Mazières_NNP '_POS Low-Bandwidth_JJ File_NN System_NN -LRB-_-LRB- LBF_NN
+,_, motivated_VBN by_IN many_JJ practical_JJ applications_NNS ._.
+One_CD motivation_NN is_VBZ the_DT need_NN to_TO identify_VB near_IN duplicate_VBP documents_NNS within_IN the_DT repository_NN ,_, to_TO eliminate_VB redundant_JJ or_CC outdated_JJ files_NNS and_CC improve_VB user_NN experience_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Archival_JJ systems_NNS -LRB-_-LRB- 26_CD ,_, 35_CD -RRB-_-RRB- need_VBP to_TO identify_VB content_NN overlap_VBP between_IN files_NNS to_TO save_VB storage_NN space_NN by_IN using_VBG techniques_NNS such_JJ as_IN delta-compression_NN -LRB-_-LRB- 2_CD ,_, 11_CD -RRB-_-RRB- ._.
+Other_JJ applications_NNS arise_VBP in_IN information_NN manageme_NN
+In_IN addition_NN ,_, we_PRP use_VBP the_DT word_NN index_NN -LRB-_-LRB- inverted_JJ index_NN -RRB-_-RRB- not_RB the_DT q-gram_NN ._.
+Word_NN index_NN has_VBZ already_RB been_VBN used_VBN by_IN existing_VBG functions_NNS ,_, e.g._FW ,_, searching_VBG ,_, and_CC there_EX is_VBZ no_DT additional_JJ cost_NN to_TO create_VB it_PRP ._.
+Forman_NNP et_FW al._FW =_SYM -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: used_VBN document_NN chunking_VBG and_CC sliding_VBG windows_NNS to_TO find_VB similar_JJ documents_NNS in_IN a_DT large_JJ document_NN repository_NN ._.
+That_DT method_NN is_VBZ similar_JJ to_TO the_DT q-gram_NN ideas_NNS ._.
+In_IN their_PRP$ approach_NN ,_, a_DT document_NN is_VBZ divided_VBN into_IN several_JJ
+rlap_NN and_CC b_NN -RRB-_-RRB- shingles_NNS do_VBP not_RB cover_VB the_DT areas_NNS between_IN shingles_NNS ._.
+Thus_RB ,_, to_TO achieve_VB the_DT same_JJ accuracy_NN as_IN our_PRP$ method_NN ,_, one_PRP would_MD need_VB a_DT lot_NN more_JJR shingle_NN hashes_NNS ._.
+Finally_RB ,_, we_PRP consider_VBP the_DT sif_NN system_NN by_IN Manber_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT is_VBZ also_RB a_DT N-vs-N_JJ document_NN comparison_NN method_NN ._.
+Like_IN AltaVista_NNP shingles_NNS ,_, his_PRP$ `_`` fingerprint_NN '_'' hashes_NNS only_RB consider_VBP a_DT few_JJ bytes_NNS at_IN the_DT boundary_NN of_IN a_DT chunk_NN ,_, whereas_IN we_PRP compute_VBP the_DT hash_JJ code_NN of_IN the_DT ent_NN
+s_VBZ the_DT file_NN ,_, and_CC at_IN every_DT position_NN k_NN in_IN the_DT file_NN ,_, the_DT fingerprint_NN ,_, Fk_NN ,_, of_IN the_DT contents_NNS of_IN this_DT window_NN is_VBZ computed_VBN ._.
+A_DT special_JJ ,_, highly_RB efficient_JJ fingerprint_NN algorithm_NN ,_, e.g._FW Rabin_NNP 's_POS fingerprint_NN algorithm_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, is_VBZ used_VBN for_IN this_DT purpose_NN ._.
+k_NN is_VBZ a_DT chunk_NN boundary_NN if_IN Fk_FW mod_FW D_NN =_JJ r_NN -LRB-_-LRB- see_VB Figure_NNP 1_CD -RRB-_-RRB- ._.
+previous_JJ chunk_NN k_NN Sliding_VBG Window_NN FkmodD_NN =_JJ r_NN ?_.
+k_NN is_VBZ not_RB a_DT chunk_NN boundary_NN no_RB yes_RB k_NN is_VBZ a_DT chunk_NN boundary_NN Figure_NNP 1_CD :_: The_DT Slid_NN
+:_: -LRB-_-LRB- 1_LS -RRB-_-RRB- comparison_NN time_NN is_VBZ shorter_JJR ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- hashes_NNS ,_, being_VBG short_JJ and_CC fixed_JJ size_NN ,_, lend_VBP themselves_PRP to_TO efficient_JJ data_NNS structures_NNS for_IN lookup_NN and_CC comparison_NN ._.
+2.2_CD Chunking_VBG Content-based_JJ chunking_NN ,_, as_IN introduced_VBN in_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, is_VBZ a_DT way_NN of_IN breaking_VBG a_DT file_NN into_IN a_DT sequence_NN of_IN chunks_NNS so_IN that_DT chunk_NN boundaries_NNS are_VBP determined_VBN by_IN the_DT local_JJ contents_NNS of_IN the_DT file_NN ._.
+This_DT is_VBZ in_IN contrast_NN to_TO using_VBG fixed_JJ size_NN chunks_NNS ,_, where_WRB chunk_NN boundarie_NN
+shared_VBN chunk_NN falling_VBG within_IN the_DT shared_JJ sequences_NNS -LRB-_-LRB- Figure_NN 2_CD -RRB-_-RRB- ._.
+Thus_RB ,_, to_TO detect_VB shorter_JJR shared_JJ sequences_NNS ,_, shorter_JJR chunks_NNS are_VBP needed_VBN ,_, implying_VBG more_JJR of_IN them_PRP ._.
+We_PRP use_VBP a_DT chunking_VBG algorithm_NN ,_, TTTD_NN -LRB-_-LRB- details_NNS in_IN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, that_WDT performs_VBZ better_JJR than_IN the_DT basic_JJ sliding_VBG window_NN algorithm_NN in_IN shared_JJ chunk_NN shared_JJ sub-sequence_NN Figure_NNP 2_CD :_: Shared_VBN Chunks_NNPS in_IN Shared_NNP Sub-Sequences_NNP the_DT following_JJ sense_NN :_: for_IN the_DT same_JJ average_JJ chunk_NN size_NN
+e_LS detail_NN ,_, including_VBG key_JJ embellishments_NNS and_CC valuable_JJ implementation_NN notes_NNS from_IN our_PRP$ experience_NN ._.
+2.1_CD Hashing_VBG Background_NN We_PRP use_VBP the_DT `_`` compare_VB by_IN hash_NN '_'' method_NN to_TO compare_VB chunks_NNS occurring_VBG in_IN different_JJ files_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Hash_JJ algorithms_NNS map_VBP long_JJ sequences_NNS of_IN bytes_NNS ,_, in_IN our_PRP$ case_NN the_DT chunks_NNS ,_, to_TO short_JJ ,_, fixed_JJ size_NN sequences_NNS in_IN such_PDT a_DT way_NN that_IN it_PRP is_VBZ almost_RB impossible_JJ to_TO find_VB two_CD chunks_NNS that_WDT have_VBP the_DT same_JJ hash_NN ._.
+We_PRP use_VBP the_DT
+d_NN identical_JJ file_NN detection_NN ,_, such_JJ as_IN the_DT Windows_NNP NTFS_NNP Single_JJ Instance_NNP Store_NNP technology_NN ._.
+These_DT are_VBP related_JJ ,_, but_CC are_VBP not_RB designed_VBN for_IN finding_VBG only_RB partly_RB similar_JJ files_NNS in_IN a_DT large_JJ repository_NN ._.
+Brin_NNP et_FW al._FW =_SYM -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP to_TO have_VB a_DT large_JJ indexed_VBN database_NN of_IN existing_VBG documents_NNS ,_, and_CC offer_VBP a_DT way_NN to_TO detect_VB whether_IN a_DT given_VBN new_JJ document_NN contains_VBZ material_NN that_WDT already_RB exists_VBZ in_IN the_DT database_NN ._.
+Note_VB that_DT their_PRP$ method_NN is_VBZ

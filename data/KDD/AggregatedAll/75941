@@ -1,0 +1,359 @@
+Selecting_VBG the_DT right_JJ interestingness_NN measure_NN for_IN association_NN patterns_NNS
+Many_JJ techniques_NNS for_IN association_NN rule_NN mining_NN and_CC feature_NN selection_NN require_VBP a_DT suitable_JJ metric_NN to_TO capture_VB the_DT dependencies_NNS among_IN variables_NNS in_IN a_DT data_NN set_NN ._.
+For_IN example_NN ,_, metrics_NNS such_JJ as_IN support_NN ,_, confidence_NN ,_, lift_NN ,_, correlation_NN ,_, and_CC collective_JJ strength_NN are_VBP often_RB used_VBN to_TO determine_VB the_DT interestingness_NN of_IN association_NN patterns_NNS ._.
+However_RB ,_, many_JJ such_JJ measures_NNS provide_VBP conflicting_VBG information_NN about_IN the_DT interestingness_NN of_IN a_DT pattern_NN ,_, and_CC the_DT best_JJS metric_NN to_TO use_VB for_IN a_DT given_VBN application_NN domain_NN is_VBZ rarely_RB known_VBN ._.
+In_IN this_DT paper_NN ,_, we_PRP present_VBP an_DT overview_NN of_IN various_JJ measures_NNS proposed_VBN in_IN the_DT statistics_NNS ,_, machine_NN learning_NN and_CC data_NN mining_NN literature_NN ._.
+We_PRP describe_VBP several_JJ key_JJ properties_NNS one_PRP should_MD examine_VB in_IN order_NN to_TO select_VB the_DT right_JJ measure_NN for_IN a_DT given_VBN application_NN domain_NN ._.
+A_DT comparative_JJ study_NN of_IN these_DT properties_NNS is_VBZ made_VBN using_VBG twenty_CD one_CD of_IN the_DT existing_VBG measures_NNS ._.
+We_PRP show_VBP that_IN each_DT measure_NN has_VBZ different_JJ properties_NNS which_WDT make_VBP them_PRP useful_JJ for_IN some_DT application_NN domains_NNS ,_, but_CC not_RB for_IN others_NNS ._.
+We_PRP also_RB present_VBP two_CD scenarios_NNS in_IN which_WDT most_JJS of_IN the_DT existing_VBG measures_NNS agree_VBP with_IN each_DT other_JJ ,_, namely_RB ,_, support-based_JJ pruning_NN and_CC table_NN standardization_NN ._.
+Finally_RB ,_, we_PRP present_VBP an_DT algorithm_NN to_TO select_VB a_DT small_JJ set_NN of_IN tables_NNS such_JJ that_IN an_DT expert_NN can_MD select_VB a_DT desirable_JJ measure_NN by_IN looking_VBG at_IN just_RB this_DT small_JJ set_NN of_IN tables_NNS ._.
+ning_JJ association_NN rules_NNS is_VBZ the_DT selection_NN of_IN interesting_JJ association_NN rules_NNS within_IN the_DT overall_NN ,_, and_CC possibly_RB huge_JJ set_NN of_IN extracted_VBN rules_NNS ._.
+Some_DT work_NN in_IN this_DT are_VBP exist_VB ,_, either_CC based_VBN on_IN statistical_JJ methods_NNS =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: or_CC by_IN considering_VBG the_DT selection_NN of_IN association_NN rules_NNS as_IN a_DT classification_NN task_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Related_VBN to_TO our_PRP$ work_NN is_VBZ trend_NN analysis_NN in_IN text_NN databases_NNS ,_, were_VBD the_DT aim_NN is_VBZ to_TO discover_VB increasing\/decreasing_NN popularit_NN
+discovered_VBN from_IN a_DT data_NN set_NN can_MD be_VB made_VBN manageable_JJ ._.
+Also_RB ,_, note_VBP that_IN ,_, in_IN addition_NN to_TO support_NN ,_, a_DT number_NN of_IN additional_JJ measures_NNS have_VBP been_VBN proposed_VBN to_TO determine_VB the_DT interestingness_NN of_IN association_NN patterns_NNS =_JJ -_: =[_NN 49_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+2.2_CD Hyperclique_NN Patterns_NN A_NN hyperclique_NN pattern_NN -LRB-_-LRB- 61_CD -RRB-_-RRB- is_VBZ a_DT type_NN of_IN frequent_JJ pattern_NN that_WDT contains_VBZ items_NNS that_WDT are_VBP strongly_RB associated_VBN with_IN each_DT other_JJ over_IN the_DT supporting_JJ transaction_NN ,_, and_CC are_VBP quite_RB spar_JJ
+ifferent_JJ measures_NNS of_IN interestingness_NN exist_VBP -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+We_PRP chose_VBD the_DT most_RBS common_JJ support_NN and_CC confidence_NN which_WDT measure_NN frequency_NN and_CC conditional_JJ probability_NN respectively_RB ._.
+But_CC other_JJ measures_NNS of_IN interestingness_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, such_JJ as_IN lift_NN ,_, cosine_NN ,_, conviction_NN ,_, etc._NN ,_, are_VBP also_RB possible_JJ and_CC are_VBP available_JJ to_TO the_DT analysis_NN ._.
+The_DT most_RBS popular_JJ algorithm_NN for_IN discovering_VBG association_NN rules_NNS is_VBZ Apriori_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- for_IN which_WDT many_JJ implementation_NN
+this_DT technique_NN generalizes_VBZ the_DT rules_NNS and_CC keeps_VBZ track_NN of_IN the_DT exceptions_NNS to_TO the_DT generalization_NN ._.
+Other_JJ research_NN projects_NNS in_IN this_DT category_NN have_VBP focused_VBN on_IN rule_NN ordering_VBG based_VBN on_IN interestingness_NN measures_NNS =_JJ -_: =[_NN 19,33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN instance_NN ,_, Li_NNP et_FW al._FW -LRB-_-LRB- 19_CD -RRB-_-RRB- proposed_VBN rule_NN ranking_NN based_VBN on_IN confidence_NN ,_, support_NN ,_, and_CC number_NN of_IN items_NNS in_IN the_DT left_JJ hand_NN side_NN ,_, to_TO prune_VB discovered_VBN rules_NNS ._.
+Our_PRP$ proposed_VBN approach_NN allows_VBZ integration_NN of_IN suc_NN
+tive_JJ psychology_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, linguistics_NNS ,_, and_CC computer_NN science_NN about_IN using_VBG word_NN -LRB-_-LRB- phrases_NNS -RRB-_-RRB- frequencies_NNS in_IN text_NN corpora_NN to_TO develop_VB measures_NNS for_IN word_NN similarity_NN or_CC word_NN association_NN ,_, partially_RB surveyed_VBN in_IN -LRB-_-LRB- 34_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 36_CD -RRB-_-RRB- -_: =_JJ -_: ,_, going_VBG back_RB to_TO at_IN least_JJS -LRB-_-LRB- 35_CD -RRB-_-RRB- ._.
+One_CD of_IN the_DT most_RBS successful_JJ is_VBZ Latent_JJ Semantic_JJ Analysis_NN -LRB-_-LRB- LSA_NN -RRB-_-RRB- -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, which_WDT has_VBZ been_VBN applied_VBN in_IN various_JJ forms_NNS in_IN a_DT great_JJ number_NN of_IN applications_NNS ._.
+We_PRP discuss_VBP LSA_NNP and_CC its_PRP$ rela_NN
+are_VBP determined_VBN based_VBN on_IN some_DT assumptions_NNS ._.
+Due_JJ to_TO these_DT reasons_NNS ,_, we_PRP define_VBP stable_JJ items_NNS based_VBN on_IN the_DT concept_NN of_IN stationary_JJ time_NN series_NN data_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+In_IN the_DT context_NN of_IN interestingness_NN measures_NNS ,_, Tan_NNP et_FW al._FW =_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP described_VBN several_JJ key_JJ properties_NNS of_IN twenty_CD one_CD interestingness_NN measures_NNS proposed_VBN in_IN statistics_NNS ,_, machine_NN learning_NN and_CC data_NN mining_NN literature_NN ._.
+Wu_NNP et_FW al._FW -LRB-_-LRB- 16_CD -RRB-_-RRB- have_VBP proposed_VBN two_CD similarity_NN measures_NNS
+icient_JJ algorithm_NN ,_, TopCor_NNP ,_, for_IN computing_VBG the_DT top-k_NN correlative_JJ graphs_NNS for_IN a_DT given_VBN query_NN ._.
+We_PRP adopt_VBP Pearson_NNP 's_POS correlation_NN coefficient_NN φ_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- as_IN the_DT correlation_NN measure_NN ;_: but_CC we_PRP remark_VBP that_IN other_JJ measures_NNS =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: can_MD also_RB be_VB applied_VBN in_IN a_DT similar_JJ way_NN ._.
+Instead_RB of_IN directly_RB searching_VBG the_DT whole_JJ database_NN D_NN ,_, TopCor_NNP limits_VBZ the_DT search_NN space_NN to_TO the_DT projected_VBN database_NN Dq_NN ,_, of_IN q_NN and_CC explores_VBZ only_RB candidate_NN graphs_NNS from_IN Dq_NNP ._.
+r_NN related_JJ rule_NN covers_NNS ._.
+Liu_NNP et_FW al._FW -LRB-_-LRB- 47_CD -RRB-_-RRB- used_VBD the_DT standard_JJ χ_NN 2_CD test_NN for_IN pruning_NN insignificant_JJ rules_NNS and_CC introduced_VBD the_DT concept_NN of_IN direction_NN setting_VBG rules_NNS to_TO summarize_VB the_DT remaining_VBG patterns_NNS ._.
+Tan_NNP et_FW al._FW =_SYM -_: =[_NN 79_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP presented_VBN a_DT survey_NN on_IN objective_JJ interestingness_NN measures_NNS and_CC investigated_VBD the_DT issue_NN of_IN consistency_NN among_IN these_DT measures_NNS ._.
+Their_PRP$ results_NNS concluded_VBD that_IN many_JJ existing_VBG measures_NNS may_MD produce_VB somewhat_RB
+related_VBN ._.
+About_IN 20_CD measures_NNS have_VBP been_VBN proposed_VBN in_IN the_DT literature_NN to_TO do_VB so_RB ._.
+Unfortunately_RB ,_, no_DT measure_NN is_VBZ better_JJR than_IN all_PDT the_DT others_NNS in_IN all_DT situations_NNS ,_, though_IN measures_NNS tend_VBP to_TO agree_VB when_WRB support_NN is_VBZ high_JJ =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP revisit_VBP measures_NNS of_IN interestingness_NN for_IN association_NN rules_NNS and_CC argue_VBP that_IN two_CD of_IN them_PRP ,_, cosine_NN and_CC added_VBN value_NN ,_, are_VBP particularly_RB suited_VBN for_IN educational_JJ data_NNS because_IN their_PRP$ meaning_NN is_VBZ
+e_LS ,_, there_EX has_VBZ been_VBN research_NN on_IN mining_NN multi-level_JJ association_NN rules_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, onMining_NN Association_NNP Rules_NNP from_IN Tabular_NNP Data_NNP Guided_VBN by_IN Maximal_JJ Frequent_JJ Itemsets_NNS 5_CD selecting_VBG the_DT right_JJ interestingness_NN measure_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, on_IN synthesizing_VBG high_JJ frequency_NN rules_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, etc._NN ._.
+Association_NN rule_NN mining_NN techniques_NNS often_RB produce_VBP a_DT large_JJ number_NN of_IN rules_NNS that_WDT are_VBP hard_JJ to_TO comprehend_VB without_IN further_JJ processing_NN ._.
+Many_JJ techniques_NNS -LRB-_-LRB- 10_CD ,_,
+t_NN -LRB-_-LRB- φ-coefficient_NN -RRB-_-RRB- as_IN advised_VBN in_IN Ref_NNP ._.
+-LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+Besides_IN φ-coefficient_NN ,_, ArTex_NNP can_MD also_RB compute_VB seven_CD additional_JJ association_NN rule_NN interestingness_NN measures_NNS ,_, which_WDT are_VBP a_DT subset_NN of_IN collection_NN made_VBN by_IN Tan_NNP et_FW al._FW =_SYM -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Table_NNP 1_CD lists_VBZ interestingness_NN measures_NNS that_WDT form_VBP an_DT extended_JJ parameter_NN set_NN of_IN the_DT Extended_NNP ArTex_NNP ._.
+Table_NNP 1_CD :_: Extended_JJ set_NN of_IN interestingness_NN measures_NNS for_IN association_NN rules_NNS -LRB-_-LRB- A_DT ⇒_NN B_NN -RRB-_-RRB- ._.
+P_NN -LRB-_-LRB- X_NN -RRB-_-RRB- represents_VBZ th_DT
+ting_JJ information_NN about_IN feature-class_JJ dependencies_NNS ,_, resulting_VBG in_IN associative_JJ classifiers_NNS with_IN different_JJ classification_NN performances_NNS -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+In_IN fact_NN ,_, different_JJ metrics_NNS have_VBP different_JJ intrinsic_JJ properties_NNS =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- i.e._FW ,_, symmetric\/asymmetric_JJ metrics_NNS ,_, scaling_VBG variant\/invariant_JJ metrics_NNS etc._NN -RRB-_-RRB- ,_, and_CC this_DT may_MD lead_VB to_TO very_RB different_JJ associative_JJ classifiers_NNS ._.
+Some_DT of_IN these_DT classifiers_NNS may_MD be_VB well_RB suited_VBN for_IN some_DT classi_NNS
+M_NN ;_: movies_NNS directed_VBN by_IN directors_NNS ,_, MD_NN ;_: and_CC ages_NNS of_IN directors_NNS ,_, DA_NNP ._.
+et_FW al._FW -LRB-_-LRB- 18_CD -RRB-_-RRB- considered_VBN measuring_VBG the_DT significance_NN of_IN rules_NNS via_IN the_DT chi-squared_JJ test_NN ,_, and_CC from_IN there_EX many_JJ other_JJ papers_NNS followed_VBD --_: see_VB e.g._FW =_SYM -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: for_IN a_DT comprehensive_JJ survey_NN ._.
+More_RBR recently_RB ,_, the_DT approach_NN of_IN defining_VBG randomization_NN tests_NNS to_TO assess_VB data_NN mining_NN results_NNS was_VBD introduced_VBN for_IN binary_JJ data_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, and_CC for_IN real-valued_JJ data_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Abstracting_VBG a_DT
+erns_FW α_FW and_CC β_NN to_TO a_DT real_JJ value_NN such_JJ that_IN R_NN -LRB-_-LRB- α_NN ,_, β_NN -RRB-_-RRB- is_VBZ the_DT redundancy_NN between_IN them_PRP ._.
+Redundancy_NN measures_VBZ the_DT extent_NN by_IN which_WDT two_CD patterns_NNS are_VBP similar_JJ ._.
+In_IN this_DT paper_NN ,_, we_PRP use_VBP a_DT variant_NN of_IN the_DT Jaccard_NNP measure_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: to_TO measure_VB the_DT redundancy_NN between_IN different_JJ features_NNS ._.
+P_NN -LRB-_-LRB- α_NN ,_, β_NN -RRB-_-RRB- R_NN -LRB-_-LRB- α_NN ,_, β_NN -RRB-_-RRB- =_JJ ×_CD min_NN -LRB-_-LRB- S_NN -LRB-_-LRB- α_NN -RRB-_-RRB- ,_, S_NN -LRB-_-LRB- β_NN -RRB-_-RRB- -RRB-_-RRB- P_NN -LRB-_-LRB- α_NN -RRB-_-RRB- +_CC P_NN -LRB-_-LRB- β_NN -RRB-_-RRB- −_NN P_NN -LRB-_-LRB- α_NN ,_, β_NN -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- According_VBG to_TO the_DT redundancy_NN definition_NN ,_, we_PRP use_VBP the_DT closed_JJ frequent_JJ patterns_NNS -LRB-_-LRB- 27_CD
+ur_IN rummaging_VBG model_NN relies_VBZ on_IN the_DT rule_NN focusing_VBG and_CC on_IN the_DT rule_NN quality_NN measures_NNS -_: indexes_NNS which_WDT allow_VBP the_DT user_NN to_TO evaluate_VB the_DT relevance_NN of_IN the_DT rules_NNS on_IN the_DT basis_NN of_IN various_JJ criteria_NNS -LRB-_-LRB- refer_VB to_TO -LRB-_-LRB- 20_CD -RRB-_-RRB- or_CC =_JJ -_: =[_NN 39_CD -RRB-_-RRB- -_: =_SYM -_: for_IN a_DT survey_NN -RRB-_-RRB- ._.
+A_DT first_JJ prototype_NN implementing_VBG our_PRP$ new_JJ representation_NN has_VBZ been_VBN developed_VBN ._.
+After_IN recalling_VBG the_DT previous_JJ works_NNS on_IN association_NN rule_NN visualization_NN in_IN a_DT first_JJ section_NN ,_, we_PRP present_VBP the_DT rule_NN r_NN
+different_JJ to_TO other_JJ ideas_NNS or_CC strongly_RB reject_VB them_PRP ?_.
+What_WP is_VBZ the_DT potential_JJ connection_NN to_TO interestingness_NN research_NN in_IN the_DT data_NNS mining_NN community_NN -LRB-_-LRB- Hilderman_NNP &_CC Hamilton_NNP ,_, 2001_CD ;_: Silberschatz_NNP &_CC Tuzhilin_NNP ,_, 1996_CD ;_: =_JJ -_: =_JJ Tan_NNP ,_, Kumar_NNP ,_, &_CC Srivastava_NNP ,_, 2002_CD -_: =--RRB-_NN ?_.
+How_WRB do_VBP we_PRP deal_VB with_IN uncertainties_NNS in_IN puzzle_NN solving_VBG and_CC mystery_NN solving_VBG processes_NNS -LRB-_-LRB- Chen_NNP ,_, 2008_CD -RRB-_-RRB- ?_.
+How_WRB is_VBZ the_DT theory_NN quantitatively_RB related_JJ to_TO existing_VBG models_NNS of_IN knowledge_NN diffusion_NN ,_, such_JJ as_IN epidemic_JJ
+universally_RB applicable_JJ ._.
+In_IN practice_NN ,_, various_JJ computable_JJ distances_NNS ,_, including_VBG eZ_NN ,_, can_MD be_VB viewed_VBN as_IN approximations_NNS to_TO e._VB Moreover_RB ,_, many_JJ of_IN the_DT measures_NNS used_VBN in_IN the_DT data_NNS mining_NN community_NN -LRB-_-LRB- see_VB Tan_NNP et_FW al._FW =_SYM -_: =[_NN 24_CD -RRB-_-RRB- -_: =--RRB-_NN may_MD ,_, after_IN normalization_NN ,_, be_VB viewed_VBN as_IN various_JJ degrees_NNS of_IN approximations_NNS to_TO e._VB The_DT NCD_NNP has_VBZ been_VBN put_VBN to_TO numerous_JJ tests_NNS ._.
+Keogh_NNP et_FW al._FW -LRB-_-LRB- 14_CD ,_, 15_CD -RRB-_-RRB- have_VBP tested_VBN a_DT closely_RB related_JJ metric_NN as_IN a_DT parameter-free_NN
+is_VBZ measure_NN ._.
+2.1_CD Correlation_NN measure_NN Various_JJ measures_NNS were_VBD proposed_VBN for_IN assessing_VBG the_DT degree_NN of_IN the_DT correlation_NN ._.
+A_DT comprehensive_JJ comparison_NN of_IN 21_CD different_JJ correlation_NN measures_NNS was_VBD given_VBN by_IN Tan_NNP et_FW al._FW =_SYM -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT popular_JJ correlation_NN measure_NN Lift_NN accompanied_VBN by_IN a_DT χ_NN 2_CD test_NN for_IN statistical_JJ significance_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- is_VBZ based_VBN on_IN support_NN expectation_NN ._.
+Other_JJ expectation-based_JJ measures_NNS are_VBP φ_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC the_DT deviation_NN from_IN the_DT
+ack_NN loops_NNS from_IN different_JJ parts_NNS of_IN the_DT tool_NN ._.
+Using_VBG the_DT information_NN provided_VBN to_TO it_PRP ,_, the_DT A-Miner_NN produces_VBZ a_DT set_NN of_IN candidate_NN assertions_NNS which_WDT are_VBP likely_JJ to_TO be_VB true_JJ ._.
+Objective_NN measures_NNS of_IN interestingness_NN =_JJ -_: =[_NN 43_CD -RRB-_-RRB- -_: =_SYM -_: can_MD be_VB used_VBN to_TO rank_VB this_DT set_NN of_IN candidate_NN assertions_NNS ,_, such_JJ as_IN the_DT support_NN as_IN specified_VBN above_IN ._.
+4.4_CD Decision_NN Tree_NN Based_VBN Supervised_NNP Learning_NNP Algorithms_NNPS Association_NNP rule_NN based_VBN data_NNS mining_NN algorithms_NNS find_VBP
+a_LS -RRB-_-RRB- Interestingness_NN :_: Computed_VBN by_IN considering_VBG the_DT source_NN and_CC target_NN entities_NNS as_IN two_CD variables_NNS ,_, populating_VBG a_DT 2x2_NN contingency-table_JJ with_IN their_PRP$ frequencies_NNS from_IN all_DT available_JJ documents_NNS -LRB-_-LRB- as_IN in_IN Section_NNP 1_CD of_IN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, and_CC applying_VBG an_DT interestingness_NN measure_NN on_IN the_DT contingency_NN table_NN ._.
+Originally_RB proposed_VBN for_IN finding_VBG interesting_JJ association_NN rules_NNS ,_, interestingness_NN measures_NNS have_VBP been_VBN successfully_RB used_VBN in_IN many_JJ applica_NN
+an_DT important_JJ problem_NN in_IN the_DT data_NNS mining_NN area_NN ._.
+Association_NN rule_NN mining_NN algorithms_NNS often_RB produce_VBP a_DT large_JJ number_NN of_IN rules_NNS ._.
+Various_JJ interestingness_NN measures_NNS have_VBP been_VBN proposed_VBN to_TO select_JJ rules_NNS ._.
+Tan_NNP et_FW al._FW =_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Geng_NNP et_FW al._FW -LRB-_-LRB- 9_CD -RRB-_-RRB- surveyed_VBN various_JJ measures_NNS proposed_VBN in_IN the_DT literature_NN ._.
+Many_JJ of_IN the_DT measures_NNS are_VBP defined_VBN based_VBN on_IN support_NN and_CC confidence_NN of_IN rules_NNS ,_, and_CC they_PRP reflect_VBP domain_NN significance_NN of_IN rules_NNS inste_VBP
+clusters_NNS ._.
+In_IN a_DT follow-up_JJ work_NN ,_, Leskovec_NNP at_IN al._FW -LRB-_-LRB- 11_CD -RRB-_-RRB- use_VBP other_JJ quality_NN metrics_NNS to_TO evaluate_VB the_DT same_JJ problem_NN ,_, but_CC those_DT new_JJ metrics_NNS also_RB focus_VBP only_RB on_IN the_DT external_JJ sparsity_NN of_IN the_DT clusters_NNS ._.
+Tan_NNP et_FW al._FW =_SYM -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: present_VB a_DT very_RB interesting_JJ comparison_NN between_IN many_JJ metrics_NNS used_VBN to_TO determine_VB the_DT ``_`` interestingness_NN ''_'' of_IN association_NN metrics_NNS like_IN lift_NN ,_, confidence_NN and_CC support_NN ,_, widely_RB used_VBN in_IN data_NNS mining_NN ._.
+They_PRP show_VBP that_IN
+tive_JJ coloring_NN -LRB-_-LRB- red_NN -RRB-_-RRB- ._.
+If_IN the_DT item_NN does_VBZ not_RB have_VB an_DT influence_NN it_PRP gets_VBZ a_DT neutral_JJ -LRB-_-LRB- white_JJ -RRB-_-RRB- coloring_NN ._.
+6_CD ._.
+RELATED_NNS WORK_VBP Alotofworkhasbeendonecomparingandevaluatingdifferent_JJ objective_NN interestingness_NN measures_VBZ =_JJ -_: =[_NN 8_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT most_RBS important_JJ outcome_NN is_VBZ that_IN there_EX is_VBZ no_DT single_JJ measure_NN that_WDT can_MD be_VB used_VBN for_IN all_DT purposes_NNS ,_, and_CC even_RB worse_JJR ,_, for_IN some_DT purposes_NNS ,_, there_EX exists_VBZ no_DT measure_NN ,_, and_CC only_RB subjective_JJ and_CC semantic_JJ criteria_NNS
+d_NN to_TO eliminate_VB other_JJ possible_JJ uninteresting_JJ rules_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Tan_NNP et_FW al._FW proposed_VBD a_DT method_NN to_TO find_VB appropriate_JJ measures_NNS where_WRB users_NNS are_VBP asked_VBN to_TO rank_VB the_DT interestingness_NN of_IN a_DT small_JJ set_NN of_IN association_NN rules_NNS =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Couturier_NNP et_FW al._FW introduced_VBD an_DT interactive_JJ matrix_NN visualization_NN with_IN a_DT fisheye_JJ view_NN to_TO help_VB users_NNS choose_VB interesting_JJ association_NN rules_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Lenca_FW et_FW al._FW applied_VBD a_DT multiple_JJ criteria_NNS decision_NN aid_NN appr_NN
+ng_NN ._.
+3.1.1_CD Support_NN Time_NN Sequence_NN We_PRP use_VBP support_NN as_IN a_DT prevalence_NN measure_NN in_IN the_DT transaction_NN database_NN since_IN it_PRP represents_VBZ how_WRB statistically_RB significant_JJ a_DT pattern_NN is_VBZ ,_, and_CC it_PRP has_VBZ an_DT anti-monotone_JJ property_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Definition_NN 1_CD Given_VBN a_DT time-stamped_JJ transaction_NN database_NN D_NN =_JJ D0_NN ∪_NN ..._: ∪_FW Dn_FW −_FW 1_CD ,_, where_WRB Di_NNP is_VBZ a_DT set_NN of_IN transactions_NNS executed_VBN in_FW ith_FW time_NN slot_NN ,_, 0_CD ≤_FW i_FW -LRB-_-LRB- n_NN ,_, the_DT support_NN of_IN an_DT itemset_NN I_NN at_IN a_DT time_NN slot_NN ti_NN is_VBZ
+asures_NNS are_VBP often_RB considered_VBN when_WRB judging_VBG the_DT significance_NN of_IN an_DT association_NN rule_NN :_: its_PRP$ support_NN and_CC its_PRP$ confidence_NN ._.
+Other_JJ quantities_NNS that_WDT measure_VBP the_DT interestingness_NN of_IN association_NN rules_NNS are_VBP studied_VBN in_IN =_JJ -_: =[_NN 6_CD ,_, 13_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Identifying_VBG associations_NNS -LRB-_-LRB- correlations_NNS -RRB-_-RRB- according_VBG to_TO statistical_JJ measures_NNS is_VBZ also_RB an_DT important_JJ problem_NN ._.
+It_PRP has_VBZ been_VBN considered_VBN in_IN statistics_NNS ,_, but_CC not_RB primarily_RB from_IN an_DT algorithmic_JJ point_NN of_IN view_NN ._.
+The_DT
+terestingness_NN measure_NN ,_, and_CC pruning_NN aiming_VBG at_IN removing_VBG redundant_JJ rules_NNS ._.
+Full_JJ review_NN of_IN such_JJ methods_NNS is_VBZ beyond_IN the_DT scope_NN of_IN this_DT paper_NN ._.
+Overviews_NNS of_IN interestingness_NN measures_NNS can_MD be_VB found_VBN for_IN example_NN in_IN =_JJ -_: =[_NN 3_CD ,_, 13_CD ,_, 11_CD ,_, 32_CD -RRB-_-RRB- -_: =_JJ -_: ,_, some_DT of_IN the_DT papers_NNS on_IN rule_NN pruning_NN are_VBP -LRB-_-LRB- 30_CD ,_, 31_CD ,_, 7_CD ,_, 14_CD ,_, 28_CD ,_, 16_CD ,_, 17_CD ,_, 33_CD -RRB-_-RRB- ._.
+Many_JJ interestingness_NN measures_NNS are_VBP based_VBN on_IN the_DT divergence_NN between_IN true_JJ probability_NN distributions_NNS and_CC distributions_NNS obtained_VBN un_IN
+tion_NN ._.
+Much_JJ of_IN the_DT statistical_JJ work_NN in_IN building_VBG multi-word_JJ features_NNS focuses_VBZ on_IN cooccurrence_NN -LRB-_-LRB- 3,17_CD -RRB-_-RRB- ._.
+All_DT correlation_NN measures_NNS are_VBP not_RB equally_RB good_JJ at_IN capturing_VBG the_DT dependencies_NNS between_IN different_JJ events_NNS =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP is_VBZ because_IN each_DT correlation_NN function_NN biases_NNS toward_IN different_JJ individual_JJ event_NN probabilities_NNS and_CC joint_JJ probabilities_NNS ._.
+Piatetsky-Shapiro_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- has_VBZ proposed_VBN three_CD key_JJ properties_NNS that_IN a_DT good_JJ correlati_NN
+we_PRP found_VBD many_JJ frequent_JJ patterns_NNS ._.
+However_RB ,_, many_JJ of_IN these_DT patterns_NNS turn_VBP out_RP to_TO be_VB trivial_JJ or_CC uninteresting_JJ ._.
+A_DT variety_NN of_IN metrics_NNS have_VBP been_VBN developed_VBN to_TO evaluate_VB the_DT interestingness_NN of_IN association_NN rules_NNS =_JJ -_: =[_NN 15_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Similar_JJ metrics_NNS are_VBP needed_VBN for_IN graph_NN mining_NN ._.
+More_RBR interesting_JJ are_VBP the_DT problems_NNS that_WDT are_VBP not_RB easily_RB reduced_VBN to_TO the_DT current_JJ notion_NN of_IN graph_NN mining_NN ._.
+Interesting_JJ features_NNS of_IN this_DT data_NNS that_WDT are_VBP not_RB well_RB
+sense_NN ._.
+In_IN a_DT larger_JJR sense_NN ,_, all_PDT the_DT work_NN done_VBN on_IN interestingness_NN of_IN extracted_VBN patterns_NNS can_MD be_VB considered_VBN related_JJ ._.
+In_IN -LRB-_-LRB- 22_CD -RRB-_-RRB- all_PDT these_DT works_NNS are_VBP divided_VBN in_IN four_CD classes_NNS :_: objective_JJ interestingness_NN measures_NNS =_JJ -_: =[_NN 12_CD ,_, 3_CD ,_, 21_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, visualization-based_JJ approaches_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, subjective_JJ domain-dependent_JJ measures_NNS of_IN interest_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, and_CC constraint-based_JJ approaches_NNS ._.
+Our_PRP$ proposal_NN clearly_RB collocates_VBZ within_IN the_DT last_JJ class_NN ._.
+As_IN already_RB stated_VBN
+for_IN evaluating_VBG and_CC creating_VBG data_NNS quality_NN -LRB-_-LRB- Winkler_NN 2004_CD -RRB-_-RRB- 2_CD Fast_JJ algorithms_NNS for_IN mining_NN association_NN rules_NNS -LRB-_-LRB- Agrawal_NNP and_CC Srikant_NNP 1994_CD -RRB-_-RRB- Selecting_VBG the_DT right_JJ interestingness_NN measure_NN for_IN association_NN patterns_NNS -LRB-_-LRB- =_JJ -_: =_JJ Tan_NNP et_FW al._FW 2002_CD -_: =--RRB-_NN 3_CD On_IN comparing_VBG classifiers_NNS :_: Pitfalls_NNS to_TO avoid_VB and_CC a_DT recommended_VBN approach_NN -LRB-_-LRB- Salzberg_NN 1997_CD -RRB-_-RRB- Classifier_NNP technology_NN and_CC the_DT illusion_NN of_IN progress_NN -LRB-_-LRB- Hand_NN 2006_CD -RRB-_-RRB- 4_CD State-of-the-art_NN in_IN privacy_NN preserving_NN data_NNS
+ies_NNS are_VBP studied_VBN in_IN more_JJR detail_NN in_IN -LRB-_-LRB- Kamber_NNP and_CC Shinghal_NNP ,_, 1996_CD ;_: Hilderman_NNP and_CC Hamilton_NNP ,_, 2001_CD -RRB-_-RRB- and_CC the_DT extent_NN to_TO which_WDT interestingness_NN measures_NNS satisfy_VBP these_DT properties_NNS has_VBZ been_VBN studied_VBN and_CC is_VBZ shown_VBN in_IN -LRB-_-LRB- =_JJ -_: =_JJ Tan_NNP et_FW al._FW ,_, 2002_CD -_: =--RRB-_NN ._.
+Two_CD other_JJ properties_NNS of_IN interestingness_NN measures_NNS are_VBP :_: monotonicity_NN and_CC anti-monotonicity_JJ -LRB-_-LRB- Agrawal_NNP and_CC Srikant_NNP ,_, 1994_CD -RRB-_-RRB- :_: 1_CD ._.
+Monotonicity_NN of_IN an_DT interestingness_NN measure_NN λ_NN :_: An_DT interestingness_NN measure_NN λ_FW i_FW
+evaluation_NN heuristics_NNS have_VBP been_VBN proposed_VBN for_IN evaluating_VBG rules_NNS in_IN the_DT context_NN of_IN classification_NN rule_NN learning_NN ,_, subgroup_NN discovery_NN and_CC association_NN rule_NN discovery_NN -LRB-_-LRB- Fürnkranz_NNP ,_, 1999_CD ;_: Lavrač_NNP et_FW al._FW ,_, 1999_CD ;_: =_JJ -_: =_JJ Tan_NNP et_FW al._FW ,_, 2002_CD -_: =--RRB-_NN ._.
+Nevertheless_RB ,_, the_DT issue_NN is_VBZ not_RB yet_RB well_RB understood_VBN ._.
+The_DT similarities_NNS and_CC differences_NNS between_IN the_DT different_JJ measures_NNS are_VBP not_RB explored_VBN in_IN sufficient_JJ depth_NN ,_, and_CC it_PRP is_VBZ often_RB also_RB not_RB clear_JJ ,_, what_WP proper_JJ
+LSA_NN patterns_NNS and_CC shown_VBN how_WRB the_DT different_JJ tools_NNS focus_VBP on_IN different_JJ facets_NNS of_IN interestingness_NN -LRB-_-LRB- and_CC should_MD therefore_RB be_VB chosen_VBN according_VBG to_TO the_DT most_RBS interesting_JJ facets_NNS for_IN the_DT analysis_NN to_TO be_VB undertaken_VBN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Future_JJ work_NN will_MD refine_VB the_DT formal_JJ methods_NNS used_VBN here_RB ._.
+First_RB ,_, the_DT discovery_NN of_IN topics_NNS could_MD be_VB improved_VBN by_IN discovering_VBG not_RB only_RB a_DT topic_NN set_NN ,_, but_CC a_DT higher-level_JJ structure_NN on_IN topics_NNS ._.
+Bast_NNP et_FW al._FW -LRB-_-LRB- 2_LS -RRB-_-RRB- s_NN
+account_NN ,_, and_CC frequent_JJ patterns_NNS that_WDT contain_VBP the_DT same_JJ feature_NN type_NN are_VBP removed_VBN apriori_NNS ._.
+In_IN transactional_JJ frequent_JJ pattern_NN mining_VBG some_DT works_NNS address_VBP the_DT problem_NN of_IN mining_NN interesting_JJ association_NN rules_NNS =_JJ -_: =[_NN 5_CD ,_, 16_CD ,_, 17_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP incorporate_VBP user-specified_JJ constraints_NNS or_CC define_VB either_CC objective_JJ or_CC subjective_JJ metrics_NNS of_IN interestingness_NN ._.
+Moreover_RB ,_, pruning_NN is_VBZ performed_VBN aposteriori_NNS ,_, after_IN the_DT rule_NN generation_NN ._.
+The_DT method_NN pro_NN
+pervised_JJ settings_NNS ,_, with_IN the_DT objective_JJ function_NN --_: typically_RB a_DT rule_NN interestingness_NN measure_NN --_: being_VBG a_DT parameter_NN of_IN the_DT task_NN itself_PRP ._.
+A_DT large_JJ variety_NN of_IN measures_NNS suitable_JJ for_IN this_DT task_NN have_VBP been_VBN investigated_VBN =_JJ -_: =[_NN 45_CD -RRB-_-RRB- -_: =_JJ -_: ,_, many_JJ of_IN which_WDT are_VBP well-known_JJ heuristics_NNS for_IN inductive_JJ rule_NN learning_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+Important_JJ examples_NNS include_VBP the_DT binomial_JJ test_NN function_NN ,_, χ_NN 2_CD ,_, or_CC the_DT Novelty_NNP function_NN ,_, which_WDT later_RB has_VBZ often_RB been_VBN referred_VBN to_TO
+restingness_NN of_IN rules_NNS manually_RB or_CC with_IN respect_NN to_TO the_DT application_NN context_NN ._.
+However_RB ,_, there_EX are_VBP a_DT number_NN of_IN approaches_NNS that_WDT offer_VBP potential_JJ solutions_NNS to_TO this_DT problem_NN in_IN an_DT application_NN independent_JJ manner_NN =_JJ -_: =[_NN 22,13,14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+When_WRB data_NNS ,_, as_IN in_IN the_DT case_NN of_IN web-server_JJ logs_NNS ,_, is_VBZ continuously_RB collected_VBN over_IN a_DT potentially_RB long_JJ period_NN ,_, the_DT concepts_NNS reflected_VBN in_IN the_DT data_NNS will_MD change_VB over_IN time_NN ._.
+Due_JJ to_TO internal_JJ and\/or_CC external_JJ fact_NN
+ood_NN values_NNS for_IN support_NN and_CC confidence_NN thresholds_NNS ;_: itsdepends_NNS on_IN the_DT size_NN of_IN dataset_NN ,_, sparseness_NN of_IN data_NNS ,_, and_CC the_DT particular_JJ problem_NN under_IN study_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Considering_VBG these_DT issues_NNS ,_, a_DT number_NN of_IN researchers_NNS =_JJ -_: =[_NN 10_CD ,_, 11_CD ,_, 13_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBN alternate_JJ interestingness_NN measures_NNS to_TO evaluate_VB and_CC rank_VB discovered_VBN associations_NNS ._.
+Inspired_VBN from_IN various_JJ statistical_JJ and_CC mathematical_JJ principles_NNS ,_, these_DT measures_NNS are_VBP considered_VBN less_RBR sensitive_JJ t_NN
+cognitive_JJ psychology_NN -LRB-_-LRB- 33_CD -RRB-_-RRB- ,_, linguistics_NNS ,_, and_CC computer_NN science_NN ,_, about_IN using_VBG word_NN -LRB-_-LRB- phrases_NNS -RRB-_-RRB- frequencies_NNS in_IN text_NN corpora_NN to_TO develop_VB measures_NNS for_IN word_NN similarity_NN or_CC word_NN association_NN ,_, partially_RB surveyed_VBN in_IN =_JJ -_: =[_NN 30_CD ,_, 32_CD -RRB-_-RRB- -_: =_JJ -_: ,_, going_VBG back_RB to_TO at_IN least_JJS -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+These_DT approaches_NNS are_VBP based_VBN on_IN arguments_NNS and_CC theories_NNS that_WDT are_VBP fundamentally_RB different_JJ from_IN the_DT approach_NN we_PRP develop_VBP ,_, which_WDT is_VBZ based_VBN on_IN coding_NN and_CC compression_NN ,_, based_VBN on_IN th_DT
+iety_NN of_IN rule_NN evaluation_NN metrics_NNS were_VBD anlyzed_VBN and_CC compared_VBN by_IN visualizing_VBG their_PRP$ behavior_NN in_IN ROC_NN space_NN ._.
+There_EX are_VBP also_RB some_DT works_NNS on_IN comparing_VBG properties_NNS of_IN association_NN rule_NN evaluation_NN measures_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- =_JJ -_: =_JJ Tan_NNP ,_, Kumar_NNP ,_, &_CC Srivastava_NNP ,_, 2002_CD -_: =--RRB-_NN -RRB-_-RRB- but_CC these_DT have_VBP different_JJ requirements_NNS than_IN classification_NN rules_NNS -LRB-_-LRB- e.g._FW ,_, completeness_NN is_VBZ not_RB an_DT issue_NN there_RB -RRB-_-RRB- ._.
+Recently_RB ,_, -LRB-_-LRB- Janssen_NNP &_CC Fürnkranz_NNP ,_, 2006_CD -RRB-_-RRB- performed_VBD an_DT experimental_JJ comparison_NN of_IN commonly_RB us_PRP
+effective_JJ in_IN reducing_VBG the_DT computation_NN time_NN for_IN lazy_JJ induction_NN ._.
+4_LS ._.
+MULTI-CRITERIA_NNP CLASSIFICATION_NNP The_DT use_NN of_IN a_DT single_JJ statistical_JJ measure_NN usually_RB does_VBZ not_RB capture_VB all_DT relevant_JJ characteristics_NNS of_IN a_DT rule_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Confidence_NN -LRB-_-LRB- θ_NN -RRB-_-RRB- ,_, for_IN instance_NN ,_, is_VBZ often_RB used_VBN to_TO measure_VB the_DT accuracy_NN of_IN a_DT rule_NN X_NN θ_FW −_FW →_FW c._FW However_RB ,_, this_DT information_NN may_MD be_VB misleading_JJ ,_, especially_RB when_WRB σ_NN -LRB-_-LRB- c_NN -RRB-_-RRB- -RRB-_-RRB- θ_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Notice_NNP that_IN confidence_NN is_VBZ not_RB affected_VBN
+with_IN respect_NN to_TO the_DT majority_NN patients_NNS -LRB-_-LRB- 10_CD ,_, p._NN 35_CD -RRB-_-RRB- ._.
+A_DT denotes_VBZ the_DT absence_NN of_IN pattern_NN A._NN For_IN example_NN ,_, A_NN defines_VBZ patients_NNS in_IN age_NN group_NN -LRB-_-LRB- 30_CD ,_, 40_CD -RRB-_-RRB- ,_, then_RB A_NN defines_VBZ patients_NNS outside_IN the_DT age_NN group_NN ._.
+Tan_NNP et_FW al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: discuss_VB the_DT properties_NNS and_CC their_PRP$ consistence_NN of_IN 21_CD existing_VBG objective_JJ interestingness_NN measures_NNS in_IN a_DT framework_NN of_IN contingency_NN table_NN and_CC statistical_JJ dependencies_NNS of_IN two_CD items_NNS ._.
+Risk_NN ratio_NN used_VBN here_RB as_IN t_NN
+elopment_NN ._.
+There_EX is_VBZ at_IN present_JJ a_DT lack_NN of_IN methodologies_NNS ,_, techniques_NNS ,_, and_CC applications_NNS which_WDT can_MD effectively_RB bridge_VB the_DT gap_NN between_IN academia_NN and_CC business_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+We_PRP need_VBP to_TO address_VB business_NN interestingness_NN =_JJ -_: =[_NN 9_CD ,_, 12_CD -RRB-_-RRB- -_: =_JJ -_: and_CC successfully_RB deliver_VB knowledge_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC patterns_NNS that_WDT are_VBP operationalisable_JJ and_CC dependable_JJ ._.
+Domain_NN driven_JJ data_NNS mining_NN targets_VBZ such_JJ challenges_NNS and_CC objectives_NNS ._.
+A_DT high_JJ level_NN of_IN domain_NN driven_JJ data_NNS min_NN
+terestingness_NN measure_NN ,_, and_CC pruning_NN aiming_VBG at_IN removing_VBG redundant_JJ rules_NNS ._.
+Full_JJ review_NN of_IN such_JJ methods_NNS is_VBZ beyond_IN the_DT scope_NN of_IN this_DT paper_NN ._.
+Overviews_NNS of_IN interestingness_NN measures_NNS can_MD be_VB found_VBN for_IN example_NN in_IN =_JJ -_: =[_NN 3_CD ,_, 13_CD ,_, 11_CD ,_, 32_CD -RRB-_-RRB- -_: =_JJ -_: ,_, some_DT of_IN the_DT papers_NNS on_IN rule_NN pruning_NN are_VBP -LRB-_-LRB- 30_CD ,_, 31_CD ,_, 7_CD ,_, 14_CD ,_, 28_CD ,_, 16_CD ,_, 17_CD ,_, 33_CD -RRB-_-RRB- ._.
+Many_JJ interestingness_NN measures_NNS are_VBP based_VBN on_IN the_DT divergence_NN between_IN true_JJ probability_NN distributions_NNS and_CC distributions_NNS obtained_VBN un_IN
+consideration_NN suggests_VBZ us_PRP a_DT simple_JJ solution_NN to_TO overcome_VB all_PDT the_DT main_JJ drawbacks_NNS of_IN constraint-based_JJ paradigm_NN ._.
+4sPaper_NN Contributions_NNS and_CC Organization_NNP In_IN this_DT paper_NN ,_, as_IN a_DT mean_NN to_TO handle_VB interestingness_NN -LRB-_-LRB- =_JJ -_: =_JJ Tan_NNP et_FW al._FW ,_, 2002_CD -_: =_JJ -_: ;_: Hilderman_NNP and_CC Hamilton_NNP ,_, 2002_CD ;_: Sahar_NNP ,_, 1999_CD -RRB-_-RRB- ,_, we_PRP introduce_VBP the_DT soft_JJ constraint_NN based_VBN pattern_NN mining_NN paradigm_NN ,_, where_WRB constraints_NNS are_VBP no_RB longer_RB rigid_JJ boolean_JJ functions_NNS ,_, but_CC are_VBP ``_`` soft_JJ ''_'' functions_NNS ,_, i.e._FW ,_, f_SYM
+square_JJ test_NN ._.
+A_DT lot_NN of_IN other_JJ measures_NNS have_VBP been_VBN proposed_VBN to_TO capture_VB the_DT interestingness_NN of_IN patterns_NNS ,_, e.g._FW ,_, see_VB -LRB-_-LRB- 10_CD ,_, 12_CD ,_, 20_CD -RRB-_-RRB- ;_: a_DT comprehensive_JJ presentation_NN and_CC comparison_NN of_IN such_JJ methods_NNS can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT problem_NN is_VBZ also_RB very_RB well_RB studied_VBN in_IN statistics_NNS ,_, and_CC there_EX is_VBZ a_DT significant_JJ amount_NN of_IN work_NN for_IN sampling_NN from_IN the_DT space_NN of_IN contingency_NN tables_NNS -LRB-_-LRB- 4_CD ,_, 5_CD ,_, 6_CD ,_, 17_CD -RRB-_-RRB- as_RB well_RB as_IN several_JJ studies_NNS that_WDT give_VBP as_IN
+USA_NN ._.
+Copyright_NN 2004_CD ACM_NNP 1-58113-888-1_CD \/_: 04\/0008_CD ..._: $_$ 5.00_CD ._.
+Rong_NNP Jin_NNP Department_NNP of_IN Computer_NNP Science_NNP and_CC Engineering_NNP Michigan_NNP State_NNP University_NNP rongjin@cse.msu.edu_NN problem_NN of_IN ordering_VBG data_NNS mining_NN patterns_NNS -LRB-_-LRB- 2_LS -RRB-_-RRB- =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Pattern_NN ordering_VBG is_VBZ an_DT important_JJ task_NN because_IN the_DT number_NN of_IN patterns_NNS extracted_VBN by_IN standard_JJ data_NNS mining_NN algorithms_NNS often_RB exceeds_VBZ our_PRP$ capacity_NN to_TO manually_RB analyze_VB them_PRP ._.
+By_IN ordering_VBG the_DT patterns_NNS ,_, we_PRP ma_FW
+ies_NNS and_CC we_PRP set_VBD our_PRP$ work_NN with_IN respect_NN to_TO it_PRP ._.
+Other_JJ works_NNS compare_VBP interestingness_NN measures_NNS to_TO determine_VB their_PRP$ differences_NNS and_CC similarities_NNS ,_, either_CC in_IN an_DT experimental_JJ manner_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- or_CC in_IN a_DT theoretical_JJ one_NN =_JJ -_: =[_NN 15_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX are_VBP also_RB attempts_NNS to_TO combine_VB several_JJ measures_NNS to_TO benefit_VB from_IN their_PRP$ joint_JJ qualities_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+However_RB it_PRP should_MD be_VB underlined_VBN that_IN choosing_VBG and_CC using_VBG a_DT measure_NN remain_VBP a_DT hard_JJ task_NN ._.
+This_DT paper_NN deals_NNS
+lore_NN the_DT co-occurrences_NNS information_NN across_IN schemas_NNS and_CC develop_VB a_DT correlation_NN mining_NN approach_NN ._.
+Unlike_IN previous_JJ correlation_NN mining_NN algorithms_NNS ,_, which_WDT mainly_RB focus_VBP on_IN finding_VBG strong_JJ positive_JJ correlations_NNS =_JJ -_: =[_NN 1_CD ,_, 20_CD ,_, 16_CD ,_, 14_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, our_PRP$ schema_NN matching_NN scenario_NN ,_, as_IN a_DT new_JJ application_NN for_IN correlation_NN mining_NN ,_, cares_VBZ both_CC positive_JJ and_CC negative_JJ correlations_NNS ._.
+In_IN particular_JJ ,_, we_PRP develop_VBP the_DT Cmin_NNP measure_NN based_VBN on_IN our_PRP$ observations_NNS of_IN matc_NN
+when_WRB F_NN -LRB-_-LRB- X_NN ,_, D_NN -RRB-_-RRB- increases_VBZ whereas_IN ,_, in_IN our_PRP$ definition_NN ,_, Mi_NNP may_MD remain_VB unchanged_JJ ._.
+In_IN practice_NN ,_, most_JJS of_IN usual_JJ measures_NNS are_VBP strong_JJ frequency-based_JJ measure_NN because_IN most_JJS of_IN them_PRP check_VB the_DT property_NN P3_NN ._.
+A_DT survey_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ carried_VBN out_RP on_IN the_DT property_NN P3_NN about_IN twenty_CD one_CD interestingness_NN measures_NNS ._.
+Table_NNP 3_CD gives_VBZ ,_, for_IN several_JJ measures_NNS ,_, these_DT ones_NNS satisfying_JJ or_CC not_RB Definition_NN 5_CD and_CC property_NN P3_NN ._.
+sCondensed_JJ Representation_NN o_NN
+e_LS of_IN interestingness_NN -LRB-_-LRB- or_CC usefulness_NN -RRB-_-RRB- of_IN the_DT pattern_NN p._NN There_EX are_VBP several_JJ previous_JJ studies_NNS on_IN the_DT significance_NN -LRB-_-LRB- or_CC interestingness_NN -RRB-_-RRB- measure_NN of_IN patterns_NNS ,_, which_WDT include_VBP -LRB-_-LRB- 11_CD -RRB-_-RRB- on_IN rule_NN interestingness_NN ,_, and_CC =_JJ -_: =[_NN 22_CD ,_, 24_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: on_IN interesting_JJ measure_NN of_IN frequent_JJ item-set_NN or_CC association_NN patterns_NNS ._.
+According_VBG to_TO -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, the_DT significance_NN measure_NN can_MD be_VB divided_VBN into_IN objective_JJ measures_NNS and_CC subjective_JJ measures_NNS ._.
+Commonly_RB used_VBN objectiv_NN
+effective_JJ in_IN reducing_VBG the_DT computation_NN time_NN for_IN lazy_JJ induction_NN ._.
+4_LS ._.
+MULTI-CRITERIA_NNP CLASSIFICATION_NNP The_DT use_NN of_IN a_DT single_JJ statistical_JJ measure_NN usually_RB does_VBZ not_RB capture_VB all_DT relevant_JJ characteristics_NNS of_IN a_DT rule_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Confidence_NN -LRB-_-LRB- θ_NN -RRB-_-RRB- ,_, for_IN instance_NN ,_, is_VBZ often_RB used_VBN to_TO measure_VB the_DT accuracy_NN of_IN a_DT rule_NN X_NN θ_FW −_FW →_FW c._FW However_RB ,_, this_DT information_NN may_MD be_VB misleading_JJ ,_, especially_RB when_WRB σ_NN -LRB-_-LRB- c_NN -RRB-_-RRB- -RRB-_-RRB- θ_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Notice_NNP that_IN confidence_NN is_VBZ not_RB affected_VBN
+constraints_NNS to_TO mine_VB true_JJ relationships_NNS among_IN events_NNS -LRB-_-LRB- 3_CD ,_, 11_CD ,_, 10_CD ,_, 4_CD -RRB-_-RRB- ._.
+Many_JJ association_NN ,_, correlation_NN ,_, and_CC similarity_NN measures_NNS have_VBP been_VBN proposed_VBN for_IN analyzing_VBG the_DT relationships_NNS among_IN discretized_JJ events_NNS =_JJ -_: =[_NN 6_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, χ_NN 2_CD is_VBZ a_DT typical_JJ measure_NN for_IN analyzing_VBG correlations_NNS among_IN discretized_JJ events_NNS in_IN statistics_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+However_RB ,_, it_PRP may_MD not_RB be_VB an_DT appropriate_JJ measure_NN for_IN analyzing_VBG event_NN associations_NNS in_IN large_JJ t_NN
+of_IN the_DT discovered_VBN patterns_NNS ,_, techniques_NNS are_VBP required_VBN to_TO reduce_VB the_DT number_NN of_IN patterns_NNS that_WDT need_VBP to_TO be_VB considered_VBN ._.
+Techniques_NNS which_WDT satisfy_VBP this_DT goal_NN are_VBP broadly_RB referred_VBN to_TO as_IN interestingness_NN measures_VBZ =_JJ -_: =[_NN 113_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 112_CD -RRB-_-RRB- ._.
+The_DT analysis_NN of_IN relationship_NN measures_NNS among_IN variables_NNS is_VBZ a_DT fundamental_JJ task_NN at_IN the_DT heart_NN of_IN such_JJ interestingness_NN measures_NNS ._.
+In_IN this_DT chapter_NN we_PRP propose_VBP to_TO analyze_VB AEP_NNP data_NNS with_IN the_DT help_NN of_IN multi_NNS
+e_LS a_DT positive_JJ influence_NN on_IN the_DT occurrence_NN of_IN B_NN -LRB-_-LRB- i.e._FW Prob_NNP -LRB-_-LRB- B_NNP |_NNP A_NNP -RRB-_-RRB- -RRB-_-RRB- Prob_NN -LRB-_-LRB- B_NN -RRB-_-RRB- -RRB-_-RRB- ._.
+4sAs_NNS can_MD be_VB seen_VBN ,_, the_DT support_NN measure_NN plays_VBZ a_DT central_JJ role_NN ._.
+In_IN fact_NN ,_, other_JJ measures_NNS can_MD generally_RB be_VB derived_VBN from_IN the_DT support_NN =_JJ -_: =[_NN 86_CD ,_, 69_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, the_DT confidence_NN of_IN an_DT association_NN A_NN ⇀_NN B_NN is_VBZ the_DT support_NN of_IN that_DT association_NN divided_VBN by_IN the_DT support_NN of_IN its_PRP$ antecedent_JJ ,_, A._NN 2.2_CD Quantitative_JJ Association_NN Rules_NNS In_IN addition_NN to_TO binary_JJ attribute_NN
+cognitive_JJ psychology_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, linguistics_NNS ,_, and_CC computer_NN science_NN ,_, about_IN using_VBG word_NN -LRB-_-LRB- phrases_NNS -RRB-_-RRB- frequencies_NNS in_IN text_NN corpora_NN to_TO develop_VB measures_NNS for_IN word_NN similarity_NN or_CC word_NN association_NN ,_, partially_RB surveyed_VBN in_IN =_JJ -_: =[_NN 37,38_CD -RRB-_-RRB- -_: =_JJ -_: ,_, going_VBG back_RB to_TO at_IN least_JJS -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+One_CD of_IN the_DT most_RBS successful_JJ is_VBZ Latent_JJ Semantic_JJ Analysis_NN -LRB-_-LRB- LSA_NN -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- that_WDT has_VBZ been_VBN applied_VBN in_IN various_JJ forms_NNS in_IN a_DT great_JJ number_NN of_IN applications_NNS ._.
+As_IN with_IN LSA_NNP ,_, many_JJ other_JJ previ_NNS
+t_NN the_DT probability_NN they_PRP co-occur_VBP in_IN the_DT same_JJ month_NN at_IN the_DT same_JJ location_NN will_MD be_VB small_JJ ._.
+If_IN these_DT events_NNS cooccur_VBP more_RBR frequently_RB than_IN expected_VBN ,_, then_RB it_PRP is_VBZ an_DT indication_NN of_IN a_DT non-random_JJ association_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT patterns_NNS extracted_VBN using_VBG association_NN analysis_NN techniques_NNS are_VBP verified_VBN using_VBG the_DT statistical_JJ chi-squared_JJ test_NN -LRB-_-LRB- Lindgren_NNP ,_, 1998_CD -RRB-_-RRB- ._.
+The_DT patterns_NNS discovered_VBD using_VBG association_NN analyses_NNS are_VBP also_RB evaluat_NN
+ming_JJ task_NN to_TO the_DT user_NN ._.
+Second_RB ,_, they_PRP are_VBP strongly_RB domain-dependent_JJ and_CC user-dependent_JJ ._.
+To_TO avoid_VB these_DT drawbacks_NNS ,_, the_DT literature_NN has_VBZ proposed_VBN more_JJR than_IN 40_CD data-driven_JJ rule_NN interestingness_NN measures_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+These_DT measures_NNS estimate_VBP the_DT degree_NN of_IN interestingness_NN of_IN a_DT rule_NN to_TO the_DT user_NN in_IN a_DT userindependent_JJ ,_, domain-independent_JJ fashion_NN ,_, and_CC so_RB are_VBP much_RB more_RBR generic_JJ ._.
+Datadriven_JJ measures_NNS have_VBP ,_, however_RB ,_, th_DT
+rank_NN rather_RB than_IN the_DT outlier_NN factor_NN itself_PRP because_IN rank_NN is_VBZ less_RBR sensitive_JJ to_TO the_DT scale_NN and_CC change_NN in_IN outlier_NN factors_NNS ._.
+Rank_NNP has_VBZ been_VBN used_VBN in_IN comparing_VBG various_JJ interesting_JJ measure_NN on_IN association_NN rules_NNS =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Formally_RB ,_, for_IN a_DT top_JJ t_NN outlier_NN list_NN by_IN a_DT method_NN M_NN ,_, LM_NN -LRB-_-LRB- t_NN -RRB-_-RRB- =_JJ -LCB-_-LRB- si_FW :_: i_LS =_JJ 1_CD ..._: t_NN -RCB-_-RRB- ,_, we_PRP define_VBP the_DT direct_JJ rank_NN -LRB-_-LRB- drank_VBN -RRB-_-RRB- and_CC the_DT corresponding_JJ normalized_VBN rank_NN -LRB-_-LRB- R_NN -RRB-_-RRB- forsi_FW ∈_FW LM_NN -LRB-_-LRB- t_NN -RRB-_-RRB- in_IN Eq_NN ._.
+-LRB-_-LRB- 19,20_CD -RRB-_-RRB- respectively_RB ._.
+From_IN
+s_NN different_JJ interestingness_NN metrics_NNS at_IN different_JJ times_NNS ._.
+Interestingness_NN may_MD change_VB from_IN person_NN to_TO person_NN and_CC also_RB for_IN each_DT individual_JJ person_NN depending_VBG upon_IN the_DT nature_NN of_IN the_DT analysis_NN being_VBG undertaken_VBN =_JJ -_: =[_NN 5_CD ,_, 6_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Whilst_IN many_JJ measures_NNS will_MD fluctuate_VB little_RB across_IN mining_NN runs_NNS ,_, some_DT vary_VBP greatly_RB ,_, become_VBP redundant_JJ or_CC require_VB supplementation_NN by_IN new_JJ or_CC existing_JJ measures_NNS ._.
+This_DT high_JJ level_NN of_IN flexibility_NN is_VBZ not_RB curre_VB
+t_NN is_VBZ directly_RB related_JJ to_TO the_DT work_NN presented_VBN herein_RB ._.
+There_EX has_VBZ been_VBN research_NN on_IN determining_VBG when_WRB a_DT relationship_NN between_IN two_CD variables_NNS is_VBZ interesting_JJ ,_, usually_RB in_IN the_DT context_NN of_IN association_NN rule_NN mining_NN -LRB-_-LRB- =_JJ -_: =[_NN 15_CD ,_, 8_CD ,_, 6_CD ,_, 10_CD ,_, 11_CD ,_, 3_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, some_DT of_IN this_DT work_NN still_RB assumes_VBZ that_IN the_DT typical_JJ support_NN and_CC confidence_NN measures_NNS are_VBP used_VBN to_TO filter_NN association_NN rules_NNS before_IN any_DT further_JJ analysis_NN ;_: since_IN support_NN excludes_VBZ small_JJ sets_NNS ,_, such_JJ w_NN
+n_NN the_DT previous_JJ section_NN ,_, are_VBP the_DT most_RBS basic_JJ measures_NNS of_IN rule_NN interestingness_NN ._.
+However_RB ,_, in_IN many_JJ cases_NNS support_NN and_CC confidence_NN are_VBP not_RB sufficient_JJ ._.
+Many_JJ other_JJ measures_NNS have_VBP been_VBN proposed_VBN in_IN the_DT literature_NN =_JJ -_: =[_NN 135_CD -RRB-_-RRB- -_: =_SYM -_: for_IN ranking_JJ association_NN patterns_NNS according_VBG to_TO their_PRP$ degree_NN of_IN interestingness_NN ._.
+We_PRP describe_VBP some_DT of_IN those_DT measures_NNS as_IN follows_VBZ :_: Lift_VB :_: also_RB known_VBN as_IN interest_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- and_CC strength_NN -LRB-_-LRB- 39_CD -RRB-_-RRB- ,_, lift_NN is_VBZ defined_VBN as_IN l_NN
+nd_NN 1_CD values_VBZ co-occur_JJ ,_, as_IN defined_VBN in_IN Table_NNP 7_CD ._.
+These_DT measures_NNS have_VBP been_VBN extensively_RB investigated_VBN by_IN numerous_JJ researchers_NNS ._.
+A_DT survey_NN of_IN these_DT measures_NNS ,_, their_PRP$ properties_NNS ,_, and_CC related_JJ issues_NNS is_VBZ provided_VBN in_IN =_JJ -_: =_JJ Tan_NNP et_FW al._FW 2002_CD -_: =_JJ -_: ,_, Tan_NNP et_FW al._FW 2004_CD ,_, and_CC Tan_NNP et_FW al._FW 2005_CD ._.
+More_RBR specifically_RB ,_, the_DT measures_NNS in_IN Table_NNP 6_CD can_MD be_VB characterized_VBN in_IN a_DT number_NN of_IN different_JJ ways_NNS ._.
+For_IN example_NN ,_, there_EX are_VBP several_JJ ,_, including_VBG confidence_NN ,_, that_WDT have_VBP a_DT
+nto_NN account_NN not_RB only_RB the_DT rank_NN of_IN patterns_NNS by_IN the_DT interestingness_NN measure_NN but_CC also_RB the_DT support_NN in_IN the_DT target_NN population_NN ._.
+The_DT interestingness_NN measure_NN is_VBZ also_RB different_JJ from_IN the_DT general_JJ ones_NNS reviewed_VBN by_IN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+3_CD Problem_NNP Description_NN Let_VBD E_NN =_JJ ɛi_FW be_VB a_DT set_NN of_IN entities_NNS -LRB-_-LRB- patients_NNS -RRB-_-RRB- ._.
+Suppose_VB there_EX is_VBZ a_DT database_NN of_IN sequences_NNS D_NN =_JJ si_NN =_JJ -LRB-_-LRB- -LRB-_-LRB- ei1_NN ,_, ti1_NN -RRB-_-RRB- ,_, -LRB-_-LRB- ei2_NN ,_, ti2_NN -RRB-_-RRB- ,_, ..._: ,_, -LRB-_-LRB- eij_NN ,_, tij_NN -RRB-_-RRB- ,_, ..._: ,_, -LRB-_-LRB- eimi_NN ,_, timi_NN -RRB-_-RRB- -RRB-_-RRB- and_CC for_IN an_DT
+t_NN F01_NN F00_NN F0_NN +_CC F_NN +1_NN F_NN +0_CD n_NN Figure_NNP 3_CD ._.
+The_DT 2_CD ☓_NN 2_CD contingency_NN table_NN of_IN a_DT target_NN attribute_NN and_CC its_PRP$ correlated_JJ neighborhood_NN Interesting-ness_JJ measures_NNS inspected_VBN in_IN this_DT comparative_JJ study_NN are_VBP mainly_RB described_VBN in_IN =_JJ -_: =[_NN 6_CD ,_, 12_CD -RRB-_-RRB- -_: =_JJ -_: and_CC they_PRP include_VBP :_: •_CD Piatetsky-Shapiro_NN -LRB-_-LRB- PS_NN -RRB-_-RRB- =_JJ F_NN 11_CD F1_NN +_CC F_NN +_CC 1_CD −_NN -LRB-_-LRB- range_NN -0.25_CD to_TO 0.25_CD -RRB-_-RRB- 2_CD n_NN n_NN •_NNP Interest_NNP nF11_NN I_NN =_JJ -LRB-_-LRB- range_NN 0_CD to_TO ∞_CD -RRB-_-RRB- F1_NN +_CC F_NN +_CC 1_CD •_FW Jaccard_FW F11_NN -LRB-_-LRB- range_NN 0_CD to_TO 1_CD -RRB-_-RRB- ζ_NN =_JJ F1_NN +_CC +_CC F_NN +_CC 1_CD −_NN F11_NN •_FW F10_FW F01_NN H_NN −_CD m_NN
+s_NN :_: Xpq_NN =_JJ 0_CD if_IN -LRB-_-LRB- Ap_NN ,_, Aq_NN -RRB-_-RRB- \/_: ∈_NN L_NN -LRB-_-LRB- Cp_NN −_CD Cpq_NN -RRB-_-RRB- -LRB-_-LRB- Cq_FW −_FW Cpq_NN -RRB-_-RRB- -LRB-_-LRB- Cp_NN +_CC Cq_NN -RRB-_-RRB- otherwise_RB ,_, Specifically_RB designed_VBN for_IN the_DT schema_NN matching_NN problem_NN ,_, this_DT matching_JJ score_NN has_VBZ the_DT following_JJ important_JJ properties_NNS :_: 1_CD ._.
+null_JJ invariance_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN any_DT two_CD attributes_NNS ,_, adding_VBG more_JJR schemas_NNS that_WDT do_VBP not_RB contain_VB the_DT attributes_NNS does_VBZ not_RB affect_VB their_PRP$ matching_JJ score_NN ._.
+That_DT is_VBZ ,_, we_PRP are_VBP more_RBR interested_JJ in_IN how_WRB frequently_RB attributes_VBZ Ap_NN and_CC Aq_NN are_VBP cross_JJ
+ally_VB a_DT rather_RB large_JJ set_NN of_IN frequent_JJ itemsets_NNS ,_, depending_VBG on_IN the_DT minimal_JJ support_NN threshold_NN ._.
+Finding_VBG interesting_JJ item_NN sets_NNS -LRB-_-LRB- and_CC association_NN rules_NNS -RRB-_-RRB- is_VBZ a_DT much_RB discussed_VBN topic_NN in_IN the_DT data_NNS mining_NN literature_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX are_VBP several_JJ approaches_NNS which_WDT define_VBP interestingness_NN with_IN purely_RB statistical_JJ measures_NNS ._.
+For_IN instance_NN ,_, itemsets_NNS whose_WP$ items_NNS appear_VBP statistically_RB dependent_JJ are_VBP interesting_JJ ._.
+A_DT measure_NN for_IN independe_NN
+ive_JJ psychology_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, linguistics_NNS ,_, and_CC computer_NN science_NN ,_, about_IN using_VBG word_NN -LRB-_-LRB- phrases_NNS -RRB-_-RRB- frequencies_NNS in_IN text_NN corpora_NN to_TO develop_VB measures_NNS for_IN word_NN similarity_NN or_CC word_NN association_NN ,_, partially_RB surveyed_VBN in_IN -LRB-_-LRB- 34_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 36_CD -RRB-_-RRB- -_: =_JJ -_: ,_, going_VBG back_RB to_TO at_IN least_JJS -LRB-_-LRB- 35_CD -RRB-_-RRB- ._.
+One_CD of_IN the_DT most_RBS successful_JJ is_VBZ Latent_JJ Semantic_JJ Analysis_NN -LRB-_-LRB- LSA_NN -RRB-_-RRB- -LRB-_-LRB- 37_CD -RRB-_-RRB- that_WDT has_VBZ been_VBN applied_VBN in_IN various_JJ forms_NNS in_IN a_DT great_JJ number_NN of_IN applications_NNS ._.
+We_PRP discuss_VBP LSA_NNP and_CC its_PRP$ relati_NNS
+response_NN to_TO the_DT specific_JJ deficiencies_NNS of_IN support\/confidence_NN techniques_NNS ,_, alternative_JJ statistical_JJ and_CC probability-based_JJ analysis_NN methods_NNS have_VBP been_VBN proposed_VBN ,_, typically_RB to_TO replace_VB the_DT confidence_NN measure_NN ._.
+=_SYM -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: surveys_VBZ a_DT large_JJ number_NN of_IN such_JJ measures_NNS and_CC demonstrates_VBZ that_IN they_PRP can_MD provide_VB conflicting_VBG information_NN ._.
+4sInterest_NN is_VBZ a_DT measure_NN that_WDT attempts_VBZ to_TO contrast_VB predictive_JJ power_NN with_IN the_DT probabilistic_JJ indep_NN
+summarization_NN and_CC organization_NN ._.
+Third_RB ,_, the_DT use_NN of_IN interestingness_NN measures_NNS is_VBZ a_DT double_JJ edge_NN sword_NN ._.
+If_IN used_VBN incorrectly_RB ,_, the_DT measures_NNS may_MD produce_VB no_DT results_NNS or_CC worse_JJR ,_, point_NN to_TO a_DT wrong_JJ set_NN of_IN insights_NNS =_JJ -_: =[_NN 18_CD -RRB-_-RRB- ._.
+-_: =_SYM -_: This_DT is_VBZ indeed_RB unavoidable_JJ if_IN the_DT knowledge_NN worker_NN lacks_VBZ sufficient_JJ training_NN or_CC technical_JJ know-how_NN ._.
+Hence_RB ,_, visualization_NN forms_VBZ the_DT posterior_JJ step_NN after_IN the_DT results_NNS of_IN data_NN mining_NN ._.
+It_PRP 's_VBZ objective_JJ ,_, si_FW
+lity_NN criterion_NN to_TO use_VB in_IN order_NN to_TO evaluate_VB rules_NNS arises_VBZ ._.
+A_DT lot_NN of_IN measures_NNS exist_VBP for_IN estimating_VBG the_DT quality_NN of_IN association_NN rules_NNS ._.
+For_IN a_DT global_JJ overview_NN ,_, readers_NNS can_MD refer_VB to_TO Freitas_NNP -LRB-_-LRB- 3_CD -RRB-_-RRB- or_CC Tan_NNP et_FW al._FW =_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Vienna_NNP ,_, Austria_NNP ,_, August_NNP 22_CD --_: 26_CD ,_, 2005s572_FW MIC2005_FW ._.
+The_DT 6th_JJ Metaheuristics_NNPS International_JJ Conference_NN In_IN order_NN to_TO evaluate_VB rules_NNS in_IN a_DT complete_JJ way_NN ,_, we_PRP have_VBP previously_RB determined_VBN a_DT coherent_JJ set_NN of_IN five_CD co_NN
+blem_NN of_IN mining_NN causal_JJ structures_NNS over_IN transaction_NN databases_NNS ._.
+Some_DT comparative_JJ studies_NNS of_IN different_JJ interestingness_NN measures_NNS were_VBD done_VBN by_IN Hilderman_NNP and_CC Hamilton_NNP -LRB-_-LRB- HH01_NN -RRB-_-RRB- and_CC by_IN Tan_NNP ,_, Kumar_NNP and_CC Srivastava_NNP =_SYM -_: =_JJ -LRB-_-LRB- TKS02_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT use_NN of_IN all_DT confidence_NN as_IN a_DT correlation_NN measure_NN for_IN generating_VBG interesting_JJ association_NN rules_NNS was_VBD studied_VBN by_IN Omiecinski_NN -LRB-_-LRB- Omi03_NN -RRB-_-RRB- and_CC by_IN Lee_NNP ,_, Kim_NNP ,_, Cai_NNP and_CC Han_NNP -LRB-_-LRB- LKCH03_NN -RRB-_-RRB- ._.
+To_TO reduce_VB the_DT huge_JJ set_NN of_IN fre_NN
+2_LS -RRB-_-RRB- questioned_VBD the_DT usefulness_NN of_IN Support_NN and_CC Confidence_NN as_IN association_NN rule_NN interestingness_NN measures_NNS and_CC have_VBP proposed_VBN various_JJ alternates_NNS ._.
+Unfortunately_RB ,_, researchers_NNS comparing_VBG interestingness_NN measures_NNS =_JJ -_: =[_NN 16_CD ,_, 32_CD -RRB-_-RRB- -_: =_SYM -_: do_VBP not_RB agree_VB on_IN any_DT single_JJ domain-independent_JJ objective_NN measure_NN ._.
+Considering_VBG this_DT ,_, we_PRP compared_VBD twenty-two_CD objective_JJ interestingness_NN measures_NNS to_TO assign_VB weights_NNS to_TO hyperedges_NNS ,_, rather_RB then_RB using_VBG Confide_NNP
+oposed_VBN in_IN order_NN to_TO get_VB better_JJR or_CC more_JJR interesting_JJ association_NN rules_NNS ._.
+Recently_RB ,_, Tan_NNP et_FW al._FW presented_VBD an_DT overview_NN of_IN various_JJ measures_NNS proposed_VBN in_IN statistics_NNS ,_, machine_NN learning_NN and_CC data_NN mining_NN literature_NN =_JJ -_: =[_NN 44_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Here_RB ,_, we_PRP only_RB consider_VBP algorithms_NNS within_IN the_DT frequency-confidence_NN framework_NN as_IN presented_VBN before_RB ._.
+2.2_CD Frequent_JJ set_NN generation_NN The_DT task_NN of_IN discovering_VBG all_DT frequent_JJ sets_NNS is_VBZ quite_RB challenging_JJ ._.
+The_DT searc_NN
+aises_VBZ the_DT question_NN whether_IN frequency_NN is_VBZ the_DT right_JJ interestingness_NN measure_NN ._.
+The_DT use_NN of_IN frequency_NN has_VBZ been_VBN criticized_VBN in_IN the_DT context_NN of_IN association_NN rules_NNS as_RB well_RB and_CC many_JJ alternatives_NNS have_VBP been_VBN offered_VBN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Unfortunately_RB ,_, finding_VBG good_JJ and_CC objective_JJ interestingness_NN measures_NNS for_IN itemsets_NNS seems_VBZ to_TO be_VB a_DT hard_JJ problem_NN ._.
+Additionally_RB ,_, allowing_VBG such_JJ measures_NNS to_TO prune_VB the_DT huge_JJ search_NN space_NN of_IN all_DT itemsets_NNS might_MD
+for_IN frequent_JJ itemset_NN mining_NN have_VBP been_VBN adapted_VBN to_TO mine_VB also_RB other_JJ kinds_NNS of_IN frequent_JJ patterns_NNS such_JJ as_IN graphs_NNS -LRB-_-LRB- 3,4,5,6_CD -RRB-_-RRB- and_CC sequences_NNS -LRB-_-LRB- 7,8,9_CD -RRB-_-RRB- ._.
+Also_RB other_JJ measures_NNS of_IN interestingness_NN have_VBP been_VBN considered_VBN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN general_JJ ,_, the_DT problem_NN can_MD be_VB formulated_VBN as_IN the_DT discovery_NN of_IN interesting_JJ patterns_NNS as_IN follows_VBZ :_: Problem_NNP 2_CD -LRB-_-LRB- Discovery_NNP of_IN interesting_JJ patterns_NNS -RRB-_-RRB- ._.
+Given_VBN a_DT pattern_NN class_NN P_NN ,_, an_DT interestingness_NN measure_NN φ_NN :_:
+ver_NN association_NN rules_NNS also_RB have_VBP their_PRP$ pitfall_NN ,_, in_IN particular_JJ with_IN regard_NN to_TO the_DT extraction_NN of_IN interesting_JJ rules_NNS ._.
+This_DT is_VBZ a_DT common_JJ concern_NN for_IN which_WDT a_DT range_NN of_IN measures_NNS exist_VBP ,_, depending_VBG on_IN the_DT context_NN =_JJ -_: =[_NN 7_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP explore_VBP in_IN this_DT paper_NN a_DT few_JJ measures_NNS in_IN the_DT context_NN of_IN our_PRP$ data_NNS ._.
+We_PRP extracted_VBD association_NN rules_NNS from_IN the_DT data_NNS stored_VBN by_IN the_DT Logic-ITA_NN ,_, an_DT intelligent_JJ tutoring_NN system_NN for_IN formal_JJ proof_NN in_IN propositi_NN
+maries_NNS ,_, classify_VB them_PRP from_IN several_JJ perspectives_NNS and_CC compare_VB their_PRP$ properties_NNS ._.
+They_PRP present_VBP 38_CD probability-based_JJ objective_JJ interestingness_NN measures_NNS for_IN association_NN rules_NNS ._.
+In_IN another_DT survey_NN ,_, Tan_NNP et_FW al._FW =_SYM -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: discuss_VB the_DT properties_NNS of_IN 21_CD objective_JJ interestingness_NN measures_NNS and_CC conclude_VBP that_IN there_EX is_VBZ no_DT ``_`` single_JJ ''_'' measure_NN that_WDT is_VBZ consistently_RB better_JJR than_IN others_NNS in_IN all_DT application_NN domains_NNS ._.
+Each_DT measure_NN captures_VBZ
+questioned_VBD the_DT usefulness_NN of_IN support_NN and_CC confidence_NN as_IN association_NN rule_NN interestingness_NN measures_NNS and_CC have_VBP proposed_VBN alternatives_NNS -LRB-_-LRB- 10_CD ,_, 51_CD -RRB-_-RRB- ._.
+Unfortunately_RB ,_, researchers_NNS comparing_VBG interestingness_NN measures_NNS =_JJ -_: =[_NN 27_CD ,_, 76_CD -RRB-_-RRB- -_: =_SYM -_: do_VBP not_RB agree_VB on_IN any_DT single_JJ domain-independent_JJ objective_NN measure_NN ._.
+Considering_VBG this_DT ,_, we_PRP compared_VBD the_DT effectiveness_NN of_IN twenty-two_JJ objective_JJ interestingness_NN measures_NNS to_TO assign_VB weights_NNS to_TO hyperedges_NNS in_IN th_DT
+The_DT local_JJ -LRB-_-LRB- i.e._FW ,_, within_IN instance_NN -RRB-_-RRB- frequencies_NNS of_IN the_DT two_CD items_NNS in_IN a_DT size-2_NN pattern_NN are_VBP averaged_VBN together_RB to_TO obtain_VB the_DT local_JJ pattern_NN significance_NN ,_, and_CC a_DT contingency_NN tablebased_JJ interestingness_NN measure_NN =_JJ -_: =[_NN 12_CD ,_, 27_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ used_VBN to_TO obtain_VB the_DT global_JJ pattern_NN significance_NN ._.
+These_DT local_JJ and_CC global_JJ significance_NN scores_NNS are_VBP then_RB multiplied_VBN to_TO obtain_VB the_DT overall_JJ pattern_NN significance_NN score_NN with_IN respect_NN to_TO the_DT current_JJ instance_NN
+we_PRP call_VBP the_DT ``_`` global_JJ ''_'' method_NN on_IN Figure_NNP 2_CD ,_, which_WDT uses_VBZ a_DT common_JJ interestingness_NN measure_NN to_TO determine_VB the_DT global_JJ pattern_NN significance_NN ._.
+In_IN our_PRP$ previous_JJ work_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, we_PRP evaluated_VBD 22_CD interestingness_NN measures_NNS =_JJ -_: =[_NN 7_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, in_IN the_DT context_NN of_IN global_JJ pattern-based_JJ hierarchical_JJ clustering_NN ,_, and_CC found_VBD that_IN only_RB a_DT small_JJ number_NN of_IN measures_NNS were_VBD stable_JJ across_IN the_DT 9_CD datasets_NNS used_VBN in_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+We_PRP have_VBP found_VBN that_IN the_DT same_JJ measures_NNS ar_IN
+the_DT pattern_NN significance_NN at_IN class_NN and_CC global_JJ levels_NNS ,_, we_PRP use_VBP a_DT common_JJ 2_CD x_CC 2_CD contingency-table-based_JJ interestingness_NN measure_NN ._.
+A_DT recent_JJ study_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- evaluated_VBD most_JJS of_IN the_DT interestingness_NN measures_NNS found_VBN in_IN =_JJ -_: =[_NN 12_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, in_IN the_DT context_NN of_IN hierarchical_JJ document_NN clustering_NN ,_, and_CC reported_VBD that_IN only_RB a_DT small_JJ number_NN of_IN interestingness_NN measures_NNS generalize_VBP well_RB to_TO datasets_NNS with_IN varying_VBG characteristics_NNS ._.
+Coincidently_RB ,_, we_PRP found_VBD
+mining_NN ._.
+However_RB ,_, this_DT has_VBZ predominantly_RB been_VBN undertaken_VBN in_IN the_DT field_NN of_IN classification_NN and_CC association_NN rules_NNS ,_, in_IN order_NN to_TO discover_VB rules_NNS -LRB-_-LRB- and_CC therefore_RB relationships_NNS -RRB-_-RRB- thought_VBN to_TO be_VB unknown_JJ to_TO a_DT user_NN =_JJ -_: =[_NN 4_CD ,_, 14_CD ,_, 21_CD ,_, 22_CD ,_, 23_CD ,_, 24_CD ,_, 28_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Finding_VBG interesting_JJ information_NN within_IN a_DT page_NN of_IN text_NN is_VBZ more_RBR removed_VBN from_IN this_DT than_IN most_JJS would_MD imagine_VB ._.
+A_DT page_NN of_IN text_NN does_VBZ not_RB neatly_RB fit_VB into_IN a_DT template_NN ,_, unlike_IN rule_NN based_JJ classification_NN or_CC assoc_NN
+ns_NNS that_WDT have_VBP significant_JJ relative_JJ risk_NN or_CC odds_NNS ratio_NN offers_VBZ a_DT very_RB powerful_JJ and_CC statistically_RB sound_JJ means_NNS for_IN separating_VBG meaningful_JJ patterns_NNS from_IN less_JJR meaningful_JJ ones_NNS ._.
+There_EX are_VBP many_JJ previous_JJ studies_NNS =_JJ -_: =[_NN 1_CD ,_, 3_CD ,_, 8_CD ,_, 9_CD ,_, 13_CD ,_, 15_CD ,_, 16_CD ,_, 19_CD ,_, 21_CD ,_, 12_CD ,_, 10_CD ,_, 14_CD ,_, 17_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: on_IN frequent_JJ itemsets_NNS ,_, their_PRP$ closed_JJ patterns_NNS ,_, and_CC their_PRP$ generators_NNS ._.
+There_EX are_VBP also_RB a_DT number_NN of_IN studies_NNS -LRB-_-LRB- 6_CD ,_, 11_CD -RRB-_-RRB- on_IN emerging_VBG patterns_NNS and_CC their_PRP$ borders_NNS ._.
+However_RB ,_, to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, the_DT mining_NN
+ally_VB a_DT rather_RB large_JJ set_NN of_IN frequent_JJ itemsets_NNS ,_, depending_VBG on_IN the_DT minimal_JJ support_NN threshold_NN ._.
+Finding_VBG interesting_JJ item_NN sets_NNS -LRB-_-LRB- and_CC association_NN rules_NNS -RRB-_-RRB- is_VBZ a_DT much_RB discussed_VBN topic_NN in_IN the_DT data_NNS mining_NN literature_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX are_VBP several_JJ approaches_NNS which_WDT define_VBP interestingness_NN with_IN purely_RB statistical_JJ measures_NNS ._.
+For_IN instance_NN ,_, itemsets_NNS whose_WP$ items_NNS appear_VBP statistically_RB dependent_JJ are_VBP interesting_JJ ._.
+A_DT measure_NN for_IN independe_NN
+ptoms_NNS ,_, keywords_NNS ,_, demographic_JJ characteristics_NNS ,_, to_TO name_VB a_DT few_JJ ._.
+To_TO guide_VB the_DT data_NNS analyst_NN identifying_VBG interesting_JJ rules_NNS ,_, many_JJ objective_JJ interestingness_NN rule_NN measures_NNS have_VBP been_VBN proposed_VBN in_IN the_DT literature_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN these_DT measures_NNS have_VBP descriptive_JJ aims_NNS ,_, we_PRP will_MD evaluate_VB their_PRP$ use_NN in_IN predictive_JJ tasks_NNS ._.
+One_CD of_IN these_DT measures_NNS ,_, conviction_NN ,_, will_MD be_VB shown_VBN as_IN particularly_RB successful_JJ in_IN classification_NN ._.
+Classifi_NNP
+ed_VBN usages_NNS of_IN the_DT pattern_NN ._.
+For_IN exploratory_JJ data_NNS mining_NN ,_, frequent_JJ subgraphs_NNS with_IN sufficiently_RB high_JJ support_NN suffice_NN ;_: for_IN classification_NN task_NN ,_, high_JJ quality_NN discriminatory_JJ subgraphs_NNS are_VBP desirable_JJ ,_, etc._NN ._.
+In_IN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, authors_NNS list_VBP twenty-one_CD different_JJ interestingness_NN measures_NNS ;_: though_IN they_PRP are_VBP formulated_VBN with_IN the_DT set_NN pattern_NN in_IN mind_NN ,_, many_JJ of_IN them_PRP can_MD easily_RB be_VB adapted_VBN for_IN subgraph_JJ patterns_NNS ._.
+Frequency_NN based_VBN interes_NNS
+d_NN to_TO distinguish_VB individuals_NNS or_CC groups_NNS on_IN the_DT basis_NN of_IN underlying_VBG features_NNS ._.
+Other_JJ interestingness_NN measures_NNS such_JJ as_IN Jaccard_NNP coefficient_NN and_CC Cosine_NN similarity_NN also_RB work_VBP properly_RB in_IN practice_NN ._.
+Tan_NNP et_FW al._FW =_SYM -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: summarized_VBN around_IN twenty-one_CD interestingness_NN measures_NNS ._.
+It_PRP is_VBZ the_DT goal_NN of_IN our_PRP$ study_NN to_TO design_VB a_DT general_JJ mining_NN framework_NN applicable_JJ to_TO a_DT wide_JJ range_NN of_IN those_DT measures_NNS ._.
+2.2_CD Framework_NN Overview_NN In_IN order_NN t_NN
+nts_NNS on_IN efficient_JJ identification_NN of_IN various_JJ kinds_NNS of_IN patterns_NNS ,_, e.g._FW ,_, itemsets_NNS ,_, sequences_NNS ,_, and_CC graphs_NNS -LRB-_-LRB- -LRB-_-LRB- 2_CD ,_, 3_CD ,_, 14_CD ,_, 7_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Patterns_NN with_IN other_JJ interesting_JJ measures_NNS were_VBD also_RB examined_VBN extensively_RB -LRB-_-LRB- see_VB e.g._FW ,_, =_JJ -_: =[_NN 11_CD ,_, 5_CD ,_, 20_CD ,_, 25_CD ,_, 19_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, the_DT major_JJ challenge_NN of_IN frequent-pattern_JJ mining_NN is_VBZ not_RB at_IN the_DT efficiency_NN but_CC at_IN the_DT interpretability_NN :_: the_DT huge_JJ number_NN of_IN frequent_JJ patterns_NNS makes_VBZ the_DT patterns_NNS themselves_PRP difficult_JJ to_TO explore_VB
+ries_NNS ,_, classifies_VBZ them_PRP from_IN several_JJ perspectives_NNS and_CC compares_VBZ their_PRP$ properties_NNS ._.
+The_DT authors_NNS present_VBP 38_CD probability-based_JJ objective_JJ interestingness_NN measures_NNS for_IN association_NN rules_NNS ._.
+In_IN a_DT previous_JJ survey_NN ,_, =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: discusses_VBZ the_DT properties_NNS of_IN 21_CD objective_JJ interestingness_NN measures_NNS and_CC concludes_VBZ that_IN there_EX is_VBZ no_DT measure_NN that_WDT is_VBZ consistently_RB better_JJR than_IN others_NNS in_IN all_DT application_NN domains_NNS ._.
+Interestingness_NNP measures_VBZ a_DT

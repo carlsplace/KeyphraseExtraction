@@ -1,0 +1,240 @@
+Distributed_VBN web_NN retrieval_NN
+In_IN the_DT ocean_NN of_IN Web_NN data_NNS ,_, Web_NN search_NN engines_NNS are_VBP the_DT primary_JJ way_NN to_TO access_NN content_NN ._.
+As_IN the_DT data_NN is_VBZ on_IN the_DT order_NN of_IN petabytes_NNS ,_, current_JJ search_NN engines_NNS are_VBP very_RB large_JJ centralized_JJ systems_NNS based_VBN on_IN replicated_VBN clusters_NNS ._.
+Web_NN data_NNS ,_, however_RB ,_, is_VBZ always_RB evolving_VBG ._.
+The_DT number_NN of_IN Web_NN sites_NNS continues_VBZ to_TO grow_VB rapidly_RB -LRB-_-LRB- over_IN 270_CD millions_NNS at_IN the_DT beginning_NN of_IN 2011_CD -RRB-_-RRB- and_CC there_EX are_VBP currently_RB more_JJR than_IN 20_CD billion_CD indexed_VBN pages_NNS ._.
+On_IN the_DT other_JJ hand_NN ,_, Internet_NNP users_NNS are_VBP above_IN one_CD billion_CD and_CC hundreds_NNS of_IN million_CD of_IN queries_NNS are_VBP issued_VBN each_DT day_NN ._.
+In_IN the_DT near_JJ future_NN ,_, centralized_VBN systems_NNS are_VBP likely_JJ to_TO become_VB less_RBR effective_JJ against_IN such_PDT a_DT data-query_JJ load_NN ,_, thus_RB suggesting_VBG the_DT need_NN of_IN fully_RB distributed_VBN search_NN engines_NNS ._.
+Such_JJ engines_NNS need_VBP to_TO maintain_VB high_JJ quality_NN answers_NNS ,_, fast_JJ response_NN time_NN ,_, high_JJ query_NN throughput_NN ,_, high_JJ availability_NN and_CC scalability_NN ;_: in_IN spite_NN of_IN network_NN latency_NN and_CC scattered_JJ data_NNS ._.
+In_IN this_DT tutorial_NN we_PRP present_VBP the_DT architecture_NN of_IN current_JJ search_NN engines_NNS and_CC we_PRP explore_VBP the_DT main_JJ challenges_NNS behind_IN the_DT design_NN of_IN all_PDT the_DT processes_NNS of_IN a_DT distributed_VBN Web_NN retrieval_NN system_NN crawling_VBG ,_, indexing_NN ,_, and_CC query_NN processing_NN ._.
+parallelized_VBN ,_, but_CC queries_NNS must_MD be_VB sent_VBN to_TO all_DT partitions_NNS ._.
+On_IN the_DT other_JJ hand_NN ,_, the_DT partition-by-term_NN is_VBZ more_RBR costly_JJ when_WRB building_VBG the_DT index_NN but_CC more_RBR efficient_JJ in_IN resource_NN usage_NN when_WRB processing_NN queries_VBZ =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Moffat_NNP et_FW al._FW showed_VBD that_IN partition-by-term_NN is_VBZ more_RBR efficient_JJ in_IN -LRB-_-LRB- query_NN -RRB-_-RRB- resource_NN usage_NN when_WRB compared_VBN to_TO the_DT partition-by-document_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Distributed_VBN Hash_JJ Tables_NNS -LRB-_-LRB- DHTs_NNS -RRB-_-RRB- are_VBP a_DT particular_JJ type_NN of_IN peer_VB --_: t_NN
+e_LS web_NN crawlers_NNS lack_VBP the_DT intelligence_NN to_TO adequately_RB fill_VB in_IN and_CC submit_VB such_JJ forms_NNS ._.
+Another_DT drawback_NN is_VBZ that_IN the_DT index_NN needs_VBZ to_TO be_VB maintained_VBN and_CC updated_VBN to_TO cope_VB with_IN both_CC content_JJ change_NN and_CC Web_NN growth_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+With_IN Deep_JJ Web_NN content_NN already_RB residing_VBG in_IN searchable_JJ databases_NNS ,_, and_CC in_IN the_DT expectation_NN that_IN the_DT Web_NN will_MD continue_VB its_PRP$ enormous_JJ growth_NN ,_, a_DT promising_JJ search_NN paradigm_NN is_VBZ DIR_NNP -LRB-_-LRB- Distributed_VBN Information_NNP Ret_NNP
+thms_NNS scale_VBP linearly_RB with_IN collection_NN size_NN ,_, which_WDT is_VBZ a_DT very_RB desirable_JJ property_NN ._.
+We_PRP did_VBD not_RB examine_VB even_RB larger_JJR collections_NNS because_IN real-world_JJ retrieval_NN engines_NNS adopt_VBP a_DT document-partitioned_JJ architecture_NN =_JJ -_: =[_NN 2_CD ,_, 36_CD -RRB-_-RRB- -_: =_JJ -_: ,_, such_JJ that_IN the_DT bottleneck_NN is_VBZ in_IN building_VBG the_DT index_NN for_IN a_DT single_JJ partition_NN --_: building_VBG multiple_JJ partitions_NNS is_VBZ parallelizable_JJ ._.
+Partition_NN sizes_NNS ,_, of_IN course_NN ,_, are_VBP collection_NN specific_JJ ,_, but_CC we_PRP find_VBP it_PRP unrealist_JJ
+hile_JJ documents_NNS are_VBP the_DT snippets_NNS and_CC satellite_NN information_NN forming_VBG page_NN results_NNS returned_VBD to_TO users_NNS in_IN response_NN to_TO their_PRP$ queries_NNS ._.
+At_IN present_NN ,_, Web_NN search_NN engines_NNS are_VBP typically_RB largescaledistributedsystems_NN =_JJ -_: =[_NN 4,7,11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, inwhichtheindexispartitioned_VBN among_IN multiple_JJ processing_NN clusters_NNS and_CC local_JJ queries_NNS are_VBP processed_VBN over_IN smaller_JJR indices_NNS ._.
+In_IN this_DT way_NN ,_, users_NNS are_VBP typically_RB served_VBN by_IN local_JJ search_NN sites_NNS that_WDT are_VBP geographi_NNS
+lished_VBN using_VBG a_DT single_JJ central_JJ index_NN ._.
+However_RB ,_, as_IN the_DT document_NN collections_NNS increased_VBD in_IN size_NN ,_, it_PRP became_VBD necessary_JJ and_CC a_DT common_JJ practice_NN to_TO partition_NN collections_NNS into_IN multiple_JJ disjoint_NN indexes_NNS -LRB-_-LRB- shards_NNS -RRB-_-RRB- =_JJ -_: =[_NN 2_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT distributed_VBN indexes_NNS facilitate_VBP parallelization_NN of_IN search_NN which_WDT in_IN turn_NN brings_VBZ down_RP the_DT query_NN processing_NN time_NN ._.
+However_RB ,_, even_RB in_IN this_DT architecture_NN the_DT cost_NN associated_VBN with_IN searching_VBG large-scale_JJ
+wever_JJR ,_, is_VBZ not_RB well_RB understood_VBN ._.
+P2P_NN Information_NN Retrieval_NN -LRB-_-LRB- IR_NN -RRB-_-RRB- ,_, the_DT ability_NN to_TO perform_VB efficient_JJ information_NN retrieval_NN tasks_NNS over_IN P2P_NN networks_NNS has_VBZ attracted_VBN considerable_JJ attention_NN in_IN recent_JJ times_NNS -LRB-_-LRB- see_VB =_JJ -_: =[_NN 7_CD ,_, 9_CD ,_, 17_CD ,_, 20_CD ,_, 26_CD ,_, 34_CD -RRB-_-RRB- -_: =_JJ -_: and_CC references_NNS given_VBN there_RB -RRB-_-RRB- ._.
+To_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, none_NN of_IN them_PRP have_VBP considered_VBN temporal_JJ querying_VBG and_CC ranking_VBG models_NNS on_IN evolving_VBG data_NNS collections_NNS ._.
+Finally_RB ,_, within_IN digital_JJ library_NN research_NN com_NN
+hine-learned_JJ ranking_JJ algorithms_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, techniques_NNS for_IN exploiting_VBG log_NN data_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, web_NN crawling_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, and_CC the_DT systems_NNS engineering_NN aspects_NNS of_IN building_VBG large-scale_JJ search_NN engines_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN there_EX continue_VBP to_TO be_VB refinements_NNS and_CC advances_NNS ,_, it_PRP is_VBZ unclear_JJ whether_IN we_PRP can_MD expect_VB major_JJ disruptive_JJ advances_NNS in_IN core_NN web_NN search_NN in_IN the_DT near_JJ future_NN ._.
+There_EX is_VBZ ,_, of_IN course_NN ,_, more_JJR to_TO information_NN
+dary_JJ storage_NN capacity_NN ,_, storing_VBG such_JJ large_JJ objects_NNS creates_VBZ an_DT additional_JJ network_NN bottleneck_NN on_IN the_DT hosts_NNS mapping_VBG these_DT keys_NNS ._.
+These_DT network_NN bottlenecks_NNS limit_VBP the_DT scalability_NN of_IN term-partitioned_JJ indexes_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: and_CC can_MD not_RB be_VB eliminated_VBN by_IN caching_NN ,_, as_IN caching_NN is_VBZ effective_JJ only_RB when_WRB reading_VBG data_NNS and_CC not_RB when_WRB new_JJ data_NNS is_VBZ being_VBG inserted_VBN into_IN the_DT system_NN ._.
+Furthermore_RB ,_, solutions_NNS that_WDT dynamically_RB redistribute_VBP keys_NNS
+and_CC to_TO build_VB a_DT collection_NN selection_NN function_NN using_VBG both_CC query_NN and_CC document_NN clusters_NNS ._.
+Their_PRP$ results_NNS show_VBP that_IN using_VBG this_DT technique_NN ,_, they_PRP are_VBP able_JJ to_TO outperform_VB the_DT state-of-the-art_JJ model_NN ,_, namely_RB CORI_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, that_WDT is_VBZ currently_RB the_DT best_JJS known_JJ collection_NN selection_NN function_NN for_IN textual_JJ documents_NNS ._.
+CORI_NNP is_VBZ only_RB based_VBN on_IN information_NN contained_VBN within_IN the_DT collection_NN ,_, whereas_IN the_DT technique_NN by_IN Puppin_NNP et_FW al._FW has_VBZ th_DT
+ample_JJ ,_, to_TO evaluate_VB the_DT precision_NN of_IN a_DT search_NN engine_NN ,_, it_PRP is_VBZ possible_JJ to_TO engineer_VB a_DT relevance_NN model_NN ._.
+Similarly_RB ,_, the_DT design_NN and_CC analysis_NN of_IN caching_NN policies_NNS require_VBP information_NN on_IN users_NNS ,_, or_CC a_DT user_NN model_NN =_JJ -_: =[_NN 22_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+User_NN behavior_NN ,_, however_RB ,_, is_VBZ an_DT external_JJ factor_NN ,_, which_WDT can_MD not_RB be_VB controlled_VBN by_IN the_DT search_NN engine_NN ._.
+Any_DT substantial_JJ change_NN in_IN the_DT search_NN behavior_NN of_IN users_NNS can_MD have_VB an_DT impact_NN on_IN the_DT precision_NN or_CC efficien_NN
+tperform_RB the_DT same_JJ time_NN ._.
+the_DT state-of-the-art_JJ The_DT only_JJ constant_JJ model_NN ,_, is_VBZ that_IN namely_RB node_NN two_CD is_VBZ tensively_RB busy_JJ allon_FW thelarge_FW time_NN ,_, document_NN acting_VBG as_IN acollections_NNS throttle_VBP onhas_FW thenot_FW been_VBN perCORI_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, that_DT performance_NN is_VBZ currently_RB of_IN the_DT thesystem_NN ._.
+best_RB known_VBN collection_NN seformed_NN ,_, and_CC it_PRP is_VBZ an_DT important_JJ problem_NN to_TO verify_VB that_IN the_DT lection_NN function_NN for_IN textual_JJ documents_NNS ._.
+CORI_NNP is_VBZ only_RB based_VBN results_NNS m_NN
+nd_NN phone_NN calls_NNS ''_'' -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+Web_NN crawlers_NNS can_MD have_VB a_DT detrimental_JJ effect_NN on_IN the_DT network_NN if_IN they_PRP are_VBP deployed_VBN without_IN taking_VBG into_IN account_NN a_DT set_NN of_IN operational_JJ guidelines_NNS to_TO minimize_VB their_PRP$ impact_NN on_IN Web_NN servers_NNS =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT most_RBS important_JJ restriction_NN for_IN a_DT Web_NN crawler_NN is_VBZ to_TO avoid_VB overloading_VBG Web_NN servers_NNS ._.
+De_NNP facto_JJ standards_NNS of_IN operation_NN state_NN that_IN a_DT crawler_NN should_MD not_RB open_VB more_JJR than_IN one_CD connection_NN at_IN a_DT time_NN to_TO each_DT
+y_NN substantial_JJ change_NN in_IN the_DT search_NN behavior_NN of_IN users_NNS can_MD have_VB an_DT impact_NN on_IN the_DT precision_NN or_CC efficiency_NN of_IN a_DT search_NN engine_NN ._.
+For_IN example_NN ,_, the_DT topics_NNS the_DT users_NNS search_NN for_IN have_VBP slowly_RB changed_VBN in_IN the_DT past_NN =_JJ -_: =[_NN 46_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC a_DT reconfiguration_NN of_IN the_DT search_NN engine_NN resources_NNS might_MD be_VB necessary_JJ to_TO maintain_VB a_DT good_JJ performance_NN ._.
+A_DT change_NN in_IN user_NN behavior_NN can_MD also_RB affect_VB the_DT performance_NN of_IN caching_NN policies_NNS ._.
+Hence_RB ,_, if_IN user_NN
+,_, it_PRP is_VBZ necessary_JJ to_TO guarantee_VB that_IN the_DT state_NN is_VBZ consistent_JJ in_IN every_DT update_VBP ,_, and_CC that_IN the_DT user_NN state_NN is_VBZ never_RB lost_VBN ._.
+There_EX are_VBP techniques_NNS from_IN distributed_VBN algorithms_NNS ,_, such_JJ as_IN state-machine_JJ replication_NN =_JJ -_: =[_NN 42_CD ,_, 29_CD -RRB-_-RRB- -_: =_JJ -_: and_CC primary-backup_JJ -LRB-_-LRB- 11_CD ,_, 52_CD -RRB-_-RRB- ,_, to_TO implement_VB such_JJ fault-tolerant_JJ services_NNS ._.
+The_DT main_JJ challenge_NN is_VBZ to_TO apply_VB such_JJ techniques_NNS on_IN large-scale_JJ systems_NNS ._.
+Traditional_JJ fault-tolerant_JJ systems_NNS assume_VBP a_DT small_JJ number_NN
+peline_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- ._.
+Alternatively_RB ,_, Dean_NNP et_CC the_DT document_NN distributed_VBN approach_NN is_VBZ consistent_JJ in_IN its_PRP$ performance_NN over_IN all_DT time_NN intervals_NNS ,_, and_CC the_DT representation_NN enables_VBZ the_DT use_NN of_IN a_DT co-clustering_JJ algorithm_NN al._FW =_SYM -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP a_DT traditional_JJ parallel_JJ computing_NN paradigm_NN to_TO build_VB clusters_NNS totalofsystem_NN queries_VBZ utilization_NN and_CC clusters_NNS remains_VBZ of_IN documents_NNS ._.
+in_IN a_DT band_NN between_IN The_DT 7.1_CD -LRB-_-LRB- map-reduce_NN -RRB-_-RRB- and_CC 7.8_CD outand_NN of_IN 8.0_CD s_NNS
+server-crawler_NN cooperation_NN -LRB-_-LRB- http:\/\/www.sitemaps.org\/_NN -RRB-_-RRB- ._.
+External_JJ factors_NNS DNS_NN is_VBZ frequently_RB a_DT bottleneck_NN for_IN the_DT operation_NN of_IN a_DT Web_NN crawler_NN -LRB-_-LRB- e.g._FW ,_, because_IN it_PRP has_VBZ to_TO submit_VB a_DT large_JJ number_NN of_IN DNS_NN queries_NNS =_JJ -_: =[_NN 25_CD ,_, 43_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+This_DT is_VBZ particularly_RB important_JJ because_IN the_DT crawler_NN does_VBZ not_RB control_VB the_DT DNS_NNP servers_NNS it_PRP probes_NNS ._.
+A_DT common_JJ solution_NN is_VBZ to_TO cache_NN DNS_NN lookup_NN results_NNS ._.
+Another_DT important_JJ consideration_NN is_VBZ that_IN servers_NNS on_IN t_NN
+s_VBZ a_DT clear_JJ distinction_NN between_IN clients_NNS that_WDT only_RB submit_VBP queries_NNS and_CC servers_NNS that_IN only_JJ process_NN queries_NNS ._.
+Alternatively_RB ,_, participants_NNS can_MD be_VB both_DT clients_NNS and_CC servers_NNS such_JJ as_IN in_IN peer-to-peer_NN -LRB-_-LRB- P2P_NN -RRB-_-RRB- systems_NNS =_JJ -_: =[_NN 5_CD ,_, 19_CD ,_, 48_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN such_JJ systems_NNS ,_, all_DT peers_NNS have_VBP all_PDT the_DT roles_NNS we_PRP mention_VBP above_IN ;_: •_CD Interaction_NN :_: In_IN a_DT federated_JJ system_NN ,_, independent_JJ entities_NNS form_VBP a_DT single_JJ system_NN ._.
+As_IN an_DT example_NN ,_, an_DT organization_NN spanning_VBG different_JJ cou_NN
+term_NN in_IN each_DT distinct_JJ document_NN ._.
+Sorting_VBG efficiently_RB these_DT records_NNS using_VBG a_DT good_JJ balance_NN of_IN memory_NN and_CC disk_NN usage_NN ,_, is_VBZ a_DT very_RB challenging_JJ operation_NN ._.
+Recently_RB it_PRP has_VBZ been_VBN shown_VBN that_IN sort-based_JJ approaches_NNS =_JJ -_: =[_NN 50_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC single-pass_JJ algorithms_NNS -LRB-_-LRB- 32_CD -RRB-_-RRB- ,_, are_VBP efficient_JJ in_IN several_JJ scenarios_NNS ,_, where_WRB indexing_NN of_IN a_DT large_JJ amount_NN of_IN data_NNS is_VBZ performed_VBN with_IN limited_JJ resources_NNS ._.
+In_IN the_DT case_NN of_IN Web_NN Search_VB Engines_NNS ,_, data_NNS repositories_NNS
+h_NN the_DT growth_NN of_IN the_DT Web_NN ,_, even_RB if_IN a_DT large_JJ number_NN of_IN servers_NNS implement_VBP such_JJ a_DT processor_NN due_JJ to_TO ,_, for_IN example_NN ,_, physical_JJ and_CC administrative_JJ constraints_NNS -LRB-_-LRB- e.g._FW ,_, size_NN of_IN a_DT single_JJ data_NN center_NN ,_, power_NN ,_, cooling_NN -RRB-_-RRB- =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Thus_RB ,_, the_DT distributed_VBN resolution_NN of_IN queries_NNS using_VBG different_JJ query_NN processors_NNS is_VBZ a_DT viable_JJ approach_NN as_IN it_PRP enables_VBZ a_DT more_RBR scalable_JJ solution_NN ,_, but_CC it_PRP also_RB imposes_VBZ new_JJ challenges_NNS ._.
+One_CD such_JJ challenge_NN is_VBZ th_DT
+ample_JJ ,_, to_TO evaluate_VB the_DT precision_NN of_IN a_DT search_NN engine_NN ,_, it_PRP is_VBZ possible_JJ to_TO engineer_VB a_DT relevance_NN model_NN ._.
+Similarly_RB ,_, the_DT design_NN and_CC analysis_NN of_IN caching_NN policies_NNS require_VBP information_NN on_IN users_NNS ,_, or_CC a_DT user_NN model_NN =_JJ -_: =[_NN 22_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+User_NN behavior_NN ,_, however_RB ,_, is_VBZ an_DT external_JJ factor_NN ,_, which_WDT can_MD not_RB be_VB controlled_VBN by_IN the_DT search_NN engine_NN ._.
+Any_DT substantial_JJ change_NN in_IN the_DT search_NN behavior_NN of_IN users_NNS can_MD have_VB an_DT impact_NN on_IN the_DT precision_NN or_CC efficien_NN
+,_, the_DT major_JJ goal_NN is_VBZ to_TO partition_NN the_DT index_NN such_JJ that_IN :_: •_VB The_DT number_NN of_IN contacted_VBN servers_NNS is_VBZ minimal_JJ ;_: •_CD Load_NN is_VBZ equally_RB spread_VBN across_IN all_DT available_JJ servers_NNS ._.
+For_IN a_DT term_NN partitioned_VBD system_NN ,_, Moffat_NNP et_FW al._FW =_SYM -_: =[_NN 36_CD -RRB-_-RRB- -_: =_SYM -_: show_VBP that_IN it_PRP is_VBZ possible_JJ to_TO balance_VB the_DT load_NN by_IN exploiting_VBG information_NN on_IN the_DT frequencies_NNS of_IN terms_NNS occurring_VBG in_IN the_DT queries_NNS and_CC postings_NNS list_NN replication_NN ._.
+Briefly_RB ,_, they_PRP abstract_JJ the_DT problem_NN of_IN partit_NN
+large_JJ scale_NN Web_NN search_NN engines_NNS ._.
+There_EX are_VBP ,_, however_RB ,_, some_DT advantages_NNS of_IN this_DT approach_NN in_IN the_DT query_NN processing_NN phase_NN ._.
+Webber_NNP et_FW al._FW show_VBP that_IN term_NN partitioning_NN results_VBZ in_IN lower_JJR utilization_NN of_IN resources_NNS =_JJ -_: =[_NN 49_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+More_RBR specifically_RB ,_, it_PRP significantly_RB reduces_VBZ the_DT number_NN of_IN disk_NN accesses_NNS and_CC the_DT volume_NN of_IN data_NNS exchanged_VBN ._.
+Although_IN document_NN partitioning_NN is_VBZ still_RB better_JJR in_IN terms_NNS of_IN throughput_NN ,_, they_PRP show_VBP that_IN it_PRP is_VBZ
+iciently_RB and_CC effectively_RB in_IN distributed_VBN Web_NN search_NN engines_NNS ?_.
+In_IN the_DT past_JJ few_JJ years_NNS ,_, using_VBG query_NN logs_NNS to_TO partition_NN the_DT document_NN collection_NN and_CC query_NN routing_VBG has_VBZ been_VBN the_DT focus_NN of_IN some_DT research_NN projects_NNS =_JJ -_: =[_NN 38_CD ,_, 45_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN a_DT term_NN partitioned_VBD IR_NN system_NN ,_, the_DT major_JJ goal_NN is_VBZ to_TO partition_NN the_DT index_NN such_JJ that_IN :_: •_VB The_DT number_NN of_IN contacted_VBN servers_NNS is_VBZ minimal_JJ ;_: •_CD Load_NN is_VBZ equally_RB spread_VBN across_IN all_DT available_JJ servers_NNS ._.
+For_IN a_DT term_NN
+comparing_VBG n-gram_NN language_NN models_NNS for_IN each_DT of_IN the_DT target_NN languages_NNS and_CC the_DT document_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, or_CC by_IN comparing_VBG the_DT probabilities_NNS that_IN the_DT most_RBS frequent_JJ words_NNS of_IN a_DT particular_JJ language_NN occur_VBP in_IN the_DT document_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Similar_JJ techniques_NNS enable_VBP the_DT identification_NN of_IN the_DT languages_NNS in_IN queries_NNS ,_, even_RB though_IN the_DT amount_NN of_IN text_NN per_IN query_NN and_CC additional_JJ contextual_JJ metadata_NN is_VBZ very_RB limited_JJ ,_, and_CC such_JJ process_NN may_MD introduce_VB
+e-scale_NN crawling_NN requires_VBZ distributing_VBG the_DT load_NN across_IN a_DT number_NN of_IN agents_NNS while_IN still_RB respecting_VBG these_DT constraints_NNS ._.
+A_DT distributed_VBN crawler_NN 1_CD is_VBZ a_DT Web_NN crawler_NN that_WDT operates_VBZ simultaneous_JJ crawling_VBG agents_NNS =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Each_DT crawling_VBG agent_NN runs_VBZ on_IN a_DT different_JJ computer_NN ,_, and_CC in_IN principle_NN some_DT agents_NNS can_MD 1_CD Also_RB named_VBN parallel_JJ crawler_NN in_IN the_DT literature_NN ._.
+sbe_NN on_IN different_JJ geographical_NN or_CC network_NN locations_NNS ._.
+On_IN every_DT crawli_NN
+ge_NN of_IN queries_NNS is_VBZ also_RB a_DT suitable_JJ approach_NN ._.
+Identifying_VBG the_DT languages_NNS in_IN a_DT document_NN can_MD be_VB performed_VBN automatically_RB by_IN comparing_VBG n-gram_NN language_NN models_NNS for_IN each_DT of_IN the_DT target_NN languages_NNS and_CC the_DT document_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC by_IN comparing_VBG the_DT probabilities_NNS that_IN the_DT most_RBS frequent_JJ words_NNS of_IN a_DT particular_JJ language_NN occur_VBP in_IN the_DT document_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- ._.
+Similar_JJ techniques_NNS enable_VBP the_DT identification_NN of_IN the_DT languages_NNS in_IN queries_NNS ,_, even_RB tho_NN
+f_LS approach_NN the_DT available_JJ to_TO create_VB 8.0_CD an_DT total_JJ index_NN resource_NN ._.
+in_IN a_DT distributed_VBN Note_NN how_WRB fashion_NN is_VBZ to_TO orall_VB the_DT queries_NNS that_WDT return_VBP that_DT document_NN as_IN an_DT answer_NN ._.
+This_DT ganize_NN the_DT servers_NNS in_IN a_DT pipeline_NN =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Alternatively_RB ,_, Dean_NNP et_CC the_DT document_NN distributed_VBN approach_NN is_VBZ consistent_JJ in_IN its_PRP$ performance_NN over_IN all_DT time_NN intervals_NNS ,_, and_CC the_DT representation_NN enables_VBZ the_DT use_NN of_IN a_DT co-clustering_JJ algorithm_NN al._FW -LRB-_-LRB- 20_CD -RRB-_-RRB- propos_NNS
+As_IN another_DT example_NN ,_, the_DT DNS_NN service_NN can_MD use_VB geographical_JJ location_NN to_TO determine_VB where_WRB to_TO route_NN queries_NNS to_TO ._.
+As_IN there_EX is_VBZ fluctuation_NN in_IN submitted_VBN queries_NNS from_IN a_DT particular_JJ geographic_JJ region_NN during_IN a_DT day_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, it_PRP is_VBZ also_RB possible_JJ to_TO offload_VB a_DT server_NN from_IN a_DT busy_JJ area_NN by_IN re-routing_VBG some_DT queries_NNS to_TO query_VB processors_NNS in_IN less_JJR busy_JJ areas_NNS ._.
+Generally_RB ,_, query_NN routing_VBG depends_VBZ upon_IN the_DT distribution_NN of_IN documents_NNS across_IN
+server-crawler_NN cooperation_NN -LRB-_-LRB- http:\/\/www.sitemaps.org\/_NN -RRB-_-RRB- ._.
+External_JJ factors_NNS DNS_NN is_VBZ frequently_RB a_DT bottleneck_NN for_IN the_DT operation_NN of_IN a_DT Web_NN crawler_NN -LRB-_-LRB- e.g._FW ,_, because_IN it_PRP has_VBZ to_TO submit_VB a_DT large_JJ number_NN of_IN DNS_NN queries_NNS =_JJ -_: =[_NN 25_CD ,_, 43_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+This_DT is_VBZ particularly_RB important_JJ because_IN the_DT crawler_NN does_VBZ not_RB control_VB the_DT DNS_NNP servers_NNS it_PRP probes_NNS ._.
+A_DT common_JJ solution_NN is_VBZ to_TO cache_NN DNS_NN lookup_NN results_NNS ._.
+Another_DT important_JJ consideration_NN is_VBZ that_IN servers_NNS on_IN t_NN
+itions_NNS is_VBZ to_TO select_JJ elements_NNS -LRB-_-LRB- terms_NNS or_CC documents_NNS -RRB-_-RRB- at_IN random_JJ ._.
+For_IN document_NN partitioning_NN ,_, a_DT different_JJ ,_, more_RBR structured_JJ approach_NN is_VBZ to_TO use_VB kmeans_NNS clustering_VBG to_TO partition_NN a_DT collection_NN according_VBG to_TO topics_NNS =_JJ -_: =[_NN 30_CD ,_, 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN document_NN and_CC term_NN partitioning_NN have_VBP been_VBN widely_RB studied_VBN ,_, it_PRP is_VBZ still_RB unclear_JJ on_IN the_DT circumstances_NNS under_IN which_WDT each_DT one_CD is_VBZ suitable_JJ ._.
+Moreover_RB ,_, it_PRP is_VBZ unclear_JJ which_WDT are_VBP good_JJ methods_NNS to_TO evaluat_VB
+itions_NNS is_VBZ to_TO select_JJ elements_NNS -LRB-_-LRB- terms_NNS or_CC documents_NNS -RRB-_-RRB- at_IN random_JJ ._.
+For_IN document_NN partitioning_NN ,_, a_DT different_JJ ,_, more_RBR structured_JJ approach_NN is_VBZ to_TO use_VB kmeans_NNS clustering_VBG to_TO partition_NN a_DT collection_NN according_VBG to_TO topics_NNS =_JJ -_: =[_NN 30_CD ,_, 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN document_NN and_CC term_NN partitioning_NN have_VBP been_VBN widely_RB studied_VBN ,_, it_PRP is_VBZ still_RB unclear_JJ on_IN the_DT circumstances_NNS under_IN which_WDT each_DT one_CD is_VBZ suitable_JJ ._.
+Moreover_RB ,_, it_PRP is_VBZ unclear_JJ which_WDT are_VBP good_JJ methods_NNS to_TO evaluat_VB
+s_NN polling_NN ._.
+This_DT could_MD be_VB improved_VBN if_IN the_DT Web_NN server_NN informs_VBZ the_DT crawler_NN of_IN the_DT modification_NN dates_NNS and_CC modification_NN frequencies_NNS for_IN its_PRP$ local_JJ pages_NNS ._.
+There_EX have_VBP been_VBN several_JJ proposals_NNS in_IN this_DT direction_NN =_JJ -_: =[_NN 24_CD ,_, 8_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC recently_RB three_CD of_IN the_DT largest_JJS search_NN engines_NNS agreed_VBD on_IN a_DT standard_NN for_IN this_DT type_NN of_IN server-crawler_JJ cooperation_NN -LRB-_-LRB- http:\/\/www.sitemaps.org\/_NN -RRB-_-RRB- ._.
+External_JJ factors_NNS DNS_NN is_VBZ frequently_RB a_DT bottleneck_NN for_IN the_DT
+e_LS threads_NNS that_WDT serve_VBP requests_NNS on_IN ,_, for_IN exam4_NN A_NN G\/G\/c_FW queue_FW models_NNS a_DT system_NN in_IN which_WDT the_DT distributions_NNS of_IN request_NN interarrival_NN and_CC service_NN times_NNS are_VBP arbitrary_JJ ,_, and_CC there_EX are_VBP c_NN servers_NNS to_TO serve_VB requests_NNS =_JJ -_: =[_NN 40_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+sMaximum_NN number_NN of_IN requests_NNS per_IN second_JJ 16_CD 14_CD 12_CD 10_CD 8_CD 6_CD 4_CD 2_CD 0_CD 10 100 1000_CD Average_JJ service_NN time_NN -LRB-_-LRB- ms_NN -RRB-_-RRB- G\/G\/150_NN Figure_NN 6_CD ._.
+Maximum_NNP capacity_NN of_IN a_DT front-end_JJ server_NN using_VBG a_DT G\/G\/150_NN model_NN ._.
+ple_NN ,_, a_DT Web_NN server_NN ._.
+I_PRP
+and_CC some_DT go_VBP off-line_JJ intermittently_JJ or_CC present_JJ other_JJ transient_JJ failures_NNS ._.
+A_DT distributed_VBN Web_NN crawler_NN must_MD be_VB tolerant_JJ to_TO transient_JJ failures_NNS and_CC slow_JJ links_NNS to_TO be_VB able_JJ to_TO cover_VB the_DT Web_NN to_TO a_DT large_JJ extent_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB coverage_NN is_VBZ the_DT percentage_NN of_IN pages_NNS obtained_VBN by_IN crawling_VBG among_IN all_DT pages_NNS available_JJ on_IN the_DT Web_NN ._.
+The_DT network_NN topology_NN can_MD also_RB be_VB a_DT bottleneck_NN ._.
+To_TO solve_VB this_DT problem_NN ,_, we_PRP can_MD carefully_RB distribute_VB
+ponents_NNS communicating_VBG using_VBG messages_NNS through_IN a_DT wide-area_JJ network_NN ._.
+Such_PDT an_DT architecture_NN does_VBZ not_RB necessarily_RB improve_VB query_NN processing_NN latency_NN because_IN message_NN latency_NN among_IN cache_NN components_NNS is_VBZ high_JJ ._.
+In_IN =_JJ -_: =[_NN 51_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Wolman_NNP et_FW al._FW argue_VBP that_IN cooperative_JJ Web_NN caching_NN does_VBZ not_RB necessarily_RB improve_VB the_DT overall_JJ request_NN latency_NN ,_, mainly_RB because_IN the_DT wide-area_JJ communication_NN eclipses_VBZ the_DT benefit_NN of_IN a_DT larger_JJR user_NN population_NN
+Traditional_JJ fault-tolerant_JJ systems_NNS assume_VBP a_DT small_JJ number_NN of_IN processes_NNS ._.
+An_DT exception_NN is_VBZ the_DT Chubby_NNP lock_NN service_NN ,_, which_WDT serves_VBZ thousands_NNS of_IN clients_NNS concurrently_RB and_CC tolerates_VBZ failures_NNS of_IN Chubby_NNP servers_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Depending_VBG on_IN the_DT requirements_NNS of_IN the_DT application_NN ,_, it_PRP is_VBZ also_RB possible_JJ to_TO relax_VB the_DT strong_JJ consistency_NN constraint_NN ,_, and_CC use_NN techniques_NNS that_WDT enable_VBP stale_JJ results_NNS thus_RB implementing_VBG weaker_JJR consistency_NN co_NN
+n_NN the_DT distribution_NN of_IN documents_NNS across_IN query_NN processors_NNS ,_, and_CC consequently_RB the_DT partition_NN of_IN the_DT index_NN ._.
+One_CD way_NN to_TO partition_NN the_DT indexsacross_NN the_DT query_NN processors_NNS is_VBZ to_TO consider_VB the_DT topics_NNS of_IN documents_NNS =_JJ -_: =[_NN 39_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, a_DT query_NN processor_NN that_WDT holds_VBZ an_DT index_NN with_IN documents_NNS on_IN a_DT particular_JJ topic_NN ,_, may_MD process_VB queries_NNS related_VBN to_TO that_DT topic_NN more_RBR effectively_RB ._.
+Routing_VBG the_DT queries_NNS according_VBG to_TO their_PRP$ topic_NN invo_NN
+g_NN on_IN the_DT requirements_NNS of_IN the_DT application_NN ,_, it_PRP is_VBZ also_RB possible_JJ to_TO relax_VB the_DT strong_JJ consistency_NN constraint_NN ,_, and_CC use_NN techniques_NNS that_WDT enable_VBP stale_JJ results_NNS thus_RB implementing_VBG weaker_JJR consistency_NN constraints_NNS =_JJ -_: =[_NN 41_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP is_VBZ also_RB possible_JJ to_TO improve_VB fault_NN tolerance_NN even_RB further_RBR by_IN using_VBG caches_NNS ._.
+Upon_IN query_NN processor_NN failures_NNS ,_, the_DT system_NN returns_NNS cached_VBD results_NNS ._.
+Thus_RB ,_, a_DT system_NN design_NN can_MD consider_VB a_DT caching_NN system_NN as_IN
+s_VBZ a_DT clear_JJ distinction_NN between_IN clients_NNS that_WDT only_RB submit_VBP queries_NNS and_CC servers_NNS that_IN only_JJ process_NN queries_NNS ._.
+Alternatively_RB ,_, participants_NNS can_MD be_VB both_DT clients_NNS and_CC servers_NNS such_JJ as_IN in_IN peer-to-peer_NN -LRB-_-LRB- P2P_NN -RRB-_-RRB- systems_NNS =_JJ -_: =[_NN 5_CD ,_, 19_CD ,_, 48_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN such_JJ systems_NNS ,_, all_DT peers_NNS have_VBP all_PDT the_DT roles_NNS we_PRP mention_VBP above_IN ;_: •_CD Interaction_NN :_: In_IN a_DT federated_JJ system_NN ,_, independent_JJ entities_NNS form_VBP a_DT single_JJ system_NN ._.
+As_IN an_DT example_NN ,_, an_DT organization_NN spanning_VBG different_JJ cou_NN
+in_IN such_PDT a_DT partitioning_NN of_IN the_DT index_NN is_VBZ that_IN changes_NNS in_IN the_DT topic_NN distribution_NN of_IN documents_NNS or_CC queries_NNS might_MD have_VB a_DT negative_JJ effect_NN on_IN the_DT performance_NN of_IN the_DT distributed_VBN retrieval_NN system_NN ._.
+As_IN shown_VBN in_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, simulations_NNS of_IN distributed_VBN query_NN processing_NN architectures_NNS indicate_VBP that_IN changes_NNS in_IN the_DT topic_NN distribution_NN of_IN queries_NNS can_MD adversely_RB impact_VB performance_NN ,_, resulting_VBG in_IN either_CC the_DT resources_NNS not_RB being_VBG exp_NN
+,_, it_PRP is_VBZ necessary_JJ to_TO guarantee_VB that_IN the_DT state_NN is_VBZ consistent_JJ in_IN every_DT update_VBP ,_, and_CC that_IN the_DT user_NN state_NN is_VBZ never_RB lost_VBN ._.
+There_EX are_VBP techniques_NNS from_IN distributed_VBN algorithms_NNS ,_, such_JJ as_IN state-machine_JJ replication_NN =_JJ -_: =[_NN 42_CD ,_, 29_CD -RRB-_-RRB- -_: =_JJ -_: and_CC primary-backup_JJ -LRB-_-LRB- 11_CD ,_, 52_CD -RRB-_-RRB- ,_, to_TO implement_VB such_JJ fault-tolerant_JJ services_NNS ._.
+The_DT main_JJ challenge_NN is_VBZ to_TO apply_VB such_JJ techniques_NNS on_IN large-scale_JJ systems_NNS ._.
+Traditional_JJ fault-tolerant_JJ systems_NNS assume_VBP a_DT small_JJ number_NN
+se_FW it_PRP consumes_VBZ bandwidth_NN and_CC processing_NN cycles_NNS of_IN other_JJ systems_NNS ._.
+In_IN fact_NN ,_, ``_`` running_VBG a_DT crawler_NN which_WDT connects_VBZ to_TO more_JJR than_IN half_PDT a_DT million_CD servers_NNS -LRB-_-LRB- ..._: -RRB-_-RRB- generates_VBZ a_DT fair_JJ amount_NN of_IN email_NN and_CC phone_NN calls_NNS ''_'' =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Web_NN crawlers_NNS can_MD have_VB a_DT detrimental_JJ effect_NN on_IN the_DT network_NN if_IN they_PRP are_VBP deployed_VBN without_IN taking_VBG into_IN account_NN a_DT set_NN of_IN operational_JJ guidelines_NNS to_TO minimize_VB their_PRP$ impact_NN on_IN Web_NN servers_NNS -LRB-_-LRB- 28_CD -RRB-_-RRB- ._.
+The_DT most_RBS impo_JJ
+s_NN polling_NN ._.
+This_DT could_MD be_VB improved_VBN if_IN the_DT Web_NN server_NN informs_VBZ the_DT crawler_NN of_IN the_DT modification_NN dates_NNS and_CC modification_NN frequencies_NNS for_IN its_PRP$ local_JJ pages_NNS ._.
+There_EX have_VBP been_VBN several_JJ proposals_NNS in_IN this_DT direction_NN =_JJ -_: =[_NN 24_CD ,_, 8_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC recently_RB three_CD of_IN the_DT largest_JJS search_NN engines_NNS agreed_VBD on_IN a_DT standard_NN for_IN this_DT type_NN of_IN server-crawler_JJ cooperation_NN -LRB-_-LRB- http:\/\/www.sitemaps.org\/_NN -RRB-_-RRB- ._.
+External_JJ factors_NNS DNS_NN is_VBZ frequently_RB a_DT bottleneck_NN for_IN the_DT
+ding_JJ Web_NN servers_NNS ._.
+De_NNP facto_JJ standards_NNS of_IN operation_NN state_NN that_IN a_DT crawler_NN should_MD not_RB open_VB more_JJR than_IN one_CD connection_NN at_IN a_DT time_NN to_TO each_DT Web_NN server_NN ,_, and_CC should_MD wait_VB several_JJ seconds_NNS between_IN repeated_JJ accesses_NNS =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO enable_VB scaling_VBG to_TO millions_NNS of_IN servers_NNS ,_, large-scale_JJ crawling_NN requires_VBZ distributing_VBG the_DT load_NN across_IN a_DT number_NN of_IN agents_NNS while_IN still_RB respecting_VBG these_DT constraints_NNS ._.
+A_DT distributed_VBN crawler_NN 1_CD is_VBZ a_DT Web_NN cra_NN
+vailability_NN of_IN large-scale_JJ ,_, distributed_VBN information_NN retrieval_NN systems_NNS is_VBZ that_IN on_IN wide-area_JJ systems_NNS the_DT network_NN connectivity_NN often_RB depends_VBZ upon_IN providers_NNS ,_, and_CC routing_VBG failures_NNS happen_VB frequently_RB enough_RB =_JJ -_: =[_NN 37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Communication_NN -LRB-_-LRB- synchronization_NN -RRB-_-RRB- Distributing_VBG the_DT tasks_NNS of_IN an_DT information_NN retrieval_NN system_NN enables_VBZ a_DT number_NN of_IN desirable_JJ features_NNS ,_, as_IN we_PRP have_VBP seen_VBN previously_RB ._.
+A_DT major_JJ drawback_NN that_WDT arises_VBZ from_IN the_DT di_FW
+his_PRP$ paper_NN we_PRP survey_VBP and_CC organize_VBP recent_JJ research_NN results_NNS ,_, outlining_VBG the_DT main_JJ challenges_NNS of_IN designing_VBG a_DT distributed_VBN Web_NN retrieval_NN system_NN ._.
+1_CD Introduction_NN A_NN standard_JJ Web_NN search_NN engine_NN has_VBZ two_CD main_JJ parts_NNS =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT first_JJ part_NN ,_, conducted_VBN off-line_JJ ,_, fetches_VBZ Web_NN pages_NNS -LRB-_-LRB- crawler_NN -RRB-_-RRB- and_CC builds_VBZ an_DT index_NN with_IN the_DT text_NN content_NN -LRB-_-LRB- indexer_NN -RRB-_-RRB- ._.
+The_DT second_JJ part_NN ,_, conducted_VBN online_NN ,_, processes_VBZ a_DT stream_NN of_IN queries_NNS -LRB-_-LRB- query_NN processor_NN
+iciently_RB and_CC effectively_RB in_IN distributed_VBN Web_NN search_NN engines_NNS ?_.
+In_IN the_DT past_JJ few_JJ years_NNS ,_, using_VBG query_NN logs_NNS to_TO partition_NN the_DT document_NN collection_NN and_CC query_NN routing_VBG has_VBZ been_VBN the_DT focus_NN of_IN some_DT research_NN projects_NNS =_JJ -_: =[_NN 38_CD ,_, 45_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN a_DT term_NN partitioned_VBD IR_NN system_NN ,_, the_DT major_JJ goal_NN is_VBZ to_TO partition_NN the_DT index_NN such_JJ that_IN :_: •_VB The_DT number_NN of_IN contacted_VBN servers_NNS is_VBZ minimal_JJ ;_: •_CD Load_NN is_VBZ equally_RB spread_VBN across_IN all_DT available_JJ servers_NNS ._.
+For_IN a_DT term_NN
+partitioned_VBN Distributing_VBG documents_NNS randomly_RB across_IN servers_NNS ,_, however_RB ,_, rection_NN sounds_VBZ promising_JJ ,_, although_IN there_EX are_VBP still_RB important_JJ does_VBZ not_RB guarantee_VB one_CD ,_, 95.3_CD %_NN an_DT even_RB compared_VBN load_NN balance_NN to_TO 58.0_CD %_NN ._.
+=_SYM -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+On_IN the_DT one_CD hand_NN ,_, this_DT open_NN is_VBZ to_TO questions_NNS ._.
+the_DT creditFor_NN of_IN document-distribution_NN ,_, instance_NN ,_, collection_NN selection_NN in_IN might_NN inThe_NN majorthat_NN drawback_NN it_PRP demonstrates_VBZ of_IN document_NN thatpartitioned_VBD it_PRP is_VBZ
+s_VBZ a_DT clear_JJ distinction_NN between_IN clients_NNS that_WDT only_RB submit_VBP queries_NNS and_CC servers_NNS that_IN only_JJ process_NN queries_NNS ._.
+Alternatively_RB ,_, participants_NNS can_MD be_VB both_DT clients_NNS and_CC servers_NNS such_JJ as_IN in_IN peer-to-peer_NN -LRB-_-LRB- P2P_NN -RRB-_-RRB- systems_NNS =_JJ -_: =[_NN 5_CD ,_, 19_CD ,_, 48_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN such_JJ systems_NNS ,_, all_DT peers_NNS have_VBP all_PDT the_DT roles_NNS we_PRP mention_VBP above_IN ;_: •_CD Interaction_NN :_: In_IN a_DT federated_JJ system_NN ,_, independent_JJ entities_NNS form_VBP a_DT single_JJ system_NN ._.
+As_IN an_DT example_NN ,_, an_DT organization_NN spanning_VBG different_JJ cou_NN
+htforward_RB ,_, we_PRP repeat_VBP in_IN Figure_NNP 5_CD a_DT graph_NN that_WDT originally_RB appeared_VBD in_IN the_DT work_NN by_IN Junqueira_NNP and_CC Marzullo_NNP -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+This_DT graph_NN summarizes_VBZ availability_NN figures_NNS obtained_VBN for_IN the_DT sites_NNS of_IN the_DT BIRN_NNP Grid_NNP system_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+BIRN_NNP had_VBD 16_CD sites_NNS connected_VBN to_TO the_DT Internet_NN during_IN the_DT measurement_NN period_NN -LRB-_-LRB- January_NNP through_IN August_NNP 2004_CD -RRB-_-RRB- ._.
+Each_DT site_NN comprises_VBZ a_DT number_NN of_IN servers_NNS ,_, and_CC we_PRP say_VBP that_IN a_DT site_NN is_VBZ unavailable_JJ if_IN it_PRP is_VBZ not_RB p_NN
+the_DT merging_JJ process_NN of_IN results_NNS because_IN more_RBR relevant_JJ results_NNS may_MD appear_VB later_RB due_JJ to_TO latencies_NNS ._.
+A_DT paradigm_NN shift_NN in_IN the_DT way_NN that_IN clients_NNS use_VBP search_NN is_VBZ also_RB possible_JJ with_IN incremental_JJ query_NN processing_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN an_DT example_NN ,_, we_PRP envision_VBP applications_NNS that_IN from_IN context_NN infer_VBP a_DT query_NN and_CC return_NN results_NNS instead_RB of_IN having_VBG users_NNS directly_RB searching_VBG using_VBG a_DT search_NN engine_NN interface_NN ._.
+When_WRB query_NN processing_NN involves_VBZ
+ee_NN that_IN the_DT state_NN is_VBZ consistent_JJ in_IN every_DT update_VBP ,_, and_CC that_IN the_DT user_NN state_NN is_VBZ never_RB lost_VBN ._.
+There_EX are_VBP techniques_NNS from_IN distributed_VBN algorithms_NNS ,_, such_JJ as_IN state-machine_JJ replication_NN -LRB-_-LRB- 42_CD ,_, 29_CD -RRB-_-RRB- and_CC primary-backup_NN =_JJ -_: =[_NN 11_CD ,_, 52_CD -RRB-_-RRB- -_: =_JJ -_: ,_, to_TO implement_VB such_JJ fault-tolerant_JJ services_NNS ._.
+The_DT main_JJ challenge_NN is_VBZ to_TO apply_VB such_JJ techniques_NNS on_IN large-scale_JJ systems_NNS ._.
+Traditional_JJ fault-tolerant_JJ systems_NNS assume_VBP a_DT small_JJ number_NN of_IN processes_NNS ._.
+An_DT exception_NN
+s_NN polling_NN ._.
+This_DT could_MD be_VB improved_VBN if_IN the_DT Web_NN server_NN informs_VBZ the_DT crawler_NN of_IN the_DT modification_NN dates_NNS and_CC modification_NN frequencies_NNS for_IN its_PRP$ local_JJ pages_NNS ._.
+There_EX have_VBP been_VBN several_JJ proposals_NNS in_IN this_DT direction_NN =_JJ -_: =[_NN 24_CD ,_, 8_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC recently_RB three_CD of_IN the_DT largest_JJS search_NN engines_NNS agreed_VBD on_IN a_DT standard_NN for_IN this_DT type_NN of_IN server-crawler_JJ cooperation_NN -LRB-_-LRB- http:\/\/www.sitemaps.org\/_NN -RRB-_-RRB- ._.
+External_JJ factors_NNS DNS_NN is_VBZ frequently_RB a_DT bottleneck_NN for_IN the_DT
+d_NN by_IN crawling_VBG among_IN all_DT pages_NNS available_JJ on_IN the_DT Web_NN ._.
+The_DT network_NN topology_NN can_MD also_RB be_VB a_DT bottleneck_NN ._.
+To_TO solve_VB this_DT problem_NN ,_, we_PRP can_MD carefully_RB distribute_VB Web_NN crawlers_NNS across_IN distinct_JJ geographic_JJ locations_NNS =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT optimization_NN problem_NN has_VBZ many_JJ variables_NNS ,_, including_VBG network_NN costs_NNS at_IN different_JJ locations_NNS and_CC the_DT cost_NN of_IN sending_VBG data_NNS back_RB to_TO the_DT search_NN engine_NN ._.
+In_IN this_DT scenario_NN ,_, part_NN of_IN the_DT indexing_NN -LRB-_-LRB- or_CC at_IN lea_NN
+ferent_JJ ways_NNS ._.
+To_TO provide_VB some_DT evidence_NN that_IN achieving_VBG high_JJ availability_NN is_VBZ not_RB necessarily_RB straightforward_JJ ,_, we_PRP repeat_VBP in_IN Figure_NNP 5_CD a_DT graph_NN that_WDT originally_RB appeared_VBD in_IN the_DT work_NN by_IN Junqueira_NN and_CC Marzullo_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT graph_NN summarizes_VBZ availability_NN figures_NNS obtained_VBN for_IN the_DT sites_NNS of_IN the_DT BIRN_NNP Grid_NNP system_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+BIRN_NNP had_VBD 16_CD sites_NNS connected_VBN to_TO the_DT Internet_NN during_IN the_DT measurement_NN period_NN -LRB-_-LRB- January_NNP through_IN August_NNP 2004_CD -RRB-_-RRB-
+Sorting_VBG efficiently_RB these_DT records_NNS using_VBG a_DT good_JJ balance_NN of_IN memory_NN and_CC disk_NN usage_NN ,_, is_VBZ a_DT very_RB challenging_JJ operation_NN ._.
+Recently_RB it_PRP has_VBZ been_VBN shown_VBN that_IN sort-based_JJ approaches_NNS -LRB-_-LRB- 50_CD -RRB-_-RRB- ,_, or_CC single-pass_JJ algorithms_NNS =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_JJ -_: ,_, are_VBP efficient_JJ in_IN several_JJ scenarios_NNS ,_, where_WRB indexing_NN of_IN a_DT large_JJ amount_NN of_IN data_NNS is_VBZ performed_VBN with_IN limited_JJ resources_NNS ._.
+In_IN the_DT case_NN of_IN Web_NN Search_VB Engines_NNS ,_, data_NNS repositories_NNS are_VBP extremely_RB large_JJ ._.
+Efficientl_NN
+ocument_NN partitioned_VBD system_NN achieves_VBZ higher_JJR throughput_NN than_IN the_DT term_NN partitioned_VBD system_NN ,_, even_RB when_WRB considering_VBG the_DT performance_NN benefits_NNS due_JJ to_TO the_DT even_JJ distribution_NN of_IN load_NN ._.
+Similarly_RB ,_, Lucchese_NNP et_FW al._FW =_SYM -_: =[_NN 34_CD -RRB-_-RRB- -_: =_SYM -_: build_VB upon_IN the_DT previous_JJ bin-packing_JJ approach_NN by_IN designing_VBG a_DT weighted_JJ function_NN for_IN terms_NNS and_CC partitions_NNS able_JJ to_TO model_VB the_DT query_NN load_NN on_IN each_DT server_NN ._.
+In_IN the_DT original_JJ bin-packing_JJ problem_NN we_PRP simply_RB aim_VB a_DT
+access_NN to_TO all_PDT the_DT information_NN necessary_JJ from_IN any_DT other_JJ component_NN ,_, and_CC assume_VB that_IN all_DT other_JJ components_NNS behave_VBP in_IN the_DT best_JJS interest_NN of_IN the_DT system_NN ._.
+In_IN open_JJ systems_NNS 3_CD ,_, however_RB ,_, this_DT may_MD not_RB be_VB the_DT case_NN =_JJ -_: =[_NN 44_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Sites_NNS from_IN different_JJ organizations_NNS cooperate_VBP as_IN opposed_VBN to_TO forming_VBG a_DT unity_NN and_CC therefore_RB may_MD act_VB from_IN self-interest_NN by_IN ,_, for_IN example_NN ,_, changing_VBG priorities_NNS on_IN query_NN resolution_NN that_WDT affect_VBP the_DT performan_NN
+mplementation_NN of_IN such_PDT a_DT feature_NN is_VBZ DNS_NNP redirection_NN :_: according_VBG to_TO the_DT IP_NNP address_NN of_IN the_DT client_NN ,_, the_DT DNS_NNP service_NN routes_VBZ the_DT query_NN to_TO the_DT appropriate_JJ coordinator_NN ,_, usually_RB the_DT closest_JJS in_IN network_NN distance_NN =_JJ -_: =[_NN 47_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN another_DT example_NN ,_, the_DT DNS_NN service_NN can_MD use_VB geographical_JJ location_NN to_TO determine_VB where_WRB to_TO route_NN queries_NNS to_TO ._.
+As_IN there_EX is_VBZ fluctuation_NN in_IN submitted_VBN queries_NNS from_IN a_DT particular_JJ geographic_JJ region_NN during_IN a_DT da_NN
+ee_NN that_IN the_DT state_NN is_VBZ consistent_JJ in_IN every_DT update_VBP ,_, and_CC that_IN the_DT user_NN state_NN is_VBZ never_RB lost_VBN ._.
+There_EX are_VBP techniques_NNS from_IN distributed_VBN algorithms_NNS ,_, such_JJ as_IN state-machine_JJ replication_NN -LRB-_-LRB- 42_CD ,_, 29_CD -RRB-_-RRB- and_CC primary-backup_NN =_JJ -_: =[_NN 11_CD ,_, 52_CD -RRB-_-RRB- -_: =_JJ -_: ,_, to_TO implement_VB such_JJ fault-tolerant_JJ services_NNS ._.
+The_DT main_JJ challenge_NN is_VBZ to_TO apply_VB such_JJ techniques_NNS on_IN large-scale_JJ systems_NNS ._.
+Traditional_JJ fault-tolerant_JJ systems_NNS assume_VBP a_DT small_JJ number_NN of_IN processes_NNS ._.
+An_DT exception_NN
+es_VBZ it_PRP unnecessary_JJ to_TO transfer_VB those_DT URLs_NNS to_TO a_DT different_JJ agent_NN ._.
+An_DT effective_JJ assignment_NN function_NN balances_VBZ the_DT load_NN across_IN the_DT agents_NNS such_JJ that_IN each_DT crawling_VBG agent_NN gets_VBZ approximately_RB the_DT same_JJ work_NN load_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN addition_NN ,_, it_PRP should_MD be_VB dynamic_JJ with_IN respect_NN to_TO agents_NNS joining_VBG and_CC leaving_VBG the_DT system_NN ._.
+Another_DT important_JJ feature_NN of_IN such_PDT an_DT assignment_NN function_NN is_VBZ the_DT reduction_NN on_IN the_DT load_NN of_IN servers_NNS as_IN we_PRP add_VBP mo_NN

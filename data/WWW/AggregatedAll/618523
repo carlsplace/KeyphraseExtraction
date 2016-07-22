@@ -1,0 +1,72 @@
+Dynamic_NNP maintenance_NN of_IN web_NN indexes_NNS using_VBG landmarks_NNS
+Recent_JJ work_NN on_IN incremental_JJ crawling_NN has_VBZ enabled_VBN the_DT indexed_VBN document_NN collection_NN of_IN a_DT search_NN engine_NN to_TO be_VB more_RBR synchronized_VBN with_IN the_DT changing_VBG World_NN Wide_NN Web_NN ._.
+However_RB ,_, this_DT synchronized_VBN collection_NN is_VBZ not_RB immediately_RB searchable_JJ ,_, because_IN the_DT keyword_JJ index_NN is_VBZ rebuilt_VBN from_IN scratch_NN less_RBR frequently_RB than_IN the_DT collection_NN can_MD be_VB refreshed_VBN ._.
+An_DT inverted_JJ index_NN is_VBZ usually_RB used_VBN to_TO index_NN documents_NNS crawled_VBD from_IN the_DT web_NN ._.
+Complete_JJ index_NN rebuild_VB at_IN high_JJ frequency_NN is_VBZ expensive_JJ ._.
+Previous_JJ work_NN on_IN incremental_JJ inverted_JJ index_NN updates_NNS have_VBP been_VBN restricted_JJ to_TO adding_VBG and_CC removing_VBG documents_NNS ._.
+Updating_VBG the_DT inverted_JJ index_NN for_IN previously_RB indexed_VBN documents_NNS that_WDT have_VBP changed_VBN has_VBZ not_RB been_VBN addressed_VBN ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP an_DT efficient_JJ method_NN to_TO update_VB the_DT inverted_JJ index_NN for_IN previously_RB indexed_VBN documents_NNS whose_WP$ contents_NNS have_VBP changed_VBN ._.
+Our_PRP$ method_NN uses_VBZ the_DT idea_NN of_IN landmarks_NNS together_RB with_IN the_DT diff_JJ algorithm_NN to_TO significantly_RB reduce_VB the_DT number_NN of_IN postings_NNS in_IN the_DT inverted_JJ index_NN that_WDT need_VBP to_TO be_VB updated_VBN ._.
+Our_PRP$ experiments_NNS verify_VBP that_IN our_PRP$ landmark-diff_JJ method_NN results_VBZ in_IN significant_JJ savings_NNS in_IN the_DT number_NN of_IN update_VB operations_NNS on_IN the_DT inverted_JJ index_NN ._.
+system_NN could_MD not_RB perform_VB updates_NNS or_CC deletions_NNS of_IN triples_NNS without_IN a_DT full_JJ re-indexing_NN ._.
+The_DT authors_NNS have_VBP recently_RB -LRB-_-LRB- 12_CD -RRB-_-RRB- proposed_VBD an_DT extension_NN for_IN incremental_JJ maintenance_NN operations_NNS based_VBN on_IN the_DT landmark_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_JJ -_: technique_NN but_CC the_DT update_VBP complexity_NN remains_VBZ substantial_JJ ._.
+The_DT update_VBP cost_NN is_VBZ O_NN -LRB-_-LRB- log_NN -LRB-_-LRB- n_NN -RRB-_-RRB- +_CC log_NN -LRB-_-LRB- l_NN -RRB-_-RRB- -RRB-_-RRB- with_IN l_NN the_DT number_NN of_IN landmarks_NNS in_IN the_DT posting_VBG list_NN ._.
+The_DT fact_NN that_IN Semplore_NNP uses_VBZ multiple_JJ indexes_NNS and_CC lan_NN
+es_NNS ._.
+Those_DT blackboxes_NNS are_VBP rule-based_JJ IE_NN blackboxes_NNS ,_, not_RB the_DT statistical_JJ programs_NNS that_IN we_PRP consider_VBP here_RB ._.
+As_IN we_PRP describe_VBP ,_, these_DT rule-based_JJ solutions_NNS ignore_VBP many_JJ recycling_VBG opportunities_NNS ._.
+Other_JJ work_NN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =--RRB-_NN considers_VBZ evolving_VBG text_NN data_NNS ,_, but_CC not_RB for_IN IE_JJ programs_NNS :_: their_PRP$ focus_NN is_VBZ on_IN incrementally_RB updating_VBG an_DT inverted_JJ index_NN ,_, as_IN the_DT indexed_VBN Web_NN pages_NNS change_VBP ._.
+CRFs_NNS :_: CRF-based_JJ IE_NN has_VBZ received_VBN much_JJ attention_NN rec_NN
+each_DT document_NN ._.
+This_DT approach_NN is_VBZ a_DT major_JJ departure_NN from_IN the_DT inverted-files_JJ paradigm_NN of_IN traditional_JJ IR_NN and_CC text_NN analytics_NNS ._.
+Our_PRP$ approach_NN resembles_VBZ the_DT notion_NN of_IN ``_`` forward_JJ indexes_NNS ''_'' in_IN the_DT IR_NN 3literature_NN =_JJ -_: =[_NN 6_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC it_PRP has_VBZ not_RB received_VBN much_JJ attention_NN there_RB either_RB ._.
+In_IN the_DT following_NN ,_, we_PRP refer_VBP to_TO our_PRP$ novel_JJ notion_NN of_IN per-document_JJ compressed_VBN phrase_NN lists_NNS as_IN forward_JJ index_NN lists_NNS ._.
+Given_VBN a_DT subset_NN D_NN ′_FW ⊂_FW D_NN -LRB-_-LRB- or_CC two_CD set_NN
+of_IN search_NN engine_NN design_NN ._.
+Word_NN distance_NN reflects_VBZ the_DT amount_NN of_IN work_NN required_VBN to_TO bring_VB the_DT search_NN index_NN up_IN to_TO date_NN ,_, assuming_VBG modifications_NNS are_VBP made_VBN incrementally_RB to_TO allow_VB immediate_JJ searchability_NN as_IN in_IN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Both_DT metrics_NNS ignore_VBP the_DT order_NN in_IN which_WDT terms_NNS appear_VBP on_IN a_DT page_NN ,_, i.e._FW they_PRP treat_VBP pages_NNS as_IN ``_`` bags_NN of_IN words_NNS ._. ''_''
+Doing_VBG so_RB is_VBZ consistent_JJ with_IN the_DT way_NN in_IN which_WDT typical_JJ search_NN engines_NNS treat_VBP documents_NNS -LRB-_-LRB- with_IN the_DT
+a_DT ,_, but_CC in_IN different_JJ problem_NN contexts_NNS ._.
+The_DT work_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- considers_VBZ how_WRB to_TO repair_VB a_DT wrapper_NN -LRB-_-LRB- so_IN that_IN it_PRP continues_VBZ to_TO extract_VB semantically_RB correct_JJ data_NNS -RRB-_-RRB- as_IN the_DT underlying_VBG page_NN templates_NNS change_VBP ,_, and_CC the_DT work_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: considers_VBZ how_WRB to_TO incrementally_RB update_VB an_DT inverted_JJ index_NN ,_, as_IN the_DT indexed_VBN Web_NN pages_NNS change_VBP ._.
+Recent_JJ work_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 14_CD -RRB-_-RRB- has_VBZ also_RB exploited_VBN overlapping_VBG text_NN data_NNS ,_, but_CC again_RB in_IN different_JJ problem_NN contexts_NNS ._.
+The_DT
+cription_NN of_IN this_DT technique_NN in_IN the_DT previous_JJ section_NN was_VBD adapted_VBN to_TO this_DT new_JJ scenario_NN ._. -RRB-_-RRB-
+Index_NN Updates_NNS :_: A_DT number_NN of_IN researchers_NNS have_VBP studied_VBN the_DT problem_NN of_IN efficiently_RB updating_VBG inverted_JJ index_NN structures_NNS =_JJ -_: =[_NN 9_CD ,_, 36_CD ,_, 11_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN mentioned_VBN ,_, current_JJ state-of-the-art_JJ methods_NNS generate_VBP posting_VBG updates_NNS that_WDT are_VBP only_RB periodically_RB merged_VBN into_IN the_DT disk-based_JJ structures_NNS ,_, rather_RB than_IN directly_RB applying_VBG changes_NNS on_IN disk_NN ._.
+Most_RBS relevant_JJ
+cription_NN of_IN this_DT technique_NN in_IN the_DT previous_JJ section_NN was_VBD adapted_VBN to_TO this_DT new_JJ scenario_NN ._. -RRB-_-RRB-
+Index_NN Updates_NNS :_: A_DT number_NN of_IN researchers_NNS have_VBP studied_VBN the_DT problem_NN of_IN efficiently_RB updating_VBG inverted_JJ index_NN structures_NNS =_JJ -_: =[_NN 9_CD ,_, 36_CD ,_, 11_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN mentioned_VBN ,_, current_JJ state-of-the-art_JJ methods_NNS generate_VBP posting_VBG updates_NNS that_WDT are_VBP only_RB periodically_RB merged_VBN into_IN the_DT disk-based_JJ structures_NNS ,_, rather_RB than_IN directly_RB applying_VBG changes_NNS on_IN disk_NN ._.
+Most_RBS relevant_JJ
+ntenance_NN strategies_NNS for_IN text_NN retrieval_NN systems_NNS in_IN dynamic_JJ search_NN environments_NNS ,_, where_WRB index_NN update_VB operations_NNS are_VBP interleaved_VBN with_IN search_NN queries_NNS ,_, have_VBP been_VBN studied_VBN intensively_RB over_IN the_DT past_JJ few_JJ years_NNS =_JJ -_: =[_NN 25_CD ,_, 24_CD ,_, 9_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO implement_VB an_DT index_NN update_VBP strategy_NN ,_, it_PRP is_VBZ straightforward_JJ to_TO construct_NN and_CC index_NN for_IN a_DT block_NN of_IN new_JJ documents_NNS ,_, then_RB merge_VB it_PRP with_IN an_DT existing_VBG index_NN -LRB-_-LRB- 24_CD ,_, 23_CD -RRB-_-RRB- ._.
+Buffering_VBG new_JJ documents_NNS ,_, as_IN they_PRP will_MD
+s_NN top_NN --_: queries_NNS efficiently_RB when_WRB the_DT document_NN scores_NNS change_VBP frequently_RB ._.
+There_EX has_VBZ also_RB been_VBN some_DT work_NN on_IN devising_VBG inverted_JJ lists_NNS that_WDT can_MD efficiently_RB handle_VB document_NN insertions_NNS ,_, deletions_NNS and_CC updates_NNS =_JJ -_: =[_NN 19_CD ,_, 21_CD ,_, 28_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC these_DT are_VBP not_RB designed_VBN to_TO handle_VB score_NN updates_NNS ._.
+3_CD System_NNP Architecture_NNP One_CD of_IN our_PRP$ primary_JJ design_NN goals_NNS was_VBD to_TO tightly_RB integrate_VB SVR_NN with_IN a_DT relational_JJ database_NN ._.
+Towards_IN this_DT end_NN ,_, we_PRP build_VBP upon_IN the_DT
+frequently_RB ,_, we_PRP have_VBP designed_VBN our_PRP$ own_JJ novel_JJ inverted_JJ lists_NNS indices_NNS in_IN Chapter_NN 2_CD ._.
+There_EX have_VBP been_VBN works_NNS on_IN devising_VBG inverted_JJ lists_NNS that_WDT can_MD efficiently_RB handle_VB document_NN insertions_NNS ,_, deletions_NNS and_CC updates_NNS =_JJ -_: =[_NN 69_CD ,_, 75_CD ,_, 93_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC still_RB these_DT are_VBP not_RB designed_VBN to_TO handle_VB document_NN score_NN updates_NNS ._.
+Long_NNP and_CC Suel_NNP -LRB-_-LRB- 76_CD -RRB-_-RRB- propose_VBP a_DT fancy_JJ list_NN ,_, which_WDT together_RB with_IN the_DT normal_JJ ranked_VBD inverted_JJ lists_NNS ,_, can_MD efficiently_RB evaluate_VB top-k_NN resul_NN
+of_IN search_NN engine_NN design_NN ._.
+Word_NN distance_NN reflects_VBZ the_DT amount_NN of_IN work_NN required_VBN to_TO bring_VB the_DT search_NN index_NN up_IN to_TO date_NN ,_, assuming_VBG modifications_NNS are_VBP made_VBN incrementally_RB to_TO allow_VB immediate_JJ searchability_NN as_IN in_IN =_JJ -_: =_JJ -LRB-_-LRB- LWP03_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+Both_DT metrics_NNS ignore_VBP the_DT order_NN in_IN which_WDT terms_NNS appear_VBP on_IN a_DT page_NN ,_, i.e._FW they_PRP treat_VBP pages_NNS as_IN ``_`` bags_NN of_IN words_NNS ._. ''_''
+Doing_VBG so_RB is_VBZ consistent_JJ with_IN the_DT way_NN in_IN which_WDT typical_JJ search_NN engines_NNS treat_VBP documents_NNS -LRB-_-LRB- with_IN the_DT
+emoval_NN of_IN values_NNS to\/from_VBP the_DT index_NN -RRB-_-RRB- are_VBP realized_VBN using_VBG other_JJ approaches_NNS ,_, e.g._FW Btree_FW -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+Future_JJ ._.
+Research_NN in_IN this_DT area_NN continues_VBZ and_CC new_JJ approaches_NNS are_VBP still_RB developed_VBN ,_, for_IN instance_NN ,_, a_DT landmark_NN method_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT introduces_VBZ special_JJ marks_NNS in_IN the_DT index_NN ._.
+The_DT marks_NNS are_VBP used_VBN as_IN initial_JJ points_NNS from_IN which_WDT some_DT values_NNS in_IN the_DT index_NN are_VBP computed_VBN -LRB-_-LRB- derived_VBN -RRB-_-RRB- ._.
+Therefore_RB ,_, if_IN one_CD modifies_VBZ the_DT mark_NN ,_, all_DT values_NNS dependent_JJ
+val_NN of_IN values_NNS to\/from_VBP the_DT index_NN -RRB-_-RRB- are_VBP realized_VBN using_VBG other_JJ approaches_NNS ,_, e.g._FW Btree_FW -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Landmark_NNP ._.
+Research_NN in_IN this_DT area_NN continues_VBZ and_CC new_JJ approaches_NNS are_VBP still_RB developed_VBN ,_, for_IN instance_NN ,_, a_DT landmark_NN method_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT introduces_VBZ special_JJ marks_NNS in_IN the_DT index_NN ._.
+The_DT marks_NNS are_VBP used_VBN as_IN initial_JJ points_NNS from_IN which_WDT some_DT values_NNS in_IN the_DT index_NN are_VBP derived_VBN ._.
+Therefore_RB ,_, if_IN one_CD modifies_VBZ the_DT mark_NN ,_, all_DT values_NNS dependent_JJ on_IN the_DT mar_FW
+changed_VBN ._.
+In_IN such_PDT a_DT case_NN ,_, it_PRP might_MD be_VB possible_JJ to_TO slightly_RB reduce_VB the_DT indexing_NN overhead_NN ,_, by_IN performing_VBG a_DT diff_NN 4_CD operation_NN to_TO find_VB out_RP which_WDT parts_NNS of_IN a_DT file_NN need_NN to_TO be_VB re-indexed_JJ ,_, as_IN done_VBN by_IN Lim_NNP et_FW al._FW =_SYM -_: =[_NN 71_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, as_IN can_MD be_VB seen_VBN from_IN Table_NNP 4.5_CD -LRB-_-LRB- Chapter_NN 4_CD -RRB-_-RRB- ,_, the_DT reading_NN and_CC parsing_VBG overhead_JJ accounts_NNS for_IN a_DT large_JJ portion_NN of_IN the_DT total_JJ workload_NN of_IN the_DT indexing_NN process_NN ,_, making_VBG it_PRP questionable_JJ whether_IN substa_NN
+n._FW In_FW terms_NNS of_IN IE_NN over_IN evolving_VBG text_NN data_NNS ,_, Cyclex_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- is_VBZ the_DT closest_JJS work_NN to_TO ours_PRP ._.
+But_CC Cyclex_NNP is_VBZ limited_VBN in_IN that_IN it_PRP considers_VBZ only_RB IE_JJ programs_NNS that_WDT contain_VBP a_DT single_JJ IE_NN blackbox_NN ,_, as_IN we_PRP have_VBP discussed_VBN ._.
+=_SYM -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: also_RB considers_VBZ evolving_VBG text_NN data_NNS ,_, but_CC in_IN different_JJ problem_NN contexts_NNS ._.
+They_PRP focus_VBP on_IN how_WRB to_TO incrementally_RB update_VB an_DT inverted_JJ index_NN ,_, as_IN the_DT indexed_VBN Web_NN pages_NNS change_VBP ._.
+Recent_JJ work_NN -LRB-_-LRB- 31_CD ,_, 19_CD -RRB-_-RRB- has_VBZ also_RB explo_VBN

@@ -1,0 +1,579 @@
+Scaling_VBG personalized_JJ web_NN search_NN
+Recent_JJ web_NN search_NN techniques_NNS augment_VBP traditional_JJ text_NN matching_NN with_IN a_DT global_JJ notion_NN of_IN ``_`` importance_NN ''_'' based_VBN on_IN the_DT linkage_NN structure_NN of_IN the_DT web_NN ,_, such_JJ as_IN in_IN Google_NNP 's_POS PageRank_NNP algorithm_NN ._.
+For_IN more_JJR refined_JJ searches_NNS ,_, this_DT global_JJ notion_NN of_IN importance_NN can_MD be_VB specialized_VBN to_TO create_VB personalized_JJ views_NNS of_IN importance_NN --_: for_IN example_NN ,_, importance_NN scores_NNS can_MD be_VB biased_VBN according_VBG to_TO a_DT user-specified_JJ set_NN of_IN initially-interesting_JJ pages_NNS ._.
+Computing_NNP and_CC storing_VBG all_DT possible_JJ personalized_JJ views_NNS in_IN advance_NN is_VBZ impractical_JJ ,_, as_IN is_VBZ computing_VBG personalized_JJ views_NNS at_IN query_NN time_NN ,_, since_IN the_DT computation_NN of_IN each_DT view_NN requires_VBZ an_DT iterative_JJ computation_NN over_IN the_DT web_NN graph_NN ._.
+We_PRP present_VBP new_JJ graph-theoretical_JJ results_NNS ,_, and_CC a_DT new_JJ technique_NN based_VBN on_IN these_DT results_NNS ,_, that_WDT encode_VBP personalized_JJ views_NNS as_IN partial_JJ vectors_NNS ._.
+Partial_JJ vectors_NNS are_VBP shared_VBN across_IN multiple_JJ personalized_JJ views_NNS ,_, and_CC their_PRP$ computation_NN and_CC storage_NN costs_NNS scale_VBP well_RB with_IN the_DT number_NN of_IN views_NNS ._.
+Our_PRP$ approach_NN enables_VBZ incremental_JJ computation_NN ,_, so_IN that_IN the_DT construction_NN of_IN personalized_JJ views_NNS from_IN partial_JJ vectors_NNS is_VBZ practical_JJ at_IN query_JJ time_NN ._.
+We_PRP present_VBP efficient_JJ dynamic_JJ programming_NN algorithms_NNS for_IN computing_VBG partial_JJ vectors_NNS ,_, an_DT algorithm_NN for_IN constructing_VBG personalized_JJ views_NNS from_IN partial_JJ vectors_NNS ,_, and_CC experimental_JJ results_NNS demonstrating_VBG the_DT effectiveness_NN and_CC scalability_NN of_IN our_PRP$ techniques_NNS ._.
+I_PRP network_VBP available_JJ from_IN BioGRID_NN or_CC specified_VBN by_IN the_DT user_NN ._.
+Our_PRP$ measure_NN of_IN closeness_NN uses_NNS personalized_VBD PageRank_NNP ,_, which_WDT was_VBD introduced_VBN by_IN -LRB-_-LRB- 32_CD -RRB-_-RRB- ,_, and_CC has_VBZ been_VBN used_VBN for_IN context-sensitive_JJ search_NN on_IN the_DT Web_NN =_JJ -_: =[_NN 33,34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP define_VBP the_DT PageRank_NN Affinity_NN of_IN two_CD proteins_NNS a_DT and_CC b_NN to_TO be_VB the_DT minimum_NN of_IN pr_NN -LRB-_-LRB- a_FW →_FW b_NN -RRB-_-RRB- and_CC pr_NN -LRB-_-LRB- b_NN →_CD a_DT -RRB-_-RRB- ,_, where_WRB pr_NN -LRB-_-LRB- a_FW →_FW b_NN -RRB-_-RRB- is_VBZ the_DT amount_NN of_IN PageRank_NNP that_IN a_DT contributes_VBZ to_TO b_NN in_IN the_DT PPI_NNP network_NN ,_, which_WDT is_VBZ p_NN
+-LRB-_-LRB- 1_LS -RRB-_-RRB- and_CC Google_NNP Personalized_NNP Search_VB -LRB-_-LRB- 7_CD -RRB-_-RRB- allow_VBP users_NNS to_TO create_VB profiles_NNS to_TO which_WDT search_NN results_NNS are_VBP tailored_VBN ._.
+There_EX has_VBZ also_RB been_VBN much_JJ research_NN into_IN methods_NNS for_IN accurately_RB personalizing_VBG search_NN queries_NNS =_JJ -_: =[_NN 9_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN these_DT projects_NNS are_VBP concerned_VBN with_IN personalization_NN ,_, our_PRP$ work_NN is_VBZ complementary_JJ and_CC examines_VBZ the_DT ability_NN to_TO use_VB social_JJ links_NNS to_TO improve_VB search_NN results_NNS ._.
+Lastly_RB ,_, a_DT number_NN of_IN projects_NNS have_VBP looked_VBN at_IN
+orst_NN ._.
+Finally_RB ,_, the_DT network_NN is_VBZ row_NN normalized_VBN so_IN that_IN the_DT edge_NN weight_NN from_IN note_NN i_FW and_CC j_NN indicates_VBZ the_DT probability_NN of_IN a_DT random_JJ surfer_NN jumping_VBG from_IN i_LS to_TO j._VB The_DT link_NN analysis_NN technique_NN we_PRP use_VBP is_VBZ PageRank_NN =_JJ -_: =[_NN 4_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Given_VBN a_DT similarity_NN matrix_NN G_NN ,_, it_PRP computes_VBZ the_DT same_JJ length_NN of_IN PageRank_NN vector_NN p_NN ,_, which_WDT assigns_VBZ a_DT ranked_VBN score_NN to_TO each_DT vertex_NN of_IN the_DT network_NN ._.
+Intuitively_RB ,_, the_DT PageRank_NNP scores_NNS of_IN the_DT network_NN of_IN ROI_NN hypo_NN
+v_LS is_VBZ the_DT expected_JJ sum_NN of_IN the_DT importance_NN of_IN all_PDT the_DT Webpages_NNP u_NN that_WDT preceed_VBD v._CC In_IN this_DT paper_NN ,_, we_PRP will_MD use_VB a_DT more_RBR general_JJ version_NN of_IN PageRank_NNP ,_, called_VBD personalized_VBN PageRank_NNP ,_, introduced_VBN by_IN Jeh_NN and_CC Widom_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- also_RB see_VBP Haveliwala_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+The_DT personalized_JJ PageRank_NN pr_FW α_FW -LRB-_-LRB- s_NNS -RRB-_-RRB- depends_VBZ on_IN two_CD parameters_NNS ,_, the_DT jumping_VBG constant2_NN α_NN and_CC a_DT seed_NN s._NN A_NN seed_NN can_MD be_VB viewed_VBN as_IN a_DT vertex_NN or_CC a_DT probability_NN distribution_NN on_IN vertic_NN
+nd_NN clicks_VBZ a_DT linked_VBN page_NN with_IN probability_NN 1_CD −_FW α_FW ._.
+Because_IN of_IN the_DT close_JJ connection_NN of_IN PageRank_NN with_IN random_JJ walks_VBZ ,_, there_EX are_VBP very_RB efficient_JJ and_CC robust_JJ algorithms_NNS for_IN computing_VBG and_CC approximating_VBG PageRank_NN =_JJ -_: =[_NN 6_CD ,_, 12_CD ,_, 46_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT leads_VBZ to_TO numerous_JJ applications_NNS including_VBG the_DT basic_JJ problem_NN of_IN finding_VBG a_DT `_`` good_JJ '_'' cut_NN in_IN a_DT graph_NN ._.
+A_DT quantative_JJ measure_NN for_IN the_DT `_`` goodness_NN '_'' of_IN a_DT cut_NN that_WDT separates_VBZ a_DT subset_NN S_NN of_IN vertices_NNS is_VBZ the_DT Chee_NNP
+urfer_NN on_IN page_NN u_NN follows_VBZ an_DT outlink_NN of_IN u_NN -LRB-_-LRB- where_WRB the_DT particular_JJ outlink_NN is_VBZ chosen_VBN uniformly_RB at_IN random_JJ -RRB-_-RRB- ._.
+With_IN probability_NN αP_NN -LRB-_-LRB- cj_FW |_FW q_FW ′_FW -RRB-_-RRB- ,_, the_DT surfer_NN instead_RB jumps_VBZ to_TO one_CD of_IN the_DT pages_NNS in_IN Tj_NN -LRB-_-LRB- where_WRB the_DT 5_CD See_NNP =_SYM -_: =[_NN 45_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC for_IN a_DT construction_NN of_IN the_DT linear_JJ transformation_NN from_IN personalization_NN vectors_NNS to_TO personalized_VBN PageRank_NN vectors_NNS ,_, see_VBP Section_NNP 3.5_CD ._.
+CHAPTER_NN 3_CD ._.
+TOPIC-SENSITIVE_NN SEARCH_NN 50_CD particular_JJ page_NN in_IN Tj_NN is_VBZ chose_VBN
+rsonalize_NN Web_NN search_NN results_NNS by_IN Gauch_NNP et_FW al._FW -LRB-_-LRB- 2004_CD -RRB-_-RRB- and_CC Speretta_NNP and_CC Gauch_NNP -LRB-_-LRB- 2004_CD -RRB-_-RRB- ._.
+Personal_JJ profiles_NNS have_VBP also_RB been_VBN used_VBN in_IN the_DT context_NN of_IN the_DT Web_NN search_NN to_TO create_VB a_DT personalized_JJ version_NN of_IN PageRank_NN -LRB-_-LRB- =_JJ -_: =_JJ Jeh_NNP &_CC Widom_NNP ,_, 2003_CD -_: =--RRB-_NN for_IN setting_VBG the_DT query-independent_JJ priors_NNS on_IN Web_NN pages_NNS ._.
+Liu_NNP et_FW al._FW -LRB-_-LRB- 2002_CD -RRB-_-RRB- used_VBD a_DT similar_JJ technique_NN for_IN mapping_NN user_NN queries_NNS to_TO categories_NNS based_VBN on_IN the_DT user_NN 's_POS search_NN history_NN ._.
+In_IN addition_NN to_TO asking_VBG use_NN
+te_IN the_DT global_JJ perception_NN of_IN persons_NNS or_CC objects_NNS ,_, yielding_VBG rough_JJ predictions_NNS that_WDT do_VBP not_RB account_VB for_IN personal_JJ preference_NN ._.
+For_IN personalization_NN ,_, some_DT approaches_NNS -LRB-_-LRB- e.g._FW ,_, TrustRank_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC Personal_JJ PageRank_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =--RRB-_NN extend_VBP PageRank_NN while_IN others_NNS -LRB-_-LRB- e.g._FW ,_, EigenTrust_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC email_NN filtering_VBG -LRB-_-LRB- 10_CD -RRB-_-RRB- -RRB-_-RRB- implement_VBP systems_NNS that_WDT operate_VBP in_IN distributed_VBN fashion_NN ._.
+Personalized_VBN approaches_NNS allow_VBP people_NNS with_IN similar_JJ interests_NNS -LRB-_-LRB- e.g._FW ,_,
+gth_NN of_IN the_DT connection_NN via_IN our_PRP$ algorithm_NN ._.
+In_IN the_DT bottom_JJ example_NN ,_, original_JJ edge_NN weights_NNS are_VBP also_RB shown_VBN in_IN parentheses_NNS ._.
+Other_JJ related_JJ work_NN includes_VBZ the_DT PageRank_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- and_CC personalized_VBD PageRank_NNP algorithms_VBZ =_JJ -_: =[_NN 15_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: ;_: graph_NN clustering_NN ,_, partioning_NN ,_, and_CC matrix_NN reordering_NN -LRB-_-LRB- 2_CD ,_, 4_CD ,_, 17_CD ,_, 23_CD ,_, 24_CD -RRB-_-RRB- ;_: electrical_JJ circuits_NNS and_CC random_JJ walks_VBZ -LRB-_-LRB- 3_CD ,_, 7_CD ,_, 22_CD -RRB-_-RRB- ;_: and_CC influence_NN propagation_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+``_`` customer_NN value_NN ''_'' of_IN a_DT node_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ;_: and_CC other_JJ top_NN
+-RRB-_-RRB- ′_CD s_NN in_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- for_IN the_DT pages_NNS with_IN sport_NN content_NN ._.
+Then_RB ,_, the_DT Topic-Sensitive_JJ PageRank_NN represents_VBZ user_NN preferences_NNS for_IN the_DT beneficial_JJ topics_NNS choice_NN ._.
+Modular_NNP PageRank_NNP ,_, that_WDT was_VBD proposed_VBN by_IN Jeh_NNP and_CC Widom_NNP in_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, is_VBZ similar_JJ to_TO the_DT above_JJ approach_NN ._.
+However_RB ,_, in_IN this_DT case_NN the_DT surfer_NN teleports_VBZ to_TO the_DT certain_JJ pages_NNS with_IN high_JJ ranks_NNS instead_RB of_IN set_NN of_IN the_DT topic-related_JJ pages_NNS ._.
+In_IN the_DT BlockRank_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- the_DT 3Web_NN is_VBZ consid_VBN
+ty_NN queries_NNS in_IN ER_NN graphs_NNS seek_VBP entity_NN nodes_NNS that_WDT are_VBP ``_`` near_JJ ''_'' nodes_NNS representing_VBG query_JJ words_NNS ,_, or_CC entity_NN nodes_NNS that_IN match_NN query_NN words_NNS ._.
+This_DT paradigm_NN is_VBZ easiest_JJS to_TO express_VB in_IN terms_NNS of_IN personalized_JJ PageRank_NN =_JJ -_: =[_NN 37_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Each_DT directed_JJ edge_NN -LRB-_-LRB- u_NN ,_, v_LS -RRB-_-RRB- of_IN the_DT data_NNS graph_NN has_VBZ a_DT conductance_NN C_NN -LRB-_-LRB- v_LS ,_, u_NN -RRB-_-RRB- ∈_NN -LRB-_-LRB- 0_CD ,_, 1_CD -RRB-_-RRB- ,_, which_WDT is_VBZ the_DT conditional_JJ probability_NN Pr_NN -LRB-_-LRB- v_LS |_FW u_FW -RRB-_-RRB- that_IN a_DT ``_`` random_JJ surfer_NN ''_'' ,_, in_FW PageRank_FW parlance_NN ,_, will_MD walk_VB from_IN node_NN u_NN in_IN th_DT
+mple_NN of_IN a_DT page_NN ranking_NN approach_NN that_WDT requires_VBZ to_TO collect_VB statistics_NNS on_IN user_NN behavior_NN such_JJ as_IN the_DT time_NN spent_VBN on_IN a_DT web_NN page_NN ._.
+The_DT generalized_JJ algorithm_NN for_IN personalized_JJ authority_NN ranking_NN is_VBZ described_VBN in_IN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ TripleRank_NNP approach_NN is_VBZ designed_VBN for_IN a_DT different_JJ scenario_NN of_IN resource_NN recommendation_NN when_WRB browsing_VBG linked_VBN data_NNS ._.
+As_IN when_WRB browsing_VBG the_DT Web_NN ,_, detailed_JJ statistical_JJ 211information_NN about_IN prior_JJ user_NN vis_FW
+or_CC the_DT computation_NN of_IN PageRank_NN ._.
+The_DT end-point_NN of_IN a_DT random_JJ walk_NN that_WDT starts_VBZ from_IN a_DT random_JJ page_NN and_CC can_MD be_VB terminated_VBN at_IN each_DT step_NN with_IN probability_NN 1_CD −_CD c_NN ,_, appears_VBZ to_TO be_VB a_DT sample_NN from_IN the_DT distribution_NN π_NN =_JJ -_: =[_NN 4_CD ,_, 7_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Thus_RB ,_, after_IN repeating_VBG the_DT process_NN many_JJ times_NNS ,_, the_DT estimate_NN of_IN πj_NN for_IN j_NN =_JJ 1_CD ,_, ..._: ,_, n_NN ,_, is_VBZ determined_VBN as_IN the_DT number_NN of_IN times_NNS when_WRB a_DT run_NN terminated_VBN at_IN j_NN ,_, divided_VBN by_IN the_DT total_JJ number_NN of_IN runs_NNS ._.
+In_IN order_NN to_TO k_NN
+ces_NNS while_IN computation_NN initially_RB and_CC add_VB them_PRP back_RB during_IN the_DT final_JJ iterations_NNS of_IN the_DT computation_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Other_JJ popular_JJ approaches_NNS to_TO handling_VBG dangling_JJ vertices_NNS ,_, is_VBZ to_TO add_VB self_NN loops_NNS to_TO dangling_JJ vertices_NNS =_JJ -_: =[_NN 16,17_CD -RRB-_-RRB- -_: =_JJ -_: and_CC to_TO add_VB links_NNS to_TO all_DT vertices_NNS in_IN the_DT graph_NN ,_, G_NN from_IN each_DT of_IN the_DT dangling_VBG vertex_NN to_TO distribute_VB the_DT PageRank_NN of_IN the_DT dangling_VBG vertex_NN uniformly_RB among_IN all_DT vertices_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+In_IN this_DT paper_NN we_PRP handle_VBP dangling_VBG v_LS
+rediction_NN can_MD suggest_VB potential_JJ involvement_NN between_IN a_DT group_NN of_IN individuals_NNS ,_, who_WP do_VBP not_RB have_VB prior_JJ records_NNS of_IN interaction_NN ._.
+In_IN general_JJ popular_JJ graph-based_JJ proximity_NN measures_NNS like_IN personalized_JJ pagerank_NN -LRB-_-LRB- =_JJ -_: =_JJ Jeh_NNP &_CC Widom_NNP ,_, 2002_CD -_: =--RRB-_NN ,_, hitting_VBG and_CC commute_NN times_NNS -LRB-_-LRB- Aldous_NNP &_CC Fill_NNP ,_, 2001_CD -RRB-_-RRB- ,_, Adamic\/Adar_NN -LRB-_-LRB- Adamic_NNP &_CC Adar_NNP ,_, 2003_CD -RRB-_-RRB- are_VBP used_VBN for_IN link_NN prediction_NN on_IN graphs_NNS ._.
+The_DT experimental_JJ setup_NN varies_VBZ from_IN predicting_VBG all_DT absent_JJ links_NNS at_IN once_RB -LRB-_-LRB- Li_NNP
+networks_NNS requiring_VBG up_RP to_TO several_JJ hours_NNS to_TO calculate_VB the_DT importance_NN of_IN users_NNS ._.
+We_PRP propose_VBP the_DT PageRank_NN linearity_NN theorem_NN to_TO solve_VB the_DT problem_NN of_IN contextsensitive_JJ expertise_NN mining_NN ._.
+The_DT linearity_NN theorem_NN =_JJ -_: =[_NN 10,11_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ defined_VBN as_IN :_: Theorem_NN 1_CD -LRB-_-LRB- Linearity_NN -RRB-_-RRB- ._.
+For_IN any_DT personalization_NN vectors_NNS p1_NN ,_, p2_NN and_CC weights_NNS w1_NN ,_, w2_NN with_IN w1_NN +_CC w2_NN =_JJ 1_CD ,_, the_DT following_JJ equality_NN holds_VBZ :_: PPV_NN -LRB-_-LRB- w1p1_NN +_CC w2p2_NN -RRB-_-RRB- =_JJ w1PPV_NN -LRB-_-LRB- p1_NN -RRB-_-RRB- +_CC w2PPV_NN -LRB-_-LRB- p2_NN -RRB-_-RRB- -LRB-_-LRB- 5_LS -RRB-_-RRB- The_DT above_JJ equal_JJ
+farms_NNS of_IN a_DT large_JJ sample_NN from_IN the_DT Web_NN ._.
+The_DT data_NNS set_VBD we_PRP used_VBD was_VBD generated_VBN by_IN the_DT Web_NN crawler_NN from_IN the_DT Stanford_NNP WebBase_NNP project_NN -LRB-_-LRB- http:\/\/wwwdiglib.stanford.edu\/∼testbed\/doc2\/WebBase_NN -RRB-_-RRB- ._.
+Some_DT prior_JJ studies_NNS =_JJ -_: =[_NN 8_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: used_VBD the_DT same_JJ data_NNS set_VBN in_IN their_PRP$ experiments_NNS ._.
+The_DT Web_NN crawler_NN ,_, WebVac_NNP ,_, randomly_RB crawls_VBZ up_RP to_TO a_DT depth_NN of_IN 10_CD levels_NNS and_CC fetches_VBZ a_DT maximum_NN of_IN 10_CD thousand_CD pages_NNS per_IN site_NN ._.
+The_DT whole_NN directed_VBD Web_NN graph_NN file_NN
+farms_NNS of_IN a_DT large_JJ sample_NN from_IN the_DT Web_NN ._.
+To_TO test_VB the_DT page_NN farm_NN extraction_NN from_IN the_DT Web_NN ,_, we_PRP used_VBD a_DT data_NN set_NN generated_VBN by_IN the_DT Web_NN crawler_NN ``_`` WebVac_NNP ''_'' from_IN the_DT Stanford_NNP WebBase_NNP project_NN 1_CD ._.
+Some_DT prior_JJ studies_NNS =_JJ -_: =[_NN 41_CD ,_, 42_CD ,_, 45_CD ,_, 67_CD -RRB-_-RRB- -_: =_SYM -_: 1_CD http:\/\/www-diglib.stanford.edu\/∼testbed\/doc2\/WebBasesCHAPTER_NN 4_CD ._.
+PAGE_NN FARM_NN ANALYSIS_NN 30_CD used_VBD the_DT same_JJ data_NNS set_VBN in_IN their_PRP$ experiments_NNS ._.
+The_DT Web_NN crawler_NN randomly_RB crawls_VBZ up_RP to_TO a_DT depth_NN of_IN 10_CD levels_NNS and_CC fet_NN
+er_NN space_NN ,_, by_IN utilizing_VBG user_NN generated_VBD tagging_VBG information_NN and_CC recommendations_NNS ._.
+In_IN all_DT cases_NNS ,_, personalization_NN seeks_VBZ to_TO improve_VB the_DT subjective_JJ performance_NN of_IN retrieval_NN as_IN perceived_VBN by_IN individual_JJ users_NNS -LRB-_-LRB- =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 35_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 36_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 38_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+This_DT article_NN focuses_VBZ on_IN the_DT role_NN of_IN contextualized_VBN personalization_NN in_IN multimedia_NNS information_NN retrieval_NN -LRB-_-LRB- IR_NN -RRB-_-RRB- ,_, and_CC more_RBR specifically_RB ,_, in_IN its_PRP$ smooth_JJ integration_NN into_IN the_DT person_NN
+he_PRP first_JJ category_NN we_PRP cite_VBP the_DT PageRank_NNP based_VBN methods_NNS ,_, which_WDT have_VBP proposed_VBN modifications_NNS of_IN the_DT PageRank_NNP algorithm_NN that_WDT include_VBP user_NN modeling_NN into_IN rank_NN computation_NN ,_, to_TO create_VB personal_JJ views_NNS of_IN the_DT Web_NN =_JJ -_: =[_FW 18,21_FW -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT approaches_NNS to_TO results_NNS re-ranking_JJ are_VBP aimed_VBN at_IN modifying_VBG the_DT ranking_JJ score_NN by_IN explicitly_RB matching_VBG the_DT user_NN profile_NN against_IN the_DT user_NN query_NN ,_, and_CC then_RB at_IN combining_VBG the_DT obtained_VBN score_NN with_IN the_DT releva_NN
+what_WP is_VBZ shown_VBN in_IN Figure_NNP 7_CD ._.
+6_CD ._.
+DISCUSSION_NN AND_CC RELATED_NNS WORK_VBP This_DT study_NN ,_, in_IN the_DT first_JJ place_NN ,_, relates_VBZ to_TO the_DT U_NNP Rank_NNP 2_CD and_CC SearchWiki_NNP 3_CD features_NNS ,_, which_WDT fall_VBP into_IN the_DT category_NN of_IN personalized_JJ search_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 21_CD ,_, 16_CD ,_, 26_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Both_DT features_NNS allow_VBP registered_JJ users_NNS to_TO explicitly_RB reorder_VB search_NN results_NNS for_IN their_PRP$ own_JJ use_NN ,_, i.e._FW ,_, the_DT re-ordered_JJ results_NNS will_MD not_RB affect_VB the_DT ranking_NN for_IN the_DT general_JJ audience_NN ._.
+Our_PRP$ study_NN differs_VBZ fro_NN
+es_NNS as_IN possible_JJ ,_, such_JJ as_IN hyperlinks_NNS among_IN documents_NNS ,_, category_NN labels_NNS of_IN documents_NNS and_CC queries_NNS ,_, social_JJ tags_NNS ,_, and_CC user_NN preferences_NNS in_IN various_JJ forms_NNS ._.
+For_IN example_NN ,_, various_JJ Personalized_NNP PageRank_NNP algorithms_VBZ =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =-[_NN 2_CD -RRB-_-RRB- have_VBP been_VBN developed_VBN for_IN applying_VBG link-analysis_NN with_IN user_NN profiles_NNS ,_, producing_VBG authority-based_JJ ranking_NN of_IN documents_NNS with_IN respect_NN to_TO each_DT individual_JJ user_NN ._.
+Topical_JJ distribution_NN in_IN user_NN 's_POS search_NN histor_NN
+robability_NN that_IN a_DT random_JJ surfer_NN is_VBZ on_IN page_NN p_NN at_IN any_DT given_VBN time_NN ._.
+The_DT significance_NN of_IN altering_VBG or_CC biasing_VBG these_DT ``_`` jump_NN probabilities_NNS ''_'' were_VBD demonstrated_VBN for_IN the_DT purposes_NNS of_IN both_DT personalizing_VBG the_DT ranking_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC combating_VBG Web_NN spam_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+The_DT main_JJ idea_NN behind_IN these_DT works_NNS was_VBD that_IN ,_, if_IN you_PRP are_VBP more_RBR likely_JJ to_TO start_VB each_DT new_JJ surfing_NN session_NN with_IN trusted_VBN pages_NNS ,_, or_CC pages_NNS relating_VBG to_TO a_DT certain_JJ topic_NN of_IN interest_NN ,_,
+aph_RB ,_, PageRank_NN is_VBZ well_RB defined_VBN for_IN any_DT graph_NN ._.
+Here_RB ,_, we_PRP will_MD use_VB a_DT modified_VBN version_NN of_IN PageRank_NNP ,_, ⋆_NNP Research_NNP supported_VBD in_IN part_NN by_IN ONR_NN MURI_NN N000140810747_NN ,_, and_CC AF\/SUB_NN 552082known_NN as_IN personalized_JJ PageRank_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, using_VBG a_DT prescribed_JJ set_NN of_IN nodes_NNS as_IN a_DT seed_NN vector_NN ._.
+PageRank_NN can_MD capture_VB well_RB the_DT quantitative_JJ correlations_NNS between_IN pairs_NNS or_CC subsets_NNS of_IN nodes_NNS ,_, especially_RB on_IN small-world_JJ graphs_NNS where_WRB the_DT usual_JJ graph_NN di_FW
+e_LS of_IN users_NNS based_VBN on_IN interactions_NNS and_CC information_NN flow_NN ;_: they_PRP ignore_VBP the_DT fact_NN that_IN interactions_NNS typically_RB take_VBP place_NN in_IN different_JJ contexts_NNS ._.
+Approaches_NNS for_IN calculating_VBG personalized_JJ PageRank_NN scores_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: were_VBD introduced_VBN to_TO enable_VB topic-sensitive_JJ search_NN on_IN the_DT Web_NN ,_, but_CC have_VBP not_RB been_VBN applied_VBN to_TO human_JJ interaction_NN analysis_NN ._.
+We_PRP propose_VBP a_DT model_NN where_WRB expertise_NN analysis_NN is_VBZ performed_VBN considering_VBG context_NN info_NN
+ems_NNS ._.
+The_DT fundamental_JJ difference_NN between_IN these_DT models_NNS and_CC our_PRP$ ranking_JJ model_NN is_VBZ that_IN they_PRP still_RB rely_VBP on_IN conventional_JJ ranking_NN models_NNS and_CC do_VBP not_RB ``_`` personalize_VB ''_'' underlying_VBG statistics_NNS ._.
+Personalized_VBN PageRank_NN =_JJ -_: =[_NN 14_CD ,_, 17_CD ,_, 18_CD ,_, 6_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT personalization_NN model_NN specifically_RB studied_VBN in_IN web_NN search_NN ._.
+Instead_RB of_IN using_VBG uniform_JJ distributions_NNS for_IN all_PDT the_DT nodes_NNS at_IN the_DT initial_JJ state_NN ,_, the_DT personalized_VBN PageRank_NNP uses_VBZ a_DT set_NN of_IN query-specific_JJ no_DT
+einberg_NN 's_POS work_NN explores_VBZ many_JJ of_IN these_DT connections_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 26_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Identification_NN of_IN web_NN communities_NNS was_VBD explored_VBN in_IN -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+Work_NN on_IN topic-sensitive_JJ and_CC personalized_JJ web_NN search_NN is_VBZ presented_VBN in_IN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT effect_NN that_IN search_NN engines_NNS have_VBP on_IN page_NN popularity_NN was_VBD discussed_VBN in_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Research_NN in_IN the_DT past_NN has_VBZ focused_VBN on_IN the_DT identification_NN of_IN web_NN communities_NNS through_IN the_DT use_NN of_IN bipartite_JJ cores_NNS -LRB-_-LRB- 28_CD -RRB-_-RRB- or_CC maxi_NN
+he_PRP network_NN ._.
+The_DT idea_NN is_VBZ to_TO design_VB an_DT algorithm_NN that_WDT will_MD assign_VB higher_JJR scores_NNS to_TO nodes_NNS whichscreated_VBD links_NNS to_TO than_IN to_TO those_DT thatsdid_NN not_RB link_VB to_TO ._.
+PageRank_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- and_CC variants_NNS like_IN Personalized_NNP PageRank_NNP =_SYM -_: =[_NN 17_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Random_NNP Walks_NNPS with_IN Restarts_NNS -LRB-_-LRB- 31_CD -RRB-_-RRB- are_VBP popular_JJ methods_NNS for_IN ranking_JJ nodes_NNS on_IN graphs_NNS ._.
+Thus_RB ,_, one_CD simple_JJ idea_NN would_MD be_VB to_TO start_VB a_DT random_JJ walk_NN at_IN node_NN s_NN and_CC compute_VB the_DT proximity_NN of_IN each_DT other_JJ node_NN to_TO no_DT
+lgorithm_NN being_VBG emulated_VBN --_: namely_RB ,_, by_IN a_DT multiplicative_JJ factor_NN of_IN at_IN most_JJS 2_CD +_CC δ_NN -LRB-_-LRB- for_IN any_DT δ_NN -RRB-_-RRB- 0_CD -RRB-_-RRB- ._.
+Recently_RB ,_, local_JJ algorithms_NNS have_VBP been_VBN demonstrated_VBN to_TO be_VB applicable_JJ for_IN computations_NNS on_IN the_DT web_NN graph_NN ._.
+In_IN =_JJ -_: =[_NN 16_CD ,_, 9_CD ,_, 34_CD ,_, 7_CD ,_, 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, local_JJ algorithms_NNS are_VBP given_VBN which_WDT ,_, for_IN a_DT given_VBN vertex_NN v_LS in_IN the_DT web_NN graph_NN ,_, computes_VBZ an_DT approximation_NN to_TO v_LS 's_POS personalized_VBN PageRank_NN vector_NN and_CC computes_VBZ the_DT vertices_NNS that_WDT contribute_VBP significantly_RB to_TO v_LS 's_POS
+evaluated_VBN ._.
+In_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, some_DT existing_VBG retrieval_NN algorithms_NNS are_VBP adapted_VBN to_TO improve_VB search_NN results_NNS based_VBN on_IN the_DT browsing_VBG history_NN of_IN a_DT user_NN ._.
+Other_JJ related_JJ work_NN on_IN using_VBG context_NN includes_VBZ personalized_JJ search_NN =_JJ -_: =[_NN 1_CD ,_, 3_CD ,_, 4_CD ,_, 7_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, query_NN log_NN analysis_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, context_NN factors_NNS -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, and_CC implicit_JJ queries_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+While_IN the_DT previous_JJ work_NN has_VBZ mostly_RB focused_VBN on_IN using_VBG clickthrough_JJ information_NN ,_, in_IN this_DT paper_NN ,_, we_PRP use_VBP both_DT clickthrough_JJ informat_NN
+been_VBN shown_VBN to_TO have_VB empirical_JJ benefits_NNS in_FW keyword_FW search_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, link_NN prediction_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, fighting_VBG spam_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ;_: there_EX has_VBZ been_VBN an_DT extensive_JJ literature_NN on_IN algorithms_NNS for_IN computing_VBG them_PRP locally_RB -LRB-_-LRB- 3_CD ,_, 5_CD -RRB-_-RRB- ,_, off-line_JJ =_JJ -_: =[_NN 12_CD ,_, 9_CD ,_, 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC from_IN streaming_NN data_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- etc._FW 2DISCOUNTED_FW HITTING_FW TIME_NN ._.
+Hitting_VBG time_NN in_IN random_JJ walks_VBZ is_VBZ a_DT well-studied_JJ measure_NN in_IN probability_NN theory_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Hitting_VBG times_NNS and_CC other_JJ local_JJ variations_NNS of_IN it_PRP has_VBZ been_VBN
+._.
+,_, kt_IN +1_CD =_JJ j_NN t_NN ∏_CD l_NN =_JJ 1_CD 1_CD d_NN +_CC -LRB-_-LRB- kℓ_NN -RRB-_-RRB- ,_, where_WRB d_NN +_CC -LRB-_-LRB- kℓ_NN -RRB-_-RRB- is_VBZ the_DT out-degree_NN of_IN node_NN kℓ_NN ,_, and_CC the_DT summation_NN is_VBZ over_IN all_DT paths_NNS of_IN length_NN t_NN from_IN i_FW to_TO j._VB An_DT equivalent_JJ formulation_NN is_VBZ given_VBN by_IN the_DT decomposition_NN theorem_NN -LRB-_-LRB- =_JJ -_: =_JJ Jeh_NNP &_CC Widom_NNP ,_, 2003_CD -_: =--RRB-_NN :_: pi_NN =_JJ αei_NN +_CC -LRB-_-LRB- 1_CD −_FW α_FW -RRB-_-RRB- ∑_FW j_FW :_: -LRB-_-LRB- i_LS ,_, j_NN -RRB-_-RRB- ∈_CD E_NN pj_NN d_NN +_CC -LRB-_-LRB- i_LS -RRB-_-RRB- ._.
+The_DT decomposition_NN theorem_NN suggests_VBZ that_IN the_DT ``_`` importance_NN ''_'' that_IN a_DT node_NN i_FW gives_VBZ to_TO a_DT node_NN j_NN ̸_NN =_JJ i_FW is_VBZ proportional_JJ to_TO the_DT average_JJ importance_NN that_IN its_PRP$ out-neig_NN
+nterest_RB ,_, one_NN 's_POS favorite_JJ pages_NNS could_MD 5be_VB recommended_VBN to_TO the_DT other_JJ if_IN she_PRP is_VBZ not_RB yet_RB a_DT fan_NN ._.
+This_DT notion_NN could_MD be_VB reflected_VBN by_IN a_DT measure_NN of_IN proximity_NN over_IN graphs_NNS by_IN performing_VBG random_JJ walk_NN with_IN restarts_NNS =_JJ -_: =[_NN 57_CD -RRB-_-RRB- -_: =_JJ -_: and_CC computing_VBG the_DT steadystate_NN probability_NN ,_, which_WDT could_MD be_VB obtained_VBN efficiently_RB even_RB for_IN million-node_JJ graphs_NNS -LRB-_-LRB- 108_CD -RRB-_-RRB- ._.
+On_IN an_DT additional_JJ note_NN ,_, the_DT graph_NN transformation_NN itself_PRP could_MD be_VB non-trivial_JJ ._.
+With_IN re_NN
+help_NN users_NNS locate_VBP webpages_NNS once_IN they_PRP have_VBP already_RB been_VBN found_VBN ._.
+Robust_JJ Hyperlinks_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- creates_VBZ signatures_NNS by_IN which_WDT a_DT webpage_NN can_MD be_VB uniquely_RB located_JJ ,_, similar_JJ to_TO GoogleURLs_NNS ._.
+Scaling_VBG Personalized_VBN Web_NN Search_VB =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, an_DT approach_NN similar_JJ to_TO Google_NNP Reordering_NNP ,_, constructs_NNS a_DT personalized_JJ PageRank_NN vector_NN based_VBN on_IN a_DT list_NN of_IN preferred_JJ pages_NNS ._.
+2.1_CD Robust_NNP Hyperlinks_NNPS Robust_NNP Hyperlinks_NNPS -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, by_IN Phelps_NNP and_CC Wilensky_NNP ,_, proposes_VBZ t_NN
+rsonalized_VBN pagerank_NN quickly_RB would_MD help_VB computing_VBG these_DT other_JJ measures_NNS as_RB well_RB ._.
+There_EX has_VBZ been_VBN a_DT lot_NN of_IN work_NN on_IN computing_VBG personalized_JJ pagerank_NN ._.
+To_TO name_VB a_DT few_JJ the_DT techniques_NNS involve_VBP hub-decomposition_JJ -LRB-_-LRB- =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, storing_VBG fingerprints_NNS of_IN random_JJ walks_VBZ from_IN every_DT node_NN -LRB-_-LRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- -RRB-_-RRB- ,_, storing_VBG sparse_JJ representations_NNS of_IN personalized_JJ pagerank_NN from_IN all_DT nodes_NNS -LRB-_-LRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- -RRB-_-RRB- etc._NN ._.
+This_DT approach_NN is_VBZ completely_RB different_JJ from_IN these_DT in_IN th_DT
+big_JJ size_NN ._.
+Other_JJ methods_NNS sharing_VBG this_DT requirement_NN include_VBP regularized_VBN regression_NN ,_, Gaussian_JJ process_NN regression_NN -LRB-_-LRB- RW06_NN -RRB-_-RRB- ,_, and_CC so_RB on_RB ._.
+Existing_VBG fast_JJ solutions_NNS for_IN RWR_NN include_VBP Hub-vector_JJ decomposition_NN based_VBN =_JJ -_: =_JJ -LRB-_-LRB- JW03_NN -RRB-_-RRB- -_: =_JJ -_: ;_: block_NN structure_NN based_VBN -LRB-_-LRB- KHMG03_NN -RRB-_-RRB- -LRB-_-LRB- SQCF05_NN -RRB-_-RRB- ;_: fingerprint_NN based_VBN -LRB-_-LRB- FR04_NN -RRB-_-RRB- ,_, and_CC so_RB on_RB ._.
+Many_JJ applications_NNS take_VBP random_JJ walk_NN and_CC related_JJ methods_NNS as_IN the_DT building_NN block_NN ,_, including_VBG PageRank_NN -LRB-_-LRB- PBMW98_NN -RRB-_-RRB- ,_, personalized_VBN
+Ng_NN et_FW al._FW analyze_VB the_DT stability_NN of_IN PageRank_NNP and_CC HITS_NNP to_TO small_JJ perturbations_NNS in_IN the_DT link_NN structure_NN and_CC present_JJ modifications_NNS to_TO HITS_NNS that_WDT yield_VBP more_RBR stable_JJ rankings_NNS ._.
+Haveliwala_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- and_CC Jeh_NN and_CC Widom_NN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP topic-sensitive_JJ PageRank_NN algorithms_NNS that_WDT identify_VBP topically_RB authoritative_JJ web_NN pages_NNS efficiently_RB at_IN query_NN time_NN ._.
+In_IN the_DT domain_NN of_IN social_JJ network_NN analysis_NN -LRB-_-LRB- SNA_NN -RRB-_-RRB- ,_, LBR_NN is_VBZ a_DT core_NN analysis_NN task_NN ._.
+The_DT
+s_NNS are_VBP very_RB large_JJ ,_, the_DT algorithm_NN has_VBZ to_TO be_VB extremely_RB fast_JJ and_CC memory_NN efficient_JJ ._.
+One_CD solution_NN would_MD be_VB to_TO compute_VB a_DT proximity_NN measure_NN from_IN the_DT relevant_JJ nodes_NNS ._.
+TrustRank_NN -LRB-_-LRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- -RRB-_-RRB- uses_VBZ personalized_JJ pagerank_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: from_IN the_DT trusted_VBN nodes_NNS to_TO discriminate_VB between_IN good_JJ and_CC spammy_JJ nodes_NNS in_IN the_DT web_NN ._.
+Recent_JJ work_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- on_IN ranking_NN refinement_NN uses_VBZ boosting_VBG to_TO learn_VB the_DT new_JJ ranking_JJ function_NN simultaneously_RB from_IN the_DT base_NN ra_NN
+tructed_VBN combinatorial_JJ graph_NN structures_NNS to_TO prove_VB worst-case_JJ notions_NNS on_IN PageRank_NNP ,_, HITS_NNP and_CC SALSA_NNP algorithms_NNS ._.
+The_DT notion_NN of_IN the_DT influence_NN between_IN two_CD nodes_NNS also_RB plays_VBZ a_DT role_NN in_IN the_DT work_NN of_IN Jeh_NN and_CC Widom_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT studies_VBZ efficient_JJ computation_NN of_IN personalized_JJ PageRank_NN ._.
+Our_PRP$ notion_NN of_IN influence_NN is_VBZ different_JJ in_IN that_IN it_PRP splits_VBZ into_IN ``_`` layers_NNS ''_'' ,_, while_IN in_IN different_JJ layers_NNS the_DT same_JJ node_NN can_MD influence_VB differently_RB ._.
+pages_NNS by_IN combining_VBG traditional_JJ information_NN retrieval_NN techniques_NNS based_VBN on_IN page_NN content_NN ,_, such_JJ as_IN the_DT word_NN vector_NN space_NN -LRB-_-LRB- 63_CD ,_, 71_CD -RRB-_-RRB- with_IN link_NN analysis_NN techniques_NNS based_VBN on_IN the_DT hypertext_NN structure_NN of_IN the_DT Web_NN =_JJ -_: =[_NN 10_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Traditional_JJ search_NN engine_NN has_VBZ dealt_VBN with_IN searching_VBG information_NN on_IN the_DT web_NN to_TO a_DT large_JJ extent_NN ,_, but_CC it_PRP also_RB has_VBZ some_DT problems_NNS at_IN present_JJ -LRB-_-LRB- 43_CD -RRB-_-RRB- ._.
+The_DT web_NN information_NN has_VBZ enlarged_JJ from_IN quantity_NN to_TO types_NNS ,_, s_NN
+ity_NN against_IN the_DT situations_NNS where_WRB these_DT events_NNS are_VBP randomly_RB distributed_VBN in_IN the_DT graph_NN ._.
+This_DT framework_NN can_MD integrate_VB various_JJ graph_NN proximity_NN measures_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- such_JJ as_IN hitting_VBG time_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, personalized_JJ PageRank_NN =_JJ -_: =[_NN 24_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Katz_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+We_PRP take_VBP hitting_VBG time_NN as_IN an_DT example_NN and_CC propose_VBP a_DT modified_VBN version_NN named_VBN Decayed_NNP Hitting_NNP Time_NNP -LRB-_-LRB- DHT_NNP -RRB-_-RRB- to_TO better_JJR and_CC faster_JJR calculate_VBP structural_JJ correlation_NN ._.
+Scalable_JJ algorithms_NNS are_VBP develo_VBN
+ems_NNS ._.
+The_DT fundamental_JJ difference_NN between_IN these_DT models_NNS and_CC our_PRP$ ranking_JJ model_NN is_VBZ that_IN they_PRP still_RB rely_VBP on_IN conventional_JJ ranking_NN models_NNS and_CC do_VBP not_RB ``_`` personalize_VB ''_'' underlying_VBG statistics_NNS ._.
+Personalized_VBN PageRank_NN =_JJ -_: =[_NN 15_CD ,_, 18_CD ,_, 7_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT personalization_NN model_NN specifically_RB studied_VBN in_IN web_NN search_NN ._.
+Instead_RB of_IN using_VBG the_DT uniform_JJ distribution_NN for_IN all_DT nodes_NNS at_IN the_DT initial_JJ state_NN ,_, personalized_VBN PageRank_NNP uses_VBZ a_DT set_NN of_IN query_NN or_CC user-specific_JJ
+hone_VB sensors_NNS can_MD be_VB modeled_VBN well_RB with_IN a_DT simple_JJ Markov_NNP chain_NN -LRB-_-LRB- 48_CD ,_, 77_CD -RRB-_-RRB- ._.
+Markov_NNP chains_NNS have_VBP also_RB been_VBN used_VBN to_TO model_VB user_NN behavior_NN in_IN other_JJ domains_NNS including_VBG computer-aided_JJ manufacturing_NN -LRB-_-LRB- 67_CD -RRB-_-RRB- ,_, Web_NN search_NN =_JJ -_: =[_NN 11_CD ,_, 51_CD -RRB-_-RRB- -_: =_JJ -_: and_CC search_NN in_IN entity_NN relation_NN graphs_NNS -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+The_DT states_NNS in_IN M_NN are_VBP labeled_VBN with_IN contexts_NNS -LCB-_-LRB- c1_NN ,_, ..._: ,_, cn_NN -RCB-_-RRB- ._.
+We_PRP consider_VBP a_DT model_NN over_IN a_DT day_NN with_IN T_NN time_NN steps_NNS :_: the_DT states_NNS in_IN M_NN represent_VBP all_DT possible_JJ context_NN
+eliminated_VBN from_IN the_DT search_NN results_NNS by_IN setting_VBG the_DT probability_NN to_TO jump_VB to_TO such_JJ pages_NNS to_TO zero_VB ._.
+Several_JJ schemes_NNS for_IN improving_VBG the_DT scalability_NN of_IN personalized_JJ PageRank_NN have_VBP been_VBN presented_VBN in_IN recent_JJ years_NNS =_JJ -_: =[_NN 27_CD ,_, 29_CD ,_, 30_CD ,_, 39_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP are_VBP discussed_VBN in_IN this_DT section_NN as_RB well_RB as_IN in_IN Section_NNP 7.1.2_CD ._.
+Topic-sensitive_JJ PageRank_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- builds_VBZ on_IN the_DT idea_NN of_IN a_DT personalized_JJ teleportation_NN vector_NN by_IN introducing_VBG a_DT number_NN of_IN topic-specific_JJ leap_NN
+ossibility_NN to_TO realize_VB a_DT personalized_JJ version_NN of_IN PageRank_NN by_IN using_VBG a_DT non-uniform_JJ leap_NN vector_NN ._.
+Several_JJ schemes_NNS for_IN improving_VBG the_DT scalability_NN of_IN personalized_JJ PageRank_NN have_VBP been_VBN presented_VBN in_IN recent_JJ years_NNS =_JJ -_: =[_NN 17_CD ,_, 18_CD ,_, 15_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT are_VBP discussed_VBN in_IN the_DT following_NN ._.
+Topic-sensitive_JJ PageRank_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- builds_VBZ on_IN the_DT idea_NN of_IN a_DT personalized_JJ teleportation_NN vector_NN by_IN introducing_VBG a_DT number_NN of_IN topic-speci_JJ c_NN leap_NN vectors_NNS ,_, each_DT assigning_VBG a_DT u_NN
+to_TO reduce_VB the_DT lag_NN time_NN from_IN when_WRB a_DT new_JJ crawl_NN is_VBZ completed_VBN to_TO when_WRB that_DT crawl_NN can_MD be_VB made_VBN available_JJ for_IN searching_VBG ._.
+Furthermore_RB ,_, recent_JJ approaches_NNS to_TO personalized_JJ and_CC topic-sensitive_JJ Page_NNP -_: Rank_NNP schemes_NNS =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: require_VB computing_VBG many_JJ PageRank_NNP vectors_NNS ,_, each_DT biased_VBN towards_IN certain_JJ types_NNS of_IN pages_NNS ._.
+These_DT approaches_NNS intensify_VBP the_DT need_NN for_IN faster_JJR methods_NNS for_IN computing_VBG PageRank_NNP ._.
+This_DT paper_NN is_VBZ structured_VBN as_IN follows_VBZ
+from_IN the_DT introduction_NN of_IN PageRank_NNP by_IN Brin_NNP and_CC Page_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+The_DT original_JJ PageRank_NN was_VBD meant_VBN for_IN Web_NN Search_VB ,_, but_CC many_JJ researchers_NNS have_VBP developed_VBN more_RBR tailored_VBN ranking_JJ systems_NNS such_JJ as_IN personalized_JJ PageRank_NN =_JJ -_: =[_NN 13_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, giving_VBG a_DT ranking_NN relative_JJ to_TO some_DT specified_VBN starting_VBG distribution_NN s._NN One_CD pitfall_NN with_IN PageRank_NN as_IN a_DT ranking_JJ system_NN is_VBZ the_DT fact_NN that_IN all_DT edges_NNS contribute_VBP positively_RB ._.
+In_IN practice_NN ,_, an_DT edge_NN such_JJ as_IN a_DT li_NN
+pensive_JJ and_CC do_VBP not_RB support_VB interactive_JJ response_NN times_NNS for_IN on-the-fly_JJ and_CC scalable_JJ personalization_NN ._.
+Authority_NNP flow_NN techniques_NNS typically_RB require_VBP dozens_NNS of_IN iteration_NN across_IN the_DT data_NNS graph_NN ._.
+Previous_JJ work_NN =_JJ -_: =[_NN 2_CD ,_, 7_CD ,_, 8_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ addressed_VBN the_DT performance_NN of_IN the_DT node-based_JJ personalization_NN approach_NN ._.
+There_EX is_VBZ no_DT work_NN to_TO facilitate_VB efficient_JJ computation_NN of_IN edge-based_JJ personalization_NN ._.
+Our_PRP$ specific_JJ challenge_NN is_VBZ on-the-fly_JJ exec_NN
+._. ._.
+,_, kt_IN +1_CD =_JJ j_NN t_NN ∏_CD l_NN =_JJ 1_CD 1_CD d_NN +_CC -LRB-_-LRB- kℓ_NN -RRB-_-RRB- ,_, where_WRB d_NN +_CC -LRB-_-LRB- kℓ_NN -RRB-_-RRB- is_VBZ the_DT out-degree_NN of_IN node_NN kℓ_NN ,_, and_CC the_DT summation_NN is_VBZ over_IN all_DT paths_NNS of_IN length_NN t_NN from_IN i_FW to_TO j._VB An_DT equivalent_JJ formulation_NN is_VBZ given_VBN by_IN the_DT decomposition_NN theorem_NN -LRB-_-LRB- =_JJ -_: =_JJ Jeh_NNP &_CC Widom_NNP ,_, 2003_CD -_: =--RRB-_NN :_: pi_NN =_JJ αei_NN +_CC -LRB-_-LRB- 1_CD −_FW α_FW -RRB-_-RRB- ∑_FW j_FW :_: -LRB-_-LRB- i_LS ,_, j_NN -RRB-_-RRB- ∈_CD E_NN pj_NN d_NN +_CC -LRB-_-LRB- i_LS -RRB-_-RRB- ._.
+The_DT decomposition_NN theorem_NN suggests_VBZ that_IN the_DT ``_`` importance_NN ''_'' that_IN a_DT node_NN i_FW gives_VBZ to_TO node_NN j_NN ̸_NN =_JJ i_FW is_VBZ proportional_JJ to_TO the_DT average_JJ importance_NN that_IN i_FW 's_POS out-neighb_NN
+both_CC content_NN and_CC links_NNS during_IN the_DT random_JJ walk_NN process_NN is_VBZ critical_JJ in_IN creating_VBG a_DT system_NN which_WDT provides_VBZ effective_JJ classification_NN ._.
+Since_IN random_JJ walks_VBZ can_MD be_VB used_VBN to_TO define_VB proximity_NN in_IN a_DT variety_NN of_IN ways_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT natural_JJ approach_NN is_VBZ to_TO construct_VB proximity-based_JJ classifiers_NNS which_WDT use_VBP the_DT majority_NN labels_NNS of_IN random_JJ walk_NN nodes_NNS for_IN the_DT propagation_NN process_NN ._.
+Since_IN the_DT text_NN is_VBZ included_VBN within_IN the_DT node_NN structure_NN of_IN
+the_DT behavior_NN of_IN large_JJ numbers_NNS of_IN other_JJ users_NNS ._.
+Recent_JJ work_NN on_IN influence_NN propagation_NN has_VBZ used_VBN numerous_JJ characterizations_NNS of_IN influentials_NNS based_VBN on_IN topological_JJ centrality_NN measures_NNS such_JJ as_IN Pagerank_NN score_NN =_JJ -_: =[_NN 19_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO characterize_VB influence_NN in_IN Twitter_NNP ,_, researchers_NNS have_VBP suggested_VBN various_JJ measures_NNS based_VBN on_IN number_NN of_IN followers_NNS ,_, mentions_VBZ ,_, retweets_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, and_CC Pagerank_NN of_IN follower_NN network_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+It_PRP has_VBZ been_VBN observed_VBN ,_, h_NN
+ended_VBN in_IN Google_NNP 's_POS favor_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+Several_JJ researchers_NNS have_VBP taken_VBN the_DT personalization_NN idea_NN beyond_IN its_PRP$ spam_NN prevention_NN abilities_NNS ,_, creating_VBG personalized_JJ PageRanking_NN systems_NNS ._.
+See_VB the_DT Stanford_NNP research_NN papers_NNS =_JJ -_: =[_NN 8_CD ,_, 9_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: for_IN the_DT various_JJ e_SYM #cient_JJ implementations_NNS of_IN PageRank_NNP that_WDT incorporate_VBP user_NN preferences_NNS ._.
+This_DT is_VBZ clearly_RB a_DT hot_JJ area_NN since_IN some_DT predict_VBP personalized_JJ engines_NNS as_IN the_DT future_NN of_IN search_NN ._.
+4.3_CD Convergence_NN Crit_NN
+l_NN 1_CD Introduction_NN The_DT analysis_NN of_IN hyperlink_NN structure_NN of_IN Web_NN documents_NNS has_VBZ been_VBN employed_VBN in_IN order_NN to_TO discover_VB documents_NNS of_IN high_JJ quality_NN on_IN the_DT Web_NN ._.
+Approaches_NNS such_JJ as_IN PageRank_NN -LRB-_-LRB- 1_CD ,_, 2_CD -RRB-_-RRB- and_CC related_JJ works_NNS =_JJ -_: =[_NN 3_CD ,_, 4_CD ,_, 5_CD ,_, 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, model_VBP the_DT Web_NN graph_NN as_IN a_DT Markov_NNP chain_NN and_CC compute_VB the_DT probability_NN of_IN visiting_VBG a_DT document_NN during_IN a_DT random_JJ walk_NN ._.
+The_DT quality_NN of_IN a_DT document_NN depends_VBZ on_IN both_CC the_DT number_NN of_IN incoming_JJ links_NNS ,_, and_CC the_DT quality_NN
+results_NNS for_IN various_JJ users_NNS ,_, which_WDT has_VBZ recently_RB attracted_VBN a_DT great_JJ deal_NN of_IN attention_NN in_IN the_DT research_NN communities_NNS ,_, with_IN the_DT focus_NN on_IN ranking_JJ function_NN optimization_NN ,_, relevance_NN measure_NN adaptation_NN and_CC so_RB on_IN =_JJ -_: =[_NN 57_CD ,_, 58_CD ,_, 42_CD ,_, 45_CD ,_, 36_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT industrial_JJ sectors_NNS ,_, Google_NNP launched_VBD the_DT beta_NN version_NN of_IN its_PRP$ personalized_JJ search_NN service_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- in_IN 2004_CD ._.
+This_DT service_NN allows_VBZ users_NNS to_TO select_VB a_DT set_NN of_IN preferred_JJ categories_NNS and_CC consequently_RB the_DT sea_NN
+by_IN a_DT large_JJ margin_NN ._.
+5.1_CD Measuring_VBG the_DT Quality_NNP of_IN Approximate_NNP PageRank_NNP Scores_NNS We_PRP compare_VBP our_PRP$ approximate_JJ PPR_NNP scores_NNS to_TO exact_JJ PPR_NN scores_NNS computed_VBN by_IN the_DT personalized_VBN PageRank_NN algorithm_NN of_IN Jeh_NN and_CC Widom_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: with_IN a_DT precision_NN of_IN 10_CD −_NN 8_CD in_IN L1_NN norm_NN ._.
+In_IN the_DT experiments_NNS we_PRP set_VBD teleportation_NN constant_JJ c_NN to_TO its_PRP$ usual_JJ value_NN 0.15_CD ,_, and_CC personalize_VB on_IN a_DT single_JJ page_NN u_NN chosen_VBN uniformly_RB at_IN random_JJ from_IN all_DT vertices_NNS ._.
+The_DT
+ting_NN of_IN the_DT parameter_NN #_# ._.
+For_IN generating_VBG a_DT larger_JJR number_NN of_IN topic-specific_JJ vectors_NNS ,_, a_DT di_FW #erent_FW approach_NN is_VBZ required_VBN ;_: speeding_VBG up_RP the_DT computation_NN of_IN individual_JJ rank_NN vectors_NNS is_VBZ insu_FW #cient_FW ._.
+Jeh_NN and_CC Widom_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP a_DT scheme_NN for_IN e_SYM #ciently_RB computing_VBG personalized_VBN PageRank_NN vectors_NNS by_IN exploiting_VBG the_DT overlap_VBP in_IN the_DT computation_NN of_IN the_DT di_FW #erent_FW vectors_NNS ._.
+The_DT intuition_NN behind_IN their_PRP$ scheme_NN can_MD be_VB seen_VBN through_IN an_DT e_SYM
+e_LS two_CD algorithms_NNS -LRB-_-LRB- 1_CD ,_, 15_CD -RRB-_-RRB- ._.
+All_DT these_DT algorithms_NNS however_RB compute_VBP `_`` global_JJ '_'' ranking_NN of_IN nodes_NNS whereas_IN connection_NN strength_NN is_VBZ more_RBR related_JJ to_TO personalized_JJ versions_NNS of_IN PageRank_NNP and_CC HITS_NNP ,_, such_JJ as_IN proposed_VBN in_IN =_JJ -_: =[_NN 5_CD ,_, 12_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, capable_JJ of_IN biasing_VBG the_DT result_NN ._.
+Other_JJ related_JJ work_NN include_VBP graph_NN clustering_NN ,_, partitioning_VBG algorithms_NNS and_CC random_JJ walks_VBZ in_IN graphs_NNS -LRB-_-LRB- 16_CD ,_, 13_CD ,_, 19_CD ,_, 4_CD ,_, 7_CD ,_, 2_CD ,_, 11_CD ,_, 18_CD -RRB-_-RRB- ._.
+3_CD Probabilistic_JJ model_NN for_IN computing_NN conn_NN
+s_NN spam_NN prevention_NN abilities_NNS ,_, creating_VBG personalized_JJ PageRanking_NN systems_NNS ._.
+Personalization_NN is_VBZ a_DT hot_JJ area_NN since_IN some_DT predict_VBP personalized_JJ engines_NNS as_IN the_DT future_NN of_IN search_NN ._.
+See_VB the_DT Stanford_NNP research_NN papers_NNS =_JJ -_: =[_NN 41_CD ,_, 60_CD ,_, 62_CD ,_, 67_CD ,_, 103_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN the_DT concept_NN of_IN personalization_NN -LRB-_-LRB- producing_VBG a_DT π_NN T_NN for_IN each_DT user_NN 's_POS v_LS T_NN vector_NN -RRB-_-RRB- sounds_VBZ wonderful_JJ in_IN theory_NN ,_, doing_VBG this_DT in_IN practice_NN is_VBZ computationally_RB impossible_JJ ._.
+-LRB-_-LRB- Recall_VB that_IN it_PRP takes_VBZ Google_NNP days_NNS
+lobal_JJ importance_NN score_NN for_IN each_DT page_NN on_IN the_DT web_NN ._.
+These_DT scores_NNS were_VBD recomputed_VBN for_IN each_DT new_JJ Web_NN graph_NN crawl_NN ._.
+Recently_RB ,_, significant_JJ attention_NN has_VBZ been_VBN given_VBN to_TO topic-specific_JJ and_CC personalized_JJ PageRanks_NN =_JJ -_: =[_NN 14_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN both_DT cases_NNS one_PRP has_VBZ to_TO compute_VB multiple_JJ PageRanks_NNP corresponding_VBG to_TO various_JJ teleportation_NN vectors_NNS for_IN different_JJ topics_NNS or_CC user_NN preferences_NNS ._.
+∗_NNP Work_NNP performed_VBD while_IN at_IN Yahoo_NNP !_. ._.
+Leonid_NNP Zhukov_NNP Yahoo_NNP !_.
+7_CD
+h_NN engines_NNS rely_VBP on_IN centralized_JJ page_NN ranking_NN algorithms_NNS which_WDT compute_VBP page_NN rank_NN values_NNS as_IN single_JJ -LRB-_-LRB- global_JJ -RRB-_-RRB- values_NNS for_IN each_DT Web_NN page_NN ._.
+Recent_JJ work_NN on_IN topic-sensitive_JJ PageRank_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC personalized_JJ PageRank_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ explored_VBN how_WRB to_TO extend_VB PageRank_NN values_NNS with_IN personalization_NN aspects_NNS ._.
+To_TO achieve_VB personalization_NN ,_, these_DT algorithms_NNS need_VBP specific_JJ input_NN :_: -LRB-_-LRB- 8_CD -RRB-_-RRB- for_IN example_NN needs_VBZ a_DT set_NN of_IN personalized_JJ hub_NN pages_NNS with_IN h_NN
+nk-like_JJ distributed_VBN computation_NN of_IN reputation_NN values_NNS in_IN a_DT P2P_NN network_NN ._.
+We_PRP used_VBD its_PRP$ model_NN in_IN designing_VBG our_PRP$ algorithm_NN ,_, as_RB well_RB as_IN the_DT investigations_NNS about_IN possible_JJ attacks_NNS from_IN malicious_JJ peers_NNS ._.
+Just_RB as_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: improves_VBZ -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, our_PRP$ algorithm_NN extends_VBZ the_DT capabilities_NNS of_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- by_IN introducing_VBG personalization_NN into_IN the_DT computation_NN ._.
+For_IN global_JJ ranking_NN algorithms_NNS ,_, we_PRP distinguish_VBP three_CD targets_NNS based_VBN on_IN fixed-point_JJ itera_NN
+hole_NN web_NN ,_, the_DT same_JJ meaning_NN as_IN in_IN standard_JJ PageRank_NN ._.
+For_IN briefness_NN ,_, we_PRP can_MD assume_VB E_NN -LRB-_-LRB- v_LS -RRB-_-RRB- =_JJ 1_CD for_IN all_DT pages_NNS in_IN the_DT group_NN ._.
+The_DT case_NN when_WRB E_NN is_VBZ not_RB uniform_JJ over_IN pages_NNS can_MD be_VB used_VBN for_IN personalized_JJ page_NN ranking_NN =_JJ -_: =[_NN 5_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Then_RB ranks_NNS of_IN all_DT pages_NNS in_IN the_DT group_NN can_MD be_VB expressed_VBN as_IN follows_VBZ :_: R_NN -LRB-_-LRB- v_LS -RRB-_-RRB- =_JJ I_NN -LRB-_-LRB- v_LS -RRB-_-RRB- +_CC V_NN -LRB-_-LRB- v_LS -RRB-_-RRB- +_CC X_NN -LRB-_-LRB- v_LS -RRB-_-RRB- -LRB-_-LRB- 3.3_CD -RRB-_-RRB- R_NN -LRB-_-LRB- u_NN -RRB-_-RRB- =_JJ α_NN ∑_NN +_CC βE_NN -LRB-_-LRB- v_LS -RRB-_-RRB- +_CC X_NN -LRB-_-LRB- v_LS -RRB-_-RRB- u_FW ∈_FW Bv_NN d_NN -LRB-_-LRB- u_NN -RRB-_-RRB- Or_CC :_: R_NN =_JJ AR_NN +_CC -LRB-_-LRB- β_NN E_NN +_CC X_NN -RRB-_-RRB- -LRB-_-LRB- 3.4_CD -RRB-_-RRB- P4_NN P_NN 3sHere_NN A_NN is_VBZ a_DT squ_NN
+aths_NNS to_TO expending_VBG the_DT effort_NN to_TO fully_RB specify_VB their_PRP$ query_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+We_PRP believe_VBP that_IN another_DT promising_JJ approach_NN to_TO personalizing_VBG search_NN is_VBZ to_TO infer_VB users_NNS '_POS information_NN goals_NNS automatically_RB ._.
+Kelly_NNP and_CC Teevan_NNP =_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: give_VB an_DT overview_NN of_IN research_NN done_VBN in_IN information_NN retrieval_NN on_IN how_WRB implicit_JJ measures_NNS can_MD be_VB used_VBN to_TO help_VB search_NN ,_, highlighting_VBG prior_JJ contributions_NNS focused_VBN on_IN helping_VBG to_TO improve_VB results_NNS for_IN individuals_NNS ,_,
+of_IN big_JJ size_NN ._.
+Other_JJ methods_NNS sharing_VBG this_DT requirement_NN include_VBP regularized_VBN regression_NN ,_, Gaussian_JJ process_NN regression_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, and_CC so_RB on_RB ._.
+Existing_VBG fast_JJ solution_NN for_IN RWR_NN include_VBP Hub-vector_JJ decomposition_NN based_VBN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ;_: block_NN structure_NN based_VBN -LRB-_-LRB- 18_CD -RRB-_-RRB- -LRB-_-LRB- 25_CD -RRB-_-RRB- ;_: fingerprint_NN based_VBN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, and_CC so_RB on_RB ._.
+Many_JJ applications_NNS take_VBP random_JJ walk_NN and_CC related_JJ methods_NNS as_IN the_DT building_NN block_NN ,_, including_VBG PageRank_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, personalized_JJ PageRank_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_,
+ks_NNS from_IN one_CD page_NN to_TO another_DT ._.
+Many_JJ link_NN analysis_NN methods_NNS have_VBP been_VBN developed_VBN over_IN the_DT past_JJ decade_NN ,_, the_DT most_RBS popular_JJ of_IN those_DT being_VBG PageRank_NNP created_VBN for_IN the_DT Google_NNP search_NN engine_NN ._.
+The_DT PageRank_NNP algorithm_NN =_JJ -_: =[_NN 6_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT method_NN of_IN calculating_VBG a_DT popularity_NN score_NN for_IN each_DT document_NN in_IN the_DT Web_NN ._.
+The_DT popularity_NN of_IN a_DT page_NN is_VBZ measured_VBN by_IN observing_VBG which_WDT other_JJ pages_NNS link_VBP to_TO it_PRP ._.
+The_DT set_NN of_IN popularity_NN scores_NNS are_VBP precompute_JJ
+sary_JJ to_TO reduce_VB the_DT lag_NN time_NN from_IN when_WRB a_DT new_JJ crawl_NN is_VBZ completed_VBN to_TO when_WRB that_DT crawl_NN can_MD be_VB made_VBN available_JJ for_IN searching_VBG ._.
+Secondly_RB ,_, recent_JJ approaches_NNS to_TO personalized_JJ and_CC topic-sensitive_JJ PageRank_NN schemes_NNS =_JJ -_: =[_NN 8_CD ,_, 17_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: require_VB computing_VBG many_JJ PageRank_NNP vectors_NNS ,_, each_DT biased_VBN towards_IN certain_JJ types_NNS of_IN pages_NNS ._.
+These_DT approaches_NNS intensify_VBP the_DT need_NN for_IN faster_JJR methods_NNS for_IN computing_VBG PageRank_NNP ._.
+Accelerating_VBG the_DT PageRank_NN algorithm_NN
+e_LS running_VBG time_NN ._.
+The_DT analysis_NN of_IN our_PRP$ algorithm_NN is_VBZ based_VBN on_IN the_DT following_JJ results_NNS :_: •_CD We_PRP give_VBP an_DT improved_JJ algorithm_NN for_IN computing_VBG approximate_JJ PageRank_NN vectors_NNS ._.
+We_PRP use_VBP a_DT technique_NN introduced_VBN by_IN Jeh-Widom_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC further_RB developed_VBN by_IN Berkhin_NNP in_IN his_PRP$ Bookmark_NNP Coloring_NNP Algorithm_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+The_DT algorithms_NNS of_IN Jeh-Widom_NNP and_CC Berkhin_NNP compute_VBP many_JJ personalized_VBN PageRank_NN vectors_NNS simultaneously_RB ,_, more_RBR quickly_RB than_IN they_PRP cou_VBP
+ages_NNS based_VBD both_DT on_IN their_PRP$ overall_JJ importance_NN ,_, the_DT core_NN of_IN PageRank_NNP ,_, and_CC their_PRP$ relevance_NN to_TO a_DT particular_JJ topic_NN or_CC individual_NN ,_, by_IN biasing_VBG the_DT random_JJ resets_NNS towards_IN topically_RB relevant_JJ or_CC bookmarked_JJ pages_NNS =_JJ -_: =[_NN 12_CD ,_, 13_CD ,_, 15_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+•_FW SimRank_FW -LRB-_-LRB- 14_CD -RRB-_-RRB- is_VBZ a_DT fixed_JJ point_NN of_IN the_DT following_JJ recursive_JJ definition_NN :_: two_CD nodes_NNS are_VBP similar_JJ to_TO the_DT extent_NN that_IN they_PRP are_VBP joined_VBN to_TO similar_JJ neighbors_NNS ._.
+Numerically_RB ,_, this_DT quantity_NN is_VBZ specified_VBN by_IN defin_NN
+sing_VB a_DT PageRank_NN vector_NN sensitive_JJ to_TO the_DT topics_NNS in_IN the_DT user_NN profile_NN -LRB-_-LRB- rather_RB than_IN to_TO the_DT topic_NN of_IN the_DT query_NN -RRB-_-RRB- ._.
+Personalised_NNP PageRank_NNP ,_, a_DT variation_NN of_IN the_DT idea_NN of_IN topic-sensitive_JJ PageRank_NN ,_, is_VBZ presented_VBN in_IN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT suggests_VBZ the_DT possibility_NN of_IN biasing_VBG the_DT scores_NNS of_IN pages_NNS according_VBG to_TO a_DT user-specified_JJ set_NN of_IN interesting_JJ pages_NNS -LRB-_-LRB- for_IN example_NN their_PRP$ bookmarks_NNS --_: which_WDT in_IN this_DT case_NN form_VBP the_DT user_NN profile_NN -RRB-_-RRB- ._.
+Personal_NNP
+and_CC is_VBZ computationally_RB tractable_JJ ._.
+The_DT connection_NN between_IN ranking_NN and_CC web_NN search_NN has_VBZ spawned_VBN an_DT increasingly_RB large_JJ literature_NN ,_, for_IN example_NN in_IN using_VBG personal_JJ preference_NN data_NNS to_TO improve_VB search_NN outcomes_NNS =_JJ -_: =[_NN 215_CD -RRB-_-RRB- -_: =_JJ -_: ,_, using_VBG page_NN importance_NN to_TO guide_VB web_NN crawls_VBZ -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, or_CC connecting_VBG ranking\/web_NN search_NN to_TO graph-theoretical_JJ optimization_NN problems_NNS such_JJ as_IN finding_VBG the_DT minimum_JJ feedback_NN arc_NN set_VBN in_IN tournaments_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+Connection_NN
+he_PRP web_NN have_VBP also_RB been_VBN explored_VBN in_IN prior_JJ research_NN ._.
+This_DT work_NN includes_VBZ explorations_NNS of_IN domain-specific_JJ or_CC person-specific_JJ PageRank_NN -LRB-_-LRB- 8_CD ,_, 24_CD -RRB-_-RRB- ,_, and_CC on_IN the_DT use_NN of_IN non-random_JJ jump_NN vectors_NNS for_IN personalization_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Related_JJ work_NN on_IN identifying_VBG web_NN spam_NN has_VBZ examined_VBN methods_NNS for_IN propagating_VBG from_IN trustedpages_NNS -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+Recent_JJ work_NN by_IN Nie_NN et_FW al._FW -LRB-_-LRB- 19_CD -RRB-_-RRB- focused_VBN on_IN eigenvectors_NNS or_CC counts_NNS to_TO set_VB node_NN priors_NNS ._.
+In_IN the_DT content_NN
+to_TO infer_VB more_JJR information_NN about_IN the_DT users_NNS '_POS intent_NN from_IN their_PRP$ previous_JJ actions_NNS ._.
+In_IN this_DT area_NN numerous_JJ personalized_VBN search_NN algorithms_NNS have_VBP been_VBN suggested_VBN ,_, and_CC implemented_VBN in_IN practice_NN -LRB-_-LRB- see_VB ,_, for_IN example_NN ,_, =_JJ -_: =[_NN 8_CD ,_, 18_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+These_DT algorithms_NNS reweigh_VBP the_DT results_NNS for_IN each_DT query_NN asked_VBN by_IN the_DT users_NNS based_VBN on_IN their_PRP$ stated_JJ preferences_NNS or_CC past_JJ search_NN histories_NNS ._.
+Permission_NN to_TO make_VB digital_JJ or_CC hard_JJ copies_NNS of_IN all_DT or_CC part_NN of_IN this_DT w_NN
+ges_NNS for_IN users_NNS ._.
+The_DT experimental_JJ results_NNS -LRB-_-LRB- 36_CD -RRB-_-RRB- illustrated_VBD that_IN this_DT system_NN could_MD improve_VB the_DT search_NN engine_NN ._.
+However_RB ,_, this_DT technique_NN is_VBZ not_RB scalable_JJ ,_, since_IN the_DT number_NN of_IN favorite_JJ pages_NNS is_VBZ limited_VBN to_TO 16_CD =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+With_IN the_DT aim_NN of_IN constructing_VBG a_DT scalable_JJ and_CC personalized_JJ PageRank_NN search_NN engine_NN ,_, Jeh_NNP and_CC Widom_NNP -LRB-_-LRB- 35_CD -RRB-_-RRB- proposed_VBD a_DT model_NN based_VBN on_IN personalized_JJ PageRank_NN vector_NN -LRB-_-LRB- PPV_NN -RRB-_-RRB- ._.
+PPV_NN represents_VBZ the_DT distribution_NN of_IN s_NN
+y_NN to_TO reduce_VB the_DT lag_NN time_NN from_IN when_WRB a_DT new_JJ crawl_NN is_VBZ completed_VBN to_TO when_WRB that_DT crawl_NN can_MD be_VB made_VBN available_JJ for_IN searching_VBG ._.
+Furthermore_RB ,_, recent_JJ approaches_NNS to_TO personalized_JJ and_CC topic-sensitive_JJ PageRank_NN schemes_NNS =_JJ -_: =[_NN 11_CD ,_, 19_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: require_VB computing_VBG many_JJ PageRank_NNP vectors_NNS ,_, each_DT biased_VBN towards_IN certain_JJ types_NNS of_IN pages_NNS ._.
+These_DT approaches_NNS intensify_VBP the_DT need_NN for_IN faster_JJR methods_NNS for_IN computing_VBG PageRank_NNP ._.
+Eigenvaluecomputation_NNP is_VBZ a_DT well-stu_NN
+inally_RB ,_, pages_NNS are_VBP ranked_VBN by_IN this_DT unified_JJ score_NN ._.
+Experiments_NNS show_VBP that_IN Topic-sensitive_JJ PageRank_NNP has_VBZ better_JJR performance_NN than_IN PageRank_NNP in_IN generating_VBG better_JJR response_NN lists_NNS to_TO a_DT given_VBN query_NN ._.
+Jeh_NN and_CC Widom_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: specialize_VB the_DT global_JJ notion_NN of_IN importance_NN that_IN PageRank_NNP provides_VBZ to_TO create_VB personalized_JJ views_NNS of_IN importance_NN by_IN introducing_VBG the_DT idea_NN of_IN preference_NN sets_NNS ._.
+The_DT rankings_NNS of_IN results_NNS can_MD then_RB be_VB biased_VBN acc_NN
+vector_NN space_NN -LRB-_-LRB- 1_CD ,_, 2_CD -RRB-_-RRB- ,_, with_IN link_NN analysis_NN techniques_NNS based_VBN on_IN the_DT hypertext_NN structure_NN of_IN the_DT Web_NN -LRB-_-LRB- 3_CD ,_, 4_CD -RRB-_-RRB- ._.
+Personalized_VBN search_NN has_VBZ gained_VBN great_JJ popularity_NN to_TO improve_VB search_NN effectiveness_NN in_IN recent_JJ years_NNS =_JJ -_: =[_NN 10_CD ,_, 12_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT objective_NN of_IN personalized_JJ search_NN is_VBZ to_TO provide_VB users_NNS with_IN information_NN tailored_VBN to_TO their_PRP$ individual_JJ contexts_NNS ._.
+We_PRP propose_VBP to_TO personalize_VB Web_NN search_NN based_VBN on_IN features_NNS extracted_VBN from_IN hyperlinks_NNS ,_, suc_NN
+b_NN taxonomy_NN provided_VBN by_IN the_DT ODP_NN to_TO resolve_VB the_DT meaning_NN of_IN a_DT user_NN query_NN ._.
+Considerable_JJ amount_NN of_IN Web_NN personalization_NN research_NN aims_VBZ at_IN enhancing_VBG the_DT original_JJ PageRank_NNP algorithm_NN ._.
+In_IN Personalized_NNP Page_NNP Rank_NNP =_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT set_NN of_IN personalized_JJ hub_NN pages_NNS with_IN high_JJ PageRank_NN is_VBZ needed_VBN to_TO drive_VB the_DT personalized_JJ rank_NN values_NNS ._.
+In_IN order_NN to_TO automate_VB the_DT hub_NN selection_NN in_IN Personalized_NNP Page_NNP Rank_NNP ,_, a_DT set_NN of_IN user_NN collected_VBD bookmark_NN
+ww.seekasong.com_NN ''_'' ._.
+Personalized_VBN search_NN is_VBZ considered_VBN a_DT solution_NN to_TO this_DT problem_NN since_IN different_JJ search_NN results_NNS based_VBN on_IN preferences_NNS of_IN users_NNS are_VBP provided_VBN ._.
+Various_JJ personalization_NN strategies_NNS including_VBG =_JJ -_: =[_NN 21_CD ,_, 22_CD ,_, 26_CD ,_, 31_CD ,_, 14_CD ,_, 9_CD ,_, 35_CD ,_, 30_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN proposed_VBN ,_, and_CC personalized_JJ web_NN search_NN systems_NNS have_VBP been_VBN developed_VBN ,_, but_CC they_PRP are_VBP far_RB from_IN optimal_JJ ._.
+One_CD problem_NN of_IN current_JJ personalized_JJ search_NN is_VBZ that_IN most_JJS proposed_VBN methods_NNS are_VBP uniformly_RB appl_JJ
+to_TO resolve_VB the_DT meaning_NN of_IN a_DT user_NN query_NN ._.
+Considerable_JJ amount_NN of_IN Web_NN personalization_NN research_NN has_VBZ been_VBN aimed_VBN at_IN enhancing_VBG the_DT original_JJ PageRank_NN algorithm_NN introduced_VBN in_IN Google_NNP ._.
+In_IN Personalized_NNP Page_NNP Rank_NNP =_SYM -_: =[_NN 26_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT set_NN of_IN personalized_JJ hub_NN pages_NNS with_IN high_JJ PageRank_NN is_VBZ needed_VBN to_TO drive_VB the_DT personalized_JJ rank_NN values_NNS ._.
+In_IN order_NN to_TO automate_VB the_DT hub_NN selection_NN in_IN Personalized_NNP Page_NNP Rank_NNP ,_, a_DT set_NN of_IN user_NN collected_VBD bookmark_NN
+ates_NNS that_IN the_DT need_NN for_IN new_JJ paradigm_NN or_CC technique_NN to_TO handle_VB the_DT dynamic_JJ web_NN as_IN the_DT static_JJ techniques_NNS can_MD no_RB longer_RB cope_VB up_RP with_IN the_DT dynamic_JJ web_NN ._.
+How_WRB to_TO scale_VB the_DT personalized_JJ web_NN search_NN is_VBZ explored_VBN in_IN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN stated_VBN in_IN section_NN 1_CD ,_, work_NN in_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- naturally_RB personalizes_VBZ the_DT search_NN without_IN invading_VBG the_DT privacy_NN ._.
+It_PRP also_RB alleviates_VBZ the_DT spider_NN menace_NN -LRB-_-LRB- if_IN deemed_VBN to_TO be_VB exist_VB !_. -RRB-_-RRB- ._.
+In_IN -LRB-_-LRB- 9_CD -RRB-_-RRB- there_EX was_VBD a_DT lengthy_JJ discuss_VB
+iwala_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- about_IN rankings_NNS biased_VBN towards_IN different_JJ topics_NNS -LRB-_-LRB- where_WRB the_DT correlation_NN was_VBD computed_VBN using_VBG a_DT measure_NN similar_JJ to_TO Kendall_NNP 's_POS τ_NN -RRB-_-RRB- ;_: such_JJ seminal_JJ work_NN has_VBZ been_VBN receiving_VBG some_DT attention_NN lately_RB ,_, as_IN in_IN =_JJ -_: =[_NN 2_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT bias_NN was_VBD introduced_VBN using_VBG a_DT preference_NN vector_NN ,_, that_DT is_VBZ ,_, by_IN assuming_VBG that_IN upon_IN teleportation_NN -LRB-_-LRB- see_VB below_IN for_IN definitions_NNS -RRB-_-RRB- one_CD does_VBZ not_RB land_VB in_IN a_DT node_NN chosen_VBN uniformly_RB at_IN random_JJ ,_, but_CC rather_RB accordi_NN
+ized_VBN PageRank_NN scores_NNS of_IN nodes_NNS that_WDT are_VBP not_RB in_IN its_PRP$ scope_NN do_VBP not_RB change_VB ._.
+For_IN the_DT proof_NN of_IN the_DT theorem_NN we_PRP use_VBP the_DT following_JJ lemma_NN that_WDT follows_VBZ from_IN the_DT results_NNS of_IN Avrachenko_NNP et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- and_CC Jeh_NN and_CC Widom_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Lemma_NN 1_CD ._.
+For_IN a_DT node_NN v_LS ∈_NNP V_NNP the_DT normalized_VBN PageRank_NN score_NN ˆr_NN -LRB-_-LRB- v_LS -RRB-_-RRB- can_MD be_VB written_VBN as_IN ˆr_NN -LRB-_-LRB- v_LS -RRB-_-RRB- =_JJ X_NN 0_CD 1_CD X_NN l_NN -LRB-_-LRB- t_NN -RRB-_-RRB- Y_NN @_SYM 1_CD A_NN -LRB-_-LRB- 1_CD −_FW ɛ_FW -RRB-_-RRB- out_RP -LRB-_-LRB- ωi_NN -RRB-_-RRB- l_NN -LRB-_-LRB- t_NN -RRB-_-RRB- ._.
+u_FW ∈_FW V_NN t_NN :_: u_FW ❀_FW v_LS i_LS =_JJ 1_CD Here_NN ,_, t_NN :_: u_FW ❀_FW v_LS denotes_VBZ the_DT set_NN of_IN tours_NNS -LRB-_-LRB- i.e._FW ,_, path_NN
+iverse_RB ,_, even_RB if_IN limited_VBN to_TO words_NNS ._.
+Person_NN wrote_VBD sent_VBN Paper_NNP works-for_NN Company_NNP received_VBD Email_NNP cited_VBD in-reply-to_JJ Figure_NNP 1_CD :_: A_DT typical_JJ ER_NN graph_NN The_DT NEAR_NN operator_NN broadly_RB follows_VBZ a_DT personalized_JJ Pageranklike_NN =_JJ -_: =[_NN 11_CD ,_, 12_CD -RRB-_-RRB- -_: =_JJ -_: semantics_NNS ._.
+A_DT random_JJ surfer_NN model_NN is_VBZ constructed_VBN as_IN in_FW Pagerank_FW -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, with_IN two_CD modifications_NNS :_: •_CD The_DT surfer_NN does_VBZ not_RB follow_VB edges_NNS out_IN of_IN a_DT node_NN uniformly_RB at_IN random_JJ ._.
+Edges_NNS have_VBP associated_VBN types_NNS ;_: types_NNS ar_IN
+er_NN 's_POS interests_NNS ,_, and_CC information_NN about_IN a_DT user_NN 's_POS intent_NN is_VBZ collected_VBN at_IN query_NN time_NN ._.
+Personal_JJ 592_CD information_NN has_VBZ also_RB been_VBN used_VBN in_IN the_DT context_NN of_IN Web_NN search_NN to_TO create_VB a_DT personalized_JJ version_NN of_IN PageRank_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+There_EX are_VBP still_RB approaches_NNS ,_, including_VBG many_JJ commercially_RB available_JJ informationfiltering_VBG systems_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, which_WDT require_VBP users_NNS explicitly_RB specify_VBP their_PRP$ interests_NNS ._.
+However_RB ,_, as_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- pointed_VBD out_RP ,_, use_VB
+at_IN this_DT node_NN that_WDT will_MD eventually_RB arrive_VB at_IN the_DT target_NN node_NN without_IN performing_VBG a_DT random_JJ jump_NN in_IN between_IN ._.
+We_PRP note_VBP that_IN influence_NN is_VBZ related_JJ to_TO the_DT inverse_JJ distance_NN measure_NN defined_VBN by_IN Jeh_NNP and_CC Widom_NNP in_IN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT overall_JJ impact_NN that_IN a_DT node_NN has_VBZ on_IN the_DT estimation_NN error_NN at_IN the_DT target_NN depends_VBZ on_IN its_PRP$ influence_NN and_CC the_DT absolute_JJ PageRank_NN estimation_NN error_NN at_IN the_DT node_NN -LRB-_-LRB- which_WDT we_PRP do_VBP not_RB know_VB -RRB-_-RRB- ._.
+Formally_RB ,_, the_DT absolut_NN
+y_NNP Heileman_NNP Department_NNP of_IN Computer_NNP Engineering_NNP University_NNP of_IN New_NNP Mexico_NNP -LCB-_-LRB- sinan_NN ,_, heileman}@ece.unm.edu_NN pages_NNS for_IN every_DT query_NN regardless_RB of_IN the_DT search_NN 's_POS and_CC the_DT searcher_NN 's_POS local_JJ context_NN ._.
+Personalized_VBN PR_NN =_JJ -_: =[_NN 4_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ the_DT customization_NN of_IN global_JJ PR_NN to_TO return_VB results_NNS that_WDT are_VBP specific_JJ or_CC local_JJ to_TO each_DT user_NN or_CC their_PRP$ search_NN context_NN ._.
+The_DT advantage_NN of_IN personalization_NN is_VBZ to_TO increase_VB the_DT relevance_NN and_CC value_NN of_IN returne_NN
+hes_NNS ,_, this_DT history_NN can_MD be_VB used_VBN to_TO help_VB search_NN engines_NNS improve_VBP the_DT results_NNS of_IN future_JJ searches_NNS by_IN personalizing_VBG her_PRP$ search_NN results_NNS according_VBG to_TO preferences_NNS automatically_RB inferred_VBD from_IN her_PRP$ history_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 9_CD ,_, 15_CD ,_, 18_CD ,_, 19_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Current_JJ personalization_NN services_NNS generally_RB operate_VBP at_IN a_DT high-level_JJ understanding_NN of_IN the_DT user_NN ._.
+For_IN example_NN ,_, references_NNS -LRB-_-LRB- 15_CD ,_, 18_CD -RRB-_-RRB- reorder_VBP search_NN results_NNS based_VBN on_IN general_JJ preferences_NNS inferred_VBN from_IN a_DT us_PRP
+g_NN concern_NN for_IN personalized_JJ search_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+Second_JJ ,_, both_CC the_DT computation_NN of_IN personalization_NN and_CC the_DT storage_NN of_IN the_DT user_NN profile_NN are_VBP done_VBN at_IN the_DT client_NN side_NN so_IN that_IN the_DT server_NN load_NN is_VBZ reduced_VBN dramatically_RB =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX have_VBP been_VBN many_JJ works_NNS studying_VBG user_NN query_NN logs_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- or_CC query_NN dynamics_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+UCAIR_NN makes_VBZ direct_JJ use_NN of_IN a_DT user_NN 's_POS query_JJ history_NN to_TO benefit_VB the_DT same_JJ user_NN immediately_RB in_IN the_DT same_JJ search_NN session_NN ._.
+UCAI_NN
+ifically_RB ,_, in_IN its_PRP$ smooth_JJ integration_NN into_IN the_DT personalization_NN of_IN content_NN retrieval_NN ._.
+Personalization_NN seeks_VBZ to_TO improve_VB the_DT subjective_JJ performance_NN of_IN retrieval_NN as_IN perceived_VBN by_IN individual_JJ users_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 34_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 36_CD -RRB-_-RRB- ._.
+Our_PRP$ work_NN aims_VBZ at_IN improving_VBG the_DT effectiveness_NN of_IN personalization_NN as_IN perceived_VBN in_IN a_DT specific_JJ context_NN ,_, reducing_VBG some_DT of_IN its_PRP$ occasional_JJ drawbacks_NNS ,_, such_JJ as_IN obtrusiveness_NN ,_, inaccuracy_NN ,_, inconsis_NN
+._.
+-LRB-_-LRB- 83_CD ;_: 84_CD -RRB-_-RRB- analyze_VBP the_DT stability_NN of_IN PageRank_NNP and_CC HITS_NNP to_TO small_JJ perturbations_NNS in_IN the_DT link_NN structure_NN and_CC present_JJ modifications_NNS to_TO HITS_NNS that_WDT yield_VBP more_RBR stable_JJ rankings_NNS ._.
+Haveliwala_NN -LRB-_-LRB- 51_CD -RRB-_-RRB- and_CC Jeh_NN and_CC Widom_NN =_JJ -_: =[_NN 56_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP topic-sensitive_JJ PageRank_NN algorithms_NNS that_WDT identify_VBP topically_RB authoritative_JJ web_NN pages_NNS efficiently_RB at_IN query_NN time_NN ._.
+Ding_NNP et_FW al._FW -LRB-_-LRB- 29_CD -RRB-_-RRB- proposes_VBZ a_DT unified_JJ framework_NN encompassing_VBG both_DT PageRank_NNP and_CC HIT_NNP
+used_VBN for_IN ranking_JJ nodes_NNS in_IN graphs_NNS ._.
+Markov_NNP balance_NN constraints_NNS -LRB-_-LRB- Section_NN 2_CD -RRB-_-RRB- and_CC linearity_NN have_VBP helped_VBN harness_NN the_DT massive_JJ literature_NN on_IN graph_NN eigensystems_NNS to_TO design_VB highly_RB scalable_JJ Pagerank_NN algorithms_NNS -LRB-_-LRB- =_JJ -_: =_JJ Jeh_NNP &_CC Widom_NNP ,_, 2003_CD -_: =--RRB-_NN ._.
+But_CC Pagerank_NNP transitions_NNS are_VBP designed_VBN by_IN hand_NN ,_, hardly_RB ever_RB learned_VBN from_IN ≺_CD ._.
+NetRank_NNP ,_, as_IN it_PRP is_VBZ ,_, does_VBZ not_RB give_VB generalization_NN guarantees_NNS ,_, and_CC ,_, indeed_RB ,_, does_VBZ not_RB generalize_VB well_RB in_IN experiments_NNS ._.
+On_IN the_DT ot_NN
+value_NN of_IN α_NN ._.
+Follow-up_JJ work_NN on_IN Pagerank_NNP has_VBZ attempted_VBN to_TO modify_VB the_DT teleport_NN vector_NN r_NN to_TO ``_`` personalize_VB ''_'' the_DT scores_NNS heuristically_RB ,_, based_VBN on_IN topics_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, words_NNS -LRB-_-LRB- 18_CD ,_, 2_CD -RRB-_-RRB- ,_, or_CC user_NN preferences_NNS on_IN graph_NN nodes_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC the_DT transitions_NNS are_VBP designed_VBN by_IN hand_NN ,_, not_RB learned_VBN from_IN preference_NN data_NNS ._.
+Learning_NNP link-based_JJ ranking_NN :_: Recently_RB there_EX have_VBP been_VBN efforts_NNS to_TO learn_VB r_NN and_CC even_RB C_NN automatically_RB ._.
+Tsoi_NNP et_FW al._FW -LRB-_-LRB- 20_CD -RRB-_-RRB- used_VBD a_DT
+which_WDT is_VBZ derived_VBN from_IN PageRank_NNP ._.
+PageRank_NNP assumes_VBZ that_IN the_DT random_JJ surfer_NN has_VBZ no_DT preference_NN when_WRB choosing_VBG a_DT ``_`` reset_JJ ''_'' page_NN ,_, i.e._FW jumping_VBG to_TO any_DT page_NN with_IN an_DT equal_JJ probability_NN ._.
+Some_DT later_JJ work_NN on_IN PageRank_NN =_JJ -_: =[_NN 12_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, consider_VB that_IN the_DT random_JJ surfer_NN has_VBZ a_DT uniform_JJ preference_NN when_WRB taking_VBG a_DT jump_NN ,_, regardless_RB of_IN his_PRP$ interest_NN context_NN ._.
+Actually_RB ,_, surfers_NNS '_POS activities_NNS often_RB are_VBP taskbased_JJ and_CC topic-specific_JJ ._.
+That_DT is_VBZ ,_, the_DT su_NN
+reference_NN vector_NN v._CC The_DT preference_NN vector_NN is_VBZ used_VBN to_TO bias_NN PageRank_NNP w.r.t._NNP a_DT selected_VBN set_NN of_IN trusted_VBN pages_NNS ,_, or_CC might_MD depend_VB on_IN the_DT user_NN 's_POS preferences_NNS ,_, in_IN which_WDT case_NN one_CD speaks_VBZ of_IN personalised_JJ PageRank_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Clearly_RB ,_, the_DT preference_NN vector_NN conditions_NNS significantly_RB PageRank_NNP ,_, but_CC in_IN real-world_NN crawls_VBZ ,_, which_WDT have_VBP a_DT large_JJ number_NN of_IN dangling_JJ nodes_NNS -LRB-_-LRB- in_IN particular_JJ if_IN the_DT graph_NN contains_VBZ the_DT whole_JJ frontier_NN of_IN the_DT
+couple_NN of_IN new_JJ approaches_NNS that_WDT apply_VBP classification_NN for_IN the_DT purpose_NN of_IN retrieval_NN have_VBP been_VBN proposed_VBN ._.
+One_CD approach_NN exploits_NNS existing_VBG categories_NNS of_IN Web_NN pages_NNS to_TO directly_RB influence_VB PageRank_NN computations_NNS -LRB-_-LRB- =_JJ -_: =_JJ Jeh_NNP &_CC Widom_NNP ,_, 2003_CD -_: =_JJ -_: ;_: Haveliwala_NNP ,_, 2002_CD -RRB-_-RRB- ,_, while_IN the_DT other_JJ automatically_RB identifies_VBZ effective_JJ query_NN modifications_NNS from_IN iterations_NNS of_IN the_DT classification_NN and_CC feature_NN selection_NN process_NN -LRB-_-LRB- Flake_NNP et_FW al._FW ,_, 2002_CD -RRB-_-RRB- ._.
+Haveliwala_NNP 's_POS resea_NN
+body_NN of_IN work_NN ._.
+Computationally_RB ,_, the_DT Monte_NNP Carlo_NNP methods_NNS in_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 4_LS -RRB-_-RRB- are_VBP similar_JJ to_TO our_PRP$ algorithms_NNS for_IN hitting_VBG time_NN ._.
+They_PRP use_VBP a_DT probabilistic_JJ formulation_NN of_IN PageRank_NN in_IN terms_NNS of_IN a_DT short_JJ random_JJ walk_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT permits_VBZ efficient_JJ sampling_NN ._.
+In_IN particular_JJ ,_, we_PRP will_MD use_VB the_DT same_JJ idea_NN as_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- to_TO efficiently_RB implement_VB many_JJ random_JJ walks_VBZ simultaneously_RB in_IN a_DT massive_JJ graph_NN ,_, without_IN requiring_VBG random_JJ access_NN ._.
+Manipu_NNP
+vel_NN ._.
+However_RB ,_, a_DT finegrained_JJ set_NN of_IN topics_NNS leads_VBZ to_TO efficiency_NN considerations_NNS ,_, as_IN the_DT cost_NN of_IN the_DT naive_JJ approach_NN to_TO computing_VBG these_DT topic-sensitive_JJ vectors_NNS is_VBZ linear_JJ in_IN the_DT number_NN of_IN basis_NN topics_NNS ._.
+See_VB =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: for_IN approaches_NNS that_WDT may_MD make_VB the_DT use_NN of_IN a_DT larger_JJR ,_, finer_NN grained_VBD set_NN of_IN basis_NN topics_NNS practical_JJ ._.
+We_PRP are_VBP also_RB currently_RB investigating_VBG a_DT different_JJ approach_NN to_TO creating_VBG the_DT damping_VBG vector_NN p_NN used_VBN to_TO creat_VB
+r_LS Technology_NNP Labs_NNPS Intel_NNP Corporation_NNP ,_, Santa_NNP Clara_NNP ,_, CA_NNP marzia.polito@intel.com_NNP In_IN this_DT paper_NN ,_, we_PRP consider_VBP the_DT problem_NN of_IN calculating_VBG fast_JJ and_CC accurate_JJ approximations_NNS to_TO the_DT personalized_VBN PageRank_NN score_NN -LRB-_-LRB- =_JJ -_: =[_NN 8_CD ,_, 16_CD -RRB-_-RRB- -_: =--RRB-_NN of_IN a_DT webpage_NN ._.
+We_PRP focus_VBP on_IN techniques_NNS to_TO improve_VB speed_NN by_IN limiting_VBG the_DT amount_NN of_IN webgraph_JJ data_NNS we_PRP need_VBP to_TO access_VB ._.
+PageRank_NN scores_NNS are_VBP mainly_RB used_VBN for_IN ranking_JJ purposes_NNS ,_, and_CC generally_RB only_RB the_DT scores_NNS e_SYM
+for_IN different_JJ users_NNS can_MD be_VB better_RBR determined_VBN ,_, if_IN the_DT PageRank_NNP algorithm_NN takes_VBZ into_IN consideration_NN user_NN preferences_NNS ._.
+Personalized_VBN PageRank_NN approach_NN was_VBD first_RB introduced_VBN in_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC studied_VBN by_IN others_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: as_IN querydependent_JJ ranking_JJ mechanism_NN ._.
+However_RB ,_, the_DT use_NN and_CC benefits_NNS of_IN personalized_JJ PageRank_NN vectors_NNS have_VBP not_RB been_VBN studied_VBN and_CC explored_VBN enough_RB in_IN personalized_JJ web_NN search_NN applications_NNS ._.
+In_IN this_DT paper_NN ,_, w_NN
+utions_NNS of_IN spam_NN nodes_NNS will_MD be_VB added_VBN to_TO determine_VB what_WP we_PRP call_VBP the_DT spam_NN mass_NN of_IN nodes_NNS ._.
+3.2_CD PageRank_NN Contribution_NN In_IN this_DT section_NN we_PRP adapt_VBP the_DT formalism_NN and_CC results_NNS introduced_VBN for_IN inverse_JJ P-distances_NNS in_IN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT connection_NN between_IN the_DT nodes_NNS x_NN and_CC y_NN is_VBZ captured_VBN by_IN the_DT concept_NN of_IN a_DT walk_NN ._.
+A_DT walk_NN W_NN from_IN x_NN to_TO y_NN in_IN a_DT directed_JJ graph_NN is_VBZ defined_VBN as_IN a_DT finite_JJ sequence_NN of_IN nodes_NNS x_NN =_JJ x0_NN ,_, x1_NN ,_, ..._: ,_, xk_NN =_JJ y_NN ,_, where_WRB the_DT
+y_NN to_TO reduce_VB the_DT lag_NN time_NN from_IN when_WRB a_DT new_JJ crawl_NN is_VBZ completed_VBN to_TO when_WRB that_DT crawl_NN can_MD be_VB made_VBN available_JJ for_IN searching_VBG ._.
+Furthermore_RB ,_, recent_JJ approaches_NNS to_TO personalized_JJ and_CC topic-sensitive_JJ PageRank_NN schemes_NNS =_JJ -_: =[_NN 2_CD ,_, 10_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: require_VB computing_VBG many_JJ PageRank_NNP vectors_NNS ,_, each_DT biased_VBN towards_IN certain_JJ types_NNS of_IN pages_NNS ._.
+These_DT approaches_NNS intensify_VBP the_DT need_NN for_IN faster_JJR methods_NNS for_IN computing_VBG PageRank_NNP ._.
+A_DT practical_JJ extrapolation_NN method_NN fo_NN
+e_LS PageRank_NN of_IN his_PRP$ pages_NNS simply_RB by_IN generating_VBG a_DT massive_JJ number_NN of_IN pages_NNS and_CC heavily_RB linking_VBG among_IN themselves_PRP ._.
+To_TO avoid_VB the_DT spammability_NN problem_NN ,_, a_DT generalized_JJ version_NN of_IN the_DT PageRank_NNP has_VBZ been_VBN proposed_VBN =_JJ -_: =[_NN 19_CD ,_, 15_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: and_CC is_VBZ being_VBG commonly_RB used_VBN ._.
+2_CD For_IN clarify_VB ,_, here_RB we_PRP assume_VBP that_IN D_NN is_VBZ a_DT finite_JJ set_NN ._.
+Under_IN the_DT generalized_VBN PageRank_NN definition_NN that_IN we_PRP describe_VBP later_RB ,_, our_PRP$ results_NNS can_MD be_VB easily_RB generalized_VBN to_TO the_DT case_NN w_NN
+a_DT P2P_NN system_NN ._.
+One_CD alternative_NN that_WDT fits_VBZ into_IN our_PRP$ vision_NN of_IN client-determined_JJ ranking_JJ functions_NNS is_VBZ to_TO allow_VB clients_NNS to_TO compute_VB their_PRP$ own_JJ global_JJ orderings_NNS which_WDT can_MD depend_VB on_IN their_PRP$ personal_JJ preferences_NNS =_JJ -_: =[_NN 23_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT ordering_VBG can_MD then_RB be_VB treated_VBN as_IN an_DT additional_JJ term_NN in_IN each_DT query_NN posed_VBN by_IN a_DT client_NN ,_, and_CC the_DT query_NN can_MD be_VB evaluated_VBN using_VBG the_DT protocol_NN proposed_VBN in_IN this_DT paper_NN -LRB-_-LRB- though_IN with_IN slightly_RB diminished_VBN eff_NN
+body_NN of_IN work_NN ._.
+Computationally_RB ,_, the_DT Monte_NNP Carlo_NNP methods_NNS in_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 4_LS -RRB-_-RRB- are_VBP similar_JJ to_TO our_PRP$ algorithms_NNS for_IN hitting_VBG time_NN ._.
+They_PRP use_VBP a_DT probabilistic_JJ formulation_NN of_IN PageRank_NN in_IN terms_NNS of_IN a_DT short_JJ random_JJ walk_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT permits_VBZ efficient_JJ sampling_NN ._.
+In_IN particular_JJ ,_, we_PRP will_MD use_VB the_DT same_JJ idea_NN as_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- to_TO efficiently_RB implement_VB many_JJ random_JJ walks_VBZ simultaneously_RB in_IN a_DT massive_JJ graph_NN ,_, without_IN requiring_VBG random_JJ access_NN ._.
+Manipu_NNP
+a_DT user_NN 's_POS interests_NNS ,_, and_CC information_NN about_IN a_DT user_NN 's_POS intent_NN is_VBZ collected_VBN at_IN query_NN time_NN ._.
+Personal_JJ information_NN has_VBZ also_RB been_VBN used_VBN in_IN the_DT context_NN of_IN Web_NN search_NN to_TO create_VB a_DT personalized_JJ version_NN of_IN PageRank_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+There_EX are_VBP still_RB approaches_NNS ,_, including_VBG many_JJ commercially_RB available_JJ informationfiltering_VBG systems_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, which_WDT require_VBP users_NNS explicitly_RB specify_VBP their_PRP$ interests_NNS ._.
+However_RB ,_, as_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- pointed_VBD out_RP ,_, use_VB
+distinction_NN between_IN these_DT two_CD black_JJ boxes_NNS because_IN personalized_JJ PageRank_NN can_MD be_VB computed_VBN more_RBR efficiently_RB that_IN global_JJ PageRank_NN ._.
+One_CD may_MD use_VB for_IN LocalPR_NN any_DT of_IN the_DT algorithms_NNS described_VBN by_IN Jeh_NN and_CC Widom_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Berkhin_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, Sarlos_NNP -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, or_CC Gleich_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, each_DT of_IN which_WDT can_MD compute_VB an_DT approximation_NN of_IN the_DT personalized_VBN PageRank_NN vector_NN pr_NN M_NN -LRB-_-LRB- α_NN ,_, v_LS -RRB-_-RRB- by_IN examining_VBG only_RB a_DT small_JJ fraction_NN of_IN the_DT input_NN graph_NN near_IN v_LS ,_, provi_NNS
+studied_VBN previously_RB in_IN distributed_VBN computing_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- and_CC in_IN graph_NN partitioning_NN and_CC clustering_NN -LRB-_-LRB- 20_CD ,_, 2_CD -RRB-_-RRB- ._.
+Personalized_VBN PageRank_NN vectors_NNS can_MD be_VB approximated_VBN locally_RB ._.
+Using_VBG one_CD of_IN several_JJ possible_JJ algorithms_NNS =_JJ -_: =[_NN 14_CD ,_, 5_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, it_PRP is_VBZ possible_JJ to_TO compute_VB an_DT approximation_NN of_IN the_DT personalized_VBN ⋆_NNP University_NNP of_IN California_NNP at_IN San_NNP Diego_NNP ,_, San_NNP Diego_NNP ,_, CA_NNP ,_, Email_NNP :_: randerse@math.ucsd.edu_NNP ⋆_NNP ⋆_NNP Microsoft_NNP Research_NNP ,_, Redmond_NNP ,_, WA_NNP ,_, Emails_NNP :_: -LCB-_-LRB- borgs_NNS
+scribing_VBG best_RB a_DT user_NN 's_POS interest_NN are_VBP given_VBN a_DT positive_JJ reset_NN value_NN ,_, and_CC the_DT reset_JJ value_NN of_IN all_DT other_JJ pages_NNS was_VBD set_VBN to_TO zero_VB ._.
+How_WRB to_TO achieve_VB this_DT efficiently_RB has_VBZ been_VBN a_DT popular_JJ area_NN of_IN research_NN ,_, see_VB e.g._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+See_VB the_DT excellent_JJ survey_NN by_IN Berkhin_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- for_IN further_JJ details_NNS ,_, variants_NNS ,_, and_CC related_JJ work_NN in_IN the_DT area_NN of_IN hyperlink_NN analysis_NN ._.
+3_CD Finding_NNP Near-Duplicate_NNP Web_NN Pages_NNP Duplicate_NNP and_CC near-duplicate_JJ web_NN pages_NNS a_DT
+selects_VBZ learning_VBG resources_NNS for_IN teachers_NNS ._.
+This_DT system_NN was_VBD inspired_VBN by_IN the_DT concept_NN of_IN stigmergy_NN ._.
+Stigmergy_NNP is_VBZ a_DT word_NN coined_VBN by_IN Grasse_NNP and_CC it_PRP refers_VBZ to_TO systems_NNS employed_VBN by_IN termites_NNS when_WRB building_NN mounds_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+When_WRB termites_NNS build_VBP mounds_NNS or_CC ants_NNS form_NN trails_VBZ ,_, they_PRP can_MD produce_VB mounds_NNS and_CC trails_VBZ by_IN following_VBG their_PRP$ colleagues_NNS '_POS traces_NNS in_IN a_DT collaborative_JJ way_NN ._.
+These_DT outputs_NNS can_MD become_VB stronger_JJR as_IN time_NN passes_NNS and_CC
+r_NN a_DT given_VBN number_NN of_IN distinct_JJ search_NN topics_NNS ._.
+A_DT similar_JJ idea_NN is_VBZ used_VBN in_IN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, where_WRB the_DT PageRank_NNP computation_NN takes_VBZ into_IN account_NN the_DT content_NN of_IN the_DT pages_NNS and_CC the_DT query_NN terms_NNS the_DT surfer_NN is_VBZ looking_VBG for_IN ._.
+In_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT decomposition_NN of_IN PageRank_NN to_TO basic_JJ components_NNS is_VBZ suggested_VBN that_WDT may_MD be_VB able_JJ to_TO scale_VB the_DT different_JJ PageRank_NN computations_NNS to_TO a_DT bigger_JJR number_NN of_IN topics_NNS or_CC even_RB distinct_JJ users_NNS ._.
+Another_DT approach_NN to_TO we_PRP
+ties_NNS is_VBZ derived_VBN as_IN a_DT function_NN of_IN chains_NNS -LRB-_-LRB- paths_NNS -RRB-_-RRB- connecting_VBG those_DT entities_NNS ._.
+M._NNP Richardson_NNP et_FW al_FW -LRB-_-LRB- 15_CD -RRB-_-RRB- provide_VBP a_DT good_JJ formal_JJ description_NN of_IN the_DT approach_NN ._.
+Another_DT work_NN in_IN this_DT area_NN ,_, Personalized_VBN PageRank_NN =_JJ -_: =[_NN 5_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ discussed_VBN in_IN Sec_NNP ._.
+2.3_CD ._.
+The_DT purpose_NN of_IN this_DT paper_NN is_VBZ to_TO introduce_VB a_DT stable_JJ balanced_JJ reputation_NN propagation_NN scheme_NN on_IN arbitrary_JJ topologies_NNS ._.
+Section_NN 2_CD introduces_VBZ definitions_NNS ands2_NN Victor_NNP S._NNP Grishchen_NNP
+iwala_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- extracted_VBD topic_NN information_NN from_IN Open_NNP Directory_NNP ,_, and_CC calculated_VBD a_DT PageRank_NN vector_NN for_IN each_DT of_IN the_DT categories_NNS by_IN boosting_VBG the_DT importance_NN of_IN the_DT pages_NNS belonging_VBG to_TO the_DT category_NN ._.
+Jeh_NN and_CC Widom_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: addressed_VBD the_DT personalization_NN of_IN PageRank_NN scores_NNS by_IN segmenting_VBG the_DT graph_NN into_IN subgraphs_NNS and_CC precalculating_VBG scores_NNS on_IN the_DT subsets_NNS enabling_VBG on_IN the_DT fly_NN combination_NN of_IN scores_NNS ._.
+Yet_RB another_DT recent_JJ study_NN -LRB-_-LRB- 7_CD
+respectively_RB ._.
+Several_JJ profile_NN learning_NN and_CC category_NN mapping_NN algorithms_NNS ,_, as_RB well_RB as_IN a_DT fusion_NN algorithm_NN ,_, are_VBP provided_VBN ._.
+Jeh_NNP and_CC Widom_NNP explored_VBD how_WRB to_TO extend_VB the_DT PageRank_NN values_NNS with_IN personalized_JJ aspects_NNS =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO achieve_VB personalization_NN ,_, the_DT algorithm_NN needs_VBZ specific_JJ inputs_NNS such_JJ as_IN a_DT set_NN of_IN personalized_JJ hub_NN pages_NNS with_IN high_JJ PageRank_NN values_NNS to_TO drive_VB the_DT computation_NN ._.
+Nejdl_NNP and_CC coworkers_NNS -LRB-_-LRB- 32_CD -RRB-_-RRB- automated_VBD the_DT hub_NN
+odes_NNS containing_VBG query_NN keywords_NNS in_IN a_DT fixed_JJ ,_, arbitrary_JJ manner_NN ._.
+In_IN topic-sensitive_JJ Pagerank_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, the_DT random_JJ walk_NN preferentially_RB moves_VBZ to_TO nodes_NNS -LRB-_-LRB- Web_NN pages_NNS -RRB-_-RRB- on_IN a_DT specified_VBN topic_NN ._.
+In_IN personalized_JJ Pagerank_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: the_DT random_JJ walk_NN preferentially_RB moves_VBZ to_TO pages_NNS visited_VBN by_IN the_DT user_NN in_IN the_DT past_NN ._.
+Only_RB very_RB few_JJ projects_NNS -LRB-_-LRB- 8_CD ,_, 24_CD ,_, 10_CD ,_, 19_CD -RRB-_-RRB- attempt_NN to_TO learn_VB the_DT parameters_NNS of_IN the_DT random_JJ walk_NN ._.
+1.1_CD Our_PRP$ contributions_NNS Our_PRP$ pri_NN
+smaller_JJR set_NN of_IN vertices_NNS are_VBP often_RB called_VBN personalized_JJ PageRank_NN vectors_NNS ._.
+These_DT were_VBD introduced_VBN by_IN Haveliwala_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, and_CC have_VBP been_VBN used_VBN to_TO provide_VB personalized_JJ search_NN ranking_NN and_CC context-sensitive_JJ search_NN =_JJ -_: =[_NN 2_CD ,_, 4_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP will_MD consider_VB PageRank_NNP vectors_NNS whose_WP$ starting_JJ vectors_NNS are_VBP equal_JJ to_TO the_DT indicator_NN function_NN 1v_NN for_IN a_DT single_JJ vertex_NN v._CC Thevertexvwill_NN be_VB called_VBN the_DT starting_VBG vertex_NN ,_, and_CC we_PRP will_MD use_VB the_DT notation_NN pr_NN -LRB-_-LRB- α_NN
+k_NN ←_CD uj_NN -RCB-_-RRB- ∣_NN ._.
+By_IN weighing_VBG the_DT authority_NN -LRB-_-LRB- or_CC quality_NN -RRB-_-RRB- values_NNS by_IN cij_NN when_WRB summing_VBG them_PRP up_RP ,_, Basic_JJ considers_VBZ precisely_RB the_DT amount_NN of_IN contribution_NN from_IN the_DT authors_NNS ._.
+Similar_JJ to_TO the_DT link_NN analysis_NN in_IN Web_NN search_NN =_JJ -_: =[_NN 7_CD ,_, 11_CD ,_, 12_CD ,_, 14_CD ,_, 15_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT reinforcing_VBG quantities_NNS Qi_NNP and_CC Aj_NNP can_MD be_VB computed_VBN iteratively_RB to_TO derive_VB their_PRP$ converged_VBN values_NNS ._.
+We_PRP discuss_VBP the_DT computational_JJ issues_NNS of_IN Basic_JJ together_RB with_IN our_PRP$ other_JJ models_NNS and_CC the_DT convergence_NN pro_NN
+istribution_NN of_IN the_DT random_JJ walk_NN induced_VBN by_IN the_DT following_VBG convex_NN combination_NN of_IN M_NN and_CC U_NN :_: P_NN =_JJ αM_NN +_CC -LRB-_-LRB- 1_CD −_FW α_FW -RRB-_-RRB- U._NNP α_NN =_JJ 0.85_CD is_VBZ a_DT typical_JJ choice_NN ,_, and_CC we_PRP use_VBP it_PRP as_RB well_RB in_IN our_PRP$ experiments_NNS ._.
+Personalized_VBN PageRank_NN =_JJ -_: =[_NN 17_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT popular_JJ generalization_NN of_IN PageRank_NNP ,_, in_IN which_WDT the_DT uniform_JJ distribution_NN in_IN U_NN is_VBZ replaced_VBN by_IN a_DT different_JJ ,_, ``_`` personalized_VBN ''_'' ,_, distribution_NN ._.
+Everything_NN we_PRP do_VBP in_IN this_DT paper_NN can_MD be_VB rather_RB easily_RB generaliz_NN
+004_CD -RRB-_-RRB- ,_, entity_NN resolution_NN -LRB-_-LRB- Cohen_NNP and_CC Minkov_NNP ,_, 2006_CD -RRB-_-RRB- ,_, and_CC personal_JJ information_NN management_NN tasks_NNS -LRB-_-LRB- Minkov_NNP et_FW al._FW ,_, 2006_CD -RRB-_-RRB- ._.
+Novel_JJ techniques_NNS have_VBP been_VBN explored_VBN for_IN computing_VBG these_DT measures_NNS efficiently_RB -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- =_JJ -_: =_JJ Jeh_NNP and_CC Widom_NNP ,_, 2003_CD -_: =_JJ -_: ;_: Csalogny_NNP et_FW al._FW ,_, 2005_CD ;_: Tong_NNP et_FW al._FW ,_, 2006_CD ;_: Chakrabarti_NNP ,_, 2007_CD -RRB-_-RRB- -RRB-_-RRB- or_CC tuning_NN them_PRP to_TO specific_JJ tasks_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- Minkov_NNP and_CC Cohen_NNP ,_, 2007_CD ;_: Diligenti_NNP et_FW al._FW ,_, 2005_CD ;_: Toutanova_NNP et_FW al._FW ,_, 2004_CD ;_: Agarwal_NNP et_FW al._FW ,_, 2006_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+algorithms_NNS ,_, such_JJ as_IN spam_NN detection_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- or_CC trust_NN networks_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- where_WRB input_NN graphs_NNS have_VBP different_JJ levels_NNS of_IN granularity_NN -LRB-_-LRB- HostRank_NN -RRB-_-RRB- or_CC different_JJ link_NN weight_NN assignments_NNS -LRB-_-LRB- internal_JJ ,_, external_JJ ,_, etc_NN -RRB-_-RRB- ._.
+Also_RB ,_, =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: suggest_VBP computing_VBG a_DT different_JJ PageRank_NN for_IN each_DT page_NN according_VBG to_TO different_JJ users_NNS profiles_NNS ._.
+Another_DT similar_JJ idea_NN is_VBZ raised_VBN in_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- where_WRB some_DT heuristics_NNS for_IN collusion-proof_JJ PageRank_NN algorithms_NNS are_VBP pr_NN
+has_VBZ been_VBN explored_VBN before_RB to_TO personalize_VB Web_NN search_NN results_NNS by_IN Gauch_NNP et_FW al._FW -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Personal_JJ profiles_NNS have_VBP also_RB been_VBN used_VBN in_IN the_DT context_NN of_IN the_DT Web_NN search_NN to_TO create_VB a_DT personalized_JJ version_NN of_IN PageRank_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: for_IN setting_VBG the_DT query-independent_JJ priors_NNS on_IN Web_NN pages_NNS ._.
+Liu_NNP et_FW al._FW -LRB-_-LRB- 14_CD -RRB-_-RRB- used_VBD a_DT similar_JJ technique_NN for_IN mapping_NN user_NN queries_NNS to_TO categories_NNS based_VBN on_IN the_DT user_NN 's_POS search_NN history_NN ._.
+Information_NN about_IN the_DT user_NN 's_POS
+trix_NN takes_VBZ days_NNS -LRB-_-LRB- 31_CD -RRB-_-RRB- and_CC requires_VBZ a_DT very_RB large_JJ configuration_NN of_IN computational_JJ and_CC storage_NN servers_NNS ._.
+These_DT issues_NNS have_VBP led_VBN to_TO several_JJ recent_JJ studies_NNS on_IN methods_NNS for_IN accelerating_VBG computation_NN of_IN pageranks_NN =_JJ -_: =[_NN 22_CD ,_, 2_CD ,_, 21_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: through_IN improvements_NNS in_IN the_DT computational_JJ algorithms_NNS ._.
+The_DT approach_NN defined_VBN and_CC described_VBN in_IN this_DT paper_NN does_VBZ not_RB require_VB a_DT web_NN crawl_NN ,_, uses_VBZ the_DT unused_JJ processing_NN power_NN of_IN the_DT hosts_NNS storing_VBG the_DT document_NN
+n_NN be_VB assigned_VBN nonuniformly_RB to_TO bias_NN the_DT results_NNS when_WRB there_EX are_VBP sets_NNS we_PRP know_VBP apriori_NNS to_TO be_VB important_JJ ._.
+This_DT is_VBZ analogous_JJ to_TO biasing_VBG web_NN pages_NNS nonuniformly_RB in_IN PageRank_NNP to_TO enable_VB a_DT personalized_JJ web_NN search_NN =_JJ -_: =[_NN 6_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4.2_CD Selective_JJ Construction_NN of_IN Pseudopredicates_NNS The_DT importance_NN rankings_NNS for_IN the_DT base_NN set_NN of_IN pseudopredicates_NNS and_CC their_PRP$ extents_NNS -LRB-_-LRB- P_NN k_NN ,_, E_NN -LRB-_-LRB- P_NN k_NN -RRB-_-RRB- -RRB-_-RRB- tell_VBP us_PRP the_DT importance_NN of_IN the_DT formulas_NNS that_WDT can_MD be_VB const_VBN
+at_IN this_DT node_NN that_WDT will_MD eventually_RB arrive_VB at_IN the_DT target_NN node_NN without_IN performing_VBG a_DT random_JJ jump_NN in_IN between_IN ._.
+We_PRP note_VBP that_IN influence_NN is_VBZ related_JJ to_TO the_DT inverse_JJ distance_NN measure_NN defined_VBN by_IN Jeh_NNP and_CC Widom_NNP in_IN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- ._.
+Th_NN -_: =_JJ -_: e_LS overall_JJ impact_NN that_IN a_DT node_NN has_VBZ on_IN the_DT estimation_NN error_NN at_IN the_DT target_NN 4_CD sFigure_NN 2_CD :_: Error_NN versus_CC cost_NN for_IN different_JJ numbers_NNS of_IN levels_NNS in_IN the_DT naive_JJ method_NN ,_, and_CC precision_NN versus_CC cost_NN on_IN the_DT right_NN
+-LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+These_DT methods_NNS however_RB work_VBP only_RB for_IN restricted_JJ cases_NNS or_CC when_WRB the_DT entire_JJ hyperlink_NN structure_NN fits_VBZ into_IN the_DT main_JJ memory_NN ._.
+In_IN this_DT paper_NN we_PRP address_VBP the_DT computational_JJ issues_NNS of_IN personalized_JJ PageRank_NN =_JJ -_: =[_NN 13,18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Just_RB as_IN all_DT hyperlink_NN based_VBN ranking_JJ methods_NNS ,_, PageRank_NNP is_VBZ based_VBN on_IN the_DT assumption_NN that_IN the_DT existence_NN of_IN a_DT hyperlink_NN u_FW →_FW v_LS implies_VBZ that_IN page_NN u_NN votes_NNS for_IN the_DT quality_NN of_IN v._CC Personalized_JJ PageRank_NN -LRB-_-LRB- PPR_NN -RRB-_-RRB- -LRB-_-LRB-
+g_NN concern_NN for_IN personalized_JJ search_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+Second_JJ ,_, both_CC the_DT computation_NN of_IN personalization_NN and_CC the_DT storage_NN of_IN the_DT user_NN profile_NN are_VBP done_VBN at_IN the_DT client_NN side_NN so_IN that_IN the_DT server_NN load_NN is_VBZ reduced_VBN dramatically_RB =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX have_VBP been_VBN many_JJ works_NNS studying_VBG user_NN query_NN logs_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- or_CC query_NN dynamics_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+UCAIR_NN makes_VBZ direct_JJ use_NN of_IN a_DT user_NN 's_POS query_JJ history_NN to_TO benefit_VB the_DT same_JJ user_NN immediately_RB in_IN the_DT same_JJ search_NN session_NN ._.
+UCAI_NN
+e_LS search_NN corpus_NN and_CC puts_VBZ more_JJR weight_NN on_IN ranking_JJ data_NNS that_IN the_DT user_NN has_VBZ seen_VBN before_RB ._.
+Additionally_RB ,_, web_NN search_NN has_VBZ shown_VBN that_IN personalized_JJ ranking_NN and_CC views_NNS of_IN data_NNS can_MD greatly_RB enhance_VB search_NN relevance_NN =_JJ -_: =[_NN 83_CD ,_, 90_CD ,_, 99_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT approach_NN has_VBZ the_DT potential_NN to_TO be_VB useful_JJ on_IN large-scale_JJ file_NN systems_NNS where_WRB search_NN needs_VBZ ,_, and_CC often_RB the_DT files_NNS to_TO search_VB ,_, vary_VBP between_IN users_NNS ._.
+2.6_CD Index_NNP Design_NNP Fast_JJ search_NN of_IN a_DT file_NN system_NN is_VBZ achie_NN
+rank_NN web_NN pages_NNS based_VBD both_DT on_IN overall_JJ ``_`` importance_NN ''_'' -LRB-_-LRB- the_DT core_NN of_IN PageRank_NN -RRB-_-RRB- and_CC relevance_NN to_TO a_DT particular_JJ topic_NN or_CC individual_NN ,_, by_IN biasing_VBG the_DT random_JJ resets_NNS towards_IN topically_RB relevant_JJ or_CC bookmarked_JJ pages_NNS =_JJ -_: =[_NN 82_CD ,_, 83_CD ,_, 88_CD ,_, 91_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Computing_NNP predictions_NNS for_IN the_DT rooted-PageRank_NN measure_NN requires_VBZ us_PRP to_TO compute_VB the_DT stationary_JJ distribution_NN of_IN a_DT different_JJ random_JJ walk_NN for_IN each_DT ``_`` root_NN ''_'' node_NN x_NN ,_, because_IN the_DT random_JJ resets_NNS are_VBP to_TO a_DT differe_NN
+vel_NN path-counting_NN formulation_NN of_IN PageRank_NN ._.
+The_DT formal_JJ proof_NN of_IN the_DT equivalence_JJ of_IN the_DT original_JJ PageRank_NN and_CC the_DT ranking_JJ scheme_NN introduced_VBN below_IN can_MD be_VB found_VBN in_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, and_CC a_DT slightly_RB different_JJ proof_NN in_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: with_IN further_JJ applications_NNS of_IN equivalence_JJ ._.
+For_IN the_DT numerical_JJ computation_NN of_IN PageRank_NN scores_NNS we_PRP refer_VBP to_TO -LRB-_-LRB- 5_CD ,_, 12_CD -RRB-_-RRB- ._.
+The_DT PageRank_NNP score_NN of_IN a_DT page_NN p_NN is_VBZ defined_VBN as_IN the_DT weighted_JJ in-degree_NN of_IN the_DT search_NN graph_NN
+reference_NN vector_NN v._CC The_DT preference_NN vector_NN is_VBZ used_VBN to_TO bias_NN PageRank_NNP w.r.t._NNP a_DT selected_VBN set_NN of_IN trusted_VBN pages_NNS ,_, or_CC might_MD depend_VB on_IN the_DT user_NN 's_POS preferences_NNS ,_, in_IN which_WDT case_NN one_CD speaks_VBZ of_IN personalised_JJ PageRank_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Clearly_RB ,_, the_DT preference_NN vector_NN conditions_NNS significantly_RB PageRank_NNP ,_, but_CC in_IN real-world_NN crawls_VBZ ,_, which_WDT have_VBP a_DT large_JJ number_NN of_IN dangling_JJ nodes_NNS -LRB-_-LRB- in_IN particular_JJ if_IN the_DT graph_NN contains_VBZ the_DT whole_JJ frontier_NN of_IN the_DT
+among_IN other_JJ areas_NNS ._.
+Such_JJ methods_NNS can_MD be_VB used_VBN in_IN model_NN context_NN similarity_NN analysis_NN ._.
+Computing_NNP similarity_NN recursively_RB based_VBN on_IN structure_NN also_RB has_VBZ been_VBN explored_VBN in_IN the_DT specific_JJ context_NN of_IN schema-matching_NN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Existing_VBG methods_NNS in_IN reuse_NN ,_, however_RB ,_, mostly_RB focus_VB on_IN composability_NN and_CC substantive_JJ interoperability_NN issues_NNS based_VBN on_IN the_DT consistency_NN among_IN functional_JJ and_CC informational_JJ profiles_NNS of_IN components_NNS ._.
+The_DT cont_NN
+f_LS r_NN is_VBZ uniform_JJ ,_, i.e._FW ri_FW =_JJ 1\/N_NN for_IN all_DT i_FW ,_, then_RB p_NN is_VBZ the_DT PageRank_NNP ._.
+For_IN non-uniform_JJ r_NN the_DT solution_NN p_NN is_VBZ called_VBN personalized_JJ PageRank_NN ;_: we_PRP denote_VBP it_PRP by_IN PPR_NN -LRB-_-LRB- r_NN -RRB-_-RRB- ._.
+It_PRP is_VBZ easy_JJ to_TO see_VB that_IN PPR_NN -LRB-_-LRB- r_NN -RRB-_-RRB- is_VBZ linear_JJ in_IN r_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_JJ -_: ;_: in_IN particular_JJ -LRB-_-LRB- 1_LS -RRB-_-RRB- pi_NN =_JJ 1_CD N_NN PPRi_NN -LRB-_-LRB- χv_NN -RRB-_-RRB- v_LS where_WRB χv_NN is_VBZ the_DT teleportation_NN vector_NN consisting_VBG of_IN all_DT 0_CD except_IN for_IN node_NN v_LS where_WRB χv_NN -LRB-_-LRB- v_LS -RRB-_-RRB- =_JJ 1_CD ._.
+By_IN equation_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- we_PRP may_MD say_VB that_IN the_DT PageRank_NN of_IN page_NN i_FW arises_VBZ as_IN t_NN
+inally_RB ,_, pages_NNS are_VBP ranked_VBN by_IN this_DT unified_JJ score_NN ._.
+Experiments_NNS show_VBP that_IN Topic-sensitive_JJ PageRank_NNP has_VBZ better_JJR performance_NN than_IN PageRank_NNP in_IN generating_VBG better_JJR response_NN lists_NNS to_TO a_DT given_VBN query_NN ._.
+Jeh_NN and_CC Widom_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: specialize_VB the_DT global_JJ notion_NN of_IN importance_NN that_IN PageRank_NNP provides_VBZ to_TO create_VB personalized_JJ views_NNS of_IN importance_NN by_IN introducing_VBG the_DT idea_NN of_IN preference_NN sets_NNS ._.
+The_DT rankings_NNS of_IN results_NNS can_MD then_RB be_VB biased_VBN acc_NN
+s_NNS constantly_RB updated_VBN ,_, added_VBN ,_, or_CC removed_VBN ,_, the_DT PageRank_NN vector_NN needs_VBZ to_TO be_VB re-computed_JJ continusouly_NN to_TO maintain_VB timeliness_NN and_CC relevance_NN of_IN the_DT search_NN results_NNS ._.
+In_IN the_DT context_NN of_IN personalized_JJ web_NN search_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- ,_, a_DT nu_NN -_: =_JJ -_: mber_NN of_IN PageRank_NN vectors_NNS need_VBP to_TO be_VB computed_VBN to_TO ∗_NNP Scientific_NNP Computing_NNP &_CC Computational_NNP Mathematics_NNP Program_NNP †_NNP Department_NNP of_IN Computer_NNP Science_NNP ‡_NNP Division_NNP of_IN Operations_NNP ,_, Information_NNP ,_, &_CC Technology_NNP ,_, G_NNP
+ges_NNS biased_VBN by_IN their_PRP$ relevance_NN to_TO the_DT query_NN ._.
+Personalized_VBN Pagerank_NN allows_VBZ to_TO put_VB preferences_NNS on_IN certain_JJ webpages_NNS ,_, so_IN that_IN the_DT centrality_NN of_IN any_DT document_NN would_MD depend_VB on_IN its_PRP$ proximity_NN to_TO preferred_JJ ones_NNS =_JJ -_: =[_NN 39_CD ,_, 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Both_DT ideas_NNS were_VBD further_RB combined_VBN in_IN a_DT unified_JJ framework_NN which_WDT considered_VBD also_RB the_DT bi-directional_JJ walk_NN over_IN hyperlinks_NNS -LRB-_-LRB- 46_CD -RRB-_-RRB- ._.
+Random_NNP walks_VBZ on_IN graphs_NNS containing_VBG queries_NNS and_CC clicked_VBN links_NNS -LRB-_-LRB- or_CC entire_JJ sea_NN
+ting_NN points_NNS for_IN the_DT random_JJ surfers_NNS and_CC run_VB the_DT ObjectRank_NNP algorithm_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- on_IN the_DT reference_NN graph_NN to_TO compute_VB a_DT dynamic_JJ rank_NN for_IN the_DT publications_NNS ._.
+The_DT ObjectRank_NNP is_VBZ an_DT adaptation_NN of_IN Personalized_JJ PageRank_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: to_TO graphs_NNS with_IN typed_VBN edges_NNS ._.
+It_PRP has_VBZ been_VBN shown_VBN to_TO work_VB well_RB in_IN bibliographic_JJ datasets_NNS ,_, where_WRB different_JJ types_NNS of_IN relationships_NNS ,_, e.g._FW citation_NN ,_, co-authorship_NN ,_, same-conference_NN ,_, all_DT affect_VBP the_DT ranking_NN of_IN
+vertices_NNS near_IN the_DT vertex_NN ._.
+This_DT is_VBZ analogous_JJ to_TO the_DT way_NN that_IN a_DT single_JJ personalized_JJ PageRank_NN vector_NN can_MD be_VB approximated_VBN efficiently_RB by_IN examining_VBG only_RB a_DT small_JJ portion_NN of_IN the_DT input_NN graph_NN -LRB-_-LRB- see_VB for_IN example_NN =_JJ -_: =[_NN 7_CD ,_, 12_CD ,_, 4_CD ,_, 16_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+This_DT is_VBZ different_JJ from_IN the_DT methods_NNS used_VBN to_TO compute_VB contribution_NN vectors_NNS in_IN existing_VBG spam_NN detection_NN algorithms_NNS -LRB-_-LRB- for_IN example_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- -RRB-_-RRB- ,_, where_WRB one_NN computes_VBZ an_DT approximation_NN of_IN each_DT personalized_VBN PageRank_NN ve_NN
+models_NNS in_IN speech_NN recognition_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+The_DT speech_NN application_NN motivated_JJ researchers_NNS to_TO think_VB about_IN smoothing_VBG methods_NNS such_JJ as_IN backoff_NN :_: -LRB-_-LRB- 17_CD ,_, 5_CD ,_, 3_CD ,_, 31_CD -RRB-_-RRB- ._.
+Query_NN suggestions_NNS -LRB-_-LRB- 7_CD ,_, 15_CD ,_, 16_CD ,_, 30_CD -RRB-_-RRB- and_CC personalization_NN =_JJ -_: =[_NN 14_CD ,_, 13_CD ,_, 27_CD ,_, 29_CD ,_, 25_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP somewhat_RB related_JJ topics_NNS ,_, though_IN the_DT connection_NN between_IN those_DT two_CD topics_NNS and_CC backoff_NN smoothing_NN of_IN language_NN models_NNS is_VBZ novel_JJ ._.
+Many_JJ personalized_JJ search_NN techniques_NNS have_VBP been_VBN proposed_VBN ,_, both_DT server-side_NN
+22_CD search_NN queries_NNS ._.
+We_PRP will_MD discuss_VB related_JJ work_NN in_IN Sec_NNP ._.
+2_CD ._.
+Our_PRP$ proposed_VBN re-ranking_NN approach_NN is_VBZ detailed_VBN in_IN Sec_NNP ._.
+3_CD and_CC evaluated_VBN in_IN Sec_NNP ._.
+4_LS ._.
+Sec_NN ._.
+5_CD summarizes_VBZ our_PRP$ findings_NNS ._.
+2_CD Related_JJ Work_NN Jeh_NN and_CC Widom_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT personalized_JJ web_NN search_NN by_IN modifying_VBG the_DT global_JJ PageRank_NN algorithm_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Instead_RB of_IN starting_VBG from_IN random_JJ pages_NNS on_IN the_DT web_NN ,_, the_DT ``_`` random_JJ surfer_NN ''_'' starts_VBZ from_IN a_DT set_NN of_IN preferred_JJ pages_NNS -LRB-_-LRB- such_JJ as_IN
+to_TO evaluate_VB our_PRP$ methodology_NN ._.
+Experimental_JJ results_NNS are_VBP presented_VBN in_IN Section_NNP 5_CD ._.
+2_CD ._.
+Background_NN The_DT idea_NN of_IN a_DT personalized_JJ PageRank_NN was_VBD first_RB introduced_VBN in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC has_VBZ been_VBN studied_VBN by_IN various_JJ researchers_NNS =_JJ -_: =[_NN 10_CD ,_, 11_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: as_IN a_DT query-dependent_JJ ranking_NN mechanism_NN ._.
+If_IN personal_JJ preferences_NNS are_VBP based_VBN on_IN n_NN binary_JJ features_NNS ,_, there_EX are_VBP 2_CD n_NN different_JJ personalized_JJ PageRank_NN vectors_NNS for_IN all_DT possible_JJ user_NN preferences_NNS ._.
+This_DT requires_VBZ
+s_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, and_CC keywords_NNS from_IN the_DT user_NN 's_POS desktop_NN environment_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+Personalization_NN of_IN ranking_JJ algorithms_NNS was_VBD proposed_VBN in_IN -LRB-_-LRB- 19_CD -RRB-_-RRB- by_IN adjusting_VBG the_DT ``_`` random-surfer_NN ''_'' model_NN based_VBN on_IN user_NN preferences_NNS ._.
+Jeh_NN and_CC Widom_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: addressed_VBD some_DT of_IN the_DT scalability_NN concerns_NNS of_IN this_DT personalized_VBN PageRank_NN approach_NN ._.
+Taxonomies_NNS and_CC ontologies_NNS have_VBP been_VBN used_VBN to_TO filter_NN and_CC rank_NN search_NN results_NNS using_VBG concept_NN weights_NNS learned_VBD from_IN user_NN b_NN
+r_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- describe_VBP a_DT method_NN based_VBN on_IN random_JJ walks_VBZ on_IN the_DT query-click_JJ graph_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, that_WDT can_MD be_VB used_VBN to_TO providequery_JJ recommendations_NNS as_IN follows_VBZ :_: given_VBN the_DT input_NN query_NN ,_, it_PRP computes_VBZ the_DT personalized_JJ PageRank_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: of_IN all_PDT the_DT other_JJ queries_NNS and_CC then_RB picks_VBZ the_DT top_JJ ones_NNS as_IN recommendations_NNS ._.
+There_EX are_VBP more_JJR details_NNS about_IN this_DT method_NN in_IN Section_NNP 4.3_CD ._.
+Fuxman_NNP et_FW al._FW -LRB-_-LRB- 15_CD -RRB-_-RRB- experiment_NN with_IN a_DT similar_JJ approach_NN in_IN the_DT context_NN
+-LRB-_-LRB- 14_CD -RRB-_-RRB- describe_VBP a_DT method_NN based_VBN on_IN random_JJ walks_VBZ on_IN the_DT query-click_JJ graph_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, that_WDT can_MD be_VB used_VBN to_TO provide_VB query_JJ recommendations_NNS as_IN follows_VBZ :_: given_VBN the_DT input_NN query_NN ,_, it_PRP computes_VBZ the_DT personalized_JJ PageRank_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: of_IN all_PDT the_DT other_JJ queries_NNS and_CC then_RB picks_VBZ the_DT top_JJ ones_NNS as_IN recommendations_NNS ._.
+In_IN Section_NNP VIII_NNP we_PRP use_VBP their_PRP$ method_NN as_IN a_DT baseline_NN when_WRB studying_VBG the_DT application_NN of_IN our_PRP$ work_NN to_TO query-recommendations_NNS ._.
+Fuxman_NNP e_SYM
+rming_JJ oligopolies_NNS -LRB-_-LRB- rank_NN sinks_VBZ in_IN the_DT PageRank_NN jargon_NN -RRB-_-RRB- ._.
+Although_IN there_EX are_VBP many_JJ equivalent_JJ ways_NNS to_TO define_VB PageRank_NN formally_RB ,_, for_IN our_PRP$ purposes_NNS it_PRP is_VBZ convenient_JJ to_TO introduce_VB it_PRP using_VBG the_DT path_NN formula_NN of_IN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: :_: given_VBN a_DT directed_JJ graph_NN D_NN =_JJ -LRB-_-LRB- VD_NN ,_, ED_NN -RRB-_-RRB- ,_, and_CC for_IN a_DT fixed_VBN α_FW ∈_FW -LRB-_-LRB- 0_CD ,_, 1_LS -RRB-_-RRB- referred_VBN to_TO as_IN the_DT damping_VBG factor_NN ,_, we_PRP define_VBP the_DT PageRank_NN of_IN node_NN x_NN ∈_NN VD_NN as_IN rD_NN -LRB-_-LRB- x_NN -RRB-_-RRB- =_JJ 1_CD −_FW α_FW n_NN D_NN ∑_FW π_FW ∈_FW PathD_NN -LRB-_-LRB- −_NN ,_, x_NN -RRB-_-RRB- α_FW |_FW π_FW |_FW br_FW -LRB-_-LRB- π_NN -RRB-_-RRB- where_WRB n_NN D_NN =_JJ |_NN
+to_TO PageRank_NNP proposed_VBD different_JJ methods_NNS to_TO bias_NN the_DT personalization_NN vector_NN v_LS to_TO take_VB into_IN account_NN different_JJ types_NNS of_IN information_NN besides_IN the_DT link_NN structure_NN such_JJ as_IN contents_NNS -LRB-_-LRB- 10_CD ,_, 23_CD -RRB-_-RRB- and_CC user_NN preferences_NNS =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN our_PRP$ random_JJ walk_NN model_NN for_IN item_NN ranking_NN ,_, we_PRP follow_VBP the_DT similar_JJ idea_NN to_TO define_VB a_DT personalization_NN vector_NN v_LS u_NN =_JJ -LRB-_-LRB- p_NN u_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, ..._: ,_, p_NN u_NN -LRB-_-LRB- n_NN -RRB-_-RRB- -RRB-_-RRB- T_NN for_IN each_DT target_NN user_NN u_NN based_VBN on_IN his_PRP$ known_JJ ratings_NNS on_IN the_DT i_FW
+he_PRP main_JJ idea_NN of_IN personalized_JJ pagerank_NN is_VBZ to_TO bias_NN the_DT probability_NN distribution_NN towards_IN a_DT set_NN of_IN webpages_NNS particular_JJ to_TO a_DT certain_JJ user_NN ,_, resulting_VBG in_IN a_DT user-specific_JJ view_NN of_IN the_DT web_NN ._.
+It_PRP has_VBZ been_VBN proven_VBN -LRB-_-LRB- =_JJ -_: =_JJ Jeh_NNP &_CC Widom_NNP ,_, 2002_CD -_: =_SYM -_: a_LS -RRB-_-RRB- that_IN the_DT PPV_NN for_IN a_DT set_NN of_IN webpages_NNS can_MD be_VB computed_VBN by_IN linearly_RB combining_VBG those_DT for_IN each_DT individual_JJ webpage_NN ._.
+However_RB it_PRP is_VBZ hard_JJ to_TO store_VB all_DT possible_JJ personalization_NN vectors_NNS or_CC compute_VB the_DT personali_NNS
+a_DT target_NN node_NN z_SYM and_CC a_DT query_JJ node_NN x_NN equals_VBZ a_DT summation_NN over_IN all_PDT the_DT paths_NNS between_IN x_NN and_CC z_SYM -LRB-_-LRB- including_VBG cyclic_JJ paths_NNS ,_, and_CC paths_NNS that_WDT cross_VBP z_SYM multiple_JJ times_NNS -RRB-_-RRB- ,_, where_WRB paths_NNS are_VBP weighted_VBN by_IN their_PRP$ probability_NN =_JJ -_: =[_NN 67_CD ,_, 48_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Specifically_RB ,_, the_DT Personalized_NNP PageRank_NNP probability_NN Q_NNP -LRB-_-LRB- z_SYM |_CD x_NN -RRB-_-RRB- of_IN reaching_VBG z_SYM in_IN an_DT infinitely-long_JJ walk_NN from_IN x_NN is_VBZ also_RB defined_VBN as_IN :_: Q_NNP -LRB-_-LRB- z_SYM |_CD x_NN -RRB-_-RRB- =_JJ γ_FW ∞_FW ∑_FW d_NN =_JJ 1_CD -LRB-_-LRB- 1_CD −_NN γ_NN -RRB-_-RRB- d_NN Q_NNP -LRB-_-LRB- x_CC =d_FW −_FW →_FW z_SYM -RRB-_-RRB- -LRB-_-LRB- 2.6_CD -RRB-_-RRB- where_WRB Q_NNP -LRB-_-LRB- x_CC =d_FW −_FW →_FW z_SYM -RRB-_-RRB- is_VBZ t_NN
+led_VBD profiles_NNS to_TO perform_VB well_RB ,_, which_WDT represents_VBZ a_DT significant_JJ burden_NN on_IN users_NNS ._.
+There_EX has_VBZ also_RB been_VBN much_JJ research_NN into_IN methods_NNS for_IN automatically_RB personalizing_VBG search_NN queries_NNS by_IN inferring_VBG user_NN interests_NNS =_JJ -_: =[_NN 68,150_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN these_DT projects_NNS are_VBP concerned_VBN with_IN personalization_NN ,_, the_DT approach_NN taken_VBN PeerSpective_NNP is_VBZ complementary_JJ in_IN that_IN we_PRP obtain_VBP personalization_NN by_IN using_VBG social_JJ links_NNS to_TO improve_VB search_NN results_NNS ._.
+The_DT MAAY_NN
+propose_VB pruning_NN algorithms_NNS to_TO efficiently_RB execute_VB k_NN nearest-neighbor_JJ queries_NNS in_IN large_JJ probabilistic_JJ graphs_NNS -LRB-_-LRB- Section_NN V_NN -RRB-_-RRB- ._.
+Next_RB we_PRP define_VBP a_DT distance_NN function_NN based_VBN on_IN the_DT notion_NN of_IN Personalized_JJ PageRank_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO that_DT end_NN ,_, we_PRP propose_VBP an_DT intuitive_JJ formulation_NN of_IN a_DT random_JJ walk_NN in_IN probabilistic_JJ graphs_NNS and_CC introduce_VB a_DT novel_JJ graph_NN transformation_NN idea_NN to_TO efficiently_RB approximate_JJ it_PRP -LRB-_-LRB- Section_NNP VI_NNP -RRB-_-RRB- ._.
+We_PRP perform_VBP an_DT ex_FW
+ow_NN to_TO approximate_JJ the_DT authority_NN flow_NN from_IN a_DT single-node_JJ base_NN set_VBN to_TO a_DT node_NN v._CC In_IN this_DT section_NN we_PRP generalize_VBP to_TO base_VB sets_NNS with_IN multiple_JJ nodes_NNS ._.
+To_TO do_VB so_RB ,_, we_PRP use_VBP the_DT linearity_NN theorem_NN from_IN Jeh_NN and_CC Widom_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT states_VBZ that_IN if_IN a_DT base_NN set_NN B_NN consists_VBZ of_IN two_CD sets_NNS B1_NN and_CC B2_NN ,_, such_JJ that_IN B_NN =_JJ B1_NN ∪_NN B2_NN ,_, then_RB the_DT PageRank_NNP score_NN r_NN B_NN -LRB-_-LRB- v_LS -RRB-_-RRB- of_IN a_DT node_NN v_LS with_IN respect_NN to_TO B_NN is_VBZ r_NN B_NN -LRB-_-LRB- u_NN -RRB-_-RRB- =_JJ r_NN B1_NN -LRB-_-LRB- v_LS -RRB-_-RRB- +_CC r_NN B2_NN -LRB-_-LRB- v_LS -RRB-_-RRB- ,_, where_WRB by_IN r_NN S_NN
+robability_NN c._NN It_PRP is_VBZ important_JJ to_TO note_VB that_IN our_PRP$ v_LS 1_CD v_LS n_NN v_LS 2_CD v_LS 3_CD vkalgorithm_NN is_VBZ designed_VBN in_IN a_DT way_NN that_IN a_DT user_NN can_MD enlarge_VB the_DT l_NN value_NN if_IN needed_VBN at_IN run_NN time_NN ._.
+We_PRP adopt_VBP the_DT similar_JJ expected_VBN f-distance_NN in_IN =_JJ -_: =[_NN 6_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT expected_VBN f-distance_NN ,_, a_DT parameter_NN c_NN is_VBZ used_VBN ._.
+We_PRP prove_VBP that_IN such_PDT a_DT parameter_NN c_NN is_VBZ the_DT restart_VB probability_NN used_VBN in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- with_IN minor_JJ difference_NN which_WDT can_MD be_VB ignored_VBN ._.
+Due_JJ to_TO the_DT space_NN limit_NN ,_, we_PRP omit_VBP
+arch_NN ._.
+This_DT work_NN includes_VBZ explorations_NNS of_IN domain-specific_JJ or_CC person-specific_JJ PageRank_NN -LRB-_-LRB- Richardson_NNP and_CC Domingos_NNP ,_, 2002a_NNP ,_, Haveliwala_NNP ,_, 2002_CD -RRB-_-RRB- ,_, and_CC on_IN the_DT use_NN of_IN non-random_JJ jump_NN vectors_NNS for_IN personalization_NN -LRB-_-LRB- =_JJ -_: =_JJ Jeh_NNP and_CC Widom_NNP ,_, 2003_CD -_: =-]_CD ._.
+Related_JJ work_NN on_IN identifying_VBG web_NN spam_NN has_VBZ examined_VBN methods_NNS for_IN propagating_VBG from_IN trustedpages_NNS -LRB-_-LRB- Wu_NNP et_FW al._FW ,_, 2006_CD -RRB-_-RRB- ._.
+Recent_JJ work_NN by_IN Nie_NN et_FW al._FW -LRB-_-LRB- Nie_NN et_FW al._FW ,_, 2006_CD -RRB-_-RRB- focused_VBN on_IN eigenvectors_NNS or_CC counts_NNS to_TO set_VB

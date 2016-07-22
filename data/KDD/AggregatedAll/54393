@@ -1,0 +1,418 @@
+Privacy_NN preserving_NN mining_NN of_IN association_NN rules_NNS
+We_PRP present_VBP a_DT framework_NN for_IN mining_NN association_NN rules_NNS from_IN transactions_NNS consisting_VBG of_IN categorical_JJ items_NNS where_WRB the_DT data_NN has_VBZ been_VBN randomized_VBN to_TO preserve_VB privacy_NN of_IN individual_JJ transactions_NNS ._.
+While_IN it_PRP is_VBZ feasible_JJ to_TO recover_VB association_NN rules_NNS and_CC preserve_VB privacy_NN using_VBG a_DT straightforward_JJ ``_`` uniform_JJ ''_'' randomization_NN ,_, the_DT discovered_VBN rules_NNS can_MD unfortunately_RB be_VB exploited_VBN to_TO find_VB privacy_NN breaches_NNS ._.
+We_PRP analyze_VBP the_DT nature_NN of_IN privacy_NN breaches_NNS and_CC propose_VBP a_DT class_NN of_IN randomization_NN operators_NNS that_WDT are_VBP much_RB more_RBR effective_JJ than_IN uniform_JJ randomization_NN in_IN limiting_VBG the_DT breaches_NNS ._.
+We_PRP derive_VBP formulae_NN for_IN an_DT unbiased_JJ support_NN estimator_NN and_CC its_PRP$ variance_NN ,_, which_WDT allow_VBP us_PRP to_TO recover_VB itemset_NN supports_VBZ from_IN randomized_VBN datasets_NNS ,_, and_CC show_VB how_WRB to_TO incorporate_VB these_DT formulae_NNS into_IN mining_NN algorithms_NNS ._.
+Finally_RB ,_, we_PRP present_VBP experimental_JJ results_NNS that_WDT validate_VBP the_DT algorithm_NN by_IN applying_VBG it_PRP on_IN real_JJ datasets_NNS ._.
+rvative_JJ about_IN 1_CD 's_POS ,_, requires_VBZ a_DT degree_NN of_IN privacy_NN for_IN the_DT O_NN 's_VBZ too_RB ._.
+A_DT caveat_NN :_: Our_PRP$ privacy_NN estimates_NNS do_VBP not_RB take_VB into_IN account_NN the_DT fact_NN that_IN there_EX may_MD be_VB a_DT reduction_NN in_IN privacy_NN ,_, as_IN pointed_VBN out_RP recently_RB in_IN =_JJ -_: =[_NN 1_CD ,_, 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, when_WRB the_DT mining_NN output_NN -LRB-_-LRB- i.e._FW ,_, the_DT association_NN rules_NNS -RRB-_-RRB- is_VBZ used_VBN to_TO re-interrogate_VB the_DT distorted_JJ database_NN -_: we_PRP plan_VBP to_TO investigate_VB this_DT issue_NN in_IN our_PRP$ future_JJ work_NN ._.
+3.2_CD Reconstruction_NN Probability_NN of_IN a_DT 1_CD Le_NNP
+-LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Recent_JJ approaches_NNS to_TO privacy_NN include_VBP data_NNS swapping_VBG -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, k-anonymity_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, and_CC cryptographic_JJ approaches_NNS -LRB-_-LRB- for_IN instance_NN ,_, -LRB-_-LRB- 19_CD ,_, 13_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Much_JJ of_IN the_DT work_NN on_IN data_NNS perturbation_NN for_IN privacy_NN -LRB-_-LRB- for_IN example_NN ,_, =_JJ -_: =[_NN 12_CD ,_, 15_CD ,_, 23_CD -RRB-_-RRB- -_: =--RRB-_NN focuses_VBZ on_IN additive_JJ or_CC multiplicative_JJ perturbation_NN of_IN individual_JJ records_NNS ,_, which_WDT may_MD not_RB preserve_VB similarities_NNS or_CC other_JJ relationships_NNS within_IN the_DT database_NN ._.
+Prior_RB to_TO -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, in_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, an_DT information-theore_NN
+concerns_NNS result_VBP in_IN two_CD lines_NNS of_IN approaches_NNS ._.
+One_CD approach_NN focuses_VBZ on_IN sanitizing_VBG the_DT original_JJ datasets_NNS before_IN publishing_VBG them_PRP ._.
+Many_JJ sanitization_NN methods_NNS have_VBP been_VBN proposed_VBN ,_, including_VBG randomization_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- --_: =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, generalization_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- --_: -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, and_CC bucketization_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Another_DT way_NN to_TO publish_VB data_NNS without_IN disclosing_VBG too_RB much_RB private_JJ information_NN is_VBZ to_TO only_RB publish_VB data_NN mining_NN results_NNS ,_, instead_RB of_IN datasets_NNS ._.
+Because_IN data_NNS
+from_IN SMPC_NNP -LRB-_-LRB- Lindell_NNP and_CC Pinkas_NNP ,_, 2000_CD -RRB-_-RRB- and_CC adding_VBG noise_NN to_TO data_NNS --_: jittering_VBG in_IN §_NN 2.1_CD -LRB-_-LRB- Agrawal_NNP and_CC Srikant_NNP ,_, 2000_CD -RRB-_-RRB- ._.
+Other_JJ problems_NNS that_WDT have_VBP been_VBN treated_VBN include_VBP association_NN rules_NNS -LRB-_-LRB- Vaidya_NNP and_CC Clifton_NNP ,_, 200_CD =_JJ -_: =_JJ 2_CD ;_: Evfimievski_NNP et_FW al._FW ,_, 2002_CD -_: =_JJ -_: ;_: Kantarcioglu_NNP and_CC Clifton_NNP ,_, 2002_CD -RRB-_-RRB- ,_, classification_NN -LRB-_-LRB- Du_NNP et_FW al._FW ,_, 2004_CD -RRB-_-RRB- ,_, clustering_NN -LRB-_-LRB- Vaidya_NNP and_CC Clifton_NNP ,_, 2003_CD ;_: Lin_NNP et_FW al._FW ,_, 2004_CD -RRB-_-RRB- ,_, and_CC linear_JJ regression_NN for_IN vertically_RB partitioned_VBN data_NNS -LRB-_-LRB- Du_NNP et_FW al._FW ,_, 2004_CD ;_: Sa_NN
+ure_NN related_JJ to_TO this_DT work_NN is_VBZ the_DT privacy_NN preserving_NN data_NNS mining_NN ._.
+In_IN general_JJ ,_, there_EX are_VBP two_CD different_JJ approaches_NNS :_: one_CD is_VBZ to_TO use_VB data_NNS distortion_NN approach_NN ,_, in_IN which_WDT data_NNS are_VBP disguised_VBN by_IN the_DT added_VBN noises_NNS =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 13_CD ,_, 14_CD ,_, 22_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Another_DT general_JJ approach_NN is_VBZ the_DT secure_JJ multi-party_JJ computation_NN approach_NN -LRB-_-LRB- 7,12,18,21,25_CD -RRB-_-RRB- ._.
+The_DT advantage_NN of_IN the_DT first_JJ approach_NN is_VBZ its_PRP$ performance_NN ,_, but_CC it_PRP achieves_VBZ this_DT at_IN the_DT cost_NN of_IN accuracy_NN ._.
+On_IN the_DT
+ner_NN obtains_NNS from_IN the_DT reconstructed_VBN aggregate_NN distribution_NN was_VBD included_VBN in_IN the_DT problem_NN formulation_NN ._.
+3.3.2_CD Reconstruction-Based_JJ Techniques_NNS for_IN Binary_NNP and_CC Categorical_NNP Data_NNP The_DT work_NN presented_VBN in_IN -LRB-_-LRB- 20_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: deal_NN with_IN binary_JJ and_CC categorical_JJ data_NNS in_IN the_DT context_NN of_IN association_NN rule_NN mining_NN ._.
+Both_DT papers_NNS consider_VBP randomization_NN techniques_NNS that_WDT offer_VBP privacy_NN while_IN they_PRP maintain_VBP high_JJ utility_NN for_IN the_DT data_NN set_NN ._.
+s4_NN
+ion_NN between_IN the_DT original_JJ data_NNS distribution_NN and_CC the_DT randomly_RB perturbed_VBN data_NNS distribution_NN ._.
+Evfimievski_NNP et_FW al._FW presented_VBD another_DT measure_NN called_VBN ``_`` privacy_NN breaches_NNS ''_'' to_TO quantify_VB the_DT preservation_NN of_IN privacy_NN =_JJ -_: =[_NN 10_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Intuitively_RB ,_, a_DT privacy_NN breach_NN level_NN is_VBZ the_DT probability_NN that_IN a_DT property_NN of_IN the_DT original_JJ data_NN record_NN is_VBZ revealed_VBN given_VBN the_DT randomized_VBN data_NN record_NN ._.
+They_PRP showed_VBD that_IN privacy_NN breaches_NNS can_MD occur_VB even_RB when_WRB
+problem_NN here_RB can_MD be_VB modelled_VBN as_IN a_DT variation_NN of_IN secured_JJ multiparty_JJ computation_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+In_IN the_DT second_JJ category_NN -LRB-_-LRB- B2C_NN -RRB-_-RRB- ,_, a_DT system_NN consists_VBZ of_IN one_CD data_NN miner_NN -LRB-_-LRB- business_NN -RRB-_-RRB- and_CC multiple_JJ data_NNS providers_NNS -LRB-_-LRB- customers_NNS -RRB-_-RRB- =_JJ -_: =[_NN 8_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Each_DT data_NNS provider_NN holds_VBZ only_RB one_CD transaction_NN ._.
+Association_NN rule_NN mining_NN is_VBZ performed_VBN by_IN the_DT data_NNS miner_NN on_IN the_DT aggregated_JJ transactions_NNS provided_VBN by_IN data_NNS providers_NNS ._.
+On-line_JJ survey_NN is_VBZ a_DT typical_JJ example_NN o_NN
+ue_NN is_VBZ the_DT fact_NN that_IN current_JJ algorithms_NNS for_IN mining_NN distributed_VBN data_NNS are_VBP capable_JJ of_IN mining_NN data_NNS -LRB-_-LRB- whether_IN vertically_RB or_CC horizontally_RB fragmented_JJ -RRB-_-RRB- only_RB when_WRB the_DT global_JJ schema_NN across_IN all_DT databases_NNS is_VBZ known_VBN =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 9_CD ,_, 14_CD ,_, 18_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT case_NN of_IN information_NN extracted_VBN from_IN distributed_VBN textual_JJ data_NNS ,_, however_RB ,_, no_DT preexisting_VBG global_JJ schema_NN -LRB-_-LRB- i.e._FW ,_, dictionary_NN of_IN terms_NNS -RRB-_-RRB- is_VBZ available_JJ ._.
+This_DT is_VBZ due_JJ to_TO the_DT fact_NN that_IN the_DT entities_NNS extracte_VBP
+our_PRP$ constructions_NNS ._.
+Another_DT line_NN of_IN research_NN has_VBZ focused_VBN on_IN statistical_JJ privacy_NN in_IN databases_NNS ,_, typically_RB achieved_VBN by_IN randomly_RB perturbing_VBG individual_JJ data_NNS entries_NNS while_IN preserving_VBG some_DT global_JJ properties_NNS =_JJ -_: =[_NN 4,2,5,3,26,12,17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT survey_NN can_MD be_VB found_VBN in_IN -LRB-_-LRB- 36_CD -RRB-_-RRB- ._.
+The_DT proofs_NNS of_IN security_NN in_IN this_DT framework_NN are_VBP statistical_JJ rather_RB than_IN cryptographic_JJ in_IN nature_NN ,_, and_CC typically_RB permit_VBP some_DT leakage_NN of_IN information_NN ,_, while_IN supporting_VBG more_JJR e_SYM
+se_FW of_IN perturbation_NN and_CC k-anonymity_NN ._.
+These_DT are_VBP as_IN follows_VBZ :_: •_FW In_FW perturbation_NN ,_, we_PRP add_VBP noise_NN to_TO the_DT original_JJ data_NNS ._.
+Reconstructed_JJ distributions_NNS are_VBP then_RB used_VBN to_TO perform_VB the_DT privacy_NN preserving_NN data_NNS mining_NN =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT perturbation_NN method_NN has_VBZ the_DT advantage_NN that_IN it_PRP can_MD be_VB performed_VBN at_IN data_NNS collection_NN time_NN ._.
+This_DT is_VBZ because_IN the_DT behavior_NN of_IN the_DT other_JJ records_NNS does_VBZ not_RB need_VB to_TO be_VB used_VBN during_IN the_DT perturbation_NN process_NN
+RELATED_NNS WORK_VBP A_DT series_NN of_IN works_NNS has_VBZ addressed_VBN the_DT question_NN of_IN mining_NN association_NN rules_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- in_IN a_DT manner_NN that_WDT preserves_VBZ privacy_NN ._.
+However_RB ,_, such_JJ works_NNS employ_VBP anonymization_NN techniques_NNS based_VBN on_IN perturbation_NN =_JJ -_: =[_NN 8_CD ,_, 21_CD ,_, 10_CD ,_, 18_CD ,_, 24_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, thus_RB damaging_VBG data_NNS integrity_NN -LRB-_-LRB- i.e._FW ,_, use_VBP distorted_JJ and_CC fake_JJ values_NNS -RRB-_-RRB- and_CC generating_VBG false_JJ inferences_NNS -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, while_IN they_PRP do_VBP not_RB inherently_RB disallow_VB sensitive_JJ inferences_NNS ._.
+On_IN the_DT other_JJ hand_NN ,_, anonymization_NN
+ollected_VBN unidentified_JJ information_NN ,_, such_JJ as_IN IP_NNP addresses_NNS that_WDT visit_VBP a_DT particular_JJ website_NN ._.
+One_CD possible_JJ solution_NN for_IN privacy_NN protection_NN is_VBZ to_TO perturb_VB the_DT IP_NNP addresses_NNS as_IN if_IN they_PRP are_VBP categorical_JJ values_NNS -LRB-_-LRB- =_JJ -_: =_JJ Evfimievski_NNP ,_, Srikant_NNP ,_, Agrawal_NNP ,_, &_CC Gehrke_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+Though_IN perturbing_VBG an_DT IP_NNP address_NN ip_NN into_IN ip_FW ′_FW can_MD protect_VB the_DT identity_NN of_IN ip_NN ,_, it_PRP can_MD falsely_RB denote_VB ip_FW ′_FW as_IN a_DT visitor_NN of_IN the_DT website_NN ._.
+Furthermore_RB ,_, if_IN ip_FW ′_FW is_VBZ listed_VBN in_IN a_DT released_VBN collection_NN from_IN anothe_NN
+numerical_JJ data_NNS -LRB-_-LRB- e.g._FW ,_, individual_JJ records_NNS -RRB-_-RRB- can_MD be_VB perturbed_VBN and_CC then_RB reconstructed_VBN by_IN estimation_NN -LRB-_-LRB- 91_CD -RRB-_-RRB- ,_, and_CC the_DT binary_JJ or_CC categorical_JJ data_NNS -LRB-_-LRB- e.g._FW ,_, association_NN rules_NNS -RRB-_-RRB- are_VBP randomized_VBN and_CC reconstructed_VBN in_IN =_JJ -_: =[_NN 92_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN these_DT techniques_NNS ,_, the_DT successful_JJ reconstruction_NN operations_NNS determine_VBP the_DT performance_NN of_IN data_NNS mining_NN ._.
+4.8.2_CD Open_NNP issues_NNS Obviously_RB the_DT privacy-preserving_JJ data_NNS modification_NN results_VBZ in_IN degradation_NN o_NN
+alm_NN Pilot_NN with_IN the_DT computation_NN of_IN generating_VBG RSA_NN keys_NNS -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+A_DT large_JJ body_NN of_IN work_NN also_RB exists_VBZ on_IN designing_VBG specialized_JJ protocols_NNS for_IN solving_VBG specific_JJ two-party_JJ or_CC multi-party_JJ problems_NNS privately_RB -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 1_CD ,_, 23_CD ,_, 6_CD ,_, 14_CD ,_, 12_CD ,_, 5_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+5_CD See_NNP http:\/\/www.sikkerhed.alexandra.dk\/uk\/projects\/_NN simap_NN ._.
+htm_NN 9_CD ._.
+CONCLUSIONS_NNS AND_CC FUTURE_NNS WORK_VBP Beyond_NNP attestation_NN and_CC authentication_NN ,_, a_DT stronger_JJR property_NN of_IN trusted_VBN computing_NN is_VBZ obliviousness_NN :_: Boris_NNP
+-RRB-_-RRB- ,_, with_IN their_PRP$ work_NN on_IN reconstructing_VBG approximations_NNS of_IN distribution_NN of_IN the_DT original_JJ dataset_NN from_IN randomly_RB perturbed_VBN values_NNS ._.
+The_DT randomization_NN approach_NN has_VBZ also_RB been_VBN applied_VBN to_TO association_NN rule_NN mining_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT randomization_NN approach_NN was_VBD shown_VBN to_TO have_VB some_DT limitations_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, where_WRB under_IN certain_JJ circumstances_NNS ,_, the_DT original_JJ data_NN points_NNS were_VBD able_JJ to_TO be_VB recovered_VBN with_IN fairly_RB high_JJ accuracy_NN ,_, thus_RB greatly_RB red_JJ
+nstruct_VB the_DT distribution_NN can_MD be_VB used_VBN to_TO tighten_VB estimates_NNS of_IN original_JJ values_NNS based_VBN on_IN the_DT distorted_JJ data_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+More_RBR recently_RB ,_, the_DT data_NNS distortion_NN approach_NN has_VBZ been_VBN applied_VBN to_TO Boolean_JJ association_NN rules_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Again_RB ,_, the_DT idea_NN is_VBZ to_TO modify_VB data_NNS values_NNS such_JJ that_IN reconstruction_NN of_IN the_DT values_NNS for_IN any_DT individual_JJ transaction_NN is_VBZ difficult_JJ ,_, but_CC the_DT rules_NNS learned_VBD on_IN the_DT distorted_JJ data_NNS are_VBP still_RB valid_JJ ._.
+One_CD int_NN
+a_DT queue_NN and_CC a_DT random_JJ number_NN generator_NN to_TO generate_VB the_DT items_NNS so_IN that_IN each_DT item_NN has_VBZ an_DT approximately_RB equal_JJ frequency_NN of_IN being_VBG added_VBN to_TO transactions_NNS ._.
+And_CC the_DT work_NN avoids_VBZ the_DT question_NN that_IN it_PRP is_VBZ hard_JJ for_IN =_JJ -_: =[_NN 13_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: to_TO utilize_VB existing_VBG tools_NNS for_IN association_NN rule_NN mining_NN ._.
+2_LS -RRB-_-RRB- Data_NNP Blocking-Based_NNP Association_NNP Rule_NNP The_DT approach_NN of_IN blocking_NN is_VBZ implemented_VBN by_IN reducing_VBG the_DT degree_NN of_IN support_NN and_CC confidence_NN of_IN the_DT sensitiv_NN
+e_LS same_JJ time_NN records_NNS for_IN the_DT same_JJ individual_JJ or_CC legal_JJ entity_NN may_MD exist_VB in_IN the_DT databases_NNS of_IN multiple_JJ jurisdictions_NNS ._.
+Recent_JJ work_NN in_IN distributed_VBN data_NNS mining_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- 36_CD -RRB-_-RRB- and_CC privacy-enhancing_JJ data_NNS mining_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 18_CD -RRB-_-RRB- -LRB-_-LRB- 19_CD -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- -LRB-_-LRB- 31_CD -RRB-_-RRB- -LRB-_-LRB- 32_CD -RRB-_-RRB- -LRB-_-LRB- 33_CD -RRB-_-RRB- has_VBZ addressed_VBN mining_NN distributed_VBD data_NNS of_IN this_DT nature_NN ._.
+Naturally_RB ,_, the_DT solutions_NNS proposed_VBN so_RB far_RB also_RB have_VBP limitations_NNS ._.
+Existing_VBG approaches_NNS ,_, for_IN example_NN ,_, deal_NN with_IN either_CC
+be_VB performed_VBN to_TO achieve_VB higher_JJR utility_NN for_IN the_DT modified_JJ data_NNS given_VBN that_IN the_DT privacy_NN is_VBZ not_RB jeopardized_VBN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Uniform_JJ randomization_NN approach_NN is_VBZ applied_VBN in_IN preserving_VBG the_DT privacy_NN of_IN association_NN rules_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Privacy_NN preservation_NN using_VBG rotation_NN is_VBZ performed_VBN for_IN classification_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+The_DT authors_NNS proposed_VBD -LRB-_-LRB- 13_CD -RRB-_-RRB- data_NN transformation_NN approaches_NNS with_IN binary_JJ representation_NN of_IN the_DT data_NNS ,_, which_WDT does_VBZ not_RB reveal_VB expe_NN
+Noise_NN can_MD be_VB introduced_VBN ,_, for_IN example_NN ,_, by_IN adding_VBG or_CC multiplying_VBG random_JJ values_NNS to_TO numerical_JJ attributes_NNS -LRB-_-LRB- Agrawal_NNP &_CC Srikant_NNP ,_, 2000_CD -RRB-_-RRB- or_CC by_IN deleting_VBG real_JJ items_NNS and_CC adding_VBG bogus_JJ items_NNS to_TO set-valued_JJ records_NNS -LRB-_-LRB- =_JJ -_: =_JJ Evfimievski_NNP ,_, Srikant_NNP ,_, Agrawal_NNP ,_, &_CC Gehrke_NNP ,_, 2002_CD -_: =_JJ -_: ;_: Rizvi_NNP &_CC Haritsa_NNP ,_, 2002_CD -RRB-_-RRB- ._.
+Given_VBN the_DT right_JJ choice_NN of_IN the_DT method_NN and_CC the_DT amount_NN of_IN randomization_NN ,_, it_PRP is_VBZ sometimes_RB possible_JJ to_TO protect_VB individual_JJ values_NNS while_IN estimating_VBG the_DT aggregate_JJ model_NN with_IN relative_JJ
+t_NN user_NN privacy_NN -LRB-_-LRB- 11_CD ,_, 41_CD ,_, 46_CD -RRB-_-RRB- ._.
+In_IN a_DT wellpublicized_JJ example_NN of_IN this_DT ,_, an_DT individual_JJ user_NN was_VBD identified_VBN from_IN AOL_NNP 's_POS anonymized_VBN search_NN logs_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+A_DT number_NN of_IN privacy-preserving_JJ approaches_NNS have_VBP been_VBN proposed_VBN =_JJ -_: =[_NN 5_CD ,_, 6_CD ,_, 21_CD ,_, 22_CD ,_, 35_CD ,_, 36_CD ,_, 50_CD -RRB-_-RRB- -_: =_JJ -_: ,_, discussed_VBN in_IN the_DT following_NN ._.
+One_CD general_JJ approach_NN -LRB-_-LRB- 5_CD ,_, 6_CD -RRB-_-RRB- is_VBZ to_TO randomize_VB user_NN data_NNS by_IN adding_VBG random_JJ distortion_NN values_NNS drawn_VBN independently_RB from_IN some_DT known_JJ distribution_NN such_JJ as_IN a_DT uniform_JJ distribution_NN o_NN
+s_NN technique_NN is_VBZ somewhat_RB efficient_JJ ,_, but_CC there_EX exists_VBZ a_DT tradeoff_NN between_IN data_NNS accuracy_NN and_CC privacy_NN protection_NN ._.
+When_WRB the_DT data_NN is_VBZ strongly_RB protected_VBN ,_, the_DT accuracy_NN of_IN the_DT mining_NN results_NNS can_MD not_RB be_VB accurate_JJ =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Cryptography_NN based_VBN techniques_NNS ,_, such_JJ as_IN Secure_NNP Multi-party_JJ Computation_NN -LRB-_-LRB- SMC_NN -RRB-_-RRB- which_WDT was_VBD introduced_VBN in_IN -LRB-_-LRB- 41_CD -RRB-_-RRB- ,_, have_VBP been_VBN widely_RB studied_VBN in_IN PPDM_NNP ._.
+Under_IN this_DT approach_NN ,_, a_DT group_NN of_IN collaborators_NNS want_VBP to_TO comp_VB
+architectural_JJ components_NNS for_IN privacy_NN guarantees_NNS on_IN stream_NN data_NNS from_IN private_JJ owned_JJ sensors_NNS to_TO collect_VB mutually_RB interested_JJ aggregated_JJ phenomena_NNS ._.
+Privacy_NN has_VBZ also_RB been_VBN studied_VBN in_IN the_DT data_NNS mining_NN domain_NN =_JJ -_: =[_NN 11_CD ,_, 47_CD ,_, 12_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Two_CD major_JJ classes_NNS of_IN schemes_NNS are_VBP used_VBN ._.
+The_DT first_JJ class_NN is_VBZ based_VBN on_IN data_NNS perturbation_NN -LRB-_-LRB- randomization_NN -RRB-_-RRB- techniques_NNS ._.
+In_IN a_DT data_NN perturbation_NN scheme_NN ,_, a_DT random_JJ number_NN drawn_VBN from_IN a_DT certain_JJ distribution_NN is_VBZ a_DT
+._.
+They_PRP also_RB pointed_VBD out_RP that_IN the_DT EM_NN algorithm_NN was_VBD in_IN fact_NN identical_JJ to_TO the_DT Bayesian_JJ reconstruction_NN proposed_VBN in_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, except_IN for_IN the_DT approximation_NN partitioning_VBG values_NNS into_IN intervals_NNS ._.
+Evfimievski_NNP et_FW al._FW =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT framework_NN for_IN mining_NN association_NN rules_NNS from_IN transactions_NNS consisting_VBG of_IN categorical_JJ items_NNS in_IN which_WDT the_DT data_NN has_VBZ been_VBN randomized_VBN to_TO preserve_VB privacy_NN of_IN individual_JJ transactions_NNS ._.
+The_DT idea_NN behi_NN
+ation_NN and_CC communication_NN overheads_NNS ._.
+We_PRP discuss_VBP these_DT ideas_NNS ,_, along_IN with_IN other_JJ related_JJ work_NN ,_, further_RB in_IN Section_NN 2_CD ._.
+Our_PRP$ protocols_NNS follow_VBP the_DT general_JJ approach_NN outlined_VBN by_IN Agrawal_NNP ,_, Evfimievski_NNP ,_, and_CC Srikant_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Unlike_IN their_PRP$ symmetric_JJ use_NN of_IN a_DT commutative_JJ encryption_NN scheme_NN to_TO protect_VB the_DT privacy_NN of_IN both_DT parties_NNS ,_, our_PRP$ protocols_NNS are_VBP asymmetric_JJ :_: They_PRP use_VBP blind_JJ signatures_NNS to_TO protect_VB the_DT privacy_NN of_IN one_CD party_NN and_CC
+nstruct_VB the_DT distribution_NN can_MD be_VB used_VBN to_TO tighten_VB estimates_NNS of_IN original_JJ values_NNS based_VBN on_IN the_DT distorted_JJ data_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+More_RBR recently_RB ,_, the_DT data_NNS distortion_NN approach_NN has_VBZ been_VBN applied_VBN to_TO Boolean_JJ association_NN rules_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Again_RB ,_, the_DT idea_NN is_VBZ to_TO modify_VB data_NNS values_NNS such_JJ that_IN reconstruction_NN of_IN the_DT values_NNS for_IN any_DT individual_JJ transaction_NN is_VBZ difficult_JJ ,_, but_CC the_DT rules_NNS learned_VBD on_IN the_DT distorted_JJ data_NNS are_VBP still_RB valid_JJ ._.
+One_CD int_NN
+rity_NN issues_NNS in_IN the_DT data_NNS mining_NN process_NN ._.
+One_CD approach_NN is_VBZ to_TO add_VB ``_`` noise_NN ''_'' to_TO the_DT data_NNS before_IN the_DT data_NNS mining_NN process_NN ,_, and_CC using_VBG techniques_NNS that_WDT mitigate_VBP the_DT impact_NN of_IN the_DT noise_NN on_IN the_DT data_NNS mining_NN results_VBZ =_JJ -_: =[_NN 5_CD ,_, 1_CD ,_, 14_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT gives_VBZ a_DT good_JJ approximation_NN ,_, but_CC assuming_VBG the_DT data_NNS sources_NNS are_VBP willing_JJ to_TO cooperate_VB to_TO obtain_VB the_DT data_NNS mining_NN result_NN allows_VBZ us_PRP to_TO obtain_VB exact_JJ results_NNS and_CC maintain_VBP higher_JJR standards_NNS of_IN privacy_NN ._.
+T_NN
+values_NNS by_IN adding_VBG random_JJ noise_NN while_IN retaining_VBG statistical_JJ properties_NNS of_IN the_DT original_JJ data_NNS ._.
+Several_JJ researchers_NNS give_VBP methods_NNS for_IN constructing_VBG association_NN mining_NN rules_NNS that_WDT minimize_VBP privacy_NN disclosures_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =-[_NN 14_CD -RRB-_-RRB- ._.
+Our_PRP$ work_NN differs_VBZ because_IN we_PRP present_VBP techniques_NNS and_CC results_NNS tailored_VBN to_TO sparse_VB relation_NN spaces_NNS where_WRB the_DT mere_JJ presence_NN of_IN an_DT attribute_NN can_MD result_VB in_IN a_DT privacy_NN disclosure_NN ._.
+As_IN discussed_VBN ,_, Sweeney_NN -LRB-_-LRB- 1_CD
+tiparty_JJ security_NN policy_NN approach_NN for_IN carrying_VBG out_RP privacy_NN sensitive_JJ data_NNS mining_NN ._.
+While_IN there_EX is_VBZ some_DT progress_NN we_PRP still_RB have_VBP a_DT long_JJ way_NN to_TO go_VB ._.
+Some_DT useful_JJ references_NNS are_VBP provided_VBN in_IN -LRB-_-LRB- CLIF02_NN -RRB-_-RRB- -LRB-_-LRB- see_VB also_RB =_JJ -_: =_JJ -LRB-_-LRB- EVFI02_NN -RRB-_-RRB- -_: =--RRB-_NN ._.
+We_PRP give_VBP some_DT more_JJR details_NNS on_IN an_DT approach_NN we_PRP are_VBP proposing_VBG ._.
+Note_VB that_IN one_CD mines_NNS the_DT data_NNS and_CC extracts_NNS patterns_NNS and_CC trends_NNS ._.
+The_DT privacy_NN constraints_NNS determine_VBP which_WDT patterns_NNS are_VBP private_JJ and_CC to_TO what_WP ex_FW
+roach_NN ,_, the_DT randomized_VBN response_NN techniques_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, to_TO disguise_VB data_NNS ._.
+Evfimievski_NNP et_FW al._FW proposed_VBD an_DT approach_NN to_TO conduct_VB privacy_NN preserving_NN association_NN rule_NN mining_NN based_VBN on_IN randomized_VBN response_NN techniques_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN our_PRP$ work_NN is_VBZ also_RB based_VBN on_IN randomized_VBN response_NN techniques_NNS ,_, there_EX are_VBP two_CD significant_JJ differences_NNS between_IN our_PRP$ work_NN and_CC their_PRP$ work_NN :_: first_RB ,_, our_PRP$ work_NN deals_NNS with_IN classification_NN ,_, instead_RB of_IN associ_NNS
+cale_NN distributed_VBD ARM_NN problem_NN was_VBD presented_VBN in_IN -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+sPrivacy-preserving_NN data_NNS mining_NN has_VBZ received_VBN a_DT lot_NN of_IN attention_NN in_IN the_DT past_JJ few_JJ years_NNS ._.
+Perturbation-based_JJ techniques_NNS have_VBP been_VBN widely_RB discussed_VBN -LRB-_-LRB- see_VB =_JJ -_: =[_NN 3_CD ,_, 7_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, because_IN they_PRP disclose_VBP data_NNS source_NN statistics_NNS ,_, they_PRP are_VBP not_RB fit_JJ for_IN a_DT distributed_VBN setting_NN ._.
+Cryptographically_RB secure_JJ versions_NNS were_VBD developed_VBN for_IN three_CD data_NNS mining_NN algorithms_NNS :_: distributed_VBN ARM_NN
+gle_NN neighbor_NN ,_, then_RB that_DT neighbor_NN will_MD learn_VB the_DT resource_NN 's_POS statistics_NNS -LRB-_-LRB- e.g._FW ,_, the_DT mortality_NN rate_NN for_IN that_DT HMO_NN -RRB-_-RRB- ._.
+Privacy-preserving_JJ data_NNS mining_NN has_VBZ received_VBN a_DT lot_NN of_IN attention_NN in_IN the_DT past_JJ few_JJ years_NNS ._.
+I_NN =_JJ -_: =_JJ n_NN -LRB-_-LRB- 3_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, techniques_NNS based_VBN on_IN perturbing_VBG the_DT original_JJ data_NNS before_IN initiating_VBG the_DT mining_NN process_NN were_VBD used_VBN ._.
+However_RB ,_, this_DT approach_NN can_MD only_RB secure_VB the_DT privacy_NN of_IN records_NNS and_CC not_RB of_IN the_DT sources_NNS -LRB-_-LRB- e.g._FW ,_, of_IN the_DT pa_NN
+a_DT sets_NNS as_IN benchmarks_NNS ._.
+However_RB ,_, organizations_NNS hesitate_VBP to_TO provide_VB their_PRP$ real-world_JJ data_NNS sets_NNS as_IN benchmarks_NNS due_JJ to_TO the_DT potential_JJ disclosure_NN of_IN private_JJ information_NN or_CC commercial_JJ secret_NN ._.
+Some_DT recent_JJ work_NN =_JJ -_: =[_NN 3_CD ,_, 6_CD ,_, 9_CD ,_, 10_CD ,_, 14_CD ,_, 16_CD ,_, 10_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: on_IN privacy_NN preserving_NN association_NN rule_NN mining_NN considers_VBZ how_WRB much_JJ information_NN can_MD be_VB inferred_VBN or_CC computed_VBN from_IN large_JJ data_NNS made_VBD available_JJ through_IN data_NN mining_NN algorithms_NNS and_CC looks_VBZ for_IN ways_NNS to_TO minimize_VB t_NN
+put_VBN such_JJ as_IN kernel-based_JJ clustering_NN ._.
+Data_NN distortion_NN has_VBZ been_VBN applied_VBN to_TO decision_NN tree_NN based_VBN classification_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- and_CC association_NN rules_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+This_DT idea_NN has_VBZ been_VBN further_RB elaborated_VBN by_IN Evfimievski_NNP et_FW al._FW =_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, one_CD weakness_NN of_IN using_VBG data_NNS distortion_NN for_IN preserving_VBG data_NNS privacy_NN is_VBZ that_IN under_IN certain_JJ conditions_NNS randomization_NN does_VBZ not_RB prevent_VB an_DT attacker_NN from_IN reconstructing_VBG original_JJ data_NNS with_IN reasonab_NN
+have_VBP been_VBN emerged_VBN from_IN the_DT data_NNS mining_NN community_NN ,_, usually_RB referred_VBN to_TO as_IN privacy_NN preserving_NN algorithms_NNS ._.
+Certain_JJ methods_NNS have_VBP been_VBN proposed_VBN that_WDT employ_VBP perturbation_NN techniques_NNS ,_, similar_JJ to_TO those_DT of_IN SDC_NN =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 9_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Other_JJ techniques_NNS have_VBP been_VBN offered_VBN under_IN the_DT guise_NN of_IN multi-party_JJ computation_NN for_IN data_NNS distributed_VBN over_IN multiple_JJ institutions_NNS -LRB-_-LRB- 15_CD ,_, 17_CD ,_, 32_CD -RRB-_-RRB- ._.
+The_DT work_NN most_RBS related_JJ to_TO the_DT trail_NN problem_NN is_VBZ that_DT of_IN the_DT
+ted_VBN ._.
+One_CD approach_NN is_VBZ to_TO perturb_VB the_DT local_JJ data_NNS -LRB-_-LRB- by_IN adding_VBG ``_`` noise_NN ''_'' -RRB-_-RRB- before_IN the_DT data_NNS mining_NN process_NN ,_, and_CC mitigate_VB the_DT impact_NN of_IN the_DT noise_NN from_IN the_DT data_NNS mining_NN results_NNS by_IN using_VBG reconstruction_NN techniques_NNS =_JJ -_: =[_NN 3_CD ,_, 2_CD ,_, 9_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, there_EX is_VBZ some_DT debate_NN about_IN the_DT security_NN properties_NNS of_IN such_JJ algorithms_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+The_DT alternative_JJ approach_NN of_IN using_VBG cryptographic_JJ techniques_NNS to_TO protect_VB privacy_NN was_VBD first_RB addressed_VBN for_IN the_DT constru_NN
+e_LS NSF_NNP grants_NNS IIS-0430402_NN ,_, IIS-0430165_NN ,_, and_CC IIS-0242237_NN ._.
+⋆_FW ⋆_FW Part_NN of_IN work_NN of_IN this_DT author_NN was_VBD done_VBN while_IN visiting_VBG the_DT University_NNP of_IN Vermont_NNP ._.
+s2_NN the_DT possible_JJ private_JJ values_NNS inferred_VBN from_IN the_DT released_VBN data_NN =_JJ -_: =[_NN 3_CD ,_, 2_CD ,_, 10_CD ,_, 9_CD ,_, 15_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- see_VB Section_NNP 4_CD for_IN more_JJR details_NNS -RRB-_-RRB- ._.
+However_RB ,_, uncertainty_NN is_VBZ only_RB one_CD aspect_NN of_IN privacy_NN and_CC it_PRP alone_RB does_VBZ not_RB provide_VB adequate_JJ protection_NN ._.
+For_IN example_NN ,_, we_PRP may_MD reveal_VB employee_NN John_NNP 's_POS salary_NN to_TO be_VB in_FW a_FW la_FW
+o_NN privacy_NN preserving_NN data_NNS management_NN in_IN data_NNS mining_NN and_CC information_NN retrieval_NN ._.
+In_IN data_NN mining_NN ,_, several_JJ efforts_NNS have_VBP been_VBN made_VBN to_TO either_RB preserve_VB the_DT privacy_NN of_IN individuals_NNS using_VBG randomized_VBN techniques_NNS =_JJ -_: =[_NN 8_CD ,_, 9_CD ,_, 16_CD ,_, 25_CD -RRB-_-RRB- -_: =_JJ -_: or_CC to_TO preserve_VB the_DT privacy_NN of_IN the_DT database_NN while_IN running_VBG data_NN mining_NN algorithms_NNS over_IN multiple_JJ databases_NNS -LRB-_-LRB- 13_CD ,_, 21_CD -RRB-_-RRB- using_VBG cryptographic_JJ techniques_NNS such_JJ as_IN secure_JJ multi-party_JJ computation_NN and_CC encryption_NN ._.
+ivately_RB :_: •_NNP Database_NNP operations_NNS ,_, like_IN join_VBP and_CC intersection_NN ,_, across_IN tables_NNS from_IN two_CD owners_NNS -LRB-_-LRB- 2_CD ,_, 18_CD -RRB-_-RRB- ;_: •_CD Privacy-preserving_JJ protocols_NNS for_IN geometric_JJ problems_NNS -LRB-_-LRB- 4_CD ,_, 11_CD -RRB-_-RRB- ;_: •_CD Privacy-preserving_JJ data_NNS mining_NN ,_, eg_FW ._.
+=_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: N_NN -LRB-_-LRB- additions_NNS -RRB-_-RRB- FP_NN gates_NNS TTP_NN gates_NNS FP_NN time_NN TTP_NN time_NN 512_CD 33K_CD 513_CD 17_CD 9_CD 1024_CD 66K_CD 1025_CD 33_CD 17_CD Table_NNP 3_CD :_: Circuit_NN size_NN and_CC program_NN execution_NN time_NN in_IN seconds_NNS for_IN N_NN 32-bit_JJ additions_NNS ._.
+Fairplay_JJ circuit_NN adders_NNS for_IN
+orical_JJ data_NNS ,_, Rizvi_NNP and_CC Haritsa_NNP presented_VBD a_DT scheme_NN to_TO mine_VB associations_NNS with_IN secrecy_NN constraints_NNS in_IN -LRB-_-LRB- 6_CD -RRB-_-RRB- ;_: Evfimievski_NNP et_FW al._FW proposed_VBD an_DT approach_NN 2_CD to_TO conduct_VB privacy_NN preserving_NN association_NN rule_NN mining_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ;_: Du_NNP and_CC Zhan_NNP proposed_VBD an_DT approach_NN to_TO conduct_VB privacy_NN preserving_NN decision_NN tree_NN building_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Zhu_NNP and_CC Liu_NNP proposed_VBD a_DT general_JJ framework_NN for_IN randomization_NN based_VBN on_IN mixture_NN models_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+3_CD Quantifying_NNP Priva_NNP
+ehavior_NN from_IN the_DT participating_VBG parties_NNS ._.
+This_DT means_VBZ parties_NNS follow_VBP the_DT protocol_NN without_IN cheating_NN ,_, but_CC may_MD try_VB to_TO find_VB as_IN much_JJ information_NN about_IN one_CD another_DT 's_POS databases_NNS ._.
+Other_JJ work_NN by_IN Evfimievski_NNP et_NNP al_NNP =_JJ -_: =[_NN 8_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: investigates_VBZ the_DT secure_JJ mining_NN of_IN association_NN rules_NNS ,_, evaluation_NN of_IN breeches_NNS ,_, and_CC quantification_NN of_IN privacy_NN ._.
+The_DT work_NN of_IN Agrawal_NNP et_FW al_FW -LRB-_-LRB- 1_LS -RRB-_-RRB- defines_VBZ minimal_JJ information_NN sharing_NN in_IN the_DT context_NN of_IN secure_JJ
+._.
+The_DT most_RBS commonly_RB used_VBN approach_NN is_VBZ to_TO perturb_VB the_DT data_NNS ,_, say_VB ,_, using_VBG randomizing_VBG functions_NNS ._.
+In_IN the_DT applications_NNS we_PRP are_VBP considering_VBG ,_, data_NNS can_MD only_RB be_VB hidden_VBN ,_, but_CC can_MD not_RB be_VB modified_VBN ._.
+Evfimievski_NNP et_FW al._FW =_SYM -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: developed_VBD a_DT privacypreserving_JJ framework_NN based_VBN on_IN the_DT notion_NN of_IN amplification_NN ._.
+A_DT closely_RB related_JJ topic_NN is_VBZ association-rule_JJ hiding_NN -LRB-_-LRB- ARH_NN for_IN short_JJ -RRB-_-RRB- -LRB-_-LRB- 6_CD ,_, 7_CD -RRB-_-RRB- ,_, in_IN which_WDT the_DT goal_NN is_VBZ to_TO prevent_VB sensitive_JJ asso_NN
+is_VBZ to_TO disturb_VB the_DT data_NNS before_IN delivery_NN for_IN mining_NN so_IN that_IN real_JJ values_NNS are_VBP obscured_VBN while_IN preserving_VBG statistics_NNS on_IN the_DT collection_NN ._.
+Some_DT Xintao_NNP Wu_NNP CS_NNP Department_NNP ,_, UNC_NNP Charlotte_NNP xwu@uncc.edu_NNP recent_JJ work_NN =_JJ -_: =[_NN 5_CD ,_, 8_CD ,_, 9_CD ,_, 10_CD ,_, 11_CD ,_, 21_CD ,_, 29_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: investigates_VBZ the_DT tradeoff_NN between_IN private_JJ information_NN leakage_NN and_CC accuracy_NN of_IN mining_NN results_NNS ._.
+One_CD problem_NN related_JJ to_TO the_DT perturbation_NN based_JJ approach_NN is_VBZ that_IN it_PRP can_MD not_RB always_RB fully_RB preserve_VB individua_NN
+rvey_NN respondents_NNS -LRB-_-LRB- data_NNS providers_NNS -RRB-_-RRB- ._.
+Most_JJS existing_VBG privacy_NN preserving_NN algorithms_NNS in_IN such_JJ system_NN use_VBP an_DT randomization_NN approach_NN which_WDT randomizes_VBZ the_DT original_JJ data_NNS to_TO protect_VB the_DT privacy_NN of_IN data_NNS providers_NNS =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD ,_, 6_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP establish_VBP the_DT foundation_NN for_IN analyzing_VBG the_DT tradeoff_NN between_IN the_DT accuracy_NN of_IN data_NN mining_NN results_NNS and_CC the_DT privacy_NN protection_NN of_IN sensitive_JJ data_NNS ._.
+Our_PRP$ contribution_NN can_MD be_VB summarized_VBN as_IN
+strong_JJ privacy_NN and_CC accuracy_NN via_IN a_DT secure_JJ multi-party_JJ computation_NN ,_, but_CC typically_RB suffers_VBZ from_IN its_PRP$ poor_JJ performance_NN ._.
+The_DT statistical_JJ approach_NN has_VBZ been_VBN used_VBN to_TO mine_VB decision_NN trees_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, association_NN rules_NNS =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 8_CD ,_, 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC clustering_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, and_CC is_VBZ popular_JJ mainly_RB because_IN of_IN its_PRP$ high_JJ performance_NN ._.
+This_DT paper_NN focuses_VBZ on_IN the_DT statistical_JJ approach_NN to_TO privacy-preserving_JJ decision_NN tree_NN mining_NN ._.
+The_DT notion_NN of_IN privacy-preservin_NN
+antee_NN while_IN still_RB well_RB preserving_VBG model_NN accuracy_NN for_IN the_DT discussed_VBN data_NN classification_NN models_NNS ._.
+1_CD Introduction_NN Data_NN perturbation_NN is_VBZ one_CD of_IN the_DT most_RBS popular_JJ approaches_NNS to_TO privacy_NN preserving_NN data_NNS mining_NN =_JJ -_: =[_NN 3_CD ,_, 6_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP is_VBZ especially_RB useful_JJ for_IN data_NN owners_NNS to_TO publish_VB data_NNS while_IN preserving_VBG privacy-sensitive_JJ information_NN ._.
+Typical_JJ examples_NNS include_VBP publishing_VBG micro_JJ data_NNS for_IN research_NN purpose_NN or_CC outsourcing_VBG the_DT data_NNS to_TO
+rating_NN data_NNS and_CC mining_NN interesting_JJ patterns_NNS from_IN private_JJ collections_NNS of_IN databases_NNS ._.
+This_DT has_VBZ resulted_VBN in_IN a_DT considerable_JJ amount_NN of_IN work_NN on_IN privacy_NN preserving_NN data_NN mining_NN methods_NNS in_IN recent_JJ years_NNS such_JJ as_IN =_JJ -_: =[_NN 1_CD ,_, 3_CD ,_, 5_CD ,_, 2_CD ,_, 8_CD ,_, 9_CD ,_, 15_CD ,_, 18_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, etc._NN ._.
+Data_NN perturbation_NN techniques_NNS are_VBP one_CD of_IN the_DT most_RBS popular_JJ models_NNS for_IN privacy_NN preserving_NN data_NNS mining_NN -LRB-_-LRB- 3_CD ,_, 1_CD -RRB-_-RRB- ._.
+It_PRP is_VBZ especially_RB convenient_JJ for_IN applications_NNS where_WRB the_DT data_NNS 1_CD owners_NNS need_VBP to_TO export\/pu_VB
+n_NN not_RB be_VB inferred_VBN from_IN its_PRP$ randomized_VBN counterpart_NN with_IN probabilities_NNS better_JJR than_IN a_DT pre-defined_JJ threshold_NN ,_, and_CC the_DT data_NNS mining_NN algorithms_NNS are_VBP performed_VBN on_IN the_DT randomized\/distorted_JJ dataset_NN instead_RB -LRB-_-LRB- -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 4_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+In_IN this_DT paper_NN ,_, we_PRP continue_VBP the_DT study_NN of_IN privacy_NN preserving_NN association_NN rule_NN mining_NN problem_NN ._.
+A_DT problem_NN with_IN many_JJ existing_VBG algorithms_NNS is_VBZ that_IN they_PRP treat_VBP all_DT data_NNS attributes_NNS identically_RB ._.
+Tha_NN
+s_NNS supported_VBN in_IN part_NN by_IN NSF_NNP Grants_NNPS IIS-0084762_NN and_CC IIS-0121175_NN ,_, the_DT Cornell_NNP Information_NNP Assurance_NNP Institute_NNP ,_, and_CC by_IN gifts_NNS from_IN Microsoft_NNP and_CC Intel_NNP ._.
+Parts_NNS of_IN this_DT dissertation_NN are_VBP based_VBN on_IN publications_NNS =_JJ -_: =[_NN 69_CD ,_, 68_CD ,_, 3_CD -RRB-_-RRB- -_: =_JJ -_: c_NN ○_NN ACM_NN 2002_CD ,_, 2003_CD ,_, and_CC on_IN publication_NN -LRB-_-LRB- 70_CD -RRB-_-RRB- c_NN ○_NN Elsevier_NNP Ltd._NNP ,_, 2003_CD ._.
+visTABLE_NN OF_IN CONTENTS_NN 1_CD Introduction_NN 1_CD 1.1_CD The_DT Problem_NNP of_IN Preserving_VBG Privacy_NN ..._: ..._: ..._: ..._: 1_CD 1.2_CD Main_NNP Resea_NNP
+arily_RB to_TO association_NN rule_NN mining_NN -LRB-_-LRB- cf._VBP -LRB-_-LRB- 3_CD ,_, 24_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+The_DT second_JJ approach_NN is_VBZ data_NN distortion_NN ,_, in_IN which_WDT the_DT true_JJ value_NN of_IN any_DT individual_JJ record_NN is_VBZ modified_VBN while_IN keeping_VBG ``_`` global_JJ ''_'' properties_NNS of_IN the_DT data_NNS -LRB-_-LRB- cf._VBP =_JJ -_: =[_NN 8_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: among_IN others_NNS -RRB-_-RRB- ._.
+Finally_RB ,_, SMC-based_JJ approaches_NNS apply_VBP techniques_NNS from_IN secure_JJ multi-party_JJ computation_NN -LRB-_-LRB- SMC_NN -RRB-_-RRB- ,_, which_WDT offers_VBZ an_DT assortment_NN of_IN basic_JJ tools_NNS for_IN allowing_VBG multiple_JJ parties_NNS to_TO jointly_RB compute_VB a_DT f_SYM
+oped_VBN in_IN thesstatistic_JJ community_NN for_IN the_DT purpose_NN of_IN protecting_VBG surveyee_NN 's_POS privacy_NN ._.
+Evfimievski_NNP et_FW al._FW propose_VBP an_DT approach_NN to_TO conduct_VB privacy_NN preserving_NN association_NN rules_NNS mining_NN based_VBN on_IN this_DT technique_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT problem_NN of_IN the_DT randomized_VBN responses_NNS techniques_NNS is_VBZ that_IN the_DT parameter_NN used_VBN in_IN randomized_JJ response_NN techniques_NNS affects_VBZ the_DT accuracy_NN of_IN learning_VBG results_NNS ._.
+The_DT last_JJ popular_JJ approach_NN to_TO achieve_VB privacy_NN
+cies_NNS and_CC their_PRP$ variances_NNS are_VBP given_VBN to_TO an_DT Apriori-like_JJ mining_NN algorithm_NN ._.
+The_DT degree_NN of_IN randomization_NN depends_VBZ on_IN the_DT needed_VBN amount_NN of_IN privacy_NN ._.
+The_DT algorithm_NN was_VBD implemented_VBN and_CC tested_VBN on_IN real-life_JJ data_NN =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT work_NN was_VBD done_VBN during_IN my_PRP$ summer_NN internship_NN at_IN IBM_NNP Almaden_NNP Research_NNP Center_NNP in_IN 2001_CD ,_, joint_JJ with_IN Dr._NNP Ramakrishnan_NNP Srikant_NNP and_CC Dr._NNP Rakesh_NNP Agrawal_NNP ,_, and_CC later_RB with_IN Prof._NNP Johannes_NNP Gehrke_NNP at_IN Cornell_NNP Uni_NNP
+ith_JJ statistical_JJ techniques_NNS for_IN reconstructing_VBG distributions_NNS from_IN the_DT perturbed_VBN responses_NNS -LRB-_-LRB- 37_CD -RRB-_-RRB- ._.
+Different_JJ random_JJ perturbation_NN methods_NNS have_VBP been_VBN proposed_VBN and_CC applied_VBN in_IN different_JJ data_NNS mining_NN algorithms_VBZ =_JJ -_: =[_NN 2_CD ,_, 1_CD ,_, 12_CD ,_, 28_CD ,_, 11_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Random_JJ perturbation_NN is_VBZ very_RB efficient_JJ ,_, but_CC in_IN general_JJ it_PRP can_MD induce_VB a_DT tradeoff_NN between_IN privacy_NN of_IN respondents_NNS and_CC accuracy_NN of_IN the_DT data_NNS mining_NN result_NN :_: the_DT more_JJR privacy_NN each_DT respondent_NN has_VBZ ,_, the_DT less_JJR a_DT
+been_VBN a_DT primary_JJ tool_NN to_TO hide_VB sensitive_JJ private_JJ data_NNS for_IN privacy_NN preserving_NN data_NNS mining_NN ._.
+The_DT issue_NN of_IN maintaining_VBG privacy_NN in_IN association_NN rule_NN mining_NN has_VBZ attracted_VBN considerable_JJ attention_NN in_IN recent_JJ years_NNS =_JJ -_: =[_NN 8_CD ,_, 9_CD ,_, 4_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS of_IN techniques_NNS are_VBP based_VBN on_IN a_DT data_NN perturbation_NN or_CC Randomized_JJ Response_NN -LRB-_-LRB- RR_NN -RRB-_-RRB- approach_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, wherein_WRB the_DT 0_CD or_CC 1_CD -LRB-_-LRB- 0_CD denotes_VBZ absence_NN of_IN an_DT item_NN while_IN 1_CD denotes_VBZ presence_NN of_IN an_DT item_NN -RRB-_-RRB- in_IN the_DT original_JJ us_PRP
+There_EX has_VBZ been_VBN a_DT recent_JJ surge_NN in_IN interest_NN in_IN privacy_NN concerns_NNS for_IN databases_NNS -LRB-_-LRB- 1_CD ,_, 9_CD ,_, 2_CD -RRB-_-RRB- ._.
+Several_JJ efforts_NNS have_VBP focused_VBN on_IN generating_VBG data_NNS mining_NN results_VBZ over_IN multiple_JJ databases_NNS while_IN preserving_VBG privacy_NN =_JJ -_: =[_NN 9_CD ,_, 2_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT protocols_NNS are_VBP highly_RB tailored_VBN to_TO the_DT mining_NN algorithm_NN and_CC are_VBP not_RB general_JJ purpose_NN ._.
+Furthermore_RB ,_, they_PRP trust_VBP each_DT of_IN the_DT owners_NNS of_IN the_DT individual_JJ databases_NNS to_TO provide_VB correct_JJ data_NNS ._.
+A_DT malicious_JJ p_NN
+a_DT Da_NN ,_, and_CC then_RB she_PRP sends_VBZ the_DT disguised_JJ data_NNS set_VBP Da_NN to_TO Bob_NNP ;_: Several_JJ schemes_NNS have_VBP been_VBN proposed_VBN for_IN conducting_VBG data_NNS mining_NN based_VBN on_IN the_DT partially_RB disguised_VBN joint_JJ data_NNS formed_VBN by_IN Da_NN and_CC Db_NN ,_, including_VBG =_JJ -_: =[_NN 2_CD ,_, 1_CD ,_, 5_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: 1_CD ._.
+The_DT contribution_NN of_IN this_DT paper_NN is_VBZ two-fold_JJ :_: First_JJ ,_, we_PRP have_VBP developed_VBN a_DT hybrid_NN scheme_NN that_WDT can_MD harness_NN the_DT strength_NN of_IN both_CC SMC_NN and_CC randomization_NN schemes_NNS to_TO achieve_VB a_DT better_JJR accuracy_NN and_CC efficienc_NN
+can_MD be_VB built_VBN with_IN the_DT knowledge_NN ofdistribution_NN of_IN each_DT attribute_NN ._.
+Evfimievski_NNP et_FW al._FW proposed_VBD an_DT approach_NN to_TO conduct_VB privacy_NN preserving_NN association_NN rule_NN mining_NN based_VBN on_IN randomized_VBN response_NN techniques_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN our_PRP$ work_NN is_VBZ also_RB based_VBN on_IN randomized_VBN response_NN techniques_NNS ,_, there_EX are_VBP two_CD significant_JJ differences_NNS between_IN our_PRP$ work_NN and_CC their_PRP$ work_NN :_: first_RB ,_, our_PRP$ work_NN deals_NNS with_IN classification_NN ,_, instead_RB ofassocia_NN
+NSF_NNP Grant_NNP ITR0326155_NN ._.
+Dragos_NNP ¸_NNP Trincă_NNP and_CC Sanguthevar_NNP Rajasekaran_NNP Department_NNP of_IN Computer_NNP Science_NNP and_CC Engineering_NNP University_NNP of_IN Connecticut_NNP Storrs_NNP ,_, CT_NNP 06269_CD ,_, USA_NN -LCB-_-LRB- dtrinca,rajasek}@engr.uconn.edu_NN ied_VBN in_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB the_DT authors_NNS gave_VBD a_DT mathematical_JJ treatment_NN for_IN a_DT class_NN of_IN randomization_NN algorithms_NNS and_CC derived_VBN formulae_NN for_IN support_NN and_CC variance_NN prediction_NN ,_, and_CC showed_VBD how_WRB to_TO incorporate_VB these_DT formulae_NNS into_IN mi_FW
+d_NN rule_NN accuracy_NN can_MD be_VB achieved_VBN ._.
+The_DT randomized_VBN valuesPrivacy_NN leakage_NN in_IN multi-relational_JJ databases_NNS distortion_NN technique_NN for_IN learning_VBG decision_NN trees_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC privacy_NN preserving_NN association_NN rule_NN mining_NN =_JJ -_: =[_NN 14,15_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP examples_NNS of_IN this_DT approach_NN ._.
+Recent_JJ developments_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- have_VBP provided_VBN an_DT expectation_NN --_: maximization_NN -LRB-_-LRB- EM_NN -RRB-_-RRB- algorithm_NN for_IN reconstructing_VBG the_DT distribution_NN of_IN the_DT original_JJ data_NNS from_IN perturbed_VBN data_NNS ._.
+This_DT appr_NN
+other_JJ side_NN ._.
+Several_JJ privacy_NN preserving_NN data_NNS mining_NN approaches_NNS have_VBP been_VBN proposed_VBN ,_, which_WDT usually_RB protect_VBP data_NNS by_IN modifying_VBG them_PRP to_TO mask_NN or_CC erase_VB the_DT original_JJ sensitive_JJ data_NNS that_WDT should_MD not_RB be_VB revealed_VBN =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT approaches_NNS typically_RB are_VBP based_VBN on_IN the_DT concepts_NNS of_IN :_: loss_NN of_IN privacy_NN ,_, measuring_VBG the_DT capacity_NN of_IN estimating_VBG the_DT original_JJ data_NNS from_IN the_DT modified_VBN data_NNS ,_, and_CC loss_NN of_IN information_NN ,_, measuring_VBG the_DT loss_NN o_NN
+ase_NN of_IN distortion_NN probabilities_NNS ,_, which_WDT can_MD better_RB protect_VB data_NNS privacy_NN ._.
+1_CD Introduction_NN The_DT issue_NN of_IN maintaining_VBG privacy_NN in_IN association_NN rule_NN mining_NN has_VBZ attracted_VBN considerable_JJ attention_NN in_IN recent_JJ years_NNS =_JJ -_: =[_NN 8,9,4,21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS of_IN techniques_NNS are_VBP based_VBN on_IN a_DT data_NN perturbation_NN or_CC Randomized_JJ Response_NN -LRB-_-LRB- RR_NN -RRB-_-RRB- approach_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, wherein_WRB the_DT 0_CD or_CC 1_CD -LRB-_-LRB- 0_CD denotes_VBZ absence_NN of_IN an_DT item_NN while_IN 1_CD denotes_VBZ presence_NN of_IN an_DT item_NN -RRB-_-RRB- in_IN the_DT original_JJ us_PRP
+rix_NN perturbation_NN -LRB-_-LRB- 6_CD ,_, 5_CD -RRB-_-RRB- ,_, ρ1-to-ρ2_JJ privacy_NN breaching_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, and_CC personalized_VBD breaching_VBG probability_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+In_IN addition_NN to_TO decision_NN trees_NNS ,_, perturbation_NN have_VBP also_RB been_VBN used_VBN in_IN PPDM_NNP to_TO find_VB association_NN rules_NNS =_JJ -_: =[_NN 6_CD ,_, 4_CD ,_, 15_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: and_CC clustering_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+The_DT well-known_JJ generalization_NN method_NN ,_, K-anonymity_NN ,_, was_VBD first_RB studied_VBN in_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- for_IN data_NN disclosure_NN ._.
+Implementations_NNS of_IN k-anonymity_NN include_VBP bottom-up_JJ generalization_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, top-down_JJ s_NN
+les_FW a_DT third-party_JJ miner_NN to_TO find_VB association_NN rules_NNS in_IN a_DT transformed_VBN database_NN while_IN preventing_VBG it_PRP from_IN accessing_VBG the_DT private_JJ information_NN in_IN the_DT original_JJ database_NN ._.
+The_DT perturbation_NN technique_NN proposed_VBN in_IN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: can_MD be_VB adapted_VBN for_IN our_PRP$ problem_NN ._.
+However_RB ,_, this_DT solution_NN returns_VBZ only_RB approximate_JJ results_NNS ._.
+Also_RB ,_, the_DT miner_NN knows_VBZ the_DT exact_JJ number_NN of_IN itemsets_NNS -LRB-_-LRB- and_CC their_PRP$ frequencies_NNS -RRB-_-RRB- that_WDT will_MD be_VB used_VBN by_IN the_DT owner_NN -LRB-_-LRB- i.e_NN
+ble_NN to_TO the_DT one_NN built_VBN from_IN the_DT original_JJ data_NNS ._.
+There_EX are_VBP broadly_RB two_CD types_NNS of_IN random_JJ perturbation_NN techniques_NNS available_JJ ,_, additive_JJ random_JJ perturbation_NN and_CC multiplicative_JJ random_JJ perturbation_NN ._.
+Evfimievski_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: suggested_JJ privacy_NN preserving_NN association_NN rule_NN learning_NN using_VBG the_DT additive_JJ random_JJ perturbation_NN approach_NN ._.
+Chong_NN -LRB-_-LRB- 47_CD -RRB-_-RRB- suggested_VBD data_NN distortion_NN by_IN probability_NN distribution_NN ,_, where_WRB confidential_JJ variables_NNS
+this_DT case_NN ._.
+Privacy-preserving_JJ algorithms_NNS have_VBP been_VBN proposed_VBN for_IN different_JJ data_NNS mining_NN applications_NNS ,_, including_VBG decision_NN trees_NNS on_IN randomized_VBN data_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, association_NN rules_NNS mining_NN on_IN randomized_VBN data_NNS -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, association_NN rules_NNS mining_NN across_IN multiple_JJ databases_NNS -LRB-_-LRB- 40_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, clustering_NN -LRB-_-LRB- 41_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, naive_JJ Bayes_NNP classification_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 42_CD -RRB-_-RRB- ,_, and_CC privacy-preserving_JJ collaborative_NN filtering_VBG -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Additionally_RB ,_, s_NN
+ibility_NN of_IN privacy-preservation_NN by_IN using_VBG techniques_NNS to_TO perturb_VB sensitive_JJ values_NNS in_IN data_NNS ._.
+•_NNP Data_NNP swapping_VBG ._.
+Attribute_NN values_NNS are_VBP interchanged_VBN in_IN a_DT way_NN that_WDT maintains_VBZ the_DT results_NNS of_IN statistical_JJ queries_NNS -LRB-_-LRB- =_JJ -_: =_JJ Evfimievski_NNP et_FW al._FW ,_, 2002_CD -_: =--RRB-_NN ._.
+•_CD The_DT elimination_NN of_IN unnecessary_JJ groupings_NNS ._.
+By_IN assigning_VBG unique_JJ identifiers_NNS randomly_RB ;_: they_PRP serve_VBP only_RB as_IN unique_JJ identifiers_NNS ._.
+This_DT prevents_VBZ meaningful_JJ groupings_NNS based_VBN on_IN these_DT identifiers_NNS yet_RB does_VBZ n_NN
+anagement_NN ,_, held_VBN in_IN conjunction_NN with_IN VLDB_NN '_'' 04_CD ,_, August_NNP 30_CD ,_, 2004.sprivacy-preserving_JJ data_NNS mining_NN and_CC other_JJ privacy-preserving_JJ computations_NNS efficient_JJ enough_RB to_TO be_VB used_VBN on_IN extremely_RB large_JJ data_NNS sets_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 3_CD ,_, 9_CD ,_, 5_CD ,_, 8_CD ,_, 17_CD ,_, 12_CD ,_, 7_CD ,_, 18_CD ,_, 10_CD ,_, 1_CD ,_, 19_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+In_IN general_JJ ,_, this_DT research_NN has_VBZ been_VBN divided_VBN into_IN solutions_NNS that_WDT provide_VBP strong_JJ cryptographic_JJ privacy_NN protection_NN ,_, which_WDT require_VBP more_RBR computational_JJ overhead_NN and_CC have_VBP so_RB far_RB been_VBN limited_VBN to_TO extremely_RB s_NN
+re_IN partitioned_VBN into_IN two_CD classes_NNS :_: TRUE_JJ ,_, if_IN the_DT zX_NN ,_, i_FW value_NN causes_VBZ the_DT alternative_JJ hypothesis_NN to_TO be_VB accepted_VBN ,_, and_CC FALSE_NNP ,_, if_IN the_DT null_JJ hypothesis_NN is_VBZ accepted_VBN ._.
+This_DT approach_NN does_VBZ not_RB cause_VB privacy_NN breaches_NNS =_JJ -_: =[_NN 9_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: because_IN there_EX are_VBP almost_RB no_DT gains_NNS in_IN information_NN about_IN the_DT local_JJ support_NN of_IN an_DT itemset_NN after_IN the_DT application_NN of_IN the_DT method_NN ._.
+The_DT only_JJ information_NN disclosed_VBN is_VBZ if_IN the_DT itemset_NN is_VBZ skewed_JJ or_CC not_RB ,_, and_CC that_IN
+s_NN critical_JJ in_IN OLAP_NNP systems_NNS ._.
+Any_DT extra_JJ procedures_NNS can_MD potentially_RB slow_VB down_RP the_DT response_NN time_NN ._.
+2.3_CD Privacy_NNP Preserving_NNP Data_NNP Mining_NNP Privacy_NNP preserving_NN data_NNS mining_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- has_VBZ drawn_VBN considerable_JJ attentions_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =-[_NN 10_CD -RRB-_-RRB- -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+The_DT basic_JJ idea_NN of_IN privacy_NN preserving_NN data_NNS mining_NN is_VBZ to_TO preserve_VB data_NNS privacy_NN by_IN adding_VBG random_JJ noise_NN ,_, while_IN making_VBG sure_JJ that_IN the_DT random_JJ noise_NN still_RB preserves_VBZ the_DT `_`` signal_NN '_'' from_IN the_DT data_NNS so_IN tha_NN
+._.
+In_IN privacy-preservation_NN domain_NN ,_, Huang_NNP ,_, Wang_NNP and_CC Borisov_NNP address_VBP the_DT problem_NN in_IN a_DT peer-to-peer_JJ network_NN application_NN in_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Privacy_NN preservation_NN has_VBZ also_RB been_VBN studied_VBN in_IN the_DT data_NNS mining_NN domain_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Two_CD major_JJ classes_NNS of_IN schemes_NNS are_VBP used_VBN ._.
+The_DT first_JJ class_NN is_VBZ based_VBN on_IN data_NNS perturbation_NN -LRB-_-LRB- randomization_NN -RRB-_-RRB- techniques_NNS ._.
+In_IN a_DT data_NN perturbation_NN scheme_NN ,_, a_DT random_JJ number_NN drawn_VBN from_IN a_DT certain_JJ distr_NN
+,_, protecting_VBG privacy_NN while_IN preserving_VBG statistics_NNS on_IN the_DT collection_NN ._.
+Recently_RB data_NN mining_NN techniques_NNS on_IN such_JJ altered_JJ data_NNS have_VBP been_VBN developed_VBN for_IN constructing_VBG decision_NN trees_NNS -LRB-_-LRB- 3_CD ,_, 2_CD -RRB-_-RRB- and_CC association_NN rules_NNS =_JJ -_: =[_NN 15_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- touched_VBN on_IN the_DT impact_NN of_IN results_NNS on_IN privacy_NN ,_, the_DT emphasis_NN was_VBD on_IN ability_NN to_TO recover_VB the_DT altered_JJ data_NN values_NNS rather_RB than_IN inherent_JJ privacy_NN problems_NNS with_IN the_DT results_NNS ._.
+The_DT second_JJ approach_NN is_VBZ b_NN
+join_VB in_IN collaborative_JJ mining_NN if_IN the_DT privacy-sensitive_JJ data_NNS of_IN individual_JJ company_NN is_VBZ not_RB properly_RB protected_VBN ._.
+Data_NN perturbation_NN has_VBZ been_VBN one_CD of_IN the_DT popular_JJ approaches_NNS for_IN privacy-preserving_JJ data_NNS mining_NN =_JJ -_: =[_NN 4_CD ,_, 41_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP protects_VBZ the_DT private_JJ information_NN by_IN changing_VBG the_DT original_JJ data_NN values_NNS while_IN preserving_VBG the_DT information_NN critical_JJ to_TO the_DT specific_JJ data_NNS mining_NN model_NN ._.
+Obviously_RB ,_, a_DT random_JJ change_NN of_IN original_JJ data_NNS may_MD
+levels_NNS of_IN privacy_NN guarantees_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+Previous_JJ work_NN has_VBZ noticed_VBN this_DT important_JJ tradeoff_NN between_IN privacy_NN and_CC utility_NN and_CC various_JJ techniques_NNS have_VBP been_VBN proposed_VBN to_TO achieve_VB a_DT desired_VBN balance_NN between_IN the_DT two_CD =_JJ -_: =[_NN 3_CD ,_, 23_CD ,_, 27_CD ,_, 10_CD ,_, 12_CD ,_, 28_CD ,_, 35_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Prior_JJ related_JJ work_NN -LRB-_-LRB- 3_CD ,_, 2_CD ,_, 23_CD ,_, 20_CD -RRB-_-RRB- consists_VBZ of_IN additive_JJ random_JJ perturbation_NN for_IN the_DT offline_JJ ,_, conventional_JJ relational_JJ data_NNS model_NN ,_, where_WRB the_DT noise_NN is_VBZ distributed_VBN along_IN the_DT principal_JJ components_NNS of_IN the_DT o_NN
+s_NNS are_VBP designed_VBN to_TO find_VB a_DT good_JJ compromise_NN between_IN privacy_NN protection_NN and_CC knowledge_NN discovery_NN ._.
+A_DT framework_NN for_IN mining_NN association_NN rules_NNS from_IN transactions_NNS consisting_VBG of_IN categorical_JJ items_NNS was_VBD proposed_VBN in_IN =_JJ -_: =[_NN 50_CD ,_, 48_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT approach_NN ,_, the_DT data_NNS are_VBP randomized_VBN to_TO preserve_VB the_DT privacy_NN of_IN individual_JJ transactions_NNS ._.
+The_DT idea_NN behind_IN this_DT approach_NN is_VBZ that_IN some_DT items_NNS in_IN each_DT transaction_NN are_VBP replaced_VBN by_IN new_JJ items_NNS not_RB origi_VB
+ted_VBN ._.
+One_CD approach_NN is_VBZ to_TO perturb_VB the_DT local_JJ data_NNS -LRB-_-LRB- by_IN adding_VBG ``_`` noise_NN ''_'' -RRB-_-RRB- before_IN the_DT data_NNS mining_NN process_NN ,_, and_CC mitigate_VB the_DT impact_NN of_IN the_DT noise_NN from_IN the_DT data_NNS mining_NN results_NNS by_IN using_VBG reconstruction_NN techniques_NNS =_JJ -_: =[_NN 3_CD ,_, 2_CD ,_, 9_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, there_EX is_VBZ some_DT debate_NN about_IN the_DT security_NN properties_NNS of_IN such_JJ algorithms_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+The_DT alternative_JJ approach_NN of_IN using_VBG cryptographic_JJ techniques_NNS to_TO protect_VB privacy_NN was_VBD first_RB addressed_VBN for_IN the_DT constru_NN
+n_NN Table_NNP 3_CD ,_, where_WRB we_PRP attempted_VBD to_TO present_VB them_PRP in_IN a_DT unified_JJ framework_NN ._.
+We_PRP explain_VBP now_RB the_DT positive_JJ and_CC negative_JJ results_NNS ._.
+Positive_JJ results_NNS There_EX are_VBP several_JJ randomized_VBN algorithms_NNS for_IN local_JJ perturbation_NN =_JJ -_: =[_NN 1_CD ,_, 9_CD ,_, 10_CD ,_, 18_CD ,_, 2_CD ,_, 15_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Each_DT tuple_NN in_IN the_DT database_NN I_PRP is_VBZ locally_RB perturbed_VBN by_IN replacing_VBG it_PRP with_IN a_DT randomly_RB chosen_VBN tuple_NN according_VBG to_TO a_DT predefined_JJ probability_NN distribution_NN ._.
+FRAPP_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- is_VBZ a_DT framework_NN that_WDT generalizes_VBZ all_DT algor_NN
+ity_NN ,_, a_DT variety_NN of_IN other_JJ methods_NNS have_VBP been_VBN proposed_VBN for_IN protecting_VBG individual_JJ privacy_NN while_IN allowing_VBG certain_JJ data_NNS mining_NN tasks_NNS ._.
+One_CD widely-studied_JJ approach_NN is_VBZ based_VBN on_IN the_DT randomized_VBN response_NN paradigm_NN =_JJ -_: =[_NN 4_CD ,_, 11_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT main_JJ advantage_NN of_IN generalization_NN is_VBZ that_IN the_DT releasedsdata_NN is_VBZ ``_`` truthful_JJ ,_, ''_'' though_IN at_IN a_DT coarsened_JJ level_NN of_IN granularity_NN ._.
+This_DT allows_VBZ additional_JJ workloads_NNS to_TO be_VB carried_VBN out_RP using_VBG the_DT data_NNS ,_, including_VBG
+precise_JJ information_NN available_JJ in_IN individual_JJ data_NNS records_NNS so_RB as_IN to_TO not_RB violating_VBG usersÕ_NN privacy_NN ._.
+This_DT approach_NN was_VBD first_RB presented_VBN in_IN -LRB-_-LRB- 108,109_CD -RRB-_-RRB- with_IN a_DT specific_JJ focus_NN on_IN decision_NN tree_NN techniques_NNS ;_: later_RB =_JJ -_: =[_NN 110,111_CD -RRB-_-RRB- -_: =_SYM -_: extended_VBD the_DT focus_NN to_TO Association_NNP rules_NNS ._.
+However_RB ,_, no_DT papers_NNS have_VBP yet_RB proposed_VBN approaches_NNS or_CC solutions_NNS that_WDT would_MD take_VB into_IN account_NN the_DT privacy_NN from_IN Web_NN Usage_NNP Mining_NNP viewpoint_NN ._.
+9_CD ._.
+Future_JJ trends_NNS There_EX
+e_LS delivery_NN for_IN mining_NN so_IN that_IN real_JJ values_NNS are_VBP obscured_VBN Yongge_NNP Wang_NNP Xintao_NNP Wu_NNP SIS_NNP Department_NNP CS_NNP Department_NNP UNC_NNP Charlotte_NNP UNC_NNP Charlotte_NNP 1_CD while_IN preserving_VBG statistics_NNS on_IN the_DT collection_NN ._.
+Some_DT recent_JJ work_NN =_JJ -_: =[_NN 8_CD ,_, 1_CD ,_, 9_CD ,_, 22_CD ,_, 6_CD ,_, 3_CD ,_, 17_CD ,_, 23_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: investigates_VBZ the_DT tradeoff_NN between_IN private_JJ information_NN leakage_NN and_CC accuracy_NN of_IN mining_NN results_NNS ._.
+One_CD problem_NN related_JJ to_TO the_DT perturbation_NN based_JJ approach_NN is_VBZ that_IN it_PRP can_MD not_RB always_RB fully_RB preserve_VB individua_NN
+g_NN will_MD not_RB compromise_VB privacy_NN and_CC it_PRP will_MD contribute_VB to_TO obtaining_VBG globally_RB meaningful_JJ results_NNS ._.
+One_CD approach_NN recently_RB investigated_VBN is_VBZ the_DT addition_NN of_IN ``_`` noise_NN ''_'' to_TO the_DT data_NNS before_IN the_DT data_NNS mining_NN process_NN =_JJ -_: =[_NN 3_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Another_DT approach_NN ,_, restricted_JJ to_TO classification_NN ,_, considers_VBZ how_WRB much_JJ information_NN can_MD be_VB inferred_VBN from_IN the_DT data_NNS made_VBD available_JJ through_IN data_NN mining_NN algorithms_NNS ,_, and_CC how_WRB to_TO minimize_VB information_NN leakage_NN -LRB-_-LRB- 3_CD
+problem_NN by_IN sanitizing_VBG sensitive_JJ data_NNS such_JJ that_IN individual_JJ privacy_NN is_VBZ preserved_VBN while_IN allowing_VBG enterprises_NNS to_TO maintain_VB and_CC share_VB sensitive_JJ data_NNS ._.
+Recently_RB ,_, there_EX has_VBZ been_VBN a_DT lot_NN of_IN work_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- 5_CD -RRB-_-RRB- =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: on_IN data_NN anonymization_NN schemes_NNS ._.
+These_DT techniques_NNS can_MD be_VB broadly_RB classified_VBN into_IN two_CD types_NNS :_: •_CD Partitioning_NN based_JJ anonymization_NN schemes_NNS :_: The_DT first_JJ class_NN of_IN techniques_NNS guarantee_VBP privacy_NN by_IN partitioning_VBG
+se_FW of_IN perturbation_NN and_CC k-anonymity_NN ._.
+These_DT are_VBP as_IN follows_VBZ :_: •_FW In_FW perturbation_NN ,_, we_PRP add_VBP noise_NN to_TO the_DT original_JJ data_NNS ._.
+Reconstructed_JJ distributions_NNS are_VBP then_RB used_VBN to_TO perform_VB the_DT privacy_NN preserving_NN data_NNS mining_NN =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT perturbation_NN method_NN has_VBZ the_DT advantage_NN that_IN it_PRP can_MD be_VB performed_VBN at_IN data_NNS collection_NN time_NN ._.
+This_DT is_VBZ because_IN the_DT behavior_NN of_IN the_DT other_JJ records_NNS does_VBZ not_RB need_VB to_TO be_VB used_VBN during_IN the_DT perturbation_NN process_NN
+of_IN privacy_NN studied_VBN in_IN this_DT context_NN is_VBZ data_NN uncertainty_NN as_IN versus_CC individual_JJ identifiability_NN ._.
+There_EX are_VBP studies_NNS focusing_VBG on_IN specific_JJ mining_NN tasks_NNS such_JJ as_IN decision_NN tree_NN -LRB-_-LRB- 8_CD ,_, 12_CD -RRB-_-RRB- ,_, association_NN rule_NN mining_NN =_JJ -_: =[_NN 39_CD ,_, 15_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC on_IN disclosure_NN analysis_NN -LRB-_-LRB- 26_CD ,_, 19_CD ,_, 42_CD ,_, 12_CD -RRB-_-RRB- ._.
+A_DT main_JJ advantage_NN of_IN data_NNS anonymization_NN as_IN opposed_VBN to_TO data_NNS perturbation_NN is_VBZ that_IN the_DT released_VBN data_NNS remain_VBP ''_'' truthful_JJ ''_'' ,_, though_IN at_IN a_DT coarse_JJ level_NN of_IN granulari_NNS
+ariety_NN of_IN refinements_NNS and_CC applications_NNS of_IN data_NNS swapping_VBG have_VBP been_VBN addressed_VBN since_IN its_PRP$ initial_JJ appearance_NN ._.
+We_PRP refer_VBP readers_NNS to_TO -LRB-_-LRB- 34_CD -RRB-_-RRB- for_IN a_DT thorough_JJ treatment_NN ._.
+Other_JJ Randomization_NN Techniques_NNS The_DT work_NN in_IN =_JJ -_: =[_NN 35_CD ,_, 36_CD -RRB-_-RRB- -_: =_SYM -_: considered_VBN categorical_JJ data_NNS perturbation_NN in_IN the_DT context_NN of_IN association_NN rule_NN mining_NN ._.
+This_DT work_NN was_VBD extended_VBN in_IN -LRB-_-LRB- 37_CD -RRB-_-RRB- where_WRB a_DT rigorous_JJ framework_NN for_IN quantifying_VBG privacy_NN breaches_NNS was_VBD introduced_VBN ._.
+This_DT fra_NN
+technique_NN ,_, Rizvi_NNP and_CC Haritsa_NNP propose_VBP a_DT scheme_NN to_TO mine_VB association_NN rules_NNS from_IN disguised_VBN data_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ;_: Evfimievski_NNP et_FW al._FW propose_VBP a_DT different_JJ approach_NN to_TO conduct_VB privacy-preserving_JJ association_NN rule_NN mining_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ;_: Du_NNP and_CC Zhan_NNP propose_VBP a_DT scheme_NN to_TO conduct_VB privacy-preserving_JJ decision_NN tree_NN building_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+Agrawal_NNP et_FW al._FW study_NN how_WRB to_TO optimize_VB the_DT efficiency_NN of_IN the_DT distribution_NN reconstruction_NN process_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+There_EX is_VBZ a_DT
+apers_NNS -LRB-_-LRB- sampling_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, global_JJ and_CC local_JJ recoding_NN -LRB-_-LRB- 14_CD ,_, 19_CD ,_, 23_CD -RRB-_-RRB- ,_, suppression_NN and_CC local_JJ suppression_NN -LRB-_-LRB- 19_CD ,_, 13_CD -RRB-_-RRB- ,_, microaggregation_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, simulation_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, adding_VBG noise_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, randomization_NN or_CC perturbation_NN methods_NNS =_JJ -_: =[_NN 15_CD ,_, 10_CD ,_, 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, data_NNS swapping_VBG -LRB-_-LRB- 4_CD ,_, 17_CD -RRB-_-RRB- ,_, substitution_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- etc._NN -RRB-_-RRB- to_TO modify_VB the_DT initial_JJ microdata_NN in_IN order_NN to_TO achieve_VB individual_JJ privacy_NN and_CC preserve_VB data_NNS usefulness_NN ._.
+While_IN applying_VBG these_DT methods_NNS ,_, the_DT data_NNS owner_NN shoul_NN
+em_NN of_IN rule_NN sanitization_NN ._.
+Rather_RB than_IN sharing_VBG the_DT data_NNS ,_, collaborators_NNS prefer_VBP to_TO mine_VB their_PRP$ own_JJ data_NNS and_CC share_VBP the_DT discovered_VBN patterns_NNS ._.
+Let_VB us_PRP consider_VB a_DT motivating_VBG example_NN based_VBN on_IN a_DT case_NN discussed_VBN in_IN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Suppose_VB we_PRP have_VBP a_DT server_NN and_CC many_JJ clients_NNS in_IN which_WDT each_DT client_NN has_VBZ a_DT set_NN of_IN sold_VBN items_NNS -LRB-_-LRB- e.g._FW books_NNS ,_, movies_NNS ,_, etc_NN -RRB-_-RRB- ._.
+The_DT clients_NNS want_VBP the_DT server_NN to_TO gather_VB statistical_JJ information_NN about_IN associations_NNS amo_VBP
+Castro_NNP and_CC Brankovic_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB- -LRB-_-LRB- who_WP analyzed_VBD the_DT relationship_NN to_TO methods_NNS in_IN statistical_JJ databases_NNS -RRB-_-RRB- favors_VBZ data_NN perturbation_NN methods_NNS ._.
+Agrawal_NNP and_CC Srikant_NNP -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC Agrawal_NNP with_IN Aggarwal_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- as_RB well_RB as_IN others_NNS =_JJ -_: =[_NN 16_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP followed_VBN this_DT research_NN ,_, referred_VBN here_RB as_IN data_NNS perturbation_NN ._.
+Data_NN perturbation_NN methods_NNS for_IN clustering_NN are_VBP recent_JJ -LRB-_-LRB- 33_CD -RRB-_-RRB- ._.
+The_DT second_JJ line_NN was_VBD initiated_VBN by_IN Lindell_NNP and_CC Pinkas_NNP -LRB-_-LRB- 27_CD -RRB-_-RRB- and_CC considers_VBZ situa_NN
+e_LS multiparty_JJ security_NN policy_NN approach_NN for_IN carrying_VBG out_RP privacy_NN sensitive_JJ data_NNS mining_NN ._.
+While_IN there_EX is_VBZ some_DT progress_NN we_PRP still_RB have_VBP a_DT long_JJ way_NN to_TO go_VB ._.
+Some_DT useful_JJ references_NNS are_VBP provided_VBN in_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- -LRB-_-LRB- see_VB also_RB =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+An_DT approach_NN we_PRP are_VBP proposing_VBG is_VBZ to_TO process_VB privacy_NN constraints_NNS in_IN a_DT database_NN management_NN system_NN ._.
+Note_VB that_IN one_CD mines_NNS the_DT data_NNS and_CC extracts_NNS patterns_NNS and_CC trends_NNS ._.
+The_DT privacy_NN constraints_NNS determine_VBP whic_JJ
+1_CD or_CC 0_CD in_IN the_DT true_JJ matrix_NN representing_VBG the_DT transactional_JJ database_NN can_MD be_VB reconstructed_VBN ,_, even_RB if_IN for_IN many_JJ applications_NNS the_DT 1_CD 's_POS and_CC 0_CD 's_POS values_NNS do_VBP not_RB need_VB the_DT same_JJ level_NN of_IN privacy_NN ._.
+Evfimievski_NNP et_FW al._FW =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP a_DT framework_NN for_IN mining_NN association_NN rules_NNS from_IN transactions_NNS consisting_VBG of_IN categorical_JJ items_NNS ,_, where_WRB the_DT data_NN has_VBZ been_VBN randomized_VBN to_TO preserve_VB privacy_NN of_IN individual_JJ transactions_NNS ,_, while_IN ensuring_VBG a_DT
+e_LS objective_NN in_IN data_NN release_NN 1_CD is_VBZ to_TO gather_VB the_DT statistical_JJ properties_NNS of_IN the_DT data_NNS from_IN each_DT data_NN owner_NN without_IN obtaining_VBG access_NN to_TO their_PRP$ raw_JJ data_NNS ._.
+A_DT recent_JJ approach_NN of_IN direct_JJ relevance_NN to_TO our_PRP$ work_NN is_VBZ =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT focus_NN in_IN data_NN release_NN 2_CD is_VBZ to_TO release_VB aggregated_JJ statistical_JJ properties_NNS of_IN all_DT of_IN the_DT data_NNS from_IN all_PDT the_DT data_NNS owners_NNS in_IN such_PDT a_DT manner_NN as_IN to_TO prevent_VB interval_JJ inference_NN ._.
+Thus_RB ,_, if_IN a_DT technical_JJ soluti_NN
+and_CC is_VBZ not_RB meant_VBN to_TO be_VB an_DT exhaustive_JJ list_NN ._.
+Some_DT work_NN has_VBZ investigated_VBN privacy_NN preservation_NN within_IN the_DT context_NN of_IN traditional_JJ data_NNS mining_NN problems_NNS ,_, e.g._FW classification_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, association_NN rule_NN mining_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, clustering_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, and_CC regression_NN analysis_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+For_IN a_DT survey_NN of_IN current_JJ approaches_NNS and_CC tools_NNS for_IN privacy_NN preservation_NN in_IN data_NNS mining_NN ,_, we_PRP refer_VBP you_PRP to_TO -LRB-_-LRB- 12_CD -RRB-_-RRB- -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+Our_PRP$ work_NN differs_VBZ from_IN this_DT lit_VBN
+st_IN in_IN privacy-preserving_JJ data_NNS mining_NN ._.
+One_CD approach_NN is_VBZ to_TO add_VB ``_`` noise_NN ''_'' to_TO the_DT data_NNS before_IN the_DT data_NNS mining_NN process_NN ,_, and_CC using_VBG techniques_NNS that_WDT mitigate_VBP the_DT impact_NN of_IN the_DT noise_NN from_IN the_DT data_NNS mining_NN results_VBZ =_JJ -_: =[_NN 2_CD ,_, 1_CD ,_, 10_CD ,_, 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT approach_NN of_IN protecting_VBG privacy_NN of_IN distributed_VBN sources_NNS was_VBD first_RB addressed_VBN for_IN the_DT construction_NN of_IN decision_NN trees_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+This_DT work_NN closely_RB followed_VBD the_DT secure_JJ multiparty_JJ computation_NN approach_NN discus_NN
+and_CC is_VBZ not_RB meant_VBN to_TO be_VB an_DT exhaustive_JJ list_NN ._.
+Some_DT work_NN has_VBZ investigated_VBN privacy_NN preservation_NN within_IN the_DT context_NN of_IN traditional_JJ data_NNS mining_NN problems_NNS ,_, e.g._FW classification_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, association_NN rule_NN mining_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, clustering_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, and_CC regression_NN analysis_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+For_IN a_DT survey_NN of_IN current_JJ approaches_NNS and_CC tools_NNS for_IN privacy_NN preservation_NN in_IN data_NNS mining_NN ,_, we_PRP refer_VBP you_PRP to_TO -LRB-_-LRB- 9_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Our_PRP$ work_NN differs_VBZ from_IN this_DT litera_NN
+opriate_JJ value_NN of_IN ¨_NN ._.
+For_IN ©_CD $_$ ,_, this_DT value_NN turned_VBD out_RP to_TO be_VB cents_NNS and_CC cents_NNS #_# cents_NNS ¥_VBP $_$ for_IN the_DT CENSUS_NN and_CC HEALTH_NN datasets_NNS ,_, respectively_RB ._.
+C&P_NNP ._.
+This_DT is_VBZ the_DT Cut-and-Paste_JJ perturbation_NN scheme_NN proposed_VBN in_IN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, with_IN algorithmic_JJ parameters_NNS and_CC ._.
+To_TO choose_VB ,_, we_PRP varied_VBD from_IN to_TO #_# ,_, and_CC for_IN each_DT ,_, was_VBD chosen_VBN such_JJ that_IN the_DT matrix_NN -LRB-_-LRB- Equation_NN 11_CD -RRB-_-RRB- satisfies_VBZ the_DT privacy_NN constraints_NNS -LRB-_-LRB- Equation_NN 2_CD -RRB-_-RRB- ._.
+The_DT res_NNS
+the_DT original_JJ data_NNS -LRB-_-LRB- which_WDT could_MD be_VB used_VBN to_TO guess_VB the_DT data_NNS value_NN to_TO a_DT higher_JJR level_NN of_IN accuracy_NN -RRB-_-RRB- ._.
+However_RB ,_, -LRB-_-LRB- 1_LS -RRB-_-RRB- provides_VBZ no_DT explicit_JJ procedure_NN to_TO reconstruct_VB the_DT original_JJ data_NN values_NNS ._.
+Evfimievski_NNP et_FW al._FW =_SYM -_: =[_NN 5_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Rizvi_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB- have_VBP also_RB considered_VBN the_DT approach_NN in_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- in_IN the_DT context_NN of_IN association_NN rule_NN mining_NN and_CC suggest_VBP techniques_NNS for_IN limiting_VBG privacy_NN breaches_NNS ._.
+Our_PRP$ primary_JJ contribution_NN is_VBZ to_TO provide_VB an_DT expli_NN
+eric_JJ data_NNS only_RB ._.
+Perturbation_NN for_IN categorical_JJ data_NNS was_VBD initially_RB considered_VBN in_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, where_WRB a_DT randomized_VBN response_NN method_NN was_VBD developed_VBN for_IN the_DT purpose_NN of_IN data_NNS collection_NN through_IN interviews_NNS ._.
+The_DT work_NN in_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: considered_VBN categorical_JJ data_NNS perturbation_NN in_IN the_DT context_NN of_IN association_NN rule_NN mining_NN ._.
+This_DT work_NN was_VBD extended_VBN in_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, where_WRB a_DT framework_NN for_IN quantifying_VBG privacy_NN breaches_NNS was_VBD introduced_VBN ._.
+The_DT framework_NN us_PRP
+statistics_NNS of_IN some_DT attributes_NNS which_WDT have_VBP a_DT high_JJ impact_NN on_IN the_DT patterns_NNS and_CC rules_NNS to_TO be_VB discovered_VBN ._.
+The_DT techniques_NNS used_VBD there_EX include_VBP data_NNS distortion_NN approach_NN -LRB-_-LRB- for_IN decision_NN tree_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, association_NN rules_NNS =_JJ -_: =[_NN 11_CD ,_, 25_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, cryptographic_JJ approach_NN -LRB-_-LRB- decision_NN tree_NN over_IN distributed_VBN data_NNS -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, k-means_NN clustering_NN over_IN vertically_RB partitioned_VBN data_NNS -LRB-_-LRB- 32_CD -RRB-_-RRB- ,_, association_NN rule_NN over_IN horizontally_RB partitioned_VBN data_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- andstested_JJ appli_NNS
+s_NN can_MD be_VB very_RB risky_JJ in_IN safeguarding_VBG confidential_JJ information_NN ._.
+Recently_RB there_EX are_VBP relevant_JJ research_NN works_NNS but_CC orthogonal_JJ to_TO ours_PRP on_IN privacypreserving_VBG data_NNS mining_NN which_WDT attracted_VBD quite_RB amount_NN of_IN effort_NN =_JJ -_: =[_NN 3_CD ,_, 2_CD ,_, 26_CD ,_, 15_CD ,_, 14_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC privacy_NN breach_NN in_IN data_NN exchange_NN -LRB-_-LRB- 25_CD ,_, 12_CD -RRB-_-RRB- ._.
+Efficient_JJ algorithms_NNS to_TO reconstruct_VB original_JJ distribution_NN from_IN perturbed_VBN data_NNS are_VBP presented_VBN in_IN -LRB-_-LRB- 3_CD ,_, 2_CD -RRB-_-RRB- ._.
+Other_JJ work_NN -LRB-_-LRB- 26_CD ,_, 15_CD ,_, 14_CD -RRB-_-RRB- study_NN different_JJ schemes_NNS of_IN
+ad_NN classes_NNS of_IN anonymization_NN techniques_NNS ._.
+Randomization-based_JJ schemes_NNS introduce_VBP uncertainty_NN either_CC by_IN randomly_RB perturbing_VBG the_DT raw_JJ data_NNS -LRB-_-LRB- a_DT technique_NN called_VBN input_NN perturbation_NN ,_, randomized_VBN response_NN ,_, e.g._FW ,_, =_JJ -_: =[_NN 34_CD ,_, 2_CD ,_, 16_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, or_CC post-randomization_JJ ,_, e.g._FW ,_, -LRB-_-LRB- 32_CD -RRB-_-RRB- -RRB-_-RRB- ,_, or_CC by_IN injecting_VBG randomness_NN into_IN the_DT algorithm_NN used_VBN to_TO analyze_VB the_DT data_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 6_CD ,_, 28_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Partition-based_JJ schemes_NNS cluster_VBP the_DT individuals_NNS in_IN the_DT database_NN into_IN disj_NN
+xacerbated_VBN by_IN some_DT recent_JJ evidence_NN that_IN for_IN some_DT data_NNS ,_, and_CC some_DT kinds_NNS of_IN noise_NN ,_, perturbation_NN provides_VBZ no_DT privacy_NN at_IN all_DT -LRB-_-LRB- 20,24_CD -RRB-_-RRB- ._.
+Recent_JJ models_NNS for_IN studying_VBG the_DT privacy_NN attainable_JJ through_IN perturbation_NN =_JJ -_: =[_NN 9,11,12,15,17_CD -RRB-_-RRB- -_: =_JJ -_: offer_NN solutions_NNS to_TO this_DT problem_NN in_IN the_DT context_NN of_IN statistical_JJ databases_NNS ._.
+At_IN the_DT same_JJ time_NN ,_, a_DT second_JJ branch_NN of_IN privacy_NN preserving_NN data_NNS mining_NN was_VBD developed_VBN ,_, using_VBG cryptographic_JJ techniques_NNS ._.
+This_DT branch_NN
+proved_VBN as_IN a_DT NP-hard_JJ problem_NN ._.
+Also_RB ,_, a_DT heuristic-based_JJ solution_NN was_VBD projected_VBN to_TO eliminate_VB sensitive_JJ frequent_JJ itemsets_NNS by_IN deleting_VBG items_NNS from_IN the_DT transactions_NNS in_IN the_DT database_NN ._.
+-LRB-_-LRB- 20_CD -RRB-_-RRB- The_DT subsequent_JJ work_NN =_JJ -_: =[_NN 1,11_CD -RRB-_-RRB- -_: =_SYM -_: extended_VBD the_DT sanitization_NN of_IN sensitive_JJ frequent_JJ itemsets_NNS to_TO the_DT sanitization_NN of_IN association_NN rules_NNS ._.
+The_DT exertion_NN provided_VBD some_DT heuristics_NNS to_TO prefer_VB the_DT items_NNS to_TO be_VB deleted_VBN ,_, with_IN the_DT consideration_NN of_IN m_NN
+tatistical_JJ surveys_NNS without_IN compromising_VBG the_DT privacy_NN of_IN individuals_NNS ._.
+Privacy-preserving_JJ data_NNS mining_NN techniques_NNS try_VBP to_TO address_VB such_JJ problems_NNS ._.
+So_RB far_RB the_DT focus_NN has_VBZ been_VBN on_IN randomised_JJ response_NN techniques_NNS =_JJ -_: =[_NN 2,1,13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN a_DT nutshell_NN ,_, recipients_NNS of_IN the_DT statistical_JJ survey_NN apply_VB a_DT fixed_JJ randomisation_NN method_NN on_IN their_PRP$ responses_NNS ._.
+As_IN a_DT result_NN ,_, each_DT individual_JJ reply_NN is_VBZ erroneous_JJ ,_, whereas_IN the_DT global_JJ statistical_JJ properties_NNS
+M_NN -LRB-_-LRB- RBF_NN -RRB-_-RRB- data_NNS ,_, while_IN some_DT of_IN the_DT properties_NNS of_IN the_DT dataset_NN critical_JJ to_TO data_NN mining_NN are_VBP still_RB preserved_JJ ._.
+Recently_RB data_NN perturbation_NN techniques_NNS have_VBP become_VBN popular_JJ for_IN privacy-preserving_JJ data_NNS mining_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, due_JJ to_TO the_DT relatively_RB low_JJ cost_NN to_TO deploy_VB them_PRP compared_VBN to_TO the_DT cryptographic_JJ techniques_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+However_RB ,_, there_EX are_VBP a_DT few_JJ challenges_NNS in_IN the_DT data-perturbation_NN base_NN
+edge_NN about_IN data_NNS and_CC the_DT posterior_JJ knowledge_NN -LRB-_-LRB- after_IN anonymization_NN -RRB-_-RRB- is_VBZ a_DT measure_NN of_IN the_DT amount_NN of_IN information_NN leaked_VBN to_TO a_DT potential_JJ adversary_NN ._.
+The_DT conditional_JJ entropy_NN has_VBZ also_RB been_VBN used_VBN in_IN this_DT context_NN =_JJ -_: =[_NN 1_CD ,_, 10_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Modeling_VBG the_DT background_NN knowledge_NN of_IN the_DT adversary_NN is_VBZ another_DT challenging_JJ problem_NN that_WDT has_VBZ been_VBN tackled_VBN with_IN informationtheoretic_JJ methods_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+4_LS ._.
+ESTIMATION_NN Information-theoretic_JJ concepts_NNS are_VBP effec_NN
+D_NN ,_, the_DT objective_NN of_IN PPDM_NN is_VBZ to_TO discover_VB interesting_JJ patterns_NNS in_IN D_NN -LRB-_-LRB- such_JJ as_IN various_JJ statistics_NNS ,_, decision_NN trees_NNS ,_, association_NN rules_NNS ,_, and_CC so_RB on_IN -RRB-_-RRB- without_IN deriving_VBG any_DT private_JJ data_NNS ._.
+Input_NN perturbation_NN -LRB-_-LRB- IP_NNP -RRB-_-RRB- =_JJ -_: =[_NN 3_CD ,_, 4_CD ,_, 11_CD ,_, 12_CD ,_, 18_CD ,_, 19_CD ,_, 21_CD ,_, 26_CD ,_, 28_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT well-adopted_JJ methodology_NN to_TO achieve_VB this_DT goal_NN ._.
+Generally_RB speaking_VBG ,_, IP_NNP converts_VBZ D_NN to_TO another_DT dataset_NN D_NN ∗_NN that_WDT permits_VBZ effective_JJ knowledge_NN learning_NN of_IN D_NN ,_, Permission_NN to_TO copy_VB without_IN fee_NN all_DT or_CC part_NN
+andomization_NN in_IN developing_VBG privacy-preserving_JJ data_NNS mining_NN techniques_NNS ,_, and_CC extend_VB this_DT line_NN of_IN inquiry_NN along_IN two_CD dimensions_NNS :_: •_CD categorical_JJ data_NNS instead_RB of_IN numerical_JJ data_NNS ,_, and_CC •_NN association_NN rule_NN mining_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: instead_RB of_IN classification_NN ._.
+We_PRP will_MD focus_VB on_IN the_DT task_NN of_IN finding_VBG frequent_JJ itemsets_NNS in_IN association_NN rule_NN mining_NN ,_, which_WDT we_PRP briefly_RB review_VBP next_JJ ._.
+Definition_NN I._NN Suppose_VBP we_PRP have_VBP a_DT set_VBN 27_CD of_IN n_NN items_NNS :_: 27_CD --_: -LCB-_-LRB- a_DT

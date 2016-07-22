@@ -1,0 +1,63 @@
+Forcehttps_NNS :_: protecting_VBG high-security_JJ web_NN sites_NNS from_IN network_NN attacks_NNS
+As_IN wireless_JJ networks_NNS proliferate_VBP ,_, web_NN browsers_NNS operate_VBP in_IN an_DT increasingly_RB hostile_JJ network_NN environment_NN ._.
+The_DT HTTPS_NNP protocol_NN has_VBZ the_DT potential_NN to_TO protect_VB web_NN users_NNS from_IN network_NN attackers_NNS ,_, but_CC real-world_JJ deployments_NNS must_MD cope_VB with_IN misconfigured_JJ servers_NNS ,_, causing_VBG imperfect_JJ web_NN sites_NNS and_CC users_NNS to_TO compromise_VB browsing_VBG sessions_NNS inadvertently_RB ._.
+ForceHTTPS_NN is_VBZ a_DT simple_JJ browser_NN security_NN mechanism_NN that_IN web_NN sites_NNS or_CC users_NNS can_MD use_VB to_TO opt_VB in_RB to_TO stricter_JJR error_NN processing_NN ,_, improving_VBG the_DT security_NN of_IN HTTPS_NN by_IN preventing_VBG network_NN attacks_NNS that_IN leverage_NN the_DT browser_NN 's_POS lax_JJ error_NN processing_NN ._.
+By_IN augmenting_VBG the_DT browser_NN with_IN a_DT database_NN of_IN custom_NN URL_NN rewrite_VBP rules_NNS ,_, ForceHTTPS_NN allows_VBZ sophisticated_JJ users_NNS to_TO transparently_RB retrofit_VB security_NN onto_IN some_DT insecure_JJ sites_NNS that_WDT support_VBP HTTPS_NNP ._.
+We_PRP provide_VBP a_DT prototype_NN implementation_NN of_IN ForceHTTPS_NN as_IN a_DT Firefox_NNP browser_NN extension_NN ._.
+t_NN prevent_VB cookies_NNS from_IN being_VBG 12replayed_VBN ._.
+HTTPI_NNP protects_VBZ cookies_NNS from_IN being_VBG replayed_VBN by_IN using_VBG a_DT session_NN key_NN ._.
+HTTP-To-HTTPS_NN redirection_NN :_: the_DT HTTP-to-HTTPS_NN redirection_NN problem_NN is_VBZ addressed_VBN by_IN ForceHTTPS_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+If_IN ForceHTTPS_FW cookie_FW is_VBZ set_VBN or_CC configured_VBN by_IN a_DT user_NN ,_, the_DT user_NN is_VBZ redirected_VBN to_TO HTTPS_NNS by_IN URL_NN rewrite_VBP rules_NNS ._.
+ForceHTTPS_NN is_VBZ a_DT complementary_JJ mechanism_NN for_IN the_DT error_NN processing_NN mechanism_NN of_IN browsers_NNS for_IN
+ed_VBN ._.
+It_PRP is_VBZ a_DT reasonable_JJ concern_NN that_IN many_JJ websites_NNS simultaneously_RB opening_VBG HTTP_NNP and_CC HTTPS_NNP ports_NNS are_VBP vulnerable_JJ ._.
+We_PRP will_MD discuss_VB in_IN Section_NNP VII_NNP how_WRB our_PRP$ finding_NN is_VBZ related_JJ to_TO a_DT paper_NN by_IN Jackson_NNP and_CC Barth_NNP =_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+IV_NNP ._.
+STATIC-HTML-BASED_NN PBP_NN EXPLOITS_VBZ We_PRP just_RB described_VBD a_DT number_NN of_IN script-based_JJ attacks_NNS that_WDT violate_VBP the_DT same-origin_JJ policy_NN ._.
+By_IN running_VBG malicious_JJ scripts_NNS in_IN the_DT context_NN of_IN victim_NN HTTPS_NN domains_NNS ,_, these_DT
+w_NN likely_JJ to_TO ignore_VB all_DT future_JJ similarly-designed_JJ warnings_NNS ,_, regardless_RB of_IN the_DT danger_NN they_PRP represent_VBP -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Jackson_NNP and_CC Barth_NNP address_VBP the_DT problem_NN of_IN users_NNS ignoring_VBG SSL_NN warnings_NNS with_IN the_DT ForceHTTPS_NN system_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Websites_NNS with_IN CA_NNP signed_VBD certificates_NNS deploy_VB a_DT special_JJ ForceHTTPs_NN cookie_NN to_TO a_DT user_NN 's_POS browser_NN ,_, which_WDT from_IN then_RB on_IN only_RB accepts_VBZ valid_JJ SSL_NN connections_NNS to_TO the_DT website_NN ._.
+This_DT strategy_NN is_VBZ elegantly_RB simple_JJ ,_,
+\/_: \/_: a.com_NN \/_: and_CC http:\/\/a.com\/_NN share_VBP the_DT cookie_NN store_NN unless_IN a_DT cookie_NN is_VBZ marked_VBN with_IN a_DT ``_`` secure_JJ ''_'' flag_NN ._.
+Non-HTTPS_JJ sites_NNS can_MD still_RB set_VB ``_`` secure_JJ ''_'' cookies_NNS in_IN some_DT implementations_NNS ,_, but_CC can_MD not_RB read_VB them_PRP back_RB -LRB-_-LRB- 9_CD -RRB-_-RRB- --_: =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT web_NN programmer_NN can_MD make_VB cookie_NN access_NN less_RBR restrictive_JJ by_IN setting_VBG a_DT cookie_NN 's_POS domain_NN attribute_NN to_TO a_DT postfix_JJ domain_NN or_CC the_DT path_NN name_NN to_TO be_VB a_DT prefix_NN path_NN ._.
+Local_JJ storage_NN is_VBZ the_DT persistent_JJ client-side_NN
+ty_NN mechanisms_NNS ,_, such_JJ as_IN preventing_VBG cross-site_JJ request_NN forgery_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, securing_VBG browser_NN frame_NN communication_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, preventing_VBG DNS_NN rebinding_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, and_CC protecting_VBG highsecurity_JJ web_NN sites_NNS from_IN network_NN attacks_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT and_CC other_JJ previous_JJ studies_NNS suggest_VBP that_IN a_DT few_JJ central_JJ modeling_NN concepts_NNS will_MD prove_VB useful_JJ for_IN evaluating_VBG a_DT wide_JJ range_NN of_IN mechanisms_NNS ._.
+The_DT central_JJ web_NN concepts_NNS we_PRP formalize_VBP in_IN our_PRP$ model_NN include_VBP
+36_CD -RRB-_-RRB- -LRB-_-LRB- 37_CD -RRB-_-RRB- -LRB-_-LRB- 38_CD -RRB-_-RRB- -LRB-_-LRB- 39_CD -RRB-_-RRB- ._.
+Thus_RB users_NNS have_VBP become_VBN trained_JJ to_TO ``_`` click_VB through_IN ''_'' security_NN notifications_NNS ``_`` in_IN order_NN to_TO get_VB work_NN done_VBN ''_'' ,_, though_IN not_RB infrequently_RB rendering_VBG themselves_PRP insecure_JJ and_CC perhaps_RB compromised_VBD =_JJ -_: =[_NN 40_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+3_LS ._.
+Discussion_NN As_IN for_IN the_DT overall_JJ policy_NN mechanism_NN ,_, we_PRP advocate_VBP a_DT combination_NN of_IN CSP_NNP and_CC ABE_NNP ,_, or_CC their_PRP$ employment_NN in_IN tandem_NN ,_, as_IN a_DT starting_VBG point_NN for_IN a_DT multi-vendor_JJ approach_NN ._.
+For_IN a_DT near-term_JJ policy_NN de_IN
+n_NN to_TO those_DT websites_NNS protected_VBN by_IN SSL_NN ._.
+Facebook.com_NNP is_VBZ one_CD of_IN the_DT vulnerable_JJ websites_NNS ._.
+Two_CD solutions_NNS have_VBP been_VBN proposed_VBN that_WDT could_MD be_VB used_VBN to_TO address_VB the_DT SSLstripping_NN attack_NN ._.
+The_DT first_JJ one_CD ,_, ForceHTTPS_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: makes_VBZ the_DT websites_NNS notify_VBP a_DT user_NN 's_POS web_NN browser_NN that_IN they_PRP require_VBP a_DT secure_JJ connection_NN to_TO operate_VB ,_, and_CC therefore_RB the_DT browser_NN will_MD always_RB establish_VB a_DT secure_JJ connection_NN with_IN those_DT websites_NNS that_WDT required_VBD
+ss_NN A9_NN :_: Insufficient_NNP Transport_NNP Layer_NNP Protection_NNP A10_NN :_: Unvalidated_NNP Redirects_NNPS and_CC Forwards_NNPS Figure_NNP 1_CD :_: Open_VB Web_NN Application_NN Security_NNP Consortium_NNP Top_NNP 10_CD 2010_CD the_DT client_NN side_NN ,_, but_CC solutions_NNS such_JJ as_IN ForceHTTPS_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: can_MD force_VB the_DT client_NN to_TO use_VB secure_JJ protocols_NNS when_WRB available_JJ -LRB-_-LRB- i.e._FW the_DT original_JJ website_NN must_MD be_VB available_JJ over_IN HTTPS_NNP ,_, which_WDT is_VBZ a_DT server-side_JJ issue_NN -RRB-_-RRB- ._.
+Of_IN these_DT top_JJ 10_CD ,_, A2_NN -_: Cross-Site_JJ Scripting_NN and_CC A5_NN -_:
+dition_NN to_TO supporting_VBG SSL_NNP out_IN of_IN the_DT box_NN ,_, our_PRP$ server_NN implements_VBZ the_DT HSTS_NN standard_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- and_CC requests_NNS that_IN all_DT incoming_JJ connections_NNS be_VB over_IN SSL_NNP ,_, which_WDT prevents_VBZ several_JJ passive_JJ and_CC active_JJ network_NN attacks_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Moreover_RB ,_, browser_NN cookies_NNS are_VBP created_VBN with_IN the_DT Secure_NNP attribute_NN ,_, preventing_VBG the_DT browser_NN from_IN leaking_VBG them_PRP to_TO the_DT network_NN in_IN plaintext_NN ._.
+Parametrized_JJ rendering_NN and_CC queries_NNS ._.
+Android_NNP already_RB supports_VBZ pa_NN
+In_IN some_DT cases_NNS ,_, the_DT browser_NN can_MD revoke_VB the_DT privilege_NN from_IN the_DT entire_JJ origin_NN if_IN the_DT browser_NN displays_VBZ a_DT document_NN that_WDT would_MD not_RB be_VB granted_VBN the_DT privilege_NN ._.
+•_FW ForceHTTPS_FW ._.
+When_WRB an_DT origin_NN enables_VBZ ForceHTTPS_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT browser_NN refuses_VBZ to_TO ignore_VB certificate_NN errors_NNS for_IN that_DT origin_NN and_CC refuses_VBZ to_TO import_VB non-HTTPS_JJ libraries_NNS into_IN that_DT origin_NN 's_POS documents_NNS ._.
+ForceHTTPS_NN protects_VBZ an_DT origin_NN from_IN being_VBG contaminated_VBN by_IN inse_NN
+dresses_NNS ._.
+•_NNP Certificate_NNP Errors_NNP ._.
+If_IN the_DT user_NN is_VBZ willing_JJ to_TO click_VB through_IN HTTPS_NNP certificate_NN errors_NNS ,_, much_JJ of_IN the_DT protection_NN afforded_VBN by_IN HTTPS_NN against_IN network_NN attackers_NNS evaporates_VBZ ._.
+A_DT number_NN of_IN researchers_NNS =_JJ -_: =[_NN 38_CD ,_, 31_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP addressed_VBN this_DT threat_NN model_NN ,_, but_CC ,_, in_IN this_DT paper_NN ,_, we_PRP assume_VBP users_NNS do_VBP not_RB click_VB through_IN certificate_NN errors_NNS ._.
+•_NNP Phishing_NNP ._.
+Phishing_NN attacks_NNS -LRB-_-LRB- 12_CD -RRB-_-RRB- occur_VBP when_WRB an_DT attacker_NN 's_POS web_NN site_NN solicits_VBZ authenticat_NN
+ion_NN procedure_NN to_TO authorize_VB and_CC set_VB authentication_NN cookies_NNS on_IN multiple_JJ machines_NNS ._.
+Many_JJ machine_NN authentication_NN systems_NNS currently_RB deployed_VBN by_IN financial_JJ Web_NN sites_NNS use_VBP challenge_NN question_NN based_JJ registration_NN =_JJ -_: =[_NN 7_CD ,_, 27_CD ,_, 49_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT challenge_NN question_NN is_VBZ a_DT user-specific_JJ question_NN to_TO which_WDT an_DT adversary_NN is_VBZ unlikely_JJ to_TO be_VB able_JJ to_TO guess_VB an_DT answer_NN ,_, e.g._FW ,_, ``_`` What_WP is_VBZ the_DT name_NN of_IN your_PRP$ favorite_JJ teacher_NN ?_. ''_''
+-LRB-_-LRB- 18_CD ,_, 32_CD -RRB-_-RRB- ._.
+Registration_NN based_VBN on_IN c_NN
+l_NN need_NN to_TO use_VB a_DT browser_NN that_WDT supports_VBZ the_DT SiteFirewall_NNP mechanism_NN ._.
+Other_JJ projects_NNS have_VBP also_RB proposed_VBN using_VBG cookies_NNS for_IN communicating_VBG persistent_JJ site-wide_JJ policy_NN to_TO the_DT browser_NN ._.
+For_IN example_NN ,_, ForceHTTPS_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT browser_NN extension_NN that_WDT enables_VBZ a_DT web_NN site_NN to_TO specify_VB that_IN all_DT connections_NNS to_TO it_PRP must_MD use_VB valid_JJ HTTPS_NNS ._.
+This_DT policy_NN is_VBZ communicated_VBN to_TO the_DT browser_NN via_IN a_DT cookie_NN ._.
+If_IN the_DT cookie_NN is_VBZ present_JJ the_DT browse_NN

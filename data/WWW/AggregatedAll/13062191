@@ -1,0 +1,149 @@
+Improving_NN recommendation_NN for_IN long-tail_JJ queries_NNS via_IN templates_NNS
+The_DT ability_NN to_TO aggregate_JJ huge_JJ volumes_NNS of_IN queries_NNS over_IN a_DT large_JJ population_NN of_IN users_NNS allows_VBZ search_NN engines_NNS to_TO build_VB precise_JJ models_NNS for_IN a_DT variety_NN of_IN query-assistance_JJ features_NNS such_JJ as_IN query_NN recommendation_NN ,_, correction_NN ,_, etc._NN ._.
+Yet_RB ,_, no_DT matter_NN how_WRB much_JJ data_NNS is_VBZ aggregated_VBN ,_, the_DT long-tail_JJ distribution_NN implies_VBZ that_IN a_DT large_JJ fraction_NN of_IN queries_NNS are_VBP rare_JJ ._.
+As_IN a_DT result_NN ,_, most_RBS query_JJ assistance_NN services_NNS perform_VBP poorly_RB or_CC are_VBP not_RB even_RB triggered_VBN on_IN long-tail_JJ queries_NNS ._.
+We_PRP propose_VBP a_DT method_NN to_TO extend_VB the_DT reach_NN of_IN query_JJ assistance_NN techniques_NNS -LRB-_-LRB- and_CC in_IN particular_JJ query_NN recommendation_NN -RRB-_-RRB- to_TO long-tail_JJ queries_NNS by_IN reasoning_NN about_IN rules_NNS between_IN query_JJ templates_NNS rather_RB than_IN individual_JJ query_NN transitions_NNS ,_, as_IN currently_RB done_VBN in_IN query-flow_JJ graph_NN models_NNS ._.
+As_IN a_DT simple_JJ example_NN ,_, if_IN we_PRP recognize_VBP that_IN `_`` Montezuma_NNP '_'' is_VBZ a_DT city_NN in_IN the_DT rare_JJ query_NN ``_`` Montezuma_NN surf_NN ''_'' and_CC if_IN the_DT rule_NN `_`` city_NN surf_NN →_CD beach_NN has_VBZ been_VBN observed_VBN ,_, we_PRP are_VBP able_JJ to_TO offer_VB ``_`` Montezuma_NN beach_NN ''_'' as_IN a_DT recommendation_NN ,_, even_RB if_IN the_DT two_CD queries_NNS were_VBD never_RB observed_VBN in_IN a_DT same_JJ session_NN ._.
+We_PRP conducted_VBD experiments_NNS to_TO validate_VB our_PRP$ hypothesis_NN ,_, first_JJ via_IN traditional_JJ small-scale_JJ editorial_NN assessments_NNS but_CC more_RBR interestingly_RB via_IN a_DT novel_JJ automated_JJ large_JJ scale_NN evaluation_NN methodology_NN ._.
+Our_PRP$ experiments_NNS show_VBP that_IN general_JJ coverage_NN can_MD be_VB relatively_RB increased_VBN by_IN 24_CD %_NN using_VBG templates_NNS without_IN penalizing_VBG quality_NN ._.
+Furthermore_RB ,_, for_IN 36_CD %_NN of_IN the_DT 95M_NN queries_NNS in_IN our_PRP$ query_NN flow_NN graph_NN ,_, which_WDT have_VBP no_DT out_JJ edges_NNS and_CC thus_RB could_MD not_RB be_VB served_VBN recommendations_NNS ,_, we_PRP can_MD now_RB offer_VB at_IN least_JJS one_CD recommendation_NN in_IN 98_CD %_NN of_IN the_DT cases_NNS ._.
+ull_NN query_NN log_NN ,_, and_CC we_PRP describe_VBP two_CD algorithmic_JJ speed-ups_NNS to_TO support_VB this_DT in_IN Section_NNP 4.3_CD ._.
+In_IN addition_NN to_TO supporting_VBG structured_JJ search_NN ,_, query_NN templates_NNS can_MD also_RB be_VB used_VBN to_TO improve_VB query_NN recommendations_NNS =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+3_LS ._.
+FEATURE_NN REPRESENTATION_NN At_IN the_DT core_NN of_IN our_PRP$ approach_NN is_VBZ the_DT use_NN of_IN feature_NN vectors_NNS to_TO represent_VB queries_NNS ._.
+The_DT key_JJ advantages_NNS of_IN a_DT feature_NN vector_NN representation_NN are_VBP that_IN semantic_JJ and_CC lexical_JJ informat_NN
+display_NN of_IN news_NN results_NNS for_IN different_JJ query_NN variants_NNS ._.
+Our_PRP$ study_NN is_VBZ insightful_JJ for_IN both_CC the_DT quality_NN of_IN news_NN display_NN and_CC the_DT search_NN user_NN experience_NN ._.
+Inconsistent_JJ triggering_NN lowers_VBZ accuracy_NN ._.
+Recent_JJ work_NN =_JJ -_: =[_NN 4_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: recognize_VBP that_IN long_JJ and_CC rare_JJ queries_NNS are_VBP also_RB important_JJ components_NNS of_IN user_NN experience_NN but_CC do_VBP not_RB always_RB return_VB -LRB-_-LRB- informative_JJ -RRB-_-RRB- results_NNS ._.
+So_IN approaches_NNS have_VBP made_VBN use_NN of_IN query_NN similarity_NN to_TO address_VB the_DT ne_NN
+ough_JJ data_NNS ,_, both_DT of_IN which_WDT might_MD be_VB expensive_JJ or_CC difficult_JJ to_TO obtain_VB ._.
+Some_DT recent_JJ works_NNS ,_, such_JJ as_IN Agarwal_NNP et_FW al._FW -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC Sarkas_FW et_FW al._FW -LRB-_-LRB- 25_CD -RRB-_-RRB- focus_NN on_IN detecting_VBG templates_NNS in_IN queries_NNS ,_, while_IN Szpektor_NNP et_FW al._FW =_SYM -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: use_NN detected_VBD templates_NNS for_IN improving_VBG query_JJ recommendations_NNS ._.
+However_RB ,_, these_DT works_NNS as409WWW_NN 2012_CD --_: Session_NN :_: Search_VB April_NNP 16_CD --_: 20_CD ,_, 2012_CD ,_, Lyon_NNP ,_, France_NNP sume_VBP that_IN the_DT attribute-set_NN as_RB well_RB as_IN the_DT associated_VBN
+n_NN the_DT long_JJ tail_NN ._.
+One_CD approach_NN could_MD be_VB to_TO simply_RB ignore_VB the_DT long_JJ tail_NN and_CC concentrate_NN on_IN serving_VBG best_JJS head_NN and_CC torso_NN needs_NNS ._.
+This_DT approach_NN ,_, we_PRP believe_VBP ,_, would_MD probably_RB be_VB a_DT mistake_NN ._.
+Indeed_RB ,_, Goel_NNP et_FW al._FW =_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: conducted_VBD a_DT thorough_JJ analysis_NN of_IN the_DT ``_`` anatomy_NN of_IN the_DT long_JJ tail_NN ,_, ''_'' and_CC showed_VBD that_IN most_JJS ``_`` ordinary_JJ people_NNS ._. ._.
+-LRB-_-LRB- have_VB -RRB-_-RRB- ._. ._.
+extraordinary_JJ tastes_NNS ,_, ''_'' i.e._FW all_DT of_IN us_PRP exhibit_VBP a_DT certain_JJ level_NN of_IN eccentricity_NN ._.
+Even_RB m_NN
+of_IN similar_JJ queries_NNS is_VBZ obtained_VBN by_IN replacing_VBG the_DT whole_JJ query_NN or_CC its_PRP$ sub-phrases_NNS ._.
+White_NNP et_FW al._FW -LRB-_-LRB- 28_CD ,_, 29_CD -RRB-_-RRB- use_VBP the_DT query_NN rewrites_VBZ observed_VBN in_IN a_DT query_NN log_NN to_TO generate_VB query_NN recommendations_NNS ._.
+Sadikov_NNP et_FW al._FW =_SYM -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP recently_RB proposed_VBN to_TO cluster_VB the_DT refinements_NNS of_IN a_DT user_NN query_NN by_IN performing_VBG a_DT random_JJ walk_NN on_IN a_DT query-document_JJ graph_NN that_WDT incorporates_VBZ both_CC session_NN and_CC click_VB information_NN ._.
+One_CD limitation_NN for_IN query_NN
+ation_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC ranking_JJ related_JJ queries_NNS using_VBG the_DT notion_NN of_IN hitting_VBG time_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+Query_JJ recommendation_NN based_VBN on_IN query_NN reformulations_NNS ._.
+Many_JJ effective_JJ approaches_NNS focus_VB on_IN the_DT analysis_NN of_IN user_NN query_NN sessions_NNS =_JJ -_: =[_NN 10_CD ,_, 14_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Fonseca_NNP et_FW al._FW -LRB-_-LRB- 10_CD -RRB-_-RRB- propose_VBP a_DT query_JJ recommendation_NN system_NN based_VBN on_IN association_NN rules_NNS ._.
+Another_DT attempt_NN of_IN extracting_VBG information_NN from_IN the_DT query_NN log_NN is_VBZ due_JJ to_TO Zhang_NNP and_CC Nasraoui_NNP -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, who_WP represent_VBP ea_NN
+In_IN this_DT paper_NN ,_, we_PRP focus_VBP on_IN related_JJ query_NN recommendation_NN ,_, one_CD of_IN the_DT tasks_NNS for_IN which_WDT the_DT long-tail_JJ issue_NN is_VBZ the_DT most_RBS visible_JJ ._.
+We_PRP propose_VBP to_TO address_VB the_DT long-tail_JJ problem_NN by_IN leveraging_VBG query_JJ templates_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT are_VBP query_JJ constructs_NNS that_IN abstract_JJ and_CC generalize_VB queries_NNS ._.
+Our_PRP$ key_JJ idea_NN is_VBZ to_TO identify_VB rules_NNS between_IN templates_NNS as_IN means_NNS for_IN suggesting_VBG related_JJ queries_NNS ._.
+The_DT rationale_NN for_IN our_PRP$ approach_NN is_VBZ based_VBN
+._.
+Two_CD of_IN the_DT authors_NNS blindly_RB evaluated_VBD these_DT pairs_NNS ,_, with_IN an_DT overlap_VB of_IN 100_CD queries_NNS for_IN agreement_NN assessment_NN ._.
+The_DT measured_JJ agreement_NN between_IN the_DT two_CD judges_NNS is_VBZ 93_CD %_NN and_CC the_DT corresponding_JJ Kappa_NNP statistic_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ 0.37_CD ,_, which_WDT is_VBZ typically_RB viewed_VBN as_IN ``_`` fair_JJ ''_'' agreement_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+No_DT decision_NN was_VBD made_VBN by_IN the_DT authors_NNS for_IN about_RB 10_CD %_NN of_IN the_DT examples_NNS ._.
+Table_NNP 2_CD presents_VBZ the_DT results_NNS of_IN the_DT manual_JJ evaluation_NN ._.
+The_DT accuracy_NN of_IN
+4.3.2_FW Template_FW construction_NN As_IN discussed_VBN above_IN ,_, templates_NNS are_VBP constructed_VBN with_IN the_DT help_NN of_IN a_DT generalization_NN hierarchy_NN H_NN over_IN entities_NNS ._.
+In_IN our_PRP$ implementation_NN ,_, H_NN is_VBZ the_DT WordNet_NNP 3.0_CD hypernymy_NN hierarchy_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: and_CC the_DT Wikipedia_NNP category_NN hierarchy_NN ,_, connected_VBN together_RB via_IN the_DT yago_NN 1_CD induced_VBN mapping_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+This_DT hierarchy_NN features_VBZ more_JJR than_IN 1,750,000_CD entities_NNS with_IN more_JJR than_IN 4,470,000_CD direct_JJ generalizations_NNS betw_VBP
+overlap_VB of_IN 100_CD queries_NNS for_IN agreement_NN assessment_NN ._.
+The_DT measured_JJ agreement_NN between_IN the_DT two_CD judges_NNS is_VBZ 93_CD %_NN and_CC the_DT corresponding_JJ Kappa_NN statistic_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- is_VBZ 0.37_CD ,_, which_WDT is_VBZ typically_RB viewed_VBN as_IN ``_`` fair_JJ ''_'' agreement_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+No_DT decision_NN was_VBD made_VBN by_IN the_DT authors_NNS for_IN about_RB 10_CD %_NN of_IN the_DT examples_NNS ._.
+Table_NNP 2_CD presents_VBZ the_DT results_NNS of_IN the_DT manual_JJ evaluation_NN ._.
+The_DT accuracy_NN of_IN both_DT methods_NNS is_VBZ very_RB high_JJ ,_, with_IN a_DT slight_JJ gain_NN for_IN the_DT query_NN -_:
+Processing_NN Finally_RB we_PRP note_VBP that_IN templates_NNS and_CC rules_NNS between_IN them_PRP have_VBP been_VBN successfully_RB used_VBN in_IN a_DT number_NN of_IN NLP_NNP tasks_NNS such_JJ as_IN information_NN extraction_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, taxonomy_NN population_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, question_NN answering_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: and_CC machine_NN translation_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+3_LS ._.
+PRELIMINARIES_NNS In_IN this_DT section_NN we_PRP review_VBP the_DT concepts_NNS of_IN query_NN logs_NNS and_CC the_DT query-flow_JJ graph_NN ,_, which_WDT are_VBP central_JJ concepts_NNS in_IN our_PRP$ paper_NN ._.
+3.1_CD Query_NNP logs_NNS Query-log_JJ analysis_NN
+-RRB-_-RRB- the_DT clicked_VBN documents_NNS ,_, and\/or_CC -LRB-_-LRB- iii_LS -RRB-_-RRB- the_DT user_NN sessions_NNS containing_VBG the_DT queries_NNS ._.
+Typical_JJ methods_NNS use_VBP a_DT combination_NN of_IN these_DT factors_NNS ._.
+Query_JJ recommendation_NN based_VBN on_IN clicked_VBN documents_NNS ._.
+Baeza-Yates_NNP et_FW al._FW =_SYM -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP a_DT measure_NN of_IN query_NN similarity_NN and_CC use_VB it_PRP to_TO build_VB methods_NNS for_IN query_NN expansion_NN ._.
+Their_PRP$ technique_NN is_VBZ based_VBN on_IN a_DT term-weight_JJ vector_NN representation_NN of_IN queries_NNS ,_, obtained_VBN from_IN the_DT aggregation_NN of_IN the_DT
+generalization_NN hierarchy_NN H_NN over_IN entities_NNS ._.
+In_IN our_PRP$ implementation_NN ,_, H_NN is_VBZ the_DT WordNet_NNP 3.0_CD hypernymy_NN hierarchy_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- and_CC the_DT Wikipedia_NNP category_NN hierarchy_NN ,_, connected_VBN together_RB via_IN the_DT yago_NN 1_CD induced_VBD mapping_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT hierarchy_NN features_VBZ more_JJR than_IN 1,750,000_CD entities_NNS with_IN more_JJR than_IN 4,470,000_CD direct_JJ generalizations_NNS between_IN them_PRP ._.
+In_IN general_JJ ,_, our_PRP$ approach_NN can_MD employ_VB any_DT method_NN for_IN generating_VBG an_DT entity_NN hierarchy_NN ,_,
+r_NN query_NN expansion_NN ._.
+Their_PRP$ technique_NN is_VBZ based_VBN on_IN a_DT term-weight_JJ vector_NN representation_NN of_IN queries_NNS ,_, obtained_VBN from_IN the_DT aggregation_NN of_IN the_DT term-weight_JJ vectors_NNS of_IN the_DT URLs_NNS clicked_VBD after_IN the_DT query_NN ._.
+Wen_NNP et_FW al._FW =_SYM -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: also_RB present_VBP a_DT clustering_NN method_NN for_IN query_NN recommendation_NN that_WDT is_VBZ centered_VBN around_IN the_DT query-click_JJ graph_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+The_DT query-click_JJ graph_NN is_VBZ also_RB utilized_VBN for_IN finding_VBG related_JJ documents_NNS using_VBG random_JJ walks_VBZ -LRB-_-LRB- 8_CD
+ation_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC ranking_JJ related_JJ queries_NNS using_VBG the_DT notion_NN of_IN hitting_VBG time_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+Query_JJ recommendation_NN based_VBN on_IN query_NN reformulations_NNS ._.
+Many_JJ effective_JJ approaches_NNS focus_VB on_IN the_DT analysis_NN of_IN user_NN query_NN sessions_NNS =_JJ -_: =[_NN 10_CD ,_, 14_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Fonseca_NNP et_FW al._FW -LRB-_-LRB- 10_CD -RRB-_-RRB- propose_VBP a_DT query_JJ recommendation_NN system_NN based_VBN on_IN association_NN rules_NNS ._.
+Another_DT attempt_NN of_IN extracting_VBG information_NN from_IN the_DT query_NN log_NN is_VBZ due_JJ to_TO Zhang_NNP and_CC Nasraoui_NNP -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, who_WP represent_VBP ea_NN
+the_DT aggregation_NN of_IN the_DT term-weight_JJ vectors_NNS of_IN the_DT URLs_NNS clicked_VBD after_IN the_DT query_NN ._.
+Wen_NNP et_FW al._FW -LRB-_-LRB- 27_CD -RRB-_-RRB- also_RB present_VBP a_DT clustering_NN method_NN for_IN query_NN recommendation_NN that_WDT is_VBZ centered_VBN around_IN the_DT query-click_JJ graph_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT query-click_JJ graph_NN is_VBZ also_RB utilized_VBN for_IN finding_VBG related_JJ documents_NNS using_VBG random_JJ walks_VBZ -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, finding_VBG related_JJ keywords_NNS for_IN advertising_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, query_NN rewriting_VBG through_IN co-citation_NN generalization_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC
+at_IN templates_NNS and_CC rules_NNS between_IN them_PRP have_VBP been_VBN successfully_RB used_VBN in_IN a_DT number_NN of_IN NLP_NNP tasks_NNS such_JJ as_IN information_NN extraction_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, taxonomy_NN population_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, question_NN answering_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- and_CC machine_NN translation_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+3_LS ._.
+PRELIMINARIES_NNS In_IN this_DT section_NN we_PRP review_VBP the_DT concepts_NNS of_IN query_NN logs_NNS and_CC the_DT query-flow_JJ graph_NN ,_, which_WDT are_VBP central_JJ concepts_NNS in_IN our_PRP$ paper_NN ._.
+3.1_CD Query_NNP logs_NNS Query-log_JJ analysis_NN is_VBZ typically_RB used_VBN by_IN search_NN
+mation_NN needs_NNS -LRB-_-LRB- 18_CD ,_, 22_CD -RRB-_-RRB- ._.
+Jones_NNP et_FW al._FW -LRB-_-LRB- 14_CD -RRB-_-RRB- introduce_VBP the_DT notion_NN of_IN query_NN substitution_NN :_: for_IN each_DT query_NN ,_, a_DT set_NN of_IN similar_JJ queries_NNS is_VBZ obtained_VBN by_IN replacing_VBG the_DT whole_JJ query_NN or_CC its_PRP$ sub-phrases_NNS ._.
+White_NNP et_FW al._FW =_SYM -_: =[_NN 28_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: use_VB the_DT query_NN rewrites_VBZ observed_VBN in_IN a_DT query_NN log_NN to_TO generate_VB query_NN recommendations_NNS ._.
+Sadikov_NNP et_FW al._FW -LRB-_-LRB- 23_CD -RRB-_-RRB- have_VBP recently_RB proposed_VBN to_TO cluster_VB the_DT refinements_NNS of_IN a_DT user_NN query_NN by_IN performing_VBG a_DT random_JJ walk_NN on_IN
+ation_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC ranking_JJ related_JJ queries_NNS using_VBG the_DT notion_NN of_IN hitting_VBG time_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+Query_JJ recommendation_NN based_VBN on_IN query_NN reformulations_NNS ._.
+Many_JJ effective_JJ approaches_NNS focus_VB on_IN the_DT analysis_NN of_IN user_NN query_NN sessions_NNS =_JJ -_: =[_NN 10_CD ,_, 14_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Fonseca_NNP et_FW al._FW -LRB-_-LRB- 10_CD -RRB-_-RRB- propose_VBP a_DT query_JJ recommendation_NN system_NN based_VBN on_IN association_NN rules_NNS ._.
+Another_DT attempt_NN of_IN extracting_VBG information_NN from_IN the_DT query_NN log_NN is_VBZ due_JJ to_TO Zhang_NNP and_CC Nasraoui_NNP -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, who_WP represent_VBP ea_NN
+ates_NNS in_IN Natural_NNP Language_NNP Processing_NNP Finally_RB we_PRP note_VBP that_IN templates_NNS and_CC rules_NNS between_IN them_PRP have_VBP been_VBN successfully_RB used_VBN in_IN a_DT number_NN of_IN NLP_NNP tasks_NNS such_JJ as_IN information_NN extraction_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, taxonomy_NN population_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, question_NN answering_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- and_CC machine_NN translation_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+3_LS ._.
+PRELIMINARIES_NNS In_IN this_DT section_NN we_PRP review_VBP the_DT concepts_NNS of_IN query_NN logs_NNS and_CC the_DT query-flow_JJ graph_NN ,_, which_WDT are_VBP central_JJ concepts_NNS in_IN our_PRP$ paper_NN ._.
+3.1_CD Quer_NN
+7_CD -RRB-_-RRB- also_RB present_VBP a_DT clustering_NN method_NN for_IN query_NN recommendation_NN that_WDT is_VBZ centered_VBN around_IN the_DT query-click_JJ graph_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+The_DT query-click_JJ graph_NN is_VBZ also_RB utilized_VBN for_IN finding_VBG related_JJ documents_NNS using_VBG random_JJ walks_VBZ =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, finding_VBG related_JJ keywords_NNS for_IN advertising_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, query_NN rewriting_VBG through_IN co-citation_NN generalization_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC ranking_JJ related_JJ queries_NNS using_VBG the_DT notion_NN of_IN hitting_VBG time_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+Query_JJ recommendation_NN based_VBN on_IN
+mation_NN needs_NNS -LRB-_-LRB- 18_CD ,_, 22_CD -RRB-_-RRB- ._.
+Jones_NNP et_FW al._FW -LRB-_-LRB- 14_CD -RRB-_-RRB- introduce_VBP the_DT notion_NN of_IN query_NN substitution_NN :_: for_IN each_DT query_NN ,_, a_DT set_NN of_IN similar_JJ queries_NNS is_VBZ obtained_VBN by_IN replacing_VBG the_DT whole_JJ query_NN or_CC its_PRP$ sub-phrases_NNS ._.
+White_NNP et_FW al._FW =_SYM -_: =[_NN 28_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: use_VB the_DT query_NN rewrites_VBZ observed_VBN in_IN a_DT query_NN log_NN to_TO generate_VB query_NN recommendations_NNS ._.
+Sadikov_NNP et_FW al._FW -LRB-_-LRB- 23_CD -RRB-_-RRB- have_VBP recently_RB proposed_VBN to_TO cluster_VB the_DT refinements_NNS of_IN a_DT user_NN query_NN by_IN performing_VBG a_DT random_JJ walk_NN on_IN
+es_NNS for_IN infrequent_JJ queries_NNS ._.
+Name-entity_NN and_CC template_NN extraction_NN using_VBG query_NN logs_NNS ._.
+A_DT few_JJ researchers_NNS have_VBP addressed_VBN the_DT problem_NN of_IN extracting_VBG name-entities_NNS and_CC hierarchy_NN knowledge-bases_NNS from_IN query_JJ logs_NNS =_JJ -_: =[_NN 9_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT main_JJ idea_NN of_IN these_DT papers_NNS is_VBZ to_TO use_VB the_DT query_NN log_NN in_IN order_NN to_TO extract_VB entities_NNS and_CC populate_VB lexicons_NNS and\/or_CC ontology_NN data_NNS ._.
+Since_IN in_IN this_DT paper_NN we_PRP are_VBP not_RB concerned_VBN with_IN building_VBG an_DT entity_NN hierar_NN
+ntroduce_VB the_DT concept_NN of_IN rules_NNS between_IN query_JJ templates_NNS ,_, which_WDT can_MD be_VB used_VBN to_TO infer_VB recommendations_NNS for_IN rare_JJ or_CC previously_RB unseen_JJ queries_NNS ._.
+We_PRP apply_VBP the_DT concept_NN of_IN template_NN rules_NNS on_IN the_DT query-flow_JJ graph_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+At_IN a_DT high_JJ level_NN ,_, the_DT concept_NN is_VBZ general_JJ and_CC can_MD be_VB used_VBN to_TO enhance_VB other_JJ query-log_JJ constructs_NNS ._.
+•_VB We_PRP explain_VB how_WRB to_TO build_VB templates_NNS and_CC more_RBR specifically_RB how_WRB to_TO extract_VB template_NN rules_NNS ._.
+Note_VB that_DT unli_NN
+recommendation_NN that_WDT is_VBZ centered_VBN around_IN the_DT query-click_JJ graph_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+The_DT query-click_JJ graph_NN is_VBZ also_RB utilized_VBN for_IN finding_VBG related_JJ documents_NNS using_VBG random_JJ walks_VBZ -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, finding_VBG related_JJ keywords_NNS for_IN advertising_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, query_NN rewriting_VBG through_IN co-citation_NN generalization_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC ranking_JJ related_JJ queries_NNS using_VBG the_DT notion_NN of_IN hitting_VBG time_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+Query_JJ recommendation_NN based_VBN on_IN query_NN reformulations_NNS ._.
+Many_JJ effective_JJ approache_NN
+the_DT weights_NNS on_IN the_DT walk_NN connecting_VBG them_PRP ._.
+Recent_JJ papers_NNS have_VBP shown_VBN that_IN not_RB only_RB the_DT previous_JJ query_NN ,_, but_CC also_RB the_DT long-term_JJ interests_NNS of_IN users_NNS ,_, are_VBP important_JJ for_IN understanding_VBG their_PRP$ information_NN needs_VBZ =_JJ -_: =[_NN 18_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Jones_NNP et_FW al._FW -LRB-_-LRB- 14_CD -RRB-_-RRB- introduce_VBP the_DT notion_NN of_IN query_NN substitution_NN :_: for_IN each_DT query_NN ,_, a_DT set_NN of_IN similar_JJ queries_NNS is_VBZ obtained_VBN by_IN replacing_VBG the_DT whole_JJ query_NN or_CC its_PRP$ sub-phrases_NNS ._.
+White_NNP et_FW al._FW -LRB-_-LRB- 28_CD ,_, 29_CD -RRB-_-RRB- use_VBP the_DT quer_NN
+ed_VBN documents_NNS using_VBG random_JJ walks_VBZ -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, finding_VBG related_JJ keywords_NNS for_IN advertising_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, query_NN rewriting_VBG through_IN co-citation_NN generalization_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC ranking_JJ related_JJ queries_NNS using_VBG the_DT notion_NN of_IN hitting_VBG time_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Query_JJ recommendation_NN based_VBN on_IN query_NN reformulations_NNS ._.
+Many_JJ effective_JJ approaches_NNS focus_VB on_IN the_DT analysis_NN of_IN user_NN query_NN sessions_NNS -LRB-_-LRB- 10_CD ,_, 14_CD ,_, 30_CD -RRB-_-RRB- ._.
+Fonseca_NNP et_FW al._FW -LRB-_-LRB- 10_CD -RRB-_-RRB- propose_VBP a_DT query_JJ recommendation_NN system_NN bas_NN
+the_DT weights_NNS on_IN the_DT walk_NN connecting_VBG them_PRP ._.
+Recent_JJ papers_NNS have_VBP shown_VBN that_IN not_RB only_RB the_DT previous_JJ query_NN ,_, but_CC also_RB the_DT long-term_JJ interests_NNS of_IN users_NNS ,_, are_VBP important_JJ for_IN understanding_VBG their_PRP$ information_NN needs_VBZ =_JJ -_: =[_NN 18_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Jones_NNP et_FW al._FW -LRB-_-LRB- 14_CD -RRB-_-RRB- introduce_VBP the_DT notion_NN of_IN query_NN substitution_NN :_: for_IN each_DT query_NN ,_, a_DT set_NN of_IN similar_JJ queries_NNS is_VBZ obtained_VBN by_IN replacing_VBG the_DT whole_JJ query_NN or_CC its_PRP$ sub-phrases_NNS ._.
+White_NNP et_FW al._FW -LRB-_-LRB- 28_CD ,_, 29_CD -RRB-_-RRB- use_VBP the_DT quer_NN
+and\/or_CC ontology_NN data_NNS ._.
+Since_IN in_IN this_DT paper_NN we_PRP are_VBP not_RB concerned_VBN with_IN building_VBG an_DT entity_NN hierarchy_NN ,_, such_PDT a_DT line_NN of_IN research_NN is_VBZ orthogonal_JJ and_CC complementary_JJ to_TO ours_PRP ._.
+Few_JJ works_NNS attempt_VBP to_TO tag_VB query_NN terms_NNS =_JJ -_: =[_NN 13_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, an_DT important_JJ step_NN towards_IN generating_VBG templates_NNS for_IN queries_NNS ._.
+These_DT works_NNS apply_VBP semi-supervised_JJ approaches_NNS for_IN tagging_VBG with_IN predefined_JJ categories_NNS ._.
+Recently_RB ,_, Agarwal_NNP et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- introduced_VBN query_NN templat_NN
+or_CC specific_JJ domains_NNS ._.
+Templates_NNS in_IN Natural_JJ Language_NN Processing_NN Finally_RB we_PRP note_VBP that_IN templates_NNS and_CC rules_NNS between_IN them_PRP have_VBP been_VBN successfully_RB used_VBN in_IN a_DT number_NN of_IN NLP_NNP tasks_NNS such_JJ as_IN information_NN extraction_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_JJ -_: ,_, taxonomy_NN population_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, question_NN answering_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- and_CC machine_NN translation_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+3_LS ._.
+PRELIMINARIES_NNS In_IN this_DT section_NN we_PRP review_VBP the_DT concepts_NNS of_IN query_NN logs_NNS and_CC the_DT query-flow_JJ graph_NN ,_, which_WDT are_VBP central_JJ conce_NN
+es_NNS for_IN infrequent_JJ queries_NNS ._.
+Name-entity_NN and_CC template_NN extraction_NN using_VBG query_NN logs_NNS ._.
+A_DT few_JJ researchers_NNS have_VBP addressed_VBN the_DT problem_NN of_IN extracting_VBG name-entities_NNS and_CC hierarchy_NN knowledge-bases_NNS from_IN query_JJ logs_NNS =_JJ -_: =[_NN 9_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT main_JJ idea_NN of_IN these_DT papers_NNS is_VBZ to_TO use_VB the_DT query_NN log_NN in_IN order_NN to_TO extract_VB entities_NNS and_CC populate_VB lexicons_NNS and\/or_CC ontology_NN data_NNS ._.
+Since_IN in_IN this_DT paper_NN we_PRP are_VBP not_RB concerned_VBN with_IN building_VBG an_DT entity_NN hierar_NN
+ry-log_JJ constructs_NNS ._.
+•_VB We_PRP explain_VB how_WRB to_TO build_VB templates_NNS and_CC more_RBR specifically_RB how_WRB to_TO extract_VB template_NN rules_NNS ._.
+Note_VB that_IN unlike_IN prior_JJ work_NN on_IN templates_NNS ,_, which_WDT used_VBD semi-supervision_NN on_IN restricted_JJ domains_NNS =_JJ -_: =[_NN 1_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP can_MD afford_VB to_TO work_VB at_IN a_DT general_JJ ,_, large-scale_JJ level_NN because_IN we_PRP extract_VBP rules_NNS rather_RB than_IN stand-alone_JJ templates_NNS and_CC ambiguity_NN is_VBZ therefore_RB automatically_RB reduced_VBN -LRB-_-LRB- see_VB Section_NNP 4.5_CD -RRB-_-RRB- ._.
+•_VB We_PRP introduce_VB th_DT

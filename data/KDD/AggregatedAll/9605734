@@ -1,0 +1,147 @@
+Predicting_VBG bounce_NN rates_NNS in_IN sponsored_VBN search_NN advertisements_NNS
+This_DT paper_NN explores_VBZ an_DT important_JJ and_CC relatively_RB unstudied_JJ quality_NN measure_NN of_IN a_DT sponsored_VBN search_NN advertisement_NN :_: bounce_NN rate_NN ._.
+The_DT bounce_NN rate_NN of_IN an_DT ad_NN can_MD be_VB informally_RB defined_VBN as_IN the_DT fraction_NN of_IN users_NNS who_WP click_VBP on_IN the_DT ad_NN but_CC almost_RB immediately_RB move_VB on_RP to_TO other_JJ tasks_NNS ._.
+A_DT high_JJ bounce_NN rate_NN can_MD lead_VB to_TO poor_JJ advertiser_NN return_NN on_IN investment_NN ,_, and_CC suggests_VBZ search_NN engine_NN users_NNS may_MD be_VB having_VBG a_DT poor_JJ experience_NN following_VBG the_DT click_VBP ._.
+In_IN this_DT paper_NN ,_, we_PRP first_RB provide_VBP quantitative_JJ analysis_NN showing_VBG that_IN bounce_NN rate_NN is_VBZ an_DT effective_JJ measure_NN of_IN user_NN satisfaction_NN ._.
+We_PRP then_RB address_VBP the_DT question_NN ,_, can_MD we_PRP predict_VB bounce_NN rate_NN by_IN analyzing_VBG the_DT features_NNS of_IN the_DT advertisement_NN ?_.
+An_DT affirmative_JJ answer_NN would_MD allow_VB advertisers_NNS and_CC search_NN engines_NNS to_TO predict_VB the_DT effectiveness_NN and_CC quality_NN of_IN advertisements_NNS before_IN they_PRP are_VBP shown_VBN ._.
+We_PRP propose_VBP solutions_NNS to_TO this_DT problem_NN involving_VBG large-scale_JJ learning_NN methods_NNS that_IN leverage_NN features_NNS drawn_VBN from_IN ad_NN creatives_NNS in_IN addition_NN to_TO their_PRP$ keywords_NNS and_CC landing_NN pages_NNS ._.
+well_RB time_NN on_IN each_DT visited_VBN result_NN URL_NN ._.
+We_PRP also_RB identify_VBP satisfied_JJ URL_NN visits_NNS -LRB-_-LRB- those_DT with_IN dwell_JJ time_NN greater_JJR than_IN 30_CD seconds_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- -RRB-_-RRB- ,_, and_CC ``_`` dissatisfied_JJ ''_'' visits_NNS -LRB-_-LRB- those_DT with_IN dwell_JJ time_NN less_JJR than_IN 15_CD seconds_NNS =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, as_RB well_RB as_IN the_DT number_NN and_CC the_DT position_NN of_IN the_DT satisfied_JJ and_CC dissatisfied_JJ URL_NN visits_NNS within_IN the_DT task_NN ._.
+Finally_RB ,_, we_PRP capture_VBP the_DT type_NN of_IN the_DT click_VBP ,_, such_JJ as_IN a_DT click_VBP on_IN organic_JJ result_NN ,_, on_IN a_DT menu_NN item_NN ,_, or_CC
+currently_RB adopted_VBN PPC_NN mechanism_NN may_MD not_RB be_VB efficient_JJ ._.
+We_PRP propose_VBP the_DT two_CD assumptions_NNS in_IN section_NN 2_CD and_CC validate_VB them_PRP in_IN section_NN 3_CD ._.
+2_CD ._.
+ASSUMPTIONS_NNS ON_IN CLICK_NN VALUES_NNS We_PRP use_VBP a_DT user_NN 's_POS post-ad-click_JJ behavior_NN =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: to_TO measure_VB the_DT value_NN of_IN his_PRP$ click_VB on_IN the_DT advertisement_NN ._.
+Post-ad-click_JJ behavior_NN is_VBZ defined_VBN to_TO be_VB the_DT user_NN 's_POS subsequent_JJ online_NN behavior_NN on_IN the_DT advertiser_NN 's_POS website_NN after_IN the_DT click_VBP ._.
+In_IN this_DT section_NN ,_, we_PRP
+m_NN sales_NNS -RRB-_-RRB- ._.
+As_IN the_DT advertisers_NNS win_VBP more_JJR ad_NN placement_NN through_IN the_DT auction_NN ,_, they_PRP learn_VBP this_DT conversion_NN rate_NN ,_, which_WDT informs_VBZ their_PRP$ bidding_NN decision_NN in_IN the_DT auction_NN -LRB-_-LRB- Ghose_NNP and_CC Yang_NNP 2009_CD ;_: Rey_NNP and_CC Kannan_NNP 2010_CD ;_: =_JJ -_: =_JJ Sculley_NNP et_FW al._FW 2009_CD -_: =-]_CD ._.
+In_IN these_DT settings_NNS ,_, the_DT bidders_NNS face_VBP a_DT trade-off_NN between_IN exploration_NN ,_, where_WRB they_PRP bid_VBP higher_JJR to_TO obtain_VB more_JJR information_NN about_IN their_PRP$ value_NN ,_, and_CC exploitation_NN ,_, where_WRB they_PRP bid_VBP optimally_RB given_VBN their_PRP$ curre_NN
+eval_NN -LRB-_-LRB- Raghavan_NNP and_CC Iyer_NNP ,_, 2008_CD -RRB-_-RRB- ,_, user_NN click_VBP prediction_NN -LRB-_-LRB- Shaparenko_FW et_FW al._FW ,_, 2009_CD ;_: Richardson_NNP et_FW al._FW ,_, 2007_CD ;_: Ciaramita_NNP et_FW al._FW ,_, 2008_CD -RRB-_-RRB- ,_, ad_NN relevance_NN -LRB-_-LRB- Raghavan_NNP and_CC Hillard_NNP ,_, 2009_CD -RRB-_-RRB- and_CC bounce_NN rate_NN prediction_NN -LRB-_-LRB- =_JJ -_: =_JJ Sculley_NNP et_FW al._FW ,_, 2009_CD -_: =--RRB-_NN ._.
+As_IN far_RB we_PRP know_VBP ,_, our_PRP$ method_NN is_VBZ the_DT only_JJ one_NN that_WDT aims_VBZ to_TO solve_VB a_DT much_RB more_RBR complex_JJ task_NN of_IN segmentation_NN and_CC entity_NN extraction_NN from_IN ad_NN creatives_NNS ._.
+Supervised_VBN methods_NNS are_VBP a_DT poor_JJ choice_NN to_TO solve_VB this_DT ta_NN
+owever_RB ,_, most_JJS of_IN the_DT approaches_NNS published_VBN in_IN the_DT literature_NN so_RB far_RB have_VBP either_RB taken_VBN a_DT traditional_JJ information_NN retrieval_NN approach_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- -RRB-_-RRB- or_CC one_CD that_WDT learns_VBZ a_DT classifier_NN based_VBN on_IN click_VB data_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 29_CD ,_, 11_CD ,_, 32_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+To_TO our_PRP$ knowledge_NN this_DT work_NN is_VBZ the_DT first_JJ to_TO show_VB the_DT benefit_NN of_IN modeling_NN humanassessed_JJ relevance_NN for_IN many_JJ tasks_NNS in_IN sponsored_VBN search_NN ._.
+We_PRP find_VBP that_IN our_PRP$ model_NN can_MD improve_VB performance_NN compared_VBN to_TO a_DT base_NN
+it_PRP would_MD be_VB problematic_JJ to_TO keep_VB motivated_JJ adversaries_NNS from_IN poisoning_NN the_DT signal_NN ._.
+Sculley_NNP et_FW al._FW explored_VBD the_DT use_NN of_IN aggregate_JJ user-based_JJ signals_NNS such_JJ as_IN bounce-rate_NN for_IN determining_VBG user_NN satisfaction_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC this_DT approach_NN is_VBZ unsuitable_JJ for_IN making_VBG per-advertisement_JJ decisions_NNS with_IN high_JJ precision_NN due_JJ to_TO signal_NN noise_NN ._.
+Various_JJ approaches_NNS such_JJ as_IN that_DT of_IN Chakrabarti_NNP et_FW al._FW have_VBP used_VBN click-feedback_JJ to_TO dete_VB
+ly_RB studied_VBN scenario_NN is_VBZ that_DT of_IN a_DT ``_`` bounce_NN back_RB ''_'' ,_, which_WDT happens_VBZ when_WRB the_DT searcher_NN returned_VBD to_TO the_DT Search_VB Engine_NNP Result_NN Page_NNP -LRB-_-LRB- SERP_NNP -RRB-_-RRB- shortly_RB after_IN she_PRP clicked_VBD on_IN a_DT result_NN ,_, indicating_VBG low_JJ result_NN relevance_NN =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT heuristic_NN and_CC resulting_VBG metrics_NNS have_VBP been_VBN successfully_RB adapted_VBN by_IN the_DT major_JJ search_NN engines_NNS ,_, and_CC have_VBP undoubtedly_RB improved_VBN search_NN quality_NN by_IN detecting_VBG non-relevant_JJ or_CC even_RB detrimental_JJ results_NNS ._.
+U_NN
+was_VBD motivated_VBN by_IN a_DT real_JJ application_NN in_IN sponsored_VBN search_NN advertising_NN in_IN which_WDT massive_JJ clickstreams_NNS are_VBP processed_VBN to_TO develop_VB a_DT predictor_NN of_IN user_NN experience_NN following_VBG the_DT click_VB of_IN a_DT sponsored_VBN search_NN ad_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP show_VBP how_WRB PLANET_NN can_MD be_VB scaled_VBN effectively_RB to_TO large_JJ datasets_NNS ,_, describe_VBP experiments_NNS that_WDT highlight_VBP the_DT performance_NN characteristics_NNS of_IN PLANET_NN ,_, and_CC demonstrate_VBP the_DT benefits_NNS of_IN various_JJ optimizations_NNS t_NN
+oduct_NN ._.
+1_CD ._.
+INTRODUCTION_NNP Online_NNP advertisers_NNS frequently_RB measure_VBP their_PRP$ success_NN and_CC return_NN on_IN investment_NN by_IN using_VBG measures_NNS such_JJ as_IN click_VBP through_IN rate_NN -LRB-_-LRB- CTR_NN -RRB-_-RRB- -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, conversion_NN rate_NN -LRB-_-LRB- CvR_NN -RRB-_-RRB- ,_, and_CC bounce_NN rate_NN -LRB-_-LRB- BR_NN -RRB-_-RRB- =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Since_IN extending_VBG our_PRP$ ad_NN platform_NN to_TO television_NN ads_NNS in_IN 2007_CD ,_, Google_NNP has_VBZ been_VBN exploring_VBG ways_NNS to_TO design_VB similar_JJ measures_NNS for_IN TV_NN ._.
+Google_NNP aggregates_NNS data_NNS ,_, collected_VBN and_CC anonymized_VBN by_IN DISH_NNP Network_NNP L.L.C._NNP ,_,
+er_IN consideration_NN ,_, and_CC 0_CD otherwise_RB ._.
+The_DT related_JJ terms_NNS were_VBD derived_VBN from_IN the_DT parsed_VBN terms_NNS using_VBG a_DT transformation_NN φ_NN -LRB-_-LRB- ·_NN -RRB-_-RRB- ,_, using_VBG a_DT proprietary_JJ process_NN similar_JJ to_TO term_VB expansion_NN via_IN latent_JJ semantic_JJ analysis_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Cluster_NN membership_NN shows_VBZ the_DT strength_NN of_IN similarity_NN of_IN a_DT given_VBN piece_NN of_IN content_NN to_TO a_DT set_NN of_IN topical_JJ clusters_NNS M_NN ,_, as_IN determined_VBN by_IN a_DT mapping_NN function_NN m_NN -LRB-_-LRB- ·_NN ,_, ·_NN -RRB-_-RRB- ._.
+These_DT topical_JJ clusters_NNS M_NN were_VBD found_VBN by_IN a_DT
+adding_VBG text_NN features_NNS from_IN the_DT landing_NN pages_NNS of_IN ads_NNS ,_, and_CC improved_VBD the_DT ranking_NN of_IN content_NN ads_NNS shown_VBN on_IN a_DT publisher_NN page_NN by_IN using_VBG a_DT support_NN vector_NN machine_NN -LRB-_-LRB- SVM_NN -RRB-_-RRB- based_JJ ranking_NN model_NN ._.
+Riberio-Neto_NNP et_FW al._FW =_SYM -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT Bayesian_JJ network-based_JJ approach_NN to_TO impedance_NN coupling_NN ,_, for_IN better_JJR matching_NN of_IN ads_NNS to_TO publisher_NN pages_NNS in_IN contextual_JJ advertising_NN ._.
+They_PRP also_RB proposed_VBD different_JJ strategies_NNS for_IN improving_VBG releva_NN
+6_CD ,_, which_WDT group_NN features_VBZ by_IN type_NN rather_RB than_IN by_IN source_NN ._.
+This_DT finding_NN may_MD enable_VB the_DT use_NN of_IN semi-supervised_JJ learning_NN methods_NNS such_JJ as_IN co-training_NN that_WDT require_VBP informative_JJ but_CC un-correlated_JJ feature_NN sets_VBZ =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: to_TO exploit_VB un-labeled_JJ data_NNS ._.
+6_CD ._.
+RELATED_NNS WORK_VBP To_TO our_PRP$ knowledge_NN ,_, this_DT work_NN is_VBZ the_DT first_JJ detailed_JJ study_NN of_IN bounce_NN rate_NN for_IN sponsored_VBN search_NN advertising_NN ._.
+It_PRP also_RB provides_VBZ the_DT first_JJ concrete_JJ proposal_NN for_IN p_NN
+lent_VBN to_TO considering_VBG kBrate_NN -LRB-_-LRB- x_NN -RRB-_-RRB- examples_NNS of_IN x_NN with_IN yx_NN =_JJ 1_CD and_CC k_NN -LRB-_-LRB- 1_CD −_NN Brate_NN -LRB-_-LRB- x_NN -RRB-_-RRB- -RRB-_-RRB- examples_NNS of_IN x_NN with_IN yx_NN =_JJ 0_CD ,_, where_WRB k_NN is_VBZ a_DT scaling_VBG constant_NN ._.
+This_DT optimization_NN problem_NN may_MD be_VB solved_VBN via_IN methods_NNS such_JJ as_IN LBFGS_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: ;_: however_RB ,_, for_IN very_RB large_JJ data_NNS sets_NNS ,_, these_DT methods_NNS do_VBP not_RB scale_VB well_RB due_JJ to_TO large_JJ matrix_NN manipulations_NNS ._.
+We_PRP thus_RB use_VBP stochastic_JJ gradient_NN descent_NN as_IN a_DT viable_JJ alternative_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, noting_VBG that_IN the_DT non-differ_NN
+d_NN via_IN methods_NNS such_JJ as_IN LBFGS_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ;_: however_RB ,_, for_IN very_RB large_JJ data_NNS sets_NNS ,_, these_DT methods_NNS do_VBP not_RB scale_VB well_RB due_JJ to_TO large_JJ matrix_NN manipulations_NNS ._.
+We_PRP thus_RB use_VBP stochastic_JJ gradient_NN descent_NN as_IN a_DT viable_JJ alternative_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, noting_VBG that_IN the_DT non-differentiability_NN induced_VBN by_IN the_DT L1_NN penalty_NN term_NN can_MD be_VB handled_VBN by_IN methods_NNS similar_JJ to_TO truncated_VBN gradient_NN descent_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+To_TO achieve_VB scalability_NN ,_, we_PRP use_VBP a_DT parallelized_JJ learning_NN algo_NN
+means_VBZ that_IN we_PRP assign_VBP weights_NNS of_IN 1_CD to_TO all_DT items_NNS in_IN the_DT term_NN vector_NN ._.
+To_TO avoid_VB zero_NN probabilities_NNS ,_, we_PRP smoothed_VBD the_DT probability_NN distributions_NNS P_NN and_CC Q_NNP -LRB-_-LRB- i.e._FW the_DT term_NN vectors_NNS -RRB-_-RRB- using_VBG Good-Turing_JJ discounting_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: before_IN computing_VBG the_DT divergence_NN ._.
+We_PRP also_RB computed_VBD a_DT normalized_VBN version_NN of_IN KLD_NNP whose_WP$ range_NN is_VBZ -LRB-_-LRB- 0,1_CD -RRB-_-RRB- ,_, with_IN the_DT maximum_NN KLD_NNP as_IN the_DT normalization_NN factor_NN ._.
+4.4_CD Evaluation_NN Given_IN a_DT feature_NN mapping_NN x_NN -LRB-_-LRB- q_NN ,_, c_NN ,_, p_NN -RRB-_-RRB- a_DT
+arge_NN training_NN set_NN sizes_NNS ._.
+We_PRP considered_VBD the_DT use_NN of_IN parallelized_FW SVMs_FW ,_, but_CC preferred_VBD a_DT faster_JJR method_NN that_WDT yields_VBZ an_DT ǫ-accurate_NN model_NN :_: the_DT Pegasos_NNP -LRB-_-LRB- Primal_JJ Estimated_JJ subGrAdient_NN SOlver_NN for_IN SVM_NN -RRB-_-RRB- algorithm_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT iterative_JJ SVM_NN solver_NN is_VBZ especially_RB well-suited_JJ for_IN learning_VBG from_IN large_JJ datasets_NNS ._.
+It_PRP proposes_VBZ a_DT method_NN that_WDT alternates_VBZ between_IN two_CD steps_NNS :_: stochastic_JJ sub-gradient_JJ descent_NN and_CC projection_NN of_IN the_DT hy_NN
+e_LS of_IN a_DT search_NN result_NN to_TO a_DT user_NN using_VBG clickthrough_JJ information_NN ._.
+Such_JJ a_DT model_NN would_MD be_VB useful_JJ for_IN evaluating_VBG search_NN results_NNS for_IN which_WDT human_JJ relevance_NN judgments_NNS have_VBP not_RB been_VBN obtained_VBN yet_RB ._.
+Pandey_NNP et_FW al._FW =_SYM -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT multi-arm_JJ bandit_NN approach_NN with_IN dependent_JJ arms_NNS for_IN more_RBR accurate_JJ clickthrough_JJ prediction_NN ,_, using_VBG historical_JJ observation_NN along_IN with_IN other_JJ features_NNS such_JJ as_IN textual_JJ similarity_NN between_IN ads_NNS ._.
+7_CD ._.
+C_NN
+ce_NN rate_NN has_VBZ a_DT range_NN of_IN -LRB-_-LRB- 0,1_CD -RRB-_-RRB- ,_, this_DT prediction_NN problem_NN fits_VBZ naturally_RB within_IN a_DT regression_NN framework_NN ._.
+Logistic_JJ regression_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- or_CC support_NN vector_NN machine_NN -LRB-_-LRB- SVM_NN -RRB-_-RRB- regression_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- with_IN probability_NN estimation_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: for_IN bounce_NN rate_NN prediction_NN requires_VBZ a_DT mapping_NN x_NN -LRB-_-LRB- ·_NN ,_, ·_NN ,_, ·_NN -RRB-_-RRB- ↦_FW →_FW R_NN n_NN from_IN a_DT query_NN ,_, creative_JJ ,_, landing_NN page_NN triple_JJ to_TO an_DT n_NN dimensional_JJ feature_NN vector_NN ._.
+The_DT feature_NN mapping_NN explored_VBN in_IN this_DT paper_NN ,_, as_IN detailed_VBN
+eatures_NNS were_VBD learned_VBN using_VBG clickthrough_JJ data_NNS from_IN logs_NNS ._.
+Their_PRP$ work_NN demonstrated_VBD that_IN simple_JJ syntactic_JJ and_CC semantic_JJ textual_JJ relevance_NN features_NNS can_MD be_VB predictive_JJ of_IN clickthrough_JJ rate_NN ._.
+Piwowarski_NNP et_FW al._FW =_SYM -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: modeled_VBN user_NN clickthrough_NN on_IN search_NN results_NNS using_VBG specific_JJ click_VBP history_NN -LRB-_-LRB- e.g._FW ,_, from_IN users_NNS -RRB-_-RRB- or_CC more_RBR general_JJ click_VBP history_NN features_NNS -LRB-_-LRB- e.g._FW ,_, from_IN user_NN communities_NNS or_CC global_JJ history_NN -RRB-_-RRB- ._.
+Agichtein_NNP et_FW al._FW -LRB-_-LRB- 1_CD
+that_WDT predicts_VBZ user_NN satisfaction_NN by_IN incorporating_VBG features_NNS from_IN the_DT user_NN 's_POS first_JJ query_NN into_IN a_DT relevance_NN model_NN ._.
+Their_PRP$ models_NNS were_VBD evaluated_VBN using_VBG relevance_NN judgements_NNS of_IN human_JJ raters_NNS ._.
+Carterette_NNP et_FW al._FW =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP used_VBN click_VBP information_NN to_TO evaluate_VB the_DT performance_NN of_IN search_NN results_NNS --_: they_PRP proposed_VBD a_DT model_NN for_IN predicting_VBG relevance_NN of_IN a_DT search_NN result_NN to_TO a_DT user_NN using_VBG clickthrough_JJ information_NN ._.
+Such_JJ a_DT model_NN wo_MD
+ata_NN set_VBN to_TO eliminate_VB outliers_NNS ,_, and_CC then_RB the_DT remaining_VBG values_NNS were_VBD normalized_VBN by_IN the_DT difference_NN between_IN the_DT remaining_VBG maximum_NN and_CC minimum_NN value_NN ._.
+This_DT results_VBZ in_IN each_DT metric_NN being_VBG rescaled_VBN to_TO the_DT range_NN =_JJ -_: =[_NN 0,1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Popularity_NN metrics_NNS for_IN languages_NNS ,_, keywords_NNS ,_, and_CC categories_NNS were_VBD computed_VBN similarly_RB ,_, but_CC using_VBG the_DT natural_JJ log_NN of_IN the_DT raw_JJ frequencies_NNS ._.
+3.2_CD Bounce_NNP Rate_NNP and_CC Click_NNP Through_IN Rate_NNP As_IN described_VBN above_IN ,_, one_CD t_NN
+,_, aggregating_VBG clicks_NNS to_TO get_VB overall_JJ statistics_NNS -LRB-_-LRB- e.g._FW ,_, clickthrough_JJ rate_NN -RRB-_-RRB- gives_VBZ reliable_JJ estimates_NNS that_WDT can_MD be_VB used_VBN to_TO re-rank_JJ search_NN results_NNS for_IN queries_NNS and_CC get_VB quality_NN improvements_NNS ._.
+Agichtein_NNP et_FW al._FW =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: also_RB developed_VBD a_DT model_NN for_IN relating_VBG user_NN behavior_NN to_TO relevance_NN ,_, proposing_VBG a_DT simple_JJ linear_JJ mixture_NN model_NN for_IN relating_VBG observed_VBN post-search_JJ user_NN behavior_NN to_TO the_DT relevance_NN of_IN a_DT search_NN result_NN ._.
+Huffman_NNP et_FW
+developed_VBD a_DT model_NN for_IN relating_VBG user_NN behavior_NN to_TO relevance_NN ,_, proposing_VBG a_DT simple_JJ linear_JJ mixture_NN model_NN for_IN relating_VBG observed_VBN post-search_JJ user_NN behavior_NN to_TO the_DT relevance_NN of_IN a_DT search_NN result_NN ._.
+Huffman_NNP et_FW al._FW =_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: examined_VBD the_DT connection_NN between_IN searchresult_NN relevance_NN in_IN web_NN search_NN and_CC users_NNS '_POS session-level_JJ satisfaction_NN ._.
+They_PRP found_VBD a_DT strong_JJ relationship_NN between_IN the_DT relevance_NN of_IN the_DT first_JJ query_NN in_IN a_DT user_NN session_NN
+pedance_NN coupling_NN ,_, for_IN better_JJR matching_NN of_IN ads_NNS to_TO publisher_NN pages_NNS in_IN contextual_JJ advertising_NN ._.
+They_PRP also_RB proposed_VBD different_JJ strategies_NNS for_IN improving_VBG relevance-based_JJ matching_JJ functions_NNS ._.
+Chakrabarti_NNP et_FW al._FW =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: used_VBN clicks_NNS on_IN contextual_JJ ads_NNS to_TO learn_VB a_DT matching_JJ function_NN ._.
+They_PRP trained_VBD a_DT logistic_JJ model_NN for_IN predicting_VBG ad_NN clicks_NNS based_VBN on_IN relevance_NN features_NNS between_IN the_DT publisher_NN page_NN and_CC the_DT ad_NN ._.
+By_IN training_VBG the_DT f_SYM
+Brate_NN -LRB-_-LRB- q_NN ,_, c_NN ,_, p_NN -RRB-_-RRB- ._.
+Since_IN the_DT true_JJ bounce_NN rate_NN has_VBZ a_DT range_NN of_IN -LRB-_-LRB- 0,1_CD -RRB-_-RRB- ,_, this_DT prediction_NN problem_NN fits_VBZ naturally_RB within_IN a_DT regression_NN framework_NN ._.
+Logistic_JJ regression_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- or_CC support_NN vector_NN machine_NN -LRB-_-LRB- SVM_NN -RRB-_-RRB- regression_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: with_IN probability_NN estimation_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- for_IN bounce_NN rate_NN prediction_NN requires_VBZ a_DT mapping_NN x_NN -LRB-_-LRB- ·_NN ,_, ·_NN ,_, ·_NN -RRB-_-RRB- ↦_FW →_FW R_NN n_NN from_IN a_DT query_NN ,_, creative_JJ ,_, landing_NN page_NN triple_JJ to_TO an_DT n_NN dimensional_JJ feature_NN vector_NN ._.
+The_DT feature_NN mapping_NN ex_FW
+ed_VBN in_IN parallelizing_VBG stochastic_JJ gradient_NN descent_NN ,_, see_VBP the_DT recent_JJ talk_NN by_IN Delalleau_NNP and_CC Bengio_NNP -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+4.2_CD ǫ-accurate_NN SVM_NN Regression_NN SVM_NN Regression_NN is_VBZ another_DT state_NN of_IN the_DT art_NN method_NN for_IN regression_NN tasks_NNS =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, SVM_NN solvers_NNS typically_RB scale_VBP poorly_RB with_IN large_JJ training_NN set_NN sizes_NNS ._.
+We_PRP considered_VBD the_DT use_NN of_IN parallelized_FW SVMs_FW ,_, but_CC preferred_VBD a_DT faster_JJR method_NN that_WDT yields_VBZ an_DT ǫ-accurate_NN model_NN :_: the_DT Pegasos_NNP -LRB-_-LRB- Pri_NNP
+ching_VBG functions_NNS that_WDT use_VBP hand-tuned_JJ combinations_NNS of_IN syntactic_JJ or_CC semantic_JJ features_NNS from_IN the_DT ad_NN or_CC page_NN text_NN ._.
+Textual_JJ relevance_NN has_VBZ also_RB been_VBN used_VBN for_IN other_JJ problems_NNS in_IN sponsored_VBN search_NN ._.
+Broder_NNP et_FW al._FW =_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP used_VBN terms_NNS from_IN the_DT search_NN results_NNS to_TO enhance_VB query_NN terms_NNS for_IN selecting_NN advertisements_NNS ._.
+They_PRP demonstrated_VBD that_IN the_DT careful_JJ addition_NN of_IN terms_NNS from_IN the_DT web_NN search_NN results_NNS -LRB-_-LRB- extracting_VBG relevant_JJ phra_NN
+elevance_NN between_IN query_NN and_CC ad_NN text_NN can_MD improve_VB broad_JJ match_NN while_IN optimizing_VBG revenue_NN ._.
+Other_JJ notable_JJ uses_NNS of_IN relevance_NN in_IN computational_JJ advertising_NN includes_VBZ learning_VBG when_WRB not_RB to_TO show_VB ads_NNS ._.
+Broder_NNP et_FW al._FW =_SYM -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: trained_VBD an_DT SVM_NN model_NN using_VBG relevance_NN and_CC cohesiveness_NN features_NNS to_TO address_VB the_DT decision_NN problem_NN of_IN whether_IN or_CC not_RB to_TO show_VB an_DT ad_NN ._.
+6.2_CD Modeling_NN User_NN Behavior_NN Another_DT aspect_NN of_IN our_PRP$ work_NN is_VBZ modeling_NN user_NN
+has_VBZ not_RB been_VBN modeled_VBN by_IN researchers_NNS in_IN the_DT past_NN ,_, other_JJ aspects_NNS of_IN user_NN clickthrough_NN behavior_NN have_VBP been_VBN studied_VBN in_IN the_DT context_NN of_IN evaluating_VBG the_DT quality_NN of_IN both_CC ad_NN and_CC search_NN results_NNS ._.
+Ciaramita_NNP et_FW al._FW =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: estimated_VBN predicted_VBD clickthrough_JJ rates_NNS of_IN search_NN ads_NNS from_IN textual_JJ relevance_NN features_NNS ._.
+They_PRP trained_VBD a_DT logistic_JJ model_NN whose_WP$ features_NNS were_VBD learned_VBN using_VBG clickthrough_JJ data_NNS from_IN logs_NNS ._.
+Their_PRP$ work_NN demonstra_NN
+thus_RB use_VB stochastic_JJ gradient_NN descent_NN as_IN a_DT viable_JJ alternative_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, noting_VBG that_IN the_DT non-differentiability_NN induced_VBN by_IN the_DT L1_NN penalty_NN term_NN can_MD be_VB handled_VBN by_IN methods_NNS similar_JJ to_TO truncated_VBN gradient_NN descent_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO achieve_VB scalability_NN ,_, we_PRP use_VBP a_DT parallelized_JJ learning_NN algorithm_NN where_WRB each_DT machine_NN handles_VBZ a_DT subset_NN of_IN the_DT data_NNS ._.
+For_IN a_DT discussion_NN of_IN typical_JJ issues_NNS involved_VBN in_IN parallelizing_VBG stochastic_JJ gradient_NN des_FW
+-LRB-_-LRB- CTR_NN -RRB-_-RRB- and_CC conversion_NN rate_NN -LRB-_-LRB- CvR_NN -RRB-_-RRB- ._.
+Though_IN less_RBR studied_VBN ,_, another_DT important_JJ metric_NN of_IN advertising_NN effectiveness_NN is_VBZ bounce_NN rate_NN ,_, which_WDT Avinash_NNP Kaushik_NNP of_IN Google_NNP Analytics_NNP colorfully_RB describes_VBZ as_IN follows_VBZ :_: =_JJ -_: =[_NN 17_CD ,_, 18_CD -RRB-_-RRB- -_: =_JJ -_: :_: Bounce_VB rate_NN for_IN a_DT page_NN is_VBZ the_DT number_NN of_IN people_NNS who_WP entered_VBD the_DT site_NN on_IN a_DT page_NN and_CC left_VBD right_RB away_RB ._.
+They_PRP came_VBD ,_, they_PRP said_VBD yuk_NN and_CC they_PRP were_VBD on_IN their_PRP$ way_NN ._.
+Kaushik_NNP claims_VBZ bounce_NN rate_NN is_VBZ important_JJ for_IN ad_NN
+-LRB-_-LRB- CTR_NN -RRB-_-RRB- and_CC conversion_NN rate_NN -LRB-_-LRB- CvR_NN -RRB-_-RRB- ._.
+Though_IN less_RBR studied_VBN ,_, another_DT important_JJ metric_NN of_IN advertising_NN effectiveness_NN is_VBZ bounce_NN rate_NN ,_, which_WDT Avinash_NNP Kaushik_NNP of_IN Google_NNP Analytics_NNP colorfully_RB describes_VBZ as_IN follows_VBZ :_: =_JJ -_: =[_NN 17_CD ,_, 18_CD -RRB-_-RRB- -_: =_JJ -_: :_: Bounce_VB rate_NN for_IN a_DT page_NN is_VBZ the_DT number_NN of_IN people_NNS who_WP entered_VBD the_DT site_NN on_IN a_DT page_NN and_CC left_VBD right_RB away_RB ._.
+They_PRP came_VBD ,_, they_PRP said_VBD yuk_NN and_CC they_PRP were_VBD on_IN their_PRP$ way_NN ._.
+Kaushik_NNP claims_VBZ bounce_NN rate_NN is_VBZ important_JJ for_IN ad_NN
+arning_VBG algorithm_NN where_WRB each_DT machine_NN handles_VBZ a_DT subset_NN of_IN the_DT data_NNS ._.
+For_IN a_DT discussion_NN of_IN typical_JJ issues_NNS involved_VBN in_IN parallelizing_VBG stochastic_JJ gradient_NN descent_NN ,_, see_VBP the_DT recent_JJ talk_NN by_IN Delalleau_NNP and_CC Bengio_NNP =_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4.2_CD ǫ-accurate_NN SVM_NN Regression_NN SVM_NN Regression_NN is_VBZ another_DT state_NN of_IN the_DT art_NN method_NN for_IN regression_NN tasks_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+However_RB ,_, SVM_NN solvers_NNS typically_RB scale_VBP poorly_RB with_IN large_JJ training_NN set_NN sizes_NNS ._.
+We_PRP considered_VBD th_DT
+onvex_JJ linear_JJ combination_NN of_IN syntactic_JJ and_CC semantic_JJ features_NNS had_VBD an_DT improvement_NN over_IN syntactic_JJ features_NNS alone_RB ,_, with_IN respect_NN to_TO a_DT ``_`` golden_JJ ranking_NN ''_'' produced_VBN by_IN human_JJ relevance_NN judgements_NNS ._.
+Murdock_NNP et_FW al._FW =_SYM -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: showed_VBD the_DT benefit_NN of_IN using_VBG machine_NN translation_NN techniques_NNS to_TO match_VB text_NN features_NNS extracted_VBN from_IN ads_NNS to_TO those_DT obtained_VBN from_IN publisher_NN pages_NNS in_IN order_NN to_TO address_VB the_DT impedance_NN problem_NN ._.
+They_PRP obtained_VBD be_VB
+retrieval_NN of_IN relevant_JJ ads_NNS ._.
+Their_PRP$ approach_NN performed_VBD better_RBR when_WRB compared_VBN to_TO a_DT system_NN that_WDT augments_VBZ the_DT query_NN terms_NNS by_IN phrases_NNS extracted_VBN from_IN web_NN users_NNS '_POS query_NN rewrites_VBZ in_IN search_NN logs_NNS ._.
+Radlinski_NNP et_FW al._FW =_SYM -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: also_RB showed_VBD that_IN relevance_NN between_IN query_NN and_CC ad_NN text_NN can_MD improve_VB broad_JJ match_NN while_IN optimizing_VBG revenue_NN ._.
+Other_JJ notable_JJ uses_NNS of_IN relevance_NN in_IN computational_JJ advertising_NN includes_VBZ learning_VBG when_WRB not_RB to_TO show_VB
+advertisements_NNS ._.
+Researchers_NNS in_IN computational_JJ advertising_NN have_VBP suggested_VBN various_JJ methods_NNS to_TO address_VB this_DT issue_NN in_IN order_NN to_TO design_VB good_JJ matching_JJ functions_NNS between_IN publisher_NN pages_NNS and_CC ads_NNS ._.
+Broder_NNP et_FW al._FW =_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: found_VBD that_IN while_IN training_VBG a_DT model_NN to_TO predict_VB the_DT relevance_NN of_IN an_DT ad_NN to_TO a_DT publisher_NN page_NN ,_, it_PRP is_VBZ useful_JJ to_TO augment_VB ``_`` syntactic_JJ ''_'' features_NNS obtained_VBN by_IN matching_VBG key-Parsed_JJ Related_JJ Clusters_NNS Categories_NNPS Dist_NNP
+re_NN types_NNS ._.
+As_IN discussed_VBN in_IN Section_NN 6_CD ,_, this_DT machine_NN learning_VBG approach_NN to_TO bounce_VB rate_NN prediction_NN is_VBZ motivated_VBN by_IN prior_JJ success_NN in_IN predicting_VBG CTR_NN for_IN sponsored_VBN search_NN ,_, as_IN exemplified_VBN by_IN Richardson_NNP et_FW al._FW =_SYM -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+2_CD ._.
+BACKGROUND_NN This_DT section_NN provides_VBZ a_DT brief_JJ background_NN on_IN sponsored_VBN search_NN ,_, gives_VBZ a_DT formal_JJ definition_NN of_IN bounce_NN rate_NN ,_, and_CC discusses_VBZ methods_NNS for_IN observing_VBG bounce_NN rate_NN non-intrusively_RB ._.
+2.1_CD Sponsored_VBN S_NN

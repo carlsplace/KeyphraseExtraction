@@ -1,0 +1,35 @@
+WAP5_NN :_: black-box_JJ performance_NN debugging_NN for_IN wide-area_JJ systems_NNS
+Wide-area_JJ distributed_VBN applications_NNS are_VBP challenging_VBG to_TO debug_VB ,_, optimize_VB ,_, and_CC maintain_VB ._.
+We_PRP present_VBP Wide-Area_NNP Project_NNP 5_CD -LRB-_-LRB- WAP5_NN -RRB-_-RRB- ,_, which_WDT aims_VBZ to_TO make_VB these_DT tasks_NNS easier_JJR by_IN exposing_VBG the_DT causal_JJ structure_NN of_IN communication_NN within_IN an_DT application_NN and_CC by_IN exposing_VBG delays_NNS that_WDT imply_VBP bottlenecks_NNS ._.
+These_DT bottlenecks_NNS might_MD not_RB otherwise_RB be_VB obvious_JJ ,_, with_IN or_CC without_IN the_DT application_NN 's_POS source_NN code_NN ._.
+Previous_JJ research_NN projects_NNS have_VBP presented_VBN algorithms_NNS to_TO reconstruct_VB application_NN structure_NN and_CC the_DT corresponding_JJ timing_NN information_NN from_IN black-box_JJ message_NN traces_NNS of_IN local-area_JJ systems_NNS ._.
+In_IN this_DT paper_NN we_PRP present_VBP -LRB-_-LRB- 1_LS -RRB-_-RRB- a_DT new_JJ algorithm_NN for_IN reconstructing_VBG application_NN structure_NN in_IN both_CC local_JJ -_: and_CC wide-area_JJ distributed_VBN systems_NNS ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- an_DT infrastructure_NN for_IN gathering_VBG application_NN traces_NNS in_IN PlanetLab_NNP ,_, and_CC -LRB-_-LRB- 3_LS -RRB-_-RRB- our_PRP$ experiences_NNS tracing_VBG and_CC analyzing_VBG three_CD systems_NNS :_: CoDeeN_NN and_CC Coral_NN ,_, two_CD content-distribution_JJ networks_NNS in_IN PlanetLab_NNP ;_: and_CC Slurpee_NNP ,_, an_DT enterprise-scale_JJ incident-monitoring_NN system_NN ._.
+rpee_NN system_NN ,_, we_PRP found_VBD instances_NNS of_IN network_NN address_NN translation_NN ,_, which_WDT did_VBD not_RB appear_VB in_IN the_DT Coral_NN or_CC CoDeeN_NN traces_NNS but_CC which_WDT might_MD appear_VB in_IN other_JJ wide-area_JJ systems_NNS ._.
+Network_NNP address_NN translation_NN -LRB-_-LRB- NAT_NN -RRB-_-RRB- =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: allows_VBZ network_NN elements_NNS to_TO change_VB the_DT addresses_NNS in_IN the_DT packets_NNS they_PRP handle_VBP ._.
+In_IN Slurpee_NNP ,_, a_DT load_NN balancer_NN uses_VBZ NAT_NNP to_TO redirect_VB requests_NNS to_TO several_JJ server_NN replicas_NNS ._.
+Wide-area_JJ systems_NNS often_RB use_VBP NAT_NNP to_TO re_VB
+vasive_NN and_CC works_VBZ on_IN the_DT largest_JJS scale_NN of_IN systems_NNS :_: wide-area_JJ distributed_VBN systems_NNS ._.
+Other_JJ causal-path_JJ analysis_NN tools_NNS differ_VBP in_IN their_PRP$ invasiveness_NN or_CC in_IN the_DT scale_NN of_IN systems_NNS they_PRP target_VBP ._.
+Our_PRP$ earlier_JJR work_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, known_VBN as_IN Project_NNP 5_CD ,_, targets_VBZ heterogeneous_JJ local-area_JJ distributed_VBN systems_NNS and_CC is_VBZ minimally_RB invasive_JJ because_IN it_PRP works_VBZ using_VBG only_JJ network_NN traces_NNS ._.
+Magpie_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC Pinpoint_NNP -LRB-_-LRB- 4_LS -RRB-_-RRB- target_NN -LRB-_-LRB- mostly_RB -RRB-_-RRB- homogeneous_JJ
+-RRB-_-RRB- ,_, or_CC the_DT diagrams_NNS in_IN our_PRP$ earlier_JJR work_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- -RRB-_-RRB- but_CC we_PRP found_VBD it_PRP hard_JJ to_TO represent_VB both_CC causality_NN and_CC delay_NN in_IN a_DT call-tree_NN ,_, especially_RB when_WRB communication_NN does_VBZ not_RB follow_VB a_DT strict_JJ call-return_JJ model_NN ._.
+Magpie_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: also_RB uses_VBZ timelines_NNS ,_, although_IN Magpie_NNP separates_VBZ threads_NNS or_CC nodes_NNS vertically_RB ,_, while_IN we_PRP only_RB do_VBP so_RB when_WRB logically_RB parallel_JJ behavior_NN requires_VBZ it_PRP ._.
+It_PRP is_VBZ possible_JJ to_TO transform_VB the_DT timeline_NN in_IN Figure_NNP 10_CD to_TO
+based_VBN on_IN DHTs_NNS ._.
+Therefore_RB ,_, we_PRP developed_VBD some_DT techniques_NNS specifically_RB for_IN handling_VBG DHT-based_JJ applications_NNS ._.
+DHTs_NNS perform_VBP lookups_NNS either_CC iteratively_RB ,_, recursively_RB ,_, or_CC recursively_RB with_IN a_DT shortcut_NN response_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN an_DT iterative_JJ lookup_NN ,_, the_DT node_NN performing_VBG the_DT query_NN contacts_NNS several_JJ remote_JJ hosts_NNS -LRB-_-LRB- normally_RB O_NN -LRB-_-LRB- lgn_NN -RRB-_-RRB- for_IN systems_NNS with_IN n_NN total_JJ hosts_NNS -RRB-_-RRB- sequentially_RB ,_, and_CC each_DT provides_VBZ a_DT referral_NN to_TO the_DT next_JJ ._.
+In_IN a_DT recu_NN
+based_VBN on_IN DHTs_NNS ._.
+Therefore_RB ,_, we_PRP developed_VBD some_DT techniques_NNS specifically_RB for_IN handling_VBG DHT-based_JJ applications_NNS ._.
+DHTs_NNS perform_VBP lookups_NNS either_CC iteratively_RB ,_, recursively_RB ,_, or_CC recursively_RB with_IN a_DT shortcut_NN response_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN an_DT iterative_JJ lookup_NN ,_, the_DT node_NN performing_VBG the_DT query_NN contacts_NNS several_JJ remote_JJ hosts_NNS -LRB-_-LRB- normally_RB O_NN -LRB-_-LRB- lgn_NN -RRB-_-RRB- for_IN systems_NNS with_IN n_NN total_JJ hosts_NNS -RRB-_-RRB- sequentially_RB ,_, and_CC each_DT provides_VBZ a_DT referral_NN to_TO the_DT next_JJ ._.
+In_IN a_DT recu_NN
+ey_NN target_NN ._.
+Our_PRP$ earlier_JJR work_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, known_VBN as_IN Project_NNP 5_CD ,_, targets_VBZ heterogeneous_JJ local-area_JJ distributed_VBN systems_NNS and_CC is_VBZ minimally_RB invasive_JJ because_IN it_PRP works_VBZ using_VBG only_JJ network_NN traces_NNS ._.
+Magpie_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC Pinpoint_NNP =_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: target_NN -LRB-_-LRB- mostly_RB -RRB-_-RRB- homogeneous_JJ local-area_NN distributed_VBN systems_NNS and_CC require_VBP specific_JJ platforms_NNS with_IN the_DT appropriate_JJ logging_VBG capabilities_NNS ._.
+In_IN some_DT cases_NNS ,_, Pinpoint_NNP also_RB requires_VBZ the_DT ability_NN to_TO change_VB messag_NN
+ucsd.edu_NNP Client_NNP Coral_NNP Web_NN proxy_NN Origin_NN server_NN Coral_NNP DHT_NNP update_VB Figure_NNP 1_CD :_: Example_NN causal_JJ path_NN through_IN Coral_NNP ._.
+Figure_NN 2_CD :_: Schematic_JJ of_IN our_PRP$ tool_NN chain_NN ._.
+We_PRP are_VBP focusing_VBG on_IN applications_NNS running_VBG on_IN PlanetLab_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, perhaps_RB the_DT best_JJS collection_NN of_IN widely_RB distributed_VBN applications_NNS for_IN which_WDT research_NN access_NN is_VBZ feasible_JJ ._.
+In_IN particular_JJ ,_, we_PRP have_VBP applied_VBN our_PRP$ tools_NNS to_TO the_DT CoDeeN_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- and_CC Coral_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- content-distribution_NN n_NN

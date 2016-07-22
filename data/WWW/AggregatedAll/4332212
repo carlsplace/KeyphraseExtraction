@@ -1,0 +1,236 @@
+Topic_NN sentiment_NN mixture_NN :_: modeling_NN facets_NNS and_CC opinions_NNS in_IN weblogs_NNS
+In_IN this_DT paper_NN ,_, we_PRP define_VBP the_DT problem_NN of_IN topic-sentiment_JJ analysis_NN on_IN Weblogs_NNS and_CC propose_VBP a_DT novel_JJ probabilistic_JJ model_NN to_TO capture_VB the_DT mixture_NN of_IN topics_NNS and_CC sentiments_NNS simultaneously_RB ._.
+The_DT proposed_VBN Topic-Sentiment_NNP Mixture_NNP -LRB-_-LRB- TSM_NNP -RRB-_-RRB- model_NN can_MD reveal_VB the_DT latent_JJ topical_JJ facets_NNS in_IN a_DT Weblog_NNP collection_NN ,_, the_DT subtopics_NNS in_IN the_DT results_NNS of_IN an_DT ad_FW hoc_FW query_NN ,_, and_CC their_PRP$ associated_VBN sentiments_NNS ._.
+It_PRP could_MD also_RB provide_VB general_JJ sentiment_NN models_NNS that_WDT are_VBP applicable_JJ to_TO any_DT ad_FW hoc_FW topics_NNS ._.
+With_IN a_DT specifically_RB designed_VBN HMM_NN structure_NN ,_, the_DT sentiment_NN models_NNS and_CC topic_NN models_NNS estimated_VBN with_IN TSM_NN can_MD be_VB utilized_VBN to_TO extract_VB topic_NN life_NN cycles_NNS and_CC sentiment_NN dynamics_NNS ._.
+Empirical_JJ experiments_NNS on_IN different_JJ Weblog_NNP datasets_NNS show_VBP that_IN this_DT approach_NN is_VBZ effective_JJ for_IN modeling_NN the_DT topic_NN facets_NNS and_CC sentiments_NNS and_CC extracting_VBG their_PRP$ dynamics_NNS from_IN Weblog_NNP collections_NNS ._.
+The_DT TSM_NNP model_NN is_VBZ quite_RB general_JJ ;_: it_PRP can_MD be_VB applied_VBN to_TO any_DT text_NN collections_NNS with_IN a_DT mixture_NN of_IN topics_NNS and_CC sentiments_NNS ,_, thus_RB has_VBZ many_JJ potential_JJ applications_NNS ,_, such_JJ as_IN search_NN result_NN summarization_NN ,_, opinion_NN tracking_NN ,_, and_CC user_NN behavior_NN prediction_NN ._.
+ther_NN work_NN related_VBN to_TO our_PRP$ approach_NN is_VBZ sentiment_NN analysis_NN ._.
+Current_NNP researches_VBZ on_IN sentiment_NN analysis_NN mainly_RB focus_VB on_IN topic_NN related_JJ issues_NNS -LRB-_-LRB- Hu_NNP &_CC Liu_NNP ,_, 2004_CD ;_: Lu_NNP &_CC Zhai_NNP ,_, 2008_CD ;_: Mei_NNP ,_, Cai_NNP ,_, Zhang_NNP ,_, &_CC Zhai_NNP ,_, 2008_CD ;_: =_JJ -_: =_JJ Mei_NNP &_CC Ling_NNP ,_, 2007_CD -_: =--RRB-_NN and_CC sentiment_NN classification_NN -LRB-_-LRB- Ding_NNP &_CC Liu_NNP ,_, 2007_CD ;_: Hatzivassiloglou_NNP &_CC McKeown_NNP ,_, 1997_CD ;_: Pang_NNP &_CC Lee_NNP ,_, 2004_CD ;_: Turney_NNP ,_, 2002_CD ;_: Turney_NNP &_CC Littman_NNP ,_, 2003_CD -RRB-_-RRB- ._.
+Here_RB ,_, we_PRP only_RB summarize_VBP some_DT of_IN previous_JJ approaches_NNS on_IN topi_NN
+ntence_NN and_CC document_NN level_NN -RRB-_-RRB- ._.
+However_RB ,_, none_NN of_IN them_PRP can_MD model_VB mixture_NN of_IN topics_NNS alongside_IN with_IN sentiment_NN classification_NN ,_, which_WDT again_RB makes_VBZ the_DT results_NNS less_RBR informative_JJ to_TO users_NNS ._.
+Some_DT of_IN the_DT recent_JJ work_NN =_JJ -_: =[_NN 14_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ been_VBN aware_JJ of_IN this_DT limitation_NN and_CC tried_VBD to_TO capture_VB sentiments_NNS and_CC mixture_NN of_IN topics_NNS simultaneously_RB ._.
+However_RB ,_, Mei_NNP et_FW al._FW -LRB-_-LRB- 14_CD -RRB-_-RRB- does_VBZ not_RB model_VB sentiment_NN directly_RB and_CC requires_VBZ post-processing_JJ to_TO calc_VB
+that_IN the_DT set_NN of_IN topically_RB relevant_JJ documents_NNS are_VBP already_RB known_VBN in_IN advance_NN ._.
+On_IN the_DT other_JJ hand_NN ,_, there_EX are_VBP also_RB some_DT interesting_JJ works_NNS on_IN modeling_NN the_DT topic_NN and_CC sentiment_NN of_IN documents_NNS in_IN a_DT unified_JJ way_NN -LRB-_-LRB- =_JJ -_: =_JJ Mei_FW et_FW al._FW ,_, 2007_CD -_: =_JJ -_: ;_: Zhang_NNP and_CC Ye_NNP ,_, 2008_CD -RRB-_-RRB- ._.
+3_CD Term_NN Weighting_NN and_CC Sentiment_NN Analysis_NN In_IN this_DT section_NN ,_, we_PRP describe_VBP the_DT characteristics_NNS of_IN terms_NNS that_WDT are_VBP useful_JJ in_IN sentiment_NN analysis_NN ,_, and_CC present_VB our_PRP$ sentiment_NN analysis_NN model_NN
+nion_NN estimation_NN :_: determine_VB whether_IN these_DT messages_NNS express_VBP positive_JJ or_CC negative_JJ opinions_NNS or_CC news_NN about_IN the_DT topic_NN ._.
+If_IN there_EX is_VBZ enough_JJ training_NN data_NNS ,_, this_DT could_MD be_VB formulated_VBN as_IN a_DT topic-sentiment_JJ model_NN -LRB-_-LRB- =_JJ -_: =_JJ Mei_FW et_FW al._FW 2007_CD -_: =--RRB-_NN ,_, in_IN which_WDT the_DT topics_NNS and_CC sentiment_NN of_IN documents_NNS are_VBP jointly_RB inferred_VBN ._.
+Our_PRP$ dataset_NN ,_, however_RB ,_, is_VBZ asymmetric_JJ ,_, with_IN millions_NNS of_IN text_NN messages_NNS per_IN day_NN -LRB-_-LRB- and_CC millions_NNS of_IN distinct_JJ vocabulary_NN items_NNS -RRB-_-RRB- but_CC only_RB
+odeled_VBN as_IN having_VBG some_DT weight_NN of_IN topicality_NN and_CC perspective_NN -LRB-_-LRB- e.g._FW ,_, liberal_JJ or_CC conservative_JJ -RRB-_-RRB- ,_, however_RB ,_, this_DT model_NN assumes_VBZ that_IN all_DT documents_NNS are_VBP about_IN the_DT same_JJ topic_NN ._.
+The_DT topic-sentiment_JJ mixture_NN model_NN -LRB-_-LRB- =_JJ -_: =_JJ Mei_FW et_FW al._FW 2007_CD -_: =--RRB-_CD models_NNS each_DT document_NN as_IN both_CC a_DT mixture_NN of_IN topics_NNS and_CC a_DT mixture_NN of_IN different_JJ sentiments_NNS -LRB-_-LRB- i.e._FW negative\/positive_JJ -RRB-_-RRB- ,_, however_RB ,_, words_NNS come_VBP from_IN either_CC the_DT topic_NN model_NN or_CC the_DT sentiment_NN model_NN rather_RB than_IN a_DT
+restaurant_NN ._.
+Summarization_NN from_IN online_JJ reviews_NNS ,_, therefore_RB ,_, plays_VBZ an_DT important_JJ role_NN for_IN such_JJ dialogue_NN systems_NNS ._.
+There_EX have_VBP been_VBN previous_JJ studies_NNS on_IN review_NN analysis_NN for_IN text-based_JJ summarization_NN systems_NNS -LRB-_-LRB- =_JJ -_: =_JJ Mei_FW et_FW al._FW ,_, 2007_CD -_: =_JJ -_: ;_: Titov_NNP and_CC McDonald_NNP ,_, 2008a_CD ;_: Branavan_NNP et_FW al._FW ,_, 2008_CD -RRB-_-RRB- ._.
+Mixture_NN models_NNS and_CC topic_NN models_NNS are_VBP used_VBN to_TO predict_VB the_DT underlying_VBG topics_NNS of_IN each_DT document_NN and_CC generate_VB a_DT phrase-level_JJ summary_NN ._.
+An_DT aspect_NN rating_NN on_IN
+n_NN active_JJ research_NN area_NN because_IN of_IN the_DT increased_VBN volume_NN of_IN opinionated_JJ data_NNS ._.
+General_JJ opinion_NN mining_NN was_VBD focused_VBN on_IN finding_VBG topics_NNS among_IN articles_NNS and_CC clustering_NN positive_JJ and_CC negative_JJ opinions_NNS on_IN topics_NNS =_JJ -_: =[_NN 7_CD ,_, 8_CD ,_, 13_CD ,_, 9_CD ,_, 20_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS of_IN the_DT results_NNS of_IN opinion_NN summarization_NN focused_VBD on_IN showing_VBG statistics_NNS of_IN the_DT number_NN of_IN positive_JJ and_CC negative_JJ opinions_NNS ._.
+Usually_RB people_NNS used_VBD table-shaped_JJ summary_NN -LRB-_-LRB- 7_CD ,_, 8_CD ,_, 16_CD -RRB-_-RRB- or_CC histogram_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+Som_NN
+r-topic_NN modeling_NN -LRB-_-LRB- Steyvers_FW et_FW al._FW ,_, 2004_CD -RRB-_-RRB- ,_, contextual_JJ topic_NN analysis_NN -LRB-_-LRB- Mei_NNP and_CC Zhai_NNP ,_, 2006_CD -RRB-_-RRB- ,_, dynamic_JJ and_CC correlated_JJ topic_NN models_NNS -LRB-_-LRB- Blei_NNP and_CC Lafferty_NNP ,_, 2005_CD ;_: Blei_NNP and_CC Lafferty_NNP ,_, 2006_CD -RRB-_-RRB- ,_, and_CC opinion_NN analysis_NN -LRB-_-LRB- =_JJ -_: =_JJ Mei_FW et_FW al._FW ,_, 2007_CD -_: =_JJ -_: ;_: Branavan_NNP et_FW al._FW ,_, 2008_CD -RRB-_-RRB- ._.
+Our_PRP$ work_NN is_VBZ an_DT extension_NN of_IN PLSA_NN by_IN incorporating_VBG the_DT knowledge_NN of_IN a_DT bilingual_JJ dictionary_NN as_IN soft_JJ constraints_NNS ._.
+Such_PDT an_DT extension_NN is_VBZ similar_JJ to_TO the_DT extension_NN of_IN PLSA_NN for_IN incor_NN
+tion_NN view_NN sentiment_NN as_IN a_DT word_NN level_NN feature_NN ._.
+Some_DT models_NNS use_VBP sentiment_NN word_NN lists_NNS ,_, either_CC given_VBN or_CC learned_VBN from_IN a_DT corpus_NN ,_, as_IN a_DT prior_RB to_TO seed_NN topics_NNS so_IN that_IN they_PRP attract_VBP other_JJ sentiment_NN bearing_NN words_NNS -LRB-_-LRB- =_JJ -_: =_JJ Mei_FW et_FW al._FW ,_, 2007_CD -_: =_JJ -_: ;_: Lin_NNP and_CC He_PRP ,_, 2009_CD -RRB-_-RRB- ._.
+Other_JJ approaches_NNS view_VBP sentiment_NN or_CC perspective_NN as_IN a_DT perturbation_NN of_IN a_DT log-linear_JJ topic_NN model_NN -LRB-_-LRB- Lin_NNP et_FW al._FW ,_, 2008_CD -RRB-_-RRB- ._.
+Such_JJ techniques_NNS could_MD be_VB combined_VBN with_IN the_DT multilingual_JJ approach_NN p_NN
+=_JJ 1_CD Figure_NN 1_CD shows_VBZ our_PRP$ model_NN using_VBG the_DT plate_NN notation_NN ._.
+3.2_CD Setting_VBG π_NN with_IN a_DT Maximum_NNP Entropy_NNP Model_NNP A_NNP simple_JJ way_NN to_TO set_VB π_NN d_NN ,_, s_NN ,_, n_NN is_VBZ to_TO draw_VB it_PRP from_IN a_DT symmetric_JJ Dirichlet_NNP prior_RB ._.
+However_RB ,_, as_IN suggested_VBN in_IN -LRB-_-LRB- =_JJ -_: =_JJ Mei_FW et_FW al._FW ,_, 2007_CD -_: =_JJ -_: ;_: Lin_NNP and_CC He_PRP ,_, 2009_CD -RRB-_-RRB- ,_, fully_RB unsupervised_JJ topic_NN models_NNS are_VBP unable_JJ to_TO identify_VB opinion_NN words_NNS well_RB ._.
+An_DT important_JJ observation_NN we_PRP make_VBP is_VBZ that_IN aspect_NN words_NNS and_CC opinion_NN words_NNS usually_RB play_VBP different_JJ syntactic_NNS
+nds_NNS ._.
+Due_JJ to_TO the_DT curse_NN of_IN dimensionality_NN ,_, the_DT sparsity_NN of_IN the_DT data_NNS could_MD affect_VB the_DT clustering_NN performance_NN ._.
+3.1.2_CD Unstructured_JJ PLSA_NN Probabilistic_JJ latent_JJ semantic_JJ analysis_NN -LRB-_-LRB- PLSA_NN -RRB-_-RRB- -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC its_PRP$ extensions_NNS =_JJ -_: =[_NN 19_CD ,_, 12_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP recently_RB been_VBN applied_VBN to_TO many_JJ text_NN mining_NN problems_NNS with_IN promising_JJ results_NNS ._.
+If_IN we_PRP ignore_VBP the_DT structure_NN of_IN the_DT phrases_NNS ,_, we_PRP could_MD apply_VB PLSA_NNP on_IN the_DT head_NN terms_NNS to_TO extract_VB topics_NNS ,_, i.e._FW aspects_NNS ._.
+As_IN in_IN
+he_PRP performance_NN is_VBZ not_RB satisfactory_JJ without_IN using_VBG any_DT prior_JJ information_NN :_: the_DT performance_NN of_IN Unsupervised_JJ CTT_NN is_VBZ less_JJR than_IN half_NN of_IN Supervised_VBN CTT_NN by_IN F1-measure_NN -RRB-_-RRB- ._.
+This_DT result_NN is_VBZ consistent_JJ with_IN that_DT of_IN -LRB-_-LRB- =_JJ -_: =_JJ Mei_FW et_FW al._FW 2007_CD -_: =--RRB-_NN ._.
+It_PRP means_VBZ that_IN incorporation_NN of_IN the_DT prior_JJ information_NN into_IN our_PRP$ approach_NN is_VBZ necessary_JJ ._.
+Mach_NNP Learn_NNP -LRB-_-LRB- 2011_CD -RRB-_-RRB- 82_CD :_: 211_CD --_: 237_CD 233_CD Table_NNP 4_CD The_DT performance_NN of_IN categorizing_VBG citation_NN relationship_NN by_IN Multi-class_JJ S_NN
+nion_NN target_NN -LRB-_-LRB- or_CC topic_NN -RRB-_-RRB- extraction_NN is_VBZ a_DT difficult_JJ task_NN in_IN opinion_NN mining_NN ._.
+Several_JJ methods_NNS have_VBP been_VBN proposed_VBN ,_, mainly_RB in_IN the_DT context_NN of_IN product_NN review_NN mining_NN -LRB-_-LRB- Hu_NNP and_CC Liu_NNP 2004_CD ;_: Popescu_NNP and_CC Etzioni_NNP 2005_CD ;_: =_JJ -_: =_JJ Mei_FW et_FW al._FW 2007_CD -_: =_JJ -_: ;_: Kobayashi_NNP ,_, Inui_NNP ,_, and_CC Matsumoto_NNP 2007_CD ;_: Scaffidi_NNP et_FW al._FW 2007_CD ;_: Wong_NNP ,_, Lam_NNP ,_, and_CC Wong_NNP 2008_CD ;_: Stoyanov_NNP and_CC Cardie_NNP 2008_CD -RRB-_-RRB- ._.
+In_IN this_DT mining_NN 3Computational_NNP Linguistics_NNP Volume_NNP 1_CD ,_, Number_NN 1_CD task_NN ,_, opinion_NN targets_NNS us_PRP
+ng_NN the_DT synonym_NN set_VBN in_IN WordNet_NNP -LRB-_-LRB- Fellbaum_NNP 1998_CD -RRB-_-RRB- and_CC the_DT semiautomated_JJ tagging_NN of_IN reviews_NNS ._.
+Our_PRP$ work_NN finds_VBZ topic_NN sets_NNS -LRB-_-LRB- equal_JJ to_TO product_NN featues_NNS -RRB-_-RRB- automatically_RB through_IN topic_NN models_NNS ._.
+Topic-Sentiment_NNP Model_NNP -LRB-_-LRB- =_JJ -_: =_JJ Mei_FW et_FW al._FW 2007_CD -_: =--RRB-_NN calculate_VBP sentiment_NN coverage_NN of_IN documents_NNS by_IN joint_JJ modeling_NN the_DT mixture_NN of_IN topics_NNS and_CC sentiment_NN predictions_NNS ._.
+But_CC their_PRP$ model_NN requires_VBZ post-processing_JJ to_TO calculate_VB sentiment_NN coverage_NN of_IN documents_NNS ._.
+Ra_NN
+model_VB the_DT relations_NNS between_IN authors_NNS and_CC their_PRP$ research_NN interest_NN topics_NNS ._.
+Supervised_VBN topic_NN model_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- is_VBZ proposed_VBN to_TO model_VB the_DT relations_NNS between_IN topics_NNS and_CC movie_NN ratings_NNS ._.
+Several_JJ sentiment_NN topic_NN models_NNS =_JJ -_: =[_NN 7_CD ,_, 8_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP proposed_VBN to_TO model_VB the_DT relations_NNS between_IN topics_NNS and_CC human_JJ 's_POS sentiments_NNS or_CC opinions_NNS ._.
+However_RB ,_, structured_JJ and_CC unstructured_JJ text_NN information_NN is_VBZ so_RB diversity_NN and_CC only_RB above_IN models_NNS are_VBP not_RB enough_RB to_TO ex_FW
+Such_JJ aspects_NNS can_MD be_VB obtained_VBN through_IN domain_NN experts_NNS manual_JJ effort_NN ,_, or_CC unsupervised_JJ automatic_JJ methods_NNS -LRB-_-LRB- e.g._FW -LRB-_-LRB- 10_CD -RRB-_-RRB- -RRB-_-RRB- ,_, or_CC automatic_JJ methods_NNS with_IN specified_VBN user_NN interests_NNS as_IN minimal_JJ human_JJ supervision_NN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+It_PRP is_VBZ not_RB our_PRP$ focus_NN to_TO find_VB those_DT aspects_NNS ._.
+Instead_RB ,_, assuming_VBG the_DT availability_NN of_IN aspects_NNS ,_, our_PRP$ problem_NN is_VBZ to_TO automatically_RB construct_VB a_DT contextdependent_JJ sentiment_NN lexicon_NN ,_, defined_VBN as_IN follows_VBZ :_: Definit_NN
+der_NN 's_POS emotion_NN for_IN a_DT specific_JJ text_NN is_VBZ to_TO be_VB determined_VBN so_IN that_IN their_PRP$ underlying_JJ sense_NN can_MD be_VB differentiated_VBN ._.
+4.3_CD Subject-Topic-Event_JJ Detection_NN There_EX are_VBP other_JJ relevant_JJ effort_NN could_MD found_VBN in_IN literature_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT proposal_NN aimed_VBN to_TO identify_VB the_DT subject_NN ,_, topic_NN or_CC event_NN in_IN a_DT sentence_NN on_IN which_WDT the_DT emotion_NN is_VBZ expressed_VBN ._.
+This_DT information_NN is_VBZ necessary_JJ for_IN tracking_NN of_IN emotions_NNS expressed_VBN on_IN a_DT particular_JJ subject_NN \/_:
+el_NN and_CC the_DT query-oriented_JJ topic_NN model_NN of_IN a_DT document_NN cluster_NN ._.
+DEFINITION_NN 2.5_CD ._.
+-LRB-_-LRB- Topic_JJ model_NN of_IN Document_NNP Cluster_NNP -RRB-_-RRB- :_: A_DT topic_NN model_NN θ_NN of_IN a_DT document_NN cluster_NN C_NN is_VBZ a_DT multinomial_JJ distribution_NN of_IN words_NNS -LCB-_-LRB- p_NN -LRB-_-LRB- w_NN |_CD θ_NN -RRB-_-RRB- -RCB-_-RRB- =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Each_DT document_NN cluster_NN is_VBZ considered_VBN as_IN a_DT mixture_NN of_IN multiple_JJ topic_NN models_NNS ._.
+The_DT assumption_NN of_IN this_DT model_NN is_VBZ that_IN words_NNS in_IN the_DT document_NN are_VBP sampled_VBN following_VBG word_NN distributions_NNS corresponding_VBG to_TO each_DT t_NN
+ormation_NN we_PRP extract_VBP can_MD benefit_VB existing_VBG summarization_NN systems_NNS ._.
+Finally_RB ,_, a_DT number_NN of_IN approaches_NNS analyze_VBP review_NN documents_NNS using_VBG probabilistic_JJ topic_NN models_NNS -LRB-_-LRB- Lu_NNP and_CC Zhai_NNP ,_, 2008_CD ;_: Titov_NNP and_CC McDonald_NNP ,_, 2008_CD ;_: =_JJ -_: =_JJ Mei_FW et_FW al._FW ,_, 2007_CD -_: =--RRB-_NN ._.
+While_IN some_DT of_IN these_DT methods_NNS focus_VBP primar351ily_RB on_IN modeling_NN ratable_JJ aspects_NNS -LRB-_-LRB- Titov_NNP and_CC McDonald_NNP ,_, 2008_CD -RRB-_-RRB- ,_, others_NNS explicitly_RB capture_VBP the_DT mixture_NN of_IN topics_NNS and_CC sentiments_NNS -LRB-_-LRB- Mei_NNP et_FW al._FW ,_, 2007_CD -RRB-_-RRB- ._.
+These_DT appr_NN
+ccurrence_NN patterns_NNS ,_, i.e._FW topics_NNS ,_, embedded_VBN in_IN documents_NNS ._.
+Topic_NN models_NNS have_VBP become_VBN important_JJ building_NN blocks_NNS of_IN many_JJ interesting_JJ applications_NNS -LRB-_-LRB- see_VB e.g._FW ,_, -LRB-_-LRB- Blei_NNP and_CC Jordan_NNP ,_, 2003_CD ;_: Blei_NNP and_CC Lafferty_NNP ,_, 2007_CD ;_: =_JJ -_: =_JJ Mei_FW et_FW al._FW ,_, 2007_CD -_: =_JJ -_: ;_: Lu_NNP and_CC Zhai_NNP ,_, 2008_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+In_IN general_JJ ,_, topic_NN models_NNS can_MD discover_VB word_NN clustering_NN patterns_NNS in_IN documents_NNS and_CC project_NN each_DT document_NN to_TO a_DT latent_JJ topic_NN space_NN formed_VBN by_IN such_JJ word_NN clusters_NNS ._.
+However_RB ,_, the_DT topical_JJ
+with_IN a_DT fully_RB supervised_VBN model_NN ._.
+Below_NNP ,_, we_PRP describe_VBP two_CD ways_NNS of_IN achieving_VBG such_JJ a_DT combined_JJ model_NN in_IN the_DT framework_NN of_IN structured_JJ conditional_JJ latent_JJ variable_JJ models_NNS ._.
+Contrary_JJ to_TO -LRB-_-LRB- generative_JJ -RRB-_-RRB- topic_NN models_NNS -LRB-_-LRB- =_JJ -_: =_JJ Mei_FW et_FW al._FW ,_, 2007_CD -_: =_JJ -_: ;_: Titov_NNP and_CC 569_CD Proceedings_NNP of_IN the_DT 49th_JJ Annual_JJ Meeting_VBG of_IN the_DT Association_NNP for_IN Computational_NNP Linguistics_NNPS :_: shortpapers_NNS ,_, pages_NNS 569_CD --_: 574_CD ,_, Portland_NNP ,_, Oregon_NNP ,_, June_NNP 19-24_CD ,_, 2011_CD ._.
+c_NN ○_CD 2011_CD Association_NNP for_IN Computati_NNP
+se_FW of_IN its_PRP$ wide_JJ acceptance_NN among_IN the_DT general_JJ public_NN ,_, blogs_NNS have_VBP been_VBN drawing_VBG much_JJ attention_NN from_IN NLP_NNP ,_, information_NN retrieval_NN -LRB-_-LRB- IR_NN -RRB-_-RRB- ,_, and_CC other_JJ research_NN communities_NNS as_IN an_DT attractive_JJ domain_NN for_IN exploration_NN =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 5_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Among_IN a_DT variety_NN of_IN research_NN opportunities_NNS targeting_VBG blogs_NNS ,_, this_DT paper_NN focuses_VBZ on_IN IR_NN aspects_NNS ,_, specifically_RB ,_, opinionated_VBN document_NN -LRB-_-LRB- blog_NN post_NN -RRB-_-RRB- retrieval_NN ,_, which_WDT has_VBZ been_VBN challenged_VBN at_IN the_DT Text_NNP Retrieval_NNP
+''_'' are_VBP feature_NN expressions_NNS referring_VBG to_TO the_DT same_JJ feature_NN of_IN cameras_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP assume_VBP that_IN all_DT feature_NN expressions_NNS have_VBP been_VBN identified_VBN by_IN an_DT existing_VBG algorithm_NN ._.
+There_EX are_VBP many_JJ such_JJ algorithms_NNS =_JJ -_: =[_NN 17-20_CD ,_, 29_CD ,_, 35_CD ,_, 38_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Grouping_VBG feature_NN expressions_NNS ,_, which_WDT are_VBP domain_NN synonyms_NNS ,_, is_VBZ critical_JJ for_IN effective_JJ opinion_NN summary_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+Since_IN there_EX are_VBP typically_RB hundreds_NNS of_IN feature_NN expressions_NNS that_WDT can_MD be_VB discovered_VBN from_IN text_NN fo_NN
+``_`` photo_NN ''_'' while_IN ``_`` movie_NN ''_'' to_TO ``_`` video_NN ''_'' ._.
+This_DT paper_NN deals_VBZ with_IN this_DT problem_NN ,_, i.e._FW ,_, grouping_VBG domain_NN synonym_NN features_NNS ._.
+We_PRP assume_VBP that_IN all_PDT the_DT feature_NN expressions_NNS have_VBP been_VBN identified_VBN by_IN an_DT existing_VBG algorithm_NN =_JJ -_: =[_NN 20-25_CD ,_, 29_CD ,_, 31_CD ,_, 36_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Topic_NN modeling_NN is_VBZ a_DT principled_JJ approach_NN to_TO solving_VBG this_DT problem_NN as_IN it_PRP groups_NNS terms_NNS of_IN the_DT same_JJ topic_NN into_IN one_CD group_NN ._.
+This_DT paper_NN takes_VBZ this_DT approach_NN ._.
+However_RB ,_, we_PRP believe_VBP instead_RB of_IN letting_VBG a_DT topic_NN mo_NN
+n_NN active_JJ research_NN area_NN because_IN of_IN the_DT increased_VBN volume_NN of_IN opinionated_JJ data_NNS ._.
+General_JJ opinion_NN mining_NN was_VBD focused_VBN on_IN finding_VBG topics_NNS among_IN articles_NNS and_CC clustering_NN positive_JJ and_CC negative_JJ opinions_NNS on_IN topics_NNS =_JJ -_: =[_NN 7_CD ,_, 8_CD ,_, 13_CD ,_, 9_CD ,_, 20_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS of_IN the_DT results_NNS of_IN opinion_NN summarization_NN focused_VBD on_IN showing_VBG statistics_NNS of_IN the_DT number_NN of_IN positive_JJ and_CC negative_JJ opinions_NNS ._.
+Usually_RB people_NNS used_VBD tableshaped_JJ summary_NN -LRB-_-LRB- 7_CD ,_, 8_CD ,_, 16_CD -RRB-_-RRB- or_CC histogram_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+Some_DT
+sentiment_NN -RRB-_-RRB- ,_, we_PRP decided_VBD to_TO leave_VB this_DT for_IN future_JJ investigation_NN ,_, since_IN the_DT documents_NNS in_IN MOV_NN are_VBP not_RB annotated_JJ with_IN genre_NN information_NN ._.
+22_CD ._.
+This_DT is_VBZ not_RB to_TO be_VB confused_VBN with_IN topic-sentiment_JJ mixture_NN models_NNS -LRB-_-LRB- =_JJ -_: =_JJ Mei_NNP ,_, Ling_NNP ,_, Wondra_NNP ,_, Su_NNP ,_, &_CC Zhai_NNP ,_, 2007_CD -_: =--RRB-_NN ,_, where_WRB the_DT goal_NN is_VBZ to_TO first_RB use_VB topic_NN models_NNS to_TO mine_VB the_DT major_JJ aspects_NNS of_IN a_DT product_NN from_IN an_DT online_JJ review_NN and_CC then_RB assign_VB ratings_NNS to_TO each_DT extracted_VBN aspect_NN ._.
+On_IN the_DT other_JJ hand_NN ,_, our_PRP$ goal_NN is_VBZ to_TO design_VB a_DT
+effort_NN is_VBZ still_RB required_VBN to_TO obtain_VB labeled_JJ data_NNS for_IN training_NN ._.
+Intuitively_RB ,_, sentiment_NN polarities_NNS are_VBP dependent_JJ on_IN contextual_JJ information_NN ,_, such_JJ as_IN topics_NNS or_CC domains_NNS ._.
+In_IN this_DT regard_NN ,_, some_DT recent_JJ work_NN -LRB-_-LRB- =_JJ -_: =_JJ Mei_FW et_FW al._FW ,_, 2007_CD -_: =_JJ -_: ;_: Titov_NNP and_CC McDonald_NNP ,_, 2008a_CD -RRB-_-RRB- has_VBZ tried_VBN to_TO model_NN both_CC sentiment_NN and_CC topics_NNS ._.
+However_RB ,_, these_DT two_CD models_NNS either_RB require_VBP postprocessing_VBG to_TO calculate_VB the_DT positive\/negative_JJ coverage_NN in_IN a_DT document_NN for_IN polarit_NN
+chniques_NNS to_TO extract_VB aspects_NNS and_CC associated_VBN opinions_NNS ._.
+Mei_FW et_FW al._FW incorporated_VBN two_CD additional_JJ sentiment_NN language_NN models_NNS into_IN topic_NN models_NNS to_TO extract_VB the_DT facets_NNS and_CC positive\/negative_JJ opinions_NNS in_IN weblogs_NNS =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Later_RB ,_, some_DT work_NN further_RB introduced_VBD aspectspecific_JJ sentiment_NN models_NNS in_IN different_JJ ways_NNS ,_, e.g._FW ,_, using_VBG supervision_NN from_IN sentiment_NN priors_NNS -LRB-_-LRB- 12_CD ,_, 9_CD -RRB-_-RRB- or_CC supervision_NN from_IN labeled_VBN sentences_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+In_IN -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, Tito_NNP
+s_NN studies_NNS ,_, which_WDT consider_VBP the_DT structure_NN information_NN as_IN heuristic_NN rules_NNS -LRB-_-LRB- Hu_NNP and_CC Liu_NNP ,_, 2004_CD -RRB-_-RRB- or_CC input_NN features_NNS -LRB-_-LRB- Wilson_NNP et_FW al._FW 2009_CD -RRB-_-RRB- ._.
+Recently_RB ,_, there_EX are_VBP some_DT studies_NNS on_IN joint_JJ sentiment\/topic_JJ extraction_NN -LRB-_-LRB- =_JJ -_: =_JJ Mei_FW et_FW al._FW 2007_CD -_: =_JJ -_: ;_: Titov_NNP and_CC McDonald_NNP ,_, 2008_CD ;_: Snyder_NNP and_CC Barzilay_NNP ,_, 2007_CD -RRB-_-RRB- ._.
+These_DT methods_NNS represent_VBP reviews_NNS as_IN several_JJ coarse-grained_JJ topics_NNS ,_, which_WDT can_MD be_VB considered_VBN as_IN clusters_NNS of_IN object_NN features_NNS ._.
+They_PRP are_VBP hard_JJ to_TO inden_VB
+onding_VBG textual_JJ evidence_NN ._.
+Text_NN excerpts_NNS are_VBP usually_RB extracted_VBN through_IN string_NN matching_NN -LRB-_-LRB- Hu_NNP and_CC Liu_NNP ,_, 2004a_CD ;_: Popescu_NNP and_CC Etzioni_NNP ,_, 2005_CD -RRB-_-RRB- ,_, sentence_NN clustering_NN -LRB-_-LRB- Gamon_NNP et_FW al._FW ,_, 2005_CD -RRB-_-RRB- ,_, or_CC through_IN topic_NN models_NNS -LRB-_-LRB- =_JJ -_: =_JJ Mei_FW et_FW al._FW ,_, 2007_CD -_: =_JJ -_: ;_: Titov_NNP and_CC McDonald_NNP ,_, 2008_CD -RRB-_-RRB- ._.
+String_NNP extraction_NN methods_NNS are_VBP limited_VBN to_TO fine-grained_JJ aspects_NNS whereas_IN clustering_NN and_CC topic_NN model_NN approaches_NNS must_MD resort_VB to_TO ad-hoc_JJ means_NNS of_IN labeling_NN clusters_NNS or_CC topics_NNS ._.
+How_WRB
+rporate_JJ training_NN examples_NNS or_CC external_JJ resources_NNS if_IN any_DT ._.
+Thus_RB our_PRP$ system_NN can_MD be_VB easily_RB extended_VBN to_TO support_VB user_NN feedback_NN in_IN interactive_JJ text_NN mining_NN ._.
+2_CD ._.
+PROBLEM_NN FORMULATION_NN Following_VBG the_DT definitions_NNS in_IN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP formally_RB define_VBP the_DT key_JJ concepts_NNS of_IN the_DT problem_NN of_IN Multi-Faceted_NNP Overview_NNP Mining_NNP as_IN follows_VBZ :_: Definition_NN 1_CD -LRB-_-LRB- Document_NNP -RRB-_-RRB- :_: We_PRP define_VBP a_DT document_NN d_NN in_IN a_DT text_NN collection_NN C_NN as_IN a_DT sequence_NN of_IN words_NNS d_NN =_JJ -LCB-_-LRB- w1_NN ,_,
+sentences_NNS CO._NNP ._.
+April_NNP 21-25_CD ,_, 2008_CD ·_NNP Beijing_NNP ,_, China_NNP In_IN the_DT second_JJ stage_NN ,_, our_PRP$ main_JJ idea_NN is_VBZ to_TO exploit_VB a_DT probabilistic_JJ topic_NN model_NN ,_, i.e._FW ,_, Probabilistic_JJ Latent_JJ Semantic_JJ Analysis_NN -LRB-_-LRB- PLSA_NN -RRB-_-RRB- with_IN conjugate_NN prior_RB =_JJ -_: =[_NN 6_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: to_TO cluster_VB opinion_NN sentences_NNS in_IN a_DT special_JJ way_NN so_IN that_IN there_EX will_MD be_VB precisely_RB one_CD cluster_NN corresponding_VBG to_TO each_DT segment_NN ri_NN in_IN the_DT expert_NN review_NN ._.
+These_DT clusters_NNS are_VBP to_TO collect_VB opinion_NN sentences_NNS that_IN c_NN
+cts_NNS or_CC targets_NNS -RRB-_-RRB- have_VBP been_VBN mined_VBN -LRB-_-LRB- for_IN example_NN ,_, Yi_FW et_FW al._FW -LRB-_-LRB- 2003_CD -RRB-_-RRB- ,_, Popescu_NNP and_CC Etzioni_NNP -LRB-_-LRB- 2005_CD -RRB-_-RRB- ,_, and_CC Hu_NNP and_CC Liu_NNP -LRB-_-LRB- 2006_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+More_RBR recently_RB there_EX has_VBZ been_VBN work_NN on_IN creating_VBG joint_JJ models_NNS of_IN topic_NN and_CC sentiments_NNS -LRB-_-LRB- =_JJ -_: =_JJ Mei_FW et_FW al._FW ,_, 2007_CD -_: =_JJ -_: ;_: Titov_NNP and_CC McDonald_NNP ,_, 2008_CD -RRB-_-RRB- to_TO improve_VB topic-sentiment_JJ summaries_NNS ._.
+We_PRP do_VBP not_RB model_VB topics_NNS ;_: instead_RB we_PRP directly_RB model_VBP the_DT relations_NNS between_IN targets_NNS ._.
+The_DT focus_NN of_IN our_PRP$ work_NN is_VBZ to_TO jointly_RB model_VB opinion_NN pol_NN
+been_VBN very_RB successfully_RB applied_VBN to_TO a_DT large_JJ range_NN of_IN text_NN mining_NN problems_NNS including_VBG hierarchical_JJ topic_NN modeling_NN -LRB-_-LRB- 17_CD ,_, 7_CD -RRB-_-RRB- ,_, author-topic_JJ analysis_NN -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, spatiotemporal_JJ text_NN mining_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, sentiment_NN analysis_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC multi-stream_JJ bursty_NN pattern_NN finding_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+They_PRP are_VBP among_IN the_DT most_RBS effective_JJ text_NN mining_NN techniques_NNS ._.
+We_PRP propose_VBP Topic_JJ Cube_NN to_TO combine_VB them_PRP with_IN OLAP_NN to_TO enable_VB effective_JJ mining_NN of_IN both_DT structured_VBN
+ime_NN Period_NN Query_NNP Term_NNP iPod_NNP 2988 1\/11_CD \/_: 05_CD ∼_CD 11\/01\/06_CD ipod_NN Da_NN Vinci_NNP Code_NNP 1000 1\/26_CD \/_: 05_CD ∼_CD 10\/31\/06_CD da_NN +_CC vinci_NN +_CC code_NN Table_NNP 2_CD :_: Basic_JJ statistics_NNS of_IN the_DT TEST_NN data_NN sets_NNS For_IN all_PDT the_DT weblog_NN collections_NNS ,_, Krovetz_NN stemmer_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ used_VBN to_TO stem_VB the_DT text_NN ._.
+5.2_CD Sentiment_NN Model_NNP Extraction_NNP Our_NNP first_JJ experiment_NN is_VBZ to_TO evaluate_VB the_DT effectiveness_NN of_IN learning_VBG the_DT prior_JJ models_NNS for_IN sentiments_NNS ._.
+As_IN discussed_VBN in_IN Section_NN 3.3_CD ,_, a_DT good_JJ ¯_NN θs_FW sh_FW
+le_FW ,_, a_DT user_NN may_MD like_VB the_DT price_NN and_CC fuel_NN efficiency_NN of_IN a_DT new_JJ Toyota_NNP Camry_NNP ,_, but_CC dislike_VB its_PRP$ power_NN and_CC safety_NN aspects_NNS ._.
+Indeed_RB ,_, people_NNS tend_VBP to_TO have_VB different_JJ opinions_NNS about_IN different_JJ features_NNS of_IN a_DT product_NN =_JJ -_: =[_NN 28_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN another_DT example_NN ,_, a_DT voter_NN may_MD agree_VB with_IN some_DT points_NNS made_VBN by_IN a_DT presidential_JJ candidate_NN ,_, but_CC disagree_VBP with_IN some_DT others_NNS ._.
+In_IN reality_NN ,_, a_DT general_JJ statement_NN of_IN good_JJ or_CC bad_JJ about_IN a_DT query_NN is_VBZ not_RB so_RB informa_VB
+ate_VBD can_MD either_RB stay_VB on_IN itself_PRP or_CC transit_NN to_TO some_DT other_JJ topic_NN states_NNS through_IN the_DT background_NN state_NN ._.
+The_DT system_NN can_MD learn_VB -LRB-_-LRB- from_IN our_PRP$ collection_NN -RRB-_-RRB- the_DT transition_NN probabilities_NNS with_IN the_DT Baum-Welch_JJ algorithm_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: and_CC decode_VB the_DT collection_NN sequence_NN with_IN the_DT Viterbi_NNP algorithm_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+We_PRP can_MD easily_RB model_VB sentiments_NNS by_IN adding_VBG two_CD sentiment_NN states_NNS to_TO the_DT HMM_NNP ._.
+Unfortunately_RB ,_, this_DT structure_NN can_MD not_RB decode_VB which_WDT sentime_NN
+Analysis_NN ._.
+Let_VB C_NN =_JJ -LCB-_-LRB- d1_NN ,_, d2_NN ,_, ..._: ,_, dm_NN -RCB-_-RRB- be_VB a_DT set_NN of_IN documents_NNS -LRB-_-LRB- e.g._FW ,_, blog_NN articles_NNS -RRB-_-RRB- ._.
+We_PRP assume_VBP that_IN C_NN covers_VBZ a_DT number_NN of_IN topics_NNS ,_, or_CC subtopics_NNS -LRB-_-LRB- also_RB known_VBN as_IN themes_NNS -RRB-_-RRB- and_CC some_DT related_JJ sentiments_NNS ._.
+Following_VBG =_JJ -_: =[_NN 9_CD ,_, 1_CD ,_, 16_CD ,_, 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP further_RB assume_VBP that_IN there_EX are_VBP k_NN major_JJ topics_NNS -LRB-_-LRB- subtopics_NNS -RRB-_-RRB- in_IN the_DT documents_NNS ,_, -LCB-_-LRB- θ1_NN ,_, θ2_NN ,_, ..._: ,_, θk_NN -RCB-_-RRB- ,_, each_DT being_VBG characterized_VBN by_IN a_DT multinomial_JJ distribution_NN over_IN all_PDT the_DT words_NNS in_IN our_PRP$ vocabulary_NN -LRB-_-LRB- also_RB kno_VBP
+topics_NNS -LRB-_-LRB- subtopics_NNS -RRB-_-RRB- in_IN the_DT documents_NNS ,_, -LCB-_-LRB- θ1_NN ,_, θ2_NN ,_, ..._: ,_, θk_NN -RCB-_-RRB- ,_, each_DT being_VBG characterized_VBN by_IN a_DT multinomial_JJ distribution_NN over_IN all_PDT the_DT words_NNS in_IN our_PRP$ vocabulary_NN -LRB-_-LRB- also_RB known_VBN as_IN a_DT unigram_JJ language_NN model_NN -RRB-_-RRB- ._.
+Following_VBG =_JJ -_: =[_NN 23_CD ,_, 21_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP assume_VBP that_IN there_EX are_VBP two_CD sentiment_NN polarities_NNS in_IN Weblog_NNP articles_NNS ,_, the_DT positive_JJ and_CC the_DT negative_JJ sentiment_NN ._.
+The_DT two_CD sentiments_NNS are_VBP associated_VBN with_IN each_DT topic_NN in_IN a_DT document_NN ,_, representing_VBG the_DT posit_NN
+mincut_JJ algorithm_NN to_TO extract_VB sentiments_NNS and_CC subjective_JJ summarization_NN for_IN movie_NN reviews_NNS -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+In_IN some_DT recent_JJ work_NN ,_, the_DT definition_NN of_IN sentiment_NN classification_NN problem_NN is_VBZ generalized_VBN into_IN a_DT rating_NN scale_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT goal_NN of_IN this_DT line_NN of_IN work_NN is_VBZ to_TO improve_VB the_DT classification_NN accuracy_NN ,_, while_IN we_PRP aim_VBP at_IN mining_NN useful_JJ information_NN -LRB-_-LRB- topic\/sentiment_NN models_NNS ,_, sentiment_NN dynamics_NNS -RRB-_-RRB- from_IN weblogs_NNS ._.
+These_DT methods_NNS do_VBP not_RB eit_VB
+B_NN ,_, πdj_NN is_VBZ the_DT probability_NN of_IN choosing_VBG the_DT j-th_NN topic_NN in_IN document_NN d_NN ,_, and_CC -LCB-_-LRB- δj_FW ,_, d_NN ,_, F_NN ,_, δj_NN ,_, d_NN ,_, P_NN ,_, δj_NN ,_, d_NN ,_, N_NN -RCB-_-RRB- is_VBZ the_DT sentiment_NN coverage_NN of_IN topic_NN j_NN in_IN document_NN d_NN ,_, as_IN defined_VBN in_IN Section_NN 2_CD ._.
+Similar_JJ to_TO existing_VBG work_NN =_JJ -_: =[_NN 28_CD ,_, 16_CD ,_, 15_CD ,_, 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP also_RB regularize_VBP this_DT model_NN by_IN fixing_VBG some_DT parameters_NNS ._.
+λB_NN is_VBZ set_VBN to_TO an_DT empirical_JJ constant_NN between_IN 0_CD and_CC 1_CD ,_, which_WDT indicates_VBZ how_WRB much_JJ noise_NN that_IN we_PRP believe_VBP exists_VBZ in_IN the_DT weblog_NN collection_NN ._.
+We_PRP then_RB s_VBZ
+s._NN For_IN example_NN ,_, Opinmind_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- is_VBZ a_DT commercial_JJ weblog_NN search_NN engine_NN which_WDT can_MD categorize_VB the_DT search_NN results_VBZ into_IN positive_JJ and_CC negative_JJ opinions_NNS ._.
+Mishne_NNP and_CC others_NNS analyze_VBP the_DT sentiments_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- and_CC moods_NNS =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: in_IN Weblogs_NNP ,_, and_CC use_VBP the_DT temporal_JJ patterns_NNS of_IN sentiments_NNS to_TO predict_VB the_DT book_NN sales_NNS as_IN opposed_VBN to_TO simple_JJ blog_NN mentions_VBZ ._.
+However_RB ,_, a_DT common_JJ deficiency_NN of_IN all_PDT this_DT work_NN is_VBZ that_IN the_DT proposed_VBN approaches_NNS ext_VBP
+book_NN sales_NNS ._.
+Opinmind_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- summarizes_VBZ the_DT weblog_NN search_NN results_VBZ with_IN positive_JJ and_CC negative_JJ categories_NNS ._.
+On_IN the_DT other_JJ hand_NN ,_, researchers_NNS also_RB use_VBP facets_NNS to_TO categorize_VB the_DT latent_JJ topics_NNS in_IN search_NN results_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, all_PDT this_DT work_NN ignores_VBZ the_DT correlation_NN between_IN topics_NNS and_CC sentiments_NNS ._.
+This_DT limitation_NN is_VBZ shared_VBN with_IN other_JJ sentiment_NN analysis_NN work_NN such_JJ as_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Sentiment_NN classification_NN has_VBZ been_VBN a_DT challengi_NN
+nt_NN work_NN has_VBZ been_VBN aware_JJ of_IN this_DT limitation_NN ._.
+Engström_NNP studied_VBD how_WRB the_DT topic_NN dependence_NN influences_VBZ the_DT accuracy_NN of_IN sentiment_NN classification_NN and_CC tried_VBD to_TO reduce_VB this_DT dependence_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+In_IN a_DT very_RB recent_JJ work_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT author_NN proposed_VBD a_DT topic_NN dependent_JJ method_NN for_IN sentiment_NN retrieval_NN ,_, which_WDT asFigure_NN 6_CD :_: Topic_JJ life_NN cycles_NNS and_CC sentiment_NN dynamics_NNS sumed_VBD that_IN a_DT sentence_NN was_VBD generated_VBN from_IN a_DT probabilistic_JJ model_NN consis_NN
+nging_JJ topic_NN in_IN Natural_NNP Language_NNP Processing_NNP -LRB-_-LRB- see_VB e.g._FW ,_, -LRB-_-LRB- 26_CD ,_, 2_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+The_DT most_RBS common_JJ definition_NN of_IN the_DT problem_NN is_VBZ a_DT binary_JJ classification_NN task_NN of_IN a_DT sentence_NN to_TO either_CC the_DT positive_JJ or_CC the_DT negative_JJ polarity_NN =_JJ -_: =[_NN 23_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Since_IN traditional_JJ text_NN categorization_NN methods_NNS perform_VBP poorly_RB on_IN sentiment_NN classification_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, Pang_NNP and_CC Lee_NNP proposed_VBD a_DT method_NN using_VBG mincut_JJ algorithm_NN to_TO extract_VB sentiments_NNS and_CC subjective_JJ summarizatio_NN
+ons_NNS from_IN Weblogs_NNP boils_VBZ down_RP to_TO sentiment_NN analysis_NN of_IN blog_NN data_NNS --_: identifying_VBG and_CC extracting_VBG positive_JJ and_CC negative_JJ opinions_NNS from_IN blog_NN articles_NNS ._.
+Although_IN much_JJ work_NN has_VBZ been_VBN done_VBN recently_RB on_IN blog_NN mining_NN =_JJ -_: =[_NN 11_CD ,_, 7_CD ,_, 6_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, most_JJS existing_VBG work_NN aims_NNS at_IN extracting_VBG and_CC analyzing_VBG topical_JJ contents_NNS of_IN blog_NN articles_NNS without_IN any_DT Copyright_NNP is_VBZ held_VBN by_IN the_DT International_NNP World_NNP Wide_NN Web_NN Conference_NN Committee_NN -LRB-_-LRB- IW3C2_NN -RRB-_-RRB- ._.
+Distribution_NN of_IN
+tween_JJ topics_NNS and_CC sentiments_NNS ._.
+This_DT limitation_NN is_VBZ shared_VBN with_IN other_JJ sentiment_NN analysis_NN work_NN such_JJ as_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Sentiment_NN classification_NN has_VBZ been_VBN a_DT challenging_JJ topic_NN in_IN Natural_NNP Language_NNP Processing_NNP -LRB-_-LRB- see_VB e.g._FW ,_, =_JJ -_: =[_NN 26_CD ,_, 2_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+The_DT most_RBS common_JJ definition_NN of_IN the_DT problem_NN is_VBZ a_DT binary_JJ classification_NN task_NN of_IN a_DT sentence_NN to_TO either_CC the_DT positive_JJ or_CC the_DT negative_JJ polarity_NN -LRB-_-LRB- 23_CD ,_, 21_CD -RRB-_-RRB- ._.
+Since_IN traditional_JJ text_NN categorization_NN methods_NNS perfo_VBP
+le_FW ,_, a_DT user_NN may_MD like_VB the_DT price_NN and_CC fuel_NN efficiency_NN of_IN a_DT new_JJ Toyota_NNP Camry_NNP ,_, but_CC dislike_VB its_PRP$ power_NN and_CC safety_NN aspects_NNS ._.
+Indeed_RB ,_, people_NNS tend_VBP to_TO have_VB different_JJ opinions_NNS about_IN different_JJ features_NNS of_IN a_DT product_NN =_JJ -_: =[_NN 28_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN another_DT example_NN ,_, a_DT voter_NN may_MD agree_VB with_IN some_DT points_NNS made_VBN by_IN a_DT presidential_JJ candidate_NN ,_, but_CC disagree_VBP with_IN some_DT others_NNS ._.
+In_IN reality_NN ,_, a_DT general_JJ statement_NN of_IN good_JJ or_CC bad_JJ about_IN a_DT query_NN is_VBZ not_RB so_RB informa_VB
+θj_NN -RRB-_-RRB- =_JJ µjp_NN -LRB-_-LRB- w_FW |_FW ¯_FW θj_FW -RRB-_-RRB- +_CC d_FW ∈_FW C_NN c_NN -LRB-_-LRB- w_NN ,_, d_LS -RRB-_-RRB- p_NN -LRB-_-LRB- zd_NN ,_, w_NN ,_, j_NN ,_, F_NN =_JJ 1_CD -RRB-_-RRB- µj_NN +_CC w_NN ′_CD ∈_NN V_NN d_FW ∈_FW C_NN c_NN -LRB-_-LRB- w_FW ′_FW ,_, d_LS -RRB-_-RRB- p_NN -LRB-_-LRB- zd_NN ,_, w_NN ′_NN ,_, j_NN ,_, F_NN =_JJ 1_LS -RRB-_-RRB- The_DT parameters_NNS µ_FW ′_FW s_NN can_MD be_VB either_CC empirically_RB set_VBN to_TO constants_NNS ,_, or_CC set_VBN through_IN regularized_VBN estimation_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, in_IN which_WDT we_PRP would_MD start_VB with_IN very_RB large_JJ µ_FW ′_FW s_NN and_CC then_RB gradually_RB discount_VB µ_FW ′_FW s_NN in_IN each_DT EM_NN iteration_NN until_IN some_DT stopping_VBG condition_NN is_VBZ satisfied_VBN ._.
+3.5_CD Utilizing_VBG the_DT Model_NNP Once_IN the_DT parameters_NNS in_IN the_DT mo_NN
+s_NNS shared_VBN with_IN -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+They_PRP also_RB did_VBD not_RB provide_VB a_DT way_NN to_TO model_VB sentiment_NN dynamics_NNS ._.
+There_EX is_VBZ yet_RB another_DT line_NN of_IN research_NN in_IN text_NN mining_NN ,_, which_WDT tries_VBZ to_TO model_VB the_DT mixture_NN of_IN topics_NNS -LRB-_-LRB- themes_NNS -RRB-_-RRB- in_IN documents_NNS =_JJ -_: =[_NN 9_CD ,_, 1_CD ,_, 16_CD ,_, 15_CD ,_, 17_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT mixture_NN model_NN we_PRP presented_VBD is_VBZ along_IN this_DT line_NN ._.
+However_RB ,_, none_NN of_IN this_DT work_NN has_VBZ tried_VBN to_TO model_VB the_DT sentiments_NNS associated_VBN with_IN the_DT topics_NNS ,_, thus_RB can_MD not_RB be_VB applied_VBN to_TO our_PRP$ problem_NN ._.
+However_RB ,_, we_PRP do_VBP not_RB
+of_IN free_JJ parameters_NNS as_IN Λ_NN ._.
+Without_IN any_DT prior_JJ knowledge_NN ,_, we_PRP may_MD use_VB the_DT maximum_NN likelihood_NN estimator_NN to_TO estimate_VB all_PDT the_DT parameters_NNS ._.
+Specifically_RB ,_, we_PRP can_MD use_VB the_DT Expectation-Maximization_NN -LRB-_-LRB- EM_NN -RRB-_-RRB- algorithm_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: to_TO compute_VB the_DT maximum_NN likelihood_NN estimate_NN iteratively_RB ;_: the_DT updating_VBG formulas_NNS are_VBP shown_VBN in_IN Figure_NNP 3_CD ._.
+In_IN these_DT formulas_NNS ,_, -LCB-_-LRB- zd_NN ,_, w_NN ,_, j_NN ,_, s_NN -RCB-_-RRB- is_VBZ a_DT set_NN of_IN hidden_JJ variables_NNS -LRB-_-LRB- s_NNS ∈_NN -LCB-_-LRB- F_NN ,_, P_NN ,_, N_NN -RCB-_-RRB- -RRB-_-RRB- ,_, and_CC p_NN -LRB-_-LRB- zd_NN ,_, w_NN ,_, j_NN ,_, s_NNS -RRB-_-RRB- is_VBZ the_DT
+ntiment_NN dynamics_NNS ._.
+Some_DT recent_JJ work_NN has_VBZ been_VBN aware_JJ of_IN this_DT limitation_NN ._.
+Engström_NNP studied_VBD how_WRB the_DT topic_NN dependence_NN influences_VBZ the_DT accuracy_NN of_IN sentiment_NN classification_NN and_CC tried_VBD to_TO reduce_VB this_DT dependence_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN a_DT very_RB recent_JJ work_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, the_DT author_NN proposed_VBD a_DT topic_NN dependent_JJ method_NN for_IN sentiment_NN retrieval_NN ,_, which_WDT asFigure_NN 6_CD :_: Topic_JJ life_NN cycles_NNS and_CC sentiment_NN dynamics_NNS sumed_VBD that_IN a_DT sentence_NN was_VBD generated_VBN from_IN a_DT
+ments_NNS in_IN Weblogs_NNP ._.
+For_IN example_NN ,_, Opinmind_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- is_VBZ a_DT commercial_JJ weblog_NN search_NN engine_NN which_WDT can_MD categorize_VB the_DT search_NN results_VBZ into_IN positive_JJ and_CC negative_JJ opinions_NNS ._.
+Mishne_NNP and_CC others_NNS analyze_VBP the_DT sentiments_NNS =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: and_CC moods_NNS -LRB-_-LRB- 19_CD -RRB-_-RRB- in_IN Weblogs_NNP ,_, and_CC use_VBP the_DT temporal_JJ patterns_NNS of_IN sentiments_NNS to_TO predict_VB the_DT book_NN sales_NNS as_IN opposed_VBN to_TO simple_JJ blog_NN mentions_VBZ ._.
+However_RB ,_, a_DT common_JJ deficiency_NN of_IN all_PDT this_DT work_NN is_VBZ that_IN the_DT proposed_VBN
+has_VBZ shown_VBN the_DT effectiveness_NN of_IN mixture_NN of_IN multinomial_JJ distributions_NNS -LRB-_-LRB- mixture_NN language_NN models_NNS -RRB-_-RRB- in_IN extracting_VBG topics_NNS -LRB-_-LRB- themes_NNS ,_, subtopics_NNS -RRB-_-RRB- from_IN either_CC plain_JJ text_NN collections_NNS or_CC contextualized_VBN collections_NNS =_JJ -_: =[_NN 9_CD ,_, 1_CD ,_, 16_CD ,_, 15_CD ,_, 17_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, none_NN of_IN this_DT work_NN models_NNS topics_NNS and_CC sentiments_NNS simultaneously_RB ;_: if_IN we_PRP apply_VBP an_DT existing_VBG topic_NN model_NN on_IN the_DT weblog_NN articles_NNS directly_RB ,_, none_NN of_IN the_DT topics_NNS extracted_VBN with_IN this_DT model_NN could_MD captur_VB
+es_NNS and_CC sentiment_NN dynamics_NNS sumed_VBD that_IN a_DT sentence_NN was_VBD generated_VBN from_IN a_DT probabilistic_JJ model_NN consisting_VBG of_IN both_CC a_DT topic_NN language_NN model_NN and_CC a_DT sentiment_NN language_NN model_NN ._.
+A_DT similar_JJ approach_NN could_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Their_PRP$ vision_NN of_IN topic-sentiment_NN dependency_NN is_VBZ similar_JJ to_TO ours_PRP ._.
+However_RB ,_, they_PRP do_VBP not_RB consider_VB the_DT mixture_NN of_IN topics_NNS in_IN the_DT text_NN ,_, while_IN we_PRP assume_VBP that_IN a_DT document_NN could_MD cover_VB multiple_JJ subtopics_NNS and_CC dif_NN
+ons_NNS from_IN Weblogs_NNP boils_VBZ down_RP to_TO sentiment_NN analysis_NN of_IN blog_NN data_NNS --_: identifying_VBG and_CC extracting_VBG positive_JJ and_CC negative_JJ opinions_NNS from_IN blog_NN articles_NNS ._.
+Although_IN much_JJ work_NN has_VBZ been_VBN done_VBN recently_RB on_IN blog_NN mining_NN =_JJ -_: =[_NN 11_CD ,_, 7_CD ,_, 6_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, most_JJS existing_VBG work_NN aims_NNS at_IN extracting_VBG and_CC analyzing_VBG topical_JJ contents_NNS of_IN blog_NN articles_NNS without_IN any_DT Copyright_NNP is_VBZ held_VBN by_IN the_DT International_NNP World_NNP Wide_NN Web_NN Conference_NN Committee_NN -LRB-_-LRB- IW3C2_NN -RRB-_-RRB- ._.
+Distribution_NN of_IN
+Analysis_NN ._.
+Let_VB C_NN =_JJ -LCB-_-LRB- d1_NN ,_, d2_NN ,_, ..._: ,_, dm_NN -RCB-_-RRB- be_VB a_DT set_NN of_IN documents_NNS -LRB-_-LRB- e.g._FW ,_, blog_NN articles_NNS -RRB-_-RRB- ._.
+We_PRP assume_VBP that_IN C_NN covers_VBZ a_DT number_NN of_IN topics_NNS ,_, or_CC subtopics_NNS -LRB-_-LRB- also_RB known_VBN as_IN themes_NNS -RRB-_-RRB- and_CC some_DT related_JJ sentiments_NNS ._.
+Following_VBG =_JJ -_: =[_NN 9_CD ,_, 1_CD ,_, 16_CD ,_, 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP further_RB assume_VBP that_IN there_EX are_VBP k_NN major_JJ topics_NNS -LRB-_-LRB- subtopics_NNS -RRB-_-RRB- in_IN the_DT documents_NNS ,_, -LCB-_-LRB- θ1_NN ,_, θ2_NN ,_, ..._: ,_, θk_NN -RCB-_-RRB- ,_, each_DT being_VBG characterized_VBN by_IN a_DT multinomial_JJ distribution_NN over_IN all_PDT the_DT words_NNS in_IN our_PRP$ vocabulary_NN -LRB-_-LRB- also_RB kno_VBP
+tween_JJ topics_NNS and_CC sentiments_NNS ._.
+This_DT limitation_NN is_VBZ shared_VBN with_IN other_JJ sentiment_NN analysis_NN work_NN such_JJ as_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Sentiment_NN classification_NN has_VBZ been_VBN a_DT challenging_JJ topic_NN in_IN Natural_NNP Language_NNP Processing_NNP -LRB-_-LRB- see_VB e.g._FW ,_, =_JJ -_: =[_NN 26_CD ,_, 2_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+The_DT most_RBS common_JJ definition_NN of_IN the_DT problem_NN is_VBZ a_DT binary_JJ classification_NN task_NN of_IN a_DT sentence_NN to_TO either_CC the_DT positive_JJ or_CC the_DT negative_JJ polarity_NN -LRB-_-LRB- 23_CD ,_, 21_CD -RRB-_-RRB- ._.
+Since_IN traditional_JJ text_NN categorization_NN methods_NNS perfo_VBP
+Figure_NN 3_CD :_: EM_NN updating_VBG formulas_NNS for_IN the_DT topic-sentiment_JJ mixture_NN model_NN It_PRP can_MD be_VB computed_VBN by_IN rewriting_VBG the_DT M-step_NN in_IN the_DT EM_NN algorithm_NN in_IN Section_NN 3.2_CD to_TO incorporate_VB the_DT pseudo_JJ counts_NNS given_VBN by_IN the_DT prior_RB =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT new_JJ M-step_NN updating_VBG formulas_NNS are_VBP :_: p_NN -LRB-_-LRB- n_NN +1_CD -RRB-_-RRB- -LRB-_-LRB- w_FW |_FW θP_NN -RRB-_-RRB- =_JJ µP_NN p_NN -LRB-_-LRB- w_FW |_FW ¯_FW θP_NN -RRB-_-RRB- +_CC µP_NN +_CC w_FW ′_FW ∈_FW V_NN p_NN -LRB-_-LRB- n_NN +1_CD -RRB-_-RRB- -LRB-_-LRB- w_FW |_FW θN_NN -RRB-_-RRB- =_JJ µNp_NN -LRB-_-LRB- w_FW |_FW ¯_FW θN_NN -RRB-_-RRB- +_CC µN_NN +_CC w_FW ′_FW ∈_FW V_NN k_NN d_FW ∈_FW C_NN d_FW ∈_FW C_NN j_NN =_JJ 1_CD c_NN -LRB-_-LRB- w_NN ,_, d_LS -RRB-_-RRB- p_NN -LRB-_-LRB- zd_NN ,_, w_NN ,_, j_NN ,_, P_NN =_JJ 1_CD -RRB-_-RRB- k_NN j_NN =_JJ 1_CD c_NN -LRB-_-LRB- w_FW ′_FW ,_, d_LS -RRB-_-RRB- p_NN -LRB-_-LRB- z_SYM d_NN ,_, w_NN
+ons_NNS from_IN Weblogs_NNP boils_VBZ down_RP to_TO sentiment_NN analysis_NN of_IN blog_NN data_NNS --_: identifying_VBG and_CC extracting_VBG positive_JJ and_CC negative_JJ opinions_NNS from_IN blog_NN articles_NNS ._.
+Although_IN much_JJ work_NN has_VBZ been_VBN done_VBN recently_RB on_IN blog_NN mining_NN =_JJ -_: =[_NN 11_CD ,_, 7_CD ,_, 6_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, most_JJS existing_VBG work_NN aims_NNS at_IN extracting_VBG and_CC analyzing_VBG topical_JJ contents_NNS of_IN blog_NN articles_NNS without_IN any_DT Copyright_NNP is_VBZ held_VBN by_IN the_DT International_NNP World_NNP Wide_NN Web_NN Conference_NN Committee_NN -LRB-_-LRB- IW3C2_NN -RRB-_-RRB- ._.
+Distribution_NN of_IN

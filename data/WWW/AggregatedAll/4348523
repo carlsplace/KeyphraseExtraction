@@ -1,0 +1,163 @@
+ASDL_NN :_: a_DT wide_JJ spectrum_NN language_NN for_IN designing_VBG web_NN services_NNS
+A_DT Service_NNP oriented_JJ system_NN emerges_VBZ from_IN composition_NN of_IN services_NNS ._.
+Dynamically_RB composed_VBN reactive_JJ Web_NN services_NNS form_VBP a_DT special_JJ class_NN of_IN service_NN oriented_JJ system_NN ,_, where_WRB the_DT delays_NNS associated_VBN with_IN communication_NN ,_, unreliability_NN and_CC unavailability_NN of_IN services_NNS ,_, and_CC competition_NN for_IN resources_NNS from_IN multiple_JJ service_NN requesters_NNS are_VBP dominant_JJ concerns_NNS ._.
+As_IN complexity_NN of_IN services_NNS increase_NN ,_, an_DT abstract_JJ design_NN language_NN for_IN the_DT specification_NN of_IN services_NNS and_CC interaction_NN between_IN them_PRP is_VBZ desired_VBN ._.
+In_IN this_DT paper_NN ,_, we_PRP present_VBP ASDL_NNP -LRB-_-LRB- Abstract_NNP Service_NNP Design_NNP Language_NNP -RRB-_-RRB- ,_, a_DT wide_JJ spectrum_NN language_NN for_IN modelling_VBG Web_NN services_NNS ._.
+We_PRP initially_RB provide_VBP an_DT informal_JJ description_NN of_IN our_PRP$ computational_JJ model_NN for_IN service_NN oriented_JJ systems_NNS ._.
+We_PRP then_RB present_VBP ASDL_NNP along_IN with_IN its_PRP$ specification_NN oriented_JJ semantics_NNS defined_VBN in_IN Interval_JJ Temporal_JJ Logic_NN -LRB-_-LRB- ITL_NN -RRB-_-RRB- :_: a_DT sound_JJ formalism_NN for_IN specifying_VBG and_CC reasoning_NN about_IN temporal_JJ properties_NNS of_IN systems_NNS ._.
+The_DT objective_NN of_IN ASDL_NNP is_VBZ to_TO provide_VB a_DT notation_NN for_IN the_DT design_NN of_IN service_NN composition_NN and_CC interaction_NN protocols_NNS at_IN an_DT abstract_JJ level_NN ._.
+ition_NN is_VBZ described_VBN in_IN -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+Although_IN the_DT prime_JJ objective_NN here_RB is_VBZ an_DT orderly_JJ sequencingsof_NN messages_NNS ,_, the_DT notation_NN does_VBZ not_RB provide_VB any_DT primitives_NNS for_IN modelling_VBG services_NNS such_JJ as_IN ``_`` timeout_NN ''_'' ._.
+Misra_NNP et_FW al._FW =_SYM -_: =[_NN 31_CD ,_, 24_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: present_VB a_DT model_NN ``_`` Orc_NNP ''_'' based_VBN on_IN transactions_NNS ._.
+In_IN this_DT model_NN a_DT service_NN is_VBZ represented_VBN by_IN a_DT ``_`` Site_NN ''_'' ._.
+The_DT model_NN does_VBZ not_RB include_VB features_NNS for_IN time-out_NN ,_, synchronization_NN ,_, communication_NN and_CC the_DT like_JJ ._.
+There_EX i_LS
+ating_VBG Sequential_JJ processes_NNS -LRB-_-LRB- CSP_NN -RRB-_-RRB- -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, Milner_NNP 's_POS Calculus_NN of_IN Communicating_NNP Systems_NNPS and_CC ACP_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+These_DT process_NN algebras_NNS have_VBP been_VBN widely_RB extended_VBN to_TO include_VB variations_NNS such_JJ as_IN Timed_JJ CSP_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, picalculus_NN =_JJ -_: =[_NN 22_CD ,_, 33_CD -RRB-_-RRB- -_: =_JJ -_: and_CC LOTOS_NNP amongst_IN others_NNS ._.
+ASDL_NNP is_VBZ however_RB more_RBR expressive_JJ as_IN it_PRP is_VBZ enriched_VBN with_IN explicit_JJ timing_NN related_JJ constructs_NNS which_WDT is_VBZ needed_VBN in_IN order_NN to_TO reason_VB about_IN services_NNS communicating_VBG asynchronously_RB ._.
+A_DT ``_``
+notion_NN of_IN messages_NNS being_VBG passed_VBN or_CC variables_NNS being_VBG shared_VBN ._.
+A_DT Site_NN call_NN is_VBZ analogous_JJ to_TO calling_VBG a_DT function_NN ._.
+This_DT view_NN is_VBZ analogous_JJ to_TO legacy_NN distributed_VBD computing_NN paradigms_NNS such_JJ as_IN CORBA_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- and_CC DCOM_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Orc_NNP provides_VBZ a_DT design_NN notation_NN with_IN operational_JJ semantics_NNS ,_, analogous_JJ to_TO ASDL_NN with_IN specification_NN oriented_JJ semantics_NNS in_IN our_PRP$ model_NN ._.
+An_DT interesting_JJ algebra_NN for_IN services_NNS is_VBZ present_JJ by_IN Cardeli_NNP and_CC Davies_NNP
+stantly_RB ._.
+In_IN our_PRP$ model_NN ,_, sending_VBG and_CC receiving_VBG of_IN messages_NNS ,_, takes_VBZ at_IN least_JJS one_CD unit_NN -LRB-_-LRB- i.e._FW skip_VBP -RRB-_-RRB- of_IN time_NN ._.
+Further_RB ,_, timeouts_NNS are_VBP not_RB handled_VBN explicitly_RB in_IN CSFMs_NNS as_IN in_IN our_PRP$ model_NN ._.
+In_IN Kahn_NNP 's_POS Process_VBP networks_NNS =_JJ -_: =[_NN 17_CD ,_, 37_CD -RRB-_-RRB- -_: =_SYM -_: the_DT unbounded_JJ FIFO_NN buffers_NNS are_VBP one_CD way_NN ,_, i.e._FW ,_, they_PRP can_MD be_VB used_VBN only_RB for_IN receiving_VBG or_CC sending_VBG ,_, which_WDT is_VBZ similar_JJ to_TO our_PRP$ model_NN ._.
+In_IN the_DT Temporal_JJ Agent_NNP Model_NNP -LRB-_-LRB- TAM_NNP -RRB-_-RRB- -LRB-_-LRB- 19_CD ,_, 34_CD -RRB-_-RRB- communication_NN is_VBZ asynchronous_JJ v_LS
+t_NN -RRB-_-RRB- ;_: S2_NN -LRB-_-LRB- ^_FW ¬_FW Gm_FW ∧_FW empty_JJ -RRB-_-RRB- where_WRB P_NN =_JJ -LCB-_-LRB- pm_FW |_FW m_NN ∈_NN I_PRP ∧_VBP pm_FW ∈_FW N_NN -RCB-_-RRB- m_NN ∈_NN I_PRP •_VBP if_IN G_NN then_RB S1_NN else_JJ S2_NN b_NN =_JJ -LRB-_-LRB- G_NN ∧_NN S1_NN -RRB-_-RRB- ∨_NN -LRB-_-LRB- ¬_CD G_NN ∧_NN S2_NN -RRB-_-RRB- 5_CD ._.
+RELATED_NNS WORK_VBP In_IN approaches_NNS such_JJ as_IN Interface_NNP Automata_NNP -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, IO_NNP Automata_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, CCS_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- and_CC CSP_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: the_DT communication_NN between_IN the_DT receive_VB and_CC send_VB processes_NNS is_VBZ synchronous_JJ ,_, while_IN in_IN our_PRP$ model_NN ,_, the_DT messages_NNS are_VBP stored_VBN in_IN a_DT bounded_VBN FIFO_NN buffer_NN ._.
+We_PRP believe_VBP that_IN modelling_NN using_VBG synchronous_JJ communicatio_NN
+._.
+There_EX is_VBZ no_DT notion_NN of_IN messages_NNS being_VBG passed_VBN or_CC variables_NNS being_VBG shared_VBN ._.
+A_DT Site_NN call_NN is_VBZ analogous_JJ to_TO calling_VBG a_DT function_NN ._.
+This_DT view_NN is_VBZ analogous_JJ to_TO legacy_NN distributed_VBD computing_NN paradigms_NNS such_JJ as_IN CORBA_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: and_CC DCOM_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Orc_NNP provides_VBZ a_DT design_NN notation_NN with_IN operational_JJ semantics_NNS ,_, analogous_JJ to_TO ASDL_NN with_IN specification_NN oriented_JJ semantics_NNS in_IN our_PRP$ model_NN ._.
+An_DT interesting_JJ algebra_NN for_IN services_NNS is_VBZ present_JJ by_IN Cardel_NN
+e_LS -LRB-_-LRB- x_NN ,_, T_NN -RRB-_-RRB- ∧_FW f_FW Here_NN type_NN -LRB-_-LRB- x_NN ,_, T_NN -RRB-_-RRB- denotes_VBZ a_DT formula_NN that_WDT describes_VBZ x_NN to_TO be_VB of_IN type_NN T_NN ._.
+Although_IN this_DT might_MD seem_VB to_TO be_VB a_DT rather_RB inexpressive_JJ type_NN system_NN ,_, richer_JJR types_NNS can_MD be_VB added_VBN following_VBG that_DT of_IN Spivey_NN =_JJ -_: =[_NN 36_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4_LS ._.
+ASDL_NN :_: ABSTRACT_NN SERVICE_NN DESIGN_NN LANGUAGE_NN ASDL_NN is_VBZ a_DT wide_JJ spectrum_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- language_NN for_IN ,_, •_CD the_DT behavioural_JJ specification_NN of_IN a_DT service_NN ._.
+•_CD the_DT specification_NN of_IN service_NN composition_NN ._.
+•_NN design_NN of_IN interaction_NN
+types_NNS :_: integer_NN ,_, character_NN ,_, boolean_NN ,_, list_NN and_CC arrays_NNS ._.
+Further_JJ types_NNS can_MD besbuilt_VB from_IN these_DT by_IN means_NNS of_IN X_NN and_CC the_DT power_NN set_NN operator_NN P_NN -LRB-_-LRB- in_IN a_DT similar_JJ fashion_NN as_IN adopted_VBN in_IN the_DT specification_NN language_NN Z_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+For_IN example_NN the_DT following_NN introduces_VBZ a_DT variable_JJ x_NN of_IN type_NN T_NN ._.
+-LRB-_-LRB- ∃_CD x_NN :_: T_NN -RRB-_-RRB- ._.
+f_FW def_FW =_JJ ∃_FW x._FW type_NN -LRB-_-LRB- x_NN ,_, T_NN -RRB-_-RRB- ∧_FW f_FW Here_NN type_NN -LRB-_-LRB- x_NN ,_, T_NN -RRB-_-RRB- denotes_VBZ a_DT formula_NN that_WDT describes_VBZ x_NN to_TO be_VB of_IN type_NN T_NN ._.
+Although_IN this_DT might_MD seem_VB to_TO
+del._NN ._.
+In_IN Kahn_NNP 's_POS Process_VB networks_NNS -LRB-_-LRB- 17_CD ,_, 37_CD -RRB-_-RRB- the_DT unbounded_JJ FIFO_NN buffers_NNS are_VBP one_CD way_NN ,_, i.e._FW ,_, they_PRP can_MD be_VB used_VBN only_RB for_IN receiving_VBG or_CC sending_VBG ,_, which_WDT is_VBZ similar_JJ to_TO our_PRP$ model_NN ._.
+In_IN the_DT Temporal_JJ Agent_NNP Model_NNP -LRB-_-LRB- TAM_NNP -RRB-_-RRB- =_JJ -_: =[_NN 19_CD ,_, 34_CD -RRB-_-RRB- -_: =_JJ -_: communication_NN is_VBZ asynchronous_JJ via_IN time_NN -_: stamped_VBD shared_JJ area_NN called_VBN shunts_NNS ._.
+The_DT model_NN proposed_VBN in_IN -LRB-_-LRB- 40_CD -RRB-_-RRB- assumes_VBZ a_DT virtual_JJ watcher_NN as_IN an_DT abstract_JJ entity_NN which_WDT records_VBZ the_DT sequence_NN of_IN message_NN as_IN they_PRP ar_VBP
+Hoare_NNP 's_POS Communicating_VBG Sequential_JJ processes_NNS -LRB-_-LRB- CSP_NN -RRB-_-RRB- -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, Milner_NNP 's_POS Calculus_NN of_IN Communicating_NNP Systems_NNPS and_CC ACP_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+These_DT process_NN algebras_NNS have_VBP been_VBN widely_RB extended_VBN to_TO include_VB variations_NNS such_JJ as_IN Timed_JJ CSP_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, picalculus_NN -LRB-_-LRB- 22_CD ,_, 33_CD -RRB-_-RRB- and_CC LOTOS_NN amongst_IN others_NNS ._.
+ASDL_NNP is_VBZ however_RB more_RBR expressive_JJ as_IN it_PRP is_VBZ enriched_VBN with_IN explicit_JJ timing_NN related_JJ constructs_NNS which_WDT is_VBZ needed_VBN in_IN order_NN to_TO reason_VB about_IN services_NNS communicatin_NN
+ition_NN is_VBZ described_VBN in_IN -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+Although_IN the_DT prime_JJ objective_NN here_RB is_VBZ an_DT orderly_JJ sequencingsof_NN messages_NNS ,_, the_DT notation_NN does_VBZ not_RB provide_VB any_DT primitives_NNS for_IN modelling_VBG services_NNS such_JJ as_IN ``_`` timeout_NN ''_'' ._.
+Misra_NNP et_FW al._FW =_SYM -_: =[_NN 31_CD ,_, 24_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: present_VB a_DT model_NN ``_`` Orc_NNP ''_'' based_VBN on_IN transactions_NNS ._.
+In_IN this_DT model_NN a_DT service_NN is_VBZ represented_VBN by_IN a_DT ``_`` Site_NN ''_'' ._.
+The_DT model_NN does_VBZ not_RB include_VB features_NNS for_IN time-out_NN ,_, synchronization_NN ,_, communication_NN and_CC the_DT like_JJ ._.
+There_EX i_LS
+es_IN the_DT modelling_NN of_IN peers_NNS considerably_RB ._.
+A_DT similar_JJ approach_NN to_TO closed_VBN systems_NNS can_MD be_VB found_VBN in_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+The_DT model_NN assumes_VBZ one_CD message_NN queue_FW per_FW peer_VB and_CC peer_VB implementations_NNS are_VBP modelled_VBN as_IN Mealy_JJ machines_NNS =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT model_NN we_PRP propose_VBP describes_VBZ an_DT open_JJ system_NN and_CC encapsulates_VBZ a_DT black_JJ box_NN view_NN of_IN service_NN ._.
+An_DT XML_NN based_JJ notation_NN with_IN formal_JJ semantics_NNS in_IN π_NN -_: calculus_NN ,_, to_TO model_VB service_NN composition_NN is_VBZ described_VBN in_IN -LRB-_-LRB-
+ating_VBG Sequential_JJ processes_NNS -LRB-_-LRB- CSP_NN -RRB-_-RRB- -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, Milner_NNP 's_POS Calculus_NN of_IN Communicating_NNP Systems_NNPS and_CC ACP_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+These_DT process_NN algebras_NNS have_VBP been_VBN widely_RB extended_VBN to_TO include_VB variations_NNS such_JJ as_IN Timed_JJ CSP_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, picalculus_NN =_JJ -_: =[_NN 22_CD ,_, 33_CD -RRB-_-RRB- -_: =_JJ -_: and_CC LOTOS_NNP amongst_IN others_NNS ._.
+ASDL_NNP is_VBZ however_RB more_RBR expressive_JJ as_IN it_PRP is_VBZ enriched_VBN with_IN explicit_JJ timing_NN related_JJ constructs_NNS which_WDT is_VBZ needed_VBN in_IN order_NN to_TO reason_VB about_IN services_NNS communicating_VBG asynchronously_RB ._.
+A_DT ``_``
+d._VBN Further_RB the_DT model_NN describes_VBZ a_DT closed_JJ system_NN where_WRB peer_VB implementations_NNS are_VBP known_VBN a_DT priori_FW ._.
+This_DT simplifies_VBZ the_DT modelling_NN of_IN peers_NNS considerably_RB ._.
+A_DT similar_JJ approach_NN to_TO closed_VBN systems_NNS can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT model_NN assumes_VBZ one_CD message_NN queue_FW per_FW peer_VB and_CC peer_VB implementations_NNS are_VBP modelled_VBN as_IN Mealy_JJ machines_NNS -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+The_DT model_NN we_PRP propose_VBP describes_VBZ an_DT open_JJ system_NN and_CC encapsulates_VBZ a_DT black_JJ box_NN view_NN of_IN service_NN ._.
+ment_NN of_IN service_NN oriented_JJ systems_NNS at_IN an_DT abstract_JJ level_NN and_CC upon_IN which_WDT users_NNS can_MD define_VB their_PRP$ own_JJ ,_, specifically_RB needed_VBN operators_NNS ._.
+4.1_CD On_IN the_DT choice_NN of_IN constructs_NNS in_IN ASDL_NNP ASDL_NNP builds_VBZ upon_IN a_DT choreography_NN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: based_VBN approach_NN to_TO specifying_VBG interaction_NN protocols_NNS for_IN services_NNS ,_, although_IN mapping_NN to_TO orchestration_NN languages_NNS such_JJ as_IN WSBPEL_NN is_VBZ equally_RB intuitive_JJ as_IN shown_VBN in_IN -LRB-_-LRB- 35_CD -RRB-_-RRB- ._.
+The_DT objective_NN is_VBZ to_TO specify_VB the_DT mutu_NN
+ides_VBZ a_DT design_NN notation_NN with_IN operational_JJ semantics_NNS ,_, analogous_JJ to_TO ASDL_NN with_IN specification_NN oriented_JJ semantics_NNS in_IN our_PRP$ model_NN ._.
+An_DT interesting_JJ algebra_NN for_IN services_NNS is_VBZ present_JJ by_IN Cardeli_NNP and_CC Davies_NNP et_FW al._FW in_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: where_WRB the_DT notion_NN of_IN a_DT service_NN is_VBZ that_DT of_IN a_DT HTTP_NN information_NN provider_NN wrapped_VBN in_IN error_NN detecting_VBG and_CC handling_VBG code_NN ._.
+The_DT idea_NN is_VBZ to_TO provide_VB service_NN combinators_NNS that_WDT simulate_VBP the_DT process_NN of_IN manual_JJ brows_NNS
+rs_NNS ._.
+To_TO avoid_VB the_DT overhead_NN of_IN synchronisation_NN between_IN local_JJ clocks_NNS of_IN the_DT services_NNS in_IN the_DT system_NN ,_, we_PRP assume_VBP the_DT existence_NN of_IN a_DT utility_NN service_NN called_VBN ``_`` Clock_NN ''_'' ._.
+It_PRP provides_VBZ a_DT single_JJ ,_, global_JJ and_CC logical_JJ =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: clock_NN for_IN all_PDT the_DT services_NNS in_IN the_DT composed_VBN system_NN ._.
+``_`` Clock_NN ''_'' provides_VBZ a_DT function_NN that_WDT generates_VBZ a_DT linear_JJ sequence_NN of_IN integers_NNS corresponding_VBG to_TO the_DT sequence_NN of_IN ticks_NNS in_IN a_DT physical_JJ clock_NN ._.
+As_IN the_DT integers_NNS
+f_LS type_NN T_NN ._.
+Although_IN this_DT might_MD seem_VB to_TO be_VB a_DT rather_RB inexpressive_JJ type_NN system_NN ,_, richer_JJR types_NNS can_MD be_VB added_VBN following_VBG that_DT of_IN Spivey_NNP -LRB-_-LRB- 36_CD -RRB-_-RRB- ._.
+4_LS ._.
+ASDL_NN :_: ABSTRACT_NN SERVICE_NN DESIGN_NN LANGUAGE_NN ASDL_NN is_VBZ a_DT wide_JJ spectrum_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: language_NN for_IN ,_, •_CD the_DT behavioural_JJ specification_NN of_IN a_DT service_NN ._.
+•_CD the_DT specification_NN of_IN service_NN composition_NN ._.
+•_NN design_NN of_IN interaction_NN protocols_NNS for_IN services_NNS ._.
+ASDL_NN abstracts_NNS from_IN providing_VBG the_DT commonly_RB foun_VBN
+ion_NN ._.
+Figure_NNP 5_CD :_: Failure_NN Support_NN in_IN service_NN oriented_JJ systems_NNS -LRB-_-LRB- 01_CD -RRB-_-RRB- Figure_NNP 6_CD :_: Failure_NN Support_NN in_IN service_NN oriented_JJ systems_NNS -LRB-_-LRB- 02_CD -RRB-_-RRB- 3_CD ._.
+INTERVAL_FW TEMPORAL_FW LOGIC_NN We_PRP base_VBP our_PRP$ work_NN on_IN Interval_JJ Temporal_JJ Logic_NN -LRB-_-LRB- ITL_NN -RRB-_-RRB- =_JJ -_: =[_NN 26_CD ,_, 25_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ selection_NN of_IN ITL_NNP is_VBZ based_VBN on_IN a_DT number_NN of_IN points_NNS ._.
+It_PRP is_VBZ a_DT flexible_JJ notation_NN for_IN both_CC propositional_JJ and_CC first-order_JJ reasoning_NN about_IN periods_NNS of_IN time_NN ._.
+Unlike_IN most_JJS temporal_JJ logics_NNS ,_, ITL_NN can_MD handle_VB bot_NN
+s_NN increase_NN ,_, an_DT abstract_JJ design_NN language_NN for_IN the_DT specification_NN of_IN services_NNS and_CC interaction_NN between_IN them_PRP is_VBZ desired_VBN ,_, before_IN the_DT behavior_NN can_MD be_VB mapped_VBN to_TO constructs_NNS in_IN XML-based_JJ languages_NNS such_JJ as_IN WSDL_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, WSBPEL_NN -LRB-_-LRB- 39_CD -RRB-_-RRB- ,_, WSCDL_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- and_CC OWL-S_NN -LRB-_-LRB- 38_CD -RRB-_-RRB- ,_, or_CC implemented_VBN using_VBG frameworks_NNS such_JJ as_IN J2EE_NN or_CC ._.
+Net_NN as_IN illustrated_VBN in_IN Figure_NNP 1_CD ._.
+The_DT development_NN of_IN such_PDT a_DT lanFigure_NN 1_CD :_: Various_JJ Levels_NNS of_IN Representing_NNP Service_NNP
+del._NN ._.
+In_IN Kahn_NNP 's_POS Process_VB networks_NNS -LRB-_-LRB- 17_CD ,_, 37_CD -RRB-_-RRB- the_DT unbounded_JJ FIFO_NN buffers_NNS are_VBP one_CD way_NN ,_, i.e._FW ,_, they_PRP can_MD be_VB used_VBN only_RB for_IN receiving_VBG or_CC sending_VBG ,_, which_WDT is_VBZ similar_JJ to_TO our_PRP$ model_NN ._.
+In_IN the_DT Temporal_JJ Agent_NNP Model_NNP -LRB-_-LRB- TAM_NNP -RRB-_-RRB- =_JJ -_: =[_NN 19_CD ,_, 34_CD -RRB-_-RRB- -_: =_JJ -_: communication_NN is_VBZ asynchronous_JJ via_IN time_NN -_: stamped_VBD shared_JJ area_NN called_VBN shunts_NNS ._.
+The_DT model_NN proposed_VBN in_IN -LRB-_-LRB- 40_CD -RRB-_-RRB- assumes_VBZ a_DT virtual_JJ watcher_NN as_IN an_DT abstract_JJ entity_NN which_WDT records_VBZ the_DT sequence_NN of_IN message_NN as_IN they_PRP ar_VBP
+ASDL_NNP ASDL_NNP builds_VBZ upon_IN a_DT choreography_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- based_VBN approach_NN to_TO specifying_VBG interaction_NN protocols_NNS for_IN services_NNS ,_, although_IN mapping_NN to_TO orchestration_NN languages_NNS such_JJ as_IN WSBPEL_NN is_VBZ equally_RB intuitive_JJ as_IN shown_VBN in_IN =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT objective_NN is_VBZ to_TO specify_VB the_DT mutually_RB visible_JJ message_NN exchange_NN behavior_NN between_IN services_NNS ,_, without_IN revealing_VBG their_PRP$ internal_JJ behavior_NN ._.
+Interactions_NNS between_IN services_NNS are_VBP considered_VBN to_TO be_VB asynchron_NN
+work_NN ._.
+2_CD ._.
+COMPUTATIONAL_JJ MODEL_NN A_NN service_NN oriented_JJ system_NN is_VBZ a_DT collection_NN of_IN possibly_RB concurrently_RB executing_VBG services_NNS ,_, which_WDT communicate_VBP asynchronously_RB via_IN message_NN passing_NN ,_, using_VBG shared_JJ bounded_JJ buffers_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: called_VBN ``_`` channels_NNS ''_'' ._.
+Service_NNP oriented_VBD systems_NNS can_MD themselves_PRP be_VB viewed_VBN as_IN single_JJ services_NNS and_CC composed_VBN into_IN larger_JJR systems_NNS ._.
+The_DT first_JJ class_NN citizens_NNS within_IN a_DT service_NN oriented_JJ system_NN are_VBP a_DT finite_JJ set_NN of_IN
+an_DT abstract_JJ design_NN language_NN for_IN the_DT specification_NN of_IN services_NNS and_CC interaction_NN between_IN them_PRP is_VBZ desired_VBN ,_, before_IN the_DT behavior_NN can_MD be_VB mapped_VBN to_TO constructs_NNS in_IN XML-based_JJ languages_NNS such_JJ as_IN WSDL_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, WSBPEL_NN =_JJ -_: =[_NN 39_CD -RRB-_-RRB- -_: =_JJ -_: ,_, WSCDL_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- and_CC OWL-S_NN -LRB-_-LRB- 38_CD -RRB-_-RRB- ,_, or_CC implemented_VBN using_VBG frameworks_NNS such_JJ as_IN J2EE_NN or_CC ._.
+Net_NN as_IN illustrated_VBN in_IN Figure_NNP 1_CD ._.
+The_DT development_NN of_IN such_PDT a_DT lanFigure_NN 1_CD :_: Various_JJ Levels_NNS of_IN Representing_NNP Service_NNP Behaviour_NNP gu_FW
+stantly_RB ._.
+In_IN our_PRP$ model_NN ,_, sending_VBG and_CC receiving_VBG of_IN messages_NNS ,_, takes_VBZ at_IN least_JJS one_CD unit_NN -LRB-_-LRB- i.e._FW skip_VBP -RRB-_-RRB- of_IN time_NN ._.
+Further_RB ,_, timeouts_NNS are_VBP not_RB handled_VBN explicitly_RB in_IN CSFMs_NNS as_IN in_IN our_PRP$ model_NN ._.
+In_IN Kahn_NNP 's_POS Process_VBP networks_NNS =_JJ -_: =[_NN 17_CD ,_, 37_CD -RRB-_-RRB- -_: =_SYM -_: the_DT unbounded_JJ FIFO_NN buffers_NNS are_VBP one_CD way_NN ,_, i.e._FW ,_, they_PRP can_MD be_VB used_VBN only_RB for_IN receiving_VBG or_CC sending_VBG ,_, which_WDT is_VBZ similar_JJ to_TO our_PRP$ model_NN ._.
+In_IN the_DT Temporal_JJ Agent_NNP Model_NNP -LRB-_-LRB- TAM_NNP -RRB-_-RRB- -LRB-_-LRB- 19_CD ,_, 34_CD -RRB-_-RRB- communication_NN is_VBZ asynchronous_JJ v_LS
+Sm_NN -RRB-_-RRB- ∧_FW pm_FW =_JJ max_NN -LRB-_-LRB- P_NN -RRB-_-RRB- -RRB-_-RRB- ∨_CD m_NN ∈_NN I_CD -LRB-_-LRB- S1_NN ∧_FW ✷_FW -LRB-_-LRB- ¬_CD c_NN -RRB-_-RRB- ∧_FW ∆_FW t_NN -RRB-_-RRB- ;_: S2_NN -LRB-_-LRB- ^_FW ¬_FW Gm_FW ∧_FW empty_JJ -RRB-_-RRB- where_WRB P_NN =_JJ -LCB-_-LRB- pm_FW |_FW m_NN ∈_NN I_PRP ∧_VBP pm_FW ∈_FW N_NN -RCB-_-RRB- m_NN ∈_NN I_PRP •_VBP if_IN G_NN then_RB S1_NN else_JJ S2_NN b_NN =_JJ -LRB-_-LRB- G_NN ∧_NN S1_NN -RRB-_-RRB- ∨_NN -LRB-_-LRB- ¬_CD G_NN ∧_NN S2_NN -RRB-_-RRB- 5_CD ._.
+RELATED_NNS WORK_VBP In_IN approaches_NNS such_JJ as_IN Interface_NNP Automata_NNP =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, IO_NNP Automata_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, CCS_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- and_CC CSP_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- the_DT communication_NN between_IN the_DT receive_VB and_CC send_VB processes_NNS is_VBZ synchronous_JJ ,_, while_IN in_IN our_PRP$ model_NN ,_, the_DT messages_NNS are_VBP stored_VBN in_IN a_DT bounded_VBN FIFO_NN buffer_NN ._.
+We_PRP believe_VBP that_IN
+ion_NN ._.
+Figure_NNP 5_CD :_: Failure_NN Support_NN in_IN service_NN oriented_JJ systems_NNS -LRB-_-LRB- 01_CD -RRB-_-RRB- Figure_NNP 6_CD :_: Failure_NN Support_NN in_IN service_NN oriented_JJ systems_NNS -LRB-_-LRB- 02_CD -RRB-_-RRB- 3_CD ._.
+INTERVAL_FW TEMPORAL_FW LOGIC_NN We_PRP base_VBP our_PRP$ work_NN on_IN Interval_JJ Temporal_JJ Logic_NN -LRB-_-LRB- ITL_NN -RRB-_-RRB- =_JJ -_: =[_NN 26_CD ,_, 25_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ selection_NN of_IN ITL_NNP is_VBZ based_VBN on_IN a_DT number_NN of_IN points_NNS ._.
+It_PRP is_VBZ a_DT flexible_JJ notation_NN for_IN both_CC propositional_JJ and_CC first-order_JJ reasoning_NN about_IN periods_NNS of_IN time_NN ._.
+Unlike_IN most_JJS temporal_JJ logics_NNS ,_, ITL_NN can_MD handle_VB bot_NN
+oach_NN used_VBN in_IN Microsoft_NNP 's_POS Behave_NNP !_.
+project_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- use_VBP asynchronous_JJ message_NN passing_NN for_IN modelling_VBG distributed_VBN and_CC concurrently_RB executing_VBG systems_NNS ._.
+Our_PRP$ model_NN differs_VBZ from_IN Communicating_VBG Finite_JJ State_NN machines_NNS =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, as_IN it_PRP uses_VBZ an_DT unbounded_JJ buffer_NN whereas_IN the_DT buffers_NNS in_IN our_PRP$ model_NN are_VBP bounded_VBN FIFOs_NNS ._.
+Our_PRP$ model_NN is_VBZ close_JJ to_TO the_DT physical_JJ implementation_NN ,_, where_WRB all_DT buffers_NNS are_VBP bounded_VBN ,_, however_RB large_JJ the_DT bound_VBN maybe_RB ._.
+In_IN
+y_NN for_IN receiving_VBG or_CC sending_VBG ,_, which_WDT is_VBZ similar_JJ to_TO our_PRP$ model_NN ._.
+In_IN the_DT Temporal_JJ Agent_NNP Model_NNP -LRB-_-LRB- TAM_NNP -RRB-_-RRB- -LRB-_-LRB- 19_CD ,_, 34_CD -RRB-_-RRB- communication_NN is_VBZ asynchronous_JJ via_IN time_NN -_: stamped_VBD shared_JJ area_NN called_VBN shunts_NNS ._.
+The_DT model_NN proposed_VBN in_IN =_JJ -_: =[_NN 40_CD -RRB-_-RRB- -_: =_SYM -_: assumes_VBZ a_DT virtual_JJ watcher_NN as_IN an_DT abstract_JJ entity_NN which_WDT records_VBZ the_DT sequence_NN of_IN message_NN as_IN they_PRP are_VBP sent_VBN to_TO peers_NNS ,_, each_DT peer_VBP is_VBZ further_RB modelled_VBN as_IN a_DT standard_JJ finite_JJ state_NN automaton_NN ._.
+Communication_NNP is_VBZ s_NN
+1_CD ∧_FW ✷_FW -LRB-_-LRB- ¬_CD c_NN -RRB-_-RRB- ∧_FW ∆_FW t_NN -RRB-_-RRB- ;_: S2_NN -LRB-_-LRB- ^_FW ¬_FW Gm_FW ∧_FW empty_JJ -RRB-_-RRB- where_WRB P_NN =_JJ -LCB-_-LRB- pm_FW |_FW m_NN ∈_NN I_PRP ∧_VBP pm_FW ∈_FW N_NN -RCB-_-RRB- m_NN ∈_NN I_PRP •_VBP if_IN G_NN then_RB S1_NN else_JJ S2_NN b_NN =_JJ -LRB-_-LRB- G_NN ∧_NN S1_NN -RRB-_-RRB- ∨_NN -LRB-_-LRB- ¬_CD G_NN ∧_NN S2_NN -RRB-_-RRB- 5_CD ._.
+RELATED_NNS WORK_VBP In_IN approaches_NNS such_JJ as_IN Interface_NNP Automata_NNP -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, IO_NNP Automata_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, CCS_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: and_CC CSP_NNP -LRB-_-LRB- 12_CD -RRB-_-RRB- the_DT communication_NN between_IN the_DT receive_VB and_CC send_VB processes_NNS is_VBZ synchronous_JJ ,_, while_IN in_IN our_PRP$ model_NN ,_, the_DT messages_NNS are_VBP stored_VBN in_IN a_DT bounded_VBN FIFO_NN buffer_NN ._.
+We_PRP believe_VBP that_IN modelling_NN using_VBG synchronous_JJ
+by_IN XML-based_JJ description_NN languages_NNS such_JJ as_IN WSDL_NN -LRB-_-LRB- 7_CD ,_, 27_CD -RRB-_-RRB- ,_, industrial_JJ specifications_NNS e.g._FW WSBPEL_FW -LRB-_-LRB- 39_CD -RRB-_-RRB- ,_, Microsoft_NNP 's_POS ._.
+Net_NN ,_, Java_NNP Message_NNP Service_NNP as_RB well_RB as_IN academic_JJ research_NN in_IN service_NN composition_NN such_JJ as_IN =_JJ -_: =[_NN 38_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP is_VBZ hoped_VBN that_IN the_DT minimum_JJ set_NN provided_VBN here_RB will_MD form_VB a_DT rich_JJ enough_JJ basis_NN to_TO undertake_VB the_DT development_NN of_IN service_NN oriented_JJ systems_NNS at_IN an_DT abstract_JJ level_NN and_CC upon_IN which_WDT users_NNS can_MD define_VB their_PRP$ own_JJ ,_,
+-RRB-_-RRB- -RRB-_-RRB- ∨_CD m_NN ∈_NN I_CD -LRB-_-LRB- S1_NN ∧_FW ✷_FW -LRB-_-LRB- ¬_CD c_NN -RRB-_-RRB- ∧_FW ∆_FW t_NN -RRB-_-RRB- ;_: S2_NN -LRB-_-LRB- ^_FW ¬_FW Gm_FW ∧_FW empty_JJ -RRB-_-RRB- where_WRB P_NN =_JJ -LCB-_-LRB- pm_FW |_FW m_NN ∈_NN I_PRP ∧_VBP pm_FW ∈_FW N_NN -RCB-_-RRB- m_NN ∈_NN I_PRP •_VBP if_IN G_NN then_RB S1_NN else_JJ S2_NN b_NN =_JJ -LRB-_-LRB- G_NN ∧_NN S1_NN -RRB-_-RRB- ∨_NN -LRB-_-LRB- ¬_CD G_NN ∧_NN S2_NN -RRB-_-RRB- 5_CD ._.
+RELATED_NNS WORK_VBP In_IN approaches_NNS such_JJ as_IN Interface_NNP Automata_NNP -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, IO_NN Automata_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, CCS_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- and_CC CSP_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- the_DT communication_NN between_IN the_DT receive_VB and_CC send_VB processes_NNS is_VBZ synchronous_JJ ,_, while_IN in_IN our_PRP$ model_NN ,_, the_DT messages_NNS are_VBP stored_VBN in_IN a_DT bounded_VBN FIFO_NN buffer_NN ._.
+We_PRP believe_VBP that_IN modelling_NN using_VBG s_NN
+ers_NNPS in_IN our_PRP$ model_NN are_VBP bounded_VBN FIFOs_NNS ._.
+Our_PRP$ model_NN is_VBZ close_JJ to_TO the_DT physical_JJ implementation_NN ,_, where_WRB all_DT buffers_NNS are_VBP bounded_VBN ,_, however_RB large_JJ the_DT bound_VBN maybe_RB ._.
+In_IN Single_JJ Link_NN Communicating_VBG Finite_JJ State_NN machines_NNS =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_JJ -_: ,_, incoming_JJ messages_NNS from_IN several_JJ processes_NNS to_TO a_DT single_JJ process_NN come_VBN from_IN a_DT single_JJ FIFO_NNP ,_, in_IN our_PRP$ model_NN ,_, incoming_JJ messages_NNS to_TO a_DT single_JJ service_NN from_IN different_JJ services_NNS ,_, come_VBN from_IN separate_JJ FIFO_NNP channels_NNS ._.
+A_DT
+does_VBZ not_RB capture_VB the_DT realistic_JJ scenario_NN of_IN composition_NN ,_, because_IN of_IN the_DT inherent_JJ distributed_VBN nature_NN of_IN Web_NN services_NNS ._.
+Formalisms_NNS such_JJ as_IN π-calculus_NN and_CC the_DT approach_NN used_VBN in_IN Microsoft_NNP 's_POS Behave_NNP !_.
+project_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: use_VB asynchronous_JJ message_NN passing_NN for_IN modelling_VBG distributed_VBN and_CC concurrently_RB executing_VBG systems_NNS ._.
+Our_PRP$ model_NN differs_VBZ from_IN Communicating_VBG Finite_JJ State_NN machines_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, as_IN it_PRP uses_VBZ an_DT unbounded_JJ buffer_NN whereas_IN t_NN
+-RRB-_-RRB- ._.
+The_DT model_NN we_PRP propose_VBP describes_VBZ an_DT open_JJ system_NN and_CC encapsulates_VBZ a_DT black_JJ box_NN view_NN of_IN service_NN ._.
+An_DT XML_NN based_JJ notation_NN with_IN formal_JJ semantics_NNS in_IN π_NN -_: calculus_NN ,_, to_TO model_VB service_NN composition_NN is_VBZ described_VBN in_IN =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN the_DT prime_JJ objective_NN here_RB is_VBZ an_DT orderly_JJ sequencingsof_NN messages_NNS ,_, the_DT notation_NN does_VBZ not_RB provide_VB any_DT primitives_NNS for_IN modelling_VBG services_NNS such_JJ as_IN ``_`` timeout_NN ''_'' ._.
+Misra_NNP et_FW al._FW -LRB-_-LRB- 31_CD ,_, 24_CD ,_, 23_CD -RRB-_-RRB- present_VBP a_DT mod_NN

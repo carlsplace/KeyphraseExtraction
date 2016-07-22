@@ -1,0 +1,150 @@
+Better_NNP abstractions_NNS for_IN secure_JJ server-side_JJ scripting_NN
+It_PRP is_VBZ notoriously_RB difficult_JJ to_TO program_VB a_DT solid_JJ web_NN application_NN ._.
+Besides_IN addressing_VBG web_NN interactions_NNS ,_, state_NN maintenance_NN ,_, and_CC whimsical_JJ user_NN navigation_NN behaviors_NNS ,_, programmers_NNS must_MD also_RB avoid_VB a_DT minefield_NN of_IN security_NN vulnerabilities_NNS ._.
+The_DT problem_NN is_VBZ twofold_JJ ._.
+First_RB ,_, we_PRP lack_VBP a_DT clear_JJ understanding_NN of_IN the_DT new_JJ computation_NN model_NN underlying_VBG web_NN applications_NNS ._.
+Second_RB ,_, we_PRP lack_VBP proper_JJ abstractions_NNS for_IN hiding_VBG common_JJ and_CC subtle_JJ coding_NN details_NNS that_WDT are_VBP orthogonal_JJ to_TO the_DT business_NN functionalities_NNS of_IN specific_JJ web_NN applications_NNS ._.
+This_DT paper_NN addresses_VBZ both_DT issues_NNS ._.
+First_RB ,_, we_PRP present_VBP a_DT language_NN BASS_NN for_IN declarative_JJ server-side_JJ scripting_NN ._.
+BASS_NN allows_VBZ programmers_NNS to_TO work_VB in_IN an_DT ideal_JJ world_NN ,_, using_VBG new_JJ abstractions_NNS to_TO tackle_VB common_JJ but_CC problematic_JJ aspects_NNS of_IN web_NN programming_NN ._.
+The_DT meta_NN properties_NNS of_IN BASS_NN provide_VBP useful_JJ security_NN guarantees_NNS ._.
+Second_RB ,_, we_PRP present_VBP a_DT language_NN MOSS_NN reflecting_VBG realistic_JJ web_NN programming_NN concepts_NNS and_CC scenarios_NNS ,_, thus_RB articulating_VBG the_DT computation_NN model_NN behind_IN web_NN programming_NN ._.
+Finally_RB ,_, we_PRP present_VBP a_DT translation_NN from_IN BASS_NN to_TO MOSS_NNP ,_, demonstrating_VBG how_WRB the_DT ideal_JJ programming_NN model_NN and_CC security_NN guarantees_NNS of_IN BASS_NN can_MD be_VB implemented_VBN in_IN practice_NN ._.
+BASS_NN is_VBZ a_DT recent_JJ attempt_NN to_TO build_VB security_NN into_IN a_DT declarative_JJ high-level_JJ web_NN programming_NN model_NN ,_, working_VBG on_IN the_DT observation_NN that_IN security_NN issues_NNS are_VBP often_RB orthogonal_JJ to_TO the_DT main_JJ web_NN application_NN logic_NN =_JJ -_: =[_NN 55_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP enables_VBZ the_DT programmer_NN to_TO specify_VB the_DT business_NN logic_NN of_IN the_DT application_NN without_IN needing_VBG to_TO write_VB the_DT security_NN related_JJ logic_NN ._.
+Abstractions_NNS for_IN common_JJ operations_NNS ,_, such_JJ as_IN form_NN input_NN ,_, are_VBP baked_JJ into_IN
+r._NN Moreover_RB ,_, when_WRB executable_JJ content_NN is_VBZ transferred_VBN to_TO the_DT client_NN as_IN XML_NN or_CC JSON_NN and_CC composed_VBN into_IN displayable_JJ HTML_NNP by_IN JavaScript_NNP ,_, previously_RB proposed_VBN on-the-wire_JJ rewriting_VBG tactics_NNS become_VBP ineffective_JJ =_JJ -_: =[_NN 37_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO address_VB this_DT problem_NN ,_, multiple_JJ proposals_NNS have_VBP focused_VBN on_IN changing_VBG the_DT browser_NN to_TO add_VB additional_JJ isolation_NN mechanisms_NNS or_CC programming_NN abstractions_NNS -LRB-_-LRB- 18_CD ,_, 11_CD ,_, 37_CD ,_, 16_CD ,_, 25_CD -RRB-_-RRB- ._.
+A_DT common_JJ theme_NN is_VBZ to_TO give_VB we_PRP
+cations_NNS ._.
+These_DT techniques_NNS include_VBP static_JJ code_NN analysis_NN -LRB-_-LRB- 9_CD ,_, 14_CD ,_, 33_CD --_: 35_CD -RRB-_-RRB- ,_, dynamic_JJ tainting_NN -LRB-_-LRB- 23_CD ,_, 24_CD ,_, 27_CD -RRB-_-RRB- ,_, combination_NN of_IN dynamic_JJ tainting_NN and_CC static_JJ analysis_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- ,_, prevention_NN by_IN construction_NN or_CC by_IN design_NN =_JJ -_: =[_NN 8_CD ,_, 13_CD ,_, 29_CD ,_, 36_CD -RRB-_-RRB- -_: =_JJ -_: and_CC enforcement_NN mechanisms_NNS executing_VBG within_IN the_DT browser_NN -LRB-_-LRB- 1_CD ,_, 7_CD ,_, 10_CD ,_, 31_CD -RRB-_-RRB- ._.
+Some_DT of_IN these_DT techniques_NNS have_VBP been_VBN commercialized_VBN and_CC can_MD be_VB found_VBN in_IN today_NN 's_POS development_NN toolsets_NNS ._.
+An_DT example_NN is_VBZ Microsoft_NNP 's_POS F_NN
+b_LS Engineering_NNP volves_VBZ the_DT automatic_JJ enforcement_NN of_IN a_DT simple_JJ security_NN policy_NN controlled_VBN by_IN the_DT administrator_NN of_IN the_DT Web_NN application_NN ._.
+Security_NN is_VBZ always_RB of_IN concern_NN in_IN publicly_RB available_JJ Web_NN applications_NNS =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Typical_JJ automated_JJ client-server_NN partitioning_VBG technologies_NNS such_JJ as_IN Hilda_NNP -LRB-_-LRB- 28_CD -RRB-_-RRB- have_VBP ignored_VBN the_DT security_NN problems_NNS caused_VBN by_IN porting_VBG some_DT parts_NNS of_IN the_DT server-side_JJ logic_NN of_IN a_DT Web_NN application_NN to_TO the_DT untr_NN
+ed_VBN numerous_JJ tools_NNS and_CC techniques_NNS to_TO detect_VB and_CC prevent_VB such_JJ vulnerabilities_NNS ,_, including_VBG static_JJ code_NN analysis_NN -LRB-_-LRB- 8_CD ,_, 11_CD ,_, 27_CD ,_, 28_CD ,_, 31_CD -RRB-_-RRB- ,_, dynamic_JJ tainting_NN -LRB-_-LRB- 18_CD ,_, 19_CD ,_, 20_CD -RRB-_-RRB- ,_, prevention_NN by_IN construction_NN or_CC by_IN design_NN =_JJ -_: =[_NN 7_CD ,_, 10_CD ,_, 21_CD ,_, 32_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC client-side_JJ mechanisms_NNS executing_VBG within_IN the_DT browser_NN -LRB-_-LRB- 2_CD ,_, 6_CD ,_, 9_CD ,_, 26_CD -RRB-_-RRB- ._.
+Some_DT of_IN these_DT techniques_NNS have_VBP been_VBN integrated_VBN in_IN developer_NN toolsets_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 13_CD ,_, 5_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Moreover_RB ,_, organizations_NNS such_JJ as_IN OWASP_NN -LRB-_-LRB- 25_CD -RRB-_-RRB-
+rface_NN for_IN receiving_VBG user_NN requests_NNS ._.
+There_EX would_MD be_VB vulnerabilities_NNS if_IN it_PRP were_VBD not_RB handled_VBN properly_RB ,_, or_CC if_IN its_PRP$ handling_NN were_VBD not_RB sufficiently_RB understood_VBN by_IN the_DT programmer_NN ._.
+Previous_JJ work_NN -LRB-_-LRB- sans_JJ security_NN -RRB-_-RRB- =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: on_IN web_NN interaction_NN abstractions_NNS requires_VBZ that_IN the_DT interface_NN be_VB ``_`` open_JJ ''_'' only_RB once_RB --_: a_DT second_JJ request_NN to_TO the_DT interface_NN would_MD not_RB be_VB accepted_VBN ._.
+This_DT significantly_RB restricts_VBZ user_NN navigation_NN -LRB-_-LRB- 15_CD ,_, 16_CD ,_, 28_CD -RRB-_-RRB- ._.
+In_IN
+rface_NN for_IN receiving_VBG user_NN requests_NNS ._.
+There_EX would_MD be_VB vulnerabilities_NNS if_IN it_PRP were_VBD not_RB handled_VBN properly_RB ,_, or_CC if_IN its_PRP$ handling_NN were_VBD not_RB sufficiently_RB understood_VBN by_IN the_DT programmer_NN ._.
+Previous_JJ work_NN -LRB-_-LRB- sans_JJ security_NN -RRB-_-RRB- =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: on_IN web_NN interaction_NN abstractions_NNS requires_VBZ that_IN the_DT interface_NN be_VB ``_`` open_JJ ''_'' only_RB once_RB --_: a_DT second_JJ request_NN to_TO the_DT interface_NN would_MD not_RB be_VB accepted_VBN ._.
+This_DT significantly_RB restricts_VBZ user_NN navigation_NN -LRB-_-LRB- 15_CD ,_, 16_CD ,_, 28_CD -RRB-_-RRB- ._.
+In_IN
+curity_NN -RRB-_-RRB- -LRB-_-LRB- 4_CD ,_, 6_CD ,_, 9_CD -RRB-_-RRB- on_IN web_NN interaction_NN abstractions_NNS requires_VBZ that_IN the_DT interface_NN be_VB ``_`` open_JJ ''_'' only_RB once_RB --_: a_DT second_JJ request_NN to_TO the_DT interface_NN would_MD not_RB be_VB accepted_VBN ._.
+This_DT significantly_RB restricts_VBZ user_NN navigation_NN =_JJ -_: =[_NN 15_CD ,_, 16_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN practice_NN ,_, it_PRP is_VBZ common_JJ for_IN a_DT user_NN to_TO return_VB to_TO a_DT previous_JJ navigation_NN stage_NN using_VBG the_DT ``_`` back_JJ ''_'' button_NN ._.
+In_IN general_JJ ,_, the_DT user_NN could_MD revisit_VB any_DT item_NN in_IN the_DT browser_NN history_NN ._.
+The_DT validity_NN of_IN such_PDT an_DT ope_NN
+ment_NN with_IN a_DT larger_JJR scale_NN prototype_NN in_IN the_DT future_NN ,_, where_WRB the_DT ideas_NNS of_IN this_DT report_NN will_MD be_VB implemented_VBN for_IN an_DT existing_VBG language_NN as_IN a_DT library_NN ._.
+6_CD ._.
+Related_JJ and_CC Future_JJ Work_NN Declarative_JJ web_NN programming_NN MAWL_NN =_JJ -_: =[_NN 3_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: and_CC its_PRP$ descendants_NNS -LRB-_-LRB- <bigwig>_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, JWIG_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- -RRB-_-RRB- use_VBP domain-specific_JJ language_NN constructs_NNS to_TO program_NN web_NN applications_NNS ._.
+They_PRP view_VBP web_NN applications_NNS as_IN form-based_JJ services_NNS ,_, and_CC provide_VB abstractions_NNS on_IN some_DT k_NN
+hese_NN abstractions_NNS hide_VBP implementation_NN details_NNS -LRB-_-LRB- e.g._FW ,_, input_NN validation_NN ,_, embedding_VBG of_IN continuation_NN and_CC state_NN in_IN URL_NN -RRB-_-RRB- ,_, thus_RB preventing_VBG certain_JJ programming_NN errors_NNS ._.
+In_IN another_DT line_NN of_IN work_NN ,_, Graunke_NNP et_FW al._FW =_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP the_DT design_NN and_CC implementation_NN of_IN an_DT I\/O_NN construct_NN for_IN web_NN interactions_NNS ._.
+This_DT construct_NN helps_VBZ to_TO program_NN web_NN applications_NNS in_IN a_DT morestraditional_JJ model_NN of_IN interactions_NNS ,_, and_CC avoids_VBZ the_DT manual_JJ sav_NN
+sting_VBG typesafe_JJ languages_NNS ._.
+Some_DT notable_JJ examples_NNS are_VBP the_DT Curry-based_JJ serverside_NN scripting_NN language_NN by_IN Hanus_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, Haskell-based_JJ WASH\/CGI_NN by_IN Thiemann_NNP -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, and_CC Smalltalk-based_JJ Seaside_NNP by_IN Ducasse_NNP et_FW al._FW =_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT provide_VBP useful_JJ abstractions_NNS in_IN the_DT form_NN of_IN libraries_NNS to_TO handle_VB some_DT common_JJ aspects_NNS of_IN web_NN programming_NN ,_, such_JJ as_IN structured_JJ HTML_NNP generation_NN ,_, session_NN management_NN ,_, and_CC client-server_JJ communication_NN ._.
+ct_NN is_VBZ to_TO include_VB client-side_JJ scripting_NN -LRB-_-LRB- e.g._FW ,_, JavaScript_NNP -RRB-_-RRB- into_IN the_DT model_NN ._.
+This_DT is_VBZ orthogonal_JJ to_TO the_DT focus_NN of_IN serverside_NN scripting_NN in_IN this_DT report_NN ,_, and_CC previous_JJ work_NN on_IN the_DT formal_JJ aspects_NNS of_IN JavaScript_NN =_JJ -_: =[_NN 29_CD ,_, 2_CD ,_, 32_CD -RRB-_-RRB- -_: =_JJ -_: and_CC web_NN application_NN development_NN frameworks_NNS and_CC policies_NNS -LRB-_-LRB- 13_CD ,_, 21_CD -RRB-_-RRB- provide_VBP some_DT good_JJ starting_VBG points_NNS ._.
+Using_VBG some_DT new_JJ abstractions_NNS ,_, BASS_NN provides_VBZ several_JJ useful_JJ security_NN guarantees_NNS as_IN articulated_VBN in_IN Sec_NN
+ct_NN is_VBZ to_TO include_VB client-side_JJ scripting_NN -LRB-_-LRB- e.g._FW ,_, JavaScript_NNP -RRB-_-RRB- into_IN the_DT model_NN ._.
+This_DT is_VBZ orthogonal_JJ to_TO the_DT focus_NN of_IN serverside_NN scripting_NN in_IN this_DT report_NN ,_, and_CC previous_JJ work_NN on_IN the_DT formal_JJ aspects_NNS of_IN JavaScript_NN =_JJ -_: =[_NN 29_CD ,_, 2_CD ,_, 32_CD -RRB-_-RRB- -_: =_JJ -_: and_CC web_NN application_NN development_NN frameworks_NNS and_CC policies_NNS -LRB-_-LRB- 13_CD ,_, 21_CD -RRB-_-RRB- provide_VBP some_DT good_JJ starting_VBG points_NNS ._.
+Using_VBG some_DT new_JJ abstractions_NNS ,_, BASS_NN provides_VBZ several_JJ useful_JJ security_NN guarantees_NNS as_IN articulated_VBN in_IN Sec_NN
+curity_NN -RRB-_-RRB- -LRB-_-LRB- 4_CD ,_, 6_CD ,_, 9_CD -RRB-_-RRB- on_IN web_NN interaction_NN abstractions_NNS requires_VBZ that_IN the_DT interface_NN be_VB ``_`` open_JJ ''_'' only_RB once_RB --_: a_DT second_JJ request_NN to_TO the_DT interface_NN would_MD not_RB be_VB accepted_VBN ._.
+This_DT significantly_RB restricts_VBZ user_NN navigation_NN =_JJ -_: =[_NN 15_CD ,_, 16_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN practice_NN ,_, it_PRP is_VBZ common_JJ for_IN a_DT user_NN to_TO return_VB to_TO a_DT previous_JJ navigation_NN stage_NN using_VBG the_DT ``_`` back_JJ ''_'' button_NN ._.
+In_IN general_JJ ,_, the_DT user_NN could_MD revisit_VB any_DT item_NN in_IN the_DT browser_NN history_NN ._.
+The_DT validity_NN of_IN such_PDT an_DT ope_NN
+erties_NNS uncovered_VBD ._.
+It_PRP is_VBZ thus_RB useful_JJ to_TO explore_VB abstractions_NNS for_IN other_JJ areas_NNS ,_, such_JJ as_IN dynamic_JJ HTML_NNP generation_NN ,_, privilege_NN management_NN ,_, and_CC dynamic_JJ SQL_NN construction_NN ._.
+HTML_NNP generation_NN has_VBZ been_VBN much_RB studied_VBN =_JJ -_: =[_NN 18_CD ,_, 9_CD ,_, 23_CD ,_, 28_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB the_DT wellformedness_NN of_IN the_DT generated_VBN document_NN can_MD be_VB guaranteed_VBN statically_RB ._.
+Privilege_NN management_NN has_VBZ been_VBN discussed_VBN in_IN Section_NN 2.4_CD ._.
+Dynamic_NNP SQL_NNP construction_NN is_VBZ worth_JJ mentioning_VBG ._.
+Most_JJS web_NN langua_NN
+ical_JJ functionalities_NNS -LRB-_-LRB- e.g._FW ,_, online_JJ banking_NN -RRB-_-RRB- ,_, the_DT security_NN of_IN the_DT server_NN programs_NNS has_VBZ become_VBN a_DT major_JJ concern_NN ._.
+Indeed_RB ,_, web_NN applications_NNS face_VBP more_JJR security_NN threats_NNS than_IN conventional_JJ desktop_NN applications_NNS =_JJ -_: =[_NN 10_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Some_DT representative_JJ ones_NNS include_VBP command_NN injection_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, crosssite_JJ scripting_NN -LRB-_-LRB- XSS_NN -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, cross-site_JJ request_NN forgery_NN -LRB-_-LRB- CSRF_NN -RRB-_-RRB- -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, and_CC session_NN fixation_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+Any_DT of_IN these_DT could_MD cause_VB serious_JJ consequenc_NN
+vilege_NN of_IN the_DT server_NN domain_NN ._.
+For_IN example_NN ,_, it_PRP may_MD read_VB the_DT cookie_NN set_VBN by_IN the_DT server_NN and_CC send_VB it_PRP to_TO the_DT attacker_NN ._.
+This_DT scenario_NN is_VBZ somewhat_RB related_JJ to_TO CSRF_NN ._.
+However_RB ,_, there_EX are_VBP also_RB second-order_JJ attacks_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT do_VBP not_RB require_VB the_DT use_NN of_IN forged_VBN requests_NNS ._.
+Session_NN fixation_NN :_: An_DT attacker_NN may_MD fix_VB an_DT SID_NNP beforehand_RB and_CC trick_VB a_DT user_NN into_IN communicating_VBG with_IN the_DT server_NN using_VBG it_PRP ._.
+This_DT is_VBZ mainly_RB applicable_JJ if_IN SIDs_NNS
+odel_NN ._.
+This_DT is_VBZ orthogonal_JJ to_TO the_DT focus_NN of_IN serverside_NN scripting_NN in_IN this_DT report_NN ,_, and_CC previous_JJ work_NN on_IN the_DT formal_JJ aspects_NNS of_IN JavaScript_NNP -LRB-_-LRB- 29_CD ,_, 2_CD ,_, 32_CD -RRB-_-RRB- and_CC web_NN application_NN development_NN frameworks_NNS and_CC policies_NNS =_JJ -_: =[_NN 13_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: provide_VBP some_DT good_JJ starting_VBG points_NNS ._.
+Using_VBG some_DT new_JJ abstractions_NNS ,_, BASS_NN provides_VBZ several_JJ useful_JJ security_NN guarantees_NNS as_IN articulated_VBN in_IN Section_NN 3.4_CD ._.
+However_RB ,_, the_DT BASS_NN abstractions_NNS are_VBP not_RB meant_VBN to_TO be_VB ``_`` com_NN
+odel_NN ._.
+This_DT is_VBZ orthogonal_JJ to_TO the_DT focus_NN of_IN serverside_NN scripting_NN in_IN this_DT report_NN ,_, and_CC previous_JJ work_NN on_IN the_DT formal_JJ aspects_NNS of_IN JavaScript_NNP -LRB-_-LRB- 29_CD ,_, 2_CD ,_, 32_CD -RRB-_-RRB- and_CC web_NN application_NN development_NN frameworks_NNS and_CC policies_NNS =_JJ -_: =[_NN 13_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: provide_VBP some_DT good_JJ starting_VBG points_NNS ._.
+Using_VBG some_DT new_JJ abstractions_NNS ,_, BASS_NN provides_VBZ several_JJ useful_JJ security_NN guarantees_NNS as_IN articulated_VBN in_IN Section_NN 3.4_CD ._.
+However_RB ,_, the_DT BASS_NN abstractions_NNS are_VBP not_RB meant_VBN to_TO be_VB ``_`` com_NN
+ct_NN is_VBZ to_TO include_VB client-side_JJ scripting_NN -LRB-_-LRB- e.g._FW ,_, JavaScript_NNP -RRB-_-RRB- into_IN the_DT model_NN ._.
+This_DT is_VBZ orthogonal_JJ to_TO the_DT focus_NN of_IN serverside_NN scripting_NN in_IN this_DT report_NN ,_, and_CC previous_JJ work_NN on_IN the_DT formal_JJ aspects_NNS of_IN JavaScript_NN =_JJ -_: =[_NN 29_CD ,_, 2_CD ,_, 32_CD -RRB-_-RRB- -_: =_JJ -_: and_CC web_NN application_NN development_NN frameworks_NNS and_CC policies_NNS -LRB-_-LRB- 13_CD ,_, 21_CD -RRB-_-RRB- provide_VBP some_DT good_JJ starting_VBG points_NNS ._.
+Using_VBG some_DT new_JJ abstractions_NNS ,_, BASS_NN provides_VBZ several_JJ useful_JJ security_NN guarantees_NNS as_IN articulated_VBN in_IN Sec_NN
+anguages_NNS and_CC frameworks_NNS for_IN web_NN application_NN development_NN ,_, automatically_RB partitioning_VBG programs_NNS among_IN the_DT server_NN and_CC the_DT client_NN ._.
+Most_JJS of_IN such_JJ work_NN does_VBZ not_RB address_VB security_NN ._.
+A_DT notable_JJ exception_NN is_VBZ Swift_NNP =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT ensures_VBZ confidentiality_NN and_CC integrity_NN of_IN web_NN application_NN information_NN using_VBG type_NN annotations_NNS which_WDT reflect_VBP information_NN flow_NN policies_NNS ._.
+The_DT security_NN guarantee_NN of_IN Swift_NNP is_VBZ largely_RB orthogonal_JJ to_TO th_DT
+discussed_VBN in_IN Section_NN 2.4_CD ._.
+Dynamic_NNP SQL_NNP construction_NN is_VBZ worth_JJ mentioning_VBG ._.
+Most_JJS web_NN languages_NNS manipulate_VBP SQL_NN commands_NNS with_IN strings_NNS ,_, naïve_JJ handling_NN of_IN which_WDT is_VBZ subject_JJ to_TO injection_NN attacks_NNS ._.
+Previous_JJ work_NN =_JJ -_: =[_NN 27_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ articulated_VBN that_IN injection_NN attacks_NNS happen_VB when_WRB client_NN input_NN changes_VBZ the_DT intended_JJ structure_NN of_IN the_DT constructed_VBN commands_NNS ._.
+In_IN response_NN ,_, it_PRP is_VBZ useful_JJ to_TO provide_VB abstractions_NNS that_WDT statically_RB enforce_VBP t_NN
+s_NN than_IN conventional_JJ desktop_NN applications_NNS -LRB-_-LRB- 10_CD ,_, 26_CD -RRB-_-RRB- ._.
+Some_DT representative_JJ ones_NNS include_VBP command_NN injection_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, crosssite_JJ scripting_NN -LRB-_-LRB- XSS_NN -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, cross-site_JJ request_NN forgery_NN -LRB-_-LRB- CSRF_NN -RRB-_-RRB- -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, and_CC session_NN fixation_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Any_DT of_IN these_DT could_MD cause_VB serious_JJ consequences_NNS :_: sensitive_JJ user_NN information_NN could_MD be_VB stolen_VBN ,_, data_NNS and_CC associated_VBN belongings_NNS could_MD be_VB damaged_VBN ,_, or_CC service_NN availability_NN could_MD be_VB compromised_VBN ._.
+In_IN response_NN
+rface_NN for_IN receiving_VBG user_NN requests_NNS ._.
+There_EX would_MD be_VB vulnerabilities_NNS if_IN it_PRP were_VBD not_RB handled_VBN properly_RB ,_, or_CC if_IN its_PRP$ handling_NN were_VBD not_RB sufficiently_RB understood_VBN by_IN the_DT programmer_NN ._.
+Previous_JJ work_NN -LRB-_-LRB- sans_JJ security_NN -RRB-_-RRB- =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: on_IN web_NN interaction_NN abstractions_NNS requires_VBZ that_IN the_DT interface_NN be_VB ``_`` open_JJ ''_'' only_RB once_RB --_: a_DT second_JJ request_NN to_TO the_DT interface_NN would_MD not_RB be_VB accepted_VBN ._.
+This_DT significantly_RB restricts_VBZ user_NN navigation_NN -LRB-_-LRB- 15_CD ,_, 16_CD ,_, 28_CD -RRB-_-RRB- ._.
+In_IN
+face_VB more_JJR security_NN threats_NNS than_IN conventional_JJ desktop_NN applications_NNS -LRB-_-LRB- 10_CD ,_, 26_CD -RRB-_-RRB- ._.
+Some_DT representative_JJ ones_NNS include_VBP command_NN injection_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, crosssite_JJ scripting_NN -LRB-_-LRB- XSS_NN -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, cross-site_JJ request_NN forgery_NN -LRB-_-LRB- CSRF_NN -RRB-_-RRB- =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC session_NN fixation_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+Any_DT of_IN these_DT could_MD cause_VB serious_JJ consequences_NNS :_: sensitive_JJ user_NN information_NN could_MD be_VB stolen_VBN ,_, data_NNS and_CC associated_VBN belongings_NNS could_MD be_VB damaged_VBN ,_, or_CC service_NN availability_NN could_MD b_NN
+onse_NN to_TO such_JJ security_NN threats_NNS ,_, existing_VBG languages_NNS and_CC frameworks_NNS for_IN server-side_JJ scripting_NN -LRB-_-LRB- e.g._FW ,_, JSP_NNP -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, PHP_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, Ruby_NNP on_IN Rails_NNPS -LRB-_-LRB- 17_CD -RRB-_-RRB- -RRB-_-RRB- ,_, as_RB well_RB as_IN the_DT web_NN application_NN security_NN community_NN -LRB-_-LRB- e.g._FW ,_, CERT_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, OWASP_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, WASC_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- -RRB-_-RRB- ,_, largely_RB promote_VB secure_JJ coding_NN practices_NNS -LRB-_-LRB- e.g._FW ,_, input_NN validation_NN -RRB-_-RRB- and_CC provide_VB useful_JJ libraries_NNS in_IN support_NN -LRB-_-LRB- e.g._FW ,_, filtering_VBG functions_NNS -RRB-_-RRB- ._.
+However_RB ,_, there_EX is_VBZ no_DT guarantee_NN that_IN prog_NN
+and_CC associated_VBN belongings_NNS could_MD be_VB damaged_VBN ,_, or_CC service_NN availability_NN could_MD be_VB compromised_VBN ._.
+In_IN response_NN to_TO such_JJ security_NN threats_NNS ,_, existing_VBG languages_NNS and_CC frameworks_NNS for_IN server-side_JJ scripting_NN -LRB-_-LRB- e.g._FW ,_, JSP_NNP =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, PHP_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, Ruby_NNP on_IN Rails_NNPS -LRB-_-LRB- 17_CD -RRB-_-RRB- -RRB-_-RRB- ,_, as_RB well_RB as_IN the_DT web_NN application_NN security_NN community_NN -LRB-_-LRB- e.g._FW ,_, CERT_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, OWASP_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, WASC_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- -RRB-_-RRB- ,_, largely_RB promote_VB secure_JJ coding_NN practices_NNS -LRB-_-LRB- e.g._FW ,_, input_NN validation_NN -RRB-_-RRB- and_CC provide_VB
+uld_RB be_VB damaged_VBN ,_, or_CC service_NN availability_NN could_MD be_VB compromised_VBN ._.
+In_IN response_NN to_TO such_JJ security_NN threats_NNS ,_, existing_VBG languages_NNS and_CC frameworks_NNS for_IN server-side_JJ scripting_NN -LRB-_-LRB- e.g._FW ,_, JSP_NNP -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, PHP_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, Ruby_NNP on_IN Rails_NNPS =_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, as_RB well_RB as_IN the_DT web_NN application_NN security_NN community_NN -LRB-_-LRB- e.g._FW ,_, CERT_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, OWASP_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, WASC_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- -RRB-_-RRB- ,_, largely_RB promote_VB secure_JJ coding_NN practices_NNS -LRB-_-LRB- e.g._FW ,_, input_NN validation_NN -RRB-_-RRB- and_CC provide_VB useful_JJ libraries_NNS in_IN support_NN -LRB-_-LRB-
+of_IN the_DT constructed_VBN commands_NNS ._.
+In_IN response_NN ,_, it_PRP is_VBZ useful_JJ to_TO provide_VB abstractions_NNS that_WDT statically_RB enforce_VBP the_DT structures_NNS of_IN SQL_NN commands_NNS before_IN client_NN input_NN is_VBZ plugged_VBN in_IN at_IN runtime_NN ._.
+Prepared_VBN statements_NNS =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: provide_VBP some_DT support_NN on_IN this_DT aspect_NN if_IN used_VBN properly_RB ,_, but_CC further_JJ study_NN on_IN more_RBR generally_RB shaped_JJ queries_NNS and_CC more_RBR friendly_JJ syntax_NN is_VBZ useful_JJ ._.
+Similar_JJ ideas_NNS may_MD also_RB help_VB addressing_VBG second-order_JJ XSS_NN -LRB-_-LRB- 2_CD
+major_JJ concern_NN ._.
+Indeed_RB ,_, web_NN applications_NNS face_VBP more_JJR security_NN threats_NNS than_IN conventional_JJ desktop_NN applications_NNS -LRB-_-LRB- 10_CD ,_, 26_CD -RRB-_-RRB- ._.
+Some_DT representative_JJ ones_NNS include_VBP command_NN injection_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, crosssite_JJ scripting_NN -LRB-_-LRB- XSS_NN -RRB-_-RRB- =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, cross-site_JJ request_NN forgery_NN -LRB-_-LRB- CSRF_NN -RRB-_-RRB- -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, and_CC session_NN fixation_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+Any_DT of_IN these_DT could_MD cause_VB serious_JJ consequences_NNS :_: sensitive_JJ user_NN information_NN could_MD be_VB stolen_VBN ,_, data_NNS and_CC associated_VBN belongings_NNS could_MD be_VB d_NN
+h_NN security_NN threats_NNS ,_, existing_VBG languages_NNS and_CC frameworks_NNS for_IN server-side_JJ scripting_NN -LRB-_-LRB- e.g._FW ,_, JSP_NNP -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, PHP_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, Ruby_NNP on_IN Rails_NNPS -LRB-_-LRB- 17_CD -RRB-_-RRB- -RRB-_-RRB- ,_, as_RB well_RB as_IN the_DT web_NN application_NN security_NN community_NN -LRB-_-LRB- e.g._FW ,_, CERT_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, OWASP_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, WASC_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- -RRB-_-RRB- ,_, largely_RB promote_VB secure_JJ coding_NN practices_NNS -LRB-_-LRB- e.g._FW ,_, input_NN validation_NN -RRB-_-RRB- and_CC provide_VB useful_JJ libraries_NNS in_IN support_NN -LRB-_-LRB- e.g._FW ,_, filtering_VBG functions_NNS -RRB-_-RRB- ._.
+However_RB ,_, there_EX is_VBZ no_DT guarantee_NN that_IN programmers_NNS will_MD
+ical_JJ functionalities_NNS -LRB-_-LRB- e.g._FW ,_, online_JJ banking_NN -RRB-_-RRB- ,_, the_DT security_NN of_IN the_DT server_NN programs_NNS has_VBZ become_VBN a_DT major_JJ concern_NN ._.
+Indeed_RB ,_, web_NN applications_NNS face_VBP more_JJR security_NN threats_NNS than_IN conventional_JJ desktop_NN applications_NNS =_JJ -_: =[_NN 10_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Some_DT representative_JJ ones_NNS include_VBP command_NN injection_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, crosssite_JJ scripting_NN -LRB-_-LRB- XSS_NN -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, cross-site_JJ request_NN forgery_NN -LRB-_-LRB- CSRF_NN -RRB-_-RRB- -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, and_CC session_NN fixation_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+Any_DT of_IN these_DT could_MD cause_VB serious_JJ consequenc_NN
+threats_NNS ,_, existing_VBG languages_NNS and_CC frameworks_NNS for_IN server-side_JJ scripting_NN -LRB-_-LRB- e.g._FW ,_, JSP_NNP -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, PHP_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, Ruby_NNP on_IN Rails_NNPS -LRB-_-LRB- 17_CD -RRB-_-RRB- -RRB-_-RRB- ,_, as_RB well_RB as_IN the_DT web_NN application_NN security_NN community_NN -LRB-_-LRB- e.g._FW ,_, CERT_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, OWASP_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, WASC_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, largely_RB promote_VB secure_JJ coding_NN practices_NNS -LRB-_-LRB- e.g._FW ,_, input_NN validation_NN -RRB-_-RRB- and_CC provide_VB useful_JJ libraries_NNS in_IN support_NN -LRB-_-LRB- e.g._FW ,_, filtering_VBG functions_NNS -RRB-_-RRB- ._.
+However_RB ,_, there_EX is_VBZ no_DT guarantee_NN that_IN programmers_NNS will_MD follow_VB the_DT
+the_DT server_NN programs_NNS has_VBZ become_VBN a_DT major_JJ concern_NN ._.
+Indeed_RB ,_, web_NN applications_NNS face_VBP more_JJR security_NN threats_NNS than_IN conventional_JJ desktop_NN applications_NNS -LRB-_-LRB- 10_CD ,_, 26_CD -RRB-_-RRB- ._.
+Some_DT representative_JJ ones_NNS include_VBP command_NN injection_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, crosssite_JJ scripting_NN -LRB-_-LRB- XSS_NN -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, cross-site_JJ request_NN forgery_NN -LRB-_-LRB- CSRF_NN -RRB-_-RRB- -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, and_CC session_NN fixation_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+Any_DT of_IN these_DT could_MD cause_VB serious_JJ consequences_NNS :_: sensitive_JJ user_NN information_NN could_MD be_VB stolen_VBN ,_, data_NNS and_CC
+curity_NN -RRB-_-RRB- -LRB-_-LRB- 4_CD ,_, 6_CD ,_, 9_CD -RRB-_-RRB- on_IN web_NN interaction_NN abstractions_NNS requires_VBZ that_IN the_DT interface_NN be_VB ``_`` open_JJ ''_'' only_RB once_RB --_: a_DT second_JJ request_NN to_TO the_DT interface_NN would_MD not_RB be_VB accepted_VBN ._.
+This_DT significantly_RB restricts_VBZ user_NN navigation_NN =_JJ -_: =[_NN 15_CD ,_, 16_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN practice_NN ,_, it_PRP is_VBZ common_JJ for_IN a_DT user_NN to_TO return_VB to_TO a_DT previous_JJ navigation_NN stage_NN using_VBG the_DT ``_`` back_JJ ''_'' button_NN ._.
+In_IN general_JJ ,_, the_DT user_NN could_MD revisit_VB any_DT item_NN in_IN the_DT browser_NN history_NN ._.
+The_DT validity_NN of_IN such_PDT an_DT ope_NN
+s_NN than_IN conventional_JJ desktop_NN applications_NNS -LRB-_-LRB- 7_CD ,_, 19_CD -RRB-_-RRB- ._.
+Some_DT representative_JJ ones_NNS include_VBP command_NN injection_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, cross-site_JJ scripting_NN -LRB-_-LRB- XSS_NN -RRB-_-RRB- -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, cross-site_JJ request_NN forgery_NN -LRB-_-LRB- CSRF_NN -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, and_CC session_NN fixation_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Any_DT of_IN these_DT could_MD cause_VB serious_JJ consequences_NNS :_: sensitive_JJ user_NN information_NN could_MD be_VB stolen_VBN ,_, data_NNS and_CC associated_VBN belongings_NNS could_MD be_VB damaged_VBN ,_, or_CC service_NN availability_NN could_MD be_VB compromised_VBN ._.
+In_IN response_NN
+rk_IN developing_VBG domain-specific_JJ languages_NNS or_CC frameworks_NNS for_IN web_NN programming_NN as_IN libraries_NNS of_IN existing_VBG typesafe_NN languages_NNS ._.
+Some_DT notable_JJ examples_NNS are_VBP the_DT Curry-based_JJ serverside_NN scripting_NN language_NN by_IN Hanus_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Haskell-based_JJ WASH\/CGI_NN by_IN Thiemann_NNP -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, and_CC Smalltalk-based_JJ Seaside_NNP by_IN Ducasse_NNP et_FW al._FW -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+These_DT provide_VBP useful_JJ abstractions_NNS in_IN the_DT form_NN of_IN libraries_NNS to_TO handle_VB some_DT common_JJ aspects_NNS of_IN web_NN programmi_NNS

@@ -1,0 +1,225 @@
+A_DT quickstart_NN in_IN frequent_JJ structure_NN mining_NN can_MD make_VB a_DT difference_NN
+Given_VBN a_DT database_NN ,_, structure_NN mining_NN algorithms_NNS search_VBP for_IN substructures_NNS that_WDT satisfy_VBP constraints_NNS such_JJ as_IN minimum_JJ frequency_NN ,_, minimum_NN confidence_NN ,_, minimum_JJ interest_NN and_CC maximum_NN frequency_NN ._.
+Examples_NNS of_IN substructures_NNS include_VBP graphs_NNS ,_, trees_NNS and_CC paths_NNS ._.
+For_IN these_DT substructures_NNS many_JJ mining_NN algorithms_NNS have_VBP been_VBN proposed_VBN ._.
+In_IN order_NN to_TO make_VB graph_NN mining_NN more_RBR efficient_JJ ,_, we_PRP investigate_VBP the_DT use_NN of_IN the_DT ``_`` quickstart_NN principle_NN ''_'' ,_, which_WDT is_VBZ based_VBN on_IN the_DT fact_NN that_IN these_DT classes_NNS of_IN structures_NNS are_VBP contained_VBN in_IN each_DT other_JJ ,_, thus_RB allowing_VBG for_IN the_DT development_NN of_IN structure_NN mining_NN algorithms_NNS that_WDT split_VBP the_DT search_NN into_IN steps_NNS of_IN increasing_VBG complexity_NN ._.
+We_PRP introduce_VBP the_DT GrAph\/Sequence\/Tree_NNP extractiON_NNP -LRB-_-LRB- Gaston_NNP -RRB-_-RRB- algorithm_NN that_WDT implements_VBZ this_DT idea_NN by_IN searching_VBG first_JJ for_IN frequent_JJ paths_NNS ,_, then_RB frequent_JJ free_JJ trees_NNS and_CC finally_RB cyclic_JJ graphs_NNS ._.
+We_PRP investigate_VBP two_CD alternatives_NNS for_IN computing_VBG the_DT frequency_NN of_IN structures_NNS and_CC present_JJ experimental_JJ results_NNS to_TO relate_VB these_DT alternatives_NNS ._.
+ce_NN of_IN a_DT sequence_NN per_IN EFG_NN could_MD potentially_RB discard_VB many_JJ other_JJ executions_NNS of_IN the_DT same_JJ region_NN ._.
+This_DT is_VBZ not_RB dissimilar_JJ to_TO the_DT methodologies_NNS employed_VBN in_IN some_DT algorithms_NNS that_WDT search_VBP for_IN frequent_JJ subgraphs_NNS =_JJ -_: =[_NN 16_CD ,_, 39_CD ,_, 14_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN addition_NN ,_, the_DT data_NNS sequences_NNS mined_VBN by_IN GSP_NN are_VBP all_DT total_JJ orderings_NNS ;_: they_PRP do_VBP not_RB have_VB the_DT edgeweighted_VBN topological_JJ structure_NN present_JJ in_IN EFGs_NNS ._.
+In_IN GSP_NNP ,_, each_DT occurrence_NN of_IN a_DT candidate_NN sequence_NN is_VBZ weig_NN
+5_CD ._.
+Experimental_JJ results_NNS are_VBP reported_VBN in_IN Section_NN 6_CD ,_, and_CC conclusions_NNS are_VBP given_VBN in_IN Section_NN 7_CD ._.
+2_CD ._.
+RELATED_NNS WORK_VBP There_EX is_VBZ a_DT wealth_NN of_IN literature_NN devoted_VBN to_TO mining_NN frequent_JJ patterns_NNS over_IN graph_NN data_NNS ,_, such_JJ as_IN =_JJ -_: =[_NN 11_CD ,_, 3_CD ,_, 16_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Compared_VBN to_TO them_PRP ,_, our_PRP$ major_JJ aim_NN in_IN this_DT study_NN is_VBZ to_TO enhance_VB the_DT usability_NN of_IN patterns_NNS that_WDT are_VBP mined_VBN out_RP ._.
+Previously_RB ,_, there_EX have_VBP been_VBN researches_VBZ that_IN either_CC relax_VB the_DT rigid_JJ structural_JJ requirement_NN or_CC
+er_RB ,_, the_DT vast_JJ majority_NN transfers_NNS techniques_NNS developed_VBD originally_RB for_IN frequent_JJ item_NN set_NN mining_NN ._.
+Examples_NNS include_VBP MolFea_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, FSG_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, MoSS\/MoFa_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, gSpan_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, Closegraph_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, FFSM_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, and_CC Gaston_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT related_JJ ,_, but_CC slightly_RB different_JJ approach_NN ,_, which_WDT is_VBZ strongly_RB geared_VBN towards_IN graph_NN compression_NN ,_, is_VBZ used_VBN in_IN Subdue_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+The_DT basic_JJ idea_NN of_IN these_DT approaches_NNS is_VBZ to_TO grow_VB subgraphs_NNS into_IN the_DT graphs_NNS of_IN the_DT
+gic_JJ programming_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+However_RB ,_, the_DT vast_JJ majority_NN transfers_VBZ techniques_NNS from_IN frequent_JJ item_NN set_NN mining_NN ._.
+Examples_NNS are_VBP MolFea_NNP -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, FSG_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, MoSS\/MoFa_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, gSpan_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, CloseGraph_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, FFSM_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, and_CC Gaston_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT related_JJ ,_, but_CC slightly_RB different_JJ approach_NN is_VBZ used_VBN in_IN Subdue_NNP -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+The_DT basic_JJ idea_NN is_VBZ to_TO grow_VB subgraphs_NNS into_IN the_DT graphs_NNS of_IN the_DT database_NN ,_, adding_VBG an_DT edge_NN and_CC maybe_RB a_DT node_NN in_IN each_DT step_NN ,_, counting_VBG the_DT numb_JJ
+er_RB ,_, the_DT vast_JJ majority_NN transfers_NNS techniques_NNS developed_VBD originally_RB for_IN frequent_JJ item_NN set_NN mining_NN ._.
+Examples_NNS include_VBP MolFea_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- ,_, FSG_NN -LRB-_-LRB- 34_CD -RRB-_-RRB- ,_, MoSS\/MoFa_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, gSpan_NN -LRB-_-LRB- 50_CD -RRB-_-RRB- ,_, CloseGraph_NN -LRB-_-LRB- 51_CD -RRB-_-RRB- ,_, FFSM_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, and_CC Gaston_NN =_JJ -_: =[_NN 39_CD ,_, 40_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT related_JJ ,_, but_CC slightly_RB different_JJ approach_NN is_VBZ used_VBN in_IN Subdue_NNP -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, which_WDT is_VBZ geared_VBN towards_IN graph_NN compression_NN with_IN common_JJ subgraphs_NNS rather_RB than_IN frequent_JJ subgraph_JJ mining_NN ._.
+An_DT overview_NN of_IN several_JJ method_NN
+subgraphs_NNS of_IN feasible_JJ dimensionality_NN by_IN a_DT mining_NN method_NN and_CC then_RB apply_VB a_DT separate_JJ regression_NN algorithm_NN ._.
+This_DT was_VBD achieved_VBN by_IN frequent_JJ substructure_NN mining_NN methods_NNS such_JJ as_IN AGM_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, gSpan_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- or_CC Gaston_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: that_IN enumerate_VB all_DT subgraphs_NNS whose_WP$ frequency_NN is_VBZ above_IN a_DT minimum_NN threshold_NN ._.
+The_DT most_RBS frequent_JJ subgraphs_NNS were_VBD then_RB used_VBN as_IN inputs_NNS to_TO a_DT regularized_VBN regression_NN algorithm_NN such_JJ as_IN L1-SVM_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- or_CC Lasso_NNP -LRB-_-LRB- 7_CD -RRB-_-RRB- w_NN
+te_IN local_JJ methods_NNS ._.
+There_EX is_VBZ currently_RB no_DT research_NN on_IN discovering_VBG this_DT kind_NN of_IN graph_NN patterns_NNS ._.
+The_DT Leiden_NNP group_NN has_VBZ expertise_NN on_IN multi-relational_JJ mining_NN -LRB-_-LRB- 25_CD ,_, 26_CD -RRB-_-RRB- and_CC the_DT mining_NN of_IN static_JJ graph_NN patterns_NNS =_JJ -_: =[_NN 36_CD ,_, 41_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC is_VBZ currently_RB performing_VBG research_NN on_IN discovery_NN of_IN graph_NN grammars_NNS ,_, which_WDT may_MD describe_VB graph_NN evolution_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Moreover_RB ,_, the_DT group_NN is_VBZ well-connected_JJ with_IN the_DT research_NN lab_NN of_IN professor_NN Luc_NN De_NNP Raedt_NNP in_IN
+mines_NNS all_DT subgraphs_NNS appearing_VBG more_RBR frequently_RB than_IN a_DT given_VBN threshold_NN from_IN a_DT set_NN of_IN graphs_NNS ,_, focuses_VBZ on_IN the_DT topological_JJ relations_NNS between_IN vertices_NNS in_IN the_DT graphs_NNS -LRB-_-LRB- 17_CD ,_, 4_CD -RRB-_-RRB- ._.
+AGM_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, gSpan_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, and_CC Gaston_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: mine_JJ frequent_JJ subgraphsstartingwiththoseofsize1byusingtheantimonotonic_JJ property_NN of_IN the_DT support_NN values_NNS ._.
+Although_IN the_DT major_JJ algorithms_NNS for_IN Graph_NNP Mining_NNP are_VBP quite_RB efficient_JJ in_IN practice_NN ,_, they_PRP require_VBP muc_NN
+ere_NN has_VBZ been_VBN a_DT considerable_JJ effort_NN ,_, from_IN both_CC database_NN and_CC data_NN mining_NN communities_NNS ,_, in_IN developing_VBG techniques_NNS for_IN managing_NN ,_, processing_NN ,_, and_CC analyzing_VBG graph_NN databases_NNS ,_, including_VBG graph_NN pattern_NN discovery_NN =_JJ -_: =[_NN 12_CD ,_, 15_CD ,_, 18_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, structurebased_JJ graph_NN queries_NNS -LRB-_-LRB- 5_CD ,_, 6_CD ,_, 10_CD ,_, 11_CD ,_, 19_CD ,_, 23_CD ,_, 27_CD ,_, 26_CD -RRB-_-RRB- ,_, etc._NN ._.
+C_NN A_NN B_NN D_NN g1_NN B_NN B_NN C_NN A_NN C_NN A_NN q1_NN C_NN A_NN Figure_NN 1_CD :_: Query_FW Graphs_FW D_NN B_NN C_NN A_NN g2_NN C_NN A_NN Figure_NN 2_CD :_: A_DT Sample_NN Graph_NN Database_NN The_DT substructure_NN search_NN proble_NN
+t_NN patterns_NNS in_IN the_DT projected_JJ space_NN ,_, and_CC finally_RB reconstruct_VB all_DT frequent_JJ patterns_NNS in_IN the_DT graph_NN space_NN ._.
+We_PRP call_VBP this_DT strategy_NN progressive_JJ mining_NN ._.
+Algorithms_NNS in_IN this_DT category_NN include_VBP SPIN_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- and_CC GASTON_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+2.2_CD Graph_NN Classification_NN In_IN graph_NN classification_NN ,_, each_DT graph_NN is_VBZ associated_VBN with_IN a_DT target_NN value_NN and_CC the_DT task_NN is_VBZ to_TO estimate_VB a_DT good_JJ function_NN that_IN 1_CD ._.
+The_DT term_NN occur_VBP is_VBZ formally_RB defined_VBN using_VBG subgraph_FW i_FW
+,_, since_IN its_PRP$ support_NN is_VBZ now_RB a_DT random_JJ variable_NN over_IN the_DT support_NN values_NNS of_IN the_DT pattern_NN in_IN all_PDT the_DT exact_JJ graph_NN databases_NNS that_WDT can_MD be_VB sampled_VBN from_IN the_DT initial_JJ uncertain_JJ graph_NN database_NN ._.
+Existing_VBG approaches_NNS =_JJ -_: =[_NN 16_CD ,_, 18_CD ,_, 8_CD ,_, 28_CD ,_, 21_CD ,_, 13_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: solve_VB the_DT frequent_JJ subgraph_JJ pattern_NN mining_NN problem_NN for_IN exact_JJ graphs_NNS by_IN performing_VBG two_CD main_JJ operations_NNS :_: -LRB-_-LRB- a_LS -RRB-_-RRB- generating_VBG candidate_NN patterns_NNS to_TO be_VB examined_VBN ,_, and_CC -LRB-_-LRB- b_LS -RRB-_-RRB- testing_NN for_IN subgraph_JJ isomorphism_NN to_TO de_IN
+ng_NN have_VBP been_VBN developed_VBN ._.
+All_PDT the_DT algorithms_NNS developed_VBD originally_RB for_IN frequent_JJ item_NN set_NN mining_NN ._.
+Examples_NNS include_VBP MolFea_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, FSG_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, MoSS\/MoFa_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, gSpan_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, CloseGraph_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, FFSM_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, and_CC Gaston_NN =_JJ -_: =[_NN 17_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT related_JJ ,_, but_CC slightly_RB different_JJ approach_NN is_VBZ used_VBN in_IN Subdue_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, which_WDT is_VBZ geared_VBN towards_IN graph_NN compression_NN with_IN common_JJ subgraphs_NNS rather_RB than_IN frequent_JJ subgraph_JJ mining_NN ._.
+An_DT overview_NN of_IN several_JJ methods_NNS
+by_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- uses_VBZ DFS_NN codes_NNS for_IN canonical_JJ labeling_NN and_CC is_VBZ much_RB more_JJR memory_NN and_CC computationally_RB efficient_JJ than_IN the_DT previous_JJ approaches_NNS ._.
+The_DT most_RBS recent_JJ work_NN on_IN this_DT problem_NN is_VBZ the_DT Gaston_NNP system_NN proposed_VBN by_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT efficiently_RB mines_NNS graph_NN datasets_NNS by_IN first_RB considering_VBG frequent_JJ paths_NNS which_WDT are_VBP transformed_VBN to_TO trees_NNS which_WDT are_VBP further_RB transformed_VBN to_TO graphs_NNS ._.
+Contrasting_VBG to_TO all_PDT these_DT approaches_NNS to_TO frequent_JJ subg_NN
+.2_NN ._.
+Mining_NN of_IN Topology_FW Graph_FW By_IN mining_VBG the_DT topology_NN graph_NN ,_, our_PRP$ method_NN extracts_NNS frequent_JJ patterns_NNS of_IN the_DT subgraphs_NNS as_IN candidates_NNS of_IN the_DT semantic_JJ elements_NNS ._.
+Our_PRP$ method_NN uses_VBZ GASTON_NNP graph_NN mining_NN algorithm_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT works_VBZ efficiently_RB ,_, especially_RB for_IN sparse_JJ graphs_NNS ._.
+Since_IN the_DT number_NN of_IN the_DT edges_NNS in_IN the_DT topology_NN graphs_NNS are_VBP generally_RB much_RB less_JJR than_IN the_DT possible_JJ number_NN of_IN edges_NNS ,_, this_DT algorithm_NN works_VBZ very_RB fast_RB ._.
+treatment_NN of_IN rings_NNS solves_VBZ some_DT of_IN these_DT problems_NNS ,_, however_RB starting_VBG the_DT search_NN with_IN single_JJ carbon_NN atoms_NNS still_RB remains_VBZ cumbersome_JJ ._.
+Other_JJ algorithms_NNS that_WDT also_RB use_VBP embedding_VBG lists_NNS have_VBP been_VBN presented_VBN in_IN =_JJ -_: =[_NN 10_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Whereas_IN the_DT former_JJ --_: FFSM_NN --_: still_RB generates_VBZ some_DT candidate_NN fragments_NNS that_WDT do_VBP not_RB exist_VB in_IN the_DT database_NN ,_, the_DT latter_JJ --_: Gaston_NNP --_: seems_VBZ to_TO be_VB very_RB fast_RB by_IN using_VBG several_JJ refinement_NN steps_NNS during_IN the_DT searc_NN
+h_NN that_WDT leverages_VBZ the_DT fact_NN that_IN many_JJ graph_NN patterns_NNS are_VBP in_IN fact_NN not_RB full_JJ cyclic_JJ graphs_NNS but_CC trees_NNS or_CC even_RB paths_NNS -LRB-_-LRB- which_WDT have_VBP simpler_JJR canonical_JJ forms_NNS -RRB-_-RRB- has_VBZ been_VBN shown_VBN to_TO be_VB fastest_JJS on_IN a_DT number_NN of_IN datasets_NNS =_JJ -_: =[_NN 23_CD ,_, 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN a_DT detailed_JJ discussion_NN of_IN the_DT canonical-form_JJ approach_NN and_CC of_IN commonalities_NNS and_CC differences_NNS between_IN the_DT different_JJ algorithms_NNS ,_, see_VB -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+For_IN a_DT detailed_JJ analysis_NN of_IN algorithm_NN performance_NN ,_, see_VB -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+O_NN
+of_IN the_DT sought_VBN subgraphs_NNS :_: -LRB-_-LRB- 12_CD ,_, 13_CD -RRB-_-RRB- search_NN for_IN induced_VBN subgraphs_NNS -LRB-_-LRB- a_DT pattern_NN can_MD only_RB be_VB embedded_VBN in_IN a_DT transaction_NN if_IN its_PRP$ nodes_NNS are_VBP connected_VBN by_IN the_DT same_JJ topology_NN in_IN the_DT transaction_NN as_IN in_IN the_DT pattern_NN -RRB-_-RRB- ._.
+=_SYM -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: exploit_VB the_DT observation_NN that_IN most_JJS patterns_NNS are_VBP rather_RB simple_JJ ,_, searching_VBG first_RB for_IN sequences_NNS ,_, then_RB for_IN trees_NNS ,_, and_CC then_RB for_IN cyclic_JJ graphs_NNS ._.
+Going_VBG beyond_IN exact_JJ matching_NN ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- preprocess_VBP their_PRP$ data_NNS to_TO find_VB
+expressiveness_NN ._.
+This_DT stepwise_JJ approach_NN led_VBD in_IN virtually_RB all_DT cases_NNS to_TO a_DT significant_JJ speed-up_NN ,_, sometimes_RB with_IN a_DT factor_NN of_IN up_IN to_TO 1000_CD ._.
+This_DT work_NN is_VBZ related_JJ to_TO the_DT Quickstart_NNP approach_NN by_IN Nijssen_NN and_CC Kok_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: where_WRB a_DT monotone_NN constraint_NN was_VBD considered_VBN ._.
+In_IN this_DT paper_NN we_PRP study_VBD a_DT branchand-bound_JJ search_NN using_VBG a_DT convex_NN constraint_NN ._.
+This_DT leads_VBZ to_TO further_VB important_JJ differences_NNS ._.
+In_IN our_PRP$ opinion_NN ,_, a_DT constrained_VBN patte_NN
+iques_NNS developed_VBD originally_RB for_IN frequent_JJ item_NN set_NN mining_NN ._.
+1_CD Examples_NNS of_IN algorithms_NNS developed_VBN in_IN this_DT way_NN include_VBP MolFea_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, FSG_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, MoSS\/MoFa_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, gSpan_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, CloseGraph_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, FFSM_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, and_CC Gaston_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT related_JJ approach_NN is_VBZ used_VBN in_IN Subdue_NNP -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+The_DT basic_JJ idea_NN of_IN these_DT approaches_NNS is_VBZ to_TO grow_VB subgraphs_NNS into_IN the_DT graphs_NNS of_IN the_DT database_NN ,_, adding_VBG an_DT edge_NN and_CC maybe_RB a_DT node_NN in_IN each_DT step_NN ,_, counting_VBG the_DT number_NN o_NN
+raphs_NNS ,_, the_DT problem_NN of_IN mining_NN frequent_JJ subgraphs_NNS is_VBZ to_TO find_VB all_DT subgraphs_NNS that_WDT are_VBP subgraph_JJ isomorphic_NN with_IN a_DT large_JJ number_NN of_IN example_NN graphs_NNS in_IN the_DT database_NN ._.
+References_NNS to_TO applications_NNS can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 2_CD ,_, 4_CD ,_, 8_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT first_JJ frequent_JJ subgraph_NN miner_NN was_VBD Inokuchi_NNP et_FW al._FW 's_POS AGM_NNP algorithm_NN -LRB-_-LRB- 2000_CD -RRB-_-RRB- ,_, for_IN unconnected_JJ subgraphs_NNS ._.
+The_DT algorithm_NN was_VBD followed_VBN by_IN the_DT FSG_NN algorithm_NN of_IN Kuramochi_NNP and_CC Karypis_NNP -LRB-_-LRB- 7_CD -RRB-_-RRB- -LRB-_-LRB- 2001_CD -RRB-_-RRB- ,_, and_CC an_DT a_DT
+from_IN the_DT worm_NN protein-protein_JJ interaction_NN network_NN are_VBP biologically_RB interesting_JJ and_CC gApprox_NN is_VBZ both_CC effective_JJ and_CC efficient_JJ ._.
+1_CD Introduction_NN In_IN the_DT past_NN ,_, there_EX have_VBP been_VBN a_DT set_NN of_IN interesting_JJ algorithms_NNS =_JJ -_: =[_NN 4_CD ,_, 10_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT mine_VBP frequent_JJ patterns_NNS in_IN a_DT set_NN of_IN graphs_NNS ._.
+Recently_RB ,_, there_EX arise_VBP a_DT large_JJ number_NN of_IN graphs_NNS with_IN massive_JJ sizes_NNS and_CC complex_JJ structures_NNS in_IN many_JJ new_JJ applications_NNS ,_, such_JJ as_IN biological_JJ networks_NNS ,_, social_JJ
+ty_IN orthogonal_JJ representative_JJ sets_NNS ,_, especially_RB for_IN datasets_NNS where_WRB traditional_JJ enumerative_JJ methods_NNS fail_VBP completely_RB ._.
+2_CD Related_JJ Work_NN Many_JJ recent_JJ methods_NNS have_VBP been_VBN proposed_VBN for_IN graph_NN mining_NN ;_: these_DT include_VBP =_JJ -_: =[_NN 4_CD ,_, 8_CD ,_, 9_CD ,_, 14_CD ,_, 6_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT focus_NN of_IN these_DT methods_NNS is_VBZ to_TO mine_VB all_DT frequent_JJ subgraph_JJ patterns_NNS ,_, rather_RB than_IN finding_VBG orthogonal_JJ or_CC representative_JJ patterns_NNS ._.
+There_EX is_VBZ also_RB an_DT increasing_VBG interest_NN in_IN using_VBG the_DT mined_VBN graph_NN pattern_NN
+mine_NN graphs_NNS using_VBG a_DT depthfirst_JJ tree-based_JJ extension_NN have_VBP been_VBN proposed_VBN in_IN -LRB-_-LRB- 36_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 37_CD -RRB-_-RRB- ._.
+Another_DT method_NN uses_VBZ a_DT candidate_NN generation_NN approach_NN based_VBN on_IN Canonical_JJ Adjacency_NN Matrices_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+The_DT GASTON_NNP method_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: adopts_VBZ an_DT interesting_JJ step-wise_JJ approach_NN using_VBG a_DT combination_NN of_IN path_NN ,_, free_JJ tree_NN ,_, and_CC ,_, finally_RB ,_, graph_NN mining_NN to_TO discover_VB all_DT frequent_JJ subgraphs_NNS ._.
+There_EX are_VBP important_JJ differences_NNS in_IN graph_NN mining_NN and_CC tre_NN
+to_TO select_VB a_DT small_JJ number_NN of_IN salient_JJ patterns_NNS necessary_JJ for_IN a_DT given_VBN learning_NN task_NN ._.
+A_DT naive_JJ approach_NN is_VBZ to_TO first_RB use_VB a_DT frequent_JJ substructure_NN mining_NN algorithm_NN such_JJ as_IN gSpan_NN -LRB-_-LRB- Yan_NNP &_CC Han_NNP ,_, 2002a_CD -RRB-_-RRB- or_CC Gaston_NNP -LRB-_-LRB- =_JJ -_: =_JJ Nijssen_NNP &_CC Kok_NNP ,_, 2004_CD -_: =--RRB-_NN to_TO collect_VB frequently_RB appearing_VBG patterns_NNS ,_, and_CC then_RB apply_VB a_DT conventional_JJ feature_NN selection_NN algorithm_NN ._.
+Actually_RB ,_, this_DT approach_NN was_VBD employed_VBN by_IN Helma_NNP et_FW al._FW -LRB-_-LRB- 2004_CD -RRB-_-RRB- and_CC Kazius_NNP et_FW al._FW -LRB-_-LRB- 2006_CD -RRB-_-RRB- ,_, where_WRB a_DT lin_NN
+phs_NNS ._.
+This_DT is_VBZ based_VBN on_IN the_DT observation_NN that_IN major_JJ problems_NNS in_IN graph_NN mining_NN are_VBP caused_VBN by_IN the_DT existence_NN of_IN cycles_NNS and_CC a_DT majority_NN of_IN these_DT problems_NNS can_MD be_VB handled_VBN efficiently_RB by_IN avoiding_VBG cycles_NNS ._.
+Gaston_NNP -LRB-_-LRB- =_JJ -_: =_JJ Nijssen_NNP and_CC Kok_NNP ,_, 2004_CD -_: =--RRB-_NN relies_VBZ on_IN the_DT same_JJ idea_NN to_TO generate_VB frequent_JJ substructures_NNS hierarchically_RB by_IN starting_VBG from_IN paths_NNS ,_, extending_VBG frequent_JJ paths_NNS to_TO trees_NNS ,_, and_CC further_RB extending_VBG frequent_JJ trees_NNS to_TO graphs_NNS ._.
+Ghazizadeh_NN and_CC Ch_NN
+ous_JJ approaches_NNS ._.
+Instead_RB of_IN mining_VBG all_DT subgraphs_NNS ,_, CloseGraph_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- only_JJ mines_NNS closed_VBD subgraphs_NNS ._.
+A_DT graph_NN G_NN is_VBZ closed_VBN in_IN a_DT dataset_NN if_IN there_EX exists_VBZ no_DT supergraph_NN of_IN G_NN that_WDT has_VBZ the_DT same_JJ support_NN as_IN G._NNP Gaston_NNP =_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: efficiently_RB mines_NNS graph_NN datasets_NNS by_IN first_RB considering_VBG frequent_JJ paths_NNS which_WDT are_VBP transformed_VBN to_TO trees_NNS which_WDT are_VBP further_RB transformed_VBN to_TO graphs_NNS ._.
+FFSM_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- is_VBZ a_DT graph_NN mining_NN system_NN which_WDT uses_VBZ an_DT algebric_JJ g_NN
+will_MD be_VB pruned_VBN at_IN infrequent_JJ fragments_NNS since_IN their_PRP$ refinements_NNS will_MD appear_VB even_RB more_RBR rarely_RB ._.
+In_IN the_DT last_JJ few_JJ years_NNS sophisticated_JJ algorithms_NNS to_TO solve_VB this_DT problem_NN were_VBD presented_VBN -LRB-_-LRB- see_VB -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 26_CD -RRB-_-RRB- -RRB-_-RRB- ,_, but_CC still_RB ,_, the_DT process_NN of_IN finding_VBG frequent_JJ fragments_NNS is_VBZ -LRB-_-LRB- and_CC is_VBZ likely_JJ to_TO remain_VB -RRB-_-RRB- too_RB time-consuming_JJ ._.
+Although_IN it_PRP may_MD seem_VB to_TO be_VB an_DT obvious_JJ approach_NN to_TO split_VB the_DT problem_NN into_IN p_NN parts_NNS ,_, to_TO solv_VB
+lgorithms_NNS employing_VBG the_DT levelwise_NN search_NN scheme_NN to_TO enumerate_VB the_DT recurrent_JJ subgraph_NN patterns_NNS ._.
+Hereafter_NNP ,_, a_DT variety_NN of_IN DFS_NN based_VBN algorithms_NNS has_VBZ been_VBN proposed_VBN ,_, including_VBG MoFa_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, gSpan_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, FFSM_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, Gaston_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT most_RBS related_JJ work_NN to_TO this_DT paper_NN in_IN graph_NN mining_NN area_NN is_VBZ TSMiner_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Although_IN TSMiner_NN has_VBZ utilized_VBN the_DT topology_NN minor_JJ to_TO solve_VB the_DT fuzzy_JJ matching_NN problem_NN ,_, the_DT pattern_NN matching_NN of_IN TSMiner_NN is_VBZ still_RB
+2_LS -RRB-_-RRB- ._.
+Note_VB that_IN the_DT canonicalcode_NN -LRB-_-LRB- -RRB-_-RRB- function_NN essentially_RB creates_VBZ a_DT unique_JJ string_NN for_IN the_DT isomorphic_JJ representation_NN of_IN the_DT motif_NN -LRB-_-LRB- a_DT labeled_JJ subgraph_NN -RRB-_-RRB- ._.
+Many_JJ methods_NNS have_VBP been_VBN developed_VBN for_IN such_JJ a_DT purpose_NN =_JJ -_: =[_NN 30_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Finally_RB each_DT motif_NN occurrence_NN is_VBZ recored_VBN in_IN a_DT the_DT motifocc_NN list_NN -LRB-_-LRB- Line_NNP 23_CD -RRB-_-RRB- ._.
+After_IN building_VBG the_DT first_JJ level_NN ,_, for_IN each_DT set_VBN Ck_NN ,_, ExtractF_NN requentMotifs_NN -LRB-_-LRB- -RRB-_-RRB- will_MD find_VB the_DT maximal_JJ number_NN of_IN occurrences_NNS which_WDT
+nstruct_NN -LRB-_-LRB- Tree_NN +_CC ∆_NN -RRB-_-RRB- ,_, we_PRP mine_VBP frequent_JJ treefeatures_NNS from_IN the_DT graph_NN database_NN ,_, G._NNP There_EX exist_VBP many_JJ reported_VBD studies_NNS on_IN frequent_JJ structural_JJ pattern_NN mining_NN over_IN large_JJ graph_NN databases_NNS such_JJ asgSpan_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, Gaston_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Hybrid_NN -_: TreeMiner_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, etc._NN ._.
+We_PRP proposed_VBD a_DT fast_RB frequent_JJ free_JJ tree_NN mining_NN algorithm_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- which_WDT takes_VBZ full_JJ advantage_NN of_IN characteristics_NNS of_IN tree_NN structure_NN ._.
+Once_RB the_DT frequent_JJ tree_NN feature_NN set_VBN FT_NNP is_VBZ selec_JJ
+ous_JJ approaches_NNS ._.
+Instead_RB of_IN mining_VBG all_DT subgraphs_NNS ,_, CloseGraph_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- only_JJ mines_NNS closed_VBD subgraphs_NNS ._.
+A_DT graph_NN G_NN is_VBZ closed_VBN in_IN a_DT dataset_NN if_IN there_EX exists_VBZ no_DT supergraph_NN of_IN G_NN that_WDT has_VBZ the_DT same_JJ support_NN as_IN G._NNP Gaston_NNP =_SYM -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: efficiently_RB mines_NNS graph_NN datasets_NNS by_IN first_RB considering_VBG frequent_JJ paths_NNS which_WDT are_VBP transformed_VBN to_TO trees_NNS which_WDT are_VBP further_RB transformed_VBN to_TO graphs_NNS ._.
+FFSM_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- is_VBZ a_DT graph_NN mining_NN system_NN which_WDT uses_VBZ an_DT algebraic_JJ
+than_IN p_NN ′_NN ._.
+If_IN an_DT entry_NN for_IN p_NN ′_NN already_RB exists_VBZ ,_, a_DT pattern_NN isomorphic_JJ to_TO p_NN ′_NN was_VBD previously_RB generated_VBN and_CC the_DT algorithm_NN thus_RB backtracks_VBZ ._.
+Otherwise_RB the_DT frequency_NN of_IN p_NN ′_NN is_VBZ computed_VBN using_VBG embedding_VBG list_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT score_NN of_IN p_NN ′_NN is_VBZ estimated_VBN and_CC is_VBZ used_VBN to_TO initialize_VB a_DT new_JJ entry_NN added_VBN to_TO the_DT trie_NN for_IN the_DT key_JJ c._NN If_IN p_NN ′_NN is_VBZ found_VBN frequent_JJ ,_, the_DT algorithm_NN is_VBZ recursively_RB called_VBN for_IN all_DT successors_NNS of_IN p_NN ′_NN so_IN that_IN a_DT
+gorithm_NN CMFreeTreeMiner_NN ._.
+CMFreeTreeMiner_NN employs_VBZ the_DT canonical_JJ form_NN presented_VBN in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, a_DT depth-first\/breadth-first_JJ enumeration_NN method_NN which_WDT is_VBZ similar_JJ to_TO that_DT employed_VBN in_IN a_DT frequent_JJ graph_NN miner_NN Gaston_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC the_DT pruning_NN techniques_NNS based_VBN on_IN the_DT occurrence-match_JJ -LRB-_-LRB- 7_CD ,_, 3_CD -RRB-_-RRB- ._.
+s_NN •_CD position_NN 4_CD :_: similar_JJ to_TO position_NN 3_CD ._.
+•_NN position_NN 5_CD :_: Let_VB qr_RB be_VB a_DT first_JJ node_NN on_IN the_DT spine_NN in_IN the_DT path_NN from_IN v_LS to_TO r._VB Similar_JJ to_TO position_NN
+t_NN that_IN the_DT input_NN consists_VBZ of_IN graphs_NNS instead_RB of_IN sets_NNS poses_VBZ some_DT problems_NNS ._.
+Examples_NNS of_IN algorithms_NNS developed_VBN in_IN this_DT way_NN are_VBP Subdue_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, MolFea_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, FSG_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, MoFa_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, gSpan_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, FFSM_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, and_CC Gaston_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Other_JJ approaches_NNS rely_VBP ,_, for_IN instance_NN ,_, on_IN principles_NNS from_IN inductive_JJ logic_NN programming_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC describe_VBP the_DT graph_NN structure_NN by_IN logical_JJ expressions_NNS ._.
+Of_IN course_NN ,_, all_DT of_IN the_DT mentioned_VBN approaches_NNS are_VBP genera_NN
+set_VBN ._.
+The_DT embedding_VBG list_NN reduces_VBZ the_DT search_NN space_NN of_IN a_DT task_NN at_IN the_DT expense_NN of_IN maintaining_VBG increased_VBN state_NN ._.
+We_PRP compared_VBD the_DT performance_NN of_IN three_CD algorithms_NNS ,_, one_CD that_WDT always_RB maintains_VBZ the_DT state_NN -LRB-_-LRB- gaston_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, one_CD that_WDT never_RB maintains_VBZ the_DT state_NN -LRB-_-LRB- gSpan_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- -RRB-_-RRB- and_CC one_CD that_WDT adaptively_RB maintains_VBZ state_NN -LRB-_-LRB- ours_JJ -RRB-_-RRB- ._.
+Notably_RB our_PRP$ adaptive_JJ algorithm_NN is_VBZ always_RB the_DT most_RBS efficient_JJ and_CC when_WRB operating_VBG on_IN smaller_JJR number_NN of_IN c_NN
+aphs_NNS ._.
+This_DT is_VBZ based_VBN on_IN the_DT observation_NN that_IN major_JJ problems_NNS in_IN graph_NN mining_NN are_VBP caused_VBN by_IN the_DT existence_NN of_IN cycles_NNS and_CC a_DT majority_NN of_IN these_DT problems_NNS can_MD be_VB handled_VBN efficiently_RB by_IN avoiding_VBG cycles_NNS ._.
+Gaston_NN =_JJ -_: =[_NN 115_CD -RRB-_-RRB- -_: =_SYM -_: relies_VBZ on_IN the_DT same_JJ idea_NN to_TO generate_VB frequent_JJ substructures_NNS hierarchically_RB by_IN starting_VBG from_IN paths_NNS ,_, extending_VBG frequent_JJ paths_NNS to_TO trees_NNS ,_, and_CC further_RB extending_VBG frequent_JJ trees_NNS to_TO graphs_NNS ._.
+Ghazizadeh_NNP and_CC Cha_NNP
+avior_RB including_VBG the_DT branched_VBN transition_NN like_IN this_DT ._.
+So_RB ,_, in_IN what_WP follows_VBZ ,_, we_PRP adopt_VBP graph_NN mining_NN which_WDT can_MD treat_VB branched_VBN transitions_NNS ._.
+2.3_CD Graph_NN mining_NN algorithms_NNS AGM_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, FSG_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, gSpan_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, and_CC GASTON_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP known_VBN as_IN representatives_NNS of_IN graph_NN mining_NN algorithms_NNS ._.
+AGM_NNP is_VBZ the_DT first_JJ graph_NN mining_NN algorithm_NN proposed_VBN by_IN Inokuchi_NNP et_FW al._FW ._.
+AGM_NNP represents_VBZ a_DT graph_NN structure_NN as_IN an_DT adjacency_NN matrix_NN ,_, and_CC extracts_NNS freq_VBP
+er_NN of_IN efficient_JJ algorithms_NNS for_IN frequent_JJ graph_NN mining_NN are_VBP available_JJ in_IN data_NN mining_NN community_NN ,_, e.g._FW ,_, AGM_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, FSG_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, the_DT path-join_JJ algorithm_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, gSpan_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, MoFa_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, FFSM_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, SPIN_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- and_CC Gaston_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Few_JJ of_IN them_PRP consideredsthe_VBP necessary_JJ changes_NNS of_IN the_DT mining_NN framework_NN if_IN structural_JJ constraints_NNS are_VBP present_JJ ._.
+Constraint-based_JJ frequent_JJ pattern_NN mining_NN has_VBZ been_VBN studied_VBN in_IN the_DT context_NN of_IN association_NN ru_NN
+revent_JJ repeated_JJ searches_NNS and_CC use_VB caching_VBG techniques_NNS to_TO reduce_VB the_DT search_NN space_NN ._.
+In_IN addition_NN ,_, the_DT search_NN process_NN can_MD be_VB split_VBN into_IN dedicated_JJ search_NN phases_NNS for_IN linear_NN ,_, branched_VBN and_CC cyclic_JJ substructures_NNS =_JJ -_: =[_NN 12_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4.4_CD Substructures_NNS in_IN elaborate_JJ chemical_NN representation_NN Characteristics_NNS of_IN atoms_NNS depend_VBP on_IN more_JJR than_IN only_RB their_PRP$ atom_NN types_NNS ._.
+For_IN example_NN ,_, the_DT environment_NN of_IN a_DT nitrogen_NN atom_NN determines_VBZ whether_IN or_CC not_RB i_LS
+network_NN and_CC they_PRP are_VBP expected_VBN to_TO be_VB close_JJ to_TO the_DT true_JJ network_NN ._.
+We_PRP enumerate_VBP putative_JJ gene_NN regulatory_JJ networks_NNS ordered_VBN by_IN scores_NNS generated_VBN by_IN sub-optimal_JJ estimation_NN algorithm_NN ,_, and_CC graph_NN mining_NN methods_NNS =_JJ -_: =[_NN 2_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP applied_VBN to_TO those_DT collected_VBN networks_NNS in_IN order_NN to_TO extract_VB motif_NN networks_NNS ._.
+2_CD Method_NN Proposing_VBG method_NN extracts_NNS gene_NN regulatory_JJ network_NN motifs_NNS from_IN estimated_VBN networks_NNS in_IN order_NN to_TO improve_VB the_DT accuracy_NN
+a_DT also_RB includes_VBZ a_DT version_NN of_IN the_DT data_NNS for_IN the_DT FOIL_NN system_NN ._.
+A_DT slightly_RB different_JJ graph-based_JJ approach_NN seeks_VBZ only_RB frequent_JJ patterns_NNS ,_, not_RB necessarily_RB high-compression_JJ patterns_NNS ._.
+One_CD such_JJ system_NN is_VBZ GASTON_NN =_JJ -_: =[_NN 2,11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recently_RB ,_, these_DT frequent_JJ graph_NN mining_NN systems_NNS have_VBP been_VBN used_VBN to_TO generate_VB features_NNS for_IN Support_NN Vector_NNP Machines_NNP -LRB-_-LRB- SVMs_NNS -RRB-_-RRB- ._.
+SVMs_NNS have_VBP also_RB been_VBN directly_RB applied_VBN to_TO graph-based_JJ relational_JJ learning_NN through_IN
+refer_VB to_TO this_DT descriptor_NN space_NN as_IN CT_NN ._.
+3.5_CD ._.
+Frequent_JJ Sub-structures_NNS -LRB-_-LRB- FS_NNS -RRB-_-RRB- A_DT number_NN of_IN methods_NNS have_VBP been_VBN proposed_VBN in_IN recent_JJ years_NNS to_TO find_VB frequently_RB occurring_VBG sub-structures_NNS in_IN a_DT chemical_NN graph_NN database_NN =_JJ -_: =[_NN 26_CD ,_, 32_CD ,_, 36_CD ,_, 51_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Frequent_JJ sub-structures_NNS of_IN a_DT chemical_NN graph_NN database_NN D_NN are_VBP defined_VBN as_IN all_DT sub-structures_NNS that_WDT are_VBP present_JJ in_IN at_IN least_JJS σ_NN -LRB-_-LRB- σ_FW ≤_FW |_NN D_NN |_CD -RRB-_-RRB- of_IN compounds_NNS of_IN the_DT database_NN ,_, where_WRB σ_NN is_VBZ the_DT absolute_JJ minimum_JJ freque_NN
+and_CC FSG_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+And_CC the_DT second_JJ category_NN takes_VBZ the_DT depthfirst_NN search_NN strategy_NN ,_, which_WDT includes_VBZ gSpan_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- and_CC FFSM_NN -LRB-_-LRB- 33_CD -RRB-_-RRB- ._.
+The_DT third_JJ category_NN works_VBZ by_IN mining_VBG frequent_JJ trees_NNS ,_, for_IN which_WDT SPIN_NN -LRB-_-LRB- 34_CD -RRB-_-RRB- and_CC GASTON_NN =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP the_DT representative_NN ._.
+There_EX are_VBP many_JJ other_JJ existing_VBG graph_NN mining_NN algorithms_NNS ,_, and_CC we_PRP refer_VBP to_TO -LRB-_-LRB- 36_CD -RRB-_-RRB- for_IN a_DT recent_JJ survey_NN ._.
+Frequent_JJ subgraph_JJ mining_NN with_IN approximate_JJ matching_NN capability_NN has_VBZ also_RB been_VBN in_IN
+ally_NN ,_, web_NN logs_NNS can_MD be_VB mapped_VBN to_TO user_NN sessions_NNS ,_, and_CC subsequently_RB represented_VBN as_IN graphs_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+Frequent_JJ pattern_NN mining_NN was_VBD first_RB introduced_VBN by_IN Agrawal_NNP et_FW al_FW -LRB-_-LRB- 1_LS -RRB-_-RRB- in_IN 1994_CD ,_, and_CC has_VBZ been_VBN studied_VBN extensively_RB =_JJ -_: =[_NN 5_CD ,_, 8_CD ,_, 13_CD ,_, 20_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN web_NN session_NN data_NNS ,_, frequent_JJ patterns_NNS represent_VBP resources_NNS which_WDT are_VBP more_RBR often_RB used_VBN ,_, and_CC the_DT paths_NNS most_RBS often_RB taken_VBN to_TO access_VB those_DT resources_NNS ._.
+Application_NN service_NN providers_NNS can_MD improve_VB web_NN server_NN b_NN
+he_PRP search_VB this_DT lattice_NN will_MD be_VB pruned_VBN at_IN infrequent_JJ fragments_NNS since_IN their_PRP$ refinements_NNS will_MD appear_VB even_RB more_RBR rarely_RB ._.
+In_IN the_DT last_JJ few_JJ years_NNS sophisticated_JJ algorithms_NNS to_TO solve_VB this_DT problem_NN were_VBD presented_VBN =_JJ -_: =[_NN 5_CD ;_: 28_CD ;_: 15_CD ;_: 22_CD ;_: 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC still_RB ,_, the_DT process_NN of_IN finding_VBG \*_NN N_NN O_NN C_NN N_NN C_NN O_NN C_NN O_NN C_NN C_NN C_NN N_NN C_NN C_NN O_NN C_NN C_NN O_NN C_NN O_NN O_NN C_NN C_NN C_NN C_NN C_NN N_NN C_NN C_NN N_NN O_NN N_NN C_NN C_NN C_NN C_NN C_NN C_NN N_NN C_NN C_NN O_NN O_NN C_NN O_NN N_NN C_NN C_NN O_NN O_NN C_NN O_NN C_NN N_NN C_NN C_NN C_NN C_NN O_NN O_NN C_NN C_NN C_NN C_NN N_NN O_NN C_NN C_NN C_NN O_NN C_NN O_NN Figure_NN 1_CD :_: The_DT comp_NN
+s_NN should_MD be_VB frequent_JJ ,_, but_CC not_RB too_RB frequent_JJ in_IN the_DT database_NN ._.
+Since_IN the_DT pruning_NN power_NN of_IN infrequent_JJ subgraphs_NNS are_VBP limited_VBN ,_, we_PRP can_MD use_VB -LRB-_-LRB- closed_VBN -RRB-_-RRB- frequent_JJ subgraph_JJ mining_NN algorithms_NNS ,_, e.g._FW ,_, FSG_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, GASTON_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC gSpan_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, to_TO generate_VB an_DT initial_JJ set_NN of_IN frequent_JJ subgraphs_NNS and_CC then_RB filter_NN out_RP those_DT contrast_NN ones_NNS ._.
+This_DT approach_NN is_VBZ much_RB easier_JJR than_IN directly_RB finding_VBG contrast_NN features_NNS from_IN the_DT exponential_JJ se_FW
+were_VBD precision_NN at_IN n_NN =_JJ 5_CD ,_, 10_CD ,_, 15_CD and_CC 20_CD -LRB-_-LRB- since_IN edges_NNS were_VBD numbered_VBN ,_, the_DT top-TR_NN edges_NNS could_MD easily_RB be_VB identified_VBN -RRB-_-RRB- and_CC recall_NN at_IN the_DT same_JJ n_NN ,_, the_DT latter_JJ 15_CD using_VBG an_DT adapted_VBN version_NN of_IN the_DT Gaston_NNP software_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: 5757_CD Conclusions_NNS and_CC outlook_NN Figure_NNP 1_CD ._.
+Events_NNS -LRB-_-LRB- ground-truth_JJ -RRB-_-RRB- ,_, edges_NNS and_CC their_PRP$ burstiness_NN profile_NN -LRB-_-LRB- average_JJ TR_NN -RRB-_-RRB- ,_, and_CC represented_VBN events_NNS ._.
+defined_VBN as_IN the_DT number_NN of_IN correctly_RB retrieved_VBN events_NNS for_IN the_DT top_NN
+in_IN terms_NNS of_IN overall_JJ quality_NN ;_: -LRB-_-LRB- b_LS -RRB-_-RRB- recall_NN was_VBD quite_RB high_JJ --_: on_IN average_NN ,_, nearly_RB half_PDT the_DT events_NNS were_VBD found_VBN in_IN a_DT graph_NN as_RB small_JJ as_IN 5_CD edges_NNS ,_, and_CC over_IN 80_CD %_NN in_IN 16_CD using_VBG an_DT adapted_VBN version_NN of_IN the_DT Gaston_NNP software_NN =_JJ -_: =[_NN 38_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+17_CD the_DT average_NN ,_, over_IN all_DT edges_NNS in_IN the_DT path_NN ,_, of_IN these_DT edges_NNS '_POS TR_NN values_NNS ._.
+123I_NN ._.
+Subašić_NNP ,_, B._NNP Berendt_NNP Table_NNP 1_CD Precision_NN and_CC recall_NN for_IN n_NN =_JJ 5_CD ,_, 10_CD ,_, 15_CD ,_, 20_CD edges_NNS for_IN raters_NNS U_NN ,_, M_NN over_IN the_DT time_NN periods_NNS in_IN ca_MD
+P_NN is_VBZ a_DT subgraph_NN of_IN P_NN ′_NN and_CC they_PRP have_VBP the_DT same_JJ frequency_NN ._.
+In_IN this_DT sense_NN ,_, closed_JJ patterns_NNS are_VBP locally_RB ``_`` maximal_JJ ''_'' patterns_NNS that_WDT can_MD not_RB grow_VB any_DT further_RBR without_IN losing_VBG some_DT instances_NNS ._.
+Graph_NN pattern_NN mining_NN =_JJ -_: =[_NN 16_CD ,_, 33_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: follows_VBZ the_DT Apriori_NNP principle_NN :_: the_DT support_NN of_IN a_DT subgraph_NN is_VBZ always_RB no_RB less_JJR than_IN the_DT support_NN of_IN any_DT of_IN its_PRP$ super-graphs_NNS ._.
+Thus_RB we_PRP can_MD first_RB consider_VB frequent_JJ small_JJ graphs_NNS ,_, and_CC then_RB check_VB whether_IN larger_JJR
+the_DT number_NN of_IN frequent_JJ paths_NNS is_VBZ much_RB smaller_JJR than_IN the_DT number_NN of_IN possible_JJ combinations_NNS of_IN frequent_JJ edges_NNS ,_, there_EX is_VBZ huge_JJ amount_NN of_IN repeated_JJ computation_NN which_WDT could_MD be_VB avoided_VBN ._.
+There_EX is_VBZ a_DT existing_VBG work_NN =_JJ -_: =_JJ -LRB-_-LRB- NK04_NN -RRB-_-RRB- -_: =_SYM -_: which_WDT explores_VBZ the_DT same_JJ idea_NN ,_, but_CC in_IN that_DT paper_NN ,_, except_IN the_DT diameter_NN of_IN the_DT tree_NN ,_, other_JJ part_NN of_IN the_DT tree_NN is_VBZ still_RB built_VBN from_IN frequent_JJ edges_NNS ._.
+Chapter_NN 6_CD ._.
+CN_NN Generation_NN 131_CD We_PRP plan_VBP to_TO investigate_VB this_DT a_DT
+y_NN orthogonal_JJ representative_JJ sets_NNS ,_, especially_RB for_IN datasets_NNS where_WRB traditional_JJ enumerative_JJ methods_NNS fail_VBP completely_RB ._.
+2_CD ._.
+RELATED_NNS WORK_VBP Many_JJ recent_JJ methods_NNS have_VBP been_VBN proposed_VBN for_IN graph_NN mining_NN ;_: these_DT include_VBP =_JJ -_: =[_NN 5_CD ,_, 12,13,19,10,15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT focus_NN of_IN these_DT methods_NNS is_VBZ to_TO mine_VB all_DT frequent_JJ subgraph_JJ patterns_NNS ,_, rather_RB than_IN finding_VBG orthogonal_JJ or_CC representative_JJ patterns_NNS ._.
+There_EX is_VBZ also_RB an_DT increasing_VBG interest_NN in_IN using_VBG the_DT mined_VBN graph_NN pattern_NN
+chemical_NN graphs_NNS are_VBP cycle-free_JJ -RRB-_-RRB- ,_, graphs_NNS in_IN these_DT domains_NNS are_VBP large_JJ and_CC dense_JJ ,_, for_IN which_WDT traditional_JJ graph_NN mining_NN algorithms_NNS do_VBP not_RB scale_VB ._.
+For_IN example_NN ,_, we_PRP ran_VBD graph_NN mining_NN algorithms_NNS -LRB-_-LRB- DMTL_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, gaston_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =--RRB-_NN on_IN a_DT small_JJ cell-graph_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- dataset_NN that_WDT contains_VBZ only_RB 30_CD graphs_NNS with_IN an_DT average_JJ vertex_NN count_NN of_IN 2184_CD and_CC an_DT average_JJ edge_NN count_NN of_IN 36945_CD ._.
+For_IN this_DT graph_NN dataset_NN ,_, none_NN of_IN the_DT existing_VBG algorithms_NNS could_MD
+peration_NN to_TO merge_VB two_CD -LRB-_-LRB- or_CC more_JJR -RRB-_-RRB- frequent_JJ substructures_NNS into_IN one_CD larger_JJR substructure_NN candidate_NN ._.
+To_TO avoid_VB this_DT overhead_NN ,_, non-Apriori-based_JJ algorithms_NNS such_JJ as_IN gSpan_NN -LRB-_-LRB- 34_CD -RRB-_-RRB- ,_, MoFa_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, FFSM_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, and_CC Gaston_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: adopt_VB the_DT patterngrowth_NN methodology_NN ,_, which_WDT attempts_VBZ to_TO extend_VB graphs_NNS from_IN a_DT single_JJ subgraph_NN directly_RB ._.
+For_IN each_DT discovered_VBN graph_NN G_NN ,_, these_DT methods_NNS recursively_RB add_VBP new_JJ edges_NNS until_IN all_PDT the_DT frequent_JJ super_JJ
+reshold_NN ._.
+To_TO find_VB frequent_JJ subgraphs_NNS ,_, we_PRP apply_VBP a_DT two_CD step_NN process_NN ._.
+The_DT first_JJ step_NN is_VBZ to_TO find_VB frequent_JJ subgraphs_NNS while_IN ignoring_VBG the_DT labels_NNS on_IN the_DT edges_NNS ._.
+We_PRP apply_VBP the_DT GASTON_NNP algorithm_NN of_IN Nijssen_NN and_CC Kok_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: to_TO find_VB maximal_JJ subgraphs_NNS that_WDT appear_VBP at_IN least_JJS s_NN times_NNS in_IN the_DT information_NN flow_NN graph_NN ._.
+The_DT second_JJ step_NN is_VBZ then_RB to_TO add_VB edge_NN labels_NNS to_TO these_DT frequent_JJ subgraphs_NNS to_TO find_VB all_DT frequent_JJ labeled_JJ subgraphs_NNS ._.
+We_PRP
+Note_VB that_IN an_DT MCEG_NNP is_VBZ not_RB necessarily_RB a_DT connected_JJ graph_NN ._.
+To_TO make_VB the_DT similarity_NN scores_NNS comparable_JJ between_IN different_JJ sizes_NNS of_IN query_NN graphs_NNS in_IN our_PRP$ research_NN ,_, we_PRP normalize_VBP the_DT MCEG_NNP sizes_NNS into_IN the_DT interval_NN =_JJ -_: =[_NN 0_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB 4_CD means_VBZ the_DT query_NN graph_NN is_VBZ a_DT subgraph_NN of_IN the_DT retrieved_VBN graph_NN ,_, while_IN 0_CD means_VBZ no_DT edge_NN matched_VBN ._.
+These_DT normalized_VBD MCEG_NNP sizes_NNS are_VBP used_VBN as_IN the_DT similarity_NN scores_NNS for_IN training_NN and_CC test_NN in_IN our_PRP$ experime_NN
+xing_NN ._.
+We_PRP address_VBP the_DT issue_NN of_IN finding_VBG the_DT set_NN of_IN subgraphs_NNS to_TO index_NN such_JJ that_IN the_DT candidate_NN set_NN of_IN subgraphs_NNS on_IN which_WDT the_DT subgraph_NN isomorphism_NN is_VBZ computed_VBN is_VBZ the_DT smallest_JJS ._.
+563All_JJ previous_JJ approaches_NNS =_JJ -_: =[_NN 13_CD ,_, 11_CD ,_, 15_CD ,_, 25_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: try_VB to_TO find_VB an_DT appropriate_JJ way_NN to_TO discover_VB a_DT set_NN of_IN subgraphs_NNS that_WDT contains_VBZ as_IN much_JJ information_NN as_IN possible_JJ to_TO achieve_VB a_DT high_JJ precision_NN of_IN query_NN answers_NNS ._.
+However_RB ,_, no_DT previous_JJ work_NN proposes_VBZ any_DT criter_NN
+graph_NN representation_NN of_IN data_NNS ._.
+Several_JJ approaches_NNS to_TO graph-based_JJ data_NNS mining_NN identify_VBP frequently_RB occurring_VBG subgraphs_NNS in_IN graph_NN transactions_NNS ,_, that_DT is_VBZ ,_, those_DT subgraphs_NNS meeting_VBG a_DT minimum_JJ level_NN of_IN support_NN =_JJ -_: =[_NN 13_CD ,_, 14_CD ,_, 22_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP distinguish_VBP graph-based_JJ relational_JJ learning_NN -LRB-_-LRB- GBRL_NN -RRB-_-RRB- from_IN graphbased_JJ data_NNS mining_NN in_IN that_DT GBRL_NN focuses_VBZ on_IN identifying_VBG novel_JJ ,_, but_CC not_RB necessarily_RB most_RBS frequent_JJ ,_, patterns_NNS in_IN a_DT graph_NN representation_NN of_IN

@@ -1,0 +1,75 @@
+Balanced_JJ allocation_NN with_IN succinct_JJ representation_NN
+Motivated_VBN by_IN applications_NNS in_IN guaranteed_JJ delivery_NN in_IN computational_JJ advertising_NN ,_, we_PRP consider_VBP the_DT general_JJ problem_NN of_IN balanced_JJ allocation_NN in_IN a_DT bipartite_JJ supply-demand_JJ setting_NN ._.
+Our_PRP$ formulation_NN captures_VBZ the_DT notion_NN of_IN deviation_NN from_IN being_VBG balanced_VBN by_IN a_DT convex_NN penalty_NN function_NN ._.
+While_IN this_DT formulation_NN admits_VBZ a_DT convex_NN programming_NN solution_NN ,_, we_PRP strive_VBP for_IN more_RBR robust_JJ and_CC scalable_JJ algorithms_NNS ._.
+For_IN the_DT case_NN of_IN L1_NN penalty_NN functions_NNS we_PRP obtain_VBP a_DT simple_JJ combinatorial_JJ algorithm_NN based_VBN on_IN min-cost_JJ flow_NN in_IN graphs_NNS and_CC show_VB how_WRB to_TO precompute_VB a_DT linear_JJ amount_NN of_IN information_NN such_JJ that_IN the_DT allocation_NN along_IN any_DT edge_NN can_MD be_VB approximated_VBN in_IN constant_JJ time_NN ._.
+We_PRP then_RB extend_VBP our_PRP$ combinatorial_JJ solution_NN to_TO any_DT convex_NN function_NN by_IN solving_VBG a_DT convex_NN cost_NN flow_NN ._.
+These_DT scalable_JJ methods_NNS may_MD have_VB applications_NNS in_IN other_JJ contexts_NNS stipulating_VBG balanced_JJ allocation_NN ._.
+We_PRP study_VBD the_DT performance_NN of_IN our_PRP$ algorithms_NNS on_IN large_JJ real-world_JJ graphs_NNS and_CC show_VBP that_IN they_PRP are_VBP efficient_JJ ,_, scalable_JJ ,_, and_CC robust_JJ in_IN practice_NN ._.
+display_NN advertising_NN when_WRB there_EX are_VBP both_DT spot_NN markets_NNS and_CC guaranteed_JJ contracts_NNS ;_: they_PRP propose_VBP a_DT solution_NN where_WRB guaranteed_VBN contracts_NNS are_VBP implemented_VBN by_IN randomized_VBN bidding_NN in_IN spot_NN markets_NNS ._.
+Devanur_NNP et_FW al._FW =_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: presented_VBD a_DT sampling_NN based_JJ method_NN that_WDT computes_VBZ a_DT near-optimal_JJ allocation_NN for_IN online_JJ keyword_JJ matching_NN with_IN budget_NN constrained_VBD advertisers_NNS and_CC random_JJ permutation_NN model_NN ._.
+Their_PRP$ approach_NN also_RB computes_VBZ a_DT
+min-cost_JJ flow_NN instance_NN is_VBZ based_VBN on_IN the_DT dual_JJ variables_NNS of_IN the_DT min-cost_JJ flow_NN solution_NN ._.
+Primal-dual_JJ methods_NNS have_VBP been_VBN largely_RB used_VBN as_IN a_DT tool_NN to_TO find_VB approximation_NN algorithms_NNS for_IN various_JJ problems_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 4_CD ,_, 1_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Recently_RB ,_, Devanur_NNP et_FW al._FW -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC Jain_NNP and_CC Vazirani_NNP -LRB-_-LRB- 13_CD -RRB-_-RRB- used_VBD primaldual_JJ methods_NNS and_CC KKT_NN conditions_NNS for_IN solving_VBG market_NN equilibria_NN problems_NNS ._.
+2_CD ._.
+PRELIMINARIES_NNS Suppose_VBP we_PRP are_VBP given_VBN a_DT set_VBN I_NN of_IN impressio_NN
+nd_NN sampling_NN aspect_NN of_IN the_DT problem_NN and_CC consider_VB only_RB the_DT strictly_RB convex_VBN version_NN ,_, which_WDT makes_VBZ it_PRP amenable_JJ to_TO using_VBG fixed_JJ point_NN criteria_NNS such_JJ as_IN KKT_NN conditions_NNS for_IN non-linear_JJ optimization_NN ._.
+Ghosh_NNP et_FW al._FW =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: studied_VBD the_DT problem_NN of_IN representative_JJ allocation_NN for_IN display_NN advertising_NN when_WRB there_EX are_VBP both_DT spot_NN markets_NNS and_CC guaranteed_JJ contracts_NNS ;_: they_PRP propose_VBP a_DT solution_NN where_WRB guaranteed_VBN contracts_NNS are_VBP implemented_VBN
+ied_VBN in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 3_LS -RRB-_-RRB- from_IN a_DT game-theoretic_JJ point_NN of_IN view_NN ._.
+Our_PRP$ solution_NN is_VBZ mainly_RB based_VBN on_IN the_DT network_NN flow_NN problem_NN and_CC its_PRP$ dual_JJ ._.
+There_EX is_VBZ a_DT large_JJ amount_NN of_IN literature_NN on_IN the_DT network_NN flow_NN problem_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+The_DT closest_JJS work_NN to_TO our_PRP$ method_NN is_VBZ the_DT push-relabel_JJ algorithm_NN of_IN Goldberg_NNP and_CC Tarjan_NNP -LRB-_-LRB- 12_CD -RRB-_-RRB- ;_: they_PRP introduced_VBD a_DT method_NN for_IN computing_VBG the_DT maximum_NN flow_NN problem_NN without_IN using_VBG augmenting_VBG paths_NNS ._.
+The_DT reconst_NN
+in_IN a_DT time-efficient_JJ manner_NN ._.
+Thus_RB ,_, we_PRP trade_VBP space_NN for_IN time_NN ._.
+Our_PRP$ contributions_NNS ._.
+We_PRP consider_VBP the_DT general_JJ problem_NN of_IN balanced_JJ allocation_NN in_IN a_DT bipartite_JJ supply-demand_JJ setting_NN ._.
+Our_PRP$ formulation_NN ,_, inspired_VBN by_IN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, is_VBZ combinatorial_JJ and_CC captures_VBZ the_DT notion_NN of_IN deviation_NN from_IN being_VBG balanced_VBN by_IN a_DT natural_JJ and_CC general_JJ form_NN of_IN a_DT penalty_NN function_NN ._.
+While_IN this_DT formulation_NN admits_VBZ a_DT convex_NN programming_NN solution_NN -LRB-_-LRB- assuming_VBG t_NN
+aximum_NN flow_NN in_IN the_DT instance_NN is_VBZ at_IN least_JJS the_DT sum_NN of_IN the_DT demands_NNS of_IN the_DT contracts_NNS ._.
+Next_RB ,_, we_PRP implement_VBP the_DT min-cost_JJ based_JJ algorithm_NN for_IN minimizing_VBG the_DT L1_NN penalty_NN ._.
+To_TO do_VB this_DT ,_, we_PRP use_VBP Goldberg_NNP 's_POS algorithm_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: for_IN min-cost_JJ flow_NN ,_, obtained_VBN from_IN http:\/\/www_NN ._.
+avglab.com\/andrew\/soft.html_NN ._.
+Since_IN this_DT implementation_NN requires_VBZ integral_JJ capacities_NNS and_CC costs_NNS ,_, we_PRP round_VBP the_DT costs_NNS and_CC capacities_NNS when_WRB constructing_VBG the_DT gra_NN
+e_LS online_JJ allocation_NN with_IN forecast_NN problem_NN ,_, where_WRB given_VBN an_DT approximation_NN of_IN the_DT online_JJ supply_NN ,_, the_DT goal_NN is_VBZ to_TO create_VB an_DT efficiently_RB reconstructible_JJ plan_NN for_IN performing_VBG some_DT form_NN of_IN balanced_JJ allocation_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP focus_VBP on_IN the_DT efficiency_NN and_CC sampling_NN aspect_NN of_IN the_DT problem_NN and_CC consider_VB only_RB the_DT strictly_RB convex_VBN version_NN ,_, which_WDT makes_VBZ it_PRP amenable_JJ to_TO using_VBG fixed_JJ point_NN criteria_NNS such_JJ as_IN KKT_NN conditions_NNS for_IN non-li_JJ
+n_NN the_DT dual_JJ variables_NNS of_IN the_DT min-cost_JJ flow_NN solution_NN ._.
+Primal-dual_JJ methods_NNS have_VBP been_VBN largely_RB used_VBN as_IN a_DT tool_NN to_TO find_VB approximation_NN algorithms_NNS for_IN various_JJ problems_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 4_CD ,_, 1_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Recently_RB ,_, Devanur_NNP et_FW al._FW =_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Jain_NNP and_CC Vazirani_NNP -LRB-_-LRB- 13_CD -RRB-_-RRB- used_VBD primaldual_JJ methods_NNS and_CC KKT_NN conditions_NNS for_IN solving_VBG market_NN equilibria_NN problems_NNS ._.
+2_CD ._.
+PRELIMINARIES_NNS Suppose_VBP we_PRP are_VBP given_VBN a_DT set_NN I_CD of_IN impressions_NNS and_CC a_DT set_VBN C_NN of_IN contracts_NNS ._.
+Ea_NN
+min-cost_JJ flow_NN instance_NN is_VBZ based_VBN on_IN the_DT dual_JJ variables_NNS of_IN the_DT min-cost_JJ flow_NN solution_NN ._.
+Primal-dual_JJ methods_NNS have_VBP been_VBN largely_RB used_VBN as_IN a_DT tool_NN to_TO find_VB approximation_NN algorithms_NNS for_IN various_JJ problems_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 4_CD ,_, 1_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Recently_RB ,_, Devanur_NNP et_FW al._FW -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC Jain_NNP and_CC Vazirani_NNP -LRB-_-LRB- 13_CD -RRB-_-RRB- used_VBD primaldual_JJ methods_NNS and_CC KKT_NN conditions_NNS for_IN solving_VBG market_NN equilibria_NN problems_NNS ._.
+2_CD ._.
+PRELIMINARIES_NNS Suppose_VBP we_PRP are_VBP given_VBN a_DT set_VBN I_NN of_IN impressio_NN
+or_CC online_JJ advertising_NN are_VBP slot_NN ad_NN auction_NN and_CC display_NN advertisement_NN ._.
+Most_JJS of_IN the_DT recent_JJ literature_NN for_IN online_JJ advertisement_NN are_VBP focused_VBN on_IN studying_VBG slot_NN ad_NN auction_NN from_IN the_DT game-theoretic_JJ perspective_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX have_VBP been_VBN some_DT recent_JJ work_NN on_IN display_NN advertisement_NN and_CC guaranteed_JJ delivery_NN ._.
+In_IN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, Feige_NNP et_FW al._FW studied_VBD the_DT guaranteed_VBN delivery_NN for_IN display_NN advertisement_NN with_IN penalties_NNS ._.
+In_IN the_DT guaranteed_VBN de_IN
+e_LS min-cost_JJ flow_NN solution_NN ._.
+Primal-dual_JJ methods_NNS have_VBP been_VBN largely_RB used_VBN as_IN a_DT tool_NN to_TO find_VB approximation_NN algorithms_NNS for_IN various_JJ problems_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 4_CD ,_, 1_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Recently_RB ,_, Devanur_NNP et_FW al._FW -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC Jain_NN and_CC Vazirani_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: used_VBN primaldual_JJ methods_NNS and_CC KKT_NN conditions_NNS for_IN solving_VBG market_NN equilibria_NN problems_NNS ._.
+2_CD ._.
+PRELIMINARIES_NNS Suppose_VBP we_PRP are_VBP given_VBN a_DT set_NN I_CD of_IN impressions_NNS and_CC a_DT set_VBN C_NN of_IN contracts_NNS ._.
+Each_DT impression_NN i_FW ∈_FW I_PRP has_VBZ a_DT s_NN
+erature_NN for_IN online_JJ advertisement_NN are_VBP focused_VBN on_IN studying_VBG slot_NN ad_NN auction_NN from_IN the_DT game-theoretic_JJ perspective_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+There_EX have_VBP been_VBN some_DT recent_JJ work_NN on_IN display_NN advertisement_NN and_CC guaranteed_JJ delivery_NN ._.
+In_IN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Feige_NNP et_FW al._FW studied_VBD the_DT guaranteed_VBN delivery_NN for_IN display_NN advertisement_NN with_IN penalties_NNS ._.
+In_IN the_DT guaranteed_VBN delivery_NN model_NN ,_, advertisers_NNS act_VBP as_IN contractors_NNS ._.
+Each_DT advertiser_NN requests_NNS some_DT number_NN of_IN impre_NN
+resent_VB a_DT bicriteria_NN algorithm_NN ._.
+Also_RB they_PRP proved_VBD a_DT structural_JJ approximation_NN result_NN for_IN the_DT adaptive_JJ greedy_JJ algorithm_NN ._.
+The_DT problem_NN of_IN advanced_JJ booking_NN with_IN costly_JJ cancellation_NN also_RB have_VBP been_VBN studied_VBN in_IN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 3_LS -RRB-_-RRB- from_IN a_DT game-theoretic_JJ point_NN of_IN view_NN ._.
+Our_PRP$ solution_NN is_VBZ mainly_RB based_VBN on_IN the_DT network_NN flow_NN problem_NN and_CC its_PRP$ dual_JJ ._.
+There_EX is_VBZ a_DT large_JJ amount_NN of_IN literature_NN on_IN the_DT network_NN flow_NN problem_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 2_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+The_DT
+bicriteria_NN algorithm_NN ._.
+Also_RB they_PRP proved_VBD a_DT structural_JJ approximation_NN result_NN for_IN the_DT adaptive_JJ greedy_JJ algorithm_NN ._.
+The_DT problem_NN of_IN advanced_JJ booking_NN with_IN costly_JJ cancellation_NN also_RB have_VBP been_VBN studied_VBN in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: from_IN a_DT game-theoretic_JJ point_NN of_IN view_NN ._.
+Our_PRP$ solution_NN is_VBZ mainly_RB based_VBN on_IN the_DT network_NN flow_NN problem_NN and_CC its_PRP$ dual_JJ ._.
+There_EX is_VBZ a_DT large_JJ amount_NN of_IN literature_NN on_IN the_DT network_NN flow_NN problem_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 2_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+The_DT closest_JJS

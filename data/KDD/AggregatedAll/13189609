@@ -1,0 +1,186 @@
+GBASE_NNP :_: a_DT scalable_JJ and_CC general_JJ graph_NN management_NN system_NN
+Graphs_NNS appear_VBP in_IN numerous_JJ applications_NNS including_VBG cyber-security_NN ,_, the_DT Internet_NNP ,_, social_JJ networks_NNS ,_, protein_NN networks_NNS ,_, recommendation_NN systems_NNS ,_, and_CC many_JJ more_JJR ._.
+Graphs_NNS with_IN millions_NNS or_CC even_RB billions_NNS of_IN nodes_NNS and_CC edges_NNS are_VBP common-place_JJ ._.
+How_WRB to_TO store_VB such_JJ large_JJ graphs_NNS efficiently_RB ?_.
+What_WP are_VBP the_DT core_NN operations\/queries_NNS on_IN those_DT graph_NN ?_.
+How_WRB to_TO answer_VB the_DT graph_NN queries_NNS quickly_RB ?_.
+We_PRP propose_VBP GBASE_NNP ,_, a_DT scalable_JJ and_CC general_JJ graph_NN management_NN and_CC mining_NN system_NN ._.
+The_DT key_JJ novelties_NNS lie_VBP in_IN 1_CD -RRB-_-RRB- our_PRP$ storage_NN and_CC compression_NN scheme_NN for_IN a_DT parallel_JJ setting_NN and_CC 2_LS -RRB-_-RRB- the_DT carefully_RB chosen_VBN graph_NN operations_NNS and_CC their_PRP$ efficient_JJ implementation_NN ._.
+We_PRP designed_VBD and_CC implemented_VBD an_DT instance_NN of_IN GBASE_NN using_VBG MapReduce\/Hadoop_NN ._.
+GBASE_NNP provides_VBZ a_DT parallel_JJ indexing_NN mechanism_NN for_IN graph_NN mining_NN operations_NNS that_IN both_DT saves_VBZ storage_NN space_NN ,_, as_RB well_RB as_IN accelerates_VBZ queries_NNS ._.
+We_PRP ran_VBD numerous_JJ experiments_NNS on_IN real_JJ graphs_NNS ,_, spanning_VBG billions_NNS of_IN nodes_NNS and_CC edges_NNS ,_, and_CC we_PRP show_VBP that_IN our_PRP$ proposed_VBN GBASE_NN is_VBZ indeed_RB fast_JJ ,_, scalable_JJ and_CC nimble_JJ ,_, with_IN significant_JJ savings_NNS in_IN space_NN and_CC time_NN ._.
+gained_VBD its_PRP$ popularity_NN in_IN the_DT recent_JJ years_NNS ,_, due_JJ to_TO -LRB-_-LRB- among_IN other_JJ merits_NNS -RRB-_-RRB- its_PRP$ excellent_JJ I\/O_NN efficiency_NN for_IN read-extensive_JJ analytical_JJ workloads_NNS ._.
+From_IN research_NN community_NN ,_, some_DT representative_JJ works_NNS include_VBP =_JJ -_: =[_NN 33_CD ,_, 3_CD ,_, 2_CD ,_, 18_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT notable_JJ work_NN of_IN column_NN store_NN database_NN from_IN industrial_JJ side_NN is_VBZ HBase_NN -LRB-_-LRB- http:\/\/hbase.apache.org\/_NN -RRB-_-RRB- ._.
+HBase_NN is_VBZ designed_VBN for_IN large_JJ sparse_JJ data_NNS ,_, built_VBN on_IN the_DT top_NN of_IN HADOOP_NN core_NN ._.
+Different_JJ from_IN HBase_NN ,_, our_PRP$ G_NN
+ASE_NN ._.
+Notice_NNP that_IN GBASE_NNP answers_VBZ wide_JJ range_NN of_IN both_CC global_JJ -LRB-_-LRB- top_JJ 3_CD rows_NNS -RRB-_-RRB- and_CC targeted_VBN queries_NNS -LRB-_-LRB- bottom_NN 5_CD rows_NNS with_IN bold_JJ fonts_NNS -RRB-_-RRB- with_IN applications_NNS in_IN browsing_VBG -LRB-_-LRB- 29_CD ,_, 35_CD ,_, 24_CD -RRB-_-RRB- ,_, ranking_NN -LRB-_-LRB- 29_CD ,_, 35_CD -RRB-_-RRB- ,_, finding_VBG communities_NNS =_JJ -_: =[_NN 20_CD ,_, 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, anomaly_JJ detection_NN -LRB-_-LRB- 34_CD ,_, 20_CD ,_, 19_CD ,_, 6_CD -RRB-_-RRB- ,_, and_CC visualization_NN -LRB-_-LRB- 24_CD ,_, 7_CD -RRB-_-RRB- ._.
+Symbol_NNP Definition_NNP G_NNP Graph_NNP ._.
+A_DT Adjacency_NN matrix_NN of_IN the_DT graph_NN G._NNP B_NNP Incidence_NN matrix_NN of_IN the_DT graph_NN G._NNP n_NN Number_NN of_IN nodes_NNS ._.
+m_NN Number_NN of_IN edges_NNS ._.
+k_NN N_NN
+,_, MAPREDUCE_NN and_CC MAPREDUCElike_NN systems_NNS have_VBP been_VBN extensively_RB explored_VBN for_IN various_JJ data_NNS processing_NN ._.
+Representative_JJ work_NN include_VBP Pregel_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, PEGASUS_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, SCOPE_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, Dryad_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, PIG_NN Latin_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, Sphere_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC Sawzall_NNP -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, etc._NN ._.
+Among_IN them_PRP ,_, both_DT PEGASUS_NNP and_CC Pregel_NNP focus_NN on_IN large_JJ graph_NN querying\/mining_NN and_CC are_VBP most_RBS related_JJ to_TO our_PRP$ work_NN ._.
+The_DT proposed_VBN GBASE_NNP provides_VBZ an_DT even_RB lower-level_JJ support_NN in_IN terms_NNS of_IN
+._.
+Due_JJ to_TO its_PRP$ excellent_JJ scalability_NN ,_, ease_NN of_IN use_NN ,_, and_CC cost_NN advantage_NN ,_, MAPREDUCE_NN and_CC MAPREDUCElike_NN systems_NNS have_VBP been_VBN extensively_RB explored_VBN for_IN various_JJ data_NNS processing_NN ._.
+Representative_JJ work_NN include_VBP Pregel_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_JJ -_: ,_, PEGASUS_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, SCOPE_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, Dryad_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, PIG_NN Latin_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, Sphere_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, and_CC Sawzall_NNP -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, etc._NN ._.
+Among_IN them_PRP ,_, both_DT PEGASUS_NNP and_CC Pregel_NNP focus_NN on_IN large_JJ graph_NN querying\/mining_NN and_CC are_VBP most_RBS related_JJ to_TO our_PRP$ work_NN ._.
+T_NN
+ers_NNPS wide_JJ range_NN of_IN both_CC global_JJ -LRB-_-LRB- top_JJ 3_CD rows_NNS -RRB-_-RRB- and_CC targeted_VBN queries_NNS -LRB-_-LRB- bottom_NN 5_CD rows_NNS with_IN bold_JJ fonts_NNS -RRB-_-RRB- with_IN applications_NNS in_IN browsing_VBG -LRB-_-LRB- 29_CD ,_, 35_CD ,_, 24_CD -RRB-_-RRB- ,_, ranking_NN -LRB-_-LRB- 29_CD ,_, 35_CD -RRB-_-RRB- ,_, finding_VBG communities_NNS -LRB-_-LRB- 20_CD ,_, 24_CD -RRB-_-RRB- ,_, anomaly_RB detection_NN =_JJ -_: =[_NN 34_CD ,_, 20_CD ,_, 19_CD ,_, 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC visualization_NN -LRB-_-LRB- 24_CD ,_, 7_CD -RRB-_-RRB- ._.
+Symbol_NNP Definition_NNP G_NNP Graph_NNP ._.
+A_DT Adjacency_NN matrix_NN of_IN the_DT graph_NN G._NNP B_NNP Incidence_NN matrix_NN of_IN the_DT graph_NN G._NNP n_NN Number_NN of_IN nodes_NNS ._.
+m_NN Number_NN of_IN edges_NNS ._.
+k_NN Number_NN of_IN partitions_NNS ._.
+p_NN ,_, q_FW Partitio_FW
+ers_NNPS wide_JJ range_NN of_IN both_CC global_JJ -LRB-_-LRB- top_JJ 3_CD rows_NNS -RRB-_-RRB- and_CC targeted_VBN queries_NNS -LRB-_-LRB- bottom_NN 5_CD rows_NNS with_IN bold_JJ fonts_NNS -RRB-_-RRB- with_IN applications_NNS in_IN browsing_VBG -LRB-_-LRB- 29_CD ,_, 35_CD ,_, 24_CD -RRB-_-RRB- ,_, ranking_NN -LRB-_-LRB- 29_CD ,_, 35_CD -RRB-_-RRB- ,_, finding_VBG communities_NNS -LRB-_-LRB- 20_CD ,_, 24_CD -RRB-_-RRB- ,_, anomaly_RB detection_NN =_JJ -_: =[_NN 34_CD ,_, 20_CD ,_, 19_CD ,_, 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC visualization_NN -LRB-_-LRB- 24_CD ,_, 7_CD -RRB-_-RRB- ._.
+Symbol_NNP Definition_NNP G_NNP Graph_NNP ._.
+A_DT Adjacency_NN matrix_NN of_IN the_DT graph_NN G._NNP B_NNP Incidence_NN matrix_NN of_IN the_DT graph_NN G._NNP n_NN Number_NN of_IN nodes_NNS ._.
+m_NN Number_NN of_IN edges_NNS ._.
+k_NN Number_NN of_IN partitions_NNS ._.
+p_NN ,_, q_FW Partitio_FW
+est_IN real_JJ graph_NN which_WDT helps_VBZ us_PRP test_VB the_DT scalability_NN of_IN our_PRP$ GBASE_NN system_NN on_IN real_JJ workload_NN ._.
+In_IN order_NN to_TO show_VB the_DT performance_NN across_IN different_JJ data_NNS scales_NNS ,_, we_PRP use_VBP two_CD synthetic_JJ data_NNS generators_NNS :_: Kronecker_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Erdős-Rényi_NNP -LRB-_-LRB- 14_CD -RRB-_-RRB- to_TO generate_VB multiple_JJ realistic_JJ graphs_NNS with_IN different_JJ sizes_NNS ._.
+Storage_NN Schemes_NNS ._.
+We_PRP use_VBP the_DT following_JJ notations_NNS to_TO distinguish_VB different_JJ storage_NN and_CC indexing_NN methods_NNS :_: •_FW GBASE_FW RAW_NN -LRB-_-LRB- ori_NN
+cency_NN queries_NNS ._.
+Aggarwal_NNP et_FW al_FW -LRB-_-LRB- 5_CD -RRB-_-RRB- proposed_VBN using_VBG edge_NN sampling_NN to_TO handle_VB graph_NN connectivity_NN queries_NNS ._.
+Sarkar_NNP et_NNP al_NNP -LRB-_-LRB- 32_CD -RRB-_-RRB- explored_VBD the_DT clustering_NN properties_NNS to_TO proximity_NN queries_NNS on_IN graphs_NNS ._.
+Maserra_FW et_FW al_FW =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT Eulerian_JJ data_NN structure_NN for_IN neighborhood_NN queries_NNS ._.
+Despite_IN of_IN their_PRP$ success_NN ,_, there_EX are_VBP two_CD major_JJ limitations_NNS of_IN these_DT work_NN ._.
+First_RB ,_, all_PDT the_DT indexing_NN techniques_NNS are_VBP designed_VBN for_IN one_CD particula_NN
+ponents_NNS -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, etc._NN ._.
+Node-level_JJ queries_NNS ,_, on_IN the_DT other_JJ hand_NN ,_, focus_NN on_IN the_DT relationship_NN among_IN individual_JJ nodes_NNS ._.
+Representative_JJ queries_NNS include_VBP neighborhood_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, proximity_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- ,_, PageRank_NN -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, centrality_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, etc._NN ._.
+Between_IN the_DT graph-level_JJ and_CC individual_JJ node-level_NN ,_, there_EX are_VBP also_RB queries_NNS on_IN the_DT sub-graph_JJ level_NN ,_, e.g._FW ,_, community_NN detection_NN -LRB-_-LRB- 21_CD ,_, 8_CD -RRB-_-RRB- ,_, finding_VBG induced_VBN subgraph_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, etc._NN ._.
+GBASE_NN covers_VBZ a_DT wide_JJ range_NN
+r_NN the_DT reachability_NN queries_NNS ._.
+Chierichetti_NNP et_NNP al_NNP -LRB-_-LRB- 12_CD -RRB-_-RRB- explored_VBD link_NN reciprocity_NN for_IN adjacency_NN queries_NNS ._.
+Aggarwal_NNP et_FW al_FW -LRB-_-LRB- 5_CD -RRB-_-RRB- proposed_VBN using_VBG edge_NN sampling_NN to_TO handle_VB graph_NN connectivity_NN queries_NNS ._.
+Sarkar_NNP et_NNP al_NNP =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: explored_VBD the_DT clustering_NN properties_NNS to_TO proximity_NN queries_NNS on_IN graphs_NNS ._.
+Maserra_NNP et_NNP al_NNP -LRB-_-LRB- 27_CD -RRB-_-RRB- proposed_VBD a_DT Eulerian_JJ data_NN structure_NN for_IN neighborhood_NN queries_NNS ._.
+Despite_IN of_IN their_PRP$ success_NN ,_, there_EX are_VBP two_CD major_JJ limita_NNS
+gained_VBD its_PRP$ popularity_NN in_IN the_DT recent_JJ years_NNS ,_, due_JJ to_TO -LRB-_-LRB- among_IN other_JJ merits_NNS -RRB-_-RRB- its_PRP$ excellent_JJ I\/O_NN efficiency_NN for_IN read-extensive_JJ analytical_JJ workloads_NNS ._.
+From_IN research_NN community_NN ,_, some_DT representative_JJ works_NNS include_VBP =_JJ -_: =[_NN 33_CD ,_, 3_CD ,_, 2_CD ,_, 18_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT notable_JJ work_NN of_IN column_NN store_NN database_NN from_IN industrial_JJ side_NN is_VBZ HBase_NN -LRB-_-LRB- http:\/\/hbase.apache.org\/_NN -RRB-_-RRB- ._.
+HBase_NN is_VBZ designed_VBN for_IN large_JJ sparse_JJ data_NNS ,_, built_VBN on_IN the_DT top_NN of_IN HADOOP_NN core_NN ._.
+Different_JJ from_IN HBase_NN ,_, our_PRP$ G_NN
+gained_VBD its_PRP$ popularity_NN in_IN the_DT recent_JJ years_NNS ,_, due_JJ to_TO -LRB-_-LRB- among_IN other_JJ merits_NNS -RRB-_-RRB- its_PRP$ excellent_JJ I\/O_NN efficiency_NN for_IN read-extensive_JJ analytical_JJ workloads_NNS ._.
+From_IN research_NN community_NN ,_, some_DT representative_JJ works_NNS include_VBP =_JJ -_: =[_NN 33_CD ,_, 3_CD ,_, 2_CD ,_, 18_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT notable_JJ work_NN of_IN column_NN store_NN database_NN from_IN industrial_JJ side_NN is_VBZ HBase_NN -LRB-_-LRB- http:\/\/hbase.apache.org\/_NN -RRB-_-RRB- ._.
+HBase_NN is_VBZ designed_VBN for_IN large_JJ sparse_JJ data_NNS ,_, built_VBN on_IN the_DT top_NN of_IN HADOOP_NN core_NN ._.
+Different_JJ from_IN HBase_NN ,_, our_PRP$ G_NN
+ide_VB a_DT set_NN of_IN core_NN operaTable_NN 1_CD :_: Applications_NNS of_IN GBASE_NN ._.
+Notice_NNP that_IN GBASE_NNP answers_VBZ wide_JJ range_NN of_IN both_CC global_JJ -LRB-_-LRB- top_JJ 3_CD rows_NNS -RRB-_-RRB- and_CC targeted_VBN queries_NNS -LRB-_-LRB- bottom_NN 5_CD rows_NNS with_IN bold_JJ fonts_NNS -RRB-_-RRB- with_IN applications_NNS in_IN browsing_VBG =_JJ -_: =[_NN 29_CD ,_, 35_CD ,_, 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, ranking_NN -LRB-_-LRB- 29_CD ,_, 35_CD -RRB-_-RRB- ,_, finding_VBG communities_NNS -LRB-_-LRB- 20_CD ,_, 24_CD -RRB-_-RRB- ,_, anomaly_JJ detection_NN -LRB-_-LRB- 34_CD ,_, 20_CD ,_, 19_CD ,_, 6_CD -RRB-_-RRB- ,_, and_CC visualization_NN -LRB-_-LRB- 24_CD ,_, 7_CD -RRB-_-RRB- ._.
+Symbol_NNP Definition_NNP G_NNP Graph_NNP ._.
+A_DT Adjacency_NN matrix_NN of_IN the_DT graph_NN G._NNP B_NNP Incidence_NN matrix_NN of_IN the_DT grap_NN
+helps_VBZ us_PRP test_VB the_DT scalability_NN of_IN our_PRP$ GBASE_NN system_NN on_IN real_JJ workload_NN ._.
+In_IN order_NN to_TO show_VB the_DT performance_NN across_IN different_JJ data_NNS scales_NNS ,_, we_PRP use_VBP two_CD synthetic_JJ data_NNS generators_NNS :_: Kronecker_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- and_CC Erdős-Rényi_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: to_TO generate_VB multiple_JJ realistic_JJ graphs_NNS with_IN different_JJ sizes_NNS ._.
+Storage_NN Schemes_NNS ._.
+We_PRP use_VBP the_DT following_JJ notations_NNS to_TO distinguish_VB different_JJ storage_NN and_CC indexing_NN methods_NNS :_: •_FW GBASE_FW RAW_NN -LRB-_-LRB- original_JJ RAW_NN encoding_NN -RRB-_-RRB- :_:
+lude_JJ neighborhood_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, proximity_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- ,_, PageRank_NN -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, centrality_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, etc._NN ._.
+Between_IN the_DT graph-level_JJ and_CC individual_JJ node-level_NN ,_, there_EX are_VBP also_RB queries_NNS on_IN the_DT sub-graph_JJ level_NN ,_, e.g._FW ,_, community_NN detection_NN =_JJ -_: =[_NN 21_CD ,_, 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, finding_VBG induced_VBN subgraph_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, etc._NN ._.
+GBASE_NN covers_VBZ a_DT wide_JJ range_NN of_IN queries_NNS ,_, including_VBG the_DT global_JJ and_CC the_DT node-level_JJ ones_NNS ,_, by_IN a_DT unified_JJ matrix-vector_JJ multiplication_NN framework_NN ._.
+Column_NNP Store_NNP ._.
+Column-orien_NN
+ide_VB a_DT set_NN of_IN core_NN operaTable_NN 1_CD :_: Applications_NNS of_IN GBASE_NN ._.
+Notice_NNP that_IN GBASE_NNP answers_VBZ wide_JJ range_NN of_IN both_CC global_JJ -LRB-_-LRB- top_JJ 3_CD rows_NNS -RRB-_-RRB- and_CC targeted_VBN queries_NNS -LRB-_-LRB- bottom_NN 5_CD rows_NNS with_IN bold_JJ fonts_NNS -RRB-_-RRB- with_IN applications_NNS in_IN browsing_VBG =_JJ -_: =[_NN 29_CD ,_, 35_CD ,_, 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, ranking_NN -LRB-_-LRB- 29_CD ,_, 35_CD -RRB-_-RRB- ,_, finding_VBG communities_NNS -LRB-_-LRB- 20_CD ,_, 24_CD -RRB-_-RRB- ,_, anomaly_JJ detection_NN -LRB-_-LRB- 34_CD ,_, 20_CD ,_, 19_CD ,_, 6_CD -RRB-_-RRB- ,_, and_CC visualization_NN -LRB-_-LRB- 24_CD ,_, 7_CD -RRB-_-RRB- ._.
+Symbol_NNP Definition_NNP G_NNP Graph_NNP ._.
+A_DT Adjacency_NN matrix_NN of_IN the_DT graph_NN G._NNP B_NNP Incidence_NN matrix_NN of_IN the_DT grap_NN
+3_CD rows_NNS -RRB-_-RRB- and_CC targeted_VBN queries_NNS -LRB-_-LRB- bottom_NN 5_CD rows_NNS with_IN bold_JJ fonts_NNS -RRB-_-RRB- with_IN applications_NNS in_IN browsing_VBG -LRB-_-LRB- 29_CD ,_, 35_CD ,_, 24_CD -RRB-_-RRB- ,_, ranking_NN -LRB-_-LRB- 29_CD ,_, 35_CD -RRB-_-RRB- ,_, finding_VBG communities_NNS -LRB-_-LRB- 20_CD ,_, 24_CD -RRB-_-RRB- ,_, anomaly_JJ detection_NN -LRB-_-LRB- 34_CD ,_, 20_CD ,_, 19_CD ,_, 6_CD -RRB-_-RRB- ,_, and_CC visualization_NN =_JJ -_: =[_NN 24_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Symbol_NNP Definition_NNP G_NNP Graph_NNP ._.
+A_DT Adjacency_NN matrix_NN of_IN the_DT graph_NN G._NNP B_NNP Incidence_NN matrix_NN of_IN the_DT graph_NN G._NNP n_NN Number_NN of_IN nodes_NNS ._.
+m_NN Number_NN of_IN edges_NNS ._.
+k_NN Number_NN of_IN partitions_NNS ._.
+p_NN ,_, q_NN Partition_NN indices_NNS ,_, 1_CD ≤_CD p_NN ,_, q_FW ≤_FW k._FW I_PRP
+and_CC column-oriented_JJ storages_NNS ._.
+Parallel_JJ Data_NNP Management_NNP ._.
+Parallel_JJ data_NNS processing_NN has_VBZ attracted_VBN a_DT lot_NN of_IN industrial_JJ attention_NN recently_RB due_JJ to_TO the_DT success_NN of_IN MAPREDUCE_NNP ,_, a_DT parallel_JJ programming_NN framework_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC its_PRP$ open_JJ source_NN version_NN HADOOP_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Due_JJ to_TO its_PRP$ excellent_JJ scalability_NN ,_, ease_NN of_IN use_NN ,_, and_CC cost_NN advantage_NN ,_, MAPREDUCE_NN and_CC MAPREDUCElike_NN systems_NNS have_VBP been_VBN extensively_RB explored_VBN for_IN various_JJ data_NNS process_NN
+olumns_NNS ,_, and_CC make_VB homogeneous_JJ regions_NNS into_IN blocks_NNS ._.
+Partitioning_NN algorithms_NNS form_VBP an_DT active_JJ research_NN area_NN ,_, and_CC finding_VBG optimal_JJ partitions_NNS is_VBZ orthogonal_JJ to_TO our_PRP$ work_NN ._.
+Any_DT partition_NN algorithms_NNS ,_, e.g._FW ,_, METIS_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Disco_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, etc_NN ,_, can_MD be_VB naturally_RB plugged_VBN into_IN GBASE_NNP ._.
+Graph_NN partitioning_NN can_MD be_VB formally_RB defined_VBN as_IN follows_VBZ ._.
+The_DT input_NN is_VBZ the_DT original_JJ raw_JJ graph_NN denoted_VBN by_IN G._NNP Given_IN a_DT graph_NN G_NN ,_, we_PRP partition_NN the_DT nodes_NNS
+lumn_NN store_NN and_CC -LRB-_-LRB- 4_LS -RRB-_-RRB- parallel_JJ data_NNS management_NN ._.
+Graph_NN Indexing_NN ._.
+Graph_NN indexing_NN is_VBZ very_RB active_JJ in_IN both_DT databases_NNS community_NN as_RB well_RB as_IN data_NNS mining_NN community_NN in_IN the_DT recent_JJ years_NNS ._.
+To_TO name_VB a_DT few_JJ ,_, Trißl_NNP et_NNP al_NNP =_JJ -_: =[_NN 36_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBN to_TO index_NN the_DT graph_NN using_VBG pre_JJ -_: and_CC postorder_NN number_NN to_TO answer_VB the_DT reachability_NN queries_NNS ._.
+Chierichetti_NNP et_NNP al_NNP -LRB-_-LRB- 12_CD -RRB-_-RRB- explored_VBD link_NN reciprocity_NN for_IN adjacency_NN queries_NNS ._.
+Aggarwal_NNP et_FW al_FW -LRB-_-LRB- 5_CD -RRB-_-RRB- proposed_VBD us_PRP
+lude_JJ neighborhood_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, proximity_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- ,_, PageRank_NN -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, centrality_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, etc._NN ._.
+Between_IN the_DT graph-level_JJ and_CC individual_JJ node-level_NN ,_, there_EX are_VBP also_RB queries_NNS on_IN the_DT sub-graph_JJ level_NN ,_, e.g._FW ,_, community_NN detection_NN =_JJ -_: =[_NN 21_CD ,_, 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, finding_VBG induced_VBN subgraph_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, etc._NN ._.
+GBASE_NN covers_VBZ a_DT wide_JJ range_NN of_IN queries_NNS ,_, including_VBG the_DT global_JJ and_CC the_DT node-level_JJ ones_NNS ,_, by_IN a_DT unified_JJ matrix-vector_JJ multiplication_NN framework_NN ._.
+Column_NNP Store_NNP ._.
+Column-orien_NN
+multiple_JJ different_JJ types_NNS of_IN queries_NNS simultaneously_RB and_CC is_VBZ naturally_RB applicable_JJ to_TO the_DT distributed_VBN computing_NN environment_NN ._.
+Finally_RB ,_, there_EX are_VBP works_NNS on_IN indexing_NN many_JJ small_JJ graphs_NNS using_VBG frequent_JJ subgraph_NN =_JJ -_: =[_NN 37_CD ,_, 39_CD -RRB-_-RRB- -_: =_JJ -_: or_CC significant_JJ graph_NN patterns_NNS -LRB-_-LRB- 38_CD -RRB-_-RRB- ,_, which_WDT is_VBZ quite_RB different_JJ from_IN our_PRP$ setting_NN where_WRB we_PRP have_VBP one_CD large_JJ graph_NN ._.
+Graph_NN Queries_NNS ._.
+There_EX are_VBP numerous_JJ different_JJ queries_NNS on_IN graphs_NNS ._.
+To_TO name_VB a_DT few_JJ ,_, graph-level_JJ
+ers_NNPS wide_JJ range_NN of_IN both_CC global_JJ -LRB-_-LRB- top_JJ 3_CD rows_NNS -RRB-_-RRB- and_CC targeted_VBN queries_NNS -LRB-_-LRB- bottom_NN 5_CD rows_NNS with_IN bold_JJ fonts_NNS -RRB-_-RRB- with_IN applications_NNS in_IN browsing_VBG -LRB-_-LRB- 29_CD ,_, 35_CD ,_, 24_CD -RRB-_-RRB- ,_, ranking_NN -LRB-_-LRB- 29_CD ,_, 35_CD -RRB-_-RRB- ,_, finding_VBG communities_NNS -LRB-_-LRB- 20_CD ,_, 24_CD -RRB-_-RRB- ,_, anomaly_RB detection_NN =_JJ -_: =[_NN 34_CD ,_, 20_CD ,_, 19_CD ,_, 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC visualization_NN -LRB-_-LRB- 24_CD ,_, 7_CD -RRB-_-RRB- ._.
+Symbol_NNP Definition_NNP G_NNP Graph_NNP ._.
+A_DT Adjacency_NN matrix_NN of_IN the_DT graph_NN G._NNP B_NNP Incidence_NN matrix_NN of_IN the_DT graph_NN G._NNP n_NN Number_NN of_IN nodes_NNS ._.
+m_NN Number_NN of_IN edges_NNS ._.
+k_NN Number_NN of_IN partitions_NNS ._.
+p_NN ,_, q_FW Partitio_FW
+ide_VB a_DT set_NN of_IN core_NN operaTable_NN 1_CD :_: Applications_NNS of_IN GBASE_NN ._.
+Notice_NNP that_IN GBASE_NNP answers_VBZ wide_JJ range_NN of_IN both_CC global_JJ -LRB-_-LRB- top_JJ 3_CD rows_NNS -RRB-_-RRB- and_CC targeted_VBN queries_NNS -LRB-_-LRB- bottom_NN 5_CD rows_NNS with_IN bold_JJ fonts_NNS -RRB-_-RRB- with_IN applications_NNS in_IN browsing_VBG =_JJ -_: =[_NN 29_CD ,_, 35_CD ,_, 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, ranking_NN -LRB-_-LRB- 29_CD ,_, 35_CD -RRB-_-RRB- ,_, finding_VBG communities_NNS -LRB-_-LRB- 20_CD ,_, 24_CD -RRB-_-RRB- ,_, anomaly_JJ detection_NN -LRB-_-LRB- 34_CD ,_, 20_CD ,_, 19_CD ,_, 6_CD -RRB-_-RRB- ,_, and_CC visualization_NN -LRB-_-LRB- 24_CD ,_, 7_CD -RRB-_-RRB- ._.
+Symbol_NNP Definition_NNP G_NNP Graph_NNP ._.
+A_DT Adjacency_NN matrix_NN of_IN the_DT graph_NN G._NNP B_NNP Incidence_NN matrix_NN of_IN the_DT grap_NN
+ost_NN advantage_NN ,_, MAPREDUCE_NN and_CC MAPREDUCElike_NN systems_NNS have_VBP been_VBN extensively_RB explored_VBN for_IN various_JJ data_NNS processing_NN ._.
+Representative_JJ work_NN include_VBP Pregel_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, PEGASUS_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, SCOPE_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, Dryad_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, PIG_NN Latin_NN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Sphere_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, and_CC Sawzall_NNP -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, etc._NN ._.
+Among_IN them_PRP ,_, both_DT PEGASUS_NNP and_CC Pregel_NNP focus_NN on_IN large_JJ graph_NN querying\/mining_NN and_CC are_VBP most_RBS related_JJ to_TO our_PRP$ work_NN ._.
+The_DT proposed_VBN GBASE_NNP provides_VBZ an_DT even_RB lower-level_JJ support_NN
+PREDUCElike_JJ systems_NNS have_VBP been_VBN extensively_RB explored_VBN for_IN various_JJ data_NNS processing_NN ._.
+Representative_JJ work_NN include_VBP Pregel_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, PEGASUS_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, SCOPE_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, Dryad_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, PIG_NN Latin_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, Sphere_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, and_CC Sawzall_NN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_JJ -_: ,_, etc._NN ._.
+Among_IN them_PRP ,_, both_DT PEGASUS_NNP and_CC Pregel_NNP focus_NN on_IN large_JJ graph_NN querying\/mining_NN and_CC are_VBP most_RBS related_JJ to_TO our_PRP$ work_NN ._.
+The_DT proposed_VBN GBASE_NNP provides_VBZ an_DT even_RB lower-level_JJ support_NN in_IN terms_NNS of_IN storage_NN cost_NN by_IN in_IN
+cost_NN ._.
+For_IN many_JJ real_JJ graphs_NNS ,_, the_DT community\/clustering_NN structure_NN can_MD be_VB naturally_RB identified_VBN ._.
+For_IN instance_NN ,_, in_IN Web_NN graphs_NNS ,_, the_DT lexicographic_JJ ordering_VBG of_IN the_DT URL_NN can_MD be_VB used_VBN as_IN an_DT indicator_NN of_IN community_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: since_IN there_EX are_VBP usually_RB more_JJR intra-domain_JJ links_NNS compared_VBN with_IN the_DT inter-domain_JJ links_NNS ._.
+For_IN authorship_NN network_NN ,_, the_DT research_NN interest_NN is_VBZ often_RB a_DT good_JJ indicator_NN to_TO find_VB communities_NNS since_IN authors_NNS with_IN th_DT
+lability_NN ,_, ease_NN of_IN use_NN ,_, and_CC cost_NN advantage_NN ,_, MAPREDUCE_NN and_CC MAPREDUCElike_NN systems_NNS have_VBP been_VBN extensively_RB explored_VBN for_IN various_JJ data_NNS processing_NN ._.
+Representative_JJ work_NN include_VBP Pregel_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, PEGASUS_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, SCOPE_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Dryad_NNP -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, PIG_NN Latin_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, Sphere_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, and_CC Sawzall_NNP -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, etc._NN ._.
+Among_IN them_PRP ,_, both_DT PEGASUS_NNP and_CC Pregel_NNP focus_NN on_IN large_JJ graph_NN querying\/mining_NN and_CC are_VBP most_RBS related_JJ to_TO our_PRP$ work_NN ._.
+The_DT proposed_VBN GBASE_NNP provides_VBZ
+gained_VBD its_PRP$ popularity_NN in_IN the_DT recent_JJ years_NNS ,_, due_JJ to_TO -LRB-_-LRB- among_IN other_JJ merits_NNS -RRB-_-RRB- its_PRP$ excellent_JJ I\/O_NN efficiency_NN for_IN read-extensive_JJ analytical_JJ workloads_NNS ._.
+From_IN research_NN community_NN ,_, some_DT representative_JJ works_NNS include_VBP =_JJ -_: =[_NN 33_CD ,_, 3_CD ,_, 2_CD ,_, 18_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT notable_JJ work_NN of_IN column_NN store_NN database_NN from_IN industrial_JJ side_NN is_VBZ HBase_NN -LRB-_-LRB- http:\/\/hbase.apache.org\/_NN -RRB-_-RRB- ._.
+HBase_NN is_VBZ designed_VBN for_IN large_JJ sparse_JJ data_NNS ,_, built_VBN on_IN the_DT top_NN of_IN HADOOP_NN core_NN ._.
+Different_JJ from_IN HBase_NN ,_, our_PRP$ G_NN
+02_CD ,_, has_VBZ more_JJR than_IN 1_CD billion_CD nodes_NNS and_CC almost_RB 7_CD billion_CD edges_NNS ._.
+Similar_JJ size_NN ,_, or_CC even_RB larger_JJR graphs_NNS ,_, exist_VBP :_: the_DT Twitter_NNP graph_NN spans_VBZ several_JJ Terabytes_NNS ;_: click-streams_NNS are_VBP reported_VBN to_TO reach_VB Petabyte_NNP scale_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Such_JJ large_JJ graphs_NNS violate_VBP the_DT assumption_NN that_IN the_DT graph_NN can_MD be_VB fit_VBN in_IN main_JJ memory_NN or_CC at_IN least_JJS the_DT disk_NN of_IN a_DT single_JJ workstation_NN ,_, on_IN which_WDT most_JJS of_IN existing_VBG graph_NN algorithms_NNS have_VBP been_VBN built_VBN ._.
+Thus_RB ,_, we_PRP n_NN
+ultaneously_RB and_CC is_VBZ naturally_RB applicable_JJ to_TO the_DT distributed_VBN computing_NN environment_NN ._.
+Finally_RB ,_, there_EX are_VBP works_NNS on_IN indexing_NN many_JJ small_JJ graphs_NNS using_VBG frequent_JJ subgraph_NN -LRB-_-LRB- 37_CD ,_, 39_CD -RRB-_-RRB- or_CC significant_JJ graph_NN patterns_NNS =_JJ -_: =[_NN 38_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT is_VBZ quite_RB different_JJ from_IN our_PRP$ setting_NN where_WRB we_PRP have_VBP one_CD large_JJ graph_NN ._.
+Graph_NN Queries_NNS ._.
+There_EX are_VBP numerous_JJ different_JJ queries_NNS on_IN graphs_NNS ._.
+To_TO name_VB a_DT few_JJ ,_, graph-level_JJ queries_NNS answer_VBP some_DT global_JJ statisti_NNS
+gained_VBD its_PRP$ popularity_NN in_IN the_DT recent_JJ years_NNS ,_, due_JJ to_TO -LRB-_-LRB- among_IN other_JJ merits_NNS -RRB-_-RRB- its_PRP$ excellent_JJ I\/O_NN efficiency_NN for_IN read-extensive_JJ analytical_JJ workloads_NNS ._.
+From_IN research_NN community_NN ,_, some_DT representative_JJ works_NNS include_VBP =_JJ -_: =[_NN 33_CD ,_, 3_CD ,_, 2_CD ,_, 18_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT notable_JJ work_NN of_IN column_NN store_NN database_NN from_IN industrial_JJ side_NN is_VBZ HBase_NN -LRB-_-LRB- http:\/\/hbase.apache.org\/_NN -RRB-_-RRB- ._.
+HBase_NN is_VBZ designed_VBN for_IN large_JJ sparse_JJ data_NNS ,_, built_VBN on_IN the_DT top_NN of_IN HADOOP_NN core_NN ._.
+Different_JJ from_IN HBase_NN ,_, our_PRP$ G_NN
+rißl_NN et_FW al_FW -LRB-_-LRB- 36_CD -RRB-_-RRB- proposed_VBN to_TO index_NN the_DT graph_NN using_VBG pre_JJ -_: and_CC postorder_NN number_NN to_TO answer_VB the_DT reachability_NN queries_NNS ._.
+Chierichetti_NNP et_NNP al_NNP -LRB-_-LRB- 12_CD -RRB-_-RRB- explored_VBD link_NN reciprocity_NN for_IN adjacency_NN queries_NNS ._.
+Aggarwal_NNP et_FW al_FW =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBN using_VBG edge_NN sampling_NN to_TO handle_VB graph_NN connectivity_NN queries_NNS ._.
+Sarkar_NNP et_NNP al_NNP -LRB-_-LRB- 32_CD -RRB-_-RRB- explored_VBD the_DT clustering_NN properties_NNS to_TO proximity_NN queries_NNS on_IN graphs_NNS ._.
+Maserra_NNP et_NNP al_NNP -LRB-_-LRB- 27_CD -RRB-_-RRB- proposed_VBD a_DT Eulerian_JJ data_NN str_NN
+s_NN well_RB as_IN data_NNS mining_NN community_NN in_IN the_DT recent_JJ years_NNS ._.
+To_TO name_VB a_DT few_JJ ,_, Trißl_NNP et_NNP al_NNP -LRB-_-LRB- 36_CD -RRB-_-RRB- proposed_VBN to_TO index_NN the_DT graph_NN using_VBG pre_JJ -_: and_CC postorder_NN number_NN to_TO answer_VB the_DT reachability_NN queries_NNS ._.
+Chierichetti_NNP et_NNP al_NNP =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: explored_VBN link_NN reciprocity_NN for_IN adjacency_NN queries_NNS ._.
+Aggarwal_NNP et_FW al_FW -LRB-_-LRB- 5_CD -RRB-_-RRB- proposed_VBN using_VBG edge_NN sampling_NN to_TO handle_VB graph_NN connectivity_NN queries_NNS ._.
+Sarkar_NNP et_NNP al_NNP -LRB-_-LRB- 32_CD -RRB-_-RRB- explored_VBD the_DT clustering_NN properties_NNS to_TO proximit_VB
+se_FW of_IN use_NN ,_, and_CC cost_NN advantage_NN ,_, MAPREDUCE_NN and_CC MAPREDUCElike_NN systems_NNS have_VBP been_VBN extensively_RB explored_VBN for_IN various_JJ data_NNS processing_NN ._.
+Representative_JJ work_NN include_VBP Pregel_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, PEGASUS_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, SCOPE_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, Dryad_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, PIG_NNP Latin_NNP -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, Sphere_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, and_CC Sawzall_NNP -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, etc._NN ._.
+Among_IN them_PRP ,_, both_DT PEGASUS_NNP and_CC Pregel_NNP focus_NN on_IN large_JJ graph_NN querying\/mining_NN and_CC are_VBP most_RBS related_JJ to_TO our_PRP$ work_NN ._.
+The_DT proposed_VBN GBASE_NNP provides_VBZ an_DT even_RB low_JJ
+multiple_JJ different_JJ types_NNS of_IN queries_NNS simultaneously_RB and_CC is_VBZ naturally_RB applicable_JJ to_TO the_DT distributed_VBN computing_NN environment_NN ._.
+Finally_RB ,_, there_EX are_VBP works_NNS on_IN indexing_NN many_JJ small_JJ graphs_NNS using_VBG frequent_JJ subgraph_NN =_JJ -_: =[_NN 37_CD ,_, 39_CD -RRB-_-RRB- -_: =_JJ -_: or_CC significant_JJ graph_NN patterns_NNS -LRB-_-LRB- 38_CD -RRB-_-RRB- ,_, which_WDT is_VBZ quite_RB different_JJ from_IN our_PRP$ setting_NN where_WRB we_PRP have_VBP one_CD large_JJ graph_NN ._.
+Graph_NN Queries_NNS ._.
+There_EX are_VBP numerous_JJ different_JJ queries_NNS on_IN graphs_NNS ._.
+To_TO name_VB a_DT few_JJ ,_, graph-level_JJ

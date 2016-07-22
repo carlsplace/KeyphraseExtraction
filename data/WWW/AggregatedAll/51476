@@ -1,0 +1,371 @@
+Super-peer-based_JJ routing_VBG and_CC clustering_VBG strategies_NNS for_IN RDF-based_JJ peer-to-peer_NN networks_NNS
+RDF-based_JJ P2P_NN networks_NNS have_VBP a_DT number_NN of_IN advantages_NNS compared_VBN with_IN simpler_JJR P2P_NN networks_NNS such_JJ as_IN Napster_NNP ,_, Gnutella_NNP or_CC with_IN approaches_NNS based_VBN on_IN distributed_VBN indices_NNS such_JJ as_IN CAN_NNP and_CC CHORD_NNP ._.
+RDF-based_JJ P2P_NN networks_NNS allow_VBP complex_JJ and_CC extendable_JJ descriptions_NNS of_IN resources_NNS instead_RB of_IN fixed_JJ and_CC limited_JJ ones_NNS ,_, and_CC they_PRP provide_VBP complex_JJ query_NN facilities_NNS against_IN these_DT metadata_NNS instead_RB of_IN simple_JJ keyword-based_JJ searches_NNS ._.
+In_IN previous_JJ papers_NNS ,_, we_PRP have_VBP described_VBN the_DT Edutella_NNP infrastructure_NN and_CC different_JJ kinds_NNS of_IN Edutella_NNP peers_NNS implementing_VBG such_JJ an_DT RDF-based_JJ P2P_NN network_NN ._.
+In_IN this_DT paper_NN we_PRP will_MD discuss_VB these_DT RDF-based_JJ P2P_NN networks_NNS as_IN a_DT specific_JJ example_NN of_IN a_DT new_JJ type_NN of_IN P2P_NN networks_NNS ,_, schema-based_JJ P2P_NN networks_NNS ,_, and_CC describe_VBP the_DT use_NN of_IN super-peer_JJ based_JJ topologies_NNS for_IN these_DT networks_NNS ._.
+Super-peer_JJ based_JJ networks_NNS can_MD provide_VB better_JJR scalability_NN than_IN broadcast_NN based_VBN networks_NNS ,_, and_CC do_VBP provide_VB perfect_JJ support_NN for_IN inhomogeneous_JJ schema-based_JJ networks_NNS ,_, which_WDT support_VBP different_JJ metadata_NN schemas_NNS and_CC ontologies_NNS -LRB-_-LRB- crucial_JJ for_IN the_DT Semantic_JJ Web_NN -RRB-_-RRB- ._.
+Furthermore_RB ,_, as_IN we_PRP will_MD show_VB in_IN this_DT paper_NN ,_, they_PRP are_VBP able_JJ to_TO support_VB sophisticated_JJ routing_VBG and_CC clustering_VBG strategies_NNS based_VBN on_IN the_DT metadata_NN schemas_NNS ,_, attributes_NNS and_CC ontologies_NNS used_VBN ._.
+Especially_RB helpful_JJ in_IN this_DT context_NN is_VBZ the_DT RDF_NNP functionality_NN to_TO uniquely_RB identify_VB schemas_NNS ,_, attributes_NNS and_CC ontologies_NNS ._.
+The_DT resulting_VBG routing_VBG indices_NNS can_MD be_VB built_VBN using_VBG dynamic_JJ frequency_NN counting_NN algorithms_NNS and_CC support_NN local_JJ mediation_NN and_CC transformation_NN rules_NNS ,_, and_CC we_PRP will_MD sketch_NN some_DT first_JJ ideas_NNS for_IN implementing_VBG these_DT advanced_JJ functionalities_NNS as_RB well_RB ._.
+eer-to-peer_JJ networks_NNS provide_VBP an_DT approach_NN that_WDT supports_VBZ more_RBR complex_JJ metadata_JJ clustering_NN than_IN previous_JJ work_NN and_CC thus_RB can_MD support_VB more_RBR complex_JJ queries_NNS ._.
+An_DT RDF-based_JJ peer-to-peer_NN network_NN is_VBZ presented_VBN in_IN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT system_NN can_MD support_VB heterogeneous_JJ metadata_NN schemes_NNS and_CC ontologies_NNS ,_, but_CC it_PRP requires_VBZ a_DT strict_JJ topology_NN with_IN hypercubes_NNS and_CC the_DT use_NN of_IN superpeers_NNS ,_, limiting_VBG the_DT dynamic_JJ nature_NN of_IN the_DT network_NN ._.
+In_IN -LRB-_-LRB- 16_CD -RRB-_-RRB-
+t_NN leverage_NN result_NN information_NN -LRB-_-LRB- such_JJ as_IN -LRB-_-LRB- 25_CD -RRB-_-RRB- -RRB-_-RRB- since_IN we_PRP use_VBP whole_JJ document_NN contents_NNS to_TO achieve_VB higher_JJR accuracy_NN ._.
+Similarly_RB ,_, several_JJ peer-to-peer_JJ systems_NNS have_VBP been_VBN developed_VBN to_TO provide_VB source_NN integration_NN =_JJ -_: =[_NN 20_CD ,_, 22_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Such_JJ systems_NNS can_MD provide_VB high_JJ retrieval_NN accuracy_NN but_CC require_VBP either_CC complex_JJ schema_NN mappings_NNS between_IN sites_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- or_CC assume_VB that_IN all_DT data_NNS is_VBZ structured_VBN similarly_RB -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+In_IN a_DT large_JJ scale_NN system_NN such_JJ as_IN th_DT
+e_LS -LRB-_-LRB- as_IN much_JJ hidden-web_JJ data_NNS is_VBZ not_RB -RRB-_-RRB- ._.
+Other_JJ systems_NNS that_WDT search_VBP multiple_JJ sources_NNS include_VBP data_NNS integration_NN systems_NNS and_CC search_NN engines_NNS ._.
+Data_NN integration_NN systems_NNS ,_, including_VBG traditional_JJ -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC P2P_NN systems_NNS =_JJ -_: =[_NN 18_CD ,_, 17_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: require_VB tight_JJ schema_NN integration_NN ._.
+These_DT systems_NNS construct_VBP complex_JJ schema_NN mappings_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- or_CC assume_VB that_IN most_JJS of_IN the_DT data_NN has_VBZ similar_JJ structure_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+In_IN a_DT large_JJ scale_NN system_NN such_JJ as_IN the_DT Web_NN ,_, it_PRP is_VBZ too_RB ex_FW
+an_DT operate_VBP independently_RB of_IN weaker_JJR nodes_NNS ._.
+While_IN many_JJ peer-to-peer_JJ systems_NNS assume_VBP that_IN nodes_NNS have_VBP uniform_JJ capabilities_NNS ,_, there_EX have_VBP also_RB been_VBN several_JJ proposals_NNS to_TO construct_VB heterogeneous_JJ systems_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 11_CD ,_, 17_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+These_DT are_VBP usually_RB based_VBN on_IN multi-tier_JJ architectures_NNS but_CC can_MD only_RB handle_VB a_DT certain_JJ subset_NN of_IN the_DT capacity_NN distributions_NNS well_RB ._.
+The_DT system_NN closest_JJS to_TO ours_PRP is_VBZ PAGODA_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- which_WDT also_RB constructs_NNS a_DT distrib_NN
+an_DT operate_VBP independently_RB of_IN weaker_JJR nodes_NNS ._.
+While_IN many_JJ peer-to-peer_JJ systems_NNS assume_VBP that_IN nodes_NNS have_VBP uniform_JJ capabilities_NNS ,_, there_EX have_VBP also_RB been_VBN several_JJ proposals_NNS to_TO construct_VB heterogeneous_JJ systems_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 11,18_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+These_DT are_VBP usually_RB based_VBN on_IN multi-tier_JJ architectures_NNS but_CC can_MD only_RB handle_VB a_DT certain_JJ subset_NN of_IN the_DT capacity_NN distributions_NNS well_RB ._.
+The_DT system_NN closest_JJS to_TO ours_PRP is_VBZ PAGODA_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- which_WDT also_RB constructs_NNS a_DT distrib_NN
+bilities_NNS for_IN peer_VBP aggregation_NN ,_, query_NN routing_VBG and_CC possibly_RB mediation_NN ._.
+The_DT KaZaA_NN network_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- uses_VBZ a_DT simple_JJ version_NN of_IN a_DT super-peer_JJ based_JJ architecture_NN ,_, more_RBR elaborate_JJ versions_NNS are_VBP described_VBN in_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Super-peerbased_JJ P2P_NN infrastructures_NNS usually_RB exploit_VBP a_DT two-phase_JJ routing_VBG architecture_NN ,_, which_WDT routes_VBZ queries_NNS first_JJ in_IN the_DT super-peer_JJ backbone_NN ,_, and_CC then_RB distributes_VBZ them_PRP to_TO the_DT peers_NNS connected_VBN to_TO the_DT s_NN
+ntains_NNS arbitrary_JJ items_NNS comparable_JJ by_IN a_DT distance_NN function_NN ._.
+Clustering_NN is_VBZ mentioned_VBN as_IN an_DT enabling_VBG factor_NN for_IN routing_VBG strategies_NNS such_JJ as_IN fireworks_NNS routing_VBG -LRB-_-LRB- 7_CD -RRB-_-RRB- or_CC the_DT superpeer-based_JJ routing_VBG in_IN Edutella_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP complement_VBP these_DT works_NNS by_IN presenting_VBG a_DT strategy_NN for_IN building_VBG the_DT necessary_JJ clustered_VBN structure_NN and_CC demonstrate_VBP under_IN which_WDT circumstances_NNS clustering_NN is_VBZ beneficial_JJ for_IN routing_VBG ._.
+-LRB-_-LRB- 7_CD -RRB-_-RRB- mentions_VBZ a_DT Learn_NNP
+per_IN peer_VB -LRB-_-LRB- a_DT constant_JJ number_NN of_IN states_NNS -RRB-_-RRB- and_CC search_NN efficiency_NN -LRB-_-LRB- polynomial-logarithmic_JJ cost_NN -RRB-_-RRB- 6_CD ._.
+Semantic_JJ Clustering_NN ._.
+The_DT idea_NN of_IN clustering_NN nodes_NNS with_IN similar_JJ documents_NNS together_RB has_VBZ appeared_VBN in_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- -LRB-_-LRB- 4_LS -RRB-_-RRB- =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =-[_NN 11_CD -RRB-_-RRB- ._.
+Proposals_NNS in_IN -LRB-_-LRB- 1_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 10_CD -RRB-_-RRB- rely_VBP on_IN a_DT centralized_JJ server_NN or_CC super-peers_NNS to_TO cluster_VB documents_NNS and_CC nodes_NNS ._.
+Preliminary_JJ work_NN in_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- proposes_VBZ to_TO cluster_VB nodes_NNS with_IN similar_JJ interest_NN together_RB ,_, without_IN di_FW
+ng_NN study_NN of_IN super-peer_JJ networks_NNS is_VBZ presented_VBN by_IN Yang_NNP and_CC Garcia-Molina_NNP -LRB-_-LRB- 53_CD -RRB-_-RRB- ._.
+The_DT authors_NNS discuss_VBP design_NN issues_NNS concerning_VBG super-peer_JJ networks_NNS and_CC come_VB up_RP with_IN a_DT set_NN of_IN useful_JJ rules_NNS of_IN thumb_NN ._.
+Edutella_NN =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ another_DT super-peer_JJ approach_NN ,_, based_VBN on_IN a_DT hypercube_NN topology_NN -LRB-_-LRB- 41_CD -RRB-_-RRB- ,_, for_IN routing_VBG queries_NNS ._.
+Super-peers_NNS maintain_VBP indices_NNS of_IN peer_VB contents_NNS and_CC routing_VBG indices_NNS ,_, and_CC searching_VBG is_VBZ practically_RB achieved_VBN throu_NN
+recently_RB ._.
+However_RB ,_, most_JJS of_IN the_DT approaches_NNS assume_VBP a_DT central_JJ broker_NN architecture_NN -LRB-_-LRB- 15,5_CD -RRB-_-RRB- ,_, which_WDT does_VBZ not_RB scale_VB well_RB or_CC an_DT asymmetric_JJ broker_NN topology_NN -LRB-_-LRB- 9,4_NN -RRB-_-RRB- ,_, which_WDT is_VBZ costly_JJ and_CC hard_JJ to_TO maintain_VB ._.
+Edutella_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: proposes_VBZ routing_VBG and_CC clustering_VBG strategies_NNS in_IN peer-to-peer_JJ networks_NNS for_IN educational_JJ materials_NNS based_VBN on_IN routing_VBG indices_NNS ._.
+Information_NN provider_NN and_CC consumer_NN connect_VBP to_TO a_DT super-peer_JJ network_NN and_CC propose_VB i_LS
+d_NN P2P_NN infrastructures_NNS are_VBP usually_RB based_VBN on_IN a_DT two-phase_JJ routing_VBG architecture_NN ,_, which_WDT routes_VBZ queries_NNS first_JJ in_IN the_DT super-peer_JJ backbone_NN ,_, and_CC then_RB distributes_VBZ them_PRP to_TO the_DT peers_NNS connected_VBN to_TO the_DT super-peers_NNS =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT SATINE_FW middleware_FW ,_, the_DT super_JJ peers_NNS store_VBP the_DT global_JJ semantic_JJ knowledge_NN ,_, that_DT is_VBZ ,_, one_CD or_CC more_JJR global_JJ message_NN ontologies_NNS and_CC their_PRP$ mappings_NNS to_TO local_JJ ontologies_NNS which_WDT are_VBP then_RB used_VBN for_IN semantic_JJ
+hese_NN proposals_NNS involve_VBP moving_VBG or_CC replicating_VBG content_NN to_TO achieve_VB high_JJ performance_NN ._.
+For_IN example_NN ,_, Cohen_NNP and_CC Shenker_NNP -LRB-_-LRB- 4_CD -RRB-_-RRB- propose_VBP replicating_VBG files_NNS in_IN order_NN to_TO make_VB them_PRP easier_JJR to_TO find_VB ._.
+Superpeer_NN networks_NNS =_JJ -_: =[_NN 21_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: replicate_VB content_JJ metadata_NN from_IN leaf_NN peers_NNS to_TO super-peers_NNS ,_, where_WRB the_DT actual_JJ search_NN processing_NN is_VBZ done_VBN ._.
+Even_RB distributed_VBN hash_JJ tables_NNS -LRB-_-LRB- 19_CD ,_, 17_CD ,_, 18_CD -RRB-_-RRB- move_NN data_NNS ,_, as_IN content_NN -LRB-_-LRB- or_CC pointers_NNS to_TO content_NN -RRB-_-RRB- are_VBP tak_NN
+s_NN ,_, since_IN a_DT great_JJ variety_NN of_IN business_NN and_CC service_NN models_NNS will_MD exist_VB ._.
+Thus_RB ,_, techniques_NNS and_CC strategies_NNS for_IN message_NN and_CC query_NN routing_VBG in_IN schema-based_JJ P2P_NN systems_NNS -LRB-_-LRB- should_MD be_VB investigated_VBN and_CC deployed_VBN -LRB-_-LRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 10_CD -RRB-_-RRB- The_DT KB_NN is_VBZ responsible_JJ for_IN matching_VBG and_CC accessing_VBG semantic_JJ data_NNS across_IN the_DT DBE_NNP network_NN nodes_NNS by_IN offering_VBG to_TO the_DT SME_NNP users_NNS a_DT set_NN of_IN Core_NNP Services_NNP for_IN transparently_RB searching_VBG and_CC accessing_VBG DBE_NNP Know_NNP
+k_NN bandwidth_NN and_CC processing_NN power_NN at_IN each_DT peer_VBP ._.
+Obviously_RB we_PRP have_VBP to_TO investigate_VB more_RBR efficient_JJ approaches_NNS that_WDT query_VBP only_RB those_DT peers_NNS that_WDT are_VBP indeed_RB capable_JJ of_IN understanding_VBG and_CC answering_VBG the_DT query_NN ._.
+=_SYM -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: suggest_VBP using_VBG a_DT super-peer_JJ topology_NN for_IN these_DT schema-based_JJ networks_NNS ._.
+These_DT networks_NNS can_MD provide_VB better_JJR scalability_NN than_IN broadcast_NN networks_NNS and_CC provide_VB perfect_JJ support_NN for_IN heterogeneous_JJ schema-based_JJ n_NN
+DF_NN content_NN ._.
+It_PRP uses_VBZ a_DT DHT_NN -LRB-_-LRB- 88_CD -RRB-_-RRB- to_TO answer_VB attribute_NN and_CC range_NN queries_NNS over_IN this_DT RDF_NNP data_NNS ._.
+This_DT system_NN ,_, and_CC decentralized_VBD RDF_NNP storage_NN and_CC querying_VBG systems_NNS like_IN it_PRP -LRB-_-LRB- i.e._FW ,_, Edutella_NN -LRB-_-LRB- 68_CD -RRB-_-RRB- and_CC its_PRP$ successor_NN =_JJ -_: =[_NN 69_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, are_VBP orthogonal_JJ to_TO Ligature_NNP ._.
+Ligature_NNP enables_VBZ disconnected_VBN operation_NN and_CC engenders_VBZ contextual_JJ exchange_NN around_IN shared_JJ objects_NNS ._.
+Particularly_RB with_IN the_DT latter_JJ ,_, it_PRP also_RB permits_VBZ sharing_VBG disparate_JJ context_NN
+he_PRP opportunity_NN to_TO share_VB and_CC reuse_VB resources_NNS already_RB available_JJ ._.
+Heterogeneity_NN of_IN users_NNS and_CC resources_NNS in_IN the_DT web_NN stresses_VBZ the_DT importance_NN of_IN customized_VBN -LRB-_-LRB- personalized_VBN -RRB-_-RRB- delivery_NN of_IN the_DT resources_NNS ._.
+Edutella_NN =_JJ -_: =[_NN 5_CD ,_, 6_CD -RRB-_-RRB- -_: =_JJ -_: framework_NN allow_VBP us_PRP to_TO connect_VB the_DT resource_NN providers_NNS and_CC provide_VB their_PRP$ metadata_NN for_IN queriing_VBG to_TO other_JJ connected_JJ peers_NNS ._.
+Edutella_NN allow_VBP us_PRP to_TO connect_VB also_RB systems_NNS which_WDT provide_VBP a_DT metadata_NN about_IN learner_NN
+former_JJ peers_NNS may_MD dynamically_RB join_VB or_CC leave_VB the_DT network_NN and_CC may_MD manage_VB data_NNS conforming_VBG to_TO varying_VBG schema_NN fragments_NNS ._.
+Schema-based_JJ routing_VBG indexes_NNS have_VBP been_VBN proposed_VBN to_TO address_VB this_DT problem_NN in_IN Edutella_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Edutella_NNP uses_VBZ two_CD kinds_NNS of_IN routing_VBG indexes_NNS :_: SuperPeer\/Peer_NN -LRB-_-LRB- SP\/P_NN RI_NN -RRB-_-RRB- and_CC Super-Peer\/Super-Peer_NN -LRB-_-LRB- SP\/SP_NN RI_NN -RRB-_-RRB- ._.
+An_DT SP\/P_NN RI_NN stores_NNS information_NN about_IN metadata_JJ usage_NN in_IN each_DT peer_VBP in_IN its_PRP$ peer_VB group_NN ._.
+This_DT inc_NN
+ock_NN links_NNS much_RB sparser_JJR than_IN links_NNS within_IN blocks_NNS ,_, search_NN peers_NNS have_VBP to_TO orient_VB themselves_PRP on_IN this_DT structure_NN -LRB-_-LRB- 4_CD ,_, 5_CD -RRB-_-RRB- ._.
+Obviously_RB ,_, it_PRP will_MD be_VB important_JJ how_WRB we_PRP connect_VBP these_DT peers_NNS ._.
+A_DT super_JJ peer_VBP architecture_NN =_JJ -_: =[_NN 6_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: might_MD be_VB a_DT good_JJ choice_NN because_IN it_PRP allows_VBZ us_PRP to_TO include_VB task_NN specific_JJ indexing_NN and_CC route_NN optimization_NN capabilities_NNS in_IN these_DT super_JJ peers_NNS ._.
+As_IN for_IN the_DT exact_JJ topology_NN ,_, we_PRP will_MD have_VB a_DT range_NN of_IN options_NNS ,_, mos_NNS
+port_NN limited_JJ querying_VBG capabilities_NNS -LRB-_-LRB- e.g._FW ,_, keyword_RB based_VBN search_NN -RRB-_-RRB- ._.
+Effective_JJ data_NNS sharing_NN requires_VBZ support_NN for_IN more_RBR structured_JJ querying_VBG capabilities_NNS to_TO exploit_VB the_DT inherent_JJ semantics_NNS in_IN data_NNS -LRB-_-LRB- -LRB-_-LRB- 7_CD ,_, 20_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+=_SYM -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: proposes_VBZ a_DT super-peer_NN based_VBN routing_VBG -LRB-_-LRB- 24_CD -RRB-_-RRB- in_IN RDF-based_JJ P2P_NN information_NN sources_NNS ._.
+The_DT proposed_VBN approach_NN focuses_VBZ on_IN indexing_NN RDF_NN resources_NNS ._.
+Few_JJ approaches_NNS that_IN leverage_NN database-like_JJ information_NN sharing_NN
+rocessing_VBG overhead_NN on_IN each_DT node_NN ,_, unless_IN a_DT hop-count_JJ limit_NN is_VBZ set_VBN for_IN queries_NNS --_: but_CC then_RB the_DT queries_NNS can_MD not_RB guarantee_VB to_TO find_VB results_NNS ,_, even_RB if_IN these_DT results_NNS exist_VBP in_IN the_DT network_NN ._.
+An_DT Edutella_NNP successor_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_JJ -_: provides_VBZ better_JJR scalability_NN by_IN introducing_VBG super-peers_NNS and_CC schema-based_JJ routing_VBG ;_: however_RB ,_, it_PRP requires_VBZ up-front_JJ definition_NN of_IN schemas_NNS and_CC designation_NN of_IN super_JJ peers_NNS ._.
+This_DT paper_NN presents_VBZ a_DT scalable_JJ P2P_NN
+that_DT removes_VBZ statements_NNS that_WDT are_VBP too_RB old_JJ in_IN combination_NN with_IN a_DT low_JJ rating_NN ._.
+6_CD Related_NNP Work_NNP Knowledge_NNP management_NN in_IN Peer-to-Peer_NNP systems_NNS is_VBZ the_DT topic_NN of_IN various_JJ active_JJ research_NN projects_NNS ._.
+Edutella_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: provides_VBZ an_DT RDF-based_JJ infrastructure_NN for_IN exchanging_VBG metadata_NN in_IN P2P_NN applications_NNS ._.
+The_DT Edutella_NNP Query_NNP Service_NNP is_VBZ intended_VBN to_TO be_VB a_DT standardized_JJ query_NN exchange_NN mechanism_NN for_IN RDF_NN metadata_NN stored_VBN in_IN distr_NN
+ach_NN will_MD also_RB enable_VB us_PRP to_TO build_VB new_JJ types_NNS of_IN structured_JJ P2P_NN networks_NNS in_IN which_WDT data_NNS and_CC nodes_NNS do_VBP not_RB necessarily_RB need_VB to_TO be_VB hashed_VBN in_IN order_NN to_TO build_VB content_NN delivery_NN overlay_NN networks_NNS ,_, as_IN discussed_VBN in_IN =_JJ -_: =[_NN 31_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: for_IN hypercube_NN topologies_NNS ._.
+Such_JJ non-hashed_JJ ,_, structured_JJ P2P_NN networks_NNS allow_VBP us_PRP to_TO apply_VB semantic_JJ web_NN and_CC database_NN technologies_NNS for_IN data_NNS organization_NN and_CC query_NN processing_NN and_CC implement_VB powerful_JJ and_CC 6_CD e.g_NN
+resource_NN providers_NNS ._.
+For_IN references_NNS to_TO and_CC systems_NNS in_IN more_JJR detail_NN see_VB -LRB-_-LRB- Balzarotti_NNP et_FW al._FW 2002_CD -RRB-_-RRB- -LRB-_-LRB- Murphy_NNP et_FW al_FW 1999_CD -RRB-_-RRB- -LRB-_-LRB- Schmitz_NNP et_FW al._FW 2002_CD -RRB-_-RRB- -LRB-_-LRB- Nejdl_NNP et_FW al._FW 2002a_FW -RRB-_-RRB- -LRB-_-LRB- Nejdl_NNP et_FW al._FW 2002b_CD -RRB-_-RRB- -LRB-_-LRB- Nejdl_NNP et_FW al._FW 2002c_CD -RRB-_-RRB- -LRB-_-LRB- =_JJ -_: =_JJ Nejdl_NNP et_FW al._FW 2003_CD -_: =--RRB-_NN -LRB-_-LRB- Ehrig_NN 2003_CD -RRB-_-RRB- -LRB-_-LRB- Paulsson_NNP &_CC Naeve_NNP 2003_CD -RRB-_-RRB- -LRB-_-LRB- Maedche_NNP et_FW a._FW 2003_CD -RRB-_-RRB- ._.
+Research_NNP needs_VBZ to_TO expanded_VBN in_IN this_DT area_NN onwards_VBZ from_IN the_DT technological_JJ -LRB-_-LRB- by_IN creating_VBG new_JJ system_NN interfaces_NNS for_IN learning_VBG repositories_NNS and_CC ser_NN
+ed_VBN to_TO the_DT super-peers_NNS ._.
+Our_PRP$ routing_VBG mechanism_NN is_VBZ based_VBN on_IN two_CD distributed_VBN routing_VBG indices_NNS storing_VBG information_NN to_TO route_NN within_IN the_DT super-peer_JJ backbone_NN and_CC between_IN super-peers_NNS and_CC their_PRP$ respective_JJ peers_NNS =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT query_NN processors_NNS at_IN the_DT super-peers_NNS can_MD be_VB dynamically_RB extended_VBN by_IN special-purpose_JJ query_NN operators_NNS that_WDT are_VBP shipped_VBN to_TO the_DT query_NN processor_NN as_IN part_NN of_IN the_DT query_NN plan_NN ._.
+In_IN this_DT way_NN ,_, query_NN evaluatio_NN
+-RRB-_-RRB- and_CC references_NNS abstract_JJ resource_NN names_NNS -LRB-_-LRB- URN_NN -RRB-_-RRB- ._.
+A_DT peer_VBP can_MD mutate_VB an_DT incoming_JJ query_NN plan_NN by_IN either_CC resolving_VBG URN_NN to_TO URL_NN ,_, or_CC substituting_VBG a_DT sub-plan_NN with_IN the_DT evaluated_VBN XML_NN encoded_VBN data_NNS ._.
+The_DT authors_NNS of_IN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP proposed_VBN super-peer_NN based_VBN routing_VBG 13_CD in_IN RDF-based_JJ peer-to-peer_NN setting_NN ._.
+We_PRP use_VBP similar_JJ concept_NN to_TO construct_VB routing_VBG indices_NNS ._.
+Our_PRP$ work_NN is_VBZ unique_JJ from_IN the_DT other_JJ related_JJ approaches_NNS in_IN the_DT following_NN
+aimed_VBN to_TO accommodate_VB heterogeneous_JJ learning_NN resource_NN metadata_NN repositories_NNS in_IN a_DT P2P_NN manner_NN and_CC further_RB facilitate_VB the_DT exchange_NN of_IN metadata_NN between_IN these_DT repositories_NNS based_VBN on_IN RDF_NNP -LRB-_-LRB- Nejdl_NNP et_FW al._FW ,_, 2002_CD ;_: =_JJ -_: =_JJ Nejdl_NNP et_FW al._FW ,_, 2003_CD -_: =--RRB-_NN ._.
+At_IN present_JJ Edutella_NNP is_VBZ geared_VBN towards_IN learning_VBG resource_NN metadata_NN repositories_NNS that_WDT are_VBP constructed_VBN based_VBN on_IN several_JJ popular_JJ learning_NN resource_NN metadata_NN sets_NNS ,_, e.g._FW ,_, DCMES_NNP -LRB-_-LRB- Dublin_NNP Core_NNP Metadata_NNP Elemen_NNP
+g_NN peer_VB ._.
+All_DT queries_NNS are_VBP routed_VBN through_IN strong_JJ peers_NNS ,_, which_WDT are_VBP also_RB called_VBN super-peers_NNS ._.
+Super-peer_JJ networks_NNS are_VBP also_RB part_NN of_IN JXTA_NN 2.0_CD -LRB-_-LRB- 30_CD -RRB-_-RRB- ._.
+Publications_NNP on_IN various_JJ super-peer_JJ networks_NNS can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 20_CD ,_, 32_CD ,_, 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Also_RB multi-tier_JJ topologies_NNS -LRB-_-LRB- i.e._FW topologies_NNS with_IN more_JJR than_IN two_CD classes_NNS of_IN peers_NNS -RRB-_-RRB- have_VBP been_VBN proposed_VBN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 27_CD -RRB-_-RRB- -RRB-_-RRB- ,_, where_WRB each_DT level_NN consists_VBZ of_IN peers_NNS with_IN approximately_RB the_DT same_JJ capabilities_NNS ._.
+None_NN of_IN
+acity_NN of_IN the_DT network_NN to_TO provide_VB efficient_JJ search_NN capabilities_NNS ,_, to_TO treat_VB queries_NNS in_IN a_DT timely_JJ and_CC accurate_JJ fashion_NN ,_, and_CC to_TO maximize_VB the_DT bandwidth_NN to_TO transfer_VB the_DT data_NNS between_IN peers_NNS ._.
+Super-peer_JJ networks_NNS =_JJ -_: =[_NN 3_CD ,_, 5_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN proposed_VBN to_TO improve_VB the_DT search_NN latency_NN and_CC scalability_NN of_IN traditional_JJ P2P_NN systems_NNS ._.
+Instead_RB of_IN having_VBG a_DT fully_RB distributed_VBN systems_NNS of_IN peer_VB nodes_NNS with_IN commensurate_JJ computing_NN capabilities_NNS and_CC r_NN
+r_NN its_PRP$ data_NNS ._.
+The_DT distributed_VBN query_NN routing_VBG category_NN ,_, as_IN opposed_VBN to_TO the_DT centralised_JJ query_NN routing_VBG handles_VBZ by_IN a_DT central_JJ server_NN ,_, is_VBZ represented_VBN by_IN several_JJ distributed_VBN systems_NNS ,_, such_JJ as_IN XPeer_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, Edutella_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Resource_NNP Sharing_VBG Clustered_VBN P2P_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, SWAP_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, KeX_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, Piazza_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC FREddies_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+The_DT distributed_VBN query_NN routing_VBG category_NN is_VBZ further_RB categorised_VBN into_IN the_DT following_JJ subcategories_NNS ,_, according_VBG to_TO
+ount_NN of_IN research_NN attention_NN ,_, especially_RB in_IN the_DT database_NN community_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+-LRB-_-LRB- 13_CD -RRB-_-RRB- suggested_VBD to_TO add_VB metadata_JJ management_NN to_TO P2P_NN networks_NNS ._.
+This_DT idea_NN has_VBZ been_VBN taken_VBN up_RP by_IN approaches_NNS like_IN Edutella_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, RDFPeers_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, P-Grid_NN -LRB-_-LRB- 121_CD -RRB-_-RRB- and_CC other_JJ projects_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Initial_JJ ideas_NNS of_IN a_DT collaboration_NN infrastructure_NN based_VBN on_IN P2P_NN technology_NN has_VBZ been_VBN realized_VBN in_IN Groove_NNP which_WDT allows_VBZ small_JJ groups_NNS to_TO share_VB a_DT calend_NN
+ies_NNS -LRB-_-LRB- which_WDT allow_VBP a_DT query-by-example_JJ style_NN of_IN request_NN -RRB-_-RRB- up_IN to_TO capabilities_NNS comparable_JJ to_TO query_VB languages_NNS of_IN state-of-the-art_JJ relational_JJ databases_NNS ._.
+QEL_NN queries_NNS are_VBP distributed_VBN to_TO all_DT relevant_JJ peers_NNS -LRB-_-LRB- see_VB =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: for_IN the_DT query_JJ distribution_NN mechanism_NN -RRB-_-RRB- ,_, and_CC matches_NNS sent_VBD back_RB to_TO the_DT query_NN originator_NN ._.
+We_PRP have_VBP implemented_VBN wrappers_NNS to_TO several_JJ RDF_NNP stores_NNS which_WDT translate_VBP the_DT QEL_NNP queries_NNS to_TO the_DT backend-specific_JJ query_NN
+super-peers_JJ definition_NN and_CC election_NN ,_, quantity_NN of_IN super-peers_NNS ,_, peers_NNS balancing_VBG ,_, routing_VBG indices_NNS and_CC fault_NN tolerance_NN ._.
+4.2.1_CD Aggregations_NNS of_IN Peers_NNS and_CC Groupings_NNS of_IN Super-peers_NNS According_VBG to_TO Nejdl_NNP et_FW al._FW =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT grouping_NN of_IN peers_NNS is_VBZ based_VBN on_IN the_DT idea_NN where_WRB peers_NNS are_VBP joined_VBN into_IN super-peers_NNS with_IN similar_JJ characteristics_NNS ._.
+The_DT great_JJ advantage_NN of_IN this_DT strategy_NN is_VBZ that_IN it_PRP decreases_VBZ the_DT number_NN of_IN messages_NNS traf_NN
+While_IN in_IN the_DT client\/server-based_JJ environment_NN of_IN the_DT World_NNP Wide_NN Web_NN metadata_NN are_VBP useful_JJ and_CC important_JJ ,_, for_IN distributed_VBN systems_NNS based_VBN on_IN Peer-to-Peer_NNP -LRB-_-LRB- P2P_NN -RRB-_-RRB- environments_NNS metadata_RB are_VBP absolutely_RB crucial_JJ =_JJ -_: =[_NN 7_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Information_NN resources_NNS in_IN such_JJ open_JJ spaces_NNS -LRB-_-LRB- networks_NNS -RRB-_-RRB- are_VBP stored_VBN on_IN numerous_JJ peers_NNS waiting_VBG to_TO be_VB queried_VBN for_IN these_DT resources_NNS if_IN we_PRP know_VBP what_WP we_PRP want_VBP to_TO retrieve_VB and_CC which_WDT node_NN is_VBZ able_JJ to_TO provide_VB that_IN
+-LRB-_-LRB- Bernstein_NNP et_FW al._FW ,_, 2002_CD -RRB-_-RRB- ,_, an_DT architecture_NN for_IN supporting_VBG data_NNS coordination_NN between_IN peer_VB databases_NNS -LRB-_-LRB- Giunchiglia_NNP and_CC Zaihrayeu_NNP ,_, 2002_CD -RRB-_-RRB- ,_, the_DT semantic_JJ overlay_NN clustering_NN approaches_NNS for_IN peer_VBP organization_NN -LRB-_-LRB- =_JJ -_: =_JJ Nejdl_NNP et_FW al._FW ,_, 2003_CD -_: =--RRB-_NN ,_, and_CC P2P-based_JJ systems_NNS for_IN distributed_VBN data_NNS sharing_NN and_CC management_NN -LRB-_-LRB- Ng_NN et_FW al._FW ,_, 2003_CD -RRB-_-RRB- ._.
+-LRB-_-LRB- 2_LS -RRB-_-RRB- Query_NNP Routing_NNP --_: including_VBG semantic-based_JJ content_NN search_NN approach_NN in_IN P2P_NN networks_NNS -LRB-_-LRB- Shen_NNP et_FW al._FW ,_, 2004_CD -RRB-_-RRB- ,_, and_CC th_DT
+peer_VB base_NN can_MD join_VB and_CC leave_VB the_DT network_NN at_IN will_NN ._.
+The_DT importance_NN of_IN intensional_JJ -LRB-_-LRB- i.e._FW ,_, schema_NN -RRB-_-RRB- information_NN for_IN integrating_VBG and_CC querying_VBG peer_VB bases_NNS has_VBZ been_VBN highlighted_VBN by_IN a_DT number_NN of_IN recent_JJ projects_NNS =_JJ -_: =[_NN 3_CD ,_, 24_CD ,_, 14_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN particular_JJ ,_, the_DT notion_NN of_IN Semantic_NNP Overlay_NNP Networks_NNP -LRB-_-LRB- SONs_NNS -RRB-_-RRB- -LRB-_-LRB- 11_CD ,_, 28_CD -RRB-_-RRB- ,_, appears_VBZ to_TO be_VB an_DT intuitive_JJ way_NN to_TO cluster_VB together_RB peers_NNS sharing_VBG the_DT same_JJ schema_NN information_NN about_IN a_DT community_NN domain_NN or_CC appli_NNS
+ng_NN indices_NNS local_JJ index_NN information_NN are_VBP first_RB introduced_VBN by_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+This_DT indexing_NN strategy_NN locally_RB stores_VBZ information_NN about_IN specific_JJ queries_NNS and_CC what_WP peers_NNS were_VBD successfully_RB queried_VBN in_IN the_DT past_NN ._.
+Edutella_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: combines_VBZ a_DT super-peer_JJ network_NN with_IN routing_VBG indices_NNS and_CC an_DT efficient_JJ broadcast_NN ._.
+While_IN its_PRP$ routing_VBG approach_NN is_VBZ efficient_JJ ,_, especially_RB when_WRB churn_VBP is_VBZ high_JJ its_PRP$ performance_NN suffers_VBZ from_IN -LRB-_-LRB- de_IN -_: -RRB-_-RRB- registering_VBG com_NN
+link_NN probability_NN q_NN to_TO which_WDT interest-based_JJ shortcuts_NNS are_VBP added_VBN so_RB as_IN to_TO construct_VB the_DT clusters_NNS of_IN nodes_NNS with_IN intra-cluster_JJ link_NN probability_NN p_NN -LRB-_-LRB- we_PRP expect_VBP p_NN -RRB-_-RRB- q_NN -RRB-_-RRB- ._.
+Some_DT alternative_JJ approaches_NNS are_VBP -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 25_CD -RRB-_-RRB- which_WDT use_VBP a_DT centralized_JJ server_NN and_CC the_DT superpeers_NNS in_IN a_DT superpeer-based_JJ network_NN ,_, respectively_RB ,_, to_TO find_VB nodes_NNS with_IN similar_JJ interests_NNS ._.
+In_IN addition_NN to_TO the_DT search_NN mechanisms_NNS suggested_VBN in_IN aforementio_NN
+n._FW Super-peer_FW networks_NNS -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, like_IN KaZaa_NNP and_CC eMule_NNP ,_, have_VBP emerged_VBN as_IN a_DT viable_JJ solution_NN for_IN developing_VBG existing_VBG P2P_NN systems_NNS ,_, harnessing_VBG the_DT merits_NNS of_IN both_CC centralized_VBN and_CC decentralized_VBN systems_NNS ._.
+Edutella_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ such_JJ a_DT super-peer_JJ approach_NN ,_, based_VBN on_IN HyperCup_NNP topology_NN ,_, where_WRB super-peers_NNS maintain_VBP indices_NNS of_IN peer_VB contents_NNS and_CC routing_VBG indices_NNS ,_, and_CC searching_VBG is_VBZ practically_RB achieved_VBN through_IN routing_VBG at_IN superpeer_NN
+shown_VBN by_IN their_PRP$ experiments_NNS ._.
+The_DT main_JJ difference_NN with_IN our_PRP$ approach_NN is_VBZ that_IN their_PRP$ peers_NNS express_VBP queries_NNS and_CC expertise_NN in_IN a_DT vector_NN ,_, in_IN which_WDT the_DT similarity_NN is_VBZ based_VBN on_IN taking_VBG the_DT cosine_NN of_IN both_DT vectors_NNS ._.
+=_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: presents_VBZ schema-based_JJ Peer-to-Peer_NNP networks_NNS and_CC the_DT use_NN of_IN super-peer_JJ based_JJ topologies_NNS for_IN these_DT networks_NNS ,_, in_IN which_WDT peers_NNS are_VBP organized_VBN in_IN hypercubes_NNS ._.
+-LRB-_-LRB- 11_CD -RRB-_-RRB- shows_VBZ how_WRB this_DT schema-based_JJ approach_NN can_MD be_VB
+address_VB the_DT issue_NN of_IN access_NN control_NN for_IN sensitive_JJ resources_NNS provided_VBN by_IN peers_NNS in_IN the_DT network_NN -LRB-_-LRB- 9_CD ,_, 19_CD -RRB-_-RRB- ,_, such_JJ as_IN services_NNS ,_, documents_NNS ,_, roles_NNS ,_, and_CC capabilities_NNS ._.
+For_IN example_NN ,_, in_IN the_DT Edutella_NNP infrastructure_NN =_JJ -_: =[_NN 15_CD ,_, 14_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, each_DT peer_VBP manages_VBZ distributed_VBN resources_NNS described_VBN by_IN RDF_NN metadata_NN ,_, and_CC interfaces_NNS to_TO the_DT Edutella_NNP network_NN using_VBG a_DT Datalog-based_JJ query_NN language_NN ._.
+The_DT early_JJ Edutella_NNP testbeds_NNS focussed_VBN on_IN providing_VBG dist_NN
+re_IN proposed_VBN in_IN order_NN to_TO increase_VB the_DT availability_NN of_IN results_NNS ._.
+The_DT SON_NNP supports_VBZ only_RB limited_JJ meta_NN data_NNS such_JJ as_IN simple_JJ filenames_NNS ._.
+On_IN the_DT other_JJ hand_NN ,_, currently_RB schema_VBP based_JJ networks_NNS such_JJ as_IN the_DT Edutella_NN =_JJ -_: =[_NN 82_CD ,_, 6_CD ,_, 46_CD ,_, 1_CD ,_, 61_CD ,_, 83_CD -RRB-_-RRB- -_: =_SYM -_: provide_VBP complex_JJ query_NN facilities_NNS but_CC no_DT sophisticated_JJ means_NNS for_IN semantic_JJ clustering_NN of_IN peers_NNS and_CC their_PRP$ broadcasting_NN does_VBZ not_RB scale_VB well_RB ._.
+In_IN this_DT condition_NN ,_, a_DT new_JJ class_NN of_IN P2P_NN system_NN that_WDT combines_VBZ SON_NN
+enerated_JJ recommendations_NNS ._.
+This_DT work_NN extends_VBZ -LRB-_-LRB- 2_CD -RRB-_-RRB- by_IN providing_VBG new_JJ both_CC methodological_JJ and_CC experimental_JJ contributions_NNS ._.
+First_RB ,_, we_PRP propose_VBP exploiting_VBG the_DT notion_NN of_IN hierarchical_JJ topology_NN -LRB-_-LRB- for_IN example_NN ,_, see_VBP =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+In_IN this_DT setting_NN ,_, peers_NNS are_VBP organized_VBN into_IN peer-groups_NNS managed_VBN by_IN super-peers_NNS ._.
+The_DT super-peers_NNS encapsulate_VBP computations_NNS made_VBN by_IN the_DT underlying_VBG peers_NNS and_CC then_RB aggregate_JJ their_PRP$ results_NNS before_IN sending_VBG t_NN
+work_NN flooding_NN ._.
+The_DT routing_VBG algorithms_NNS use_VBP Bloom_NNP filters_NNS for_IN aggregation_NN resource_NN information_NN and_CC to_TO help_VB route_NN the_DT queries_NNS ._.
+Experimental_JJ results_NNS prove_VBP the_DT efficiency_NN and_CC scalability_NN of_IN the_DT scheme_NN ._.
+In_IN =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =_SYM -_: a_DT related_JJ approach_NN called_VBN schema-based_JJ networks_NNS is_VBZ presented_VBN ,_, which_WDT is_VBZ based_VBN on_IN super-peer_JJ topologies_NNS ._.
+Distributed_VBN hash_JJ tables_NNS can_MD be_VB used_VBN for_IN storing_VBG semantic_JJ information_NN in_IN Grids_NNP ._.
+For_IN example_NN ,_, in_IN -LRB-_-LRB-
+authors_NNS propose_VBP a_DT Peer-to-Peer_NNP framework_NN for_IN searching_VBG for_IN ontologies_NNS ._.
+In_IN this_DT paper_NN the_DT authors_NNS provide_VBP the_DT motivation_NN for_IN using_VBG the_DT P2P_NN framework_NN as_IN a_DT means_NN of_IN realizing_VBG the_DT Semantic_JJ Web_NN vision_NN ._.
+In_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: the_DT authors_NNS present_VBP a_DT super-peer-based_JJ routing_VBG and_CC clustering_VBG strategy_NN for_IN peers_NNS that_WDT maintains_VBZ RDF_NN metadata_NN ._.
+The_DT main_JJ idea_NN suggested_VBN by_IN them_PRP is_VBZ to_TO use_VB the_DT RDF_NNP schema_NN as_IN a_DT means_NN of_IN organizing_VBG RDF_NN dat_NN
+ed_VBN works_NNS and_CC perspectives_NNS We_PRP are_VBP currently_RB implementing_VBG the_DT system_NN described_VBN here_RB using_VBG Pastry_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC AXML_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Our_PRP$ system_NN is_VBZ related_JJ to_TO XML-based_JJ P2P_NN frameworks_NNS -LRB-_-LRB- 1_CD ,_, 7_CD ,_, 13_CD -RRB-_-RRB- and_CC semantic_JJ P2P_NN networks_NNS =_JJ -_: =[_NN 8_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+KadoP_NN improves_VBZ over_IN -LRB-_-LRB- 1_CD ,_, 13_CD -RRB-_-RRB- by_IN using_VBG a_DT DHT_NN layer_NN allowing_VBG each_DT peer_VBP to_TO search_VB for_IN resources_NNS anywhere_RB in_IN the_DT P2P_NN network_NN ._.
+Differently_RB from_IN -LRB-_-LRB- 1_CD ,_, 13_CD ,_, 7_CD -RRB-_-RRB- ,_, we_PRP set_VBP data_NNS and_CC knowledge_NN items_NNS on_IN equal_JJ levels_NNS
+port_NN limited_JJ querying_VBG capabilities_NNS -LRB-_-LRB- e.g._FW ,_, keyword_RB based_VBN search_NN -RRB-_-RRB- ._.
+Effective_JJ data_NNS sharing_NN requires_VBZ support_NN for_IN more_RBR structured_JJ querying_VBG capabilities_NNS to_TO exploit_VB the_DT inherent_JJ semantics_NNS in_IN data_NNS -LRB-_-LRB- -LRB-_-LRB- 34,35_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+=_SYM -_: =[_NN 36_CD -RRB-_-RRB- -_: =_SYM -_: proposes_VBZ a_DT super-peer_NN based_VBN routing_VBG -LRB-_-LRB- 37_CD -RRB-_-RRB- in_IN RDF-based_JJ P2P_NN information_NN sources_NNS ._.
+The_DT proposed_VBN approach_NN focuses_VBZ on_IN indexing_NN RDF_NN resources_NNS ._.
+Few_JJ approaches_NNS that_IN leverage_NN database-like_JJ information_NN sharing_NN
+evant_JJ neighbors_NNS ._.
+Frameworks_NNS have_VBP been_VBN proposed_VBN for_IN obtaining_VBG semantic_JJ interoperability_NN among_IN data_NNS sources_NNS in_IN a_DT bottom-up_JJ ,_, semiautomatic_JJ manner_NN without_IN relying_VBG on_IN pre-existing_JJ ,_, global_JJ semantic_JJ models_NNS =_JJ -_: =[_NN 1_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Semantic_JJ alignment_NN of_IN query_JJ interpretation_NN between_IN peers_NNS in_IN the_DT network_NN is_VBZ greatly_RB facilitated_VBN by_IN the_DT use_NN of_IN CQL_NNP ,_, because_IN this_DT language_NN makes_VBZ use_NN of_IN ``_`` context_NN sets_NNS ''_'' ,_, which_WDT rigorously_RB define_VBP the_DT seman_NN
+r_NN routing_VBG mechanism_NN is_VBZ based_VBN on_IN two_CD distributed_VBN routing_VBG indices_NNS storing_VBG information_NN to_TO route_NN within_IN the_DT super-peer_JJ backbone_NN and_CC between_IN super-peers_NNS and_CC their_PRP$ respective_JJ peers_NNS ._.
+Super-peers_NNS in_IN Edutella_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: employ_VB routing_VBG indices_NNS which_WDT explicitly_RB acknowledge_VBP the_DT semantic_JJ heterogeneity_NN of_IN schema-based_JJ P2P_NN networks_NNS ,_, and_CC therefore_RB include_VBP schema_NN information_NN as_RB well_RB as_IN other_JJ possible_JJ index_NN information_NN ._.
+The_DT
+-RRB-_-RRB- and_CC references_NNS abstract_JJ resource_NN names_NNS -LRB-_-LRB- URN_NN -RRB-_-RRB- ._.
+A_DT peer_VBP can_MD mutate_VB an_DT incoming_JJ query_NN plan_NN by_IN either_CC resolving_VBG URN_NN to_TO URL_NN ,_, or_CC substituting_VBG a_DT sub-plan_NN with_IN the_DT evaluated_VBN XML_NN encoded_VBN data_NNS ._.
+The_DT authors_NNS of_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP proposed_VBN super-peer_NN based_VBN routing_VBG 12_CD in_IN RDF-based_JJ peer-to-peer_NN setting_NN ._.
+We_PRP use_VBP similar_JJ concept_NN to_TO construct_VB routing_VBG indices_NNS ._.
+Our_PRP$ work_NN is_VBZ unique_JJ from_IN the_DT other_JJ related_JJ approaches_NNS in_IN the_DT following_NN
+ery_NN routing_VBG in_IN a_DT p2p_NN network_NN is_VBZ the_DT process_NN by_IN which_WDT a_DT query_NN is_VBZ routed_VBN to_TO a_DT number_NN of_IN relevant_JJ peers_NNS instead_RB of_IN being_VBG broadcast_VBN to_TO the_DT whole_JJ network_NN ._.
+This_DT problem_NN has_VBZ been_VBN studied_VBN in_IN recent_JJ works_NNS ._.
+In_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: a_DT routing_VBG strategy_NN based_VBN on_IN routing_VBG indices_NNS is_VBZ presented_VBN ._.
+Obviously_RB ,_, indices_NNS only_RB help_VBP if_IN they_PRP can_MD exploit_VB and_CC express_VB regularities_NNS present_JJ in_IN the_DT peer_VBP and_CC data_NNS distribution_NN ._.
+A_DT more_RBR advanced_JJ techniqu_NN
+gh_IN the_DT entire_JJ network_NN anymore_RB ,_, but_CC can_MD be_VB purposefully_RB routed_VBN to_TO relevant_JJ parts_NNS of_IN the_DT peer-topeer_JJ network_NN or_CC even_RB single_JJ peers_NNS using_VBG centralized_VBN ,_, distributed_VBN or_CC even_RB synchronized_VBN local_JJ indexes_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recent_JJ studies_NNS show_VBP that_IN these_DT approaches_NNS can_MD drastically_RB reduce_VB the_DT data_NNS traffic_NN within_IN the_DT network_NN ._.
+Up_IN to_TO now_RB ,_, however_RB ,_, the_DT use_NN of_IN these_DT indexes_NNS was_VBD restricted_JJ to_TO exact_JJ match_NN queries_NNS ,_, each_DT index_NN p_NN
+of_IN the_DT most_RBS interesting_JJ open_JJ problems_NNS in_IN this_DT area_NN is_VBZ how_WRB to_TO evaluate_VB queries_NNS expressed_VBN in_IN Semantic_JJ Web_NN query_NN languages_NNS -LRB-_-LRB- e.g._FW ,_, RDQL_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, RQL_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, SPARQL_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- or_CC OWL-QL_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- -RRB-_-RRB- on_IN top_NN of_IN P2P_NN networks_NNS =_JJ -_: =[_NN 9_CD ,_, 4_CD ,_, 19_CD ,_, 20_CD ,_, 25_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN we_PRP study_VBD the_DT problem_NN of_IN evaluating_VBG conjunctive_JJ queries_NNS composed_VBN of_IN triple_JJ patterns_NNS on_IN top_NN of_IN RDF_NNP data_NNS stored_VBN in_IN distributed_VBN hash_NN tables_NNS ._.
+Distributed_VBN hash_JJ tables_NNS -LRB-_-LRB- DHTs_NNS -RRB-_-RRB- are_VBP an_DT important_JJ
+ation_NN distribution_NN for_IN mobile_JJ devices_NNS in_IN ad_FW hoc_FW environments_NNS ._.
+Nevertheless_RB ,_, there_EX is_VBZ a_DT lot_NN of_IN related_JJ work_NN done_VBN for_IN traditional_JJ peer-to-peer_JJ RSS_NN data_NNS exchange_NN or_CC information_NN exchange_NN in_IN general_JJ ._.
+-LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 9_CD -RRB-_-RRB- focus_NN on_IN the_DT efficient_JJ RSS\/XML_NN data_NNS exchange_NN in_IN non-mobile_JJ peer-to-peer_NN environments_NNS by_IN showing_VBG different_JJ indexing_NN strategies_NNS ._.
+For_IN a_DT survey_NN on_IN peer-to-peer_JJ content_NN distribution_NN see_VBP -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+fficient_JJ search_NN for_IN large_JJ integers_NNS -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC real-valued_JJ vectors_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, as_RB well_RB as_IN information_NN retrieval_NN -LRB-_-LRB- 14_CD ,_, 2_CD -RRB-_-RRB- or_CC queries_NNS in_IN distributed_VBN RDF_NN repositories_NNS based_VBN on_IN structured_JJ broadcast_NN and_CC super-peers_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT present_JJ article_NN gives_VBZ and_CC evaluates_VBZ a_DT contribution_NN to_TO the_DT processing_NN of_IN similarity_NN queries_NNS in_IN P2P_NN networks_NNS ._.
+In_IN the_DT current_JJ literature_NN about_IN complex_JJ queries_NNS in_IN P2P_NN networks_NNS ,_, there_EX are_VBP the_DT followi_NNS
+ecently_RB the_DT research_NN community_NN has_VBZ turned_VBN to_TO create_VB Semantic_NNP Overlay_NNP Networks_NNP -LRB-_-LRB- SON_NNP -RRB-_-RRB- to_TO improve_VB the_DT efficiency_NN of_IN p2p_NN information_NN sharing_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Notable_JJ examples_NNS are_VBP Interest-based_JJ overlay_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, Edutella_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Bibster_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, SSW_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+In_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, Sripanidkulchai_NNP et_NNP al_NNP identify_VB the_DT natural_JJ principle_NN in_IN Gnutella_NNP and_CC other_JJ p2p_NN networks_NNS called_VBD interest-based_JJ locality_NN ,_, which_WDT posits_VBZ that_IN if_IN a_DT peer_VBP has_VBZ a_DT particular_JJ pie_NN
+ighbor_NN for_IN propagating_VBG the_DT query_NN -LRB-_-LRB- finding_VBG the_DT closest_JJS hyper-rectangle_NN -RRB-_-RRB- ._.
+If_IN the_DT query_NN is_VBZ more_RBR complex_JJ ,_, it_PRP is_VBZ transformed_VBN into_IN one_CD or_CC more_JJR absolute_JJ location_NN paths_NNS and_CC the_DT same_JJ mechanism_NN is_VBZ deployed_VBN ._.
+In_IN =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT hybrid_NN structured_JJ -LRB-_-LRB- non-DHT_JJ -RRB-_-RRB- p2p_NN architecture_NN is_VBZ presented_VBN ._.
+The_DT superpeers_NNS are_VBP organized_VBN into_IN a_DT hypercube_NN topology_NN that_WDT supports_VBZ efficient_JJ broadcasting_NN ,_, while_IN -LRB-_-LRB- non-super_JJ -RRB-_-RRB- peers_NNS connect_VBP to_TO superpeer_VB
+roach_NN include_VBP :_: high_JJ flexibility_NN for_IN peers_NNS to_TO join_VB or_CC leave_VB the_DT network_NN dynamically_RB ,_, scalability_NN -LRB-_-LRB- recently_RB it_PRP was_VBD shown_VBN that_IN for_IN really_RB large_JJ networks_NNS ,_, a_DT hybrid_NN solution_NN with_IN super-peers_JJ scales_NNS better_RBR =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, autonomy_NN -LRB-_-LRB- as_IN peers_NNS do_VBP not_RB relinquish_VB control_NN over_IN their_PRP$ resources_NNS -RRB-_-RRB- and_CC high_JJ resilience_NN against_IN peer_VB failures_NNS ._.
+The_DT main_JJ disadvantages_NNS are_VBP that_IN P2P_NN networks_NNS require_VBP constant_JJ management_NN ,_, as_IN peers_NNS join_VBP
+ing_NN policies_NNS are_VBP proposed_VBN to_TO generate_VB semantic_JJ clusters_NNS in_IN super-peer_JJ networks_NNS ._.
+Particular_JJ emphasis_NN is_VBZ put_VBN on_IN managing_VBG heterogeneous_JJ data_NNS schemes_NNS ._.
+Clustering_NN peers_NNS based_VBN on_IN schemas_NNS is_VBZ also_RB studied_VBN in_IN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, while_IN in_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, GridVine_NN is_VBZ presented_VBN ,_, which_WDT is_VBZ about_IN SONs_NNS based_VBN on_IN schema_NN mappings_NNS ._.
+An_DT approach_NN for_IN distributed_VBN document_NN clustering_NN based_VBN on_IN k-means_NN is_VBZ presented_VBN in_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+In_IN -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, an_DT approach_NN for_IN con_NN
+scribe_NN architecture_NN with_IN fast_JJ matching_NN techniques_NNS for_IN content-based_JJ Metadata_NNP ._.
+In_IN section_NN 2_CD data_NN sources_NNS as_RB well_RB as_IN learner_NN policies_NNS are_VBP described_VBN by_IN Metadata_NNP as_IN they_PRP are_VBP stored_VBN stored_VBN in_IN the_DT Edutella_NN =_JJ -_: =[_NN 12_CD ,_, 11_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: super-peer_JJ network_NN ._.
+Inspired_VBN by_IN the_DT SIENA_NNP -LRB-_-LRB- 1_CD ,_, 2_LS -RRB-_-RRB- publish\/subscribe_NN architecture_NN and_CC the_DT work_NN in_IN the_DT project_NN P2P-DIET_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- we_PRP present_VBP a_DT combined_JJ broadcast_NN and_CC content_NN based_VBN routing_VBG schema_NN for_IN selecting_VBG
+peer_VB base_NN can_MD join_VB and_CC leave_VB the_DT network_NN at_IN will_NN ._.
+The_DT importance_NN of_IN intensional_JJ -LRB-_-LRB- i.e._FW ,_, schema_NN -RRB-_-RRB- information_NN for_IN integrating_VBG and_CC querying_VBG peer_VB bases_NNS has_VBZ been_VBN highlighted_VBN by_IN a_DT number_NN of_IN recent_JJ projects_NNS =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+In_IN particular_JJ ,_, the_DT notion_NN of_IN Semantic_NNP Overlay_NNP Networks_NNP -LRB-_-LRB- SONs_NNS -RRB-_-RRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, appears_VBZ to_TO be_VB an_DT intuitive_JJ way_NN to_TO group_NN together_RB peers_VBZ sharing_VBG the_DT same_JJ schema_NN information_NN ._.
+Thus_RB ,_, peers_NNS employing_VBG one_CD or_CC more_JJR
+c_NN responsibilities_NNS for_IN peer_VBP aggregation_NN ,_, query_NN routing_VBG ,_, and_CC mediation_NN ._.
+An_DT example_NN of_IN a_DT simple_JJ super-peer_JJ based_JJ architecture_NN is_VBZ the_DT KaZaA_NN network_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, more_RBR elaborate_JJ versions_NNS are_VBP described_VBN in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Super-peer_JJ based_VBN P2P_NN infrastructures_NNS are_VBP usually_RB based_VBN on_IN a_DT two-phase_JJ routing_VBG architecture_NN ,_, which_WDT routes_VBZ queries_NNS first_JJ in_IN the_DT super-peer_JJ backbone_NN ,_, and_CC then_RB distributes_VBZ them_PRP to_TO the_DT peers_NNS connected_VBN to_TO
+ers_NNPS to_TO the_DT connections_NNS between_IN a_DT superpeer_NN and_CC the_DT ordinary_JJ peers_NNS assigned_VBN to_TO it_PRP ._.
+There_EX has_VBZ been_VBN a_DT lot_NN of_IN research_NN work_NN both_CC on_IN building_VBG appropriate_JJ overlays_NNS and_CC on_IN selecting_NN superpeers_NNS -LRB-_-LRB- for_IN example_NN ,_, =_JJ -_: =[_NN 14_CD ,_, 7_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP make_VBP no_DT specific_JJ assumptions_NNS with_IN regards_VBZ to_TO these_DT overlays_NNS ._.
+We_PRP just_RB assume_VBP that_IN the_DT superpeer_NN overlay_NN network_NN is_VBZ connected_VBN and_CC that_IN ,_, for_IN simplicity_NN ,_, each_DT ordinary_JJ peer_VBP is_VBZ assigne_NN
+peers_NNS sharing_VBG common_JJ expertise_NN ._.
+EDUTELLA_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- is_VBZ a_DT semantic_JJ P2P_NN system_NN ,_, its_PRP$ basic_JJ functionality_NN is_VBZ very_RB similar_JJ to_TO that_DT of_IN SWAP_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- project_NN which_WDT uses_VBZ an_DT expertise_NN based_JJ model_NN for_IN query_NN routing_VBG ._.
+In_IN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: they_PRP have_VBP discussed_VBN a_DT query_NN routing_VBG mechanism_NN ._.
+Peers_NNS with_IN common_JJ expertise_NN are_VBP arranged_VBN in_IN hypercube_NN topology_NN which_WDT ensures_VBZ that_IN each_DT peer_VBP is_VBZ contacted_VBN exactly_RB once_RB for_IN a_DT query_NN ._.
+This_DT approach_NN is_VBZ cont_NN
+in_IN the_DT super-peer_JJ backbone_NN and_CC then_RB distributes_VBZ them_PRP to_TO the_DT peers_NNS connected_VBN to_TO the_DT superpeers_NNS ._.
+Super-peer_NN based_VBN routing_VBG can_MD be_VB based_VBN on_IN different_JJ kinds_NNS of_IN indexing_NN and_CC routing_VBG tables_NNS ,_, as_IN discussed_VBN in_IN =_JJ -_: =[_NN 10_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT following_JJ sections_NNS ,_, we_PRP will_MD also_RB present_VB indexing_NN and_CC routing_VBG mechanisms_NNS appropriate_JJ for_IN publish\/subscribe_NN services_NNS ._.
+These_DT will_MD be_VB based_VBN on_IN two_CD levels_NNS of_IN indices_NNS ,_, one_CD storing_VBG information_NN to_TO r_NN
+nally_RB ,_, section_NN 5_CD presents_VBZ a_DT pro-cons_JJ discussion_NN vis-a-vis_NN other_JJ prevalent_JJ technologies_NNS ._.
+2_CD Related_NNP Work_NNP Super-peer_NN networks_NNS are_VBP being_VBG used_VBN by_IN many_JJ new_JJ P2P_NN implementations_NNS -_: KaZaa_NNP ,_, Super_NNP peer_VBP based_VBN RDF_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: to_TO name_VB a_DT few_JJ ._.
+An_DT excellent_JJ research_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- details_NNS a_DT technique_NN to_TO design_VB such_JJ kind_NN of_IN super-peer_JJ networks_NNS ._.
+The_DT benefits_NNS of_IN designing_VBG a_DT super_JJ peer_VB network_NN over_IN the_DT flat_JJ P2P_NN scheme_NN are_VBP manifold_RB ._.
+The_DT 2sSu_NN
+processing_NN overhead_NN on_IN each_DT node_NN ,_, unless_IN a_DT hop-count_JJ limit_NN is_VBZ set_VBN for_IN queries_NNS --_: but_CC then_RB the_DT queries_NNS can_MD not_RB guarantee_VB to_TO find_VB results_NNS ,_, even_RB if_IN these_DT results_NNS exist_VBP in_IN the_DT network_NN ._.
+An_DT Edutella_NNP successor_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_JJ -_: provides_VBZ better_JJR scalability_NN by_IN introducing_VBG super-peers_NNS and_CC schema-based_JJ routing_VBG ;_: however_RB ,_, it_PRP requires_VBZ up-front_JJ definition_NN of_IN schemas_NNS and_CC designation_NN of_IN super_JJ peers_NNS ._.
+This_DT paper_NN presents_VBZ a_DT scalable_JJ P2P_NN
+category_NN ._.
+In_IN general_JJ ,_, the_DT portal_NN will_MD return_VB a_DT product_NN as_IN a_DT ``_`` match_NN ''_'' ,_, if_IN any_DT part_NN of_IN the_DT description_NN of_IN the_DT product_NN contains_VBZ the_DT keyword_NN ._.
+Answering_VBG queries_NNS based_VBN on_IN keywords_NNS has_VBZ obvious_JJ short-comings_NNS =_JJ -_: =[_NN 8_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT query_NN model_NN in_IN current_JJ web_NN portals_NNS -LRB-_-LRB- e.g._FW ,_, Amazon.com_NNP -RRB-_-RRB- does_VBZ not_RB allow_VB users_NNS to_TO query_VB precisely_RB using_VBG rich_JJ descriptions_NNS of_IN the_DT products_NNS ._.
+For_IN example_NN ,_, users_NNS can_MD only_RB ask_VB for_IN ``_`` products_NNS related_VBN to_TO la_DT
+updates_NNS among_IN the_DT members_NNS of_IN each_DT subsection_NN ._.
+Bawa_NNP et_NNP al_NNP -LRB-_-LRB- 3_CD -RRB-_-RRB- use_VBP term_NN vectors_NNS as_IN metadata_NN about_IN peers_NNS ,_, peers_NNS are_VBP clustered_VBN by_IN topic_NN and_CC queries_NNS are_VBP routed_VBN to_TO clusters_NNS and_CC within_IN clusters_NNS ._.
+Nejdl_NNP et_FW al_FW =_JJ -_: =[_NN 41_CD -RRB-_-RRB- -_: =_SYM -_: describe_VBP super-peers_NNS for_IN routing_VBG queries_NNS in_IN the_DT P2P_NN network_NN ._.
+Super-peers_NNS are_VBP repositories_NNS for_IN RDF_NNP descriptions_NNS of_IN peer_VB content_NN as_RB well_RB as_IN those_DT of_IN neighboring_JJ super-peers_NNS ._.
+Peers_NNS register_VBP with_IN a_DT chose_VBN
+on_IN the_DT pure_JJ P2P_NN architecture_NN where_WRB individual_JJ data_NNS sources_NNS are_VBP connected_VBN directly_RB as_IN peers_NNS ,_, whereas_IN in_FW WS-CatalogNet_FW ,_, each_DT peer_VBP is_VBZ a_DT data_NN integration_NN mediator_NN -LRB-_-LRB- similar_JJ to_TO the_DT concept_NN of_IN superpeer_NN in_IN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 17_CD -RRB-_-RRB- -RRB-_-RRB- holding_VBG a_DT registry\/mapping_NN information_NN for_IN the_DT individual_JJ data_NN sources_NNS ._.
+This_DT helps_VBZ in_IN organizing_VBG the_DT available_JJ information_NN space_NN into_IN manageable_JJ ,_, meaningful_JJ spaces_NNS ._.
+Also_RB ,_, the_DT burden_NN of_IN query_NN r_NN
+ging_NN distributed_VBD syndication_NN archictectures_NNS ._.
+For_IN example_NN ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- present_VBP an_DT distributed_VBN RDF_NN publish\/subscribe_NN approach_NN ,_, in_IN which_WDT a_DT peer-to-peer_NN -LRB-_-LRB- P2P_NN -RRB-_-RRB- architecture_NN is_VBZ utilized_VBN ._.
+Specifically_RB ,_, a_DT super-peer_NN =_JJ -_: =[_NN 11_CD ,_, 47_CD -RRB-_-RRB- -_: =_JJ -_: architecture_NN is_VBZ proposed_VBN ,_, where_WRB super-peers_NNS in_IN the_DT network_NN are_VBP responsible_JJ transfering_VBG publications_NNS to_TO the_DT correct_JJ subscribers_NNS ,_, which_WDT are_VBP regular_JJ peers_NNS in_IN the_DT network_NN ._.
+Concept-Based_JJ Approaches_NNS ._.
+In_IN -LRB-_-LRB- 5_CD
+rd_IN the_DT request_NN to_TO are_VBP selected_VBN with_IN the_DT same_JJ list-based_JJ approach_NN discussed_VBN above_RB for_IN request_NN sending_VBG ._.
+4_CD Concluding_VBG Remarks_NNS We_PRP have_VBP compared_VBN our_PRP$ system_NN with_IN FreeNet_NN -LRB-_-LRB- freenet.sourceforge.net_NN -RRB-_-RRB- ,_, Edutella_NN =_JJ -_: =[_NN 15,14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, KEEx_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, Napster_NN -LRB-_-LRB- www.napster.com_NN -RRB-_-RRB- ,_, Piazza_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, the_DT Trusted_NNP Computing_NNP P2P_NN -LRB-_-LRB- TC-P2P_NN -RRB-_-RRB- Architecture_NNP -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, and_CC SWAPSTER_NN -LRB-_-LRB- 11,20_CD -RRB-_-RRB- ,_, along_IN the_DT three_CD features_NNS that_WDT characterize_VBP our_PRP$ proposal_NN :_: -LRB-_-LRB- i_LS -RRB-_-RRB- use_NN of_IN onto_IN
+ount_NN of_IN research_NN attention_NN ,_, especially_RB in_IN the_DT database_NN community_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+-LRB-_-LRB- 13_CD -RRB-_-RRB- suggested_VBD to_TO add_VB metadata_JJ management_NN to_TO P2P_NN networks_NNS ._.
+This_DT idea_NN has_VBZ been_VBN taken_VBN up_RP by_IN approaches_NNS like_IN Edutella_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, RDFPeers_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, P-Grid_NN -LRB-_-LRB- 121_CD -RRB-_-RRB- and_CC other_JJ projects_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Initial_JJ ideas_NNS of_IN a_DT collaboration_NN infrastructure_NN based_VBN on_IN P2P_NN technology_NN has_VBZ been_VBN realized_VBN in_IN Groove_NNP which_WDT allows_VBZ small_JJ groups_NNS to_TO share_VB a_DT calend_NN
+RNz_NN -LRB-_-LRB- s_NN +_CC 1_CD N_NN -RRB-_-RRB- ≈_FW RzsN_FW ._.
+All_PDT the_DT super-nodes_NNS see_VBP the_DT same_JJ bandwidth_NN since_IN all_DT queries_NNS pass_VBP through_IN them_PRP ._.
+If_IN we_PRP assume_VBP that_IN the_DT query_NN crosses_VBZ each_DT edge_NN in_IN the_DT multicast_JJ tree_NN -LRB-_-LRB- using_VBG an_DT approach_NN similar_JJ to_TO =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =--RRB-_NN then_RB it_PRP is_VBZ necessary_JJ and_CC sufficient_JJ for_IN the_DT maximum_NN degree_NN to_TO be_VB 3_CD ,_, thus_RB Bmax_NN =_JJ 3RzN_NN ,_, which_WDT is_VBZ independent_JJ of_IN s._NN Since_IN there_EX are_VBP CN_NN total_JJ content_NN items_NNS ,_, the_DT average_JJ disk_NN space_NN is_VBZ Dave_NNP =_JJ CNz\/N_NN =_JJ Cz_NN ._.
+ocal_JJ information_NN ._.
+Thus_RB ,_, it_PRP clearly_RB makes_VBZ sense_NN to_TO use_VB the_DT square-root_JJ topology_NN instead_RB of_IN constant_JJ degree_NN or_CC proportional_JJ topologies_NNS ._.
+A_DT widely_RB used_VBN topology_NN in_IN many_JJ systems_NNS is_VBZ the_DT super-peer_JJ topology_NN =_JJ -_: =[_NN 7_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT topology_NN ,_, a_DT fraction_NN of_IN the_DT peers_NNS serve_VBP as_IN super-peers_NNS ,_, aggregating_VBG content_JJ information_NN from_IN several_JJ ``_`` leaf_NN ''_'' pears_NNS ._.
+Then_RB ,_, searches_NNS only_RB need_VBP to_TO be_VB sent_VBN to_TO super-peers_NNS ._.
+The_DT superpeers_NNS are_VBP conn_VBN
+al_FW nodes_NNS can_MD be_VB used_VBN as_IN the_DT clustering_NN criterion_NN ._.
+Grouping_VBG together_RB peers_NNS with_IN similar_JJ interests_NNS under_IN one_CD super-peer_NN increases_VBZ query_NN locality_NN ,_, and_CC as_IN a_DT consequence_NN improves_VBZ the_DT performance_NN of_IN search_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Clustering_NN may_MD be_VB applied_VBN not_RB only_RB to_TO the_DT peers_NNS ,_, but_CC also_RB to_TO the_DT content_NN -LRB-_-LRB- 9_CD ,_, 16_CD ,_, 24_CD -RRB-_-RRB- ._.
+In_IN a_DT super-peer_JJ architecture_NN with_IN content_NN clustering_NN pointers_NNS to_TO the_DT files_NNS with_IN similar_JJ request_NN patterns_NNS are_VBP sto_NN
+d_NN at_IN the_DT technical_JJ implementation_NN level_NN whereas_IN logically_RB a_DT commonly_RB shared_VBN ontology_NN is_VBZ used_VBN ._.
+The_DT original_JJ design_NN of_IN Edutella_NNP which_WDT is_VBZ based_VBN on_IN Gnutella_NNP is_VBZ changed_VBN to_TO a_DT super-peer_JJ network_NN approach_NN in_IN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT offers_VBZ better_JJR scalability_NN and_CC provides_VBZ sophisticated_JJ routing_VBG and_CC clustering_VBG strategies_NNS based_VBN on_IN the_DT meta-data_JJ schemas_NN attributes_NNS and_CC ontologies_NNS used_VBN ._.
+This_DT approach_NN includes_VBZ a_DT methodology_NN for_IN me_PRP
+ght_NN be_VB employed_VBN to_TO access_NN data_NNS ._.
+Intelligent_JJ agents_NNS that_WDT exploit_VBP ontologies_NNS to_TO perform_VB content-based_JJ information_NN retrieval_NN in_IN P2P_NN networks_NNS may_MD represent_VB a_DT viable_JJ solution_NN to_TO overcome_VB their_PRP$ limitations_NNS =_JJ -_: =[_NN 2,10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT recent_JJ proposal_NN of_IN a_DT semantic_JJ ,_, policy-based_JJ system_NN for_IN the_DT retrieval_NN of_IN XML_NN documents_NNS in_IN P2P_NN networks_NNS comes_VBZ from_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+There_RB ,_, peers_NNS are_VBP organised_VBN into_IN thematic_JJ groups_NNS ,_, each_DT one_CD coordinated_VBN by_IN a_DT ``_`` su_FW
+ess_NN data_NNS ._.
+Intelligent_JJ agents_NNS that_WDT exploit_VBP ontologies_NNS to_TO perform_VB content-based_JJ information_NN retrieval_NN in_IN P2P_NN networks_NNS may_MD represent_VB a_DT viable_JJ solution_NN to_TO overcome_VB the_DT limitations_NNS of_IN current_JJ P2P_NN networks_NNS =_JJ -_: =[_NN 11,1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT recent_JJ proposal_NN for_IN a_DT semantic_JJ ,_, policy-based_JJ system_NN for_IN the_DT retrieval_NN of_IN XML_NN documents_NNS in_IN P2P_NN networks_NNS comes_VBZ from_IN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, where_WRB peers_NNS are_VBP organised_VBN into_IN thematic_JJ groups_NNS coordinated_VBN by_IN a_DT ``_`` super-peer_NN a_DT
+alization_NN of_IN their_PRP$ domain_NN ,_, and_CC their_PRP$ preferences_NNS on_IN information_NN categories_NNS are_VBP common_JJ ._.
+On_IN the_DT other_JJ hand_NN ,_, there_EX is_VBZ a_DT lot_NN of_IN research_NN on_IN semantic_JJ peer_VBP to_TO peer_VB search_NN networks_NNS and_CC social_JJ networks_NNS -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 1,4,5,6,12,14,15_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Methods_NNS involving_VBG the_DT gradual_JJ creation_NN of_IN overlay_NN networks_NNS via_IN re-wiring_NN ,_, shortcuts_NNS creation_NN -LRB-_-LRB- 1,4,12_CD -RRB-_-RRB- or_CC clustering_NN of_IN peers_NNS -LRB-_-LRB- 13,5_CD -RRB-_-RRB- are_VBP tuning_NN approaches_NNS whose_WP$ aims_NNS are_VBP closely_RB related_JJ to_TO the_DT appro_NN
+category_NN ._.
+In_IN general_JJ ,_, the_DT portal_NN will_MD return_VB a_DT product_NN as_IN a_DT ``_`` match_NN ''_'' ,_, if_IN any_DT part_NN of_IN the_DT description_NN of_IN the_DT product_NN contains_VBZ the_DT keyword_NN ._.
+Answering_VBG queries_NNS based_VBN on_IN keywords_NNS has_VBZ obvious_JJ Short-comings_NNS =_SYM -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT query_NN model_NN in_IN current_JJ web_NN portals_NNS -LRB-_-LRB- e.g._FW ,_, Amazon.com_NNP -RRB-_-RRB- does_VBZ not_RB allow_VB users_NNS to_TO 227_CD query_NN precisely_RB using_VBG rich_JJ descriptions_NNS of_IN the_DT products_NNS ._.
+For_IN example_NN ,_, users_NNS can_MD only_RB ask_VB for_IN ``_`` products_NNS related_JJ t_NN
+t_NN categories_NNS ._.
+For_IN example_NN ,_, in_IN the_DT domain_NN of_IN educational_JJ resources_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, users_NNS have_VBP a_DT certain_JJ affinity_NN towards_IN learning_VBG materials_NNS related_VBN to_TO the_DT course_NN of_IN study_NN they_PRP undertake_VBP ._.
+It_PRP has_VBZ been_VBN observed_VBN in_IN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: that_IN many_JJ document_NN storage_NN systems_NNS ,_, including_VBG the_DT WWW_NNP ,_, exhibit_VBP Zipf_NNP distributions_NNS on_IN the_DT popularity_NN of_IN documents_NNS ._.
+This_DT reflects_VBZ the_DT fact_NN that_IN some_DT popular_JJ documents_NNS are_VBP very_RB widely_RB copied_VBN and_CC held_VBN ,_, w_NN
+ated_VBN into_IN local_JJ queries_NNS with_IN respect_NN to_TO the_DT schema_NN supported_VBD at_IN the_DT respective_JJ peer_VB ,_, using_VBG the_DT concept_NN of_IN local_JJ translation\/coordination_NN formulas_NNS to_TO translate_VB between_IN different_JJ schemas_NNS ._.
+Aberer_FW et_FW ._.
+al._FW =_SYM -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: proposes_VBZ schema-based_JJ peers_NNS and_CC local_JJ translations_NNS to_TO accommodate_VB more_RBR sophisticated_JJ information_NN providers_NNS connected_VBN by_IN a_DT Gnutella-like_JJ P2P_NN topology_NN ._.
+All_DT these_DT approaches_NNS focus_VBP on_IN providing_VBG improved_VBN
+outlined_VBN in_IN section_NN 2.1_CD each_DT peer_VBP registers_VBZ with_IN a_DT super-peer_NN using_VBG so_RB called_VBN advertisements_NNS which_WDT contain_VBP the_DT metadata_NN schema_NN used_VBN at_IN the_DT peer_VB ._.
+Since_IN schema-based_JJ approaches_NNS of_IN model_NN correspondences_NNS =_JJ -_: =[_NN 9_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN successfully_RB used_VBN in_IN the_DT context_NN of_IN mediator-based_JJ information_NN systems_NNS -LRB-_-LRB- MBIS_NNS -RRB-_-RRB- -LRB-_-LRB- 17_CD -RRB-_-RRB- we_PRP will_MD apply_VB this_DT approach_NN also_RB to_TO our_PRP$ super-peer_JJ networks_NNS ._.
+The_DT approach_NN of_IN -LRB-_-LRB- 9_CD -RRB-_-RRB- uses_VBZ rules_NNS that_WDT describe_VBP
+outlined_VBN in_IN section_NN 2.1_CD each_DT peer_VBP registers_VBZ with_IN a_DT super-peer_NN using_VBG so_RB called_VBN advertisements_NNS which_WDT contain_VBP the_DT metadata_NN schema_NN used_VBN at_IN the_DT peer_VB ._.
+Since_IN schema-based_JJ approaches_NNS of_IN model_NN correspondences_NNS =_JJ -_: =[_NN 9_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN successfully_RB used_VBN in_IN the_DT context_NN of_IN mediator-based_JJ information_NN systems_NNS -LRB-_-LRB- MBIS_NNS -RRB-_-RRB- -LRB-_-LRB- 17_CD -RRB-_-RRB- we_PRP will_MD apply_VB this_DT approach_NN also_RB to_TO our_PRP$ super-peer_JJ networks_NNS ._.
+The_DT approach_NN of_IN -LRB-_-LRB- 9_CD -RRB-_-RRB- uses_VBZ rules_NNS that_WDT describe_VBP
+ect_VB to_TO what_WDT degree_NN they_PRP are_VBP queried_VBN for_IN -LRB-_-LRB- and_CC possibly_RB replicated_VBN -RRB-_-RRB- throughout_IN the_DT network_NN ._.
+Second_JJ ,_, peers_NNS are_VBP interested_VBN only_RB in_IN a_DT subset_NN of_IN the_DT available_JJ content_NN on_IN the_DT network_NN ._.
+The_DT latter_NN is_VBZ shown_VBN in_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: :_: Data_NN objects_NNS in_IN a_DT P2P_NN file_NN sharing_NN network_NN can_MD be_VB classified_VBN in_IN a_DT number_NN of_IN content_NN categories_NNS ._.
+In_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, it_PRP is_VBZ also_RB observed_VBN that_IN peers_NNS are_VBP often_RB interested_JJ only_RB in_IN data_NNS objects_NNS from_IN a_DT few_JJ content_NN ca_MD
+r-peer_NN topology_NN for_IN these_DT schema-based_JJ networks_NNS ,_, where_WRB each_DT peer_VBP connects_VBZ to_TO one_CD super-peer_NN only_RB ._.
+Super-peer_NN then_RB connect_VB to_TO other_JJ super-peers_NNS and_CC build_VB up_RP the_DT backbone_NN of_IN the_DT super-peer_JJ network_NN -LRB-_-LRB- see_VB =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: for_IN the_DT general_JJ characteristics_NNS of_IN super-peer_JJ networks_NNS ,_, and_CC Kazaa_NNP ,_, Grokster_NNP and_CC Morpheus_NNP for_IN existing_VBG super-peer_JJ systems_NNS -RRB-_-RRB- ._.
+In_IN schema-based_JJ networks_NNS ,_, super-peers_NNS manage_VBP the_DT routing_VBG indices_NNS and_CC determi_NNS
+n_NN the_DT sent_VBN queries_NNS -LRB-_-LRB- cf._VBP 2.1_CD and_CC 2.2_CD -RRB-_-RRB- ._.
+Thus_RB ,_, each_DT peer_VBP ,_, super-peer_NN and_CC query_NN is_VBZ characterized_VBN by_IN a_DT set_NN of_IN items_NNS ,_, and_CC on_IN pairs_NNS of_IN these_DT sets_NNS a_DT similarity_NN measure_NN such_JJ as_IN the_DT Jaccard_NNP or_CC Dice_NNP coefficient_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: can_MD be_VB computed_VBN ._.
+This_DT measure_NN can_MD be_VB used_VBN to_TO determine_VB whether_IN a_DT query_NN should_MD be_VB sent_VBN to_TO a_DT neighboring_JJ super-peer_NN ,_, or_CC whether_IN two_CD peers_NNS should_MD be_VB in_IN the_DT same_JJ cluster_NN ._.
+This_DT means_VBZ that_IN we_PRP have_VBP to_TO add_VB a_DT
+ge_NN to_TO all_DT listeners_NNS -LRB-_-LRB- fireEvent_NN -LRB-_-LRB- -RRB-_-RRB- method_NN -RRB-_-RRB- ._.
+In_IN our_PRP$ simulations_NNS ,_, we_PRP attempt_VBP to_TO accurately_RB model_VB traffic_NN patterns_NNS that_WDT are_VBP observable_JJ in_IN real-world_JJ P2P_NN systems_NNS ._.
+In_IN recent_JJ studies_NNS on_IN existing_VBG P2P_NN networks_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, important_JJ characteristics_NNS of_IN both_CC typical_JJ traffic_NN patterns_NNS and_CC content_NN distribution_NN in_IN P2P_NN networks_NNS have_VBP been_VBN observed_VBN ._.
+Simulations_NNS of_IN P2P_NN algorithms_NNS have_VBP to_TO be_VB carried_VBN out_RP in_IN an_DT environment_NN that_IN cl_NN
+the_DT problems_NNS of_IN fixed_JJ and_CC unchangeable_JJ metadata_NN schemas_NNS which_WDT often_RB occur_VBP in_IN recent_JJ peer-to-peer_NN -LRB-_-LRB- P2P_NN -RRB-_-RRB- systems_NNS ._.
+Current_JJ P2P_NN systems_NNS however_RB support_VBP only_RB limited_JJ metadata_JJ sets_NNS such_JJ as_IN simple_JJ filenames_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, so_IN it_PRP is_VBZ easy_JJ for_IN example_NN to_TO search_VB Gnutella_NNP for_IN music_NN composed_VBN by_IN Beethoven_NNP ,_, but_CC retrieving_VBG all_PDT his_PRP$ symphonies_NNS is_VBZ much_RB more_RBR difficult_JJ ._.
+To_TO solve_VB the_DT shortcomings_NNS of_IN P2P_NN networks_NNS with_IN restricted_JJ and_CC
+uages_NNS ,_, supporting_VBG query_NN functionalities_NNS extending_VBG the_DT usual_JJ relationally_JJ complete_JJ query_NN languages_NNS ._.
+Two_CD other_JJ interesting_JJ approaches_NNS are_VBP the_DT ones_NNS investigated_VBN by_IN Bernstein_NNP and_CC Aberer_NNP ._.
+Bernstein_NNP et_NNP ._.
+al._FW =_SYM -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP the_DT Local_NNP Relational_NNP Model_NNP -LRB-_-LRB- LRM_NNP -RRB-_-RRB- enabling_VBG general_JJ queries_NNS to_TO be_VB translated_VBN into_IN local_JJ queries_NNS with_IN respect_NN to_TO the_DT schema_NN supported_VBD at_IN the_DT respective_JJ peer_VB ,_, using_VBG the_DT concept_NN of_IN local_JJ translati_NNS
+heterogeneous_JJ schemas_NNS ._.
+There_EX are_VBP only_RB a_DT few_JJ research_NN groups_NNS that_WDT have_VBP investigated_VBN these_DT schema-based_JJ P2P_NN networks_NNS so_RB far_RB ._.
+In_IN our_PRP$ group_NN we_PRP have_VBP been_VBN working_VBG on_IN a_DT schema-based_JJ network_NN called_VBN Edutella_NNP =_SYM -_: =[_NN 11_CD -_: =-]_CD -LRB-_-LRB- see_VB http:\/\/edutella.jxta.org_NN for_IN the_DT source_NN code_NN -RRB-_-RRB- ,_, which_WDT aims_VBZ at_IN providing_VBG access_NN to_TO distributed_VBN collections_NNS of_IN digital_JJ resources_NNS through_IN a_DT P2P_NN network_NN ._.
+Resources_NNP in_IN the_DT Edutella_NNP network_NN are_VBP not_RB de_IN
+The_DT introduction_NN of_IN super-peers_NNS in_IN combination_NN with_IN routing_VBG indices_NNS reduces_VBZ the_DT workload_NN of_IN peers_NNS significantly_RB by_IN distributing_VBG queries_NNS only_RB to_TO the_DT appropriate_JJ subset_NN of_IN all_DT possible_JJ peers_NNS -LRB-_-LRB- see_VB also_RB =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: who_WP discusses_VBZ routing_VBG indices_NNS based_VBN on_IN various_JJ aggregation_NN strategies_NNS of_IN content_NN indices_NNS -RRB-_-RRB- ._.
+In_IN the_DT next_JJ sections_NNS we_PRP will_MD discuss_VB these_DT routing_VBG indices_NNS in_IN more_JJR detail_NN ._.
+2.1_CD Routing_VBG Super-Peer-Peer_FW Queri_FW
+ters_NNS ._.
+As_IN query_NN characteristics_NNS in_IN a_DT large_JJ and_CC possibly_RB heterogeneous_JJ P2P_NN network_NN can_MD not_RB be_VB defined_VBN in_IN advance_NN ,_, we_PRP propose_VBP to_TO use_VB frequency_NN counting_NN algorithms_NNS on_IN streams_NNS such_JJ as_IN the_DT ones_NNS discussed_VBN in_IN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: to_TO identify_VB the_DT most_RBS commonly_RB used_VBN schemas_NNS ,_, properties_NNS and_CC sets_NNS of_IN properties_NNS in_IN the_DT sent_VBN queries_NNS ._.
+This_DT means_VBZ that_IN we_PRP have_VBP to_TO add_VB a_DT frequency_NN property_NN in_IN our_PRP$ SP\/SP_NN routing_VBG indices_NNS ,_, that_IN we_PRP focus_VBP on_IN i_FW
+only_RB to_TO peers_NNS which_WDT support_VBP the_DT schemas_NNS used_VBN in_IN the_DT query_NN ._.
+Super-peer_JJR #_# $_$ s_NN ¥_NN will_MD forward_RB the_DT sample_NN query_NN to_TO attached_JJ peers_NNS which_WDT use_VBP DC_NN and_CC LOM_NN to_TO annotate_VB resources_NNS -LRB-_-LRB- peers_NNS ¦_NNP ¥_NNP in_IN Figure_NNP 3_CD -RRB-_-RRB- ._.
+Media_NNP =_SYM -_: =_JJ tion_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- -_: =_SYM -_: between_IN different_JJ schemas_NNS will_MD be_VB supported_VBN at_IN the_DT super-peer_JJ level_NN ,_, we_PRP discuss_VBP how_WRB it_PRP can_MD be_VB supported_VBN in_IN subsection_NN 2.4_CD ._.
+Property\/Sets_NNS of_IN Properties_NNP Index_NNP ._.
+Peers_NNS might_MD choose_VB to_TO use_VB only_JJ parts_NNS of_IN -LRB-_-LRB-
+the_DT peer_VBP ._.
+As_IN this_DT may_MD involve_VB quite_RB a_DT large_JJ amount_NN of_IN metadata_NN ,_, we_PRP build_VBP upon_IN the_DT schema-based_JJ approaches_NNS which_WDT have_VBP successfully_RB been_VBN used_VBN in_IN the_DT context_NN of_IN mediator-based_JJ information_NN systems_NNS -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+To_TO ensure_VB that_IN the_DT indices_NNS are_VBP always_RB up-to-date_JJ ,_, peers_NNS notify_VBP super-peers_NNS when_WRB their_PRP$ content_NN changes_NNS in_IN ways_NNS that_WDT trigger_VBP an_DT update_VB of_IN the_DT index_NN ._.
+For_IN example_NN ,_, if_IN a_DT peer_VB had_VBD announced_VBN that_IN it_PRP uses_VBZ
+he_PRP last_JJ years_NNS ,_, and_CC P2P_NN networks_NNS have_VBP evolved_VBN from_IN simple_JJ systems_NNS like_IN Napster_NNP and_CC Gnutella_NNP to_TO more_RBR sophisticated_JJ ones_NNS based_VBN on_IN distributed_VBN indices_NNS -LRB-_-LRB- e.g._FW distributed_VBN hash_JJ tables_NNS -RRB-_-RRB- such_JJ as_IN CAN_NN and_CC CHORD_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+Still_RB ,_, while_IN these_DT new_JJ systems_NNS do_VBP provide_VB more_RBR efficient_JJ topologies_NNS than_IN early_JJ P2P_NN networks_NNS ,_, they_PRP neither_DT address_NN more_RBR complex_JJ metadata_NN sets_NNS nor_CC do_VBP they_PRP support_VB more_RBR complex_JJ queries_NNS ._.
+In_IN the_DT
+ears_NNS ,_, and_CC P2P_NN networks_NNS have_VBP evolved_VBN from_IN simple_JJ systems_NNS like_IN Napster_NNP and_CC Gnutella_NNP to_TO more_RBR sophisticated_JJ ones_NNS based_VBN on_IN distributed_VBN indices_NNS -LRB-_-LRB- e.g._FW distributed_VBN hash_JJ tables_NNS -RRB-_-RRB- such_JJ as_IN CAN_NN and_CC CHORD_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Still_RB ,_, while_IN these_DT new_JJ systems_NNS do_VBP provide_VB more_RBR efficient_JJ topologies_NNS than_IN early_JJ P2P_NN networks_NNS ,_, they_PRP neither_DT address_NN more_RBR complex_JJ metadata_NN sets_NNS nor_CC do_VBP they_PRP support_VB more_RBR complex_JJ queries_NNS ._.
+In_IN the_DT Semantic_NNP

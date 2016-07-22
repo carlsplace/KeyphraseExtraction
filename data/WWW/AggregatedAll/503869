@@ -1,0 +1,56 @@
+SCTP_NN :_: an_DT innovative_JJ transport_NN layer_NN protocol_NN for_IN the_DT web_NN
+We_PRP propose_VBP using_VBG the_DT Stream_NNP Control_NNP Transmission_NNP Protocol_NNP -LRB-_-LRB- SCTP_NN -RRB-_-RRB- ,_, a_DT recent_JJ IETF_NN transport_NN layer_NN protocol_NN ,_, for_IN reliable_JJ web_NN transport_NN ._.
+Although_IN TCP_NNP has_VBZ traditionally_RB been_VBN used_VBN ,_, we_PRP argue_VBP that_IN SCTP_NN better_RB matches_VBZ the_DT needs_NNS of_IN HTTP-based_JJ network_NN applications_NNS ._.
+This_DT position_NN paper_NN discusses_VBZ SCTP_NN features_NNS that_WDT address_VBP :_: -LRB-_-LRB- i_LS -RRB-_-RRB- head-of-line_JJ blocking_NN within_IN a_DT single_JJ TCP_NN connection_NN ,_, -LRB-_-LRB- ii_LS -RRB-_-RRB- vulnerability_NN to_TO network_NN failures_NNS ,_, and_CC -LRB-_-LRB- iii_LS -RRB-_-RRB- vulnerability_NN to_TO denial-of-service_JJ SYN_NN attacks_NNS ._.
+We_PRP discuss_VBP our_PRP$ experience_NN in_IN modifying_VBG the_DT Apache_NNP server_NN and_CC the_DT Firefox_NNP browser_NN to_TO benefit_VB from_IN SCTP_NNP ,_, and_CC demonstrate_VB our_PRP$ HTTP_NN over_IN SCTP_NN design_NN via_IN simple_JJ experiments_NNS ._.
+We_PRP also_RB discuss_VBP the_DT benefits_NNS of_IN using_VBG SCTP_NN in_IN other_JJ web_NN domains_NNS through_IN two_CD example_NN scenarios_NNS ?_.
+multiplexing_VBG user_NN requests_NNS ,_, and_CC multiplexing_VBG resource_NN access_NN ._.
+Finally_RB ,_, we_PRP highlight_VBP several_JJ SCTP_NN features_NNS that_WDT will_MD be_VB valuable_JJ to_TO the_DT design_NN and_CC implementation_NN of_IN current_JJ HTTP-based_JJ client-server_NN applications_NNS ._.
+thors_NNS have_VBP detected_VBN problems_NNS in_IN some_DT circumstances_NNS and_CC proposed_VBN solutions_NNS ._.
+Other_JJ works_NNS study_VBP applications_NNS of_IN SCTP_NN beyond_IN its_PRP$ original_JJ purpose_NN of_IN signalling_NN transport_NN ,_, such_JJ as_IN HTTP_NN transport_NN over_IN SCTP_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: and_CC mobility_NN management_NN at_IN the_DT transport_NN layer_NN based_VBN on_IN multi-homing_JJ plus_NN extensions_NNS for_IN dynamic_JJ address_NN reconfiguration_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+The_DT configuration_NN of_IN process_NN redundancy_NN mechanisms_NNS in_IN M3UA_NN is_VBZ touched_VBN up_RP
+Aggressive_JJ behavior_NN during_IN congestion_NN :_: TCP_NN 's_POS algorithms_NNS maintain_VBP fairness_NN among_IN TCP_NN -LRB-_-LRB- and_CC TCP-like_JJ -RRB-_-RRB- connections_NNS ._.
+A_DT TCP_NN sender_NN reduces_VBZ its_PRP$ congestion_NN window_NN by_IN half_NN when_WRB network_NN congestion_NN is_VBZ detected_VBN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT reduction_NN is_VBZ a_DT well_RB understood_VBN and_CC recommended_VBN procedure_NN for_IN maintaining_VBG stability_NN and_CC fairness_NN in_IN the_DT network_NN -LRB-_-LRB- 18,19_CD -RRB-_-RRB- ._.
+An_DT application_NN using_VBG multiple_JJ TCP_NN connections_NNS gets_VBZ an_DT unfair_JJ share_NN of_IN the_DT
+ort_NN and_CC network_NN layers_NNS which_WDT aggregates_NNS congestion_NN control_NN at_IN the_DT end_NN host_NN ,_, thereby_RB enforcing_VBG a_DT fair_JJ sending_VBG rate_NN when_WRB an_DT application_NN uses_VBZ multiple_JJ TCP_NN connections_NNS to_TO the_DT same_JJ end_NN host_NN ._.
+``_`` TCP_NN Session_NN ''_'' =_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: proposes_VBZ integrated_JJ loss_NN recovery_NN across_IN multiple_JJ TCP_NN connections_NNS to_TO the_DT same_JJ web_NN client_NN -LRB-_-LRB- these_DT multiple_JJ TCP_NN connections_NNS are_VBP together_RB referred_VBN to_TO as_IN a_DT TCP_NN session_NN -RRB-_-RRB- ._.
+All_DT TCP_NNP connections_NNS within_IN a_DT sessi_NN
+SCTP_NN association_NN alive_JJ through_IN failover_NN to_TO alternate_JJ destination_NN A2_NN ,_, and_CC allows_VBZ the_DT end_NN host_NN applications_NNS to_TO continue_VB communicating_VBG seamlessly_RB ._.
+Ongoing_JJ research_NN on_IN Concurrent_JJ Multipath_NN Transfer_NN -LRB-_-LRB- CMT_NN -RRB-_-RRB- =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, proposes_VBZ to_TO use_VB multihoming_JJ for_IN parallel_JJ load_NN sharing_NN ._.
+During_IN scenarios_NNS where_WRB multiple_JJ active_JJ interfaces_NNS between_IN source_NN and_CC destination_NN connect_VBP through_IN independent_JJ paths_NNS ,_, CMT_NNP simultaneously_RB uses_VBZ the_DT
+liably_RB using_VBG SCTP_NNP 's_POS unordered_JJ service_NN ._.
+•_FW SCTP_FW shim_FW layer_NN :_: To_TO encourage_VB application_NN developers_NNS and_CC end_NN users_NNS to_TO widely_RB adopt_VB SCTP_NN and_CC leverage_NN its_PRP$ benefits_NNS ,_, a_DT TCP-to-SCTP_NN shim_NN layer_NN has_VBZ been_VBN developed_VBN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT shim_NN is_VBZ a_DT proof_NN of_IN concept_NN and_CC translates_VBZ application_NN level_NN TCP_NN system_NN calls_VBZ into_IN corresponding_JJ SCTP_NN calls_NNS ._.
+By_IN using_VBG such_PDT a_DT shim_NN layer_NN ,_, a_DT legacy_NN TCP-based_JJ web_NN application_NN can_MD communicate_VB using_VBG S_NN
+also_RB been_VBN significant_JJ interest_NN in_IN designing_VBG new_JJ transport_NN and_CC session_NN protocols_NNS that_WDT better_RB suit_VBP the_DT needs_NNS of_IN HTTP-based_JJ client-server_JJ applications_NNS than_IN TCP_NNP ._.
+Several_JJ experts_NNS agree_VBP -LRB-_-LRB- for_IN instance_NN ,_, see_VBP =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =--RRB-_NN that_IN the_DT best_JJS transport_NN scheme_NN for_IN HTTP_NNP would_MD be_VB one_CD that_WDT supports_VBZ datagrams_NNS ,_, provides_VBZ TCP_NNP compatible_JJ congestion_NN control_NN on_IN the_DT entire_JJ datagram_NN flow_NN ,_, and_CC facilitates_VBZ concurrency_NN in_IN GET_VB requests_NNS ._.
+Web_NN
+pplications_NNS on_IN mobile_JJ phones_NNS ,_, increased_VBN HOL_NN blocking_NN will_MD cause_VB significant_JJ user-perceived_JJ delays_NNS ._.
+To_TO alleviate_VB HOL_NN blocking_NN ,_, web_NN browsers_NNS usually_RB open_VBP multiple_JJ TCP_NN connections_NNS to_TO the_DT same_JJ web_NN server_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+All_DT HTTP_NNS GET_VBP requests_NNS to_TO the_DT server_NN are_VBP distributed_VBN among_IN these_DT connections_NNS ,_, avoiding_VBG HOL_NN blocking_NN between_IN the_DT corresponding_JJ responses_NNS ._.
+However_RB ,_, multiple_JJ independent_JJ objects_NNS transferred_VBN within_IN one_CD o_NN
+ork_NN Failures_NNS Critical_JJ web_NN servers_NNS rely_VBP on_IN redundancy_NN at_IN multiple_JJ levels_NNS to_TO provide_VB uninterrupted_JJ service_NN during_IN resource_NN failures_NNS ._.
+A_DT host_NN is_VBZ multihomed_VBN if_IN it_PRP can_MD be_VB addressed_VBN by_IN multiple_JJ IP_NNP addresses_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Multihoming_VBG a_DT web_NN server_NN offers_VBZ redundancy_NN at_IN the_DT network_NN layer_NN ,_, provided_VBN that_IN the_DT web_NN server_NN remains_VBZ accessible_JJ even_RB when_WRB one_CD of_IN its_PRP$ IP_NNP addresses_NNS becomes_VBZ unreachable_JJ ,_, say_VBP due_JJ to_TO an_DT interface_NN or_CC lin_NN
+ork_NN Failures_NNS Critical_JJ web_NN servers_NNS rely_VBP on_IN redundancy_NN at_IN multiple_JJ levels_NNS to_TO provide_VB uninterrupted_JJ service_NN during_IN resource_NN failures_NNS ._.
+A_DT host_NN is_VBZ multihomed_VBN if_IN it_PRP can_MD be_VB addressed_VBN by_IN multiple_JJ IP_NNP addresses_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Multihoming_VBG a_DT web_NN server_NN offers_VBZ redundancy_NN at_IN the_DT network_NN layer_NN ,_, provided_VBN that_IN the_DT web_NN server_NN remains_VBZ accessible_JJ even_RB when_WRB one_CD of_IN its_PRP$ IP_NNP addresses_NNS becomes_VBZ unreachable_JJ ,_, say_VBP due_JJ to_TO an_DT interface_NN or_CC lin_NN
+ransfers_NNS ,_, making_VBG SCTP_NN a_DT better_JJR choice_NN for_IN web_NN transport_NN ._.
+SCTP_NN was_VBD originally_RB designed_VBN within_IN the_DT IETF_NNP SIGTRAN_NNP working_VBG group_NN to_TO address_VB the_DT shortcomings_NNS of_IN TCP_NN for_IN telephony_NN signaling_NN over_IN IP_NNP networks_NNS =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+SCTP_NN has_VBZ since_IN evolved_VBN into_IN a_DT general_JJ purpose_NN IETF_NN transport_NN protocol_NN ,_, and_CC is_VBZ well_RB beyond_IN a_DT laboratory_JJ research_NN project_NN ._.
+More_JJR than_IN 25_CD SCTP_NN implementations_NNS currently_RB exist_VBP ,_, including_VBG kernel_NN implement_VB
+der_NN reduces_VBZ its_PRP$ congestion_NN window_NN by_IN half_NN when_WRB network_NN congestion_NN is_VBZ detected_VBN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+This_DT reduction_NN is_VBZ a_DT well_RB understood_VBN and_CC recommended_VBN procedure_NN for_IN maintaining_VBG stability_NN and_CC fairness_NN in_IN the_DT network_NN =_JJ -_: =[_FW 18,19_FW -RRB-_-RRB- -_: =_SYM -_: ._.
+An_DT application_NN using_VBG multiple_JJ TCP_NN connections_NNS gets_VBZ an_DT unfair_JJ share_NN of_IN the_DT available_JJ bandwidth_NN in_IN the_DT path_NN ,_, since_IN all_DT of_IN the_DT application_NN 's_POS TCP_NN connections_NNS may_MD not_RB suffer_VB loss_NN when_WRB there_EX is_VBZ congestion_NN
+g._NNS Using_VBG multiple_JJ TCP_NN connections_NNS for_IN transferring_VBG a_DT single_JJ application_NN 's_POS data_NNS introduces_VBZ many_JJ negative_JJ consequences_NNS for_IN both_CC the_DT application_NN and_CC the_DT network_NN ._.
+Previous_JJ work_NN such_JJ as_IN Congestion_NN Manager_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Transaction_NN TCP_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- analyze_VBP these_DT consequences_NNS in_IN depth_NN ,_, which_WDT we_PRP summarize_VBP :_: •_CD Aggressive_JJ behavior_NN during_IN congestion_NN :_: TCP_NN 's_POS algorithms_NNS maintain_VBP fairness_NN among_IN TCP_NN -LRB-_-LRB- and_CC TCP-like_JJ -RRB-_-RRB- connections_NNS ._.
+A_DT T_NN
+fer_NN loss_NN when_WRB there_EX is_VBZ congestion_NN in_IN the_DT transmission_NN path_NN ._.
+If_IN m_NN of_IN the_DT n_NN open_JJ TCP_NN connections_NNS suffer_VBP loss_NN ,_, the_DT multiplicative_JJ decrease_NN factor_NN for_IN the_DT connection_NN aggregate_NN at_IN the_DT sender_NN is_VBZ -LRB-_-LRB- 1_CD -_: m\/2n_NN -RRB-_-RRB- =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT decrease_NN factor_NN is_VBZ often_RB greater_JJR than_IN one-half_NN ,_, and_CC therefore_RB an_DT application_NN using_VBG parallel_JJ connections_NNS is_VBZ considered_VBN an_DT aggressive_JJ sender_NN ._.
+This_DT aggressive_JJ behavior_NN leads_VBZ to_TO consumption_NN of_IN an_DT u_NN
+istreaming_NN avoids_VBZ HOL_NN blocking_NN ._.
+The_DT experiment_NN topology_NN ,_, shown_VBN in_IN Figure_NNP 4_CD ,_, uses_VBZ three_CD nodes_NNS :_: a_DT custom_NN web_NN client_NN -LRB-_-LRB- FreeBSD_NN 5.4_CD -RRB-_-RRB- and_CC an_DT Apache_NNP server_NN -LRB-_-LRB- FreeBSD_NN 5.4_CD -RRB-_-RRB- connected_VBN by_IN Dummynet_NN -LRB-_-LRB- FreeBSD_NN 4.10_CD -RRB-_-RRB- =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Dummynet_NNP 's_POS traffic_NN shaper_NN configures_VBZ a_DT 56Kbps_FW duplex_FW link_NN ,_, with_IN a_DT queue_NN size_NN of_IN 50KB_NN and_CC zero_NN added_VBD propagation_NN delay_NN between_IN client_NN and_CC server_NN ._.
+This_DT link_NN has_VBZ no_DT loss_NN in_IN the_DT direction_NN from_IN client_NN to_TO

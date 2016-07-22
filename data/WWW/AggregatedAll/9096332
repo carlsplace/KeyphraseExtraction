@@ -1,0 +1,293 @@
+Efficient_JJ similarity_NN joins_VBZ for_IN near_IN duplicate_VB detection_NN
+With_IN the_DT increasing_VBG amount_NN of_IN data_NNS and_CC the_DT need_NN to_TO integrate_VB data_NNS from_IN multiple_JJ data_NNS sources_NNS ,_, a_DT challenging_JJ issue_NN is_VBZ to_TO find_VB near_IN duplicate_VBP records_NNS efficiently_RB ._.
+In_IN this_DT paper_NN ,_, we_PRP focus_VBP on_IN efficient_JJ algorithms_NNS to_TO find_VB pairs_NNS of_IN records_NNS such_JJ that_IN their_PRP$ similarities_NNS are_VBP above_IN a_DT given_VBN threshold_NN ._.
+Several_JJ existing_VBG algorithms_NNS rely_VBP on_IN the_DT prefix_NN filtering_VBG principle_NN to_TO avoid_VB computing_NN similarity_NN values_NNS for_IN all_DT possible_JJ pairs_NNS of_IN records_NNS ._.
+We_PRP propose_VBP new_JJ filtering_VBG techniques_NNS by_IN exploiting_VBG the_DT ordering_VBG information_NN ;_: they_PRP are_VBP integrated_VBN into_IN the_DT existing_VBG methods_NNS and_CC drastically_RB reduce_VB the_DT candidate_NN sizes_NNS and_CC hence_RB improve_VB the_DT efficiency_NN ._.
+Experimental_JJ results_NNS show_VBP that_IN our_PRP$ proposed_VBN algorithms_NNS can_MD achieve_VB up_IN to_TO 2.6_CD x_NN -_: 5x_NN speed-up_NN over_IN previous_JJ algorithms_NNS on_IN several_JJ real_JJ datasets_NNS and_CC provide_VB alternative_JJ solutions_NNS to_TO the_DT near_JJ duplicate_VB Web_NN page_NN detection_NN problem_NN ._.
+ity_NN join_VB -LRB-_-LRB- SSJoin_NN -RRB-_-RRB- -LRB-_-LRB- 31_CD ,_, 10_CD -RRB-_-RRB- are_VBP relevant_JJ to_TO our_PRP$ proposal_NN ._.
+Optimization_NN techniques_NNS developed_VBN in_IN the_DT literature_NN -LRB-_-LRB- e.g._FW ,_, size_NN filtering_VBG -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, prefix_NN filtering_VBG -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, order_NN filtering_VBG -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, or_CC suffix_NN filtering_VBG =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =--RRB-_NN can_MD be_VB applied_VBN to_TO the_DT RL_NN problem_NN -LRB-_-LRB- and_CC thus_RB to_TO our_PRP$ techniques_NNS -RRB-_-RRB- when_WRB the_DT threshold_NN model_NN is_VBZ used_VBN for_IN measuring_VBG similarities_NNS -LRB-_-LRB- as_IN opposed_VBN to_TO the_DT top-k_NN model_NN -RRB-_-RRB- ._.
+In_IN a_DT sense_NN ,_, all_PDT these_DT optimization_NN techniqu_NN
+appear_VB in_IN Hadjieleftheriou_NNP et_FW al._FW -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Similar_JJ observations_NNS using_VBG Lp-norms_JJ -LRB-_-LRB- in_IN a_DT more_RBR general_JJ context_NN -RRB-_-RRB- have_VBP been_VBN made_VBN by_IN Bayardo_NNP et_FW al._FW -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Lp-norm_NN based_VBN filtering_VBG has_VBZ also_RB been_VBN used_VBN by_IN Xiao_NNP et_FW al._FW =_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT detailed_JJ analysis_NN of_IN threshold_NN based_VBN algorithms_NNS is_VBZ conducted_VBN by_IN Fagin_NNP et_FW al._FW -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Improved_VBN termination_NN conditions_NNS for_IN these_DT algorithms_NNS are_VBP discussed_VBN by_IN Sarawagi_NNP and_CC Kirpal_NNP -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, Bayardo_NNP et_FW al._FW -LRB-_-LRB- 3_CD -RRB-_-RRB-
+o_NN this_DT threshold_NN ._.
+Additional_JJ attribute-level_JJ similarity_NN thresholds_NNS can_MD optionally_RB be_VB specified_VBN for_IN each_DT attribute_NN pair_NN that_WDT should_MD be_VB considered_VBN in_IN the_DT computation_NN of_IN the_DT entity_NN similarity_NN ._.
+-_: PPJoin_NN +_CC =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT single-attribute_JJ match_NN approach_NN -LRB-_-LRB- similarity_NN join_VB -RRB-_-RRB- using_VBG sophisticated_JJ filtering_VBG techniques_NNS for_IN improved_VBN efficiency_NN ._.
+The_DT approach_NN has_VBZ two_CD parameters_NNS that_WDT need_VBP to_TO be_VB configured_VBN ._.
+The_DT parameter_NN func_NN
+e_LS filters_NNS ,_, which_WDT can_MD decrease_VB the_DT number_NN of_IN candidate_NN pairs_NNS whose_WP$ similarity_NN needs_VBZ to_TO be_VB verified_VBN ._.
+In_IN the_DT past_JJ few_JJ years_NNS ,_, there_EX have_VBP been_VBN several_JJ studies_NNS involving_VBG a_DT technique_NN called_VBN prefix_NN filtering_VBG =_JJ -_: =[_NN 6_CD ,_, 4_CD ,_, 29_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT is_VBZ based_VBN on_IN the_DT pigeonhole_NN principle_NN and_CC works_VBZ as_IN follows_VBZ ._.
+The_DT tokens_NNS of_IN strings_NNS are_VBP ordered_VBN based_VBN on_IN a_DT global_JJ token_JJ ordering_VBG ._.
+For_IN each_DT string_NN ,_, we_PRP define_VBP its_PRP$ prefix_NN of_IN length_NN n_NN as_IN the_DT first_JJ n_NN
+real_JJ and_CC synthetic_JJ data_NNS ._.
+1_CD ._.
+INTRODUCTION_NN Recently_RB ,_, set_VBN similarity_NN join_VB has_VBZ become_VBN an_DT increasingly_RB important_JJ tool_NN in_IN many_JJ real-world_JJ applications_NNS such_JJ as_IN data_NN cleaning_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, near_IN duplication_NN detection_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, data_NNS integration_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, and_CC so_RB on_RB ._.
+As_IN an_DT example_NN ,_, in_IN the_DT application_NN of_IN detecting_VBG near_RB duplicate_VB Web_NN pages_NNS -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, each_DT Web_NN page_NN contains_VBZ a_DT set_NN of_IN tokens_NNS -LRB-_-LRB- such_JJ as_IN words_NNS or_CC shingles_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- -RRB-_-RRB- ,_, and_CC the_DT simila_NN
+rity_NN join_VB -LRB-_-LRB- SSJoin_NN -RRB-_-RRB- -LRB-_-LRB- 78_CD ,_, 18_CD -RRB-_-RRB- are_VBP relevant_JJ to_TO this_DT thesis_NN ._.
+Optimization_NN techniques_NNS developed_VBN in_IN the_DT literature_NN -LRB-_-LRB- e.g._FW ,_, size_NN filtering_VBG -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, prefix_NN filtering_VBG -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, order_NN filtering_VBG -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, or_CC suffix_NN filtering_VBG =_JJ -_: =[_NN 95_CD -RRB-_-RRB- -_: =--RRB-_NN can_MD be_VB applied_VBN to_TO the_DT RL_NN problem_NN when_WRB the_DT threshold_NN model_NN is_VBZ used_VBN for_IN measuring_VBG similarities_NNS ._.
+In_IN a_DT sense_NN ,_, all_PDT these_DT optimization_NN techniques_NNS aim_VBP at_IN reducing_VBG the_DT size_NN of_IN clusters_NNS via_IN more_JJR sophisticate_NN
+res_NNS such_JJ as_IN ease_NN of_IN use_NN and_CC high_JJ fault-tolerance_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, and_CC it_PRP has_VBZ been_VBN widely_RB adopted_VBN in_IN the_DT industry_NN ._.
+The_DT technical_JJ contribution_NN in_IN this_DT demo_NN is_VBZ the_DT non-trivial_JJ generalization_NN of_IN our_PRP$ PPJoin_NN algorithm_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: into_IN the_DT MapReduce_NNP framework_NN ._.
+2_CD ._.
+SYSTEM_NNP OVERVIEW_NNP In_IN this_DT section_NN ,_, we_PRP describe_VBP the_DT proposed_VBN system_NN MapDupReducer_NNP ._.
+First_RB ,_, we_PRP give_VBP the_DT architecture_NN of_IN MapDupReducer_NNP ._.
+Then_RB ,_, we_PRP present_VBP the_DT technical_JJ suppo_NN
+ark_RB duplicate_VB links_NNS in_IN their_PRP$ pages_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+Besides_IN leveraging_VBG the_DT supports_NNS from_IN webmasters_NNS ,_, intensiveresearcheffortshavebeendevotedinrecentyearstopursue_JJ automatic_JJ de-duping_JJ solutions_NNS ,_, from_IN both_DT academia_NN =_JJ -_: =[_NN 7_CD ,_, 10,12,18_CD -RRB-_-RRB- -_: =_JJ -_: and_CC industry_NN -LRB-_-LRB- 4,13_CD --_: 16_CD -RRB-_-RRB- ._.
+According_VBG to_TO the_DT methodologies_NNS ,_, most_JJS of_IN the_DT current_JJ de-duping_JJ technologies_NNS can_MD be_VB classified_VBN into_IN two_CD categories_NNS :_: content-based_JJ de-duping_JJ and_CC URL-based_JJ de-duping_NN ._.
+Content-base_NN
+larity_NN measure_NN is_VBZ non-trivial_JJ ._.
+In_IN the_DT text_NN retrieval_NN community_NN ,_, methods_NNS based_VBN on_IN prefixfiltering_NN have_VBP been_VBN developed_VBN for_IN ǫ-NN_NN graph_NN construction_NN ,_, a.k.a._VBP all_DT pairs_NNS similarity_NN search_NN or_CC similarity_NN join_VBP =_JJ -_: =[_NN 2_CD ,_, 22_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+An_DT ǫ-NN_NN graph_NN is_VBZ different_JJ from_IN a_DT K-NNG_NN in_IN that_DT undirected_JJ edges_NNS are_VBP established_VBN between_IN all_DT pairs_NNS of_IN points_NNS with_IN a_DT similarity_NN above_IN ǫ_NN ._.
+These_DT methods_NNS are_VBP efficient_JJ with_IN a_DT tight_JJ similarity_NN threshold_NN ,_,
+ctors_NNS make_VBP TFIDF_NN useful_JJ in_IN many_JJ practically_RB important_JJ settings_NNS ,_, and_CC perhaps_RB explains_VBZ why_WRB it_PRP -LRB-_-LRB- and_CC similar_JJ token-based_JJ similarity_NN metrics_NNS -RRB-_-RRB- have_VBP been_VBN the_DT focus_NN of_IN much_JJ recent_JJ work_NN on_IN ``_`` soft_JJ joins_VBZ ''_'' -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 2_CD ,_, 23_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, although_IN TFIDF_NN 's_POS efficiency_NN and_CC scalability_NN make_VBP it_PRP ideal_JJ for_IN many_JJ large-scale_JJ problems_NNS ,_, TFIDF_NN does_VBZ not_RB exploit_VB all_PDT the_DT information_NN in_IN all_DT large_JJ data_NNS collections_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP conside_VBP
+not_RB provide_VB a_DT sitemap_NN file_NN because_IN of_IN its_PRP$ usercentered_JJ nature_NN ,_, each_DT user_NN has_VBZ her_PRP$ own_JJ ``_`` sitemap_NN ''_'' instead_RB of_IN a_DT global_JJ sitemap_NN ._.
+Content-based_JJ near-duplicate_JJ webpage_NN detection_NN has_VBZ been_VBN studied_VBN previously_RB =_JJ -_: =[_NN 23_CD ,_, 28_CD ,_, 41_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT techniques_NNS detect_VBP and_CC remove_VBP near-duplicate_JJ webpages_NNS after_IN they_PRP have_VBP been_VBN downloaded_VBN from_IN the_DT Web_NN ._.
+Recent_JJ work_NN -LRB-_-LRB- 6_CD ,_, 16_CD -RRB-_-RRB- aims_VBZ to_TO learn_VB URL_NN rewrite_VBP or_CC transformation_NN rules_NNS such_JJ that_IN webpages_NNS with_IN
+l_NN constrained_VBD clustering_NN approach_NN to_TO detect_VB near-duplicated_JJ documents_NNS ._.
+Similarity_NN join_VB algorithms_NNS in_IN the_DT database_NN are_VBP used_VBN to_TO find_VB pairs_NNS of_IN records_NNS whose_WP$ similarity_NN scores_NNS are_VBP above_IN a_DT given_VBN threshold_NN =_JJ -_: =[_NN 23_CD ,_, 9_CD ,_, 40_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+-LRB-_-LRB- 9_CD -RRB-_-RRB- presents_VBZ algorithms_NNS for_IN computing_VBG exact_JJ set-similarity_NN joins_VBZ by_IN converting_VBG the_DT similarity_NN threshold_NN to_TO a_DT threshold_NN on_IN Hamming_VBG distance_NN ._.
+-LRB-_-LRB- 23_CD -RRB-_-RRB- exploited_VBD q-grams_NN to_TO find_VB similar_JJ string_NN pairs_NNS in_IN the_DT
+e_LS inverted_JJ index_NN that_WDT maps_VBZ each_DT dimension_NN to_TO a_DT list_NN of_IN data_NNS records_NNS having_VBG a_DT non-zero_JJ projection_NN along_IN that_DT dimension_NN ._.
+Existing_VBG solutions_NNS for_IN AP_NNP SS_NNP are_VBP all_DT limited_VBN to_TO serial_JJ algorithms_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+The_DT compute_VBP -_: and_CC dataintensive_JJ nature_NN of_IN AP_NNP SS_NNP is_VBZ a_DT rate_NN limiting_VBG factor_NN for_IN the_DT AP_NN SS_NN applicability_NN to_TO large-scale_JJ real-world_JJ problems_NNS and_CC calls_VBZ for_IN alternative_JJ approaches_NNS ._.
+Processor_NN cloc_NN
+Inverted_JJ Indexes_NNS Hadjieleftheriou_NNP et_FW al._FW -LRB-_-LRB- 33_CD -RRB-_-RRB- introduced_VBD further_JJ optimizations_NNS for_IN the_DT special_JJ case_NN of_IN Cosine_NNP similarity_NN ._.
+Lp-norm_NN based_VBN filtering_VBG has_VBZ also_RB been_VBN used_VBN by_IN Li_NNP et_FW al._FW -LRB-_-LRB- 48_CD -RRB-_-RRB- and_CC Xiao_NNP et_FW al._FW =_SYM -_: =[_NN 75_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT detailed_JJ analysis_NN of_IN threshold_NN based_VBN algorithms_NNS is_VBZ conducted_VBN by_IN Fagin_NNP et_FW al._FW -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+Improved_VBN termination_NN conditions_NNS for_IN these_DT algorithms_NNS are_VBP discussed_VBN by_IN Sarawagi_NNP and_CC Kirpal_NNP -LRB-_-LRB- 60_CD -RRB-_-RRB- ,_, Bayardo_NNP et_FW al._FW -LRB-_-LRB- 1_CD
+in_IN ''_'' -RRB-_-RRB- operation_NN of_IN multiple_JJ lists_NNS requires_VBZ more_RBR efficient_JJ indexes_NNS and_CC algorithms_NNS ._.
+Approximate_JJ string_NN search_NN and_CC similarity_NN join_VBP :_: There_EX have_VBP been_VBN recent_JJ studies_NNS to_TO support_VB efficient_JJ fuzzy_JJ string_NN search_NN =_JJ -_: =[_NN 2_CD ,_, 11,12,14,21,22,29,32,36,37,62,65_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Many_JJ algorithms_NNS use_VBP grams_NNS for_IN efficient_JJ fuzzy_JJ string_NN search_NN ._.
+A_DT gram_NN of_IN a_DT string_NN is_VBZ a_DT substring_NN that_WDT can_MD be_VB used_VBN as_IN a_DT signature_NN for_IN efficient_JJ search_NN ._.
+These_DT algorithms_NNS answer_VBP a_DT fuzzy_JJ query_NN on_IN a_DT collec_NN
+r_NN ,_, wepresent_JJ the_DT core_NN of_IN our_PRP$ approach_NN to_TO parallel_JJ set-similarity_NN join_VB processing_NN ._.
+2.1_CD Set-Similarity_NN Joins_VBZ Set-similarity_NN joins_VBZ on_IN a_DT single_JJ machine_NN have_VBP been_VBN widely_RB studied_VBN in_IN the_DT literature_NN recently_RB =_JJ -_: =[_NN 6_CD ,_, 10_CD ,_, 18_CD ,_, 56_CD ,_, 64_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Inverted-list-based_JJ algorithms_NNS for_IN finding_VBG pairs_NNS of_IN strings_NNS that_WDT share_VBP a_DT certain_JJ number_NN of_IN tokens_NNS in_IN common_JJ have_VBP been_VBN proposed_VBN in_IN -LRB-_-LRB- 56_CD -RRB-_-RRB- ._.
+After_IN such_JJ pairs_NNS are_VBP identified_VBN ,_, they_PRP have_VBP to_TO be_VB verified_VBN usin_NN
+for_IN comparing_VBG English_JJ names_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+Soundex_NNP is_VBZ used_VBN to_TO account_VB for_IN misspellings_NNS due_JJ to_TO similar_JJ pronunciations_NNS ._.
+Jaccard_NN similarities_NNS or_CC cosine_NN similarities_NNS measure_VBP the_DT 2similarity_NN of_IN multi-token_JJ strings_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Similarity_NN functions_NNS can_MD also_RB be_VB weighted_VBN ._.
+A_DT common_JJ heuristic_NN is_VBZ to_TO use_VB the_DT well-known_JJ tf-idf_JJ scheme_NN ._.
+To_TO allow_VB misspellings_NNS ,_, a_DT soft_JJ version_NN of_IN tf-idf_NN is_VBZ proposed_VBN in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, and_CC later_RB extended_VBN in_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+A_DT
+reshold_JJ t_NN if_IN they_PRP have_VBP Sim_NN -LRB-_-LRB- R_NN -LRB-_-LRB- x1_NN -RRB-_-RRB- ,_, R_NN -LRB-_-LRB- x2_NN -RRB-_-RRB- -RRB-_-RRB- ≥_FW t._FW Threshold_NN t_NN is_VBZ in_IN the_DT range_NN of_IN -LRB-_-LRB- 0_CD ..._: 1_LS -RRB-_-RRB- ._.
+Its_PRP$ value_NN depends_VBZ on_IN the_DT application_NN scenario_NN ._.
+For_IN instance_NN ,_, typical_JJ values_NNS for_IN text_NN are_VBP between_IN 0.8_CD and_CC 0.95_CD =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN our_PRP$ application_NN scenarios_NNS ,_, e.g._FW ,_, parallelizing_VBG downloads_NNS ,_, or_CC locating_VBG multimedia_NNS resources_NNS of_IN different_JJ resolutions_NNS -LRB-_-LRB- cf._VBP Section_NNP I_NNP -RRB-_-RRB- ,_, this_DT threshold_NN is_VBZ a_DT fairly_RB stable_JJ system_NN property_NN for_IN each_DT re_NN
+stic_JJ signature_NN methods_NNS In_IN the_DT database_NN community_NN ,_, finding_VBG all_DT pairs_NNS with_IN similarity_NN above_IN a_DT given_VBN threshold_NN is_VBZ sometimes_RB referred_VBN to_TO as_IN a_DT ``_`` similarity_NN join_VB ._. ''_''
+Recent_JJ results_NNS on_IN similarity_NN joins_VBZ include_VBP =_JJ -_: =[_NN 11_CD ,_, 30_CD ,_, 93_CD ,_, 94_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN not_RB always_RB described_VBN in_IN this_DT way_NN ,_, these_DT methods_NNS can_MD be_VB seen_VBN as_IN deterministic_JJ analogs_NNS of_IN the_DT locality-sensitive_JJ hashing_VBG methods_NNS ,_, offering_VBG exact_JJ results_NNS ._.
+The_DT idea_NN is_VBZ to_TO avoid_VB computing_VBG the_DT sim_NN
+l_NN pairs_NNS similarity_NN search_NN problem_NN is_VBZ impressive_JJ :_: clustering_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, semi-supervised_JJ learning_NN -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, information_NN retrieval_NN -LRB-_-LRB- including_VBG text_NN ,_, audio_NN and_CC video_NN -RRB-_-RRB- ,_, query_NN refinement_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, nearduplicate_JJ detection_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_JJ -_: ,_, collaborative_JJ filtering_VBG ,_, link_NN prediction_NN for_IN graphs_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, and_CC 3-D_JJ scene_NN reconstruction_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- among_IN others_NNS ._.
+In_IN many_JJ of_IN these_DT applications_NNS ,_, approximate_JJ solutions_NNS with_IN small_JJ errors_NNS in_IN similarity_NN assessme_NN
+and_CC thus_RB significantly_RB reduce_VB pairwise_JJ computation_NN ._.
+For_IN f_LS -LRB-_-LRB- Ec1_NN ,_, Ec2_NN -RRB-_-RRB- ,_, we_PRP can_MD view_VB the_DT problem_NN as_IN a_DT set_VBN similarity_NN join_VB by_IN the_DT overlap_VBP of_IN two_CD sets_NNS X_NN and_CC Y_NN ._.
+Many_JJ efficient_JJ algorithms_NNS have_VBP been_VBN proposed_VBN =_JJ -_: =[_NN 37_CD ,_, 12_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT order_VBP all_DT sets_NNS based_VBN on_IN the_DT same_JJ ordering_VBG ._.
+Once_RB ordered_VBN ,_, two_CD sets_NNS with_IN high_JJ enough_JJ similarity_NN would_MD share_VB a_DT prefix_NN ,_, and_CC the_DT length_NN of_IN the_DT shared_JJ prefix_NN can_MD be_VB used_VBN to_TO safely_RB prune_VB out_RP class_NN pa_NN
+sed_VBN on_IN translating_VBG complex_JJ link_NN specifications_NNS into_IN a_DT combination_NN of_IN atomic_JJ specifications_NNS via_IN a_DT concatenation_NN of_IN operations_NNS on_IN sets_NNS and_CC filter_NN operations_NNS ._.
+3_LS ._.
+We_PRP use_VBP this_DT method_NN to_TO enable_VB the_DT PPJoin_NN +_CC =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: algorithm_NN to_TO be_VB used_VBN for_IN processing_VBG complex_JJ link_NN specifications_NNS ._.
+4_LS ._.
+We_PRP specify_VBP and_CC evaluate_VBP the_DT HYpersphere_NN aPPrOximation_NN algorithm_NN HYPPO_NN ,_, a_DT fully_RB novel_JJ LD_NN approach_NN designed_VBN to_TO operate_VB on_IN numeric_JJ val_NN
+ny_NN of_IN the_DT unseen_JJ record_NN pairs_NNS ._.
+Top-k_NN similarity_NN join_VBP poses_VBZ several_JJ challenges_NNS to_TO designing_VBG efficient_JJ query_NN processing_NN algorithms_NNS ._.
+Although_IN many_JJ similarity_NN join_VB algorithms_NNS have_VBP been_VBN proposed_VBN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, The_DT University_NNP of_IN New_NNP South_NNP Wales_NNP &_CC NICTA_NNP -LCB-_-LRB- chuanx_NN ,_, weiw_NN ,_, lxue_NN ,_, shangh}@cse.unsw.edu.au_NN their_PRP$ efficiency_NN heavily_RB depends_VBZ on_IN a_DT constant_JJ ,_, given_VBN similarity_NN threshold_NN ,_, and_CC hence_RB they_PRP can_MD not_RB be_VB direc_JJ
+gain_NN further_JJ efficiency_NN ._.
+This_DT algorithm_NN will_MD also_RB serve_VB as_IN a_DT baseline_NN algorithm_NN for_IN comparison_NN in_IN our_PRP$ experiment_NN ._.
+3_LS ._.
+LOCATION-BASED_NNP MISMATCH_NNP FILTERING_NNP AND_NNP ED-JOIN_NN 2_CD Although_IN ppjoin_NN family_NN algorithms_NNS =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN shown_VBN to_TO outperform_VB All-Pairs_NNP ,_, we_PRP do_VBP n't_RB consider_VB them_PRP as_IN the_DT optimizations_NNS used_VBN in_IN -LRB-_-LRB- 34_CD -RRB-_-RRB- are_VBP either_RB made_VBN redundant_JJ by_IN the_DT location-based_JJ mismatch_NN filtering_VBG or_CC not_RB easily_RB extendible_JJ to_TO the_DT ed_VBN
+ctors_NNS make_VBP TFIDF_NN useful_JJ in_IN many_JJ practically_RB important_JJ settings_NNS ,_, and_CC perhaps_RB explains_VBZ why_WRB it_PRP -LRB-_-LRB- and_CC similar_JJ token-based_JJ similarity_NN metrics_NNS -RRB-_-RRB- have_VBP been_VBN the_DT focus_NN of_IN much_JJ recent_JJ work_NN on_IN ``_`` soft_JJ joins_VBZ ''_'' -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 2_CD ,_, 23_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, although_IN TFIDF_NN 's_POS efficiency_NN and_CC scalability_NN make_VBP it_PRP ideal_JJ for_IN many_JJ large-scale_JJ problems_NNS ,_, TFIDF_NN does_VBZ not_RB exploit_VB all_PDT the_DT information_NN in_IN all_DT large_JJ data_NNS collections_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP conside_VBP
+ize_RB ,_, as_IN verified_VBN by_IN our_PRP$ initial_JJ experiments_NNS ._.
+Many_JJ algorithms_NNS have_VBP been_VBN developed_VBN for_IN the_DT problem_NN of_IN approximate_JJ string_NN joins_VBZ based_VBN on_IN various_JJ similarity_NN functions_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_JJ -_: ,_, especially_RB in_IN the_DT context_NN of_IN record_NN linkage_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Some_DT of_IN them_PRP are_VBP proposed_VBN in_IN the_DT context_NN of_IN relational_JJ DBMS_NN systems_NNS ._.
+Severalrecent_JJ papers_NNS focused_VBN on_IN approximate_JJ selection_NN -LRB-_-LRB- or_CC search_NN -RRB-_-RRB- queries_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB-
+netand_RB the_DT growingneed_NN to_TO integratingdata_NN fromheterogeneoussources_NNS ._.
+As_IN aconcrete_NN example_NN ,_, a_DT sizeable_JJ percentage_NN of_IN the_DT Web_NN pages_NNS are_VBP found_VBN to_TO be_VB near-duplicates_JJ by_IN several_JJ studies_NNS -LRB-_-LRB- Broder_NNP et_FW al._FW 1997_CD ;_: =_JJ -_: =_JJ Fetterly_NNP et_FW al._FW 2003_CD -_: =_JJ -_: ;_: Henzinger_NNP 2006_CD -RRB-_-RRB- ._.
+These_DT studies_NNS suggest_VBP that_IN around_IN 1.7_CD %_NN to_TO 7_CD %_NN of_IN the_DT Web_NN pages_NNS visited_VBN by_IN crawlers_NNS are_VBP near_RB duplicate_VB pages_NNS ._.
+Near_IN duplicate_VBP data_NNS bear_VBP high_JJ similarity_NN to_TO each_DT other_JJ ,_, yet_RB they_PRP are_VBP not_RB
+ndependent_JJ hash_JJ functions_NNS ._.
+An_DT alternative_JJ method_NN is_VBZ to_TO use_VB every_DT l-th_NN shingle_NN or_CC shingles_NNS that_WDT satisfy_VBP certain_JJ properties_NNS -LRB-_-LRB- Brin_NNP et_FW al._FW 1995_CD -RRB-_-RRB- ._.
+Manber_NNP considered_VBD finding_VBG similar_JJ files_NNS in_IN a_DT file_NN system_NN -LRB-_-LRB- =_JJ -_: =_JJ Manber_NNP 1994_CD -_: =-]_CD ._.
+The_DT scheme_NN was_VBD improved_VBN by_IN Winnowing_NNP -LRB-_-LRB- Schleimer_NNP et_FW al._FW 2003_CD -RRB-_-RRB- ,_, which_WDT selects_VBZ the_DT q-gram_NN whose_WP$ hash_NN value_NN is_VBZ the_DT minimum_NN within_IN a_DT sliding_VBG window_NN of_IN q-grams_NN ._.
+The_DT Hailstorm_NNP method_NN was_VBD proposed_VBN in_IN -LRB-_-LRB- Hami_NNP
+1994_CD -RRB-_-RRB- ._.
+The_DT scheme_NN was_VBD improved_VBN by_IN Winnowing_NNP -LRB-_-LRB- Schleimer_NNP et_FW al._FW 2003_CD -RRB-_-RRB- ,_, which_WDT selects_VBZ the_DT q-gram_NN whose_WP$ hash_NN value_NN is_VBZ the_DT minimum_NN within_IN a_DT sliding_VBG window_NN of_IN q-grams_NN ._.
+The_DT Hailstorm_NNP method_NN was_VBD proposed_VBN in_IN -LRB-_-LRB- =_JJ -_: =_JJ Hamid_NNP et_FW al._FW 2009_CD -_: =-]_CD which_WDT features_VBZ the_DT total_JJ coverage_NN property_NN ,_, i.e._FW ,_, each_DT token_JJ in_IN the_DT document_NN is_VBZ covered_VBN by_IN at_IN least_JJS one_CD shingle_NN ._.
+Another_DT scheme_NN based_VBN on_IN DCT_NNP -LRB-_-LRB- Discrete_NNP CosineTransformation_NNP -RRB-_-RRB- wasproposedin_NN -LRB-_-LRB- SeoandCroft_NN
+oposed_VBN to_TO further_RB speed_VB up_RP the_DT query_NN processing_NN -LRB-_-LRB- Xiao_NNP et_FW al._FW 2008_CD -RRB-_-RRB- ._.
+Gapped_FW q-gram_FW is_VBZ shown_VBN to_TO have_VB better_RBR filtering_VBG powers_NNS than_IN standard_JJ q-gram_NN ,_, but_CC is_VBZ only_RB suitable_JJ for_IN edit_NN distance_NN threshold_NN of_IN 1_CD -LRB-_-LRB- =_JJ -_: =_JJ Burkhardt_NNP and_CC Kärkkäinen_NNP 2002_CD -_: =-]_CD ._.
+A_DT variable_JJ ACM_NN Transactions_NNS on_IN Database_NNP Systems_NNP ,_, Vol_NNP ._.
+V_NN ,_, No._NN ._.
+N_NN ,_, Article_NN A_NN ,_, Publication_NN date_NN :_: January_NNP YYYY_NNP ._.
+A_DT :38_CD length_NN q-gram_NN was_VBD proposed_VBN in_IN -LRB-_-LRB- Li_NNP et_FW al._FW 2007_CD ;_: Yang_NNP et_FW al._FW 2008_CD -RRB-_-RRB- and_CC was_VBD shown_VBN to_TO spe_VB
+to_TO use_VB every_DT l-th_NN shingle_NN or_CC shingles_NNS that_WDT satisfy_VBP certain_JJ properties_NNS -LRB-_-LRB- Brin_NNP et_FW al._FW 1995_CD -RRB-_-RRB- ._.
+Manber_NNP considered_VBD finding_VBG similar_JJ files_NNS in_IN a_DT file_NN system_NN -LRB-_-LRB- Manber_NNP 1994_CD -RRB-_-RRB- ._.
+The_DT scheme_NN was_VBD improved_VBN by_IN Winnowing_NN -LRB-_-LRB- =_JJ -_: =_JJ Schleimer_NNP et_FW al._FW 2003_CD -_: =-]_NN ,_, which_WDT selects_VBZ the_DT q-gram_NN whose_WP$ hash_NN value_NN is_VBZ the_DT minimum_NN within_IN a_DT sliding_VBG window_NN of_IN q-grams_NN ._.
+The_DT Hailstorm_NNP method_NN was_VBD proposed_VBN in_IN -LRB-_-LRB- Hamid_NNP et_FW al._FW 2009_CD -RRB-_-RRB- which_WDT features_VBZ the_DT total_JJ coverage_NN property_NN ,_, i.e_NN
+of_IN data_NNS on_IN the_DT Internetand_NNP the_DT growingneed_NN to_TO integratingdata_NN fromheterogeneoussources_NNS ._.
+As_IN aconcrete_NN example_NN ,_, a_DT sizeable_JJ percentage_NN of_IN the_DT Web_NN pages_NNS are_VBP found_VBN to_TO be_VB near-duplicates_JJ by_IN several_JJ studies_NNS -LRB-_-LRB- =_JJ -_: =_JJ Broder_NNP et_FW al._FW 1997_CD -_: =_JJ -_: ;_: Fetterly_NNP et_FW al._FW 2003_CD ;_: Henzinger_NNP 2006_CD -RRB-_-RRB- ._.
+These_DT studies_NNS suggest_VBP that_IN around_IN 1.7_CD %_NN to_TO 7_CD %_NN of_IN the_DT Web_NN pages_NNS visited_VBN by_IN crawlers_NNS are_VBP near_RB duplicate_VB pages_NNS ._.
+Near_IN duplicate_VBP data_NNS bear_VBP high_JJ similarity_NN to_TO each_DT ot_NN
+f_LS the_DT well-known_JJ nearest_JJS neighbor_NN problem_NN ,_, which_WDT is_VBZ studied_VBN by_IN a_DT wide_JJ body_NN of_IN work_NN ,_, with_IN many_JJ approximation_NN techniques_NNS considered_VBN by_IN recent_JJ work_NN -LRB-_-LRB- Charikar_NNP 2002_CD ;_: Fagin_NNP et_FW al._FW 2003_CD ;_: Gionis_NNP et_FW al._FW 1999_CD ;_: =_JJ -_: =_JJ Indyk_NNP and_CC Motwani_NNP 1998_CD -_: =-]_CD ._.
+9.4_CD ._.
+Similarity_NNP Join_NNP on_IN Strings_NNP The_DT problem_NN of_IN similarity_NN join_VBP on_IN strings_NNS has_VBZ been_VBN studied_VBN by_IN several_JJ work_NN -LRB-_-LRB- Gravano_NNP et_FW al._FW 2001_CD ;_: Xiao_NNP et_FW al._FW 2008_CD ;_: 2008_CD ;_: Li_NNP et_FW al._FW 2007_CD ;_: Yang_NNP et_FW al._FW 2008_CD -RRB-_-RRB- ._.
+q-gramsar_NN
+tion_NN problem_NN is_VBZ also_RB a_DT generalization_NN of_IN the_DT well-known_JJ nearest_JJS neighbor_NN problem_NN ,_, which_WDT is_VBZ studied_VBN by_IN a_DT wide_JJ body_NN of_IN work_NN ,_, with_IN many_JJ approximation_NN techniques_NNS considered_VBN by_IN recent_JJ work_NN -LRB-_-LRB- Charikar_NNP 2002_CD ;_: =_JJ -_: =_JJ Fagin_NNP et_FW al._FW 2003_CD -_: =_JJ -_: ;_: Gionis_NNP et_FW al._FW 1999_CD ;_: Indyk_NNP and_CC Motwani_NNP 1998_CD -RRB-_-RRB- ._.
+9.4_CD ._.
+Similarity_NNP Join_NNP on_IN Strings_NNP The_DT problem_NN of_IN similarity_NN join_VBP on_IN strings_NNS has_VBZ been_VBN studied_VBN by_IN several_JJ work_NN -LRB-_-LRB- Gravano_NNP et_FW al._FW 2001_CD ;_: Xiao_NNP et_FW al._FW 2008_CD ;_: 2008_CD ;_:
+n_NN ,_, a_DT number_NN that_WDT is_VBZ often_RB prohibitively_RB large_JJ ._.
+Several_JJ existing_VBG work_NN takes_VBZ this_DT approach_NN with_IN optimization_NN by_IN pushing_VBG the_DT overlap_VBP constraint_NN into_IN the_DT similarity_NN value_NN calculation_NN phase_NN ._.
+For_IN example_NN ,_, -LRB-_-LRB- =_JJ -_: =_JJ Sarawagi_NNP and_CC Kirpal_NNP 2004_CD -_: =-]_NN employs_VBZ sequential_JJ access_NN on_IN short_JJ inverted_JJ lists_NNS but_CC switches_NNS to_TO binary_JJ search_NN on_IN the_DT α_FW −_FW 1_CD longest_JJS inverted_JJ lists_NNS ,_, where_WRB α_NN is_VBZ the_DT Overlap_NNP similarity_NN threshold_NN ._.
+Another_DT approach_NN is_VBZ based_VBN on_IN the_DT int_NN
+January_NNP YYYY_NNP ._.
+A_DT :2_NN --_: ForWebsearchengines_NNP ,_, identifyingnearduplicateWebpageshelpstoperformfocused_NNP crawling_VBG ,_, increase_VB the_DT quality_NN and_CC diversity_NN of_IN query_NN results_NNS ,_, and_CC identify_VB spams_NNS -LRB-_-LRB- Fetterly_NNP et_FW al._FW 2003_CD ;_: =_JJ -_: =_JJ Conrad_NNP et_FW al._FW 2003_CD -_: =_JJ -_: ;_: Henzinger_NNP 2006_CD -RRB-_-RRB- ._.
+--_: Many_JJ Web_NN mining_NN applications_NNS rely_VBP on_IN the_DT ability_NN to_TO accurately_RB and_CC efficiently_RB identify_VB near-duplicate_JJ objects_NNS ._.
+They_PRP include_VBP document_NN clustering_NN -LRB-_-LRB- Broder_NNP et_FW al._FW 1997_CD -RRB-_-RRB- ,_, finding_VBG repl_NN
+s_NN to_TO solve_VB an_DT approximate_JJ version_NN of_IN the_DT problem_NN ,_, i.e._FW ,_, finding_VBG most_JJS of_IN ,_, if_IN not_RB all_DT ,_, similar_JJ objects_NNS ._.
+Several_JJ synopsis-based_JJ schemes_NNS have_VBP been_VBN proposed_VBN and_CC widely_RB adopted_VBN -LRB-_-LRB- Broder_NNP 1997_CD ;_: Charikar_NNP 2002_CD ;_: =_JJ -_: =_JJ Chowdhury_NNP et_FW al._FW 2002_CD -_: =-]_CD ._.
+Recently_RB ,_, researchers_NNS started_VBD to_TO investigate_VB algorithms_NNS that_WDT compute_VBP the_DT similarity_NN join_VB for_IN some_DT common_JJ similarity\/distance_NN functions_NNS exactly_RB ._.
+Proposed_VBN methods_NNS include_VBP inverted_JJ index-based_JJ methods_NNS
+that_WDT compute_VBP the_DT similarity_NN join_VB for_IN some_DT common_JJ similarity\/distance_NN functions_NNS exactly_RB ._.
+Proposed_VBN methods_NNS include_VBP inverted_JJ index-based_JJ methods_NNS -LRB-_-LRB- Sarawagiand_NNP Kirpal_NNP 2004_CD -RRB-_-RRB- ,_, prefix_NN filtering-basedmethods_NNS -LRB-_-LRB- =_JJ -_: =_JJ Chaudhuri_NNP et_FW al._FW 2006_CD -_: =_JJ -_: ;_: Bayardo_NNP et_FW al._FW 2007_CD -RRB-_-RRB- and_CC signature-based_JJ methods_NNS -LRB-_-LRB- Arasu_NNP et_FW al._FW 2006_CD -RRB-_-RRB- ._.
+Among_IN them_PRP ,_, the_DT All-Pairs_NNP algorithm_NN -LRB-_-LRB- Bayardo_NNP et_FW al._FW 2007_CD -RRB-_-RRB- was_VBD demonstrated_VBN to_TO be_VB highly_RB efficient_JJ and_CC be_VB scalable_JJ to_TO tens_NNS of_IN mil_NN
+n_NN and_CC the_DT order_NN by_IN which_WDT data_NNS are_VBP sorted_VBN ._.
+The_DT indexing_NN prefix_NN was_VBD proposed_VBN to_TO reduce_VB both_CC index_NN and_CC candidate_NN sizes_NNS ._.
+9.6_CD ._.
+Similarity_NN Search_VB Severalexisting_VBG work_NN studies_NNS the_DT similarity_NN search_NN problem_NN -LRB-_-LRB- =_JJ -_: =_JJ Chaudhuri_NNP et_FW al._FW 2003_CD -_: =_JJ -_: ;_: Gravano_NNP et_FW al._FW 2001_CD ;_: Li_NNP et_FW al._FW 2008_CD ;_: Hadjieleftheriou_NNP et_FW al._FW 2008_CD ;_: Behm_NNP et_FW al._FW 2009_CD -RRB-_-RRB- ,_, which_WDT returns_VBZ the_DT records_NNS in_IN a_DT collection_NN whose_WP$ similarity_NN with_IN the_DT query_NN exceeds_VBZ a_DT given_VBN threshold_NN ._.
+Based_VBN on_IN the_DT
+algorithm_NN and_CC pattern_NN matching_NN communities_NNS ._.
+We_PRP refer_VBP readers_NNS to_TO -LRB-_-LRB- Navarro_NNP 2001_CD -RRB-_-RRB- and_CC -LRB-_-LRB- Gusfield_JJ 1997_CD -RRB-_-RRB- ._.
+9.5_CD ._.
+Top-k_NN Similarity_NN Joins_VBZ The_DT problem_NN of_IN top-k_FW query_FW processing_NN has_VBZ been_VBN studied_VBN by_IN Fagin_NNP et_FW al_FW -LRB-_-LRB- =_JJ -_: =_JJ Fagin_NNP 1999_CD -_: =_JJ -_: ;_: Fagin_NNP et_FW al._FW 2003_CD -RRB-_-RRB- ._.
+Much_JJ work_NN build_VB upon_IN Fagin_NNP 's_POS work_NN for_IN different_JJ application_NN scenarios_NNS ,_, e.g._FW ,_, rankingqueryresultsfromstructureddatabases_NNS -LRB-_-LRB- Agrawaletal_JJ .2003_NN -RRB-_-RRB- ,_, processingdistributed_JJ preference_NN queries_NNS
+;_: Gionis_NNP et_FW al._FW 1999_CD ;_: Indyk_NNP and_CC Motwani_NNP 1998_CD -RRB-_-RRB- ._.
+9.4_CD ._.
+Similarity_NNP Join_NNP on_IN Strings_NNP The_DT problem_NN of_IN similarity_NN join_VBP on_IN strings_NNS has_VBZ been_VBN studied_VBN by_IN several_JJ work_NN -LRB-_-LRB- Gravano_NNP et_FW al._FW 2001_CD ;_: Xiao_NNP et_FW al._FW 2008_CD ;_: 2008_CD ;_: =_JJ -_: =_JJ Li_NNP et_FW al._FW 2007_CD -_: =_JJ -_: ;_: Yang_NNP et_FW al._FW 2008_CD -RRB-_-RRB- ._.
+q-gramsarewidelyusedforapproximatestringmatch_NN -LRB-_-LRB- Gravanoetal_JJ .2001_NN -RRB-_-RRB- ._.
+Itisespecially_RB useful_JJ for_IN edit_NN distance_NN constraints_NNS due_JJ to_TO its_PRP$ ability_NN to_TO prune_VB candidates_NNS with_IN the_DT count_NN filtering_VBG
+al._FW 1997_CD -RRB-_-RRB- ,_, finding_VBG replicated_VBN Web_NN collections_NNS -LRB-_-LRB- Cho_NNP et_FW al._FW 2000_CD -RRB-_-RRB- ,_, detecting_VBG plagiarism_NN -LRB-_-LRB- Hoad_NNP and_CC Zobel_NNP 2003_CD -RRB-_-RRB- ,_, community_NN mining_NN in_IN a_DT social_JJ network_NN site_NN -LRB-_-LRB- Spertus_NNP et_FW al._FW 2005_CD -RRB-_-RRB- ,_, collaborative_JJ filtering_VBG -LRB-_-LRB- =_JJ -_: =_JJ Bayardo_NNP et_FW al._FW 2007_CD -_: =-]_CD and_CC discovering_VBG large_JJ dense_JJ graphs_NNS -LRB-_-LRB- Gibson_NNP et_FW al._FW 2005_CD -RRB-_-RRB- ._.
+Aquantitativewaytodefine_NN twoobjectsarenearduplicates_VBZ isto_NN useasimilarityfunction_NN ._.
+The_DT similarity_NN function_NN measures_VBZ degree_NN of_IN similarity_NN betwe_NN
+s_NN work_NN for_IN different_JJ application_NN scenarios_NNS ,_, e.g._FW ,_, rankingqueryresultsfromstructureddatabases_NNS -LRB-_-LRB- Agrawaletal_JJ .2003_NN -RRB-_-RRB- ,_, processingdistributed_JJ preference_NN queries_NNS -LRB-_-LRB- Chang_NNP and_CC won_VBD Hwang_NNP 2002_CD -RRB-_-RRB- and_CC keyword_JJ queries_NNS -LRB-_-LRB- =_JJ -_: =_JJ Luo_NNP et_FW al._FW 2007_CD -_: =-]_CD ._.
+-LRB-_-LRB- Xiao_NNP et_FW al._FW 2009_CD -RRB-_-RRB- studies_NNS the_DT top-k_NN similarity_NN join_VBP problem_NN ,_, which_WDT retrieves_VBZ pairs_NNS of_IN objects_NNS that_WDT have_VBP the_DT highest_JJS similarity_NN score_NN among_IN the_DT data_NNS collection_NN ._.
+Several_JJ optimizing_VBG techniques_NNS are_VBP pr_NN
+h_NN in_IN the_DT past_NN is_VBZ to_TO solve_VB an_DT approximate_JJ version_NN of_IN the_DT problem_NN ,_, i.e._FW ,_, finding_VBG most_JJS of_IN ,_, if_IN not_RB all_DT ,_, similar_JJ objects_NNS ._.
+Several_JJ synopsis-based_JJ schemes_NNS have_VBP been_VBN proposed_VBN and_CC widely_RB adopted_VBN -LRB-_-LRB- Broder_NNP 1997_CD ;_: =_JJ -_: =_JJ Charikar_NNP 2002_CD -_: =_JJ -_: ;_: Chowdhury_NNP et_FW al._FW 2002_CD -RRB-_-RRB- ._.
+Recently_RB ,_, researchers_NNS started_VBD to_TO investigate_VB algorithms_NNS that_WDT compute_VBP the_DT similarity_NN join_VB for_IN some_DT common_JJ similarity\/distance_NN functions_NNS exactly_RB ._.
+Proposed_VBN methods_NNS include_VBP inver_NN
+8_CD -RRB-_-RRB- ._.
+-LRB-_-LRB- Hamidet_FW al._FW 2009_CD -RRB-_-RRB- performed_VBD a_DT comprehensive_JJ experimental_JJ comparison_NN of_IN some_DT above-mentioned_JJ schemes_NNS ._.
+Charikar_NNP 's_POS simhash_JJ -LRB-_-LRB- Charikar_JJ 2002_CD -RRB-_-RRB- has_VBZ been_VBN employed_VBN to_TO detect_VB near_IN duplicates_NNS for_IN Web_NN crawling_NN -LRB-_-LRB- =_JJ -_: =_JJ Manku_FW et_FW al._FW 2007_CD -_: =-]_CD ._.
+After_IN converting_VBG Web_NN pages_NNS to_TO high-dimensional_JJ vectors_NNS ,_, it_PRP maps_VBZ the_DT vectors_NNS to_TO small-sized_JJ fingerprints_NNS ._.
+Near_IN duplicates_NNS are_VBP identified_VBN by_IN collecting_VBG the_DT fingerprints_NNS that_WDT differ_VBP by_IN only_RB a_DT few_JJ bits_NNS
+ctions_NNS exactly_RB ._.
+Proposed_VBN methods_NNS include_VBP inverted_JJ index-based_JJ methods_NNS -LRB-_-LRB- Sarawagiand_NNP Kirpal_NNP 2004_CD -RRB-_-RRB- ,_, prefix_NN filtering-basedmethods_NNS -LRB-_-LRB- Chaudhuri_NNP et_FW al._FW 2006_CD ;_: Bayardo_NNP et_FW al._FW 2007_CD -RRB-_-RRB- and_CC signature-based_JJ methods_NNS -LRB-_-LRB- =_JJ -_: =_JJ Arasu_NNP et_FW al._FW 2006_CD -_: =-]_CD ._.
+Among_IN them_PRP ,_, the_DT All-Pairs_NNP algorithm_NN -LRB-_-LRB- Bayardo_NNP et_FW al._FW 2007_CD -RRB-_-RRB- was_VBD demonstrated_VBN to_TO be_VB highly_RB efficient_JJ and_CC be_VB scalable_JJ to_TO tens_NNS of_IN millions_NNS of_IN records_NNS ._.
+Nevertheless_RB ,_, we_PRP show_VBP that_IN the_DT All-Pairs_NNP algorithm_NN ,_,
+etection_NN Near_IN duplicate_VBP object_NN detection_NN has_VBZ been_VBN studied_VBN under_IN different_JJ names_NNS in_IN several_JJ areas_NNS ,_, including_VBG record_NN linkage_NN -LRB-_-LRB- Winkler_NN 1999_CD -RRB-_-RRB- ,_, merge-purge_NN -LRB-_-LRB- Hernández_NNP and_CC Stolfo_NNP 1998_CD -RRB-_-RRB- ,_, data_NN deduplication_NN -LRB-_-LRB- =_JJ -_: =_JJ Sarawagi_NNP and_CC Bhamidipaty_NNP 2002_CD -_: =-]_NN ,_, name_NN matching_NN -LRB-_-LRB- Bilenko_NNP et_FW al._FW 2003_CD -RRB-_-RRB- ,_, just_RB to_TO name_VB a_DT few_JJ ._.
+-LRB-_-LRB- Elmagarmid_NNP et_FW al._FW 2007_CD -RRB-_-RRB- is_VBZ a_DT recent_JJ survey_NN on_IN this_DT topic_NN ._.
+Similarity_NN functions_NNS are_VBP the_DT key_NN to_TO the_DT near_JJ duplicate_VBP detection_NN task_NN ._.
+For_IN text_NN d_NN
+itution_NN of_IN a_DT single_JJ character_NN ._.
+It_PRP can_MD be_VB calculated_VBN via_IN dynamic_JJ programming_NN -LRB-_-LRB- Ukkonen_NN 1983_CD -RRB-_-RRB- ._.
+It_PRP is_VBZ usually_RB converted_VBN into_IN a_DT weaker_JJR constraint_NN on_IN the_DT overlap_VBP between_IN the_DT q-gram_NN sets_NNS of_IN the_DT two_CD strings_NNS -LRB-_-LRB- =_JJ -_: =_JJ Gravano_NNP et_FW al._FW 2001_CD -_: =_JJ -_: ;_: Li_NNP et_FW al._FW 2008_CD ;_: Xiao_NNP et_FW al._FW 2008_CD -RRB-_-RRB- ._.
+Note_VB that_IN the_DT above_JJ similarity_NN and_CC distance_NN functions_NNS are_VBP inter-related_JJ ._.
+We_PRP discuss_VBP some_DT important_JJ relationships_NNS in_IN Section_NN 2.2_CD ,_, and_CC others_NNS in_IN Section_NN 6.1_CD ._.
+1_CD For_IN t_NN
+ze_NN ._.
+9_CD ._.
+RELATED_NNS WORK_VBP 9.1_CD ._.
+Near_IN Duplicate_FW Object_FW Detection_NN Near_IN duplicate_VBP object_NN detection_NN has_VBZ been_VBN studied_VBN under_IN different_JJ names_NNS in_IN several_JJ areas_NNS ,_, including_VBG record_NN linkage_NN -LRB-_-LRB- Winkler_NN 1999_CD -RRB-_-RRB- ,_, merge-purge_JJ -LRB-_-LRB- =_JJ -_: =_JJ Hernández_NNP and_CC Stolfo_NNP 1998_CD -_: =-]_NN ,_, data_NN deduplication_NN -LRB-_-LRB- Sarawagi_NNP and_CC Bhamidipaty_NNP 2002_CD -RRB-_-RRB- ,_, name_NN matching_NN -LRB-_-LRB- Bilenko_NNP et_FW al._FW 2003_CD -RRB-_-RRB- ,_, just_RB to_TO name_VB a_DT few_JJ ._.
+-LRB-_-LRB- Elmagarmid_NNP et_FW al._FW 2007_CD -RRB-_-RRB- is_VBZ a_DT recent_JJ survey_NN on_IN this_DT topic_NN ._.
+Similarity_NN functions_NNS are_VBP the_DT
+ix_NN was_VBD proposed_VBN to_TO reduce_VB both_CC index_NN and_CC candidate_NN sizes_NNS ._.
+9.6_CD ._.
+Similarity_NN Search_VB Severalexisting_VBG work_NN studies_NNS the_DT similarity_NN search_NN problem_NN -LRB-_-LRB- Chaudhuri_NNP et_FW al._FW 2003_CD ;_: Gravano_NNP et_FW al._FW 2001_CD ;_: Li_NNP et_FW al._FW 2008_CD ;_: =_JJ -_: =_JJ Hadjieleftheriou_NNP et_FW al._FW 2008_CD -_: =_JJ -_: ;_: Behm_NNP et_FW al._FW 2009_CD -RRB-_-RRB- ,_, which_WDT returns_VBZ the_DT records_NNS in_IN a_DT collection_NN whose_WP$ similarity_NN with_IN the_DT query_NN exceeds_VBZ a_DT given_VBN threshold_NN ._.
+Based_VBN on_IN the_DT inverted_JJ list_NN framework_NN ,_, -LRB-_-LRB- Li_NNP et_FW al._FW 2008_CD -RRB-_-RRB- proposes_VBZ an_DT efficient_JJ p_NN
+ility_NN to_TO accurately_RB and_CC efficiently_RB identify_VB near-duplicate_JJ objects_NNS ._.
+They_PRP include_VBP document_NN clustering_NN -LRB-_-LRB- Broder_NNP et_FW al._FW 1997_CD -RRB-_-RRB- ,_, finding_VBG replicated_VBN Web_NN collections_NNS -LRB-_-LRB- Cho_NNP et_FW al._FW 2000_CD -RRB-_-RRB- ,_, detecting_VBG plagiarism_NN -LRB-_-LRB- =_JJ -_: =_JJ Hoad_NNP and_CC Zobel_NNP 2003_CD -_: =-]_NN ,_, community_NN mining_NN in_IN a_DT social_JJ network_NN site_NN -LRB-_-LRB- Spertus_NNP et_FW al._FW 2005_CD -RRB-_-RRB- ,_, collaborative_JJ filtering_VBG -LRB-_-LRB- Bayardo_NNP et_FW al._FW 2007_CD -RRB-_-RRB- and_CC discovering_VBG large_JJ dense_JJ graphs_NNS -LRB-_-LRB- Gibson_NNP et_FW al._FW 2005_CD -RRB-_-RRB- ._.
+Aquantitativewaytodefine_FW twoo_FW
+en_IN studied_VBN under_IN different_JJ names_NNS in_IN several_JJ areas_NNS ,_, including_VBG record_NN linkage_NN -LRB-_-LRB- Winkler_NN 1999_CD -RRB-_-RRB- ,_, merge-purge_NN -LRB-_-LRB- Hernández_NNP and_CC Stolfo_NNP 1998_CD -RRB-_-RRB- ,_, data_NN deduplication_NN -LRB-_-LRB- Sarawagi_NNP and_CC Bhamidipaty_NNP 2002_CD -RRB-_-RRB- ,_, name_NN matching_NN -LRB-_-LRB- =_JJ -_: =_JJ Bilenko_FW et_FW al._FW 2003_CD -_: =-]_CD ,_, just_RB to_TO name_VB a_DT few_JJ ._.
+-LRB-_-LRB- Elmagarmid_NNP et_FW al._FW 2007_CD -RRB-_-RRB- is_VBZ a_DT recent_JJ survey_NN on_IN this_DT topic_NN ._.
+Similarity_NN functions_NNS are_VBP the_DT key_NN to_TO the_DT near_JJ duplicate_VBP detection_NN task_NN ._.
+For_IN text_NN documents_NNS ,_, edit_NN distance_NN -LRB-_-LRB- Ukkonen_NN 1983_CD
+y_NN Web_NN mining_NN applications_NNS rely_VBP on_IN the_DT ability_NN to_TO accurately_RB and_CC efficiently_RB identify_VB near-duplicate_JJ objects_NNS ._.
+They_PRP include_VBP document_NN clustering_NN -LRB-_-LRB- Broder_NNP et_FW al._FW 1997_CD -RRB-_-RRB- ,_, finding_VBG replicated_VBN Web_NN collections_NNS -LRB-_-LRB- =_JJ -_: =_JJ Cho_NNP et_FW al._FW 2000_CD -_: =-]_CD ,_, detecting_VBG plagiarism_NN -LRB-_-LRB- Hoad_NNP and_CC Zobel_NNP 2003_CD -RRB-_-RRB- ,_, community_NN mining_NN in_IN a_DT social_JJ network_NN site_NN -LRB-_-LRB- Spertus_NNP et_FW al._FW 2005_CD -RRB-_-RRB- ,_, collaborative_JJ filtering_VBG -LRB-_-LRB- Bayardo_NNP et_FW al._FW 2007_CD -RRB-_-RRB- and_CC discovering_VBG large_JJ dense_JJ graphs_NNS -LRB-_-LRB- Gibson_NNP
+algorithms_NNS ._.
+ppjoin_NN integrates_VBZ positional_JJ filtering_VBG into_IN the_DT All-Pairs_NNP algorithm_NN ,_, while_IN ppjoin_NN +_CC further_JJ employes_NNS suffix_VBP filtering_VBG ._.
+--_: LSH_NN is_VBZ an_DT algorithm_NN to_TO retrieve_VB approximate_JJ answers_NNS to_TO the_DT problem_NN -LRB-_-LRB- =_JJ -_: =_JJ Gionis_FW et_FW al._FW 1999_CD -_: =-]_CD ._.
+Its_PRP$ basic_JJ idea_NN is_VBZ to_TO hash_VB the_DT records_NNS using_VBG several_JJ hash_JJ functions_NNS so_RB as_IN to_TO ensure_VB that_IN similar_JJ records_NNS have_VBP much_RB higher_JJR probability_NN of_IN collision_NN than_IN dissimilar_JJ records_NNS ._.
+We_PRP adopt_VBP the_DT LSH_NN algorithm_NN
+Similarity_NN join_VB on_IN strings_NNS is_VBZ also_RB closely_RB related_JJ to_TO approximate_JJ string_NN matching_NN ,_, an_DT extensively_RB studied_VBN topic_NN in_IN algorithm_NN and_CC pattern_NN matching_NN communities_NNS ._.
+We_PRP refer_VBP readers_NNS to_TO -LRB-_-LRB- Navarro_NNP 2001_CD -RRB-_-RRB- and_CC -LRB-_-LRB- =_JJ -_: =_JJ Gusfield_NNP 1997_CD -_: =-]_CD ._.
+9.5_CD ._.
+Top-k_NN Similarity_NN Joins_VBZ The_DT problem_NN of_IN top-k_FW query_FW processing_NN has_VBZ been_VBN studied_VBN by_IN Fagin_NNP et_FW al_FW -LRB-_-LRB- Fagin_NNP 1999_CD ;_: Fagin_NNP et_FW al._FW 2003_CD -RRB-_-RRB- ._.
+Much_JJ work_NN build_VB upon_IN Fagin_NNP 's_POS work_NN for_IN different_JJ application_NN scenar_NN
+hash_NN values_NNS are_VBP kept_VBN ._.
+This_DT process_NN is_VBZ repeated_VBN several_JJ times_NNS using_VBG min-wise_JJ independent_JJ hash_JJ functions_NNS ._.
+An_DT alternative_JJ method_NN is_VBZ to_TO use_VB every_DT l-th_NN shingle_NN or_CC shingles_NNS that_WDT satisfy_VBP certain_JJ properties_NNS -LRB-_-LRB- =_JJ -_: =_JJ Brin_NNP et_FW al._FW 1995_CD -_: =-]_CD ._.
+Manber_NNP considered_VBD finding_VBG similar_JJ files_NNS in_IN a_DT file_NN system_NN -LRB-_-LRB- Manber_NNP 1994_CD -RRB-_-RRB- ._.
+The_DT scheme_NN was_VBD improved_VBN by_IN Winnowing_NNP -LRB-_-LRB- Schleimer_NNP et_FW al._FW 2003_CD -RRB-_-RRB- ,_, which_WDT selects_VBZ the_DT q-gram_NN whose_WP$ hash_NN value_NN is_VBZ the_DT minimum_NN within_IN
+alent_JJ approach_NN in_IN the_DT past_NN is_VBZ to_TO solve_VB an_DT approximate_JJ version_NN of_IN the_DT problem_NN ,_, i.e._FW ,_, finding_VBG most_JJS of_IN ,_, if_IN not_RB all_DT ,_, similar_JJ objects_NNS ._.
+Several_JJ synopsis-based_JJ schemes_NNS have_VBP been_VBN proposed_VBN and_CC widely_RB adopted_VBN -LRB-_-LRB- =_JJ -_: =_JJ Broder_NNP 1997_CD -_: =_JJ -_: ;_: Charikar_NNP 2002_CD ;_: Chowdhury_NNP et_FW al._FW 2002_CD -RRB-_-RRB- ._.
+Recently_RB ,_, researchers_NNS started_VBD to_TO investigate_VB algorithms_NNS that_WDT compute_VBP the_DT similarity_NN join_VB for_IN some_DT common_JJ similarity\/distance_NN functions_NNS exactly_RB ._.
+Proposed_VBN method_NN
+edit_VB operations_NNS needed_VBN to_TO transform_VB one_CD string_NN into_IN the_DT other_JJ ,_, where_WRB an_DT edit_NN operation_NN is_VBZ an_DT insertion_NN ,_, deletion_NN ,_, or_CC substitution_NN of_IN a_DT single_JJ character_NN ._.
+It_PRP can_MD be_VB calculated_VBN via_IN dynamic_JJ programming_NN -LRB-_-LRB- =_JJ -_: =_JJ Ukkonen_NNP 1983_CD -_: =-]_CD ._.
+It_PRP is_VBZ usually_RB converted_VBN into_IN a_DT weaker_JJR constraint_NN on_IN the_DT overlap_VBP between_IN the_DT q-gram_NN sets_NNS of_IN the_DT two_CD strings_NNS -LRB-_-LRB- Gravano_NNP et_FW al._FW 2001_CD ;_: Li_NNP et_FW al._FW 2008_CD ;_: Xiao_NNP et_FW al._FW 2008_CD -RRB-_-RRB- ._.
+Note_VB that_IN the_DT above_JJ similarity_NN an_DT
+do_VB et_FW al._FW 2007_CD -RRB-_-RRB- for_IN cosine_NN similarity_NN function_NN ,_, and_CC was_VBD extended_VBN to_TO other_JJ similarity_NN ACM_NN Transactions_NNS on_IN Database_NNP Systems_NNP ,_, Vol_NNP ._.
+V_NN ,_, No._NN ._.
+N_NN ,_, Article_NN A_NN ,_, Publication_NN date_NN :_: January_NNP YYYY_NNP ._.
+A_DT :10_CD functions_NNS in_IN -LRB-_-LRB- =_JJ -_: =_JJ Xiao_NNP et_FW al._FW 2009_CD -_: =-]_CD ._.
+We_PRP formally_RB state_VBP this_DT observation_NN in_IN the_DT following_JJ lemma_NN that_WDT can_MD further_RB reduce_VB the_DT number_NN of_IN tokens_NNS to_TO be_VB indexed_VBN and_CC hence_RB accessed_VBN ,_, Lemma_NNP 4.4_CD ._.
+Given_VBN a_DT record_NN x_NN ,_, we_PRP only_RB need_VBP to_TO index_NN its_PRP$ li_NN =_JJ
+be_VB calculated_VBN via_IN dynamic_JJ programming_NN -LRB-_-LRB- Ukkonen_NN 1983_CD -RRB-_-RRB- ._.
+It_PRP is_VBZ usually_RB converted_VBN into_IN a_DT weaker_JJR constraint_NN on_IN the_DT overlap_VBP between_IN the_DT q-gram_NN sets_NNS of_IN the_DT two_CD strings_NNS -LRB-_-LRB- Gravano_NNP et_FW al._FW 2001_CD ;_: Li_NNP et_FW al._FW 2008_CD ;_: =_JJ -_: =_JJ Xiao_NNP et_FW al._FW 2008_CD -_: =-]_CD ._.
+Note_VB that_IN the_DT above_JJ similarity_NN and_CC distance_NN functions_NNS are_VBP inter-related_JJ ._.
+We_PRP discuss_VBP some_DT important_JJ relationships_NNS in_IN Section_NN 2.2_CD ,_, and_CC others_NNS in_IN Section_NN 6.1_CD ._.
+1_CD For_IN the_DT ease_NN of_IN illustration_NN ,_, we_PRP do_VBP not_RB
+haracter_NN ._.
+It_PRP can_MD be_VB calculated_VBN via_IN dynamic_JJ programming_NN -LRB-_-LRB- Ukkonen_NN 1983_CD -RRB-_-RRB- ._.
+It_PRP is_VBZ usually_RB converted_VBN into_IN a_DT weaker_JJR constraint_NN on_IN the_DT overlap_VBP between_IN the_DT q-gram_NN sets_NNS of_IN the_DT two_CD strings_NNS -LRB-_-LRB- Gravano_NNP et_FW al._FW 2001_CD ;_: =_JJ -_: =_JJ Li_NNP et_FW al._FW 2008_CD -_: =_JJ -_: ;_: Xiao_NNP et_FW al._FW 2008_CD -RRB-_-RRB- ._.
+Note_VB that_IN the_DT above_JJ similarity_NN and_CC distance_NN functions_NNS are_VBP inter-related_JJ ._.
+We_PRP discuss_VBP some_DT important_JJ relationships_NNS in_IN Section_NN 2.2_CD ,_, and_CC others_NNS in_IN Section_NN 6.1_CD ._.
+1_CD For_IN the_DT ease_NN of_IN illus_NN
+te_NN of_IN a_DT smaller_JJR candidate_NN size_NN ._.
+9_CD ._.
+RELATED_NNS WORK_VBP 9.1_CD ._.
+Near_IN Duplicate_FW Object_FW Detection_NN Near_IN duplicate_VBP object_NN detection_NN has_VBZ been_VBN studied_VBN under_IN different_JJ names_NNS in_IN several_JJ areas_NNS ,_, including_VBG record_NN linkage_NN -LRB-_-LRB- =_JJ -_: =_JJ Winkler_NNP 1999_CD -_: =-]_NN ,_, merge-purge_NN -LRB-_-LRB- Hernández_NNP and_CC Stolfo_NNP 1998_CD -RRB-_-RRB- ,_, data_NN deduplication_NN -LRB-_-LRB- Sarawagi_NNP and_CC Bhamidipaty_NNP 2002_CD -RRB-_-RRB- ,_, name_NN matching_NN -LRB-_-LRB- Bilenko_NNP et_FW al._FW 2003_CD -RRB-_-RRB- ,_, just_RB to_TO name_VB a_DT few_JJ ._.
+-LRB-_-LRB- Elmagarmid_NNP et_FW al._FW 2007_CD -RRB-_-RRB- is_VBZ a_DT recent_JJ survey_NN on_IN
+areas_NNS ,_, including_VBG record_NN linkage_NN -LRB-_-LRB- Winkler_NN 1999_CD -RRB-_-RRB- ,_, merge-purge_NN -LRB-_-LRB- Hernández_NNP and_CC Stolfo_NNP 1998_CD -RRB-_-RRB- ,_, data_NN deduplication_NN -LRB-_-LRB- Sarawagi_NNP and_CC Bhamidipaty_NNP 2002_CD -RRB-_-RRB- ,_, name_NN matching_NN -LRB-_-LRB- Bilenko_NNP et_FW al._FW 2003_CD -RRB-_-RRB- ,_, just_RB to_TO name_VB a_DT few_JJ ._.
+-LRB-_-LRB- =_JJ -_: =_JJ Elmagarmid_NNP et_FW al._FW 2007_CD -_: =-]_CD is_VBZ a_DT recent_JJ survey_NN on_IN this_DT topic_NN ._.
+Similarity_NN functions_NNS are_VBP the_DT key_NN to_TO the_DT near_JJ duplicate_VBP detection_NN task_NN ._.
+For_IN text_NN documents_NNS ,_, edit_NN distance_NN -LRB-_-LRB- Ukkonen_NN 1983_CD -RRB-_-RRB- and_CC Jaccard_NN similarity_NN on_IN q-grams_NN -LRB-_-LRB- Gravano_NN e_SYM
+tion_NN problem_NN is_VBZ also_RB a_DT generalization_NN of_IN the_DT well-known_JJ nearest_JJS neighbor_NN problem_NN ,_, which_WDT is_VBZ studied_VBN by_IN a_DT wide_JJ body_NN of_IN work_NN ,_, with_IN many_JJ approximation_NN techniques_NNS considered_VBN by_IN recent_JJ work_NN -LRB-_-LRB- Charikar_NNP 2002_CD ;_: =_JJ -_: =_JJ Fagin_NNP et_FW al._FW 2003_CD -_: =_JJ -_: ;_: Gionis_NNP et_FW al._FW 1999_CD ;_: Indyk_NNP and_CC Motwani_NNP 1998_CD -RRB-_-RRB- ._.
+9.4_CD ._.
+Similarity_NNP Join_NNP on_IN Strings_NNP The_DT problem_NN of_IN similarity_NN join_VBP on_IN strings_NNS has_VBZ been_VBN studied_VBN by_IN several_JJ work_NN -LRB-_-LRB- Gravano_NNP et_FW al._FW 2001_CD ;_: Xiao_NNP et_FW al._FW 2008_CD ;_: 2008_CD ;_:
+index_NN and_CC candidate_NN sizes_NNS ._.
+9.6_CD ._.
+Similarity_NN Search_VB Severalexisting_VBG work_NN studies_NNS the_DT similarity_NN search_NN problem_NN -LRB-_-LRB- Chaudhuri_NNP et_FW al._FW 2003_CD ;_: Gravano_NNP et_FW al._FW 2001_CD ;_: Li_NNP et_FW al._FW 2008_CD ;_: Hadjieleftheriou_NNP et_FW al._FW 2008_CD ;_: =_JJ -_: =_JJ Behm_NNP et_FW al._FW 2009_CD -_: =-]_NN ,_, which_WDT returns_VBZ the_DT records_NNS in_IN a_DT collection_NN whose_WP$ similarity_NN with_IN the_DT query_NN exceeds_VBZ a_DT given_VBN threshold_NN ._.
+Based_VBN on_IN the_DT inverted_JJ list_NN framework_NN ,_, -LRB-_-LRB- Li_NNP et_FW al._FW 2008_CD -RRB-_-RRB- proposes_VBZ an_DT efficient_JJ principle_NN to_TO skip_VB r_NN
+rinciple_NN ._.
+The_DT records_NNS are_VBP carefully_RB divided_VBN into_IN partitions_NNS and_CC then_RB hashed_VBD into_IN signatures_NNS ,_, with_IN which_WDT candidate_NN pairs_NNS are_VBP generated_VBN ,_, followed_VBN by_IN a_DT post-filtering_JJ step_NN to_TO eliminate_VB false_JJ positives_NNS ._.
+-LRB-_-LRB- =_JJ -_: =_JJ Arasu_NNP et_FW al._FW 2008_CD -_: =-]_CD designs_NNS a_DT novel_JJ framework_NN to_TO identify_VB similar_JJ records_NNS with_IN some_DT token_JJ transformations_NNS ._.
+In_IN -LRB-_-LRB- Liebermanetal_JJ .2008_NN -RRB-_-RRB- ,_, LSSalgorithmisproposedtoperformsimilarity_NN join_VBP using_VBG Graphics_NNP Processing_NNP Unit_NNP -LRB-_-LRB- GPU_NNP -RRB-_-RRB- ._.
+Com_NNP
+ts_NNS ._.
+They_PRP include_VBP document_NN clustering_NN -LRB-_-LRB- Broder_NNP et_FW al._FW 1997_CD -RRB-_-RRB- ,_, finding_VBG replicated_VBN Web_NN collections_NNS -LRB-_-LRB- Cho_NNP et_FW al._FW 2000_CD -RRB-_-RRB- ,_, detecting_VBG plagiarism_NN -LRB-_-LRB- Hoad_NNP and_CC Zobel_NNP 2003_CD -RRB-_-RRB- ,_, community_NN mining_NN in_IN a_DT social_JJ network_NN site_NN -LRB-_-LRB- =_JJ -_: =_JJ Spertus_FW et_FW al._FW 2005_CD -_: =-]_CD ,_, collaborative_JJ filtering_VBG -LRB-_-LRB- Bayardo_NNP et_FW al._FW 2007_CD -RRB-_-RRB- and_CC discovering_VBG large_JJ dense_JJ graphs_NNS -LRB-_-LRB- Gibson_NNP et_FW al._FW 2005_CD -RRB-_-RRB- ._.
+Aquantitativewaytodefine_NN twoobjectsarenearduplicates_VBZ isto_NN useasimilarityfunction_NN ._.
+The_DT similari_NN
+a_DT new_JJ token_JJ -LRB-_-LRB- Chaudhuri_NNP et_FW al._FW 2006_CD -RRB-_-RRB- ._.
+This_DT conversion_NN enables_VBZ us_PRP to_TO perform_VB multiset_JJ intersections_NNS and_CC capture_VB the_DT similarity_NN between_IN multisets_NNS with_IN commonly_RB used_VBN similarity_NN functions_NNS such_JJ as_IN Jaccard_NNP -LRB-_-LRB- =_JJ -_: =_JJ Theobald_NNP et_FW al._FW 2008_CD -_: =-]_CD ._.
+We_PRP can_MD evaluate_VB the_DT similarity_NN of_IN two_CD Web_NN pages_NNS as_IN the_DT Jaccard_NNP similarity_NN between_IN their_PRP$ corresponding_JJ sets_NNS of_IN tokens_NNS ._.
+We_PRP denote_VBP the_DT size_NN of_IN a_DT record_NN x_NN as_IN |_CD x_CC |_CD ,_, which_WDT is_VBZ the_DT number_NN of_IN tokens_NNS in_IN x._NN Th_NN

@@ -1,0 +1,466 @@
+Mining_NNP concept-drifting_JJ data_NN streams_NNS using_VBG ensemble_NN classifiers_NNS
+Recently_RB ,_, mining_NN data_NNS streams_NNS with_IN concept_NN drifts_VBZ for_IN actionable_JJ insights_NNS has_VBZ become_VBN an_DT important_JJ and_CC challenging_JJ task_NN for_IN a_DT wide_JJ range_NN of_IN applications_NNS including_VBG credit_NN card_NN fraud_NN protection_NN ,_, target_NN marketing_NN ,_, network_NN intrusion_NN detection_NN ,_, etc._NN ._.
+Conventional_JJ knowledge_NN discovery_NN tools_NNS are_VBP facing_VBG two_CD challenges_NNS ,_, the_DT overwhelming_JJ volume_NN of_IN the_DT streaming_NN data_NNS ,_, and_CC the_DT concept_NN drifts_VBZ ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT general_JJ framework_NN for_IN mining_NN concept-drifting_JJ data_NN streams_NNS using_VBG weighted_JJ ensemble_NN classifiers_NNS ._.
+We_PRP train_VBP an_DT ensemble_NN of_IN classification_NN models_NNS ,_, such_JJ as_IN C4_NN .5_NN ,_, RIPPER_NN ,_, naive_JJ Beyesian_NN ,_, etc._NN ,_, from_IN sequential_JJ chunks_NNS of_IN the_DT data_NNS stream_NN ._.
+The_DT classifiers_NNS in_IN the_DT ensemble_NN are_VBP judiciously_RB weighted_VBN based_VBN on_IN their_PRP$ expected_VBN classification_NN accuracy_NN on_IN the_DT test_NN data_NNS under_IN the_DT time-evolving_JJ environment_NN ._.
+Thus_RB ,_, the_DT ensemble_NN approach_NN improves_VBZ both_CC the_DT efficiency_NN in_IN learning_VBG the_DT model_NN and_CC the_DT accuracy_NN in_IN performing_VBG classification_NN ._.
+Our_PRP$ empirical_JJ study_NN shows_VBZ that_IN the_DT proposed_VBN methods_NNS have_VBP substantial_JJ advantage_NN over_IN single-classifier_JJ approaches_NNS in_IN prediction_NN accuracy_NN ,_, and_CC the_DT ensemble_NN framework_NN is_VBZ effective_JJ for_IN a_DT variety_NN of_IN classification_NN models_NNS ._.
+am_VB analysis_NN ,_, and_CC credit_NN card_NN fraud_NN detection_NN ._.
+Thus_RB ,_, many_JJ research_NN projects_NNS have_VBP recently_RB focused_VBN on_IN designing_VBG fast_JJ mining_NN algorithms_NNS ,_, whereby_RB massive_JJ data_NNS streams_NNS can_MD be_VB mined_VBN with_IN real-time_JJ response_NN =_JJ -_: =[_NN 10_CD ,_, 4_CD ,_, 13_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Similarly_RB ,_, many_JJ research_NN projects_NNS have_VBP also_RB focused_VBN on_IN managing_VBG the_DT data_NNS streams_NNS generated_VBN from_IN these_DT applications_NNS -LRB-_-LRB- 9_CD ,_, 1_CD ,_, 6_CD -RRB-_-RRB- ._.
+However_RB ,_, the_DT problem_NN of_IN supporting_VBG mining_NN algorithms_NNS in_IN such_JJ systems_NNS has_VBZ
+an_DT classifiers_NNS -RRB-_-RRB- :_: we_PRP build_VBP a_DT new_JJ classifier_NN for_IN each_DT window_NN and_CC use_VB an_DT ensemble_NN containing_VBG K_NN such_JJ classifiers_NNS to_TO achieve_VB more_RBR accurate_JJ predictions_NNS via_IN advanced_JJ techniques_NNS ,_, such_JJ as_IN bagging_VBG and_CC boosting_VBG =_JJ -_: =[_NN 56_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Ensemble_NN methods_NNS have_VBP long_RB been_VBN used_VBN to_TO improve_VB the_DT predictive_JJ accuracy_NN of_IN classifiers_NNS built_VBN from_IN different_JJ samples_NNS of_IN the_DT same_JJ data_NN set_NN ._.
+However_RB ,_, for_IN data_NNS streams_NNS ,_, classifiers_NNS are_VBP continuously_RB buil_NN
+nsibility_NN and_CC declarativity_NN has_VBZ lead_VBN to_TO the_DT implementation_NN of_IN many_JJ mining_NN algorithms_NNS in_IN SMM_NNP ,_, including_VBG Naïve_JJ Bayesian_JJ classifiers_NNS ,_, decision_NN tree_NN classifiers_NNS ,_, ensemble_NN based_VBN methods_NNS for_IN classification_NN =_JJ -_: =[_NN 36_CD -RRB-_-RRB- -_: =_JJ -_: ,_, IncDBScan_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, SWIM_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, and_CC SQL-TS_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- ._.
+Future_NNP Work_NNP Currently_NNP the_DT SMM_NNP does_VBZ not_RB provide_VB much_JJ assistance_NN in_IN terms_NNS of_IN visualizing_VBG the_DT results_NNS of_IN association_NN rule_NN mining_NN ._.
+Thus_RB ,_, we_PRP are_VBP currently_RB focu_NN
+past_NN ._.
+Most_JJS of_IN the_DT practical_JJ restoring_VBG methods_NNS include_VBP choosing_VBG the_DT classifier_NN with_IN the_DT best_JJS fit_NN for_IN the_DT current_JJ input_NN ._.
+This_DT can_MD be_VB the_DT case_NN with_IN a_DT single_JJ classifier_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC with_IN ensemble_NN classifiers_NNS =_JJ -_: =[_NN 6,7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT latter_JJ case_NN the_DT ranking_JJ information_NN is_VBZ used_VBN to_TO weight_VB the_DT responses_NNS of_IN classifiers_NNS depending_VBG on_IN their_PRP$ suitability_NN for_IN the_DT current_JJ input_NN ._.
+In_IN either_DT case_NN ,_, we_PRP have_VBP a_DT set_NN -LRB-_-LRB- pool_NN -RRB-_-RRB- H_NN =_JJ -LCB-_-LRB- h1_NN ,_, h2_NN ,_, ..._: ,_, hm_NN
+stical_JJ principles_NNS ,_, such_JJ as_IN the_DT leave-one-out_NN bound_VBD -LRB-_-LRB- 13_CD -RRB-_-RRB- to_TO measure_NN and_CC rate_NN concept_NN drift_NN ._.
+Ensemblebased_JJ methods_NNS adjust_VBP the_DT weights_NNS of_IN the_DT base_NN classifiers_NNS instead_RB of_IN modifying_VBG a_DT classifier_NN ,_, see_VB e.g._FW =_SYM -_: =[_NN 22_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT task_NN of_IN concept_NN drift_NN detection_NN can_MD be_VB framed_VBN as_IN a_DT statistical_JJ hypothesis_NN test_NN with_IN two_CD samples_NNS and_CC multivariate_JJ data_NNS ._.
+There_EX is_VBZ quite_RB some_DT work_NN on_IN such_JJ problems_NNS in_IN the_DT statistical_JJ literature_NN ._.
+Mo_NN
+ssification_NN -LRB-_-LRB- see_VB ,_, e.g._FW ,_, -LRB-_-LRB- 7_CD ,_, 10_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Multiple_JJ classifiers_NNS can_MD be_VB combined_VBN using_VBG a_DT meta_NN classifier_NN approach_NN -LRB-_-LRB- 4_CD ,_, 20_CD ,_, 9_CD -RRB-_-RRB- ,_, for_IN example_NN ,_, by_IN voting_VBG on_IN the_DT final_JJ decision_NN -LRB-_-LRB- including_VBG weighted_JJ voting_NN ,_, see_VB ,_, e.g._FW ,_, =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Such_JJ a_DT setup_NN is_VBZ interesting_JJ not_RB only_RB to_TO combine_VB different_JJ algorithmic_JJ techniques_NNS ,_, but_CC mostly_RB for_IN combining_VBG classifiers_NNS that_WDT have_VBP been_VBN trained_VBN with_IN different_JJ training_NN sets_NNS or_CC for_IN different_JJ feature_NN s_NN
+ing_NN stream_NN mining_NN models_NNS accordingly_RB is_VBZ a_DT challenging_JJ issue_NN and_CC has_VBZ only_RB been_VBN recognized_VBN as_IN an_DT important_JJ one_CD in_IN the_DT past_JJ few_JJ years_NNS ._.
+A_DT number_NN of_IN techniques_NNS have_VBP been_VBN proposed_VBN for_IN solving_VBG these_DT problem_NN =_JJ -_: =[_NN 6_CD ,_, 12_CD ,_, 14_CD ,_, 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC most_JJS of_IN them_PRP are_VBP ad-hoc_JJ and_CC can_MD not_RB be_VB generalized_VBN to_TO different_JJ mining_NN applications_NNS ._.
+These_DT change_NN detection_NN technique_NN usually_RB only_RB perform_VB well_RB on_IN certain_JJ types_NNS of_IN streams_NNS ._.
+Aggarwal_NNP addresses_VBZ the_DT
+he_PRP last_JJ few_JJ years_NNS ,_, in_IN the_DT data_NNS mining_NN community_NN ,_, approaches_VBZ to_TO processing_VBG data_NNS streams_NNS through_IN classifier_NN ensembles_NNS have_VBP been_VBN gaining_VBG an_DT increasing_VBG interest_NN ._.
+Many_JJ different_JJ proposals_NNS are_VBP described_VBN in_IN =_JJ -_: =[_NN 15_CD ,_, 17_CD ,_, 2_CD ,_, 3_CD ,_, 9_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT survey_NN on_IN the_DT most_RBS recent_JJ research_NN topics_NNS can_MD be_VB found_VBN in_IN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+However_RB ,_, the_DT above_JJ approaches_NNS are_VBP not_RB capable_JJ to_TO deal_VB with_IN distributed_VBN streams_NNS ._.
+If_IN data_NNS comes_VBZ from_IN different_JJ locations_NNS ,_, it_PRP is_VBZ necessa_NN
+include_VBP the_DT streaming_NN ensemble_NN algorithm_NN -LRB-_-LRB- SEA_NN -RRB-_-RRB- -LRB-_-LRB- Street_NNP &_CC Kim_NNP ,_, 2001_CD -RRB-_-RRB- ,_, adaptive_JJ classifiers-ensemble_JJ system_NN -LRB-_-LRB- ACE_NN -RRB-_-RRB- -LRB-_-LRB- Nishida_NNP ,_, Yamauchi_NNP ,_, &_CC Omori_NNP ,_, 2005_CD -RRB-_-RRB- ,_, the_DT weighted_JJ classifier_NN ensemble_NN algorithm_NN -LRB-_-LRB- WCEA_NN -RRB-_-RRB- -LRB-_-LRB- =_JJ -_: =_JJ Wang_NNP ,_, Fan_NNP ,_, Yu_NNP ,_, &_CC Han_NNP ,_, 2003_CD -_: =--RRB-_NN ,_, and_CC the_DT dynamic_JJ weighted_JJ majority_NN -LRB-_-LRB- DWM_NN -RRB-_-RRB- algorithm_NN -LRB-_-LRB- Kolter_NNP &_CC Maloof_NNP ,_, 2003_CD -RRB-_-RRB- ._.
+These_DT are_VBP considered_VBN in_IN detail_NN in_IN Procopio_NNP -LRB-_-LRB- 2007a_CD -RRB-_-RRB- ._.
+3_LS ._.
+ALGORITHMS_NNP This_NNP section_NN is_VBZ divided_VBN into_IN three_CD major_JJ parts_NNS ._.
+First_RB ,_, t_NN
+2_LS -RRB-_-RRB- ._.
+Due_JJ to_TO its_PRP$ potential_NN in_IN industry_NN applications_NNS ,_, data_NNS stream_NN mining_NN has_VBZ been_VBN studied_VBN intensively_RB in_IN the_DT past_JJ few_JJ years_NNS ._.
+In_IN particular_JJ ,_, much_JJ research_NN has_VBZ been_VBN focused_VBN on_IN classifying_VBG data_NNS streams_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- -_: =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT general_JJ approach_NN is_VBZ to_TO first_RB learn_VB one_CD or_CC multiple_JJ classification_NN models_NNS from_IN the_DT past_JJ records_NNS of_IN the_DT evolving_VBG data_NNS ,_, and_CC then_RB use_VB a_DT selected_VBN model_NN that_WDT best_RB matches_VBZ the_DT current_JJ data_NNS to_TO predict_VB t_NN
+he_PRP last_JJ few_JJ years_NNS ,_, in_IN the_DT data_NNS mining_NN community_NN ,_, approaches_VBZ to_TO processing_VBG data_NNS streams_NNS through_IN classifier_NN ensembles_NNS have_VBP been_VBN gaining_VBG an_DT increasing_VBG interest_NN ._.
+Many_JJ different_JJ proposals_NNS are_VBP described_VBN in_IN =_JJ -_: =[_NN 16_CD ,_, 18_CD ,_, 3_CD ,_, 4_CD ,_, 9_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT survey_NN on_IN the_DT most_RBS recent_JJ research_NN topics_NNS can_MD be_VB found_VBN in_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+However_RB ,_, the_DT above_JJ approaches_NNS are_VBP not_RB capable_JJ to_TO deal_VB with_IN distributed_VBN streams_NNS ._.
+If_IN data_NNS comes_VBZ from_IN different_JJ locations_NNS ,_, it_PRP is_VBZ necessa_NN
+different_JJ parts_NNS of_IN stream_NN and_CC organize_VB these_DT individual_JJ classifiers_NNS to_TO make_VB the_DT final_JJ decision_NN ._.
+This_DT motivates_VBZ more_JJR than_IN a_DT few_JJ attempts_NNS to_TO develop_VB novel_JJ ensemble_NN learning_NN mechanisms_NNS for_IN data_NN streams_NNS =_JJ -_: =[_NN 9_CD ,_, 11_CD ,_, 12_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, all_PDT these_DT models_NNS ,_, although_IN effective_JJ to_TO some_DT extent_NN ,_, do_VBP not_RB provide_VB satisfying_JJ solution_NN to_TO some_DT open_JJ problems_NNS ,_, due_JJ to_TO the_DT difficulties_NNS of_IN :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- seeking_VBG enough_JJ training_NN data_NNS for_IN individual_JJ cl_NN
+for_IN the_DT task_NN at_IN hand_NN ._.
+This_DT objective_NN has_VBZ traditionally_RB led_VBN to_TO an_DT intuitive_JJ solution_NN :_: separate_JJ stream_NN data_NNS into_IN chunks_NNS ,_, and_CC then_RB integrate_VB the_DT classifiers_NNS learned_VBN from_IN each_DT chunk_NN for_IN a_DT final_JJ decision_NN =_JJ -_: =[_NN 11_CD ,_, 22_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Given_VBN a_DT huge_JJ volume_NN of_IN data_NNS ,_, such_PDT an_DT intuitive_JJ solution_NN can_MD easily_RB result_VB in_IN a_DT large_JJ number_NN of_IN base_NN classifiers_NNS ,_, where_WRB the_DT techniques_NNS from_IN Multiple_JJ Classifier_NNP Systems_NNPS -LRB-_-LRB- MCS_NN -RRB-_-RRB- -LRB-_-LRB- 1-2_CD -RRB-_-RRB- are_VBP involved_VBN to_TO int_VB
+There_EX is_VBZ significant_JJ work_NN on_IN using_VBG ensembles_NNS to_TO tackle_VB concept_NN drift_NN ._.
+These_DT approaches_NNS are_VBP motivated_VBN by_IN the_DT fact_NN that_IN it_PRP is_VBZ often_RB useful_JJ to_TO have_VB multiple_JJ -LRB-_-LRB- weighted_JJ -RRB-_-RRB- opinions_NNS before_IN making_VBG a_DT decision_NN ._.
+=_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: presented_VBD an_DT ensemble_NN method_NN for_IN concept_NN drift_NN by_IN assigning_VBG weights_NNS to_TO classifiers_NNS based_VBN on_IN their_PRP$ accuracies_NNS ._.
+-LRB-_-LRB- 3_LS -RRB-_-RRB- extended_VBN this_DT work_NN by_IN dynamically_RB creating_VBG and_CC removing_VBG weighted_JJ experts_NNS in_IN response_NN
+partially_RB learned_VBN models_NNS ,_, e.g._FW ,_, -LRB-_-LRB- 2_CD ,_, 3_CD -RRB-_-RRB- ._.
+Many_JJ have_VBP maintained_VBN and_CC compared_VBN ``_`` base_NN ''_'' models_NNS trained_VBN on_IN blocks_NNS of_IN consecutive_JJ examples_NNS to_TO identify_VB those_DT that_WDT are_VBP the_DT best_JJS predictors_NNS of_IN new_JJ examples_NNS ,_, e.g._FW ,_, =_JJ -_: =[_NN 4_CD ,_, 5_CD ,_, 6_CD ,_, 7_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP focus_VBP on_IN this_DT approach_NN ._.
+Such_JJ methods_NNS address_VBP directly_RB the_DT uncertainty_NN about_IN the_DT existence_NN and_CC location_NN of_IN drift_NN ._.
+We_PRP propose_VBP using_VBG probability_NN theory_NN to_TO reason_VB about_IN this_DT uncertainty_NN ._.
+A_DT probabilis_NN
+ation_NN problem_NN ,_, we_PRP use_VBP a_DT labeled_JJ training_NN data_NNS set_VBN in_IN order_NN to_TO supervise_VB the_DT classification_NN of_IN unlabeled_JJ data_NNS instances_NNS ._.
+The_DT problem_NN of_IN classification_NN has_VBZ also_RB been_VBN widely_RB studied_VBN inthedatastreamdomain_NN =_JJ -_: =[_NN 1,7,8,9,11,10,14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN we_PRP will_MD examine_VB the_DT problem_NN of_IN massivedomain_NN stream_NN classification_NN ._.
+A_DT massive-domain_JJ stream_NN is_VBZ defined_VBN as_IN one_CD in_IN which_WDT each_DT attribute_NN takes_VBZ on_IN an_DT extremely_RB large_JJ number_NN of_IN possible_JJ val_NN
+roperties_NNS might_MD be_VB the_DT class_NN prior_JJ P_NN -LRB-_-LRB- y_NN -RRB-_-RRB- ,_, the_DT feature_NN distribution_NN P_NN -LRB-_-LRB- x_NN |_CD y_NN -RRB-_-RRB- ,_, the_DT decision_NN function_NN P_NN -LRB-_-LRB- y_NN |_CD x_NN -RRB-_-RRB- or_CC a_DT combination_NN of_IN all_DT ._.
+Multiple_JJ approaches_NNS have_VBP been_VBN developed_VBN ,_, such_JJ as_IN ensemble_NN approaches_VBZ =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, co-clustering_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, and_CC local_JJ structure_NN map_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+Transfer_NN learning_NN is_VBZ also_RB relevant_JJ to_TO sample_NN bias_NN correction_NN ,_, which_WDT is_VBZ mostly_RB concerned_VBN with_IN distinct_JJ training_NN distribution_NN P_NN -LRB-_-LRB- x_NN |_CD λ_NN -RRB-_-RRB- and_CC testing_NN distri_NNS
+elevant_JJ description_NN is_VBZ selected_VBN ._.
+A_DT number_NN of_IN techniques_NNS are_VBP used_VBN to_TO identify_VB the_DT set_NN of_IN concept_NN descriptions_NNS including_VBG feature_NN construction_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, contextual_JJ clustering_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, sequential_JJ chunks_NNS of_IN data_NN =_JJ -_: =[_NN 29,30_CD -RRB-_-RRB- -_: =_JJ -_: or_CC groupings_NNS based_VBN on_IN decreasing_VBG periods_NNS of_IN time_NN -LRB-_-LRB- 16,28_CD -RRB-_-RRB- ._.
+All_DT incremental_JJ ensemble_NN approaches_NNS use_VBP some_DT criteria_NNS to_TO dynamically_RB delete_VB ,_, reactivate_VB ,_, or_CC create_VB new_JJ ensemble_NN members_NNS ,_, which_WDT are_VBP normally_RB b_NN
+model_NN has_VBZ become_VBN one_CD of_IN the_DT most_RBS challenging_JJ problems_NNS in_IN the_DT domain_NN of_IN classification_NN ._.
+Many_JJ approaches_NNS ,_, including_VBG both_CC the_DT incrementally_RB updated_VBN classifiers_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC the_DT ensemble_NN classifiers_NNS =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- have_VBP proved_VBN that_IN model_NN update_VBP is_VBZ a_DT very_RB costly_JJ process_NN and_CC not_RB depends_VBZ on_IN rate_NN of_IN disturbance_NN in_IN the_DT data_NNS ._.
+Data_NN streams_NNS are_VBP generated_VBN from_IN the_DT events_NNS of_IN real_JJ world_NN so_IN existence_NN of_IN associations_NNS ,_,
+fication_NN model_NN when_WRB new_JJ data_NNS appear_VBP ,_, such_JJ as_IN the_DT Very_RB Fast_JJ Decision_NN Tree_NN -LRB-_-LRB- VFDT_NN -RRB-_-RRB- -LRB-_-LRB- 3_LS -RRB-_-RRB- approach_NN ._.
+Another_DT approach_NN is_VBZ to_TO use_VB an_DT ensemble_NN of_IN classifiers_NNS and_CC update_VB the_DT ensemble_NN every_DT time_NN new_JJ data_NNS appears_VBZ =_JJ -_: =[_NN 4_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN shown_VBN in_IN -LRB-_-LRB- 4_CD ,_, 5_CD -RRB-_-RRB- ,_, the_DT ensemble_NN classifier_NN is_VBZ often_RB more_RBR robust_JJ at_IN handling_VBG unexpected_JJ changes_NNS and_CC concept_NN drifts_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP DIME_NNP ,_, a_DT Data_NNP Intensive_NNP Multi-chunk_JJ Ensemble_NN classificati_NNS
+ification_NN model_NN when_WRB new_JJ data_NNS appear_VBP ,_, such_JJ as_IN the_DT Very_RB Fast_JJ Decision_NN Tree_NN -LRB-_-LRB- VFDT_NN -RRB-_-RRB- -LRB-_-LRB- 2_LS -RRB-_-RRB- approach_NN ._.
+Another_DT approach_NN is_VBZ to_TO use_VB an_DT ensemble_NN of_IN classifiers_NNS and_CC update_VB the_DT ensemble_NN every_DT time_NN new_JJ data_NNS appear_VBP =_JJ -_: =[_NN 3,4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN shown_VBN in_IN -LRB-_-LRB- 3,4_CD -RRB-_-RRB- ,_, the_DT ensemble_NN classifier_NN is_VBZ often_RB more_RBR robust_JJ at_IN handling_VBG unexpected_JJ changes_NNS and_CC concept_NN drifts_NNS ._.
+We_PRP propose_VBP a_DT multi-partition_JJ ,_, multi-chunk_JJ ensemble_NN classification_NN algorithm_NN ,_, which_WDT
+pply_NN knowledge_NN learned_VBD from_IN one_CD or_CC more_JJR tasks_NNS to_TO help_VB solve_VB related_JJ tasks_NNS -LRB-_-LRB- 33_CD ,_, 20_CD ,_, 65_CD ,_, 67_CD ,_, 105_CD ,_, 119_CD -RRB-_-RRB- ._.
+In_IN data_NN mining_NN ,_, techniques_NNS have_VBP been_VBN developed_VBN to_TO recognize_VB drifting_VBG concepts_NNS from_IN streaming_NN data_NN =_JJ -_: =[_NN 61_CD ,_, 92_CD ,_, 102_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Specialized_JJ methods_NNS are_VBP also_RB available_JJ for_IN adapting_VBG language_NN models_NNS and_CC parsers_NNS in_IN natural_JJ language_NN processing_NN -LRB-_-LRB- NLP_NN -RRB-_-RRB- -LRB-_-LRB- 9_CD ,_, 53_CD ,_, 82_CD -RRB-_-RRB- and_CC adapting_VBG acoustic_JJ models_NNS in_IN speech_NN recognition_NN -LRB-_-LRB- 45_CD ,_, 64_CD -RRB-_-RRB- ._.
+Neverthe_NNP
+vantage_NN that_IN they_PRP can_MD be_VB updated_VBN efficiently_RB ,_, and_CC they_PRP can_MD be_VB easily_RB made_VBN to_TO adopt_VB the_DT changes_NNS in_IN the_DT stream_NN ._.
+Several_JJ ensemble_NN approaches_NNS have_VBP been_VBN devised_VBN for_IN classification_NN of_IN evolving_VBG data_NNS streams_NNS =_JJ -_: =[_NN 7_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT general_JJ technique_NN practiced_VBN by_IN these_DT approaches_NNS is_VBZ that_IN the_DT data_NNS stream_NN is_VBZ divided_VBN into_IN equal-sized_JJ chunks_NNS ._.
+Each_DT of_IN these_DT chunks_NNS is_VBZ used_VBN to_TO train_VB a_DT classifier_NN ._.
+An_DT ensemble_NN of_IN L_NN such_JJ classifiers_NNS
+ive_JJ sub-trees_NNS immediately_RB after_IN a_DT great_JJ increase_NN of_IN classification_NN error_NN and_CC then_RB performs_VBZ replacement_NN of_IN the_DT original_JJ sub-trees_NNS if_IN necessary_JJ ._.
+Figure_NN 1_CD ._.
+The_DT weight-by-accuracy_JJ ensemble_NN model_NN approach_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Online_JJ ensemble_NN model_NN methods_NNS train_VBP multiple_JJ base_NN models_NNS on_IN the_DT biased_VBN data_NN distributions_NNS and_CC then_RB combine_VB some_DT of_IN them_PRP in_IN order_NN to_TO best_RB match_VB the_DT data_NNS distributions_NNS of_IN incoming_JJ instances_NNS ._.
+A_DT well-kn_JJ
+roach_NN is_VBZ a_DT hybrid_JJ batch-incremental_JJ approach_NN ,_, in_IN which_WDT each_DT model_NN is_VBZ built_VBN using_VBG a_DT batch_NN learning_NN technique_NN ._.
+However_RB ,_, older_JJR models_NNS are_VBP replaced_VBN by_IN newer_JJR models_NNS when_WRB the_DT older_JJR models_NNS become_VBP obsolete_JJ -LRB-_-LRB- =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Some_DT of_IN these_DT hybrid_NN approaches_NNS use_VBP a_DT single_JJ model_NN to_TO classify_VB the_DT unlabeled_JJ data_NNS -LRB-_-LRB- e.g._FW -LRB-_-LRB- 8_CD -RRB-_-RRB- -RRB-_-RRB- ,_, whereas_IN others_NNS use_VBP an_DT ensemble_NN of_IN models_NNS -LRB-_-LRB- e.g._FW -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+The_DT advantage_NN of_IN the_DT hybrid_NN ap_NN
+er_IN the_DT training_NN data_NNS ._.
+In_IN order_NN to_TO cope_VB with_IN concept-drift_NN ,_, a_DT classifier_NN must_MD be_VB continuously_RB updated_VBN to_TO be_VB consistent_JJ with_IN the_DT most_RBS recent_JJ concept_NN ._.
+ActMiner_NNP applies_VBZ a_DT hybrid_JJ batch-incremental_JJ process_NN =_JJ -_: =[_NN 2_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: to_TO solve_VB the_DT infinite_JJ length_NN and_CC concept-drift_JJ problems_NNS ._.
+It_PRP divides_VBZ the_DT data_NNS stream_NN into_IN equal_JJ sized_VBN chunks_NNS and_CC trains_VBZ a_DT classification_NN model_NN from_IN each_DT chunk_NN ._.
+An_DT ensemble_NN of_IN M_NN such_JJ models_NNS is_VBZ used_VBN to_TO
+es_NNS may_MD evolve_VB in_IN the_DT stream_NN ._.
+There_EX are_VBP many_JJ existing_VBG solutions_NNS in_IN literature_NN that_WDT solve_VBP the_DT first_JJ two_CD problems_NNS ,_, such_JJ as_IN single_JJ model_NN incremental_JJ learning_NN algorithms_NNS -LRB-_-LRB- 1,2,11_CD -RRB-_-RRB- ,_, and_CC ensemble_NN classifiers_NNS =_JJ -_: =[_NN 3,5,9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, most_JJS of_IN the_DT existing_VBG techniques_NNS are_VBP not_RB capable_JJ of_IN detecting_VBG novel_JJ classes_NNS in_IN the_DT stream_NN ._.
+On_IN the_DT other_JJ hand_NN ,_, our_PRP$ approach_NN can_MD handle_VB both_DT concept-drift_NN ,_, and_CC detect_VB novel_JJ classes_NNS at_IN the_DT same_JJ
+on_IN ,_, concept-drift_NN occurs_VBZ in_IN the_DT stream_NN when_WRB the_DT underlying_VBG concepts_NNS of_IN the_DT stream_NN change_NN over_IN time_NN ._.
+A_DT variety_NN of_IN techniques_NNS have_VBP also_RB been_VBN proposed_VBN in_IN the_DT literature_NN for_IN addressing_VBG concept-drift_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: in_IN data_NNS stream_NN classification_NN ._.
+However_RB ,_, another_DT significant_JJ characteristic_NN of_IN data_NNS stream_NN is_VBZ that_DT of_IN concept-evolution_NN ._.
+This_DT occurs_VBZ when_WRB new_JJ classes_NNS evolve_VBP in_IN the_DT data_NNS ._.
+For_IN example_NN ,_, consider_VB the_DT prob_NN
+3_CD ;_: Chen_NNP and_CC Liu_NNP 2009_CD ;_: Aggarwal_NNP and_CC Yu_NNP 2010_CD -RRB-_-RRB- ._.
+There_EX has_VBZ also_RB been_VBN work_NN using_VBG online_NN or_CC incremental_JJ supervised_JJ learning_NN on_IN data_NNS streams_NNS to_TO address_VB the_DT ``_`` concept_NN drift_NN ''_'' problem_NN -LRB-_-LRB- Domingos_NNP and_CC Hulten_NNP 2000_CD ;_: =_JJ -_: =_JJ Wang_NNP et_FW al._FW 2003_CD -_: =-]_CD ._.
+Most_JJS of_IN these_DT proposed_VBN methods_NNS focus_VB on_IN time-series_NNS of_IN scalar_NN values_NNS ,_, categorical_JJ or_CC homogeneous_JJ network_NN data_NNS as_IN opposed_VBN to_TO our_PRP$ multi-relational_JJ network_NN data_NNS ._.
+Online_JJ news_NN and_CC event_NN tracking_NN ._.
+The_DT pr_NN
+s_NNS have_VBP been_VBN proposed_VBN for_IN learning_VBG with_IN concept_NN change_NN -LRB-_-LRB- 1_CD --_: 5_CD -RRB-_-RRB- ._.
+However_RB ,_, in_IN most_JJS cases_NNS ,_, the_DT algorithms_NNS are_VBP based_VBN on_IN heuristics_NNS and_CC applicable_JJ to_TO a_DT limited_JJ set_NN of_IN problems_NNS ._.
+Boosting_VBG algorithm_NN proposed_VBN in_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: uses_VBZ each_DT new_JJ data_NNS batch_NN to_TO train_VB an_DT additional_JJ classifier_NN and_CC to_TO recalculate_VB the_DT weights_NNS for_IN the_DT existing_VBG classifiers_NNS ._.
+These_DT weights_NNS are_VBP recalculated_VBN instead_RB of_IN updated_VBN ,_, thus_RB discarding_VBG the_DT influenc_NN
+build_VB online_JJ classification_NN algorithms_NNS ,_, such_JJ as_IN decision_NN tree_NN classifiers_NNS -LRB-_-LRB- 23_CD -RRB-_-RRB- ._.
+Additionally_RB ,_, researchers_NNS have_VBP focused_VBN on_IN improving_VBG the_DT accuracy_NN of_IN on-line_JJ classifiers_NNS using_VBG ensemble_NN 11based_JJ methods_NNS =_JJ -_: =[_NN 43_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Furthermore_RB ,_, there_EX has_VBZ also_RB been_VBN significant_JJ research_NN in_IN finding_VBG frequentpatterns_NNS and_CC association_NN rules_NNS -LRB-_-LRB- 44_CD -RRB-_-RRB- ,_, including_VBG frequent_JJ pattern_NN mining_NN over_IN over_IN a_DT stream_NN of_IN transactions_NNS ._.
+For_IN in_IN
+shape_NN of_IN the_DT decision_NN surfaces_NNS ,_, and_CC the_DT value_NN f_FW -LRB-_-LRB- x_NN -RRB-_-RRB- determines_VBZ the_DT class_NN label_NN of_IN each_DT instance_NN x._VBD The_DT concept_NN drifting_VBG of_IN the_DT data_NNS streams_NNS is_VBZ simulated_JJ and_CC controlled_VBN through_IN the_DT following_JJ parameters_NNS =_JJ -_: =[_NN 24_CD ,_, 29_CD -RRB-_-RRB- -_: =_JJ -_: :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- t_NN ,_, controlling_VBG the_DT magnitude_NN of_IN the_DT concept_NN drifting_VBG ;_: -LRB-_-LRB- 2_LS -RRB-_-RRB- p_NN ,_, controlling_VBG the_DT number_NN of_IN attributes_NNS whose_WP$ weights_NNS are_VBP involved_VBN in_IN the_DT change_NN ;_: and_CC -LRB-_-LRB- 3_LS -RRB-_-RRB- h_NN and_CC g_NN -LCB-_-LRB- -1_CD ,_, 1_CD -RCB-_-RRB- ,_, controlling_VBG the_DT weight_NN adjust_VBP
+of_IN interruption_NN and_CC improve_VB its_PRP$ quality_NN with_IN more_JJR time_NN allowance_NN ._.
+Anytime_NNP algorithms_NNS are_VBP an_DT active_JJ field_NN of_IN research_NN ,_, e.g._FW in_IN clustering_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, top_JJ k_NN processing_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC anytime_RB learning_NN of_IN classifiers_NNS =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Many_JJ anytime_RB classifiers_NNS have_VBP been_VBN proposed_VBN ,_, e.g._FW for_IN support_NN vector_NN machines_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, decision_NN trees_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, nearest_JJS neighbor_NN classifiers_NNS -LRB-_-LRB- 20_CD -RRB-_-RRB- and_CC Bayes_NNP classifiers_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+A_DT second_JJ issue_NN when_WRB dealing_VBG with_IN
+class_NN learning_NN method_NN ._.
+1_CD Introduction_NN One-class_JJ learning_NN on_IN uncertain_JJ data_NNS streams_NNS is_VBZ a_DT new_JJ and_CC challenging_JJ research_NN issue_NN ._.
+It_PRP involves_VBZ the_DT consolidation_NN of_IN one-class_JJ learning_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, data_NN stream_NN mining_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC uncertain_JJ data_NNS learning_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+The_DT problem-solving_JJ nature_NN of_IN many_JJ real-life_JJ applications_NNS ,_, such_JJ as_IN sensor_NN network_NN ,_, and_CC intrusion_NN detection_NN ,_, can_MD be_VB categorized_VBN as_IN one-class-based_JJ uncertain_JJ data_NNS stre_VBP
+streams_NNS using_VBG different_JJ techniques_NNS ._.
+Clustering_NN data_NNS streams_NNS has_VBZ been_VBN studied_VBN in_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+Data_NN stream_NN classification_NN has_VBZ been_VBN studied_VBN in_IN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Extracting_VBG frequent_JJ items_NNS and_CC frequent_JJ itemsets_NNS have_VBP been_VBN studied_VBN in_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 23_CD -RRB-_-RRB- ._.
+sThe_NN above_IN algorithms_NNS deal_VBP with_IN the_DT problem_NN of_IN mining_NN data_NNS streams_NNS using_VBG different_JJ methodologies_NNS ._.
+These_DT algorithm_NN
+countered_VBN in_IN traditional_JJ mining_NN of_IN stored_VBN data_NNS :_: at_IN the_DT physical_JJ level_NN ,_, these_DT include_VBP fast_JJ input_NN rates_NNS and_CC unending_JJ data_NNS sets_NNS ,_, while_IN ,_, at_IN the_DT logical_JJ level_NN ,_, there_EX is_VBZ the_DT need_NN to_TO cope_VB with_IN concept_NN drift_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Therefore_RB ,_, classical_JJ classification_NN algorithms_NNS must_MD be_VB replaced_VBN by_IN ,_, or_CC modified_VBN into_IN ,_, incremental_JJ algorithms_NNS that_WDT are_VBP fast_JJ and_CC light_JJ and_CC gracefully_RB adapt_VB to_TO changes_NNS in_IN data_NN statistics_NNS -LRB-_-LRB- 17,18,5_CD -RRB-_-RRB- ._.
+Rel_NN
+e_LS ,_, and_CC several_JJ strategies_NNS have_VBP been_VBN proposed_VBN ._.
+The_DT first_JJ and_CC easiest_JJS strategy_NN is_VBZ deciding_VBG -LRB-_-LRB- or_CC asking_VBG the_DT user_NN for_IN -RRB-_-RRB- a_DT window_NN size_NN W_NN and_CC keeping_VBG it_PRP fixed_VBD through_IN the_DT execution_NN of_IN the_DT algorithm_NN -LRB-_-LRB- see_VB e.g._FW =_SYM -_: =[_NN 6_CD ,_, 7_CD ,_, 18_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+In_IN order_NN to_TO detect_VB change_NN ,_, one_PRP can_MD keep_VB a_DT reference_NN window_NN with_IN data_NNS from_IN the_DT past_NN ,_, also_RB of_IN some_DT fixed_JJ size_NN ,_, and_CC decide_VB that_DT change_NN has_VBZ occurred_VBN if_IN some_DT statistical_JJ test_NN indicates_VBZ that_IN the_DT distribu_NN
+e_LS error_NN margin_NN ._.
+Mining_NNP Data_NNP Streams_NNP has_VBZ been_VBN studies_NNS in_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 32_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 33_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 34_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 35_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 36_CD -RRB-_-RRB- ,_, s_NN =_JJ -_: =[_NN 42_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Table_NNP 1_CD ._.
+-LRB-_-LRB- 15_CD -RRB-_-RRB- summarizes_VBZ the_DT most_RBS cited_VBN data_NNS stream_NN mining_NN techniques_NNS according_VBG to_TO the_DT mining_NN task_NN ,_, the_DT used_VBN approach_NN and_CC the_DT status_NN of_IN implementation_NN ._.
+Table_NNP 1_CD Mining_NNP Data_NNP Stream_NNP Algorithms_NNP Algorith_NNP
+raph_NN ._.
+The_DT normalized_VBN aggregate_NN size_NN is_VBZ computed_VBN using_VBG Equation_NN 5_CD ._.
+We_PRP can_MD then_RB weight_VB each_DT pattern_NN using_VBG Equation_NN 6_CD ._.
+-LRB-_-LRB- |_CD g_NN |_FW |_FW n_NN |_NN -RRB-_-RRB- size_NN -LRB-_-LRB- g_NN j_NN -RRB-_-RRB- =_JJ |_FW i_FW j_NN |_CD m_NN |_NNP ik_NNP |_NNP k_NN =_JJ 1_CD ∗_CD j_NN ∗_CD j_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- size_NN -LRB-_-LRB- g_NN j_NN -RRB-_-RRB- w_NN -LRB-_-LRB- g_NN -RRB-_-RRB- =_JJ -_: =-LRB-_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: j_NN =_JJ m_NN i_FW =_JJ 1_CD size_NN -LRB-_-LRB- g_NN -RRB-_-RRB- For_IN the_DT patterns_NNS described_VBN above_RB ,_, the_DT normalized_VBN aggregate_NN sizes_NNS would_MD be_VB calculated_VBN using_VBG Equation_NN 5_CD as_IN follows_VBZ :_: is5200_NN size_NN -LRB-_-LRB- g1_NN -RRB-_-RRB- =_JJ ∗_NN 5200_CD +_CC 6800_CD +_CC 6000_CD 6800_CD size_NN -LRB-_-LRB- g_NN 2_CD -RRB-_-RRB- =_JJ ∗_NN 52_CD
+work_NN for_IN stream_NN mining_NN ._.
+Guha_NNP et_FW al._FW -LRB-_-LRB- 23_CD -RRB-_-RRB- propose_VBP a_DT one-pass_JJ k-median_NN clustering_NN algorithm_NN ._.
+Domingos_NNP and_CC Hulten_NNP -LRB-_-LRB- 17_CD -RRB-_-RRB- construct_NN 699_CD a_DT decision_NN tree_NN online_NN ,_, by_IN passing_VBG over_IN the_DT data_NNS only_RB once_RB ._.
+Recently_RB ,_, =_JJ -_: =[_NN 25_CD ,_, 36_CD -RRB-_-RRB- -_: =_SYM -_: address_VB the_DT problem_NN of_IN finding_VBG patterns_NNS over_IN concept_NN drifting_VBG streams_NNS ._.
+Papadimitriou_NNP et_FW al._FW -LRB-_-LRB- 32_CD -RRB-_-RRB- proposed_VBD a_DT method_NN to_TO find_VB patterns_NNS in_IN a_DT single_JJ stream_NN ,_, using_VBG wavelets_NNS ._.
+More_RBR recently_RB ,_, Palpanas_FW et_FW al._FW ._.
+from_IN the_DT blowup_NN of_IN data_NN arrival_NN rates_NNS and_CC is_VBZ unlikely_JJ to_TO be_VB able_JJ to_TO keep_VB pace_NN with_IN the_DT incoming_JJ data_NNS ._.
+Some_DT previous_JJ works_NNS have_VBP dealt_VBN with_IN challenges_NNS in_IN the_DT singlestream_NN classification_NN problem_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- -LRB-_-LRB- 14_CD -RRB-_-RRB- =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =-[_CD 5_CD -RRB-_-RRB- ._.
+To_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, there_EX has_VBZ been_VBN no_DT work_NN on_IN such_JJ join_VB stream_NN classification_NN problem_NN ._.
+Although_IN there_EX have_VBP been_VBN many_JJ classification_NN algorithms_NNS that_WDT work_VBP well_RB on_IN static_JJ tables_NNS ,_, it_PRP is_VBZ ver_NN
+n_NN 5_CD presents_VBZ concluding_VBG remarks_NNS ._.
+2_CD Related_JJ Work_NN In_IN our_PRP$ problem_NN context_NN ,_, sensor_NN data_NNS is_VBZ an_DT unbounded_JJ multivariate_JJ time_NN series_NN data_NNS ._.
+Multivariate_JJ time_NN series_NN data_NNS classification_NN methods_NNS were_VBD studied_VBN in_IN =_JJ -_: =[_NN 4_CD ,_, 5_CD ,_, 6_CD ,_, 7_CD ,_, 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, including_VBG On-demand_JJ Classifier_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, HMM_NNP -LRB-_-LRB- Hidden_NNP Markov_NNP Models_NNS -RRB-_-RRB- -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, RNN_NNP -LRB-_-LRB- Recurrent_NNP Neural_NNP Network_NNP -RRB-_-RRB- ,_, Dynamic_NNP Time_NNP Warping_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, weighted_JJ ensemble_NN classifier_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC SAX_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+These_DT methods_NNS involve_VBP larg_NN
+n_NN a_DT wide_JJ spectrum_NN of_IN applications_NNS and_CC do_VBP not_RB focus_VB on_IN specific_JJ quality_NN requirements_NNS of_IN classification_NN tasks_NNS ._.
+A_DT second_JJ related_JJ line_NN of_IN research_NN seeks_VBZ to_TO design_VB or_CC extend_VB classifiers_NNS for_IN streaming_NN data_NN =_JJ -_: =[_NN 15_CD ,_, 11_CD ,_, 12_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT line_NN of_IN research_NN focuses_VBZ on_IN designing_VBG fast_JJ &_CC light_JJ one-pass_JJ classification_NN algorithms_NNS ,_, building_VBG effective_JJ data_NNS synopsis_NN ,_, and_CC adapting_VBG classifiers_NNS to_TO work_VB in_IN the_DT presence_NN of_IN conceptdrift_NN ._.
+Here_RB ,_, we_PRP
+nnot_NN be_VB easily_RB used_VBN in_IN the_DT context_NN of_IN an_DT on-demand_JJ classifier_NN in_IN an_DT evolving_VBG environment_NN ._.
+The_DT concept_NN drifting_VBG problem_NN in_IN stream_NN data_NNS classification_NN has_VBZ been_VBN addressed_VBN by_IN several_JJ authors_NNS ._.
+Wang_NNP et_FW al._FW =_SYM -_: =[_NN 50_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP proposed_VBN a_DT general_JJ framework_NN for_IN mining_NN concept_NN drifting_VBG data_NNS streams_NNS ._.
+The_DT proposed_VBN technique_NN uses_VBZ weighted_JJ classifier_NN ensembles_NNS to_TO mine_VB data_NNS streams_NNS ._.
+Last_JJ -LRB-_-LRB- 40_CD -RRB-_-RRB- has_VBZ proposed_VBN an_DT online_NN classifica_NN
+uld_RB be_VB allocated_VBN to_TO a_DT data_NN source_NN if_IN its_PRP$ classification_NN is_VBZ more_RBR sensitive_JJ to_TO the_DT exact_JJ feature_NN value_NN ._.
+Furthermore_RB ,_, data_NN mining_NN applications_NNS are_VBP often_RB more_RBR sensitive_JJ to_TO changes_NNS in_IN data_NN characteristics_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP means_VBZ feature_NN value_NN prediction_NN is_VBZ important_JJ to_TO load_VB shedding_VBG design_NN for_IN mining_NN data_NNS streams_NNS ._.
+Fortunately_RB ,_, many_JJ feature_NN values_NNS -LRB-_-LRB- e._NN g_NN ,_, the_DT readings_NNS of_IN temperature_NN sensors_NNS ,_, the_DT water_NN level_NN of_IN a_DT river_NN
+omparing_VBG the_DT statistics_NNS of_IN successive_JJ windows_NNS we_PRP can_MD -LRB-_-LRB- i_LS -RRB-_-RRB- detect_VB concept_NN shift\/drift_NN ,_, and_CC when_WRB none_NN is_VBZ detected_VBN -LRB-_-LRB- ii_LS -RRB-_-RRB- use_VBP bagging_VBG and_CC boosting_VBG techniques_NNS to_TO improve_VB the_DT predictive_JJ accuracy_NN of_IN our_PRP$ model_NN =_JJ -_: =[_NN 23_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+DSMS_NNS support_VBP a_DT rich_JJ assortment_NN of_IN window_NN constructs_NNS that_WDT can_MD be_VB utilized_VBN very_RB effectively_RB in_IN these_DT tasks_NNS -LRB-_-LRB- 29_CD ,_, 27_CD ,_, 21_CD -RRB-_-RRB- ._.
+Sampling_NN represents_VBZ another_DT basic_JJ function_NN that_WDT is_VBZ useful_JJ for_IN mining_NN data_NNS strea_VBP
+answers_NNS using_VBG small_JJ and_CC constant_JJ time_NN per_IN example_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Recent_JJ works_NNS on_IN data_NNS streams_NNS classification_NN has_VBZ been_VBN mainly_RB addressed_VBN by_IN two_CD different_JJ approaches_NNS :_: decision_NN trees_NNS -LRB-_-LRB- 2_CD ,_, 6_CD ,_, 7_CD -RRB-_-RRB- and_CC ensemble_NN methods_NNS =_JJ -_: =[_NN 9_CD ,_, 17_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Domingos_NNP &_CC Hulten_NNP 's_POS VFDT_NNP and_CC CVFDT_NNP systems_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- build_VB a_DT decision_NN tree_NN based_VBN on_IN Hoeffding_NNP bounds_NNS ,_, which_WDT guarantee_VBP constant_JJ time_NN and_CC memory_NN per_IN example_NN and_CC an_DT output_NN model_NN asymptotically_RB nearly_RB identic_JJ
+n_NN to_TO managing_VBG and_CC querying_VBG data_NNS streams_NNS ,_, mining_NN streams_NNS for_IN interesting_JJ patterns_NNS is_VBZ also_RB an_DT important_JJ challenge_NN ._.
+Recently_RB ,_, several_JJ studies_NNS on_IN mining_NN data_NNS streams_NNS have_VBP appeared_VBN including_VBG classi_JJ cation_NN =_JJ -_: =[_NN 15,17,23,25,32_CD -RRB-_-RRB- -_: =_JJ -_: ,_, clustering_NN -LRB-_-LRB- 2,19,29_CD -RRB-_-RRB- ,_, and_CC mining_NN frequent_JJ itemsets_NNS -LRB-_-LRB- 7,18,28_CD -RRB-_-RRB- ._.
+In_IN this_DT paper_NN ,_, we_PRP study_VBD the_DT problem_NN of_IN mining_NN frequent_JJ itemsets_NNS over_IN arbitrary_JJ time_NN intervals_NNS on_IN stream_NN data_NNS ._.
+We_PRP examine_VBP a_DT novel_JJ data_NN st_NN
+approaches_NNS -LRB-_-LRB- 8,9,10_CD -RRB-_-RRB- ._.
+In_IN windowing_VBG approaches_NNS ,_, a_DT frame_NN of_IN recent_JJ instances_NNS are_VBP selected_VBN as_IN a_DT window_NN and_CC are_VBP constantly_RB used_VBN to_TO train_VB and_CC evaluate_VB the_DT classifiers_NNS ._.
+Some_DT of_IN these_DT windows_NNS are_VBP fixed-size_NN =_JJ -_: =[_NN 21,22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, while_IN others_NNS are_VBP resized_VBN adaptively_RB according_VBG to_TO the_DT validity_NN of_IN the_DT learner_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, for_IN example_NN ,_, whenever_WRB a_DT concept_NN change_NN happens_VBZ the_DT window_NN size_NN is_VBZ reduced_VBN so_IN that_IN the_DT learner_NN is_VBZ supplied_VBN with_IN a_DT sma_NN
+ocused_VBN on_IN finding_VBG interesting_JJ patterns_NNS in_IN a_DT single_JJ stream_NN ._.
+Ganti_FW et_FW al._FW -LRB-_-LRB- 9_CD -RRB-_-RRB- propose_VBP a_DT generic_JJ framework_NN for_IN stream_NN mining_NN ._.
+Guha_NNP et_FW al._FW -LRB-_-LRB- 11_CD -RRB-_-RRB- propose_VBP a_DT one-pass_JJ k-median_NN clustering_NN algorithm_NN ._.
+Recently_RB ,_, =_JJ -_: =[_NN 14_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: address_VB the_DT problem_NN of_IN finding_VBG patterns_NNS over_IN concept_NN drifting_VBG streams_NNS ._.
+10srelative_JJ error_NN 0.1_CD 0.08_CD 0.06_CD 0.04_CD 0.02_CD 0_CD Group1_NN Group2_NN Group3_NN Group4_NN 20_CD 40_CD 60_CD period_NN 80_CD 100_CD relative_JJ error_NN 0.1_CD 0.08_CD 0.06_CD 0.04_CD
+an_DT extended_JJ period_NN of_IN time_NN ,_, the_DT statistics_NNS in_IN the_DT data_NNS are_VBP likely_JJ to_TO change_VB ._.
+The_DT time-dependent_JJ variation_NN of_IN statistics_NNS in_IN streamed_VBN data_NNS are_VBP termed_VBN concept_NN drift_NN in_IN the_DT literature_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Concept_NN drift_NN falls_VBZ under_IN the_DT general_JJ formulation_NN in_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Here_RB the_DT target_NN distribution_NN characterizes_VBZ the_DT statistics_NNS of_IN the_DT most_RBS recent_JJ recordings_NNS ,_, and_CC there_EX is_VBZ an_DT auxiliary_JJ distribution_NN characterizi_NNS
+different_JJ statistics_NNS -LRB-_-LRB- e.g._FW variance_NN and_CC k-means_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, frequency_NN count_NN -LRB-_-LRB- 65_CD -RRB-_-RRB- ,_, quantile_NN -LRB-_-LRB- 42_CD -RRB-_-RRB- ,_, correlation_NN -LRB-_-LRB- 98_CD -RRB-_-RRB- ,_, Count\/Sum\/Lp-norm_NN -LRB-_-LRB- 29_CD -RRB-_-RRB- -RRB-_-RRB- ,_, data_NN mining_NN -LRB-_-LRB- 25_CD ,_, 87_CD ,_, 34_CD ,_, 52_CD -RRB-_-RRB- ,_, prediction_NN -LRB-_-LRB- 27_CD ,_, 74_CD -RRB-_-RRB- ,_, classification_NN =_JJ -_: =[_NN 88_CD ,_, 33_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC clustering_NN -LRB-_-LRB- 14_CD ,_, 15_CD -RRB-_-RRB- ._.
+-LRB-_-LRB- 18_CD ,_, 38_CD ,_, 41_CD ,_, 36_CD ,_, 39_CD ,_, 59_CD -RRB-_-RRB- give_VBP excellent_JJ overviews_NNS of_IN issues_NNS in_IN data_NNS stream_NN management_NN and_CC mining_NN ._.
+The_DT large_JJ amount_NN of_IN literature_NN on_IN time_NN series_NNS and_CC data_NNS streams_NNS is_VBZ beyond_IN th_DT
+decision_NN making_NN by_IN predicting_VBG class_NN labels_NNS for_IN given_VBN data_NNS based_VBN on_IN past_JJ records_NNS ,_, classification_NN on_IN stream_NN data_NNS has_VBZ been_VBN extensively_RB studied_VBN in_IN recent_JJ years_NNS ,_, with_IN many_JJ interesting_JJ algorithms_NNS developed_VBD =_JJ -_: =[_NN 10_CD ,_, 14_CD ,_, 7_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, there_EX are_VBP still_RB some_DT open_JJ problems_NNS in_IN stream_NN classification_NN as_IN illustrated_VBN below_IN ._.
+First_JJ ,_, descriptive_JJ -LRB-_-LRB- non-parametric_JJ -RRB-_-RRB- and_CC generative_JJ -LRB-_-LRB- parametric_JJ -RRB-_-RRB- methods_NNS are_VBP two_CD major_JJ categories_NNS for_IN stream_NN
+heir_NN weights_NNS as_IN time_NN elapses_VBZ ._.
+Alternatively_RB ,_, other_JJ researchers_NNS explore_VBP some_DT sophisticated_JJ methods_NNS to_TO select_VB old_JJ examples_NNS to_TO help_VB train_VB a_DT better_JJR model_NN rather_RB than_IN just_RB using_VBG the_DT most_RBS recent_JJ data_NNS alone_RB =_JJ -_: =[_NN 10_CD ,_, 2_CD ,_, 9_CD ,_, 7_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT algorithms_NNS select_JJ either_CC old_JJ examples_NNS or_CC old_JJ models_NNS with_IN respect_NN to_TO how_WRB well_RB they_PRP match_VBP the_DT current_JJ data_NNS ._.
+Hence_RB ,_, they_PRP also_RB implicitly_RB make_VB the_DT assumption_NN that_IN the_DT current_JJ training_NN distribution_NN
+blocks_NNS ._.
+Once_RB a_DT base_NN model_NN is_VBZ constructed_VBN ,_, it_PRP will_MD never_RB be_VB updated_VBN with_IN new_JJ examples_NNS ._.
+Two_CD types_NNS of_IN voting_NN schemes_NNS are_VBP adopted_VBN ._.
+Street_NNP et_FW al._FW -LRB-_-LRB- 16_CD -RRB-_-RRB- let_VB their_PRP$ ensemble_NN vote_NN uniformly_RB ,_, while_IN Wang_NNP et_FW al._FW =_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: prefer_VBP a_DT weighted_JJ voting_NN ._.
+These_DT two_CD approaches_NNS ,_, -LRB-_-LRB- 16_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, are_VBP closely_RB related_JJ to_TO what_WP we_PRP will_MD present_VB in_IN this_DT paper_NN ,_, as_IN our_PRP$ method_NN also_RB build_VBP an_DT ensemble_NN from_IN sequential_JJ blocks_NNS ._.
+In_IN our_PRP$ comparati_NNS
+d_NN time_NN frame_NN ._.
+It_PRP is_VBZ done_VBN according_VBG to_TO the_DT available_JJ resources_NNS by_IN monitoring_VBG the_DT input-output_JJ rate_NN ._.
+This_DT process_NN is_VBZ followed_VBN by_IN merging_VBG clusters_NNS when_WRB the_DT memory_NN is_VBZ full_JJ ._.
+3.2_CD Classification_NN Wang_NNP et_FW al._FW =_SYM -_: =[_NN 53_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP proposed_VBN a_DT general_JJ framework_NN for_IN mining_NN concept_NN drifting_VBG data_NNS streams_NNS ._.
+They_PRP have_VBP observed_VBN that_IN data_NNS stream_NN mining_NN algorithms_NNS proposed_VBN so_RB far_RB have_VBP not_RB addressed_VBN the_DT concept_NN of_IN drifting_VBG in_IN the_DT evo_NN
+ic_JJ -RRB-_-RRB- ._.
+The_DT window_NN sizes_NNS ,_, however_RB ,_, are_VBP still_RB fixed_VBN through_IN the_DT execution_NN and_CC externally_RB defined_VBN ._.
+The_DT third_JJ technique_NN ,_, combining_VBG models_NNS built_VBN at_IN different_JJ times_NNS by_IN ensemble_NN techniques_NNS ,_, is_VBZ investigated_VBN in_IN =_JJ -_: =[_NN 17_CD ,_, 19_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+An_DT alleged_JJ advantage_NN of_IN the_DT method_NN is_VBZ that_IN algorithms_NNS for_IN model_NN building_NN can_MD be_VB used_VBN off-the-shelf_JJ ,_, since_IN models_NNS will_MD be_VB built_VBN from_IN a_DT static_JJ dataset_NN -LRB-_-LRB- namely_RB ,_, the_DT current_JJ window_NN -RRB-_-RRB- 3sand_NN they_PRP will_MD not_RB
+wever_JJR ,_, more_RBR often_RB than_IN not_RB ,_, change_NN detection_NN only_RB serves_VBZ to_TO trigger_VB a_DT costly_JJ learning_NN process_NN ,_, and_CC the_DT change_NN itself_PRP is_VBZ not_RB used_VBN to_TO mend_VB the_DT current_JJ prediction_NN model_NN directly_RB ._.
+Recently_RB ,_, several_JJ works_NNS =_JJ -_: =[_NN 8_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP studied_VBN how_WRB to_TO updatesthe_VB current_JJ model_NN f_FW ∗_FW -LRB-_-LRB- x_NN -RRB-_-RRB- in_IN response_NN to_TO the_DT concept_NN drifts_VBZ in_IN data_NNS streams_NNS ,_, for_IN instance_NN ,_, by_IN assimilating_VBG new_JJ instances_NNS in_IN D_NNP ′_NNP and_CC forgetting_VBG old_JJ instances_NNS in_IN D._NNP These_DT can_MD
+al_FW learning_VBG algorithms_NNS based_VBN on_IN bagging_VBG and_CC boosting_VBG and_CC successfully_RB applied_VBD them_PRP to_TO EEG_NNP data_NNS classification_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Wang_NNP et_FW al._FW used_VBN weighted_JJ ensemble_NN classifiers_NNS to_TO mine_VB concept-drifting_JJ data_NNS stream_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Like_IN bagging_NN ,_, a_DT model_NN of_IN incremental_JJ learning_NN by_IN classifier_NN combining_VBG -LRB-_-LRB- ILbyCC_NN -RRB-_-RRB- is_VBZ proposed_VBN in_IN this_DT paper_NN ._.
+2_CD Incremental_JJ Learning_NNP by_IN Classifier_NNP Combining_VBG 2.1_CD Definition_NN of_IN Batch_NN Incremental_JJ Learning_NNP
+et_FW al._FW -LRB-_-LRB- 14_CD -RRB-_-RRB- have_VBP proposed_VBN a_DT variation_NN of_IN their_PRP$ original_JJ algorithm_NN for_IN building_NN decision_NN trees_NNS for_IN time-changing_JJ data_NNS streams_NNS ._.
+Several_JJ research_NN groups_NNS have_VBP applied_VBN ensemble_NN classifiers_NNS on_IN this_DT problem_NN =_JJ -_: =[_NN 19_CD ,_, 20_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP plan_VBP to_TO consider_VB drifting_VBG streams_NNS in_IN our_PRP$ future_JJ work_NN ._.
+Our_PRP$ work_NN also_RB has_VBZ a_DT close_JJ relationship_NN with_IN the_DT work_NN on_IN incremental_JJ algorithms_NNS ._.
+There_EX have_VBP only_RB been_VBN a_DT few_JJ efforts_NNS on_IN incremental_JJ algorithms_NNS
+odel_NN that_WDT represents_VBZ both_CC old_JJ and_CC new_JJ data_NNS which_WDT can_MD be_VB a_DT misleading_JJ model_NN due_JJ to_TO the_DT concept_NN drift_NN ._.
+Algorithms_NNS under_IN this_DT category_NN have_VBP been_VBN studied_VBN in_IN -LRB-_-LRB- Fan04a_NN -RRB-_-RRB- ,_, -LRB-_-LRB- Fan04b_NN -RRB-_-RRB- ,_, -LRB-_-LRB- FHY04_NN -RRB-_-RRB- ,_, -LRB-_-LRB- HSD01_NN -RRB-_-RRB- ,_, -LRB-_-LRB- Kli04_NN -RRB-_-RRB- ,_, =_JJ -_: =_JJ -LRB-_-LRB- WFY03_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+Having_VBG briefly_NN presented_VBD the_DT related_JJ work_NN ,_, the_DT following_JJ section_NN proposes_VBZ our_PRP$ STREAM-DETECT_NN algorithm_NN for_IN revealing_VBG the_DT change_NN in_IN data_NNS stream_NN distribution_NN and\/or_CC domain_NN using_VBG online_JJ clustering_NN resul_NN
+ent_JJ pattern_NN mining_NN -LRB-_-LRB- 12_CD ,_, 30_CD -RRB-_-RRB- ,_, as_RB well_RB as_IN clustering_NN -LRB-_-LRB- 38_CD ,_, 24_CD ,_, 2_CD ,_, 37_CD ,_, 6_CD -RRB-_-RRB- ._.
+Classification_NN ,_, regression_NN and_CC related_JJ learning_NN methods_NNS have_VBP been_VBN independently_RB studied_VBN by_IN the_DT database\/data_JJ mining_NN communities_NNS =_JJ -_: =[_NN 43_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: as_RB well_RB as_IN the_DT machine_NN learning_NN community_NN -LRB-_-LRB- 27_CD ,_, 11_CD -RRB-_-RRB- ._.
+Although_IN unsupervised_JJ online_NN clustering_NN and_CC its_PRP$ applications_NNS to_TO text_NN analysis_NN is_VBZ becoming_VBG increasingly_RB important_JJ ,_, except_IN for_IN a_DT few_JJ important_JJ ideas_NNS ,_,
+mental_JJ results_NNS demonstrate_VBP the_DT effectiveness_NN of_IN the_DT proposed_VBN framework_NN ,_, both_CC in_IN terms_NNS of_IN reducing_VBG the_DT amount_NN of_IN model_NN updates_NNS and_CC maintaining_VBG high_JJ accuracy_NN ._.
+1_CD ._.
+Introduction_NN Data_NN stream_NN classification_NN =_JJ -_: =[_NN 1,3,4,5,6_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ attracted_VBN considerable_JJ interest_NN among_IN researchers_NNS because_IN of_IN its_PRP$ wide_JJ range_NN of_IN applicability_NN ,_, from_IN network_NN traffic_NN analysis_NN to_TO the_DT mining_NN of_IN video_NN streams_NNS ._.
+However_RB ,_, characteristics_NNS of_IN the_DT data_NNS st_IN
+for_IN a_DT wide_JJ range_NN of_IN applications_NNS -LRB-_-LRB- 7_CD ,_, 14_CD ,_, 16_CD ,_, 3_CD ,_, 12_CD -RRB-_-RRB- ._.
+Compared_VBN to_TO traditional_JJ data_NNS mining_NN ,_, mining_NN data_NNS streams_NNS poses_VBZ new_JJ challenges_NNS as_IN data_NNS are_VBP streaming_VBG through_IN instead_RB of_IN being_VBG statically_RB available_JJ =_JJ -_: =[_NN 3_CD ,_, 7_CD ,_, 14_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN the_DT underlying_VBG data_NNS generating_VBG mechanism_NN is_VBZ evolving_VBG over_IN time_NN ,_, so_RB are_VBP the_DT data_NNS patterns_NNS that_IN data_NN mining_NN systems_NNS intend_VBP to_TO capture_VB ._.
+This_DT is_VBZ known_VBN as_IN concept_NN drifting_VBG in_IN the_DT stream_NN mining_NN literat_NN
+on_IN tree_NN -RRB-_-RRB- 。_FW VFDT_FW 能用_FW 固定的内存和固定的时间为每个用例构建一棵决策树_FW 。_FW 它利用_FW Hoeffding_FW 边界来保证算法的输出模型与批量_FW 学习_NN -LRB-_-LRB- batch_NN learner_NN -RRB-_-RRB- 的输出模型是趋向于一致的_FW 。_FW 然而_NN ,_, 一个流数据的模型并不是一成不变的_NN ,_, 它会随时间而变化_NN ,_, 但这个算法对整个数据流只用一种模_NNP 型来表示_NNP ,_, 所以模型精确度是很差的_NNP 。_NNP 我们需要的是一个随数据流的变化_NNP ,_, 能生成不同模型的算法_NNP 。_NNP Wang_NNP 等人在_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: 中给出了一个处理数据流中概念递移的方法_NN --_: --_: 加权分类器聚集_CD -LRB-_-LRB- weighted_JJ classifier_NN ensembles_NNS -RRB-_-RRB- 。_NNP 现在_NNP ,_, 我们不需要不断的修改一个单一的模型_NNP ,_, 而可以在流的连续数据块中设置多个分类器来采集模型_NNP 。_NNP 我们也不需要维持一个最新的分类器_NNP ,_, 因为一些潜在有用的信息可能就在以前使用过的因不够精确而被丢弃_NNP 的分类器的模型中_NNP 。_NNP 为了防止对数据的描述过于细致以及概念冲突等问题_NNP ,_, 数据是否过期由数据的分_NN
+ed_VBN size_NN ._.
+When_WRB the_DT ensemble_NN is_VBZ full_JJ ,_, new_JJ classifiers_NNS are_VBP added_VBN only_RB if_IN they_PRP improve_VBP the_DT ensemble_NN 's_POS performance_NN ._.
+Concept_NN drift_NN is_VBZ treated_VBN by_IN relying_VBG on_IN the_DT replacement_NN policy_NN of_IN the_DT method_NN ._.
+Wang_NNP et_FW al._FW =_SYM -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP a_DT framework_NN for_IN mining_NN concept_NN drifting_VBG data_NNS streams_NNS using_VBG weighted_JJ ensemble_NN classifiers_NNS ._.
+The_DT classifiers_NNS are_VBP weighted_VBN by_IN estimating_VBG the_DT expected_VBN predictionerroronthetestset_NN ._.
+ThesizeK_NN of_IN the_DT e_SYM
+answers_NNS using_VBG small_JJ and_CC constant_JJ time_NN per_IN example_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Recent_JJ works_NNS on_IN data_NNS streams_NNS classification_NN has_VBZ been_VBN mainly_RB addressed_VBN by_IN two_CD different_JJ approaches_NNS :_: decision_NN trees_NNS -LRB-_-LRB- 2_CD ,_, 6_CD ,_, 7_CD -RRB-_-RRB- and_CC ensemble_NN methods_NNS =_JJ -_: =[_NN 9_CD ,_, 17_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+sFerrer-Troyano_NNP F.J._NNP ,_, Aguilar-Ruiz_NNP J.S._NNP ,_, Riquelme_NNP J.C._NNP :_: Incremental_JJ ..._: 1429_CD Domingos_NNP &_CC Hulten_NNP 's_POS VFDT_NNP and_CC CVFDT_NNP systems_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- build_VB a_DT decision_NN tree_NN based_VBN on_IN Hoeffding_NNP bounds_NNS ,_, which_WDT guarantee_VBP constant_JJ t_NN
+n_NN a_DT certain_JJ concept_NN ._.
+The_DT important_JJ part_NN is_VBZ to_TO identify_VB correctly_RB in_IN which_WDT concept_NN a_DT future_JJ instance_NN belongs_VBZ to_TO and_CC apply_VB the_DT most_RBS appropriate_JJ classifier_NN ._.
+Representatives_NNS of_IN this_DT group_NN can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+An_DT additional_JJ group_NN of_IN methods_NNS could_MD be_VB the_DT category_NN of_IN Quickly_RB adapting_VBG incremental_JJ algorithms_NNS :_: This_DT group_NN consists_VBZ of_IN methods_NNS like_IN CVFDT_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- that_WDT try_VBP to_TO adapt_VB rapidly_RB to_TO the_DT newest_JJS batch_NN
+system_NN that_IN we_PRP are_VBP trying_VBG to_TO model_VB ,_, but_CC when_WRB or_CC why_WRB this_DT happens_VBZ is_VBZ not_RB known_VBN to_TO the_DT algorithm_NN ._.
+This_DT phenomenon_NN is_VBZ generally_RB referred_VBN to_TO in_IN the_DT literature_NN as_IN learning_VBG in_IN the_DT presence_NN of_IN concept_NN drift_NN =_JJ -_: =[_NN 20_CD ,_, 16_CD ,_, 37_CD ,_, 22_CD ,_, 35_CD ,_, 42_CD ,_, 38_CD ,_, 8_CD ,_, 41_CD ,_, 43_CD -RRB-_-RRB- -_: =_JJ -_: and_CC is_VBZ the_DT focus_NN of_IN this_DT paper_NN ._.
+Our_PRP$ solution_NN is_VBZ based_VBN on_IN the_DT weighted_JJ majority_NN algorithm_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, an_DT online_JJ learning_NN algorithm_NN that_WDT given_VBD a_DT set_NN of_IN ``_`` experts_NNS ''_'' -LRB-_-LRB- predictors_NNS that_WDT are_VBP used_VBN as_IN black_JJ boxes_NNS -RRB-_-RRB- use_VBP
+rticular_JJ is_VBZ a_DT hot_JJ topic_NN ._.
+The_DT use_NN of_IN multiple_JJ model_NN -LRB-_-LRB- ensemble_NN -RRB-_-RRB- techniques_NNS over_IN single_JJ models_NNS is_VBZ also_RB gaining_VBG acceptance_NN due_JJ to_TO their_PRP$ increased_VBN performance_NN ,_, efficiency_NN and_CC potential_NN for_IN parallelization_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX are_VBP clear_JJ parallels_NNS between_IN the_DT hierarchical_JJ model_NN presented_VBN here_RB and_CC bagging_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+In_IN a_DT data_NN stream_NN context_NN there_EX is_VBZ no_DT need_NN to_TO sample_NN with_IN replacement_NN as_IN there_EX is_VBZ not_RB a_DT limited_JJ supply_NN of_IN data_NNS
+eturns_VBZ the_DT result_NN of_IN the_DT majority_NN of_IN the_DT classifiers_NNS ._.
+2_LS -RRB-_-RRB- unanimous_JJ decision_NN :_: if_IN all_DT classifiers_NNS give_VBP us_PRP the_DT same_JJ result_NN -LRB-_-LRB- either_CC +1_CD or_CC -1_CD -RRB-_-RRB- ,_, Meta_NN returns_NNS this_DT result_NN ,_, 0_CD otherwise_RB ._.
+3_LS -RRB-_-RRB- weighted_JJ averaging_NN =_JJ -_: =[_NN 43_CD -RRB-_-RRB- -_: =_JJ -_: :_: Meta_NN weighs_VBZ the_DT classifiers_NNS by_IN using_VBG some_DT predetermined_JJ quality_NN estimator_NN ,_, e.g._FW ,_, a_DT leaveone-out_NN or_CC k-fold-crossvalidation_NN estimator_NN for_IN each_DT vi_LS ._.
+The_DT restrictive_JJ and_CC tunable_JJ behavior_NN is_VBZ achieved_VBN by_IN t_NN
+t_NN is_VBZ able_JJ to_TO cope_VB with_IN concept_NN drift_NN automatically_RB ._.
+Related_NNP Work_NNP ._.
+The_DT problem_NN of_IN dealing_VBG with_IN concept_NN drift_NN in_IN the_DT context_NN of_IN learning_VBG from_IN data_NNS streams_NNS is_VBZ receiving_VBG much_JJ attention_NN recently_RB ,_, see_VB e.g._FW =_SYM -_: =[_NN 10_CD ,_, 20_CD ,_, 21_CD ,_, 3_CD ,_, 11_CD ,_, 22_CD ,_, 24_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS of_IN these_DT algorithms_NNS divide_VBP the_DT input_NN stream_NN of_IN data_NNS into_IN subsets_NNS of_IN sequential_JJ data_NNS -LRB-_-LRB- or_CC ``_`` data_NNS windows_NNS ''_'' -RRB-_-RRB- ,_, and_CC repeatedly_RB build_VB predictive_JJ models_NNS using_VBG only_RB one_CD or_CC several_JJ contiguous_JJ windows_NNS of_IN d_NN
+er_IN previous_JJ approaches_NNS ._.
+Keywords_NNS :_: Stream_NNP data_NNS mining_NN ,_, adaptive_JJ boosting_VBG ensembles_NNS ,_, change_NN detection_NN 1_CD Introduction_NN A_NN substantial_JJ amount_NN of_IN recent_JJ work_NN has_VBZ focused_VBN on_IN continuous_JJ mining_NN of_IN data_NNS streams_NNS =_JJ -_: =[_NN 4_CD ,_, 10,11,15,16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Typical_JJ applications_NNS include_VBP network_NN traffic_NN monitoring_NN ,_, credit_NN card_NN fraud_NN detection_NN and_CC sensor_NN network_NN management_NN systems_NNS ._.
+Challenges_NNS are_VBP posed_VBN by_IN data_NNS ever_RB increasing_VBG in_IN amount_NN and_CC in_IN speed_NN ,_, as_IN we_PRP
+ved_VBN considerable_JJ interest_NN -LRB-_-LRB- 11_CD ,_, 13_CD ,_, 35_CD ,_, 38_CD ,_, 36_CD ,_, 46_CD ,_, 44_CD ,_, 9_CD -RRB-_-RRB- ._.
+At_IN the_DT confluence_NN of_IN these_DT to_TO research_NN areas_NNS is_VBZ on-line_JJ data_NNS stream_NN mining_NN ,_, which_WDT has_VBZ started_VBN to_TO become_VB the_DT focus_NN of_IN a_DT few_JJ research_NN projects_NNS =_JJ -_: =[_NN 14_CD ,_, 21_CD ,_, 15_CD ,_, 47_CD ,_, 19_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT interest_NN is_VBZ largely_RB due_JJ to_TO the_DT growing_VBG set_NN of_IN streaming_NN applications_NNS where_WRB mining_NN plays_VBZ a_DT critical_JJ role_NN ,_, these_DT include_VBP network_NN traffic_NN monitoring_NN ,_, web_NN click-stream_JJ analysis_NN ,_, highway_NN traffic_NN con_NN
+ze_NN ._.
+1_CD Introduction_NN Machine_NN learning_NN systems_NNS are_VBP currently_RB required_VBN to_TO deal_VB with_IN large_JJ datasets_NNS ._.
+Moreover_RB ,_, data_NNS streams_NNS have_VBP recently_RB become_VBN a_DT new_JJ challenge_NN for_IN data_NNS mining_NN because_IN of_IN certain_JJ features_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: of_IN which_WDT infinite_JJ data_NN flow_NN is_VBZ the_DT most_RBS notable_JJ ._.
+Thus_RB ,_, datasets_NNS can_MD indefinitely_RB grow_VB at_IN a_DT very_RB high_JJ rate_NN and_CC it_PRP would_MD be_VB highly_RB desirable_JJ to_TO be_VB able_JJ to_TO induce_VB concepts_NNS from_IN them_PRP ._.
+Trying_VBG to_TO extract_VB k_NN
+for_IN quadratic_JJ and_CC misclassification_NN loss_NN functions_NNS ._.
+4_LS ._.
+These_DT decompositions_NNS allow_VBP better_JJR understanding_NN of_IN certain_JJ types_NNS of_IN machine_NN learning_NN algorithms_NNS ._.
+For_IN example_NN ,_, bagging_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- or_CC ensemble_NN techniques_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, can_MD be_VB easily_RB explained_VBN through_IN the_DT variance_NN term_NN of_IN the_DT decomposition_NN ._.
+Breaking_VBG down_RP classification_NN problems_NNS with_IN many_JJ classes_NNS to_TO a_DT set_NN of_IN 2-class_JJ classification_NN problems_NNS should_MD also_RB provide_VB better_JJR
+y_NN -LRB-_-LRB- old_JJ -RRB-_-RRB- data_NNS to_TO build_VB better_JJR classifiers_NNS for_IN the_DT primary_JJ -LRB-_-LRB- new_JJ -RRB-_-RRB- data_NNS ._.
+Two_CD main_JJ approaches_NNS are_VBP to_TO construct_VB an_DT ``_`` ensemble_NN ''_'' combining_VBG the_DT output_NN of_IN classifiers_NNS trained_VBN independently_RB from_IN the_DT two_CD datasets_NNS =_JJ -_: =[_NN 4_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC to_TO train_VB an_DT ``_`` aggregated_JJ ''_'' classifier_NN on_IN the_DT labeled_JJ examples_NNS combined_VBN from_IN both_DT datasets_NNS -LRB-_-LRB- 3_CD ,_, 5_CD ,_, 11_CD -RRB-_-RRB- ._.
+In_IN this_DT paper_NN ,_, we_PRP seek_VBP a_DT rather_RB different_JJ approach_NN that_WDT adapts_VBZ the_DT auxiliary_JJ classifier_NN -LRB-_-LRB- more_JJR p_NN
+they_PRP learn_VBP faster_JJR and_CC consume_VB less_JJR resources_NNS ._.
+The_DT adaptive_JJ weighting_NN scheme_NN distinguishes_VBZ our_PRP$ approach_NN from_IN previous_JJ work_NN using_VBG ensemble_NN methods_NNS for_IN data_NNS stream_NN learning_NN ,_, such_JJ as_IN the_DT work_NN in_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, uniform_JJ votes_NNS are_VBP taken_VBN among_IN members_NNS ,_, while_IN in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, classifier_NN votes_NNS are_VBP weighted_VBN proportionally_RB to_TO their_PRP$ estimated_VBN accuracy_NN ._.
+As_IN shown_VBN in_IN the_DT experiment_NN section_NN ,_, our_PRP$ approach_NN outperforms_VBZ bo_NN
+arner_NN from_IN all_DT previously_RB labeled_VBN examples_NNS ._.
+On_IN the_DT other_JJ hand_NN ,_, as_IN the_DT concepts_NNS of_IN the_DT data_NNS streams_NNS evolve_VBP ,_, aggregating_VBG all_DT labeled_VBN instances_NNS may_MD reduce_VB the_DT learner_NN performances_NNS instead_RB of_IN adding_VBG help_NN =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP present_VBP here_RB our_PRP$ recent_JJ research_NN efforts_NNS in_IN addressing_VBG these_DT challenges_NNS ._.
+In_IN short_JJ ,_, we_PRP propose_VBP a_DT classifier_NN ensembling_VBG based_VBN active_JJ learning_NN framework_NN ,_, with_IN an_DT objective_NN of_IN maximizing_VBG the_DT predicti_NN
+te_NN of_IN the_DT classifier_NN must_MD not_RB reveal_VB private_JJ information_NN to_TO other_JJ sites_NNS ._.
+This_DT problem_NN is_VBZ referred_VBN to_TO as_IN thessecure_NN join_VBP stream_NN classification_NN -LRB-_-LRB- Secure-JSC_NN -RRB-_-RRB- hereinafter_NN ._.
+Existing_VBG classification_NN methods_NNS =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =-[_NN 4_CD -RRB-_-RRB- -LRB-_-LRB- 31_CD -RRB-_-RRB- can_MD not_RB be_VB applied_VBN to_TO the_DT Secure-JSC_NN problem_NN because_IN they_PRP deal_VBP with_IN a_DT single_JJ stream_NN and_CC requires_VBZ the_DT join_VBP stream_NN to_TO be_VB explicitly_RB given_VBN ._.
+Our_PRP$ insight_NN is_VBZ that_IN the_DT independence_NN assumption_NN of_IN Naïve_NNP
+Volume_NN 8_CD ,_, Issue_NN 2_CD Page_NNP 57that_NN classifier_NN committees_NNS have_VBP substantial_JJ advantages_NNS on_IN single-classifier_JJ approaches_NNS in_IN the_DT field_NN of_IN text_NN categorization_NN -LRB-_-LRB- 29_CD ;_: 18_CD ;_: 3_LS -RRB-_-RRB- ,_, mining_NN concept-drifting_JJ data_NN streams_NNS =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_JJ -_: ,_, gene_NN data_NNS classification_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, etc._NN ._.
+An_DT ensemble_NN based_VBN method_NN has_VBZ also_RB been_VBN used_VBN in_IN the_DT winner_NN solution_NN of_IN KDD_NN cup_NN 2005_CD -LRB-_-LRB- 20_CD ;_: 21_CD -RRB-_-RRB- ._.
+A_DT classifier_NN committee_NN can_MD be_VB characterized_VBN by_IN the_DT committee_NN members_NNS -LRB-_-LRB-
+training_NN phase_NN ,_, where_WRB models_NNS are_VBP learned_VBN from_IN past_JJ data_NNS ,_, and_CC a_DT testing_NN phase_NN ,_, where_WRB models_NNS are_VBP applied_VBN on_IN the_DT future_JJ data_NNS ._.
+Recently_RB ,_, much_JJ work_NN focuses_VBZ on_IN mining_NN evolving_VBG data_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+Evolving_VBG data_NNS ,_, or_CC data_NNS with_IN changing_VBG class_NN distribution_NN ,_, blurs_VBZ the_DT boundary_NN between_IN the_DT training_NN and_CC the_DT testing_NN phases_NNS ._.
+Because_IN data_NN 's_POS class_NN distribution_NN is_VBZ no_DT longer_RBR stationary_JJ ,_, mod_NN
+ow_NN of_IN objects_NNS or_CC a_DT fixed_VBN learning_NN rate_NN ._.
+Within_IN the_DT detect-and-retrain_JJ strategy_NN group_NN ,_, changes_NNS are_VBP detected_VBN explicitly_RB -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Ensembles_NNS of_IN classifiers_NNS for_IN changing_VBG environments_NNS have_VBP also_RB been_VBN considered_VBN =_JJ -_: =[_NN 4_CD ,_, 7_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, mostly_RB following_VBG the_DT constant-update_JJ strategy_NN ._.
+Which_WDT method_NN will_MD be_VB adequate_JJ for_IN a_DT particular_JJ problem_NN depends_VBZ on_IN the_DT types_NNS and_CC frequencies_NNS of_IN the_DT changes_NNS ._.
+These_DT are_VBP rarely_RB known_VBN in_IN advance_NN ._.
+Hence_RB ,_, t_NN
+antify_JJ how_WRB well_RB the_DT cleansed_JJ data_NN set_NN resembles_VBZ the_DT clean_JJ one_CD and_CC hence_RB measure_VB the_DT quality_NN of_IN the_DT cleansing_VBG method_NN ._.
+A_DT third_JJ example_NN stems_VBZ from_IN the_DT research_NN and_CC practice_NN of_IN data_NNS stream_NN classification_NN =_JJ -_: =[_NN 13_CD ,_, 14_CD ,_, 15_CD ,_, 16_CD ,_, 17_CD ,_, 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB the_DT concept_NN underlying_VBG the_DT data_NNS may_MD change_VB over_IN time_NN and_CC the_DT classifier_NN should_MD be_VB updated_VBN accordingly_RB ._.
+A_DT crucial_JJ task_NN here_RB is_VBZ to_TO judge_VB whether_IN the_DT concept_NN has_VBZ changed_VBN across_IN instances_NNS streamin_NN
+ues_NNS ,_, developing_VBG mechanisms_NNS to_TO potentially_RB capture_VB those_DT capabilities_NNS ,_, and_CC trying_VBG to_TO bring_VB it_PRP closer_JJR to_TO reality_NN ._.
+Although_IN various_JJ algorithms_NNS have_VBP been_VBN proposed_VBN for_IN certain_JJ domain-specific_JJ applications_NNS =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 35_CD -RRB-_-RRB- ,_, there_EX is_VBZ no_DT general_JJ framework_NN that_WDT can_MD self-adapt_VB and_CC learn_VB new_JJ concepts_NNS ._.
+To_TO this_DT end_NN ,_, we_PRP hope_VBP the_DT proposed_VBN IMORL_NN framework_NN also_RB provides_VBZ some_DT insights_NNS into_IN this_DT issue_NN for_IN machine_NN intelligence_NN
+n_NN be_VB deleted_VBN from_IN the_DT ensemble_NN according_VBG to_TO a_DT heuristic_NN that_WDT favors_VBZ classifiers_NNS that_WDT can_MD correctly_RB classify_VB instances_NNS on_IN which_WDT the_DT ensemble_NN is_VBZ nearly_RB undecided_JJ ._.
+The_DT weighted_JJ classifier_NN ensemble_NN -LRB-_-LRB- WCE_NN -RRB-_-RRB- =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ based_VBN on_IN the_DT authors_NNS '_POS proof_NN that_IN a_DT carefully_RB weighted_JJ classifier_NN ensemble_NN built_VBN on_IN a_DT set_NN of_IN data_NNS partitions_NNS S1_NN ,_, S2_NN ,_, ·_NNP ·_NNP ·_NNP ,_, Sn_NNP is_VBZ more_RBR accurate_JJ than_IN a_DT single_JJ classifier_NN built_VBN on_IN S1_NN ∪_NN S2_NN ∪_FW Sn_FW ._.
+To_TO c_NN
+ensembles_NNS can_MD usually_RB reduce_VB variance_NN and_CC achieve_VB higher_JJR accuracy_NN than_IN individual_JJ classifiers_NNS ._.
+Such_JJ methods_NNS include_VBP Bayesian_JJ averaging_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, bagging_NN ,_, boosting_VBG and_CC many_JJ variants_NNS of_IN ensemble_NN approaches_VBZ =_JJ -_: =[_NN 2_CD ,_, 27_CD ,_, 13_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Some_DT ensemble_NN methods_NNS assign_VBP weights_NNS locally_RB -LRB-_-LRB- 1_CD ,_, 19_CD -RRB-_-RRB- ,_, but_CC such_JJ weights_NNS are_VBP determined_VBN based_VBN on_IN training_NN data_NNS only_RB ._.
+There_EX has_VBZ not_RB been_VBN much_JJ work_NN on_IN ensemble_NN methods_NNS to_TO address_VB the_DT transfer_NN learning_NN p_NN
+drift_NN over_IN the_DT last_JJ few_JJ years_NNS ._.
+For_IN instance_NN ,_, we_PRP can_MD cite_VB ensemble_NN approaches_NNS which_WDT create_VBP a_DT new_JJ classifier_NN to_TO each_DT new_JJ chunk_NN of_IN data_NNS and_CC weight_NN classifiers_NNS according_VBG to_TO their_PRP$ accuracy_NN on_IN recent_JJ data_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: --_: -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, possibly_RB using_VBG a_DT boosting-like_JJ mechanism_NN for_IN the_DT learning_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- --_: -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+Another_DT example_NN is_VBZ Gao_NNP et_FW al._FW 's_POS work_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, which_WDT proposes_VBZ the_DT use_NN of_IN unweighted_JJ ensembles_NNS ,_, as_IN new_JJ data_NNS may_MD belong_VB to_TO a_DT concept_NN
+ding_NN ._.
+In_IN contrast_NN ,_, how_WRB to_TO defined_VBN the_DT quality_NN measure_NN for_IN data_NN mining_NN tasks_NNS is_VBZ a_DT major_JJ part_NN of_IN our_PRP$ work_NN ._.
+Another_DT topic_NN that_WDT is_VBZ closely_RB related_JJ to_TO our_PRP$ work_NN is_VBZ concept_NN drifts_VBZ in_IN mining_NN data_NNS streams_NNS ._.
+In_IN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Wang_NNP et_FW al._FW proposed_VBD an_DT algorithm_NN for_IN mining_NN concept-drifting_JJ data_NN streams_NNS using_VBG weighted_JJ ensemble_NN classifiers_NNS ._.
+Ins_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, Fan_NN et_FW al._FW proposed_VBD an_DT active_JJ mining_NN method_NN that_WDT detects_VBZ potential_JJ changes_NNS in_IN
+or_CC monitoring_VBG stock_NN price_NN ,_, network_NN bandwidth_NN usage_NN ,_, foreign_JJ currency_NN exchange_NN rate_NN ,_, holiday_NN effect_NN ,_, and_CC so_RB on_RB ._.
+This_DT issue_NN is_VBZ referred_VBN to_TO as_IN data_NNS evolution_NN ,_, time-changing_JJ data_NNS ,_, or_CC conceptdrifting_VBG data_NN =_JJ -_: =[_NN 1_CD ,_, 13_CD ,_, 17_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+1.1_CD Motivation_NN The_DT distribution_NN change_NN over_IN data_NNS streams_NNS has_VBZ great_JJ impact_NN on_IN most_JJS stream_NN mining_NN algorithms_NNS ._.
+A_DT data_NN stream_NN mining_NN model_NN built_VBN previously_RB may_MD not_RB be_VB efficient_JJ or_CC accurate_JJ when_WRB the_DT data_NNS
+cation\/regression_NN models_NNS may_MD also_RB change_VB ,_, which_WDT is_VBZ often_RB called_VBN ``_`` concept_NN drifting_VBG ''_'' ._.
+There_EX are_VBP algorithms_NNS proposed_VBN to_TO address_VB this_DT problem_NN ,_, such_JJ as_IN ensemble_NN classifiers_NNS for_IN capturing_VBG drifting_VBG concepts_NNS =_JJ -_: =[_NN 39_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN addition_NN ,_, nonparametric_JJ testing_NN is_VBZ used_VBN to_TO monitor_VB the_DT information_NN change_NN in_IN data_NNS streams_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, as_RB well_RB as_IN various_JJ statistical_JJ testing_NN -LRB-_-LRB- 23_CD ,_, 24_CD -RRB-_-RRB- ._.
+Other_JJ loosely_RB related_JJ work_NN includes_VBZ indexing_NN catego_NN
+at_IN provides_VBZ the_DT ease-of-use_NN of_IN a_DT declarative_JJ language_NN ,_, which_WDT is_VBZ Turing_NN complete_JJ in_IN terms_NNS of_IN expressive_JJ power_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+In_IN the_DT database_NN community_NN ,_, there_EX is_VBZ much_JJ interest_NN in_IN data_NNS stream_NN mining_NN applications_NNS =_JJ -_: =[_NN 13_CD ,_, 16_CD ,_, 20_CD -RRB-_-RRB- -_: =_JJ -_: and_CC in_IN Data_NNP Stream_NNP Management_NNP Systems_NNPS -LRB-_-LRB- DSMS_NN -RRB-_-RRB- -LRB-_-LRB- 21_CD ,_, 14_CD ,_, 19_CD ,_, 18_CD -RRB-_-RRB- ;_: but_CC ,_, while_IN highly_RB desirable_JJ ,_, a_DT marriage_NN between_IN the_DT two_CD faces_VBZ difficult_JJ research_NN challenges_NNS ._.
+The_DT difficulty_NN of_IN the_DT task_NN is_VBZ demonstrated_VBN
+this_DT meta_NN classifier_NN family_NN include_VBP voting_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- -LRB-_-LRB- Meta_NN -LRB-_-LRB- -RRB-_-RRB- returns_VBZ the_DT result_NN of_IN the_DT majority_NN of_IN the_DT classifiers_NNS -RRB-_-RRB- ,_, unanimous_JJ decisions_NNS -LRB-_-LRB- if_IN all_DT classifiers_NNS give_VBP us_PRP the_DT same_JJ result_NN -RRB-_-RRB- ,_, and_CC weighted_JJ averaging_NN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- Meta_NN -LRB-_-LRB- -RRB-_-RRB- weights_NNS the_DT classifiers_NNS using_VBG some_DT predetermined_JJ quality_NN estimator_NN ,_, e.g._FW ,_, a_DT leaveone-out_JJ estimator_NN for_IN each_DT vi_LS -RRB-_-RRB- ._.
+The_DT restrictive_JJ behavior_NN is_VBZ achieved_VBN by_IN the_DT choice_NN of_IN the_DT thresholds_NNS :_: we_PRP dismi_VBP
+0\/03\/0008_CD ..._: $_$ 5.00_CD ._.
+data_NNS generating_VBG mechanism_NN ,_, or_CC the_DT concept_NN that_IN we_PRP try_VBP to_TO learn_VB from_IN the_DT data_NNS ,_, is_VBZ constantly_RB evolving_VBG ._.
+Knowledge_NN discovery_NN on_IN streaming_NN data_NNS is_VBZ a_DT research_NN topic_NN of_IN growing_VBG interest_NN =_JJ -_: =[_NN 1_CD ,_, 4_CD ,_, 7_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT fundamental_JJ problem_NN we_PRP need_VBP to_TO solve_VB is_VBZ the_DT following_NN :_: given_VBN an_DT infinite_JJ amount_NN of_IN continuous_JJ measurements_NNS ,_, how_WRB do_VBP we_PRP model_VB them_PRP in_IN order_NN to_TO capture_VB time-evolving_JJ trends_NNS and_CC patterns_NNS in_IN the_DT stre_NN
+re_NN efficient_JJ than_IN building_VBG a_DT single_JJ model_NN ,_, since_IN most_JJS model_NN construction_NN algorithms_NNS have_VBP super-linear_JJ complexity_NN ._.
+Third_RB ,_, the_DT nature_NN of_IN classifier_NN ensembles_NNS lend_VBP themselves_PRP to_TO scalable_JJ parallelization_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: and_CC on-line_JJ classification_NN of_IN large_JJ databases_NNS ._.
+Previously_RB ,_, we_PRP used_VBD averaging_VBG ensemble_NN for_IN scalable_JJ learning_NN over_IN very-large_JJ datasets_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+We_PRP show_VBP that_IN a_DT model_NN 's_POS performance_NN can_MD be_VB estimated_VBN before_IN i_FW
+0\/03\/0008_CD ..._: $_$ 5.00_CD ._.
+data_NNS generating_VBG mechanism_NN ,_, or_CC the_DT concept_NN that_IN we_PRP try_VBP to_TO learn_VB from_IN the_DT data_NNS ,_, is_VBZ constantly_RB evolving_VBG ._.
+Knowledge_NN discovery_NN on_IN streaming_NN data_NNS is_VBZ a_DT research_NN topic_NN of_IN growing_VBG interest_NN =_JJ -_: =[_NN 1_CD ,_, 4_CD ,_, 7_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT fundamental_JJ problem_NN we_PRP need_VBP to_TO solve_VB is_VBZ the_DT following_NN :_: given_VBN an_DT infinite_JJ amount_NN of_IN continuous_JJ measurements_NNS ,_, how_WRB do_VBP we_PRP model_VB them_PRP in_IN order_NN to_TO capture_VB time-evolving_JJ trends_NNS and_CC patterns_NNS in_IN the_DT stre_NN
+f_LS the_DT training_NN data_NNS makes_VBZ them_PRP inappropriate_JJ in_IN the_DT streaming_NN environment_NN where_WRB examples_NNS are_VBP coming_VBG in_RP at_IN a_DT higher_JJR rate_NN than_IN they_PRP can_MD be_VB repeatedly_RB analyzed_VBN ._.
+Incremental_JJ or_CC online_JJ data_NNS mining_NN methods_NNS =_JJ -_: =[_NN 25_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP another_DT option_NN for_IN mining_NN data_NNS streams_NNS ._.
+These_DT methods_NNS continuously_RB revise_VB and_CC refine_VB a_DT model_NN by_IN incorporating_VBG new_JJ data_NNS as_IN they_PRP arrive_VBP ._.
+However_RB ,_, in_IN order_NN to_TO guarantee_VB that_IN the_DT model_NN trained_JJ increm_NN
+the_DT data_NNS include_VBP the_DT time_NN of_IN the_DT transaction_NN ,_, the_DT merchant_NN type_NN ,_, the_DT merchant_NN location_NN ,_, past_JJ payments_NNS ,_, the_DT summary_NN of_IN transaction_NN history_NN ,_, etc._NN ._.
+A_DT detailed_JJ description_NN of_IN this_DT data_NN set_NN can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP use_VBP the_DT benefit_NN matrix_NN shown_VBN in_IN Table_NNP 1_CD with_IN the_DT cost_NN of_IN disputing_VBG and_CC investigating_VBG a_DT fraud_NN transaction_NN fixed_VBN at_IN cost_NN =_JJ $_$ 90_CD ._.
+The_DT total_JJ benefit_NN is_VBZ the_DT sum_NN of_IN recovered_JJ amount_NN of_IN fraudulent_JJ transa_NN
+02_CD 46139_CD 71660_CD Table_NNP 6_CD :_: Benefits_NNS -LRB-_-LRB- US_NNP $_$ -RRB-_-RRB- using_VBG Single_JJ Classifiers_NNS and_CC Classifier_NN Ensembles_NNS -LRB-_-LRB- original_JJ stream_NN -RRB-_-RRB- sembles_NNS include_VBP changing_VBG the_DT instances_NNS used_VBN for_IN training_NN through_IN techniques_NNS such_JJ as_IN Bagging_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Boosting_VBG -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+The_DT classifier_NN ensembles_NNS have_VBP several_JJ advantages_NNS over_IN single_JJ model_NN classifiers_NNS ._.
+First_RB ,_, classifier_NN ensembles_NNS offer_VBP a_DT significant_JJ improvement_NN in_IN prediction_NN accuracy_NN -LRB-_-LRB- 12_CD ,_, 24_CD -RRB-_-RRB- ._.
+Second_JJ ,_,
+community_NN ._.
+One_CD of_IN the_DT goals_NNS of_IN traditional_JJ data_NNS mining_NN algorithms_NNS is_VBZ to_TO learn_VB models_NNS from_IN large_JJ databases_NNS with_IN boundedmemory_NN ._.
+It_PRP has_VBZ been_VBN achieved_VBN by_IN several_JJ classification_NN methods_NNS ,_, including_VBG Sprint_NNP =_SYM -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, BOAT_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, etc._NN ._.
+Nevertheless_RB ,_, the_DT fact_NN that_IN these_DT algorithms_NNS require_VBP multiple_JJ scans_NNS of_IN the_DT training_NN data_NNS makes_VBZ them_PRP inappropriate_JJ in_IN the_DT streaming_NN environment_NN where_WRB examples_NNS are_VBP coming_VBG in_RP at_IN a_DT highe_NN
+ts_NNS on_IN prediction_NN accuracy_NN ,_, and_CC to_TO analyze_VB the_DT advantage_NN of_IN our_PRP$ approach_NN over_IN alternative_JJ methods_NNS such_JJ as_IN incremental_JJ learning_NN ._.
+The_DT base_NN models_NNS used_VBN in_IN our_PRP$ tests_NNS are_VBP C4_NN .5_CD -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, the_DT RIPPER_NN rule_NN learner_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC the_DT Naive_JJ Bayesian_JJ method_NN ._.
+The_DT tests_NNS are_VBP conducted_VBN on_IN a_DT Linux_NNP machine_NN with_IN a_DT 770_CD MHz_NNP CPU_NNP and_CC 256_CD MB_NN main_JJ memory_NN ._.
+6.1_CD Algorithms_NNS used_VBN in_IN Comparison_NN We_PRP denote_VBP a_DT classifier_NN ensemble_NN with_IN a_DT capacity_NN
+e_LS above_JJ tests_NNS are_VBP given_VBN in_IN Table_NNP 6_CD and_CC 5_CD ._.
+7_CD ._.
+DISCUSSION_NN AND_CC RELATED_NNS WORK_VBP Data_NN stream_NN processing_NN has_VBZ recently_RB become_VBN a_DT very_RB important_JJ research_NN domain_NN ._.
+Much_JJ work_NN has_VBZ been_VBN done_VBN on_IN modeling_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, querying_VBG =_JJ -_: =[_NN 2_CD ,_, 13_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC mining_NN data_NNS streams_NNS ,_, for_IN instance_NN ,_, several_JJ papers_NNS have_VBP been_VBN published_VBN on_IN classification_NN -LRB-_-LRB- 7_CD ,_, 19_CD ,_, 23_CD -RRB-_-RRB- ,_, regression_NN analysis_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, and_CC clustering_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Traditional_JJ data_NNS mining_NN algorithms_NNS are_VBP challeng_VBG
+ble_NN 6_CD :_: Benefits_NNS -LRB-_-LRB- US_NNP $_$ -RRB-_-RRB- using_VBG Single_JJ Classifiers_NNS and_CC Classifier_NN Ensembles_NNS -LRB-_-LRB- original_JJ stream_NN -RRB-_-RRB- sembles_NNS include_VBP changing_VBG the_DT instances_NNS used_VBN for_IN training_NN through_IN techniques_NNS such_JJ as_IN Bagging_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC Boosting_VBG =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT classifier_NN ensembles_NNS have_VBP several_JJ advantages_NNS over_IN single_JJ model_NN classifiers_NNS ._.
+First_RB ,_, classifier_NN ensembles_NNS offer_VBP a_DT significant_JJ improvement_NN in_IN prediction_NN accuracy_NN -LRB-_-LRB- 12_CD ,_, 24_CD -RRB-_-RRB- ._.
+Second_RB ,_, building_VBG a_DT classi_NN
+well_RB trained_VBN classifier_NN are_VBP expected_VBN to_TO approximate_JJ the_DT a_DT posterior_JJ class_NN distribution_NN ._.
+In_IN addition_NN to_TO the_DT Bayes_NNP error_NN ,_, the_DT remaining_VBG error_NN of_IN the_DT classifier_NN can_MD be_VB decomposed_VBN into_IN bias_NN and_CC variance_NN =_JJ -_: =[_NN 15_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+More_RBR specifically_RB ,_, given_VBN a_DT test_NN example_NN y_NN ,_, the_DT probability_NN output_NN of_IN classifier_NN Ci_NN can_MD be_VB expressed_VBN as_IN :_: i_LS =_JJ 1_CD f_FW i_FW c_NN -LRB-_-LRB- y_NN -RRB-_-RRB- =_JJ p_NN -LRB-_-LRB- c_NN |_CD y_NN -RRB-_-RRB- +_CC β_FW i_FW c_NN +_CC η_FW i_FW c_NN -LRB-_-LRB- y_NN -RRB-_-RRB- -RCB-_-RRB- -LCB-_-LRB- -LCB-_-LRB- -RCB-_-RRB- added_VBD error_NN for_IN y_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- where_WRB p_NN -LRB-_-LRB- c_NN |_CD y_NN -RRB-_-RRB- is_VBZ the_DT a_DT po_NN
+e_LS above_JJ tests_NNS are_VBP given_VBN in_IN Table_NNP 6_CD and_CC 5_CD ._.
+7_CD ._.
+DISCUSSION_NN AND_CC RELATED_NNS WORK_VBP Data_NN stream_NN processing_NN has_VBZ recently_RB become_VBN a_DT very_RB important_JJ research_NN domain_NN ._.
+Much_JJ work_NN has_VBZ been_VBN done_VBN on_IN modeling_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, querying_VBG =_JJ -_: =[_NN 2_CD ,_, 13_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC mining_NN data_NNS streams_NNS ,_, for_IN instance_NN ,_, several_JJ papers_NNS have_VBP been_VBN published_VBN on_IN classification_NN -LRB-_-LRB- 7_CD ,_, 19_CD ,_, 23_CD -RRB-_-RRB- ,_, regression_NN analysis_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, and_CC clustering_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Traditional_JJ data_NNS mining_NN algorithms_NNS are_VBP challeng_VBG
+ty_NN of_IN y_NN being_VBG an_DT instance_NN of_IN class_NN c._NN A_NN classifier_NN ensemble_NN pools_NNS the_DT outputs_NNS of_IN several_JJ classifiers_NNS before_IN a_DT decision_NN is_VBZ made_VBN ._.
+The_DT most_RBS popular_JJ way_NN of_IN combining_VBG multiple_JJ classifiers_NNS is_VBZ via_IN averaging_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, in_IN which_WDT case_NN the_DT probability_NN output_NN of_IN the_DT ensemble_NN is_VBZ given_VBN by_IN :_: Ek_NN produces_VBZ a_DT smaller_JJR classification_NN error_NN than_IN Gk_NNP ,_, if_IN classifiers_NNS in_IN Ek_NN are_VBP weighted_VBN by_IN their_PRP$ expected_VBN classification_NN accuracy_NN on_IN t_NN
+k_NN has_VBZ been_VBN done_VBN on_IN modeling_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, querying_VBG -LRB-_-LRB- 2_CD ,_, 13_CD ,_, 16_CD -RRB-_-RRB- ,_, and_CC mining_NN data_NNS streams_NNS ,_, for_IN instance_NN ,_, several_JJ papers_NNS have_VBP been_VBN published_VBN on_IN classification_NN -LRB-_-LRB- 7_CD ,_, 19_CD ,_, 23_CD -RRB-_-RRB- ,_, regression_NN analysis_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, and_CC clustering_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Traditional_JJ data_NNS mining_NN algorithms_NNS are_VBP challenged_VBN by_IN two_CD characteristic_JJ features_NNS of_IN data_NNS streams_NNS :_: the_DT infinite_JJ data_NN flow_NN and_CC the_DT drifting_VBG concepts_NNS ._.
+As_IN methods_NNS that_WDT require_VBP multiple_JJ scans_NNS of_IN the_DT data_NNS
+ssifier_JJR ensembles_NNS lend_VBP themselves_PRP to_TO scalable_JJ parallelization_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- and_CC on-line_JJ classification_NN of_IN large_JJ databases_NNS ._.
+Previously_RB ,_, we_PRP used_VBD averaging_VBG ensemble_NN for_IN scalable_JJ learning_NN over_IN very-large_JJ datasets_NNS =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP show_VBP that_IN a_DT model_NN 's_POS performance_NN can_MD be_VB estimated_VBN before_IN it_PRP is_VBZ completely_RB learned_VBN -LRB-_-LRB- 8_CD ,_, 9_CD -RRB-_-RRB- ._.
+In_IN this_DT work_NN ,_, we_PRP use_VBP weighted_JJ ensemble_NN classifiers_NNS on_IN concept-drifting_JJ data_NNS streams_NNS ._.
+It_PRP combines_VBZ multiple_JJ
+ion_NN of_IN large_JJ databases_NNS ._.
+Previously_RB ,_, we_PRP used_VBD averaging_VBG ensemble_NN for_IN scalable_JJ learning_NN over_IN very-large_JJ datasets_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+We_PRP show_VBP that_IN a_DT model_NN 's_POS performance_NN can_MD be_VB estimated_VBN before_IN it_PRP is_VBZ completely_RB learned_VBN =_JJ -_: =[_NN 8_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT work_NN ,_, we_PRP use_VBP weighted_JJ ensemble_NN classifiers_NNS on_IN concept-drifting_JJ data_NNS streams_NNS ._.
+It_PRP combines_VBZ multiple_JJ classifiers_NNS weighted_VBN by_IN their_PRP$ expected_VBN prediction_NN accuracy_NN on_IN the_DT current_JJ test_NN data_NNS ._.
+Compare_VB
+well_RB trained_VBN classifier_NN are_VBP expected_VBN to_TO approximate_JJ the_DT a_DT posterior_JJ class_NN distribution_NN ._.
+In_IN addition_NN to_TO the_DT Bayes_NNP error_NN ,_, the_DT remaining_VBG error_NN of_IN the_DT classifier_NN can_MD be_VB decomposed_VBN into_IN bias_NN and_CC variance_NN =_JJ -_: =[_NN 15_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+More_RBR specifically_RB ,_, given_VBN a_DT test_NN example_NN y_NN ,_, the_DT probability_NN output_NN of_IN classifier_NN Ci_NN can_MD be_VB expressed_VBN as_IN :_: i_LS =_JJ 1_CD f_FW i_FW c_NN -LRB-_-LRB- y_NN -RRB-_-RRB- =_JJ p_NN -LRB-_-LRB- c_NN |_CD y_NN -RRB-_-RRB- +_CC β_FW i_FW c_NN +_CC η_FW i_FW c_NN -LRB-_-LRB- y_NN -RRB-_-RRB- -RCB-_-RRB- -LCB-_-LRB- -LCB-_-LRB- -RCB-_-RRB- added_VBD error_NN for_IN y_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- where_WRB p_NN -LRB-_-LRB- c_NN |_CD y_NN -RRB-_-RRB- is_VBZ the_DT a_DT po_NN
+ion_NN of_IN large_JJ databases_NNS ._.
+Previously_RB ,_, we_PRP used_VBD averaging_VBG ensemble_NN for_IN scalable_JJ learning_NN over_IN very-large_JJ datasets_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+We_PRP show_VBP that_IN a_DT model_NN 's_POS performance_NN can_MD be_VB estimated_VBN before_IN it_PRP is_VBZ completely_RB learned_VBN =_JJ -_: =[_NN 8_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT work_NN ,_, we_PRP use_VBP weighted_JJ ensemble_NN classifiers_NNS on_IN concept-drifting_JJ data_NNS streams_NNS ._.
+It_PRP combines_VBZ multiple_JJ classifiers_NNS weighted_VBN by_IN their_PRP$ expected_VBN prediction_NN accuracy_NN on_IN the_DT current_JJ test_NN data_NNS ._.
+Compare_VB
+the_DT KL-distance_JJ criterion_NN is_VBZ limited_VBN to_TO streams_NNS with_IN no_DT or_CC mild_JJ concept_NN drifting_VBG only_RB ,_, since_IN concept_NN drifts_NNS also_RB enlarge_VBP the_DT KL-distance_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP apply_VBP the_DT instance-based_JJ pruning_NN technique_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: to_TO data_NNS streams_NNS with_IN conceptual_JJ drifts_NNS ._.
+q_NN is_VBZ defined_VBN as_IN D_NN -LRB-_-LRB- p_NN |_CD |_CD q_NN -RRB-_-RRB- =_JJ ∑_CD x_CC 5.2_CD Instance_NN Based_VBN Pruning_VBG Cost-sensitive_JJ applications_NNS usually_RB provide_VBP higher_JJR error_NN tolerance_NN ._.
+For_IN instance_NN ,_, in_IN credit_NN card_NN fraud_NN
+One_CD of_IN the_DT goals_NNS of_IN traditional_JJ data_NNS mining_NN algorithms_NNS is_VBZ to_TO learn_VB models_NNS from_IN large_JJ databases_NNS with_IN boundedmemory_NN ._.
+It_PRP has_VBZ been_VBN achieved_VBN by_IN several_JJ classification_NN methods_NNS ,_, including_VBG Sprint_NNP -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, BOAT_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, etc._NN ._.
+Nevertheless_RB ,_, the_DT fact_NN that_IN these_DT algorithms_NNS require_VBP multiple_JJ scans_NNS of_IN the_DT training_NN data_NNS makes_VBZ them_PRP inappropriate_JJ in_IN the_DT streaming_NN environment_NN where_WRB examples_NNS are_VBP coming_VBG in_RP at_IN a_DT higher_JJR rate_NN than_IN
+0\/03\/0008_CD ..._: $_$ 5.00_CD ._.
+data_NNS generating_VBG mechanism_NN ,_, or_CC the_DT concept_NN that_IN we_PRP try_VBP to_TO learn_VB from_IN the_DT data_NNS ,_, is_VBZ constantly_RB evolving_VBG ._.
+Knowledge_NN discovery_NN on_IN streaming_NN data_NNS is_VBZ a_DT research_NN topic_NN of_IN growing_VBG interest_NN =_JJ -_: =[_NN 1_CD ,_, 4_CD ,_, 7_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT fundamental_JJ problem_NN we_PRP need_VBP to_TO solve_VB is_VBZ the_DT following_NN :_: given_VBN an_DT infinite_JJ amount_NN of_IN continuous_JJ measurements_NNS ,_, how_WRB do_VBP we_PRP model_VB them_PRP in_IN order_NN to_TO capture_VB time-evolving_JJ trends_NNS and_CC patterns_NNS in_IN the_DT stre_NN
+0\/03\/0008_CD ..._: $_$ 5.00_CD ._.
+data_NNS generating_VBG mechanism_NN ,_, or_CC the_DT concept_NN that_IN we_PRP try_VBP to_TO learn_VB from_IN the_DT data_NNS ,_, is_VBZ constantly_RB evolving_VBG ._.
+Knowledge_NN discovery_NN on_IN streaming_NN data_NNS is_VBZ a_DT research_NN topic_NN of_IN growing_VBG interest_NN =_JJ -_: =[_NN 1_CD ,_, 4_CD ,_, 7_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT fundamental_JJ problem_NN we_PRP need_VBP to_TO solve_VB is_VBZ the_DT following_NN :_: given_VBN an_DT infinite_JJ amount_NN of_IN continuous_JJ measurements_NNS ,_, how_WRB do_VBP we_PRP model_VB them_PRP in_IN order_NN to_TO capture_VB time-evolving_JJ trends_NNS and_CC patterns_NNS in_IN the_DT stre_NN
+tly_RB become_VBN a_DT very_RB important_JJ research_NN domain_NN ._.
+Much_JJ work_NN has_VBZ been_VBN done_VBN on_IN modeling_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, querying_VBG -LRB-_-LRB- 2_CD ,_, 13_CD ,_, 16_CD -RRB-_-RRB- ,_, and_CC mining_NN data_NNS streams_NNS ,_, for_IN instance_NN ,_, several_JJ papers_NNS have_VBP been_VBN published_VBN on_IN classification_NN =_JJ -_: =[_NN 7_CD ,_, 19_CD ,_, 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, regression_NN analysis_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, and_CC clustering_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Traditional_JJ data_NNS mining_NN algorithms_NNS are_VBP challenged_VBN by_IN two_CD characteristic_JJ features_NNS of_IN data_NNS streams_NNS :_: the_DT infinite_JJ data_NN flow_NN and_CC the_DT drifting_VBG concepts_NNS ._.
+As_IN m_NN

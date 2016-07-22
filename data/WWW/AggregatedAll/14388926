@@ -1,0 +1,123 @@
+Distributed_VBN graph_NN pattern_NN matching_VBG
+Graph_NN simulation_NN has_VBZ been_VBN adopted_VBN for_IN pattern_NN matching_NN to_TO reduce_VB the_DT complexity_NN and_CC capture_VB the_DT need_NN of_IN novel_JJ applications_NNS ._.
+With_IN the_DT rapid_JJ development_NN of_IN the_DT Web_NN and_CC social_JJ networks_NNS ,_, data_NNS is_VBZ typically_RB distributed_VBN over_IN multiple_JJ machines_NNS ._.
+Hence_RB a_DT natural_JJ question_NN raised_VBN is_VBZ how_WRB to_TO evaluate_VB graph_NN simulation_NN on_IN distributed_VBN data_NNS ._.
+To_TO our_PRP$ knowledge_NN ,_, no_DT such_JJ distributed_VBN algorithms_NNS are_VBP in_IN place_NN yet_RB ._.
+This_DT paper_NN settles_VBZ this_DT question_NN by_IN providing_VBG evaluation_NN algorithms_NNS and_CC optimizations_NNS for_IN graph_NN simulation_NN in_IN a_DT distributed_VBN setting_NN ._.
+-LRB-_-LRB- 1_LS -RRB-_-RRB- We_PRP study_VBD the_DT impacts_NNS of_IN components_NNS and_CC data_NNS locality_NN on_IN the_DT evaluation_NN of_IN graph_NN simulation_NN ._.
+-LRB-_-LRB- 2_LS -RRB-_-RRB- We_PRP give_VBP an_DT analysis_NN of_IN a_DT large_JJ class_NN of_IN distributed_VBN algorithms_NNS ,_, captured_VBN by_IN a_DT message-passing_JJ model_NN ,_, for_IN graph_NN simulation_NN ._.
+We_PRP also_RB identify_VBP three_CD complexity_NN measures_NNS :_: visit_NN times_NNS ,_, makespan_NN and_CC data_NN shipment_NN ,_, for_IN analyzing_VBG the_DT distributed_VBN algorithms_NNS ,_, and_CC show_VBP that_IN these_DT measures_NNS are_VBP essentially_RB controversial_JJ with_IN each_DT other_JJ ._.
+-LRB-_-LRB- 3_LS -RRB-_-RRB- We_PRP propose_VBP distributed_VBN algorithms_NNS and_CC optimization_NN techniques_NNS that_WDT exploit_VBP the_DT properties_NNS of_IN graph_NN simulation_NN and_CC the_DT analyses_NNS of_IN distributed_VBN algorithms_NNS ._.
+-LRB-_-LRB- 4_LS -RRB-_-RRB- We_PRP experimentally_RB verify_VBP the_DT effectiveness_NN and_CC efficiency_NN of_IN these_DT algorithms_NNS ,_, using_VBG both_CC real-life_JJ and_CC synthetic_JJ data_NNS ._.
+y_NN on_IN a_DT large_JJ dataset_NN ,_, one_CD wants_VBZ to_TO partition_NN and_CC distribute_VB the_DT data_NNS to_TO multiple_JJ machines_NNS ,_, so_IN that_IN the_DT query_NN can_MD be_VB efficiently_RB evaluated_VBN in_IN parallel_NN ,_, as_IN advocated_VBN by_IN ,_, e.g._FW ,_, MapReduce_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- and_CC Pregel_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Moreover_RB ,_, it_PRP is_VBZ common_JJ to_TO find_VB distributed_VBN real-life_JJ datasets_NNS ,_, such_JJ as_IN Facebook_NNP ,_, Yahoo_NNP Flickr_NNP ,_, Twitter_NNP ,_, and_CC Apple_NNP AppStore_NNP ,_, that_WDT are_VBP stored_VBN at_IN data_NN centers_NNS ,_, which_WDT typically_RB host_VBP a_DT cluster_NN of_IN tens_NNS to_TO
+preserves_VBZ the_DT labels_NNS and_CC the_DT child_NN relationship_NN of_IN a_DT graph_NN pattern_NN in_IN its_PRP$ match_NN ._.
+Simulation_NN was_VBD proposed_VBN for_IN the_DT analyses_NNS of_IN programs_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, and_CC studied_VBN for_IN schema_NN extraction_NN from_IN semi-structured_JJ data_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Simulation_NN and_CC its_PRP$ extensions_NNS were_VBD recently_RB introduced_VBN for_IN social_JJ networks_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC for_IN graph_NN pattern_NN matching_NN -LRB-_-LRB- 13_CD ,_, 12_CD -RRB-_-RRB- ._.
+Graph_NN pattern_NN matching_NN ._.
+The_DT problem_NN is_VBZ to_TO find_VB ,_, given_VBN any_DT pattern_NN graph_NN Q_NNP and_CC
+not_RB run_VB in_IN quadratic_JJ time_NN ,_, but_CC it_PRP is_VBZ simple_JJ and_CC easy_JJ to_TO be_VB understood_VBN ._.
+Its_PRP$ further_JJ refinement_NN leads_VBZ to_TO a_DT quadratic_JJ algorithm_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, the_DT best_JJS available_JJ algorithm_NN as_RB long_RB as_IN time_NN complexity_NN is_VBZ concerned_VBN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+-LRB-_-LRB- 2_LS -RRB-_-RRB- Algorithm_NN HHK_NN correctly_RB computes_VBZ the_DT maximum_NN match_NN M_NN in_IN data_NNS graph_NN G_NN for_IN pattern_NN graph_NN Q_NNP ,_, andQ_FW ≺_FW G_NN iff_NN for_IN each_DT node_NN v_LS in_IN Q_NNP ,_, thereexistsanodeu_NN in_IN G_NN with_IN -LRB-_-LRB- v_LS ,_, u_NN -RRB-_-RRB- ∈_FW M._FW Hence_RB we_PRP focus_VBP on_IN computing_NN t_NN
+mber_NN of_IN nodes_NNS and_CC edges_NNS as_IN the_DT original_JJ graph_NN except_IN that_IN the_DT children_NNS of_IN boundary_NN nodes_NNS are_VBP labeled_VBN with_IN IDs_NNS of_IN the_DT fragments_NNS in_IN which_WDT they_PRP are_VBP located_JJ ._.
+-LRB-_-LRB- 2_LS -RRB-_-RRB- Graph_NN partition_NN is_VBZ np-complete_JJ in_IN general_JJ =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC is_VBZ not_RB the_DT focus_NN of_IN this_DT work_NN ._.
+Here_RB we_PRP allow_VBP arbitrary_JJ fragmentation_NN of_IN data_NNS graphs_NNS ._.
+Distributed_VBN graph_NN pattern_NN matching_NN ._.
+We_PRP now_RB define_VBP the_DT graph_NN pattern_NN matching_NN problem_NN in_IN a_DT distributed_VBN setting_NN
+ecursive_JJ computations_NNS ,_, as_IN illustrated_VBN by_IN its_PRP$ recursive_JJ definition_NN given_VBN before_RB ._.
+MapReduce_NNP is_VBZ typically_RB not_RB fit_VB for_IN this_DT kind_NN of_IN graph_NN algorithms_NNS ,_, which_WDT needs_VBZ a_DT series_NN of_IN chained_JJ MapReduce_NNP invocations_NNS =_JJ -_: =[_NN 7_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Pregel_NNP utilizes_VBZ a_DT messagepassing_NN model_NN ,_, which_WDT is_VBZ typically_RB fit_JJ for_IN graph_NN algorithms_NNS ._.
+However_RB ,_, if_IN we_PRP simply_RB delegate_VBP the_DT computation_NN tasks_NNS to_TO Pregel_NNP ,_, it_PRP may_MD involve_VB too_RB many_JJ rounds_NNS of_IN computations_NNS ._.
+A_DT
+e.g._FW ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- for_IN a_DT survey_NN -RRB-_-RRB- ._.
+Hence_RB the_DT problem_NN is_VBZ np-complete_JJ -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+Furthermore_RB ,_, subgraph_NN isomorphism_NN is_VBZ often_RB too_RB restrictive_JJ to_TO catch_VB sensible_JJ matches_NNS in_IN emerging_VBG applications_NNS such_JJ as_IN social_JJ networks_NNS =_JJ -_: =[_NN 5_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO reduce_VB the_DT complexity_NN and_CC capture_VB the_DT need_NN of_IN novel_JJ applications_NNS ,_, graph_NN simulation_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- has_VBZ been_VBN adopted_VBN for_IN pattern_NN matching_NN -LRB-_-LRB- 5_CD ,_, 13_CD -RRB-_-RRB- ._.
+It_PRP is_VBZ less_RBR restrictive_JJ than_IN subgraph_JJ isomorphism_NN ,_, and_CC can_MD be_VB
+matching_NN ,_, in_IN terms_NNS of_IN graph_NN simulation_NN ,_, on_IN distributed_VBN data_NNS ._.
+To_TO our_PRP$ knowledge_NN ,_, no_DT such_JJ distributed_VBN algorithms_NNS are_VBP in_IN place_NN yet_RB ._.
+Example_NN 1_CD :_: Consider_VB a_DT real-life_JJ example_NN for_IN social_JJ matching_NN ,_, taken_VBN from_IN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, that_WDT recruits_VBZ people_NNS from_IN a_DT social_JJ system_NN to_TO set_VB up_RP a_DT team_NN to_TO develop_VB a_DT new_JJ software_NN product_NN ._.
+Ideally_RB such_JJ a_DT team_NN consists_VBZ of_IN members_NNS with_IN the_DT following_JJ roles_NNS :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- project_NN manager_NN -LRB-_-LRB- PM_NN -RRB-_-RRB- ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- business_NN
+ptimization_NN techniques_NNS are_VBP effective_JJ ,_, reducing_VBG 1\/5_CD of_IN running_VBG time_NN in_IN average_NN ._.
+Related_JJ work_NN ._.
+There_EX has_VBZ been_VBN a_DT host_NN of_IN work_NN on_IN graph_NN pattern_NN matching_NN ,_, via_IN subgraph_JJ isomorphism_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 18_CD ,_, 25_CD ,_, 26_CD -RRB-_-RRB- ;_: see_VB =_JJ -_: =[_NN 3_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: for_IN surveys_NNS -RRB-_-RRB- and_CC via_IN graph_NN simulation_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- and_CC its_PRP$ extensions_NNS -LRB-_-LRB- 13_CD ,_, 12_CD -RRB-_-RRB- ._.
+Nevertheless_RB ,_, none_NN of_IN these_DT investigates_VBZ the_DT problem_NN in_IN a_DT distributed_VBN fashion_NN ._.
+Distributed_VBN query_NN processing_NN has_VBZ been_VBN studied_VBN fo_IN
+hism_NN is_VBZ often_RB too_RB restrictive_JJ to_TO catch_VB sensible_JJ matches_NNS in_IN emerging_VBG applications_NNS such_JJ as_IN social_JJ networks_NNS -LRB-_-LRB- 5_CD ,_, 13_CD -RRB-_-RRB- ._.
+To_TO reduce_VB the_DT complexity_NN and_CC capture_VB the_DT need_NN of_IN novel_JJ applications_NNS ,_, graph_NN simulation_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ been_VBN adopted_VBN for_IN pattern_NN matching_NN -LRB-_-LRB- 5_CD ,_, 13_CD -RRB-_-RRB- ._.
+It_PRP is_VBZ less_RBR restrictive_JJ than_IN subgraph_JJ isomorphism_NN ,_, and_CC can_MD be_VB determined_VBN in_IN quadratic_JJ time_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+We_PRP say_VBP that_IN a_DT graph_NN G_NN matches_VBZ a_DT pattern_NN Q_NNP ,_, via_IN graph_NN sim_NN
+1_CD ._.
+INTRODUCTION_NN Graph_NN pattern_NN matching_NN is_VBZ being_VBG increasingly_RB used_VBN in_IN various_JJ applications_NNS ,_, e.g._FW ,_, software_NN plagiarism_NN detection_NN ,_, protein_NN interaction_NN networks_NNS ,_, social_JJ networks_NNS and_CC intelligence_NN analysis_NN =_JJ -_: =[_NN 18_CD ,_, 25_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Graph_NN matching_NN is_VBZ typically_RB defined_VBN in_IN terms_NNS of_IN subgraph_NN isomorphism_NN -LRB-_-LRB- see_VB ,_, e.g._FW ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- for_IN a_DT survey_NN -RRB-_-RRB- ._.
+Hence_RB the_DT problem_NN is_VBZ np-complete_JJ -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+Furthermore_RB ,_, subgraph_NN isomorphism_NN is_VBZ often_RB too_RB restrictive_JJ
+networks_NNS ,_, social_JJ networks_NNS and_CC intelligence_NN analysis_NN -LRB-_-LRB- 18_CD ,_, 25_CD ,_, 26_CD -RRB-_-RRB- ._.
+Graph_NN matching_NN is_VBZ typically_RB defined_VBN in_IN terms_NNS of_IN subgraph_NN isomorphism_NN -LRB-_-LRB- see_VB ,_, e.g._FW ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- for_IN a_DT survey_NN -RRB-_-RRB- ._.
+Hence_RB the_DT problem_NN is_VBZ np-complete_JJ =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Furthermore_RB ,_, subgraph_NN isomorphism_NN is_VBZ often_RB too_RB restrictive_JJ to_TO catch_VB sensible_JJ matches_NNS in_IN emerging_VBG applications_NNS such_JJ as_IN social_JJ networks_NNS -LRB-_-LRB- 5_CD ,_, 13_CD -RRB-_-RRB- ._.
+To_TO reduce_VB the_DT complexity_NN and_CC capture_VB the_DT need_NN of_IN novel_NN
+aphs_NNS -LRB-_-LRB- 11_CD ,_, 21_CD -RRB-_-RRB- ._.
+However_RB ,_, to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, no_DT previous_JJ work_NN has_VBZ studied_VBN distributed_VBN computation_NN of_IN graph_NN simulation_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- and_CC its_PRP$ extensions_NNS -LRB-_-LRB- 13_CD ,_, 12_CD -RRB-_-RRB- ._.
+Close_JJ to_TO this_DT work_NN is_VBZ strong_JJ simulation_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, in_IN which_WDT the_DT locality_NN property_NN of_IN strong_JJ simulation_NN allows_VBZ us_PRP to_TO develop_VB a_DT simple_NN yet_RB effective_JJ algorithm_NN to_TO find_VB matches_NNS in_IN distributed_VBN graphs_NNS ._.
+In_IN contrast_NN ,_, we_PRP show_VBP that_IN graph_NN simulation_NN has_VBZ poor_JJ l_NN
+e.g._FW ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- for_IN a_DT survey_NN -RRB-_-RRB- ._.
+Hence_RB the_DT problem_NN is_VBZ np-complete_JJ -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+Furthermore_RB ,_, subgraph_NN isomorphism_NN is_VBZ often_RB too_RB restrictive_JJ to_TO catch_VB sensible_JJ matches_NNS in_IN emerging_VBG applications_NNS such_JJ as_IN social_JJ networks_NNS =_JJ -_: =[_NN 5_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO reduce_VB the_DT complexity_NN and_CC capture_VB the_DT need_NN of_IN novel_JJ applications_NNS ,_, graph_NN simulation_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- has_VBZ been_VBN adopted_VBN for_IN pattern_NN matching_NN -LRB-_-LRB- 5_CD ,_, 13_CD -RRB-_-RRB- ._.
+It_PRP is_VBZ less_RBR restrictive_JJ than_IN subgraph_JJ isomorphism_NN ,_, and_CC can_MD be_VB
+xecute_VB only_RB local_JJ computations_NNS without_IN involving_VBG message-passing_NN during_IN the_DT computation_NN ,_, and_CC they_PRP run_VBP in_IN time_NN of_IN a_DT polynomial_NN of_IN |_NNP Q_NNP |_NN and_CC |_NN Gs_NN ,_, i_FW |_FW ._.
+Note_VB that_IN this_DT is_VBZ to_TO help_VB analyze_VB the_DT makespan_NN problem_NN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: of_IN distributed_VBN algorithms_NNS ,_, and_CC should_MD not_RB be_VB treated_VBN as_IN a_DT restriction_NN at_IN all_DT ._.
+Remark_NN ._.
+Under_IN the_DT model_NN and_CC specifications_NNS ,_, we_PRP can_MD express_VB a_DT large_JJ class_NN of_IN distributed_VBN algorithms_NNS for_IN graph_NN simulation_NN ,_,
+ime_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+3.2_CD Data_NNP Locality_NNP We_PRP then_RB study_VBD the_DT impacts_NNS of_IN data_NNS locality_NN on_IN graph_NN simulation_NN ._.
+For_IN distributed_VBN algorithms_NNS ,_, one_CD way_NN to_TO maximize_VB parallelization_NN is_VBZ to_TO explore_VB ``_`` what_WP can_MD be_VB computed_VBN locally_RB ''_'' =_SYM -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, as_IN observed_VBN in_IN -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, graph_NN algorithms_NNS often_RB exhibit_VBP poor_JJ locality_NN and_CC hence_RB ,_, may_MD incur_VB prohibitive_JJ overhead_NN on_IN network_NN traffic_NN ._.
+This_DT is_VBZ indeed_RB rather_RB challenging_JJ for_IN graph_NN simulation_NN ,_, illus_NN
+separately_RB for_IN evaluating_VBG graph_NN simulation_NN ._.
+Remark_NN ._.
+Note_VB that_DT finding_NN all_DT pairwise_JJ disconnected_VBN components_NNS is_VBZ linear-time_JJ equivalent_NN to_TO finding_VBG strongly_RB connected_JJ components_NNS ,_, which_WDT is_VBZ in_IN linear_JJ time_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+3.2_CD Data_NNP Locality_NNP We_PRP then_RB study_VBD the_DT impacts_NNS of_IN data_NNS locality_NN on_IN graph_NN simulation_NN ._.
+For_IN distributed_VBN algorithms_NNS ,_, one_CD way_NN to_TO maximize_VB parallelization_NN is_VBZ to_TO explore_VB ``_`` what_WP can_MD be_VB computed_VBN locally_RB ''_'' -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+H_NN
+valuating_VBG a_DT query_NN on_IN a_DT large_JJ dataset_NN ,_, one_CD wants_VBZ to_TO partition_NN and_CC distribute_VB the_DT data_NNS to_TO multiple_JJ machines_NNS ,_, so_IN that_IN the_DT query_NN can_MD be_VB efficiently_RB evaluated_VBN in_IN parallel_NN ,_, as_IN advocated_VBN by_IN ,_, e.g._FW ,_, MapReduce_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Pregel_NNP -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Moreover_RB ,_, it_PRP is_VBZ common_JJ to_TO find_VB distributed_VBN real-life_JJ datasets_NNS ,_, such_JJ as_IN Facebook_NNP ,_, Yahoo_NNP Flickr_NNP ,_, Twitter_NNP ,_, and_CC Apple_NNP AppStore_NNP ,_, that_WDT are_VBP stored_VBN at_IN data_NN centers_NNS ,_, which_WDT typically_RB host_VBP a_DT cl_NN
+class_NN of_IN distributed_VBN algorithms_NNS for_IN graph_NN simulation_NN -LRB-_-LRB- Section_NN 4_CD -RRB-_-RRB- ._.
+These_DT distributed_VBN algorithms_NNS are_VBP captured_VBN by_IN a_DT message-passing_JJ model_NN ,_, which_WDT is_VBZ flexible_JJ enough_RB to_TO express_VB a_DT broad_JJ class_NN of_IN algorithms_NNS =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC is_VBZ typically_RB fit_JJ for_IN the_DT evaluation_NN of_IN graph_NN algorithms_NNS -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+We_PRP also_RB identify_VBP three_CD complexity_NN measures_NNS :_: visit_NN times_NNS ,_, makespan_NN and_CC data_NN shipment_NN ,_, fortheanalysesof_NN this_DT class_NN of_IN distributed_VBN algo_NN
+1_CD ._.
+INTRODUCTION_NN Graph_NN pattern_NN matching_NN is_VBZ being_VBG increasingly_RB used_VBN in_IN various_JJ applications_NNS ,_, e.g._FW ,_, software_NN plagiarism_NN detection_NN ,_, protein_NN interaction_NN networks_NNS ,_, social_JJ networks_NNS and_CC intelligence_NN analysis_NN =_JJ -_: =[_NN 18_CD ,_, 25_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Graph_NN matching_NN is_VBZ typically_RB defined_VBN in_IN terms_NNS of_IN subgraph_NN isomorphism_NN -LRB-_-LRB- see_VB ,_, e.g._FW ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- for_IN a_DT survey_NN -RRB-_-RRB- ._.
+Hence_RB the_DT problem_NN is_VBZ np-complete_JJ -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+Furthermore_RB ,_, subgraph_NN isomorphism_NN is_VBZ often_RB too_RB restrictive_JJ
+,_, software_NN plagiarism_NN detection_NN ,_, protein_NN interaction_NN networks_NNS ,_, social_JJ networks_NNS and_CC intelligence_NN analysis_NN -LRB-_-LRB- 18_CD ,_, 25_CD ,_, 26_CD -RRB-_-RRB- ._.
+Graph_NN matching_NN is_VBZ typically_RB defined_VBN in_IN terms_NNS of_IN subgraph_NN isomorphism_NN -LRB-_-LRB- see_VB ,_, e.g._FW ,_, =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: for_IN a_DT survey_NN -RRB-_-RRB- ._.
+Hence_RB the_DT problem_NN is_VBZ np-complete_JJ -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+Furthermore_RB ,_, subgraph_NN isomorphism_NN is_VBZ often_RB too_RB restrictive_JJ to_TO catch_VB sensible_JJ matches_NNS in_IN emerging_VBG applications_NNS such_JJ as_IN social_JJ networks_NNS -LRB-_-LRB- 5_CD ,_, 13_CD -RRB-_-RRB- ._.
+To_TO
+en_IN pattern_NN graph_NN Q_NNP ,_, we_PRP compute_VBP a_DT minimized_VBN pattern_NN graph_NN Qm_NN such_JJ that_IN for_IN any_DT data_NNS graph_NN G_NN ,_, G_NN matches_VBZ Q_NNP iff_NNP G_NNP matches_VBZ Qm_NNP ,_, via_IN graph_NN simulation_NN ._.
+The_DT algorithm_NN runs_VBZ in_IN quadratic_JJ time_NN ,_, and_CC is_VBZ taken_VBN from_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Note_VB that_IN Q_NNP is_VBZ typically_RB small_JJ ._.
+We_PRP next_RB illustrate_VBP the_DT benefits_NNS of_IN minimizing_VBG pattern_NN graphs_NNS with_IN an_DT example_NN below_IN ._.
+Example_NN 11_CD :_: Consider_VB pattern_NN graph_NN Qo_NN in_IN Fig_NN .3_NN ._.
+The_DT minimized_VBN equivalent_JJ pattern_NN g_NN
+i.e._FW ,_, |_NNP V_NNP |_NNP +_CC |_NNP E_NNP |_NNP ._.
+WealsodenoteG_NN as_IN -LRB-_-LRB- V_NN ,_, E_NN -RRB-_-RRB- when_WRB it_PRP is_VBZ clear_JJ from_IN the_DT context_NN ._.
+Intuitively_RB ,_, the_DT function_NN l_NN -LRB-_-LRB- -RRB-_-RRB- specifies_VBZ node_NN attributes_NNS ,_, e.g._FW ,_, keywords_NNS ,_, blogs_NNS ,_, comments_NNS ,_, ratings_NNS ,_, names_NNS ,_, emails_NNS ,_, companies_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ;_: and_CC the_DT label_NN set_NN Σ_NN denotes_VBZ all_DT such_JJ attributes_NNS ._.
+950WWW_NN 2012_CD --_: Session_NN :_: Data_NNP and_CC Content_NNP Management_NNP 2_CD April_NNP 16_CD --_: 20_CD ,_, 2012_CD ,_, Lyon_NNP ,_, France_NNP Input_NNP :_: Pattern_NN graph_NN Q_NNP -LRB-_-LRB- Vq_NNP ,_, Eq_NN -RRB-_-RRB- and_CC data_NN graph_NN G_NN -LRB-_-LRB- V_NN ,_, E_NN -RRB-_-RRB- ._.
+Output_NN :_: T_NN
+putations_NNS ._.
+-LRB-_-LRB- 2_LS -RRB-_-RRB- When_WRB machine_NN Si_NNP sends_VBZ a_DT message_NN to_TO another_DT machine_NN Sj_NN ,_, the_DT message_NN only_RB consists_VBZ of_IN the_DT local_JJ information_NN -LRB-_-LRB- Q_NNP ,_, Gs_NN ,_, i_FW ,_, Ri_NN -RRB-_-RRB- available_JJ at_IN machine_NN Si_NNP ._.
+Here_RB we_PRP do_VBP not_RB allow_VB information_NN coding_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: since_IN it_PRP is_VBZ orthogonal_JJ to_TO the_DT analysis_NN of_IN the_DT data_NNS shipment_NN of_IN distributed_VBN algorithms_NNS ._.
+-LRB-_-LRB- 3_LS -RRB-_-RRB- At_IN each_DT machine_NN Si_NNP ,_, local_JJ algorithms_NNS that_IN given_VBN the_DT local_JJ information_NN -LRB-_-LRB- Q_NNP ,_, Gs_NN ,_, i_FW ,_, Ri_NN -RRB-_-RRB- ,_, compute_VBP an_DT updated_VBN Ri_NN b_NN
+1_CD ._.
+INTRODUCTION_NN Graph_NN pattern_NN matching_NN is_VBZ being_VBG increasingly_RB used_VBN in_IN various_JJ applications_NNS ,_, e.g._FW ,_, software_NN plagiarism_NN detection_NN ,_, protein_NN interaction_NN networks_NNS ,_, social_JJ networks_NNS and_CC intelligence_NN analysis_NN =_JJ -_: =[_NN 18_CD ,_, 25_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Graph_NN matching_NN is_VBZ typically_RB defined_VBN in_IN terms_NNS of_IN subgraph_NN isomorphism_NN -LRB-_-LRB- see_VB ,_, e.g._FW ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- for_IN a_DT survey_NN -RRB-_-RRB- ._.
+Hence_RB the_DT problem_NN is_VBZ np-complete_JJ -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+Furthermore_RB ,_, subgraph_NN isomorphism_NN is_VBZ often_RB too_RB restrictive_JJ
+ulation_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- and_CC its_PRP$ extensions_NNS -LRB-_-LRB- 13_CD ,_, 12_CD -RRB-_-RRB- ._.
+Nevertheless_RB ,_, none_NN of_IN these_DT investigates_VBZ the_DT problem_NN in_IN a_DT distributed_VBN fashion_NN ._.
+Distributed_VBN query_NN processing_NN has_VBZ been_VBN studied_VBN for_IN relational_JJ data_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- and_CC XML_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX has_VBZ also_RB been_VBN recent_JJ work_NN on_IN distributed_VBN graph_NN processing_NN to_TO manage_VB large-scale_JJ graphs_NNS -LRB-_-LRB- 11_CD ,_, 21_CD -RRB-_-RRB- ._.
+However_RB ,_, to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, no_DT previous_JJ work_NN has_VBZ studied_VBN distributed_VBN computation_NN of_IN

@@ -1,0 +1,206 @@
+Static_JJ approximation_NN of_IN dynamically_RB generated_VBN Web_NN pages_NNS
+Server-side_JJ programming_NN is_VBZ one_CD of_IN the_DT key_JJ technologies_NNS that_WDT support_VBP today_NN 's_POS WWW_NNP environment_NN ._.
+It_PRP makes_VBZ it_PRP possible_JJ to_TO generate_VB Web_NN pages_NNS dynamically_RB according_VBG to_TO a_DT user_NN 's_POS request_NN and_CC to_TO customize_VB pages_NNS for_IN each_DT user_NN ._.
+However_RB ,_, the_DT flexibility_NN obtained_VBN by_IN server-side_JJ programming_NN makes_VBZ it_PRP much_RB harder_JJR to_TO guarantee_VB validity_NN and_CC security_NN of_IN dynamically_RB generated_VBN pages_NNS ._.
+To_TO check_VB statically_RB the_DT properties_NNS of_IN Web_NN pages_NNS generated_VBN dynamically_RB by_IN a_DT server-side_JJ program_NN ,_, we_PRP develop_VBP a_DT static_JJ program_NN analysis_NN that_WDT approximates_VBZ the_DT string_NN output_NN of_IN a_DT program_NN with_IN a_DT context-free_JJ grammar_NN ._.
+The_DT approximation_NN obtained_VBN by_IN the_DT analyzer_NN can_MD be_VB used_VBN to_TO check_VB various_JJ properties_NNS of_IN a_DT server-side_JJ program_NN and_CC the_DT pages_NNS it_PRP generates_VBZ ._.
+To_TO demonstrate_VB the_DT effectiveness_NN of_IN the_DT analysis_NN ,_, we_PRP have_VBP implemented_VBN a_DT string_NN analyzer_NN for_IN the_DT server-side_JJ scripting_NN language_NN PHP_NN ._.
+The_DT analyzer_NN is_VBZ successfully_RB applied_VBN to_TO publicly_RB available_JJ PHP_NNP programs_NNS to_TO detect_VB cross-site_JJ scripting_NN vulnerabilities_NNS and_CC to_TO validate_VB pages_NNS they_PRP generate_VBP dynamically_RB ._.
+e_LS briefly_RB summarize_VB them_PRP here_RB -LRB-_-LRB- see_VB -LRB-_-LRB- 27_CD -RRB-_-RRB- for_IN adetailed_JJ discussion_NN -RRB-_-RRB- ._.
+Defenses_NNS based_VBN on_IN static_JJ analysis_NN There_EX has_VBZ been_VBN extensive_JJ research_NN on_IN static_JJ analysis_NN to_TO detect_VB whether_IN an_DT application_NN is_VBZ vulnerable_JJ =_JJ -_: =[_NN 21,32,9,10,34,31,12,29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT most_RBS common_JJ theme_NN of_IN detection_NN approaches_NNS is_VBZ to_TO reason_VB about_IN sources_NNS -LRB-_-LRB- user_NN inputs_NNS -RRB-_-RRB- and_CC their_PRP$ influenceonquerystringsissuedatsinks_NNS -LRB-_-LRB- sensitiveoperations_NNS -RRB-_-RRB- orintermediatepoints_NNS -LRB-_-LRB- sanitization_NN routines_NNS -RRB-_-RRB- ._.
+fast_RB even_RB for_IN higher-order_JJ cases_NNS ;_: on_IN the_DT other_JJ hand_NN ,_, previous_JJ approaches_NNS based_VBN on_IN transducers_NNS do_VBP not_RB seem_VB to_TO scale_VB well_RB for_IN higher-order_JJ cases_NNS -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+Other_JJ applications_NNS include_VBP :_: -LRB-_-LRB- iii_LS -RRB-_-RRB- string_NN analysis_NN =_JJ -_: =[_NN 3_CD ,_, 29_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC -LRB-_-LRB- iv_LS -RRB-_-RRB- verification_NN of_IN programs_NNS that_WDT use_VBP other_JJ recursive_JJ data_NNS types_NNS -LRB-_-LRB- e.g._FW the_DT list-ness_NN of_IN the_DT output_NN of_IN the_DT function_NN ``_`` flatten_VB ''_'' converting_VBG nested_JJ lists_NNS into_IN flat_JJ lists_NNS -RRB-_-RRB- ._.
+For_IN -LRB-_-LRB- iii_LS -RRB-_-RRB- ,_, the_DT goal_NN is_VBZ to_TO
+rogram_NN 's_POS variables_NNS ._.
+The_DT occurrences_NNS of_IN x_NN can_MD indeed_RB be_VB data-typed_JJ as_IN S_NN ,_, but_CC r_NN has_VBZ no_DT data_NNS type_NN that_WDT corresponds_VBZ to_TO a_DT nonterminal_JJ ._.
+--_: An_DT analysis_NN based_VBN on_IN regular_JJ expressions_NNS -LRB-_-LRB- Christensen_NNP -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, Minamide_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Wasserman_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- -RRB-_-RRB- solves_VBZ flow_NN equations_NNS shown_VBN in_IN Figure_NNP 1_CD 's_POS right_JJ column_NN in_IN the_DT domain_NN of_IN regular_JJ expressions_NNS ,_, determining_VBG that_IN the_DT hot_JJ spot_NN 's_POS -LRB-_-LRB- X3_NN 's_POS -RRB-_-RRB- values_NNS conform_VBP to_TO the_DT regular_JJ expression_NN ,_, -LRB-_-LRB- ∗_FW ·_FW a_DT ·_NN -RRB-_-RRB-
+nerability_NN signatures_NNS of_IN vulnerable_JJ applications_NNS ,_, STRANGER_NN can_MD also_RB verify_VB the_DT absence_NN of_IN vulnerabilities_NNS in_IN applications_NNS that_WDT use_VBP proper_JJ sanitization_NN ._.
+Compared_VBN to_TO grammar-based_JJ string_NN analysis_NN tools_NNS =_JJ -_: =[_NN 3_CD ,_, 5_CD ,_, 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, STRANGER_NN features_VBZ specific_JJ automatabased_JJ techniques_NNS including_VBG automata_NN widening_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, language-based_JJ replacement_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC symbolic_JJ automata_NN encoding_NN and_CC manipulation_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+STRANGER_NN and_CC several_JJ benchmar_NN
+rations_NNS -LRB-_-LRB- i.e._FW ,_, library_NN string_NN methods_NNS such_JJ as_IN String_NNP ._.
+subString_NN -LRB-_-LRB- int_NN ,_, int_NN -RRB-_-RRB- in_IN Java_NNP -RRB-_-RRB- on_IN the_DT right_JJ hand_NN side_NN of_IN productions_NNS ._.
+Then_RB these_DT string_NN operations_NNS are_VBP simulated_JJ with_IN finite-state_JJ transducers_NNS -LRB-_-LRB- FSTs_NNS -RRB-_-RRB- =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Finally_RB ,_, the_DT language_NN of_IN the_DT generated_VBN CFG_NNP represents_VBZ all_PDT the_DT possible_JJ values_NNS of_IN the_DT string_NN variable_NN under_IN analysis_NN ._.
+String-taint_JJ analysis_NN is_VBZ a_DT technique_NN proposed_VBN by_IN Wessermann_NNP and_CC Su_NNP -LRB-_-LRB- 18_CD -RRB-_-RRB- for_IN traci_NNS
+E_NN '_'' 10_CD ,_, September_NNP 20_CD --_: 24_CD ,_, 2010_CD ,_, Antwerp_NNP ,_, Belgium_NNP ._.
+Copyright_NN 2010_CD ACM_NNP 978-1-4503-0116-9_CD \/_: 10\/09_CD ..._: $_$ 10.00_CD ._.
+1_CD ._.
+INTRODUCTION_NN Reasoning_NN about_IN string_NN variables_NNS is_VBZ a_DT key_JJ aspect_NN in_IN many_JJ areas_NNS of_IN program_NN analysis_NN =_JJ -_: =[_NN 2_CD ,_, 20_CD ,_, 26_CD ,_, 29_CD ,_, 32_CD -RRB-_-RRB- -_: =_JJ -_: and_CC automated_JJ testing_NN -LRB-_-LRB- 7_CD ,_, 8_CD ,_, 9_CD ,_, 19_CD -RRB-_-RRB- ._.
+Program_NN analyses_NNS and_CC transformations_NNS that_WDT deal_VBP with_IN string-manipulating_JJ programs_NNS ,_, such_JJ as_IN test_NN inputgenerationforlegacysystems_NNS -LRB-_-LRB- 15_CD ,_, 16_CD -RRB-_-RRB- ,_, webapplication_NN bugfinding_VBG
+or-prone_JJ reimplementation_NN of_IN a_DT critical_JJ component_NN :_: the_DT string-constraint_JJ solver_NN ._.
+To_TO compute_VB the_DT language_NN intersection_NN ,_, Wassermann_NNP and_CC Su_NNP implemented_VBD a_DT custom_NN solver_NN based_VBN on_IN the_DT algorithm_NN by_IN Minamide_NN =_JJ -_: =[_NN 83_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Second_NNP ,_, HAMPI_NNP creates_VBZ concrete_JJ example_NN strings_NNS from_IN the_DT language_NN intersection_NN ,_, which_WDT is_VBZ important_JJ for_IN generating_VBG attack_NN vectors_NNS ;_: Wassermann_NNP and_CC Su_NNP 's_POS custom_NN solver_NN only_RB checks_VBZ for_IN emptiness_NN of_IN the_DT in_IN
+acle_NN ,_, and_CC line_NN coverage_NN measurement_NN ._.
+For_IN our_PRP$ experiments_NNS ,_, we_PRP use_VBP the_DT WDG_NNP offline_JJ HTML_NNP validator_NN ,_, version_NN 1.2.2_CD ._.
+We_PRP also_RB compared_VBD Apollo_NNP 's_POS results_NNS to_TO the_DT results_NNS reported_VBN by_IN Minamide_NNP 's_POS static_JJ analysis_NN =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_SYM -_: on_IN the_DT four_CD subject_JJ programs_NNS that_IN we_PRP have_VBP in_IN common_JJ -LRB-_-LRB- Section_NNP 6.3.1_NNP presents_VBZ the_DT results_NNS -RRB-_-RRB- ._.
+To_TO answer_VB the_DT third_JJ research_NN question_NN ,_, about_IN the_DT effectiveness_NN of_IN the_DT input_NN minimization_NN ,_, we_PRP performed_VBD the_DT fo_NN
+problems_NNS associated_VBN with_IN string_NN manipulating_VBG code_NN ._.
+Several_JJ static_JJ analyses_NNS aim_VBP to_TO address_VB cross-site_JJ scripting_NN or_CC SQL_NN injection_NN by_IN explicitly_RB modeling_NN sets_NNS of_IN values_NNS that_IN strings_NNS can_MD take_VB at_IN runtime_NN =_JJ -_: =[_NN 5_CD ,_, 16_CD ,_, 22_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT approaches_NNS use_VBP analysisspecific_JJ models_NNS of_IN strings_NNS that_WDT are_VBP based_VBN on_IN finite_JJ automata_NN or_CC context-free_JJ grammars_NNS ._.
+More_RBR recently_RB ,_, there_EX has_VBZ been_VBN significant_JJ interest_NN in_IN constraint_NN solving_VBG tools_NNS tha_NN
+nificant_JJ recent_JJ interest_NN in_IN decision_NN procedures_NNS for_IN string_NN constraints_NNS ._.
+Traditionally_RB ,_, many_JJ analyses_NNS and_CC automated_JJ testing_NN approaches_NNS relied_VBP on_IN their_PRP$ own_JJ built-in_JJ models_NNS to_TO reason_VB about_IN string_NN values_NNS =_JJ -_: =[_NN 5,8,9,21,23,28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recent_JJ work_NN on_IN string_NN analysis_NN has_VBZ focused_VBN on_IN providing_VBG external_JJ decision_NN procedures_NNS that_WDT reason_VBP about_IN strings_NNS -LRB-_-LRB- 2,11,12,15,24,26,27_CD -RRB-_-RRB- ._.
+The_DT separation_NN of_IN string_NN decision_NN procedures_NNS from_IN their_PRP$ client_NN a_DT
+anitizers_NNS is_VBZ difficult_JJ to_TO do_VB correctly_RB ._.
+Recent_JJ static_JJ analyses_NNS of_IN web_NN applications_NNS address_VBP cross-site_JJ scripting_NN or_CC SQL_NN injection_NN by_IN explicitly_RB modeling_NN sets_NNS of_IN values_NNS that_IN strings_NNS can_MD take_VB at_IN runtime_NN =_JJ -_: =[_NN 9_CD ,_, 18_CD ,_, 26_CD ,_, 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT approaches_NNS use_VBP analysis-specific_JJ models_NNS of_IN strings_NNS that_WDT are_VBP based_VBN on_IN finite_JJ automata_NN or_CC context-free_JJ grammars_NNS ._.
+More_RBR recently_RB ,_, there_EX has_VBZ been_VBN significant_JJ interest_NN in_IN constraint_NN solving_VBG tools_NNS th_DT
+es_NNS ._.
+The_DT occurrences_NNS of_IN x_NN can_MD indeed_RB be_VB data-typed_JJ as_IN S_NN ,_, but_CC r_NN has_VBZ no_DT data_NNS type_NN that_WDT corresponds_VBZ to_TO a_DT nonterminal_JJ ._.
+2_CD ._.
+An_DT analysis_NN based_VBN on_IN regular_JJ expressions_NNS -LRB-_-LRB- Christensen_NNP -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, Minamide_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, Wasserman_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =--RRB-_NN solves_VBZ flow_NN equations_NNS shown_VBN in_IN Figure_NNP 1_CD 's_POS right_JJ column_NN in_IN the_DT domain_NN of_IN regular_JJ expressions_NNS ,_, determining_VBG that_IN the_DT hot_JJ spot_NN 's_POS -LRB-_-LRB- X3_NN 's_POS -RRB-_-RRB- values_NNS conform_VBP to_TO the_DT regular_JJ expression_NN ,_, -LRB-_-LRB- ∗_FW ·_FW a_DT ·_NN -RRB-_-RRB- ∗_NN ,_, but_CC this_DT do_VBP
+fication_NN is_VBZ necessary_JJ for_IN creating_VBG new_JJ implementations_NNS of_IN the_DT language_NN ._.
+It_PRP also_RB helps_VBZ us_PRP discuss_VB the_DT correctness_NN of_IN optimizations_NNS ,_, or_CC design_VB a_DT program_NN analysis_NN ,_, e.g._FW ,_, PHP_NN string_NN analysis_NN by_IN Minamide_NN -LRB-_-LRB- =_JJ -_: =_JJ Minamide_NNP 2005_CD -_: =--RRB-_NN ._.
+Unfortunately_RB ,_, in_IN the_DT case_NN of_IN PHP_NNP ,_, 3_CD PHP_NN references_NNS are_VBP also_RB close_RB to_TO hard_JJ links_NNS in_IN UNIX_NNP file_NN systems_NNS ._.
+PHP_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- PHP_NN -LRB-_-LRB- d_NN -RRB-_-RRB- PHP_NN -LRB-_-LRB- g_NN -RRB-_-RRB- $_$ r_NN ✷_CD $_$ r_NN ✷_CD $_$ r_NN ✷_CD $_$ l_NN =_JJ $_$ r_SYM ↦_FW −_FW →_FW $_$ l_NN =_JJ $_$ r_SYM ↦_FW −_FW →_FW $_$ l_NN =_JJ $_$ r_SYM ↦_FW −_FW →_FW $_$ l_NN
+gram_NN paths_NNS or_CC ,_, given_VBN a_DT program_NN path_NN ,_, to_TO generate_VB testcases_NNS that_WDT exercise_VBP that_DT path_NN ._.
+Recent_JJ work_NN in_IN string_NN analysis_NN has_VBZ focused_VBN on_IN providing_VBG similar_JJ external_JJ decision_NN procedures_NNS for_IN string_NN constraints_NNS =_JJ -_: =[_NN 2_CD ,_, 21_CD ,_, 24_CD ,_, 39_CD ,_, 40_CD ,_, 46_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Thus_RB far_RB ,_, this_DT work_NN has_VBZ focused_VBN on_IN individual_JJ features_NNS ,_, such_JJ as_IN support_NN for_IN symbolic_JJ integer_NN constraints_NNS -LRB-_-LRB- 46_CD -RRB-_-RRB- ,_, support_NN for_IN bounded_VBN context-free_JJ grammars_NNS -LRB-_-LRB- 2_CD ,_, 24_CD -RRB-_-RRB- ,_, and_CC embedding_VBG into_IN an_DT existing_VBG SMT_NN s_NN
+an_DT be_VB further_RB classified_VBN into_IN dynamic_JJ and_CC static_JJ approaches_NNS ._.
+Dynamic_NNP tools_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 1_CD ,_, 2_CD ,_, 3_CD -RRB-_-RRB- ,_, and_CC Perl_NNP 's_POS taint_NN mode_NN try_VBP to_TO detect_VB attacks_NNS while_IN executing_VBG the_DT audited_JJ program_NN ,_, whereas_IN static_JJ analyzers_NNS -LRB-_-LRB- =_JJ -_: =[_NN 4_CD ,_, 5_CD ,_, 6_CD ,_, 7_CD -RRB-_-RRB- -_: =--RRB-_NN scan_VB the_DT Web_NN application_NN 's_POS source_NN codes_NNS for_IN vulnerabilities_NNS ._.
+From_IN the_DT static_JJ point_NN of_IN view_NN ,_, applications_NNS could_MD be_VB statically_RB analyzed_VBN where_WRB it_PRP can_MD protect_VB applications_NNS before_IN actually_RB running_VBG them_PRP ,_,
+the_DT value_NN of_IN action_NN sent_VBN in_IN the_DT client_NN 's_POS request_NN ._.
+Thus_RB ,_, two_CD different_JJ pages_NNS can_MD be_VB generated_VBN ._.
+Several_JJ existing_VBG techniques_NNS are_VBP relevant_JJ to_TO solving_VBG client_NN side_NN page_NN extraction_NN problem_NN ._.
+Minamide_NNP 's_POS work_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: analyzes_VBZ server_NN scripts_NNS and_CC presents_VBZ the_DT possible_JJ client_NN pages_NNS in_IN regular_JJ expressions_NNS ._.
+However_RB ,_, since_IN such_JJ regular_JJ expressions_NNS are_VBP not_RB valid_JJ JS_NN code_NN ,_, program_NN analysis_NN would_MD not_RB be_VB directly_RB applicable_JJ
+or-prone_JJ reimplementation_NN of_IN a_DT critical_JJ component_NN :_: the_DT string-constraint_JJ solver_NN ._.
+To_TO compute_VB the_DT language_NN intersection_NN ,_, Wassermann_NNP and_CC Su_NNP implemented_VBD a_DT custom_NN solver_NN based_VBN on_IN the_DT algorithm_NN by_IN Minamide_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Second_NNP ,_, Hampi_NNP creates_VBZ concrete_JJ example_NN strings_NNS from_IN the_DT language_NN intersection_NN ,_, which_WDT is_VBZ important_JJ for_IN generating_VBG attack_NN vectors_NNS ;_: Wassermann_NNP and_CC Su_NNP 's_POS custom_NN solver_NN only_RB checks_VBZ for_IN emptiness_NN of_IN the_DT in_IN
+In_IN this_DT paper_NN ,_, we_PRP extend_VBP the_DT concolic_JJ testing_NN approach_NN to_TO PHP_NNP web_NN applications_NNS ._.
+To_TO do_VB so_RB ,_, we_PRP generate_VBP constraints_NNS on_IN string_NN values_NNS by_IN modeling_NN string_NN operations_NNS using_VBG finite_JJ state_NN transducers_NNS -LRB-_-LRB- FSTs_NNS -RRB-_-RRB- =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN PHP_NNP ,_, not_RB only_RB do_VB many_JJ library_NN functions_NNS take_VBP arguments_NNS of_IN one_CD type_NN and_CC return_NN values_NNS of_IN another_DT ,_, but_CC the_DT runtime_NN system_NN itself_PRP readily_RB performs_VBZ many_JJ different_JJ dynamic_JJ type_NN casts_VBZ ._.
+Consequently_RB ,_, su_FW
+Some_DT recent_JJ work_NN has_VBZ started_VBN exploring_VBG the_DT issue_NN of_IN specification_NN completeness_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- as_RB well_RB as_IN sanitizer_NN correctness_NN by_IN explicitly_RB statically_RB modeling_NN sets_NNS of_IN values_NNS that_IN strings_NNS can_MD take_VB at_IN runtime_NN =_JJ -_: =[_NN 13_CD ,_, 26_CD ,_, 36_CD ,_, 37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT approaches_NNS use_VBP analysis-specific_JJ models_NNS of_IN strings_NNS that_WDT are_VBP based_VBN on_IN finite_JJ automata_NN or_CC context-free_JJ grammars_NNS ._.
+More_RBR recently_RB ,_, there_EX has_VBZ been_VBN significant_JJ interest_NN in_IN constraint_NN solving_VBG tools_NNS th_DT
+xisting_VBG PHP_NNP code_NN ._.
+Other_JJ security_NN analysis_NN of_IN PHP_NN code_NN ,_, e.g._FW ,_, SQL_NN injection_NN attacks_NNS ,_, use_NN string_NN analyzers_NNS to_TO obtain_VB overapproximations_NNS -LRB-_-LRB- in_IN form_NN of_IN context_NN free_JJ grammars_NNS -RRB-_-RRB- of_IN the_DT HTML_NNP output_NN by_IN a_DT server_NN =_JJ -_: =[_NN 34_CD ,_, 48_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Yu_FW et_FW al._FW show_VB how_WRB multiple_JJ automata_NN can_MD be_VB composed_VBN to_TO model_VB looping_JJ code_NN -LRB-_-LRB- 50_CD -RRB-_-RRB- ._.
+Our_PRP$ work_NN is_VBZ complementary_JJ to_TO previous_JJ efforts_NNS in_IN using_VBG SMT_NNP solvers_VBZ to_TO solve_VB problems_NNS related_VBN to_TO list_NN transformations_NNS ._.
+hat_NN rely_VBP on_IN automata_NN and_CC use_VB regular_JJ expressions_NNS are_VBP precise_JJ but_CC slow_JJ ,_, and_CC they_PRP do_VBP not_RB scale_VB up_RP -LRB-_-LRB- 14_CD ,_, 24_CD ,_, 21_CD ,_, 13_CD -RRB-_-RRB- ,_, while_IN many_JJ other_JJ approaches_NNS are_VBP focused_VBN on_IN particular_JJ properties_NNS or_CC class_NN of_IN programs_NNS =_JJ -_: =[_NN 10_CD ,_, 18_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Genericity_NN and_CC scalability_NN are_VBP the_DT main_JJ advantages_NNS of_IN the_DT abstract_JJ interpretation_NN approach_NN -LRB-_-LRB- 4_CD ,_, 5_CD -RRB-_-RRB- ,_, though_IN its_PRP$ instantiation_NN to_TO textual_JJ values_NNS has_VBZ been_VBN quite_RB limited_VBN up_RP to_TO now_RB ._.
+The_DT main_JJ contribution_NN
+isting_VBG PHP_NNP code_NN ._.
+Other_JJ security_NN analysis_NN of_IN PHP_NN code_NN ,_, e.g._FW ,_, SQL_NN injection_NN attacks_NNS ,_, use_NN string_NN analyzers_NNS to_TO obtain_VB over-approximations_NNS -LRB-_-LRB- in_IN form_NN of_IN context_NN free_JJ grammars_NNS -RRB-_-RRB- of_IN the_DT HTML_NNP output_NN by_IN a_DT server_NN =_JJ -_: =[_NN 28_CD ,_, 43_CD ,_, 44_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ work_NN is_VBZ complementary_JJ to_TO previous_JJ efforts_NNS in_IN using_VBG SMT_NNP solvers_VBZ to_TO solve_VB problems_NNS related_VBN to_TO list_NN transformations_NNS ._.
+HAMPI_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- and_CC Kaluza_NNP -LRB-_-LRB- 34_CD -RRB-_-RRB- extend_VBP the_DT STP_NN solver_VBZ to_TO handle_VB equations_NNS over_IN string_NN
+orrect_NN ._.
+Some_DT recent_JJ work_NN has_VBZ started_VBN exploring_VBG the_DT issue_NN of_IN specification_NN completeness_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- as_RB well_RB as_IN sanitizer_NN correctness_NN by_IN explicitly_RB statically_RB modeling_NN sets_VBZ ofvaluesthatstringscantakeat_JJ runtime_NN =_JJ -_: =[_NN 13,26,36,37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Theseapproachesuseanalysis-specificmodelsofstrings_NNS that_WDT are_VBP based_VBN on_IN finite_JJ automata_NN or_CC context-free_JJ grammars_NNS ._.
+More_RBR recently_RB ,_, there_EX has_VBZ been_VBN significant_JJ interest_NN in_IN constraint_NN solving_VBG tools_NNS that_IN mod_NN
+-RRB-_-RRB- to_TO the_DT program_NN 's_POS variables_NNS ._.
+The_DT occurrences_NNS of_IN x_NN can_MD indeed_RB be_VB data-typed_JJ as_IN S_NN ,_, but_CC r_NN has_VBZ no_DT data_NNS type_NN that_WDT corresponds_VBZ to_TO a_DT nonterminal_JJ ._.
+2_CD ._.
+A_DT regular_JJ expression_NN analysis_NN -LRB-_-LRB- Christensen_NNP -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, Minamide_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Wasserman_NNP -LRB-_-LRB- 10_CD -RRB-_-RRB- -RRB-_-RRB- solves_VBZ the_DT flow_NN equations_NNS in_IN Figure_NNP 1_CD in_IN the_DT domain_NN of_IN regular_JJ expressions_NNS ,_, determining_VBG that_IN the_DT hot_JJ spot_NN 's_POS -LRB-_-LRB- X3_NN 's_POS -RRB-_-RRB- values_NNS conform_VBP to_TO the_DT regular_JJ expression_NN ,_, -LRB-_-LRB- ∗_FW ·_FW a_DT ·_NN -RRB-_-RRB- ∗_NN ,_, but_CC this_DT doe_NN
+in_IN Section_NNP 5.2.2_CD ._.
+5_CD Implementation_NN As_IN PHP_NN is_VBZ one_CD of_IN the_DT most_RBS popular_JJ programming_NN languages_NNS for_IN web_NN applications_NNS ,_, we_PRP implemented_VBD our_PRP$ approach_NN by_IN extending_VBG Wassermann_NNP and_CC Minamide_NNP 's_POS PHP_NNP string_NN analyzer_NN =_JJ -_: =[_NN 21_CD ,_, 30_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT is_VBZ written_VBN in_IN OCaml_NN ._.
+The_DT original_JJ PHP_NN string_NN analyzer_NN was_VBD developed_VBN to_TO detect_VB injection_NN vulnerabilities_NNS in_IN web_NN applications_NNS ,_, and_CC it_PRP analyzes_VBZ individual_JJ pages_NNS in_IN isolation_NN and_CC explores_VBZ all_DT exec_NN
+g_NN to_TO safe_JJ types_NNS ,_, and_CC regular_JJ expression_NN match_NN ._.
+That_DT is_VBZ ,_, the_DT approach_NN keeps_VBZ a_DT database_NN of_IN sanitizing_VBG regular_JJ expressions_NNS ._.
+Wasserman_NNP et_FW al._FW -LRB-_-LRB- 18_CD ,_, 19_CD -RRB-_-RRB- use_VBP grammar-based_JJ string_NN analysis_NN following_VBG Minamide_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: to_TO find_VB the_DT set_NN of_IN possible_JJ string_NN values_NNS of_IN a_DT given_VBN variable_NN at_IN a_DT givenHunting_NN Bugs_NNS Inside_IN Web_NN Applications_NNS 5_CD program_NN point_NN and_CC gains_NNS this_DT information_NN to_TO detect_VB SQL_NN injections_NNS ._.
+However_RB ,_, the_DT employe_NN
+static_JJ analysis_NN ._.
+This_DT approach_NN has_VBZ been_VBN explored_VBN in_IN WebYichen_NNP Xie_NNP Alex_NNP Aiken_NNP Computer_NNP Science_NNP Department_NNP Stanford_NNP University_NNP Stanford_NNP ,_, CA_NNP 94305_CD -LCB-_-LRB- yxie,aiken}@cs.stanford.edu_FW SSARI_FW -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC by_IN Minamide_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+WebSSARI_NN has_VBZ been_VBN used_VBN to_TO find_VB a_DT number_NN of_IN security_NN vulnerabilities_NNS in_IN PHP_NNP scripts_NNS ,_, but_CC has_VBZ a_DT large_JJ number_NN of_IN false_JJ positives_NNS and_CC negatives_NNS due_JJ to_TO its_PRP$ intraprocedural_JJ type-based_JJ analysis_NN ._.
+Minamide_NNP 's_POS
+be_VB further_RB classified_VBN into_IN dynamic_JJ and_CC static_JJ approaches_NNS ._.
+Dynamic_NNP tools_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 9_CD ,_, 18_CD ,_, 21_CD -RRB-_-RRB- ,_, and_CC Perl_NNP 's_POS taint_NN mode_NN try_VBP to_TO detect_VB attacks_NNS while_IN executing_VBG the_DT audited_JJ program_NN ,_, whereas_IN static_JJ analyzers_NNS -LRB-_-LRB- =_JJ -_: =[_NN 10_CD ,_, 11_CD ,_, 15_CD ,_, 16_CD -RRB-_-RRB- -_: =--RRB-_NN scan_VB the_DT Web_NN application_NN 's_POS source_NN code_NN for_IN vulnerabilities_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP present_VBP Pixy_NNP ,_, the_DT first_JJ open_JJ source_NN tool_NN for_IN statically_RB detecting_VBG XSS_NN vulnerabilities_NNS in_IN PHP_NN 4_CD -LRB-_-LRB- 20_CD -RRB-_-RRB- code_NN by_IN means_NNS of_IN dat_NN
+input_NN to_TO exploit_VB these_DT vulnerabilities_NNS and_CC compromise_VB the_DT system_NN ._.
+A_DT natural_JJ alternative_NN is_VBZ to_TO find_VB these_DT errors_NNS using_VBG static_JJ analysis_NN ._.
+This_DT approach_NN has_VBZ been_VBN explored_VBN in_IN WebSSARI_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC by_IN Minamide_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+WebSSARI_NN has_VBZ been_VBN used_VBN to_TO find_VB a_DT number_NN of_IN security_NN vulnerabilities_NNS in_IN PHP_NNP scripts_NNS ,_, but_CC has_VBZ a_DT large_JJ number_NN of_IN false_JJ positives_NNS and_CC negatives_NNS due_JJ to_TO its_PRP$ intraprocedural_JJ type-based_JJ analysis_NN ._.
+Minamide_NNP 's_POS
+y_NN approximates_VBZ the_DT possible_JJ string_NN values_NNS generated_VBN by_IN a_DT program_NN -LRB-_-LRB- CMS03b_NN -RRB-_-RRB- ._.
+Minamide_NNP adopted_VBD context-free_JJ grammars_NNS as_IN a_DT foundation_NN of_IN string_NN expression_NN analysis_NN and_CC developed_VBD a_DT string_NN analyzer_NN for_IN PHP_NN =_JJ -_: =_JJ -LRB-_-LRB- Min05_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP consider_VBP the_DT validation_NN of_IN a_DT context-free_JJ grammar_NN obtained_VBN by_IN the_DT analysis_NN against_IN XML_NN schemas_NNS and_CC develop_VB two_CD algorithms_NNS for_IN deciding_VBG inclusion_NN L_NN -LRB-_-LRB- G1_NN -RRB-_-RRB- ⊆_NN L_NN -LRB-_-LRB- G2_NN -RRB-_-RRB- where_WRB G1_NN is_VBZ a_DT context-free_JJ grammar_NN a_DT
+oyment_NN and_CC upgrading_NN ._.
+Static_JJ analyses_NNS to_TO find_VB SQLCIVs_NNS have_VBP also_RB been_VBN proposed_VBN ,_, but_CC none_NN of_IN them_PRP runs_VBZ without_IN user_NN intervention_NN and_CC can_MD guarantee_VB theabsence_NN of_IN SQLCIVs_NNS ._.
+String_NNP analysis-based_JJ techniques_NNS =_JJ -_: =[_NN 3_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: use_VB formal_JJ languages_NNS to_TO characterize_VB conservatively_RB the_DT set_NN of_IN values_NNS astring_VBG variable_NN may_MD assume_VB at_IN runtime_NN ._.
+They_PRP do_VBP not_RB track_VB the_DT source_NN of_IN string_NN values_NNS ,_, so_IN they_PRP require_VBP a_DT specification_NN ,_, in_IN the_DT fo_NN
+ment_NN and_CC upgrading_NN ._.
+Static_JJ analyses_NNS to_TO find_VB SQLCIVs_NNS have_VBP also_RB been_VBN proposed_VBN ,_, but_CC none_NN of_IN them_PRP runs_VBZ without_IN user_NN intervention_NN and_CC can_MD guarantee_VB the_DT absence_NN of_IN SQLCIVs_NNS ._.
+String_NNP analysis-based_JJ techniques_NNS =_JJ -_: =[_NN 3_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: use_VB formal_JJ languages_NNS to_TO characterize_VB conservatively_RB the_DT set_NN of_IN values_NNS a_DT string_NN variable_NN may_MD assume_VB at_IN runtime_NN ._.
+They_PRP do_VBP not_RB track_VB the_DT source_NN of_IN string_NN values_NNS ,_, so_IN they_PRP require_VBP a_DT specification_NN ,_, in_IN the_DT f_SYM
+ng_NN program_NN analyzer_NN ._.
+1_CD Introduction_NN We_PRP have_VBP been_VBN developing_VBG a_DT program_NN analyzer_NN for_IN the_DT server-side_JJ scripting_NN language_NN PHP_NNP ,_, which_WDT approximates_VBZ the_DT string_NN output_NN of_IN a_DT program_NN with_IN a_DT contextfree_JJ grammar_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP adopted_VBD and_CC developed_VBD several_JJ advanced_JJ decision_NN procedures_NNS on_IN context-free_JJ grammars_NNS to_TO check_VB properties_NNS of_IN a_DT program_NN with_IN the_DT analyzer_NN -LRB-_-LRB- 9_CD ,_, 17_CD -RRB-_-RRB- ._.
+Although_IN the_DT correctness_NN of_IN those_DT decision_NN procedur_NN
+nt_NN templates_NNS ._.
+Dynamic_NNP policy_NN generation_NN is_VBZ also_RB relevant_JJ to_TO ASP.NET_NNP or_CC JSP_NNP pages_NNS ._.
+Both_DT of_IN these_DT technologies_NNS allow_VBP servers_NNS to_TO mix_VB static_JJ HTML_NNP and_CC dynamic_JJ content_NN ._.
+Using_VBG static_JJ analysis_NN -LRB-_-LRB- e.g._FW ,_, that_IN in_IN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, the_DT computed_JJ parts_NNS of_IN Web_NN pages_NNS can_MD be_VB approximated_VBN and_CC ,_, thereby_RB ,_, the_DT structure_NN and_CC contents_NNS of_IN generated_VBN pages_NNS ._.
+For_IN example_NN ,_, the_DT analysis_NN may_MD be_VB directed_VBN to_TO assume_VB no_DT permitted_VBN scripts_NNS in_IN applicat_NN
+eir_NN technique_NN recovers_VBZ semantic_JJ information_NN from_IN binary_JJ code_NN -LRB-_-LRB- e.g._FW ,_, they_PRP perform_VBP string_NN inference_NN ,_, alias_JJ analysis_NN -RRB-_-RRB- and_CC leverages_VBZ the_DT JSA_NNP infrastructure_NN of_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- to_TO perform_VB the_DT string_NN analysis_NN ._.
+Minamide_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: describes_VBZ an_DT application_NN of_IN string_NN analysis_NN to_TO statically_RB detect_VB cross-site_JJ scripting_NN vulnerabilities_NNS and_CC to_TO validate_VB pages_NNS generated_VBN by_IN web_NN applications_NNS written_VBN in_IN the_DT PHP_NNP language_NN ._.
+Similarly_RB to_TO JSA_NNP
+ment_NN and_CC upgrading_NN ._.
+Static_JJ analyses_NNS to_TO find_VB SQLCIVs_NNS have_VBP also_RB been_VBN proposed_VBN ,_, but_CC none_NN of_IN them_PRP runs_VBZ without_IN user_NN intervention_NN and_CC can_MD guarantee_VB the_DT absence_NN of_IN SQLCIVs_NNS ._.
+String_NNP analysis-based_JJ techniques_NNS =_JJ -_: =[_NN 3_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: use_VB formal_JJ languages_NNS to_TO characterize_VB conservatively_RB the_DT set_NN of_IN values_NNS a_DT string_NN variable_NN may_MD assume_VB at_IN runtime_NN ._.
+They_PRP do_VBP not_RB track_VB the_DT source_NN of_IN string_NN values_NNS ,_, so_IN they_PRP require_VBP a_DT specification_NN ,_, in_IN the_DT f_SYM
+tatic_JJ analysis_NN ._.
+This_DT approach_NN has_VBZ been_VBN explored_VBN in_IN WebYichen_NNP Xie_NNP Alex_NNP Aiken_NNP Computer_NNP Science_NNP Department_NNP Stanford_NNP University_NNP Stanford_NNP ,_, CA_NNP 94305_CD -LCB-_-LRB- yxie,aiken}@cs.stanford.edu_NN 1_CD SSARI_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC by_IN Minamide_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+WebSSARI_NN has_VBZ been_VBN used_VBN to_TO find_VB a_DT number_NN of_IN security_NN vulnerabilities_NNS in_IN PHP_NNP scripts_NNS ,_, but_CC has_VBZ a_DT large_JJ number_NN of_IN false_JJ positives_NNS and_CC negatives_NNS due_JJ to_TO its_PRP$ intraprocedural_JJ type-based_JJ analysis_NN ._.
+Minamide_NNP 's_POS
+of_IN dynamic_JJ class_NN loading_NN ,_, nor_CC have_VBP we_PRP been_VBN able_JJ to_TO identify_VB any_DT that_WDT augment_VBP JSA_NN with_IN the_DT generalizations_NNS proposed_VBN in_IN our_PRP$ work_NN ._.
+There_EX are_VBP other_JJ forms_NNS of_IN string_NN anlaysis_NN that_WDT have_VBP been_VBN studied_VBN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 26_CD ,_, 27_CD ,_, 17_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+We_PRP based_VBD our_PRP$ approach_NN on_IN JSA_NNP because_IN it_PRP provides_VBZ an_DT open-source_NN ,_, well_RB documented_VBN ,_, library_NN that_WDT directly_RB applies_VBZ to_TO Java_NNP applications_NNS ._.
+It_PRP is_VBZ also_RB widely_RB accepted_VBN and_CC heavily_RB utilized_VBN ,_, as_IN described_VBN a_DT
+amically_RB ,_, the_DT contents_NNS of_IN which_WDT may_MD depend_VB on_IN parameters_NNS in_IN the_DT URL_NN ,_, the_DT time_NN of_IN day_NN ,_, the_DT user_NN visiting_VBG the_DT site_NN ,_, or_CC other_JJ variables_NNS ._.
+For_IN such_JJ pages_NNS ,_, it_PRP may_MD be_VB useful_JJ to_TO apply_VB the_DT techniques_NNS found_VBN in_IN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: to_TO form_VB a_DT static_JJ approximation_NN for_IN the_DT purposes_NNS of_IN extracting_VBG features_NNS ._.
+The_DT resulting_VBG grammar_NN describing_VBG the_DT page_NN could_MD itself_PRP be_VB a_DT source_NN of_IN additional_JJ features_NNS describing_VBG the_DT complexity_NN of_IN the_DT page_NN
+input_NN parameters_NNS and_CC their_PRP$ types_NNS ,_, and_CC randomly_RB assigns_VBZ values_NNS mined_VBN from_IN the_DT program_NN 's_POS source_NN to_TO each_DT parameter_NN ._.
+Additionally_RB ,_, we_PRP compared_VBD our_PRP$ results_NNS to_TO those_DT reported_VBN by_IN Minamide_NNP 's_POS static_JJ analysis_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: on_IN the_DT same_JJ subject_JJ programs_NNS -LRB-_-LRB- Section_NN 5.3.1_NN presents_VBZ the_DT results_NNS -RRB-_-RRB- ._.
+We_PRP use_VBP the_DT following_VBG test_NN input_NN generation_NN strategies_NNS in_IN the_DT remainder_NN of_IN this_DT section_NN :_: Apollo_NNP is_VBZ a_DT strategy_NN that_WDT generates_VBZ test_NN inp_NN
+rmine_JJ syntactic_JJ correctness_NN ._.
+However_RB ,_, syntactic_JJ correctness_NN does_VBZ not_RB entail_VB safety_NN ,_, and_CC therefore_RB it_PRP is_VBZ unclear_JJ how_WRB one_PRP can_MD adapt_VB this_DT work_NN to_TO the_DT detection_NN of_IN SQL_NN injection_NN vulnerabilities_NNS ._.
+Minamide_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: extended_VBD the_DT approach_NN and_CC constructed_VBD a_DT string_NN analyzer_NN for_IN PHP_NNP ._.
+It_PRP cited_VBD SQL_NN injection_NN detection_NN as_IN a_DT possible_JJ application_NN ._.
+However_RB ,_, the_DT analyzer_NN models_NNS a_DT small_JJ set_NN of_IN string_NN operations_NNS in_IN PHP_NNP -LRB-_-LRB- e.g._FW
+tion_NN identification_NN ,_, evaluation_NN ,_, or_CC modeling_NN ._.
+However_RB ,_, taint_NN propagation_NN analysis_NN is_VBZ not_RB the_DT only_JJ possible_JJ negative_JJ approach_NN to_TO vulnerability_NN analysis_NN of_IN web-based_JJ applications_NNS ._.
+For_IN example_NN ,_, Minamide_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: proposes_VBZ another_DT approach_NN to_TO static_JJ detection_NN of_IN cross-site_JJ scripting_NN attacks_NNS in_IN PHP_NNP applications_NNS ._.
+The_DT PHP_NNP string_NN analyzer_NN developed_VBN by_IN Minamide_NNP approximates_VBZ the_DT output_NN of_IN PHP_NNP applications_NNS and_CC constr_NN
+tion_NN identification_NN ,_, evaluation_NN ,_, or_CC modeling_NN ._.
+However_RB ,_, taint_NN propagation_NN analysis_NN is_VBZ not_RB the_DT only_JJ possible_JJ negative_JJ approach_NN to_TO vulnerability_NN analysis_NN of_IN web-based_JJ applications_NNS ._.
+For_IN example_NN ,_, Minamide_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: proposes_VBZ another_DT approach_NN to_TO static_JJ detection_NN of_IN cross-site_JJ scripting_NN attacks_NNS in_IN PHP_NNP applications_NNS ._.
+The_DT PHP_NNP string_NN analyzer_NN developed_VBN by_IN Minamide_NNP approximates_VBZ the_DT output_NN of_IN PHP_NNP applications_NNS and_CC constr_NN
+from_IN untrusted_JJ sources_NNS ._.
+The_DT stringtaint_JJ analysis_NN that_IN we_PRP use_VBP represents_VBZ sets_NNS of_IN string_NN values_NNS with_IN context_NN free_JJ grammars_NNS ,_, and_CC models_NNS the_DT semantics_NNS of_IN string_NN operations_NNS using_VBG finite_JJ state_NN transducers_NNS =_JJ -_: =[_NN 18_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT second_JJ phase_NN of_IN our_PRP$ approach_NN enforces_VBZ the_DT policy_NN that_WDT generated_VBD web_NN pages_NNS include_VBP no_DT untrusted_JJ scripts_NNS ._.
+In_IN order_NN to_TO generate_VB the_DT right_JJ low-level_JJ description_NN of_IN this_DT high-level_JJ policy_NN ,_, we_PRP must_MD co_VB
+by_IN the_DT server_NN code_NN at_IN runtime_NN ._.
+The_DT output_NN of_IN the_DT server_NN application_NN is_VBZ an_DT HTML_NNP document_NN with_IN the_DT client_NN application_NN embedded_VBN within_IN ._.
+Techniques_NNS to_TO create_VB static_JJ approximations_NNS of_IN the_DT dynamic_NN webpages_VBZ =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: can_MD reliably_RB extract_VB the_DT client_NN application_NN ._.
+With_IN the_DT client_NN application_NN code_NN ,_, we_PRP can_MD perform_VB source_NN analysis_NN to_TO identify_VB the_DT points_NNS of_IN interaction_NN with_IN the_DT server_NN ._.
+While_IN a_DT client_NN application_NN running_VBG
+oncrete_JJ input_NN and_CC collects_VBZ symbolic_JJ constraints_NNS ._.
+Upon_IN reaching_VBG a_DT SQL-related_JJ statement_NN ,_, the_DT tool_NN attempts_VBZ to_TO create_VB an_DT input_NN that_WDT will_MD expose_VB a_DT SQL_NN injection_NN vulnerability_NN ,_, by_IN using_VBG a_DT string_NN analysis_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT authors_NNS show_VBP that_IN their_PRP$ tool_NN can_MD re-discover_VB 3_CD previously_RB known_VBN vulnerabilities_NNS ._.
+The_DT most_RBS important_JJ differences_NNS between_IN Wassermann_NNP 's_POS work_NN and_CC ours_PRP are_VBP :_: -LRB-_-LRB- i_LS -RRB-_-RRB- Their_PRP$ tool_NN has_VBZ not_RB discovered_VBN any_DT prev_NN
+ether_VB they_PRP accounted_VBD for_IN 35.5_CD %_NN of_IN reported_VBN vulnerabilities_NNS in_IN 2006_CD -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Reasoning_NN about_IN these_DT bugs_NNS -LRB-_-LRB- e.g._FW ,_, for_IN static_JJ detection_NN -RRB-_-RRB- often_RB involves_VBZ the_DT explicit_JJ modeling_NN of_IN possible_JJ runtime_NN string_NN values_VBZ =_JJ -_: =[_NN 32_CD ,_, 43_CD ,_, 44_CD ,_, 47_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+∗_NNP This_NNP research_NN was_VBD supported_VBN in_IN part_NN by_IN National_NNP Science_NNP Foundation_NNP Grants_NNPS CNS_NN 0627523_CD and_CC CNS_NN 0716478_CD and_CC Air_NNP Force_NNP Office_NNP of_IN Scientific_NNP Research_NNP grant_NN BAA_NNP 06-028_CD ,_, as_RB well_RB as_IN gifts_NNS from_IN Microsoft_NNP
+rorprone_NN reimplementation_NN of_IN a_DT critical_JJ component_NN :_: the_DT string_NN constraint_NN solver_NN ._.
+To_TO compute_VB the_DT language_NN intersection_NN ,_, Wassermann_NNP and_CC Su_NNP implemented_VBD a_DT custom_NN solver_NN based_VBN on_IN the_DT algorithm_NN by_IN Minamide_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Second_NNP ,_, Hampi_NNP creates_VBZ concrete_JJ example_NN strings_NNS from_IN the_DT language_NN intersection_NN ,_, which_WDT is_VBZ important_JJ for_IN generating_VBG attack_NN vectors_NNS ;_: Wassermann_NNP and_CC Su_NNP 's_POS custom_NN solver_NN only_RB checks_VBZ for_IN emptiness_NN of_IN the_DT in_IN
+rings_NNS in_IN Java-based_JJ web_NN applications_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Christodorescu_NNP et_FW al._FW -LRB-_-LRB- 8_CD -RRB-_-RRB- present_VBP an_DT implementation_NN of_IN the_DT grammar-based_JJ string_NN analysis_NN technique_NN for_IN executable_JJ programs_NNS for_IN the_DT x86_NN architecture_NN ._.
+Minamide_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: supports_VBZ string-based_JJ replacement_NN operations_NNS by_IN escaping_VBG replace_VB operations_NNS to_TO finitestate_NN transducers_NNS ,_, and_CC describes_VBZ a_DT string_NN analysis_NN similar_JJ to_TO JSA_NNP to_TO statically_RB detect_VB cross-site_JJ scripting_NN vulner_NN
+lgorithm_NN for_IN transforming_VBG dependence_NN graphs_NNS into_IN automata_NN is_VBZ not_RB directly_RB applicable_JJ to_TO graphs_NNS that_WDT contain_VBP cycles_NNS ._.
+In_IN general_JJ ,_, the_DT precise_JJ modeling_NN of_IN cyclic_JJ string_NN operations_NNS is_VBZ a_DT difficult_JJ problem_NN =_JJ -_: =[_NN 4_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ solution_NN is_VBZ to_TO replace_VB strongly_RB connected_VBN components_NNS -LRB-_-LRB- SCCs_NNS -RRB-_-RRB- in_IN the_DT dependence_NN graph_NN with_IN special_JJ SCC_NN nodes_NNS ,_, which_WDT results_VBZ in_IN a_DT dependence_NN graph_NN without_IN cycles_NNS ._.
+This_DT explains_VBZ the_DT final_JJ Lines_NNP 12_CD t_NN
+Dbased_JJ approach_NN -LRB-_-LRB- e.g._FW by_IN fixing_VBG analysis_NN budget_NN and_CC enhancing_VBG the_DT analysis_NN with_IN a_DT priority-driven_JJ scheme_NN -RRB-_-RRB- also_RB appears_VBZ to_TO be_VB problematic_JJ ._.
+Wassermann_NNP and_CC Su_NNP extend_VB Minamide_NNP 's_POS string-analysis_JJ algorithm_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: to_TO syntactically_RB isolate_VB tainted_JJ substrings_NNS from_IN untainted_JJ substrings_NNS in_IN PHP_NNP applications_NNS ._.
+They_PRP label_VBP non-terminals_NNS in_IN a_DT Context-Free_JJ Grammar_NN -LRB-_-LRB- CFG_NN -RRB-_-RRB- with_IN annotations_NNS reflecting_VBG taintedness_NN and_CC untaint_NN
+n_NN ,_, this_DT grammar_NN is_VBZ converted_VBN to_TO a_DT regular_JJ language_NN by_IN computing_VBG an_DT overapproximation_NN ._.
+This_DT type_NN of_IN grammar-based_JJ string_NN analysis_NN has_VBZ been_VBN used_VBN to_TO check_VB for_IN various_JJ types_NNS of_IN errors_NNS in_IN Web_NN applications_NNS =_JJ -_: =[_NN 7,8,12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX are_VBP also_RB several_JJ recent_JJ string_NN analysis_NN tools_NNS that_WDT use_VBP symbolic_JJ string_NN analysis_NN based_VBN on_IN DFA_NN encodings_NNS -LRB-_-LRB- 6,11,14,15_CD -RRB-_-RRB- ._.
+Some_DT of_IN them_PRP are_VBP based_VBN on_IN symbolic_JJ execution_NN and_CC use_VB a_DT DFA_NNP representation_NN t_NN
+f_LS the_DT tools_NNS mentioned_VBN above_IN addresses_NNS language-based_JJ replacement_NN operations_NNS which_WDT causes_VBZ the_DT approximations_NNS computed_VBN by_IN these_DT tools_NNS to_TO be_VB too_RB coarse_JJ for_IN analyzing_VBG some_DT sanitization_NN routines_NNS ._.
+Minamide_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: proposes_VBZ a_DT grammar-based_JJ string_NN analysis_NN that_WDT supports_VBZ language-based_JJ replacement_NN operations_NNS by_IN escaping_VBG replace_VB operations_NNS to_TO finite-state_JJ transducers_NNS ._.
+Instead_RB of_IN approximating_VBG the_DT grammar_NN to_TO a_DT regu_NN

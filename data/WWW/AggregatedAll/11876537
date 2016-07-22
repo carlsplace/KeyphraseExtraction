@@ -1,0 +1,165 @@
+Analyzing_VBG and_CC accelerating_VBG web_NN access_NN in_IN a_DT school_NN in_IN peri-urban_JJ India_NNP
+While_IN computers_NNS and_CC Internet_NN access_NN have_VBP growing_VBG penetration_NN amongst_IN schools_NNS in_IN the_DT developing_VBG world_NN ,_, intermittent_JJ connectivity_NN and_CC limited_JJ bandwidth_NN often_RB prevent_VBP them_PRP from_IN being_VBG fully_RB utilized_VBN by_IN students_NNS and_CC teachers_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP make_VBP two_CD contributions_NNS to_TO help_VB address_VB this_DT problem_NN ._.
+First_RB ,_, we_PRP characterize_VBP six_CD weeks_NNS of_IN HTTP_NN traffic_NN from_IN a_DT primary_JJ school_NN outside_IN of_IN Bangalore_NNP ,_, India_NNP ,_, illuminating_JJ opportunities_NNS and_CC constraints_NNS for_IN improving_VBG performance_NN in_IN such_JJ settings_NNS ._.
+Second_RB ,_, we_PRP deploy_VBP an_DT aggressive_JJ caching_NN and_CC prefetching_NN engine_NN and_CC show_VBP that_IN it_PRP accelerates_VBZ a_DT user_NN 's_POS overall_JJ browsing_NN experience_NN -LRB-_-LRB- apart_RB from_IN video_NN content_NN -RRB-_-RRB- by_IN 2.8_CD x._NNP Our_NNP accelerator_NN leverages_VBZ innovative_JJ techniques_NNS that_WDT have_VBP been_VBN proposed_VBN ,_, but_CC not_RB evaluated_VBN in_IN detail_NN ,_, including_VBG the_DT effectiveness_NN of_IN serving_VBG stale_JJ pages_NNS ,_, cached_JJ page_NN highlighting_VBG ,_, and_CC client-side_JJ prefetching_NN ._.
+Unlike_IN proxy-based_JJ techniques_NNS ,_, our_PRP$ system_NN is_VBZ bundled_VBN as_IN an_DT open-source_JJ Firefox_NNP plugin_NN and_CC runs_VBZ directly_RB on_IN client_NN machines_NNS ._.
+This_DT allows_VBZ easy_JJ installation_NN and_CC configuration_NN by_IN end_NN users_NNS ,_, which_WDT is_VBZ especially_RB important_JJ in_IN developing_VBG regions_NNS where_WRB a_DT lack_NN of_IN permissions_NNS or_CC technical_JJ expertise_NN often_RB prevents_VBZ modification_NN of_IN internal_JJ network_NN settings_NNS ._.
+ays_NNS been_VBN there_RB for_IN me_PRP ._.
+I_PRP dedicate_VBP this_DT thesis_NN to_TO my_PRP$ mother_NN and_CC father_NN ._.
+Relation_NN to_TO other_JJ publications_NNS -_: This_DT dissertation_NN includes_VBZ prior_JJ work_NN by_IN the_DT author_NN ._.
+Chapters_NNS 2_CD and_CC 5_CD subsume_VBP prior_JJ work_NN on_IN ELF_NN =_JJ -_: =[_NN 109_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Chapter_NN 2_CD and_CC 6_CD include_VBP material_NN that_WDT extends_VBZ prior_JJ work_NN on_IN web_NN browsing_NN and_CC RuralCafe_NN -LRB-_-LRB- 108_CD ,_, 114_CD ,_, 115_CD -RRB-_-RRB- ._.
+Chapter_NN 7_CD and_CC 8_CD include_VBP and_CC extend_VBP CIP_NN publications_NNS -LRB-_-LRB- 110_CD ,_, 112_CD -RRB-_-RRB- ._.
+Chapter_NN 10_CD includes_VBZ and_CC extend_VB
+,_, many_JJ ideas_NNS and_CC several_JJ systems_NNS have_VBP been_VBN implemented_VBN to_TO address_VB connectivity_NN challenges_NNS ._.
+Solutions_NNPS exist_VBP for_IN problems_NNS such_JJ as_IN power_NN outages_NNS as_RB well_RB as_IN intermittent_JJ and_CC last-hop_JJ network_NN connectivity_NN =_JJ -_: =[_NN 46_CD ,_, 15_CD ,_, 35_CD ,_, 47_CD ,_, 9_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP is_VBZ also_RB understood_VBN that_IN even_RB after_IN a_DT connection_NN is_VBZ established_VBN ,_, the_DT quality_NN is_VBZ by_IN no_DT means_NNS adequate_JJ ;_: basic_JJ problems_NNS such_JJ as_IN high_JJ cost_NN per_IN byte_NN ,_, low_JJ bandwidth_NN per_IN person_NN ,_, and_CC high_JJ latencies_NNS plague_VBP
+fline_NN browsing_NN ,_, and_CC collaborative_JJ caching_NN have_VBP been_VBN suggested_VBN and_CC implemented_VBN but_CC specialized_VBN systems_NNS are_VBP often_RB difficult_JJ to_TO deploy_VB and_CC scale_VB up_RP because_IN they_PRP require_VBP additional_JJ resources_NNS or_CC expertise_NN =_JJ -_: =[_NN 47_CD ,_, 9_CD ,_, 28_CD ,_, 25_CD ,_, 50_CD ,_, 41_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Lower_NNP in_IN the_DT networking_NN stack_VB ,_, transport_NN or_CC session_NN layer_NN protocols_NNS such_JJ as_IN SCTP_NN -LRB-_-LRB- 42_CD -RRB-_-RRB- ,_, SST_NN -LRB-_-LRB- 45_CD -RRB-_-RRB- ,_, and_CC SPDY_NN -LRB-_-LRB- 44_CD -RRB-_-RRB- have_VBP also_RB been_VBN implemented_VBN and_CC experimented_VBN with_IN ,_, but_CC they_PRP are_VBP designed_VBN as_IN performance_NN
+s_NN at_IN Internet_NNP cafes_NNS or_CC kiosks_NNS in_IN rural_JJ areas_NNS -LRB-_-LRB- 13_CD ,_, 26_CD ,_, 33_CD ,_, 20_CD -RRB-_-RRB- ._.
+One_CD recent_JJ attempt_NN has_VBZ been_VBN made_VBN to_TO analyze_VB web_NN traffic_NN for_IN emerging_VBG regions_NNS at_IN larger_JJR scales_NNS using_VBG Content_NN Distribution_NN Networks_NNP -LRB-_-LRB- CDNs_NNS -RRB-_-RRB- =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, gathering_VBG traffic_NN statistics_NNS using_VBG client_NN opt-in_JJ CDNs_NNS biases_NNS the_DT sample_NN population_NN since_IN the_DT traffic_NN traces_NNS themselves_PRP only_RB contain_VBP requests_NNS that_WDT use_VBP the_DT CDN_NNP ._.
+The_DT lack_NN of_IN adequate_JJ basic_JJ res_NNS
+icularly_RB among_IN the_DT poorly_RB connected_VBN -LRB-_-LRB- 51_CD -RRB-_-RRB- ._.
+Research_NN that_WDT focuses_VBZ on_IN traditional_JJ constrained_VBN web_NN access_NN is_VBZ either_RB dated_VBN -LRB-_-LRB- 29_CD ,_, 34_CD -RRB-_-RRB- or_CC ,_, in_IN the_DT case_NN of_IN more_RBR recent_JJ work_NN ,_, is_VBZ in_IN the_DT context_NN of_IN mobile_JJ devices_NNS =_JJ -_: =[_NN 52_CD ,_, 27_CD ,_, 53_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Characterizing_VBG traffic_NN patterns_NNS of_IN groups_NNS of_IN users_NNS in_IN emerging_VBG regions_NNS has_VBZ only_RB been_VBN performed_VBN in_IN a_DT few_JJ isolated_VBN cases_NNS at_IN Internet_NNP cafes_NNS or_CC kiosks_NNS in_IN rural_JJ areas_NNS -LRB-_-LRB- 13_CD ,_, 26_CD ,_, 33_CD ,_, 20_CD -RRB-_-RRB- ._.
+One_CD recent_JJ attempt_NN
+icularly_RB among_IN the_DT poorly_RB connected_VBN -LRB-_-LRB- 51_CD -RRB-_-RRB- ._.
+Research_NN that_WDT focuses_VBZ on_IN traditional_JJ constrained_VBN web_NN access_NN is_VBZ either_RB dated_VBN -LRB-_-LRB- 29_CD ,_, 34_CD -RRB-_-RRB- or_CC ,_, in_IN the_DT case_NN of_IN more_RBR recent_JJ work_NN ,_, is_VBZ in_IN the_DT context_NN of_IN mobile_JJ devices_NNS =_JJ -_: =[_NN 52_CD ,_, 27_CD ,_, 53_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Characterizing_VBG traffic_NN patterns_NNS of_IN groups_NNS of_IN users_NNS in_IN emerging_VBG regions_NNS has_VBZ only_RB been_VBN performed_VBN in_IN a_DT few_JJ isolated_VBN cases_NNS at_IN Internet_NNP cafes_NNS or_CC kiosks_NNS in_IN rural_JJ areas_NNS -LRB-_-LRB- 13_CD ,_, 26_CD ,_, 33_CD ,_, 20_CD -RRB-_-RRB- ._.
+One_CD recent_JJ attempt_NN
+fforts_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+We_PRP initiate_VBP our_PRP$ inquiry_NN by_IN analyzing_VBG a_DT six-week_JJ HTTP_NN trace_NN gathered_VBN from_IN 37_CD of_IN the_DT client_NN machines_NNS in_IN the_DT school_NN ._.
+While_IN researchers_NNS have_VBP analyzed_VBN web_NN traces_NNS from_IN developing_VBG regions_NNS before_IN =_JJ -_: =[_NN 13_CD ,_, 26_CD ,_, 33_CD ,_, 20_CD ,_, 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, they_PRP did_VBD not_RB focus_VB on_IN an_DT educational_JJ environment_NN ._.
+In_IN some_DT cases_NNS our_PRP$ results_NNS corroborate_VBP prior_JJ findings_NNS ,_, while_IN in_IN some_DT dimensions_NNS they_PRP differ_VBP ._.
+For_IN example_NN ,_, we_PRP observe_VBP the_DT shift_NN of_IN web_NN content_NN towards_IN
+optimizations_NNS ,_, and_CC directions_NNS for_IN future_JJ work_NN ._.
+From_IN our_PRP$ results_NNS ,_, freshness_NN vs_CC speed_NN is_VBZ a_DT good_JJ tradeoff_NN for_IN users_NNS behind_IN constrained_VBN network_NN connections_NNS ._.
+We_PRP realize_VBP that_IN this_DT tradeoff_NN violates_VBZ RFC2616_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC ,_, as_IN suggested_VBN by_IN prior_JJ work_NN ,_, users_NNS in_IN these_DT settings_NNS are_VBP unlikely_JJ to_TO be_VB interested_JJ in_IN minute_JJ changes_NNS in_IN content_NN on_IN sites_NNS other_JJ than_IN news_NN ,_, webmail_NN ,_, and_CC Facebook_NNP -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+We_PRP also_RB found_VBD that_IN prefetchi_NN
+,_, many_JJ ideas_NNS and_CC several_JJ systems_NNS have_VBP been_VBN implemented_VBN to_TO address_VB connectivity_NN challenges_NNS ._.
+Solutions_NNPS exist_VBP for_IN problems_NNS such_JJ as_IN power_NN outages_NNS as_RB well_RB as_IN intermittent_JJ and_CC last-hop_JJ network_NN connectivity_NN =_JJ -_: =[_NN 46_CD ,_, 15_CD ,_, 35_CD ,_, 47_CD ,_, 9_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP is_VBZ also_RB understood_VBN that_IN even_RB after_IN a_DT connection_NN is_VBZ established_VBN ,_, the_DT quality_NN is_VBZ by_IN no_DT means_NNS adequate_JJ ;_: basic_JJ problems_NNS such_JJ as_IN high_JJ cost_NN per_IN byte_NN ,_, low_JJ bandwidth_NN per_IN person_NN ,_, and_CC high_JJ latencies_NNS plague_VBP
+fforts_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+We_PRP initiate_VBP our_PRP$ inquiry_NN by_IN analyzing_VBG a_DT six-week_JJ HTTP_NN trace_NN gathered_VBN from_IN 37_CD of_IN the_DT client_NN machines_NNS in_IN the_DT school_NN ._.
+While_IN researchers_NNS have_VBP analyzed_VBN web_NN traces_NNS from_IN developing_VBG regions_NNS before_IN =_JJ -_: =[_NN 13_CD ,_, 26_CD ,_, 33_CD ,_, 20_CD ,_, 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, they_PRP did_VBD not_RB focus_VB on_IN an_DT educational_JJ environment_NN ._.
+In_IN some_DT cases_NNS our_PRP$ results_NNS corroborate_VBP prior_JJ findings_NNS ,_, while_IN in_IN some_DT dimensions_NNS they_PRP differ_VBP ._.
+For_IN example_NN ,_, we_PRP observe_VBP the_DT shift_NN of_IN web_NN content_NN towards_IN
+mpression_NN ,_, which_WDT require_VBP an_DT additional_JJ proxy_NN component_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+Prefetching_NN systems_NNS are_VBP also_RB well_RB studied_VBN ,_, but_CC are_VBP also_RB dated_JJ and_CC untested_JJ in_IN this_DT context_NN and_CC require_VB access_NN to_TO a_DT proxy_NN or_CC server_NN support_NN =_JJ -_: =[_NN 16_CD ,_, 10_CD ,_, 34_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Furthermore_RB ,_, emerging_VBG region_NN specific_JJ ideas_NNS such_JJ as_IN proxying_NN ,_, text-only_JJ browsing_NN ,_, offline_JJ browsing_NN ,_, and_CC collaborative_JJ caching_NN have_VBP been_VBN suggested_VBN and_CC implemented_VBN but_CC specialized_VBN systems_NNS are_VBP often_RB di_FW
+tion_NN techniques_NNS built_VBN upon_IN the_DT findings_NNS from_IN these_DT traces_NNS ,_, highlighting_VBG their_PRP$ importance_NN -LRB-_-LRB- 43_CD ,_, 31_CD -RRB-_-RRB- ._.
+Relatively_RB little_JJ is_VBZ known_VBN about_IN web_NN use_NN in_IN emerging_VBG regions_NNS particularly_RB among_IN the_DT poorly_RB connected_VBN =_JJ -_: =[_NN 51_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Research_NN that_WDT focuses_VBZ on_IN traditional_JJ constrained_VBN web_NN access_NN is_VBZ either_RB dated_VBN -LRB-_-LRB- 29_CD ,_, 34_CD -RRB-_-RRB- or_CC ,_, in_IN the_DT case_NN of_IN more_RBR recent_JJ work_NN ,_, is_VBZ in_IN the_DT context_NN of_IN mobile_JJ devices_NNS -LRB-_-LRB- 52_CD ,_, 27_CD ,_, 53_CD -RRB-_-RRB- ._.
+Characterizing_VBG traffic_NN pat_NN
+y_NN no_RB means_VBZ adequate_JJ ;_: basic_JJ problems_NNS such_JJ as_IN high_JJ cost_NN per_IN byte_NN ,_, low_JJ bandwidth_NN per_IN person_NN ,_, and_CC high_JJ latencies_NNS plague_VBP even_RB large_JJ institutions_NNS such_JJ as_IN universities_NNS that_WDT can_MD afford_VB a_DT broadband_NN connection_NN =_JJ -_: =[_NN 9_CD ,_, 47_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO make_VB matters_NNS worse_JJR ,_, modern_JJ web_NN pages_NNS are_VBP designed_VBN for_IN dynamic_JJ and_CC media-rich_JJ content_NN which_WDT places_VBZ greater_JJR demands_NNS on_IN the_DT network_NN ._.
+In_IN conjunction_NN these_DT issues_NNS result_VBP in_IN an_DT extremely_RB poor_JJ user_NN expe_NN
+t_NN expected_VBD due_JJ to_TO the_DT many_JJ deployment_NN challenges_NNS in_IN these_DT areas_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+However_RB ,_, a_DT large_JJ and_CC growing_VBG number_NN of_IN initiatives_NNS ,_, systems_NNS ,_, applications_NNS ,_, and_CC services_NNS are_VBP targeted_VBN at_IN emerging_VBG regions_NNS each_DT year_NN =_JJ -_: =[_NN 11_CD ,_, 4_CD ,_, 40_CD ,_, 30_CD ,_, 39_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Web_NN use_NN in_IN schools_NNS is_VBZ particularly_RB important_JJ to_TO study_VB ._.
+Education_NNP is_VBZ a_DT central_JJ focus_NN of_IN development_NN initiatives_NNS -LRB-_-LRB- 48_CD -RRB-_-RRB- ._.
+Also_RB ,_, digital_JJ literacy_NN is_VBZ increasingly_RB considered_VBN as_IN a_DT requirement_NN for_IN getting_VBG a_DT
+fforts_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+We_PRP initiate_VBP our_PRP$ inquiry_NN by_IN analyzing_VBG a_DT six-week_JJ HTTP_NN trace_NN gathered_VBN from_IN 37_CD of_IN the_DT client_NN machines_NNS in_IN the_DT school_NN ._.
+While_IN researchers_NNS have_VBP analyzed_VBN web_NN traces_NNS from_IN developing_VBG regions_NNS before_IN =_JJ -_: =[_NN 13_CD ,_, 26_CD ,_, 33_CD ,_, 20_CD ,_, 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, they_PRP did_VBD not_RB focus_VB on_IN an_DT educational_JJ environment_NN ._.
+In_IN some_DT cases_NNS our_PRP$ results_NNS corroborate_VBP prior_JJ findings_NNS ,_, while_IN in_IN some_DT dimensions_NNS they_PRP differ_VBP ._.
+For_IN example_NN ,_, we_PRP observe_VBP the_DT shift_NN of_IN web_NN content_NN towards_IN
+prior_JJ techniques_NNS for_IN aggressive_JJ caching_NN ,_, including_VBG serving_VBG stale_JJ pages_NNS ,_, as_IN utilized_VBN by_IN the_DT C-LINK_NN system_NN in_IN Nicaragua_NNP -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+It_PRP also_RB performs_VBZ client-side_JJ prefetching_NN ,_, which_WDT has_VBZ been_VBN studied_VBN previously_RB =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+An_DT innovative_JJ aspect_NN of_IN our_PRP$ tool_NN is_VBZ that_IN it_PRP is_VBZ very_RB easy_JJ to_TO install_VB :_: rather_RB than_IN requiring_VBG the_DT user_NN to_TO adjust_VB any_DT proxy_JJ settings_NNS -LRB-_-LRB- as_IN is_VBZ typical_JJ of_IN caching_VBG and_CC prefetching_VBG systems_NNS -RRB-_-RRB- ,_, our_PRP$ tool_NN is_VBZ bundl_NN
+ngs_NNS that_WDT are_VBP completely_RB novel_JJ ._.
+In_IN this_DT and_CC the_DT next_JJ section_NN we_PRP compare_VBP our_PRP$ results_NNS with_IN the_DT two_CD pieces_NNS of_IN prior_JJ research_NN that_WDT are_VBP the_DT most_RBS closely_RB related_JJ to_TO ours_PRP by_IN Du_NNP et_FW al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC Johnson_NNP et_FW al._FW =_SYM -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ logs_NNS were_VBD taken_VBN over_IN a_DT 48_CD day_NN period_NN between_IN September_NNP 6_CD and_CC October_NNP 24_CD ,_, 2010_CD ._.
+New_JJ data_NNS continues_VBZ to_TO be_VB captured_VBN for_IN analysis_NN ._.
+Our_PRP$ trace_NN contains_VBZ 1_CD ,_, 723_CD ,_, 146_CD log_NN events_NNS with_IN 665_CD ,_, 571_CD HTTP_NN reques_NNS
+t_NN expected_VBD due_JJ to_TO the_DT many_JJ deployment_NN challenges_NNS in_IN these_DT areas_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+However_RB ,_, a_DT large_JJ and_CC growing_VBG number_NN of_IN initiatives_NNS ,_, systems_NNS ,_, applications_NNS ,_, and_CC services_NNS are_VBP targeted_VBN at_IN emerging_VBG regions_NNS each_DT year_NN =_JJ -_: =[_NN 11_CD ,_, 4_CD ,_, 40_CD ,_, 30_CD ,_, 39_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Web_NN use_NN in_IN schools_NNS is_VBZ particularly_RB important_JJ to_TO study_VB ._.
+Education_NNP is_VBZ a_DT central_JJ focus_NN of_IN development_NN initiatives_NNS -LRB-_-LRB- 48_CD -RRB-_-RRB- ._.
+Also_RB ,_, digital_JJ literacy_NN is_VBZ increasingly_RB considered_VBN as_IN a_DT requirement_NN for_IN getting_VBG a_DT
+t_NN expected_VBD due_JJ to_TO the_DT many_JJ deployment_NN challenges_NNS in_IN these_DT areas_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+However_RB ,_, a_DT large_JJ and_CC growing_VBG number_NN of_IN initiatives_NNS ,_, systems_NNS ,_, applications_NNS ,_, and_CC services_NNS are_VBP targeted_VBN at_IN emerging_VBG regions_NNS each_DT year_NN =_JJ -_: =[_NN 11_CD ,_, 4_CD ,_, 40_CD ,_, 30_CD ,_, 39_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Web_NN use_NN in_IN schools_NNS is_VBZ particularly_RB important_JJ to_TO study_VB ._.
+Education_NNP is_VBZ a_DT central_JJ focus_NN of_IN development_NN initiatives_NNS -LRB-_-LRB- 48_CD -RRB-_-RRB- ._.
+Also_RB ,_, digital_JJ literacy_NN is_VBZ increasingly_RB considered_VBN as_IN a_DT requirement_NN for_IN getting_VBG a_DT
+t_NN expected_VBD due_JJ to_TO the_DT many_JJ deployment_NN challenges_NNS in_IN these_DT areas_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+However_RB ,_, a_DT large_JJ and_CC growing_VBG number_NN of_IN initiatives_NNS ,_, systems_NNS ,_, applications_NNS ,_, and_CC services_NNS are_VBP targeted_VBN at_IN emerging_VBG regions_NNS each_DT year_NN =_JJ -_: =[_NN 11_CD ,_, 4_CD ,_, 40_CD ,_, 30_CD ,_, 39_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Web_NN use_NN in_IN schools_NNS is_VBZ particularly_RB important_JJ to_TO study_VB ._.
+Education_NNP is_VBZ a_DT central_JJ focus_NN of_IN development_NN initiatives_NNS -LRB-_-LRB- 48_CD -RRB-_-RRB- ._.
+Also_RB ,_, digital_JJ literacy_NN is_VBZ increasingly_RB considered_VBN as_IN a_DT requirement_NN for_IN getting_VBG a_DT
+fline_NN browsing_NN ,_, and_CC collaborative_JJ caching_NN have_VBP been_VBN suggested_VBN and_CC implemented_VBN but_CC specialized_VBN systems_NNS are_VBP often_RB difficult_JJ to_TO deploy_VB and_CC scale_VB up_RP because_IN they_PRP require_VBP additional_JJ resources_NNS or_CC expertise_NN =_JJ -_: =[_NN 47_CD ,_, 9_CD ,_, 28_CD ,_, 25_CD ,_, 50_CD ,_, 41_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Lower_NNP in_IN the_DT networking_NN stack_VB ,_, transport_NN or_CC session_NN layer_NN protocols_NNS such_JJ as_IN SCTP_NN -LRB-_-LRB- 42_CD -RRB-_-RRB- ,_, SST_NN -LRB-_-LRB- 45_CD -RRB-_-RRB- ,_, and_CC SPDY_NN -LRB-_-LRB- 44_CD -RRB-_-RRB- have_VBP also_RB been_VBN implemented_VBN and_CC experimented_VBN with_IN ,_, but_CC they_PRP are_VBP designed_VBN as_IN performance_NN
+mpression_NN ,_, which_WDT require_VBP an_DT additional_JJ proxy_NN component_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+Prefetching_NN systems_NNS are_VBP also_RB well_RB studied_VBN ,_, but_CC are_VBP also_RB dated_JJ and_CC untested_JJ in_IN this_DT context_NN and_CC require_VB access_NN to_TO a_DT proxy_NN or_CC server_NN support_NN =_JJ -_: =[_NN 16_CD ,_, 10_CD ,_, 34_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Furthermore_RB ,_, emerging_VBG region_NN specific_JJ ideas_NNS such_JJ as_IN proxying_NN ,_, text-only_JJ browsing_NN ,_, offline_JJ browsing_NN ,_, and_CC collaborative_JJ caching_NN have_VBP been_VBN suggested_VBN and_CC implemented_VBN but_CC specialized_VBN systems_NNS are_VBP often_RB di_FW
+mpression_NN ,_, which_WDT require_VBP an_DT additional_JJ proxy_NN component_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+Prefetching_NN systems_NNS are_VBP also_RB well_RB studied_VBN ,_, but_CC are_VBP also_RB dated_JJ and_CC untested_JJ in_IN this_DT context_NN and_CC require_VB access_NN to_TO a_DT proxy_NN or_CC server_NN support_NN =_JJ -_: =[_NN 16_CD ,_, 10_CD ,_, 34_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Furthermore_RB ,_, emerging_VBG region_NN specific_JJ ideas_NNS such_JJ as_IN proxying_NN ,_, text-only_JJ browsing_NN ,_, offline_JJ browsing_NN ,_, and_CC collaborative_JJ caching_NN have_VBP been_VBN suggested_VBN and_CC implemented_VBN but_CC specialized_VBN systems_NNS are_VBP often_RB di_FW
+ty_RB ,_, and_CC a_DT diurnal_JJ cycle_NN -LRB-_-LRB- 5_CD ,_, 49_CD ,_, 6_CD -RRB-_-RRB- ._.
+Later_JJ research_NN on_IN web_NN caching_NN ,_, prefetching_NN ,_, compression_NN ,_, and_CC other_JJ acceleration_NN techniques_NNS built_VBN upon_IN the_DT findings_NNS from_IN these_DT traces_NNS ,_, highlighting_VBG their_PRP$ importance_NN =_JJ -_: =[_NN 43_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Relatively_RB little_JJ is_VBZ known_VBN about_IN web_NN use_NN in_IN emerging_VBG regions_NNS particularly_RB among_IN the_DT poorly_RB connected_VBN -LRB-_-LRB- 51_CD -RRB-_-RRB- ._.
+Research_NN that_WDT focuses_VBZ on_IN traditional_JJ constrained_VBN web_NN access_NN is_VBZ either_RB dated_VBN -LRB-_-LRB- 29_CD ,_, 34_CD -RRB-_-RRB- or_CC ,_, in_IN
+race_NN data_NNS analysis_NN has_VBZ long_JJ history_NN ._.
+Our_PRP$ study_NN confirms_VBZ well-known_JJ features_NNS of_IN web_NN traffic_NN ,_, including_VBG a_DT power_NN law_NN distribution_NN of_IN web_NN requests_NNS to_TO their_PRP$ popularity_NN ,_, selfsimilarity_NN ,_, and_CC a_DT diurnal_JJ cycle_NN =_JJ -_: =[_NN 5_CD ,_, 49_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Later_JJ research_NN on_IN web_NN caching_NN ,_, prefetching_NN ,_, compression_NN ,_, and_CC other_JJ acceleration_NN techniques_NNS built_VBN upon_IN the_DT findings_NNS from_IN these_DT traces_NNS ,_, highlighting_VBG their_PRP$ importance_NN -LRB-_-LRB- 43_CD ,_, 31_CD -RRB-_-RRB- ._.
+Relatively_RB little_JJ is_VBZ kno_NN
+ze_IN that_DT Isaacman_NNP and_CC Martonosi_NNP 's_POS setting_NN is_VBZ different_JJ across_IN several_JJ dimensions_NNS ,_, including_VBG the_DT deployment_NN environment_NN ,_, user_NN population_NN ,_, and_CC task_NN assignment_NN ._.
+A_DT wide_JJ variety_NN of_IN caching_NN algorithms_NNS exist_VBP =_JJ -_: =[_NN 54_CD ,_, 37_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC recent_JJ research_NN targeting_VBG emerging_VBG regions_NNS has_VBZ looked_VBN at_IN caching_VBG architectures_NNS for_IN affordable_JJ hardware_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Tangentially_RB related_JJ to_TO our_PRP$ work_NN is_VBZ Opera_NNP Mini_NNP ,_, which_WDT is_VBZ designed_VBN to_TO accelerate_VB web_NN br_NN
+race_NN data_NNS analysis_NN has_VBZ long_JJ history_NN ._.
+Our_PRP$ study_NN confirms_VBZ well-known_JJ features_NNS of_IN web_NN traffic_NN ,_, including_VBG a_DT power_NN law_NN distribution_NN of_IN web_NN requests_NNS to_TO their_PRP$ popularity_NN ,_, selfsimilarity_NN ,_, and_CC a_DT diurnal_JJ cycle_NN =_JJ -_: =[_NN 5_CD ,_, 49_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Later_JJ research_NN on_IN web_NN caching_NN ,_, prefetching_NN ,_, compression_NN ,_, and_CC other_JJ acceleration_NN techniques_NNS built_VBN upon_IN the_DT findings_NNS from_IN these_DT traces_NNS ,_, highlighting_VBG their_PRP$ importance_NN -LRB-_-LRB- 43_CD ,_, 31_CD -RRB-_-RRB- ._.
+Relatively_RB little_JJ is_VBZ kno_NN
+ze_IN that_DT Isaacman_NNP and_CC Martonosi_NNP 's_POS setting_NN is_VBZ different_JJ across_IN several_JJ dimensions_NNS ,_, including_VBG the_DT deployment_NN environment_NN ,_, user_NN population_NN ,_, and_CC task_NN assignment_NN ._.
+A_DT wide_JJ variety_NN of_IN caching_NN algorithms_NNS exist_VBP =_JJ -_: =[_NN 54_CD ,_, 37_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC recent_JJ research_NN targeting_VBG emerging_VBG regions_NNS has_VBZ looked_VBN at_IN caching_VBG architectures_NNS for_IN affordable_JJ hardware_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Tangentially_RB related_JJ to_TO our_PRP$ work_NN is_VBZ Opera_NNP Mini_NNP ,_, which_WDT is_VBZ designed_VBN to_TO accelerate_VB web_NN br_NN
+fline_NN browsing_NN ,_, and_CC collaborative_JJ caching_NN have_VBP been_VBN suggested_VBN and_CC implemented_VBN but_CC specialized_VBN systems_NNS are_VBP often_RB difficult_JJ to_TO deploy_VB and_CC scale_VB up_RP because_IN they_PRP require_VBP additional_JJ resources_NNS or_CC expertise_NN =_JJ -_: =[_NN 47_CD ,_, 9_CD ,_, 28_CD ,_, 25_CD ,_, 50_CD ,_, 41_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Lower_NNP in_IN the_DT networking_NN stack_VB ,_, transport_NN or_CC session_NN layer_NN protocols_NNS such_JJ as_IN SCTP_NN -LRB-_-LRB- 42_CD -RRB-_-RRB- ,_, SST_NN -LRB-_-LRB- 45_CD -RRB-_-RRB- ,_, and_CC SPDY_NN -LRB-_-LRB- 44_CD -RRB-_-RRB- have_VBP also_RB been_VBN implemented_VBN and_CC experimented_VBN with_IN ,_, but_CC they_PRP are_VBP designed_VBN as_IN performance_NN
+t_NN expected_VBD due_JJ to_TO the_DT many_JJ deployment_NN challenges_NNS in_IN these_DT areas_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+However_RB ,_, a_DT large_JJ and_CC growing_VBG number_NN of_IN initiatives_NNS ,_, systems_NNS ,_, applications_NNS ,_, and_CC services_NNS are_VBP targeted_VBN at_IN emerging_VBG regions_NNS each_DT year_NN =_JJ -_: =[_NN 11_CD ,_, 4_CD ,_, 40_CD ,_, 30_CD ,_, 39_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Web_NN use_NN in_IN schools_NNS is_VBZ particularly_RB important_JJ to_TO study_VB ._.
+Education_NNP is_VBZ a_DT central_JJ focus_NN of_IN development_NN initiatives_NNS -LRB-_-LRB- 48_CD -RRB-_-RRB- ._.
+Also_RB ,_, digital_JJ literacy_NN is_VBZ increasingly_RB considered_VBN as_IN a_DT requirement_NN for_IN getting_VBG a_DT
+rtance_NN -LRB-_-LRB- 43_CD ,_, 31_CD -RRB-_-RRB- ._.
+Relatively_RB little_JJ is_VBZ known_VBN about_IN web_NN use_NN in_IN emerging_VBG regions_NNS particularly_RB among_IN the_DT poorly_RB connected_VBN -LRB-_-LRB- 51_CD -RRB-_-RRB- ._.
+Research_NN that_WDT focuses_VBZ on_IN traditional_JJ constrained_VBN web_NN access_NN is_VBZ either_RB dated_VBN =_JJ -_: =[_NN 29_CD ,_, 34_CD -RRB-_-RRB- -_: =_JJ -_: or_CC ,_, in_IN the_DT case_NN of_IN more_RBR recent_JJ work_NN ,_, is_VBZ in_IN the_DT context_NN of_IN mobile_JJ devices_NNS -LRB-_-LRB- 52_CD ,_, 27_CD ,_, 53_CD -RRB-_-RRB- ._.
+Characterizing_VBG traffic_NN patterns_NNS of_IN groups_NNS of_IN users_NNS in_IN emerging_VBG regions_NNS has_VBZ only_RB been_VBN performed_VBN in_IN a_DT few_JJ isolated_VBN
+ty_RB ,_, and_CC a_DT diurnal_JJ cycle_NN -LRB-_-LRB- 5_CD ,_, 49_CD ,_, 6_CD -RRB-_-RRB- ._.
+Later_JJ research_NN on_IN web_NN caching_NN ,_, prefetching_NN ,_, compression_NN ,_, and_CC other_JJ acceleration_NN techniques_NNS built_VBN upon_IN the_DT findings_NNS from_IN these_DT traces_NNS ,_, highlighting_VBG their_PRP$ importance_NN =_JJ -_: =[_NN 43_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Relatively_RB little_JJ is_VBZ known_VBN about_IN web_NN use_NN in_IN emerging_VBG regions_NNS particularly_RB among_IN the_DT poorly_RB connected_VBN -LRB-_-LRB- 51_CD -RRB-_-RRB- ._.
+Research_NN that_WDT focuses_VBZ on_IN traditional_JJ constrained_VBN web_NN access_NN is_VBZ either_RB dated_VBN -LRB-_-LRB- 29_CD ,_, 34_CD -RRB-_-RRB- or_CC ,_, in_IN
+be_VB relevant_JJ ,_, particularly_RB if_IN the_DT optimizationsare_NN deployable_JJ with_IN low_JJ levels_NNS of_IN expertise_NN ._.
+Finally_RB ,_, web_NN acceleration_NN techniques_NNS that_WDT are_VBP browser_NN based_VBN have_VBP been_VBN implemented_VBN and_CC deployed_VBN extensively_RB =_JJ -_: =[_NN 19_CD ,_, 17_CD ,_, 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC to_TO our_PRP$ knowledge_NN no_DT formal_JJ study_NN in_IN any_DT emerging-region_JJ context_NN has_VBZ been_VBN conducted_VBN to_TO evaluate_VB how_WRB well_RB these_DT techniques_NNS actually_RB perform_VBP ._.
+3_LS ._.
+THE_DT SCHOOL_NNP ENVIRONMENT_NNP 3.1_CD Infrastructure_NN The_DT study_NN
+rtance_NN -LRB-_-LRB- 43_CD ,_, 31_CD -RRB-_-RRB- ._.
+Relatively_RB little_JJ is_VBZ known_VBN about_IN web_NN use_NN in_IN emerging_VBG regions_NNS particularly_RB among_IN the_DT poorly_RB connected_VBN -LRB-_-LRB- 51_CD -RRB-_-RRB- ._.
+Research_NN that_WDT focuses_VBZ on_IN traditional_JJ constrained_VBN web_NN access_NN is_VBZ either_RB dated_VBN =_JJ -_: =[_NN 29_CD ,_, 34_CD -RRB-_-RRB- -_: =_JJ -_: or_CC ,_, in_IN the_DT case_NN of_IN more_RBR recent_JJ work_NN ,_, is_VBZ in_IN the_DT context_NN of_IN mobile_JJ devices_NNS -LRB-_-LRB- 52_CD ,_, 27_CD ,_, 53_CD -RRB-_-RRB- ._.
+Characterizing_VBG traffic_NN patterns_NNS of_IN groups_NNS of_IN users_NNS in_IN emerging_VBG regions_NNS has_VBZ only_RB been_VBN performed_VBN in_IN a_DT few_JJ isolated_VBN
+icularly_RB among_IN the_DT poorly_RB connected_VBN -LRB-_-LRB- 51_CD -RRB-_-RRB- ._.
+Research_NN that_WDT focuses_VBZ on_IN traditional_JJ constrained_VBN web_NN access_NN is_VBZ either_RB dated_VBN -LRB-_-LRB- 29_CD ,_, 34_CD -RRB-_-RRB- or_CC ,_, in_IN the_DT case_NN of_IN more_RBR recent_JJ work_NN ,_, is_VBZ in_IN the_DT context_NN of_IN mobile_JJ devices_NNS =_JJ -_: =[_NN 52_CD ,_, 27_CD ,_, 53_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Characterizing_VBG traffic_NN patterns_NNS of_IN groups_NNS of_IN users_NNS in_IN emerging_VBG regions_NNS has_VBZ only_RB been_VBN performed_VBN in_IN a_DT few_JJ isolated_VBN cases_NNS at_IN Internet_NNP cafes_NNS or_CC kiosks_NNS in_IN rural_JJ areas_NNS -LRB-_-LRB- 13_CD ,_, 26_CD ,_, 33_CD ,_, 20_CD -RRB-_-RRB- ._.
+One_CD recent_JJ attempt_NN
+race_NN data_NNS analysis_NN has_VBZ long_JJ history_NN ._.
+Our_PRP$ study_NN confirms_VBZ well-known_JJ features_NNS of_IN web_NN traffic_NN ,_, including_VBG a_DT power_NN law_NN distribution_NN of_IN web_NN requests_NNS to_TO their_PRP$ popularity_NN ,_, selfsimilarity_NN ,_, and_CC a_DT diurnal_JJ cycle_NN =_JJ -_: =[_NN 5_CD ,_, 49_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Later_JJ research_NN on_IN web_NN caching_NN ,_, prefetching_NN ,_, compression_NN ,_, and_CC other_JJ acceleration_NN techniques_NNS built_VBN upon_IN the_DT findings_NNS from_IN these_DT traces_NNS ,_, highlighting_VBG their_PRP$ importance_NN -LRB-_-LRB- 43_CD ,_, 31_CD -RRB-_-RRB- ._.
+Relatively_RB little_JJ is_VBZ kno_NN
+elves_NNS only_RB contain_VBP requests_NNS that_WDT use_VBP the_DT CDN_NNP ._.
+The_DT lack_NN of_IN adequate_JJ basic_JJ research_NN on_IN web_NN traffic_NN in_IN these_DT underserved_JJ regions_NNS is_VBZ somewhat_RB expected_VBN due_JJ to_TO the_DT many_JJ deployment_NN challenges_NNS in_IN these_DT areas_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, a_DT large_JJ and_CC growing_VBG number_NN of_IN initiatives_NNS ,_, systems_NNS ,_, applications_NNS ,_, and_CC services_NNS are_VBP targeted_VBN at_IN emerging_VBG regions_NNS each_DT year_NN -LRB-_-LRB- 11_CD ,_, 4_CD ,_, 40_CD ,_, 30_CD ,_, 39_CD -RRB-_-RRB- ._.
+Web_NN use_NN in_IN schools_NNS is_VBZ particularly_RB important_JJ t_NN
+,_, many_JJ ideas_NNS and_CC several_JJ systems_NNS have_VBP been_VBN implemented_VBN to_TO address_VB connectivity_NN challenges_NNS ._.
+Solutions_NNPS exist_VBP for_IN problems_NNS such_JJ as_IN power_NN outages_NNS as_RB well_RB as_IN intermittent_JJ and_CC last-hop_JJ network_NN connectivity_NN =_JJ -_: =[_NN 46_CD ,_, 15_CD ,_, 35_CD ,_, 47_CD ,_, 9_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP is_VBZ also_RB understood_VBN that_IN even_RB after_IN a_DT connection_NN is_VBZ established_VBN ,_, the_DT quality_NN is_VBZ by_IN no_DT means_NNS adequate_JJ ;_: basic_JJ problems_NNS such_JJ as_IN high_JJ cost_NN per_IN byte_NN ,_, low_JJ bandwidth_NN per_IN person_NN ,_, and_CC high_JJ latencies_NNS plague_VBP
+,_, many_JJ ideas_NNS and_CC several_JJ systems_NNS have_VBP been_VBN implemented_VBN to_TO address_VB connectivity_NN challenges_NNS ._.
+Solutions_NNPS exist_VBP for_IN problems_NNS such_JJ as_IN power_NN outages_NNS as_RB well_RB as_IN intermittent_JJ and_CC last-hop_JJ network_NN connectivity_NN =_JJ -_: =[_NN 46_CD ,_, 15_CD ,_, 35_CD ,_, 47_CD ,_, 9_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP is_VBZ also_RB understood_VBN that_IN even_RB after_IN a_DT connection_NN is_VBZ established_VBN ,_, the_DT quality_NN is_VBZ by_IN no_DT means_NNS adequate_JJ ;_: basic_JJ problems_NNS such_JJ as_IN high_JJ cost_NN per_IN byte_NN ,_, low_JJ bandwidth_NN per_IN person_NN ,_, and_CC high_JJ latencies_NNS plague_VBP
+uture_NN work_NN ._.
+We_PRP found_VBD that_IN offline_JJ cache_NN browsing_NN is_VBZ only_RB useful_JJ for_IN visiting_VBG previously_RB viewed_VBN pages_NNS ._.
+While_IN some_DT prior_JJ work_NN has_VBZ suggested_VBN that_IN less_JJR experienced_JJ web_NN users_NNS perform_VBP historybased_JJ browsing_NN =_JJ -_: =[_NN 38_CD -RRB-_-RRB- -_: =_JJ -_: ,_, this_DT appears_VBZ to_TO be_VB a_DT corner_NN case_NN in_IN our_PRP$ setting_NN ._.
+We_PRP hypothesize_VBP that_IN another_DT shortcoming_NN of_IN offline_JJ browsing_NN is_VBZ that_IN the_DT rate_NN at_IN which_WDT pages_NNS are_VBP prefetched_VBN or_CC cached_VBN can_MD not_RB keep_VB up_RP with_IN the_DT pages_NNS br_NN
+,_, user_NN population_NN ,_, and_CC task_NN assignment_NN ._.
+A_DT wide_JJ variety_NN of_IN caching_NN algorithms_NNS exist_VBP -LRB-_-LRB- 54_CD ,_, 37_CD -RRB-_-RRB- ,_, and_CC recent_JJ research_NN targeting_VBG emerging_VBG regions_NNS has_VBZ looked_VBN at_IN caching_VBG architectures_NNS for_IN affordable_JJ hardware_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Tangentially_RB related_JJ to_TO our_PRP$ work_NN is_VBZ Opera_NNP Mini_NNP ,_, which_WDT is_VBZ designed_VBN to_TO accelerate_VB web_NN browsing_VBG for_IN mobile_JJ devices_NNS and_CC primarily_RB focuses_VBZ on_IN page_NN rewriting_VBG and_CC compression_NN ,_, which_WDT require_VBP an_DT additional_JJ p_NN

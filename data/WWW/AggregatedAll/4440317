@@ -1,0 +1,97 @@
+Using_VBG Google_NNP distance_NN to_TO weight_VB approximate_JJ ontology_NN matches_NNS
+Discovering_VBG mappings_NNS between_IN concept_NN hierarchies_NNS is_VBZ widely_RB regarded_VBN as_IN one_CD of_IN the_DT hardest_JJS and_CC most_JJS urgent_JJ problems_NNS facing_VBG the_DT Semantic_JJ Web_NN ._.
+The_DT problem_NN is_VBZ even_RB harder_RBR in_IN domains_NNS where_WRB concepts_NNS are_VBP inherently_RB vague_JJ and_CC ill-defined_JJ ,_, and_CC can_MD not_RB be_VB given_VBN a_DT crisp_JJ definition_NN ._.
+A_DT notion_NN of_IN approximate_JJ concept_NN mapping_NN is_VBZ required_VBN in_IN such_JJ domains_NNS ,_, but_CC until_IN now_RB ,_, no_DT such_JJ notion_NN is_VBZ vailable_JJ ._.
+The_DT first_JJ contribution_NN of_IN this_DT paper_NN is_VBZ a_DT definition_NN for_IN approximate_JJ mappings_NNS between_IN concepts_NNS ._.
+Roughly_RB ,_, a_DT mapping_NN between_IN two_CD concepts_NNS is_VBZ decomposed_VBN into_IN a_DT number_NN of_IN submappings_NNS ,_, and_CC a_DT sloppiness_NN value_NN determines_VBZ the_DT fraction_NN of_IN these_DT submappings_NNS that_WDT can_MD be_VB ignored_VBN when_WRB establishing_VBG the_DT mapping_NN ._.
+A_DT potential_JJ problem_NN of_IN such_PDT a_DT definition_NN is_VBZ that_IN with_IN an_DT increasing_VBG sloppiness_NN value_NN ,_, it_PRP will_MD gradually_RB allow_VB mappings_NNS between_IN any_DT two_CD arbitrary_JJ concepts_NNS ._.
+To_TO improve_VB on_IN this_DT trivial_JJ behavior_NN ,_, we_PRP need_VBP to_TO design_VB a_DT heuristic_NN weighting_NN which_WDT minimises_VBZ the_DT sloppiness_NN required_VBN to_TO conclude_VB desirable_JJ matches_NNS ,_, but_CC at_IN the_DT same_JJ time_NN maximises_VBZ the_DT sloppiness_NN required_VBN to_TO conclude_VB undesirable_JJ matches_NNS ._.
+The_DT second_JJ contribution_NN of_IN this_DT paper_NN is_VBZ to_TO show_VB that_IN a_DT Google_NNP based_VBN similarity_NN measure_NN has_VBZ exactly_RB these_DT desirable_JJ properties_NNS ._.
+We_PRP establish_VBP these_DT results_NNS by_IN experimental_JJ validation_NN in_IN the_DT domain_NN of_IN musical_JJ genres_NNS ._.
+We_PRP show_VBP that_IN this_DT domain_NN does_VBZ suffer_VB from_IN ill-defined_JJ concepts_NNS ._.
+We_PRP take_VBP two_CD real-life_JJ genre_NN hierarchies_NNS from_IN the_DT Web_NN ,_, we_PRP compute_VBP approximate_JJ mappings_NNS between_IN them_PRP at_IN varying_VBG levels_NNS of_IN sloppiness_NN ,_, and_CC we_PRP validate_VBP our_PRP$ results_NNS against_IN a_DT handcrafted_JJ Gold_NNP Standard_NNP ._.
+Our_PRP$ method_NN makes_VBZ use_NN of_IN the_DT huge_JJ amount_NN of_IN knowledge_NN that_WDT is_VBZ implicit_JJ in_IN the_DT current_JJ Web_NN ,_, and_CC exploits_VBZ this_DT knowledge_NN as_IN a_DT heuristic_NN for_IN establishing_VBG approximate_JJ mappings_NNS between_IN ill-defined_JJ concepts_NNS ._.
+rs_NNS of_IN concepts_NNS from_IN different_JJ meta-data_JJ schemas_NNS that_WDT have_VBP an_DT equivalent_JJ meaning_NN ,_, a_DT problem_NN known_VBN as_IN ontology_NN matching_NN ._.
+This_DT problem_NN has_VBZ been_VBN extensively_RB studied_VBN in_IN the_DT Semantic_JJ Web_NN and_CC elsewhere_RB ,_, see_VBP =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: for_IN recent_JJ survey_NN papers_NNS ._.
+However_RB ,_, in_IN many_JJ realistic_JJ domains_NNS ,_, it_PRP is_VBZ impossible_JJ to_TO give_VB precise_JJ concept_NN definitions_NNS ,_, and_CC consequently_RB no_DT crisp_JJ notion_NN of_IN concept_NN equivalence_JJ exists_VBZ ._.
+Below_IN we_PRP will_MD illus_VB
+ion_NN takes_VBZ advantage_NN of_IN the_DT vast_JJ knowledge_NN available_JJ on_IN the_DT web_NN by_IN using_VBG a_DT Googlebased_JJ dissimilarity_NN measure_NN ._.
+We_PRP utilise_VBP a_DT dissimilarity_NN measure_NN ,_, called_VBN Normalised_NNP Google_NNP Distance_NNP -LRB-_-LRB- NGD_NNP -RRB-_-RRB- ,_, introduced_VBN in_IN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+NGD_NN takes_VBZ advantage_NN of_IN the_DT number_NN of_IN hits_NNS returned_VBN by_IN Google_NNP to_TO compute_VB the_DT semantic_JJ distance_NN between_IN concepts_NNS ._.
+The_DT concepts_NNS are_VBP represented_VBN with_IN their_PRP$ labels_NNS which_WDT are_VBP fed_VBN to_TO the_DT Google_NNP search_NN engi_NN
+l._NNP Figure_NNP 2_CD illustrates_VBZ this_DT with_IN an_DT example_NN from_IN existing_VBG music_NN schemas_NNS ._.
+Although_IN the_DT labels_NNS are_VBP equivalent_JJ -LRB-_-LRB- namely_RB Experimental_JJ -RRB-_-RRB- ,_, they_PRP represent_VBP different_JJ classes_NNS ._.
+We_PRP adopt_VBP the_DT approach_NN proposed_VBN in_IN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: to_TO make_VB the_DT meanings_NNS explicit_JJ by_IN conjoining_VBG the_DT concepts_NNS with_IN their_PRP$ superconcepts_NNS in_IN the_DT hierarchy_NN ._.
+This_DT then_RB makes_VBZ the_DT meaning_NN of_IN the_DT two_CD concepts_NNS in_IN the_DT example_NN explicit_JJ as_IN Electronic_NNP ∩_NNP Experimenta_NNP
+the_DT overlap_VBP or_CC relatedness_NN between_IN classified_JJ instances_NNS ,_, see_VB -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+background_NN knowledge_NN :_: use_VB external_JJ resources_NNS such_JJ as_IN thesaurus_NN ,_, dictionaries_NNS or_CC more_JJR complicated_JJ ontologies_NNS to_TO perform_VB the_DT task_NN ,_, see_VBP =_JJ -_: =[_NN 16_CD ,_, 17_CD ,_, 18_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN mentioned_VBN in_IN section_NN 2_CD ,_, any_DT of_IN the_DT above_JJ approaches_NNS to_TO ontology_JJ matching_NN could_MD be_VB deployed_VBN in_IN solving_VBG our_PRP$ A_NN ⊆_FW Bi_FW subproblems_NNS ._.
+Our_PRP$ Google-based_JJ weighting_NN method_NN resembles_VBZ recent_JJ work_NN in_IN the_DT field_NN
+and_CC styles_NNS ,_, for_IN example_NN Blues_NNS ,_, Jazz_NN ,_, ..._: with_IN further_JJ distinctions_NNS such_JJ as_IN American_NNP Blues_NNP ,_, Electronic_NNP Jazz_NN ,_, ..._: Imprecision_NNP in_IN Music_NNP Schemas_NNP ._.
+Music_NN genres_NNS and_CC styles_NNS are_VBP intrinsically_RB ill-defined_JJ ,_, see_VB =_JJ -_: =[_NN 6_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX is_VBZ no_DT single_JJ authority_NN that_WDT can_MD decide_VB for_IN a_DT music_NN entity_NN which_WDT genre_NN or_CC style_NN it_PRP belongs_VBZ to_TO ._.
+For_IN example_NN ,_, it_PRP 's_VBZ becoming_VBG increasingly_RB difficult_JJ to_TO categorise_VB the_DT newly_RB emerging_VBG musical_JJ styles_NNS
+and_CC styles_NNS ,_, for_IN example_NN Blues_NNS ,_, Jazz_NN ,_, ..._: with_IN further_JJ distinctions_NNS such_JJ as_IN American_NNP Blues_NNP ,_, Electronic_NNP Jazz_NN ,_, ..._: Imprecision_NNP in_IN Music_NNP Schemas_NNP ._.
+Music_NN genres_NNS and_CC styles_NNS are_VBP intrinsically_RB ill-defined_JJ ,_, see_VB =_JJ -_: =[_NN 6_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX is_VBZ no_DT single_JJ authority_NN that_WDT can_MD decide_VB for_IN a_DT music_NN entity_NN which_WDT genre_NN or_CC style_NN it_PRP belongs_VBZ to_TO ._.
+For_IN example_NN ,_, it_PRP 's_VBZ becoming_VBG increasingly_RB difficult_JJ to_TO categorise_VB the_DT newly_RB emerging_VBG musical_JJ styles_NNS
+rs_NNS of_IN concepts_NNS from_IN different_JJ meta-data_JJ schemas_NNS that_WDT have_VBP an_DT equivalent_JJ meaning_NN ,_, a_DT problem_NN known_VBN as_IN ontology_NN matching_NN ._.
+This_DT problem_NN has_VBZ been_VBN extensively_RB studied_VBN in_IN the_DT Semantic_JJ Web_NN and_CC elsewhere_RB ,_, see_VBP =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: for_IN recent_JJ survey_NN papers_NNS ._.
+However_RB ,_, in_IN many_JJ realistic_JJ domains_NNS ,_, it_PRP is_VBZ impossible_JJ to_TO give_VB precise_JJ concept_NN definitions_NNS ,_, and_CC consequently_RB no_DT crisp_JJ notion_NN of_IN concept_NN equivalence_JJ exists_VBZ ._.
+Below_IN we_PRP will_MD illus_VB
+number_NN of_IN hits_NNS when_WRB querying_VBG a_DT search_NN engine_NN like_IN Google_NNP ,_, by_IN analyzing_VBG cooccurrence_NN of_IN concepts_NNS within_IN large_JJ text_NN corpora_NN ,_, or_CC by_IN exploiting_VBG patterns_NNS to_TO construct_VB queries_NNS to_TO check_VB for_IN a_DT relation_NN -LRB-_-LRB- see_VB =_JJ -_: =[_NN 20_CD ,_, 21_CD ,_, 22_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: for_IN recent_JJ work_NN -RRB-_-RRB- ._.
+Other_JJ attempts_NNS exist_VBP to_TO deal_VB with_IN vaguely_RB defined_VBN domain_NN concepts_NNS ,_, most_RBS notably_RB by_IN using_VBG fuzzy-logic_JJ representations_NNS -LRB-_-LRB- e.g._FW -LRB-_-LRB- 23_CD -RRB-_-RRB- -RRB-_-RRB- ,_, and_CC more_RBR recently_RB by_IN using_VBG rough_JJ sets_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+An_DT inhe_NN
+truct_NN queries_NNS to_TO check_VB for_IN a_DT relation_NN -LRB-_-LRB- see_VB -LRB-_-LRB- 20_CD ,_, 21_CD ,_, 22_CD ,_, 9_CD -RRB-_-RRB- for_IN recent_JJ work_NN -RRB-_-RRB- ._.
+Other_JJ attempts_NNS exist_VBP to_TO deal_VB with_IN vaguely_RB defined_VBN domain_NN concepts_NNS ,_, most_RBS notably_RB by_IN using_VBG fuzzy-logic_JJ representations_NNS -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, and_CC more_RBR recently_RB by_IN using_VBG rough_JJ sets_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+An_DT inherent_JJ price_NN of_IN these_DT approaches_NNS is_VBZ that_IN they_PRP require_VBP significant_JJ extra_JJ modelling_NN effort_NN to_TO capture_VB the_DT imprecision_NN of_IN the_DT concepts_NNS ,_, either_CC in_IN terms_NNS
+the_DT overlap_VBP or_CC relatedness_NN between_IN classified_JJ instances_NNS ,_, see_VB -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+background_NN knowledge_NN :_: use_VB external_JJ resources_NNS such_JJ as_IN thesaurus_NN ,_, dictionaries_NNS or_CC more_JJR complicated_JJ ontologies_NNS to_TO perform_VB the_DT task_NN ,_, see_VBP =_JJ -_: =[_NN 16_CD ,_, 17_CD ,_, 18_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN mentioned_VBN in_IN section_NN 2_CD ,_, any_DT of_IN the_DT above_JJ approaches_NNS to_TO ontology_JJ matching_NN could_MD be_VB deployed_VBN in_IN solving_VBG our_PRP$ A_NN ⊆_FW Bi_FW subproblems_NNS ._.
+Our_PRP$ Google-based_JJ weighting_NN method_NN resembles_VBZ recent_JJ work_NN in_IN the_DT field_NN
+number_NN of_IN hits_NNS when_WRB querying_VBG a_DT search_NN engine_NN like_IN Google_NNP ,_, by_IN analyzing_VBG cooccurrence_NN of_IN concepts_NNS within_IN large_JJ text_NN corpora_NN ,_, or_CC by_IN exploiting_VBG patterns_NNS to_TO construct_VB queries_NNS to_TO check_VB for_IN a_DT relation_NN -LRB-_-LRB- see_VB =_JJ -_: =[_NN 20_CD ,_, 21_CD ,_, 22_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: for_IN recent_JJ work_NN -RRB-_-RRB- ._.
+Other_JJ attempts_NNS exist_VBP to_TO deal_VB with_IN vaguely_RB defined_VBN domain_NN concepts_NNS ,_, most_RBS notably_RB by_IN using_VBG fuzzy-logic_JJ representations_NNS -LRB-_-LRB- e.g._FW -LRB-_-LRB- 23_CD -RRB-_-RRB- -RRB-_-RRB- ,_, and_CC more_RBR recently_RB by_IN using_VBG rough_JJ sets_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+An_DT inhe_NN
+the_DT overlap_VBP or_CC relatedness_NN between_IN classified_JJ instances_NNS ,_, see_VB -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+background_NN knowledge_NN :_: use_VB external_JJ resources_NNS such_JJ as_IN thesaurus_NN ,_, dictionaries_NNS or_CC more_JJR complicated_JJ ontologies_NNS to_TO perform_VB the_DT task_NN ,_, see_VBP =_JJ -_: =[_NN 16_CD ,_, 17_CD ,_, 18_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN mentioned_VBN in_IN section_NN 2_CD ,_, any_DT of_IN the_DT above_JJ approaches_NNS to_TO ontology_JJ matching_NN could_MD be_VB deployed_VBN in_IN solving_VBG our_PRP$ A_NN ⊆_FW Bi_FW subproblems_NNS ._.
+Our_PRP$ Google-based_JJ weighting_NN method_NN resembles_VBZ recent_JJ work_NN in_IN the_DT field_NN
+at_IN we_PRP employ_VBP to_TO solve_VB the_DT subproblems_NNS is_VBZ a_DT very_RB simple_JJ version_NN of_IN these_DT methods_NNS ._.
+structural_JJ :_: use_VB the_DT structure_NN of_IN the_DT ontology_NN ,_, i.e._FW the_DT relatedness_NN among_IN entities_NNS within_IN the_DT matching_NN ontologies_NNS ,_, see_VBP =_JJ -_: =[_NN 14_CD ,_, 10_CD ,_, 11_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ method_NN of_IN splitting_NN up_RP A_DT ⊆_NN B_NN into_IN A_DT ⊆_FW Bi_FW can_MD be_VB seen_VBN as_IN a_DT simple_JJ way_NN of_IN using_VBG logical_JJ structure_NN of_IN the_DT ontology_NN ._.
+instance-based_JJ :_: use_VB the_DT overlap_VBP or_CC relatedness_NN between_IN classified_JJ instances_NNS ,_, see_VB
+._.
+Our_PRP$ method_NN of_IN splitting_NN up_RP A_DT ⊆_NN B_NN into_IN A_DT ⊆_FW Bi_FW can_MD be_VB seen_VBN as_IN a_DT simple_JJ way_NN of_IN using_VBG logical_JJ structure_NN of_IN the_DT ontology_NN ._.
+instance-based_JJ :_: use_VB the_DT overlap_VBP or_CC relatedness_NN between_IN classified_JJ instances_NNS ,_, see_VBP =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+background_NN knowledge_NN :_: use_VB external_JJ resources_NNS such_JJ as_IN thesaurus_NN ,_, dictionaries_NNS or_CC more_JJR complicated_JJ ontologies_NNS to_TO perform_VB the_DT task_NN ,_, see_VB -LRB-_-LRB- 16_CD ,_, 17_CD ,_, 18_CD ,_, 19_CD -RRB-_-RRB- ._.
+As_IN mentioned_VBN in_IN section_NN 2_CD ,_, any_DT of_IN the_DT above_JJ app_NN
+rs_NNS of_IN concepts_NNS from_IN different_JJ meta-data_JJ schemas_NNS that_WDT have_VBP an_DT equivalent_JJ meaning_NN ,_, a_DT problem_NN known_VBN as_IN ontology_NN matching_NN ._.
+This_DT problem_NN has_VBZ been_VBN extensively_RB studied_VBN in_IN the_DT Semantic_JJ Web_NN and_CC elsewhere_RB ,_, see_VBP =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: for_IN recent_JJ survey_NN papers_NNS ._.
+However_RB ,_, in_IN many_JJ realistic_JJ domains_NNS ,_, it_PRP is_VBZ impossible_JJ to_TO give_VB precise_JJ concept_NN definitions_NNS ,_, and_CC consequently_RB no_DT crisp_JJ notion_NN of_IN concept_NN equivalence_JJ exists_VBZ ._.
+Below_IN we_PRP will_MD illus_VB
+rable_JJ matches_NNS sloppyness_NN 1_CD 0.9_CD 0.8_CD 0.7_CD 0.6_CD 0.5_CD 0.4_CD 0.3_CD 0.2_CD 0.1_CD 0_CD Uniform_NNP Google_NNP Figure_NNP 11_CD :_: Google-based_JJ versus_CC uniform_JJ weighting_NN on_IN desirable_JJ matches_NNS tween_VBP the_DT elements_NNS from_IN different_JJ ontologies_NNS ,_, see_VBP =_JJ -_: =[_NN 10_CD ,_, 11_CD ,_, 12_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT method_NN that_IN we_PRP employ_VBP to_TO solve_VB the_DT subproblems_NNS is_VBZ a_DT very_RB simple_JJ version_NN of_IN these_DT methods_NNS ._.
+structural_JJ :_: use_VB the_DT structure_NN of_IN the_DT ontology_NN ,_, i.e._FW the_DT relatedness_NN among_IN entities_NNS within_IN the_DT matching_NN o_NN
+rs_NNS of_IN concepts_NNS from_IN different_JJ meta-data_JJ schemas_NNS that_WDT have_VBP an_DT equivalent_JJ meaning_NN ,_, a_DT problem_NN known_VBN as_IN ontology_NN matching_NN ._.
+This_DT problem_NN has_VBZ been_VBN extensively_RB studied_VBN in_IN the_DT Semantic_JJ Web_NN and_CC elsewhere_RB ,_, see_VBP =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: for_IN recent_JJ survey_NN papers_NNS ._.
+However_RB ,_, in_IN many_JJ realistic_JJ domains_NNS ,_, it_PRP is_VBZ impossible_JJ to_TO give_VB precise_JJ concept_NN definitions_NNS ,_, and_CC consequently_RB no_DT crisp_JJ notion_NN of_IN concept_NN equivalence_JJ exists_VBZ ._.
+Below_IN we_PRP will_MD illus_VB
+number_NN of_IN hits_NNS when_WRB querying_VBG a_DT search_NN engine_NN like_IN Google_NNP ,_, by_IN analyzing_VBG cooccurrence_NN of_IN concepts_NNS within_IN large_JJ text_NN corpora_NN ,_, or_CC by_IN exploiting_VBG patterns_NNS to_TO construct_VB queries_NNS to_TO check_VB for_IN a_DT relation_NN -LRB-_-LRB- see_VB =_JJ -_: =[_NN 20_CD ,_, 21_CD ,_, 22_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: for_IN recent_JJ work_NN -RRB-_-RRB- ._.
+Other_JJ attempts_NNS exist_VBP to_TO deal_VB with_IN vaguely_RB defined_VBN domain_NN concepts_NNS ,_, most_RBS notably_RB by_IN using_VBG fuzzy-logic_JJ representations_NNS -LRB-_-LRB- e.g._FW -LRB-_-LRB- 23_CD -RRB-_-RRB- -RRB-_-RRB- ,_, and_CC more_RBR recently_RB by_IN using_VBG rough_JJ sets_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+An_DT inhe_NN
+0_CD ,_, 21_CD ,_, 22_CD ,_, 9_CD -RRB-_-RRB- for_IN recent_JJ work_NN -RRB-_-RRB- ._.
+Other_JJ attempts_NNS exist_VBP to_TO deal_VB with_IN vaguely_RB defined_VBN domain_NN concepts_NNS ,_, most_RBS notably_RB by_IN using_VBG fuzzy-logic_JJ representations_NNS -LRB-_-LRB- e.g._FW -LRB-_-LRB- 23_CD -RRB-_-RRB- -RRB-_-RRB- ,_, and_CC more_RBR recently_RB by_IN using_VBG rough_JJ sets_NNS =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+An_DT inherent_JJ price_NN of_IN these_DT approaches_NNS is_VBZ that_IN they_PRP require_VBP significant_JJ extra_JJ modelling_NN effort_NN to_TO capture_VB the_DT imprecision_NN of_IN the_DT concepts_NNS ,_, either_CC in_IN terms_NNS of_IN fuzzy_JJ membership_NN functions_NNS or_CC in_IN terms_NNS of_IN
+rable_JJ matches_NNS sloppyness_NN 1_CD 0.9_CD 0.8_CD 0.7_CD 0.6_CD 0.5_CD 0.4_CD 0.3_CD 0.2_CD 0.1_CD 0_CD Uniform_NNP Google_NNP Figure_NNP 11_CD :_: Google-based_JJ versus_CC uniform_JJ weighting_NN on_IN desirable_JJ matches_NNS tween_VBP the_DT elements_NNS from_IN different_JJ ontologies_NNS ,_, see_VBP =_JJ -_: =[_NN 10_CD ,_, 11_CD ,_, 12_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT method_NN that_IN we_PRP employ_VBP to_TO solve_VB the_DT subproblems_NNS is_VBZ a_DT very_RB simple_JJ version_NN of_IN these_DT methods_NNS ._.
+structural_JJ :_: use_VB the_DT structure_NN of_IN the_DT ontology_NN ,_, i.e._FW the_DT relatedness_NN among_IN entities_NNS within_IN the_DT matching_NN o_NN
+the_DT overlap_VBP or_CC relatedness_NN between_IN classified_JJ instances_NNS ,_, see_VB -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+background_NN knowledge_NN :_: use_VB external_JJ resources_NNS such_JJ as_IN thesaurus_NN ,_, dictionaries_NNS or_CC more_JJR complicated_JJ ontologies_NNS to_TO perform_VB the_DT task_NN ,_, see_VBP =_JJ -_: =[_NN 16_CD ,_, 17_CD ,_, 18_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN mentioned_VBN in_IN section_NN 2_CD ,_, any_DT of_IN the_DT above_JJ approaches_NNS to_TO ontology_JJ matching_NN could_MD be_VB deployed_VBN in_IN solving_VBG our_PRP$ A_NN ⊆_FW Bi_FW subproblems_NNS ._.
+Our_PRP$ Google-based_JJ weighting_NN method_NN resembles_VBZ recent_JJ work_NN in_IN the_DT field_NN
+rable_JJ matches_NNS sloppyness_NN 1_CD 0.9_CD 0.8_CD 0.7_CD 0.6_CD 0.5_CD 0.4_CD 0.3_CD 0.2_CD 0.1_CD 0_CD Uniform_NNP Google_NNP Figure_NNP 11_CD :_: Google-based_JJ versus_CC uniform_JJ weighting_NN on_IN desirable_JJ matches_NNS tween_VBP the_DT elements_NNS from_IN different_JJ ontologies_NNS ,_, see_VBP =_JJ -_: =[_NN 10_CD ,_, 11_CD ,_, 12_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT method_NN that_IN we_PRP employ_VBP to_TO solve_VB the_DT subproblems_NNS is_VBZ a_DT very_RB simple_JJ version_NN of_IN these_DT methods_NNS ._.
+structural_JJ :_: use_VB the_DT structure_NN of_IN the_DT ontology_NN ,_, i.e._FW the_DT relatedness_NN among_IN entities_NNS within_IN the_DT matching_NN o_NN
+rable_JJ matches_NNS sloppyness_NN 1_CD 0.9_CD 0.8_CD 0.7_CD 0.6_CD 0.5_CD 0.4_CD 0.3_CD 0.2_CD 0.1_CD 0_CD Uniform_NNP Google_NNP Figure_NNP 11_CD :_: Google-based_JJ versus_CC uniform_JJ weighting_NN on_IN desirable_JJ matches_NNS tween_VBP the_DT elements_NNS from_IN different_JJ ontologies_NNS ,_, see_VBP =_JJ -_: =[_NN 10_CD ,_, 11_CD ,_, 12_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT method_NN that_IN we_PRP employ_VBP to_TO solve_VB the_DT subproblems_NNS is_VBZ a_DT very_RB simple_JJ version_NN of_IN these_DT methods_NNS ._.
+structural_JJ :_: use_VB the_DT structure_NN of_IN the_DT ontology_NN ,_, i.e._FW the_DT relatedness_NN among_IN entities_NNS within_IN the_DT matching_NN o_NN

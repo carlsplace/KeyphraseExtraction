@@ -1,0 +1,161 @@
+Combining_VBG classifiers_NNS to_TO identify_VB online_NN databases_NNS
+We_PRP address_VBP the_DT problem_NN of_IN identifying_VBG the_DT domain_NN of_IN onlinedatabases_NNS ._.
+More_RBR precisely_RB ,_, given_VBN a_DT set_VBN F_NN of_IN Web_NN forms_NNS automaticallygathered_VBN by_IN a_DT focused_JJ crawler_NN and_CC an_DT online_JJ databasedomain_NN D_NN ,_, our_PRP$ goal_NN is_VBZ to_TO select_VB from_IN F_NN only_RB the_DT formsthat_NN are_VBP entry_NN points_NNS to_TO databases_NNS in_IN D._NNP Having_VBG a_DT set_VBN ofWebforms_NNS that_WDT serve_VBP as_IN entry_NN points_NNS to_TO similar_JJ online_NN databasesis_VBZ a_DT requirement_NN for_IN many_JJ applications_NNS and_CC techniques_NNS thataim_VBP to_TO extract_VB and_CC integrate_VB hidden-Web_JJ information_NN ,_, suchas_NN meta-searchers_NNS ,_, online_JJ database_NN directories_NNS ,_, hidden-Webcrawlers_NNS ,_, and_CC form-schema_NN matching_NN and_CC merging_JJ ._.
+We_PRP propose_VBP a_DT new_JJ strategy_NN that_WDT automatically_RB and_CC accuratelyclassifies_VBZ online_JJ databases_NNS based_VBN on_IN features_NNS that_WDT canbe_VBP easily_RB extracted_VBN from_IN Web_NN forms_NNS ._.
+By_IN judiciously_RB partitioningthe_JJ space_NN of_IN form_NN features_NNS ,_, this_DT strategy_NN allows_VBZ theuse_NN of_IN simpler_JJR classifiers_NNS that_WDT can_MD be_VB constructed_VBN using_VBG learningtechniques_NNS that_WDT are_VBP better_RB suited_VBN for_IN the_DT features_NNS of_IN eachpartition_NN ._.
+Experiments_NNS using_VBG real_JJ Web_NN data_NNS in_IN a_DT representativeset_NN of_IN domains_NNS show_VBP that_IN the_DT use_NN of_IN different_JJ classifiersleads_NNS to_TO high_JJ accuracy_NN ,_, precision_NN and_CC recall_NN ._.
+This_DT indicatesthat_NN our_PRP$ modular_JJ classifier_NN composition_NN provides_VBZ an_DT effectiveand_JJ scalable_JJ solution_NN for_IN classifying_VBG online_JJ databases_NNS ._.
+ble_JJ forms_NNS that_WDT do_VBP not_RB represent_VB database_NN queries_NNS such_JJ as_IN forms_NNS for_IN login_NN ,_, mailing_NN list_NN subscriptions_NNS ,_, or_CC quote_NN requests_NNS ._.
+To_TO filter_NN out_RP irrelevant_JJ forms_NNS ,_, we_PRP use_VBP HIerarchical_JJ Form_NN Identification_NN -LRB-_-LRB- HIFI_NN -RRB-_-RRB- =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: framework_NN ._.
+HIFI_NNP classifes_VBZ forms_NNS with_IN respect_NN to_TO a_DT domain_NN and_CC it_PRP has_VBZ been_VBN shown_VBN to_TO be_VB both_CC scalable_JJ and_CC accurate_JJ ._.
+Unlike_IN previous_JJ approaches_NNS to_TO form_VB classification_NN ,_, which_WDT rely_VBP on_IN the_DT ability_NN to_TO extrac_VB
+o_NN address_NN this_DT problem_NN ,_, we_PRP have_VBP designed_VBN HIerarchical_JJ Form_NN Identification_NN -LRB-_-LRB- HIFI_NN -RRB-_-RRB- ,_, a_DT new_JJ method_NN for_IN automatically_RB classifying_VBG forms_NNS with_IN respect_NN to_TO a_DT database_NN domain_NN that_WDT is_VBZ both_DT scalable_JJ and_CC accurate_JJ =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Whereas_IN previous_JJ approaches_NNS to_TO form_VB classification_NN relied_VBN on_IN the_DT ability_NN to_TO extract_VB the_DT form_NN attribute_NN labels_NNS -LRB-_-LRB- a_DT task_NN that_WDT is_VBZ hard_JJ to_TO automate_VB -RRB-_-RRB- ,_, HIFI_NN utilizes_VBZ only_JJ form_NN features_NNS that_WDT can_MD be_VB automati_VBN
+that_WDT contain_VBP forms_NNS ;_: and_CC a_DT formfiltering_NN process_NN that_WDT identifies_VBZ forms_NNS that_WDT belong_VBP to_TO a_DT given_VBN database_NN domain_NN ._.
+Below_NNP ,_, we_PRP give_VBP a_DT brief_JJ overview_NN of_IN these_DT components_NNS ._.
+For_IN a_DT more_RBR detailed_JJ description_NN ,_, see_VBP =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+2_CD ._.
+LOCATING_VBG ONLINE_JJ DATABASES_NNS A_DT naïve_JJ approach_NN to_TO the_DT problem_NN of_IN locating_VBG forms_NNS would_MD be_VB to_TO visit_VB all_DT Web_NN pages_NNS and_CC extract_VB the_DT forms_NNS in_IN these_DT pages_NNS ._.
+Because_IN the_DT Web_NN is_VBZ large_JJ and_CC forms_NNS are_VBP sparsely_RB d_NN
+sible_RB ,_, including_VBG meta-searchers_NNS ,_, hidden-Web_JJ crawlers_NNS and_CC Web_NN information_NN integration_NN systems_NNS ._.
+These_DT applications_NNS face_VBP several_JJ challenges_NNS ,_, from_IN locating_VBG relevant_JJ forms_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC determining_VBG their_PRP$ domains_NNS =_JJ -_: =[_NN 5_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, to_TO understanding_VBG the_DT semantics_NNS of_IN the_DT form_NN elements_NNS and_CC identifying_VBG matches_NNS among_IN elements_NNS across_IN different_JJ forms_NNS -LRB-_-LRB- 12_CD ,_, 9_CD ,_, 22_CD ,_, 8_CD ,_, 18_CD ,_, 20_CD -RRB-_-RRB- ._.
+Different_JJ approaches_NNS have_VBP been_VBN proposed_VBN for_IN matching_JJ form_NN sc_NN
+derstanding_VBG these_DT variants_NNS is_VBZ key_JJ for_IN programs_NNS to_TO pass_VB these_DT gates_NNS as_IN needed_VBN by_IN a_DT broad_JJ range_NN of_IN applications_NNS :_: crawling_VBG and_CC surfacing_VBG the_DT deep_JJ web_NN -LRB-_-LRB- 14_CD ,_, 10_CD ,_, 5_CD -RRB-_-RRB- ,_, classifying_VBG the_DT domain_NN of_IN web_NN databases_NNS =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: for_IN web_NN site_NN classification_NN ,_, sampling_NN the_DT contents_NNS of_IN web_NN databases_NNS -LRB-_-LRB- 11_CD ,_, 1_CD -RRB-_-RRB- ,_, and_CC matching_JJ interfaces_NNS across_IN domains_NNS -LRB-_-LRB- 4_CD ,_, 15_CD -RRB-_-RRB- ._.
+In_IN web_NN engineering_NN ,_, automated_JJ form_NN understanding_NN contributes_VBZ e.g._FW to_TO web_NN a_DT
+the_DT Publicly_RB Indexable_JJ Web_NN -LRB-_-LRB- PIW_NN -RRB-_-RRB- to_TO find_VB entry_NN points_NNS into_IN the_DT hidden_JJ Web_NN ._.
+This_DT crawler_NN is_VBZ domain-specific_JJ and_CC is_VBZ initialized_VBN with_IN pre-classified_JJ documents_NNS and_CC relevant_JJ keywords_NNS ._.
+Luciano_NNP and_CC Juliana_NNP =_SYM -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: compose_VB two_CD classifiers_NNS in_IN a_DT hierarchical_JJ fashion_NN to_TO identify_VB online_JJ databases_NNS among_IN a_DT heterogeneous_JJ set_NN of_IN Web_NN forms_NNS automatically_RB gathered_VBN by_IN a_DT focused_JJ crawler_NN ._.
+In_IN Ref_NNP ._.
+-LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, they_PRP present_VBP a_DT new_JJ adap_NN
+ut_IN removing_VBG the_DT positive_JJ ones_NNS ._.
+But_CC note_NN that_IN the_DT precision_NN and_CC F-measure_NN scores_NNS are_VBP consistently_RB low_JJ for_IN all_DT classifiers_NNS ._.
+Inspired_VBN by_IN previous_JJ works_NNS that_WDT combine_VBP classifiers_NNS to_TO obtain_VB higher_JJR accuracy_NN =_JJ -_: =[_NN 3_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP designed_VBD a_DT classification_NN scheme_NN that_WDT consists_VBZ of_IN two_CD steps_NNS ._.
+The_DT first_JJ classifier_NN works_VBZ as_IN a_DT pruning_NN step_NN ,_, eliminating_VBG a_DT large_JJ number_NN of_IN negative_JJ instances_NNS ._.
+The_DT pruned_VBN set_NN of_IN candidate_NN mappings_NNS ,_,
+tly_RB ,_, significant_JJ research_NN effort_NN has_VBZ been_VBN devoted_VBN to_TO enable_VB a_DT uniform_JJ access_NN to_TO the_DT large_JJ amount_NN of_IN data_NNS guarded_VBN by_IN query_NN interfaces_NNS ._.
+These_DT approaches_NNS include_VBP :_: clustering\/classifying_NN of_IN Web_NN databases_NNS =_JJ -_: =[_NN 2_CD ,_, 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, schema_NN matching_NN across_IN a_DT set_NN of_IN interfaces_NNS -LRB-_-LRB- 10_CD ,_, 23_CD ,_, 4_CD ,_, 21_CD -RRB-_-RRB- ,_, computation_NN of_IN unified_JJ interfaces_NNS for_IN a_DT given_VBN application_NN domain_NN -LRB-_-LRB- 8_CD ,_, 12_CD -RRB-_-RRB- ,_, query_JJ translation_NN between_IN query_JJ interfaces_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- and_CC surfacing_VBG th_DT
+s_NN in_IN Section_NN 7_CD ._.
+The_DT paper_NN concludes_VBZ in_IN Section_NN 8_CD ._.
+2_CD ._.
+BACKGROUND_NN The_DT most_RBS advocated_VBN approach_NN to_TO integrate_VB Deep_JJ Web_NN sources_NNS is_VBZ to_TO undergo_VB integration_NN domain-wise_NN ._.
+First_JJ ,_, relevant_JJ sources_NNS are_VBP discovered_VBN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Second_JJ ,_, query_JJ interfaces_NNS are_VBP identified_VBN ,_, extracted_VBN from_IN the_DT relevant_JJ Web_NN pages_NNS -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC clustered_VBN on_IN subject_JJ domains_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Third_RB ,_, fields_NNS of_IN different_JJ query_NN interfaces_NNS in_IN the_DT same_JJ domain_NN are_VBP matched_VBN -LRB-_-LRB-
+fiers_NNS is_VBZ to_TO compose_VB them_PRP in_IN an_DT ensemble_NN ._.
+A_DT set_NN of_IN base_NN classifiers_NNS is_VBZ constructed_VBN ,_, and_CC classification_NN of_IN new_JJ examples_NNS is_VBZ decided_VBN by_IN combining_VBG individual_JJ decisions_NNS from_IN the_DT base_NN classifiers_NNS -LRB-_-LRB- see_VB e.g._FW ,_, =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+In_IN contrast_NN ,_, HIFI_NNP partitions_VBZ the_DT feature_NN space_NN and_CC applies_VBZ different_JJ classifiers_NNS to_TO the_DT different_JJ partitions_NNS in_IN a_DT sequence_NN ._.
+As_IN illustrated_VBN in_IN Figure_NNP 6_CD ,_, the_DT domain-independent_JJ GFC_NNP first_RB performs_VBZ a_DT c_NN
+such_JJ as_IN Airfare_NNP and_CC Job_NNP have_VBP fairly_RB large_JJ forms_NNS -LRB-_-LRB- with_IN an_DT average_NN of_IN 172_CD and_CC 165_CD terms_NNS ,_, respectively_RB -RRB-_-RRB- ._.
+These_DT domains_NNS also_RB present_VBP a_DT wide_JJ variation_NN in_IN their_PRP$ vocabulary_NN ._.
+Figure_NN 7_CD shows_VBZ the_DT Simpson_NNP Index_NNP =_SYM -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: for_IN the_DT different_JJ domains_NNS ._.
+The_DT value_NN of_IN this_DT index_NN represents_VBZ the_DT probability_NN that_IN two_CD words_NNS selected_VBN at_IN random_JJ from_IN distinct_JJ forms_NNS in_IN a_DT domain_NN are_VBP the_DT same_JJ word_NN --_: thus_RB ,_, the_DT higher_JJR the_DT value_NN ,_, the_DT more_JJR
+e_LS relevance_NN of_IN a_DT form_NN to_TO a_DT given_VBN database_NN domain_NN by_IN examining_VBG information_NN that_WDT can_MD be_VB automatically_RB extracted_VBN from_IN the_DT forms_NNS and_CC in_IN their_PRP$ vicinity_NN ._.
+Web_NN crawlers_NNS can_MD be_VB used_VBN to_TO locate_VB online_JJ databases_NNS =_JJ -_: =[_NN 3_CD ,_, 9_CD ,_, 10_CD ,_, 13_CD ,_, 26_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, even_RB a_DT focused_JJ crawler_NN invariably_RB retrieves_VBZ a_DT diverse_JJ set_NN of_IN forms_NNS ._.
+Consider_VB for_IN example_NN ,_, the_DT Form-Focused_JJ Crawler_NN -LRB-_-LRB- FFC_NN -RRB-_-RRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- which_WDT is_VBZ optimized_VBN for_IN locating_VBG searchable_JJ Web_NN forms_NNS ._.
+For_IN a_DT set_NN
+ers_NNPS leads_VBZ to_TO modularity_NN :_: a_DT complex_JJ problem_NN is_VBZ decomposed_VBN into_IN simpler_JJR subcomponents_NNS and_CC a_DT monolithic_JJ classifier_NN is_VBZ replaced_VBN by_IN a_DT hierarchy_NN of_IN classifiers_NNS ,_, each_DT dedicated_VBN to_TO a_DT subset_NN of_IN the_DT hypothesis_NN =_JJ -_: =[_NN 16_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT has_VBZ several_JJ benefits_NNS ._.
+First_JJ and_CC foremost_JJ ,_, because_IN the_DT learning_VBG task_NN of_IN the_DT DSFC_NN is_VBZ simplified_VBN ,_, the_DT overall_JJ classification_NN process_NN is_VBZ more_RBR accurate_JJ and_CC robust_JJ ._.
+The_DT DSFC_NNP need_MD not_RB consider_VB hypothe_NN
+onal_JJ Web_NN pages_NNS ,_, etc._FW ._.
+Recognizing_VBG the_DT need_NN for_IN better_JJR mechanisms_NNS to_TO locate_VB online_JJ databases_NNS ,_, people_NNS have_VBP started_VBN to_TO create_VB online_NN database_NN collections_NNS such_JJ as_IN the_DT Molecular_JJ Biology_NN Database_NN Collection_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT lists_VBZ databases_NNS of_IN value_NN to_TO biologists_NNS ._.
+This_DT collection_NN ,_, has_VBZ been_VBN manually_RB created_VBN and_CC is_VBZ maintained_VBN by_IN the_DT National_NNP Library_NNP of_IN Medicine_NNP ._.
+Since_IN there_EX are_VBP several_JJ million_CD online_JJ databases_NNS -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_,
+ers_NNPS leads_VBZ to_TO modularity_NN :_: a_DT complex_JJ problem_NN is_VBZ decomposed_VBN into_IN simpler_JJR subcomponents_NNS and_CC a_DT monolithic_JJ classifier_NN is_VBZ replaced_VBN by_IN a_DT hierarchy_NN of_IN classifiers_NNS ,_, each_DT dedicated_VBN to_TO a_DT subset_NN of_IN the_DT hypothesis_NN =_JJ -_: =[_NN 16_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT has_VBZ several_JJ benefits_NNS ._.
+First_JJ and_CC foremost_JJ ,_, because_IN the_DT learning_VBG task_NN of_IN the_DT DSFC_NN is_VBZ simplified_VBN ,_, the_DT overall_JJ classification_NN process_NN is_VBZ more_RBR accurate_JJ and_CC robust_JJ ._.
+The_DT DSFC_NNP need_MD not_RB consider_VB hypothe_NN
+e_LS relevance_NN of_IN a_DT form_NN to_TO a_DT given_VBN database_NN domain_NN by_IN examining_VBG information_NN that_WDT can_MD be_VB automatically_RB extracted_VBN from_IN the_DT forms_NNS and_CC in_IN their_PRP$ vicinity_NN ._.
+Web_NN crawlers_NNS can_MD be_VB used_VBN to_TO locate_VB online_JJ databases_NNS =_JJ -_: =[_NN 3_CD ,_, 9_CD ,_, 10_CD ,_, 13_CD ,_, 26_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, even_RB a_DT focused_JJ crawler_NN invariably_RB retrieves_VBZ a_DT diverse_JJ set_NN of_IN forms_NNS ._.
+Consider_VB for_IN example_NN ,_, the_DT Form-Focused_JJ Crawler_NN -LRB-_-LRB- FFC_NN -RRB-_-RRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- which_WDT is_VBZ optimized_VBN for_IN locating_VBG searchable_JJ Web_NN forms_NNS ._.
+For_IN a_DT set_NN
+orms_NNS in_IN different_JJ domains_NNS ._.
+Because_IN the_DT GFC_NNP is_VBZ domain_NN independent_JJ ,_, it_PRP can_MD be_VB re-used_JJ ,_, as_IN is_VBZ ,_, in_IN many_JJ applications_NNS ._.
+For_IN example_NN ,_, it_PRP can_MD be_VB used_VBN to_TO pre-process_JJ input_NN forms_NNS for_IN form_NN clustering_NN algorithms_NNS =_JJ -_: =[_NN 4_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC to_TO improve_VB the_DT quality_NN of_IN automatically_RB constructed_VBN online_NN database_NN directories_NNS such_JJ as_IN Complete_JJ Planet_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+4_LS ._.
+FORM_NNP DOMAIN_NNP IDENTIFICATION_NNP AS_NNP TEXT_NNP CLASSIFICATION_NNP The_NNP GFC_NNP is_VBZ effective_JJ for_IN identify_VB
+rectories_NNS ,_, Web_NN crawlers_NNS ._.
+1_CD ._.
+INTRODUCTION_NNP Due_NNP to_TO the_DT explosion_NN in_IN the_DT number_NN of_IN online_JJ databases_NNS ,_, there_EX has_VBZ been_VBN increased_VBN interest_NN in_IN leveraging_VBG the_DT highquality_NN information_NN present_JJ in_IN these_DT databases_NNS =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 11_CD ,_, 23_CD ,_, 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, finding_VBG the_DT right_JJ databases_NNS can_MD be_VB very_RB challenging_JJ ._.
+For_IN example_NN ,_, if_IN a_DT biologist_NN needs_VBZ to_TO locate_VB databases_NNS related_VBN to_TO molecular_JJ biology_NN and_CC searches_NNS on_IN Google_NNP for_IN the_DT keywords_NNS ``_`` molecular_JJ bi_NN
+rectories_NNS ,_, Web_NN crawlers_NNS ._.
+1_CD ._.
+INTRODUCTION_NNP Due_NNP to_TO the_DT explosion_NN in_IN the_DT number_NN of_IN online_JJ databases_NNS ,_, there_EX has_VBZ been_VBN increased_VBN interest_NN in_IN leveraging_VBG the_DT highquality_NN information_NN present_JJ in_IN these_DT databases_NNS =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 11_CD ,_, 23_CD ,_, 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, finding_VBG the_DT right_JJ databases_NNS can_MD be_VB very_RB challenging_JJ ._.
+For_IN example_NN ,_, if_IN a_DT biologist_NN needs_VBZ to_TO locate_VB databases_NNS related_VBN to_TO molecular_JJ biology_NN and_CC searches_NNS on_IN Google_NNP for_IN the_DT keywords_NNS ``_`` molecular_JJ bi_NN
+owever_RB ,_, these_DT techniques_NNS can_MD not_RB be_VB easily_RB adapted_VBN to_TO -LRB-_-LRB- structured_JJ -RRB-_-RRB- multi-attribute_JJ interfaces_NNS ._.
+The_DT difficulties_NNS in_IN automatically_RB filling_VBG out_RP structured_JJ Web_NN forms_NNS have_VBP been_VBN documented_VBN in_IN the_DT literature_NN =_JJ -_: =[_NN 7_CD ,_, 11_CD ,_, 25_CD ,_, 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO help_VB automatically_RB fill_VB out_RP multi-attribute_JJ forms_NNS ,_, paradoxically_RB ,_, it_PRP is_VBZ often_RB necessary_JJ to_TO first_RB discover_VB and_CC organize_VB forms_NNS in_IN the_DT domain_NN ,_, so_IN that_IN attribute_NN correspondences_NNS can_MD be_VB found_VBN and_CC poss_NN
+mmon_NN or_CC more_RBR expensive_JJ to_TO identify_VB are_VBP placed_VBN in_IN the_DT bottom_NN of_IN the_DT hierarchy_NN ._.
+Our_PRP$ strategy_NN for_IN composing_VBG classifiers_NNS is_VBZ also_RB related_JJ to_TO the_DT sequential_JJ classifier_NN model_NN proposed_VBN by_IN Even-Zohar_NNP and_CC Roth_NNP =_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, who_WP applied_VBD this_DT idea_NN to_TO part-of-speech_JJ tagging_NN ._.
+8_CD ._.
+CONCLUSION_NN This_DT paper_NN presents_VBZ a_DT solution_NN to_TO the_DT problem_NN of_IN identifying_VBG online_JJ databases_NNS among_IN a_DT heterogeneous_JJ set_NN of_IN Web_NN forms_NNS automatically_RB gath_VBP
+rectories_NNS ,_, Web_NN crawlers_NNS ._.
+1_CD ._.
+INTRODUCTION_NNP Due_NNP to_TO the_DT explosion_NN in_IN the_DT number_NN of_IN online_JJ databases_NNS ,_, there_EX has_VBZ been_VBN increased_VBN interest_NN in_IN leveraging_VBG the_DT highquality_NN information_NN present_JJ in_IN these_DT databases_NNS =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 11_CD ,_, 23_CD ,_, 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, finding_VBG the_DT right_JJ databases_NNS can_MD be_VB very_RB challenging_JJ ._.
+For_IN example_NN ,_, if_IN a_DT biologist_NN needs_VBZ to_TO locate_VB databases_NNS related_VBN to_TO molecular_JJ biology_NN and_CC searches_NNS on_IN Google_NNP for_IN the_DT keywords_NNS ``_`` molecular_JJ bi_NN
+ized_VBN as_IN pre-query_JJ and_CC post-query_JJ -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+Post-query_JJ techniques_NNS issue_NN probe_NN queries_NNS and_CC the_DT retrieved_VBN results_NNS -LRB-_-LRB- i.e._FW ,_, the_DT database_NN contents_NNS -RRB-_-RRB- are_VBP used_VBN for_IN classification_NN purposes_NNS ._.
+Probing-based_JJ techniques_NNS =_JJ -_: =[_NN 7_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP effective_JJ and_CC required_VBN for_IN simple_JJ ,_, keyword-based_JJ interfaces_NNS ,_, which_WDT are_VBP easy_JJ to_TO fill_VB out_RP automatically_RB and_CC have_VBP little_JJ or_CC no_DT information_NN pertinent_JJ to_TO the_DT underlying_JJ database_NN -LRB-_-LRB- e.g._FW ,_, a_DT form_NN with_IN a_DT s_NN
+ized_VBN as_IN pre-query_JJ and_CC post-query_JJ -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+Post-query_JJ techniques_NNS issue_NN probe_NN queries_NNS and_CC the_DT retrieved_VBN results_NNS -LRB-_-LRB- i.e._FW ,_, the_DT database_NN contents_NNS -RRB-_-RRB- are_VBP used_VBN for_IN classification_NN purposes_NNS ._.
+Probing-based_JJ techniques_NNS =_JJ -_: =[_NN 7_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP effective_JJ and_CC required_VBN for_IN simple_JJ ,_, keyword-based_JJ interfaces_NNS ,_, which_WDT are_VBP easy_JJ to_TO fill_VB out_RP automatically_RB and_CC have_VBP little_JJ or_CC no_DT information_NN pertinent_JJ to_TO the_DT underlying_JJ database_NN -LRB-_-LRB- e.g._FW ,_, a_DT form_NN with_IN a_DT s_NN
+e_LS use_VB a_DT more_RBR specialized_JJ classifier_NN ,_, the_DT DSFC_NNP ._.
+The_DT DSFC_NNP uses_VBZ the_DT textual_JJ content_NN of_IN a_DT form_NN to_TO determine_VB its_PRP$ domain_NN ._.
+The_DT form_NN content_NN is_VBZ often_RB a_DT good_JJ indicator_NN of_IN the_DT database_NN domain_NN --_: it_PRP 1_CD We_PRP used_VBD WEKA_NN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: to_TO construct_VB these_DT classifiers_NNS as_RB well_RB as_IN for_IN constructing_VBG the_DT classifiers_NNS described_VBN in_IN Section_NN 4_CD ._.
+-LRB-_-LRB- a_LS -RRB-_-RRB- Hotel_NN search_NN -LRB-_-LRB- b_NN -RRB-_-RRB- Rental_JJ car_NN search_NN Figure_NNP 5_CD :_: Searchable_JJ forms_NNS obtained_VBN among_IN Airfarerelated_JJ Web_NN
+e_LS relevance_NN of_IN a_DT form_NN to_TO a_DT given_VBN database_NN domain_NN by_IN examining_VBG information_NN that_WDT can_MD be_VB automatically_RB extracted_VBN from_IN the_DT forms_NNS and_CC in_IN their_PRP$ vicinity_NN ._.
+Web_NN crawlers_NNS can_MD be_VB used_VBN to_TO locate_VB online_JJ databases_NNS =_JJ -_: =[_NN 3_CD ,_, 9_CD ,_, 10_CD ,_, 13_CD ,_, 26_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, even_RB a_DT focused_JJ crawler_NN invariably_RB retrieves_VBZ a_DT diverse_JJ set_NN of_IN forms_NNS ._.
+Consider_VB for_IN example_NN ,_, the_DT Form-Focused_JJ Crawler_NN -LRB-_-LRB- FFC_NN -RRB-_-RRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- which_WDT is_VBZ optimized_VBN for_IN locating_VBG searchable_JJ Web_NN forms_NNS ._.
+For_IN a_DT set_NN
+e_LS relevance_NN of_IN a_DT form_NN to_TO a_DT given_VBN database_NN domain_NN by_IN examining_VBG information_NN that_WDT can_MD be_VB automatically_RB extracted_VBN from_IN the_DT forms_NNS and_CC in_IN their_PRP$ vicinity_NN ._.
+Web_NN crawlers_NNS can_MD be_VB used_VBN to_TO locate_VB online_JJ databases_NNS =_JJ -_: =[_NN 3_CD ,_, 9_CD ,_, 10_CD ,_, 13_CD ,_, 26_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, even_RB a_DT focused_JJ crawler_NN invariably_RB retrieves_VBZ a_DT diverse_JJ set_NN of_IN forms_NNS ._.
+Consider_VB for_IN example_NN ,_, the_DT Form-Focused_JJ Crawler_NN -LRB-_-LRB- FFC_NN -RRB-_-RRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- which_WDT is_VBZ optimized_VBN for_IN locating_VBG searchable_JJ Web_NN forms_NNS ._.
+For_IN a_DT set_NN
+names_NNS to_TO represent_VB the_DT same_JJ concepts_NNS ._.
+-LRB-_-LRB- b_NN -RRB-_-RRB- shows_VBZ forms_NNS in_IN two_CD distinct_JJ domains_NNS ,_, Hotel_NNP and_CC Airfare_NNP ,_, which_WDT contain_VBP attributes_NNS with_IN similar_JJ labels_NNS ._.
+statistical_JJ schema_NN matching_NN across_IN Web_NN form_NN interfaces_VBZ =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: can_MD be_VB greatly_RB diminished_VBN if_IN the_DT set_NN of_IN input_NN forms_NNS is_VBZ noisy_JJ and_CC contains_VBZ forms_NNS from_IN multiple_JJ domains_NNS ._.
+Identifying_VBG relevant_JJ forms_NNS as_IN belonging_VBG to_TO a_DT given_VBN database_NN domain_NN ,_, however_RB ,_, is_VBZ a_DT hard_JJ problem_NN t_NN
+different_JJ domains_NNS ._.
+There_EX can_MD also_RB be_VB high_JJ similarity_NN between_IN searchable_JJ and_CC non-searchable_JJ forms_NNS -LRB-_-LRB- see_VB Figure_NNP 2_CD -RRB-_-RRB- ._.
+Previously_RB proposed_VBN techniques_NNS ,_, however_RB ,_, have_VBP limitations_NNS with_IN respect_NN to_TO scalability_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC the_DT ability_NN to_TO deal_VB with_IN highly_RB heterogeneous_JJ Figure_NNP 2_CD :_: Searchable_NNP and_CC a_DT non-searchable_JJ form_NN with_IN similar_JJ contents_NNS ._.
+The_DT form_NN on_IN the_DT left_NN is_VBZ used_VBN for_IN searching_VBG over_IN a_DT database_NN of_IN used_JJ cars_NNS ,_, where_WRB
+owever_RB ,_, these_DT techniques_NNS can_MD not_RB be_VB easily_RB adapted_VBN to_TO -LRB-_-LRB- structured_JJ -RRB-_-RRB- multi-attribute_JJ interfaces_NNS ._.
+The_DT difficulties_NNS in_IN automatically_RB filling_VBG out_RP structured_JJ Web_NN forms_NNS have_VBP been_VBN documented_VBN in_IN the_DT literature_NN =_JJ -_: =[_NN 7_CD ,_, 11_CD ,_, 25_CD ,_, 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO help_VB automatically_RB fill_VB out_RP multi-attribute_JJ forms_NNS ,_, paradoxically_RB ,_, it_PRP is_VBZ often_RB necessary_JJ to_TO first_RB discover_VB and_CC organize_VB forms_NNS in_IN the_DT domain_NN ,_, so_IN that_IN attribute_NN correspondences_NNS can_MD be_VB found_VBN and_CC poss_NN
+2_LS -RRB-_-RRB- classifies_VBZ forms_NNS based_VBN on_IN form_NN attribute_NN labels_NNS ._.
+Thus_RB ,_, the_DT effectiveness_NN of_IN their_PRP$ technique_NN depends_VBZ on_IN the_DT ability_NN to_TO extract_VB descriptive_JJ labels_NNS for_IN form_NN attributes_NNS --_: a_DT task_NN that_WDT is_VBZ hard_JJ to_TO automate_VB =_JJ -_: =[_NN 19_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Cope_VB et_FW al._FW -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, on_IN the_DT other_JJ hand_NN ,_, use_VBP a_DT classifier_NN that_WDT considers_VBZ only_RB a_DT subset_NN of_IN the_DT form_NN contents_NNS :_: the_DT form_NN structure_NN and_CC the_DT content_NN inside_IN tags_NNS in_IN the_DT form_NN context_NN -LRB-_-LRB- e.g._FW ,_, the_DT text_NN inside_IN an_DT
+rectories_NNS ,_, Web_NN crawlers_NNS ._.
+1_CD ._.
+INTRODUCTION_NNP Due_NNP to_TO the_DT explosion_NN in_IN the_DT number_NN of_IN online_JJ databases_NNS ,_, there_EX has_VBZ been_VBN increased_VBN interest_NN in_IN leveraging_VBG the_DT highquality_NN information_NN present_JJ in_IN these_DT databases_NNS =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 11_CD ,_, 23_CD ,_, 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, finding_VBG the_DT right_JJ databases_NNS can_MD be_VB very_RB challenging_JJ ._.
+For_IN example_NN ,_, if_IN a_DT biologist_NN needs_VBZ to_TO locate_VB databases_NNS related_VBN to_TO molecular_JJ biology_NN and_CC searches_NNS on_IN Google_NNP for_IN the_DT keywords_NNS ``_`` molecular_JJ bi_NN
+e_LS relevance_NN of_IN a_DT form_NN to_TO a_DT given_VBN database_NN domain_NN by_IN examining_VBG information_NN that_WDT can_MD be_VB automatically_RB extracted_VBN from_IN the_DT forms_NNS and_CC in_IN their_PRP$ vicinity_NN ._.
+Web_NN crawlers_NNS can_MD be_VB used_VBN to_TO locate_VB online_JJ databases_NNS =_JJ -_: =[_NN 3_CD ,_, 9_CD ,_, 10_CD ,_, 13_CD ,_, 26_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, even_RB a_DT focused_JJ crawler_NN invariably_RB retrieves_VBZ a_DT diverse_JJ set_NN of_IN forms_NNS ._.
+Consider_VB for_IN example_NN ,_, the_DT Form-Focused_JJ Crawler_NN -LRB-_-LRB- FFC_NN -RRB-_-RRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- which_WDT is_VBZ optimized_VBN for_IN locating_VBG searchable_JJ Web_NN forms_NNS ._.
+For_IN a_DT set_NN
+Searchable_NNP and_CC a_DT non-searchable_JJ form_NN with_IN similar_JJ contents_NNS ._.
+The_DT form_NN on_IN the_DT left_NN is_VBZ used_VBN for_IN searching_VBG over_IN a_DT database_NN of_IN used_JJ cars_NNS ,_, whereas_IN the_DT one_CD on_IN the_DT right_NN is_VBZ used_VBN to_TO request_VB quotes_NNS ._.
+form_NN sets_VBZ =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT technique_NN proposed_VBN by_IN Hess_NNP and_CC Kushmerick_NNP -LRB-_-LRB- 22_CD -RRB-_-RRB- classifies_VBZ forms_NNS based_VBN on_IN form_NN attribute_NN labels_NNS ._.
+Thus_RB ,_, the_DT effectiveness_NN of_IN their_PRP$ technique_NN depends_VBZ on_IN the_DT ability_NN to_TO extract_VB descriptive_JJ labels_NNS fo_NN
+database_NN domain_NN ,_, however_RB ,_, is_VBZ a_DT hard_JJ problem_NN that_WDT has_VBZ started_VBN to_TO receive_VB attention_NN in_IN recent_JJ literature_NN ._.
+Previous_JJ works_NNS on_IN form_NN classification_NN can_MD be_VB broadly_RB characterized_VBN as_IN pre-query_JJ and_CC post-query_JJ =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Post-query_JJ techniques_NNS issue_NN probe_NN queries_NNS and_CC the_DT retrieved_VBN results_NNS -LRB-_-LRB- i.e._FW ,_, the_DT database_NN contents_NNS -RRB-_-RRB- are_VBP used_VBN for_IN classification_NN purposes_NNS ._.
+Probing-based_JJ techniques_NNS -LRB-_-LRB- 7_CD ,_, 17_CD -RRB-_-RRB- are_VBP effective_JJ and_CC required_JJ fo_NN
+rectories_NNS ,_, Web_NN crawlers_NNS ._.
+1_CD ._.
+INTRODUCTION_NNP Due_NNP to_TO the_DT explosion_NN in_IN the_DT number_NN of_IN online_JJ databases_NNS ,_, there_EX has_VBZ been_VBN increased_VBN interest_NN in_IN leveraging_VBG the_DT highquality_NN information_NN present_JJ in_IN these_DT databases_NNS =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 11_CD ,_, 23_CD ,_, 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, finding_VBG the_DT right_JJ databases_NNS can_MD be_VB very_RB challenging_JJ ._.
+For_IN example_NN ,_, if_IN a_DT biologist_NN needs_VBZ to_TO locate_VB databases_NNS related_VBN to_TO molecular_JJ biology_NN and_CC searches_NNS on_IN Google_NNP for_IN the_DT keywords_NNS ``_`` molecular_JJ bi_NN
+IFI_NNP can_MD be_VB used_VBN as_IN a_DT basic_JJ buildingsblock_NN for_IN large-scale_JJ information_NN integration_NN tasks_NNS ._.
+For_IN example_NN ,_, it_PRP can_MD be_VB used_VBN to_TO generate_VB sets_NNS of_IN homogeneous_JJ forms_NNS required_VBN in_IN form-schema_NN matching_NN and_CC merging_VBG =_JJ -_: =[_NN 18_CD ,_, 20_CD ,_, 33_CD -RRB-_-RRB- -_: =_JJ -_: ;_: and_CC it_PRP can_MD help_VB automate_VB the_DT process_NN of_IN constructing_VBG online_JJ database_NN collections_NNS such_JJ as_IN the_DT one_CD described_VBN in_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- as_RB well_RB as_IN improve_VB the_DT quality_NN of_IN directories_NNS like_IN BrightPlanet_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Because_IN HIFI_NN r_NN

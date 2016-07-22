@@ -1,0 +1,54 @@
+Document_NNP preprocessing_VBG for_IN naive_JJ Bayes_NNP classification_NN and_CC clustering_NN with_IN mixture_NN of_IN multinomials_NNS
+Naive_JJ Bayes_NNP classifier_NN has_VBZ long_RB been_VBN used_VBN for_IN text_NN categorization_NN tasks_NNS ._.
+Its_PRP$ sibling_NN from_IN the_DT unsupervised_JJ world_NN ,_, the_DT probabilistic_JJ mixture_NN of_IN multinomial_JJ models_NNS ,_, has_VBZ likewise_RB been_VBN successfully_RB applied_VBN to_TO text_NN clustering_NN problems_NNS ._.
+Despite_IN the_DT strong_JJ independence_NN assumptions_NNS that_IN these_DT models_NNS make_VBP ,_, their_PRP$ attractiveness_NN come_VBN from_IN low_JJ computational_JJ cost_NN ,_, relatively_RB low_JJ memory_NN consumption_NN ,_, ability_NN to_TO handle_VB heterogeneous_JJ features_NNS and_CC multiple_JJ classes_NNS ,_, and_CC often_RB competitiveness_NN with_IN the_DT top_NN of_IN the_DT line_NN models_NNS ._.
+Recently_RB ,_, there_EX has_VBZ been_VBN several_JJ attempts_NNS to_TO alleviate_VB the_DT problems_NNS of_IN Naive_JJ Bayes_NNS by_IN performing_VBG heuristic_NN feature_NN transformations_NNS ,_, such_JJ as_IN IDF_NN ,_, normalization_NN by_IN the_DT length_NN of_IN the_DT documents_NNS and_CC taking_VBG the_DT logarithms_NNS of_IN the_DT counts_NNS ._.
+We_PRP justify_VBP the_DT use_NN of_IN these_DT techniques_NNS and_CC apply_VB them_PRP to_TO two_CD problems_NNS :_: classification_NN of_IN products_NNS in_IN Yahoo_NNP !_.
+Shopping_NNP and_CC clustering_VBG the_DT vectors_NNS of_IN collocated_VBN terms_NNS in_IN user_NN queries_NNS to_TO Yahoo_NNP !_.
+Search_VB ._.
+The_DT experimental_JJ evaluation_NN allows_VBZ us_PRP to_TO draw_VB conclusions_NNS about_IN the_DT promise_NN that_IN these_DT transformations_NNS carry_VBP with_IN regard_NN to_TO alleviating_VBG the_DT strong_JJ assumptions_NNS of_IN the_DT multinomial_JJ model_NN ._.
+m_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- has_VBZ at_IN least_JJS quadratic_JJ complexity_NN in_IN the_DT number_NN of_IN data_NNS points_NNS per_IN iteration_NN ._.
+There_EX has_VBZ been_VBN work_NN on_IN speeding_VBG up_RP SVM_NN training_NN includes_VBZ various_JJ forms_NNS of_IN data_NN sampling_NN ,_, boosting_VBG -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC squashing_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, in_IN our_PRP$ experience_NN handling_VBG multiclass_JJ problems_NNS is_VBZ still_RB an_DT issue_NN while_IN the_DT preprocessing_VBG steps_NNS above_IN can_MD easily_RB result_VB in_IN either_CC inaccurate_JJ classifier_NN -LRB-_-LRB- e.g._FW ,_, sampling_NN -RRB-_-RRB- or_CC are_VBP too_RB computatio_JJ
+anced_JJ SMO_NN algorithm_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- has_VBZ at_IN least_JJS quadratic_JJ complexity_NN in_IN the_DT number_NN of_IN data_NNS points_NNS per_IN iteration_NN ._.
+There_EX has_VBZ been_VBN work_NN on_IN speeding_VBG up_RP SVM_NN training_NN includes_VBZ various_JJ forms_NNS of_IN data_NN sampling_NN ,_, boosting_VBG =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: and_CC squashing_VBG -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+However_RB ,_, in_IN our_PRP$ experience_NN handling_VBG multiclass_JJ problems_NNS is_VBZ still_RB an_DT issue_NN while_IN the_DT preprocessing_VBG steps_NNS above_IN can_MD easily_RB result_VB in_IN either_CC inaccurate_JJ classifier_NN -LRB-_-LRB- e.g._FW ,_, sampling_NN -RRB-_-RRB- or_CC
+rms_NNS ._.
+We_PRP propose_VBP an_DT explanation_NN to_TO this_DT phenomenon_NN and_CC draw_NN conclusions_NNS in_IN Section_NNP 5_CD ._.
+2_CD ._.
+MODEL_NNP DESCRIPTION_NNP We_PRP only_RB present_VBP brief_JJ model_NN descriptions_NNS here_RB ,_, for_IN a_DT more_RBR detailed_JJ discussion_NN please_VBP refer_VB to_TO =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: for_IN Naive_JJ Bayes_NNS classifier_NN and_CC to_TO -LRB-_-LRB- 6_CD -RRB-_-RRB- for_IN multinomial_JJ mixture_NN models_NNS ._.
+We_PRP assume_VBP that_IN the_DT data_NN consists_VBZ of_IN documents_NNS ,_, each_DT represented_VBD as_IN a_DT bag_NN of_IN words_NNS ,_, i.e._FW as_IN a_DT map_NN from_IN the_DT set_NN of_IN terms_NNS occurring_VBG
+entropy_NN classifiers_NNS are_VBP not_RB going_VBG to_TO have_VB as_RB big_JJ a_DT problem_NN handling_VBG multiple_JJ classes_NNS as_IN SVMs_NNS ,_, but_CC they_PRP are_VBP probably_RB even_RB slower_JJR than_IN SVMs_NNS if_IN trained_VBN with_IN a_DT commonly_RB used_VBN generalized_JJ iterative_JJ scaling_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX has_VBZ been_VBN also_RB work_VBP on_IN speeding_VBG up_RP the_DT training_NN of_IN maximum_NN entropy_NN models_NNS ._.
+However_RB ,_, even_RB with_IN these_DT speed_NN ups_NNS ,_, the_DT algorithms_NNS are_VBP still_RB far_RB from_IN the_DT simplicity_NN and_CC speed_NN of_IN naive_JJ Bayes_NNS ._.
+Thus_RB ,_, t_NN
+._.
+Keywords_NNS :_: Classification_NN ,_, clustering_NN ,_, data_NN transformations_NNS ,_, performance_NN ,_, Naive_JJ Bayes_NNS ,_, mixture_NN of_IN multinomials_NNS ._.
+1_CD ._.
+INTRODUCTION_NN Naive_JJ Bayes_NNP classifier_NN has_VBZ been_VBN a_DT subject_NN of_IN multiple_JJ research_NN studies_NNS =_JJ -_: =[_NN 2_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: and_CC almost_RB on_IN every_DT occasion_NN it_PRP was_VBD noted_VBN that_IN the_DT Naive_JJ Bayes_NNS '_POS performance_NN can_MD be_VB jeopardized_VBN by_IN several_JJ independent_JJ problems_NNS ._.
+These_DT include_VBP the_DT imbalance_NN of_IN training_NN documents_NNS in_IN classes_NNS ,_, mismatch_NN
+deal-with_JJ problems_NNS ,_, and_CC from_IN this_DT perspective_NN Naive_JJ Bayes_NNP classifier_NN looks_VBZ quite_RB attractive_JJ ,_, especially_RB if_IN some_DT of_IN its_PRP$ drawbacks_NNS can_MD be_VB alleviated_VBN ._.
+This_DT was_VBD exactly_RB the_DT goal_NN of_IN several_JJ recent_JJ studies_NNS =_JJ -_: =[_NN 11_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT first_JJ two_CD papers_NNS discuss_VBP approaches_NNS with_IN introducing_VBG dependencies_NNS between_IN features_NNS and_CC performing_VBG clustering_NN prior_RB to_TO classification_NN ._.
+These_DT methods_NNS are_VBP quite_RB a_DT bit_NN more_RBR complex_JJ than_IN the_DT regular_NN
+._.
+Keywords_NNS :_: Classification_NN ,_, clustering_NN ,_, data_NN transformations_NNS ,_, performance_NN ,_, Naive_JJ Bayes_NNS ,_, mixture_NN of_IN multinomials_NNS ._.
+1_CD ._.
+INTRODUCTION_NN Naive_JJ Bayes_NNP classifier_NN has_VBZ been_VBN a_DT subject_NN of_IN multiple_JJ research_NN studies_NNS =_JJ -_: =[_NN 2_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: and_CC almost_RB on_IN every_DT occasion_NN it_PRP was_VBD noted_VBN that_IN the_DT Naive_JJ Bayes_NNS '_POS performance_NN can_MD be_VB jeopardized_VBN by_IN several_JJ independent_JJ problems_NNS ._.
+These_DT include_VBP the_DT imbalance_NN of_IN training_NN documents_NNS in_IN classes_NNS ,_, mismatch_NN
+phenomenon_NN and_CC draw_NN conclusions_NNS in_IN Section_NNP 5_CD ._.
+2_CD ._.
+MODEL_NNP DESCRIPTION_NNP We_PRP only_RB present_VBP brief_JJ model_NN descriptions_NNS here_RB ,_, for_IN a_DT more_RBR detailed_JJ discussion_NN please_VBP refer_VB to_TO -LRB-_-LRB- 3_CD -RRB-_-RRB- for_IN Naive_JJ Bayes_NNS classifier_NN and_CC to_TO =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: for_IN multinomial_JJ mixture_NN models_NNS ._.
+We_PRP assume_VBP that_IN the_DT data_NN consists_VBZ of_IN documents_NNS ,_, each_DT represented_VBD as_IN a_DT bag_NN of_IN words_NNS ,_, i.e._FW as_IN a_DT map_NN from_IN the_DT set_NN of_IN terms_NNS occurring_VBG to_TO their_PRP$ count_NN in_IN the_DT text_NN ._.
+The_DT length_NN
+de_IN in_IN our_PRP$ case_NN ._.
+But_CC still_RB by_IN far_RB the_DT main_JJ problem_NN for_IN SVMs_NNS comes_VBZ with_IN the_DT number_NN of_IN training_NN data_NNS points_NNS ,_, which_WDT are_VBP in_IN our_PRP$ case_NN products_NNS ,_, constantly_RB growing_VBG in_IN number_NN ._.
+The_DT most_RBS advanced_JJ SMO_NN algorithm_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ at_IN least_JJS quadratic_JJ complexity_NN in_IN the_DT number_NN of_IN data_NNS points_NNS per_IN iteration_NN ._.
+There_EX has_VBZ been_VBN work_NN on_IN speeding_VBG up_RP SVM_NN training_NN includes_VBZ various_JJ forms_NNS of_IN data_NN sampling_NN ,_, boosting_VBG -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC squashing_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+an_DT efficient_JJ way_NN of_IN handling_VBG the_DT multiclass_JJ problems_NNS ._.
+Oneagainst-others_JJ solution_NN is_VBZ going_VBG to_TO ``_`` enjoy_VB ''_'' even_RB more_RBR severe_JJ problems_NNS with_IN imbalanced_JJ classes_NNS than_IN Naive_JJ Bayes_NNS ._.
+Errorcorrecting_VBG output_NN coding_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: remains_VBZ a_DT viable_JJ option_NN ,_, but_CC in_IN any_DT case_NN the_DT computational_JJ penalty_NN of_IN training_VBG a_DT single_JJ SVM_NN is_VBZ going_VBG to_TO be_VB multiplied_VBN by_IN at_IN least_JJS the_DT number_NN of_IN classes_NNS ,_, i.e._FW possibly_RB grow_VB 1_CD to_TO 2_CD orders_NNS of_IN magnitude_NN
+deal-with_JJ problems_NNS ,_, and_CC from_IN this_DT perspective_NN Naive_JJ Bayes_NNP classifier_NN looks_VBZ quite_RB attractive_JJ ,_, especially_RB if_IN some_DT of_IN its_PRP$ drawbacks_NNS can_MD be_VB alleviated_VBN ._.
+This_DT was_VBD exactly_RB the_DT goal_NN of_IN several_JJ recent_JJ studies_NNS =_JJ -_: =[_NN 11_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT first_JJ two_CD papers_NNS discuss_VBP approaches_NNS with_IN introducing_VBG dependencies_NNS between_IN features_NNS and_CC performing_VBG clustering_NN prior_RB to_TO classification_NN ._.
+These_DT methods_NNS are_VBP quite_RB a_DT bit_NN more_RBR complex_JJ than_IN the_DT regular_NN

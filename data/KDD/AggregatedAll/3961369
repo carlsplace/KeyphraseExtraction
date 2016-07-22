@@ -1,0 +1,160 @@
+Utility-based_JJ anonymization_NN using_VBG local_JJ recoding_NN
+Privacy_NN becomes_VBZ a_DT more_RBR and_CC more_RBR serious_JJ concern_NN in_IN applications_NNS involving_VBG microdata_NN ._.
+Recently_RB ,_, efficient_JJ anonymization_NN has_VBZ attracted_VBN much_JJ research_NN work_NN ._.
+Most_JJS of_IN the_DT previous_JJ methods_NNS use_VBP global_JJ recoding_NN ,_, which_WDT maps_VBZ the_DT domains_NNS of_IN the_DT quasi-identifier_JJ attributes_NNS to_TO generalized_JJ or_CC changed_JJ values_NNS ._.
+However_RB ,_, global_JJ recoding_NN may_MD not_RB always_RB achieve_VB effective_JJ anonymization_NN in_IN terms_NNS of_IN discernability_NN and_CC query_NN answering_VBG accuracy_NN using_VBG the_DT anonymized_JJ data_NNS ._.
+Moreover_RB ,_, anonymized_JJ data_NNS is_VBZ often_RB for_IN analysis_NN ._.
+As_IN well_RB accepted_VBN in_IN many_JJ analytical_JJ applications_NNS ,_, different_JJ attributes_NNS in_IN a_DT data_NN set_NN may_MD have_VB different_JJ utility_NN in_IN the_DT analysis_NN ._.
+The_DT utility_NN of_IN attributes_NNS has_VBZ not_RB been_VBN considered_VBN in_IN the_DT previous_JJ methods_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP study_VBD the_DT problem_NN of_IN utility-based_JJ anonymization_NN ._.
+First_RB ,_, we_PRP propose_VBP a_DT simple_JJ framework_NN to_TO specify_VB utility_NN of_IN attributes_NNS ._.
+The_DT framework_NN covers_VBZ both_CC numeric_JJ and_CC categorical_JJ data_NNS ._.
+Second_RB ,_, we_PRP develop_VBP two_CD simple_JJ yet_CC efficient_JJ heuristic_NN local_JJ recoding_VBG methods_NNS for_IN utility-based_JJ anonymization_NN ._.
+Our_PRP$ extensive_JJ performance_NN study_NN using_VBG both_CC real_JJ data_NN sets_NNS and_CC synthetic_JJ data_NNS sets_NNS shows_VBZ that_IN our_PRP$ methods_NNS outperform_VBP the_DT state-of-the-art_JJ multidimensional_JJ global_JJ recoding_NN methods_NNS in_IN both_CC discernability_NN and_CC query_NN answering_VBG accuracy_NN ._.
+Furthermore_RB ,_, our_PRP$ utility-based_JJ method_NN can_MD boost_VB the_DT quality_NN of_IN analysis_NN using_VBG the_DT anonymized_JJ data_NNS ._.
+ultidimensional_JJ k-anonymity_NN where_WRB data_NNS generalization_NN is_VBZ over_IN multidimension-at-a-time_JJ ,_, and_CC -LRB-_-LRB- 17_CD -RRB-_-RRB- extended_VBD multidimensional_JJ generalization_NN to_TO anonymize_VB data_NNS for_IN a_DT specific_JJ task_NN such_JJ as_IN classification_NN ._.
+=_SYM -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD some_DT greedy_JJ methods_NNS to_TO achieve_VB k-anonymity_NN with_IN cell_NN generalization_NN ,_, and_CC showed_VBD that_IN the_DT cell_NN generalization_NN generally_RB causes_VBZ less_JJR information_NN loss_NN than_IN the_DT multidimensional_JJ generalization_NN ._.
+ng_NN such_JJ anonymization_NN is_VBZ a_DT loss_NN in_IN the_DT quality_NN of_IN the_DT data_NNS set_NN ._.
+Researchers_NNS have_VBP therefore_RB looked_VBN at_IN different_JJ methods_NNS to_TO obtain_VB an_DT optimal_JJ anonymization_NN that_WDT results_VBZ in_IN a_DT minimal_JJ loss_NN of_IN information_NN =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 11_CD ,_, 14_CD ,_, 18_CD ,_, 20_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT typical_JJ disclosure_NN control_NN algorithm_NN searches_NNS over_IN the_DT space_NN of_IN anonymizations_NNS satisfying_VBG a_DT particular_JJ privacy_NN model_NN ,_, seeking_VBG the_DT one_NN with_IN highest_JJS utility_NN ._.
+An_DT implicit_JJ assumption_NN in_IN such_JJ optimizat_NN
+tion_NN loss_NN can_MD be_VB measured_VBN by_IN the_DT uncertainty_NN introduced_VBN by_IN the_DT generalization_NN ._.
+Technically_NNP ,_, we_PRP adopt_VBP the_DT uncertainty_NN penalty_NN measure_NN of_IN information_NN loss_NN which_WDT is_VBZ also_RB used_VBN in_IN previous_JJ studies_NNS such_JJ as_IN =_JJ -_: =[_NN 37_CD ,_, 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, since_IN it_PRP can_MD handle_VB both_CC numeric_JJ and_CC categorical_JJ attributes_NNS in_IN a_DT uniform_JJ way_NN ._.
+For_IN static_JJ data_NNS ,_, we_PRP have_VBP the_DT following_JJ definition_NN ._.
+Definition_NN 2_CD -LRB-_-LRB- Uncertainty_NN penalty_NN --_: static_JJ data_NNS -RRB-_-RRB- ._.
+Suppose_VB table_NN T_NN is_VBZ
+Multi-dimensional_JJ generalization_NN QI-group_NN 1_CD QI-group_NN 2_CD QI-group_NN 3_CD QI-group_NN 1_CD QI-group_NN 2_CD QI-group_NN 3_CD exist_VBP three_CD variations_NNS of_IN generalization_NN ,_, namely_RB ,_, suppression_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, single-dimensional_JJ generalization_NN =_JJ -_: =[_NN 7_CD ,_, 15_CD ,_, 20_CD ,_, 46_CD ,_, 51_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC multidimensional_JJ generalization_NN -LRB-_-LRB- 16_CD ,_, 27_CD ,_, 28_CD -RRB-_-RRB- ._.
+Suppression_NN replaces_VBZ distinct_JJ QI_NN values_NNS in_IN each_DT QI-group_NN with_IN stars_NNS ,_, as_IN demonstrated_VBN in_IN Section_NN 1_CD ._.
+Single-dimensional_JJ generalization_NN ,_, on_IN the_DT other_JJ h_NN
+MT_NN record_NN is_VBZ assigned_VBN a_DT penalty_NN equal_JJ to_TO the_DT cardinality_NN of_IN its_PRP$ anonymized_JJ group_NN ._.
+The_DT DM_NN of_IN AT_NNP is_VBZ defined_VBN as_IN the_DT sum_NN of_IN penalties_NNS of_IN all_DT MT_FW tuples_FW ._.
+According_VBG to_TO the_DT normalized_VBN certainty_NN penalty_NN -LRB-_-LRB- NCP_NN -RRB-_-RRB- =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT information_NN loss_NN for_IN a_DT record_NN is_VBZ equal_JJ to_TO the_DT perimeter_NN of_IN its_PRP$ G-box_NN ._.
+The_DT NCP_NN of_IN the_DT AT_NNP is_VBZ defined_VBN as_IN the_DT sum_NN of_IN the_DT information_NN loss_NN for_IN every_DT MT_NN record_NN ._.
+For_IN instance_NN ,_, the_DT NCP_NN of_IN AT_NNP in_IN Figure_NNP 2_CD
+ernational_JJ Conference_NNP on_IN Very_RB Large_JJ Data_NNP Bases_NNP ,_, September_NNP 13-17_CD ,_, 2010_CD ,_, Singapore_NNP ._.
+Proceedings_NNP of_IN the_DT VLDB_NNP Endowment_NNP ,_, Vol_NNP ._.
+3_CD ,_, No._NN 1_CD Copyright_NN 2010_CD VLDB_NN Endowment_NN 2150-8097\/10_CD \/_: 09_CD ..._: $_$ 10.00_CD ._.
+algorithms_NNS =_JJ -_: =[_NN 1_CD ,_, 4_CD ,_, 8_CD ,_, 9_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN described_VBN ._.
+To_TO guarantee_VB that_IN individual_JJ privacy_NN is_VBZ protected_VBN ,_, the_DT algorithms_NNS ensure_VBP that_IN various_JJ requirements_NNS hold_VBP over_IN the_DT published_VBN data_NNS ,_, such_JJ as_IN ℓ-diversity_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, -LRB-_-LRB- α_NN ,_, k_NN -RRB-_-RRB- -_: anonymity_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_,
+es_NNS to_TO the_DT original_JJ location_NN ._.
+Therefore_RB ,_, in_IN this_DT paper_NN ,_, we_PRP employ_VBP information_NN loss_NN ,_, namely_RB location_NN distortion_NN ,_, as_IN the_DT utility_NN measure_NN ._.
+We_PRP remark_VBP that_IN our_PRP$ location_NN distortion_NN is_VBZ different_JJ from_IN that_DT of_IN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: in_IN the_DT following_JJ aspects_NNS ._.
+First_RB ,_, as_IN QI_NN attributes_NNS in_IN data_NN publishing_NN are_VBP independent_JJ ,_, each_DT attribute_NN can_MD be_VB associated_VBN with_IN a_DT weight_NN to_TO reflect_VB its_PRP$ importance_NN ._.
+Nevertheless_RB ,_, the_DT information_NN in_IN LBSs_NNS ,_,
+ok_VB for_IN a_DT convex_NN optimization_NN problem_NN to_TO be_VB solved_VBN numerically_RB as_IN the_DT next_JJ most_RBS attractive_JJ option_NN ._.
+•_NNP Investigate_NNP the_DT connection_NN of_IN mutual_JJ information_NN with_IN information_NN loss_NN metrics_NNS other_JJ than_IN MSE_NNP ,_, like_IN =_JJ -_: =[_NN 5_CD ,_, 15_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Acknowledgments_NNS and_CC disclaimer_VB This_DT work_NN was_VBD partly_RB funded_VBN by_IN the_DT Spanish_NNP Government_NNP through_IN projects_NNS CONSOLIDER_NNP INGENIO_NNP 2010_CD CSD200700004_NN ``_`` ARES_NNP ''_'' and_CC TSI2007-65406-C03-01_NN ``_`` E-AEGIS_NN ''_'' ._.
+The_DT first_JJ author_NN
+until_IN no_DT further_JJ partition_NN is_VBZ possible_JJ ._.
+Among_IN them_PRP ,_, Mondrian_NNP -LRB-_-LRB- 9_CD -RRB-_-RRB- is_VBZ a_DT well-known_JJ one_NN ,_, which_WDT selects_VBZ the_DT dimension_NN with_IN widest_JJS range_NN and_CC partition_NN based_VBN on_IN median_NN of_IN selected_VBN dimension_NN ._.
+Utility_NNP based_VBD =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ another_DT one_NN ,_, which_WDT selects_VBZ two_CD farthest_JJS points_NNS as_IN seeds_NNS and_CC form_NN two_CD partitions_NNS based_VBN on_IN nearest_JJS neighbor_NN ._.
+However_RB ,_, utility_NN based_JJ partition_NN is_VBZ not_RB rectangle_NN constrained_VBN and_CC unsuitable_JJ for_IN our_PRP$ prob_NN
+equivalence_JJ classes_NNS -LRB-_-LRB- EC_NNS -RRB-_-RRB- from_IN QIDs_NNS and_CC -LRB-_-LRB- 2_LS -RRB-_-RRB- keeps_VBZ close_JJ semantics_NNS between_IN an_DT equivalence_JJ class_NN and_CC the_DT values_NNS of_IN the_DT QIDs_NNS it_PRP contains_VBZ ._.
+Most_JJS generalizationbased_JJ algorithms_NNS fall_VBP in_IN this_DT category_NN ,_, e.g._FW ,_, =_JJ -_: =[_NN 33_CD ,_, 36_CD ,_, 27_CD ,_, 37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Such_JJ algorithms_NNS are_VBP based_VBN on_IN generalization_NN taxonomies_NNS ,_, each_DT taxonomy_NN defining_VBG the_DT generalization_NN hierarchy_NN of_IN a_DT QID_NNP attribute_NN ._.
+Basically_RB ,_, an_DT equivalence_JJ class_NN is_VBZ defined_VBN by_IN a_DT set_NN of_IN generalization_NN
+equivalence_JJ classes_NNS -LRB-_-LRB- EC_NNS -RRB-_-RRB- from_IN QIDs_NNS and_CC -LRB-_-LRB- 2_LS -RRB-_-RRB- keeps_VBZ close_JJ semantics_NNS between_IN an_DT equivalence_JJ class_NN and_CC the_DT values_NNS of_IN the_DT QIDs_NNS it_PRP contains_VBZ ._.
+Most_JJS generalization-based_JJ algorithms_NNS fall_VBP in_IN this_DT category_NN ,_, e.g._FW ,_, =_JJ -_: =[_NN 32_CD ,_, 36_CD ,_, 27_CD ,_, 37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Such_JJ algorithms_NNS are_VBP based_VBN on_IN generalization_NN taxonomies_NNS ,_, each_DT taxonomy_NN defining_VBG the_DT generalization_NN hierarchy_NN of_IN a_DT QID_NNP attribute_NN ._.
+Basically_RB ,_, an_DT equivalence_JJ class_NN is_VBZ defined_VBN by_IN a_DT set_NN of_IN generalization_NN
+riments_NNS ,_, we_PRP compare_VBP our_PRP$ 1-D_JJ optimal_JJ k-anonymity_NN algorithm_NN against_IN the_DT existing_VBG state-ofthe-art_JJ techniques_NNS :_: The_DT multi-dimensional_JJ -LRB-_-LRB- Mondrian_JJ -RRB-_-RRB- kanonymity_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, and_CC the_DT TopDown_JJ clustering-based_JJ technique_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- see_VB Section_NNP 2_CD for_IN details_NNS -RRB-_-RRB- ._.
+For_IN our_PRP$ optimal_JJ 1D_NN algorithm_NN ,_, we_PRP consider_VBP both_DT the_DT Hilbert_NNP -LRB-_-LRB- with_IN 12_CD bits_NNS per_IN dimension_NN -RRB-_-RRB- and_CC iDistance_NN -LRB-_-LRB- with_IN 512_CD reference_NN points_NNS -RRB-_-RRB- mappings_NNS ._.
+For_IN each_DT of_IN the_DT two_CD mappings_NNS ,_,
+ly_RB ,_, the_DT algorithm_NN we_PRP present_JJ in_IN this_DT paper_NN allows_VBZ us_PRP to_TO anonymize_VB data_NN sets_NNS containing_VBG at_IN least_JJS 100_CD million_CD records_NNS ;_: also_RB ,_, by_IN a_DT recently_RB presented_VBN metric_NN for_IN the_DT quality_NN of_IN anonymization_NN -LRB-_-LRB- ``_`` certainty_NN ''_'' =_SYM -_: =[_NN 33_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, the_DT anonymizations_NNS produced_VBN by_IN our_PRP$ algorithm_NN are_VBP approximately_RB a_DT factor_NN of_IN two_CD better_JJR than_IN previous_JJ algorithms_NNS ._.
+The_DT key_NN to_TO our_PRP$ algorithm_NN is_VBZ to_TO exploit_VB a_DT striking_JJ parallel_NN between_IN the_DT ``_`` classical_JJ ''_'' ar_NN
+ew_NN has_VBZ uniform_JJ domains_NNS ._.
+But_CC ,_, it_PRP may_MD lose_VB more_JJR information_NN ,_, compared_VBN with_IN local_JJ recoding_NN -LRB-_-LRB- which_WDT will_MD be_VB discussed_VBN next_JJ -RRB-_-RRB- ,_, because_IN it_PRP suffers_VBZ from_IN over-generalization_NN ._.
+Under_IN the_DT scheme_NN of_IN local_JJ recoding_NN =_JJ -_: =[_NN 14_CD ,_, 13_CD ,_, 1_CD ,_, 10_CD ,_, 6_CD ,_, 5_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, values_NNS may_MD be_VB generalized_VBN to_TO different_JJ levels_NNS in_IN the_DT domain_NN ._.
+For_IN example_NN ,_, Table_NNP 3_CD is_VBZ a_DT -LRB-_-LRB- 0.5_CD ,_, 2_LS -RRB-_-RRB- anonymous_JJ table_NN by_IN local_JJ recoding_NN ._.
+In_IN fact_NN ,_, one_PRP can_MD say_VB that_IN local_JJ recoding_NN is_VBZ a_DT more_RBR general_JJ model_NN and_CC
+lot_NN of_IN attention_NN as_IN mechanisms_NNS for_IN limiting_VBG the_DT risk_NN of_IN this_DT kind_NN of_IN attack_NN ._.
+A_DT wide_JJ variety_NN of_IN algorithms_NNS have_VBP been_VBN proposed_VBN for_IN generalizing_VBG ,_, clustering_NN ,_, or_CC aggregating_VBG data_NNS to_TO guarantee_VB k-anonymity_NN =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 5_CD ,_, 6_CD ,_, 7_CD ,_, 10_CD ,_, 12_CD ,_, 16_CD ,_, 19_CD ,_, 20_CD ,_, 22_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, the_DT vast_JJ majority_NN of_IN proposals_NNS assume_VBP that_IN the_DT data_NN fits_VBZ in_IN main_JJ memory_NN ._.
+For_IN larger_JJR data_NNS sets_NNS ,_, memory_NN and_CC I\/O_NN must_MD be_VB managed_VBN explicitly_RB to_TO present_JJ thrashing_NN and_CC performance_NN degradation_NN ._.
+In_IN
+y_NN satisfies_VBZ the_DT principle_NN ,_, too_RB ._.
+As_IN proved_VBN in_IN Section_NN 5.1_CD ,_, however_RB ,_, -LRB-_-LRB- ε_NN ,_, m_NN -RRB-_-RRB- -_: anonymity_NN is_VBZ not_RB monotonic_JJ ._.
+The_DT difference_NN immediately_RB invalidates_VBZ the_DT applicability_NN of_IN the_DT previous_JJ anonymization_NN algorithms_NNS =_JJ -_: =[_NN 7_CD ,_, 17_CD ,_, 18_CD ,_, 24_CD ,_, 25_CD ,_, 43_CD ,_, 44_CD -RRB-_-RRB- -_: =_SYM -_: to_TO achieving_VBG -LRB-_-LRB- ε_NN ,_, m_NN -RRB-_-RRB- -_: anonymity_NN ._.
+This_DT fact_NN justifies_VBZ the_DT necessity_NN of_IN studying_VBG the_DT characteristics_NNS of_IN -LRB-_-LRB- ε_NN ,_, m_NN -RRB-_-RRB- -_: anonymity_NN ,_, and_CC the_DT corresponding_JJ generalization_NN algorithm_NN ._.
+3.2_CD Inadequacy_NN of_IN Perturbation_NN Th_NN
+is_VBZ always_RB mapped_VBN to_TO the_DT same_JJ generalized_JJ value_NN ._.
+In_IN contrast_NN ,_, local_JJ recoding_NN allows_VBZ distinct_JJ mappings_NNS across_IN different_JJ anonymized_JJ groups_NNS ._.
+Clustering-based_JJ local_JJ recoding_NN methods_NNS are_VBP proposed_VBN in_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+k-anonymity_NN prevents_VBZ re-identification_NN of_IN individual_JJ records_NNS ,_, but_CC it_PRP is_VBZ vulnerable_JJ to_TO homogeneity_NN attacks_NNS ,_, where_WRB many_JJ -LRB-_-LRB- or_CC all_DT -RRB-_-RRB- of_IN the_DT records_NNS in_IN an_DT anonymized_JJ group_NN share_VBP the_DT same_JJ sensitive_JJ attribut_NN
+l_NN ranges_NNS in_IN the_DT quasi-identifier_JJ space_NN ._.
+In_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, k-anonymity_NN is_VBZ treated_VBN as_IN a_DT special_JJ clustering_NN problem_NN ,_, and_CC a_DT constant_JJ factor_NN approximation_NN of_IN the_DT optimal_JJ solution_NN is_VBZ proposed_VBN ._.
+In_IN the_DT same_JJ direction_NN ,_, =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP more_RBR efficient_JJ agglomerative_JJ and_CC divisive_JJ recursive_JJ clustering_NN algorithms_NNS for_IN this_DT problem_NN ._.
+A_DT stronger_JJR version_NN of_IN k-anonymity_NN -LRB-_-LRB- called_VBN ℓ-diversity_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- -RRB-_-RRB- requires_VBZ the_DT diversity_NN of_IN sensitive_JJ val_NN
+limited_VBN version_NN of_IN local_JJ recoding_NN ._.
+-LRB-_-LRB- 1_LS -RRB-_-RRB- model_NN the_DT problem_NN as_IN clustering_NN and_CC propose_VBP a_DT constant_JJ factor_NN approximation_NN of_IN the_DT optimal_JJ solution_NN ,_, but_CC the_DT bound_VBN only_RB holds_VBZ for_IN the_DT Euclidean_JJ distance_NN metric_NN ._.
+=_SYM -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP agglomerative_JJ and_CC divisive_JJ recursive_JJ clustering_NN algorithms_NNS ,_, which_WDT attempt_VBP to_TO minimize_VB the_DT NCP_NN metric_NN ._.
+Our_PRP$ problem_NN is_VBZ not_RB suitable_JJ for_IN multidimensional_JJ recoding_NN ,_, because_IN the_DT dimensionality_NN of_IN
+as_IN DNA_NN sequences_NNS ._.
+Most_JJS research_NN on_IN data_NNS utility_NN has_VBZ focused_VBN on_IN value_NN precision_NN ._.
+The_DT purpose_NN is_VBZ to_TO minimize_VB value_NN generalizations_NNS in_IN an_DT anonymized_VBN table_NN ._.
+Criteria_NNS such_JJ as_IN distortion_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, uncertainty_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, query_JJ accuracy_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, information_NN loss_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, and_CC information_NN utility_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- capture_VBP this_DT information_NN directly_RB ._.
+The_DT smaller_JJR modifications_NNS are_VBP made_VBN to_TO a_DT data_NN set_NN ,_, the_DT better_JJR the_DT anonymization_NN is_VBZ ._.
+To_TO incr_VB
+racy_JJ in_IN aggregate_JJ query_NN answering_NN ._.
+1_LS -RRB-_-RRB- General_NNP Utility_NNP Measures_NNS :_: We_PRP first_RB compare_VBP data_NNS utility_NN based_VBN on_IN two_CD general_JJ utility_NN measures_NNS :_: Discernibility_NNP Metric_NNP -LRB-_-LRB- DM_NN -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- and_CC Global_JJ Certainty_NN Penalty_NN -LRB-_-LRB- GCP_NN -RRB-_-RRB- =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Figure_NN 5_CD -LRB-_-LRB- a_DT -RRB-_-RRB- shows_VBZ the_DT DM_NN cost_NN while_IN Figure_NNP 5_CD -LRB-_-LRB- b_NN -RRB-_-RRB- shows_VBZ the_DT GCP_NNP cost_NN for_IN the_DT four_CD anonymized_JJ tables_NNS ._.
+In_IN both_DT experiments_NNS ,_, we_PRP evaluate_VBP the_DT utility_NN measure_NN as_IN a_DT function_NN of_IN the_DT privacy_NN parameters_NNS shown_VBN
+he_PRP weights_NNS greedily_RB until_IN the_DT privacy_NN preservation_NN requirement_NN is_VBZ achieved_VBN ._.
+5.2_CD Greedy_JJ Graph_NN Modification_NN Approaches_VBZ Greedy_JJ approaches_NNS have_VBP been_VBN widely_RB used_VBN in_IN privacy_NN preservation_NN in_IN relational_JJ data_NN =_JJ -_: =[_NN 44_CD ,_, 23_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC have_VBP been_VBN shown_VBN effective_JJ ._.
+They_PRP also_RB can_MD be_VB used_VBN in_IN anonymizing_VBG social_JJ network_NN data_NNS ._.
+Zhou_NNP and_CC Pei_NNP -LRB-_-LRB- 51_CD -RRB-_-RRB- considered_VBN anonymization_NN in_IN social_JJ networks_NNS where_WRB each_DT vertex_NN is_VBZ associated_VBN with_IN non-sensit_JJ
+iting_VBG from_IN Department_NNP of_IN Computer_NNP Science_NNP ,_, Babes-Bolyai_NNP University_NNP ,_, Romania_NNP tuple_NN corresponds_VBZ to_TO one_CD individual_JJ entity_NN -RRB-_-RRB- ._.
+Of_IN particular_JJ interest_NN are_VBP the_DT cost_NN metrics_NNS that_WDT quantify_VBP the_DT information_NN loss_NN =_JJ -_: =[_NN 2_CD ,_, 5_CD ,_, 19_CD ,_, 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN producing_VBG the_DT optimal_JJ solution_NN for_IN the_DT k-anonymity_NN problem_NN w.r.t._NN various_JJ proposed_VBN cost_NN measures_NNS has_VBZ been_VBN proved_VBN to_TO be_VB NP-hard_JJ -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, there_EX are_VBP several_JJ polynomial_JJ algorithms_NNS that_WDT produce_VBP good_JJ
+lity_NN of_IN the_DT anonymized_VBN data_NNS ._.
+Various_JJ metrics_NNS have_VBP been_VBN proposed_VBN in_IN the_DT literature_NN ._.
+Metrics_NNS that_WDT are_VBP relevant_JJ in_IN our_PRP$ setting_NN include_VBP the_DT Discernability_NNP Metric_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, and_CC the_DT Normalized_JJ Certainty_NN Penalty_NN =_JJ -_: =[_NN 39_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT Discernability_NNP Metric_NNP measures_VBZ the_DT size_NN of_IN equivalence_JJ classes_NNS ,_, or_CC partitions_NNS ,_, in_IN the_DT anonymization_NN ._.
+This_DT is_VBZ not_RB directly_RB applicable_JJ to_TO the_DT k_NN m_NN -_: anonymity_NN model_NN ,_, to_TO which_WDT we_PRP want_VBP to_TO compare_VB our_PRP$
+indistinguishable_JJ tuples_NNS ._.
+That_DT is_VBZ ,_, number_NN of_IN tuples_NNS in_IN the_DT table_NN CAV_NN G_NN =_JJ number_NN of_IN group-bys_NNS on_IN quasi-identifier_FW ·_FW k_NN ._.
+The_DT ideal_JJ anonymization_NN should_MD minimize_VB the_DT penalty_NN ._.
+However_RB ,_, theoretical_JJ analysis_NN =_JJ -_: =[_NN 2_CD ,_, 8_CD ,_, 7_CD ,_, 3_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: indicates_VBZ that_IN the_DT problem_NN of_IN optimal_JJ anonymization_NN under_IN many_JJ non-trivial_JJ quality_NN models_NNS is_VBZ NP-hard_JJ ._.
+A_DT few_JJ approximation_NN methods_NNS were_VBD developed_VBN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, such_JJ as_IN datafly_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, annealing_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, and_CC Mondria_NNP
+ful_NN as_IN possible_JJ ,_, it_PRP is_VBZ required_VBN to_TO reduce_VB the_DT information_NN loss_NN as_RB much_JJ as_IN possible_JJ ._.
+A_DT few_JJ models_NNS have_VBP been_VBN proposed_VBN to_TO measure_VB the_DT usefulness_NN of_IN anonymized_JJ data_NNS ._.
+For_IN example_NN ,_, the_DT discernability_NN model_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: tries_VBZ to_TO minimize_VB the_DT number_NN of_IN tuples_NNS that_WDT are_VBP indistinguishable_JJ ,_, as_RB long_RB as_IN they_PRP satisfy_VBP the_DT k-anonymity_NN requirement_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP study_VBD the_DT problem_NN of_IN k-anonymization_NN and_CC focus_VB on_IN two_CD interes_NNS
+preservation_NN ,_, data_NNS mining_NN ,_, k-anonymity_NN ,_, utility_NN ,_, local_JJ recoding_NN 1_CD ._.
+INTRODUCTION_NN To_TO protect_VB privacy_NN against_IN re-identifying_JJ individuals_NNS by_IN joining_VBG multiple_JJ public_JJ data_NNS sources_NNS ,_, k-anonymity_NN was_VBD proposed_VBN =_JJ -_: =[_NN 10_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+∗_NNP This_NNP research_NN was_VBD supported_VBN by_IN the_DT Shanghai_NNP Raising_NNP Star_NNP Program_NNP Grant_NNP 05QMX1405_NNP ,_, the_DT National_NNP Natural_NNP Science_NNP Foundation_NNP of_IN China_NNP Grants_NNPS 69933010_CD and_CC 60303008_CD ,_, the_DT National_NNP Basic_NNP Research_NNP Program_NNP
+ized_VBN tuples_NNS ,_, the_DT less_JJR information_NN loss_NN in_IN the_DT anonymization_NN ._.
+Can_MD we_PRP use_VB -LRB-_-LRB- fully_RB -RRB-_-RRB- local_JJ recoding_NN to_TO achieve_VB less_JJR information_NN loss_NN in_IN anonymization_NN effectively_RB ?_.
+Generally_RB ,_, optimal_JJ k-anonymity_NN is_VBZ NP-hard_NN =_JJ -_: =[_NN 8_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP two_CD simple_JJ yet_CC efficient_JJ heuristic_NN algorithms_NNS using_VBG local_JJ recoding_NN for_IN k-anonymization_NN ._.
+Our_PRP$ extensive_JJ empirical_JJ study_NN on_IN both_CC real_JJ data_NN sets_NNS and_CC synthetic_JJ data_NNS sets_NNS show_VBP th_DT
+indistinguishable_JJ tuples_NNS ._.
+That_DT is_VBZ ,_, number_NN of_IN tuples_NNS in_IN the_DT table_NN CAV_NN G_NN =_JJ number_NN of_IN group-bys_NNS on_IN quasi-identifier_FW ·_FW k_NN ._.
+The_DT ideal_JJ anonymization_NN should_MD minimize_VB the_DT penalty_NN ._.
+However_RB ,_, theoretical_JJ analysis_NN =_JJ -_: =[_NN 2_CD ,_, 8_CD ,_, 7_CD ,_, 3_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: indicates_VBZ that_IN the_DT problem_NN of_IN optimal_JJ anonymization_NN under_IN many_JJ non-trivial_JJ quality_NN models_NNS is_VBZ NP-hard_JJ ._.
+A_DT few_JJ approximation_NN methods_NNS were_VBD developed_VBN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, such_JJ as_IN datafly_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, annealing_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, and_CC Mondria_NNP
+lem_NN of_IN k-anonymization_NN and_CC focus_VB on_IN two_CD interesting_JJ issues_NNS :_: anonymization_NN using_VBG heuristic_NN local_JJ recoding_NN and_CC utility-based_JJ anonymization_NN ._.
+1.1_CD Global_NNP and_CC Local_NNP Anonymization_NNP Many_JJ recent_JJ methods_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 7_CD -RRB-_-RRB- -_: =--RRB-_NN use_NN either_CC global_JJ recoding_NN or_CC constrained_VBN local_JJ recoding_NN ._.
+Global_JJ recoding_NN maps_VBZ a_DT given_VBN value_NN in_IN a_DT single_JJ domain_NN to_TO another_DT one_CD globally_RB ._.
+In_IN constrained_VBN local_JJ recoding_NN ,_, the_DT data_NNS space_NN is_VBZ partitioned_VBN
+lem_NN of_IN k-anonymization_NN and_CC focus_VB on_IN two_CD interesting_JJ issues_NNS :_: anonymization_NN using_VBG heuristic_NN local_JJ recoding_NN and_CC utility-based_JJ anonymization_NN ._.
+1.1_CD Global_NNP and_CC Local_NNP Anonymization_NNP Many_JJ recent_JJ methods_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 7_CD -RRB-_-RRB- -_: =--RRB-_NN use_NN either_CC global_JJ recoding_NN or_CC constrained_VBN local_JJ recoding_NN ._.
+Global_JJ recoding_NN maps_VBZ a_DT given_VBN value_NN in_IN a_DT single_JJ domain_NN to_TO another_DT one_CD globally_RB ._.
+In_IN constrained_VBN local_JJ recoding_NN ,_, the_DT data_NNS space_NN is_VBZ partitioned_VBN
+preservation_NN ,_, data_NNS mining_NN ,_, k-anonymity_NN ,_, utility_NN ,_, local_JJ recoding_NN 1_CD ._.
+INTRODUCTION_NN To_TO protect_VB privacy_NN against_IN re-identifying_JJ individuals_NNS by_IN joining_VBG multiple_JJ public_JJ data_NNS sources_NNS ,_, k-anonymity_NN was_VBD proposed_VBN =_JJ -_: =[_NN 10_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+∗_NNP This_NNP research_NN was_VBD supported_VBN by_IN the_DT Shanghai_NNP Raising_NNP Star_NNP Program_NNP Grant_NNP 05QMX1405_NNP ,_, the_DT National_NNP Natural_NNP Science_NNP Foundation_NNP of_IN China_NNP Grants_NNPS 69933010_CD and_CC 60303008_CD ,_, the_DT National_NNP Basic_NNP Research_NNP Program_NNP
+oretical_JJ analysis_NN -LRB-_-LRB- 2_CD ,_, 8_CD ,_, 7_CD ,_, 3_CD ,_, 1_LS -RRB-_-RRB- indicates_VBZ that_IN the_DT problem_NN of_IN optimal_JJ anonymization_NN under_IN many_JJ non-trivial_JJ quality_NN models_NNS is_VBZ NP-hard_JJ ._.
+A_DT few_JJ approximation_NN methods_NNS were_VBD developed_VBN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, such_JJ as_IN datafly_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, annealing_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, and_CC Mondrian_NNP multidimensional_JJ kanonymity_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Some_DT optimal_JJ methods_NNS -LRB-_-LRB- 4_CD ,_, 6_CD -RRB-_-RRB- with_IN exponential_JJ cost_NN in_IN the_DT worst_JJS case_NN were_VBD shown_VBN feasible_JJ and_CC often_RB of_IN good_JJ performance_NN in_IN practice_NN ._.
+To_TO th_DT
+Two_CD types_NNS of_IN recoding_NN can_MD be_VB used_VBN -LRB-_-LRB- 14_CD -RRB-_-RRB- :_: global_JJ recoding_NN and_CC local_JJ recoding_NN ,_, as_IN described_VBN and_CC demonstrated_VBN in_IN Section_NN 1.1_CD ._.
+Many_JJ previous_JJ methods_NNS use_VBP global_JJ recoding_NN and_CC constrained_VBD local_JJ recoding_NN ._.
+In_IN =_JJ -_: =[_NN 9_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, full-domain_JJ generalization_NN ,_, a_DT type_NN of_IN constrained_VBN local_JJ recoding_NN ,_, was_VBD developed_VBN ,_, which_WDT maps_VBZ the_DT whole_JJ domain_NN of_IN each_DT quasi-identifier_JJ attribute_NN to_TO a_DT more_RBR general_JJ domain_NN in_IN the_DT domain_NN generalization_NN
+s_NN -LRB-_-LRB- 2_CD ,_, 8_CD ,_, 7_CD ,_, 3_CD ,_, 1_LS -RRB-_-RRB- indicates_VBZ that_IN the_DT problem_NN of_IN optimal_JJ anonymization_NN under_IN many_JJ non-trivial_JJ quality_NN models_NNS is_VBZ NP-hard_JJ ._.
+A_DT few_JJ approximation_NN methods_NNS were_VBD developed_VBN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, such_JJ as_IN datafly_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, annealing_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC Mondrian_NNP multidimensional_JJ kanonymity_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Some_DT optimal_JJ methods_NNS -LRB-_-LRB- 4_CD ,_, 6_CD -RRB-_-RRB- with_IN exponential_JJ cost_NN in_IN the_DT worst_JJS case_NN were_VBD shown_VBN feasible_JJ and_CC often_RB of_IN good_JJ performance_NN in_IN practice_NN ._.
+To_TO the_DT best_JJS of_IN our_PRP$ kn_NN
+Two_CD types_NNS of_IN recoding_NN can_MD be_VB used_VBN -LRB-_-LRB- 14_CD -RRB-_-RRB- :_: global_JJ recoding_NN and_CC local_JJ recoding_NN ,_, as_IN described_VBN and_CC demonstrated_VBN in_IN Section_NN 1.1_CD ._.
+Many_JJ previous_JJ methods_NNS use_VBP global_JJ recoding_NN and_CC constrained_VBD local_JJ recoding_NN ._.
+In_IN =_JJ -_: =[_NN 9_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, full-domain_JJ generalization_NN ,_, a_DT type_NN of_IN constrained_VBN local_JJ recoding_NN ,_, was_VBD developed_VBN ,_, which_WDT maps_VBZ the_DT whole_JJ domain_NN of_IN each_DT quasi-identifier_JJ attribute_NN to_TO a_DT more_RBR general_JJ domain_NN in_IN the_DT domain_NN generalization_NN

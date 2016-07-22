@@ -1,0 +1,131 @@
+Unified_JJ analysis_NN of_IN streaming_NN news_NN
+News_NN clustering_NN ,_, categorization_NN and_CC analysis_NN are_VBP key_JJ components_NNS of_IN any_DT news_NN portal_NN ._.
+They_PRP require_VBP algorithms_NNS capable_JJ of_IN dealing_VBG with_IN dynamic_JJ data_NNS to_TO cluster_VB ,_, interpret_VB and_CC to_TO temporally_RB aggregate_JJ news_NN articles_NNS ._.
+These_DT three_CD tasks_NNS are_VBP often_RB solved_VBN separately_RB ._.
+In_IN this_DT paper_NN we_PRP present_VBP a_DT unified_JJ framework_NN to_TO group_NN incoming_JJ news_NN articles_NNS into_IN temporary_JJ but_CC tightly-focused_JJ storylines_NNS ,_, to_TO identify_VB prevalent_JJ topics_NNS and_CC key_JJ entities_NNS within_IN these_DT stories_NNS ,_, and_CC to_TO reveal_VB the_DT temporal_JJ structure_NN of_IN stories_NNS as_IN they_PRP evolve_VBP ._.
+We_PRP achieve_VBP this_DT by_IN building_VBG a_DT hybrid_NN clustering_NN and_CC topic_NN model_NN ._.
+To_TO deal_VB with_IN the_DT available_JJ wealth_NN of_IN data_NNS we_PRP build_VBP an_DT efficient_JJ parallel_JJ inference_NN algorithm_NN by_IN sequential_JJ Monte_NNP Carlo_NNP estimation_NN ._.
+Time_NN and_CC memory_NN costs_NNS are_VBP nearly_RB constant_JJ in_IN the_DT length_NN of_IN the_DT history_NN ,_, and_CC the_DT approach_NN scales_NNS to_TO hundreds_NNS of_IN thousands_NNS of_IN documents_NNS ._.
+We_PRP demonstrate_VBP the_DT efficiency_NN and_CC accuracy_NN on_IN the_DT publicly_RB available_JJ TDT_NN dataset_NN and_CC data_NNS of_IN a_DT major_JJ internet_NN news_NN site_NN ._.
+ritance_NN tree_NN by_IN placing_VBG each_DT particle_NN at_IN a_DT leaf_NN ,_, while_IN storing_VBG common_JJ information_NN in_IN the_DT internal_JJ nodes_NNS ._.
+This_DT makes_VBZ particle_NN writes_VBZ thread-safe_JJ ,_, since_IN no_DT particle_NN is_VBZ ever_RB an_DT ancestor_NN of_IN another_DT -LRB-_-LRB- see_VB -LRB-_-LRB- =_JJ -_: =_JJ Ahmed_NNP et_FW al._FW 2011_CD -_: =--RRB-_NN for_IN more_JJR details_NNS -RRB-_-RRB- ._.
+Extended_VBN inheritance_NN trees_NNS Parts_NNS of_IN our_PRP$ algorithm_NN require_VBP storage_NN of_IN sets_NNS of_IN objects_NNS ._.
+For_IN example_NN ,_, our_PRP$ story_NN sampling_NN equation_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- needs_VBZ the_DT set_NN of_IN stories_NNS associated_VBN with_IN each_DT na_TO
+pired_VBN by_IN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Before_IN we_PRP measure_VBP the_DT coverage_NN of_IN an_DT entire_JJ map_NN ,_, we_PRP consider_VBP the_DT coverage_NN of_IN a_DT single_JJ document_NN ._.
+As_IN in_IN the_DT previous_JJ section_NN ,_, documents_NNS are_VBP feature_NN vectors_NNS ._.
+Let_VB function_NN coverdi_NN -LRB-_-LRB- w_NN -RRB-_-RRB- :_: W_NN →_NN =_JJ -_: =[_NN 0_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: quantify_VB the_DT amount_NN that_WDT document_VBP di_FW covers_VBZ feature_NN w._NN For_IN example_NN ,_, if_IN W_NN is_VBZ a_DT set_NN of_IN words_NNS ,_, we_PRP can_MD define_VB cover_NN ·_NN -LRB-_-LRB- ·_NN -RRB-_-RRB- as_IN tf-idf_JJ values_NNS ._.
+Next_RB ,_, we_PRP extend_VBP cover_NN ·_NN -LRB-_-LRB- ·_NN -RRB-_-RRB- to_TO maps_NNS ._.
+Since_IN in_IN our_PRP$ model_NN coverage_NN do_VBP
+haf_NN and_CC Guestrin_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- essentially_RB detect_VB a_DT whole_JJ causality_NN chain_NN --_: given_VBN two_CD news_NN articles_NNS ,_, they_PRP provide_VBP a_DT coherent_JJ small_JJ number_NN of_IN news_NN items_NNS connecting_VBG them_PRP ._.
+Similarly_RB ,_, some_DT works_NNS in_IN topic_NN tracking_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, try_VB to_TO identify_VB coherent_JJ story_NN lines_NNS from_IN news_NN ._.
+More_RBR recently_RB ,_, some_DT works_NNS -LRB-_-LRB- 16_CD ,_, 16_CD ,_, 29_CD -RRB-_-RRB- have_VBP explored_VBN the_DT usage_NN of_IN large_JJ text_NN mining_NN techniques_NNS ,_, applied_VBN on_IN temporal_JJ corpus_NN ,_, such_JJ as_IN news_NN and_CC books_NNS ._.
+Th_NN
+d_NN by_IN the_DT number_NN of_IN potentially_RB relevant_JJ documents_NNS ,_, existing_VBG generative_JJ models_NNS can_MD be_VB deployed_VBN only_RB on_IN narrowly-selected_JJ collections_NNS ._.
+Standard_JJ Bayesian_JJ inference_NN does_VBZ not_RB scale_VB easily_RB to_TO web-size_JJ data_NN =_JJ -_: =[_NN 31_CD ,_, 12_CD -RRB-_-RRB- -_: =_JJ -_: ;_: however_RB ,_, we_PRP believe_VBP that_IN the_DT scalability_NN of_IN topic_NN models_NNS such_JJ as_IN Latent_JJ Dirichlet_NNP Allocation_NNP is_VBZ also_RB limited_VBN on_IN a_DT more_RBR fundamental_JJ level_NN by_IN the_DT underlying_VBG representation_NN ._.
+We_PRP address_VBP both_DT issues_NNS :_: we_PRP
+._.
+This_DT work_NN equates_VBZ storylines_NNS with_IN clusters_NNS ,_, and_CC does_VBZ not_RB model_VB high-level_JJ topics_NNS ._.
+Non-parametric_JJ clustering_NN has_VBZ been_VBN combined_VBN with_IN topic_NN models_NNS ,_, with_IN the_DT cluster_NN defining_VBG a_DT distribution_NN over_IN topics_NNS =_JJ -_: =[_NN 32_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP differ_VBP from_IN these_DT approaches_NNS in_IN several_JJ respects_NNS :_: we_PRP incorporate_VBP temporal_JJ information_NN and_CC named_VBN entities_NNS ,_, and_CC we_PRP permit_VBP both_CC the_DT storylines_NNS and_CC topics_NNS to_TO emit_VB words_NNS ._.
+There_EX have_VBP been_VBN several_JJ effor_NN
+line_NN is_VBZ the_DT best_JJS performing_VBG system_NN on_IN TDT2004_NN task_NN and_CC was_VBD shown_VBN to_TO be_VB competitive_JJ with_IN Bayesian_JJ models_NNS -LRB-_-LRB- 33_CD -RRB-_-RRB- ._.
+This_DT method_NN scales_NNS linearly_RB with_IN the_DT number_NN of_IN all_DT previously_RB seen_VBN documents_NNS ,_, however_RB ,_, in_IN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT authors_NNS showed_VBD that_IN using_VBG locality_NN sensitive_JJ hashing_VBG -LRB-_-LRB- LSH_NN -RRB-_-RRB- ,_, one_PRP can_MD restrict_VB the_DT subset_NN of_IN documents_NNS examined_VBN with_IN little_JJ effect_NN of_IN the_DT final_JJ accuracy_NN ._.
+Here_RB ,_, we_PRP use_VBP a_DT similar_JJ idea_NN ,_, but_CC we_PRP even_RB a_DT
+d_NN by_IN the_DT number_NN of_IN potentially_RB relevant_JJ documents_NNS ,_, existing_VBG generative_JJ models_NNS can_MD be_VB deployed_VBN only_RB on_IN narrowly-selected_JJ collections_NNS ._.
+Standard_JJ Bayesian_JJ inference_NN does_VBZ not_RB scale_VB easily_RB to_TO web-size_JJ data_NN =_JJ -_: =[_NN 31_CD ,_, 12_CD -RRB-_-RRB- -_: =_JJ -_: ;_: however_RB ,_, we_PRP believe_VBP that_IN the_DT scalability_NN of_IN topic_NN models_NNS such_JJ as_IN Latent_JJ Dirichlet_NNP Allocation_NNP is_VBZ also_RB limited_VBN on_IN a_DT more_RBR fundamental_JJ level_NN by_IN the_DT underlying_VBG representation_NN ._.
+We_PRP address_VBP both_DT issues_NNS :_: we_PRP
+nclude_NN with_IN our_PRP$ experimental_JJ results_NNS and_CC a_DT discussion_NN of_IN future_JJ work_NN ._.
+For_IN an_DT in-depth_JJ analysis_NN of_IN the_DT inference_NN procedure_NN ,_, more_RBR detailed_JJ statistical_JJ and_CC technical_JJ implications_NNS ,_, we_PRP refer_VBP the_DT reader_NN to_TO =_JJ -_: =[_NN 1_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+2_CD ._.
+CONCEPTS_NNS Generative_JJ statistical_JJ models_NNS enable_VBP rich_JJ inference_NN over_IN an_DT intuitively_RB appealing_JJ probabilistic_JJ representation_NN for_IN documents_NNS and_CC text_NN ._.
+But_CC just_RB as_IN human_JJ readers_NNS are_VBP overwhelmed_VBN by_IN the_DT nu_NN
+th_DT different_JJ numbers_NNS of_IN topics_NNS ._.
+Table_NNP 2_CD shows_VBZ that_IN the_DT number_NN of_IN topics_NNS matters_NNS in_IN the_DT clustering_NN accuracy_NN of_IN our_PRP$ method_NN but_CC it_PRP becomes_VBZ less_JJR of_IN a_DT concern_NN if_IN we_PRP use_VBP a_DT sufficient_JJ number_NN of_IN topics_NNS --_: see_VBP =_JJ -_: =[_NN 2_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: for_IN more_JJR details_NNS ._.
+TOPICS_NNS STORYLINES_NNS champions_NNS goal_NN leg_NN coach_NN striker_NN midfield_NN penalty_NN UEFA-soccer_JJ Sports_NNP games_NNS won_VBD team_NN final_JJ season_NN league_NN held_VBN Juventus_NNP AC_NN Milan_NNP Real_NNP Madrid_NNP Milan_NNP Lazio_NNP Ronaldo_NNP Lyon_NNP
+ur_NN model_NN on_IN English_JJ news_NN samples_NNS of_IN varying_VBG sizes_NNS extracted_VBN from_IN Yahoo_NNP !_.
+News_NN over_IN a_DT two-monthperiod_NN ._.
+Details_NNS of_IN the_DT news_NN samples_NNS are_VBP listed_VBN in_IN Table_NNP 1_CD ._.
+We_PRP use_VBP a_DT sophisticated_JJ named_VBN entity_NN recognizer_NN =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT disambiguates_VBZ and_CC resolves_VBZ named_VBN entities_NNS to_TO Wikipedia_NNP entries_NNS in_IN the_DT data_NNS preprocessing_VBG step_NN ._.
+In_IN addition_NN ,_, we_PRP remove_VBP common_JJ stop-words_NNS and_CC tokens_NNS which_WDT are_VBP neither_DT verbs_NNS ,_, nor_CC nouns_NNS ,_, nor_CC adject_NN
+processed_VBN and_CC should_MD not_RB distract_VB the_DT system_NN from_IN properly_RB processing_VBG the_DT annotated_JJ documents_NNS ._.
+Named_VBN entities_NNS are_VBP extracted_VBN using_VBG the_DT Stanford_NNP NER_NN system_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+After_IN applying_VBG a_DT stoplist_NN of_IN 500_CD words_NNS =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT vocabulary_NN of_IN both_DT words_NNS and_CC named_VBN entities_NNS is_VBZ pruned_VBN to_TO the_DT 3000_CD most_RBS frequent_JJ terms_NNS ._.
+5.2_CD Evaluating_VBG Clustering_NN Accuracy_NN We_PRP evaluate_VBP the_DT clustering_NN accuracy_NN of_IN our_PRP$ model_NN over_IN the_DT Yahoo_NNP !_.
+news_NN da_NN
+ount_NN of_IN data_NNS we_PRP consider_VBP ._.
+Furthermore_RB they_PRP are_VBP unsuitable_JJ for_IN streaming_NN data_NN applications_NNS ._.
+4.1_CD Sequential_NNP Monte_NNP Carlo_NNP Instead_RB ,_, we_PRP apply_VBP a_DT sequential_JJ Monte_NNP Carlo_NNP -LRB-_-LRB- SMC_NNP -RRB-_-RRB- method_NN known_VBN as_IN particle_NN filters_NNS =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Particle_NN filters_VBZ approximate_JJ the_DT posterior_JJ distribution_NN over_IN the_DT latent_JJ variables_NNS up_RB until_IN document_NN td_NN ._.
+When_WRB document_NN td_NN arrives_VBZ ,_, the_DT posterior_NN is_VBZ updated_VBN and_CC the_DT posterior_JJ approximation_NN is_VBZ maintain_VB
+participate_VB in_IN evaluation_NN ,_, but_CC must_MD still_RB be_VB processed_VBN and_CC should_MD not_RB distract_VB the_DT system_NN from_IN properly_RB processing_VBG the_DT annotated_JJ documents_NNS ._.
+Named_VBN entities_NNS are_VBP extracted_VBN using_VBG the_DT Stanford_NNP NER_NN system_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+After_IN applying_VBG a_DT stoplist_NN of_IN 500_CD words_NNS -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, the_DT vocabulary_NN of_IN both_DT words_NNS and_CC named_VBN entities_NNS is_VBZ pruned_VBN to_TO the_DT 3000_CD most_RBS frequent_JJ terms_NNS ._.
+5.2_CD Evaluating_VBG Clustering_NN Accuracy_NN We_PRP evaluate_VBP the_DT clustering_NN
+.5_CD for_IN the_DT storyline_NN specific_JJ term_NN ._.
+For_IN the_DT RCRP_NN ,_, we_PRP allow_VBP K_NNP +1_NNP the_DT new-storyline_JJ hyperparameter_NN γt_NN to_TO be_VB epoch-specific_JJ ,_, we_PRP apply_VBP a_DT Gamma_NN -LRB-_-LRB- 5,10_CD -RRB-_-RRB- prior_JJ and_CC sample_NN after_IN every_DT batch_NN of_IN 20_CD documents_NNS ._.
+See_VB =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: for_IN details_NNS ._.
+As_IN for_IN the_DT kernel_NN parameters_NNS ,_, we_PRP set_VBD ∆_NN =_JJ 3_CD and_CC λ_NN =_JJ 0.5_CD --_: results_NNS were_VBD robust_JJ across_IN a_DT range_NN of_IN settings_NNS ._.
+For_IN all_DT experiments_NNS ,_, we_PRP use_VBP 8-particles_NNS running_VBG on_IN an_DT 8-core_JJ machine_NN ._.
+4.2_CD Impleme_NN
+218_CD 12,475_CD 0.801_CD 0.738_CD 2_CD 274,969_CD 29,604_CD 21,797_CD 0.806_CD 0.791_CD 3_CD 547,057_CD 40,576_CD 32,637_CD 0.817_CD 0.800_CD For_IN the_DT sake_NN of_IN evaluating_VBG clustering_NN ,_, we_PRP compare_VBP against_IN a_DT variant_NN of_IN a_DT single-link_JJ clustering_NN baseline_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT simple_JJ baseline_NN is_VBZ the_DT best_JJS performing_VBG system_NN on_IN TDT2004_NN task_NN and_CC was_VBD shown_VBN to_TO be_VB competitive_JJ with_IN Bayesian_JJ models_NNS -LRB-_-LRB- 33_CD -RRB-_-RRB- ._.
+This_DT method_NN scales_NNS linearly_RB with_IN the_DT number_NN of_IN all_DT previously_RB seen_VBN docum_NN
+._.
+This_DT work_NN equates_VBZ storylines_NNS with_IN clusters_NNS ,_, and_CC does_VBZ not_RB model_VB high-level_JJ topics_NNS ._.
+Non-parametric_JJ clustering_NN has_VBZ been_VBN combined_VBN with_IN topic_NN models_NNS ,_, with_IN the_DT cluster_NN defining_VBG a_DT distribution_NN over_IN topics_NNS =_JJ -_: =[_NN 32_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP differ_VBP from_IN these_DT approaches_NNS in_IN several_JJ respects_NNS :_: we_PRP incorporate_VBP temporal_JJ information_NN and_CC named_VBN entities_NNS ,_, and_CC we_PRP permit_VBP both_CC the_DT storylines_NNS and_CC topics_NNS to_TO emit_VB words_NNS ._.
+There_EX have_VBP been_VBN several_JJ effor_NN
+has_VBZ not_RB been_VBN seen_VBN over_IN a_DT long_JJ period_NN of_IN time_NN ._.
+One_CD approach_NN to_TO modeling_NN time_NN would_MD be_VB parametric_JJ :_: we_PRP could_MD associate_VB a_DT probability_NN distribution_NN with_IN the_DT timestamps_NNS of_IN documents_NNS in_IN any_DT given_VBN storyline_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, different_JJ stories_NNS often_RB have_VBP radically_RB different_JJ temporal_JJ characteristics_NNS ,_, and_CC multimodality_NN is_VBZ not_RB uncommon_JJ ,_, as_IN we_PRP observe_VBP e.g._NNP in_IN Figure_NNP 4_CD ._.
+We_PRP turn_VBP to_TO the_DT Recurrent_NNP Chinese_NNP Restaurant_NNP Pro_FW
+topic_NN ,_, but_CC it_PRP provides_VBZ a_DT crucial_JJ anchor_NN that_WDT helps_VBZ us_PRP to_TO differentiate_VB storylines_NNS from_IN topics_NNS ,_, while_IN sidestepping_VBG some_DT of_IN the_DT problems_NNS encountered_VBN by_IN similar_JJ generative_JJ models_NNS over_IN terms_NNS and_CC entities_NNS =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN an_DT added_VBN benefit_NN ,_, a_DT separate_JJ model_NN for_IN entities_NNS provides_VBZ us_PRP with_IN useful_JJ data_NNS for_IN annotating_VBG clusters_NNS by_IN capturing_VBG the_DT dramatis_NN personae_NN ._.
+3_LS ._.
+STATISTICAL_JJ MODEL_NN 3.1_CD Recurrent_NNP Chinese_NNP Restaurant_NNP Proc_NNP
+pics_NNS ._.
+Unlike_IN clustering_NN however_RB ,_, LDA_NNP can_MD incorporate_VB more_JJR data_NNS without_IN dramatically_RB increasing_VBG the_DT size_NN of_IN the_DT latent_JJ space_NN ._.
+Moreover_RB there_EX are_VBP effective_JJ models_NNS for_IN dealing_VBG with_IN topic_NN drift_NN over_IN time_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN other_JJ words_NNS ,_, LDA_NNP excels_VBZ in_IN almost_RB all_DT aspects_NNS where_WRB clustering_NN fails_VBZ ,_, and_CC vice_NN versa_RB ._.
+2.3_CD Storylines_NNS and_CC Topics_NNS We_PRP now_RB describe_VBP how_WRB we_PRP integrate_VBP the_DT strengths_NNS of_IN story_NN clustering_NN and_CC LDA_NN topic_NN mo_NN
+tering_NN ,_, we_PRP compare_VBP against_IN a_DT variant_NN of_IN a_DT single-link_JJ clustering_NN baseline_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+This_DT simple_JJ baseline_NN is_VBZ the_DT best_JJS performing_VBG system_NN on_IN TDT2004_NN task_NN and_CC was_VBD shown_VBN to_TO be_VB competitive_JJ with_IN Bayesian_JJ models_NNS =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT method_NN scales_NNS linearly_RB with_IN the_DT number_NN of_IN all_DT previously_RB seen_VBN documents_NNS ,_, however_RB ,_, in_IN -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, the_DT authors_NNS showed_VBD that_IN using_VBG locality_NN sensitive_JJ hashing_VBG -LRB-_-LRB- LSH_NN -RRB-_-RRB- ,_, one_PRP can_MD restrict_VB the_DT subset_NN of_IN documen_NN
+arlo_NN sampling_NN approach_NN that_WDT handles_VBZ the_DT streaming_NN setting_VBG explicitly_RB ._.
+Banerjee_NNP and_CC Basu_NNP also_RB develop_VBP online_JJ sampling_NN equations_NNS ,_, but_CC they_PRP instantiate_VBP the_DT parameters_NNS θ_NN and_CC φ_NN whereas_IN we_PRP marginalize_VBP them_PRP =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ approach_NN is_VBZ most_RBS influenced_VBN by_IN the_DT particle_NN filter_NN of_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, from_IN which_WDT we_PRP take_VBP the_DT idea_NN of_IN efficiently_RB storing_VBG the_DT hidden_JJ variable_JJ history_NN ._.
+7_CD ._.
+CONCLUSION_NN We_PRP present_VBP a_DT scalable_JJ probabilistic_JJ mode_NN
+the_DT topic_NN βzn_NN ;_: otherwise_RB it_PRP is_VBZ drawn_VBN from_IN a_DT distribution_NN linked_VBN to_TO the_DT storyline_NN φs_NNS ._.
+Topic_JJ models_NNS usually_RB focus_VBP on_IN individual_JJ words_NNS ,_, but_CC news_NN stories_NNS often_RB center_VBP around_IN specific_JJ people_NNS and_CC locations_NNS =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN this_DT reason_NN ,_, we_PRP extract_VBP named_VBN entities_NNS from_IN text_NN in_IN a_DT preprocessing_VBG step_NN ,_, and_CC model_VB their_PRP$ generation_NN directly_RB ._.
+Note_VB that_IN we_PRP make_VBP no_DT effort_NN to_TO resolve_VB names_NNS ``_`` Barack_NNP Obama_NNP ''_'' and_CC ``_`` President_NNP Obama_NNP ''_'' t_NN
+eristics_NNS ,_, and_CC multimodality_NN is_VBZ not_RB uncommon_JJ ,_, as_IN we_PRP observe_VBP e.g._NNP in_IN Figure_NNP 4_CD ._.
+We_PRP turn_VBP to_TO the_DT Recurrent_NNP Chinese_NNP Restaurant_NNP Process_VB -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, which_WDT generalizes_VBZ the_DT well-known_JJ Chinese_NNP Restaurant_NNP Process_VB -LRB-_-LRB- CRP_NN -RRB-_-RRB- =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: to_TO model_VB partially_RB exchangeable_JJ data_NNS like_IN document_NN streams_NNS ._.
+The_DT RCRP_NNP provides_VBZ a_DT nonparametric_JJ model_NN over_IN storyline_NN strength_NN ,_, and_CC permits_VBZ sampling-based_JJ inference_NN over_IN a_DT potentially_RB unbounded_JJ number_NN o_NN
+ng_NN the_DT language_NN model_NN underlying_VBG this_DT process_NN ._.
+2.2_CD Topics_NNS In_IN order_NN to_TO address_VB the_DT clustering_NN issue_NN ,_, we_PRP shall_MD integrate_VB our_PRP$ RCRP_NN story_NN model_NN with_IN the_DT strengths_NNS of_IN the_DT Latent_JJ Dirichlet_NNP Allocation_NNP model_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT LDA_NNP exploits_VBZ longrange_JJ relations_NNS between_IN words_NNS by_IN assuming_VBG that_IN documents_NNS are_VBP composed_VBN of_IN topics_NNS ._.
+Under_IN LDA_NNP ,_, to_TO model_VB the_DT content_NN of_IN a_DT document_NN it_PRP suffices_VBZ to_TO estimate_VB the_DT topics_NNS that_WDT occur_VBP in_FW i_FW
+of_IN the_DT ``_`` first_JJ story_NN detection_NN ''_'' task_NN ,_, which_WDT is_VBZ the_DT problem_NN of_IN correctly_RB identifying_VBG the_DT first_JJ document_NN in_IN each_DT annotated_JJ storyline_NN ;_: this_DT is_VBZ considered_VBN to_TO be_VB the_DT most_RBS difficult_JJ problem_NN in_IN the_DT TDT_NN task_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP use_VBP the_DT TDT_NN scoring_VBG software_NN and_CC report_VBP the_DT standard_JJ metric_NN ,_, which_WDT is_VBZ the_DT macro-averaged_JJ minimum_JJ cdet_NN cost_NN ._.
+Our_PRP$ system_NN outputs_VBZ the_DT probability_NN that_IN each_DT story_NN is_VBZ new_JJ ,_, this_DT probability_NN is_VBZ taken_VBN to_TO
+rallelizable_JJ ._.
+Our_PRP$ experiments_NNS demonstrate_VBP both_CC the_DT scalability_NN and_CC accuracy_NN of_IN our_PRP$ approach_NN ._.
+In_IN particular_JJ ,_, we_PRP compare_VBP against_IN the_DT manual_JJ annotations_NNS from_IN the_DT Topic_JJ Detection_NN and_CC Tracking_VBG shared_JJ task_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, obtaining_VBG state_NN of_IN the_DT art_NN results_NNS -LRB-_-LRB- without_IN using_VBG any_DT of_IN the_DT hand_NN annotations_NNS typically_RB employed_VBN for_IN parameter_NN tuning_NN on_IN this_DT task_NN -RRB-_-RRB- that_WDT validate_VBP the_DT design_NN choices_NNS embodied_VBN by_IN our_PRP$ model_NN ._.
+To_TO demonst_VB
+documents_NNS examined_VBN with_IN little_JJ effect_NN of_IN the_DT final_JJ accuracy_NN ._.
+Here_RB ,_, we_PRP use_VBP a_DT similar_JJ idea_NN ,_, but_CC we_PRP even_RB allow_VBP the_DT baseline_NN to_TO be_VB fit_JJ offline_NN ._.
+First_RB ,_, we_PRP compute_VBP the_DT similarities_NNS between_IN articles_NNS via_IN LSH_NN =_JJ -_: =[_NN 20_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, then_RB construct_VB a_DT pairwise_JJ similarity_NN graph_NN on_IN which_WDT a_DT single-link_JJ clustering_NN algorithm_NN is_VBZ applied_VBN to_TO form_VB larger_JJR clusters_NNS ._.
+The_DT single-link_JJ algorithm_NN is_VBZ stopped_VBN when_WRB no_DT two_CD clusters_NNS to_TO be_VB merged_VBN have_VBP
+or_CC practical_JJ deployment_NN ,_, they_PRP would_MD detract_VB from_IN the_DT key_JJ algorithm_NN presented_VBN in_IN this_DT paper_NN and_CC are_VBP hence_RB omitted_VBN ._.
+Nevertheless_RB ,_, it_PRP is_VBZ easy_JJ to_TO add_VB such_JJ metadata_NN to_TO our_PRP$ model_NN by_IN '_POS upstream_JJ conditioning_NN '_'' =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, i.e._FW by_IN using_VBG side_NN information_NN such_JJ as_IN links_NNS ,_, newspapers_NNS ,_, authors_NNS ,_, or_CC categories_NNS to_TO improve_VB topic_NN and_CC cluster_NN estimates_NNS ._.
+Similarly_RB ,_, co-clicks_NNS ,_, popularity_NN of_IN articles_NNS ,_, etc._NN can_MD provide_VB highly_RB valuabl_JJ
+ynamic_JJ cluster_NN assumptions_NNS to_TO make_VB our_PRP$ model_NN adaptive_JJ to_TO the_DT ever_RB changing_VBG nature_NN of_IN the_DT news_NN stream_NN ._.
+At_IN its_PRP$ heart_NN is_VBZ a_DT nonparametric_JJ Bayesian_JJ approach_NN called_VBN the_DT Recurrent_NNP Chinese_NNP Restaurant_NNP Process_VB =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN a_DT side_NN benefit_NN our_PRP$ model_NN yields_VBZ temporal_JJ intensity_NN tracking_NN ,_, i.e._FW it_PRP addresses_VBZ the_DT issue_NN of_IN constructingFigure_NN 1_CD :_: Left_VBN :_: Recurrent_NNP Chinese_NNP Restaurant_NNP Process_VB for_IN clustering_NN ;_: Middle_NNP :_: Latent_JJ Dirich_NN
+single_JJ multinomial_JJ distribution_NN to_TO each_DT cluster_NN ,_, we_PRP now_RB have_VBP a_DT mixture_NN of_IN multinomials_NNS for_IN each_DT document_NN ._.
+This_DT approach_NN has_VBZ been_VBN shown_VBN to_TO yield_VB content_NN models_NNS that_WDT correlate_VBP well_RB with_IN human_JJ judgments_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Unfortunately_RB ,_, when_WRB applying_VBG LDA_NN to_TO news_NN articles_NNS we_PRP face_VBP a_DT problem_NN :_: LDA_NN offers_VBZ us_PRP little_JJ guidance_NN in_IN terms_NNS of_IN how_WRB to_TO aggregate_JJ articles_NNS into_IN stories_NNS ._.
+That_DT is_VBZ ,_, while_IN LDA_NN is_VBZ very_RB useful_JJ in_IN identifyin_NN

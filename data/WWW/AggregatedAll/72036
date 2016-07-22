@@ -1,0 +1,195 @@
+A_DT flexible_JJ learning_NN system_NN for_IN wrapping_VBG tables_NNS and_CC lists_NNS in_IN HTML_NNP documents_NNS
+A_DT program_NN that_WDT makes_VBZ an_DT existing_VBG website_NN look_NN like_IN a_DT database_NN is_VBZ called_VBN a_DT wrapper_NN ._.
+Wrapper_NN learning_NN is_VBZ the_DT problem_NN of_IN learning_VBG website_NN wrappers_NNS from_IN examples_NNS ._.
+We_PRP present_VBP a_DT wrapper-learning_JJ system_NN called_VBN WL2_NN that_WDT can_MD exploit_VB several_JJ different_JJ representations_NNS of_IN a_DT document_NN ._.
+Examples_NNS of_IN such_JJ different_JJ representations_NNS include_VBP DOM-level_JJ and_CC token-level_JJ representations_NNS ,_, as_RB well_RB as_IN two-dimensional_JJ geometric_JJ views_NNS of_IN the_DT rendered_VBN page_NN -LRB-_-LRB- for_IN tabular_JJ data_NNS -RRB-_-RRB- and_CC representations_NNS of_IN the_DT visual_JJ appearance_NN of_IN text_NN asm_NN it_PRP will_MD be_VB rendered_VBN ._.
+Additionally_RB ,_, the_DT learning_NN system_NN is_VBZ modular_JJ ,_, and_CC can_MD be_VB easily_RB adapted_VBN to_TO new_JJ domains_NNS and_CC tasks_NNS ._.
+The_DT learning_NN system_NN described_VBN is_VBZ part_NN of_IN an_DT ``_`` industrial-strength_JJ ''_'' wrapper_NN management_NN system_NN that_WDT is_VBZ in_IN active_JJ use_NN at_IN WhizBang_NNP Labs_NNPS ._.
+Controlled_VBN experiments_NNS show_VBP that_IN the_DT learner_NN has_VBZ broader_JJR coverage_NN and_CC a_DT faster_JJR learning_NN rate_NN than_IN earlier_JJR wrapper-learning_JJ systems_NNS ._.
+pages_NNS ._.
+So_RB we_PRP review_VBP existing_VBG works_NNS on_IN web_NN table_NN analysis_NN ._.
+Since_IN late_JJ 1990s_NNS ,_, web_NN table_NN analysis_NN has_VBZ attracted_VBN many_JJ attentions_NNS from_IN researchers_NNS in_IN the_DT areas_NNS of_IN Web_NN Data_NN Mining_NN and_CC Information_NN Retrieval_NN =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 5_CD ,_, 6_CD ,_, 7_CD ,_, 12_CD ,_, 13_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Basically_RB ,_, there_EX are_VBP two_CD ways_NNS of_IN processing_NN web_NN tables_NNS ._.
+One_CD is_VBZ based_VBN on_IN the_DT HTML_NNP source_NN code_NN ,_, and_CC the_DT other_JJ is_VBZ based_VBN on_IN the_DT visual_JJ rendition_NN of_IN web_NN pages_NNS ._.
+For_IN the_DT first_JJ way_NN ,_, Lim_NN and_CC Ng_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- proposed_VBN
+r_NN interfaces_NNS for_IN accessing_VBG web_NN tables_NNS ._.
+Web_NN Table_NNP Analysis_NNP ._.
+Web_NN table_NN analysis_NN has_VBZ attracted_VBN many_JJ attentions_NNS from_IN researchers_NNS in_IN the_DT areas_NNS of_IN Web_NN Data_NNP Mining_NNP and_CC Information_NNP Retrieval_NNP since_IN late_JJ 1990s_NNS =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 5_CD ,_, 6_CD ,_, 7_CD ,_, 12_CD ,_, 13_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN recent_JJ years_NNS ,_, some_DT researchers_NNS even_RB try_VBP to_TO extend_VB table_NN analyzing_NN technologies_NNS to_TO other_JJ document_NN formats_NNS like_IN PDF_NN files_NNS -LRB-_-LRB- 4_CD ,_, 8_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- ._.
+Lim_NN and_CC Ng_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- proposed_VBN to_TO automatically_RB retrieve_VB hierarchic_JJ
+in_IN our_PRP$ field_NN ._.
+1_CD ._.
+Introduction_NN As_IN explained_VBN in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, to_TO locate_VB tables_NNS in_IN documents_NNS only_RB a_DT few_JJ authors_NNS have_VBP used_VBN data_NNS induced_VBD learning_NN algorithms_NNS :_: probabilistic_JJ modelling_NN -LRB-_-LRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- -RRB-_-RRB- ,_, Naïve-Bayes_JJ classifier_NN -LRB-_-LRB- =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, Maximum_NNP Entropy_NNP classifier_NN -LRB-_-LRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 5_CD -RRB-_-RRB- -RRB-_-RRB- ,_, decision_NN trees_NNS -LRB-_-LRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- -RRB-_-RRB- ,_, SVM_NN classifiers_NNS -LRB-_-LRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- -RRB-_-RRB- ,_, the_DT Winnow_NNP classifier_NN -LRB-_-LRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- -RRB-_-RRB- ,_, Conditional_JJ Random_NNP Fields_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC an_DT HMM_NN of_IN the_DT traditional_JJ sort_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+T_NN
+t_NN by_IN constructing_VBG a_DT wrapper_NN that_WDT uses_VBZ a_DT set_NN of_IN consistent_JJ patterns_NNS -LRB-_-LRB- rules_NNS -RRB-_-RRB- ,_, namely_RB ,_, each_DT of_IN which_WDT correctly_RB extract_VBP information_NN from_IN some_DT pages_NNS but_CC does_VBZ not_RB wrongly_RB extract_VB information_NN from_IN any_DT pages_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+But_CC there_EX may_MD be_VB no_DT such_JJ set_NN of_IN patterns_NNS ._.
+For_IN example_NN ,_, consider_VB a_DT case_NN that_IN a_DT restaurant_NN name_NN and_CC its_PRP$ reputation_NN are_VBP written_VBN in_IN the_DT first_JJ and_CC the_DT third_JJ columns_NNS in_IN one_CD table_NN while_IN a_DT restaurant_NN name_NN a_DT
+re_IN then_RB subjected_VBN to_TO the_DT following_JJ steps_NNS :_: 3_CD http:\/\/www.cse.iitb.ac.in\/˜sunita\/wwt_NN 11Table_JJ extraction_NN from_IN HTML_NNP record_NN sets_VBZ There_EX is_VBZ a_DT long_JJ history_NN of_IN extracting_VBG structure_NN from_IN record_NN data_NNS on_IN the_DT Web_NN =_JJ -_: =[_NN 5_CD ,_, 14_CD ,_, 46_CD ,_, 30_CD ,_, 18_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, most_JJS of_IN this_DT work_NN has_VBZ been_VBN restricted_JJ to_TO specific_JJ verticals_NNS like_IN shopping_NN ,_, advertisements_NNS ,_, and_CC publications_NNS ._.
+Recent_JJ work_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- seeks_VBZ robust_JJ extractors_NNS that_WDT do_VBP not_RB depend_VB on_IN prior_JJ schema_NNS know_VBP
+agile_JJ wrappers_NNS -LRB-_-LRB- so_IN that_DT change_NN can_MD be_VB detected_VBN easily_RB -RRB-_-RRB- ._.
+In_IN general_JJ ,_, the_DT result_NN is_VBZ the_DT suggestion_NN to_TO use_VB relative_JJ XPaths_NNS and_CC to_TO normalize_VB variant_JJ tags_NNS -LRB-_-LRB- for_IN example_NN ,_, changing_VBG ``_`` b_NN ''_'' and_CC ``_`` i_FW ''_'' tags_NNS to_TO ``_`` font_VB ''_'' =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Our_PRP$ probabilistic_JJ tree_NN model_NN is_VBZ related_JJ to_TO two_CD bodies_NNS of_IN existing_VBG work_NN ,_, probabilistic_JJ tree_NN transducers_NNS and_CC tree_NN edit_NN models_NNS ._.
+The_DT work_NN on_IN probabilistic_JJ tree_NN transducers_NNS -LRB-_-LRB- see_VB -LRB-_-LRB- 5_CD ,_, 11_CD ,_, 15_CD -RRB-_-RRB- and_CC citation_NN
+,_, 13_CD ,_, 3_CD -RRB-_-RRB- ._.
+Most_RBS prior_JJ work_NN on_IN extracting_VBG record-like_JJ structures_NNS from_IN regular_JJ web_NN pages_NNS ,_, has_VBZ been_VBN localized_JJ to_TO specific_JJ vertical_JJ applications_NNS like_IN Shopping_NNP ,_, advertisements_NNS ,_, and_CC other_JJ catalog_NN structures_NNS =_JJ -_: =[_NN 1_CD ,_, 7_CD ,_, 22_CD ,_, 16_CD ,_, 9_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT excitement_NN of_IN late_RB is_VBZ in_IN exploiting_VBG these_DT resources_NNS for_IN domain_NN independent_JJ web_NN searches_NNS ._.
+In_IN this_DT talk_NN ,_, we_PRP will_MD present_VB one_CD such_JJ paradigm_NN of_IN horizontal_JJ structured_JJ search_NN that_IN returns_NNS as_IN answers_NNS ,_,
+s_NN -LRB-_-LRB- stop-words_NNS -RRB-_-RRB- and_CC by_IN 1_CD http:\/\/www.amazon.com\/_FW 21sthe_FW optional_JJ replacing_VBG of_IN words_NNS by_IN their_PRP$ stems_VBZ ._.
+On_IN the_DT other_JJ hand_NN ,_, many_JJ wrapper-learning_JJ systems_NNS represent_VBP a_DT document_NN as_IN a_DT linear_JJ sequence_NN of_IN tokens_NNS -LRB-_-LRB- =_JJ -_: =_JJ Cohen_NNP ,_, Hurst_NNP ,_, &_CC Jensen_NNP ,_, 2002_CD -_: =_JJ -_: ;_: Muslea_NNP ,_, Minton_NNP ,_, &_CC Knoblock_NNP ,_, 1999_CD -RRB-_-RRB- as_IN they_PRP are_VBP more_RBR concerned_JJ with_IN the_DT structural_JJ cues_NNS based_VBN on_IN special_JJ characters_NNS such_JJ as_IN carriage_NN returns_NNS ._.
+One_CD problem_NN is_VBZ that_IN different_JJ applications_NNS need_VBP different_JJ
+age_NN structure_NN seems_VBZ to_TO be_VB particularly_RB important_JJ in_IN finding_VBG site-specific_JJ extraction_NN rules_NNS -LRB-_-LRB- ``_`` wrappers_NNS ''_'' -RRB-_-RRB- ,_, since_IN on_IN a_DT given_VBN site_NN ,_, formatting_VBG information_NN is_VBZ frequently_RB an_DT excellent_JJ indication_NN of_IN cont_NN =_JJ -_: =_JJ ent_NN -LRB-_-LRB- 6_CD ,_, 10_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT paper_NN is_VBZ based_VBN on_IN two_CD practical_JJ observations_NNS about_IN web_NN page_NN classification_NN ._.
+The_DT first_JJ is_VBZ that_IN for_IN many_JJ categories_NNS of_IN economic_JJ interest_NN -LRB-_-LRB- e.g._FW ,_, product_NN pages_NNS ,_, job-posting_JJ pages_NNS ,_, and_CC press_NN release_NN
+Hurst_NNP and_CC Jensen_NNP introduce_VB a_DT system_NN in_IN which_WDT the_DT wrapper_NN induction_NN system_NN is_VBZ composed_VBN of_IN a_DT master_NN algorithm_NN which_WDT learns_VBZ extraction_NN rules_NNS over_IN multiple_JJ languages_NNS each_DT of_IN which_WDT is_VBZ defined_VBN by_IN a_DT builders_NNS =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Each_DT builder_NN defines_VBZ an_DT extraction_NN language_NN over_IN a_DT different_JJ representation_NN ,_, such_JJ as_IN token_JJ sequences_NNS ,_, DOM_NNP trees_NNS ,_, or_CC page_NN layout_NN and_CC also_RB a_DT method_NN to_TO minimally_RB generalize_VB an_DT extrac94tion_NN rule_NN in_IN tha_NN
+okenization_NN ,_, sentence_NN splitting_NN ,_, orthomatching_NN -LRB-_-LRB- coreference_NN resolution_NN -RRB-_-RRB- and_CC regular_JJ expressions_NNS ._.
+Wrapper_NN Induction_NN ``_`` A_DT program_NN that_WDT makes_VBZ an_DT existing_VBG website_NN look_NN like_IN a_DT database_NN is_VBZ called_VBN a_DT wrapper_NN ._. ''_''
+=_SYM -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Wrappers_NNS perform_VBP pattern_NN matching_VBG to_TO find_VB the_DT information_NN of_IN interest_NN ._.
+The_DT main_JJ goal_NN in_IN learning_VBG a_DT wrapper_NN is_VBZ to_TO find_VB a_DT general_JJ description_NN of_IN what_WP the_DT information_NN that_WDT is_VBZ supposed_VBN to_TO be_VB extracted_VBN l_NN
+Related_NNP Work_NNP This_NNP work_NN is_VBZ related_JJ to_TO wrapper_NN induction_NN and_CC automated_JJ data_NNS extraction_NN ._.
+Wrapper_NN induction_NN uses_VBZ supervised_JJ learning_NN to_TO learn_VB data_NN extraction_NN rules_NNS from_IN a_DT set_NN of_IN manually_RB labeled_VBN examples_NNS =_JJ -_: =[_NN 2_CD ,_, 4_CD ,_, 5_CD ,_, 11_CD ,_, 12_CD ,_, 18_CD ,_, 21_CD ,_, 22_CD ,_, 25_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP have_VBP discussed_VBN issues_NNS with_IN wrapper_NN induction_NN in_IN the_DT introduction_NN section_NN ._.
+Our_PRP$ technique_NN requires_VBZ no_DT human_JJ labeling_NN ._.
+It_PRP mines_NNS templates_NNS and_CC extracts_NNS data_NNS automatically_RB ._.
+Finding_VBG a_DT template_NN from_IN mul_NN
+labeled_VBN -RRB-_-RRB- semantic_JJ partition_NN tree_NN ._.
+There_EX are_VBP a_DT number_NN of_IN areas_NNS related_VBN to_TO this_DT problem_NN ,_, namely_RB ,_, XML_NN schema_NN discovery_NN -LRB-_-LRB- 15_CD ,_, 26_CD ,_, 14_CD ,_, 27_CD -RRB-_-RRB- ,_, schema_NN inference_NN from_IN HTML_NNP documents_NNS -LRB-_-LRB- 8_CD ,_, 2_CD -RRB-_-RRB- ,_, wrapper_NN construction_NN =_JJ -_: =[_NN 17_CD ,_, 7_CD ,_, 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, record_NN boundary_NN detection_NN in_IN HTML_NNP documents_NNS -LRB-_-LRB- 12_CD ,_, 11_CD ,_, 10_CD ,_, 4_CD -RRB-_-RRB- ,_, and_CC semantic_JJ annotation_NN of_IN HTML_NNP documents_NNS -LRB-_-LRB- 18_CD ,_, 19_CD ,_, 9_CD -RRB-_-RRB- However_RB ,_, our_PRP$ approach_NN departs_VBZ from_IN all_PDT the_DT related_JJ works_NNS above_IN in_IN several_JJ respects_NNS ._.
+Not_RB to_TO slight_JJ the_DT vast_JJ amount_NN of_IN work_NN on_IN table_NN processing_NN -LRB-_-LRB- 17,48_CD -RRB-_-RRB- ,_, we_PRP mention_VBP here_RB only_RB work_VB on_IN HTML_NNP table_NN interpretation_NN ._.
+Several_JJ researchers_NNS try_VBP to_TO differentiate_VB data_NNS tables_NNS from_IN tables_NNS for_IN layout_NN =_JJ -_: =[_NN 7,10,21,45_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP use_VBP machine-learning_JJ methods_NNS -LRB-_-LRB- 10,45_CD -RRB-_-RRB- ,_, visual_JJ level_NN features_NNS -LRB-_-LRB- 21,22_CD -RRB-_-RRB- ,_, and_CC linguistic_JJ features_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Other_JJ papers_NNS -LRB-_-LRB- 7,19,20,24,28_CD -RRB-_-RRB- discuss_VBP the_DT HTML_NNP table_NN interpretation_NN problem_NN based_VBN on_IN simple_JJ assu_NN
+y._NNP Removing_NNP this_DT constraint_NN can_MD increase_VB the_DT number_NN of_IN extractable_JJ named_VBN entities_NNS and_CC enable_VB new_JJ uses_NNS ._.
+There_EX is_VBZ other_JJ work_NN considering_VBG semi-structured_JJ content_NN within_IN HTML_NNP pages_NNS ._.
+Cohen_NNP ,_, Hurst_NNP ,_, Jensen_NNP -LRB-_-LRB- =_JJ -_: =_JJ Cohen_NNP et_FW al._FW ,_, 2002_CD -_: =--RRB-_NN learn_VB wrappers_NNS for_IN lists_NNS and_CC tables_NNS ,_, while_IN Agichtein_NNP and_CC Gravano_NNP -LRB-_-LRB- Agichtein_NNP et_FW al._FW ,_, 2000_CD -RRB-_-RRB- focus_NN on_IN wrappers_NNS for_IN HTML_NNP tables_NNS ._.
+Our_PRP$ work_NN differs_VBZ from_IN theirs_JJ as_IN we_PRP use_VBP a_DT simple_JJ wrapper_NN for_IN lists_NNS ,_, which_WDT
+L_NN ,_, use_NN trees_NNS that_WDT are_VBP stored_VBN as_IN strings_NNS to_TO structure_VB information_NN presentation_NN ._.
+More_RBR recent_JJ information_NN extraction_NN tools_NNS work_VBP on_IN these_DT trees_NNS obtained_VBN through_IN parsing_NN ,_, for_IN instance_NN ,_, Stalker_NN -LRB-_-LRB- 129_CD -RRB-_-RRB- ,_, WL_NN 2_CD =_JJ -_: =[_NN 41_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC Lixto_NNP -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+The_DT former_JJ two_CD use_NN machine_NN learning_VBG 5sfor_JJ wrapper_NN generation_NN ._.
+Lixto_NNP ,_, in_IN contrast_NN ,_, relies_VBZ on_IN user_NN interaction_NN for_IN wrapper_NN specification_NN ,_, and_CC simplifies_VBZ this_DT task_NN through_IN a_DT graphical_JJ u_NN
+XML_NN are_VBP unranked_JJ trees_NNS with_IN nodes_NNS containing_VBG texts_NNS ._.
+The_DT tree_NN structure_NN is_VBZ often_RB crucial_JJ to_TO distinguish_VB relevant_JJ information_NN ,_, in_IN particular_JJ for_IN documents_NNS that_WDT are_VBP homogeneously_RB generated_VBN by_IN databases_NNS =_JJ -_: =[_NN 13_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP investigate_VBP monadic_JJ queries_NNS that_WDT define_VBP sets_NNS of_IN nodes_NNS in_IN trees_NNS ._.
+We_PRP restrict_VBP ourselves_PRP to_TO regular_JJ monadic_JJ queries_NNS that_WDT are_VBP computable_JJ by_IN tree_NN automata_NN -LRB-_-LRB- 24_CD ,_, 9_CD -RRB-_-RRB- ,_, or_CC equivalently_RB ,_, expr_NN
+nd_NN accuracy_NN depends_VBZ on_IN the_DT expressiveness_NN of_IN the_DT expressions_NNS -LRB-_-LRB- i.e._FW wild_JJ cards_NNS ,_, semantic\/synonym_NN matches_NNS ,_, etc._FW -RRB-_-RRB- ,_, the_DT amount_NN of_IN data_NNS to_TO learn_VB from_IN ,_, and_CC the_DT level_NN of_IN structure_NN in_IN the_DT documents_NNS ._.
+Cohen_NNP in_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: extended_VBD the_DT notion_NN of_IN wrapper_NN induction_NN by_IN generalizing_VBG how_WRB to_TO automatically_RB learn_VB rules_NNS to_TO include_VB linear_JJ regular_JJ expressions_NNS as_RB well_RB as_IN hierarchical_JJ paths_NNS -LRB-_-LRB- DOM_NN parse_NN -RRB-_-RRB- in_IN an_DT HTML_NNP document_NN ._.
+Cohen_NNP al_NNP
+bels_NNS whenever_WRB they_PRP are_VBP available_JJ ._.
+We_PRP do_VBP not_RB provide_VB algorithms_NNS for_IN extracting_VBG and_CC labeling_VBG data_NNS from_IN within_IN HTML_NNP tables_NNS since_IN there_EX are_VBP existing_VBG solutions_NNS for_IN detecting_VBG and_CC wrapping_VBG these_DT structures_NNS =_JJ -_: =[_NN 7_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Other_JJ related_JJ work_NN includes_VBZ schema_NN learning_NN -LRB-_-LRB- 9_CD --_: 11_CD -RRB-_-RRB- for_IN semi-structured_JJ data_NNS and_CC techniques_NNS for_IN finding_VBG frequent_JJ substructures_NNS from_IN hierarchical_JJ semistructured_JJ data_NNS -LRB-_-LRB- 12_CD ,_, 13_CD -RRB-_-RRB- which_WDT can_MD be_VB utilized_VBN to_TO tr_VB
+not_RB scalable_JJ to_TO a_DT large_JJ number_NN of_IN pages_NNS ._.
+Other_JJ approaches_NNS all_DT have_VBP some_DT degree_NN of_IN automation_NN ._.
+There_EX are_VBP two_CD main_JJ types_NNS of_IN algorithms_NNS ,_, wrapper_NN induction_NN and_CC automatic_JJ extraction_NN ._.
+In_IN wrapper_NN induction_NN =_JJ -_: =[_NN 11_CD ,_, 19_CD ,_, 23_CD ,_, 25_CD ,_, 33_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT set_NN of_IN extraction_NN rules_NNS are_VBP learned_VBN from_IN a_DT set_NN of_IN manually_RB labeled_VBN pages_NNS or_CC data_NNS records_NNS ._.
+These_DT rules_NNS are_VBP then_RB used_VBN to_TO extract_VB data_NNS items_NNS from_IN similar_JJ pages_NNS ._.
+This_DT method_NN still_RB requires_VBZ substantial_JJ
+hey_NN range_NN from_IN hand-crafted_JJ and_CC page_NN specific_JJ rules_NNS for_IN identifying_VBG and_CC retrieving_VBG the_DT object_NN of_IN interest_NN -LRB-_-LRB- 6_CD ,_, 31_CD -RRB-_-RRB- to_TO machine_NN learning_NN methods_NNS dependent_JJ on_IN HTML_NNP and_CC other_JJ formatting_VBG instructions_NNS as_IN in_IN =_JJ -_: =[_NN 5_CD ,_, 22_CD ,_, 47_CD ,_, 65_CD -RRB-_-RRB- -_: =_JJ -_: or_CC pre-defined_JJ templates_NNS as_IN in_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- to_TO automated_JJ wrapper_NN learning_NN systems_NNS -LRB-_-LRB- 42_CD ,_, 36_CD ,_, 56_CD ,_, 55_CD -RRB-_-RRB- ._.
+The_DT work_NN in_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- used_VBD pattern_NN mining_NN algorithms_NNS to_TO detect_VB examples_NNS and_CC learn_VB extraction_NN rules_NNS with_IN more_JJR aut_NN
+n_NN to_TO DOM_NNP and_CC how_WRB we_PRP used_VBD DOM_NNP to_TO represent_VB an_DT HTML_NNP document_NN in_IN order_NN to_TO achieve_VB our_PRP$ goal_NN ._.
+3.2_CD DOM_NN Representation_NN A_NN DOM_NN tree_NN is_VBZ an_DT ordered_VBN tree_NN ,_, where_WRB each_DT node_NN is_VBZ either_CC an_DT element_NN node_NN or_CC a_DT text_NN node_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+An_DT element_NN node_NN has_VBZ a_DT node_NN name_NN which_WDT indicates_VBZ the_DT HTML_NNP tag_NN of_IN this_DT node_NN -LRB-_-LRB- such_JJ as_IN <TABLE>_NN ,_, <TH>_NN and_CC <LI>_NN -RRB-_-RRB- and_CC an_DT ordered_VBN list_NN of_IN child_NN nodes_NNS -LRB-_-LRB- this_DT list_NN can_MD be_VB empty_JJ -RRB-_-RRB- ._.
+A_DT text_NN node_NN has_VBZ no_DT child_NN node_NN
+ns_NNS -LRB-_-LRB- e.g._FW ,_, ``_`` 〈_NNP Organization_NNP 〉_NNP in_IN 〈_NNP Location_NNP 〉_NNP ''_'' -LRB-_-LRB- 1_LS -RRB-_-RRB- -RRB-_-RRB- or_CC for_IN probabilistic_JJ extraction_NN models_NNS -LRB-_-LRB- e.g._FW ,_, HMMs_NNS -LRB-_-LRB- 23_CD -RRB-_-RRB- or_CC CRFs_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Furthermore_RB ,_, extractors_NNS that_WDT rely_VBP on_IN web_NN page_NN structures_NNS such_JJ as_IN HTML_NNP lists_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 11_CD ,_, 14_CD -RRB-_-RRB- -_: =--RRB-_NN still_RB have_VBP to_TO retrieve_VB the_DT complete_JJ document_NN and_CC apply_VB extractors_NNS as_IN the_DT original_JJ QXtract_NN or_CC KnowItAll_NN system_NN would_MD ._.
+More_RBR generally_RB ,_, annotations_NNS such_JJ as_IN part-of-speech_JJ tags_NNS and_CC sentence_NN boundaries_NNS c_NN
+achieves_VBZ 97_CD %_NN recall_NN with_IN only_RB 1_CD example_NN ,_, WIEN_NNP achieves_VBZ 100_CD %_NN recall_NN using_VBG an_DT average_NN of_IN 3.5_CD documents_NNS containing_VBG approximately_RB 46_CD examples_NNS ,_, and_CC SoftMealy_NNP achieves_VBZ 100_CD %_NN recall_NN given_VBN 1_CD example_NN ._.
+Recently_RB =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT novel_JJ approach_NN called_VBN WL2_NN was_VBD compared_VBN to_TO WIEN_NN and_CC Stalker_NN ._.
+We_PRP include_VBP the_DT results_NNS of_IN WL2_NN on_IN the_DT Bigbook_NNP and_CC Okra_NNP datasets_NNS in_IN Table_NNP 5_CD ._.
+WL2_NN has_VBZ also_RB been_VBN tested_VBN on_IN the_DT IAF_NN and_CC QS_NN datasets_NNS and_CC is_VBZ ab_IN
+ce_NN and_CC is_VBZ well_RB structured_VBN -LRB-_-LRB- e.g._FW employing_VBG RDF_NN or_CC XML_NN -RRB-_-RRB- ._.
+The_DT most_JJS web_NN sources_NNS are_VBP HTML-based_JJ and_CC thus_RB offer_VBP no_DT structured_JJ output_NN ._.
+Result_NN extraction_NN is_VBZ the_DT focus_NN of_IN numerous_JJ related_JJ works_NNS ,_, e.g._FW -LRB-_-LRB- CMM01_NN -RRB-_-RRB- ,_, =_JJ -_: =_JJ -LRB-_-LRB- CHJ02_NN -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- Cha01_NN -RRB-_-RRB- or_CC -LRB-_-LRB- WL03_NN -RRB-_-RRB- ._.
+-LRB-_-LRB- LRNST02_NN -RRB-_-RRB- gives_VBZ a_DT good_JJ overview_NN on_IN this_DT issue_NN ._.
+We_PRP follow_VBP a_DT grammar-based_JJ paradigm_NN -LRB-_-LRB- Kab03_NN -RRB-_-RRB- ._.
+In_IN the_DT MIWeb_NN system_NN we_PRP defined_VBD the_DT grammar_NN manually_RB ._.
+In_IN future_NN we_PRP want_VBP to_TO generate_VB it_PRP au_IN
+achieves_VBZ 97_CD %_NN recall_NN with_IN only_RB 1_CD example_NN ,_, WIEN_NNP achieves_VBZ 100_CD %_NN recall_NN using_VBG an_DT average_NN of_IN 3.5_CD documents_NNS containing_VBG approximately_RB 46_CD examples_NNS ,_, and_CC SoftMealy_NNP achieves_VBZ 100_CD %_NN recall_NN given_VBN 1_CD example_NN ._.
+Recently_RB =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT novel_JJ approach_NN called_VBN WL_NN 2_CD was_VBD compared_VBN to_TO WIEN_NN and_CC Stalker_NN ._.
+We_PRP include_VBP the_DT results_NNS of_IN WL_NN 2_CD on_IN the_DT Bigbook_NNP and_CC Okra_NNP datasets_NNS in_IN Table_NNP 5_CD ._.
+WL_NN 2_CD has_VBZ also_RB been_VBN tested_VBN on_IN the_DT IAF_NN and_CC QS_NN datasets_NNS and_CC is_VBZ
+hallenges_NNS of_IN the_DT table_NN interpretation_NN problem_NN ._.
+We_PRP focus_VBP in_IN this_DT paper_NN ,_, however_RB ,_, only_RB HTML_NNP tables_NNS ._.
+A_DT number_NN of_IN HTML_NNP table_NN extraction_NN systems_NNS use_VBP machine_NN learning_VBG to_TO recognize_VB tables_NNS in_IN web_NN pages_NNS -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 3_CD ,_, 15_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Drawbacks_NNS of_IN machine_NN learning_NN approaches_NNS ,_, however_RB ,_, are_VBP that_IN they_PRP need_VBP training_NN data_NNS ,_, and_CC they_PRP need_VBP to_TO be_VB retrained_VBN for_IN tables_NNS from_IN different_JJ web_NN sites_NNS ._.
+Other_JJ table_NN interpretation_NN systems_NNS work_VBP based_VBN
+tion_NN requires_VBZ a_DT target_NN schema_NN and_CC requires_VBZ that_IN arbitrary_JJ input_NN -LRB-_-LRB- generally_RB of_IN some_DT standard_JJ encoding_NN -RRB-_-RRB- be_VB transformed_VBN into_IN instances_NNS of_IN the_DT schema_NN ._.
+Examples_NNS of_IN systems_NNS that_WDT fit_VBP this_DT definition_NN include_VBP =_JJ -_: =[_NN 22_CD ,_, 28_CD ,_, 31_CD ,_, 60_CD ,_, 80_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Each_DT of_IN these_DT systems_NNS works_VBZ with_IN varying_VBG definitions_NNS of_IN tables_NNS and_CC varying_VBG data_NNS formats_NNS ._.
+3_CD A_DT wider_JJR definition_NN without_IN a_DT fixed_JJ schema_NN may_MD be_VB analogous_JJ to_TO message_NN understanding_NN and_CC represents_VBZ perhaps_RB
+ral_NN kinds_NNS of_IN applications_NNS dedicated_VBN to_TO the_DT HTML_NNP information_NN extraction_NN ._.
+Ones_NNS are_VBP based_VBN on_IN trainings_NNS through_IN examples_NNS as_IN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, or_CC use_NN heuristics_NNS as_IN -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+Others_NNS are_VBP based_VBN on_IN patterns_NNS like_IN Omini_NNP ,_, Xwrap_NNP =_SYM -_: =[_NN 3_CD ,_, 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Lixto_NNP -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, Xtros_NN -LRB-_-LRB- 29_CD -RRB-_-RRB- ;_: or_CC on_IN extracting_VBG the_DT data_NNS from_IN HTML_NNP tables_NNS or_CC lists_NNS as_IN -LRB-_-LRB- 12_CD ,_, 16_CD -RRB-_-RRB- ._.
+According_VBG to_TO its_PRP$ performance_NN ,_, you_PRP can_MD distinguish_VB among_IN applications_NNS based_VBN on_IN searching_VBG text_NN information_NN betw_NN
+ly_RB from_IN Chinese_NNP HTML_NNP documents_NNS ,_, we_PRP do_VBP not_RB rely_VB on_IN other_JJ data_NNS extraction_NN tools_NNS ._.
+In_IN the_DT past_NN ,_, various_JJ approaches_NNS for_IN processing_NN -LRB-_-LRB- Chinese_NN -RRB-_-RRB- HTML_NNP tables_NNS have_VBP been_VBN presented_VBN in_IN the_DT literature_NN ._.
+Cohen_NNP et_FW al._FW =_SYM -_: =_JJ -LRB-_-LRB- CHJ02_NN -RRB-_-RRB- -_: =_SYM -_: propose_VBP a_DT wrapper-learning_JJ system_NN ,_, which_WDT includes_VBZ a_DT single_JJ general-purpose_JJ ``_`` master_NN learning_NN algorithm_NN ''_'' and_CC a_DT number_NN of_IN smaller_JJR ,_, special-purpose_JJ ``_`` builders_NNS ''_'' ,_, each_DT of_IN which_WDT can_MD exploit_VB a_DT different_JJ view_NN
+r_NN a_DT relative_JJ distinction_NN can_MD be_VB done_VBN eliminating_VBG rules_NNS determined_VBN from_IN the_DT k_NN smallest_JJS clusters_NNS ._.
+5_CD Related_NNP Work_NNP Early_NNP work_NN in_IN the_DT field_NN of_IN web_NN wrapper_NN generation_NN investigates_VBZ the_DT extracting_VBG structures_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC others_NNS ._.
+The_DT main_JJ focus_NN of_IN these_DT works_NNS is_VBZ to_TO recognize_VB regular_JJ structures_NNS at_IN result_NN pages_NNS ._.
+Other_JJ approaches_NNS use_VBP domain_NN specific_JJ extraction_NN ontologies_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Another_DT direction_NN of_IN resea_NN
+al_FW effort_NN is_VBZ tedious_JJ ,_, boring_JJ ,_, error-prone_JJ and_CC requires_VBZ a_DT high_JJ level_NN of_IN expertise_NN ._.
+Recently_RB ,_, several_JJ wrapper_NN learning_NN approaches_NNS are_VBP proposed_VBN for_IN automatically_RB learning_VBG wrappers_NNS from_IN training_NN examples_NNS =_JJ -_: =[_NN 2_CD ,_, 4_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Wrapper_NN learning_NN systems_NNS significantly_RB reduce_VB the_DT amount_NN of_IN human_JJ effort_NN in_IN constructing_VBG wrappers_NNS ._.
+Consider_VB a_DT Web_NN page_NN shown_VBN in_IN Figure_NNP 1_CD collected_VBN from_IN a_DT Web_NN site_NN under_IN the_DT book_NN domain_NN 1_CD ._.
+To_TO learn_VB
+and_CC publications_NNS as_IN a_DT list_NN ,_, where_WRB our_PRP$ system_NN can_MD extract_VB the_DT publications_NNS but_CC the_DT author_NN is_VBZ ignored_VBN as_IN optional_JJ tokens_NNS ._.
+5_CD Related_NNP Work_NNP Most_NNP wrapper_NN induction_NN systems_NNS require_VBP labeled_JJ training_NN examples_NNS =_JJ -_: =[_NN 1_CD ,_, 3_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX are_VBP three_CD systems_NNS -LRB-_-LRB- 5_CD --_: 7_CD -RRB-_-RRB- that_WDT learn_VBP wrappers_NNS from_IN unlabeled_JJ pages_NNS ._.
+RoadRunner_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- automatically_RB generates_VBZ wrappers_NNS by_IN comparing_VBG HTML_NNP pages_NNS and_CC analyzing_VBG their_PRP$ similarities_NNS and_CC differences_NNS ,_, and_CC
+ct_RB ,_, as_IN they_PRP consider_VBP a_DT Web_NN page_NN as_IN simply_RB a_DT bag_NN of_IN words_NNS ._.
+In_IN contrast_NN ,_, modeling_NN data_NNS sources_NNS for_IN more_RBR complex_JJ systems_NNS -LRB-_-LRB- such_JJ as_IN data_NN integration_NN ones_NNS -RRB-_-RRB- is_VBZ very_RB difficult_JJ and_CC has_VBZ received_VBN much_JJ attention_NN =_JJ -_: =[_NN 55_CD ,_, 47_CD ,_, 9_CD ,_, 2_CD ,_, 27_CD ,_, 36_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP have_VBP mentioned_VBN modeling_NN text_NN sources_NNS in_IN Section_NN 2.1_CD -LRB-_-LRB- 47_CD ,_, 9_CD -RRB-_-RRB- ._.
+Modeling_VBG a_DT structured_JJ data_NN source_NN typically_RB means_VBZ recovering_VBG the_DT source_NN schema_NN via_IN examining_VBG the_DT HTML_NNP pages_NNS exported_VBN by_IN the_DT source_NN ._.
+Th_NN
+s_NN customizability_NN means_VBZ that_IN we_PRP have_VBP potentially_RB tens_NNS of_IN thousands_NNS of_IN wrappers_NNS to_TO create_VB and_CC maintain_VB ._.
+To_TO address_VB this_DT issue_NN ,_, we_PRP use_VBP wrapper_NN learning_VBG methods_NNS to_TO reduce_VB the_DT cost_NN of_IN developing_VBG wrappers_NNS =_JJ -_: =[_NN 8_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC the_DT new_JJ technique_NN of_IN cluster_NN wrapping_VBG to_TO learn_VB wrappers_NNS which_WDT apply_VBP to_TO multiple_JJ message_NN board_NN systems_NNS ._.
+The_DT wrapper_NN learning_NN system_NN we_PRP use_VBP was_VBD also_RB extended_VBN to_TO take_VB advantage_NN of_IN programmatic_JJ marke_NN
+bstituted_VBN by_IN arbitrary_JJ ordered_VBN trees_NNS ._.
+Information_NN Extraction_NN or_CC wrapper_NN extraction_NN from_IN high-level_JJ data_NNS such_JJ as_IN semistructured_JJ data_NNS or_CC tables_NNS is_VBZ a_DT hot_JJ topic_NN in_IN the_DT field_NN of_IN Web_NN learning_NN or_CC Web_NN mining_NN =_JJ -_: =[_NN 3_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, we_PRP gave_VBD a_DT data_NN mining_NN method_NN from_IN tree_NN structured_JJ data_NNS using_VBG ordered_VBN term_NN trees_NNS ._.
+2_CD ._.
+ORDERED_NNP TERM_NNP TREES_NNP Let_NNP T_NN =_JJ -LRB-_-LRB- VT_NNP ,_, ET_NNP -RRB-_-RRB- be_VB an_DT ordered_VBN tree_NN with_IN a_DT vertex_NN set_VBN VT_NNP and_CC an_DT edge_NN set_VBN ET_NNP ._.
+A_DT list_NN
+ing_NN text_NN ._.
+The_DT tree_NN structure_NN is_VBZ relevant_JJ for_IN Web_NN information_NN extraction_NN -LRB-_-LRB- IE_NN -RRB-_-RRB- from_IN well_RB structured_VBN documents_NNS as_IN created_VBN by_IN databases_NNS ._.
+Many_JJ recent_JJ approaches_NNS to_TO Web_NN IE_NN therefore_RB focus_VB on_IN tree_NN structure_NN =_JJ -_: =[_NN 5_CD ,_, 10_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: rather_RB than_IN pure_JJ text_NN -LRB-_-LRB- 15_CD ,_, 22_CD -RRB-_-RRB- ._.
+A_DT base_NN problem_NN in_IN Web_NN information_NN extraction_NN -LRB-_-LRB- IE_NN -RRB-_-RRB- is_VBZ to_TO find_VB appropriate_JJ queries_NNS for_IN informative_JJ nodes_NNS in_IN trees_NNS ._.
+In_IN Fig._NNP 1_CD ,_, for_IN instance_NN ,_, one_PRP might_MD want_VB to_TO extract_VB all_DT
+from_IN the_DT training_NN pages_NNS ._.
+These_DT rules_NNS can_MD then_RB be_VB applied_VBN to_TO extract_VB target_NN items_NNS from_IN new_JJ pages_NNS ._.
+Example_NN wrapper_NN induction_NN systems_NNS include_VBP WIEN_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, Softmealy_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, Stalker_NN -LRB-_-LRB- 8_CD ,_, 15_CD ,_, 12_CD -RRB-_-RRB- ,_, BWI_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, WL_NN 2_CD =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC etc_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+A_DT theoretical_JJ study_NN on_IN wrapper_NN learning_NN is_VBZ also_RB done_VBN in_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+It_PRP gives_VBZ a_DT family_NN of_IN PAC-learnable_JJ wrapper_NN classes_NNS and_CC their_PRP$ induction_NN algorithms_NNS and_CC complexities_NNS ._.
+WIEN_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC Softmealy_NNP
+ince_NN we_PRP focus_VBP in_IN this_DT paper_NN only_RB on_IN HTML_NNP tables_NNS ,_, we_PRP limit_VBP the_DT related_JJ work_NN we_PRP discuss_VBP to_TO only_RB HTML_NNP table_NN processing_NN ._.
+Several_JJ researchers_NNS have_VBP tried_VBN to_TO differentiate_VB data_NNS tables_NNS from_IN tables_NNS for_IN layout_NN =_JJ -_: =[_NN 4_CD ,_, 7_CD ,_, 19_CD ,_, 42_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP have_VBP tried_VBN to_TO use_VB machine_NN learning_NN methods_NNS -LRB-_-LRB- 7_CD ,_, 42_CD -RRB-_-RRB- ,_, visual_JJ level_NN features_NNS -LRB-_-LRB- 19_CD ,_, 20_CD -RRB-_-RRB- ,_, and_CC linguistic_JJ features_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+TISP_NN provides_VBZ a_DT unique_JJ way_NN to_TO do_VB this_DT task_NN when_WRB sibling_NN pages_NNS are_VBP available_JJ ._.
+By_IN
+treating_VBG complex_JJ mappings_NNS from_IN application_NN data_NNS structures_NNS to_TO nested_JJ tables_NNS ._.
+The_DT considerable_JJ number_NN of_IN research_NN works_VBZ related_JJ to_TO table_NN analysis_NN and_CC interpretation_NN that_WDT can_MD be_VB found_VBN in_IN the_DT literature_NN =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: proves_VBZ that_IN table_NN parsing_NN is_VBZ a_DT difficult_JJ problem_NN and_CC an_DT interesting_JJ object_NN of_IN study_NN by_IN itself_PRP ._.
+We_PRP believe_VBP that_IN the_DT introduction_NN of_IN models_NNS of_IN domain_NN knowledge_NN in_IN this_DT frame_NN brings_VBZ about_IN interesting_JJ vi_LS
+s_NN for_IN Web_NN sources_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- is_VBZ a_DT tedious_JJ ,_, time-consuming_JJ ,_, and_CC error-prone_JJ job_NN ,_, thus_RB the_DT study_NN of_IN automatic_JJ wrapper_NN induction_NN using_VBG machine_NN learning_NN techniques_NNS has_VBZ been_VBN a_DT subject_NN of_IN research_NN in_IN recent_JJ years_NNS =_JJ -_: =[_NN 12_CD ,_, 11_CD ,_, 17_CD ,_, 16_CD ,_, 3_CD ,_, 6_CD ,_, 5_CD ,_, 18_CD ,_, 4_CD ,_, 21_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT paper_NN also_RB focuses_VBZ on_IN wrapping_VBG Web_NN sources_NNS in_IN an_DT automatic_JJ manner_NN ._.
+Although_IN different_JJ wrapper_NN induction_NN systems_NNS employ_VBP various_JJ techniques_NNS and_CC strategies_NNS to_TO generate_VB wrappers_NNS ,_, they_PRP all_DT separate_JJ
+fusing_NN for_IN an_DT automated_JJ system_NN ._.
+The_DT above_JJ example_NN also_RB demonstrates_VBZ that_IN the_DT problem_NN of_IN segmenting_VBG lists_NNS is_VBZ different_JJ from_IN the_DT traditional_JJ information_NN extraction_NN problem_NN of_IN wrapper_NN generation_NN problem_NN =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 9_CD ,_, 10_CD ,_, 11_CD ,_, 13_CD ,_, 14_CD ,_, 15_CD ,_, 17_CD ,_, 23_CD ,_, 24_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT typical_JJ assumption_NN in_IN wrapper_NN generation_NN is_VBZ that_IN web_NN pages_NNS -LRB-_-LRB- or_CC parts_NNS of_IN web_NN pages_NNS -RRB-_-RRB- are_VBP automatically_RB generated_VBN for_IN each_DT record_NN in_IN an_DT underlying_JJ table_NN using_VBG an_DT HTML_NNP template_NN ._.
+Thus_RB ,_, the_DT layout_NN of_IN
+le_DT for_IN each_DT entity_NN ._.
+A_DT common_JJ approach_NN for_IN extracting_VBG data_NNS from_IN Web_NN sources_NNS is_VBZ to_TO build_VB wrappers_NNS -LRB-_-LRB- 28_CD ,_, 23_CD ,_, 8_CD ,_, 36_CD ,_, 15_CD ,_, 2_CD ,_, 32_CD ,_, 26_CD ,_, 7_CD -RRB-_-RRB- ._.
+Among_IN these_DT assorted_JJ approaches_NNS learning-based_JJ extraction_NN techniques_NNS =_JJ -_: =[_NN 26_CD ,_, 10_CD ,_, 31_CD ,_, 7_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP becoming_VBG important_JJ since_IN they_PRP exhibit_VBP a_DT high_JJ degree_NN of_IN automation_NN and_CC scalability_NN ._.
+Extraction_NN based_VBN on_IN learning_VBG techniques_NNS is_VBZ a_DT two_CD step_NN process_NN ._.
+In_FW thesrst_FW step_NN ,_, called_VBN labeling_NN ,_, examples_NNS of_IN rel_NN
+RSS_NN feeds_VBZ ._.
+The_DT task_NN of_IN extracting_VBG records_NNS from_IN web_NN pages_NNS is_VBZ usually_RB implemented_VBN by_IN programs_NNS called_VBN wrappers_NNS ._.
+The_DT process_NN of_IN leaning_VBG a_DT wrapper_NN from_IN a_DT group_NN of_IN similar_JJ pages_NNS is_VBZ called_VBN wrapper_NN induction_NN =_JJ -_: =[_NN 10_CD ,_, 9_CD ,_, 15_CD ,_, 14_CD ,_, 3_CD ,_, 6_CD ,_, 5_CD ,_, 17_CD ,_, 4_CD ,_, 21_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Due_JJ to_TO its_PRP$ high_JJ extraction_NN accuracy_NN ,_, wrapper_NN induction_NN is_VBZ one_CD of_IN the_DT most_RBS popular_JJ methods_NNS to_TO extract_VB web_NN information_NN and_CC it_PRP is_VBZ extensively_RB used_VBN by_IN many_JJ commercial_JJ information_NN systems_NNS including_VBG major_JJ
+n_NN argument_NN the_DT span_NN s2_NN to_TO be_VB extracted_VBN and_CC returns_VBZ an_DT intermediate_JJ span_NN s_NN ′_NN :_: i.e._FW ,_, fd_NN -LRB-_-LRB- s2_NN -RRB-_-RRB- =_JJ s_NN ′_NN ._.
+The_DT chain_NN builder_NN will_MD learn_VB concepts_NNS p_NN of_IN the_DT form_NN p_NN ≡_CD -LCB-_-LRB- -LRB-_-LRB- s1_NN ,_, s2_NN -RRB-_-RRB- :_: p1_NN -LRB-_-LRB- s1_NN ,_, fd_NN -LRB-_-LRB- s2_NN -RRB-_-RRB- -RRB-_-RRB- ∧_CD p2_NN -LRB-_-LRB- fd_NN -LRB-_-LRB- s2_NN =_JJ -_: =-RRB-_NN ,_, s2_NN -RRB-_-RRB- -RCB-_-RRB- -LRB-_-LRB- 2_CD -RRB-_-RRB- -_: =_SYM -_: where_WRB p1_NN is_VBZ in_IN the_DT language_NN associated_VBN with_IN B1_NN and_CC p2_NN is_VBZ in_IN the_DT language_NN associated_VBN with_IN B2_NN ._.
+Given_VBN the_DT decomposition_NN function_NN fd_NN ,_, it_PRP is_VBZ straightforward_JJ to_TO define_VB the_DT necessary_JJ operations_NNS for_IN a_DT chain_NN
+set_VBN InnerSet_NNP i_FW −_FW EXECUTE_NN -LRB-_-LRB- p_NN ,_, Outer_NNP i_LS -RRB-_-RRB- are_VBP false_JJ negative_JJ predictions_NNS for_IN p_NN ,_, and_CC the_DT false_JJ positive_JJ predictions_NNS for_IN p_NN are_VBP spans_VBZ s_NN in_IN the_DT set_NN -LCB-_-LRB- s_NN ∈_NNP EXECUTE_NNP -LRB-_-LRB- p_NN ,_, Outer_NNP i_LS -RRB-_-RRB- −_FW InnerSet_FW i_FW :_: contains_VBZ -LRB-_-LRB- Scope_NN =_JJ -_: =_JJ ,_, s_NNS -RRB-_-RRB- -RCB-_-RRB- -LRB-_-LRB- 1_LS -RRB-_-RRB- -_: =_SYM -_: a_DT XPath_NN is_VBZ a_DT widely-used_JJ declarative_JJ language_NN for_IN addressing_VBG nodes_NNS in_IN an_DT XML_NN -LRB-_-LRB- or_CC XHTML_NN -RRB-_-RRB- document_NN 4_CD ._.
+sSeptember_NN 19_CD ,_, 2003_CD 9:19_CD WSPC\/Trim_NN Size_NN :_: 9in_CD x_CC 6in_CD for_IN Review_NNP Volume_NNP ws-chj_NN 8_CD Cohen_NNP et_FW al_FW 3.5_CD ._.
+Desi_NNS

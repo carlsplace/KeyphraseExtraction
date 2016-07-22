@@ -1,0 +1,121 @@
+Mining_NN intrusion_NN detection_NN alarms_NNS for_IN actionable_JJ knowledge_NN
+In_IN response_NN to_TO attacks_NNS against_IN enterprise_NN networks_NNS ,_, administrators_NNS increasingly_RB deploy_VBP intrusion_NN detection_NN systems_NNS ._.
+These_DT systems_NNS monitor_VBP hosts_NNS ,_, networks_NNS ,_, and_CC other_JJ resources_NNS for_IN signs_NNS of_IN security_NN violations_NNS ._.
+The_DT use_NN of_IN intrusion_NN detection_NN has_VBZ given_VBN rise_NN to_TO another_DT difficult_JJ problem_NN ,_, namely_RB the_DT handling_NN of_IN a_DT generally_RB large_JJ number_NN of_IN alarms_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP mine_VBP historical_JJ alarms_NNS to_TO learn_VB how_WRB future_JJ alarms_NNS can_MD be_VB handled_VBN more_RBR efficiently_RB ._.
+First_RB ,_, we_PRP investigate_VBP episode_NN rules_NNS with_IN respect_NN to_TO their_PRP$ suitability_NN in_IN this_DT approach_NN ._.
+We_PRP report_VBP the_DT difficulties_NNS encountered_VBD and_CC the_DT unexpected_JJ insights_NNS gained_VBD ._.
+In_IN addition_NN ,_, we_PRP introduce_VBP a_DT new_JJ conceptual_JJ clustering_NN technique_NN ,_, and_CC use_VB it_PRP in_IN extensive_JJ experiments_NNS with_IN real-world_JJ data_NNS to_TO show_VB that_IN intrusion_NN detection_NN alarms_NNS can_MD be_VB handled_VBN efficiently_RB by_IN using_VBG previously_RB mined_VBN knowledge_NN ._.
+are_VBP not_RB based_VBN on_IN machine_NN learning_NN techniques_NNS ._.
+Other_JJ approaches_NNS that_WDT do_VBP not_RB involve_VB machine_NN learning_NN are_VBP reported_VBN in_IN -LRB-_-LRB- 6_CD ,_, 7_CD -RRB-_-RRB- ._.
+Machine-learning_JJ techniques_NNS in_IN this_DT area_NN include_VBP the_DT work_NN by_IN Julisch_NNP et_FW al._FW =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Dain_NNP and_CC Cunningham_NNP -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, Zanero_NNP and_CC Savaresi_NNP -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, and_CC Laskov_NNP et_FW al_FW -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+The_DT method_NN by_IN Julisch_NNP et_FW al._FW relies_VBZ on_IN clustering_NN algorithms_NNS rather_RB than_IN classification_NN algorithms_NNS ,_, and_CC requires_VBZ an_DT administ_NN
+mentioning_VBG that_IN we_PRP have_VBP applied_VBN the_DT same_JJ algorithm_NN to_TO many_VB more_JJR data_NNS sets_NNS of_IN various_JJ environments_NNS ._.
+The_DT results_NNS obtained_VBN with_IN these_DT different_JJ data_NNS sets_NNS are_VBP consistent_JJ with_IN the_DT results_NNS presented_VBN here_RB -LRB-_-LRB- =_JJ -_: =_JJ Julisch_NNP and_CC Dacier_NNP 2002_CD -_: =-]_CD ._.
+However_RB ,_, this_DT section_NN focuses_VBZ on_IN a_DT single_JJ data_NN set_VBN in_IN order_NN to_TO have_VB a_DT detailed_JJ discussion_NN of_IN the_DT results_NNS ._.
+For_IN the_DT purpose_NN of_IN our_PRP$ experiment_NN ,_, we_PRP model_VBP alarms_NNS as_IN 7-tuples_NNS ._.
+In_IN detail_NN ,_, the_DT individual_NN a_DT
+one_CD sensor_NN can_MD be_VB too_RB limited_JJ for_IN diagnosing_VBG large_JJ scale_NN attacks_NNS or_CC using_VBG knowledge_NN about_IN the_DT operating_NN environment_NN at_IN sensor_NN level_NN ._.
+Alert_NNP correlation_NN has_VBZ been_VBN proposed_VBN as_IN one_CD solution_NN to_TO the_DT problem_NN =_JJ -_: =[_NN 6_CD ,_, 8_CD ,_, 14_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Harshly_RB simplifying_VBG ,_, correlation_NN is_VBZ a_DT higher_JJR level_NN function_NN taking_VBG multiple_JJ alerts_VBZ and_CC additional_JJ information_NN into_IN account_NN to_TO 1_CD -RRB-_-RRB- reduce_VB the_DT alert_JJ volume_NN ,_, 2_LS -RRB-_-RRB- improve_VB the_DT alert_JJ content_NN ,_, 3_CD -RRB-_-RRB- and_CC to_TO trac_VB
+a_DT data_NN mining_NN method_NN ,_, which_WDT makes_VBZ the_DT knowledge-based_JJ preceding_JJ filters_NNS treat_VBP only_RB important_JJ alarms_NNS ._.
+When_WRB applying_VBG this_DT method_NN ,_, it_PRP is_VBZ reported_VBN to_TO bring_VB a_DT 30_CD %_NN decrease_NN in_IN false_JJ alarms_NNS in_IN real_JJ systems_NNS =_JJ -_: =[_NN 7_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, this_DT method_NN inevitably_RB neglects_VBZ attacks_NNS that_WDT do_VBP not_RB frequently_RB occur_VB ,_, due_JJ to_TO its_PRP$ structure_NN ,_, causing_VBG a_DT loss_NN of_IN perception_NN in_IN abnormal_JJ states_NNS and_CC unsatisfactory_JJ reaction_NN to_TO new_JJ attacks_NNS ._.
+The_DT o_NN
+n_NN of_IN pre_JJ -_: and_CC post-conditions_NNS of_IN the_DT attacks_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, sometimes_RB along_IN with_IN time-distance_JJ criteria_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+It_PRP is_VBZ possible_JJ to_TO mine_VB scenario_NN rules_NNS directly_RB from_IN data_NNS ,_, either_CC in_IN a_DT supervised_JJ -LRB-_-LRB- 6_CD -RRB-_-RRB- or_CC unsupervised_JJ =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: fashion_NN ._.
+Both_DT approaches_NNS use_VBP alert_JJ classifications_NNS as_IN part_NN of_IN their_PRP$ rules_NNS ._.
+None_NN of_IN these_DT techniques_NNS would_MD work_VB for_IN anomaly_JJ detection_NN systems_NNS ,_, as_IN they_PRP rely_VBP on_IN alert_JJ names_NNS or_CC classification_NN to_TO work_VB ._.
+Th_NN
+d_NN the_DT provision_NN of_IN techniques_NNS to_TO detect_VB patterns_NNS and_CC isolate_JJ data_NNS of_IN interest_NN ._.
+Overviews_NNS of_IN data_NN mining_NN studies_NNS in_IN the_DT area_NN of_IN communications_NNS networks_NNS -LRB-_-LRB- Garofalakis_NNP &_CC Rastogi_NNP 2001_CD ,_, Hulten_NNP et_FW al._FW 2001_CD ,_, =_JJ -_: =_JJ Julisch_NNP &_CC Dacier_NNP 2002_CD -_: =--RRB-_NN offer_VBP some_DT insight_NN into_IN current_JJ efforts_NNS to_TO address_VB these_DT problems3_NN ._.
+The_DT approach_NN discussed_VBN in_IN this_DT paper_NN is_VBZ to_TO support_VB an_DT investigation_NN focussed_VBN on_IN a_DT large_JJ and_CC diverse_JJ collection_NN of_IN communications_NNS
+ncke_NN -RRB-_-RRB- ._.
+One_CD of_IN the_DT most_RBS important_JJ requirements_NNS of_IN a_DT good_JJ intrusion_NN detection_NN system_NN -LRB-_-LRB- IDS_NNP -RRB-_-RRB- is_VBZ the_DT generation_NN of_IN high_JJ quality_NN alerts_VBZ ._.
+Unfortunately_RB ,_, IDS_NNP sensors_NNS usually_RB generate_VBP massive_JJ amount_NN of_IN alerts_VBZ =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, especially_RB if_IN those_DT sensors_NNS have_VBP high_JJ sensitivity_NN to_TO potential_JJ misuse_NN ,_, as_IN can_MD be_VB the_DT case_NN with_IN tightly_RB tuned_VBN anomaly_RB based_VBN sensors_NNS ._.
+In_IN the_DT distributed_VBN 1389-1286_CD \/_: $_$ -_: see_VB front_JJ matter_NN Ó_NN 2006_CD Elsevier_NNP
+effective_JJ IDS_NNP is_VBZ its_PRP$ ability_NN to_TO properly_RB correlate_VB information_NN drawn_VBN from_IN appropriately_RB placed_VBN IDS_NNP sensors_NNS due_JJ to_TO the_DT following_JJ three_CD reasons_NNS ._.
+First_RB ,_, IDS_NNP sensors_NNS can_MD generate_VB massive_JJ amount_NN of_IN alerts_VBZ =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, if_IN they_PRP have_VBP a_DT high_JJ sensitivity_NN to_TO potential_JJ misuse_NN ;_: examining_VBG these_DT alerts_VBZ is_VBZ costly_JJ and_CC not_RB all_DT of_IN this_DT information_NN leads_VBZ to_TO good_JJ decisions_NNS ._.
+Second_RB ,_, the_DT false_JJ positive_JJ rate_NN is_VBZ one_CD of_IN the_DT most_JJS seri_NNS
+igns_NNS of_IN possible_JJ threats_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+A_DT well-known_JJ problem_NN with_IN intrusion_NN detection_NN systems_NNS is_VBZ their_PRP$ propensity_NN to_TO trigger_VB thousands_NNS of_IN alerts_VBZ per_IN day_NN ,_, the_DT overwhelming_JJ majority_NN of_IN which_WDT are_VBP actually_RB benign_JJ =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Floods_NNS of_IN alerts_VBZ overwhelm_VB human_JJ analysts_NNS and_CC result_VBP in_IN important_JJ events_NNS being_VBG lost_VBN in_IN the_DT noise_NN ._.
+One_CD way_NN to_TO circumvent_VB this_DT is_VBZ to_TO look_VB for_IN deviations_NNS in_IN the_DT aggregate_JJ behavior_NN of_IN alerts_VBZ from_IN normal_JJ
+istics_NNS in_IN a_DT short_JJ time_NN frame_NN ,_, such_JJ as_IN the_DT number_NN of_IN international_JJ calls_NNS and_CC total_JJ duration_NN of_IN all_DT calls_NNS in_IN a_DT day_NN ,_, which_WDT is_VBZ different_JJ from_IN the_DT sequential_JJ patterns_NNS in_IN our_PRP$ techniques_NNS ._.
+Julisch_NN and_CC Dacier_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: used_VBN techniques_NNS of_IN episode_NN rules_NNS and_CC conceptual_JJ clustering_NN to_TO mine_VB historical_JJ alarms_NNS for_IN network_NN intrusion_NN detection_NN ._.
+Their_PRP$ episode_NN rules_NNS are_VBP designed_VBN to_TO predict_VB the_DT occurrence_NN of_IN certain_JJ alarms_NNS base_NN
+formation_NN ._.
+There_EX are_VBP other_JJ alert_JJ correlation_NN techniques_NNS ._.
+Some_DT approaches_NNS cluster_NN alerts_VBZ on_IN the_DT basis_NN of_IN the_DT similarities_NNS between_IN the_DT alert_JJ attributes_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 7,29_CD -RRB-_-RRB- -RRB-_-RRB- ,_, or_CC hierarchies_NNS of_IN concepts_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 17,18_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Some_DT others_NNS correlate_VBP alerts_VBZ by_IN matching_NN alerts_VBZ against_IN known_JJ attack_NN scenarios_NNS ,_, using_VBG languages_NNS such_JJ as_IN STATL_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC LAMBDA_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+These_DT methods_NNS are_VBP potentially_RB complementary_JJ to_TO our_PRP$ approach_NN ._.
+Our_PRP$ a_DT
+text_NN based_JJ distance_NN metrics_NNS combined_VBN with_IN Neural_NNP Networks_NNP and_CC K-nearest_JJ neighbors_NNS '_POS algorithms_NNS ._.
+The_DT idea_NN to_TO perform_VB data_NNS mining_NN in_IN order_NN to_TO reduce_VB for_IN false_JJ alarm_NN has_VBZ been_VBN explored_VBN by_IN Julisch_NNP et_FW al._FW =_SYM -_: =_JJ -LRB-_-LRB- JD02_NN -RRB-_-RRB- -_: =_JJ -_: ;_: using_VBG conceptual_JJ clustering_NN of_IN old_JJ alarms_NNS to_TO derive_VB new_JJ filters_NNS ._.
+Our_PRP$ method_NN for_IN adaptive_JJ filtering_VBG has_VBZ the_DT same_JJ objective_NN ,_, but_CC we_PRP use_VBP automatic_JJ text_NN classification_NN instead_RB ._.
+2_CD The_DT Safeguard_NN context_NN T_NN
+in_IN conjunction_NN with_IN other_JJ components_NNS ._.
+Evidence_NN indicates_VBZ that_IN the_DT presented_VBN method_NN is_VBZ able_JJ to_TO achieve_VB high_JJ performance_NN with_IN respect_NN to_TO very_RB important_JJ IDS_NNP evaluation_NN measures_NNS such_JJ as_IN false_JJ alarm_NN rate_NN =_JJ -_: =[_NN 9_CD ,_, 10_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: or_CC ''_'' time_NN to_TO detect_VB ._. ''_''
+LUS-MT_NN was_VBD developed_VBN and_CC tested_VBN on_IN real-world_JJ data_NNS ,_, thereby_RB avoiding_VBG the_DT pitfalls_NNS of_IN using_VBG simulation_NN data_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+Intrusion_NN detection_NN has_VBZ been_VBN heavily_RB investigated_VBN using_VBG a_DT number_NN
+res_NNS prior_RB to_TO clustering_NN or_CC visualization_NN ._.
+Finally_RB ,_, Julisch_NNP and_CC Dacier_NNP demonstrated_VBD that_IN a_DT form_NN of_IN conceptual_JJ clustering_NN is_VBZ effective_JJ for_IN grouping_VBG similar_JJ alarms_NNS from_IN intrusion_NN detection_NN systems_NNS -LRB-_-LRB- IDS_NNP -RRB-_-RRB- =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP note_VBP that_IN IDS_NNP alarms_NNS are_VBP typically_RB generated_VBN by_IN matching_VBG intrusion_NN signatures_NNS ,_, hence_RB the_DT attack_NN type_NN is_VBZ at_IN least_JJS partially_RB known_VBN ._.
+Alarms_NNS typically_RB have_VBP many_JJ fewer_JJR features_NNS than_IN execution_NN profiles_NNS
+and_CC hence_RB ,_, valid_JJ communications_NNS are_VBP interrupted_JJ or_CC even_RB stopped_VBD ._.
+Moreover_RB ,_, IDSs_NNS are_VBP known_VBN to_TO produce_VB large_JJ amount_NN of_IN alarms_NNS per_IN day_NN ,_, most_JJS of_IN which_WDT are_VBP irrelevant_JJ to_TO the_DT overall_JJ security_NN of_IN a_DT network_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 26_CD -RRB-_-RRB- ;_: this_DT is_VBZ also_RB valid_JJ for_IN IPSs_NNS as_IN they_PRP use_VBP the_DT same_JJ set_NN of_IN attack_NN detection_NN techniques_NNS ._.
+In_IN this_DT paper_NN we_PRP extend_VBP our_PRP$ previous_JJ work_NN on_IN FIDRAN_NNP which_WDT is_VBZ a_DT network-based_JJ intrusion_NN prevention_NN overlay_NN n_NN
+oducing_VBG alerts_VBZ describing_VBG the_DT details_NNS of_IN potential_JJ intrusions_NNS ._.
+The_DT number_NN of_IN alerts_VBZ generated_VBN by_IN these_DT systems_NNS can_MD be_VB overwhelming_JJ :_: thousands_NNS of_IN alerts_VBZ per_IN day_NN ,_, up_RB to_TO 99_CD %_NN of_IN which_WDT are_VBP false_JJ positives_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Analysts_NNS combine_VBP their_PRP$ knowledge_NN and_CC experience_NN with_IN an_DT understanding_NN of_IN the_DT surrounding_VBG context_NN to_TO determine_VB the_DT accuracy_NN and_CC severity_NN of_IN an_DT alert_NN amid_IN changing_VBG configurations_NNS in_IN their_PRP$ operating_NN en_IN
+experience_NN demonstrates_VBZ that_DT is_VBZ quite_RB easy_JJ for_IN a_DT detection_NN system_NN to_TO generate_VB thousands_NNS of_IN alarms_NNS per_IN day_NN ,_, most_JJS of_IN which_WDT are_VBP false_JJ alarms_NNS -LRB-_-LRB- i.e._FW ,_, benign_JJ events_NNS that_WDT are_VBP incorrectly_RB considered_VBN attacks_NNS -RRB-_-RRB- =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT problem_NN will_MD tend_VB to_TO be_VB exacerbated_VBN in_IN the_DT future_NN since_IN the_DT hacker_NN community_NN has_VBZ been_VBN developing_VBG tools_NNS whose_WP$ only_JJ purpose_NN is_VBZ to_TO flood_NN the_DT detection_NN systems_NNS with_IN unrelated_JJ attacks_NNS to_TO prevent_VB the_DT
+,_, West_NNP Point_NNP ,_, NY_NNP generated_VBN by_IN an_DT IDS_NNP can_MD be_VB overwhelming_JJ ,_, and_CC the_DT number_NN of_IN false_JJ positives_NNS may_MD be_VB extremely_RB high_JJ ._.
+IDSs_NNS can_MD trigger_VB thousands_NNS of_IN alerts_VBZ per_IN day_NN ,_, up_RB to_TO 99_CD %_NN of_IN which_WDT are_VBP false_JJ positives_NNS =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Differentiating_VBG the_DT large_JJ number_NN of_IN false_JJ positives_NNS from_IN the_DT true_JJ malicious_JJ activity_NN is_VBZ a_DT daunting_JJ task_NN that_WDT relies_VBZ heavily_RB on_IN the_DT knowledge_NN and_CC experience_NN of_IN the_DT human_JJ analyst_NN ._.
+The_DT output_NN from_IN many_JJ
+ns_NNS of_IN all_PDT the_DT comparable_JJ alert_JJ attributes_NNS ._.
+Also_RB based_VBN on_IN the_DT similarity_NN between_IN alerts_VBZ ,_, Cuppens_NNP -LRB-_-LRB- 13_CD -RRB-_-RRB- proposed_VBN to_TO use_VB clustering_NN techniques_NNS to_TO correlate_VB similar_JJ alerts_VBZ into_IN clusters_NNS ,_, and_CC Julish_NNP et_FW al._FW =_SYM -_: =[_NN 30_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBN to_TO use_VB hierarchical_JJ conceptual_JJ clustering_NN technique_NN to_TO correlate_NN alerts_VBZ ._.
+Attack_NN scenarios_NNS are_VBP very_RB useful_JJ information_NN in_IN forensic_JJ analysis_NN ._.
+Instead_RB of_IN clustering_NN alerts_VBZ ._.
+Some_DT researchers_NNS pro_NN
+similarities_NNS between_IN the_DT alert_JJ attributes_NNS ._.
+The_DT Tivoli_NNP approach_NN correlates_NNS alerts_VBZ based_VBN on_IN the_DT observation_NN that_IN some_DT alerts_VBZ usually_RB occur_VBP in_IN sequence_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+The_DT alert_JJ clustering_NN techniques_NNS 11_CD in_IN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: use_VB conceptual_JJ clustering_NN and_CC generalization_NN hierarchy_NN to_TO aggregate_NN alerts_VBZ into_IN clusters_NNS ._.
+It_PRP is_VBZ proposed_VBN in_IN -LRB-_-LRB- 26_CD -RRB-_-RRB- to_TO use_VB time_NN series_NN analysis_NN to_TO discover_VB potential_JJ causality_NN between_IN alerts_VBZ without_IN spe_NN
+it_PRP trail_NN processing_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- and_CC nowadays_RB IDSes_VBZ themselves_PRP can_MD generate_VB enormous_JJ amounts_NNS of_IN alerts_VBZ ._.
+Just_RB one_CD sensor_NN can_MD create_VB thousands_NNS of_IN alerts_VBZ each_DT day_NN ,_, and_CC a_DT large_JJ majority_NN of_IN these_DT can_MD be_VB irrelevant_JJ =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, partly_RB because_IN the_DT diagnostic_JJ capabilities_NNS of_IN current_NN ,_, fielded_VBD intrusion_NN detection_NN systems_NNS are_VBP rather_RB weak_JJ -LRB-_-LRB- 3_CD -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+This_DT alert_JJ flood_NN can_MD easily_RB overwhelm_VB the_DT human_JJ operating_VBG the_DT system_NN and_CC the_DT inter_NN
+intrusion_NN alerts_VBZ ._.
+The_DT mission-impact-based_JJ approach_NN correlates_NNS alerts_VBZ raised_VBN by_IN INFOSEC_NN devices_NNS such_JJ as_IN IDS_NNP and_CC firewalls_NNS with_IN the_DT importance_NN of_IN system_NN assets_NNS -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+The_DT alert_JJ clustering_NN techniques_NNS in_IN =_JJ -_: =[_NN 22_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: use_VB conceptual_JJ clustering_NN and_CC generalization_NN hierarchy_NN to_TO aggregate_NN alerts_VBZ into_IN clusters_NNS ._.
+Alert_NNP correlation_NN may_MD also_RB be_VB performed_VBN by_IN matching_VBG attack_NN scenarios_NNS specified_VBN by_IN attack_NN languages_NNS ._.
+Examples_NNS
+eration_NN ._.
+For_IN example_NN ,_, temporal_JJ statistical_JJ features_NNS of_IN connections_NNS and_CC sessions_NNS have_VBP been_VBN found_VBN informative_JJ -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+Other_JJ more_RBR elaborate_JJ approaches_NNS -LRB-_-LRB- e.g._FW ,_, conceptual_JJ clustering_NN -RRB-_-RRB- have_VBP also_RB shown_VBN promise_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT RDBMS_NN context_NN ,_, SQL_NN and_CC user-defined_JJ functions_NNS offer_VBP a_DT high_JJ degree_NN of_IN flexibility_NN and_CC efficiency_NN when_WRB extracting_VBG key_JJ pieces_NNS of_IN information_NN from_IN the_DT audit_NN stream_NN ._.
+Useful_JJ SQL_NN capabilities_NNS includ_VBP
+clustering_NN is_VBZ used_VBN to_TO further_JJ group_NN alerts_VBZ after_IN alert_JJ fusion_NN ._.
+Based_VBN on_IN various_JJ clustering_NN algorithms_NNS ,_, we_PRP can_MD group_NN alerts_VBZ in_IN different_JJ ways_NNS according_VBG to_TO the_DT similarity_NN among_IN alerts_VBZ ,_, -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 83_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 46_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Currently_RB ,_, based_VBN on_IN the_DT results_NNS of_IN alert_JJ fusion_NN ,_, we_PRP further_JJ group_NN alerts_VBZ that_WDT have_VBP same_JJ attributes_NNS except_IN time_NN stamps_NNS into_IN one_CD cluster_NN ._.
+After_IN this_DT step_NN ,_, we_PRP have_VBP further_RB reduced_VBN the_DT redundancy_NN of_IN al_FW
+per_IN uses_VBZ Syslog_NNP ,_, rather_RB than_IN event_NN messages_NNS from_IN multiple_JJ network_NN layers_NNS ,_, as_IN its_PRP$ data_NNS source_NN ._.
+2_CD ._.
+RELATED_NNS WORK_VBP Many_JJ previous_JJ works_NNS have_VBP studied_VBN event_NN correlation_NN and_CC sequential_JJ pattern_NN mining_NN ,_, such_JJ as_IN =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD ,_, 6_CD ,_, 7_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: to_TO name_VB but_CC a_DT few_JJ ._.
+Many_JJ papers_NNS have_VBP also_RB used_VBN temporal_JJ heuristics_NNS to_TO improve_VB the_DT accuracy_NN of_IN their_PRP$ results_NNS ._.
+However_RB ,_, while_IN many_JJ papers_NNS have_VBP shown_VBN how_WRB these_DT heuristics_NNS can_MD be_VB used_VBN to_TO improve_VB event_NN cor_NN
+art_NN intrusion_NN detection_NN tools_NNS as_IN these_DT sensors_NNS are_VBP not_RB very_RB accurate_JJ and_CC produce_VBP a_DT lot_NN of_IN false_JJ positives_NNS -LRB-_-LRB- some_DT researchers_NNS have_VBP suggested_VBN that_IN as_RB much_JJ as_IN 99_CD %_NN of_IN typical_JJ alarm_NN traffic_NN is_VBZ false_JJ alarms_NNS =_JJ -_: =[_NN 2_CD ,_, 13_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+If_IN network_NN defense_NN systems_NNS provided_VBD the_DT kind_NN of_IN detailed_JJ data_NNS described_VBN by_IN the_DT M2D2_NN data_NN model_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- it_PRP might_MD be_VB possible_JJ to_TO determine_VB if_IN the_DT alerts_VBZ correspond_VBP to_TO real_JJ attacks_NNS and_CC if_IN those_DT attacks_NNS w_SYM
+e_LS key_JJ resources_NNS in_IN the_DT ID_NNP task_NN ._.
+Unfortunately_RB ,_, the_DT number_NN of_IN alerts_VBZ that_WDT are_VBP triggered_VBN by_IN the_DT IDS_NNP can_MD be_VB overwhelming_JJ ,_, especially_RB with_IN large_JJ heterogeneous_JJ networks_NNS ,_, with_IN a_DT false_JJ alarm_NN rate_NN up_IN to_TO 99_CD %_NN -LRB-_-LRB- =_JJ -_: =_JJ Julisch_NNP &_CC Dacier_NNP ,_, 2002_CD -_: =--RRB-_NN ._.
+This_DT adds_VBZ to_TO cognitive_JJ workload_NN ,_, as_IN engineers_NNS must_MD reduce_VB the_DT number_NN of_IN alerts_VBZ to_TO a_DT manageable_JJ level_NN while_IN ensuring_VBG that_IN true_JJ intrusions_NNS are_VBP not_RB missed_VBN ._.
+Specifically_RB ,_, the_DT monitoring_NN phase_NN requires_VBZ
+intrusion_NN alerts_VBZ ._.
+The_DT mission-impact-based_JJ approach_NN correlates_NNS alerts_VBZ raised_VBN by_IN INFOSEC_NN devices_NNS such_JJ as_IN IDS_NNP and_CC firewalls_NNS with_IN the_DT importance_NN of_IN system_NN assets_NNS -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+The_DT alert_JJ clustering_NN techniques_NNS in_IN =_JJ -_: =[_NN 22_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: use_VB conceptual_JJ clustering_NN and_CC generalization_NN hierarchy_NN to_TO aggregate_NN alerts_VBZ into_IN clusters_NNS ._.
+Alert_NNP correlation_NN may_MD also_RB be_VB performed_VBN by_IN matching_VBG attack_NN scenarios_NNS specified_VBN by_IN attack_NN languages_NNS ._.
+Examples_NNS
+-_: performing_VBG some_DT preliminary_JJ feature_NN selection_NN operations_NNS to_TO bring_VB the_DT number_NN of_IN variables_NNS to_TO a_DT manageable_JJ range_NN ._.
+Data_NNP Mining_NNP lends_VBZ techniques_NNS from_IN many_JJ different_JJ disciplines_NNS such_JJ as_IN databases_NNS -LRB-_-LRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, and_CC others_NNS -RRB-_-RRB- ,_, statistics_NNS -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, Machine_NNP Learning\/Pattern_NNP Recognition_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, and_CC Visualization_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+The_DT aim_NN of_IN this_DT study_NN is_VBZ to_TO investigate_VB how_WRB data_NN mining_NN techniques_NNS can_MD be_VB used_VBN

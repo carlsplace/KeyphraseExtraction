@@ -1,0 +1,79 @@
+Sampling_VBG search-engine_JJ results_NNS
+We_PRP consider_VBP the_DT problem_NN of_IN efficiently_RB sampling_NN Web_NN search_NN engine_NN query_NN results_NNS ._.
+In_IN turn_NN ,_, using_VBG a_DT small_JJ random_JJ sample_NN instead_RB of_IN the_DT full_JJ set_NN of_IN results_NNS leads_VBZ to_TO efficient_JJ approximate_JJ algorithms_NNS for_IN several_JJ applications_NNS ,_, such_JJ as_IN :_: Determining_VBG the_DT set_NN of_IN categories_NNS in_IN a_DT given_VBN taxonomy_NN spanned_VBN by_IN the_DT search_NN results_NNS ;_: Finding_VBG the_DT range_NN of_IN metadata_NN values_NNS associated_VBN to_TO the_DT result_NN set_VBN in_IN order_NN to_TO enable_VB ``_`` multi-faceted_JJ search_NN ;_: ''_'' Estimating_VBG the_DT size_NN of_IN the_DT result_NN set_NN ;_: Data_NNP mining_NN associations_NNS to_TO the_DT query_NN terms_NNS ._.
+We_PRP present_VBP and_CC analyze_VBP an_DT efficient_JJ algorithm_NN for_IN obtaining_VBG uniform_JJ random_JJ samples_NNS applicable_JJ to_TO any_DT search_NN engine_NN based_VBN on_IN posting_VBG lists_NNS and_CC document-at-a-time_JJ evaluation_NN ._.
+-LRB-_-LRB- To_TO our_PRP$ knowledge_NN ,_, all_DT popular_JJ Web_NN search_NN engines_NNS ,_, e.g._FW Google_NNP ,_, Inktomi_NNP ,_, AltaVista_NNP ,_, AllTheWeb_NNP ,_, belong_VBP to_TO this_DT class_NN ._. -RRB-_-RRB-
+Furthermore_RB ,_, our_PRP$ algorithm_NN can_MD be_VB modified_VBN to_TO follow_VB the_DT modern_JJ object-oriented_JJ approach_NN whereby_WRB posting_VBG lists_NNS are_VBP viewed_VBN as_IN streams_NNS equipped_VBN with_IN a_DT next_JJ method_NN ,_, and_CC the_DT next_JJ method_NN for_IN Boolean_NNP and_CC other_JJ complex_JJ queries_NNS is_VBZ built_VBN from_IN the_DT next_JJ method_NN for_IN primitive_JJ terms_NNS ._.
+In_IN our_PRP$ case_NN we_PRP show_VBP how_WRB to_TO construct_VB a_DT basic_JJ next_JJ -LRB-_-LRB- p_NN -RRB-_-RRB- method_NN that_IN samples_NNS term_VBP posting_VBG lists_NNS with_IN probability_NN p_NN ,_, and_CC show_VB how_WRB to_TO construct_VB next_JJ -LRB-_-LRB- p_NN -RRB-_-RRB- methods_NNS for_IN Boolean_JJ operators_NNS -LRB-_-LRB- AND_NNP ,_, OR_NN ,_, WAND_NN -RRB-_-RRB- from_IN primitive_JJ methods_NNS ._.
+Finally_RB ,_, we_PRP test_VBP the_DT efficiency_NN and_CC quality_NN of_IN our_PRP$ approach_NN on_IN both_CC synthetic_JJ and_CC real-world_JJ data_NNS ._.
+nces_NNS on_IN dj_FW +1_FW ._.
+Compared_VBN to_TO TAAT_NN ,_, DAAT_NNP has_VBZ a_DT smaller_JJR memory_NN footprint_NN than_IN TAAT_NN ,_, due_JJ to_TO the_DT lack_NN of_IN maintaining_VBG intermediate_JJ scores_NNS for_IN many_JJ documents_NNS ,_, and_CC is_VBZ reportedly_RB applied_VBN by_IN large_JJ search_NN engines_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+An_DT alternative_JJ strategy_NN to_TO DAAT_NN and_CC TAAT_NN is_VBZ called_VBN score-at-atime_JJ -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, however_RB this_DT is_VBZ suitable_JJ only_RB for_IN indices_NNS sorted_VBD or_CC partially_RB sorted_VBN by_IN document_NN importance_NN ,_, which_WDT must_MD be_VB calculated_VBN before_IN th_DT
+adays_NNS ,_, users_NNS interact_VBP with_IN Web_NN Search_VB Engines_NNS -LRB-_-LRB- WSE_NN -RRB-_-RRB- by_IN typing_NN a_DT few_JJ keywords_NNS representing_VBG their_PRP$ information_NN need_NN ,_, and_CC these_DT keywords_NNS are_VBP often_RB ambiguous_JJ and_CC have_VBP more_JJR than_IN one_CD possible_JJ interpretation_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP is_VBZ also_RB known_VBN that_IN WSEs_NNS collect_VBP detailed_JJ information_NN about_IN the_DT queries_NNS submitted_VBN in_IN the_DT past_NN along_IN with_IN a_DT lot_NN of_IN additional_JJ information_NN that_WDT are_VBP extremely_RB valuable_JJ for_IN a_DT number_NN of_IN different_JJ tasks_NNS
+computational_JJ complexity_NN bound_VBD ._.
+In_IN Web_NN search_NN ranking_NN ,_, queries_NNS are_VBP associated_VBN with_IN multiple_JJ intents_NNS ,_, and_CC when_WRB a_DT user_NN 's_POS intent_NN is_VBZ unknown_JJ ,_, trading-off_JJ some_DT relevance_NN for_IN result_NN diversity_NN is_VBZ desirable_JJ =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 13_CD ,_, 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Presubmit_NNP is_VBZ a_DT clear_JJ case_NN where_WRB intent_NN is_VBZ not_RB defined_VBN ._.
+Common_JJ solutions_NNS suggest_VBP the_DT most_RBS popular_JJ queries_NNS that_WDT match_VBP a_DT user_NN 's_POS prefix_NN ._.
+However_RB ,_, mere_JJ frequency_NN sorting_NN leads_VBZ to_TO many_JJ cases_NNS with_IN low_JJ util_NN
+f_LS particular_JJ interest_NN to_TO the_DT user_NN are_VBP present_JJ ,_, it_PRP can_MD not_RB be_VB effective_JJ if_IN all_DT top_JJ N_NN results_NNS are_VBP similar_JJ ._.
+Anagnostopoulos_NNP et_FW al._FW recently_RB proposed_VBD a_DT method_NN to_TO sample_NN search_NN results_NNS to_TO avoid_VB homogeneity_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP propose_VBP an_DT alternative_NN of_IN using_VBG query-query_JJ reformulations_NNS to_TO understand_VB the_DT variety_NN of_IN user_NN intents_NNS and_CC improve_VB the_DT effectiveness_NN of_IN client-side_JJ Permission_NN to_TO make_VB digital_JJ or_CC hard_JJ copies_NNS of_IN all_DT
+2_CD to_TO rank_VB Web_NN pages_NNS ._.
+However_RB ,_, only_RB using_VBG the_DT Okapi_NNP method_NN will_MD concentrate_VB the_DT search_NN results_VBZ on_IN a_DT few_JJ topics_NNS ._.
+In_IN the_DT past_NN ,_, studies_NNS have_VBP shown_VBN that_IN searchers_NNS usually_RB prefer_VBP diversified_JJ search_NN results_NNS =_JJ -_: =[_NN 1_CD ,_, 11_CD ,_, 32_CD ,_, 47_CD ,_, 48_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT existing_VBG methods_NNS for_IN result_NN diversification_NN fall_NN into_IN three_CD categories_NNS :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- Re-rank_NN or_CC cluster_VB the_DT returned_VBN top-L_JJ Web_NN pages_NNS -LRB-_-LRB- 11_CD ,_, 18_CD -RRB-_-RRB- ._.
+-LRB-_-LRB- 2_LS -RRB-_-RRB- Generate_VB from_IN the_DT original_JJ query_NN a_DT set_NN of_IN related_JJ querie_NN
+ame_NN time_NN ,_, the_DT Web_NN corpus_NN grows_VBZ :_: a_DT study_NN during_IN the_DT beginning_NN of_IN 2005_CD argues_VBZ that_IN the_DT size_NN of_IN the_DT indexable_JJ Web_NN is_VBZ at_IN least_JJS 11.5_CD billion_CD pages_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+\*_SYM A_DT preliminary_JJ version_NN of_IN this_DT work_NN has_VBZ appeared_VBN in_IN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: #Work_NN performed_VBN while_IN this_DT author_NN was_VBD at_IN IBM_NNP T._NNP J._NNP Watson_NNP Research_NNP Center_NNP ._.
+1sThus_NN search_NN algorithmic_JJ efficiency_NN is_VBZ as_RB important_JJ as_IN ever_RB :_: although_IN processor_NN speeds_NNS are_VBP increasing_VBG and_CC hardware_NN is_VBZ getti_NNS
+for_IN clustering_NN publication_NN years_NNS to_TO time_NN spans_NNS for_IN a_DT facet_NN `_`` publication_NN year_NN '_'' to_TO avoid_VB non-empty_JJ facet_NN components_NNS -RRB-_-RRB- ._.
+This_DT has_VBZ led_VBN to_TO a_DT rich_JJ line_NN of_IN extensive_JJ research_NN in_IN result_NN clustering_NN or_CC sampling_NN =_JJ -_: =[_NN 2_CD ,_, 9_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One_CD of_IN the_DT main_JJ problems_NNS in_IN document_NN retrieval_NN is_VBZ that_IN all_DT information_NN about_IN a_DT document_NN 's_POS topics_NNS -LRB-_-LRB- and_CC related_JJ information_NN or_CC categorizations_NNS -RRB-_-RRB- has_VBZ to_TO be_VB expensively_RB derived_VBN directly_RB from_IN the_DT full_JJ tex_NN
+hole_NN web_NN -LRB-_-LRB- 23_CD ,_, 19_CD ,_, 20_CD ,_, 2_CD ,_, 30_CD ,_, 7_CD -RRB-_-RRB- ._.
+Sampling_VBG from_IN the_DT whole_JJ web_NN ,_, however_RB ,_, is_VBZ a_DT more_RBR difficult_JJ problem_NN ,_, and_CC therefore_RB all_PDT the_DT known_JJ algorithms_NNS suffer_VBP from_IN severe_JJ bias_NN ._.
+Anagnostopoulos_NNP ,_, Broder_NNP ,_, and_CC Carmel_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: showed_VBD a_DT technique_NN for_IN measuring_VBG parameters_NNS of_IN the_DT results_NNS of_IN a_DT single_JJ search_NN engine_NN query_NN ,_, rather_RB of_IN the_DT entire_JJ corpus_NN ._.
+Their_PRP$ technique_NN ,_, however_RB ,_, assumes_VBZ privileged_JJ access_NN to_TO the_DT internal_JJ data_NNS struc_VBP
+leTop_NN returns_NNS fewer_JJR and_CC fewer_JJR Web_NN pages_NNS relative_JJ to_TO all_DT retrieved_VBN documents_NNS ,_, thereby_RB rendering_VBG it_PRP less_RBR effective_JJ ._.
+A_DT more_RBR effective_JJ means_NNS to_TO sample_NN documents_NNS from_IN the_DT Web_NN is_VBZ essential_JJ ,_, as_IN described_VBN in_IN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN contrast_NN ,_, GoogleCooc_NNP yields_VBZ a_DT more_RBR precise_JJ number_NN if_IN the_DT Web_NN grows_VBZ because_IN the_DT low-frequency_NN problem_NN is_VBZ improved_VBN ._.
+Therefore_RB ,_, a_DT good_JJ combination_NN of_IN GoogleCooc_NNP and_CC GoogleTop_NNP is_VBZ necessary_JJ for_IN Super_NNP
+portance_NN sampling_NN and_CC rejection_NN sampling_NN to_TO make_VB their_PRP$ samples_NNS near-uniform_JJ ._.
+Yet_RB ,_, the_DT bias_NN they_PRP suffer_VBP towards_IN pages_NNS with_IN high_JJ in-degree_NN is_VBZ significant_JJ ._.
+Last_JJ year_NN ,_, Anagnostopoulos_NNP ,_, Broder_NNP ,_, and_CC Carmel_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD an_DT enhancement_NN to_TO index_NN architecture_NN that_WDT could_MD support_VB random_JJ sampling_NN from_IN the_DT result_NN sets_NNS of_IN broad_JJ queries_NNS ._.
+This_DT is_VBZ very_RB different_JJ from_IN what_WP we_PRP do_VBP in_IN this_DT paper_NN :_: our_PRP$ techniques_NNS do_VBP not_RB pro_JJ
+esent_VB the_DT motivation_NN for_IN the_DT problem_NN and_CC two_CD algorithms_NNS for_IN addressing_VBG it_PRP ._.
+We_PRP analyze_VBP them_PRP theoretically_RB and_CC we_PRP present_VBP some_DT experimental_JJ results_NNS ._.
+Most_JJS of_IN the_DT results_NNS of_IN this_DT chapter_NN have_VBP appeared_VBN in_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC are_VBP joint_JJ work_NN with_IN Andrei_NNP Broder_NNP and_CC David_NNP Carmel_NNP ._.
+4.1_CD Problem_NNP Description_NN and_CC Motivation_NN Web_NN search_NN continues_VBZ its_PRP$ explosive_JJ growth_NN :_: according_VBG to_TO the_DT Pew_NNP Internet_NNP &_CC American_NNP Life_NNP Project_NNP -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_,
+untimes_NNS ._.
+With_IN certain_JJ IR_NNP systems_NNS ,_, the_DT candidate_NN solution_NN set_NN could_MD prove_VB prohibitively_RB large_JJ for_IN direct_JJ application_NN of_IN our_PRP$ techniques_NNS ._.
+We_PRP plan_VBP to_TO investigate_VB how_WRB techniques_NNS such_JJ as_IN those_DT described_VBN in_IN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: could_MD be_VB employed_VBN to_TO reduce_VB to_TO a_DT representative_JJ sample_NN the_DT number_NN of_IN candidates_NNS considered_VBN ._.
+Preference_NN Representation_NN While_IN our_PRP$ experimental_JJ setup_NN was_VBD sufficient_JJ to_TO demonstrate_VB the_DT superiority_NN of_IN our_PRP$
+he_PRP owners_NNS of_IN search_NN engines_NNS themselves_PRP ._.
+For_IN example_NN ,_, even_RB the_DT simple_JJ problem_NN of_IN efficiently_RB counting_VBG the_DT size_NN of_IN a_DT result_NN set_NN raises_VBZ non-trivial_JJ problems_NNS ._.
+In_IN fact_NN ,_, Anagnostopoulos_NNP ,_, Broder_NNP ,_, and_CC Carmel_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: show_VB a_DT Google_NNP example_NN using_VBG the_DT queries_NNS george_NN and_CC washington_NN where_WRB the_DT identity_NN |_NN A_NN ∪_NN B_NN |_NN =_JJ |_CD A_NNP |_NNP +_CC |_NNP B_NNP |_NNP −_NNP |_NNP A_NNP ∩_NNP B_NNP |_NNP is_VBZ off_RP by_IN 25_CD %_NN ._.
+-LRB-_-LRB- They_PRP present_VBP an_DT algorithm_NN that_WDT enables_VBZ efficient_JJ sampling_NN of_IN search_NN results_NNS ,_,
+f_LS particular_JJ interest_NN to_TO the_DT user_NN are_VBP present_JJ ,_, it_PRP can_MD not_RB be_VB effective_JJ if_IN all_DT top_JJ N_NN results_NNS are_VBP similar_JJ ._.
+Anagnostopoulos_NNP et_FW al._FW recently_RB proposed_VBD a_DT method_NN to_TO sample_NN search_NN results_NNS to_TO avoid_VB homogeneity_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP propose_VBP an_DT alternative_NN of_IN using_VBG query-query_JJ reformulations_NNS to_TO understand_VB the_DT variety_NN of_IN user_NN intents_NNS and_CC improve_VB the_DT effectiveness_NN of_IN client-side_JJ Permission_NN to_TO make_VB digital_JJ or_CC hard_JJ copies_NNS of_IN all_DT
+on_IN that_IN the_DT document_NN frequency_NN of_IN the_DT query_NN terms_NNS will_MD be_VB accurately_RB reported_VBN by_IN each_DT search_NN engine_NN ._.
+Even_RB when_WRB collections_NNS do_VBP provide_VB the_DT document_NN frequency_NN ,_, these_DT statistics_NNS are_VBP not_RB always_RB reliable_JJ -LRB-_-LRB- =_JJ -_: =_JJ Anagnostopoulos_NNPS et_FW al._FW ,_, 2005_CD -_: =-]_CD ._.
+In_IN addition_NN ,_, as_IN we_PRP have_VBP seen_VBN ,_, the_DT assumption_NN of_IN randomness_NN in_IN QBS_NN is_VBZ questionable_JJ ._.
+Compared_VBN to_TO capture-recapture_NN ,_, the_DT additional_JJ costs_NNS of_IN SRS_NN are_VBP significant_JJ :_: the_DT documents_NNS must_MD be_VB fetched_VBN and_CC a_DT gr_NN
+escribed_VBN in_IN -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+Our_PRP$ work_NN extends_VBZ OLAP_NN by_IN combining_VBG content-based_JJ ,_, structure-based_JJ ,_, and_CC link-based_JJ reporting_NN over_IN text_NN collections_NNS ._.
+Search_VB ._.
+Search_VB on_IN unstructured_JJ data_NNS evolved_VBN to_TO multifaceted_JJ search_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT is_VBZ often_RB deployed_VBN at_IN e-commerce_NN web_NN sites_NNS ._.
+It_PRP provides_VBZ a_DT keyword-driven_JJ way_NN to_TO search_VB and_CC further_RB refine_VB query_NN results_NNS ._.
+For_IN example_NN ,_, Endeca_NNP 's_POS ``_`` MDEX_NNP ''_'' engine_NN implements_VBZ guided_VBN navigation_NN that_WDT is_VBZ i_FW
+ation_NN is_VBZ necessary_JJ for_IN easier_JJR ranking_NN -LRB-_-LRB- especially_RB with_IN the_DT long_JJ and_CC complex_JJ queries_NNS that_WDT arise_VBP in_IN automated_JJ query_NN preprocessing_NN -RRB-_-RRB- :_: new_JJ techniques_NNS applied_VBN to_TO inverted_JJ indices_NNS ,_, such_JJ as_IN document_NN sampling_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, require_VBP that_IN skips_NNS are_VBP generated_VBN by_IN a_DT random_JJ source_NN ._.
+In_IN that_DT case_NN ,_, it_PRP is_VBZ even_RB more_RBR difficult_JJ to_TO predict_VB the_DT usage_NN pattern_NN of_IN skip_VB methods_NNS ._.
+Motivated_VBN by_IN these_DT reasons_NNS ,_, we_PRP are_VBP going_VBG to_TO present_VB a_DT gener_NN
+Using_VBG another_DT dataset_NN ,_, Bilgic_NNP and_CC Mooney_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- have_VBP shown_VBN that_IN histogram-based_JJ explanations_NNS can_MD be_VB more_RBR persuasive_JJ than_IN intended_JJ ,_, causing_VBG items_NNS to_TO be_VB over-estimated_VBN ._.
+6.2_CD Web_NN Search_VB To_TO the_DT exception_NN of_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, most_JJS Web_NN search_NN engines_NNS often_RB enforce_VBP diversity_NN over_IN -LRB-_-LRB- unstructured_JJ -RRB-_-RRB- data_NNS results_VBZ as_IN a_DT post-processing_JJ step_NN -LRB-_-LRB- 6_CD ,_, 19_CD -RRB-_-RRB- ._.
+In_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, the_DT authors_NNS develop_VBP a_DT query_JJ reformulation_NN method_NN used_VBN to_TO re-rank_VB
+a-list_NN similarity_NN metric_JJ to_TO assess_VB the_DT topical_JJ diversity_NN of_IN recommendation_NN lists_NNS and_CC a_DT topic_NN diversification_NN approach_NN for_IN decreasing_VBG intra-list_JJ similarity_NN ._.
+Web_NN Search_VB :_: Most_JJS Web_NN search_NN engines_NNS ,_, except_IN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, enforce_VBP diversity_NN as_IN a_DT post-processing_JJ step_NN ._.
+These_DT methods_NNS are_VBP quite_RB different_JJ from_IN ours_PRP since_IN they_PRP were_VBD developed_VBN in_IN the_DT context_NN of_IN search_NN ._.
+The_DT method_NN in_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- relies_VBZ on_IN sampling_NN term_NN posting_VBG

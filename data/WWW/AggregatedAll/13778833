@@ -1,0 +1,194 @@
+Design_NN and_CC implementation_NN of_IN contextual_JJ information_NN portals_NNS
+This_DT paper_NN presents_VBZ a_DT system_NN for_IN enabling_VBG offline_JJ web_NN use_NN to_TO satisfy_VB the_DT information_NN needs_NNS of_IN disconnected_VBN communities_NNS ._.
+We_PRP describe_VBP the_DT design_NN ,_, implementation_NN ,_, evaluation_NN ,_, and_CC pilot_NN deployment_NN of_IN an_DT automated_JJ mechanism_NN to_TO construct_VB Contextual_JJ Information_NN Portals_NNS -LRB-_-LRB- CIPs_NNS -RRB-_-RRB- ._.
+CIPs_NNS are_VBP large_JJ searchable_JJ information_NN repositories_NNS of_IN web_NN pages_NNS tailored_VBN to_TO the_DT information_NN needs_NNS of_IN a_DT target_NN population_NN ._.
+We_PRP combine_VBP an_DT efficient_JJ classifier_NN with_IN a_DT focused_JJ crawler_NN to_TO gather_VB the_DT web_NN pages_NNS for_IN the_DT portal_NN for_IN any_DT given_VBN topic_NN ._.
+Given_VBN a_DT set_NN of_IN topics_NNS of_IN interest_NN ,_, our_PRP$ system_NN constructs_NNS a_DT CIP_NN containing_VBG the_DT most_RBS relevant_JJ pages_NNS from_IN the_DT web_NN across_IN these_DT topics_NNS ._.
+Using_VBG several_JJ secondary_JJ school_NN course_NN syllabi_NNS ,_, we_PRP demonstrate_VBP the_DT effectiveness_NN of_IN our_PRP$ system_NN for_IN constructing_VBG CIPs_NNS for_IN use_NN as_IN an_DT education_NN resource_NN ._.
+We_PRP evaluate_VBP our_PRP$ system_NN across_IN several_JJ metrics_NNS :_: classification_NN accuracy_NN ,_, crawl_NN scalability_NN ,_, crawl_NN accuracy_NN and_CC harvest_NN rate_NN ._.
+We_PRP describe_VBP the_DT utility_NN and_CC usability_NN of_IN our_PRP$ system_NN based_VBN on_IN a_DT preliminary_JJ deployment_NN study_NN at_IN an_DT after-school_JJ program_NN in_IN India_NNP ,_, and_CC also_RB outline_VB our_PRP$ ongoing_JJ larger-scale_JJ pilot_NN deployment_NN at_IN five_CD schools_NNS in_IN Kenya_NNP ._.
+rs_IN 2_CD and_CC 5_CD subsume_VBP prior_JJ work_NN on_IN ELF_NN -LRB-_-LRB- 109_CD -RRB-_-RRB- ._.
+Chapter_NN 2_CD and_CC 6_CD include_VBP material_NN that_WDT extends_VBZ prior_JJ work_NN on_IN web_NN browsing_NN and_CC RuralCafe_NN -LRB-_-LRB- 108_CD ,_, 114_CD ,_, 115_CD -RRB-_-RRB- ._.
+Chapter_NN 7_CD and_CC 8_CD include_VBP and_CC extend_VBP CIP_NNP publications_NNS =_JJ -_: =[_NN 110_CD ,_, 112_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Chapter_NN 10_CD includes_VBZ and_CC extends_VBZ work_NN from_IN SMSFind_NN -LRB-_-LRB- 111_CD ,_, 113_CD -RRB-_-RRB- ._.
+Chapter_NN 11_CD is_VBZ a_DT combination_NN of_IN our_PRP$ UjU_NN and_CC Epothecary_JJ publications_NNS -LRB-_-LRB- 204_CD ,_, 248_CD -RRB-_-RRB- ._.
+vAbstract_NN A_NN significant_JJ fraction_NN of_IN Internet_NNP users_NNS who_WP r_SYM
+used_VBN crawlers_NNS ,_, and_CC more_RBR sophisticated_JJ variations_NNS exist_VBP -LRB-_-LRB- 46,49_CD -RRB-_-RRB- ._.
+Also_RB ,_, extensive_JJ follow_VBP up_RP work_NN has_VBZ compared_VBN focused_JJ crawling_NN against_IN a_DT variety_NN of_IN other_JJ crawling_VBG techniques_NNS across_IN a_DT variety_NN of_IN domains_NNS =_JJ -_: =[_NN 19,20,42_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP has_VBZ been_VBN shown_VBN in_IN recent_JJ work_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- that_WDT uses_VBZ a_DT latent_JJ semantic_JJ indexing_NN -LRB-_-LRB- LSI_NNP -RRB-_-RRB- classifier_NN ,_, which_WDT combines_VBZ link_NN analysis_NN with_IN text_NN content_NN ,_, that_IN a_DT variant_NN of_IN the_DT simple_JJ Shark-search_NN can_MD be_VB surprisin_NN
+cs_NNS that_WDT facilitate_VBP the_DT process_NN of_IN finding_VBG information_NN targets_NNS ._.
+It_PRP was_VBD definitely_RB useful_JJ for_IN getting_VBG a_DT sense_NN of_IN the_DT general_JJ ideas_NNS in_IN the_DT CIP_NNP ._.
+We_PRP also_RB integrated_VBD our_PRP$ repository_NN and_CC index_NN with_IN RuralCafe_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: user_NN interface_NN ._.
+The_DT benefit_NN of_IN this_DT is_VBZ that_IN if_IN there_EX is_VBZ some_DT network_NN available_JJ ,_, RuralCafe_NNP could_MD dynamically_RB update_VB its_PRP$ contents_NNS and_CC slowly_RB improve_VB the_DT CIP_NNP on_IN the_DT fly_NN ._.
+Carrot2_NN uses_VBZ its_PRP$ own_JJ indexing_NN me_PRP
+r_NN web_NN graph_NN -LRB-_-LRB- sibling-relationships_NNS -RRB-_-RRB- ._.
+Still_RB other_JJ approaches_NNS view_VBP the_DT labeling_NN of_IN pages_NNS as_IN a_DT optimization_NN problem_NN on_IN the_DT graph_NN of_IN pages_NNS formed_VBN by_IN anchors_NNS ,_, and_CC attempt_NN to_TO optimize_VB labeling_NN on_IN the_DT graph_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Other_JJ work_NN in_IN the_DT area_NN has_VBZ been_VBN on_IN URL-only_JJ classifiers_NNS ;_: these_DT ask_VBP the_DT question_NN of_IN whether_IN is_VBZ it_PRP feasible_JJ to_TO classify_VB a_DT page_NN knowing_VBG only_RB the_DT URL_NN -LRB-_-LRB- and_CC possibly_RB some_DT link_NN structure_NN -RRB-_-RRB- -LRB-_-LRB- 33_CD -RRB-_-RRB- ._.
+This_DT is_VBZ of_IN
+and_CC shipped_VBN as_IN a_DT self-contained_JJ web_NN cache_NN to_TO any_DT geographic_JJ location_NN ._.
+CIPs_NNS are_VBP complementary_JJ to_TO existing_VBG mechanical_JJ modes_NNS of_IN bulk_JJ digital_JJ information_NN dissemination_NN which_WDT makes_VBZ them_PRP easily_RB deployable_VBP =_JJ -_: =[_NN 24,29,50,54,55_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+CIPs_NNS may_MD also_RB be_VB used_VBN to_TO address_VB existing_VBG connection_NN or_CC content_NN scarcity_NN by_IN bootstrapping_VBG local_JJ web_NN caches_NNS behind_IN slow_JJ connections_NNS ,_, as_IN a_DT stand-alone_JJ portal_NN within_IN a_DT kiosk_NN service_NN ,_, or_CC as_IN an_DT informati_NN
+to_TO well-structured_JJ portals_NNS such_JJ as_IN MIT_NNP OpenCourseWare_NNP -LRB-_-LRB- 4_CD -RRB-_-RRB- or_CC educational_JJ video_NN repositories_NNS such_JJ as_IN Khan_NNP Academy_NNP -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Locality-specific_JJ web_NN portals_NNS :_: Collaborative_JJ caching_NN over_IN delay_NN tolerant_JJ networks_NNS =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ been_VBN observed_VBN to_TO improve_VB cache_NN hit_NN rates_NNS dramatically_RB due_JJ to_TO similar_JJ interests_NNS across_IN nearby_JJ villages_NNS ._.
+The_DT prefetching_JJ component_NN in_IN these_DT systems_NNS could_MD be_VB improved_VBN by_IN learning_VBG which_WDT location_NN spec_NN
+as_IN a_DT 1_CD Mbps_NN leased_VBD line_NN in_IN universities_NNS and_CC small_JJ companies_NNS -RRB-_-RRB- ,_, the_DT network_NN connection_NN is_VBZ often_RB shared_VBN across_IN many_JJ users_NNS -LRB-_-LRB- 50_CD −_CD 1000_CD users_NNS in_IN universities_NNS -RRB-_-RRB- resulting_VBG in_IN an_DT extremely_RB poor_JJ user_NN experience_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Only_RB tens_NNS of_IN kilometers_NNS outside_IN Nairobi_NNP ,_, Kenya_NNP ,_, our_PRP$ researchers_NNS found_VBD several_JJ secondary_JJ schools_NNS where_WRB the_DT local_JJ Internet_NN Service_NN Provider_NN -LRB-_-LRB- ISP_NN -RRB-_-RRB- was_VBD simply_RB unwilling_JJ to_TO lay_VB down_RP the_DT ``_`` last_JJ hop_NN ''_'' of_IN fiber_NN
+ML_NN tags_NNS -LRB-_-LRB- 58_CD -RRB-_-RRB- and_CC the_DT geometry_NN of_IN the_DT rendered_VBN page_NN -LRB-_-LRB- 56_CD -RRB-_-RRB- ._.
+A_DT broad_JJ class_NN of_IN features_NNS for_IN documents_NNS comes_VBZ from_IN anchors_NNS ._.
+Anchor-text_JJ from_IN links_NNS pointing_VBG into_IN a_DT page_NN can_MD be_VB associated_VBN with_IN the_DT page_NN itself_PRP =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN addition_NN ,_, URLs_NNS and_CC text_NN from_IN other_JJ pages_NNS may_MD be_VB accumulated_VBN into_IN the_DT candi5_NNP Deployment_NNP at_IN School_NNP 3_CD has_VBZ been_VBN delayed_VBN due_JJ to_TO internal_JJ conflict_NN between_IN the_DT instructor_NN and_CC the_DT principal_NN which_WDT is_VBZ stil_NN
+dicine_NN ._.
+The_DT same_JJ idea_NN can_MD be_VB extended_VBN to_TO disease_NN specific_JJ portals_NNS for_IN important_JJ diseases_NNS such_JJ as_IN HIV_NN ,_, TB_NN ,_, malaria_NN ,_, diabetes_NN or_CC for_IN portals_NNS for_IN specific_JJ specializations_NNS such_JJ as_IN opthalmology_NN or_CC surgery_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Education_NNP :_: Given_IN the_DT volume_NN of_IN educational_JJ material_NN available_JJ online_NN ,_, educational_JJ portals_NNS for_IN specific_JJ topics_NNS may_MD be_VB automatically_RB constructed_VBN separately_RB or_CC as_IN supplementary_JJ materials_NNS to_TO well-struct_JJ
+ortant_JJ value-added_JJ service_NN that_IN eChoupal_NN could_MD offer_VB its_PRP$ rural_JJ farmers_NNS at_IN each_DT kiosk_NN ._.
+We_PRP have_VBP begun_VBN work_NN with_IN agricultural_JJ universities_NNS in_IN India_NNP to_TO develop_VB such_JJ portals_NNS ._.
+Medicine_NNP :_: Bluetrunk_NNP Libraries_NNPS =_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT massive_JJ project_NN by_IN WHO_WP to_TO ship_VB mobile_JJ libraries_NNS of_IN 150_CD healthcare_NN books_NNS into_IN remote_JJ regions_NNS of_IN Africa_NNP as_IN an_DT educational_JJ guide_NN for_IN healthworkers_NNS on_IN the_DT field_NN ._.
+St._NNP Johns_NNP Medical_NNP College_NNP ,_, one_CD of_IN th_DT
+everage_VB Google_NNP based_VBN results_NNS which_WDT leverages_VBZ the_DT underlying_VBG web_NN graph_NN ,_, we_PRP believe_VBP our_PRP$ initial_JJ set_NN to_TO have_VB good_JJ hubs_NNS and_CC authorities_NNS for_IN a_DT topic_NN ._.
+Third_RB ,_, we_PRP added_VBD a_DT heuristic_NN technique_NN called_VBD tunneling_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT allows_VBZ a_DT number_NN of_IN irrelevant_JJ pages_NNS to_TO be_VB traversed_VBN to_TO reach_VB a_DT relevant_JJ page_NN ._.
+This_DT is_VBZ important_JJ because_IN ,_, pages_NNS relevant_JJ to_TO a_DT topic_NN are_VBP not_RB necessarily_RB connected_VBN in_IN the_DT web_NN graph_NN ._.
+In_IN our_PRP$ implemen_NNS
+to_TO automatically_RB construct_VB a_DT Contextual_NNP Information_NNP Portal_NNP -LRB-_-LRB- CIP_NNP -RRB-_-RRB- ._.
+A_DT CIP_NNP provides_VBZ an_DT offline_JJ searchable_JJ ,_, browseable_JJ repository_NN composed_VBN of_IN content_NN from_IN the_DT web_NN about_IN specific_JJ topics_NNS ._.
+In_IN previous_JJ work_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP proposed_VBD the_DT basic_JJ framework_NN for_IN CIPs_NNS and_CC outlined_VBD some_DT of_IN the_DT research_NN challenges_NNS involved_VBN in_IN building_VBG and_CC populating_VBG them_PRP ._.
+Building_VBG a_DT CIP_NNP for_IN any_DT given_VBN task_NN is_VBZ a_DT challenging_JJ problem_NN and_CC require_VB
+recent_JJ ICTD_NN projects_NNS have_VBP focused_VBN on_IN constructing_VBG information_NN portals_NNS or_CC repositories_NNS for_IN the_DT illiterate_JJ and_CC focus_VB on_IN challenges_NNS resulting_VBG from_IN using_VBG voice_NN as_IN the_DT communication_NN and_CC publication_NN medium_NN =_JJ -_: =[_NN 35_CD ,_, 36_CD ,_, 47_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Typically_RB ,_, after_IN such_PDT a_DT system_NN is_VBZ constructed_VBN ,_, locally_RB generated_VBN content_NN is_VBZ the_DT main_JJ source_NN of_IN information_NN available_JJ ._.
+While_IN this_DT information_NN is_VBZ highly_RB context_NN appropriate_JJ to_TO the_DT local_JJ population_NN ,_, it_PRP
+ine_NN document_NN relevance_NN and_CC distillation_NN or_CC link_NN analysis_NN to_TO identify_VB authoritative_JJ sources_NNS of_IN relevant_JJ documents_NNS ._.
+Shark_NN is_VBZ one_CD of_IN the_DT earlier_JJR focused_JJ crawlers_NNS ,_, and_CC more_RBR sophisticated_JJ variations_NNS exist_VBP =_JJ -_: =[_NN 46,49_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Also_RB ,_, extensive_JJ follow_VBP up_RP work_NN has_VBZ compared_VBN focused_JJ crawling_NN against_IN a_DT variety_NN of_IN other_JJ crawling_VBG techniques_NNS across_IN a_DT variety_NN of_IN domains_NNS -LRB-_-LRB- 19,20,42_CD -RRB-_-RRB- ._.
+It_PRP has_VBZ been_VBN shown_VBN in_IN recent_JJ work_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- that_WDT uses_VBZ a_DT l_NN
+a_DT page_NN is_VBZ relevant_JJ to_TO a_DT specific_JJ topic_NN ._.
+While_IN there_EX has_VBZ been_VBN much_JJ work_NN on_IN document_NN classification_NN in_IN general_JJ -LRB-_-LRB- 21_CD ,_, 25_CD -RRB-_-RRB- ,_, personalized_JJ or_CC context-aware_JJ classification_NN is_VBZ still_RB an_DT area_NN of_IN active_JJ research_NN =_JJ -_: =[_NN 26,59_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN earlier_JJR work_NN -LRB-_-LRB- 51_CD -RRB-_-RRB- ,_, we_PRP designed_VBD and_CC implemented_VBD a_DT custom_NN feature_NN extractor_NN that_WDT is_VBZ compatible_JJ with_IN several_JJ existing_VBG classifiers_NNS and_CC provides_VBZ high_JJ classification_NN accuracy_NN with_IN minimal_JJ training_NN ._.
+Ste_NN
+recent_JJ ICTD_NN projects_NNS have_VBP focused_VBN on_IN constructing_VBG information_NN portals_NNS or_CC repositories_NNS for_IN the_DT illiterate_JJ and_CC focus_VB on_IN challenges_NNS resulting_VBG from_IN using_VBG voice_NN as_IN the_DT communication_NN and_CC publication_NN medium_NN =_JJ -_: =[_NN 35_CD ,_, 36_CD ,_, 47_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Typically_RB ,_, after_IN such_PDT a_DT system_NN is_VBZ constructed_VBN ,_, locally_RB generated_VBN content_NN is_VBZ the_DT main_JJ source_NN of_IN information_NN available_JJ ._.
+While_IN this_DT information_NN is_VBZ highly_RB context_NN appropriate_JJ to_TO the_DT local_JJ population_NN ,_, it_PRP
+t_NN pages_NNS on_IN a_DT given_VBN topic_NN ;_: -LRB-_-LRB- c_LS -RRB-_-RRB- a_DT presentation_NN layer_NN that_WDT enables_VBZ users_NNS to_TO efficiently_RB search_VB and_CC browse_VB a_DT CIP_NNP ._.
+We_PRP had_VBD previously_RB explored_VBN the_DT document_NN classification_NN problem_NN in_IN the_DT frame-work_NN of_IN CIPs_NNS =_JJ -_: =[_NN 51_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP describe_VBP the_DT design_NN and_CC implementation_NN of_IN a_DT complete_JJ system_NN to_TO automatically_RB generate_VB CIPs_NNS for_IN any_DT topic_NN ._.
+We_PRP demonstrate_VBP how_WRB our_PRP$ system_NN efficiently_RB constructs_NNS a_DT CIP_NNP with_IN relatively_RB
+ing_VB it_PRP ._.
+Even_RB with_IN this_DT restriction_NN on_IN available_JJ information_NN ,_, classification_NN precision_NN above_IN 60_CD %_NN has_VBZ been_VBN achieved_VBN on_IN the_DT WebKB_NN dataset_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+There_EX is_VBZ extensive_JJ of_IN literature_NN on_IN web_NN crawling_VBG algorithms_NNS =_JJ -_: =[_NN 11_CD ,_, 34_CD ,_, 44_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Focused_VBN crawling_VBG was_VBD defined_VBN and_CC formalized_VBN by_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, which_WDT introduced_VBD taxonomic_JJ classification_NN or_CC text_NN analysis_NN to_TO determine_VB document_NN relevance_NN and_CC distillation_NN or_CC link_NN analysis_NN to_TO identify_VB authorit_NN
+ing_VB it_PRP ._.
+Even_RB with_IN this_DT restriction_NN on_IN available_JJ information_NN ,_, classification_NN precision_NN above_IN 60_CD %_NN has_VBZ been_VBN achieved_VBN on_IN the_DT WebKB_NN dataset_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+There_EX is_VBZ extensive_JJ of_IN literature_NN on_IN web_NN crawling_VBG algorithms_NNS =_JJ -_: =[_NN 11_CD ,_, 34_CD ,_, 44_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Focused_VBN crawling_VBG was_VBD defined_VBN and_CC formalized_VBN by_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, which_WDT introduced_VBD taxonomic_JJ classification_NN or_CC text_NN analysis_NN to_TO determine_VB document_NN relevance_NN and_CC distillation_NN or_CC link_NN analysis_NN to_TO identify_VB authorit_NN
+-LRB-_-LRB- 59_CD -RRB-_-RRB- ._.
+The_DT two_CD techniques_NNS appearing_VBG most_RBS often_RB for_IN web_NN page_NN classification_NN are_VBP naive_JJ Bayes_NNS -LRB-_-LRB- 37_CD -RRB-_-RRB- and_CC SVM_NN learners_NNS -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+In_IN recent_JJ years_NNS ,_, other_JJ techniques_NNS have_VBP been_VBN proposed_VBN and_CC used_VBN ,_, with_IN some_DT success_NN =_JJ -_: =[_NN 45_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Prior_JJ work_NN for_IN web_NN page_NN classification_NN largely_RB focuses_VBZ on_IN feature_NN extraction_NN and_CC selection_NN ._.
+In_IN addition_NN to_TO the_DT page_NN text_NN ,_, additional_JJ components_NNS of_IN pages_NNS and_CC their_PRP$ relationships_NNS have_VBP been_VBN integrated_VBN
+used_VBN crawlers_NNS ,_, and_CC more_RBR sophisticated_JJ variations_NNS exist_VBP -LRB-_-LRB- 46,49_CD -RRB-_-RRB- ._.
+Also_RB ,_, extensive_JJ follow_VBP up_RP work_NN has_VBZ compared_VBN focused_JJ crawling_NN against_IN a_DT variety_NN of_IN other_JJ crawling_VBG techniques_NNS across_IN a_DT variety_NN of_IN domains_NNS =_JJ -_: =[_NN 19,20,42_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP has_VBZ been_VBN shown_VBN in_IN recent_JJ work_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- that_WDT uses_VBZ a_DT latent_JJ semantic_JJ indexing_NN -LRB-_-LRB- LSI_NNP -RRB-_-RRB- classifier_NN ,_, which_WDT combines_VBZ link_NN analysis_NN with_IN text_NN content_NN ,_, that_IN a_DT variant_NN of_IN the_DT simple_JJ Shark-search_NN can_MD be_VB surprisin_NN
+tep_NN 2_CD :_: Training_VBG a_DT classifier_NN ._.
+The_DT purpose_NN of_IN a_DT document_NN classifier_NN is_VBZ to_TO determine_VB whether_IN a_DT page_NN is_VBZ relevant_JJ to_TO a_DT specific_JJ topic_NN ._.
+While_IN there_EX has_VBZ been_VBN much_JJ work_NN on_IN document_NN classification_NN in_IN general_JJ =_JJ -_: =[_NN 21_CD ,_, 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, personalized_JJ or_CC context-aware_JJ classification_NN is_VBZ still_RB an_DT area_NN of_IN active_JJ research_NN -LRB-_-LRB- 26,59_CD -RRB-_-RRB- ._.
+In_IN earlier_JJR work_NN -LRB-_-LRB- 51_CD -RRB-_-RRB- ,_, we_PRP designed_VBD and_CC implemented_VBD a_DT custom_NN feature_NN extractor_NN that_WDT is_VBZ compatible_JJ with_IN several_JJ
+determine_VB whether_IN a_DT web_NN page_NN is_VBZ related_JJ to_TO that_DT topic_NN ._.
+Document_NNP classification_NN is_VBZ a_DT well_RB studied_VBN problem_NN in_IN information_NN retrieval_NN -LRB-_-LRB- 31_CD ,_, 37_CD ,_, 40_CD -RRB-_-RRB- ,_, and_CC specifically_RB in_IN relation_NN to_TO the_DT content_NN on_IN the_DT web_NN =_JJ -_: =[_NN 52,56,58_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Even_RB with_IN this_DT previous_JJ work_NN ,_, classification_NN of_IN web_NN pages_NNS continues_VBZ to_TO be_VB challenging_JJ ,_, and_CC existing_VBG approaches_NNS either_CC do_VBP not_RB provide_VB high_JJ levels_NNS of_IN accuracy_NN or_CC require_VB extensive_JJ training_NN ._.
+There_EX are_VBP
+and_CC shipped_VBN as_IN a_DT self-contained_JJ web_NN cache_NN to_TO any_DT geographic_JJ location_NN ._.
+CIPs_NNS are_VBP complementary_JJ to_TO existing_VBG mechanical_JJ modes_NNS of_IN bulk_JJ digital_JJ information_NN dissemination_NN which_WDT makes_VBZ them_PRP easily_RB deployable_VBP =_JJ -_: =[_NN 24,29,50,54,55_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+CIPs_NNS may_MD also_RB be_VB used_VBN to_TO address_VB existing_VBG connection_NN or_CC content_NN scarcity_NN by_IN bootstrapping_VBG local_JJ web_NN caches_NNS behind_IN slow_JJ connections_NNS ,_, as_IN a_DT stand-alone_JJ portal_NN within_IN a_DT kiosk_NN service_NN ,_, or_CC as_IN an_DT informati_NN
+and_CC shipped_VBN as_IN a_DT self-contained_JJ web_NN cache_NN to_TO any_DT geographic_JJ location_NN ._.
+CIPs_NNS are_VBP complementary_JJ to_TO existing_VBG mechanical_JJ modes_NNS of_IN bulk_JJ digital_JJ information_NN dissemination_NN which_WDT makes_VBZ them_PRP easily_RB deployable_VBP =_JJ -_: =[_NN 24,29,50,54,55_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+CIPs_NNS may_MD also_RB be_VB used_VBN to_TO address_VB existing_VBG connection_NN or_CC content_NN scarcity_NN by_IN bootstrapping_VBG local_JJ web_NN caches_NNS behind_IN slow_JJ connections_NNS ,_, as_IN a_DT stand-alone_JJ portal_NN within_IN a_DT kiosk_NN service_NN ,_, or_CC as_IN an_DT informati_NN
+and_CC shipped_VBN as_IN a_DT self-contained_JJ web_NN cache_NN to_TO any_DT geographic_JJ location_NN ._.
+CIPs_NNS are_VBP complementary_JJ to_TO existing_VBG mechanical_JJ modes_NNS of_IN bulk_JJ digital_JJ information_NN dissemination_NN which_WDT makes_VBZ them_PRP easily_RB deployable_VBP =_JJ -_: =[_NN 24,29,50,54,55_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+CIPs_NNS may_MD also_RB be_VB used_VBN to_TO address_VB existing_VBG connection_NN or_CC content_NN scarcity_NN by_IN bootstrapping_VBG local_JJ web_NN caches_NNS behind_IN slow_JJ connections_NNS ,_, as_IN a_DT stand-alone_JJ portal_NN within_IN a_DT kiosk_NN service_NN ,_, or_CC as_IN an_DT informati_NN
+our_PRP$ document_NN classifier_NN is_VBZ :_: given_VBN an_DT arbitrary_JJ topic_NN and_CC a_DT web_NN page_NN ,_, determine_VBD whether_IN a_DT web_NN page_NN is_VBZ related_JJ to_TO that_DT topic_NN ._.
+Document_NNP classification_NN is_VBZ a_DT well_RB studied_VBN problem_NN in_IN information_NN retrieval_NN =_JJ -_: =[_NN 31_CD ,_, 37_CD ,_, 40_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC specifically_RB in_IN relation_NN to_TO the_DT content_NN on_IN the_DT web_NN -LRB-_-LRB- 52,56,58_CD -RRB-_-RRB- ._.
+Even_RB with_IN this_DT previous_JJ work_NN ,_, classification_NN of_IN web_NN pages_NNS continues_VBZ to_TO be_VB challenging_JJ ,_, and_CC existing_VBG approaches_NNS either_CC do_VBP not_RB provid_VB
+recent_JJ ICTD_NN projects_NNS have_VBP focused_VBN on_IN constructing_VBG information_NN portals_NNS or_CC repositories_NNS for_IN the_DT illiterate_JJ and_CC focus_VB on_IN challenges_NNS resulting_VBG from_IN using_VBG voice_NN as_IN the_DT communication_NN and_CC publication_NN medium_NN =_JJ -_: =[_NN 35_CD ,_, 36_CD ,_, 47_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Typically_RB ,_, after_IN such_PDT a_DT system_NN is_VBZ constructed_VBN ,_, locally_RB generated_VBN content_NN is_VBZ the_DT main_JJ source_NN of_IN information_NN available_JJ ._.
+While_IN this_DT information_NN is_VBZ highly_RB context_NN appropriate_JJ to_TO the_DT local_JJ population_NN ,_, it_PRP
+on_IN the_DT graph_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Other_JJ work_NN in_IN the_DT area_NN has_VBZ been_VBN on_IN URL-only_JJ classifiers_NNS ;_: these_DT ask_VBP the_DT question_NN of_IN whether_IN is_VBZ it_PRP feasible_JJ to_TO classify_VB a_DT page_NN knowing_VBG only_RB the_DT URL_NN -LRB-_-LRB- and_CC possibly_RB some_DT link_NN structure_NN -RRB-_-RRB- =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT is_VBZ of_IN particular_JJ interest_NN for_IN systems_NNS such_JJ as_IN web-crawlers_NNS and_CC focused_JJ crawlers_NNS ,_, where_WRB there_EX is_VBZ a_DT desire_NN to_TO classify_VB a_DT page_NN as_IN desirable_JJ before_IN retrieving_VBG it_PRP ._.
+Even_RB with_IN this_DT restriction_NN on_IN avai_NN
+determine_VB whether_IN a_DT web_NN page_NN is_VBZ related_JJ to_TO that_DT topic_NN ._.
+Document_NNP classification_NN is_VBZ a_DT well_RB studied_VBN problem_NN in_IN information_NN retrieval_NN -LRB-_-LRB- 31_CD ,_, 37_CD ,_, 40_CD -RRB-_-RRB- ,_, and_CC specifically_RB in_IN relation_NN to_TO the_DT content_NN on_IN the_DT web_NN =_JJ -_: =[_NN 52,56,58_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Even_RB with_IN this_DT previous_JJ work_NN ,_, classification_NN of_IN web_NN pages_NNS continues_VBZ to_TO be_VB challenging_JJ ,_, and_CC existing_VBG approaches_NNS either_CC do_VBP not_RB provide_VB high_JJ levels_NNS of_IN accuracy_NN or_CC require_VB extensive_JJ training_NN ._.
+There_EX are_VBP
+our_PRP$ document_NN classifier_NN is_VBZ :_: given_VBN an_DT arbitrary_JJ topic_NN and_CC a_DT web_NN page_NN ,_, determine_VBD whether_IN a_DT web_NN page_NN is_VBZ related_JJ to_TO that_DT topic_NN ._.
+Document_NNP classification_NN is_VBZ a_DT well_RB studied_VBN problem_NN in_IN information_NN retrieval_NN =_JJ -_: =[_NN 31_CD ,_, 37_CD ,_, 40_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC specifically_RB in_IN relation_NN to_TO the_DT content_NN on_IN the_DT web_NN -LRB-_-LRB- 52,56,58_CD -RRB-_-RRB- ._.
+Even_RB with_IN this_DT previous_JJ work_NN ,_, classification_NN of_IN web_NN pages_NNS continues_VBZ to_TO be_VB challenging_JJ ,_, and_CC existing_VBG approaches_NNS either_CC do_VBP not_RB provid_VB
+632-4\/11_CD \/_: 03_CD ._.
+Russell_NNP Power_NNP New_NNP York_NNP University_NNP power@cs.nyu.edu_NNP Jonathan_NNP Ledlie_NNP Nokia_NNP Research_NNP Center_NNP jonathan.ledlie@nokia.com_NNP through_IN conventional_JJ means_NNS has_VBZ been_VBN shown_VBN to_TO be_VB economically_RB not_RB viable_JJ =_JJ -_: =[_NN 43_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Systems_NNP that_WDT rely_VBP on_IN wireless_JJ networks_NNS and_CC mechanical_JJ backhauls_NNS have_VBP been_VBN explored_VBN for_IN disconnected_VBN locations_NNS -LRB-_-LRB- 48,55_CD -RRB-_-RRB- ,_, but_CC these_DT require_VBP significant_JJ expertise_NN and_CC training_NN to_TO deploy_VB and_CC maintain_VB ._.
+Po_NN
+1_CD Our_NNP Approach_NNP Our_NNP system_NN involves_VBZ four_CD steps_NNS :_: Step_NN 1_CD :_: Defining_VBG topics_NNS ._.
+Topics_NNS may_MD be_VB defined_VBN many_JJ ways_NNS ._.
+One_CD simple_JJ way_NN of_IN gathering_VBG sub-topics_NNS is_VBZ to_TO use_VB manually-generated_JJ ontologies_NNS such_JJ as_IN Wordnet_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: or_CC machine_NN generated_VBD ontologies_NNS such_JJ as_IN the_DT suggested_JJ queries_NNS returned_VBN by_IN large_JJ Internet_NNP search_NN engines_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP assume_VBP that_IN a_DT set_NN of_IN desired_VBN topics_NNS is_VBZ provided_VBN ,_, and_CC in_IN our_PRP$ evaluation_NN we_PRP sh_VBP
+extraction_NN algorithm_NN in_IN conjunction_NN with_IN two_CD standard_JJ classifiers_NNS for_IN our_PRP$ system_NN ,_, Support_NN Vector_NNP Machines_NNP -LRB-_-LRB- SVM_NNP -RRB-_-RRB- and_CC Naive_JJ Bayes_NNS ._.
+Both_DT of_IN these_DT have_VBP been_VBN shown_VBN to_TO be_VB effective_JJ for_IN text_NN classification_NN =_JJ -_: =[_NN 30,37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN our_PRP$ system_NN ,_, we_PRP used_VBD the_DT bow_NN classification_NN toolkit_NN -LRB-_-LRB- 57_CD -RRB-_-RRB- ,_, which_WDT provides_VBZ both_DT Naive_JJ Bayes_NNP and_CC SVM_NNP implementations_NNS ._.
+Classification_NN was_VBD evaluated_VBN on_IN the_DT reduced_VBN feature_NN set_NN produced_VBN by_IN the_DT rare\/pop_NN
+ler_NN based_VBN on_IN the_DT Shark_NN crawler_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+The_DT goal_NN of_IN a_DT focused_JJ crawler_NN is_VBZ to_TO crawl_VB only_RB the_DT relevant_JJ portion_NN of_IN the_DT web_NN that_WDT relates_VBZ to_TO the_DT topic_NN while_IN minimizing_VBG the_DT waste_NN of_IN downloading_VBG unrelated_JJ pages_NNS =_JJ -_: =[_NN 7,46,59_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ crawler_NN uses_VBZ the_DT input_NN of_IN the_DT classifier_NN and_CC various_JJ page_NN and_CC link_NN level_NN features_VBZ to_TO reduce_VB the_DT crawling_NN of_IN irrelevant_JJ pages_NNS ._.
+We_PRP make_VBP several_JJ modifications_NNS to_TO the_DT Shark_NN crawler_NN to_TO improve_VB the_DT cr_NN
+ojects_NNS based_VBN on_IN or_CC around_IN the_DT CIP_NNP code_NN base_NN ._.
+7_CD ._.
+RELATED_NNS WORK_VBP The_DT application_NN of_IN focused_JJ crawlers_NNS to_TO particular_JJ topics_NNS in_IN an_DT effort_NN to_TO build_VB digital_JJ libraries_NNS and_CC web_NN caches_NNS has_VBZ been_VBN considered_VBN before_IN =_JJ -_: =[_NN 10_CD ,_, 22_CD ,_, 53_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC the_DT application_NN of_IN these_DT automatic_JJ techniques_NNS to_TO the_DT context_NN of_IN development_NN has_VBZ not_RB been_VBN evaluated_VBN ._.
+Vertical_JJ search_NN portals_NNS use_VBP similar_JJ focused_JJ crawling_VBG techniques_NNS to_TO index_NN a_DT specific_JJ domain_NN on_IN
+our_PRP$ document_NN classifier_NN is_VBZ :_: given_VBN an_DT arbitrary_JJ topic_NN and_CC a_DT web_NN page_NN ,_, determine_VBD whether_IN a_DT web_NN page_NN is_VBZ related_JJ to_TO that_DT topic_NN ._.
+Document_NNP classification_NN is_VBZ a_DT well_RB studied_VBN problem_NN in_IN information_NN retrieval_NN =_JJ -_: =[_NN 31_CD ,_, 37_CD ,_, 40_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC specifically_RB in_IN relation_NN to_TO the_DT content_NN on_IN the_DT web_NN -LRB-_-LRB- 52,56,58_CD -RRB-_-RRB- ._.
+Even_RB with_IN this_DT previous_JJ work_NN ,_, classification_NN of_IN web_NN pages_NNS continues_VBZ to_TO be_VB challenging_JJ ,_, and_CC existing_VBG approaches_NNS either_CC do_VBP not_RB provid_VB
+underlying_VBG crawling_NN and_CC classification_NN technology_NN is_VBZ well_RB studied_VBN ._.
+A_DT wide_JJ variety_NN of_IN document_NN classifiers_NNS have_VBP been_VBN developed_VBN :_: Decision_NN Tree_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, Support_NN Vector_NNP Machines_NNP -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, taxonomic_JJ classifiers_NNS =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC many_JJ others_NNS -LRB-_-LRB- 59_CD -RRB-_-RRB- ._.
+The_DT two_CD techniques_NNS appearing_VBG most_RBS often_RB for_IN web_NN page_NN classification_NN are_VBP naive_JJ Bayes_NNS -LRB-_-LRB- 37_CD -RRB-_-RRB- and_CC SVM_NN learners_NNS -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+In_IN recent_JJ years_NNS ,_, other_JJ techniques_NNS have_VBP been_VBN proposed_VBN and_CC used_VBN ,_, w_NN
+ing_VB it_PRP ._.
+Even_RB with_IN this_DT restriction_NN on_IN available_JJ information_NN ,_, classification_NN precision_NN above_IN 60_CD %_NN has_VBZ been_VBN achieved_VBN on_IN the_DT WebKB_NN dataset_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+There_EX is_VBZ extensive_JJ of_IN literature_NN on_IN web_NN crawling_VBG algorithms_NNS =_JJ -_: =[_NN 11_CD ,_, 34_CD ,_, 44_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Focused_VBN crawling_VBG was_VBD defined_VBN and_CC formalized_VBN by_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, which_WDT introduced_VBD taxonomic_JJ classification_NN or_CC text_NN analysis_NN to_TO determine_VB document_NN relevance_NN and_CC distillation_NN or_CC link_NN analysis_NN to_TO identify_VB authorit_NN
+ler_NN based_VBN on_IN the_DT Shark_NN crawler_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+The_DT goal_NN of_IN a_DT focused_JJ crawler_NN is_VBZ to_TO crawl_VB only_RB the_DT relevant_JJ portion_NN of_IN the_DT web_NN that_WDT relates_VBZ to_TO the_DT topic_NN while_IN minimizing_VBG the_DT waste_NN of_IN downloading_VBG unrelated_JJ pages_NNS =_JJ -_: =[_NN 7,46,59_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ crawler_NN uses_VBZ the_DT input_NN of_IN the_DT classifier_NN and_CC various_JJ page_NN and_CC link_NN level_NN features_VBZ to_TO reduce_VB the_DT crawling_NN of_IN irrelevant_JJ pages_NNS ._.
+We_PRP make_VBP several_JJ modifications_NNS to_TO the_DT Shark_NN crawler_NN to_TO improve_VB the_DT cr_NN
+atures_NNS kept_VBN by_IN the_DT filtering_VBG process_NN is_VBZ shown_VBN in_IN Figure_NNP 1_CD ._.
+5.1.2_CD Classification_NN Results_NNS We_PRP tested_VBD two_CD classifiers_NNS on_IN our_PRP$ corpus_NN of_IN topics_NNS ,_, a_DT Naive_JJ Bayes_NNP classifier_NN and_CC an_DT SVM_NN learner_NN ;_: we_PRP used_VBD the_DT bow_NN =_JJ -_: =[_NN 41_CD -RRB-_-RRB- -_: =_JJ -_: toolkit_NN to_TO construct_VB and_CC test_VB our_PRP$ classifiers_NNS ._.
+The_DT models_NNS used_VBN for_IN the_DT classifiers_NNS were_VBD generated_VBN using_VBG the_DT text_NN of_IN the_DT documents_NNS as_IN a_DT unigram_JJ bag-of-words_JJ model_NN ._.
+The_DT classifiers_NNS were_VBD separately_RB trai_VBN
+s_VBZ the_DT web_NN frequency_NN of_IN n_NN −_CD grams_NNS for_IN n_NN ≤_NN 5_CD ._.
+We_PRP denote_VBP this_DT as_IN LDC_NNP -LRB-_-LRB- t_NN -RRB-_-RRB- ._.
+We_PRP use_VBP the_DT LDC_NNP dataset_NN to_TO discount_NN terms_NNS from_IN the_DT feature_NN set_NN relative_JJ to_TO their_PRP$ popularity_NN ._.
+For_IN every_DT term_NN t_NN ,_, we_PRP compute_VBP the_DT TF-IDF_NN =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: value_NN of_IN that_DT term_NN as_IN :_: tfidf_NN -LRB-_-LRB- t_NN -RRB-_-RRB- =_JJ tf_NN -LRB-_-LRB- t_NN -RRB-_-RRB- ×_CD log_NN -LRB-_-LRB- N\/N_NN -LRB-_-LRB- t_NN -RRB-_-RRB- -RRB-_-RRB- where_WRB we_PRP approximate_JJ N_NN -LRB-_-LRB- t_NN -RRB-_-RRB- using_VBG LDC_NNP -LRB-_-LRB- t_NN -RRB-_-RRB- and_CC N_NN using_VBG the_DT maximum_NN value_NN of_IN the_DT LDC_NNP across_IN all_DT n_NN −_CD grams_NNS ._.
+The_DT LDCis_NN a_DT commonly_RB used_VBN dataset_NN for_IN estima_NN
+ojects_NNS based_VBN on_IN or_CC around_IN the_DT CIP_NNP code_NN base_NN ._.
+7_CD ._.
+RELATED_NNS WORK_VBP The_DT application_NN of_IN focused_JJ crawlers_NNS to_TO particular_JJ topics_NNS in_IN an_DT effort_NN to_TO build_VB digital_JJ libraries_NNS and_CC web_NN caches_NNS has_VBZ been_VBN considered_VBN before_IN =_JJ -_: =[_NN 10_CD ,_, 22_CD ,_, 53_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC the_DT application_NN of_IN these_DT automatic_JJ techniques_NNS to_TO the_DT context_NN of_IN development_NN has_VBZ not_RB been_VBN evaluated_VBN ._.
+Vertical_JJ search_NN portals_NNS use_VBP similar_JJ focused_JJ crawling_VBG techniques_NNS to_TO index_NN a_DT specific_JJ domain_NN on_IN
+ssifiers_NNS and_CC provides_VBZ high_JJ classification_NN accuracy_NN with_IN minimal_JJ training_NN ._.
+Step_NN 3_CD :_: Focused_NNP Crawling_NNP ._.
+To_TO perform_VB the_DT actual_JJ crawling_NN process_NN ,_, we_PRP implemented_VBD a_DT focused_JJ crawler_NN based_VBN on_IN the_DT Shark_NN crawler_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT goal_NN of_IN a_DT focused_JJ crawler_NN is_VBZ to_TO crawl_VB only_RB the_DT relevant_JJ portion_NN of_IN the_DT web_NN that_WDT relates_VBZ to_TO the_DT topic_NN while_IN minimizing_VBG the_DT waste_NN of_IN downloading_VBG unrelated_JJ pages_NNS -LRB-_-LRB- 7,46,59_CD -RRB-_-RRB- ._.
+Our_PRP$ crawler_NN uses_VBZ the_DT inp_NN
+used_VBN crawlers_NNS ,_, and_CC more_RBR sophisticated_JJ variations_NNS exist_VBP -LRB-_-LRB- 46,49_CD -RRB-_-RRB- ._.
+Also_RB ,_, extensive_JJ follow_VBP up_RP work_NN has_VBZ compared_VBN focused_JJ crawling_NN against_IN a_DT variety_NN of_IN other_JJ crawling_VBG techniques_NNS across_IN a_DT variety_NN of_IN domains_NNS =_JJ -_: =[_NN 19,20,42_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP has_VBZ been_VBN shown_VBN in_IN recent_JJ work_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- that_WDT uses_VBZ a_DT latent_JJ semantic_JJ indexing_NN -LRB-_-LRB- LSI_NNP -RRB-_-RRB- classifier_NN ,_, which_WDT combines_VBZ link_NN analysis_NN with_IN text_NN content_NN ,_, that_IN a_DT variant_NN of_IN the_DT simple_JJ Shark-search_NN can_MD be_VB surprisin_NN
+Internet_NN access_NN tends_VBZ to_TO be_VB expensive_JJ ,_, unreliable_JJ and_CC largely_RB confined_VBN to_TO urban_JJ areas_NNS ._.
+In_IN rural_JJ areas_NNS the_DT Internet_NNP is_VBZ unusable_JJ for_IN a_DT variety_NN of_IN reasons_NNS that_WDT result_VBP in_IN poor_JJ and_CC unreliable_JJ connectivity_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Providing_VBG reliable_JJ high_JJ bandwidth_NN connectivity_NN to_TO these_DT regions_NNS Copyright_NNP is_VBZ held_VBN by_IN the_DT International_NNP World_NNP Wide_NN Web_NN Conference_NN Committee_NN -LRB-_-LRB- IW3C2_NN -RRB-_-RRB- ._.
+Distribution_NN of_IN these_DT papers_NNS is_VBZ limited_VBN to_TO classro_VB
+e@nokia.com_NN through_IN conventional_JJ means_NNS has_VBZ been_VBN shown_VBN to_TO be_VB economically_RB not_RB viable_JJ -LRB-_-LRB- 43_CD -RRB-_-RRB- ._.
+Systems_NNP that_WDT rely_VBP on_IN wireless_JJ networks_NNS and_CC mechanical_JJ backhauls_NNS have_VBP been_VBN explored_VBN for_IN disconnected_VBN locations_NNS =_JJ -_: =[_NN 48,55_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC these_DT require_VBP significant_JJ expertise_NN and_CC training_NN to_TO deploy_VB and_CC maintain_VB ._.
+Poor_NNP Internet_NNP access_NN in_IN the_DT rural_JJ developing_VBG world_NN does_VBZ not_RB represent_VB a_DT ``_`` corner_NN case_NN ._. ''_''
+Beyond_IN the_DT digital_JJ infrastructure_NN
+tep_NN 2_CD :_: Training_VBG a_DT classifier_NN ._.
+The_DT purpose_NN of_IN a_DT document_NN classifier_NN is_VBZ to_TO determine_VB whether_IN a_DT page_NN is_VBZ relevant_JJ to_TO a_DT specific_JJ topic_NN ._.
+While_IN there_EX has_VBZ been_VBN much_JJ work_NN on_IN document_NN classification_NN in_IN general_JJ =_JJ -_: =[_NN 21_CD ,_, 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, personalized_JJ or_CC context-aware_JJ classification_NN is_VBZ still_RB an_DT area_NN of_IN active_JJ research_NN -LRB-_-LRB- 26,59_CD -RRB-_-RRB- ._.
+In_IN earlier_JJR work_NN -LRB-_-LRB- 51_CD -RRB-_-RRB- ,_, we_PRP designed_VBD and_CC implemented_VBD a_DT custom_NN feature_NN extractor_NN that_WDT is_VBZ compatible_JJ with_IN several_JJ
+there_EX is_VBZ a_DT desire_NN to_TO classify_VB a_DT page_NN as_IN desirable_JJ before_IN retrieving_VBG it_PRP ._.
+Even_RB with_IN this_DT restriction_NN on_IN available_JJ information_NN ,_, classification_NN precision_NN above_IN 60_CD %_NN has_VBZ been_VBN achieved_VBN on_IN the_DT WebKB_NN dataset_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX is_VBZ extensive_JJ of_IN literature_NN on_IN web_NN crawling_VBG algorithms_NNS -LRB-_-LRB- 11_CD ,_, 34_CD ,_, 44_CD -RRB-_-RRB- ._.
+Focused_VBN crawling_VBG was_VBD defined_VBN and_CC formalized_VBN by_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, which_WDT introduced_VBD taxonomic_JJ classification_NN or_CC text_NN analysis_NN to_TO determine_VB

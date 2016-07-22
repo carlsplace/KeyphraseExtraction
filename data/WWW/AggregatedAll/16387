@@ -1,0 +1,760 @@
+A_DT software_NN framework_NN for_IN matchmaking_NN based_VBN on_IN semantic_JJ web_NN technology_NN
+An_DT important_JJ objective_NN of_IN the_DT Semantic_JJ Web_NN is_VBZ to_TO make_VB Electronic_NNP Commerce_NNP interactions_NNS more_RBR flexible_JJ and_CC automated_JJ ._.
+To_TO achieve_VB this_DT ,_, standardization_NN of_IN ontologies_NNS ,_, message_NN content_NN and_CC message_NN protocols_NNS will_MD be_VB necessary_JJ ._.
+In_IN this_DT paper_NN we_PRP investigate_VBP how_WRB Semantic_JJ and_CC Web_NN Services_NNPS technologies_NNS can_MD be_VB used_VBN to_TO support_VB service_NN advertisement_NN and_CC discovery_NN in_IN e-commerce_NN ._.
+In_IN particular_JJ ,_, we_PRP describe_VBP the_DT design_NN and_CC implementation_NN of_IN a_DT service_NN matchmaking_NN prototype_NN which_WDT uses_VBZ a_DT DAML-S_NN based_JJ ontology_NN and_CC a_DT Description_NN Logic_NN reasoner_NN to_TO compare_VB ontology_RB based_VBN service_NN descriptions_NNS ._.
+We_PRP also_RB present_VBP the_DT results_NNS of_IN initial_JJ experiments_NNS testing_VBG the_DT performance_NN of_IN this_DT prototype_NN implementation_NN in_IN a_DT realistic_JJ agent_NN based_VBN e-commerce_NN scenario_NN ._.
+ntation_NN formalisms_NNS with_IN a_DT clearly_RB defined_VBN semantics_NNS and_CC well-understood_JJ computational_JJ properties_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Several_JJ approaches_NNS to_TO service_NN discovery_NN based_VBN on_IN description_NN logics_NNS have_VBP already_RB been_VBN proposed_VBN in_IN =_JJ -_: =[_NN 26_CD ,_, 18_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Along_IN these_DT lines_NNS ,_, in_IN this_DT paper_NN we_PRP extend_VBP our_PRP$ work_NN from_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC present_VB a_DT DL-based_JJ approach_NN for_IN modelling_VBG semantics_NNS of_IN Web_NN Services_NNPS ._.
+We_PRP build_VBP on_IN establishing_VBG a_DT clear_JJ correspondence_NN between_IN the_DT DL_NN
+ed_VBN in_IN earlier_JJR research_NN reports_NNS ._.
+Our_PRP$ algorithm_NN is_VBZ based_VBN on_IN the_DT new_JJ OWL-S_NN standard_NN and_CC provides_VBZ a_DT fine-grained_JJ and_CC tunable_JJ ranked_VBN matching_NN of_IN service_NN descriptions_NNS ._.
+A_DT variation_NN of_IN the_DT matching_JJ algorithm_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: provides_VBZ ranking_NN by_IN supporting_VBG different_JJ reasoning_NN operations_NNS ,_, but_CC considers_VBZ only_RB the_DT categorisation_NN of_IN a_DT service_NN ._.
+Our_PRP$ motivation_NN for_IN refining_VBG the_DT matching_NN process_NN is_VBZ that_IN it_PRP might_MD easily_RB occur_VB that_IN
+blished_VBN content_NN ._.
+As_IN the_DT semantics_NNS of_IN a_DT large_JJ subset_NN of_IN OWL_NN is_VBZ aligned_VBN with_IN description_NN logics_NNS -LRB-_-LRB- DLs_NNS -RRB-_-RRB- ,_, reasoning_NN techniques_NNS for_IN DLs_NNS can_MD then_RB be_VB leveraged_JJ for_IN matching_VBG content_NN with_IN subscription_NN requests_NNS =_JJ -_: =[_NN 12_CD ,_, 31_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN such_PDT an_DT approach_NN ,_, the_DT previously_RB mentioned_VBN benefits_NNS of_IN using_VBG a_DT formal_JJ representation_NN language_NN can_MD therefore_RB be_VB achieved_VBN ._.
+An_DT additional_JJ benefit_NN of_IN an_DT OWL-based_JJ syndication_NN approach_NN is_VBZ its_PRP$ native_JJ W_NN
+r_NN direct_JJ subclass_NN of_IN the_DT advertisement_NN ;_: plug-in_JJ ,_, if_IN the_DT request_NN is_VBZ subsumed_VBN by_IN the_DT advertisement_NN ;_: subsume_VB ,_, if_IN the_DT request_NN subsumes_VBZ the_DT advertisement_NN ;_: and_CC fail_VB ,_, if_IN there_EX is_VBZ no_DT subsumption_NN relation_NN ._.
+In_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: the_DT last_JJ case_NN is_VBZ further_RB distinguished_VBN in_IN intersection_NN ,_, if_IN the_DT intersection_NN of_IN the_DT request_NN and_CC the_DT advertisement_NN is_VBZ satisfiable_JJ ,_, and_CC disjoint_NN ,_, if_IN the_DT two_CD concepts_NNS are_VBP disjoint_JJ ._.
+Also_RB ,_, the_DT match_NN is_VBZ con_RB
+hmaking_NN techniques_NNS ._.
+In_IN particular_JJ ,_, we_PRP distinguish_VBP techniques_NNS that_WDT rely_VBP on_IN deductive_JJ reasoning_NN and_CC techniques_NNS based_VBN on_IN similarity_NN evaluation_NN ._.
+In_IN general_JJ ,_, techniques_NNS based_VBN on_IN deductive_JJ reasoning_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 5,8_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, present_JJ high_JJ precision_NN and_CC recall_NN ,_, but_CC are_VBP often_RB characterized_VBN by_IN low_JJ flexibility_NN ._.
+On_IN the_DT contrary_JJ ,_, similarity-based_JJ techniques_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- -RRB-_-RRB- are_VBP characterized_VBN by_IN high_JJ flexibility_NN ,_, but_CC limited_JJ precis_NNS
+s_NNS are_VBP required_VBN ._.
+Another_DT interesting_JJ aspect_NN of_IN Example_NN 1_CD is_VBZ that_IN it_PRP requires_VBZ what_WP the_DT SWS_NNP community_NN calls_VBZ ``_`` partial_JJ matches_NNS ''_'' ,_, as_IN opposed_VBN to_TO ``_`` plug-in_JJ matches_NNS ''_'' -LRB-_-LRB- Paolucci_NNP ,_, Kawamura_NNP ,_, Payne_NNP ,_, &_CC Sycara_NNP ,_, 2002_CD ;_: =_JJ -_: =_JJ Li_NNP &_CC Horrocks_NNP ,_, 2003_CD -_: =_JJ -_: ;_: Kumar_NNP ,_, Neogi_NNP ,_, Pragallapati_NNP ,_, &_CC Ram_NNP ,_, 2007_CD -RRB-_-RRB- ._.
+5_CD Consider_VB the_DT situation_NN where_WRB one_NN wants_VBZ to_TO ``_`` connect_VB ''_'' a_DT web_NN service_NN w_NN to_TO another_DT web_NN service_NN w_FW ′_FW ._.
+That_DT is_VBZ ,_, w_NN will_MD be_VB executed_VBN prior_RB to_TO w_FW ′_FW ,_, and_CC the_DT output_NN
+ity_NN search_NN capability_NN ._.
+Woogle_JJ first_JJ clusters_NNS parameter_NN names_NNS into_IN semantically_RB meaningful_JJ concepts_NNS ,_, which_WDT are_VBP then_RB used_VBN to_TO compute_VB the_DT similarity_NN between_IN parameter_NN or_CC operation_NN names_NNS ._.
+Li_NNP and_CC Horrocks_NNP =_SYM -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: used_VBN DAML-S_NN to_TO design_VB a_DT service_NN matchmaker_NN ._.
+DAML-S_NN is_VBZ used_VBN to_TO represent_VB knowledge_NN for_IN promoting_VBG service_NN capability_NN matching_NN ._.
+A_DT description_NN logic_NN -LRB-_-LRB- DL_NN -RRB-_-RRB- based_VBN on_IN DAML-S_NN is_VBZ used_VBN to_TO implement_VB matchmaking_NN
+nce_NN ''_'' function_NN used_VBN in_IN the_DT depicted_VBN rule_NN is_VBZ a_DT good_JJ example_NN of_IN a_DT user-defined_JJ function_NN ._.
+This_DT approach_NN has_VBZ some_DT advantages_NNS compared_VBN to_TO traditional_JJ matchmaking_NN approaches_NNS ,_, such_JJ as_IN -LRB-_-LRB- Cali_NNP et_NNP al_NNP ,_, 2004_CD -RRB-_-RRB- and_CC -LRB-_-LRB- =_JJ -_: =_JJ Li_NNP and_CC Horrocks_NNP ,_, 2003_CD -_: =--RRB-_NN ._.
+The_DT most_RBS noticeable_JJ one_NN is_VBZ that_IN this_DT correlation_NN engine_NN does_VBZ not_RB impose_VB any_DT specific_JJ representation_NN but_CC the_DT language_NN ,_, OWL\/RDF_NN ,_, so_IN it_PRP is_VBZ easily_RB deployed_VBN on_IN any_DT semantics-enabled_JJ project_NN ._.
+It_PRP is_VBZ also_RB
+ested_VBN service_NN description_NN to_TO the_DT service_NN descriptions_NNS of_IN potential_JJ providers_NNS ,_, in_IN order_NN to_TO detect_VB relevant_JJ ones_NNS ._.
+Two_CD service_NN descriptions_NNS match_VBP if_IN there_EX is_VBZ an_DT acceptable_JJ instance_NN for_IN both_DT descriptions_NNS =_JJ -_: =[_NN 14_CD ,_, 12_CD ,_, 6_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Considering_VBG the_DT framework_NN presented_VBN in_IN Sect_NNP ._.
+2_CD ,_, let_VB Dr_NN and_CC Dp_NN respectively_RB a_DT requested_VBN service_NN description_NN and_CC a_DT provided_VBN service_NN description_NN ,_, expressed_VBN as_IN a_DT set_NN of_IN axioms_NNS imposing_VBG restrictions_NNS on_IN t_NN
+rently_RB known_VBN services_NNS the_DT planner_NN is_VBZ unable_JJ to_TO generate_VB 3_CD We_PRP consider_VBP as_IN partial_JJ matches_NNS the_DT subsume_JJ match_NN type_NN identified_VBN by_IN Paolluci_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- and_CC the_DT intersection_NN or_CC overlap_VB match_NN type_NN identified_VBN by_IN Li_NNP =_SYM -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Constantinescu_NNP -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+sService_NNP Composition_NNP with_IN Directories_NNPS 169_CD Algorithm_NN 1_CD ._.
+Composer_NN algorithm_NN for_IN service_NN composition_NN with_IN directories_NNS procedure_NN FindComposition_NN -LRB-_-LRB- PL_NN ,_, DIR_NN ,_, SRproblem_NN -RRB-_-RRB- :_: SAcomposite_NN PL_NN ._.
+i_LS
+erful_JJ enough_RB to_TO carry_VB out_RP the_DT inferences_NNS we_PRP need_VBP ._.
+3.2_CD Suitability_NN for_IN the_DT Web_NN Research_NN regarding_VBG the_DT use_NN of_IN ontologies_NNS and_CC Description_NN Logics_NNS for_IN semantic_JJ matchmaking_NN of_IN Web_NN Services_NNP descriptions_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 20_CD -RRB-_-RRB- as_RB well_RB as_IN other_JJ sources_NNS -LRB-_-LRB- 19_CD -RRB-_-RRB- has_VBZ led_VBN to_TO the_DT recognition_NN of_IN a_DT common_JJ query_NN method_NN ,_, using_VBG subsumption_NN relationships_NNS between_IN concepts_NNS ._.
+According_VBG to_TO this_DT method_NN ,_, the_DT query_NN is_VBZ modeled_VBN as_IN a_DT new_JJ conce_NN
+call_VB this_DT kind_NN of_IN matching_NN between_IN the_DT inputs_NNS of_IN query_NN Q_NNP and_CC service_NN S_NN forward_RB chaining_VBG with_IN partial_JJ type_NN matches_NNS ._.
+It_PRP corresponds_VBZ to_TO the_DT overlap_VB resp_NN ._.
+intersection_NN match_NN identified_VBN by_IN Li_NNP and_CC Horrocks_NNP =_SYM -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Constantinescu_NNP and_CC Faltings_NNP -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Figure_NN 3_CD illustrates_VBZ how_WRB partially_RB matching_VBG services_NNS can_MD be_VB aggregated_VBN in_IN order_NN to_TO cover_VB a_DT given_VBN input_NN range_NN ._.
+In_IN this_DT example_NN ,_, the_DT query_NN Q1_NN provides_VBZ the_DT input_NN par_NN
+sQuerySpecies_NNS -RRB-_-RRB- Actually_RB there_EX is_VBZ another_DT possible_JJ species_NN list_NN ,_, which_WDT is_VBZ not_RB covered_VBN by_IN the_DT above_JJ three_CD kinds_NNS of_IN matchings_NNS ,_, that_DT is_VBZ ,_, Intersecting_JJ matching_NN -LRB-_-LRB- ¬_CD -LRB-_-LRB- ClassRealSpecies_NNP ⊓_NNP ClassQuerySpecies_NNP ⊑_NNP ⊥_NNP -RRB-_-RRB- -RRB-_-RRB- =_JJ -_: =[_NN 23,24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, if_IN a_DT species_NN has_VBZ ``_`` greenish-yellow_JJ ''_'' flowers_NNS ,_, it_PRP would_MD also_RB be_VB possible_JJ to_TO find_VB in_IN the_DT field_NN an_DT individual_NN which_WDT has_VBZ ``_`` yellow_JJ ''_'' flowers_NNS ._.
+Although_IN this_DT latter_JJ list_NN has_VBZ a_DT lower_JJR probability_NN to_TO
+mal_JJ way_NN :_: T_NN ̸_FW |_FW =_JJ S_NN ⊑_FW ⊥_FW ._.
+Based_VBN on_IN these_DT standard_JJ inferences_NNS ,_, given_VBN a_DT request_NN D_NN -LRB-_-LRB- for_IN demand_NN -RRB-_-RRB- and_CC a_DT resource_NN S_NN -LRB-_-LRB- for_IN supply_NN -RRB-_-RRB- the_DT following_VBG match_NN classes_NNS can_MD be_VB identified_VBN with_IN respect_NN to_TO an_DT ontology_NN T_NN -LRB-_-LRB- see_VB =_JJ -_: =[_NN 14_CD ,_, 22_CD ,_, 18_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+exact_JJ T_NN |_NN =_JJ D_NN ≡_FW S._FW S_NN is_VBZ semantically_RB equivalent_JJ to_TO D._NNP All_NNP the_DT characteristics_NNS expressed_VBN in_IN D_NN are_VBP presented_VBN in_IN S_NN and_CC S_NN does_VBZ not_RB expose_VB any_DT additional_JJ characteristic_NN with_IN respect_NN to_TO D._NNP full_JJ T_NN |_NN =_JJ S_NN ⊑_NN D_NN
+arketplaces_NNS --_: see_VB eBay_NNP among_IN others_NNS ._.
+Explanation_NNP Services_NNPS and_CC Request_NN Refinement_NN 15_CD Given_VBN R_NN and_CC O_NN both_CC satisfiable_JJ w.r.t._NN an_DT ontology_NN ,_, logic_NN based_VBN approaches_NNS to_TO matchmaking_NN proposed_VBN in_IN the_DT literature_NN =_JJ -_: =[_NN 20_CD ,_, 18_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: use_NN classification\/implication_NN and_CC satisfiability_NN to_TO grade_NN match_NN results_VBZ in_IN five_CD categories_NNS ._.
+We_PRP recall_VBP such_PDT a_DT classification_NN list_NN :_: 1_CD ._.
+Exact_JJ ._.
+M_NN R_NN =_JJ M_NN O_NN --_: The_DT demand_NN is_VBZ semantically_RB equivalent_JJ to_TO the_DT s_NN
+sals_NNS on_IN matchmaking_NN systems_NNS were_VBD issued_VBN ._.
+They_PRP either_RB try_VBP to_TO compute_VB a_DT score_NN of_IN possible_JJ counterparts_NNS ,_, based_VBN on_IN textual_JJ information_NN -LRB-_-LRB- 42_CD -RRB-_-RRB- ,_, or_CC to_TO compare_VB the_DT logical_JJ representations_NNS of_IN supply_NN and_CC demand_NN =_JJ -_: =[_NN 40,20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC combine_VB both_DT scores_NNS and_CC logic_NN in_IN some_DT way_NN -LRB-_-LRB- 19,39,7,22_CD -RRB-_-RRB- ._.
+Our_PRP$ proposal_NN falls_VBZ in_IN this_DT last_JJ category_NN ,_, mixing_VBG in_IN a_DT formal_JJ way_NN Datalog_NNP ,_, Fuzzy_NNP sets_VBZ ,_, and_CC Utility_NNP Theory_NNP ._.
+While_IN the_DT above_JJ logic-based_JJ propo_NN
+f_LS it_PRP was_VBD in_IN conflict_NN with_IN available_JJ resources_NNS ._.
+Given_VBN R_NN -LRB-_-LRB- for_IN Request_NNP -RRB-_-RRB- and_CC O_NN -LRB-_-LRB- for_IN Offer_NN -RRB-_-RRB- both_CC consistent_JJ with_IN respect_NN to_TO an_DT ontology_NN T_NN ,_, logic-based_JJ approaches_NNS to_TO matchmaking_NN proposed_VBN in_IN the_DT literature_NN =_JJ -_: =[_NN 2_CD ,_, 3_CD -RRB-_-RRB- -_: =_JJ -_: use_NN classification_NN and_CC consistency_NN to_TO grade_NN match_NN results_VBZ in_IN five_CD categories_NNS :_: --_: Exact_JJ ._.
+All_PDT the_DT features_NNS requested_VBN in_IN R_NN are_VBP exactly_RB the_DT same_JJ provided_VBN by_IN O_NN and_CC vice_NN versa_RB --_: in_FW formulae_FW T_NN |_NN =_JJ R_NNP ⇔_NNP O._NNP --_: Ful_NN
+logics_NNS ,_, e-commerce_NN ,_, parser_NN ,_, semantic_JJ web_NN I._NNP INTRODUCTION_NNP Knowledge-based_JJ systems_NNS for_IN matchmaking_NN and_CC resource_NN retrieval_NN --_: often_RB based_VBN on_IN Description_NN Logics_NN fomalisms_NNS -LRB-_-LRB- DLs_NNS -RRB-_-RRB- --_: have_VBP been_VBN recently_RB proposed_VBN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+DLs_NNS ,_, in_IN fact_NN ,_, are_VBP endowed_JJ of_IN a_DT formal_JJ semantics_NNS ,_, allow_VBP for_IN an_DT open-world_JJ assumption_NN ._.
+Incomplete_JJ information_NN is_VBZ admitted_VBN ,_, and_CC absence_NN of_IN information_NN can_MD be_VB distinguished_VBN from_IN negative_JJ informatio_NN
+rank_VB a_DT set_NN of_IN resources_NNS with_IN respect_NN to_TO a_DT request_NN ._.
+Given_VBN R_NN -LRB-_-LRB- for_IN Request_NNP -RRB-_-RRB- and_CC O_NN -LRB-_-LRB- for_IN Offer_NN -RRB-_-RRB- both_CC consistent_JJ with_IN respect_NN to_TO an_DT ontology_NN T_NN ,_, logic-based_JJ approaches_NNS to_TO matchmaking_NN proposed_VBN in_IN literature_NN =_JJ -_: =[_NN 31_CD ,_, 32_CD -RRB-_-RRB- -_: =_JJ -_: use_NN classification_NN and_CC consistency_NN to_TO grade_NN match_NN results_VBZ in_IN five_CD categories_NNS :_: 4_CD Notice_NNP that_IN ∃_NNP R_NNP is_VBZ equivalent_JJ to_TO -LRB-_-LRB- ≥_NN 1_CD R_NN -RRB-_-RRB- 5_CD We_PRP write_VBP -LRB-_-LRB- =_JJ n_NN R_NN -RRB-_-RRB- for_IN -LRB-_-LRB- ≥_CD n_NN R_NN -RRB-_-RRB- ⊓_NN -LRB-_-LRB- ≤_CD n_NN R_NN -RRB-_-RRB- Semantic-based_JJ RFID_NNP Data_NNP Management_NNP 9_CD --_:
+ed_VBN to_TO compute_VB the_DT degree_NN of_IN match_NN ._.
+The_DT second_JJ paradigm_NN follows_VBZ the_DT Semantic_JJ Web_NN vision_NN ._.
+Services_NNPS are_VBP enriched_VBN by_IN annotating_VBG their_PRP$ parameters_NNS with_IN semantic_JJ concepts_NNS taken_VBN from_IN domain_NN ontologies_NNS ;_: e.g._FW ,_, =_JJ -_: =[_NN 32_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Then_RB ,_, estimating_VBG the_DT degree_NN of_IN parameter_NN match_NN reduces_VBZ to_TO a_DT problem_NN of_IN logic_NN inference_NN :_: a_DT reasoner_NN is_VBZ employed_VBN to_TO check_VB for_IN equivalence_JJ or_CC subsumption_JJ relationships_NNS between_IN concepts_NNS ._.
+Both_DT paradigms_NNS
+every_DT activity_NN or_CC operation_NN in_IN the_DT process_NN is_VBZ carried_VBN out_RP by_IN a_DT Web_NN service_NN ._.
+Previous_JJ works_NNS have_VBP examined_VBN a_DT number_NN of_IN traditional_JJ paradigms_NNS such_JJ as_IN planning_NN -LRB-_-LRB- 19_CD ,_, 26_CD ,_, 34_CD ,_, 32_CD -RRB-_-RRB- ,_, ontologybased_JJ matchmaking_NN =_JJ -_: =[_NN 23_CD ,_, 11_CD ,_, 20_CD -RRB-_-RRB- -_: =_JJ -_: and_CC constraint-based_JJ systems_NNS -LRB-_-LRB- 2_CD ,_, 16_CD -RRB-_-RRB- to_TO automate_VB various_JJ parts_NNS of_IN the_DT composition_NN task_NN ._.
+Alternatively_RB ,_, some_DT approaches_NNS such_JJ as_IN -LRB-_-LRB- 12_CD ,_, 36_CD -RRB-_-RRB- have_VBP investigated_VBN the_DT effectiveness_NN of_IN using_VBG MDA-based_JJ technolo_NN
+rameter_FW q.d_FW is_VBZ intended_VBN to_TO be_VB used_VBN within_IN a_DT matchmaking_NN procedure_NN to_TO find_VB the_DT set_NN of_IN providers_NNS ,_, denoted_VBN by_IN the_DT set_VBN Pq_NN ,_, that_WDT are_VBP able_JJ to_TO treat_VB q._NN There_EX is_VBZ a_DT large_JJ body_NN of_IN work_NN on_IN matchmaking_NN ,_, see_VB e.g._FW =_SYM -_: =[_NN 11_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, so_IN we_PRP do_VBP not_RB focus_VB on_IN this_DT problem_NN and_CC we_PRP assume_VBP there_EX exists_VBZ one_CD in_IN the_DT system_NN that_WDT is_VBZ sound_JJ and_CC complete_JJ :_: it_PRP does_VBZ not_RB return_VB false_JJ positive_JJ nor_CC false_JJ negatives_NNS ._.
+We_PRP use_VBP Nq_NN for_IN denoting_VBG |_NNP |_NNP Pq_NNP |_NNP |_NNP ,_, or_CC s_NN
+compares_VBZ the_DT functional_JJ capabilities_NNS of_IN Web_NN services_NNS in_IN terms_NNS of_IN inputs_NNS and_CC outputs_NNS ._.
+No_DT evaluation_NN study_NN is_VBZ presented_VBN to_TO determine_VB the_DT effectiveness_NN and_CC speed_NN of_IN the_DT ATLAS_NN matchmaker_NN ._.
+Li_NNP and_CC Horrocks_NNP =_SYM -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: describe_VBP the_DT design_NN of_IN a_DT service_NN matchmaker_NN that_WDT uses_VBZ DAML-S-based_JJ ontology_NN ._.
+It_PRP uses_VBZ techniques_NNS from_IN knowledge_NN representation_NN to_TO match_VB service_NN capabilities_NNS ._.
+In_IN particular_JJ ,_, it_PRP defines_VBZ a_DT description_NN lo_NN
+-LRB-_-LRB- 2_LS -RRB-_-RRB- ._.
+Given_VBN R_NN -LRB-_-LRB- for_IN Request_NNP -RRB-_-RRB- and_CC O_NN -LRB-_-LRB- for_IN Offered_VBN resource_NN -RRB-_-RRB- ,_, both_DT consistent_JJ w.r.t._NN a_DT common_JJ ontology_NN -LRB-_-LRB- containing_VBG axioms_NNS modeling_NN domain_NN knowledge_NN -RRB-_-RRB- ,_, logic-based_JJ approaches_NNS to_TO matchmaking_NN in_IN literature_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: use_NN classification_NN and_CC consistency_NN to_TO grade_NN match_NN results_VBZ in_IN five_CD categories_NNS :_: -LRB-_-LRB- i_LS -RRB-_-RRB- exact_NN -_: every_DT feature_NN requested_VBN in_IN R_NN is_VBZ exactly_RB the_DT same_JJ provided_VBN by_IN O_NN and_CC vice_NN versa_RB ;_: -LRB-_-LRB- ii_LS -RRB-_-RRB- full-subsumption_NN -_: every_DT
+tweight_JJ Semantic_JJ Web_NN Services_NNP 9_CD matchmaker_NN is_VBZ Sycara_NNP et_FW al._FW 's_POS SEMANTIC_JJ MATCHMAKER_NN -LRB-_-LRB- 44_CD -RRB-_-RRB- ._.
+It_PRP was_VBD one_CD of_IN several_JJ matchmakers_NNS proposed_VBN for_IN OWL-S_NN which_WDT matched_VBD requests_NNS according_VBG to_TO input_NN and_CC output_NN types_NNS =_JJ -_: =[_NN 27_CD ,_, 45_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Each_DT request_NN 's_POS input_NN and_CC output_NN types_NNS are_VBP compared_VBN pairwise_JJ with_IN the_DT corresponding_JJ inputs_NNS and_CC outputs_NNS of_IN a_DT service_NN description_NN ,_, with_IN the_DT comparisons_NNS resulting_VBG in_IN per-variable_JJ matches_NNS named_VBN exact_NN -LRB-_-LRB- th_DT
+ted_VBN to_TO determine_VB the_DT effectiveness_NN and_CC speed_NN of_IN the_DT ATLAS_NN matchmaker_NN ._.
+Maedche_NNP and_CC Staab_NNP -LRB-_-LRB- 55_CD -RRB-_-RRB- provided_VBD multiple_JJ phase_NN cross_NN evaluation_NN to_TO assess_VB the_DT similarity_NN between_IN two_CD different_JJ ontology_NN ._.
+The_DT work_NN =_JJ -_: =[_NN 56_CD -RRB-_-RRB- -_: =_SYM -_: describes_VBZ the_DT design_NN of_IN a_DT service_NN matchmaker_NN that_WDT uses_VBZ DAML-S-based_JJ ontology_NN ._.
+It_PRP uses_VBZ techniques_NNS from_IN knowledge_NN representation_NN to_TO match_VB service_NN capabilities_NNS ._.
+In_IN particular_JJ ,_, it_PRP defines_VBZ a_DT description_NN l_NN
+roduced_VBN to_TO formally_RB define_VB domain_NN conceptualizations_NNS and_CC to_TO describe_VB the_DT resources_NNS that_WDT are_VBP available_JJ in_IN these_DT domains_NNS ._.
+Some_DT examples_NNS are_VBP ,_, -LRB-_-LRB- i_LS -RRB-_-RRB- ,_, the_DT software_NN domain_NN where_WRB resources_NNS may_MD be_VB Web_NN services_NNS =_JJ -_: =[_NN 32_CD ,_, 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- ii_LS -RRB-_-RRB- ,_, the_DT business_NN transactions_NNS domain_NN where_WRB resources_NNS are_VBP business_NN products_NNS -LRB-_-LRB- 21_CD ,_, 22_CD -RRB-_-RRB- ,_, or_CC ,_, -LRB-_-LRB- iii_LS -RRB-_-RRB- ,_, the_DT multimedia_NNS domain_NN where_WRB resources_NNS may_MD be_VB multimedia_NNS objects_NNS -LRB-_-LRB- 1_CD ,_, 24_CD -RRB-_-RRB- ._.
+The_DT adoption_NN of_IN such_JJ repres_NNS
+ches_NNS dealing_VBG with_IN ontology-based_JJ service_NN discovery_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, and_CC more_RBR precisely_RB OWL-S_NN based_VBN approaches_NNS -LRB-_-LRB- as_IN we_PRP are_VBP relying_VBG on_IN OWLS_NNS with_IN regards_VBZ to_TO Web_NN Service_NN descriptions_NNS -RRB-_-RRB- ,_, capability_NN matching_NN algorithms_VBZ =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: exploiting_VBG service_NN profile_NN descriptions_NNS have_VBP been_VBN proposed_VBN ._.
+Matchmaking_NN algorithms_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- comparing_VBG state_NN transformations_NNS described_VBN in_IN the_DT query_NN to_TO the_DT ones_NNS provided_VBN in_IN the_DT descriptions_NNS have_VBP also_RB been_VBN
+etween_VB the_DT request_NN and_CC advertisement_NN parameters_NNS ._.
+Finally_RB ,_, the_DT ratings_NNS for_IN all_DT of_IN the_DT IOPEs_NNS are_VBP combined_VBN to_TO produce_VB an_DT overall_JJ rating_NN of_IN the_DT match_NN ._.
+-LRB-_-LRB- Gonzalez-Castillo_NNP ,_, Trastour_NNP ,_, &_CC Bartolini_NNP 2002_CD -RRB-_-RRB- and_CC -LRB-_-LRB- =_JJ -_: =_JJ Li_NNP &_CC Horrocks_NNP 2003_CD -_: =--RRB-_NN extended_VBD this_DT algorithm_NN to_TO consider_VB the_DT subsumption_NN relation_NN between_IN the_DT request_NN and_CC advertisement_NN profiles_NNS considered_VBN as_IN whole_JJ concepts_NNS ._.
+But_CC like_IN the_DT DAML-S_NNP Matchmaker_NNP ,_, they_PRP then_RB map_VBP the_DT subsumptio_NN
+to_TO be_VB solved_VBN for_IN service_NN instantiation_NN -LRB-_-LRB- in_IN the_DT rest_NN of_IN the_DT paper_NN we_PRP refer_VBP to_TO it_PRP as_IN service_NN personalization_NN and_CC adaptation_NN -RRB-_-RRB- ._.
+The_DT semantic_JJ matching_NN ,_, core_NN of_IN our_PRP$ approach_NN ,_, exploits_VBZ standard_JJ DL_NN reasoning_NN =_JJ -_: =[_NN 15_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: and_CC abduction_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- to_TO i_LS -RRB-_-RRB- adapt_VBP services_NNS to_TO the_DT user_NN by_IN identifying_VBG useful_JJ parts_NNS of_IN its_PRP$ profile_NN that_WDT satisfy_VBP the_DT service_NN requirements_NNS -LRB-_-LRB- i.e._FW ,_, input_NN parameters_NNS -RRB-_-RRB- and_CC ii_LS -RRB-_-RRB- compute_VB the_DT descriptions_NNS required_VBD
+n_NN interface_NN contract_NN between_IN service_NN components_NNS by_IN providing_VBG a_DT uniform_JJ interface_NN for_IN the_DT components_NNS connected_VBN to_TO each_DT port_NN ._.
+Here_RB ,_, varying_VBG matching_JJ strategies_NNS ,_, such_JJ as_IN the_DT well-known_JJ subsumption_NN match_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, can_MD be_VB employed_VBN ._.
+Directionality_NN is_VBZ modelled_VBN by_IN constraints_NNS that_WDT enforce_VBP a_DT connection_NN to_TO connect_VB a_DT data_NN consumer_NN to_TO a_DT data_NN provider_NN where_WRB the_DT supplied_VBN object_NN is_VBZ compatible_JJ with_IN the_DT requested_VBN data_NN typ_NN
+nd_NN O_NN -LRB-_-LRB- for_IN Offer_NN -RRB-_-RRB- both_CC consistent_JJ w.r.t._NN a_DT common_JJ ontology_NN -LRB-_-LRB- containing_VBG axioms_NNS that_WDT model_VBP knowledge_NN for_IN the_DT reference_NN problem_NN domain_NN -RRB-_-RRB- ,_, logic-based_JJ approaches_NNS to_TO matchmaking_NN proposed_VBN in_IN the_DT literature_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: use_NN classification_NN and_CC consistency_NN to_TO identify_VB full_JJ matches_NNS -LRB-_-LRB- all_DT features_NNS requested_VBN in_IN R_NN are_VBP provided_VBN by_IN O_NN -RRB-_-RRB- and_CC mismatches_NNS -LRB-_-LRB- a.k.a._NN partial_JJ or_CC disjoint_JJ matches_NNS :_: some_DT features_NNS requested_VBN in_IN R_NN are_VBP confli_VBN
+-RRB-_-RRB- ,_, which_WDT delivers_VBZ implementation_NN and_CC configuration_NN support_NN in_IN Semantic_NNP Business_NNP Process_VB Management_NNP ._.
+Our_PRP$ approach_NN integrates_VBZ well_RB with_IN the_DT existing_VBG discovery_NN mechanisms_NNS for_IN Semantic_JJ Web_NN Services_NNPS ,_, e.g._FW =_JJ -_: =[_NN 7_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT are_VBP based_VBN on_IN subsumption_NN reasoning_NN ._.
+In_IN order_NN to_TO make_VB our_PRP$ solution_NN more_RBR flexible_JJ in_IN the_DT presence_NN of_IN erroneous_JJ business_NN process_NN models_NNS ,_, we_PRP may_MD extend_VB service_NN discovery_NN to_TO approximate_JJ reasoning_NN ._.
+T_NN
+that_IN we_PRP can_MD easily_RB import_VB some_DT constructs_NNS from_IN OWL-S_NN ,_, such_JJ as_IN those_DT in_IN ServiceProfile_NNP ,_, into_IN the_DT OPUCE_NNP Ontology_NNP if_IN further_JJ requirements_NNS appear_VBP ._.
+Another_DT two_CD DL-based_JJ service_NN ontologies_NNS can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+In_IN -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, the_DT authors_NNS proposed_VBD a_DT DAML-S_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- based_VBN service_NN ontology_NN to_TO represent_VB concepts_NNS in_IN the_DT e-commerce_NN domain_NN such_JJ as_IN advertisements_NNS ,_, service_NN queries_NNS ,_, sales_NNS ,_, and_CC delivery_NN ._.
+Similar_JJ to_TO the_DT O_NN
+cation_NN of_IN new_JJ services_NNS and_CC service_NN matching_NN ._.
+4.2.1_CD Service_NNP Discovery_NNP Existing_VBG service_NN matching_NN algorithms_NNS usually_RB perform_VBP a_DT pair-wise_JJ comparison_NN between_IN a_DT service_NN request_NN and_CC all_DT registered_VBN services_NNS -LRB-_-LRB- =_JJ -_: =_JJ Li_NNP and_CC Horrocks_NNP 2004_CD -_: =_JJ -_: ;_: Paolucci_NNP et_FW al._FW 2002_CD -RRB-_-RRB- ._.
+A_DT match_NN between_IN a_DT request_NN and_CC a_DT service_NN must_MD involve_VB semantic_JJ matching_NN of_IN the_DT request_NN concept_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- and_CC the_DT service_NN concept_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- ._.
+For_IN discovery_NN of_IN CAD\/GIS_NN web_NN services_NNS ,_, a_DT service_NN m_NN
+ture_NN of_IN individual_JJ behavior_NN in_IN collaborative_JJ interactions_NNS ._.
+Semantic_JJ matchmaking_NN techniques_NNS as_IN we_PRP utilize_VBP for_IN partner_NN and_CC service_NN discovery_NN have_VBP been_VBN developed_VBN in_IN several_JJ preceding_JJ efforts_NNS ,_, e.g._FW -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ;_: we_PRP extend_VBP these_DT by_IN the_DT differentiation_NN of_IN action_NN and_CC object_NN knowledge_NN in_IN resource_NN descriptions_NNS and_CC by_IN using_VBG a_DT theorem_NN prover_NN for_IN matchmaking_NN realization_NN ,_, see_VB -LRB-_-LRB- 20_CD -RRB-_-RRB- for_IN details_NNS ._.
+Based_VBN on_IN previous_JJ work_NN
+logic_NN and_CC DAML-S_NN -LRB-_-LRB- this_DT was_VBD a_DT forerunner_NN to_TO OWL-S_NN -RRB-_-RRB- ._.
+However_RB for_IN performance_NN concerns_NNS a_DT non-semantic_JJ matchmaker_NN was_VBD used_VBN in_IN this_DT paper_NN ._.
+There_EX are_VBP also_RB papers_NNS on_IN QoS_NN Web_NN services_NNS that_WDT use_VBP ontologies_NNS ._.
+In_IN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: they_PRP provide_VBP a_DT novel_JJ ,_, rich_JJ and_CC extensible_JJ ontology_NN for_IN the_DT selection_NN of_IN the_DT requested_VBN QoS_NN ._.
+Also_RB see_VB -LRB-_-LRB- 18_CD ,_, 19_CD -RRB-_-RRB- ._.
+However_RB these_DT ontologies_NNS were_VBD too_RB comprehensive_JJ for_IN this_DT research_NN ._.
+The_DT Grid_NNP community_NN -LRB-_-LRB- 20_CD
+ormal_JJ descriptions_NNS and_CC semantic_JJ matchmaking_NN techniques_NNS for_IN evaluating_VBG these_DT conditions_NNS ._.
+3.2_CD ._.
+Functional_JJ Descriptions_NNS Following_VBG the_DT common_JJ approach_NN for_IN semantically_RB enabled_VBN Web_NN service_NN discovery_NN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 22,20_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, we_PRP describe_VBP the_DT functionality_NN provided_VBN by_IN a_DT Web_NN service_NN as_RB well_RB as_IN the_DT one_NN requested_VBN by_IN a_DT goal_NN in_IN terms_NNS of_IN inputs_NNS ,_, outputs_NNS ,_, preconditions_NNS ,_, and_CC effects_NNS on_IN the_DT basis_NN of_IN ontologies_NNS ._.
+Formally_RB ,_, we_PRP defin_VBP
+ld_RB ._.
+In_IN addition_NN to_TO the_DT work_NN mentioned_VBN so_RB far_RB ,_, some_DT researchers_NNS have_VBP approached_VBN service_NN matchmaking_NN in_IN OWL_NN -_: S_NN purely_RB from_IN a_DT Description_NN Logics_NN -LRB-_-LRB- DL_NN -RRB-_-RRB- perspective_NN ,_, perhaps_RB the_DT most_RBS notable_JJ example_NN being_VBG =_JJ -_: =[_NN 56_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN a_DT nutshell_NN the_DT idea_NN is_VBZ to_TO treat_VB both_DT service_NN advertisements_NNS and_CC queries_NNS as_IN concepts_NNS and_CC then_RB consider_VB the_DT subsumption_NN relation_NN between_IN both_DT ._.
+Based_VBN on_IN this_DT approach_NN ,_, Li_NNP and_CC Horrocks_NNP -LRB-_-LRB- 56_CD -RRB-_-RRB- have_VBP been_VBN
+he_PRP requested_VBD and_CC the_DT supplied_VBN resources_NNS are_VBP expressed_VBN in_IN ALN_FW w.r.t._FW an_DT ontology_NN T_NN ,_, it_PRP is_VBZ possible_JJ to_TO exploit_VB their_PRP$ formal_JJ semantics_NNS during_IN the_DT classification_NN and_CC matching_NN processes_NNS ._.
+Recall_VB that_DT -LRB-_-LRB- see_VB =_JJ -_: =[_NN 12_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: for_IN further_JJ details_NNS -RRB-_-RRB- given_VBN a_DT TBox_NN T_NN ,_, a_DT match_NN degree_NN between_IN a_DT request_NN D_NN and_CC a_DT supplied_VBN resource_NN C_NN -LRB-_-LRB- both_DT expressed_VBN w.r.t._NN T_NN -RRB-_-RRB- can_MD be_VB evaluated_VBN as_IN :_: --_: Exact_JJ ._.
+All_PDT the_DT features_NNS requested_VBN in_IN D_NN are_VBP exactly_RB
+describe_VBP documents_NNS in_IN ``_`` publish_VB and_CC subscribe_VB ''_'' applications_NNS -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, to_TO annotate_VB data_NNS in_IN bioinformatics_NNS applications_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- and_CC to_TO annotate_VB web_NN resources_NNS such_JJ as_IN web_NN pages_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- or_CC web_NN service_NN descriptions_NNS =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: in_IN Semantic_JJ Web_NN applications_NNS ._.
+Indeed_RB ,_, we_PRP have_VBP successfully_RB applied_VBN the_DT Instance_NNP Store_NNP to_TO perform_VB web_NN service_NN discovery_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, to_TO search_VB over_IN the_DT gene_NN ontology_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- and_CC its_PRP$ associated_VBN instances_NNS -LRB-_-LRB- see_VB bel_NN
+engines_NNS -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, where_WRB they_PRP can_MD help_VB in_IN finding_VBG pages_NNS that_WDT contain_VBP semantically_RB similar_JJ but_CC syntactically_RB different_JJ words_NNS and_CC phrases_NNS -LRB-_-LRB- see_VB ,_, e.g._FW ,_, http:\/\/www.hotbot.com\/_NN -RRB-_-RRB- ;_: and_CC --_: in_IN web_NN and_CC grid_NN service_NN =_JJ -_: =_JJ s_NN -LRB-_-LRB- 32_CD ,_, 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB they_PRP can_MD provide_VB rich_JJ service_NN descriptions_NNS that_WDT can_MD help_VB in_IN locating_VBG suitable_JJ services_NNS ._.
+In_IN order_NN to_TO support_VB these_DT and_CC other_JJ usage_NN scenarios_NNS ,_, OWL_NN takes_VBZ the_DT basic_JJ fact-stating_JJ ability_NN of_IN RDF_NN -LRB-_-LRB- 26_CD
+erefore_RB ,_, several_JJ degrees_NNS of_IN matches_NNS can_MD be_VB considered_VBN ,_, each_DT varying_VBG in_IN the_DT degree_NN of_IN satisfaction_NN of_IN the_DT user_NN 's_POS goal_NN ._.
+The_DT notion_NN of_IN matching_VBG goals_NNS to_TO services_NNS is_VBZ similar_JJ to_TO component_NN matchmaking_NN ,_, cf._VBP =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT first_JJ release_NN of_IN the_DT WSMX_NNP implementation_NN ,_, the_DT built-in_JJ matchmaking_NN is_VBZ performed_VBN by_IN simple_JJ string-based_JJ Figure_NNP 2_CD ._.
+Simplified_VBN Operational_JJ Aspects_NNS of_IN WSMX_NN comparison_NN of_IN the_DT requester_NN goal_NN with_IN t_NN
+ithin_VB the_DT proposed_VBN architetcure_NN are_VBP subject_JJ of_IN ongoing_JJ and_CC future_JJ research_NN ._.
+Although_IN our_PRP$ approach_NN calls_VBZ for_IN a_DT sophisticated_JJ mapping_NN the_DT authors_NNS are_VBP confident_JJ that_IN for_IN example_NN semantic_JJ techniques_NNS like_IN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: can_MD provide_VB appropriate_JJ solutions_NNS ._.
+Acknowledgements_NNP This_NNP work_NN has_VBZ been_VBN supported_VBN by_IN the_DT NextGRID_NN project_NN and_CC has_VBZ been_VBN partly_RB funded_VBN by_IN the_DT European_NNP Commission_NNP 's_POS IST_NN activity_NN of_IN the_DT 6th_JJ Framework_NN Prog_NN
+We_PRP have_VBP developed_VBN a_DT directory_NN service_NN with_IN specific_JJ features_NNS to_TO ease_VB service_NN composition_NN ._.
+Queries_NNS may_MD not_RB only_RB search_VB for_IN complete_JJ matches_NNS ,_, but_CC may_MD also_RB retrieve_VB partially_RB matching_VBG directory_NN entries_NNS =_JJ -_: =[_NN 7_CD ,_, 6_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN the_DT number_NN of_IN -LRB-_-LRB- partially_RB -RRB-_-RRB- matching_JJ entries_NNS may_MD be_VB large_JJ ,_, the_DT directory_NN supports_VBZ incremental_JJ retrieval_NN of_IN the_DT results_NNS of_IN a_DT query_NN ._.
+This_DT is_VBZ achieved_VBN through_IN sessions_NNS ,_, during_IN which_WDT a_DT client_NN issues_NNS qu_IN
+ges_NNS that_IN it_PRP receives_VBZ and_CC compile_VB the_DT messages_NNS that_IN it_PRP sends_VBZ to_TO the_DT requester_NN or_CC to_TO the_DT provider_NN ._.
+A_DT number_NN of_IN capability_NN matching_NN algorithms_NNS for_IN OWL-S_NN based_VBN Web_NN services_NNS have_VBP been_VBN proposed_VBN -LRB-_-LRB- see_VB -LRB-_-LRB- 2_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =-[_NN 22_CD -RRB-_-RRB- -RRB-_-RRB- which_WDT exploit_VBP OWL_NN ontologies_NNS and_CC the_DT related_JJ logics_NNS to_TO infer_VB which_WDT advertisements_NNS satisfy_VBP a_DT request_NN for_IN capabilities_NNS ._.
+These_DT algorithms_NNS can_MD be_VB used_VBN to_TO solve_VB the_DT problem_NN of_IN matching_VBG from_IN the_DT capab_NN
+between_IN service_NN requests_NNS and_CC the_DT advertisements_NNS of_IN the_DT services_NNS provided_VBN ._.
+In_IN general_JJ ,_, they_PRP exploit_VBP one_CD of_IN the_DT two_CD views_NNS of_IN the_DT capabilities_NNS described_VBN above_IN ._.
+Matching_VBG algorithms_NNS ,_, such_JJ as_IN described_VBN in_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, assume_VB the_DT availability_NN of_IN ontologies_NNS of_IN functionalities_NNS to_TO express_VB capabilities_NNS ._.
+Matching_VBG between_IN the_DT request_NN and_CC the_DT available_JJ advertisements_NNS is_VBZ reduced_VBN to_TO their_PRP$ subsumption_NN relation_NN ._.
+Dif_NN
+process_NN ._.
+These_DT two_CD tasks_NNS are_VBP highly_RB interrelated_JJ since_IN the_DT input_NN to_TO the_DT matchmaking_NN process_NN is_VBZ the_DT service_NN request_NN and_CC the_DT descriptions_NNS of_IN available_JJ services_NNS ._.
+sSimilarly_RB to_TO the_DT work_NN of_IN Li_NNP and_CC Horrocks_NNP =_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: both_CC the_DT service_NN advertisements_NNS and_CC requests_NNS are_VBP accompanied_VBN by_IN a_DT service_NN profile_NN ._.
+The_DT service_NN profile_NN -LRB-_-LRB- SP_NN -RRB-_-RRB- defines_VBZ the_DT type_NN of_IN the_DT service_NN -LRB-_-LRB- e.g._FW mapping_NN service_NN -RRB-_-RRB- ,_, describes_VBZ input_NN and_CC output_NN paramete_NN
+definitions_NNS in_IN resource_NN descriptions_NNS ._.
+A_DT match_NN is_VBZ achieved_VBN when_WRB the_DT object_NN definitions_NNS in_IN the_DT resources_NNS descriptions_NNS do_VBP not_RB contradict_VB ._.
+For_IN determining_VBG this_DT ,_, we_PRP apply_VBP set-theoretic_JJ criteria_NNS defined_VBN in_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT are_VBP extended_VBN into_IN five_CD matchmaking_NN notions_NNS for_IN semantically_RB enabled_VBN discovery_NN shown_VBN in_IN Figure_NNP 4_CD ._.
+Each_DT notion_NN defines_VBZ a_DT different_JJ logical_JJ relationship_NN between_IN the_DT resource_NN descriptions_NNS considered_VBN
+-RRB-_-RRB- ,_, a_DT specific_JJ language_NN was_VBD defined_VBN for_IN agent_NN advertisement_NN ,_, and_CC matchmaking_NN engine_NN was_VBD developed_VBN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, which_WDT carries_VBZ out_RP the_DT process_NN on_IN five_CD possible_JJ match_NN levels_NNS ._.
+This_DT approach_NN was_VBD later_RB extended_VBN in_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, with_IN two_CD new_JJ levels_NNS for_IN matching_VBG classification_NN ._.
+A_DT similar_JJ classification_NN was_VBD proposed_VBN --_: in_IN the_DT same_JJ venue_NN --_: in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, along_IN with_IN properties_NNS that_IN a_DT matchmaker_NN should_MD have_VB in_IN a_DT DL_NN based_JJ framework_NN ,_, and_CC
+t_NN subsumption_NN relations_NNS computed_VBN in_IN the_DT underlying_JJ ontology_NN ._.
+Prominent_JJ examples_NNS of_IN such_JJ logic-based_JJ approaches_NNS to_TO semantic_JJ service_NN matchmaking_NN are_VBP the_DT OWLSUDDI_NN matchmaker_NN -LRB-_-LRB- Sycara_FW et_FW al._FW 2003_CD -RRB-_-RRB- ,_, RACER_NN -LRB-_-LRB- =_JJ -_: =_JJ Li_NNP &_CC Horrock_NNP 2003_CD -_: =--RRB-_NN ,_, and_CC MAMA_NNP -LRB-_-LRB- Colucci_NNP et_FW al._FW 2004_CD -RRB-_-RRB- ._.
+However_RB ,_, like_IN Sheth_NNP and_CC his_PRP$ colleagues_NNS -LRB-_-LRB- Sheth_NNP ,_, Ramakrishnan_NNP ,_, &_CC Thomas_NNP 2005_CD -RRB-_-RRB- ,_, we_PRP believe_VBP that_IN purely_RB logic-based_JJ reasoning_NN on_IN respectively_RB annotated_JJ content_NN and_CC servi_NNS
+rtisements_NNS ,_, reasoners_NNS perform_VBP matching_VBG with_IN the_DT help_NN of_IN information_NN found_VBN in_IN ontologies_NNS ._.
+Finally_RB ,_, there_EX are_VBP numerous_JJ approaches_NNS to_TO use_VB reasoning_NN upon_IN OWL-S_NN ontologies_NNS to_TO perform_VB automatic_JJ composition_NN =_JJ -_: =[_NN 90_CD ,_, 126_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP all_DT use_VBP description_NN logic_NN formalism_NN ,_, and_CC are_VBP able_JJ to_TO compute_VB the_DT following_JJ degrees_NNS of_IN matching_NN :_: exact_JJ match_NN ,_, subsumes_VBZ matching_NN ,_, intersection_NN matching_NN and_CC disjoint_NN matching_NN -LRB-_-LRB- failed_JJ matching_NN -RRB-_-RRB- ._.
+Na_NN
+different_JJ levels_NNS of_IN matchings_NNS :_: Exact_JJ matching_NN -LRB-_-LRB- ClassRealSpecies_NNP ≡_NNP ClassQuerySpecies_NNP -RRB-_-RRB- ,_, PlugIn_NN matching_NN -LRB-_-LRB- ClassRealSpecies_NNP ⊑_NNP ClassQuerySpecies_NNP -RRB-_-RRB- andSubsume_NN matching_NN -LRB-_-LRB- ClassRealSpecies_NNP ⊒_NNP ClassQuerySpecies_NNP -RRB-_-RRB- =_JJ -_: =[_NN 26_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Actually_RB there_EX is_VBZ another_DT possible_JJ species_NN list_NN ,_, which_WDT is_VBZ not_RB covered_VBN by_IN the_DT above_JJ three_CD kinds_NNS of_IN matchings_NNS ,_, that_DT is_VBZ ,_, Intersecting_JJ matching_NN -LRB-_-LRB- ¬_CD -LRB-_-LRB- ClassRealSpecies_NNP ⊓_NNP ClassQuerySpecies_NNP ⊑_NNP ⊥_NNP -RRB-_-RRB- -RRB-_-RRB- ._.
+For_IN example_NN ,_, i_FW
+r_NN a_DT -LRB-_-LRB- slightly_RB -RRB-_-RRB- different_JJ purpose_NN but_CC that_WDT can_MD however_RB be_VB used_VBN for_IN the_DT aims_NNS of_IN the_DT current_JJ query_NN ._.
+Therefore_RB ,_, these_DT techniques_NNS facilitate_VBP software_NN reuse_NN ._.
+So-called_JJ semantic_JJ matchmaking_NN techniques_NNS -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 21_CD ,_, 16_CD ,_, 10_CD -RRB-_-RRB- -_: =--RRB-_NN mainly_RB exploit_VBP forms_NNS of_IN ontological_JJ reasoning_NN ._.
+Many_JJ of_IN these_DT proposals_NNS are_VBP inspired_VBN by_IN the_DT seminal_JJ work_NN of_IN Zaremski_NNP and_CC Wing_NNP -LRB-_-LRB- 30_CD -RRB-_-RRB- for_IN software_NN components_NNS match_VBP ,_, who_WP propose_VBP a_DT formal_JJ specification_NN to_TO
+full_JJ or_CC nearly_RB full_JJ automatization_NN of_IN this_DT process_NN ._.
+Therefore_RB ,_, it_PRP is_VBZ not_RB surprising_JJ that_IN automatic_JJ web_NN service_NN discovery_NN is_VBZ a_DT popular_JJ research_NN topic_NN and_CC many_JJ papers_NNS are_VBP published_VBN on_IN it_PRP -LRB-_-LRB- cf._VB -LRB-_-LRB- AGDR03_NN -RRB-_-RRB- ,_, =_JJ -_: =_JJ -LRB-_-LRB- LH03a_NN -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- PKPS02a_NN -RRB-_-RRB- ,_, -LRB-_-LRB- BHRT03_NN -RRB-_-RRB- ,_, -LRB-_-LRB- GCTB01_NN -RRB-_-RRB- ,_, -LRB-_-LRB- VSSP04_NN -RRB-_-RRB- ,_, -LRB-_-LRB- SWKL02_NN -RRB-_-RRB- ,_, -LRB-_-LRB- ZK04_NN -RRB-_-RRB- -RRB-_-RRB- ._.
+Still_RB ,_, many_JJ of_IN these_DT papers_NNS discuss_VBP discovery_NN in_IN the_DT setting_NN of_IN multiagent_JJ systems_NNS or_CC in_IN the_DT setting_NN of_IN description_NN logic_NN based_VBN reasoning_NN
+gative_JJ information_NN by_IN F_NN LORA-2_NN programs_NNS -LRB-_-LRB- except_IN through_IN the_DT closed_JJ world_NN assumption_NN -RRB-_-RRB- ._.
+5_CD Related_JJ Work_NN Several_JJ existing_VBG approaches_NNS to_TO dynamic_JJ Web_NN Service_NN discovery_NN rely_VBP on_IN OWL-S_NN ._.
+For_IN instance_NN ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP an_DT OWL-S-based_JJ approach_NN to_TO matching_JJ service_NN advertisements_NNS and_CC requests_NNS ._.
+Both_DT approaches_NNS rely_VBP on_IN OWL-style_JJ subsumption_NN reasoning_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- to_TO determine_VB if_IN a_DT match_NN exists_VBZ between_IN the_DT information_NN de_IN
+ed_VBN work_NN Different_NNP matchmaking_NN approaches_NNS have_VBP been_VBN developed_VBN aiming_VBG at_IN improving_VBG keyword-based_JJ techniques_NNS ._.
+In_IN general_JJ ,_, service_NN matchmaking_NN strategies_NNS that_WDT are_VBP based_VBN on_IN purely_RB logic_NN reasoning_NN services_NNS =_JJ -_: =[_NN 5_CD ,_, 9_CD -RRB-_-RRB- -_: =_JJ -_: present_JJ high_JJ precision_NN and_CC recall_NN ,_, but_CC are_VBP often_RB characterized_VBN by_IN low_JJ flexibility_NN ._.
+Moreover_RB these_DT approaches_NNS usually_RB suffer_VBP from_IN scalability_NN problems_NNS ._.
+In_IN -LRB-_-LRB- 9_CD -RRB-_-RRB- a_DT service_NN matchmaking_NN strategy_NN based_VBN on_IN t_NN
+rs_IN both_DT may_MD specify_VB the_DT model_NN name_NN as_IN input_NN and_CC return_VB a_DT receipt_NN number_NN as_IN output_NN ._.
+The_DT algorithm_NN proposed_VBN by_IN the_DT authors_NNS would_MD identify_VB a_DT match_NN for_IN in_IN this_DT case_NN ._.
+3.4.2_CD Second_NNP approach_NN Horrocks_NNP and_CC Li_NNP =_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP a_DT software_NN framework_NN for_IN semantic_JJ matchmaking_NN of_IN services_NNS ._.
+As_IN in_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, the_DT ontology_NN used_VBN is_VBZ DAML-S_NN and_CC the_DT services_NNS are_VBP described_VBN using_VBG the_DT DAML-S_NN profile_NN ._.
+However_RB ,_, here_RB the_DT matchmaking_NN is_VBZ no_DT
+idea_NN of_IN how_WRB to_TO match_VB program_NN capabilities_NNS initially_RB proposed_VBN in_IN -LRB-_-LRB- 4_CD ,_, 18_CD -RRB-_-RRB- ._.
+Other_JJ relevant_JJ approaches_NNS to_TO automated_JJ selection_NN of_IN semantic_JJ web_NN services_NNS include_VBP those_DT for_IN retrieving_VBG relevant_JJ OWL-S_NN services_NNS =_JJ -_: =[_NN 11_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS of_IN them_PRP rely_VBP on_IN DL_NN based_JJ subsumption_NN reasoning_NN ._.
+However_RB ,_, OWL_NN still_RB lacks_VBZ the_DT support_NN of_IN rules_NNS and_CC subsumption_NN reasoning_NN in_IN the_DT underlying_JJ description_NN logic_NN SHOIN_NN -LRB-_-LRB- D_NN -RRB-_-RRB- is_VBZ NEXPTIME_NNP ._.
+Besides_IN ,_, unlike_IN
+supported_VBN by_IN the_DT new_JJ standards_NNS for_IN the_DT Semantic_JJ Web_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, and_CC languages_NNS based_VBN on_IN formal_JJ logic_NN and_CC with_IN a_DT precisely_RB --_: defined_VBN semantic_JJ -LRB-_-LRB- e.g._FW ,_, OWL_NN and_CC OWL-S_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Amazingly_RB ,_, various_JJ projects_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, and_CC -LRB-_-LRB- 15_CD -RRB-_-RRB- -RRB-_-RRB- seem_VBP to_TO suggest_VB that_IN the_DT adoption_NN of_IN these_DT standards_NNS is_VBZ not_RB sufficient_JJ to_TO achieve_VB a_DT 100_CD %_NN precision_NN anyway_RB ._.
+Similarly_RB ,_, C_NN 3_CD introduces_VBZ a_DT new_JJ discovery_NN approach_NN aiming_VBG to_TO achieve_VB
+ization_NN and_CC schema_NN integration_NN -LRB-_-LRB- 2_CD ,_, 16_CD ,_, 25_CD -RRB-_-RRB- ,_, and_CC in_IN knowledge_NN representation_NN it_PRP has_VBZ been_VBN widely_RB used_VBN in_IN Description_NN Logic_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- for_IN object_NN classification_NN ,_, schema_NN integration_NN ,_, service_NN discovery_NN ,_, and_CC more_RBR =_JJ -_: =[_NN 8_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT most_RBS interesting_JJ and_CC practically_RB significant_JJ instance_NN of_IN the_DT problem_NN arises_VBZ when_WRB queries_NNS are_VBP posed_VBN against_IN databases_NNS that_WDT satisfy_VBP constraints_NNS ._.
+In_IN this_DT case_NN ,_, query_NN results_NNS that_WDT are_VBP otherwise_RB not_RB
+se_FW values_NNS ._.
+Moreover_RB ,_, we_PRP would_MD like_VB to_TO note_VB that_IN considering_VBG the_DT ontological_JJ relations_NNS of_IN the_DT service_NN types_NNS as_RB well_RB as_IN the_DT types_NNS and_CC values_NNS of_IN their_PRP$ properties_NNS could_MD benefit_VB the_DT similarity_NN calculation_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, especially_RB if_IN generic_JJ similarity_NN functions_NNS based_VBN on_IN the_DT ontological_JJ relations_NNS could_MD be_VB utilized_VBN ._.
+Note_VB that_IN in_IN our_PRP$ example_NN ,_, we_PRP define_VBP a_DT specific_JJ similarity_NN function_NN for_IN each_DT property_NN type_NN ._.
+With_IN poten_NN
+work_NN can_MD be_VB used_VBN to_TO build_VB directories_NNS that_WDT contain_VBP service_NN descriptions_NNS -LRB-_-LRB- functional_JJ attributes_NNS expressed_VBN in_IN Semantic_JJ Web_NN Languages_NNS -RRB-_-RRB- ._.
+More_JJR information_NN on_IN semantic_JJ discovery_NN of_IN services_NNS can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Information_NN in_IN the_DT eWallet_NNP is_VBZ stored_VBN as_IN semantic_JJ annotations_NNS ,_, therefore_RB ;_: the_DT eWallet_NNP can_MD readily_RB make_VB use_NN of_IN OWL-S_NN -LRB-_-LRB- see_VB appendix_NN -RRB-_-RRB- based_VBN semantic_JJ service_NN discovery_NN ._.
+To_TO further_RB clarify_VB the_DT need_NN for_IN se_FW
+e_LS of_IN requested_VBN or_CC offered_VBN service_NN ._.
+The_DT advertisements_NNS are_VBP stored_VBN into_IN a_DT repository_NN and_CC the_DT matching_NN of_IN advertisements_NNS is_VBZ reduced_VBN to_TO matching_NN of_IN RDF_NNP graphs_NNS ._.
+The_DT authors_NNS implement_VBP a_DT matching_JJ algorithm_NN ._.
+=_SYM -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: assesses_VBZ the_DT requirements_NNS for_IN a_DT service_NN description_NN language_NN and_CC ontology_NN ,_, and_CC argue_VBP that_IN DAML+OIL_NN and_CC DAML-S_NN common_JJ service_NN ontology_NN ,_, fulfil_VB these_DT requirements_NNS ._.
+This_DT argument_NN is_VBZ supported_VBN by_IN their_PRP$ d_NN
+eb_IN services_NNS ,_, followed_VBN by_IN contracting_NN and_CC behavioral_JJ conformance_NN tests_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Several_JJ research_NN works_VBZ present_JJ discovery_NN techniques_NNS by_IN semantic_JJ matchmaking_NN of_IN requested_VBN and_CC provided_VBN functionalities_NNS ,_, e.g._FW =_JJ -_: =[_NN 16,13,2,7,11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, due_JJ to_TO deficiencies_NNS in_IN the_DT expressiveness_NN and_CC the_DT formal_JJ semantics_NNS of_IN functional_JJ descriptions_NNS most_RBS existing_JJ approaches_NNS lack_VBP in_IN the_DT achievable_JJ quality_NN of_IN the_DT matchmaking_NN results_VBZ for_IN Web_NN serv_NN
+ices_NNS provided_VBN by_IN a_DT DL_NN reasoner_NN :_: Subsumption_NN and_CC Satisfiablity_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Given_VBN a_DT query_NN Q_NNP and_CC an_DT item_NN to_TO be_VB retrieved_VBN I_PRP the_DT following_VBG match_NN classes_NNS can_MD be_VB identified_VBN with_IN respect_NN to_TO an_DT ontology_NN T_NN -LRB-_-LRB- see_VB -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 25_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+•_NN exact_NN -_: T_NN |_NN =_JJ Q_NNP ≡_NNP I._NNP I_NNP is_VBZ semantically_RB equivalent_JJ to_TO Q._NNP All_NNP the_DT characteristics_NNS expressed_VBN in_IN Q_NNP are_VBP presented_VBN in_IN I_PRP and_CC I_PRP does_VBZ not_RB expose_VB any_DT additional_JJ characteristic_NN with_IN respect_NN to_TO Q._NNP •_FW ful_FW
+used_VBN for_IN special_JJ named_VBN elements_NNS belonging_VBG to_TO concepts_NNS ._.
+Recently_RB ,_, motivated_VBN by_IN the_DT ongoing_JJ effort_NN known_VBN as_IN the_DT Semantic_JJ Web_NN initiative_NN ,_, DLs_NNS have_VBP been_VBN widely_RB proposed_VBN in_IN the_DT modeling_NN of_IN e-marketplaces_NNS ._.
+=_SYM -_: =[_NN 13_CD ,_, 22_CD ,_, 21_CD ,_, 11_CD ,_, 16_CD ,_, 12_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+DLs_NNS ,_, in_IN fact_NN ,_, allow_VBP for_IN an_DT open-world_JJ assumption_NN ,_, i.e._FW ,_, incomplete_JJ information_NN is_VBZ admitted_VBN ,_, and_CC absence_NN of_IN information_NN can_MD be_VB distinguished_VBN from_IN negative_JJ information_NN ._.
+Furthermore_RB such_JJ languages_NNS allo_NN
+port_NN restrictions_NNS on_IN class_NN properties_NNS ,_, which_WDT suits_VBZ our_PRP$ notion_NN of_IN policy_NN ._.
+For_IN the_DT description_NN of_IN policies_NNS we_PRP use_VBP several_JJ aspects_NNS of_IN the_DT DL_NN formalism_NN reflecting_VBG different_JJ ways_NNS of_IN restricting_NN properties_NNS =_JJ -_: =_JJ -LRB-_-LRB- LH03_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT property_NN can_MD be_VB restricted_VBN to_TO a_DT fixed_JJ value_NN ,_, a_DT set_NN of_IN possible_JJ values_NNS or_CC a_DT value_NN range_NN ._.
+Furthermore_RB ,_, it_PRP can_MD be_VB either_CC mandatory_JJ or_CC facultative_JJ as_RB well_RB as_IN single-valued_JJ or_CC multiple-valued_JJ ._.
+Sev1_NN Sub_NN
+ropriate_NN description_NN of_IN service_NN semantics_NNS ._.
+One_CD of_IN them_PRP is_VBZ to_TO model_VB knowledge_NN about_IN services_NNS on_IN the_DT ontological_JJ level_NN of_IN concepts_NNS and_CC relations_NNS and_CC then_RB perform_VB schema_NN matching_NN ._.
+An_DT example_NN is_VBZ given_VBN in_IN =_JJ -_: =[_NN 93_CD -RRB-_-RRB- -_: =_SYM -_: where_WRB description_NN logic_NN reasoning_NN is_VBZ used_VBN ._.
+Both_DT ,_, goals_NNS and_CC capabilities_NNS ,_, are_VBP described_VBN as_IN description_NN logic_NN concept_NN expressions_NNS ._.
+To_TO check_VB the_DT intersection_NN of_IN the_DT two_CD concepts_NNS for_IN satisfiability_NN reduc_NN
+tologies_NNS which_WDT organize_VBP their_PRP$ site_NN structure_NN or_CC page_NN content_NN ._.
+Lastly_RB ,_, there_EX has_VBZ been_VBN recent_JJ interest_NN in_IN utilizing_VBG DL_NN reasoning_NN for_IN the_DT purpose_NN of_IN matching_VBG published_VBN content_NN with_IN subscription_NN requests_NNS =_JJ -_: =[_NN 8_CD ,_, 9_CD ,_, 26_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+When_WRB disseminating_VBG time_NN sensitive_JJ information_NN efficient_JJ reasoning_NN for_IN frequently_RB changing_VBG KBs_NNS will_MD be_VB critical_JJ in_IN achieving_VBG practical_JJ DL-based_JJ approaches_NNS ._.
+While_IN there_EX exists_VBZ such_JJ use_NN cases_NNS for_IN reaso_NN
+ion_NN of_IN business-to-business_NN -LRB-_-LRB- B2B_NN -RRB-_-RRB- interactions_NNS is_VBZ reckoned_VBN as_IN a_DT hot_JJ topic_NN for_IN corporate_JJ IT_NNP ._.
+The_DT compatibility_NN of_IN partners_NNS is_VBZ the_DT basis_NN of_IN realizing_VBG the_DT automation_NN of_IN a_DT B2B_NN interaction_NN ._.
+Previous_JJ works_NNS =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: focus_NN upon_IN the_DT compatibility_NN of_IN individual_JJ stateless_JJ messages_NNS ,_, which_WDT is_VBZ insufficient_JJ as_IN B2B_NN interactions_NNS usually_RB require_VBP more_RBR complex_JJ and_CC time-consuming_JJ interaction_NN processes_NNS ._.
+Consider_VB the_DT following_NN
+in_IN this_DT area_NN has_VBZ focused_VBN on_IN the_DT use_NN of_IN DAML-S_NN to_TO describe_VB service_NN capabilities_NNS ._.
+A_DT matchmaker_NN engine_NN then_RB compares_VBZ the_DT DAML-S_NN description_NN of_IN the_DT service_NN requested_VBN with_IN those_DT of_IN the_DT services_NNS advertised_VBD =_JJ -_: =[_NN 20_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT work_NN is_VBZ extended_VBN by_IN Sycara_FW et_FW ._.
+al._FW -LRB-_-LRB- 16_CD -RRB-_-RRB- to_TO propose_VB a_DT preliminary_JJ composition_NN framework_NN based_VBN on_IN AI_NNP planning_VBG technology_NN ,_, the_DT DAML-S_NNP Matchmaker_NNP and_CC the_DT DAML-S_NN Virtual_JJ Machine_NN ._.
+The_DT framework_NN does_VBZ
+in_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, where_WRB specifications_NNS of_IN requests_NNS are_VBP matched_VBN against_IN a_DT set_NN of_IN capabilities_NNS of_IN agents_NNS or_CC services_NNS ._.
+Capability_NN based_JJ matching_NN has_VBZ recently_RB also_RB been_VBN applied_VBN for_IN matching_NN of_IN Web_NN Services_NNPS ,_, e.g._FW =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Another_DT approach_NN ,_, which_WDT does_VBZ a_DT semantic_JJ comparison_NN between_IN a_DT query_NN and_CC a_DT peer_VBP 's_POS context_NN comes_VBZ from_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+They_PRP propose_VBP a_DT Peer-to-Peer_NNP architecture_NN ,_, implemented_VBN as_IN their_PRP$ '_POS KEx_NNS '_POS system_NN where_WRB queries_NNS can_MD
+-LRB-_-LRB- i.e._FW type_NN ,_, inputs_NNS ,_, outputs_NNS and_CC contextual_JJ attributes_NNS -RRB-_-RRB- from_IN the_DT request_NN that_WDT are_VBP not_RB present_JJ in_FW S._FW Based_VBN on_IN those_DT missing_VBG properties_NNS we_PRP classify_VBP the_DT match_NN in_IN five_CD different_JJ categories_NNS ,_, defined_VBN by_IN Li_NNP =_SYM -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- fig._NN 4_CD -RRB-_-RRB- ._.
+The_DT first_JJ category_NN indicates_VBZ an_DT exact_JJ match_NN ._.
+The_DT request_NN has_VBZ the_DT same_JJ properties_NNS as_IN the_DT service_NN description_NN ,_, i.e._FW there_EX are_VBP no_DT missing_VBG properties_NNS ._.
+This_DT is_VBZ the_DT best_JJS possible_JJ match_NN ._.
+The_DT secon_NN
+ched_VBN by_IN the_DT inputs_NNS of_IN the_DT request_NN ._.
+The_DT algorithm_NN in_IN -LRB-_-LRB- Paolucci_NNP ,_, Kawamura_NNP et_FW al._FW ,_, 2002_CD -RRB-_-RRB- however_RB does_VBZ not_RB deal_VB with_IN service_NN behavior_NN ,_, nor_CC it_PRP considers_VBZ service_NN composition_NN ._.
+Li_NNP and_CC Horrocks_NNP described_VBN in_IN -LRB-_-LRB- =_JJ -_: =_JJ Li_NNP and_CC Horrocks_NNP ,_, 2004_CD -_: =--RRB-_CD a_DT service_NN discovery_NN algorithm_NN based_VBN on_IN a_DT description_NN logic_NN reasoner_NN ,_, which_WDT speeds_VBZ up_RP the_DT matching_NN process_NN by_IN employing_VBG an_DT off_RB --_: line_NN classification_NN of_IN DAML_NNP --_: S_NN service_NN advertisements_NNS ._.
+As_IN -LRB-_-LRB- Paolucci_NNP ,_, Kawa_NNP
+d_NN compares_VBZ the_DT functional_JJ capabilities_NNS of_IN Web_NN services_NNS in_IN terms_NNS of_IN inputs_NNS and_CC outputs_NNS ._.
+No_DT evaluation_NN study_NN is_VBZ presented_VBN to_TO determine_VB the_DT effectiveness_NN and_CC speed_NN of_IN the_DT ATLAS_NN matchmaker_NN ._.
+Li_NNP and_CC Horrocks_NNP =_SYM -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: describe_VBP the_DT design_NN of_IN a_DT service_NN matchmaker_NN that_WDT uses_VBZ DAML-S-based_JJ ontology_NN ._.
+It_PRP uses_VBZ techniques_NNS from_IN knowledge_NN representation_NN to_TO match_VB service_NN capabilities_NNS ._.
+In_IN particular_JJ ,_, it_PRP defines_VBZ a_DT description_NN log_NN
+blished_VBN content_NN ._.
+As_IN the_DT semantics_NNS of_IN a_DT large_JJ subset_NN of_IN OWL_NN is_VBZ aligned_VBN with_IN description_NN logics_NNS -LRB-_-LRB- DLs_NNS -RRB-_-RRB- ,_, reasoning_NN techniques_NNS for_IN DLs_NNS can_MD then_RB be_VB leveraged_JJ for_IN matching_VBG content_NN with_IN subscription_NN requests_NNS =_JJ -_: =[_NN 9_CD ,_, 22_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN such_PDT an_DT approach_NN ,_, the_DT previously_RB mentioned_VBN benefits_NNS of_IN using_VBG a_DT formal_JJ representation_NN language_NN can_MD therefore_RB be_VB achieved_VBN ._.
+An_DT additional_JJ benefit_NN of_IN an_DT OWL-based_JJ syndication_NN approach_NN is_VBZ its_PRP$ native_JJ W_NN
+e_LS output_NN was_VBD given_VBN instead_RB due_JJ to_TO the_DT fact_NN that_IN ``_`` man_NN ''_'' is_VBZ a_DT subclass_NN of_IN the_DT ``_`` human_JJ ''_'' class_NN ,_, the_DT service_NN providedswould_NN not_RB be_VB appropriate_JJ ._.
+As_IN so_RB ,_, in_IN the_DT present_JJ research_NN ,_, unlike_IN the_DT matching_JJ methods_NNS of_IN =_JJ -_: =[_NN 10_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, when_WRB a_DT service_NN receiving_VBG inputs_NNS of_IN ``_`` man_NN ''_'' based_VBN on_IN -LRB-_-LRB- Rule_NN 2_CD -RRB-_-RRB- and_CC -LRB-_-LRB- Rule_NN 3_CD -RRB-_-RRB- is_VBZ desired_VBN ,_, priority_NN ranks_NNS are_VBP assigned_VBN when_WRB the_DT request_NN input_NN value_NN is_VBZ the_DT same_JJ or_CC larger_JJR than_IN the_DT advertisement_NN input_NN value_NN ._.
+of_IN the_DT advertisement_NN ._.
+This_DT profile_NN does_VBZ not_RB necessarily_RB contain_VBP information_NN about_IN the_DT presented_VBN product_NN itself_PRP ,_, but_CC also_RB about_IN what_WP the_DT advertiser_NN suspect_NN to_TO find_VB within_IN the_DT webpage_NN ._.
+Li_NNP and_CC Horrocks_NNP =_SYM -_: =_JJ -LRB-_-LRB- LH03_NN -RRB-_-RRB- -_: =_SYM -_: describe_VBP a_DT matchmaking_NN framework_NN based_VBN on_IN semantic_JJ web_NN technology_NN ._.
+This_DT framework_NN can_MD be_VB used_VBN to_TO support_VB service_NN advertisement_NN and_CC discovery_NN in_IN e-commerce_NN ._.
+4_LS ._.
+PROPOSED_VBN MODEL_NN Based_VBN on_IN the_DT knowledge_NN of_IN
+blished_VBN content_NN ._.
+As_IN the_DT semantics_NNS of_IN a_DT large_JJ subset_NN of_IN OWL_NN is_VBZ aligned_VBN with_IN description_NN logics_NNS -LRB-_-LRB- DLs_NNS -RRB-_-RRB- ,_, reasoning_NN techniques_NNS for_IN DLs_NNS can_MD then_RB be_VB leveraged_JJ for_IN matching_VBG content_NN with_IN subscription_NN requests_NNS =_JJ -_: =[_NN 9_CD ,_, 22_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN such_PDT an_DT approach_NN ,_, the_DT previously_RB mentioned_VBN benefits_NNS of_IN using_VBG a_DT formal_JJ representation_NN language_NN can_MD therefore_RB be_VB achieved_VBN ._.
+An_DT additional_JJ benefit_NN of_IN an_DT OWL-based_JJ syndication_NN approach_NN is_VBZ its_PRP$ native_JJ W_NN
+owledge_NN domains_NNS in_IN Semantic_JJ Web_NN scenarios_NNS ._.
+A_DT challenging_JJ issue_NN in_IN such_JJ scenarios_NNS is_VBZ the_DT matchmaking_NN problem_NN which_WDT is_VBZ finding_VBG an_DT offered_VBN resource_NN described_VBN by_IN a_DT formalism_NN with_IN an_DT unambiguous_JJ semantics_NNS =_JJ -_: =[_NN 21_CD ,_, 8_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Using_VBG DLs_NNS to_TO describe_VB resources_NNS ,_, it_PRP is_VBZ possible_JJ to_TO infer_VB which_WDT of_IN them_PRP satisfies_VBZ the_DT request_NN either_CC completely_RB -LRB-_-LRB- i.e._FW ,_, subsumes_VBZ the_DT request_NN -RRB-_-RRB- or_CC potentially_RB -LRB-_-LRB- i.e._FW ,_, the_DT conjunction_NN of_IN the_DT requested_VBN res_NNS
+semantic_JJ web_NN services_NNS ._.
+As_IN such_JJ ,_, it_PRP does_VBZ not_RB suggest_VB a_DT specific_JJ matching_NN rule_NN ,_, which_WDT is_VBZ up_IN to_TO the_DT specific_JJ implementations_NNS ._.
+However_RB ,_, the_DT authors_NNS propose_VBP in_IN -LRB-_-LRB- 21_CD -RRB-_-RRB- an_DT approach_NN that_WDT is_VBZ based_VBN on_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC on_IN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT ,_, in_IN turn_NN ,_, is_VBZ based_VBN upon_IN -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+More_RBR recently_RB ,_, a_DT WSMO_NNP matchmaker_NN has_VBZ been_VBN proposed_VBN in_IN -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, which_WDT combines_VBZ several_JJ aspects_NNS :_: type_NN matching_NN ,_, relation_NN matching_NN ,_, constraint_NN matching_NN ,_, parameter_NN matchi_NNS
+ts_NNS as_IN ,_, usually_RB ,_, no_DT single_JJ domain_NN concept_NN will_MD contain_VB the_DT complete_JJ structure_NN of_IN the_DT service_NN message_NN ._.
+Another_DT research_NN area_NN related_VBN to_TO the_DT work_NN presented_VBN here_RB is_VBZ ,_, that_DT of_IN service_NN matchmaking_NN -LRB-_-LRB- see_VB e.g._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 17_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+This_DT research_NN topic_NN is_VBZ related_JJ to_TO Web_NN service_NN classifi3_NN http:\/\/www.w3.org\/TR\/2001\/REC-xmlschema-2-20010502scation_NN in_IN that_DT our_PRP$ approach_NN computes_VBZ similarity_NN degrees_NNS between_IN services_NNS in_IN order_NN
+categories_NNS ,_, they_PRP classify_VBP a_DT service_NN by_IN finding_VBG the_DT ontology_NN that_WDT yields_VBZ a_DT higher_JJR similarity_NN value_NN when_WRB compared_VBN with_IN the_DT service_NN ._.
+Another_DT related_JJ area_NN to_TO our_PRP$ work_NN is_VBZ that_DT of_IN service_NN matchmaking_NN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 14_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+It_PRP is_VBZ somehow_RB related_JJ to_TO web_NN service_NN classification_NN but_CC differs_VBZ in_IN the_DT final_JJ objectives_NNS ._.
+Our_PRP$ research_NN aims_VBZ to_TO find_VB similarity_NN degrees_NNS between_IN services_NNS in_IN order_NN to_TO assign_VB them_PRP to_TO a_DT common_JJ c_NN
+OWL-S_NN definitions_NNS ._.
+OWL-S_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- is_VBZ a_DT widely_RB discussed_VBN formalism_NN for_IN capturing_VBG the_DT semantics_NNS of_IN services_NNS ._.
+However_RB ,_, the_DT current_JJ release_NN of_IN the_DT OWL-S_NN specification_NN suffers_VBZ from_IN some_DT deficiencies_NNS -LRB-_-LRB- see_VB e.g._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+To_TO overcome_VB these_DT disadvantages_NNS the_DT so-called_JJ Web_NN Service_NNP Semantic_NNP Profile_NNP -LRB-_-LRB- WSSP_NNP -RRB-_-RRB- ,_, which_WDT enriches_VBZ syntactic_JJ WSDL_NN descriptions_NNS with_IN semantic_JJ descriptions_NNS ,_, has_VBZ been_VBN proposed_VBN as_IN a_DT more_RBR pragmatic_JJ solut_NN
+variables_NNS ,_, to_TO some_DT information_NN and_CC some_DT real_JJ world_NN effects_NNS of_IN the_DT service_NN capability_NN ._.
+This_DT function_NN is_VBZ what_WP we_PRP call_VBP the_DT service_NN functionality_NN ._.
+2.2_CD Alternative_NNP descriptions_NNS Existing_VBG proposals_NNS such_JJ as_IN =_JJ -_: =[_NN 3_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: rely_VB on_IN a_DT single_JJ way_NN of_IN describing_VBG the_DT value_NN of_IN services_NNS ._.
+However_RB ,_, the_DT variety_NN of_IN usage_NN scenarios_NNS in_IN which_WDT locating_VBG appropriate_JJ services_NNS for_IN fulfilling_VBG a_DT goal_NN might_MD be_VB required_VBN makes_VBZ it_PRP advisable_JJ to_TO
+erwise_RB ,_, we_PRP can_MD check_VB the_DT subsumption_NN relationships_NNS between_IN Match_NNP ,_, UsersInterest_NNP and_CC ServiceOffer_NNP to_TO determine_VB a_DT match_NN degree_NN ._.
+Horrocks_NNP et_FW al._FW have_VBP proposed_VBN a_DT matching_JJ approach_NN that_WDT achieves_VBZ this_DT task_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+RELATED_NNS WORK_VBP In_IN the_DT following_NN ,_, we_PRP want_VBP to_TO quickly_RB describe_VB some_DT related_JJ approaches_NNS for_IN semantic_JJ matchmaking_NN of_IN services_NNS ._.
+DReggie_NN DReggie_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- is_VBZ a_DT dynamic_JJ service_NN discovery_NN infrastructure_NN targeted_VBN at_IN
+es_NNS ._.
+As_IN a_DT result_NN ,_, research_NN efforts_NNS have_VBP been_VBN carried_VBN out_RP to_TO enhance_VB workflow_NN systems_NNS in_IN their_PRP$ support_NN of_IN web_NN service_NN composition_NN -LRB-_-LRB- 99_CD -RRB-_-RRB- ._.
+Regarding_VBG the_DT service_NN matching_NN and_CC composability_NN ,_, Li_NNP and_CC Horrocks_NNP =_SYM -_: =[_NN 65_CD -RRB-_-RRB- -_: =_SYM -_: use_VB DAML-S_NN to_TO design_VB a_DT service_NN matchmaker_NN ._.
+DAML-S_NN is_VBZ used_VBN to_TO represent_VB knowledge_NN for_IN promoting_VBG service_NN capability_NN matching_NN ._.
+A_DT description_NN logic_NN -LRB-_-LRB- DL_NN -RRB-_-RRB- based_VBN on_IN DAML-S_NN is_VBZ used_VBN to_TO implement_VB matchmaking_NN d_NN
+a_DT detailed_JJ evaluation_NN of_IN Web_NN services_NNS is_VBZ needed_VBN ._.
+7_CD Related_NNP Work_NNP Most_NNP -LRB-_-LRB- semantic_JJ -RRB-_-RRB- web_NN service_NN discovery_NN proposals_NNS are_VBP based_VBN on_IN the_DT semantic_JJ matching_NN of_IN Web_NN services_NNS and_CC goals_NNS based_VBN on_IN DL_NN reasoning_NN e.g._FW =_SYM -_: =[_NN 4_CD ,_, 17_CD ,_, 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, focusing_VBG on_IN a_DT single_JJ logical_JJ filter_NN and_CC not_RB considering_VBG neither_CC the_DT relation_NN between_IN input_NN values_NNS and_CC Web_NN service_NN results_NNS ,_, nor_CC alternative_JJ filters_NNS ._.
+Works_NNP such_JJ as_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 12_CD -RRB-_-RRB- take_VBP into_IN account_NN how_WRB
+of_IN any_DT web_NN service_NN architecture_NN ._.
+Currently_RB ,_, this_DT collaboration_NN approach_NN is_VBZ only_RB supported_VBN for_IN black-box_JJ services_NNS ,_, i.e._FW services_NNS having_VBG input_NN and_CC output_NN parameters_NNS and_CC optional_JJ pre_JJ and_CC post_JJ conditions_NNS =_JJ -_: =[_NN 10_CD ,_, 22_CD ,_, 24_CD ,_, 27_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Such_JJ black-box_JJ services_NNS do_VBP not_RB provide_VB any_DT information_NN on_IN the_DT internal_JJ operation_NN of_IN the_DT service_NN ._.
+WSDL_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, in_IN combination_NN with_IN languages_NNS like_IN OWL-S_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- and_CC WSMO_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, has_VBZ emerged_VBN as_IN standard_JJ langua_NN
+s_NNS given_VBN in_IN terms_NNS of_IN pre_JJ -_: and_CC post-conditions_NNS ,_, written_VBN as_IN predicates_NNS in_IN first-order_JJ logic_NN ._.
+These_DT matches_NNS are_VBP at_IN the_DT basis_NN of_IN many_JJ proposals_NNS ,_, both_DT for_IN software_NN component_NN match_NN and_CC for_IN web_NN service_NN match_NN =_JJ -_: =[_NN 11_CD ,_, 14_CD ,_, 16_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT idea_NN of_IN working_VBG on_IN a_DT specification_NN of_IN software_NN components_NNS -LRB-_-LRB- although_IN not_RB yet_RB on_IN preand_NN post-conditions_NNS -RRB-_-RRB- can_MD be_VB found_VBN also_RB in_IN earlier_JJR works_NNS ,_, such_JJ as_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, where_WRB a_DT compositional_JJ method_NN for_IN the_DT autom_NN
+the_DT client_NN 's_POS needs_NNS ._.
+Sometimes_RB ,_, the_DT client_NN 's_POS intervention_NN will_MD be_VB needed_VBN so_RB as_IN to_TO choose_VB the_DT one_NN that_IN he_PRP considers_VBZ as_IN most_JJS appropriate_JJ ._.
+The_DT Information_NNP Management_NNP Group_NNP at_IN the_DT University_NNP of_IN Manchester_NNP =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: developed_VBD another_DT approach_NN ._.
+The_DT prototype_NN description_NN of_IN the_DT matching_JJ algorithm_NN is_VBZ alsosJOURNAL_NNP OF_IN NETWORKS_NNP ,_, VOL_NNP ._.
+3_CD ,_, NO._NN 1_CD ,_, JANUARY_NNP 2008_CD 37_CD based_VBN on_IN the_DT descriptions_NNS of_IN DAML-S_NN ._.
+It_PRP uses_VBZ the_DT reasoner_NN R_NN
+e_LS engineers_NNS ._.
+Within_IN this_DT paper_NN we_PRP focus_VBP on_IN how_WRB to_TO discover_VB services_NNS ._.
+Within_IN the_DT literature_NN there_EX are_VBP numerous_JJ proposals_NNS on_IN how_WRB to_TO extend_VB the_DT existing_VBG WSDL_NNP based_VBN interface_NN descriptions_NNS with_IN semantics_NNS :_: =_JJ -_: =[_NN 6_CD ,_, 8_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB rather_RB than_IN on_IN taking_VBG current_JJ constraints_NNS and_CC foreseeable_JJ evolvement_NN of_IN services_NNS into_IN account_NN the_DT approaches_NNS focus_VBP purely_RB on_IN some_DT logical_JJ 1sframework_NN that_WDT could_MD potentially_RB make_VB retrieval_NN mo_NN
+sk_NN of_IN finding_VBG relevant_JJ services_NNS given_VBN a_DT user_NN request_NN ,_, is_VBZ one_CD task_NN where_WRB semantic_JJ based_VBN approaches_NNS can_MD bring_VB more_JJR automatization_NN and_CC accuracy_NN ._.
+Solutions_NNPS for_IN discovery_NN were_VBD proposed_VBN in_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+However_RB ,_, most_JJS of_IN the_DT existing_VBG literature_NN in_IN this_DT field_NN refers_VBZ to_TO detecting_VBG matches_NNS by_IN comparing_VBG the_DT inputs_NNS and_CC outputs_NNS of_IN requested_VBN ,_, respectively_RB provided_VBN services_NNS ._.
+For_IN example_NN ,_, the_DT matching_NN a_DT
+,_, which_WDT use_VBP different_JJ types_NNS of_IN information_NN provided_VBN by_IN the_DT service_NN profile_NN and_CC the_DT available_JJ ontologies_NNS to_TO match_VB between_IN service_NN requests_NNS and_CC advertisements_NNS ._.
+Some_DT matching_JJ algorithms_NNS ,_, such_JJ as_IN -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: rely_VB on_IN the_DT subsumption_NN computation_NN provided_VBN by_IN OWL_NN inference_NN engines_NNS to_TO infer_VB the_DT relation_NN between_IN the_DT advertisement_NN and_CC the_DT request_NN ._.
+These_DT matching_JJ algorithms_NNS rely_VBP on_IN the_DT ability_NN to_TO construct_VB taxon_NN
+and_CC recall_NN ._.
+It_PRP also_RB reduces_VBZ human_JJ interference_NN with_IN the_DT discovery_NN process_NN and_CC makes_VBZ the_DT dynamic_JJ discovery_NN possible_JJ ._.
+Therefore_RB ,_, semantic_JJ web_NN technologies_NNS become_VBP a_DT solution_NN for_IN this_DT matchmaking_NN process_NN =_JJ -_: =[_NN 47_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 26_CD -RRB-_-RRB- -LRB-_-LRB- 28_CD -RRB-_-RRB- ._.
+In_IN the_DT mean_NN time_NN ,_, quality_NN of_IN service_NN becomes_VBZ an_DT interesting_JJ topic_NN for_IN selecting_VBG optimal_JJ services_NNS from_IN a_DT subset_NN of_IN services_NNS that_WDT have_VBP the_DT same_JJ functionality_NN the_DT requester_NN asked_VBD for_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- -LRB-_-LRB- 53_CD
+Subsume_JJ match_NN means_VBZ that_IN an_DT output_NN parameter_NN of_IN a_DT service_NN sy_NN subsumes_VBZ an_DT input_NN parameter_NN of_IN the_DT succeeding_VBG service_NN sx_NN ._.
+Besides_IN these_DT four_CD semantic_JJ matching_JJ functions_NNS -LRB-_-LRB- Table_NNP 1_CD -RRB-_-RRB- ,_, non-empty_JJ intersection_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, concept_NN abduction_NN or_CC contraction_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- might_MD be_VB proposed_VBN in_IN order_NN to_TO add_VB expressivity_NN of_IN the_DT SimT_NN function_NN ._.
+Suppose_VB two_CD Web_NN services_NNS sy_NN and_CC sz_NN with_IN a_DT respective_JJ output_NN parameter_NN Out_IN sy_NN and_CC Out_IN sz_NN ._.
+In_IN
+e_LS field_NN of_IN Semantic_JJ Web_NN services_NNS ._.
+As_IN the_DT core_NN technique_NN ,_, research_NN on_IN semantic_JJ matchmaking_NN has_VBZ identified_VBN different_JJ degrees_NNS under_IN which_WDT a_DT Web_NN service_NN is_VBZ considered_VBN to_TO be_VB usable_JJ for_IN solve_VB a_DT goal_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 21_CD ,_, 26_CD ,_, 16_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+In_IN all_DT situations_NNS where_WRB the_DT functionality_NN offered_VBN by_IN a_DT Web_NN service_NN provider_NN does_VBZ not_RB exactly_RB match_VB with_IN the_DT one_NN demanded_VBN by_IN requester_NN for_IN solving_VBG his_PRP$ goal_NN ,_, certain_JJ conditions_NNS arise_VBP under_IN which_WDT the_DT
+gistry_NN is_VBZ not_RB supported_VBN by_IN UDDI_NNP ._.
+Therefore_RB ,_, semantic_JJ Web_NN service_NN matching_NN methods_NNS have_VBP been_VBN developed_VBN to_TO resolve_VB UDDI_NNP keyword-based_JJ search_NN shortcomings_NNS using_VBG subsumption_NN reasoning_NN based_VBN on_IN ontologies_NNS =_JJ -_: =[_NN 5_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+With_IN the_DT dramatic_JJ increase_NN in_IN the_DT number_NN of_IN Web_NN services_NNS ,_, the_DT number_NN of_IN functionally_RB similar_JJ Web_NN services_NNS is_VBZ increasing_VBG as_RB well_RB ._.
+Therefore_RB ,_, there_EX is_VBZ a_DT need_NN to_TO select_VB the_DT most_RBS suitable_JJ service_NN from_IN t_NN
+subsumption_NN relations_NNS computed_VBN in_IN the_DT corresponding_JJ ontology_NN ._.
+Prominent_JJ examples_NNS of_IN such_JJ logic-based_JJ only_JJ approaches_NNS to_TO semantic_JJ service_NN discovery_NN are_VBP provided_VBN by_IN the_DT OWLS-UDDI_NN matchmaker_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, RACER_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, MAMA_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, and_CC the_DT WSMO_NNP service_NN discovery_NN approach_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+These_DT approaches_NNS do_VBP not_RB exploit_VB semantics_NNS that_WDT are_VBP implicit_JJ ,_, for_IN example_NN ,_, in_IN patterns_NNS or_CC relative_JJ frequencies_NNS of_IN terms_NNS in_IN service_NN descriptions_NNS
+e._NN Goals_NNS -RRB-_-RRB- and_CC Web_NN services_NNS ._.
+If_IN such_PDT a_DT relationship_NN holds_VBZ ,_, the_DT Web_NN service_NN is_VBZ considered_VBN to_TO be_VB usable_JJ for_IN resolving_VBG the_DT client_NN 's_POS goal_NN ._.
+On_IN basis_NN of_IN several_JJ preceding_JJ works_NNS on_IN semantic_JJ matchmaking_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT Web_NN service_NN discovery_NN framework_NN defined_VBN for_IN WSMO_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- identifies_VBZ five_CD matchmaking_NN notions_NNS as_IN the_DT core_NN for_IN functional_JJ discovery_NN as_IN shown_VBN in_IN Figure_NNP 4_CD ._.
+The_DT important_JJ characteristic_NN of_IN these_DT notions_NNS
+突_NNP ,_, 记录冲突_NNP 〈_NNP :_: S1_NN ._.
+out_RB ,_, :_: Q._NNP result_NN 〉_NN ._.
+S1_NN 3_CD ._.
+Tableaux选择G_FW 中_FW 一个_FW 分支_FW ∃_FW initial_NN ._.
+I1却导致Q的initial属性产生的个体与S1的_NNP ∀_NNP in_IN ._.
+¬_FW I1冲突_FW ,_, 记录冲_NN 4_CD ._.
+中一个分支_FW ∃_FW initial_NN ._.
+I2却导致Q的initial属性产生的个体与S2的_NNP ∀_NNP in_IN ._.
+¬_FW I2冲突_FW ,_, 记录冲_NN 4_CD 相关工作_FW 突_FW 〈_FW :_: Q._NNP initial_JJ ,_, :_: S_NN 2_CD ._.
+in_IN 〉_NNP ._.
+文献_NN =_SYM -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: 的基础上提出了采用线性逻辑推理进行_CD Web_NN 服务组合_FW 的方法_FW ._.
+文献_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- 中的方案还能够进行_CD Web_NN 服务_FW 参数_FW 个数的匹配_FW ,_, 但是_NN ,_, 该方案并不能保证服务组合算法会终止_NN ._.
+为桶装汽油不是一种汽油_NN ,_, 它是一种由汽油和油桶_NN -LRB-_-LRB- barrel_NN -RRB-_-RRB- 构成的复合体_NN -LRB-_-LRB- complex_NN -RRB-_-RRB- ._.
+本文的服务组合方案便能够_FW 很好地解决这个问题_FW ,_, 它会告诉用户把桶装汽油买回来_NN ,_, 里_FW 面装的就是汽油_FW ._.
+Fig_FW .1_FW Ontology_NN desc_NN
+offered_VBN service_NN ._.
+The_DT advertisements_NNS are_VBP stored_VBN into_IN a_DT repository_NN and_CC the_DT matching_NN of_IN advertisements_NNS is_VBZ reduced_VBN to_TO matching_NN of_IN RDF_NNP graphs_NNS ._.
+The_DT authors_NNS implemented_VBD a_DT matching_JJ algorithm_NN ._.
+Li_NNP and_CC Horrocks_NNP =_SYM -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: assess_VB the_DT requirements_NNS for_IN a_DT service_NN description_NN language_NN and_CC ontology_NN ,_, and_CC argue_VBP that_IN DAML+OIL_NN and_CC DAML-S_NN common_JJ service_NN ontology_NN ,_, fulfil_VB these_DT requirements_NNS ._.
+This_DT argument_NN is_VBZ supported_VBN by_IN their_PRP$ des_FW
+ase_NN of_IN subsumed-by_JJ and_CC nearest-neighbor_JJ -RRB-_-RRB- ._.
+This_DT combination_NN is_VBZ not_RB straightforward_JJ ,_, maybe_RB a_DT parametrized_JJ function_NN which_WDT allows_VBZ scaling_VBG the_DT contribution_NN of_IN each_DT measure_NN might_MD be_VB appropriate_JJ ._.
+Li_NNP Horrocks_NNP =_SYM -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: A_DT DL_NN concept_NN is_VBZ used_VBN to_TO describe_VB the_DT inputs_NNS and_CC another_DT for_IN the_DT outputs_NNS of_IN a_DT service_NN advertisement_NN or_CC request_NN ._.
+They_PRP extend_VBP the_DT degrees_NNS of_IN match_NN proposed_VBN by_IN Paolucci_NNP et_FW al._FW by_IN adding_VBG an_DT intersection_NN m_NN
+ystems_NNS while_IN other_JJ systems_NNS use_VBP customized_VBN algorithms_NNS for_IN matchmaking_NN ._.
+The_DT LARKS_NNP based_VBN system_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, the_DT Description_NN Logic_NN based_VBN NeoClassic_NNP Reasoner_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC the_DT Semantic_JJ Web_NN language_NN DAMLS_NNS based_VBN system_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: use_VB KR_NN languages_NNS to_TO represent_VB knowledge_NN ._.
+3.3_CD Tree_NN Some_DT researchers_NNS have_VBP proposed_VBN the_DT use_NN of_IN a_DT tree_NN structure_NN to_TO represent_VB knowledge_NN ._.
+Islam_NNP et_FW al._FW -LRB-_-LRB- 3_CD -RRB-_-RRB- used_VBD a_DT basic_JJ tree_NN structure_NN and_CC proposed_VBD a_DT matchm_NN
+n_NN during_IN adaptation_NN ._.
+Further_RB ,_, we_PRP use_VBP ontology_JJ classification_NN for_IN adaptation_NN while_IN the_DT above_JJ projects_NNS use_VBP only_RB context_NN information_NN ._.
+There_EX has_VBZ been_VBN a_DT lot_NN of_IN work_NN on_IN semantic_JJ matchmaking_NN using_VBG ontologies_NNS =_JJ -_: =[_NN 14_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, especially_RB for_IN web_NN services_NNS -LRB-_-LRB- 12_CD ,_, 13_CD -RRB-_-RRB- ._.
+We_PRP have_VBP borrowed_VBN ideas_NNS from_IN some_DT of_IN these_DT works_NNS ,_, especially_RB in_IN coming_VBG up_RP with_IN degrees_NNS of_IN match_NN ,_, and_CC deciding_VBG how_WRB semantically_RB similar_JJ two_CD application_NN components_NNS
+was_VBD to_TO be_VB able_JJ to_TO compare_VB the_DT semantic_JJ annotation_NN of_IN incoming_JJ messages_NNS with_IN the_DT interests_NNS and_CC disinterests_NNS stored_VBN in_IN the_DT semantic_JJ user_NN profile_NN ._.
+This_DT is_VBZ what_WP we_PRP call_VBP matchmaking_NN following_VBG the_DT ideas_NNS in_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT decision_NN whether_IN a_DT message_NN matches_VBZ a_DT users_NNS interests_NNS is_VBZ based_VBN on_IN concept_NN satisfiability_NN and_CC subsumption_NN of_IN the_DT DL_NN in_IN use_NN ._.
+Because_IN the_DT mobile_JJ clients_NNS provide_VBP limited_JJ computing_NN power_NN ,_, the_DT decision_NN
+g_NN carrier_NN for_IN the_DT current_JJ shipping_NN request_NN during_IN runtime_NN ._.
+The_DT realization_NN of_IN this_DT component_NN is_VBZ described_VBN in_IN detail_NN in_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+It_PRP is_VBZ based_VBN on_IN an_DT approach_NN for_IN semantic_JJ Web_NN service_NN discovery_NN introduced_VBN in_IN =_JJ -_: =[_NN 5_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN applying_VBG this_DT approach_NN ,_, an_DT abstract_JJ service_NN capability_NN is_VBZ described_VBN based_VBN on_IN the_DT domain_NN ontology_NN ._.
+The_DT abstract_JJ service_NN capability_NN is_VBZ carrier-independent_JJ and_CC covers_VBZ all_DT possible_JJ Web_NN service_NN capab_NN
+ervice_NN properties_NNS -LRB-_-LRB- i.e._FW ,_, Inputs_NNP ,_, Outputs_NNP ,_, Preconditions_NNP ,_, Effects_NNPS or_CC IOPE_NNP 's_POS -RRB-_-RRB- ._.
+In_IN general_JJ ,_, ontology-based_JJ matchmaking_NN is_VBZ used_VBN to_TO discover_VB and_CC invoke_VB service_NN providers_NNS against_IN a_DT specific_JJ service_NN request_NN =_JJ -_: =[_NN 115_CD ,_, 140_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, the_DT existing_VBG techniques_NNS either_CC do_VBP not_RB consider_VB the_DT ontologies_NNS used_VBN to_TO describe_VB the_DT services_NNS to_TO be_VB semantically_RB heterogeneous_JJ or_CC do_VBP not_RB provide_VB the_DT support_NN for_IN consideration_NN of_IN both_DT function_NN
+._.
+We_PRP still_RB require_VBP that_IN all_DT preconditions_NNS of_IN s_NN are_VBP fulfilled_VBN by_IN r._NN This_DT kind_NN of_IN matching_NN between_IN the_DT types_NNS of_IN the_DT inputs_NNS of_IN request_NN r_NN and_CC of_IN service_NN s_NN corresponds_VBZ to_TO the_DT overlap_VBP or_CC intersection_NN match_NN =_JJ -_: =[_NN 5_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Service_NN composition_NN with_IN partial_JJ type_NN matches_NNS combines_VBZ several_JJ partially_RB matching_VBG services_NNS into_IN a_DT composite_JJ service_NN using_VBG a_DT switch_NN that_WDT maps_VBZ each_DT possible_JJ combination_NN of_IN parameter_NN values_NNS from_IN the_DT sp_NN
+service_NN description_NN standard_NN ._.
+A_DT recent_JJ study_NN shows_VBZ how_WRB to_TO map_VB DAML-S_NN service_NN profiles_NNS into_IN UDDI_NNP records_NNS to_TO provide_VB a_DT way_NN to_TO record_VB semantic_JJ information_NN within_IN UDDI_NN records_NNS -LRB-_-LRB- Paolucci_NNP et_FW al._FW ,_, 2002b_CD -RRB-_-RRB- ._.
+-LRB-_-LRB- =_JJ -_: =_JJ Li_NNP and_CC Horrocks_NNP ,_, 2003_CD -_: =-]_NN implements_VBZ a_DT prototype_NN matchmaker_NN ,_, which_WDT uses_VBZ a_DT DL_NN reasoner_NN to_TO match_VB service_NN advertisements_NNS and_CC requests_NNS based_VBN on_IN a_DT DAML-S_NN based_JJ ontology_NN ._.
+They_PRP also_RB argue_VBP that_IN service_NN profiles_NNS contain_VBP too_RB much_JJ info_NN
+e_LS current_JJ shipping_NN request_NN during_IN runtime_NN ._.
+The_DT realization_NN of_IN this_DT component_NN is_VBZ described_VBN in_IN detail_NN in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+It_PRP is_VBZ based_VBN on_IN an_DT approach_NN for_IN semantic_JJ Web_NN service_NN discovery_NN introduced_VBN by_IN Li_NNP and_CC Horrocks_NNP =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+For_IN applying_VBG this_DT approach_NN ,_, an_DT abstract_JJ service_NN capability_NN is_VBZ described_VBN based_VBN on_IN the_DT domain_NN ontology_NN ._.
+The_DT abstract_JJ service_NN capability_NN is_VBZ carrier-independent_JJ and_CC covers_VBZ all_DT possible_JJ Web_NN serv_NN
+es_NNS before_IN they_PRP submit_VBP them_PRP in_IN order_NN to_TO maximize_VB the_DT probability_NN of_IN matching_NN ._.
+83sFigure_NN 7.3_CD :_: Service_NN description_NN branch_NN of_IN the_DT subsumption_NN tree_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- ._.
+7.3_CD Framework_NN for_IN Matchmaking_NN Based_VBN on_IN Semantic_NNP In_IN =_JJ -_: =[_NN 37_CD -RRB-_-RRB- -_: =_JJ -_: service_NN matchmaking_NN in_IN e-commerce_NN is_VBZ introduced_VBN ,_, the_DT requirements_NNS for_IN a_DT service_NN description_NN language_NN and_CC ontology_NN is_VBZ assessed_VBN ,_, and_CC the_DT idea_NN that_IN DAML+OIL_NN and_CC DAML-S_NN fulfill_VBP these_DT requirements_NNS is_VBZ argu_NN
+ichton_VB Street_NNP ,_, Edinburgh_NNP ,_, EH89LE_NNP ,_, Scotland_NNP dr@inf.ed.ac.uk_NNP http:\/\/www.cisa.informatics.ed.ac.uk\/_NNP Abstract_NNP ._.
+Although_IN Semantic_JJ Web_NN service_NN discovery_NN has_VBZ been_VBN extensively_RB studied_VBN in_IN the_DT literature_NN -LRB-_-LRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 10_CD -RRB-_-RRB- -RRB-_-RRB- ,_, we_PRP are_VBP far_RB from_IN achieving_VBG an_DT effective_JJ ,_, complete_JJ and_CC automated_JJ discovery_NN process_NN ._.
+Using_VBG the_DT incidence_NN calculus_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, a_DT truth-functional_JJ probabilistic_JJ calculus_NN ,_, and_CC a_DT lightweight_JJ broke_VBD
+ion_NN support_NN considers_VBZ methods_NNS like_IN :_: complete_JJ logic_NN and_CC heavyweight_JJ ontologies_NNS ._.
+DAML-S\/OWL-S_NN APPROACHES_VBZ Many_JJ approaches_NNS for_IN discovery_NN using_VBG DAML-S_NN -LRB-_-LRB- The02_NN -RRB-_-RRB- or_CC OWL-S_NN -LRB-_-LRB- The04_NN -RRB-_-RRB- have_VBP been_VBN proposed_VBN -LRB-_-LRB- PKPS02_NN -RRB-_-RRB- ,_, =_JJ -_: =_JJ -LRB-_-LRB- LH03_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- PKPS02_NN -RRB-_-RRB- a_DT DAML-S_NN semantic_JJ matching_NN between_IN advertisements_NNS and_CC requests_NNS is_VBZ proposed_VBN ._.
+The_DT matching_JJ algorithm_NN is_VBZ based_VBN on_IN subsumption_NN reasoning_NN in_IN DAML+OIL_NN -LRB-_-LRB- HvH01_NN -RRB-_-RRB- ._.
+A_DT service_NN profile_NN and_CC a_DT request_NN
+ns_NNS ._.
+sIf_NN a_DT requestor_NN searches_VBZ a_DT service_NN ,_, the_DT restrictions_NNS should_MD be_VB described_VBN in_IN a_DT declarative_JJ way_NN ._.
+Thereby_RB methods_NNS well_RB known_VBN from_IN Description_NN Logic_NN could_MD be_VB applied_VBN for_IN matchmaking_NN ,_, like_IN described_VBN in_IN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Standardization_NN efforts_NNS like_IN the_DT Web_NN Ontology_NN Language_NN -LRB-_-LRB- OWL_NN -RRB-_-RRB- -LRB-_-LRB- 18_CD -RRB-_-RRB- are_VBP suspected_VBN to_TO build_VB a_DT semantic_JJ foundation_NN for_IN describing_VBG such_JJ restrictions_NNS ._.
+This_DT leads_VBZ to_TO the_DT following_JJ model_NN :_: The_DT set_NN of_IN QoS_NN for_IN
+of_IN match_NN ranking_NN ._.
+There_EX have_VBP also_RB been_VBN a_DT number_NN of_IN efforts_NNS that_WDT use_VBP description_NN logic_NN -LRB-_-LRB- DL_NN -RRB-_-RRB- based_VBN approaches_NNS for_IN semantically_RB matching_VBG web_NN services_NNS ._.
+For_IN example_NN the_DT matchmaking_NN framework_NN presented_VBN in_IN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: uses_VBZ a_DT DAML-S_NN based_JJ ontology_NN for_IN describing_VBG the_DT services_NNS ._.
+A_DT DL_NN reasoner_NN has_VBZ been_VBN used_VBN to_TO compute_VB the_DT matches_NNS for_IN a_DT given_VBN request_NN ._.
+The_DT matches_NNS are_VBP classified_VBN into_IN one_CD of_IN its_PRP$ five_CD ``_`` degrees_NNS of_IN match_NN ''_'' -LRB-_-LRB- n_NN
+._.
+e._RB ,_, using_VBG UDDI_NN -LRB-_-LRB- 47_CD -RRB-_-RRB- -RRB-_-RRB- always_RB involves_VBZ a_DT human_JJ in_IN the_DT loop_NN ._.
+Given_VBN that_IN ,_, in_IN practice_NN ,_, automatic_JJ discovery_NN of_IN Web_NN Services_NNPS is_VBZ not_RB used_VBN ._.
+Ontologies_NNS can_MD play_VB a_DT key_JJ role_NN in_IN automating_VBG Web_NN Service_NNP Discovery_NNP =_SYM -_: =[_NN 46_CD ,_, 33_CD ,_, 40_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT work_NN we_PRP will_MD adopt_VB Glue_NN as_IN Web_NN Service_NN discovery_NN engine_NN ._.
+Glue_NN -LRB-_-LRB- 14_CD ,_, 15_CD -RRB-_-RRB- is_VBZ based_VBN on_IN a_DT novel_JJ approach_NN that_WDT refines_VBZ the_DT conceptual_JJ model_NN for_IN WSMO_NN Web_NN Service_NN discovery_NN as_RB well_RB as_IN the_DT reference_NN
+in_IN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, where_WRB specifications_NNS of_IN requests_NNS are_VBP matched_VBN against_IN a_DT set_NN of_IN capabilities_NNS of_IN agents_NNS or_CC services_NNS ._.
+Capability_NN based_JJ matching_NN has_VBZ recently_RB also_RB been_VBN applied_VBN for_IN matching_NN of_IN Web_NN Services_NNPS ,_, e.g._FW =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Another_DT approach_NN ,_, which_WDT does_VBZ a_DT semantic_JJ comparison_NN between_IN a_DT query_NN and_CC a_DT peer_VBP 's_POS context_NN comes_VBZ from_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+They_PRP propose_VBP a_DT Peer-toPeer_NNP architecture_NN ,_, implemented_VBN as_IN their_PRP$ '_POS KEx_NNS '_POS system_NN where_WRB queries_NNS can_MD b_SYM
+sx_FW ∈_FW T_NN of_IN a_DT service_NN sx_NN ._.
+Thereby_RB sx_NN and_CC sy_NN are_VBP semantically_RB and_CC partially_RB linked_VBN according_VBG to_TO a_DT matchmaking_NN function_NN SimT_NN -LRB-_-LRB- Out_IN sy_NN ,_, In_IN sx_NN -RRB-_-RRB- ._.
+The_DT matchmaking_NN function_NN SimT_NN determines_VBZ the_DT matchmaking_NN type_NN =_JJ -_: =[_NN 23_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: between_IN these_DT two_CD parameters_NNS ,_, and_CC can_MD have_VB the_DT following_JJ values_NNS :_: --_: Exact_JJ -LRB-_-LRB- ≡_NN -RRB-_-RRB- if_IN the_DT output_NN parameter_NN Out_IN sy_NN of_IN sy_NN and_CC the_DT input_NN parameter_NN In_IN sx_NN of_IN sx_NN are_VBP equivalent_JJ concepts_NNS ;_: formally_RB ,_, T_NN |_NN =_JJ Out_IN sy_FW ≡_FW
+systems_NNS and_CC present_VB a_DT new_JJ approach_NN that_WDT complement_VBP existing_VBG ones_NNS by_IN considering_VBG the_DT types_NNS of_IN interactions_NNS that_IN services_NNS can_MD be_VB used_VBN in_IN ._.
+2_CD Role-based_JJ approach_NN Most_NNP current_JJ service_NN discovery_NN techniques_NNS =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =-[_NN 4_CD -RRB-_-RRB- -LRB-_-LRB- 6_CD -RRB-_-RRB- aim_NN at_IN web_NN services_NNS and_CC base_VB their_PRP$ search_NN on_IN inputs_NNS and_CC outputs_NNS of_IN the_DT service_NN ._.
+Some_DT of_IN them_PRP also_RB take_VBP into_IN account_NN preconditions_NNS ,_, effects_NNS and_CC other_JJ parameters_NNS that_WDT describe_VBP the_DT service_NN ._.
+Howeve_NNP
+ce_NN to_TO find_VB useful_JJ services_NNS needed_VBN by_IN the_DT applications_NNS ,_, thus_RB allowing_VBG a_DT flexible_JJ mechanism_NN for_IN exchanging_VBG descriptive_JJ information_NN of_IN various_JJ entities_NNS ._.
+In_IN our_PRP$ framework_NN ,_, this_DT semantic_JJ matchmaking_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ based_VBN on_IN querying_VBG the_DT Racer_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- Server_NN which_WDT allows_VBZ subsumption_NN and_CC classification_NN of_IN different_JJ concepts_NNS defined_VBN in_IN the_DT ontology_NN ._.
+4_CD Formal_JJ Context_NN Modeling_NN Once_IN features_NNS are_VBP gathered_VBN from_IN the_DT fea_NN
+bileWeb_NN -LRB-_-LRB- Eureka-CELTIC_NN -RRB-_-RRB- 2.3.1_CD Classification_NN by_IN degrees_NNS of_IN match_NN One_CD of_IN the_DT most_RBS simple_JJ ,_, yet_RB powerful_JJ ,_, algorithms_NNS for_IN matching_NN based_VBN in_IN Description_NN Logics_NNS is_VBZ the_DT one_NN proposed_VBN by_IN L._NNP Li_NNP and_CC I._NNP Horrocks_NNP =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Their_PRP$ proposal_NN is_VBZ focused_VBN on_IN finding_VBG all_PDT the_DT advertisements_NNS from_IN a_DT database_NN which_WDT may_MD potentially_RB satisfy_VB the_DT requirements_NNS expressed_VBN in_IN a_DT query_NN ._.
+According_VBG to_TO the_DT authors_NNS ,_, both_CC the_DT query_NN and_CC the_DT adve_NN
+and_CC satisfiability_NN -RRB-_-RRB- for_IN classification_NN of_IN matches_NNS into_IN coarse_JJ categories_NNS ,_, without_IN providing_VBG a_DT way_NN to_TO semantically_RB rank_VB obtained_VBN matches_NNS ,_, neither_CC within_IN the_DT same_JJ match_NN class_NN nor_CC regardless_RB of_IN the_DT class_NN =_JJ -_: =[_NN 9_CD ,_, 11_CD ,_, 17_CD ,_, 16_CD ,_, 18_CD ,_, 14_CD ,_, 4_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Yet_RB ranking_NN should_MD be_VB a_DT core_NN process_NN in_IN matchmaking_NN ,_, and_CC a_DT classification_NN into_IN satisfiable\/unsatisfiable_JJ might_MD be_VB unfair_JJ when_WRB unsatisfiability_NN is_VBZ due_JJ ,_, for_IN example_NN ,_, to_TO a_DT neglectable_JJ detail_NN that_WDT would_MD
+e_LS ongoing_JJ transformation_NN of_IN the_DT ''`_FW unstructured_FW '''_FW Web_NN in_IN the_DT Semantic_NNP ,_, machine_NN understandable_JJ one_CD ,_, Description_NN Logics_NNS -LRB-_-LRB- DLs_NNS -RRB-_-RRB- have_VBP been_VBN investigated_VBN to_TO model_VB the_DT matchmaking_NN problem_NN in_IN various_JJ scenarios_NNS =_JJ -_: =[_NN 39_CD ,_, 19_CD ,_, 35_CD ,_, 32_CD ,_, 33_CD ,_, 20_CD ,_, 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT we_PRP discuss_VBP in_IN the_DT final_JJ Section_NN ._.
+DLs_NNS formalization_NN has_VBZ several_JJ advantages_NNS ;_: among_IN them_PRP an_DT open-world_JJ assumption_NN can_MD be_VB made_VBN ,_, incomplete_JJ information_NN is_VBZ admitted_VBN ,_, and_CC absence_NN of_IN information_NN can_NN b_NN
+a_DT formal_JJ way_NN :_: T_NN |_NN =_JJ S_NN ⊑_FW ⊥_FW ._.
+Based_VBN on_IN these_DT standard_JJ inferences_NNS ,_, given_VBN a_DT request_NN D_NN -LRB-_-LRB- for_IN demand_NN -RRB-_-RRB- and_CC a_DT resource_NN S_NN -LRB-_-LRB- for_IN supply_NN -RRB-_-RRB- the_DT following_VBG match_NN classes_NNS can_MD be_VB identified_VBN with_IN respect_NN to_TO an_DT ontology_JJ T_NN =_JJ -_: =[_NN 10_CD ,_, 14_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+exact_JJ T_NN |_NN =_JJ D_NN ≡_FW S._FW S_NN is_VBZ semantically_RB equivalent_JJ to_TO D._NNP All_NNP the_DT characteristics_NNS expressed_VBN in_IN D_NN are_VBP presented_VBN in_IN S_NN and_CC S_NN does_VBZ not_RB expose_VB any_DT additional_JJ characteristic_NN with_IN respect_NN to_TO D._NNP full_JJ T_NN |_NN =_JJ S_NNP ⊑_NNP D._NNP
+for_IN Semantic_JJ Web_NN Services_NNPS like_IN OWL-S_NN ,_, thus_RB in_IN this_DT way_NN improving_VBG the_DT reusability_NN of_IN domain_NN ontologies_NNS ._.
+It_PRP is_VBZ furthermore_RB tempting_JJ to_TO specify_VB core_NN concepts_NNS as_IN inputs_NNS and_CC outputs_NNS in_IN the_DT domain_NN ontology_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC outputs_NNS for_IN one_CD service_NN might_MD be_VB inputs_NNS for_IN another_DT service_NN so_IN that_DT would_MD restrict_VB reusability_NN ._.
+Usage_NN of_IN core_NN concepts_NNS can_MD be_VB enforced_VBN by_IN only_RB allowing_VBG parameters_NNS refer_VBP to_TO concepts_NNS that_WDT are_VBP subs_NNS
+ic_JJ way_NN ._.
+Also_RB ,_, the_DT user_NN could_MD browse_VB the_DT whole_JJ list_NN of_IN selected_VBN Services_NNP and_CC select_VB the_DT one_NN that_WDT interests_VBZ him_PRP the_DT most_JJS ._.
+Various_JJ techniques_NNS for_IN automating_VBG the_DT selection_NN of_IN services_NNS have_VBP been_VBN explored_VBN -LRB-_-LRB- =_JJ -_: =[_NN 41_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 52_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Usually_RB some_DT ranking_JJ algorithm_NN is_VBZ employed_VBN to_TO order_VB the_DT services_NNS and_CC then_RB the_DT first_JJ ranked_VBN service_NN is_VBZ automatically_RB selected_VBN ._.
+2.3_CD Composition_NNP Service_NNP composition_NN can_MD be_VB defined_VBN as_IN :_: ``_`` Assembly_NN o_NN
+ement_NN A_NN ,_, it_PRP is_VBZ called_VBN a_DT PlugIn_NNP 178smatch_NNP •_NNP Subsume_NNP If_IN request_NN R_NN is_VBZ super-concept_JJ of_IN advertisement_NN A_NN ,_, it_PRP is_VBZ called_VBN a_DT Subsume_NNP match_NN •_NN Fail_NN Otherwise_RB ,_, there_EX is_VBZ no_DT match_NN There_EX have_VBP been_VBN several_JJ proposals_NNS =_JJ -_: =[_NN 43_CD ,_, 78_CD -RRB-_-RRB- -_: =_SYM -_: to_TO extend_VB the_DT matchmaking_NN algorithms_NNS to_TO exploit_VB more_JJR features_NNS of_IN subsumption_NN relations_NNS ._.
+For_IN example_NN ,_, when_WRB there_EX is_VBZ no_DT subsumption_NN relation_NN between_IN the_DT advertisement_NN and_CC request_NN ,_, a_DT rating_NN called_VBN Inter_NNP
+nded_VBN in_IN various_JJ way_NN for_IN service_NN discovery_NN ,_, e.g._FW Jaeger_FW et_FW al._FW -LRB-_-LRB- 15_CD -RRB-_-RRB- introduce_VBP ``_`` contravariance_NN ''_'' in_IN matching_JJ inputs_NNS and_CC outputs_NNS between_IN service_NN advertisements_NNS and_CC service_NN requests_NNS using_VBG OWL-S_NN ,_, Li_NNP et_FW al._FW =_SYM -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: introduce_VB a_DT ``_`` intersection_NN ''_'' relationship_NN between_IN a_DT service_NN advertisement_NN and_CC a_DT service_NN request_NN ,_, Majithia_NNP et_FW al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- introduce_VBP reputation_NN metrics_NNS in_IN matching_JJ services_NNS ._.
+Besides_IN OWL-S_NN ,_, another_DT prominent_JJ
+Work_NNP Our_NNP proposal_NN has_VBZ elements_NNS from_IN matching_JJ approaches_NNS for_IN DAML-S_NN ,_, which_WDT were_VBD already_RB introduced_VBN ._.
+A_DT variation_NN of_IN the_DT matching_JJ algorithm_NN is_VBZ to_TO match_VB complete_JJ Service_NNP Profile_NNP descriptions_NNS as_IN found_VBN in_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ motivation_NN for_IN refining_VBG the_DT matching_NN process_NN is_VBZ that_IN it_PRP might_MD easily_RB occur_VB that_IN two_CD profiles_NNS will_MD be_VB declared_VBN as_IN non-compatible_JJ because_IN one_CD -LRB-_-LRB- probably_RB less_RBR important_JJ -RRB-_-RRB- property_NN in_IN a_DT profile_NN is_VBZ not_RB
+chmaking_VBG in_IN Other_JJ Domains_NNS We_PRP summarize_VBP existing_VBG work_NN in_IN other_JJ domains_NNS that_WDT ,_, similar_JJ to_TO our_PRP$ work_NN ,_, have_VBP developed_VBN matchmakers_NNS based_VBN on_IN ontologies_NNS ._.
+DAML+OIL_NN based_VBN Matchmaking_NNP ._.
+DAML+OIL_NN based_VBD Matchmaking_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: describes_VBZ a_DT matchmaking_NN system_NN based_VBN on_IN Semantic_JJ Web_NN Technology_NN ,_, using_VBG a_DT Description_NN Logic_NN reasoner_NN to_TO compare_VB ontology-based_JJ service_NN descriptions_NNS ._.
+Service_NN advertisements_NNS are_VBP expressed_VBN as_IN class_NN expre_NN
+match_NN happens_VBZ when_WRB the_DT request_NN subsumes_VBZ the_DT advertisement_NN ,_, and_CC finally_RB a_DT failure_NN occurs_VBZ if_IN there_EX are_VBP no_DT subsumption_NN relationships_NNS between_IN conceptual_JJ descriptions_NNS of_IN adverts_NNS and_CC requests_NNS ._.
+Similarly_RB in_IN =_JJ -_: =[_NN 56_CD -RRB-_-RRB- -_: =_JJ -_: DAML-S_NN profiles_NNS are_VBP used_VBN for_IN representing_VBG service_NN adverts_NNS and_CC services_NNS requests_NNS ,_, and_CC a_DT DL_NNP Reasoner_NNP is_VBZ used_VBN to_TO develop_VB a_DT semantic_JJ matchmaker_NN that_WDT extends_VBZ the_DT previous_JJ matchmaker_NN 's_POS algorithm_NN -LRB-_-LRB- 73_CD -RRB-_-RRB- to_TO ad_NN
+preQ_FW ⇒_FW preS_NN -RRB-_-RRB- ,_, if_IN every_DT constraint_NN in_IN preQ_NN is_VBZ subsumed_VBN by_IN a_DT constraint_NN in_IN preS_NN -LRB-_-LRB- similarly_RB for_IN postconditions_NNS -RRB-_-RRB- :_: preQ_FW θ_FW preS_FW ⇔_FW -LRB-_-LRB- ∀_FW CQ_FW ∈_FW preQ_NN -RRB-_-RRB- -LRB-_-LRB- ∃_JJ CS_NN ∈_FW preS_FW -RRB-_-RRB- -LRB-_-LRB- CQ_FW θ_FW CS_NN -RRB-_-RRB- ._.
+Most_RBS recent_JJ work_NN regarding_VBG matchmaking_NN =_JJ -_: =[_NN 13_CD ,_, 10_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: extended_VBD these_DT approaches_NNS by_IN using_VBG languages_NNS based_VBN on_IN description_NN logic_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- like_IN OWL_NN -LRB-_-LRB- http:\/\/www.w3.org\/_NN TR\/owl-ref_NN \/_: -RRB-_-RRB- for_IN defining_VBG terms_NNS of_IN service_NN advertisements_NNS and_CC requests_NNS ._.
+2.2_CD Interval_NNP Constrain_NNP
+mponents_NNS and_CC semantic_JJ bridging_VBG of_IN data_NNS incompatibilities_NNS is_VBZ done_VBN by_IN our_PRP$ Context_NNP File_NNP System_NNP using_VBG service_NN composition_NN techniques_NNS ._.
+There_EX has_VBZ been_VBN a_DT lot_NN of_IN work_NN on_IN semantic_JJ matchmaking_NN using_VBG ontologies_NNS =_JJ -_: =[_NN 14_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, especially_RB for_IN web_NN services_NNS -LRB-_-LRB- 12_CD ,_, 13_CD -RRB-_-RRB- ._.
+We_PRP have_VBP borrowed_VBN ideas_NNS from_IN some_DT of_IN these_DT works_NNS ,_, especially_RB in_IN coming_VBG up_RP with_IN degrees_NNS of_IN match_NN ,_, and_CC deciding_VBG how_WRB semantically_RB similar_JJ two_CD application_NN components_NNS
+icular_JJ domain_NN ._.
+This_DT is_VBZ static_JJ information_NN that_IN service_NN consumers_NNS would_MD generally_RB expect_VB to_TO know_VB such_JJ as_IN the_DT product_NN of_IN the_DT service_NN ,_, sales_NNS detail_NN ,_, and_CC means_NNS of_IN service_NN delivery_NN -LRB-_-LRB- Trastour_NNP et_FW al._FW ,_, 2001_CD ;_: =_JJ -_: =_JJ Li_NNP and_CC Horrocks_NNP ,_, 2003_CD -_: =--RRB-_NN ._.
+Service_NN structure_NN is_VBZ represented_VBN by_IN a_DT structural_JJ ontology_NN in_IN a_DT structural_JJ profile_NN ._.
+•_NNP Service_NNP behavior_NN captures_VBZ more_RBR dynamic_JJ behavioural_JJ information_NN of_IN web_NN services_NNS ._.
+It_PRP is_VBZ modelled_VBN as_IN a_DT function_NN wh_NN
+e_LS to_TO matches_NNS and_CC eventually_RB rank_VB them_PRP ._.
+Several_JJ recent_JJ proposals_NNS try_VBP to_TO formalize_VB with_IN Description_NN Logics_NNS -LRB-_-LRB- DLs_NNS -RRB-_-RRB- ,_, the_DT matchmaking_NN of_IN supplies_NNS and_CC demands_NNS in_IN an_DT electronic_JJ marketplace_NN -LRB-_-LRB- see_VB ,_, among_IN others_NNS =_JJ -_: =[_NN 27,57,55,24,42,26,23_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+DLs_NNS ,_, in_IN fact_NN ,_, allow_VBP for_IN an_DT open-world_JJ assumption_NN ._.
+Incomplete_JJ information_NN is_VBZ admitted_VBN and_CC absence_NN of_IN information_NN can_MD be_VB distinguished_VBN from_IN negative_JJ information_NN -LRB-_-LRB- we_PRP provide_VBP a_DT little_JJ detail_NN on_IN DLs_NNS in_IN
+tunately_RB as_IN the_DT authors_NNS admit_VBP ,_, though_IN very_RB expressive_JJ ,_, FaCT_NN lacks_VBZ of_IN concrete_JJ datatypes_NNS ,_, which_WDT are_VBP obviously_RB extremely_RB useful_JJ for_IN ,_, e.g._FW ,_, e-commerce_NN applications_NNS ,_, and_CC their_PRP$ prototype_NN is_VBZ incomplete_JJ ._.
+In_IN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: a_DT framework_NN for_IN matchmaking_NN based_VBN on_IN DAML-S_NN and_CC describing_VBG an_DT implementation_NN for_IN service_NN discovery_NN using_VBG Racer_NN ispresented_VBD ,_, which_WDT anyway_RB reverts_VBZ to_TO basic_JJ subsumption_NN based_VBN matchmaking_NN ._.
+In_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- a_DT kno_NN
+he_PRP latter_JJ discovers_VBZ the_DT services_NNS available_JJ along_IN the_DT local_JJ surrounding_NN of_IN an_DT agent_NN ._.
+Semantic_JJ matching_NN of_IN services_NNS required_VBN and_CC services_NNS available_JJ could_MD be_VB performed_VBN using_VBG the_DT standardized_JJ ontologies_NNS -LRB-_-LRB- =_JJ -_: =_JJ Li_NNP &_CC Horrocks_NNP ,_, 2003_CD -_: =-]_CD ._.
+Semantic_JJ matching_NN is_VBZ the_DT process_NN of_IN determining_VBG whether_IN the_DT available_JJ services_NNS cater_VBP to_TO the_DT requirements_NNS of_IN the_DT agents_NNS ._.
+Service_NNP Broadcaster_NNP This_NNP module_NN is_VBZ responsible_JJ for_IN broadcasting_VBG services_NNS in_IN a_DT
+here_RB are_VBP no_DT precondition_NN or_CC effect_NN expressions_NNS associated_VBN with_IN the_DT process_NN this_DT matching_JJ algorithm_NN reduces_VBZ to_TO standard_JJ techniques_NNS developed_VBN for_IN Semantic_JJ Web_NN Service_NN matchmaking_NN -LRB-_-LRB- Paolucci_NNP et_FW al._FW 2002_CD ;_: =_JJ -_: =_JJ Li_NNP &_CC Horrocks_NNP 2003_CD -_: =--RRB-_NN that_WDT simply_RB checks_VBZ subsumption_NN relation_NN between_IN parameter_NN types_NNS ._.
+The_DT second_JJ step_NN in_IN matching_NN is_VBZ to_TO compute_VB the_DT rank_NN of_IN the_DT services_NNS based_VBN on_IN the_DT given_VBN preferences_NNS ._.
+We_PRP adopt_VBP the_DT standard_JJ rank_NN computa_NN
+lear_NN from_IN the_DT literature_NN how_WRB the_DT closeness_NN of_IN the_DT attributes_NNS are_VBP judged_VBN ._.
+No_DT form_NN of_IN match_NN ranking_NN is_VBZ performed_VBN in_IN this_DT matching_JJ process_NN ._.
+There_EX have_VBP also_RB been_VBN a_DT number_NN of_IN efforts_NNS such_JJ as_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 23_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, that_WDT use_VBP description_NN logic_NN based_VBN approaches_NNS for_IN semantically_RB matching_VBG web_NN services_NNS ._.
+In_IN the_DT work_NN carried_VBD out_RP in_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, DAML+OIL_NN has_VBZ been_VBN used_VBN for_IN service_NN descriptions_NNS and_CC the_DT use_NN of_IN the_DT DL_NN reasoners_NNS F_NN
+ur_NN approach_NN ._.
+1_CD Introduction_NN We_PRP are_VBP interested_JJ in_IN the_DT problem_NN of_IN location_NN of_IN web_NN services_NNS on_IN the_DT basis_NN of_IN the_DT capabilities_NNS that_IN they_PRP provide_VBP ._.
+This_DT problem_NN is_VBZ often_RB referred_VBN as_IN matchmaking_NN problem_NN ,_, see_VBP =_JJ -_: =[_NN 14_CD ,_, 15_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: for_IN some_DT recent_JJ examples_NNS ._.
+Most_JJS previous_JJ solutions_NNS employ_VBP a_DT single_JJ ontology_NN approach_NN ,_, namely_RB the_DT web_NN services_NNS are_VBP assumed_VBN to_TO be_VB described_VBN by_IN the_DT concepts_NNS taken_VBN from_IN a_DT shared_JJ ontology_NN ._.
+This_DT allows_VBZ to_TO r_NN
+r_NN ,_, application_NN adaptation_NN in_IN Gaia_NNP is_VBZ based_VBN on_IN ontological_JJ classification_NN and_CC context_NN information_NN ._.
+Gaia_NNP also_RB performs_VBZ self-repair_NN ._.
+There_EX has_VBZ been_VBN a_DT lot_NN of_IN work_NN on_IN semantic_JJ matchmaking_NN using_VBG ontologies_NNS =_JJ -_: =[_NN 3_CD ,_, 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, especially_RB for_IN web_NN services_NNS -LRB-_-LRB- 10_CD ,_, 20_CD -RRB-_-RRB- ._.
+Ideas_NNS from_IN some_DT of_IN these_DT works_NNS have_VBP been_VBN borrowed_VBN ,_, especially_RB in_IN coming_VBG up_RP with_IN degrees_NNS of_IN match_NN ,_, and_CC deciding_VBG how_WRB semantically_RB similar_JJ two_CD application_NN componen_NNS
+o_NN characterise_VB their_PRP$ content_NN by_IN ontological_JJ concepts_NNS ._.
+Based_VBN on_IN this_DT foundation_NN it_PRP is_VBZ then_RB possible_JJ to_TO determine_VB their_PRP$ similarity_NN by_IN applying_VBG the_DT five_CD degrees_NNS of_IN match_NN -LRB-_-LRB- e._FW g._FW ,_, subsumption_NN -RRB-_-RRB- proposed_VBN by_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT more_RBR extensive_JJ discussion_NN of_IN conceptual_JJ ,_, spatial_JJ ,_, and_CC temporal_JJ clustering_NN criteria_NNS is_VBZ given_VBN in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+3_CD Clustering_NN Protocol_NNP The_NNP distributed_VBN clustering_NN protocol_NN -LRB-_-LRB- Fig._NN 1_CD -RRB-_-RRB- presented_VBN in_IN this_DT section_NN is_VBZ
+al_FW case_NN of_IN the_DT so-called_JJ matchmaking_NN problem_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+It_PRP denotes_VBZ the_DT decision_NN whether_IN advertisements_NNS offered_VBN by_IN business_NN entities_NNS or_CC agents_NNS match_VBP requests_NNS issued_VBN by_IN other_JJ agents_NNS ._.
+An_DT approach_NN proposed_VBN by_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: addresses_NNS this_DT task_NN by_IN considering_VBG the_DT formal_JJ semantics_NNS of_IN ontology-based_JJ knowledge_NN representation_NN techniques_NNS ._.
+They_PRP propose_VBP five_CD different_JJ degrees_NNS of_IN match_NN between_IN two_CD concepts_NNS c1_NN and_CC c2_NN :_: exact_JJ c1_NN ≡_NN
+pite_VB the_DT fact_NN that_IN B_NN would_MD have_VB provided_VBN something_NN closer_RBR to_TO X_NN and_CC there_EX would_MD have_VB been_VBN no_DT harm_NN to_TO X_NN from_IN the_DT extraneous_JJ output_NN ._.
+We_PRP will_MD see_VB another_DT case_NN of_IN this_DT in_IN the_DT next_JJ example_NN ._.
+Li_NNP and_CC Horrocks_NNP =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP another_DT example_NN of_IN DAML-S_NN use_NN for_IN matchmaking_NN ._.
+Their_PRP$ representation_NN represents_VBZ advertisement_NN instances_NNS as_IN special_JJ concepts_NNS with_IN the_DT argument_NN that_IN TBox_NN level_NN reasoning_NN is_VBZ more_RBR effective_JJ than_IN ABox_NN
+with_IN notions_NNS for_IN handling_VBG partial_JJ matches_NNS ._.
+An_DT analogous_JJ approach_NN applies_VBZ DL_NN subsumption_NN reasoning_NN based_VBN on_IN SHIQ_NN -LRB-_-LRB- D_NN -RRB-_-RRB- ,_, a_DT Description_NN Logic_NN with_IN a_DT semantics_NNS equivalent_JJ to_TO OWL_NN for_IN ontology_NN representation_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN these_DT approaches_NNS are_VBP very_RB similar_JJ to_TO the_DT one_CD used_VBN in_IN GS_NN Discovery_NNP -LRB-_-LRB- subsumption_NN reasoning_NN ,_, handling_NN of_IN partial_JJ matches_NNS -RRB-_-RRB- ,_, they_PRP naturally_RB inherit_VBP the_DT insufficiencies_NNS of_IN OWL-S_NN for_IN service_NN descr_NN
+9_CD -RRB-_-RRB- ,_, or_CC it_PRP can_MD be_VB a_DT new_JJ XML-based_JJ ad-hoc_JJ language_NN ._.
+The_DT basic_JJ concept_NN of_IN the_DT Semantic_JJ Web_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- is_VBZ that_IN the_DT data_NNS may_MD not_RB be_VB only_RB machine-readable_JJ and_CC human_JJ understandable_JJ ,_, but_CC also_RB machine_NN understandable_JJ =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Therefore_RB ,_, Hypermedia_NN service_NN description_NN language_NN should_MD have_VB an_DT XML_NN format_NN ._.
+HSDL_NN aims_VBZ to_TO fully_RB describe_VB a_DT Hypermedia_NNP service_NN ,_, and_CC to_TO provide_VB all_PDT the_DT necessary_JJ information_NN to_TO web_NN developers_NNS who_WP wan_VBP
+in_IN this_DT area_NN has_VBZ focused_VBN on_IN the_DT use_NN of_IN DAML-S_NN to_TO describe_VB service_NN capabilities_NNS ._.
+A_DT matchmaker_NN engine_NN then_RB compares_VBZ the_DT DAML-S_NN description_NN of_IN the_DT service_NN requested_VBN with_IN those_DT of_IN the_DT services_NNS advertised_VBD =_JJ -_: =[_NN 20_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT work_NN is_VBZ extended_VBN by_IN Sycara_FW et_FW ._.
+al._FW -LRB-_-LRB- 16_CD -RRB-_-RRB- to_TO propose_VB a_DT preliminary_JJ discovery_NN and_CC execution_NN framework_NN based_VBN on_IN AI_NNP planning_VBG technology_NN ,_, the_DT DAML-S_NNP Matchmaker_NNP and_CC the_DT DAML-S_NN Virtual_JJ Machine_NN ._.
+The_DT fra_NN
+ects_NNS of_IN a_DT given_VBN service_NN ,_, and_CC how_WRB such_JJ descriptions_NNS can_MD be_VB exploited_VBN for_IN efficiently_RB and_CC accurately_RB locating_VBG a_DT requested_VBN service_NN ._.
+While_IN a_DT number_NN of_IN proposals_NNS are_VBP available_JJ in_IN our_PRP$ area_NN of_IN interest_NN e.g._FW =_SYM -_: =[_NN 2_CD ,_, 6_CD ,_, 20_CD ,_, 14_CD ,_, 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, none_NN of_IN them_PRP has_VBZ discussed_VBN these_DT aspects_NNS in_IN depth_NN ._.
+Therefore_RB ,_, we_PRP will_MD first_RB define_VB a_DT model_NN that_WDT takes_VBZ into_IN account_NN pragmatic_JJ considerations_NNS and_CC defines_VBZ the_DT border_NN line_NN between_IN different_JJ steps_NNS involv_VBP
+ressing_VBG service_NN descriptions_NNS with_IN a_DT formal_JJ semantics_NNS which_WDT matches_VBZ the_DT modeler_NN 's_POS intuition_NN ._.
+--_: matching_JJ algorithms_NNS capable_JJ of_IN reasoning_NN with_IN service_NN descriptions_NNS used_VBN to_TO realize_VB the_DT discovery_NN task_NN ._.
+In_IN =_JJ -_: =[_NN 4_CD ,_, 2_CD ,_, 13_CD ,_, 8_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: description_NN logics_NNS -LRB-_-LRB- DL_NN 5_CD -RRB-_-RRB- have_VBP been_VBN used_VBN as_IN formal_JJ languages_NNS for_IN expressing_VBG service_NN descriptions_NNS ._.
+DLs_NNS are_VBP closely_RB connected_VBN to_TO OWL_NN 6_CD ,_, the_DT ontology_JJ language_NN for_IN the_DT Semantic_JJ Web_NN ._.
+Hence_RB ,_, using_VBG DLs_NNS en_IN
+sed_JJ vocabulary_NN ._.
+As_IN such_JJ ,_, ontologies_NNS are_VBP used_VBN to_TO relate_VB terms_NNS from_IN differing_VBG domains_NNS which_WDT leads_VBZ to_TO approximate_JJ matches_NNS being_VBG found_VBN for_IN service_NN requests_NNS ._.
+These_DT techniques_NNS have_VBP been_VBN deployed_VBN in_IN systems_NNS =_JJ -_: =[_NN 21_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT problem_NN domain_NN of_IN Grid_NNP monitoring_NN differs_VBZ from_IN that_DT of_IN matching_JJ service_NN descriptions_NNS ._.
+In_IN Grid_NNP monitoring_NN we_PRP are_VBP dealing_VBG with_IN one_CD fixed_JJ domain_NN ,_, so_IN it_PRP is_VBZ possible_JJ to_TO fix_VB a_DT single_JJ ,_, standardised_JJ voc_NN
+expressivity_NN in_IN OWL-based_JJ syndication_NN -LRB-_-LRB- given_VBN in_IN turtle_NN syntax_NN for_IN clarity_NN -RRB-_-RRB- ._.
+While_IN the_DT power_NN of_IN this_DT increased_VBN expressivity_NN is_VBZ clear_JJ ,_, the_DT inherent_JJ difficulty_NN of_IN DL_NN reasoning_NN causes_VBZ scalability_NN issues_NNS =_JJ -_: =[_NN 56_CD ,_, 41_CD ,_, 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN domains_NNS such_JJ as_IN financial_JJ news_NN feeds_VBZ ,_, updates_NNS come_VBP frequently_RB and_CC they_PRP must_MD be_VB reasoned_VBN over_IN and_CC delivered_VBN in_IN near_RB real-time_JJ if_IN they_PRP are_VBP to_TO be_VB useful_JJ for_IN tasks_NNS like_IN stock_NN trading_NN ._.
+However_RB ,_, the_DT st_NN
+o_NN classes_NNS were_VBD presented_VBN ._.
+Matchmaking_NN of_IN web-services_NNS ,_, providing_VBG a_DT ranking_NN of_IN matches_NNS based_VBN on_IN the_DT DL-based_JJ approach_NN of_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- was_VBD presented_VBN in_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+An_DT extension_NN to_TO the_DT approach_NN in_IN -LRB-_-LRB- 27_CD -RRB-_-RRB- was_VBD proposed_VBN in_IN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: where_WRB two_CD new_JJ levels_NNS for_IN service_NN profiles_NNS matching_NN were_VBD introduced_VBN ._.
+Notice_NNP that_IN there_EX the_DT intersection_NN satisfiable_JJ level_NN was_VBD introduced_VBN ,_, whose_WP$ definition_NN is_VBZ close_JJ to_TO the_DT one_CD of_IN potential_JJ matching_NN pro_NN
+added_VBN to_TO the_DT result_NN set_NN ._.
+However_RB ,_, we_PRP need_VBP to_TO introduce_VB the_DT definition_NN of_IN the_DT degree_NN of_IN match_NN to_TO distinguish_VB different_JJ advertisements_NNS ._.
+The_DT matching_JJ degree_NN definition_NN in_IN our_PRP$ algorithm_NN is_VBZ different_JJ from_IN =_JJ -_: =[_NN 11_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Some_DT of_IN the_DT definition_NN are_VBP as_IN follows_VBZ :_: •_FW Subsume_FW If_IN request_NN R_NN is_VBZ super-concept_JJ of_IN advertisement_NN A_NN ,_, we_PRP call_VBP the_DT match_NN Subsume_NNP ;_: that_DT is_VBZ ,_, A_NNP ⊑_NNP R._NNP •_NNP Exact_JJ If_IN advertisement_NN R_NN and_CC request_NN A_NN are_VBP equivalent_JJ c_NN
+puts_VBZ -RRB-_-RRB- ._.
+On_IN a_DT description_NN -LRB-_-LRB- language_NN -RRB-_-RRB- these_DT sets_NNS allow_VBP for_IN a_DT natural_JJ representation_NN by_IN means_NNS of_IN concepts_NNS in_IN Description_NN Logics_NNS ._.
+Matching_VBG then_RB has_VBZ been_VBN reduced_VBN to_TO standard_JJ reasoning_NN tasks_NNS in_IN the_DT language_NN =_JJ -_: =[_NN 15_CD ,_, 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, however_RB the_DT dynamics_NNS associated_VBN with_IN a_DT detailed_JJ -LRB-_-LRB- state-based_JJ -RRB-_-RRB- perspective_NN on_IN Web_NN services_NNS ,_, can_MD not_RB be_VB represented_VBN in_IN such_JJ a_DT setting_NN ._.
+Until_IN recently_RB ,_, it_PRP seemed_VBD to_TO be_VB a_DT common_JJ practice_NN in_IN the_DT Semantic_NNP
+e_LS defined_VBN in_IN eFlow_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+At_IN run-time_NN ,_, the_DT composition_NN engine_NN selects_VBZ Web_NN services_NNS that_WDT match_VBP participants_NNS '_POS abstract_JJ specifications_NNS ._.
+Several_JJ techniques_NNS have_VBP been_VBN proposed_VBN to_TO deal_VB with_IN service_NN matching_NN =_JJ -_: =[_NN 3_CD ,_, 7_CD ,_, 8_CD ,_, 21_CD ,_, 28_CD ,_, 35_CD ,_, 41_CD ,_, 42_CD ,_, 44_CD ,_, 47_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, these_DT techniques_NNS use_VBP a_DT limited_JJ set_NN of_IN matching_JJ attributes_NNS defined_VBN within_IN service_NN descriptions_NNS -LRB-_-LRB- e.g._FW ,_, DAML-S_NN descriptions_NNS -LRB-_-LRB- 34_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+SpringersDistrib_JJ Parallel_JJ Databases_NNS -LRB-_-LRB- 2007_CD -RRB-_-RRB- 21:5_CD --_: 37_CD 7_CD They_PRP mer_VBP
+-LRB-_-LRB- 5_LS -RRB-_-RRB- use_NN ontologies_NNS in_IN resource_NN matching_NN to_TO gain_VB the_DT ability_NN of_IN mechanical_JJ reasoning_NN ,_, thus_RB being_VBG able_JJ to_TO match_VB requests_NNS much_RB more_RBR flexible_JJ than_IN in_IN former_JJ key-value_JJ based_JJ resource_NN matching_NN systems_NNS ._.
+In_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: Li_NNP and_CC Horrocks_NNP analyze_VBP the_DT usability_NN of_IN DAML+OIL_NN and_CC DAML-S_NN for_IN service_NN description_NN ._.
+They_PRP prove_VBP the_DT ability_NN using_VBG a_DT prototypic_JJ matchmaker_NN ,_, which_WDT based_VBN on_IN a_DT DL_NN reasoner_NN ._.
+By_IN simulating_VBG an_DT ecommerce_NN sc_NN
+in_IN general_JJ can_MD also_RB be_VB used_VBN for_IN booking_VBG hotel_NN rooms_NNS ._.
+As_IN a_DT consequence_NN ,_, it_PRP should_MD appear_VB in_IN the_DT result_NN set_NN of_IN the_DT query_NN ._.
+Such_JJ implicit_JJ relationships_NNS between_IN profiles_NNS can_MD be_VB derived_VBN using_VBG subsumption_NN ._.
+=_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: describes_VBZ the_DT basic_JJ concept_NN how_WRB matchmaking_NN can_MD be_VB realized_VBN with_IN subsumption_NN ._.
+Accordingly_RB ,_, two_CD profiles_NNS are_VBP compatible_JJ ,_, iff_VB their_PRP$ intersection_NN is_VBZ satisfiable_JJ ._.
+On_IN the_DT basis_NN of_IN subsumption_NN relationship_NN
+asses_NNS -RRB-_-RRB- ._.
+6.2_CD ._.
+Semantic_JJ Matching_NN of_IN concepts_NNS The_DT process_NN of_IN finding_VBG semantically_RB similar_JJ concepts_NNS makes_VBZ use_NN of_IN the_DT ontological_JJ hierarchy_NN ._.
+We_PRP implemented_VBD an_DT adapted_VBN version_NN of_IN the_DT algorithm_NN presented_VBN in_IN =_JJ -_: =[_NN 14_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN our_PRP$ algorithm_NN ,_, for_IN any_DT two_CD concepts_NNS C1_NN and_CC C2_NN ,_, C1_NN matches_VBZ C2_NN with_IN a_DT certain_JJ similarity-level_NN if_IN :_: •_NN C1_NN is_VBZ equivalent_JJ to_TO C2_NN ,_, with_IN similarity-level_NN 0_CD •_NN C1_NN is_VBZ a_DT sub-concept_NN of_IN C2_NN ,_, with_IN similarity-lev_NN
+In_IN ,_, Subsumes_NNP ,_, Overlap_NNP ._.
+We_PRP consider_VBP Subsumes_NNP and_CC Overlap_NNP as_IN `_`` partial_JJ 'm_VBP atches_NNS ._.
+The_DT first_JJ three_CD relations_NNS have_VBP been_VBN previously_RB identified_VBN by_IN Paolucci_NNP in_IN -LRB-_-LRB- 21_CD -RRB-_-RRB- and_CC the_DT fourth_JJ ,_, Overlap_NNP ,_, was_VBD identified_VBN by_IN Li_NNP =_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Constantinescu_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Determining_VBG one_CD match_NN relation_NN between_IN a_DT query_NN description_NN and_CC a_DT service_NN description_NN requires_VBZ that_IN subsequent_JJ relations_NNS are_VBP determined_VBN between_IN all_PDT the_DT inputs_NNS of_IN the_DT query_NN Q_NNP an_DT
+on_IN is_VBZ sent_VBN to_TO the_DT broker_NN ,_, the_DT problem_NN is_VBZ to_TO find_VB relevant_JJ channel-based_JJ services_NNS such_JJ that_IN match_NN with_IN the_DT demand_NN specification_NN ._.
+In_IN the_DT literature_NN ,_, several_JJ formalizations_NNS of_IN this_DT process_NN are_VBP discussed_VBN =_JJ -_: =[_NN 1_CD ,_, 3_CD -RRB-_-RRB- -_: =_JJ -_: :_: •_CD Satisfiability_NN of_IN the_DT conjunction_NN Si_NNP ⊓_NNP Di_NNP of_IN supply_NN and_CC demand_NN description_NN with_IN respect_NN to_TO KBSi_NNP ∪_NNP KBDi_NNP ∪_NNP KBB_NNP ._.
+•_NNP Subsumption_NNP Si_NNP ⊑_NNP Di_NNP between_IN supply_NN and_CC demand_NN descriptions_NNS w.r.t._VBP a_DT background_NN ontol_NN
+hips_NNS between_IN reactions_NNS ,_, we_PRP represented_VBD the_DT number_NN and_CC kind_NN of_IN participants_NNS -LRB-_-LRB- including_VBG generic_JJ classes_NNS of_IN compounds_NNS -RRB-_-RRB- in_IN a_DT reaction_NN as_IN qualified_JJ cardinality_NN restrictions_NNS and_CC used_VBD an_DT analysis_NN similar_JJ to_TO =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: to_TO analyze_VB the_DT computed_JJ crossdatabase_NN relationships_NNS ._.
+The_DT effort_NN ,_, ongoing_JJ ,_, has_VBZ already_RB surfaced_VBN quite_RB a_DT few_JJ errors_NNS in_IN the_DT source_NN databases_NNS ,_, and_CC has_VBZ contributed_VBN to_TO the_DT reaction_NN mapping_NN effort_NN ._.
+The_DT deta_NN
+-LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, MASE_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, etc._NN ._.
+However_RB ,_, to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN there_EX are_VBP no_DT approaches_NNS that_WDT use_VBP them_PRP to_TO describe_VB what_WP the_DT services_NNS do_VBP ._.
+Con_NN formato_NN :_: Fuente_NNP :_: S_NNP NegritasMost_NNP current_JJ OWL-S_NN matchmakers_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: only_RB consider_VB service_NN inputs_NNS and_CC outputs_NNS in_IN their_PRP$ matching_JJ algorithm_NN ._.
+We_PRP propose_VBP considering_VBG roles_NNS and_CC interactions_NNS as_RB well_RB ._.
+This_DT information_NN may_MD help_VB the_DT matchmaker_NN in_IN discriminating_VBG the_DT service_NN pro_NN
+gn_NN time_NN and_CC do_VBP not_RB lend_VB themselves_PRP to_TO later_JJ extension_NN ._.
+In_IN knowledge_NN representation_NN ,_, ontologies_NNS have_VBP received_VBN wide-spread_JJ attention_NN in_IN particular_JJ around_IN the_DT semantic_JJ web_NN and_CC for_IN web_NN service_NN management_NN =_JJ -_: =[_NN 6,7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC also_RB innumerable_JJ other_JJ fields_NNS of_IN information_NN science_NN ._.
+Ontologies_NNS strike_VBP a_DT compromise_NN between_IN formalism_NN and_CC expressiveness_NN that_WDT allows_VBZ for_IN being_VBG intuitive_JJ ,_, generic_JJ ,_, extensible_JJ ,_, and_CC powerful_JJ for_IN r_NN
+ration_NN techniques_NNS -LRB-_-LRB- 1_CD ,_, 12,16_CD -RRB-_-RRB- ;_: in_IN knowledge_NN representation_NN ,_, it_PRP has_VBZ been_VBN used_VBN for_IN object_NN classification_NN ,_, schema_NN integration_NN ,_, service_NN discovery_NN ,_, and_CC more_JJR ,_, in_IN particular_JJ in_IN the_DT area_NN of_IN description_NN logics_NNS =_JJ -_: =[_NN 6_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Results_NNS on_IN practical_JJ instances_NNS of_IN the_DT general_JJ problem_NN were_VBD studied_VBN in_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, followed_VBN by_IN -LRB-_-LRB- 5_CD ,_, 7_CD ,_, 2_CD ,_, 4_CD ,_, 13_CD -RRB-_-RRB- ._.
+In_IN particular_JJ ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 7_CD -RRB-_-RRB- deal_NN respectively_RB with_IN query_NN containment_NN and_CC efficient_JJ query_NN answ_NN
+better_RBR satisfy_VB the_DT specified_VBN requirements_NNS ._.
+Currently_RB ,_, most_JJS of_IN the_DT matchmaking_NN algorithms_NNS ,_, like_IN LARKS_NNP -LRB-_-LRB- Language_NNP for_IN Advertisement_NNP and_CC Request_NNP for_IN Knowledge_NNP Sharing_VBG -RRB-_-RRB- -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, the_DT OWL-S\/UDDI_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, the_DT RACER_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT MaMaS_NN -LRB-_-LRB- MatchMaker-Service_NN -RRB-_-RRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, the_DT HotBlu_NNP -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC the_DT OWLS-MX_NN -LRB-_-LRB- Hybrid_NN OWL-S_NN Web_NN Service_NNP Matchmaker_NNP -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- take_VBP into_IN account_NN the_DT 3_CD cf._VBP http:\/\/www.mindswap.org_NN 4_CD cf._VBP http:\/\/jena.sourceforge.net\/_NN 5_CD
+istency_NN checking_NN ,_, seems_VBZ unavailable_JJ with_IN this_DT type_NN of_IN match_NN ._.
+An_DT extension_NN to_TO the_DT approach_NN by_IN Paolucci_NNP et_FW al._FW is_VBZ proposed_VBN by_IN Li_NNP and_CC Horrocks_NNP ,_, who_WP introduced_VBD two_CD new_JJ levels_NNS for_IN service_NN profile_NN matching_NN =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP use_VBP the_DT JADE_NNP agent_NN platform_NN for_IN semantic_JJ Web_NN services_NNS discovery_NN on_IN a_DT test_NN ontology_NN based_VBN on_IN DAML-S_NN ._.
+Note_VB that_IN they_PRP introduce_VBP the_DT intersection_NN satisfiable_JJ level_NN ,_, whose_WP$ definition_NN is_VBZ close_JJ to_TO the_DT
+s_NN requested_VBD ._.
+The_DT four_CD categories_NNS mentioned_VBN may_MD also_RB be_VB employed_VBN to_TO measure_VB the_DT degree_NN to_TO which_WDT an_DT advertised_JJ Web_NN service_NN can_MD meet_VB a_DT request_NN ._.
+A_DT detailed_JJ implementation_NN of_IN this_DT approach_NN is_VBZ presented_VBN in_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT authors_NNS enhance_VBP the_DT four_CD mentioned_VBN categories_NNS by_IN intersection_NN ._.
+However_RB ,_, it_PRP is_VBZ not_RB possible_JJ to_TO assess_VB ,_, for_IN example_NN ,_, which_WDT of_IN two_CD plug-ins_NNS better_RB meets_VBZ a_DT request_NN ._.
+Xu_FW et_FW al._FW propose_VBP the_DT use_NN of_IN sema_NN
+of_IN service_NN related_JJ tasks_NNS ,_, such_JJ as_IN discovery_NN ,_, ranking_NN ,_, and_CC selection_NN ._.
+In_IN particular_JJ ,_, discovery_NN of_IN services_NNS that_WDT fulfill_VBP certain_JJ user_NN requirements_NNS have_VBP been_VBN widely_RB treated_VBN in_IN several_JJ proposals_NNS ,_, such_JJ as_IN =_JJ -_: =[_NN 3_CD ,_, 5_CD ,_, 6_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT proposals_NNS are_VBP mostly_RB based_VBN on_IN Description_NN Logics_NNS reasoners_NNS ,_, which_WDT match_VBP service_NN descriptions_NNS with_IN user_NN requirements_NNS ._.
+These_DT discovered_VBN services_NNS need_VBP to_TO be_VB ranked_VBN in_IN order_NN to_TO select_VB the_DT best_JJS ser_NN
+owever_RB ,_, the_DT assumption_NN based_VBN on_IN our_PRP$ real-life_JJ scenarios_NNS is_VBZ that_IN the_DT majority_NN of_IN matches_NNS will_MD be_VB of_IN type_NN intersection_NN ._.
+A_DT method_NN for_IN finding_VBG intersection_NN matches_NNS using_VBG Description_NN Logic_NN is_VBZ described_VBN in_IN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC its_PRP$ application_NN in_IN case_NN of_IN long_JJ and_CC complex_JJ capability_NN descriptions_NNS is_VBZ problematic_JJ ._.
+For_IN example_NN ,_, it_PRP requires_VBZ that_IN unrelated_JJ concepts_NNS are_VBP defined_VBN as_IN disjoint_NN pair_NN wise_JJ ._.
+Overall_RB ,_, the_DT matching_JJ proc_NN
+ce_IN the_DT penetration_NN of_IN the_DT user_NN to_TO messages_NNS of_IN interest_NN ._.
+We_PRP suggested_VBD a_DT user_NN profile_NN and_CC matchmaking_NN in_IN -LRB-_-LRB- 6_CD ,_, 8_CD -RRB-_-RRB- that_WDT copes_VBZ with_IN SPAM_NN annotations_NNS ._.
+More_JJR DL_NN based_VBN approaches_NNS to_TO matchmaking_NN can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Unlike_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- we_PRP consider_VBP privacy_NN a_DT major_JJ issue_NN ._.
+Due_JJ to_TO the_DT nature_NN of_IN user_NN profiles_NNS ,_, we_PRP would_MD like_VB to_TO encourage_VB users_NNS to_TO keep_VB their_PRP$ private_JJ data_NNS on_IN their_PRP$ personal_JJ device_NN ._.
+This_DT requires_VBZ the_DT mobile_JJ devi_NNS
+hm_NN to_TO match_VB Web_NN service_NN data_NNS types_NNS -LRB-_-LRB- in_IN XML_NN Schema_NN -RRB-_-RRB- and_CC concepts_NNS is_VBZ defined_VBN ,_, based_VBN on_IN schema_NN matching_NN ._.
+Another_DT research_NN area_NN related_VBN to_TO the_DT work_NN presented_VBN here_RB is_VBZ that_DT of_IN service_NN matchmaking_NN -LRB-_-LRB- see_VB e.g._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 17_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+It_PRP is_VBZ related_JJ to_TO Web_NN service_NN classification_NN in_IN that_DT our_PRP$ approach_NN computes_VBZ similarity_NN degrees_NNS between_IN services_NNS in_IN order_NN to_TO assign_VB them_PRP to_TO a_DT common_JJ category_NN ,_, and_CC service_NN matchmaking_NN aims_VBZ to_TO
+nt_NN and_CC Request_NN for_IN Knowledge_NN Sharing_VBG -RRB-_-RRB- -LRB-_-LRB- 17-19_CD -RRB-_-RRB- ,_, a_DT project_NN based_VBN on_IN a_DT collaboration_NN between_IN Toshiba_NNP and_CC Carnegie_NNP Mellon_NNP University_NNP -LRB-_-LRB- 6,7_CD -RRB-_-RRB- ,_, a_DT Matchmaker_NN from_IN TU-Berlin_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, and_CC systems_NNS by_IN Li_NNP and_CC Horrocks_NNP =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Paolucci_NNP -LRB-_-LRB- 13_CD -RRB-_-RRB- etc._NN ._.
+These_DT web_NN service_NN discovery_NN systems_NNS only_RB support_VBP matching_VBG web_NN services_NNS using_VBG the_DT same_JJ ontology_NN ._.
+This_DT assumption_NN implies_VBZ that_IN if_IN different_JJ ontologies_NNS are_VBP used_VBN ,_, matching_VBG can_MD not_RB be_VB c_NN
+rements_NNS -LRB-_-LRB- demands_NNS -RRB-_-RRB- a_DT formal_JJ definition_NN for_IN the_DT suitability_NN of_IN a_DT supply_NN for_IN a_DT certain_JJ demand_NN has_VBZ to_TO be_VB found_VBN ._.
+In_IN the_DT literature_NN ,_, several_JJ approaches_NNS for_IN a_DT ``_`` match_NN ''_'' of_IN a_DT supply_NN with_IN a_DT demand_NN are_VBP discussed_VBN =_JJ -_: =[_NN 8_CD ,_, 14_CD ,_, 6_CD -RRB-_-RRB- -_: =_JJ -_: :_: •_CD Satisfiability_NN of_IN the_DT conjunction_NN of_IN supply_NN and_CC demand_NN description_NN ,_, i.e._FW ,_, there_EX is_VBZ one_CD ``_`` world_NN ''_'' -LRB-_-LRB- model_NN of_IN the_DT background_NN ontology_NN -RRB-_-RRB- that_WDT satisfies_VBZ supply_NN and_CC demand_NN in_IN combination_NN -LRB-_-LRB- usually_RB this_DT is_VBZ a_DT
+ses_VBZ the_DT Matching_NNP Engine_NNP to_TO find_VB out_RP whether_IN there_EX exist_VBP any_DT subsumption_NN relations_NNS in_IN the_DT request_NN ._.
+The_DT semantic_JJ matching_JJ mechanism_NN of_IN Matching_NNP Engine_NNP is_VBZ derived_VBN from_IN previous_JJ work_NN on_IN semantic_JJ matching_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+The_DT basic_JJ algorithm_NN of_IN the_DT match_NN function_NN is_VBZ given_VBN below_IN :_: Match_NNP -LRB-_-LRB- expression_NN ,_, Multi-AgentOrganizationDescriptions_NNS -RRB-_-RRB- -LCB-_-LRB- degreeOfMatch_NN =_JJ expression_NN ._.
+getOperation_NN -LRB-_-LRB- -RRB-_-RRB- ;_: request_NN =_JJ expression_NN ._.
+getValue_NN -LRB-_-LRB- -RRB-_-RRB- ;_: m_NN
+D_NN MATCHMAKING_NN 3.1_CD Deductive_JJ matching_NN In_IN a_DT deductive_JJ approach_NN based_VBN on_IN Description_NN Logics_NNS the_DT description_NN R_NN of_IN a_DT request_NN is_VBZ compared_VBN with_IN the_DT description_NN S_NN of_IN an_DT offer_NN ._.
+Following_VBG general_JJ guidelines_NNS in_IN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP define_VBP five_CD kinds_NNS of_IN match_NN ,_, that_WDT can_MD be_VB intuitively_RB described_VBN as_IN follows_VBZ :_: -_: exact_JJ match_NN ,_, when_WRB the_DT request_NN and_CC the_DT offer_NN present_VBP the_DT same_JJ functionalities_NNS -LRB-_-LRB- this_DT is_VBZ a_DT strong_JJ condition_NN -RRB-_-RRB- ;_: -_: plug-in_JJ ma_NN
+the_DT requested_VBN service_NN by_IN using_VBG a_DT DAML-based_JJ subsumption_NN inference_NN engine_NN to_TO compare_VB input_NN and_CC output_NN sets_NNS ._.
+Also_RB other_JJ approaches_NNS use_VBP logical_JJ formalisms_NNS to_TO enhance_VB service_NN matchmaking_NN ._.
+Horrocks_NNP et_FW al._FW =_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: express_VBP OWL-S_NN service_NN profile_NN by_IN means_NNS of_IN Description_NN Logics_NNS and_CC exploit_VB inference_NN mechanisms_NNS of_IN a_DT Description_NN Logic_NN reasoner_NN -LRB-_-LRB- such_JJ as_IN Racer_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- -RRB-_-RRB- to_TO establish_VB the_DT degree_NN of_IN match_NN between_IN advertiseme_NN
+the_DT postcondition_NN holds_VBZ in_IN the_DT state_NN reached_VBN by_IN the_DT execution_NN ._.
+Semantic_JJ annotation_NN allows_VBZ the_DT discovery_NN of_IN services_NNS ,_, whose_WP$ descriptions_NNS do_VBP not_RB exactly_RB match_VB with_IN the_DT corresponding_JJ queries_NNS -LRB-_-LRB- e.g._FW -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 2_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Semantic_JJ matchmaking_NN focuses_VBZ on_IN the_DT discovery_NN of_IN single_JJ services_NNS ,_, in_IN the_DT sense_NN that_IN a_DT service_NN is_VBZ considered_VBN as_IN corresponding_VBG to_TO a_DT single_JJ operation_NN ._.
+In_IN general_JJ ,_, however_RB ,_, the_DT use_NN of_IN a_DT web_NN servic_NN
+for_IN achieving_VBG R_NN ,_, we_PRP need_VBP to_TO run_VB a_DT discovery_NN procedure_NN between_IN R_NN and_CC each_DT service_NN ._.
+Existing_VBG developments_NNS for_IN discovery_NN with_IN semantic_JJ matchmaking_NN consist_VBP of_IN complex_NN ,_, expensive_JJ reasoning_NN procedures_NNS -LRB-_-LRB- see_VB =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 24_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+This_DT effort_NN can_MD significantly_RB be_VB reduced_VBN when_WRB knowing_VBG and_CC considering_VBG the_DT relationship_NN between_IN R_NN and_CC the_DT Web_NN Services_NNP ._.
+Imagine_VB that_IN we_PRP have_VBP the_DT following_JJ additional_JJ information_NN :_: R_NN
+upon_IN organisational_JJ information_NN contained_VBN in_IN service_NN descriptions_NNS ._.
+This_DT mechanism_NN is_VBZ orthogonal_JJ to_TO general-purpose_JJ service_NN matching_NN techniques_NNS that_WDT focus_VBP mainly_RB on_IN inputs_NNS and_CC outputs_NNS of_IN services_NNS -LRB-_-LRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+We_PRP have_VBP implemented_VBN a_DT role-based_JJ matchmaking_NN component_NN and_CC evaluated_VBD it_PRP in_IN combination_NN with_IN the_DT well_RB known_VBN OWLS-MX_NN matchmaker_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+Our_PRP$ experiments_NNS have_VBP shown_VBN that_IN the_DT combination_NN of_IN both_DT match_NN
+offered_VBN service_NN ._.
+The_DT advertisements_NNS are_VBP stored_VBN into_IN a_DT repository_NN and_CC the_DT matching_NN of_IN advertisements_NNS is_VBZ reduced_VBN to_TO matching_NN of_IN RDF_NNP graphs_NNS ._.
+The_DT authors_NNS implemented_VBD a_DT matching_JJ algorithm_NN ._.
+Li_NNP and_CC Horrocks_NNP =_SYM -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: assess_VB the_DT requirements_NNS for_IN a_DT service_NN description_NN language_NN and_CC ontology_NN ,_, and_CC argue_VBP that_IN DAML+OIL_NN and_CC DAML-S_NN common_JJ service_NN ontology_NN ,_, fulfil_VB these_DT requirements_NNS ._.
+This_DT argument_NN is_VBZ supported_VBN by_IN their_PRP$ des_FW
+-RRB-_-RRB- ,_, and_CC retrieval_NN of_IN workflow_NN execution_NN traces_NNS to_TO be_VB reused_VBN during_IN workflow_NN creation_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+Matching_VBG based_VBN on_IN types_NNS of_IN data_NNS has_VBZ been_VBN done_VBN for_IN the_DT discovery_NN of_IN individual_JJ services_NNS or_CC software_NN components_NNS =_JJ -_: =[_NN 10,15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC not_RB for_IN the_DT more_RBR complex_JJ structures_NNS that_IN workflows_NNS represent_VBP ._.
+Queries_NNS I_PRP to_TO III_NNP above_RB have_VBP not_RB been_VBN investigated_VBN to_TO date_NN and_CC are_VBP the_DT most_RBS challenging_JJ ,_, as_IN they_PRP represent_VBP data-centered_JJ properties_NNS o_NN
+of_IN joined_VBN occurrences_NNS ._.
+Decker_NNP et_FW al_FW -LRB-_-LRB- 6_CD -RRB-_-RRB- suggest_VBP the_DT use_NN of_IN middle_JJ agents_NNS ,_, as_IN connection_NN elements_NNS between_IN suppliers_NNS of_IN information_NN and_CC requesters_NNS in_IN a_DT scene_NN of_IN distributed_VBN multi-agents_NNS ._.
+Li_NNP and_CC Horrocks_NNP =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, guided_VBN to_TO the_DT Semantic_JJ Web_NN ,_, consider_VB a_DT system_NN for_IN matchmaking_NN based_VBN on_IN a_DT repository_NN of_IN information_NN where_WRB agents_NNS can_MD publish_VB and_CC search_VB for_IN announcements_NNS described_VBN in_IN Daml-S_NN -LRB-_-LRB- DARPA_NNP Agent_NNP Markup_NNP Langu_NNP
+to_TO account_VB the_DT graph_NN structure_NN and_CC statistics_NNS ._.
+In_IN the_DT Semantic_JJ Web_NN ,_, various_JJ approaches_NNS have_VBP been_VBN suggested_VBN to_TO measure_VB semantic_JJ similarity_NN between_IN different_JJ artifacts_NNS ._.
+Most_JJS similarity_NN measures_NNS such_JJ as_IN =_JJ -_: =[_NN 42_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 43_CD -RRB-_-RRB- focus_NN only_RB on_IN subsumption_NN relations_NNS -LRB-_-LRB- i.e._FW hierarchical_JJ ``_`` is-a_NN ''_'' links_NNS in_IN an_DT ontology_NN -RRB-_-RRB- ._.
+Maguitman_NNP et_FW al._FW -LRB-_-LRB- 44_CD -RRB-_-RRB- propose_VBP an_DT information_NN theoretic_JJ measure_NN of_IN similarity_NN that_WDT also_RB considers_VBZ non-hierarc_JJ
+based_VBN approaches_NNS to_TO semantic_JJ service_NN discovery_NN are_VBP provided_VBN by_IN OWL-S_NN description_NN matchmakers_NNS such_JJ as_IN the_DT Matching_VBG algorithm_NN used_VBN in_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- -LRB-_-LRB- which_WDT is_VBZ based_VBN on_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- -RRB-_-RRB- ,_, the_DT OWLS-UDDI_NN matchmaker_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, RACER_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, MAMA_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- and_CC by_IN the_DT WSMO_NNP service_NN discovery_NN approach_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+These_DT approaches_NNS do_VBP not_RB exploit_VB semantics_NNS that_WDT are_VBP implicit_JJ ,_, i.e._FW patterns_NNS and\/or_CC relative_JJ frequencies_NNS of_IN service_NN descriptions_NNS computed_VBN by_IN
+s_NN of_IN the_DT advertisement_NN are_VBP matched_VBN by_IN the_DT inputs_NNS of_IN the_DT request_NN ._.
+The_DT algorithm_NN in_IN -LRB-_-LRB- 23_CD -RRB-_-RRB- however_RB does_VBZ not_RB deal_VB with_IN service_NN behavior_NN ,_, nor_CC it_PRP considers_VBZ service_NN composition_NN ._.
+Li_NNP and_CC Horrocks_NNP described_VBN in_IN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: a_DT service_NN discovery_NN algorithm_NN based_VBN on_IN a_DT description_NN logic_NN reasoner_NN ,_, which_WDT speeds_VBZ up_RP the_DT matching_NN process_NN by_IN employing_VBG an_DT off-line_JJ classification_NN of_IN DAML-S_NN service_NN advertisements_NNS ._.
+As_IN -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 14_CD -RRB-_-RRB- does_VBZ
+atch_NN ._.
+Standard_NNP Information_NNP retrieval_NN techniques_NNS have_VBP been_VBN also_RB used_VBN in_IN the_DT GRAPPA_NNP matchmaking_NN framework_NN -LRB-_-LRB- Veit_NNP et_FW al._FW ,_, 2001_CD -RRB-_-RRB- ._.
+An_DT extension_NN to_TO the_DT approach_NN in_IN -LRB-_-LRB- Paoluccis4_NN et_FW al._FW ,_, 2002b_CD -RRB-_-RRB- is_VBZ proposed_VBN in_IN -LRB-_-LRB- =_JJ -_: =_JJ Li_NNP and_CC Horrocks_NNP ,_, 2003_CD -_: =-]_CD where_WRB two_CD new_JJ levels_NNS for_IN service_NN profiles_NNS matching_VBG are_VBP introduced_VBN ._.
+JADE_NN agent_NN platform_NN for_IN semantic_JJ web_NN services_NNS discovery_NN is_VBZ used_VBN there_RB on_IN a_DT test_NN ontology_NN based_VBN on_IN DAML-S_NN ._.
+The_DT approach_NN presented_VBN do_VBP
+role_NN in_IN the_DT Semantic_JJ Web_NN by_IN providing_VBG common_JJ vocabularies_NNS shared_VBN by_IN applications_NNS ._.
+Currently_RB ,_, the_DT Web_NN Services_NNPS Description_NN Language_NN -LRB-_-LRB- WSDL_NN -RRB-_-RRB- -LRB-_-LRB- 19_CD -RRB-_-RRB- does_VBZ not_RB support_VB semantic_JJ descriptions_NNS for_IN Web_NN services_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC the_DT Universal_NNP Description_NN ,_, Discovery_NNP and_CC Integration_NN -LRB-_-LRB- UDDI_NN -RRB-_-RRB- -LRB-_-LRB- 20_CD -RRB-_-RRB- also_RB can_MD not_RB provide_VB adequate_JJ documentation_NN of_IN Web_NN service_NN capabilities_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+To_TO address_VB their_PRP$ limitations_NNS ,_, ontology_NN languages_NNS -LRB-_-LRB- e.g_NN
+rds_NNS for_IN defining_VBG and_CC using_VBG ontologies_NNS are_VBP already_RB being_VBG developed_VBN ._.
+RDF_NNP ,_, which_WDT is_VBZ being_VBG developed_VBN by_IN the_DT W3C_NN RDF_NN Core_NN working_VBG group_NN ,_, is_VBZ a_DT web_NN markup_NN language_NN that_WDT provides_VBZ basic_JJ ontological_JJ primitives_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ;_: DAML+OIL_NN is_VBZ an_DT ontology_JJ language_NN that_WDT extends_VBZ RDF_NNP with_IN a_DT much_RB richer_JJR set_NN of_IN primitives_NNS -LRB-_-LRB- e.g._FW ,_, boolean_JJ operators_NNS and_CC cardinality_NN constraints_NNS -RRB-_-RRB- ,_, and_CC which_WDT is_VBZ now_RB the_DT basis_NN for_IN the_DT W3C_NN Web_NN Ontology_NNP Lang_NNP
+r_NN design_NN ._.
+Hence_RB it_PRP will_MD be_VB useful_JJ to_TO give_VB an_DT overview_NN of_IN DL_NN languages_NNS and_CC notations_NNS ._.
+A_DT detailed_JJ discussion_NN of_IN DLs_NNS is_VBZ ,_, however_RB ,_, beyond_IN the_DT scope_NN of_IN this_DT paper_NN ,_, and_CC the_DT interested_JJ reader_NN is_VBZ referred_VBN to_TO =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: for_IN further_JJ details_NNS ._.
+3.1.1_CD Description_NN logics_NNS syntax_VBP Elementary_JJ descriptions_NNS are_VBP atomic_JJ concepts_NNS and_CC atomic_JJ roles_NNS ._.
+Complex_NN descriptions_NNS can_MD be_VB built_VBN from_IN them_PRP inductively_RB with_IN concept_NN constructors_NNS ._.
+I_PRP
+he_PRP Semantic_JJ Web_NN :_: The_DT semantic_JJ web_NN goal_NN is_VBZ to_TO be_VB a_DT unifying_JJ system_NN which_WDT will_MD -LRB-_-LRB- like_IN the_DT web_NN for_IN human_JJ communication_NN -RRB-_-RRB- be_VB as_RB un-restraining_JJ as_IN possible_JJ so_IN that_IN the_DT complexity_NN of_IN reality_NN can_MD be_VB described_VBN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+With_IN a_DT Semantic_JJ Web_NN ,_, it_PRP is_VBZ widely_RB believed_VBN that_IN it_PRP will_MD be_VB easy_JJ to_TO realize_VB a_DT whole_JJ range_NN of_IN tools_NNS and_CC applications_NNS that_WDT are_VBP difficult_JJ to_TO handle_VB in_IN the_DT framework_NN of_IN the_DT current_JJ web_NN ._.
+Examples_NNS include_VBP
+i.e._FW ,_, a_DT repository_NN where_WRB agents_NNS can_MD advertise_VB and_CC search_VB for_IN services_NNS that_WDT match_VBP some_DT semantic_JJ description_NN ._.
+We_PRP used_VBD JADE_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- as_IN the_DT agent_NN platform_NN for_IN our_PRP$ prototype_NN and_CC we_PRP used_VBD the_DT RACER_NN DL_NN reasoner_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: in_IN order_NN to_TO compute_VB semantic_JJ matches_NNS between_IN service_NN advertisements_NNS and_CC service_NN requests_NNS ._.
+We_PRP illustrate_VBP some_DT difficulties_NNS both_CC in_IN the_DT application_NN of_IN the_DT DAML-S_NN ontology_NN and_CC in_IN the_DT use_NN of_IN the_DT DL_NN reaso_NN
+,_, so_IN we_PRP have_VBP designed_VBN a_DT domain-specific_JJ sample_NN ontology_NN about_IN the_DT sales_NNS of_IN computers_NNS in_IN order_NN to_TO achieve_VB agreement_NN at_IN the_DT semantic_JJ level_NN between_IN various_JJ parties_NNS ._.
+4_CD In_IN our_PRP$ prototype_NN ,_, we_PRP used_VBD the_DT OilEd_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ontology_NN editor_NN to_TO build_VB DAML+OIL_NN ontologies_NNS ._.
+For_IN the_DT purpose_NN of_IN clarity_NN and_CC compactness_NN ,_, however_RB ,_, in_IN this_DT paper_NN we_PRP will_MD use_VB the_DT DL_NN notions_NNS in_IN place_NN of_IN the_DT DAML+OIL_NN syntax_NN ._.
+In_IN our_PRP$ ontology_NN ,_, we_PRP use_VBP th_DT
+e_LS domain-specific_JJ ontology_NN is_VBZ a_DT shared_JJ vocabulary_NN that_IN all_DT agents_NNS can_MD use_VB to_TO specify_VB advertisements_NNS and_CC requests_NNS to_TO the_DT broker_NN ._.
+5sIn_NNP InfoSleuth_NNP ,_, the_DT service_NN capability_NN information_NN is_VBZ written_VBN in_IN LDL_NN +_CC +_CC =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT logical_JJ deduction_NN language_NN ._.
+Agents_NNS use_VBP a_DT set_NN of_IN LDL_NN +_CC +_CC deductive_JJ rules_NNS to_TO support_VB inferences_NNS about_IN whether_IN an_DT expression_NN of_IN requirements_NNS matches_VBZ a_DT set_NN of_IN advertised_JJ capabilities_NNS ._.
+In_IN contrast_NN ,_, we_PRP pr_VBP
+2svice_NN descriptions_NNS ._.
+1_CD These_DT descriptions_NNS are_VBP used_VBN in_IN a_DT matchmaking_NN prototype_NN ,_, i.e._FW ,_, a_DT repository_NN where_WRB agents_NNS can_MD advertise_VB and_CC search_VB for_IN services_NNS that_WDT match_VBP some_DT semantic_JJ description_NN ._.
+We_PRP used_VBD JADE_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: as_IN the_DT agent_NN platform_NN for_IN our_PRP$ prototype_NN and_CC we_PRP used_VBD the_DT RACER_NN DL_NN reasoner_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- in_IN order_NN to_TO compute_VB semantic_JJ matches_NNS between_IN service_NN advertisements_NNS and_CC service_NN requests_NNS ._.
+We_PRP illustrate_VBP some_DT difficulties_NNS
+set_NN of_IN primitives_NNS -LRB-_-LRB- e.g._FW ,_, boolean_JJ operators_NNS and_CC cardinality_NN constraints_NNS -RRB-_-RRB- ,_, and_CC which_WDT is_VBZ now_RB the_DT basis_NN for_IN the_DT W3C_NN Web_NN Ontology_NN Language_NN working_VBG group_NN 's_POS development_NN of_IN the_DT OWL_NN ontology_NN language_NN standard_NN =_JJ -_: =[_NN 10_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Moreover_RB ,_, if_IN applications_NNS are_VBP to_TO exchange_VB semantic_JJ information_NN ,_, they_PRP will_MD need_VB to_TO use_VB common_JJ ontologies_NNS ._.
+One_CD such_JJ ontology_NN -LRB-_-LRB- written_VBN in_IN DAML+OIL_NN -RRB-_-RRB- ,_, which_WDT has_VBZ been_VBN designed_VBN for_IN the_DT purpose_NN of_IN describin_NN

@@ -1,0 +1,111 @@
+Practical_NNP end-to-end_JJ web_NN content_NN integrity_NN
+Widespread_JJ growth_NN of_IN open_JJ wireless_JJ hotspots_NNS has_VBZ made_VBN it_PRP easy_JJ to_TO carry_VB out_RP man-in-the-middle_JJ attacks_NNS and_CC impersonate_VB web_NN sites_NNS ._.
+Although_IN HTTPS_NN can_MD be_VB used_VBN to_TO prevent_VB such_JJ attacks_NNS ,_, its_PRP$ universal_JJ adoption_NN is_VBZ hindered_VBN by_IN its_PRP$ performance_NN cost_NN and_CC its_PRP$ inability_NN to_TO leverage_NN caching_NN at_IN intermediate_JJ servers_NNS -LRB-_-LRB- such_JJ as_IN CDN_NN servers_NNS and_CC caching_NN proxies_NNS -RRB-_-RRB- while_IN maintaining_VBG end-to-end_JJ security_NN ._.
+To_TO complement_VB HTTPS_NNP ,_, we_PRP revive_VBP an_DT old_JJ idea_NN from_IN SHTTP_NNP ,_, a_DT protocol_NN that_WDT offers_VBZ end-to-end_JJ web_NN integrity_NN without_IN confidentiality_NN ._.
+We_PRP name_VBP the_DT protocol_NN HTTPi_NNS and_CC give_VB it_PRP an_DT efficient_JJ design_NN that_WDT is_VBZ easy_JJ to_TO deploy_VB for_IN today_NN 's_POS web_NN ._.
+In_IN particular_JJ ,_, we_PRP tackle_VBP several_JJ previously-unidentified_JJ challenges_NNS ,_, such_JJ as_IN supporting_VBG progressive_JJ page_NN loading_VBG on_IN the_DT client_NN 's_POS browser_NN ,_, handling_VBG mixed_JJ content_NN ,_, and_CC defining_VBG access_NN control_NN policies_NNS among_IN HTTP_NN ,_, HTTPi_NN ,_, and_CC HTTPS_NN content_NN from_IN the_DT same_JJ domain_NN ._.
+Our_PRP$ prototyping_NN and_CC evaluation_NN experience_NN show_VBP that_IN HTTPi_NN incurs_VBZ negligible_JJ performance_NN overhead_NN over_IN HTTP_NN ,_, can_NN leverage_NN existing_VBG web_NN infrastructure_NN such_JJ as_IN CDNs_NNS or_CC caching_NN proxies_NNS without_IN any_DT modifications_NNS to_TO them_PRP ,_, and_CC can_MD make_VB many_JJ of_IN the_DT mixed-content_JJ problems_NNS in_IN existing_VBG HTTPS_NN web_NN sites_NNS easily_RB go_VBP away_RB ._.
+Based_VBN on_IN this_DT experience_NN ,_, we_PRP advocate_VBP browser_NN and_CC web_NN server_NN vendors_NNS to_TO adopt_VB HTTPi_NNS ._.
+iptors_VBZ K._NNP 6.5_CD -LRB-_-LRB- Management_NNP of_IN Computing_NNP and_CC Information_NNP Systems_NNP -RRB-_-RRB- :_: Security_NN and_CC Protection_NN General_JJ Terms_NNS Security_NNP Keywords_NNPS Web_NN security_NN ,_, content_NN integrity_NN ,_, caching_NN 1_CD ._.
+INTRODUCTION_NN The_DT same-origin_JJ policy_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- SOP_NN -RRB-_-RRB- is_VBZ the_DT key_JJ access_NN control_NN policy_NN for_IN the_DT web_NN and_CC browsers_NNS ._.
+SOP_NN defines_VBZ a_DT principal_JJ model_NN where_WRB web_NN sites_NNS are_VBP mutually_RB distrusting_VBG principals_NNS -LRB-_-LRB- 35,36_CD -RRB-_-RRB- ,_, and_CC where_WRB one_CD site_NN 's_POS script_NN can_MD not_RB access_VB a_DT
+es_RB ,_, we_PRP advocate_VBP a_DT new_JJ protocol_NN ,_, called_VBN HTTPi_NNS ,_, which_WDT offers_VBZ end-to-end_JJ web_NN integrity_NN without_IN confidentiality_NN ._.
+While_IN this_DT is_VBZ an_DT old_JJ idea_NN which_WDT first_RB appeared_VBD in_IN the_DT signature_NN mode_NN of_IN operation_NN in_IN SHTTP_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- which_WDT was_VBD a_DT proposal_NN that_WDT unsuccessfully_RB competed_VBD with_IN SSL_NNP and_CC HTTPS_NNP in_IN 1999_CD -RRB-_-RRB- ,_, the_DT development_NN of_IN this_DT idea_NN has_VBZ stayed_VBN at_IN the_DT algorithmic_JJ level_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP give_VBP it_PRP an_DT efficient_JJ and_CC practical_JJ
+ith_VB that_DT element_NN ._.
+Per_IN SOP_NNP ,_, all_PDT the_DT objects_NNS on_IN the_DT page_NN can_MD now_RB interact_VB without_IN restriction_NN ._.
+Our_PRP$ second_JJ step_NN is_VBZ to_TO enforce_VB access_NN control_NN rules_NNS that_WDT govern_VBP such_JJ interactions_NNS ._.
+We_PRP build_VBP on_IN earlier_JJR work_NN =_JJ -_: =[_NN 32_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT implements_VBZ a_DT JavaScript_NNP engine_NN proxy_NN -LRB-_-LRB- called_VBN Script_NNP Engine_NNP Proxy_NNP or_CC SEP_NNP -RRB-_-RRB- :_: SEP_NN is_VBZ installed_VBN between_IN IE_NN 's_POS rendering_NN and_CC script_NN engines_NNS ,_, and_CC it_PRP mediates_VBZ and_CC customizes_VBZ DOM_NNP object_NN interactions_NNS ._.
+SEP_NN
+scripts_NNS and_CC stylesheets_NNS ,_, be_VB rendered_VBN over_IN HTTPi_NN or_CC HTTPS_NN ._.
+To_TO allow_VB web_NN applications_NNS to_TO customize_VB this_DT default_NN behavior_NN ,_, we_PRP use_VBP an_DT HTTP_NN header_NN that_WDT is_VBZ compatible_JJ with_IN the_DT Content_NNP Security_NNP Policy_NNP -LRB-_-LRB- CSP_NNP -RRB-_-RRB- =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_JJ -_: header_NN to_TO specify_VB the_DT server_NN 's_POS end-to-end_JJ integrity_NN requirements_NNS for_IN dependent_JJ resources_NNS ._.
+The_DT CSP_NNP policy_NN syntax_NN is_VBZ convenient_JJ for_IN our_PRP$ purposes_NNS ,_, as_IN it_PRP already_RB allows_VBZ sites_NNS to_TO specify_VB which_WDT origins_NNS the_DT
+integrity_NN breaches_NNS ._.
+Fundamentally_RB ,_, web_NN tripwires_NNS focus_VBP on_IN detection_NN ,_, while_IN HTTPi_NN focuses_VBZ on_IN both_CC detection_NN and_CC prevention_NN ._.
+Other_JJ research_NN has_VBZ proposed_VBN cryptographic_JJ schemes_NNS for_IN web_NN content_NN integrity_NN =_JJ -_: =[_NN 8_CD ,_, 17_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN we_PRP share_VBP some_DT commonality_NN with_IN these_DT efforts_NNS in_IN integrity_NN computation_NN ,_, our_PRP$ system_NN differs_VBZ in_IN three_CD significant_JJ ways_NNS ._.
+First_RB ,_, our_PRP$ design_NN is_VBZ more_RBR robust_JJ against_IN attacks_NNS like_IN stripping_VBG and_CC content_NN
+integrity_NN breaches_NNS ._.
+Fundamentally_RB ,_, web_NN tripwires_NNS focus_VBP on_IN detection_NN ,_, while_IN HTTPi_NN focuses_VBZ on_IN both_CC detection_NN and_CC prevention_NN ._.
+Other_JJ research_NN has_VBZ proposed_VBN cryptographic_JJ schemes_NNS for_IN web_NN content_NN integrity_NN =_JJ -_: =[_NN 8_CD ,_, 17_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN we_PRP share_VBP some_DT commonality_NN with_IN these_DT efforts_NNS in_IN integrity_NN computation_NN ,_, our_PRP$ system_NN differs_VBZ in_IN three_CD significant_JJ ways_NNS ._.
+First_RB ,_, our_PRP$ design_NN is_VBZ more_RBR robust_JJ against_IN attacks_NNS like_IN stripping_VBG and_CC content_NN
+asynchronous_JJ postMessage-based_JJ protocols_NNS ,_, which_WDT carries_VBZ extra_JJ marshalling_VBG costs_NNS and_CC may_MD be_VB hard_JJ to_TO design_VB correctly_RB ,_, as_IN illustrated_VBN by_IN recent_JJ flaws_NNS found_VBN in_IN Facebook_NNP Connect_NNP and_CC Google_NNP Friend_NN Connect_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Consequently_RB ,_, a_DT developer_NN may_MD be_VB discouraged_VBN from_IN converting_VBG some_DT content_NN on_IN an_DT HTTPS_NN site_NN into_IN HTTPi_NNS to_TO benefit_VB from_IN its_PRP$ cacheability_NN properties_NNS ._.
+As_IN a_DT concrete_JJ example_NN ,_, consider_VBP an_DT online_JJ shopping_NN
+ables_VBZ web_NN sites_NNS to_TO save_VB bandwidth_NN costs_NNS and_CC to_TO reduce_VB latency_NN for_IN users_NNS by_IN outsourcing_VBG infrastructure_NN to_TO CDNs_NNS and_CC offloading_VBG requests_NNS to_TO CDN_NNP servers_NNS ._.
+Although_IN CDNs_NNS do_VBP offer_NN services_NNS for_IN HTTPS_NN content_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, this_DT carries_VBZ the_DT cost_NN of_IN trusting_VBG CDN_NNP servers_NNS to_TO be_VB man-in-the-middle_JJ and_CC losing_JJ end-to-end_JJ security_NN ._.
+Furthermore_RB ,_, such_JJ services_NNS come_VBP with_IN a_DT hefty_JJ charge_NN of_IN up_IN to_TO $_$ 3,000_CD per_IN month_NN plus_CC bandwidth_NN cos_NNS
+ant_JJ performance_NN incentive_NN to_TO use_VB HTTPi_NNS instead_RB of_IN HTTPS_NNP ._.
+8_CD ._.
+RELATED_NNS WORK_VBP Prior_JJ work_NN has_VBZ explored_VBN a_DT number_NN of_IN integrity_NN protection_NN techniques_NNS ._.
+A_DT proposal_NN on_IN authentication-only_JJ ciphersuites_NNS for_IN PSKTLS_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: describes_VBZ a_DT transport_NN layer_NN security_NN scheme_NN for_IN authentication_NN and_CC integrity_NN ,_, with_IN no_DT confidentiality_NN guarantees_NNS ._.
+However_RB ,_, this_DT proposal_NN requires_VBZ a_DT shared_JJ secret_NN between_IN each_DT client_NN and_CC the_DT server_NN to_TO
+n_NN if_IN browsers_NNS flawlessly_RB implement_VBP the_DT enforcement_NN of_IN the_DT same-origin_JJ policy_NN ._.
+Such_JJ attacks_NNS are_VBP highly_RB practical_JJ today_NN with_IN the_DT prevalence_NN of_IN wireless_JJ hotspots_NNS and_CC insecurity_NN in_IN the_DT DNS_NN infrastructure_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Copyright_NN is_VBZ held_VBN by_IN the_DT International_NNP World_NNP Wide_NN Web_NN Conference_NN Committee_NN -LRB-_-LRB- IW3C2_NN -RRB-_-RRB- ._.
+Distribution_NN of_IN these_DT papers_NNS is_VBZ limited_VBN to_TO classroom_NN use_NN ,_, and_CC personal_JJ use_NN by_IN others_NNS ._.
+WWW_NN 2012_CD ,_, April_NNP 16_CD --_: 20_CD ,_, 2012_CD ,_,
+expected_VBN for_IN connections_NNS to_TO a_DT given_VBN server_NN ._.
+The_DT policy_NN can_MD be_VB delivered_VBN via_IN an_DT HTTP_NN header_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+To_TO prevent_VB attacks_NNS on_IN the_DT user_NN 's_POS first_JJ visit_NN to_TO the_DT site_NN ,_, the_DT policy_NN can_MD also_RB be_VB delivered_VBN via_IN DNSSEC_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP use_VBP an_DT extension_NN to_TO HSTS_NN ,_, allowHTTPi_NN ,_, to_TO allow_VB servers_NNS to_TO specify_VB HTTPi_NNS as_IN the_DT minimum_JJ level_NN of_IN security_NN ._.
+The_DT allowHTTPi_NN token_JJ is_VBZ appended_VBN to_TO the_DT server_NN 's_POS existing_VBG Strict-Transport-Security_NN decla_NN
+ce_NN cost_NN and_CC its_PRP$ uncacheability_NN at_IN intermediate_JJ servers_NNS ._.
+Regarding_VBG performance_NN ,_, although_IN GMail_NN has_VBZ recently_RB demonstrated_VBN the_DT ability_NN of_IN serving_VBG HTTPS_NN content_NN with_IN low_JJ overhead_NN using_VBG commodity_NN hardware_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT general_JJ applicability_NN of_IN their_PRP$ solution_NN to_TO other_JJ SSL_NN setups_NNS is_VBZ still_RB not_RB clear_JJ -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Web_NN caching_NN offers_VBZ significant_JJ benefits_NNS to_TO web_NN sites_NNS and_CC users_NNS ._.
+It_PRP enables_VBZ web_NN sites_NNS to_TO save_VB bandwidth_NN costs_NNS and_CC
+sformer_NN into_IN a_DT web_NN proxy_NN that_WDT translates_VBZ typical_JJ HTTP_NN responses_NNS into_IN HTTPi_JJ responses_NNS by_IN embedding_VBG all_PDT the_DT hashes_NNS and_CC signatures_NNS needed_VBN by_IN HTTPi_NNS ._.
+We_PRP leveraged_VBD the_DT public-domain_JJ Fiddler_NN debugging_NN proxy_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: and_CC its_PRP$ FiddlerCore_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- extensibility_NN interfaces_NNS ._.
+This_DT option_NN is_VBZ independent_JJ of_IN web_NN server_NN implementation_NN and_CC al663WWW_NN 2012_CD --_: Session_NN :_: Security_NN 2_CD April_NNP 16_CD --_: 20_CD ,_, 2012_CD ,_, Lyon_NNP ,_, France_NNP JavaScript_NNP Engine_NNP S_NNP
+sents_VBZ a_DT typical_JJ size_NN of_IN a_DT page_NN with_IN no_DT embedded_JJ links_NNS ._.
+We_PRP arrived_VBD at_IN this_DT page_NN size_NN based_VBN on_IN the_DT web_NN estimates_NNS that_WDT put_VBP total_JJ page_NN size_NN at_IN 170KB_NN -LRB-_-LRB- median_NN -RRB-_-RRB- and_CC number_NN of_IN objects_NNS per_IN page_NN at_IN 37_CD -LRB-_-LRB- median_NN -RRB-_-RRB- =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN each_DT page_NN ,_, we_PRP increased_VBD the_DT offered_VBN load_NN on_IN For_IN our_PRP$ measurements_NNS ,_, we_PRP specify_VBP two_CD headers_NNS ,_, Server_NN and_CC Content-Type_NNP ,_, to_TO require_VB integrity_NN ._.
+This_DT time_NN cost_NN will_MD vary_VB with_IN the_DT number_NN of_IN headers_NNS for_IN w_NN
+total_JJ overhead_NN of_IN HTTPi_NN -LRB-_-LRB- since_IN our_PRP$ microbenchmarks_NNS showed_VBD that_IN client-side_JJ overhead_NN is_VBZ small_JJ but_CC not_RB negligible_JJ -RRB-_-RRB- ._.
+Web_NN Server_NN Throughput_NN ._.
+Our_PRP$ server_NN throughput_NN measurements_NNS are_VBP performed_VBN using_VBG httperf_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, an_DT HTTP_NN performance_NN measurement_NN tool_NN ._.
+The_DT experiments_NNS are_VBP performed_VBN using_VBG two_CD different_JJ setups_NNS representative_NN of_IN real-world_JJ web_NN site_NN deployments_NNS :_: •_CD Our_PRP$ first_JJ setup_NN consists_VBZ of_IN an_DT IIS_NN server_NN that_WDT is_VBZ
+read_VB up_RP -RRB-_-RRB- Biba_NNP Model_NNP -LRB-_-LRB- no_DT read_NN down_RB ,_, no_DT write_VB up_RP -RRB-_-RRB- Figure_NNP 2_CD :_: Interactions_NNS in_IN Mixed_NNP Content_NNP Rendering_NNP ._.
+dered_VBN data_NNS ._.
+Our_PRP$ default_NN communication_NN policies_NNS are_VBP inspired_VBN by_IN the_DT combination_NN of_IN the_DT Bell_NNP LaPadula_NNP =_SYM -_: =[_NN 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Biba_NNP -LRB-_-LRB- 11_CD -RRB-_-RRB- models_NNS ._.
+It_PRP is_VBZ important_JJ to_TO note_VB that_DT our_PRP$ goal_NN is_VBZ not_RB to_TO enforce_VB information_NN flow_NN invariants_NNS often_RB associated_VBN with_IN those_DT models_NNS -LRB-_-LRB- e.g._FW ,_, frames_NNS of_IN any_DT origin_NN can_MD already_RB freely_RB communicate_VBP
+integrity_NN breaches_NNS ._.
+Fundamentally_RB ,_, web_NN tripwires_NNS focus_VBP on_IN detection_NN ,_, while_IN HTTPi_NN focuses_VBZ on_IN both_CC detection_NN and_CC prevention_NN ._.
+Other_JJ research_NN has_VBZ proposed_VBN cryptographic_JJ schemes_NNS for_IN web_NN content_NN integrity_NN =_JJ -_: =[_NN 8_CD ,_, 17_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN we_PRP share_VBP some_DT commonality_NN with_IN these_DT efforts_NNS in_IN integrity_NN computation_NN ,_, our_PRP$ system_NN differs_VBZ in_IN three_CD significant_JJ ways_NNS ._.
+First_RB ,_, our_PRP$ design_NN is_VBZ more_RBR robust_JJ against_IN attacks_NNS like_IN stripping_VBG and_CC content_NN
+ude_NN caching_NN ,_, and_CC only_RB show_VBP the_DT first_JJ of_IN potentially_RB many_JJ requests_NNS for_IN this_DT page_NN ._.
+Evaluating_VBG performance_NN of_IN a_DT particular_JJ cache_NN is_VBZ not_RB the_DT goal_NN of_IN our_PRP$ experiments_NNS ;_: this_DT has_VBZ been_VBN well_RB studied_VBN previously_RB =_JJ -_: =[_NN 37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP see_VBP that_IN HTTPi_NN incurs_VBZ minimal_JJ overhead_NN over_IN both_DT HTTP_NNP and_CC HTTPS_NNP ,_, and_CC this_DT overhead_NN is_VBZ consistently_RB within_IN 0.7-2_CD .0_CD seconds_NNS over_IN both_DT HTTP_NNP and_CC HTTPS_NNP for_IN different_JJ network_NN bandwidths_NNS ._.
+Since_IN this_DT val_NN
+affects_VBZ whether_IN a_DT forward_JJ network_NN proxy_NN is_VBZ being_VBG used_VBN ._.
+We_PRP used_VBD rich_JJ media_NNS web_NN ads_NNS as_IN a_DT delivery_NN mechanism_NN for_IN our_PRP$ measurement_NN code_NN ,_, using_VBG the_DT same_JJ ad_NN network_NN and_CC technique_NN previously_RB demonstrated_VBN in_IN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP spent_VBD $_$ 80_CD to_TO purchase_VB 115,031_CD impressions_NNS spread_VBN across_IN 194_CD countries_NNS ._.
+Our_PRP$ advertisement_NN detected_VBD forward_JJ proxies_NNS using_VBG XMLHttpRequest_NN to_TO bypass_VB the_DT browser_NN cache_NN and_CC store_NN content_NN in_IN the_DT network_NN
+insecure_JJ HTTP_NN request_NN and_CC remove_VB redirects_NNS to_TO secure_VB content_NN ._.
+Although_IN it_PRP is_VBZ possible_JJ to_TO notice_VB stripping_VBG attacks_NNS by_IN manually_RB checking_VBG browser_NN security_NN indicators_NNS ,_, users_NNS often_RB ignore_VBP these_DT indicators_NNS =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT HTTP_NN Strict_JJ Transport_NNP Security_NNP protocol_NN -LRB-_-LRB- HSTS_NN -RRB-_-RRB- prevents_VBZ these_DT attacks_NNS by_IN allowing_VBG web_NN sites_NNS to_TO specify_VB a_DT minimum_JJ level_NN of_IN security_NN expected_VBN for_IN connections_NNS to_TO a_DT given_VBN server_NN ._.
+The_DT policy_NN can_MD be_VB d_NN
+practical_JJ design_NN for_IN today_NN 's_POS web_NN by_IN addressing_VBG the_DT previously-unidentified_JJ challenges_NNS of_IN progressive_JJ content_NN loading_VBG ,_, mixed_JJ content_NN handling_NN ,_, and_CC access_NN control_NN across_IN HTTP\/HTTPi\/HTTPS_NN ._.
+Web_NN tripwires_VBZ =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: verify_VB the_DT integrity_NN of_IN a_DT page_NN by_IN matching_VBG it_PRP against_IN a_DT known_JJ good_JJ representation_NN -LRB-_-LRB- either_CC a_DT checksum_NN or_CC an_DT encoded_VBN copy_NN of_IN the_DT page_NN 's_POS HTML_NNP -RRB-_-RRB- ,_, using_VBG client-side_JJ JavaScript_NNP to_TO detect_VB in-flight_JJ modificat_NN
+t_NN can_MD not_RB take_VB advantage_NN of_IN these_DT proxies_NNS at_IN all_DT today_NN ._.
+We_PRP observe_VBP that_IN much_JJ of_IN the_DT web_NN is_VBZ cacheable_JJ -LRB-_-LRB- Section_NN 7.1_CD -RRB-_-RRB- ,_, and_CC we_PRP expect_VBP significant_JJ growth_NN in_IN cacheable_JJ web_NN content_NN as_IN rich_JJ media_NNS proliferates_VBZ =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO achieve_VB an_DT end-to-end_JJ secure_JJ web_NN ,_, HTTPS_NN is_VBZ definitely_RB not_RB the_DT complete_JJ answer_NN ._.
+Fortunately_RB ,_, end-to-end_JJ security_NN ,_, cacheability_NN ,_, and_CC performance_NN are_VBP not_RB at_IN conflict_NN inherently_RB ._.
+End-to-end_JJ security_NN
+read_VB up_RP -RRB-_-RRB- Biba_NNP Model_NNP -LRB-_-LRB- no_DT read_NN down_RB ,_, no_DT write_VB up_RP -RRB-_-RRB- Figure_NNP 2_CD :_: Interactions_NNS in_IN Mixed_NNP Content_NNP Rendering_NNP ._.
+dered_VBN data_NNS ._.
+Our_PRP$ default_NN communication_NN policies_NNS are_VBP inspired_VBN by_IN the_DT combination_NN of_IN the_DT Bell_NNP LaPadula_NNP =_SYM -_: =[_NN 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Biba_NNP -LRB-_-LRB- 11_CD -RRB-_-RRB- models_NNS ._.
+It_PRP is_VBZ important_JJ to_TO note_VB that_DT our_PRP$ goal_NN is_VBZ not_RB to_TO enforce_VB information_NN flow_NN invariants_NNS often_RB associated_VBN with_IN those_DT models_NNS -LRB-_-LRB- e.g._FW ,_, frames_NNS of_IN any_DT origin_NN can_MD already_RB freely_RB communicate_VBP
+del_DT -LRB-_-LRB- no_DT read_NN down_RB ,_, no_DT write_VB up_RP -RRB-_-RRB- Figure_NNP 2_CD :_: Interactions_NNS in_IN Mixed_NNP Content_NNP Rendering_NNP ._.
+dered_VBN data_NNS ._.
+Our_PRP$ default_NN communication_NN policies_NNS are_VBP inspired_VBN by_IN the_DT combination_NN of_IN the_DT Bell_NNP LaPadula_NNP -LRB-_-LRB- 9_CD ,_, 10_CD -RRB-_-RRB- and_CC Biba_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: models_NNS ._.
+It_PRP is_VBZ important_JJ to_TO note_VB that_DT our_PRP$ goal_NN is_VBZ not_RB to_TO enforce_VB information_NN flow_NN invariants_NNS often_RB associated_VBN with_IN those_DT models_NNS -LRB-_-LRB- e.g._FW ,_, frames_NNS of_IN any_DT origin_NN can_MD already_RB freely_RB communicate_VBP via_IN postMessa_NN
+36_CD -RRB-_-RRB- ._.
+Therefore_RB ,_, content_NN from_IN the_DT same_JJ domain_NN and_CC port_NN number_NN but_CC with_IN different_JJ protocols_NNS is_VBZ rendered_VBN as_IN separate_JJ principals_NNS ,_, which_WDT can_MD only_RB communicate_VB explicitly_RB through_IN messages_NNS -LRB-_-LRB- i.e._FW ,_, postMessage_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+In_IN this_DT section_NN ,_, we_PRP consider_VBP the_DT default_NN interaction_NN and_CC access_NN control_NN model_NN for_IN HTTPS_NNP ,_, HTTPi_NNP ,_, and_CC HTTP_NN content_NN served_VBD from_IN the_DT same_JJ domain_NN and_CC port_NN ._.
+For_IN example_NN ,_, a_DT top-level_JJ HTTPi_NN page_NN may_MD embed_VB
+beyond_IN algorithmic_JJ design_NN and_CC also_RB offer_VBP a_DT full_JJ practical_JJ implementation_NN and_CC evaluation_NN of_IN HTTPi_NNS for_IN a_DT real-world_JJ browser_NN ,_, while_IN earlier_JJR research_NN lacks_VBZ any_DT implementation_NN details_NNS ._.
+Stubblefield_NNP et_FW al._FW =_SYM -_: =[_NN 34_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBN mechanisms_NNS to_TO improve_VB SSL_NNP 's_POS performance_NN ._.
+While_IN their_PRP$ WISPr_NN system_NN shares_VBZ HTTPi_NN 's_POS motivation_NN of_IN supporting_VBG in-network_JJ caching_NN while_IN preserving_VBG integrity_NN ,_, it_PRP is_VBZ designed_VBN for_IN another_DT content_NN de_IN

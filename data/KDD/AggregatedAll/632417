@@ -1,0 +1,78 @@
+Robust_JJ boosting_VBG and_CC its_PRP$ relation_NN to_TO bagging_VBG
+Several_JJ authors_NNS have_VBP suggested_VBN viewing_VBG boosting_VBG as_IN a_DT gradient_NN descent_NN search_NN for_IN a_DT good_JJ fit_NN in_IN function_NN space_NN ._.
+At_IN each_DT iteration_NN observations_NNS are_VBP re-weighted_VBN using_VBG the_DT gradient_NN of_IN the_DT underlying_JJ loss_NN function_NN ._.
+We_PRP present_VBP an_DT approach_NN of_IN weight_NN decay_NN for_IN observation_NN weights_NNS which_WDT is_VBZ equivalent_JJ to_TO ``_`` robustifying_VBG ''_'' the_DT underlying_JJ loss_NN function_NN ._.
+At_IN the_DT extreme_JJ end_NN of_IN decay_NN this_DT approach_NN converges_VBZ to_TO Bagging_NNP ,_, which_WDT can_MD be_VB viewed_VBN as_IN boosting_VBG with_IN a_DT linear_JJ underlying_JJ loss_NN function_NN ._.
+We_PRP illustrate_VBP the_DT practical_JJ usefulness_NN of_IN weight_NN decay_NN for_IN improving_VBG prediction_NN performance_NN and_CC present_VB an_DT equivalence_JJ between_IN one_CD form_NN of_IN weight_NN decay_NN and_CC ``_`` Huberizing_NNP ''_'' --_: a_DT statistical_JJ method_NN for_IN making_VBG loss_NN functions_NNS more_RBR robust_JJ ._.
+in_IN which_WDT it_PRP may_MD be_VB beneficial_JJ ._.
+We_PRP use_VBP three_CD datasets_NNS :_: the_DT ``_`` Spam_NNP ''_'' and_CC ``_`` Waveform_NNP ''_'' datasets_NNS ,_, available_JJ from_IN the_DT UCI_NN repository_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ;_: and_CC the_DT ``_`` Digits_NNP ''_'' handwritten_JJ digits_NNS recognition_NN dataset_NN ,_, discussed_VBN in_IN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT were_VBD chosen_VBN since_IN they_PRP are_VBP reasonably_RB large_JJ and_CC represent_VBP very_RB different_JJ problem_NN domains_NNS ._.
+Since_IN we_PRP have_VBP limited_VBN the_DT discussion_NN here_RB to_TO 2-class_JJ models_NNS ,_, we_PRP selected_VBD only_RB two_CD classes_NNS from_IN the_DT mul_NN
+ificantly_RB better_RBR ._.
+Much_RB has_VBZ been_VBN written_VBN about_IN the_DT empirical_JJ success_NN of_IN these_DT approaches_NNS in_IN creating_VBG prediction_NN models_NNS in_IN actual_JJ modeling_NN tasks_NNS -LRB-_-LRB- 4_CD ,_, 1_CD -RRB-_-RRB- ._.
+The_DT theoretical_JJ discussions_NNS of_IN these_DT algorithms_NNS =_JJ -_: =[_NN 4_CD ,_, 11_CD ,_, 12_CD ,_, 5_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP viewed_VBN them_PRP from_IN various_JJ perspectives_NNS ._.
+The_DT general_JJ theoretical_JJ and_CC practical_JJ consensus_NN ,_, however_RB ,_, is_VBZ that_IN the_DT weak_JJ learners_NNS for_IN boosting_VBG should_MD be_VB really_RB weak_JJ ,_, while_IN the_DT ``_`` weak_JJ learners_NNS ''_'' for_IN baggi_NNS
+xed_VBD the_DT step_NN size_NN to_TO ɛ_NN at_IN each_DT iteration_NN -LRB-_-LRB- step_NN 2_CD -LRB-_-LRB- e_LS -RRB-_-RRB- -RRB-_-RRB- ._.
+While_IN AdaBoost_NNP uses_VBZ a_DT line_NN search_NN to_TO determine_VB step_NN size_NN ,_, it_PRP can_MD be_VB argued_VBN that_IN a_DT fixed_JJ -LRB-_-LRB- usually_RB ``_`` small_JJ ''_'' -RRB-_-RRB- ɛ_NN step_NN is_VBZ theoretically_RB preferable_JJ -LRB-_-LRB- see_VB =_JJ -_: =[_NN 10_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: for_IN details_NNS -RRB-_-RRB- ._.
+3_LS ._.
+An_DT important_JJ issue_NN in_IN designing_VBG boosting_VBG algorithms_NNS is_VBZ the_DT selection_NN of_IN the_DT loss_NN function_NN C_NN -LRB-_-LRB- ·_NN ,_, ·_NN -RRB-_-RRB- ._.
+Extreme_JJ loss_NN functions_NNS ,_, such_JJ as_IN the_DT exponential_JJ loss_NN of_IN AdaBoost_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, are_VBP not_RB robus_NN
+or_CC improving_VBG prediction_NN performance_NN and_CC present_VB an_DT equivalence_JJ between_IN one_CD form_NN of_IN weight_NN decay_NN and_CC ``_`` Huberizing_NNP ''_'' --_: a_DT statistical_JJ method_NN for_IN making_VBG loss_NN functions_NNS more_RBR robust_JJ ._.
+1_CD ._.
+INTRODUCTION_NN Boosting_VBG =_JJ -_: =[_NN 9_CD ,_, 8_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Bagging_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- are_VBP two_CD approaches_NNS to_TO combining_VBG ``_`` weak_JJ ''_'' models_NNS in_IN order_NN to_TO build_VB prediction_NN models_NNS that_WDT are_VBP significantly_RB better_RBR ._.
+Much_RB has_VBZ been_VBN written_VBN about_IN the_DT empirical_JJ success_NN of_IN these_DT approaches_NNS
+mon_NN application_NN for_IN both_DT boosting_VBG and_CC bagging_VBG ,_, but_CC the_DT results_NNS mostly_RB carry_VBP through_IN to_TO other_JJ learning_NN domains_NNS where_WRB boosting_VBG and_CC bagging_VBG have_VBP been_VBN used_VBN ,_, such_JJ as_IN multi-class_JJ classification_NN ,_, regression_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: and_CC density_NN estimation_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+2_CD ._.
+BOOSTING_NNP ,_, BAGGING_NNP AND_NNP A_NNP CONNECTION_NNP A_NNP view_NN has_VBZ emerged_VBN in_IN the_DT last_JJ few_JJ years_NNS of_IN boosting_VBG as_IN a_DT gradient-based_JJ search_NN for_IN a_DT good_JJ model_NN in_IN a_DT large_JJ implicit_JJ feature_NN space_NN -LRB-_-LRB-
+ificantly_RB better_RBR ._.
+Much_RB has_VBZ been_VBN written_VBN about_IN the_DT empirical_JJ success_NN of_IN these_DT approaches_NNS in_IN creating_VBG prediction_NN models_NNS in_IN actual_JJ modeling_NN tasks_NNS -LRB-_-LRB- 4_CD ,_, 1_CD -RRB-_-RRB- ._.
+The_DT theoretical_JJ discussions_NNS of_IN these_DT algorithms_NNS =_JJ -_: =[_NN 4_CD ,_, 11_CD ,_, 12_CD ,_, 5_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP viewed_VBN them_PRP from_IN various_JJ perspectives_NNS ._.
+The_DT general_JJ theoretical_JJ and_CC practical_JJ consensus_NN ,_, however_RB ,_, is_VBZ that_IN the_DT weak_JJ learners_NNS for_IN boosting_VBG should_MD be_VB really_RB weak_JJ ,_, while_IN the_DT ``_`` weak_JJ learners_NNS ''_'' for_IN baggi_NNS
+seek_VB to_TO find_VB a_DT weak_JJ i_LS -RRB-_-RRB- learner_NN which_WDT minimizes_VBZ weighted_JJ error_NN rate_NN ,_, with_IN the_DT weights_NNS being_VBG the_DT gradient_NN of_IN the_DT loss_NN ._.
+If_IN we_PRP use_VBP the_DT exponential_JJ loss_NN :_: C_NN -LRB-_-LRB- y_NN ,_, f_LS -RRB-_-RRB- =_JJ exp_NN -LRB-_-LRB- −_CD yf_NN -RRB-_-RRB- -LRB-_-LRB- 2_LS -RRB-_-RRB- then_RB it_PRP can_MD be_VB shown_VBN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =--RRB-_NN that_WDT -LRB-_-LRB- 1_LS -RRB-_-RRB- is_VBZ the_DT exact_JJ classification_NN task_NN which_WDT AdaBoost_NNP -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, the_DT original_JJ and_CC most_RBS famous_JJ boosting_VBG algorithm_NN ,_, solves_VBZ for_IN finding_VBG the_DT next_JJ weak_JJ learner_NN ._.
+In_IN their_PRP$ original_JJ AdaBoost_NNP implementation_NN -LRB-_-LRB- 8_CD -RRB-_-RRB-
+ificantly_RB better_RBR ._.
+Much_RB has_VBZ been_VBN written_VBN about_IN the_DT empirical_JJ success_NN of_IN these_DT approaches_NNS in_IN creating_VBG prediction_NN models_NNS in_IN actual_JJ modeling_NN tasks_NNS -LRB-_-LRB- 4_CD ,_, 1_CD -RRB-_-RRB- ._.
+The_DT theoretical_JJ discussions_NNS of_IN these_DT algorithms_NNS =_JJ -_: =[_NN 4_CD ,_, 11_CD ,_, 12_CD ,_, 5_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP viewed_VBN them_PRP from_IN various_JJ perspectives_NNS ._.
+The_DT general_JJ theoretical_JJ and_CC practical_JJ consensus_NN ,_, however_RB ,_, is_VBZ that_IN the_DT weak_JJ learners_NNS for_IN boosting_VBG should_MD be_VB really_RB weak_JJ ,_, while_IN the_DT ``_`` weak_JJ learners_NNS ''_'' for_IN baggi_NNS
+sting_NN and_CC bagging_NN ,_, but_CC the_DT results_NNS mostly_RB carry_VBP through_IN to_TO other_JJ learning_NN domains_NNS where_WRB boosting_VBG and_CC bagging_VBG have_VBP been_VBN used_VBN ,_, such_JJ as_IN multi-class_JJ classification_NN ,_, regression_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC density_NN estimation_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+2_CD ._.
+BOOSTING_NNP ,_, BAGGING_NNP AND_NNP A_NNP CONNECTION_NNP A_NNP view_NN has_VBZ emerged_VBN in_IN the_DT last_JJ few_JJ years_NNS of_IN boosting_VBG as_IN a_DT gradient-based_JJ search_NN for_IN a_DT good_JJ model_NN in_IN a_DT large_JJ implicit_JJ feature_NN space_NN -LRB-_-LRB- 16_CD ,_, 10_CD -RRB-_-RRB- ._.
+More_RBR specifically_RB ,_,
+s_NN ,_, weighted_JJ error_NN rate_NN of_IN the_DT weak_JJ learners_NNS of_IN at_IN most_JJS 1\/2_CD −_FW λ_FW for_IN each_DT iteration_NN --_: then_RB the_DT training_NN margins_NNS will_MD increase_VB ,_, and_CC generalization_NN error_NN will_MD go_VB to_TO 0_CD for_IN large_JJ enough_JJ training_NN samples_NNS -LRB-_-LRB- see_VB =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: for_IN more_JJR details_NNS -RRB-_-RRB- ._.
+Duffy_NN and_CC Helmbold_NN -LRB-_-LRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, Theorems_NNPS 24_CD -RRB-_-RRB- give_VBP sufficient_JJ conditions_NNS for_IN this_DT property_NN to_TO hold_VB ,_, which_WDT apply_VBP to_TO the_DT exponential_JJ and_CC logistic_JJ loss_NN functions_NNS ._.
+These_DT conditions_NNS include_VBP str_NN
+ificantly_RB better_RBR ._.
+Much_RB has_VBZ been_VBN written_VBN about_IN the_DT empirical_JJ success_NN of_IN these_DT approaches_NNS in_IN creating_VBG prediction_NN models_NNS in_IN actual_JJ modeling_NN tasks_NNS -LRB-_-LRB- 4_CD ,_, 1_CD -RRB-_-RRB- ._.
+The_DT theoretical_JJ discussions_NNS of_IN these_DT algorithms_NNS =_JJ -_: =[_NN 4_CD ,_, 11_CD ,_, 12_CD ,_, 5_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP viewed_VBN them_PRP from_IN various_JJ perspectives_NNS ._.
+The_DT general_JJ theoretical_JJ and_CC practical_JJ consensus_NN ,_, however_RB ,_, is_VBZ that_IN the_DT weak_JJ learners_NNS for_IN boosting_VBG should_MD be_VB really_RB weak_JJ ,_, while_IN the_DT ``_`` weak_JJ learners_NNS ''_'' for_IN baggi_NNS
+models_NNS in_IN order_NN to_TO build_VB prediction_NN models_NNS that_WDT are_VBP significantly_RB better_RBR ._.
+Much_RB has_VBZ been_VBN written_VBN about_IN the_DT empirical_JJ success_NN of_IN these_DT approaches_NNS in_IN creating_VBG prediction_NN models_NNS in_IN actual_JJ modeling_NN tasks_NNS =_JJ -_: =[_NN 4_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT theoretical_JJ discussions_NNS of_IN these_DT algorithms_NNS -LRB-_-LRB- 4_CD ,_, 11_CD ,_, 12_CD ,_, 5_CD ,_, 16_CD -RRB-_-RRB- have_VBP viewed_VBN them_PRP from_IN various_JJ perspectives_NNS ._.
+The_DT general_JJ theoretical_JJ and_CC practical_JJ consensus_NN ,_, however_RB ,_, is_VBZ that_IN the_DT weak_JJ learners_NNS fo_NN
+of_IN at_IN most_JJS 1\/2_CD −_FW λ_FW for_IN each_DT iteration_NN --_: then_RB the_DT training_NN margins_NNS will_MD increase_VB ,_, and_CC generalization_NN error_NN will_MD go_VB to_TO 0_CD for_IN large_JJ enough_JJ training_NN samples_NNS -LRB-_-LRB- see_VB -LRB-_-LRB- 20_CD -RRB-_-RRB- for_IN more_JJR details_NNS -RRB-_-RRB- ._.
+Duffy_NN and_CC Helmbold_JJ -LRB-_-LRB- =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Theorems_NNP 24_CD -RRB-_-RRB- give_VBP sufficient_JJ conditions_NNS for_IN this_DT property_NN to_TO hold_VB ,_, which_WDT apply_VBP to_TO the_DT exponential_JJ and_CC logistic_JJ loss_NN functions_NNS ._.
+These_DT conditions_NNS include_VBP strict_JJ convexity_NN ,_, and_CC so_RB do_VBP not_RB directly_RB apply_VB
+or_CC improving_VBG prediction_NN performance_NN and_CC present_VB an_DT equivalence_JJ between_IN one_CD form_NN of_IN weight_NN decay_NN and_CC ``_`` Huberizing_NNP ''_'' --_: a_DT statistical_JJ method_NN for_IN making_VBG loss_NN functions_NNS more_RBR robust_JJ ._.
+1_CD ._.
+INTRODUCTION_NN Boosting_VBG =_JJ -_: =[_NN 9_CD ,_, 8_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Bagging_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- are_VBP two_CD approaches_NNS to_TO combining_VBG ``_`` weak_JJ ''_'' models_NNS in_IN order_NN to_TO build_VB prediction_NN models_NNS that_WDT are_VBP significantly_RB better_RBR ._.
+Much_RB has_VBZ been_VBN written_VBN about_IN the_DT empirical_JJ success_NN of_IN these_DT approaches_NNS
+tion_NN performance_NN and_CC present_VB an_DT equivalence_JJ between_IN one_CD form_NN of_IN weight_NN decay_NN and_CC ``_`` Huberizing_NNP ''_'' --_: a_DT statistical_JJ method_NN for_IN making_VBG loss_NN functions_NNS more_RBR robust_JJ ._.
+1_CD ._.
+INTRODUCTION_NNP Boosting_NNP -LRB-_-LRB- 9_CD ,_, 8_CD -RRB-_-RRB- and_CC Bagging_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP two_CD approaches_NNS to_TO combining_VBG ``_`` weak_JJ ''_'' models_NNS in_IN order_NN to_TO build_VB prediction_NN models_NNS that_WDT are_VBP significantly_RB better_RBR ._.
+Much_RB has_VBZ been_VBN written_VBN about_IN the_DT empirical_JJ success_NN of_IN these_DT approaches_NNS in_IN creating_VBG pred_JJ
+n_NN become_VB more_RBR or_CC less_RBR robust_JJ if_IN there_EX are_VBP problematic_JJ data_NNS points_NNS ?_.
+In_IN this_DT context_NN ,_, it_PRP is_VBZ interesting_JJ to_TO note_VB some_DT previous_JJ work_NN on_IN bounding_VBG the_DT boosting_VBG weights_NNS to_TO achieve_VB more_RBR robust_JJ performance_NN by_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT main_JJ difference_NN from_IN our_PRP$ approach_NN is_VBZ that_IN they_PRP operate_VBP on_IN the_DT re-normalized_JJ AdaBoost_NNP weights_NNS ._.
+Their_PRP$ approach_NN thus_RB lacks_VBZ the_DT gradient_NN descent_NN interpretation_NN in_IN a_DT new_JJ loss_NN ,_, since_IN AdaBoost_NNP 's_POS re-nor_NN
+me_PRP experiments_NNS to_TO examine_VB the_DT usefulness_NN of_IN weight_NN decay_NN and_CC the_DT situations_NNS in_IN which_WDT it_PRP may_MD be_VB beneficial_JJ ._.
+We_PRP use_VBP three_CD datasets_NNS :_: the_DT ``_`` Spam_NNP ''_'' and_CC ``_`` Waveform_NNP ''_'' datasets_NNS ,_, available_JJ from_IN the_DT UCI_NNP repository_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ;_: and_CC the_DT ``_`` Digits_NNP ''_'' handwritten_JJ digits_NNS recognition_NN dataset_NN ,_, discussed_VBN in_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+These_DT were_VBD chosen_VBN since_IN they_PRP are_VBP reasonably_RB large_JJ and_CC represent_VBP very_RB different_JJ problem_NN domains_NNS ._.
+Since_IN we_PRP have_VBP limited_VBN the_DT
+models_NNS in_IN order_NN to_TO build_VB prediction_NN models_NNS that_WDT are_VBP significantly_RB better_RBR ._.
+Much_RB has_VBZ been_VBN written_VBN about_IN the_DT empirical_JJ success_NN of_IN these_DT approaches_NNS in_IN creating_VBG prediction_NN models_NNS in_IN actual_JJ modeling_NN tasks_NNS =_JJ -_: =[_NN 4_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT theoretical_JJ discussions_NNS of_IN these_DT algorithms_NNS -LRB-_-LRB- 4_CD ,_, 11_CD ,_, 12_CD ,_, 5_CD ,_, 16_CD -RRB-_-RRB- have_VBP viewed_VBN them_PRP from_IN various_JJ perspectives_NNS ._.
+The_DT general_JJ theoretical_JJ and_CC practical_JJ consensus_NN ,_, however_RB ,_, is_VBZ that_IN the_DT weak_JJ learners_NNS fo_NN
+oss_RB ,_, bounding_VBG w_NN means_VBZ that_IN we_PRP are_VBP ``_`` huberizing_VBG ''_'' the_DT loss_NN function_NN ,_, i.e._FW ,_, continuing_VBG it_PRP linearly_RB beyond_IN some_DT point_NN -LRB-_-LRB- this_DT operation_NN was_VBD suggested_VBN ,_, in_IN the_DT context_NN of_IN squared_VBN error_NN loss_NN for_IN regression_NN ,_, by_IN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+The_DT loss_NN function_NN corresponding_VBG to_TO the_DT decayed_JJ weights_NNS is_VBZ thus_RB :_: C_NN -LRB-_-LRB- p_NN -RRB-_-RRB- -LRB-_-LRB- m_NN -RRB-_-RRB- =_JJ C_NN -LRB-_-LRB- m_NN -RRB-_-RRB- p_NN C_NN -LRB-_-LRB- m_NN ∗_NN -LRB-_-LRB- p_NN -RRB-_-RRB- -RRB-_-RRB- p_NN −_NN m_NN −_CD m_NN ∗_NN -LRB-_-LRB- p_NN -RRB-_-RRB- 1_CD −_CD p_NN m_NN -RRB-_-RRB- m_NN ∗_NN -LRB-_-LRB- p_NN -RRB-_-RRB- otherwise_RB -LRB-_-LRB- unique_JJ because_IN the_DT loss_NN is_VBZ convex_NN and_CC monotone_NN decreasing_VBG -RRB-_-RRB- ._.
+w_NN

@@ -1,0 +1,124 @@
+Fast_JJ and_CC parallel_JJ webpage_NN layout_NN
+The_DT web_NN browser_NN is_VBZ a_DT CPU-intensive_JJ program_NN ._.
+Especially_RB on_IN mobile_JJ devices_NNS ,_, webpages_NNS load_VBP too_RB slowly_RB ,_, expending_VBG significant_JJ time_NN in_IN processing_VBG a_DT document_NN 's_POS appearance_NN ._.
+Due_JJ to_TO power_NN constraints_NNS ,_, most_RBS hardware-driven_JJ speedups_NNS will_MD come_VB in_IN the_DT form_NN of_IN parallel_JJ architectures_NNS ._.
+This_DT is_VBZ also_RB true_JJ of_IN mobile_JJ devices_NNS such_JJ as_IN phones_NNS and_CC e-books_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP introduce_VBP new_JJ algorithms_NNS for_IN CSS_NN selector_NN matching_NN ,_, layout_NN solving_VBG ,_, and_CC font_NN rendering_NN ,_, which_WDT represent_VBP key_JJ components_NNS for_IN a_DT fast_JJ layout_NN engine_NN ._.
+Evaluation_NN on_IN popular_JJ sites_NNS shows_VBZ speedups_NNS as_RB high_JJ as_IN 80x_NN ._.
+We_PRP also_RB formulate_VBP the_DT layout_NN problem_NN with_IN attribute_NN grammars_NNS ,_, enabling_VBG us_PRP to_TO not_RB only_RB parallelize_VB our_PRP$ algorithm_NN but_CC prove_VBP that_IN it_PRP computes_VBZ in_IN O_NN -LRB-_-LRB- log_NN -RRB-_-RRB- time_NN and_CC without_IN reflow_NN ._.
+hysical_JJ resource_NN control_NN also_RB stems_VBZ from_IN the_DT design_NN of_IN our_PRP$ parallel_JJ web_NN browser_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- as_RB much_JJ of_IN the_DT time_NN in_IN browsers_NNS is_VBZ spent_VBN in_IN native_JJ libraries_NNS like_IN CSS_NN selector_NN matching_NN ._.
+Tuned_VBN algorithm_NN approaches_VBZ =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, reminiscent_JJ of_IN typical_JJ HPC_NN techniques_NNS like_IN tiling_NN ,_, give_VB magnitudes_NNS of_IN improvements_NNS ,_, so_RB having_VBG better_JJR control_NN would_MD yield_VB to_TO better_JJR speedups_NNS ._.
+Finally_RB ,_, effective_JJ QOS_NNP management_NN is_VBZ not_RB possible_JJ without_IN
+the_DT higher_JJR level_NN syntactic_JJ layer_NN of_IN JavaScript_NNP ,_, with_IN a_DT nod_NN to_TO applications_NNS of_IN their_PRP$ results_NNS to_TO type_NN systems_NNS ._.
+Meyerovich_NNP and_CC Bodík_NNP find_VBP that_IN at_IN least_JJS 40_CD %_NN of_IN Safari_NNP 's_POS time_NN is_VBZ spent_VBN in_IN page_NN layout_NN tasks_NNS =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP also_RB break_VBP down_RP the_DT length_NN of_IN time_NN for_IN several_JJ websites_NNS spent_VBN on_IN various_JJ tasks_NNS during_IN page_NN loads_NNS ,_, of_IN which_WDT JavaScript_NNP is_VBZ a_DT relatively_RB small_JJ component_NN -LRB-_-LRB- 15_CD %_NN -20_CD %_NN of_IN page_NN load_NN time_NN -RRB-_-RRB- ._.
+Given_VBN these_DT re_NN
+prevents_VBZ modules_NNS from_IN breaking_VBG abstractions_NNS and_CC makes_VBZ swapping_VBG implementations_NNS simple_JJ ._.
+Parsers_NNS could_MD be_VB replaced_VBN with_IN parallel_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- or_CC speculative_JJ 4_CD versions_NNS ;_: layout_NN might_MD be_VB replaced_VBN with_IN a_DT parallel_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: or_CC incrementalizing_VBG version_NN ,_, and_CC so_RB on_RB ._.
+The_DT default_NN module_NN implementations_NNS are_VBP intended_VBN as_IN straightforward_JJ ,_, unoptimized_JJ reference_NN implementations_NNS ._.
+This_DT permits_VBZ easy_JJ permodule_JJ evaluations_NNS of_IN alternate_NN
+he_PRP computation_NN of_IN the_DT browser_NN ._.
+The_DT network_NN improvement_NN is_VBZ discussed_VBN separately_RB and_CC is_VBZ not_RB clearly_RB included_VBN in_IN the_DT breakdown_NN ._.
+Using_VBG call_NN stack_VBP sampling_NN for_IN performance_NN characterization_NN ,_, the_DT authors_NNS of_IN =_JJ -_: =[_NN 3_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: threw_VBD out_RP the_DT network_NN time_NN in_IN their_PRP$ analysis_NN since_IN their_PRP$ profiling_NN method_NN can_MD not_RB capture_VB the_DT time_NN spent_VBD idling_VBG ._.
+None_NN of_IN their_PRP$ methods_NNS capture_VBP the_DT cost_NN of_IN resource_NN loading_NN or_CC consider_VB the_DT concurrency_NN
+ly_RB optimize_VB typical_JJ pages_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC rewrite_VB them_PRP in_IN low-level_JJ platforms_NNS for_IN mobile_JJ devices_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+As_IN we_PRP have_VBP previously_RB noted_VBN ,_, browsers_NNS are_VBP increasingly_RB CPU-bound_JJ -LRB-_-LRB- 8_CD ,_, 15_CD -RRB-_-RRB- ._.
+Benchmarks_NNS of_IN Internet_NNP Explorer_NNP =_SYM -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Safari_NNP reveal_VBP 40-70_CD %_NN of_IN the_DT average_JJ processing_NN time_NN is_VBZ spent_VBN on_IN visual_JJ layout_NN ,_, so_IN we_PRP present_VBP our_PRP$ new_JJ components_NNS for_IN layout_NN ._.
+Crucial_JJ to_TO exploiting_VBG modern_JJ and_CC coming_JJ hardware_NN ,_, our_PRP$ algorithms_NNS featur_VBP
+ld_RB be_VB at_IN least_JJS a_DT magnitude_NN faster_RBR ._.
+Current_JJ browser_NN performance_NN is_VBZ insufficient_JJ ,_, so_IN companies_NNS like_IN Google_NNP manually_RB optimize_VBP typical_JJ pages_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC rewrite_VB them_PRP in_IN low-level_JJ platforms_NNS for_IN mobile_JJ devices_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN we_PRP have_VBP previously_RB noted_VBN ,_, browsers_NNS are_VBP increasingly_RB CPU-bound_JJ -LRB-_-LRB- 8_CD ,_, 15_CD -RRB-_-RRB- ._.
+Benchmarks_NNS of_IN Internet_NNP Explorer_NNP -LRB-_-LRB- 16_CD -RRB-_-RRB- and_CC Safari_NNP reveal_VBP 40-70_CD %_NN of_IN the_DT average_JJ processing_NN time_NN is_VBZ spent_VBN on_IN visual_JJ layout_NN ,_, so_IN w_NN
+hing_NN one_CD selector_NN against_IN one_CD node_NN --_: the_DT innermost_JJS loop_NN of_IN algorithm_NN implicitly_RB within_IN function_NN match_NN --_: but_CC do_VBP not_RB show_VB scaling_VBG beyond_IN 2_CD cores_NNS nor_CC significant_JJ gains_NNS on_IN typical_JJ sites_NNS ._.
+Bordawekar_NNP et_NNP al_NNP =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: study_NN matching_VBG XPath_NN expressions_NNS against_IN XML_NN files_NNS ._.
+They_PRP experiment_NN with_IN data_NNS partitioning_VBG -LRB-_-LRB- spreading_VBG the_DT tree_NN across_IN multiple_JJ processors_NNS and_CC concurrently_RB matching_VBG the_DT full_JJ query_NN against_IN the_DT partitio_NN
+oadtime_NN is_VBZ still_RB 9x_NN slower_JJR on_IN the_DT handheld_JJ ,_, suggesting_VBG the_DT network_NN is_VBZ not_RB entirely_RB to_TO blame_VB ._.
+The_DT IE8_NN team_NN ,_, on_IN undisclosed_JJ hardware_NN ,_, found_VBD the_DT top_JJ 30_CD most_RBS popular_JJ sites_NNS use_VBP an_DT average_JJ 1.0_CD s_NN of_IN CPU_NNP time_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: and_CC our_PRP$ above_JJ sample_NN shows_VBZ about_IN 1.6_CD s._NN Consider_VB the_DT 6x_JJ clock_NN frequency_NN slowdown_NN when_WRB switching_VBG from_IN a_DT MacBook_FW Pro_FW to_TO an_DT iPhone_NNP ,_, as_RB well_RB as_IN the_DT overall_JJ simplification_NN in_IN architecture_NN :_: the_DT 9x_NN slowdown_NN
+f_LS time_NN spent_VBN within_IN functionally_RB isolated_VBN and_CC dependent_JJ algorithms_NNS ._.
+Selectors_NNS ._.
+Our_PRP$ rule_NN matching_NN algorithm_NN incorporates_VBZ two_CD sequential_JJ optimizations_NNS from_IN WebKit_NNP ._.
+Inspired_VBN by_IN our_PRP$ work_NN ,_, Haghighat_NNP et_FW al_FW =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: speculatively_RB parallelize_NN matching_VBG one_CD selector_NN against_IN one_CD node_NN --_: the_DT innermost_JJS loop_NN of_IN algorithm_NN implicitly_RB within_IN function_NN match_NN --_: but_CC do_VBP not_RB show_VB scaling_VBG beyond_IN 2_CD cores_NNS nor_CC significant_JJ gains_NNS on_IN t_NN
+se_FW class_NN of_IN mobile_JJ devices_NNS ._.
+Consider_VB the_DT 85,000_CD +_CC applications_NNS specifically_RB written_VBN for_IN Apple_NNP 's_POS iPhone_NNP and_CC iTouch_NNP devices_NNS that_WDT have_VBP been_VBN downloaded_VBN over_IN 2,000,000,000_CD times_NNS by_IN their_PRP$ 50,000,000_CD +_CC owners_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Alarmingly_RB ,_, instead_RB of_IN just_RB refactoring_VBG existing_VBG user_NN interfaces_NNS for_IN the_DT smaller_JJR form_NN factor_NN ,_, sites_NNS like_IN yelp.com_NNP and_CC facebook.com_NNP fully_RB rewrite_VBP their_PRP$ clients_NNS with_IN the_DT low-level_JJ instead_RB of_IN losing_VBG 1_CD -_:
+h_NN Carolina_NNP ,_, USA_NNP ._.
+ACM_NN 978-1-60558-799-8_CD \/_: 10\/04_CD ._.
+Web_NN browsers_NNS should_MD be_VB at_IN least_JJS a_DT magnitude_NN faster_RBR ._.
+Current_JJ browser_NN performance_NN is_VBZ insufficient_JJ ,_, so_IN companies_NNS like_IN Google_NNP manually_RB optimize_VBP typical_JJ pages_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC rewrite_VB them_PRP in_IN low-level_JJ platforms_NNS for_IN mobile_JJ devices_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+As_IN we_PRP have_VBP previously_RB noted_VBN ,_, browsers_NNS are_VBP increasingly_RB CPU-bound_JJ -LRB-_-LRB- 8_CD ,_, 15_CD -RRB-_-RRB- ._.
+Benchmarks_NNS of_IN Internet_NNP Explorer_NNP -LRB-_-LRB- 16_CD -RRB-_-RRB- and_CC Safari_NNP reveal_VBP 40-70_CD %_NN
+ign_NN -LRB-_-LRB- Section_NN 2_CD -RRB-_-RRB- and_CC the_DT roles_NNS of_IN our_PRP$ algorithms_NNS -LRB-_-LRB- Section_NN 3_CD -RRB-_-RRB- ,_, we_PRP separately_RB introduce_VB and_CC evaluate_VB our_PRP$ algorithms_NNS -LRB-_-LRB- Sections_NNS 4_CD ,_, 5_CD ,_, and_CC 6_CD -RRB-_-RRB- ._.
+Due_JJ to_TO space_NN constraints_NNS ,_, we_PRP refer_VBP readers_NNS to_TO our_PRP$ project_NN site_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: for_IN source_NN code_NN ,_, test_NN cases_NNS ,_, benchmarks_NNS ,_, and_CC extended_JJ discussion_NN ._.
+2_CD ._.
+BACKGROUND_NN Originally_RB ,_, web_NN browsers_NNS were_VBD designed_VBN to_TO render_VB hyperlinked_JJ documents_NNS ._.
+Later_RB ,_, JavaScript_NNP was_VBD introduced_VBN to_TO enable_VB scri_NNS
+M_NN 978-1-60558-799-8_CD \/_: 10\/04_CD ._.
+Google_NNP manually_RB optimize_VBP typical_JJ pages_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC rewrite_VB them_PRP in_IN low-level_JJ platforms_NNS for_IN mobile_JJ devices_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+As_IN we_PRP have_VBP previously_RB noted_VBN ,_, browsers_NNS are_VBP increasingly_RB CPU-bound_JJ =_JJ -_: =[_NN 8_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Benchmarks_NNS of_IN Internet_NNP Explorer_NNP -LRB-_-LRB- 16_CD -RRB-_-RRB- and_CC Safari_NNP reveal_VBP 40-70_CD %_NN of_IN the_DT average_JJ processing_NN time_NN is_VBZ spent_VBN on_IN visual_JJ layout_NN ,_, which_WDT motivates_VBZ our_PRP$ new_JJ components_NNS for_IN layout_NN ._.
+Crucial_JJ to_TO exploiting_VBG coming_JJ ha_NN
+s_NN at_IN most_JJS linear_NN in_IN the_DT size_NN of_IN the_DT HTML_NNP tree_NN -LRB-_-LRB- and_CC often_RB solvable_JJ in_IN log_NN time_NN -RRB-_-RRB- ._.
+Currently_RB ,_, browser_NN developers_NNS can_MD not_RB even_RB be_VB sure_JJ that_IN layout_NN solving_VBG terminates_VBZ ._.
+In_IN practice_NN ,_, it_PRP occasionally_RB does_VBZ not_RB =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Due_JJ to_TO space_NN constraints_NNS ,_, we_PRP only_RB detail_NN BSS0_NN ,_, a_DT simple_JJ layout_NN language_NN for_IN vertical_JJ and_CC horizontal_JJ boxes_NNS ._.
+It_PRP is_VBZ simple_JJ enough_RB to_TO be_VB described_VBN with_IN one_CD attribute_NN grammar_NN ,_, but_CC complicated_VBD enough_RB that_IN
+r_NN algorithm_NN with_IN attribute_NN grammars_NNS ._.
+Finally_RB ,_, this_DT approach_NN yields_VBZ the_DT first_JJ proofs_NNS of_IN not_RB only_RB termination_NN but_CC solving_VBG in_IN log_NN time_NN and_CC without_IN reflow_NN ._.
+3_LS ._.
+Font_NN handling_NN ._.
+We_PRP optimize_VBP use_NN of_IN FreeType_NN 2_CD =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT font_JJ library_NN common_JJ to_TO embeded_JJ systems_NNS like_IN the_DT iPhone_NNP ._.
+Our_PRP$ ultimate_JJ goal_NN is_VBZ a_DT fast_JJ 1_CD Watt_NN browser_NN ._.
+After_IN an_DT overview_NN of_IN browser_NN design_NN -LRB-_-LRB- Section_NN 2_CD -RRB-_-RRB- and_CC the_DT roles_NNS of_IN our_PRP$ algorithms_NNS -LRB-_-LRB- Section_NN 3_CD -RRB-_-RRB- ,_, we_PRP
+y_NN optimize_VB typical_JJ pages_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC rewrite_VB them_PRP in_IN low-level_JJ platforms_NNS for_IN mobile_JJ devices_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+As_IN we_PRP have_VBP previously_RB noted_VBN ,_, browsers_NNS are_VBP increasingly_RB CPU-bound_JJ -LRB-_-LRB- 8_CD ,_, 15_CD -RRB-_-RRB- ._.
+Benchmarks_NNS of_IN Internet_NNP Explorer_NNP =_SYM -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Safari_NNP reveal_VBP 40-70_CD %_NN of_IN the_DT average_JJ processing_NN time_NN is_VBZ spent_VBN on_IN visual_JJ layout_NN ,_, which_WDT motivates_VBZ our_PRP$ new_JJ components_NNS for_IN layout_NN ._.
+Crucial_JJ to_TO exploiting_VBG coming_VBG hardware_NN ,_, our_PRP$ algorithms_NNS feature_VBP low_JJ cac_NN
+out_IN specification_NN from_IN implementation_NN by_IN using_VBG attribute_NN grammars_NNS ._.
+We_PRP provide_VBP the_DT first_JJ declarative_JJ specification_NN of_IN core_NN layout_NN features_NNS that_WDT are_VBP not_RB presented_VBN by_IN the_DT closest_JJS previous_JJ approach_NN ,_, CCSS_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Examples_NNS of_IN analytic_JJ benefits_NNS are_VBP our_PRP$ proofs_NNS of_IN layout_NN solving_VBG termination_NN in_IN log_NN time_NN and_CC without_IN performing_VBG any_DT reflows_NNS ._.
+3_LS ._.
+Font_NN handling_NN ._.
+We_PRP optimize_VBP use_NN of_IN FreeType_NN 2_CD -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, a_DT font_JJ library_NN common_JJ
+Script_NN are_VBP used_VBN ._.
+These_DT are_VBP still_RB general_JJ purpose_NN ;_: we_PRP use_VBP an_DT analyzable_JJ domain_NN specific_JJ language_NN ._.
+Constraint-based_JJ layout_NN ._.
+Executable_JJ specifications_NNS of_IN layout_NN is_VBZ an_DT open_JJ problem_NN ._.
+The_DT Cassowary_NNP project_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: proposes_VBZ extending_VBG CSS_NNP with_IN its_PRP$ linear_JJ constraint_NN solver_NN ._.
+Unfortunately_RB ,_, linear_JJ constraints_NNS are_VBP insufficient_JJ for_IN CSS_NNP ._.
+A_DT solution_NN is_VBZ to_TO make_VB a_DT pipeline_NN of_IN linear_JJ and_CC ad-hoc_JJ solvers_NNS -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+These_DT approac_NN
+where_WRB the_DT standard_NN is_VBZ undefined_JJ ,_, or_CC explicitly_RB or_CC possibly_RB by_IN accident_NN ._.
+In_IN contrast_NN ,_, our_PRP$ specification_NN is_VBZ well-defined_JJ ._.
+5.3_CD Parallelization_NNP Attribute_NNP grammars_NNS expose_VBP opportunties_NNS for_IN parallelization_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+First_RB ,_, consider_VB inherited_VBN attributes_NNS ._.
+Data_NN dependencies_NNS flow_VBP down_RP the_DT tree_NN :_: given_VBN the_DT inherited_VBN attributes_NNS of_IN Figure_NNP 8_CD :_: BSS0_NN passes_NNS ,_, constraints_NNS ,_, helpers_NNS ,_, grammar_NN ,_, and_CC types_NNS ._.
+class_NN Node_NN def_NN traverse_NN
+ve_VB to_TO its_PRP$ parent_NN ._.
+The_DT bottom_NN of_IN the_DT figure_NN defines_VBZ the_DT types_NNS of_IN the_DT constraints_NNS and_CC classes_NNS V_NN and_CC H_NN specify_VBP ,_, for_IN vertical_JJ and_CC horizontal_JJ boxes_NNS ,_, the_DT meaning_NN of_IN the_DT constraints_NNS ._.
+In_IN an_DT attribute_NN grammar_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, attributes_VBZ on_IN each_DT node_NN are_VBP solved_VBN during_IN tree_NN traversals_NNS ._.
+An_DT inherited_VBN attribute_NN is_VBZ dependent_JJ upon_IN attributes_NNS of_IN nodes_NNS above_IN it_PRP in_IN the_DT tree_NN ,_, such_JJ as_IN a_DT width_NN being_VBG a_DT percentage_NN of_IN its_PRP$ parent_NN width_NN 's_POS
+where_WRB the_DT standard_NN is_VBZ undefined_JJ ,_, or_CC explicitly_RB or_CC possibly_RB by_IN accident_NN ._.
+In_IN contrast_NN ,_, our_PRP$ specification_NN is_VBZ well-defined_JJ ._.
+5.3_CD Parallelization_NNP Attribute_NNP grammars_NNS expose_VBP opportunties_NNS for_IN parallelization_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+First_RB ,_, consider_VB inherited_VBN attributes_NNS ._.
+Data_NN dependencies_NNS flow_VBP down_RP the_DT tree_NN :_: given_VBN the_DT inherited_VBN attributes_NNS of_IN a_DT parent_NN node_NN ,_, the_DT inherited_VBN attributes_NNS of_IN its_PRP$ children_NNS may_MD be_VB independently_RB computed_VBN ._.
+S_NN
+gly_RB ,_, high-level_JJ languages_NNS like_IN Action-Script_NNP are_VBP used_VBN ,_, but_CC they_PRP are_VBP still_RB general_JJ purpose_NN ones_NNS ._.
+Declarative_JJ layout_NN ._.
+Executable_JJ specification_NN of_IN document_NN layout_NN is_VBZ a_DT difficult_JJ problem_NN ._.
+Heckmann_NNP et_FW al_FW =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: provide_VBP an_DT implementation_NN of_IN LATEX_NN formula_NN layout_NN in_IN SML_NNS ;_: a_DT pure_JJ functional_JJ specification_NN in_IN this_DT style_NN is_VBZ too_RB general_JJ purpose_NN for_IN our_PRP$ needs_NNS ._.
+In_IN constrast_NN ,_, the_DT Cassowary_NNP project_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- shows_VBZ how_WRB to_TO mode_NN
+ssowary_JJ project_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- proposes_VBZ extending_VBG CSS_NNP with_IN its_PRP$ linear_JJ constraint_NN solver_NN ._.
+Unfortunately_RB ,_, linear_JJ constraints_NNS are_VBP insufficient_JJ for_IN CSS_NNP ._.
+A_DT solution_NN is_VBZ to_TO make_VB a_DT pipeline_NN of_IN linear_JJ and_CC ad-hoc_JJ solvers_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT approaches_NNS do_VBP not_RB currently_RB support_VB reasoning_NN about_IN layouts_NNS ,_, do_VBP not_RB have_VB performance_NN on-par_JJ with_IN browsers_NNS ,_, and_CC elide_VB popular_JJ powerful_JJ features_NNS like_IN floats_VBZ ._.
+In_IN contrast_NN ,_, for_IN a_DT difficult_JJ and_CC rep_NN
+least_JJS 40_CD %_NN of_IN the_DT time_NN in_IN Safari_NNP is_VBZ spent_VBN in_IN these_DT tasks_NNS and_CC others_NNS report_VBP 70_CD %_NN of_IN the_DT time_NN in_IN Internet_NNP Explorer_NNP for_IN just_RB a_DT subset_NN of_IN them_PRP -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+We_PRP examine_VBP the_DT following_NN for_IN CSS_NNP -LRB-_-LRB- Cascading_NNP Style_NNP Sheets_NNPS =_SYM -_: =[_NN 5_CD ,_, 11_CD -RRB-_-RRB- -_: =--RRB-_NN layout_NN tasks_NNS :_: 1_CD ._.
+Selector_NNP Matching_NNP ._.
+A_DT rule_NN language_NN is_VBZ used_VBN to_TO associate_VB style_NN constraints_NNS with_IN page_NN elements_NNS ,_, such_JJ as_IN declaring_VBG that_IN pictures_NNS nested_JJ with_IN paragraphs_NNS have_VBP large_JJ margins_NNS ._.
+We_PRP reexamine_VBP
+fficient_JJ ,_, so_IN companies_NNS like_IN Google_NNP manually_RB optimize_VBP typical_JJ pages_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC rewrite_VB them_PRP in_IN low-level_JJ platforms_NNS for_IN mobile_JJ devices_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+As_IN we_PRP have_VBP previously_RB noted_VBN ,_, browsers_NNS are_VBP increasingly_RB CPU-bound_JJ =_JJ -_: =[_NN 8_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Benchmarks_NNS of_IN Internet_NNP Explorer_NNP -LRB-_-LRB- 16_CD -RRB-_-RRB- and_CC Safari_NNP reveal_VBP 40-70_CD %_NN of_IN the_DT average_JJ processing_NN time_NN is_VBZ spent_VBN on_IN visual_JJ layout_NN ,_, so_IN we_PRP present_VBP our_PRP$ new_JJ components_NNS for_IN layout_NN ._.
+Crucial_JJ to_TO exploiting_VBG modern_JJ and_CC

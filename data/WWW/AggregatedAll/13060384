@@ -1,0 +1,77 @@
+Towards_IN liquid_JJ service_NN oriented_JJ architectures_NNS
+The_DT advent_NN of_IN Cloud_NN computing_NN platforms_NNS ,_, and_CC the_DT growing_VBG pervasiveness_NN of_IN Multicore_NN processor_NN architectures_NNS have_VBP revealed_VBN the_DT inadequateness_NN of_IN traditional_JJ programming_NN models_NNS based_VBN on_IN sequential_JJ computations_NNS ,_, opening_VBG up_RP many_JJ challenges_NNS for_IN research_NN on_IN parallel_JJ programming_NN models_NNS for_IN building_NN distributed_VBN ,_, service-oriented_JJ systems_NNS ._.
+More_RBR in_IN detail_NN ,_, the_DT dynamic_JJ nature_NN of_IN Cloud_NN computing_NN and_CC its_PRP$ virtualized_VBN infrastructure_NN pose_VB new_JJ challenges_NNS in_IN term_NN of_IN application_NN design_NN ,_, deployment_NN and_CC dynamic_JJ reconfiguration_NN ._.
+An_DT application_NN developed_VBD to_TO be_VB delivered_VBN as_IN a_DT service_NN in_IN the_DT Cloud_NNP has_VBZ to_TO deal_VB with_IN poorly_RB understood_VBN issues_NNS such_JJ as_IN elasticity_NN ,_, infinite_JJ scalability_NN and_CC portability_NN across_IN heterogeneous_JJ virtualized_JJ environments_NNS ._.
+In_IN this_DT position_NN paper_NN we_PRP define_VBP the_DT problem_NN of_IN providing_VBG a_DT novel_JJ parallel_JJ programming_NN model_NN for_IN building_NN application_NN services_NNS that_WDT can_MD be_VB transparently_RB deployed_VBN on_IN multicore_NN and_CC cloud_NN execution_NN environments_NNS ._.
+To_TO this_DT end_NN ,_, we_PRP introduce_VBP and_CC motivate_VBP a_DT research_NN plan_NN for_IN the_DT definition_NN of_IN a_DT novel_JJ programming_NN framework_NN for_IN Web_NN service-based_JJ applications_NNS ._.
+Our_PRP$ vision_NN called_VBN ``_`` Liquid_NN Architecture_NNP ''_'' is_VBZ based_VBN on_IN a_DT programming_NN model_NN inspired_VBN by_IN core_NN ideas_NNS tied_VBN to_TO the_DT REST_NN architectural_JJ style_NN coupled_VBN with_IN a_DT self-configuring_JJ runtime_NN that_WDT allows_VBZ transparent_JJ deployment_NN of_IN Web_NN services_NNS on_IN a_DT broad_JJ range_NN of_IN heterogeneous_JJ platforms_NNS ,_, from_IN multicores_NNS to_TO clouds_NNS ._.
+following_VBG technologies_NNS to_TO implement_VB our_PRP$ standard_JJ li1_NN http:\/\/code.google.com\/p\/v8\/_NN 2_CD http:\/\/nodejs.org_NN brary_NN :_: memcached_VBN 3_CD as_IN the_DT shared_JJ memory_NN component_NN ,_, and_CC JOpera_NN 4_CD as_IN the_DT service_NN composition_NN engine_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4_LS ._.
+METHODOLOGY_NN The_DT methodology_NN that_WDT will_MD be_VB adopted_VBN for_IN the_DT development_NN of_IN the_DT programming_NN framework_NN is_VBZ based_VBN on_IN three_CD main_JJ milestones_NNS to_TO be_VB reached_VBN in_IN parallel_NN for_IN all_DT of_IN the_DT three_CD key_JJ components_NNS o_NN
+e_LS to_TO correctly_RB use_VB a_DT very_RB large_JJ and_CC potentially_RB heterogeneous_JJ pool_NN of_IN available_JJ execution_NN resources_NNS ._.
+For_IN instance_NN ,_, in_IN the_DT near_JJ future_JJ multicore_NN machines_NNS with_IN more_JJR than_IN 64_CD cores_NNS will_MD become_VB mainstream_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+On_IN such_PDT a_DT computing_NN platform_NN ,_, the_DT correct_JJ usage_NN of_IN each_DT core_NN will_MD became_VBD a_DT relevant_JJ issue_NN not_RB only_RB affecting_VBG the_DT overall_JJ performance_NN of_IN the_DT service_NN ,_, but_CC also_RB impacting_VBG its_PRP$ power_NN consumption_NN ._.
+The_DT sam_NN
+on_IN primitives_NNS ._.
+Belonging_VBG to_TO this_DT area_NN are_VBP well_RB known_VBN models_NNS like_IN the_DT Actor_NN Model_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, the_DT AgentOriented_NNP programming_NN paradigm_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, the_DT Active_JJ Object_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, or_CC the_DT Partitioned_JJ global_JJ address_NN space_NN model_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+All_DT of_IN these_DT concurrency_NN paradigms_NNS offer_VBP interesting_JJ solutions_NNS to_TO the_DT scalability_NN problem_NN ,_, and_CC some_DT of_IN them_PRP have_VBP shown_VBN how_WRB general_JJ concepts_NNS can_MD be_VB efficiently_RB implemented_VBN in_IN real-world_JJ applications_NNS ._.
+uild_JJ parallel_JJ and_CC concurrent_JJ applications_NNS ._.
+Notable_JJ in_IN this_DT area_NN are_VBP some_DT relevant_JJ programming_NN paradigms_NNS from_IN the_DT high_JJ performance_NN computing_NN field_NN ,_, like_IN the_DT Skeletal_JJ model_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC the_DT Flow_NN based_JJ model_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+All_DT of_IN these_DT models_NNS embrace_VBP a_DT simple_JJ but_CC very_RB effective_JJ idea_NN of_IN parallelism_NN :_: if_IN you_PRP have_VBP the_DT need_NN for_IN scalable_JJ applications_NNS ,_, at_IN some_DT points_NNS you_PRP will_MD have_VB the_DT need_NN to_TO isolate_VB and_CC replicate_VB some_DT porti_NNS
+rogramming_VBG languages_NNS ._.
+Out_IN of_IN the_DT realm_NN of_IN parallel_JJ programming_NN ,_, relevant_JJ efforts_NNS have_VBP been_VBN done_VBN through_IN the_DT development_NN of_IN frameworks_NNS and_CC instruments_NNS explicitly_RB designed_VBN for_IN Cloud_NN computing_NN platforms_NNS =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Microsoft_NNP Azure_NNP is_VBZ a_DT relevant_JJ example_NN in_IN this_DT area_NN ._.
+Thanks_NNS to_TO its_PRP$ service_NN oriented_JJ layer_NN ,_, the_DT Azure_NNP platform_NN allows_VBZ to_TO deploy_VB in_IN the_DT cloud_NN complex_NN data-intensive_JJ applications_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, as_RB well_RB as_IN any_DT ki_FW
+ility_NN problem_NN ,_, and_CC some_DT of_IN them_PRP have_VBP shown_VBN how_WRB general_JJ concepts_NNS can_MD be_VB efficiently_RB implemented_VBN in_IN real-world_JJ applications_NNS ._.
+Good_JJ examples_NNS for_IN this_DT class_NN are_VBP the_DT Microsoft_NNP CCR\/DSS_NN framework_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, Scala_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC the_DT X10_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- programming_NN languages_NNS ._.
+Out_IN of_IN the_DT realm_NN of_IN parallel_JJ programming_NN ,_, relevant_JJ efforts_NNS have_VBP been_VBN done_VBN through_IN the_DT development_NN of_IN frameworks_NNS and_CC instruments_NNS explicitly_RB designed_VBN for_IN Cloud_NN c_NN
+ntime_JJ support_NN ._.
+In_IN the_DT meanwhile_NN ,_, we_PRP are_VBP also_RB working_VBG on_IN the_DT development_NN of_IN one_CD of_IN the_DT two_CD key_JJ components_NNS of_IN the_DT shared_JJ memory_NN standard_JJ library_NN :_: the_DT service_NN composition_NN engine_NN ._.
+In_IN our_PRP$ preliminary_JJ work_NN =_JJ -_: =[_NN 3_CD ,_, 4_CD ,_, 20_CD -RRB-_-RRB- -_: =_JJ -_: we_PRP have_VBP explored_VBN and_CC optimized_VBN the_DT performance_NN of_IN a_DT business_NN process_NN execution_NN engine_NN on_IN modern_JJ multicore_JJ machines_NNS ._.
+In_IN particular_JJ ,_, our_PRP$ work_NN has_VBZ been_VBN focused_VBN on_IN scalability_NN optimizations_NNS of_IN the_DT engine_NN
+ntime_JJ support_NN ._.
+In_IN the_DT meanwhile_NN ,_, we_PRP are_VBP also_RB working_VBG on_IN the_DT development_NN of_IN one_CD of_IN the_DT two_CD key_JJ components_NNS of_IN the_DT shared_JJ memory_NN standard_JJ library_NN :_: the_DT service_NN composition_NN engine_NN ._.
+In_IN our_PRP$ preliminary_JJ work_NN =_JJ -_: =[_NN 3_CD ,_, 4_CD ,_, 20_CD -RRB-_-RRB- -_: =_JJ -_: we_PRP have_VBP explored_VBN and_CC optimized_VBN the_DT performance_NN of_IN a_DT business_NN process_NN execution_NN engine_NN on_IN modern_JJ multicore_JJ machines_NNS ._.
+In_IN particular_JJ ,_, our_PRP$ work_NN has_VBZ been_VBN focused_VBN on_IN scalability_NN optimizations_NNS of_IN the_DT engine_NN
+._.
+Thanks_NNS to_TO its_PRP$ service_NN oriented_JJ layer_NN ,_, the_DT Azure_NNP platform_NN allows_VBZ to_TO deploy_VB in_IN the_DT cloud_NN complex_NN data-intensive_JJ applications_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, as_RB well_RB as_IN any_DT kind_NN of_IN Web_NN service_NN ,_, including_VBG third_JJ party_NN components_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+3_LS ._.
+PROPOSED_VBN APPROACH_NN As_IN introduced_VBN in_IN Section_NN 1_CD ,_, there_EX is_VBZ a_DT lack_NN of_IN programming_NN abstractions_NNS and_CC techniques_NNS which_WDT prevents_VBZ Web_NN services_NNS to_TO fully_RB exploit_VB both_DT Clouds_NNS and_CC Multicores_NNS ._.
+Also_RB ,_, none_NN of_IN the_DT
+o_NN the_DT scalability_NN problem_NN ,_, and_CC some_DT of_IN them_PRP have_VBP shown_VBN how_WRB general_JJ concepts_NNS can_MD be_VB efficiently_RB implemented_VBN in_IN real-world_JJ applications_NNS ._.
+Good_JJ examples_NNS for_IN this_DT class_NN are_VBP the_DT Microsoft_NNP CCR\/DSS_NN framework_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Scala_NNP -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, and_CC the_DT X10_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- programming_NN languages_NNS ._.
+Out_IN of_IN the_DT realm_NN of_IN parallel_JJ programming_NN ,_, relevant_JJ efforts_NNS have_VBP been_VBN done_VBN through_IN the_DT development_NN of_IN frameworks_NNS and_CC instruments_NNS explicitly_RB designed_VBN
+ntime_JJ support_NN ._.
+In_IN the_DT meanwhile_NN ,_, we_PRP are_VBP also_RB working_VBG on_IN the_DT development_NN of_IN one_CD of_IN the_DT two_CD key_JJ components_NNS of_IN the_DT shared_JJ memory_NN standard_JJ library_NN :_: the_DT service_NN composition_NN engine_NN ._.
+In_IN our_PRP$ preliminary_JJ work_NN =_JJ -_: =[_NN 3_CD ,_, 4_CD ,_, 20_CD -RRB-_-RRB- -_: =_JJ -_: we_PRP have_VBP explored_VBN and_CC optimized_VBN the_DT performance_NN of_IN a_DT business_NN process_NN execution_NN engine_NN on_IN modern_JJ multicore_JJ machines_NNS ._.
+In_IN particular_JJ ,_, our_PRP$ work_NN has_VBZ been_VBN focused_VBN on_IN scalability_NN optimizations_NNS of_IN the_DT engine_NN
+e_LS in_IN the_DT definition_NN of_IN concurrency_NN models_NNS more_RBR focused_VBN on_IN the_DT semantic_NN of_IN cooperating_VBG processes_NNS than_IN in_IN the_DT communication_NN primitives_NNS ._.
+Belonging_VBG to_TO this_DT area_NN are_VBP well_RB known_VBN models_NNS like_IN the_DT Actor_NN Model_NNP =_SYM -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT AgentOriented_NNP programming_NN paradigm_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, the_DT Active_JJ Object_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, or_CC the_DT Partitioned_JJ global_JJ address_NN space_NN model_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+All_DT of_IN these_DT concurrency_NN paradigms_NNS offer_VBP interesting_JJ solutions_NNS to_TO the_DT scalabili_NN
+across_IN the_DT last_JJ decades_NNS ,_, to_TO build_VB parallel_JJ and_CC concurrent_JJ applications_NNS ._.
+Notable_JJ in_IN this_DT area_NN are_VBP some_DT relevant_JJ programming_NN paradigms_NNS from_IN the_DT high_JJ performance_NN computing_NN field_NN ,_, like_IN the_DT Skeletal_JJ model_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: and_CC the_DT Flow_NN based_JJ model_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+All_DT of_IN these_DT models_NNS embrace_VBP a_DT simple_JJ but_CC very_RB effective_JJ idea_NN of_IN parallelism_NN :_: if_IN you_PRP have_VBP the_DT need_NN for_IN scalable_JJ applications_NNS ,_, at_IN some_DT points_NNS you_PRP will_MD have_VB the_DT need_NN to_TO is_VBZ
+some_DT of_IN them_PRP have_VBP shown_VBN how_WRB general_JJ concepts_NNS can_MD be_VB efficiently_RB implemented_VBN in_IN real-world_JJ applications_NNS ._.
+Good_JJ examples_NNS for_IN this_DT class_NN are_VBP the_DT Microsoft_NNP CCR\/DSS_NN framework_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, Scala_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, and_CC the_DT X10_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: programming_NN languages_NNS ._.
+Out_IN of_IN the_DT realm_NN of_IN parallel_JJ programming_NN ,_, relevant_JJ efforts_NNS have_VBP been_VBN done_VBN through_IN the_DT development_NN of_IN frameworks_NNS and_CC instruments_NNS explicitly_RB designed_VBN for_IN Cloud_NN computing_NN platform_NN
+ployment_NN of_IN the_DT Operating_NNP System_NNP on_IN both_DT Clouds_NNS and_CC Multicores_NNS ._.
+Other_JJ examples_NNS of_IN distributed_VBN Operating_NNP Systems_NNP that_WDT have_VBP somehow_RB tried_VBN to_TO address_VB similar_JJ scenarios_NNS with_IN peculiar_JJ solutions_NNS are_VBP Amoeba_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Sprite_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- and_CC Clouds_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+Unlike_IN the_DT case_NN of_IN a_DT distributed_VBN OS_NN ,_, in_IN our_PRP$ scenario_NN we_PRP are_VBP more_RBR interested_JJ in_IN Web_NN services_NNS instead_RB of_IN general_JJ applications_NNS ._.
+Due_JJ to_TO this_DT reason_NN ,_, the_DT Operating_NNP System_NNP app_NN
+tic_NN of_IN cooperating_VBG processes_NNS than_IN in_IN the_DT communication_NN primitives_NNS ._.
+Belonging_VBG to_TO this_DT area_NN are_VBP well_RB known_VBN models_NNS like_IN the_DT Actor_NN Model_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, the_DT AgentOriented_NNP programming_NN paradigm_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, the_DT Active_JJ Object_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC the_DT Partitioned_JJ global_JJ address_NN space_NN model_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+All_DT of_IN these_DT concurrency_NN paradigms_NNS offer_VBP interesting_JJ solutions_NNS to_TO the_DT scalability_NN problem_NN ,_, and_CC some_DT of_IN them_PRP have_VBP shown_VBN how_WRB general_JJ concepts_NNS can_MD be_VB
+omputing_VBG platforms_NNS -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Microsoft_NNP Azure_NNP is_VBZ a_DT relevant_JJ example_NN in_IN this_DT area_NN ._.
+Thanks_NNS to_TO its_PRP$ service_NN oriented_JJ layer_NN ,_, the_DT Azure_NNP platform_NN allows_VBZ to_TO deploy_VB in_IN the_DT cloud_NN complex_NN data-intensive_JJ applications_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, as_RB well_RB as_IN any_DT kind_NN of_IN Web_NN service_NN ,_, including_VBG third_JJ party_NN components_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+3_LS ._.
+PROPOSED_VBN APPROACH_NN As_IN introduced_VBN in_IN Section_NN 1_CD ,_, there_EX is_VBZ a_DT lack_NN of_IN programming_NN abstractions_NNS and_CC techniques_NNS which_WDT prevents_VBZ W_NN
+he_PRP Operating_NNP System_NNP on_IN both_DT Clouds_NNS and_CC Multicores_NNS ._.
+Other_JJ examples_NNS of_IN distributed_VBN Operating_NNP Systems_NNP that_WDT have_VBP somehow_RB tried_VBN to_TO address_VB similar_JJ scenarios_NNS with_IN peculiar_JJ solutions_NNS are_VBP Amoeba_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, Sprite_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Clouds_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+Unlike_IN the_DT case_NN of_IN a_DT distributed_VBN OS_NN ,_, in_IN our_PRP$ scenario_NN we_PRP are_VBP more_RBR interested_JJ in_IN Web_NN services_NNS instead_RB of_IN general_JJ applications_NNS ._.
+Due_JJ to_TO this_DT reason_NN ,_, the_DT Operating_NNP System_NNP approach_NN seems_VBZ t_NN
+to_TO our_PRP$ work_NN ._.
+2_CD ._.
+RELATED_NNS WORK_VBP The_DT idea_NN of_IN treating_VBG Clouds_NNS and_CC Multicores_NNS as_IN a_DT single_JJ computing_NN environment_NN has_VBZ been_VBN introduced_VBN by_IN David_NNP Wentzlaff_NNP et_FW al._FW within_IN the_DT contest_NN of_IN the_DT Fos_NN Operating_NN System_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP propose_VBP the_DT development_NN of_IN a_DT modern_JJ Operating_NNP System_NNP to_TO target_VB at_IN the_DT same_JJ time_NN and_CC in_IN parallel_NN the_DT two_CD different_JJ computing_NN platforms_NNS ,_, using_VBG a_DT well_RB defined_VBN service_NN based_JJ architecture_NN ._.
+Within_IN Fo_NN

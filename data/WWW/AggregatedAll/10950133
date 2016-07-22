@@ -1,0 +1,123 @@
+Regular_JJ expressions_NNS considered_VBN harmful_JJ in_IN client-side_JJ XSS_NN filters_NNS
+Cross-site_JJ scripting_NN flaws_NNS have_VBP now_RB surpassed_VBN buffer_NN overflows_VBZ as_IN the_DT world_NN 's_POS most_RBS common_JJ publicly-reported_JJ security_NN vulnerability_NN ._.
+In_IN recent_JJ years_NNS ,_, browser_NN vendors_NNS and_CC researchers_NNS have_VBP tried_VBN to_TO develop_VB client-side_JJ filters_NNS to_TO mitigate_VB these_DT attacks_NNS ._.
+We_PRP analyze_VBP the_DT best_JJS existing_VBG filters_NNS and_CC find_VB them_PRP to_TO be_VB either_CC unacceptably_RB slow_JJ or_CC easily_RB circumvented_VBN ._.
+Worse_JJR ,_, some_DT of_IN these_DT filters_NNS could_MD introduce_VB vulnerabilities_NNS into_IN sites_NNS that_WDT were_VBD previously_RB bug-free_JJ ._.
+We_PRP propose_VBP a_DT new_JJ filter_NN design_NN that_WDT achieves_VBZ both_DT high_JJ performance_NN and_CC high_JJ precision_NN by_IN blocking_VBG scripts_NNS after_IN HTML_NNP parsing_NN but_CC before_IN execution_NN ._.
+Compared_VBN to_TO previous_JJ approaches_NNS ,_, our_PRP$ approach_NN is_VBZ faster_JJR ,_, protects_VBZ against_IN more_JJR vulnerabilities_NNS ,_, and_CC is_VBZ harder_RBR for_IN attackers_NNS to_TO abuse_VB ._.
+We_PRP have_VBP contributed_VBN an_DT implementation_NN of_IN our_PRP$ filter_NN design_NN to_TO the_DT WebKit_NNP open_JJ source_NN rendering_VBG engine_NN ,_, and_CC the_DT filter_NN is_VBZ now_RB enabled_VBN by_IN default_NN in_IN the_DT Google_NNP Chrome_NNP browser_NN ._.
+he_PRP page_NN ,_, including_VBG frame_NN busting_VBG scripts_NNS ._.
+External_JJ scripts_NNS can_MD also_RB be_VB targeted_VBN by_IN matching_VBG an_DT external_JJ include_VBP ,_, effectively_RB disabling_VBG all_DT external_JJ scripts_NNS ._.
+Since_IN Google_NNP Chrome_NNP ._.
+The_DT XSSAuditor_NN filter_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, deployed_VBN in_IN Google_NNP Chrome_NNP ,_, gives_VBZ the_DT attacker_NN the_DT ability_NN to_TO selectively_RB cancel_VB a_DT particular_JJ script_NN block_NN ._.
+By_IN matching_VBG the_DT entire_JJ contents_NNS of_IN a_DT specific_JJ inline_NN script_NN ,_, XSSAuditor_NN disables_VBZ it_PRP ._.
+This_DT e_SYM
+side_NN model_NN of_IN web_NN security_NN ,_, and_CC we_PRP plan_VBP to_TO add_VB more_RBR advanced_JJ browser_NN security_NN exercises_NNS that_WDT teach_VBP students_NNS how_WRB browser_NN defenses_NNS can_MD mitigate_VB server_NN side_NN vulnerabilities_NNS such_JJ as_IN click-jacking_NN and_CC XSS_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+6Table_JJ 1_CD :_: Webseclab_NNP Exercises_NNP Covering_NNP OWASP_NNP Top_NNP 10_CD Exercises_NNS Introduction_NN OWASP_NNP Top_NNP 10_CD Category_NNP Injection_NN ̌_FW Cross-Site_FW Scripting_FW ̌_FW Broken_JJ Authentication_NN and_CC Session_NN Management_NNP ̌_NNP ̌_NNP Insecure_NNP Direct_NNP
+ese_NN tools_NNS utilize_VBP similar_JJ techniques_NNS with_IN xHunter_NN ._.
+Especially_RB ,_, noXSS_NN ,_, like_IN xHunter_NN ,_, implements_VBZ a_DT complete_JJ JavaScript_NNP parser_NN for_IN that_DT purpose_NN ._.
+It_PRP has_VBZ been_VBN shown_VBN that_IN these_DT techniques_NNS are_VBP not_RB efficient_JJ =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: due_JJ to_TO high_JJ false_JJ positive_JJ and_CC false_JJ negative_JJ rates_NNS ._.
+However_RB ,_, xHunter_NN is_VBZ not_RB meant_VBN to_TO be_VB treated_VBN as_IN a_DT defense_NN mechanism_NN ,_, but_CC rather_RB as_IN an_DT XSS_NN network_NN monitor_NN ._.
+Thus_RB ,_, xHunter_NN can_MD be_VB tolerant_JJ in_IN false_JJ p_NN
+ynamic_JJ tainting_NN -LRB-_-LRB- 23_CD ,_, 24_CD ,_, 27_CD -RRB-_-RRB- ,_, combination_NN of_IN dynamic_JJ tainting_NN and_CC static_JJ analysis_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- ,_, prevention_NN by_IN construction_NN or_CC by_IN design_NN -LRB-_-LRB- 8_CD ,_, 13_CD ,_, 29_CD ,_, 36_CD -RRB-_-RRB- and_CC enforcement_NN mechanisms_NNS executing_VBG within_IN the_DT browser_NN =_JJ -_: =[_NN 1_CD ,_, 7_CD ,_, 10_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Some_DT of_IN these_DT techniques_NNS have_VBP been_VBN commercialized_VBN and_CC can_MD be_VB found_VBN in_IN today_NN 's_POS development_NN toolsets_NNS ._.
+An_DT example_NN is_VBZ Microsoft_NNP 's_POS FxCop_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- which_WDT can_MD be_VB integrated_VBN into_IN some_DT editions_NNS of_IN Microsoft_NNP Visual_NNP
+ers_NNPS to_TO be_VB able_JJ to_TO provide_VB users_NNS with_IN rich_JJ ,_, interactive_JJ services_NNS ._.
+As_IN a_DT result_NN ,_, dynamic_JJ web_NN applications_NNS may_MD contain_VB a_DT wide_JJ range_NN of_IN input_NN validation_NN vulnerabilities_NNS such_JJ as_IN cross_JJ site_NN scripting_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 4_CD ,_, 5_CD ,_, 34_CD -RRB-_-RRB- -_: =--RRB-_NN and_CC SQL_NN injection_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 15_CD ,_, 17_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Unfortunately_RB ,_, because_IN of_IN their_PRP$ high_JJ popularity_NN and_CC a_DT user_NN base_NN that_WDT consists_VBZ of_IN millions_NNS of_IN Internet_NNP users_NNS ,_, web_NN applications_NNS have_VBP become_VBN prime_JJ targets_NNS for_IN attack_NN
+s_NNS have_VBP found_VBN specially_RB crafted_VBN pages_NNS that_WDT do_VBP not_RB initially_RB have_VB cross_JJ site_NN scripting_NN attacks_NNS ,_, but_CC when_WRB passed_VBN through_IN anti-cross-site_JJ scripting_NN filters_NNS yield_VBP web_NN pages_NNS that_WDT cause_VBP JavaScript_NNP execution_NN =_JJ -_: =[_NN 10_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT problem_NN becomes_VBZ even_RB more_RBR complicated_JJ when_WRB considering_VBG that_IN a_DT web_NN application_NN may_MD compose_VB multiple_JJ sanitizers_NNS in_IN the_DT course_NN of_IN creating_VBG a_DT web_NN page_NN ._.
+In_IN a_DT recent_JJ empirical_JJ analysis_NN ,_, we_PRP found_VBD that_IN
+gic_JJ for_IN dynamic_JJ web_NN services_NNS ,_, we_PRP do_VBP need_VB to_TO know_VB the_DT basic_JJ user_NN operations_NNS in_IN order_NN to_TO model_VB normal_JJ behavior_NN ._.
+In_IN addition_NN ,_, validating_VBG input_NN is_VBZ useful_JJ to_TO detect_VB or_CC prevent_VB SQL_NN or_CC XSS_NN injection_NN attacks_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 36_CD -RRB-_-RRB- ._.
+This_DT is_VBZ orthogonal_JJ to_TO the_DT DoubleGuard_NNP approach_NN ,_, which_WDT can_MD utilize_VB input_NN validation_NN as_IN an_DT additional_JJ defense_NN ._.
+However_RB ,_, we_PRP have_VBP found_VBN that_IN DoubleGuard_NNP can_MD detect_VB SQL_NN injection_NN attacks_NNS by_IN taking_VBG
+ers_NNPS to_TO be_VB able_JJ to_TO provide_VB users_NNS with_IN rich_JJ ,_, interactive_JJ services_NNS ._.
+As_IN a_DT result_NN ,_, dynamic_JJ web_NN applications_NNS may_MD contain_VB a_DT wide_JJ range_NN of_IN input_NN validation_NN vulnerabilities_NNS such_JJ as_IN cross_JJ site_NN scripting_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 5_CD ,_, 6_CD ,_, 33_CD -RRB-_-RRB- -_: =--RRB-_NN and_CC SQL_NN injection_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 16_CD ,_, 18_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Unfortunately_RB ,_, because_IN of_IN their_PRP$ high_JJ popularity_NN and_CC a_DT user_NN base_NN that_WDT consists_VBZ of_IN millions_NNS of_IN Internet_NNP users_NNS ,_, web_NN applications_NNS have_VBP become_VBN prime_JJ targets_NNS for_IN attack_NN
+rchers_NNS have_VBP found_VBN specially_RB crafted_VBN pages_NNS that_WDT do_VBP not_RB initially_RB have_VB cross_JJ site_NN scripting_NN attacks_NNS ,_, but_CC when_WRB passed_VBN through_IN anti-cross-site_JJ scripting_NN filters_NNS yield_VBP web_NN pagesthatcauseJavaScriptexecution_NN =_JJ -_: =[_NN 10,22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT problem_NN becomes_VBZ even_RB more_RBR complicated_JJ when_WRB considering_VBG that_IN a_DT web_NN application_NN may_MD compose_VB multiple_JJ sanitizers_NNS in_IN the_DT course_NN of_IN creating_VBG a_DT web_NN page_NN ._.
+In_IN a_DT recent_JJ empirical_JJ analysis_NN ,_, we_PRP found_VBD that_IN
+ly_RB researched_VBN -LRB-_-LRB- 1_CD ,_, 2_CD ,_, 6_CD ,_, 18_CD ,_, 24_CD ,_, 27_CD ,_, 31_CD --_: 33_CD ,_, 37_CD ,_, 41_CD ,_, 42_CD ,_, 51_CD ,_, 52_CD -RRB-_-RRB- ._.
+Defense_NN architectures_NNS have_VBP targeted_VBN three_CD broad_JJ categories_NNS :_: server-side_JJ techniques_NNS -LRB-_-LRB- 5_CD ,_, 32_CD ,_, 43_CD ,_, 49_CD ,_, 52_CD -RRB-_-RRB- ,_, purely_RB browser-based_JJ techniques_NNS =_JJ -_: =[_NN 4_CD ,_, 35_CD -RRB-_-RRB- -_: =_JJ -_: and_CC client-server_JJ collaborative_JJ defenses_NNS -LRB-_-LRB- 19_CD ,_, 26_CD ,_, 36_CD ,_, 46_CD -RRB-_-RRB- ._.
+Unlike_IN browser-based_JJ and_CC client-server_JJ defenses_NNS ,_, purely_RB server-side_JJ approaches_NNS are_VBP applicable_JJ to_TO the_DT server_NN code_NN without_IN requiring_VBG modificat_NN
+ogle_VB Analytics_NNP ,_, Facebook_NNP and_CC Twitter_NNP have_VBP had_VBN XSS_NN issues_NNS in_IN recent_JJ years_NNS despite_IN intense_JJ research_NN on_IN the_DT subject_NN -LRB-_-LRB- 34_CD ,_, 52_CD ,_, 61_CD -RRB-_-RRB- ._.
+Though_IN XSS_NN mitigation_NN and_CC analysis_NN techniques_NNS have_VBP enjoyed_VBN intense_JJ focus_NN =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 12_CD ,_, 13_CD ,_, 33_CD ,_, 36_CD ,_, 37_CD ,_, 39_CD ,_, 41_CD ,_, 43_CD ,_, 44_CD ,_, 47_CD ,_, 49_CD ,_, 50_CD ,_, 59_CD ,_, 64_CD ,_, 66_CD ,_, 68_CD -RRB-_-RRB- -_: =_JJ -_: ,_, research_NN has_VBZ paid_VBN little_JJ or_CC no_DT attention_NN to_TO a_DT promising_JJ sets_NNS of_IN tools_NNS for_IN solving_VBG the_DT XSS_NN riddle_NN --_: web_NN application_NN frameworks_NNS --_: which_WDT are_VBP gaining_VBG wide_JJ adoption_NN -LRB-_-LRB- 18_CD ,_, 21_CD ,_, 22_CD ,_, 28_CD ,_, 35_CD ,_, 42_CD ,_, 48_CD ,_, 55_CD ,_, 58_CD ,_, 69_CD ,_, 7_CD
+es_NNS ,_, including_VBG static_JJ code_NN analysis_NN -LRB-_-LRB- 8_CD ,_, 11_CD ,_, 27_CD ,_, 28_CD ,_, 31_CD -RRB-_-RRB- ,_, dynamic_JJ tainting_NN -LRB-_-LRB- 18_CD ,_, 19_CD ,_, 20_CD -RRB-_-RRB- ,_, prevention_NN by_IN construction_NN or_CC by_IN design_NN -LRB-_-LRB- 7_CD ,_, 10_CD ,_, 21_CD ,_, 32_CD -RRB-_-RRB- ,_, and_CC client-side_JJ mechanisms_NNS executing_VBG within_IN the_DT browser_NN =_JJ -_: =[_NN 2_CD ,_, 6_CD ,_, 9_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Some_DT of_IN these_DT techniques_NNS have_VBP been_VBN integrated_VBN in_IN developer_NN toolsets_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 13_CD ,_, 5_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Moreover_RB ,_, organizations_NNS such_JJ as_IN OWASP_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- and_CC the_DT SANS_NNP Institute_NNP -LRB-_-LRB- 22_CD -RRB-_-RRB- have_VBP started_VBN to_TO offer_VB training_NN programs_NNS th_DT
+ners_NNS but_CC parsed_VBN correctly_RB by_IN the_DT Adobe_NNP reader_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+HTML_NNP parsing_NN is_VBZ notoriously_RB tricky_JJ -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, and_CC cross-site_JJ scripting_NN can_MD exploit_VB HTML-parsing_JJ discrepancies_NNS between_IN browsers_NNS and_CC sanitization_NN routines_NNS =_JJ -_: =[_NN 5_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN contrast_NN ,_, we_PRP show_VBP how_WRB the_DT most_RBS primitive_JJ viruses_NNS ,_, which_WDT are_VBP present_JJ in_IN standard_JJ virus_NN databases_NNS and_CC do_VBP not_RB use_VB any_DT obfuscation_NN ,_, can_MD evade_VB detection_NN by_IN exploiting_VBG discrepancies_NNS in_IN the_DT processing_NN o_NN
+r_NN ,_, covering_VBG attacks_NNS is_VBZ of_IN less_JJR utility_NN ._.
+If_IN an_DT attacker_NN can_MD evade_VB the_DT filter_NN by_IN constructing_VBG a_DT convoluted_JJ attack_NN string_NN -LRB-_-LRB- e.g._FW ,_, by_IN injecting_VBG script_NN via_IN CSS_NN expressions_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- or_CC via_IN obscure_JJ parser_NN quirks_VBZ =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, then_RB the_DT filter_NN does_VBZ not_RB actually_RB prevent_VB a_DT sophisticated_JJ attacker_NN from_IN attacking_VBG the_DT site_NN ._.
+Each_DT filter_NN ,_, then_RB ,_, defines_VBZ a_DT set_NN of_IN vulnerabilities_NNS that_WDT are_VBP in-scope_JJ ,_, meaning_VBG the_DT filter_NN aims_VBZ to_TO prevent_VB
+However_RB ,_, because_IN several_JJ techniques_NNS for_IN disabling_VBG frame_NN busting_VBG already_RB exist_VBP ,_, we_PRP recommend_VBP that_IN sites_NNS replace_VBP their_PRP$ circumventable_JJ frame_NN busting_VBG scripts_NNS with_IN the_DT X-Frame-Options_FW HTTP_FW response_NN header_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT was_VBD designed_VBN to_TO help_VB mitigate_VB clickjacking_NN ._.
+To_TO protect_VB users_NNS with_IN legacy_NN browsers_NNS that_WDT do_VBP not_RB support_VB this_DT header_NN ,_, a_DT web_NN site_NN operator_NN should_MD use_VB a_DT frame_NN busting_VBG script_NN that_WDT is_VBZ robust_JJ to_TO being_VBG
+e_LS source_NN into_IN an_DT integrated_VBN experience_NN ._.
+Because_IN the_DT gadget_NN author_NN is_VBZ not_RB trusted_VBN with_IN arbitrary_JJ access_NN to_TO the_DT user_NN 's_POS account_NN ,_, these_DT sites_NNS use_VBP frames_NNS or_CC a_DT JavaScript_NN sandboxing_VBG technology_NN such_JJ as_IN FBJS_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, ADsafe_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, or_CC Caja_NNP -LRB-_-LRB- 6_CD -RRB-_-RRB- to_TO prevent_VB the_DT gadget_NN from_IN escalating_VBG its_PRP$ privileges_NNS ._.
+Gadgets_NNS are_VBP typically_RB rendered_VBN in_IN a_DT small_JJ rectangle_NN and_CC are_VBP not_RB allowed_VBN to_TO draw_VB outside_IN this_DT area_NN ._.
+Facebook_NNP uses_VBZ cascadi_NNS
+ites_NNS ._.
+3.1_CD Exfiltration_NNP Prevention_NNP A_NNP number_NN of_IN client-side_JJ XSS_NN filters_NNS attempt_VBP to_TO mitigate_VB XSS_NN vulnerabilities_NNS by_IN preventing_VBG the_DT attacker_NN 's_POS script_NN from_IN leaking_VBG sensitive_JJ data_NNS to_TO the_DT attacker_NN 's_POS servers_NNS =_JJ -_: =[_NN 5_CD ,_, 11_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Typically_RB ,_, these_DT filters_NNS monitor_VBP the_DT flow_NN of_IN information_NN within_IN the_DT web_NN site_NN 's_POS JavaScript_NNP environment_NN and_CC aim_NN to_TO block_VB the_DT attacker_NN from_IN exfiltrating_VBG that_DT information_NN to_TO his_PRP$ or_CC her_PRP$ servers_NNS ._.
+One_CD tech_NN
+ed_VBN experience_NN ._.
+Because_IN the_DT gadget_NN author_NN is_VBZ not_RB trusted_VBN with_IN arbitrary_JJ access_NN to_TO the_DT user_NN 's_POS account_NN ,_, these_DT sites_NNS use_VBP frames_NNS or_CC a_DT JavaScript_NN sandboxing_VBG technology_NN such_JJ as_IN FBJS_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, ADsafe_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, or_CC Caja_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: to_TO prevent_VB the_DT gadget_NN from_IN escalating_VBG its_PRP$ privileges_NNS ._.
+Gadgets_NNS are_VBP typically_RB rendered_VBN in_IN a_DT small_JJ rectangle_NN and_CC are_VBP not_RB allowed_VBN to_TO draw_VB outside_IN this_DT area_NN ._.
+Facebook_NNP uses_VBZ cascading_VBG style_NN sheets_NNS to_TO confin_VB
+owser_NN benchmarks_NNS ,_, including_VBG JavaScript_NNP performance_NN and_CC page_NN load_NN time_NN ._.
+JavaScript_NNP ._.
+We_PRP evaluate_VBP the_DT impact_NN of_IN the_DT filter_NN on_IN core_NN JavaScript_NN performance_NN using_VBG the_DT industry-standard_JJ SunSpider_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC V8_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: benchmark_JJ suites_NNS ._.
+We_PRP were_VBD unable_JJ to_TO measure_VB any_DT performance_NN difference_NN on_IN these_DT benchmarks_NNS as_IN a_DT result_NN of_IN the_DT filter_NN ._.
+This_DT is_VBZ unsurprising_JJ because_IN the_DT filter_NN interposes_VBZ on_IN the_DT interface_NN to_TO the_DT JavaSc_NN
+igure_NN 3_CD -RRB-_-RRB- ._.
+This_DT issue_NN is_VBZ particularly_RB severe_JJ because_IN ,_, in_IN Internet_NNP Explorer_NNP ,_, the_DT attacker_NN can_MD force_VB a_DT web_NN page_NN that_WDT does_VBZ not_RB declare_VB its_PRP$ character_NN set_VBN explicitly_RB to_TO be_VB decoded_VBN using_VBG the_DT UTF-7_NN code_NN page_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, making_VBG the_DT IE8_NN XSS_NN filter_NN ineffective_JJ at_IN protecting_VBG web_NN sites_NNS that_WDT do_VBP not_RB explicitly_RB declare_VB their_PRP$ character_NN set_NN ._.
+3.3_CD Induced_VBN False_JJ Positives_NNS Once_IN the_DT filter_NN has_VBZ decided_VBN that_IN a_DT sequence_NN of_IN reflected_VBN
+aired_VBN ._.
+After_IN the_DT implementation_NN reached_VBD some_DT level_NN of_IN maturity_NN ,_, we_PRP encouraged_VBD external_JJ security_NN researchers_NNS to_TO find_VB additional_JJ false_JJ negatives_NNS ._.
+A_DT number_NN of_IN researchers_NNS from_IN sla.ckers.org_NN participated_VBD =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC found_VBD a_DT false_JJ negative_NN related_VBN to_TO Unicode_NNP denormalization_NN ._.
+In_IN response_NN ,_, we_PRP changed_VBD the_DT filter_NN 's_POS matching_JJ algorithm_NN to_TO ignore_VB all_DT nonASCII_JJ characters_NNS ._.
+This_DT experience_NN suggests_VBZ that_IN we_PRP have_VBP low_JJ ass_NN
+ly_RB covered_VBN vulnerabilities_NNS ._.
+However_RB ,_, covering_VBG attacks_NNS is_VBZ of_IN less_JJR utility_NN ._.
+If_IN an_DT attacker_NN can_MD evade_VB the_DT filter_NN by_IN constructing_VBG a_DT convoluted_JJ attack_NN string_NN -LRB-_-LRB- e.g._FW ,_, by_IN injecting_VBG script_NN via_IN CSS_NN expressions_NNS =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: or_CC via_IN obscure_JJ parser_NN quirks_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- -RRB-_-RRB- ,_, then_RB the_DT filter_NN does_VBZ not_RB actually_RB prevent_VB a_DT sophisticated_JJ attacker_NN from_IN attacking_VBG the_DT site_NN ._.
+Each_DT filter_NN ,_, then_RB ,_, defines_VBZ a_DT set_NN of_IN vulnerabilities_NNS that_WDT are_VBP in-scope_JJ ,_, m_NN
+vigation_NN using_VBG an_DT onbeforeunload_JJ handler_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Client-side_JJ XSS_NN filters_NNS add_VBP yet_RB another_DT way_NN to_TO circumvent_VB frame_NN busting_VBG :_: the_DT attacker_NN can_MD induce_VB a_DT false_JJ positive_NN that_WDT disables_VBZ the_DT frame_NN busting_VBG script_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Figure_NNP 5_CD :_: Container_NNP escape_NN phishing_NN attack_NN using_VBG IE8_NN 's_POS XSS_NN filter_NN to_TO bypass_VB Facebook_NNP 's_POS style_NN restrictions_NNS ._.
+contain_VBP script_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, IE8_NN 's_POS XSS_NN filter_NN blocks_VBZ attackers_NNS from_IN injecting_VBG style_NN sheets_NNS ._.
+An_DT atta_NN
+ined_VBD the_DT Bank_NNP of_IN America_NNP web_NN site_NN for_IN user-local_JJ persistent_JJ storage_NN ._.
+Our_PRP$ cursory_JJ examination_NN revealed_VBD that_IN the_DT attacker_NN can_MD exfiltrate_VB at_IN least_JJS 400_CD bytes_NNS per_IN attack_NN ._.
+Alternatives_NNP ._.
+Some_DT filters_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 20_CD ,_, 14_CD ,_, 19_CD -RRB-_-RRB- -_: =--RRB-_NN avoid_VB the_DT above_JJ difficulties_NNS by_IN blocking_VBG XSS_NN attacks_NNS earlier_RBR ._.
+Instead_RB of_IN letting_VBG the_DT attacker_NN 's_POS script_NN co-mingle_NN with_IN the_DT target_NN web_NN site_NN 's_POS script_NN ,_, these_DT filters_NNS prevent_VBP the_DT attacker_NN from_IN injecting_VBG
+ined_VBD the_DT Bank_NNP of_IN America_NNP web_NN site_NN for_IN user-local_JJ persistent_JJ storage_NN ._.
+Our_PRP$ cursory_JJ examination_NN revealed_VBD that_IN the_DT attacker_NN can_MD exfiltrate_VB at_IN least_JJS 400_CD bytes_NNS per_IN attack_NN ._.
+Alternatives_NNP ._.
+Some_DT filters_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 20_CD ,_, 14_CD ,_, 19_CD -RRB-_-RRB- -_: =--RRB-_NN avoid_VB the_DT above_JJ difficulties_NNS by_IN blocking_VBG XSS_NN attacks_NNS earlier_RBR ._.
+Instead_RB of_IN letting_VBG the_DT attacker_NN 's_POS script_NN co-mingle_NN with_IN the_DT target_NN web_NN site_NN 's_POS script_NN ,_, these_DT filters_NNS prevent_VBP the_DT attacker_NN from_IN injecting_VBG
+ation_NN in_IN the_DT parent_NN frame_NN ,_, preventing_VBG the_DT above_JJ script_NN for_IN successfully_RB changing_VBG the_DT location_NN of_IN the_DT attacker_NN 's_POS frame_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+The_DT attacker_NN can_MD also_RB cancel_VB the_DT navigation_NN using_VBG an_DT onbeforeunload_JJ handler_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Client-side_JJ XSS_NN filters_NNS add_VBP yet_RB another_DT way_NN to_TO circumvent_VB frame_NN busting_VBG :_: the_DT attacker_NN can_MD induce_VB a_DT false_JJ positive_NN that_WDT disables_VBZ the_DT frame_NN busting_VBG script_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Figure_NNP 5_CD :_: Container_NNP escape_NN phishing_NN att_NN
+is_VBZ reason_NN ,_, the_DT filter_NN causes_VBZ the_DT browser_NN to_TO ignore_VB base_NN URLs_NNS that_WDT appear_VBP in_IN the_DT request_NN ._.
+To_TO reduce_VB false_JJ positives_NNS ,_, the_DT filter_NN blocks_VBZ base_NN URLs_NNS only_RB if_IN the_DT URLs_NNS point_VBP to_TO a_DT third-party_JJ host_NN ._.
+Data_NNP URLs_NNPS =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: require_VBP special_JJ attention_NN for_IN Firefox_NNP XSS_NNP filters_NNS because_IN data_NNS URLs_NNS inherit_VBP the_DT privileges_NNS of_IN the_DT web_NN page_NN that_WDT contains_VBZ the_DT URL_NN ._.
+However_RB ,_, data_NNS URLs_NNS are_VBP neither_CC an_DT XSS_NN attack_NN vector_NN for_IN Internet_NNP Expl_NNP
+ites_NNS ._.
+3.1_CD Exfiltration_NNP Prevention_NNP A_NNP number_NN of_IN client-side_JJ XSS_NN filters_NNS attempt_VBP to_TO mitigate_VB XSS_NN vulnerabilities_NNS by_IN preventing_VBG the_DT attacker_NN 's_POS script_NN from_IN leaking_VBG sensitive_JJ data_NNS to_TO the_DT attacker_NN 's_POS servers_NNS =_JJ -_: =[_NN 5_CD ,_, 11_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Typically_RB ,_, these_DT filters_NNS monitor_VBP the_DT flow_NN of_IN information_NN within_IN the_DT web_NN site_NN 's_POS JavaScript_NNP environment_NN and_CC aim_NN to_TO block_VB the_DT attacker_NN from_IN exfiltrating_VBG that_DT information_NN to_TO his_PRP$ or_CC her_PRP$ servers_NNS ._.
+One_CD tech_NN
+s-site_NN scripting_NN -LRB-_-LRB- XSS_NN -RRB-_-RRB- is_VBZ recognized_VBN as_IN the_DT biggest_JJS security_NN problem_NN facing_VBG web_NN application_NN developers_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+In_IN fact_NN ,_, XSS_NN now_RB tops_VBZ buffer_NN overflows_NNS as_IN the_DT most-reported_JJ type_NN of_IN security_NN vulnerability_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN each_DT individual_JJ XSS_NN vulnerability_NN is_VBZ easy_JJ to_TO fix_VB ,_, much_RB like_IN each_DT individual_JJ buffer_NN overflow_NN is_VBZ easy_JJ to_TO fix_VB ,_, fixing_VBG every_DT XSS_NN vulnerability_NN in_IN a_DT large_JJ web_NN site_NN is_VBZ a_DT more_RBR challenging_JJ task_NN ,_, a_DT
+ites_NNS ._.
+3.1_CD Exfiltration_NNP Prevention_NNP A_NNP number_NN of_IN client-side_JJ XSS_NN filters_NNS attempt_VBP to_TO mitigate_VB XSS_NN vulnerabilities_NNS by_IN preventing_VBG the_DT attacker_NN 's_POS script_NN from_IN leaking_VBG sensitive_JJ data_NNS to_TO the_DT attacker_NN 's_POS servers_NNS =_JJ -_: =[_NN 5_CD ,_, 11_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Typically_RB ,_, these_DT filters_NNS monitor_VBP the_DT flow_NN of_IN information_NN within_IN the_DT web_NN site_NN 's_POS JavaScript_NNP environment_NN and_CC aim_NN to_TO block_VB the_DT attacker_NN from_IN exfiltrating_VBG that_DT information_NN to_TO his_PRP$ or_CC her_PRP$ servers_NNS ._.
+One_CD tech_NN
+several_JJ different_JJ ways_NNS ._.
+For_IN example_NN ,_, the_DT attacker_NN can_MD create_VB a_DT variable_JJ called_VBN location_NN in_IN the_DT parent_NN frame_NN ,_, preventing_VBG the_DT above_JJ script_NN for_IN successfully_RB changing_VBG the_DT location_NN of_IN the_DT attacker_NN 's_POS frame_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT attacker_NN can_MD also_RB cancel_VB the_DT navigation_NN using_VBG an_DT onbeforeunload_JJ handler_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Client-side_JJ XSS_NN filters_NNS add_VBP yet_RB another_DT way_NN to_TO circumvent_VB frame_NN busting_VBG :_: the_DT attacker_NN can_MD induce_VB a_DT false_JJ positive_JJ th_DT

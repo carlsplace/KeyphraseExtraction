@@ -1,0 +1,149 @@
+SecuBat_NNP :_: a_DT web_NN vulnerability_NN scanner_NN
+As_IN the_DT popularity_NN of_IN the_DT web_NN increases_NNS and_CC web_NN applications_NNS become_VBP tools_NNS of_IN everyday_JJ use_NN ,_, the_DT role_NN of_IN web_NN security_NN has_VBZ been_VBN gaining_VBG importance_NN as_RB well_RB ._.
+The_DT last_JJ years_NNS have_VBP shown_VBN a_DT significant_JJ increase_NN in_IN the_DT number_NN of_IN web-based_JJ attacks_NNS ._.
+For_IN example_NN ,_, there_EX has_VBZ been_VBN extensive_JJ press_NN coverage_NN of_IN recent_JJ security_NN incidences_NNS involving_VBG the_DT loss_NN of_IN sensitive_JJ credit_NN card_NN information_NN belonging_VBG to_TO millions_NNS of_IN customers_NNS ._.
+Many_JJ web_NN application_NN security_NN vulnerabilities_NNS result_VBP from_IN generic_JJ input_NN validation_NN problems_NNS ._.
+Examples_NNS of_IN such_JJ vulnerabilities_NNS are_VBP SQL_NN injection_NN and_CC Cross-Site_JJ Scripting_NN -LRB-_-LRB- XSS_NN -RRB-_-RRB- ._.
+Although_IN the_DT majority_NN of_IN web_NN vulnerabilities_NNS are_VBP easy_JJ to_TO understand_VB and_CC to_TO avoid_VB ,_, many_JJ web_NN developers_NNS are_VBP ,_, unfortunately_RB ,_, not_RB security-aware_JJ ._.
+As_IN a_DT result_NN ,_, there_EX exist_VBP many_JJ web_NN sites_NNS on_IN the_DT Internet_NN that_WDT are_VBP vulnerable_JJ ._.
+This_DT paper_NN demonstrates_VBZ how_WRB easy_JJ it_PRP is_VBZ for_IN attackers_NNS to_TO automatically_RB discover_VB and_CC exploit_VB application-level_JJ vulnerabilities_NNS in_IN a_DT large_JJ number_NN of_IN web_NN applications_NNS ._.
+To_TO this_DT end_NN ,_, we_PRP developed_VBD SecuBat_NNP ,_, a_DT generic_JJ and_CC modular_JJ web_NN vulnerability_NN scanner_NN that_IN ,_, similar_JJ to_TO a_DT port_NN scanner_NN ,_, automatically_RB analyzes_VBZ web_NN sites_NNS with_IN the_DT aim_NN of_IN finding_VBG exploitable_JJ SQL_NN injection_NN and_CC XSS_NN vulnerabilities_NNS ._.
+Using_VBG SecuBat_NNP ,_, we_PRP were_VBD able_JJ to_TO find_VB many_JJ potentially_RB vulnerable_JJ web_NN sites_NNS ._.
+To_TO verify_VB the_DT accuracy_NN of_IN SecuBat_NNP ,_, we_PRP picked_VBD one_CD hundred_CD interesting_JJ web_NN sites_NNS from_IN the_DT potential_JJ victim_NN list_NN for_IN further_JJ analysis_NN and_CC confirmed_VBD exploitable_JJ flaws_NNS in_IN the_DT identified_VBN web_NN pages_NNS ._.
+Among_IN our_PRP$ victims_NNS were_VBD well-known_JJ global_JJ companies_NNS and_CC a_DT finance_NN ministry_NN ._.
+Of_IN course_NN ,_, we_PRP notified_VBD the_DT administrators_NNS of_IN vulnerable_JJ sites_NNS about_IN potential_JJ security_NN problems_NNS ._.
+More_JJR than_IN fifty_CD responded_VBD to_TO request_VB additional_JJ information_NN or_CC to_TO report_VB that_IN the_DT security_NN hole_NN was_VBD closed_VBN ._.
+._.
+In_IN particular_JJ ,_, information_NN extraction_NN -LRB-_-LRB- parallel_JJ concept_NN extraction_NN from_IN blogs_NNS ,_, news_NN ,_, instance_NN messages_NNS etc_NN -RRB-_-RRB- ,_, online_JJ and_CC off-line_JJ search_NN -LRB-_-LRB- e.g._FW retrieval_NN -RRB-_-RRB- ,_, and_CC traffic_NN scanning_NN -LRB-_-LRB- e.g._FW network_NN scanning_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, online_JJ query_NN log_NN processing_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- -RRB-_-RRB- are_VBP application_NN classes_NNS in_IN which_WDT massive_JJ concept_NN sets_NNS are_VBP sought_VBN in_IN large_JJ unstructured_JJ and_CC semistructured_JJ online_NN datasets_NNS ._.
+Data_NN pre-processing_NN ,_, including_VBG feature_NN ex_FW
+I_PRP via_IN information_NN flow_NN ,_, modeling_NN checking_NN analysis_NN ,_, or_CC a_DT combination_NN thereof_RB ._.
+Work_NN by_IN Wassermann_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, Lam_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, Kie˙zun_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, Jovanovic_JJ -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, and_CC Huang_NNP -LRB-_-LRB- 24_CD -RRB-_-RRB- all_DT fall_NN into_IN this_DT category_NN ._.
+Kals_FW et_FW ._.
+al._FW =_SYM -_: =[_NN 25_CD -RRB-_-RRB- -_: =_JJ -_: and_CC McAllister_NNP et_NNP ._.
+al._FW -LRB-_-LRB- 26_CD -RRB-_-RRB- implemented_VBD automated_JJ black_JJ box_NN web_NN vulnerability_NN scanners_NNS ,_, with_IN the_DT former_JJ targeting_VBG SQLI_NN and_CC XSS_NN vulnerabilities_NNS and_CC the_DT latter_JJ utilizing_VBG user_NN interactions_NNS to_TO generate_VB m_NN
+omplex_JJ data_NNS type_NN containing_VBG string_NN ._.
+Yes_NNP Web_NN applications_NNS model_NN -LRB-_-LRB- OCL_NN -RRB-_-RRB- ._.
+WAVES_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- SQLI_NNP and_CC XSS_NNP Response_NNP pages_NNS Crawl_VB and_CC add_VB attack_NN test_NN cases_NNS in_IN input_NN forms_NNS ._.
+Black_JJ box_NN URL_NN Yes_UH Web_NN applications_NNS SecuBat_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: SQLI_NN and_CC XSS_NN Source_NN code_NN Inject_NN attack_NN cases_NNS in_IN nonmalicious_JJ inputs_NNS ._.
+Black_JJ box_NN URL_NN Yes_UH Web_NN applications_NNS Breech_NNP et_FW al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- BOF_NN Compiled_VBD program_NN Modify_NNP program_NN instructions_NNS through_IN dynamic_JJ compiler_NN ._.
+B_NN
+et_CC Explorer_NNP 8_CD and_CC NoScript_NNP already_RB implement_VB this_DT approach_NN ._.
+Closely_RB related_JJ to_TO our_PRP$ automatic_JJ approach_NN on_IN detecting_VBG clickjacking_NN attacks_NNS are_VBP existing_VBG automatic_JJ web_NN application_NN security_NN scanners_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 1_CD ,_, 5_CD ,_, 17_CD ,_, 23_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Although_IN these_DT scanners_NNS automatically_RB test_VBP web_NN applications_NNS just_RB as_IN we_PRP do_VBP ,_, they_PRP do_VBP not_RB focus_VB on_IN detecting_VBG clickjacking_JJ attempts_NNS ._.
+SecuBat_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- by_IN Kals_NNS et_FW al._FW automatically_RB detects_VBZ SQL_NN injection_NN and_CC
+depth_NN that_IN a_DT website_NN can_MD be_VB scanned_VBN with_IN ,_, the_DT instrumented_JJ browser_NN in_IN PAPAS_NNP uses_VBZ a_DT number_NN of_IN simple_JJ heuristics_NNS to_TO automatically_RB fill_VB forms_NNS -LRB-_-LRB- similarly_RB to_TO previously_RB proposed_VBN scanning_NN solutions_NNS such_JJ as_IN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+For_IN example_NN ,_, random_JJ alphanumeric_JJ values_NNS of_IN 8_CD characters_NNS are_VBP inserted_VBN into_IN password_NN fields_NNS and_CC a_DT default_NN email_NN address_NN is_VBZ inserted_VBN into_IN fields_NNS with_IN the_DT name_NN email_NN ,_, e-mail_JJ ,_, ormail_NN ._.
+For_IN sites_NNS where_WRB th_DT
+depth_NN that_IN a_DT website_NN can_MD be_VB scanned_VBN with_IN ,_, the_DT instrumented_JJ browser_NN in_IN PAPAS_NNP uses_VBZ a_DT number_NN of_IN simple_JJ heuristics_NNS to_TO automatically_RB fill_VB forms_NNS -LRB-_-LRB- similarly_RB to_TO previously_RB proposed_VBN scanning_NN solutions_NNS such_JJ as_IN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+For_IN example_NN ,_, random_JJ alphanumeric_JJ values_NNS of_IN 8_CD characters_NNS are_VBP inserted_VBN into_IN password_NN fields_NNS and_CC a_DT default_NN e-mail_JJ address_NN is_VBZ inserted_VBN into_IN fields_NNS with_IN the_DT name_NN email_NN ,_, e-mail_JJ ,_, or_CC mail_NN ._.
+For_IN sites_NNS where_WRB
+s_NN and_CC the_DT discovery_NN of_IN web_NN application_NN vulnerabilities_NNS ._.
+SQL_NN injection_NN and_CC cross_NN site_NN scripting_NN -LRB-_-LRB- XSS_NN -RRB-_-RRB- are_VBP two_CD well-known_JJ web_NN security_NN problems_NNS that_WDT have_VBP been_VBN studied_VBN in_IN detail_NN in_IN the_DT literature_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 28_CD ,_, 26_CD ,_, 7_CD ,_, 8_CD ,_, 12_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Recently_RB ,_, phishing_NN has_VBZ also_RB started_VBN to_TO receive_VB attention_NN by_IN the_DT academic_JJ community_NN as_RB well_RB as_IN from_IN companies_NNS ._.
+To_TO date_NN ,_, several_JJ anti-phishing_JJ solutions_NNS have_VBP been_VBN proposed_VBN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 25_CD ,_, 4_CD ,_, 33_CD ,_, 18_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Cr_NN
+ess_NN to_TO on-line_JJ services_NNS ._.
+As_IN the_DT use_NN of_IN web_NN applications_NNS increases_VBZ ,_, a_DT greater_JJR focus_NN on_IN web_NN security_NN is_VBZ needed_VBN ._.
+In_IN recent_JJ years_NNS ,_, there_EX has_VBZ been_VBN a_DT significant_JJ increase_NN in_IN the_DT number_NN of_IN web-based_JJ attacks_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One_CD key_JJ technology_NN used_VBN in_IN interactive_JJ web_NN applications_NNS is_VBZ JavaScript_NNP -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Embedded_VBN into_IN the_DT HTML_NNP of_IN a_DT web_NN page_NN ,_, it_PRP is_VBZ dynamically_RB executed_VBN at_IN the_DT client_NN ,_, allowing_VBG for_IN enhanced_VBN webpage_NN display_NN and_CC g_NN
+ities_NNS by_IN using_VBG software_NN agents_NNS ._.
+These_DT tools_NNS perform_VBP attacks_NNS against_IN web_NN applications_NNS ,_, usually_RB in_IN a_DT black-box_JJ fashion_NN ,_, and_CC detect_VB vulnerabilities_NNS by_IN observing_VBG the_DT applications_NNS '_POS response_NN to_TO the_DT attacks_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, without_IN exact_JJ knowledge_NN about_IN the_DT internal_JJ structure_NN of_IN applications_NNS ,_, a_DT black-box_JJ approach_NN might_MD not_RB have_VB enough_JJ test_NN cases_NNS to_TO reveal_VB existing_VBG vulnerabilities_NNS and_CC also_RB have_VBP false_JJ positives_NNS ._.
+ty_NN scanners_NNS crawl_VBP and_CC scan_VBP for_IN web_NN vulnerabilities_NNS by_IN using_VBG software_NN agents_NNS ._.
+These_DT tools_NNS perform_VBP attacks_NNS against_IN web_NN applications_NNS and_CC detect_VB vulnerabilities_NNS by_IN observing_VBG their_PRP$ behavior_NN to_TO the_DT attacks_NN =_JJ -_: =[_NN 4_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+WAVES_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, SecuBat_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, AppScan_NN ,_, ScanDo_NN ,_, and_CC WebInspect_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- are_VBP in_IN this_DT category_NN ._.
+However_RB ,_, without_IN exact_JJ knowledge_NN about_IN the_DT internal_JJ structure_NN of_IN applications_NNS ,_, it_PRP is_VBZ difficult_JJ to_TO generate_VB precise_JJ
+ronics_NNS Computer_NNP &_CC Information_NNP Engineering_NNP ,_, Chonnam_NNP National_NNP University_NNP ,_, Republic_NNP of_IN Korea_NNP -LRB-_-LRB- Phone_NNP :_: +82625303714_CD ;_: Fax_NN :_: +82625303719_CD ;_: e-mail_JJ :_: bongnam@jnu.ac.kr_NN -RRB-_-RRB- ._.
+Jaechul_NNP Park_NNP and_CC Bongnam_NNP Noh_NNP web_NN attacks_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Kruegel_NNP 's_POS study_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- has_VBZ received_VBN much_JJ attention_NN in_IN method_NN to_TO detect_VB web-based_JJ attack_NN ;_: the_DT analysis_NN techniques_NNS used_VBN by_IN the_DT HTTP_NN queries_NNS contain_VBP parameters_NNS ._.
+This_DT approach_NN supports_VBZ a_DT more_RBR focused_JJ
+string_NN values_NNS for_IN underlying_VBG system_NN ._.
+These_DT string_NN values_NNS are_VBP many_JJ times_NNS used_VBN ,_, for_IN example_NN ,_, for_IN database_NN queries_NNS ._.
+In_IN fact_NN ,_, the_DT most_RBS common_JJ command_NN injection_NN attack_NN is_VBZ an_DT SQL_NN 2scommand_NN injection_NN attack_NN =_JJ -_: =[_NN 5_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT application_NN is_VBZ vulnerable_JJ to_TO the_DT SQL_NN injection_NN if_IN the_DT attacker_NN has_VBZ a_DT possibility_NN to_TO insert_VB partial_JJ SQL_NN statement_NN into_IN an_DT existing_VBG SQL_NN statement_NN of_IN the_DT system_NN ._.
+Typically_RB ,_, for_IN example_NN ,_, the_DT attacke_NN
+rstood_VBN merely_RB by_IN analyzing_VBG the_DT server-side_JJ code_NN ._.
+An_DT important_JJ group_NN of_IN security_NN tools_NNS are_VBP black-box_JJ security_NN scanners_NNS that_WDT dynamically_RB access_VBP the_DT web_NN application_NN using_VBG public_JJ interfaces_NNS only_RB ._.
+SecuBat_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: and_CC WAVES_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- are_VBP tools_NNS that_WDT aim_VBP at_IN detecting_VBG SQL_NN injection_NN and_CC XSS_NN by_IN using_VBG a_DT crawler_NN ._.
+Most_JJS crawler-based_JJ tools_NNS are_VBP currently_RB agnostic_JJ to_TO the_DT runtime_NN DOM_NN tree_NN changes_NNS ,_, and_CC can_MD not_RB handle_VB the_DT client_NN s_NN
+er_IN an_DT effective_JJ protection_NN against_IN web_NN attacks_NNS ._.
+The_DT dynamic_JJ part_NN of_IN our_PRP$ work_NN is_VBZ also_RB related_JJ to_TO a_DT number_NN of_IN research_NN results_NNS and_CC tools_NNS in_IN the_DT areas_NNS of_IN application_NN security_NN testing_NN and_CC fault_NN injection_NN =_JJ -_: =[_NN 3,12,19,29,37,40_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+All_DT these_DT systems_NNS inject_VBP malicious_JJ -LRB-_-LRB- or_CC sometimes_RB random_JJ -RRB-_-RRB- input_NN into_IN the_DT applications_NNS to_TO identify_VB security_NN problems_NNS ._.
+In_IN our_PRP$ tool_NN ,_, we_PRP inject_VBP strings_NNS corresponding_VBG to_TO possible_JJ XSS_NN and_CC SQL_NN injection_NN att_NN
+ided_VBN ._.
+Black-box_JJ testing_NN is_VBZ a_DT popular_JJ choice_NN when_WRB analyzing_VBG web_NN applications_NNS for_IN security_NN errors_NNS ._.
+This_DT is_VBZ confirmed_VBN by_IN the_DT large_JJ number_NN of_IN open-source_JJ and_CC commercial_JJ black-box_JJ tools_NNS that_WDT are_VBP available_JJ =_JJ -_: =[_NN 1_CD ,_, 16_CD ,_, 19_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT tools_NNS ,_, also_RB called_VBN web_NN vulnerability_NN scanners_NNS or_CC fuzzers_NNS ,_, typically_RB check_NN for_IN the_DT presence_NN of_IN well-known_JJ vulnerabilities_NNS ,_, such_JJ as_IN cross-site_JJ scripting_NN -LRB-_-LRB- XSS_NN -RRB-_-RRB- or_CC SQL_NN injection_NN flaws_NNS ._.
+To_TO check_VB fo_NN
+etail_NN to_TO determine_VB whether_IN it_PRP would_MD be_VB able_JJ to_TO cope_VB with_IN modern_JJ AJAX_NNP web_NN applications_NNS ._.
+VeriWeb_NNP offers_VBZ no_DT support_NN for_IN generating_VBG test_NN suites_NNS as_IN we_PRP do_VBP in_IN Section_NN 7_CD ._.
+Tools_NNS such_JJ as_IN WAVES_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC SecuBat_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN proposed_VBN for_IN automatically_RB assessing_VBG web_NN application_NN security_NN ._.
+The_DT general_JJ approach_NN is_VBZ based_VBN on_IN a_DT crawler_NN capable_JJ of_IN detecting_VBG data_NNS entry_NN points_NNS which_WDT can_MD be_VB seen_VBN as_IN possible_JJ points_NNS of_IN secu_NN
+ks_NNS than_IN traditional_JJ computer_NN applications_NNS -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+Browser-based_JJ attacks_NNS have_VBP posed_VBN serious_JJ threats_NNS to_TO the_DT Web_NN in_IN recent_JJ years_NNS ._.
+Exploiting_VBG the_DT vulnerabilities_NNS in_IN Web_NN browsers_NNS -LRB-_-LRB- 6_CD ,_, 25_CD -RRB-_-RRB- or_CC Web_NN applications_NNS =_JJ -_: =[_NN 11_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, attackers_NNS may_MD directly_RB harm_VB a_DT Web_NN browser_NN 's_POS host_NN machine_NN and_CC user_NN through_IN various_JJ attacks_NNS such_JJ as_IN drive-by_JJ download_NN -LRB-_-LRB- 20_CD ,_, 24_CD ,_, 28_CD -RRB-_-RRB- ,_, crosssite_JJ scripting_NN -LRB-_-LRB- 10_CD ,_, 37_CD -RRB-_-RRB- ,_, cross-site_JJ request_NN forgery_NN -LRB-_-LRB- 2_CD ,_, 46_CD -RRB-_-RRB- ,_, an_DT
+rs_NNS that_IN the_DT cross-site_JJ scripting_NN analysis_NN performed_VBN by_IN Acunetix_NNP is_VBZ much_RB simpler_JJR than_IN the_DT complete_JJ attack_NN scenario_NN presented_VBN in_IN this_DT paper_NN ._.
+Also_RB ,_, no_DT working_VBG proof-of-concept_JJ exploits_NNS are_VBP generated_VBN ._.
+In_IN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Scott_NNP and_CC Sharp_NNP discuss_VBP web_NN vulnerabilities_NNS such_JJ as_IN XSS_NN ._.
+They_PRP propose_VBP to_TO deploy_VB application-level_JJ firewalls_NNS that_WDT use_VBP manual_JJ policies_NNS to_TO secure_VB web_NN applications_NNS ._.
+Their_PRP$ approach_NN would_MD certainly_RB protec_VB
+ance_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+2.2_CD Cross-Site_NNP Scripting_NNP Cross_NNP Site_NN Scripting_NN -LRB-_-LRB- XSS_NN ,_, sometimes_RB also_RB abbreviated_VBD as_IN CSS_NN -RRB-_-RRB- refers_VBZ to_TO a_DT range_NN of_IN attacks_NNS in_IN which_WDT the_DT attacker_NN injects_VBZ malicious_JJ JavaScript_NNP into_IN a_DT web_NN application_NN =_JJ -_: =[_NN 2_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+When_WRB a_DT victim_NN views_VBZ the_DT vulnerable_JJ web_NN page_NN with_IN the_DT malicious_JJ script_NN ,_, this_DT script_NN origins_NNS directly_RB from_IN the_DT web_NN site_NN itself_PRP and_CC thus_RB ,_, is_VBZ trusted_VBN ._.
+As_IN a_DT result_NN ,_, the_DT script_NN can_MD access_VB and_CC steal_VB cookie_NN
+elopment_NN environments_NNS ,_, another_DT solution_NN is_VBZ the_DT use_NN of_IN an_DT intermediate_JJ component_NN that_WDT performs_VBZ the_DT filtering_VBG of_IN dangerous_JJ characters_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, as_IN Alfantookh_NNP proposes_VBZ in_IN his_PRP$ paper_NN on_IN SQL_NN injection_NN avoidance_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+2.2_CD Cross-Site_NNP Scripting_NNP Cross_NNP Site_NN Scripting_NN -LRB-_-LRB- XSS_NN ,_, sometimes_RB also_RB abbreviated_VBD as_IN CSS_NN -RRB-_-RRB- refers_VBZ to_TO a_DT range_NN of_IN attacks_NNS in_IN which_WDT the_DT attacker_NN injects_VBZ malicious_JJ JavaScript_NNP into_IN a_DT web_NN application_NN -LRB-_-LRB- 2_CD ,_, 9_CD -RRB-_-RRB- ._.
+es_NNS ._.
+Another_DT way_NN of_IN helping_VBG developers_NNS is_VBZ to_TO implement_VB user_NN data_NNS encoding_VBG within_IN the_DT web_NN server_NN application_NN environment_NN ._.
+For_IN example_NN ,_, Microsoft_NNP implemented_VBD such_JJ security_NN checks_NNS in_IN their_PRP$ ._.
+NET_NN framework_NN =_JJ -_: =[_NN 4_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Apart_RB from_IN such_JJ approaches_NNS specific_JJ to_TO development_NN environments_NNS ,_, another_DT solution_NN is_VBZ the_DT use_NN of_IN an_DT intermediate_JJ component_NN that_WDT performs_VBZ the_DT filtering_VBG of_IN dangerous_JJ characters_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, as_IN Alfantookh_JJ propo_NN
+ilable_JJ worker_NN threads_NNS via_IN the_DT common_JJ thread_NN controller_NN ._.
+At_IN execution_NN time_NN ,_, the_DT attacking_VBG task_NN creates_VBZ new_JJ instances_NNS of_IN the_DT attack_NN and_CC analysis_NN components_NNS of_IN the_DT selected_VBN plug-in_JJ using_VBG ._.
+NET_NN reflection_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP then_RB calls_VBZ their_PRP$ run_NN Figure_NNP 3_CD :_: SecuBat_NNP Attacking_NNP Architecture_NNP methods_NNS ._.
+After_IN the_DT attack_NN and_CC analysis_NN components_NNS complete_VBP their_PRP$ work_NN ,_, the_DT task_NN stores_NNS the_DT detection_NN results_VBZ into_IN the_DT database_NN for_IN su_NN
+links_NNS ._.
+Conceptual_JJ ideas_NNS for_IN the_DT implementation_NN of_IN the_DT crawling_VBG component_NN werestaken_NN from_IN existing_VBG systems_NNS ,_, especially_RB from_IN Ken_NNP Moody_NNP 's_POS and_CC Marco_NNP Palomino_NNP 's_POS SharpSpider_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, and_CC David_NNP Cruwys_NNP '_POS spider_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+3.2_CD Attack_NNP Component_NNP After_IN the_DT crawling_VBG phase_NN has_VBZ completed_VBN ,_, SecuBat_NNP starts_VBZ processing_VBG the_DT list_NN of_IN target_NN pages_NNS ._.
+In_IN particular_JJ ,_, the_DT attack_NN component_NN scans_VBZ each_DT page_NN for_IN the_DT presence_NN of_IN web_NN forms_NNS ._.
+Th_NN
+cases_NNS are_VBP generated_VBN and_CC sent_VBN to_TO the_DT application_NN ._.
+Then_RB ,_, the_DT results_NNS returned_VBN by_IN the_DT application_NN are_VBP analyzed_VBN for_IN unexpected_JJ behavior_NN that_WDT indicate_VBP errors_NNS or_CC vulnerabilities_NNS ._.
+So_RB far_RB ,_, white-box_JJ testing_NN =_JJ -_: =[_NN 11_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ not_RB experienced_VBN widespread_JJ use_NN for_IN finding_VBG security_NN flaws_NNS in_IN web_NN applications_NNS ._.
+An_DT important_JJ reason_NN is_VBZ the_DT limited_JJ detection_NN capability_NN of_IN white-box_NN analysis_NN tools_NNS ,_, in_IN particular_JJ due_JJ to_TO heterogene_NN
+nly_RB protect_VB applications_NNS against_IN a_DT vulnerability_NN scanner_NN such_JJ as_IN SecuBat_NNP ._.
+However_RB ,_, the_DT problem_NN of_IN their_PRP$ approach_NN is_VBZ that_IN it_PRP is_VBZ a_DT tedious_JJ and_CC error-prone_JJ task_NN to_TO create_VB suitable_JJ policies_NNS ._.
+Huang_NNP et_FW al._FW =_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: present_VB a_DT vulnerability_NN detection_NN tool_NN that_WDT automatically_RB executes_VBZ SQL_NN injection_NN attacks_NNS ._.
+As_RB far_RB as_IN SQL_NN injection_NN is_VBZ concerned_VBN ,_, our_PRP$ work_NN is_VBZ similar_JJ to_TO theirs_JJ ._.
+However_RB ,_, their_PRP$ scanner_NN is_VBZ not_RB as_IN compreh_NN
+range_NN of_IN general_JJ application-level_JJ vulnerabilities_NNS ._.
+In_IN addition_NN to_TO applicationlevel_NN vulnerability_NN scanners_NNS ,_, there_EX are_VBP also_RB tools_NNS that_WDT audit_VBP hosts_NNS on_IN the_DT network_NN level_NN ._.
+For_IN example_NN ,_, tools_NNS such_JJ as_IN NMap_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: or_CC Xprobe_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- can_MD determine_VB the_DT availability_NN of_IN hosts_NNS and_CC accessible_JJ services_NNS ._.
+However_RB ,_, they_PRP are_VBP not_RB concerned_VBN with_IN higher-level_JJ vulnerability_NN analysis_NN ._.
+Figure_NNP 5_CD :_: Successful_JJ form-redirection_NN attack_NN
+a_DT non-existing_JJ URL_NN There_EX are_VBP commercial_JJ web_NN application_NN vulnerability_NN scanner_NN available_JJ on_IN the_DT market_NN that_WDT claim_VBP to_TO provide_VB functionality_NN similar_JJ to_TO SecuBat_NNP -LRB-_-LRB- e.g._FW ,_, Acunetix_JJ Web_NN Vulnerability_NN Scanner_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Unfortunately_RB ,_, due_JJ to_TO the_DT closed-source_JJ nature_NN of_IN these_DT systems_NNS ,_, many_JJ of_IN the_DT claims_NNS can_MD not_RB be_VB verified_VBN ,_, and_CC an_DT in-depth_JJ comparison_NN with_IN SecuBat_NN is_VBZ difficult_JJ ._.
+For_IN example_NN ,_, it_PRP appears_VBZ that_IN the_DT cross_NN -_:
+the_DT option_NN of_IN dropping_VBG external_JJ links_NNS ._.
+Conceptual_JJ ideas_NNS for_IN the_DT implementation_NN of_IN the_DT crawling_VBG component_NN werestaken_NN from_IN existing_VBG systems_NNS ,_, especially_RB from_IN Ken_NNP Moody_NNP 's_POS and_CC Marco_NNP Palomino_NNP 's_POS SharpSpider_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC David_NNP Cruwys_NNP '_POS spider_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+3.2_CD Attack_NNP Component_NNP After_IN the_DT crawling_VBG phase_NN has_VBZ completed_VBN ,_, SecuBat_NNP starts_VBZ processing_VBG the_DT list_NN of_IN target_NN pages_NNS ._.
+In_IN particular_JJ ,_, the_DT attack_NN component_NN scans_VBZ each_DT page_NN for_IN
+vironments_NNS with_IN appropriate_JJ configuration_NN settings_NNS ._.
+In_IN either_DT case_NN ,_, the_DT Encoded_NNP Reflected_NNP XSS_NNP Attack_NNP plug-in_JJ attempts_NNS to_TO bypass_VB simple_JJ input_NN filtering_VBG by_IN using_VBG HTML_NNP encodings_NNS -LRB-_-LRB- see_VB the_DT XSS_NNS cheat_VBP sheet_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+For_IN instance_NN ,_, Table_NNP 2_CD shows_VBZ different_JJ ways_NNS of_IN encoding_VBG the_DT the_DT ``_`` -LRB-_-LRB- ''_'' character_NN ._.
+One_CD disadvantage_NN of_IN using_VBG encoded_VBN characters_NNS is_VBZ that_IN not_RB all_DT browsers_NNS interpret_VBP them_PRP in_IN the_DT same_JJ way_NN -LRB-_-LRB- many_JJ encodings_NNS on_IN
+cases_NNS are_VBP generated_VBN and_CC sent_VBN to_TO the_DT application_NN ._.
+Then_RB ,_, the_DT results_NNS returned_VBN by_IN the_DT application_NN are_VBP analyzed_VBN for_IN unexpected_JJ behavior_NN that_WDT indicate_VBP errors_NNS or_CC vulnerabilities_NNS ._.
+So_RB far_RB ,_, white-box_JJ testing_NN =_JJ -_: =[_NN 11_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ not_RB experienced_VBN widespread_JJ use_NN for_IN finding_VBG security_NN flaws_NNS in_IN web_NN applications_NNS ._.
+An_DT important_JJ reason_NN is_VBZ the_DT limited_JJ detection_NN capability_NN of_IN white-box_NN analysis_NN tools_NNS ,_, in_IN particular_JJ due_JJ to_TO heterogene_NN
+l_NN application-level_NN vulnerabilities_NNS ._.
+In_IN addition_NN to_TO applicationlevel_NN vulnerability_NN scanners_NNS ,_, there_EX are_VBP also_RB tools_NNS that_WDT audit_VBP hosts_NNS on_IN the_DT network_NN level_NN ._.
+For_IN example_NN ,_, tools_NNS such_JJ as_IN NMap_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- or_CC Xprobe_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: can_MD determine_VB the_DT availability_NN of_IN hosts_NNS and_CC accessible_JJ services_NNS ._.
+However_RB ,_, they_PRP are_VBP not_RB concerned_VBN with_IN higher-level_JJ vulnerability_NN analysis_NN ._.
+Figure_NNP 5_CD :_: Successful_JJ form-redirection_JJ attack_NN to_TO a_DT non-existi_JJ
+ance_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+2.2_CD Cross-Site_NNP Scripting_NNP Cross_NNP Site_NN Scripting_NN -LRB-_-LRB- XSS_NN ,_, sometimes_RB also_RB abbreviated_VBD as_IN CSS_NN -RRB-_-RRB- refers_VBZ to_TO a_DT range_NN of_IN attacks_NNS in_IN which_WDT the_DT attacker_NN injects_VBZ malicious_JJ JavaScript_NNP into_IN a_DT web_NN application_NN =_JJ -_: =[_NN 2_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+When_WRB a_DT victim_NN views_VBZ the_DT vulnerable_JJ web_NN page_NN with_IN the_DT malicious_JJ script_NN ,_, this_DT script_NN origins_NNS directly_RB from_IN the_DT web_NN site_NN itself_PRP and_CC thus_RB ,_, is_VBZ trusted_VBN ._.
+As_IN a_DT result_NN ,_, the_DT script_NN can_MD access_VB and_CC steal_VB cookie_NN

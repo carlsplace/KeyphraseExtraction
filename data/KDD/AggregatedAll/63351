@@ -1,0 +1,90 @@
+Adversarial_JJ learning_NN
+Many_JJ classification_NN tasks_NNS ,_, such_JJ as_IN spam_NN filtering_VBG ,_, intrusion_NN detection_NN ,_, and_CC terrorism_NN detection_NN ,_, are_VBP complicated_VBN by_IN an_DT adversary_NN who_WP wishes_VBZ to_TO avoid_VB detection_NN ._.
+Previous_JJ work_NN on_IN adversarial_JJ classification_NN has_VBZ made_VBN the_DT unrealistic_JJ assumption_NN that_IN the_DT attacker_NN has_VBZ perfect_JJ knowledge_NN of_IN the_DT classifier_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+In_IN this_DT paper_NN ,_, we_PRP introduce_VBP the_DT adversarial_JJ classifier_NN reverse_NN engineering_NN -LRB-_-LRB- ACRE_NN -RRB-_-RRB- learning_NN problem_NN ,_, the_DT task_NN of_IN learning_VBG sufficient_JJ information_NN about_IN a_DT classifier_NN to_TO construct_VB adversarial_JJ attacks_NNS ._.
+We_PRP present_VBP efficient_JJ algorithms_NNS for_IN reverse_JJ engineering_NN linear_NN classifiers_NNS with_IN either_CC continuous_JJ or_CC Boolean_JJ features_NNS and_CC demonstrate_VBP their_PRP$ effectiveness_NN using_VBG real_JJ data_NNS from_IN the_DT domain_NN of_IN spam_NN filtering_VBG ._.
+being_VBG developed_VBN by_IN Sahota_NNP -LRB-_-LRB- 14_CD ,_, 13_CD ,_, 12_CD -RRB-_-RRB- ,_, and_CC Shimada_NNP et_FW al._FW -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Also_RB ,_, an_DT earlier_JJR version_NN of_IN the_DT Soccer_NNP Server_NN has_VBZ been_VBN used_VBN by_IN Stone_NNP and_CC Veloso_NNP to_TO investigate_VB learning_NN under_IN multi-agent_JJ environments_NNS =_JJ -_: =[_NN 16_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP apply_VBP techniques_NNS of_IN neural_JJ networks_NNS and_CC machine_NN learning_NN to_TO improve_VB a_DT player_NN 's_POS skills_NNS and_CC to_TO acquire_VB the_DT ability_NN to_TO select_VB good_JJ play-plans_NNS ._.
+2.2_CD RoboCup_NNP The_NNP World_NNP Cup_NNP Robot_NNP Soccer_NNP Initiative_NNP -LRB-_-LRB- Ro_NN
+-LRB-_-LRB- 8_CD -RRB-_-RRB- or_CC decision_NN tree_NN induction_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ;_: beating_VBG a_DT non-reactive_JJ defender_NN circling_VBG in_IN front_NN of_IN the_DT goal_NN ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ;_: simpler_JJR forms_NNS of_IN passing_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ;_: and_CC unchallenged_JJ interception_NN using_VBG feedforward_JJ neural_JJ networks_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT models_NNS do_VBP not_RB consider_VB adversarial_JJ situations_NNS ,_, and_CC apart_RB from_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, online_JJ training_NN ,_, to_TO handle_VB the_DT specific_JJ type_NN of_IN opponent_NN involved_VBN ,_, has_VBZ not_RB been_VBN investigated_VBN ._.
+In_IN this_DT paper_NN we_PRP will_MD consider_VB
+ng_NN In_IN another_DT software_NN soccer_NN server_NN which_WDT closely_RB models_NNS the_DT real_JJ world_NN robotic_JJ soccer_NN competition_NN ,_, Stone_NNP and_CC Veloso_NNP use_VBP a_DT neural_JJ network_NN to_TO teach_VB a_DT robot_NN how_WRB to_TO kick_VB a_DT moving_VBG ball_NN into_IN an_DT open_JJ goal_NN =_JJ -_: =_JJ -LRB-_-LRB- SV98b_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+After_IN training_VBG the_DT network_NN to_TO shoot_VB the_DT ball_NN with_IN the_DT robot_NN beginning_VBG in_IN the_DT upperleft_NN quadrant_NN of_IN the_DT field_NN ,_, the_DT robot_NN was_VBD moved_VBN to_TO the_DT three_CD other_JJ quadrants_NNS and_CC tested_VBN with_IN the_DT learned_VBN behavior_NN ._.
+the_DT goal_NN ._.
+In_IN this_DT way_NN ,_, agents_NNS attempt_VBP to_TO coordinate_VB their_PRP$ defense_NN of_IN the_DT goal_NN ,_, while_IN also_RB attempting_VBG to_TO position_VB themselves_PRP near_IN it_PRP ._.
+4_CD Learning_NNP Inspired_VBN by_IN previous_JJ work_NN on_IN machine_NN learning_NN in_IN RoboCup_NN =_JJ -_: =[_NN 13_CD ,_, 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP focused_VBD on_IN techniques_NNS to_TO improve_VB individual_JJ players_NNS '_POS skills_NNS to_TO kick_VB ,_, pass_NN ,_, or_CC intercept_VB the_DT ball_NN ._.
+Fortunately_RB ,_, the_DT two_CD layer_NN ISIS_NN architecture_NN helps_VBZ to_TO simplify_VB the_DT problem_NN for_IN skill_NN learning_NN ._.
+In_IN
+n_NN belief_NN or_CC turn_VB to_TO other_JJ 's_POS observation_NN directly_RB ,_, rather_RB than_IN bothering_VBG to_TO argue_VB to_TO resolve_VB the_DT disagreement_NN ._.
+4_CD Lower-level_JJ skills_NNS and_CC Learning_NNP Inspired_VBN by_IN previous_JJ work_NN on_IN machine_NN learning_NN in_IN RoboCup_NN =_JJ -_: =[_NN 15_CD ,_, 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP focused_VBD on_IN techniques_NNS to_TO improve_VB individual_JJ players_NNS '_POS skills_NNS to_TO kick_VB ,_, pass_NN ,_, or_CC intercept_VB the_DT ball_NN ._.
+Fortunately_RB ,_, the_DT two_CD layer_NN ISIS_NN architecture_NN helps_VBZ to_TO simplify_VB the_DT problem_NN for_IN skill_NN learning_NN ._.
+In_IN
+on_IN techniques_NNS :_: agents_NNS must_MD act_VB quickly_RB and_CC autonomously_RB while_IN contributing_VBG to_TO the_DT achievement_NN of_IN the_DT team_NN 's_POS overall_JJ goal_NN -LRB-_-LRB- 4_CD ,_, 7_CD -RRB-_-RRB- ._.
+Robotic_JJ soccer_NN systems_NNS have_VBP been_VBN recently_RB developed_VBN both_CC in_IN simulation_NN =_JJ -_: =[_NN 9_CD ,_, 14_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: and_CC with_IN real_JJ robots_NNS -LRB-_-LRB- 1_CD ,_, 3_CD ,_, 12_CD ,_, 13_CD ,_, 20_CD -RRB-_-RRB- ._.
+The_DT research_NN presented_VBN in_IN this_DT paper_NN was_VBD developed_VBN jointly_RB in_IN simulation_NN and_CC on_IN our_PRP$ real_JJ robot_NN team_NN ._.
+2.1_CD Simulator_NNP The_NNP RoboCup_NNP soccer_NN server_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- has_VBZ been_VBN use_NN
+tly_RB communicate_VBP with_IN one_CD another_DT ;_: instead_RB all_DT such_JJ communication_NN is_VBZ mediated_VBN by_IN the_DT soccer_NN server_NN as_IN discussed_VBN below_IN ._.
+Figure_NN 1_CD shows_VBZ a_DT snapshot_NN of_IN the_DT soccer_NN server_NN with_IN two_CD competing_VBG teams_NNS :_: CMUnited_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: versus_CC our_PRP$ ISIS_NNP team_NN ._.
+Figure_NN 1_CD :_: The_DT Robocup_NNP synthetic_JJ soccer_NN domain_NN ._.
+The_DT soccer_NN server_NN provides_VBZ each_DT individual_JJ player_NN agent_NN input_NN in_IN the_DT form_NN of_IN two_CD types_NNS of_IN sensory_JJ information_NN :_: visual_JJ information_NN
+e_LS the_DT references_NNS provided_VBN in_IN Section_NN 1_CD -RRB-_-RRB- ,_, approaches_NNS that_WDT rely_VBP on_IN a_DT combination_NN of_IN planning_NN and_CC learning_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 29_CD ,_, 30_CD ,_, 38_CD -RRB-_-RRB- -RRB-_-RRB- ,_, and_CC approaches_NNS that_WDT rely_VBP on_IN a_DT combination_NN of_IN reacting_VBG and_CC learning_VBG -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 3_CD ,_, 17_CD ,_, 19_CD ,_, 21_CD ,_, 26_CD ,_, 24_CD ,_, 36_CD ,_, 37_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+M_NN -_: =_JJ --_: Dyna-Q_NN can_MD be_VB considered_VBN as_IN a_DT generalization_NN of_IN these_DT approaches_NNS ,_, and_CC as_IN such_JJ it_PRP aims_VBZ at_IN offering_VBG ``_`` maximum_JJ coordination_NN flexibility_NN ._. ''_''
+This_DT is_VBZ not_RB to_TO say_VB that_DT M-DynaQ_NN is_VBZ the_DT best_JJS choice_NN for_IN every_DT
+tiation_NN scenarios_NNS by_IN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+We_PRP believe_VBP that_IN the_DT first_JJ proven_JJ application_NN of_IN auctions_NNS in_IN a_DT physical_JJ multi_JJ robot_NN system_NN was_VBD developed_VBN by_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+The_DT field_NN of_IN Multiagent_NNP Learning_NNP is_VBZ described_VBN in_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC in_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: as_IN a_DT fusion_NN between_IN Multiagent_NNP Systems_NNP and_CC Machine_NNP Learning_NNP -LRB-_-LRB- ML_NN -RRB-_-RRB- ._.
+Applying_VBG ML_NN techniques_NNS to_TO MAS_NNP allows_VBZ us_PRP to_TO build_VB evolving_VBG agents_NNS :_: agents_NNS that_WDT learn_VBP from_IN and_CC adapt_VB to_TO their_PRP$ experience_NN and_CC their_PRP$ inte_NN
+y_NN ,_, so_IN multiplicity_NN of_IN optima_NN is_VBZ not_RB an_DT issue_NN ._. -RRB-_-RRB-
+However_RB ,_, computing_VBG the_DT optimal_JJ joint_JJ policy_NN can_MD be_VB complex_JJ in_IN some_DT settings_NNS --_: such_JJ as_IN in_IN the_DT control_NN of_IN artificial_JJ predator_NN teams_NNS -LRB-_-LRB- 63,68_CD -RRB-_-RRB- ,_, or_CC robot_NN soccer_NN =_JJ -_: =[_NN 67_CD -RRB-_-RRB- -_: =_SYM -_: even_RB if_IN the_DT opponent_NN team_NN 's_POS strategy_NN were_VBD known_VBN --_: so_IN using_VBG some_DT learning_VBG algorithm_NN to_TO come_VB up_RP with_IN a_DT joint_JJ policy_NN may_MD be_VB a_DT reasonable_JJ alternative_NN ._.
+This_DT establishes_VBZ a_DT connection_NN to_TO the_DT computational_JJ MAL_NN
+rogramming_VBG ._.
+In_IN other_JJ soccer_NN systems_NNS ,_, there_EX have_VBP been_VBN a_DT number_NN of_IN learning_VBG techniques_NNS that_WDT have_VBP been_VBN explored_VBN ._.
+However_RB ,_, most_JJS have_VBP learned_VBN low-level_JJ ,_, individual_JJ skills_NNS as_IN opposed_VBN to_TO team-based_JJ policies_NNS =_JJ -_: =[_NN 1_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Interestingly_RB ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- uses_VBZ genetic_JJ programming_NN to_TO evolve_VB team_NN behaviors_NNS from_IN scratch_NN as_IN opposed_VBN to_TO our_PRP$ layered_JJ learning_NN approach_NN ._.
+TPOT-RL_NN is_VBZ an_DT adaptation_NN of_IN RL_NN to_TO non-Markovian_JJ multi-agent_JJ domains_NNS wit_NN
+ed_VBN to_TO soccer_NN playing_NN robots_NNS as_IN an_DT example_NN for_IN a_DT multi-robot_JJ system_NN to_TO investigate_VB behavior_NN arbitration_NN by_IN reinforcement_NN learning_NN ._.
+Soccer_NN is_VBZ a_DT rich_JJ domain_NN for_IN the_DT study_NN of_IN multi-agent_JJ learning_NN issues_NNS =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Reinforcement_NN learning_NN -LRB-_-LRB- RL_NN -RRB-_-RRB- is_VBZ a_DT suitable_JJ learning_NN method_NN for_IN robotic_JJ soccer_NN because_IN it_PRP emulates_VBZ our_PRP$ own_JJ experience_NN in_IN playing_VBG soccer_NN ._.
+We_PRP usually_RB learn_VBP the_DT game_NN by_IN the_DT reward_NN and_CC punishment_NN that_IN we_PRP
+99_CD -RRB-_-RRB- 241_CD --_: 273_CD 271_CD used_VBN Memory-based_JJ Learning_NNP to_TO allow_VB a_DT player_NN to_TO learn_VB when_WRB to_TO shoot_VB and_CC when_WRB to_TO pass_VB the_DT ball_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+We_PRP then_RB used_VBD Neural_NNP Networks_NNP to_TO teach_VB a_DT player_NN to_TO shoot_VB a_DT moving_VBG ball_NN into_IN the_DT goal_NN =_JJ -_: =[_NN 36_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT soccer_NN server_NN ,_, we_PRP then_RB layered_VBD two_CD learned_VBN behaviors_NNS to_TO produce_VB a_DT higherlevel_JJ multi-agent_JJ behavior_NN :_: passing_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- ._.
+Also_RB in_IN the_DT soccer_NN server_NN Matsubara_NNP et_FW al._FW used_VBD a_DT Neural_NNP Network_NNP to_TO allow_VB a_DT p_NN
+ignificant_JJ advances_NNS ._.
+s202_FW SHEPPARD_FW To_TO date_NN ,_, research_NN in_IN multiple_JJ agent_NN planning_NN and_CC control_NN has_VBZ been_VBN limited_VBN largely_RB to_TO the_DT area_NN of_IN distributed_VBN artificial_JJ intelligence_NN -LRB-_-LRB- Rosenschein_NNP &_CC Genesereth_NNP ,_, 1985_CD ;_: =_JJ -_: =_JJ Stone_NNP &_CC Veloso_NNP ,_, 1996_CD -_: =_SYM -_: a_DT ;_: Suguwara_NNP &_CC Lesser_NNP ,_, 1993_CD ;_: Tan_NNP ,_, 1993_CD -RRB-_-RRB- and_CC artificial_JJ life_NN -LRB-_-LRB- Collins_NNP ,_, 1992_CD ;_: Huberman_NNP &_CC Glance_NNP ,_, 1995_CD ;_: Sandholm_NNP &_CC Crites_NNP ,_, 1995_CD ;_: Stanley_NNP ,_, Ashlock_NNP ,_, &_CC Tesfastsion_NNP ,_, 1993_CD -RRB-_-RRB- ._.
+In_IN distributed_VBN AI_NN -LRB-_-LRB- DAI_NN -RRB-_-RRB- ,_, several_JJ ag_NN
+in_IN percentage_NN of_IN communication_NN operators_NNS ._.
+7_CD Related_NNP Work_NNP There_EX are_VBP two_CD areas_NNS of_IN related_JJ work_NN --_: one_CD focused_VBN on_IN implementing_VBG theories_NNS of_IN collaboration_NN ,_, and_CC a_DT second_NN focused_VBN on_IN collaboration_NN in_IN RoboCup_NN =_JJ -_: =[_NN 16_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+With_IN respect_NN to_TO the_DT first_JJ area_NN of_IN related_JJ work_NN ,_, as_IN mentioned_VBN earlier_RBR ,_, few_JJ research_NN efforts_NNS have_VBP implemented_VBN theories_NNS of_IN collaboration_NN ._.
+Jennings_NNP 's_POS implementation_NN of_IN the_DT joint_JJ intentions_NNS framework_NN in_IN
+terministic_JJ planner_NN -LRB-_-LRB- Cimatti_NNP et_FW al._FW ,_, 1998a_CD ,_, 1998b_CD -RRB-_-RRB- ._.
+One_CD of_IN our_PRP$ main_JJ research_NN objectives_NNS is_VBZ to_TO develop_VB planning_NN systems_NNS suitable_JJ for_IN planning_NN in_IN uncertain_JJ ,_, single_JJ ,_, or_CC multi-agent_JJ environments_NNS -LRB-_-LRB- Haigh_NNP &_CC =_JJ -_: =_JJ Veloso_NNP ,_, 1998_CD -_: =_JJ -_: ;_: Veloso_NNP et_FW al._FW ,_, 1998_CD ;_: Stone_NNP &_CC Veloso_NNP ,_, 1998_CD -RRB-_-RRB- ._.
+The_DT universal_JJ planning_NN approach_NN ,_, as_IN originally_RB developed_VBN -LRB-_-LRB- Schoppers_NNP ,_, 1987_CD -RRB-_-RRB- ,_, is_VBZ appealing_VBG for_IN this_DT type_NN of_IN environments_NNS ._.
+A_DT universal_JJ plan_NN is_VBZ a_DT set_NN of_IN state_NN
+wn_NN to_TO be_VB a_DT very_RB efficient_JJ non-deterministic_JJ planner_NN -LRB-_-LRB- 9_CD ,_, 10_CD -RRB-_-RRB- ._.
+One_CD of_IN our_PRP$ main_JJ research_NN objectives_NNS is_VBZ to_TO develop_VB planning_NN systems_NNS suitable_JJ for_IN planning_NN in_IN uncertain_JJ ,_, single_JJ ,_, or_CC multi-agent_JJ environments_NNS =_JJ -_: =[_NN 25_CD ,_, 42_CD ,_, 39_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT universal_JJ planning_NN approach_NN ,_, as_IN originally_RB developed_VBN -LRB-_-LRB- 38_CD -RRB-_-RRB- ,_, is_VBZ appealing_VBG for_IN this_DT type_NN of_IN environments_NNS ._.
+A_DT universal_JJ plan_NN is_VBZ a_DT set_NN of_IN state-action_JJ rules_NNS that_WDT aim_VBP at_IN covering_VBG the_DT possible_JJ multiple_NN
+heir_NN sections_NNS effectively_RB coordinated_VBN ._.
+Coordination_NN is_VBZ a_DT matter_NN of_IN command_NN ._.
+Consequently_RB ,_, units_NNS do_VBP not_RB learn_VB how_WRB to_TO cooperate_VB --_: commanders_NNS do_VBP ._.
+Some_DT might_MD argue_VB that_IN this_DT is_VBZ a_DT type_NN of_IN isolated_VBN learning_NN -LRB-_-LRB- =_JJ -_: =_JJ Stone_NNP &_CC Veloso_NNP ,_, 1998_CD -_: =--RRB-_NN ,_, because_IN agents_NNS seem_VBP to_TO learn_VB separately_RB and_CC individually_RB ._.
+However_RB ,_, what_WP a_DT unit_NN learns_VBZ will_MD affect_VB the_DT planning_NN and_CC learning_NN processes_NNS of_IN other_JJ agents_NNS ._.
+Copyright_NNP ©_NNP 2003_CD ,_, Idea_NNP Group_NNP Inc._NNP ._.
+Copying_NNP or_CC d_NN
+s_NNS '_POS behaviors_NNS change_VBP ._.
+Some_DT low-level_JJ skills_NNS ,_, such_JJ as_IN dribbling_NN ,_, are_VBP entirely_RB individual_JJ in_IN nature_NN ,_, others_NNS ,_, such_JJ as_IN passing_VBG and_CC receiving_VBG passes_NNS ,_, are_VBP necessitated_VBN by_IN the_DT multiagent_JJ nature_NN of_IN the_DT domain_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+sM_NN ._.
+Asadpour_NNP et_FW al._FW \/_: A_NNP Realistic_NNP Simulation_NNP Testbed_NNP for_IN Studying_NNP Game_NNP Playing_VBG in_IN Robotic_NNP Soccer_NNP 7_CD Since_IN occasionally_RB MAS_NNP algorithms_NNS are_VBP studied_VBN in_IN robotic_JJ soccer_NN area_NN ,_, we_PRP have_VBP designed_VBN this_DT testbed_VBD
+olicies_NNS in_IN repeated_VBN trials_NNS -LRB-_-LRB- or_CC episodes_NNS -RRB-_-RRB- in_IN different_JJ settings_NNS ,_, with_IN one_CD or_CC both_DT parties_NNS having_VBG learning_NN abilities_NNS ._.
+-LRB-_-LRB- the_DT latter_JJ setting_NN has_VBZ been_VBN termed_VBN adversarial_JJ learning_NN in_IN the_DT research_NN literature_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+In_IN addition_NN ,_, we_PRP study_VBD the_DT impact_NN of_IN different_JJ parameters_NNS on_IN sensor_NN and_CC evader_NN performance_NN ,_, such_JJ as_IN sensor_NN range_NN ._.
+The_DT domain_NN has_VBZ similarities_NNS to_TO the_DT predator-prey_JJ setting_NN -LRB-_-LRB- where_WRB reinforcement_NN learni_NNS
+of_IN team_NN behavior_NN ._.
+Similar_JJ approaches_NNS have_VBP been_VBN developed_VBN from_IN numerous_JJ research_NN groups_NNS ._.
+These_DT studies_NNS have_VBP the_DT focus_NN on_IN learning_VBG team_NN behavior_NN within_IN the_DT simulation_NN and_CC middle_JJ size_NN league_NN -LRB-_-LRB- see_VB -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Raines_NNP et_FW al._FW -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, e.g._FW ,_, describe_VBP a_DT new_JJ approach_NN to_TO automate_VB assistants_NNS to_TO aid_VB humans_NNS in_IN understanding_VBG team_NN behaviors_NNS for_IN the_DT simulation_NN league_NN ._.
+This_DT approaches_NNS are_VBP designed_VBN for_IN the_DT ana_NN
+ective_JJ behavior_NN systems_NNS has_VBZ been_VBN studied_VBN from_IN many_JJ different_JJ perspectives_NNS -LRB-_-LRB- Nolfi_NNP ,_, Deneubourg_NNP ,_, et_FW al._FW ,_, 2003_CD -RRB-_-RRB- ,_, -LRB-_-LRB- Campos_NNP ,_, Theraulaz_NNP ,_, Bonabeau_NNP ,_, &_CC Deneubourg_NNP ,_, 2001_CD -RRB-_-RRB- ,_, -LRB-_-LRB- Haynes_NNP &_CC Sen_NNP ,_, 1996_CD -RRB-_-RRB- ,_, -LRB-_-LRB- Bongard_NNP ,_, 2000_CD -RRB-_-RRB- ,_, -LRB-_-LRB- =_JJ -_: =_JJ Stone_NNP &_CC Veloso_NNP ,_, 2002_CD -_: =--RRB-_NN ,_, -LRB-_-LRB- Bryant_NNP &_CC Miikkulainen_NNP ,_, 2003_CD -RRB-_-RRB- ,_, -LRB-_-LRB- Whiteson_NNP ,_, Kohl_NNP ,_, Miikkulainen_NNP ,_, &_CC Stone_NNP ,_, 2003_CD -RRB-_-RRB- ,_, -LRB-_-LRB- Blumenthal_NNP &_CC Parker_NNP ,_, 2004b_CD -RRB-_-RRB- and_CC is_VBZ thus_RB often_RB defined_VBN in_IN accordance_NN with_IN the_DT goals_NNS of_IN researchers_NNS conducting_VBG the_DT study_NN

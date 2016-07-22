@@ -1,0 +1,52 @@
+Dynamic_NNP coordination_NN of_IN information_NN management_NN services_NNS for_IN processing_VBG dynamic_JJ web_NN content_NN
+Dynamic_NNP Web_NN content_NN provides_VBZ us_PRP with_IN time-sensitive_JJ and_CC continuously_RB changing_VBG data_NNS ._.
+To_TO glean_VB up-to-date_JJ information_NN ,_, users_NNS need_VBP to_TO regularly_RB browse_VB ,_, collect_VB and_CC analyze_VB this_DT Web_NN content_NN ._.
+Without_IN proper_JJ tool_NN support_NN this_DT information_NN management_NN task_NN is_VBZ tedious_JJ ,_, time-consuming_JJ and_CC error_NN prone_JJ ,_, especially_RB when_WRB the_DT quantity_NN of_IN the_DT dynamic_JJ Web_NN content_NN is_VBZ large_JJ ,_, when_WRB many_JJ information_NN management_NN services_NNS are_VBP needed_VBN to_TO analyze_VB it_PRP ,_, and_CC when_WRB underlying_VBG services\/network_NN are_VBP not_RB completely_RB reliable_JJ ._.
+This_DT paper_NN describes_VBZ a_DT multi-level_JJ ,_, lifecycle_NN -LRB-_-LRB- design-time_NN and_CC run-time_NN -RRB-_-RRB- coordination_NN mechanism_NN that_WDT enables_VBZ rapid_JJ ,_, efficient_JJ development_NN and_CC execution_NN of_IN information_NN management_NN applications_NNS that_WDT are_VBP especially_RB useful_JJ for_IN processing_VBG dynamic_JJ Web_NN content_NN ._.
+Such_JJ a_DT coordination_NN mechanism_NN brings_VBZ dynamism_NN to_TO coordinating_VBG independent_JJ ,_, distributed_VBN information_NN management_NN services_NNS ._.
+Dynamic_NNP parallelism_NN spawns\/merges_NNS multiple_JJ execution_NN service_NN branches_NNS based_VBN on_IN available_JJ data_NNS ,_, and_CC dynamic_JJ run-time_JJ reconfiguration_NN coordinates_VBZ service_NN execution_NN to_TO overcome_VB faulty_JJ services_NNS and_CC bottlenecks_NNS ._.
+These_DT features_NNS enable_VBP information_NN management_NN applications_NNS to_TO be_VB more_RBR efficient_JJ in_IN handling_VBG content_NN and_CC format_NN changes_NNS in_IN Web_NN resources_NNS ,_, and_CC enable_VB the_DT applications_NNS to_TO be_VB evolved_VBN and_CC adapted_VBN to_TO process_VB dynamic_JJ Web_NN content_NN ._.
+ormation18sseeking_NN goals_NNS better_RBR ._.
+Needless_JJ to_TO say_VB ,_, these_DT two_CD views_NNS can_MD be_VB fruitfully_RB integrated_VBN ._.
+The_DT software_NN framework_NN proposed_VBN here_RB is_VBZ complementary_JJ to_TO other_JJ frameworks_NNS for_IN interaction_NN co-ordination_NN =_JJ -_: =[_NN 18_CD ,_, 25_CD ,_, 41_CD -RRB-_-RRB- -_: =_JJ -_: ,_, functional_JJ web_NN adaptation_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- and_CC re-engineering_NN of_IN websites_NNS -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+However_RB ,_, the_DT specific_JJ setting_NN assumed_VBN here_RB -LRB-_-LRB- i.e._FW ,_, out-of-turn_JJ interaction_NN -RRB-_-RRB- is_VBZ different_JJ from_IN those_DT considered_VBN in_IN these_DT works_NNS ._.
+Our_PRP$
+ler_NN architecture_NN is_VBZ proposed_VBN in_IN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+All_PDT this_DT activity_NN still_RB promulgates_VBZ the_DT pull_NN based_VBN data_NNS accumulation_NN ._.
+Same_JJ authors_NNS of_IN -LRB-_-LRB- 6_CD -RRB-_-RRB- in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- showed_VBD that_IN the_DT frequency_NN of_IN web_NN change_NN is_VBZ quite_RB considerable_JJ and_CC =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: devices_NNS a_DT mechanism_NN to_TO dynamically_RB coordinate_VB dynamic_JJ web_NN content_NN ._.
+This_DT also_RB illustrates_VBZ that_IN the_DT need_NN for_IN new_JJ paradigm_NN or_CC technique_NN to_TO handle_VB the_DT dynamic_JJ web_NN as_IN the_DT static_JJ techniques_NNS can_MD no_RB longer_JJR c_NN
+such_JJ as_IN Workware_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+Other_JJ approaches_NNS to_TO enhancing_VBG the_DT WWW_NN with_IN cooperation_NN support_NN ,_, such_JJ as_IN sTeam_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, focus_NN on_IN document_NN management_NN ,_, rather_RB than_IN modeling_NN and_CC executing_VBG workflows_NNS ._.
+The_DT approach_NN in_IN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: supports_VBZ the_DT composition_NN of_IN information_NN management_NN services_NNS for_IN processing_VBG dynamic_JJ Web_NN content_NN ._.
+IBM_NNP 's_POS Web_NN Services_NNP Flow_NN Language_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- is_VBZ an_DT XML-based_JJ language_NN for_IN composing_VBG Web_NN services_NNS so_IN that_DT busin_NN
+riero_NN define_VBP the_DT coordination_NN model_NN as_IN ``_`` the_DT glue_NN that_WDT binds_VBZ separate_JJ activities_NNS into_IN an_DT ensemble_NN ,_, ''_'' which_WDT is_VBZ embodied_VBN by_IN the_DT operations_NNS to_TO create_VB the_DT activities_NNS and_CC to_TO support_VB communication_NN among_IN them_PRP =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO provide_VB the_DT mechanism_NN to_TO connect_VB multiple_JJ services_NNS to_TO perform_VB complex_JJ information_NN management_NN tasks_NNS ,_, and_CC to_TO make_VB the_DT information_NN management_NN application_NN reusable_JJ and_CC reconfigurable_JJ ,_, we_PRP propose_VBP a_DT mu_NN
+tware_NN gauges_VBZ to_TO measure_VB semantic_JJ interoperability_NN and_CC compatibility_NN between_IN software_NN components_NNS ,_, which_WDT help_VBP application_NN developers_NNS build_VBP active_JJ document_NN collection_NN templates_NNS efficiently_RB and_CC correctly_RB =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Also_RB ,_, the_DT project_NN develops_VBZ a_DT GUI_NN tool_NN -LRB-_-LRB- Figure_NN 4_CD -RRB-_-RRB- by_IN which_WDT users_NNS can_MD easily_RB compose_VB ,_, instantiate_VB and_CC execute_VB active_JJ document_NN collection_NN templates_NNS ._.
+The_DT upper_JJ part_NN of_IN the_DT service_NN composition_NN tool_NN curre_NN
+ined_JJ service_NN interface_NN ._.
+To_TO interact_VB with_IN an_DT analysis_NN service_NN ,_, the_DT proxy_NN accesses_VBZ GeoWorlds_NNP '_POS job_NN pool_NN interface_NN ,_, which_WDT is_VBZ the_DT interface_NN to_TO our_PRP$ asynchronous_JJ ,_, distributed_VBN service_NN invocation_NN architecture_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Using_VBG the_DT job_NN pool_NN ,_, proxies_NNS can_MD transparently_RB invoke_VB and_CC monitor_VB distributed_VBN service_NN instances_NNS ._.
+To_TO interact_VB with_IN other_JJ types_NNS of_IN services_NNS ,_, proxies_NNS use_VBP a_DT language_NN specific_JJ interface_NN for_IN each_DT service_NN t_NN
+ivated_VBN when_WRB its_PRP$ input_NN requirements_NNS are_VBP satisfied_JJ ._.
+Active_JJ document_NN collection_NN templates_NNS provide_VBP the_DT mechanism_NN to_TO represent_VB data-centric_JJ coordination_NN of_IN services_NNS for_IN information_NN management_NN applications_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN an_DT active_JJ document_NN collection_NN template_NN ,_, the_DT actions_NNS of_IN transforming_VBG a_DT document_NN collection_NN from_IN one_CD semantics_NNS to_TO another_DT are_VBP described_VBN ._.
+Document_NNP collection_NN semantics_NNS is_VBZ represented_VBN in_IN dual_JJ ontolog_NN
+d_NN sorting_NN Cross-product_NN between_IN topics_NNS and_CC places_VBZ Geographical_JJ mapping_NN of_IN the_DT articles_NNS 2_CD ._.
+DYNAMIC_JJ WEB_NN DOCUMENT_NN PROCESSING_NN TASKS_NNS Although_IN the_DT Web_NN itself_PRP was_VBD developed_VBN to_TO support_VB information_NN management_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, as_IN the_DT size_NN and_CC density_NN of_IN the_DT Web_NN increases_NNS ,_, users_NNS are_VBP having_VBG a_DT more_RBR difficult_JJ time_NN in_IN locating_VBG ,_, retrieving_VBG and_CC organizing_VBG the_DT information_NN they_PRP need_VBP ._.
+Many_JJ users_NNS have_VBP resorted_VBN to_TO using_VBG front-end_JJ inf_NN
+raction_NN levels_NNS through_IN the_DT design\/runtime_JJ lifecycle_NN ,_, which_WDT is_VBZ essential_JJ for_IN processing_VBG dynamic_JJ Web_NN contents_NNS efficiently_RB and_CC correctly_RB ._.
+This_DT mechanism_NN has_VBZ been_VBN adapted_VBN by_IN USC_NNP ISI_NNP 's_POS GeoWorlds_NNP system_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC has_VBZ been_VBN proven_VBN that_IN it_PRP is_VBZ practically_RB effective_JJ on_IN developing_VBG information_NN management_NN applications_NNS for_IN processing_VBG dynamic_JJ Web_NN content_NN ._.
+The_DT characteristics_NNS of_IN the_DT class_NN of_IN information_NN management_NN
+on_IN of_IN a_DT larger_JJR ,_, higher-level_JJ software_NN system_NN by_IN using_VBG a_DT coordination_NN language_NN is_VBZ also_RB one_CD of_IN the_DT major_JJ concerns_NNS for_IN the_DT CHAIMS_NNP -LRB-_-LRB- Compiling_NNP High-level_JJ Access_NN Interfaces_NNS for_IN Multi-site_JJ Software_NNP -RRB-_-RRB- project_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP focuses_VBZ on_IN providing_VBG a_DT mechanism_NN to_TO compose_VB and_CC run_VB software_NN services_NNS that_WDT are_VBP composed_VBN of_IN multiple_JJ megamodules_NNS ._.
+Megamodules_NNS are_VBP autonomous_JJ ,_, heterogeneous_JJ ,_, distributed_VBN ,_, and_CC normally_RB computation_NN a_DT
+bstraction_NN levels_NNS through_IN the_DT design\/runtime_JJ lifecycle_NN ,_, which_WDT is_VBZ essential_JJ for_IN processing_VBG dynamic_JJ Web_NN contents_NNS efficiently_RB and_CC correctly_RB ._.
+This_DT mechanism_NN has_VBZ been_VBN adapted_VBN by_IN USC_NNP ISI_NNP 's_POS GeoWorlds_NNP system_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =-[_NN 6_CD -RRB-_-RRB- ,_, and_CC has_VBZ been_VBN proven_VBN that_IN it_PRP is_VBZ practically_RB effective_JJ on_IN developing_VBG information_NN management_NN applications_NNS for_IN processing_VBG dynamic_JJ Web_NN content_NN ._.
+The_DT characteristics_NNS of_IN the_DT class_NN of_IN information_NN manageme_NN
+fic_JJ service_NN instances_NNS ._.
+The_DT service_NN proxies_NNS interact_VBP with_IN service_NN instances_NNS during_IN run-time_NN by_IN using_VBG standard_JJ interfaces_NNS ._.
+Therefore_RB ,_, our_PRP$ coordination_NN mechanism_NN can_MD be_VB classified_VBN as_IN exogenous_JJ ._.
+MANIFOLD_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT coordination_NN mechanism_NN for_IN highperformance_NN ,_, parallel_JJ computing_NN ._.
+It_PRP is_VBZ also_RB classified_VBN as_IN controloriented_JJ and_CC exogenous_JJ ._.
+MANIFOLD_NNP provides_VBZ a_DT coordination_NN language_NN to_TO describe_VB connections_NNS among_IN a_DT

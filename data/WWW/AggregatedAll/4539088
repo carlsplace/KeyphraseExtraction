@@ -1,0 +1,61 @@
+A_DT scalable_JJ application_NN placement_NN controller_NN for_IN enterprise_NN data_NNS centers_NNS
+Given_VBN a_DT set_NN of_IN machines_NNS and_CC a_DT set_NN of_IN Web_NN applications_NNS with_IN dynamically_RB changing_VBG demands_NNS ,_, an_DT online_JJ application_NN placement_NN controller_NN decides_VBZ how_WRB many_JJ instances_NNS to_TO run_VB for_IN each_DT application_NN and_CC where_WRB to_TO put_VB them_PRP ,_, while_IN observing_VBG all_DT kinds_NNS of_IN resource_NN constraints_NNS ._.
+This_DT NP_NN hard_JJ problem_NN has_VBZ real_JJ usage_NN in_IN commercial_JJ middleware_JJ products_NNS ._.
+Existing_VBG approximation_NN algorithms_NNS for_IN this_DT problem_NN can_MD scale_VB to_TO at_IN most_JJS a_DT few_JJ hundred_CD machines_NNS ,_, and_CC may_MD produce_VB placement_NN solutions_NNS that_WDT are_VBP far_RB from_IN optimal_JJ when_WRB system_NN resources_NNS are_VBP tight_JJ ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT new_JJ algorithm_NN that_WDT can_MD produce_VB within_IN 30seconds_CD high-quality_JJ solutions_NNS for_IN hard_JJ placement_NN problems_NNS with_IN thousands_NNS of_IN machines_NNS and_CC thousands_NNS of_IN applications_NNS ._.
+This_DT scalability_NN is_VBZ crucial_JJ for_IN dynamic_JJ resource_NN provisioning_VBG in_IN large-scale_JJ enterprise_NN data_NN centers_NNS ._.
+Our_PRP$ algorithm_NN allows_VBZ multiple_JJ applications_NNS to_TO share_VB a_DT single_JJ machine_NN ,_, and_CC strivesto_NN maximize_VBP the_DT total_JJ satisfied_JJ application_NN demand_NN ,_, to_TO minimize_VB the_DT number_NN of_IN application_NN starts_NNS and_CC stops_NNS ,_, and_CC to_TO balance_VB the_DT load_NN across_IN machines_NNS ._.
+Compared_VBN with_IN existing_VBG state-of-the-art_JJ algorithms_NNS ,_, for_IN systems_NNS with_IN 100_CD machines_NNS or_CC less_JJR ,_, our_PRP$ algorithm_NN is_VBZ up_IN to_TO 134_CD times_NNS faster_RBR ,_, reduces_VBZ application_NN starts_NNS and_CC stops_NNS by_IN up_IN to_TO 97_CD %_NN ,_, and_CC produces_VBZ placement_NN solutions_NNS that_WDT satisfy_VBP up_RB to_TO 25_CD %_NN more_JJR application_NN demands_NNS ._.
+Our_PRP$ algorithm_NN has_VBZ been_VBN implemented_VBN and_CC adopted_VBN in_IN a_DT leading_VBG commercial_JJ middleware_NN product_NN for_IN managing_VBG the_DT performance_NN of_IN Web_NN applications_NNS ._.
+tions_NNS as_IN needed_VBN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, which_WDT does_VBZ not_RB allow_VB applications_NNS to_TO share_VB machines_NNS ._.
+In_IN contrast_NN ,_, our_PRP$ placement_NN controller_NN allows_VBZ this_DT sharing_NN and_CC is_VBZ optimized_VBN for_IN it_PRP ._.
+The_DT algorithm_NN proposed_VBN by_IN Urgaonkar_NNP et_FW al._FW =_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: allows_VBZ applications_NNS to_TO share_VB machines_NNS ,_, but_CC it_PRP does_VBZ not_RB dynamically_RB change_VB the_DT number_NN of_IN instances_NNS of_IN an_DT application_NN ,_, does_VBZ not_RB try_VB to_TO minimize_VB placement_NN changes_NNS ,_, and_CC only_RB considers_VBZ a_DT single_JJ bottleneck_NN
+one_CD machine_NN may_MD lead_VB to_TO reconsideration_NN of_IN the_DT placement_NN decisions_NNS for_IN all_PDT the_DT other_JJ machines_NNS ._.
+A_DT popular_JJ approach_NN to_TO dynamic_JJ server_NN provisioning_VBG is_VBZ to_TO allocate_VB full_JJ machines_NNS to_TO applications_NNS as_IN needed_VBN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT does_VBZ not_RB allow_VB applications_NNS to_TO share_VB machines_NNS ._.
+In_IN contrast_NN ,_, our_PRP$ placement_NN controller_NN allows_VBZ this_DT sharing_NN and_CC is_VBZ optimized_VBN for_IN it_PRP ._.
+The_DT algorithm_NN proposed_VBN by_IN Urgaonkar_NNP et_FW al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- allows_VBZ applica_NN
+eed_NN resources_NNS -LRB-_-LRB- e.g._FW ,_, memory_NN -RRB-_-RRB- to_TO start_VB an_DT instance_NN of_IN application_NN z_SYM on_IN both_DT A_NNP and_CC B._NNP The_NNP application_NN placement_NN problem_NN can_MD be_VB formulated_VBN as_IN a_DT variant_NN of_IN the_DT Class_NNP Constrained_NNP Multiple-Knapsack_NNP Problem_NNP =_SYM -_: =[_NN 12_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Under_IN multiple_JJ resource_NN constraints_NNS -LRB-_-LRB- e.g._FW ,_, CPU_NN and_CC memory_NN -RRB-_-RRB- and_CC application_NN constraints_NNS -LRB-_-LRB- e.g._FW ,_, the_DT need_NN for_IN special_JJ hardware_NN or_CC software_NN -RRB-_-RRB- ,_, a_DT placement_NN algorithm_NN strives_VBZ to_TO produce_VB placement_NN solutions_NNS
+._.
+One_CD limitation_NN of_IN our_PRP$ algorithm_NN is_VBZ that_IN it_PRP makes_VBZ no_DT attempt_NN to_TO co-locate_VB on_IN the_DT same_JJ machine_NN the_DT set_NN of_IN applications_NNS that_WDT have_VBP high-volume_JJ internal_JJ communication_NN ._.
+This_DT issue_NN has_VBZ been_VBN studied_VBN before_IN =_JJ -_: =[_NN 5_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC it_PRP still_RB remains_VBZ a_DT challenge_NN to_TO design_VB for_IN commercial_JJ product_NN a_DT fullyautomated_JJ algorithm_NN that_WDT does_VBZ not_RB rely_VB on_IN manual_JJ offline_JJ profiling_NN ._.
+6_CD ._.
+CONCLUSION_NN In_IN this_DT paper_NN ,_, we_PRP proposed_VBD an_DT application_NN p_NN
+eed_NN resources_NNS -LRB-_-LRB- e.g._FW ,_, memory_NN -RRB-_-RRB- to_TO start_VB an_DT instance_NN of_IN application_NN z_SYM on_IN both_DT A_NNP and_CC B._NNP The_NNP application_NN placement_NN problem_NN can_MD be_VB formulated_VBN as_IN a_DT variant_NN of_IN the_DT Class_NNP Constrained_NNP Multiple-Knapsack_NNP Problem_NNP =_SYM -_: =[_NN 12_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Under_IN multiple_JJ resource_NN constraints_NNS -LRB-_-LRB- e.g._FW ,_, CPU_NN and_CC memory_NN -RRB-_-RRB- and_CC application_NN constraints_NNS -LRB-_-LRB- e.g._FW ,_, the_DT need_NN for_IN special_JJ hardware_NN or_CC software_NN -RRB-_-RRB- ,_, a_DT placement_NN algorithm_NN strives_VBZ to_TO produce_VB placement_NN solutions_NNS
+second_JJ ._.
+We_PRP use_VBP a_DT peer-to-peer_JJ infrastructure_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- to_TO gather_VB performance_NN metrics_NNS from_IN a_DT large_JJ number_NN of_IN machines_NNS in_IN a_DT scalable_JJ and_CC reliable_JJ fashion_NN ._.
+In_IN the_DT past_NN ,_, we_PRP have_VBP developed_VBN a_DT middleware_JJ system_NN =_JJ -_: =[_NN 1_CD ,_, 9_CD ,_, 10_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT includes_VBZ a_DT superset_NN of_IN the_DT control_NN loop_NN in_IN Figure_NNP 2_CD ._.
+In_IN this_DT paper_NN ,_, we_PRP focus_VBP on_IN the_DT design_NN and_CC evaluation_NN of_IN the_DT placement_NN controller_NN ._.
+The_DT rest_NN of_IN this_DT section_NN presents_VBZ the_DT formal_JJ formulation_NN of_IN
+ng_NN the_DT total_JJ number_NN of_IN application_NN starts_NNS and_CC stops_NNS as_IN they_PRP disturb_VBP the_DT running_VBG system_NN ,_, and_CC -LRB-_-LRB- 3_LS -RRB-_-RRB- balancing_VBG the_DT load_NN across_IN machines_NNS ._.
+The_DT placement_NN problem_NN is_VBZ NP_NNP hard_RB ._.
+Existing_VBG approximation_NN algorithms_NNS =_JJ -_: =[_NN 6_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: can_MD scale_VB to_TO at_IN most_JJS a_DT few_JJ hundred_CD machines_NNS ,_, and_CC may_MD produce_VB placement_NN solutions_NNS that_WDT are_VBP far_RB from_IN optimal_JJ when_WRB system_NN resources_NNS are_VBP tight_JJ ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT new_JJ approximation_NN algorithm_NN tha_NN
+timating_VBG application_NN demands_NNS is_VBZ a_DT non-trivial_JJ task_NN ._.
+We_PRP use_VBP online_JJ profiling_NN and_CC data_NN regression_NN to_TO dynamically_RB estimate_VB the_DT average_JJ CPU_NNP cycles_NNS needed_VBD to_TO process_VB one_CD Web_NN request_NN of_IN a_DT given_VBN application_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT product_NN of_IN the_DT estimated_VBN CPU_NNP cycles_NNS per_IN request_NN and_CC the_DT projected_VBN request_NN rate_NN gives_VBZ the_DT CPU_NNP cycles_NNS needed_VBN by_IN the_DT application_NN per_IN second_NN ._.
+We_PRP use_VBP a_DT peer-to-peer_JJ infrastructure_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- to_TO gather_VB perf_NN
+ng_NN the_DT total_JJ number_NN of_IN application_NN starts_NNS and_CC stops_NNS as_IN they_PRP disturb_VBP the_DT running_VBG system_NN ,_, and_CC -LRB-_-LRB- 3_LS -RRB-_-RRB- balancing_VBG the_DT load_NN across_IN machines_NNS ._.
+The_DT placement_NN problem_NN is_VBZ NP_NNP hard_RB ._.
+Existing_VBG approximation_NN algorithms_NNS =_JJ -_: =[_NN 6_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: can_MD scale_VB to_TO at_IN most_JJS a_DT few_JJ hundred_CD machines_NNS ,_, and_CC may_MD produce_VB placement_NN solutions_NNS that_WDT are_VBP far_RB from_IN optimal_JJ when_WRB system_NN resources_NNS are_VBP tight_JJ ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT new_JJ approximation_NN algorithm_NN tha_NN
+en_IN application_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+The_DT product_NN of_IN the_DT estimated_VBN CPU_NNP cycles_NNS per_IN request_NN and_CC the_DT projected_VBN request_NN rate_NN gives_VBZ the_DT CPU_NNP cycles_NNS needed_VBN by_IN the_DT application_NN per_IN second_NN ._.
+We_PRP use_VBP a_DT peer-to-peer_JJ infrastructure_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: to_TO gather_VB performance_NN metrics_NNS from_IN a_DT large_JJ number_NN of_IN machines_NNS in_IN a_DT scalable_JJ and_CC reliable_JJ fashion_NN ._.
+In_IN the_DT past_NN ,_, we_PRP have_VBP developed_VBN a_DT middleware_NN system_NN -LRB-_-LRB- 1_CD ,_, 9_CD ,_, 10_CD ,_, 11_CD -RRB-_-RRB- that_WDT includes_VBZ a_DT superset_NN of_IN the_DT con_NN
+nly_RB considers_VBZ a_DT single_JJ bottleneck_NN resource_NN ._.
+Placement_NNP problems_NNS have_VBP also_RB been_VBN studied_VBN in_IN the_DT optimization_NN literature_NN ,_, including_VBG bin_NN packing_NN ,_, multiple_JJ knapsack_NN ,_, and_CC multi-dimensional_JJ knapsack_NN problems_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT special_JJ case_NN of_IN our_PRP$ problem_NN with_IN uniform_JJ memory_NN requirements_NNS was_VBD studied_VBN in_IN -LRB-_-LRB- 12_CD ,_, 13_CD -RRB-_-RRB- ,_, and_CC some_DT approximation_NN algorithms_NNS were_VBD proposed_VBN ._.
+These_DT algorithms_NNS have_VBP been_VBN shown_VBN to_TO be_VB inferior_JJ to_TO the_DT algo_NN
+Center_NNP 19_CD Skyline_NNP Drive_NNP ,_, Hawthorne_NNP ,_, NY_NNP 10532_CD ,_, USA_NN -LCB-_-LRB- ctang_NN ,_, steinder_NN ,_, mspeitz_NN ,_, giovanni}@us.ibm.com_NN 1_CD shown_VBN that_IN the_DT Web_NN request_NN rate_NN is_VBZ bursty_JJ and_CC can_MD fluctuate_VB dramatically_RB in_IN a_DT short_JJ period_NN of_IN time_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Therefore_RB ,_, it_PRP is_VBZ not_RB cost-effective_JJ to_TO over_IN provision_NN data_NNS centers_NNS to_TO handle_VB the_DT potential_JJ peak_NN demands_NNS of_IN all_PDT the_DT applications_NNS ._.
+To_TO utilize_VB system_NN resources_NNS more_RBR effectively_RB ,_, modern_JJ Web_NN applications_NNS
+._.
+One_CD limitation_NN of_IN our_PRP$ algorithm_NN is_VBZ that_IN it_PRP makes_VBZ no_DT attempt_NN to_TO co-locate_VB on_IN the_DT same_JJ machine_NN the_DT set_NN of_IN applications_NNS that_WDT have_VBP high-volume_JJ internal_JJ communication_NN ._.
+This_DT issue_NN has_VBZ been_VBN studied_VBN before_IN =_JJ -_: =[_NN 5_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC it_PRP still_RB remains_VBZ a_DT challenge_NN to_TO design_VB for_IN commercial_JJ product_NN a_DT fullyautomated_JJ algorithm_NN that_WDT does_VBZ not_RB rely_VB on_IN manual_JJ offline_JJ profiling_NN ._.
+6_CD ._.
+CONCLUSION_NN In_IN this_DT paper_NN ,_, we_PRP proposed_VBD an_DT application_NN p_NN
+admission_NN control_NN ,_, flow_NN control_NN ,_, and_CC load_NN balancing_NN ._.
+These_DT functions_NNS decide_VBP how_WRB to_TO dynamically_RB allocate_VB resources_NNS to_TO the_DT running_VBG application_NN instances_NNS ,_, which_WDT are_VBP well-studied_JJ topics_NNS in_IN the_DT literature_NN =_JJ -_: =[_NN 4_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT paper_NN studies_VBZ an_DT equally_RB important_JJ problem_NN that_WDT receives_VBZ relatively_RB less_JJR attention_NN in_IN the_DT past_NN :_: Given_IN a_DT set_NN of_IN machines_NNS with_IN constrained_VBN resources_NNS and_CC a_DT set_NN of_IN Web_NN applications_NNS with_IN dynamically_RB

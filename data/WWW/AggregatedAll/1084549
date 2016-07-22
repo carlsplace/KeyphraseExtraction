@@ -1,0 +1,236 @@
+P2Cast_NN :_: peer-to-peer_JJ patching_NN scheme_NN for_IN VoD_NN service_NN
+Providing_VBG video_NN on_IN demand_NN -LRB-_-LRB- VoD_NN -RRB-_-RRB- service_NN over_IN the_DT Internet_NN in_IN a_DT scalable_JJ way_NN is_VBZ a_DT challenging_JJ problem_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP P2Cast_NN -_: an_DT architecture_NN that_WDT uses_VBZ a_DT peer-to-peer_JJ approach_NN to_TO cooperatively_RB stream_NN video_NN using_VBG patching_NN techniques_NNS ,_, while_IN only_RB relying_VBG on_IN unicast_JJ connections_NNS among_IN peers_NNS ._.
+We_PRP address_VBP the_DT following_JJ two_CD key_JJ technical_JJ issues_NNS in_IN P2Cast_NN :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- constructing_VBG an_DT application_NN overlay_NN appropriate_JJ for_IN streaming_NN ;_: and_CC -LRB-_-LRB- 2_LS -RRB-_-RRB- providing_VBG continuous_JJ stream_NN playback_NN -LRB-_-LRB- without_IN glitches_NNS -RRB-_-RRB- in_IN the_DT face_NN of_IN disruption_NN from_IN an_DT early_JJ departing_VBG client_NN ._.
+Our_PRP$ simulation_NN experiments_NNS show_VBP that_IN P2Cast_NN can_MD serve_VB many_JJ more_JJR clients_NNS than_IN traditional_JJ client-server_JJ unicast_NN service_NN ,_, and_CC that_IN it_PRP generally_RB out-performs_JJ multicast-based_JJ patching_NN if_IN clients_NNS can_MD cache_NN more_JJR than_IN of_IN a_DT stream_NN 's_POS initial_JJ portion_NN ._.
+We_PRP handle_VBP disruptions_NNS by_IN delaying_VBG the_DT start_NN of_IN playback_NN and_CC applying_VBG the_DT shifted_VBN forwarding_NN technique_NN ._.
+A_DT threshold_NN on_IN the_DT length_NN of_IN time_NN during_IN which_WDT arriving_VBG clients_NNS are_VBP served_VBN in_IN a_DT single_JJ session_NN in_IN P2Cast_NN serves_VBZ as_IN a_DT knob_NN to_TO adjust_VB the_DT balance_NN between_IN the_DT scalability_NN and_CC the_DT clients_NNS '_POS viewing_VBG quality_NN in_IN P2Cast_NN ._.
+proposed_VBD an_DT overlay_NN multicast_JJ strategy_NN called_VBN oStream_NNP to_TO address_VB the_DT on-demand_JJ media_NNS distribution_NN problem_NN in_IN overlay_NN network_NN ._.
+Guo_NNP et_FW al._FW extended_VBD the_DT IP_NNP multicast_JJ patching_NN scheme_NN by_IN proposing_VBG P2Cast_NN =_JJ -_: =[_NN 42_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT constructs_NNS the_DT application_NN overlay_NN appropriate_JJ for_IN streaming_NN and_CC provides_VBZ continuous_JJ stream_NN playback_NN in_IN the_DT face_NN of_IN disruption_NN from_IN an_DT early_JJ departing_VBG client_NN ._.
+Do_VB et_FW al._FW presented_VBD a_DT system_NN call_NN
+d_NN on_IN maintaining_VBG an_DT application_NN multicast_JJ tree_NN ._.
+-LRB-_-LRB- 19_CD -RRB-_-RRB- proposed_VBD tree_NN based_JJ overlay_NN intended_VBN for_IN hundred_CD of_IN clients_NNS in_IN a_DT multicast_JJ group_NN ._.
+-LRB-_-LRB- 33_CD -RRB-_-RRB- offered_VBD a_DT P2P_NN VOD_NN network_NN that_WDT pre-caches_VBZ content_NN on_IN peers_NNS ._.
+=_SYM -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: presented_VBD a_DT P2P_NN VoD_NN that_IN streams_NNS the_DT video_NN between_IN the_DT clients_NNS in_IN a_DT tree_NN ._.
+-LRB-_-LRB- 17_CD -RRB-_-RRB- is_VBZ a_DT high-bandwidth_JJ content_NN streaming\/distribution_NN system_NN that_WDT is_VBZ built_VBN upon_IN Pastry_NN and_CC Scribe_NN ._.
+-LRB-_-LRB- 27_CD -RRB-_-RRB- employs_VBZ distributed_VBN
+nd_NN latency_NN ._.
+We_PRP investigate_VBP application-level_JJ multicasting_NN to_TO a_DT large_JJ number_NN of_IN broadband_JJ Internet_NNP users_NNS ._.
+In_IN a_DT simple_JJ multicast_JJ system_NN ,_, a_DT single_JJ compressed_VBN video_NN stream_NN is_VBZ used_VBN ,_, with_IN a_DT fixed_VBN data_NN rate_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+For_IN most_JJS broadband_JJ Internet_NNP users_NNS ,_, the_DT height_NN of_IN their_PRP$ monthly_JJ subscription_NN fee_NN determines_VBZ their_PRP$ maximum_NN Internet_NN upload\/download_NN bandwidth_NN ._.
+We_PRP define_VBP the_DT rate_NN matching_NN problem_NN as_IN the_DT inab_NN
+8_CD -RRB-_-RRB- ,_, the_DT server_NN makes_VBZ the_DT batches_NNS of_IN requests_NNS for_IN the_DT same_JJ video_NN together_RB if_IN their_PRP$ time_NN of_IN arrival_NN are_VBP closer_JJR ,_, and_CC multicasts_NNS the_DT video_NN to_TO these_DT requests_NNS to_TO save_VB the_DT network_NN I\/O_NN bandwidth_NN ._.
+In_IN patching_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT main_JJ server_NN sends_VBZ the_DT complete_JJ video_NN clip_NN to_TO the_DT first_JJ client_NN ._.
+Later_JJ clients_NNS join_VBP the_DT existing_VBG multicast_JJ channel_NN and_CC get_VB the_DT missing_VBG data_NNS of_IN the_DT video_NN using_VBG unicast_JJ channels_NNS ._.
+Another_DT innovative_JJ
+the_DT stream_NN more_RBR live_JJ ._.
+On_IN the_DT contrary_NN ,_, in_IN VoD_NN streaming_NN ,_, it_PRP is_VBZ more_RBR important_JJ to_TO deliver_VB the_DT whole_JJ video_NN to_TO the_DT new_JJ joining_VBG user_NN ._.
+-LRB-_-LRB- 6,7,10,12,13,14,15,16_CD -RRB-_-RRB- are_VBP approaches_NNS for_IN live_JJ streaming_NN in_IN P2P_NN and_CC =_JJ -_: =[_NN 1,2,3,5,17,18_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP for_IN VoD_NN streaming_NN in_IN P2P_NN ._.
+Most_JJS approaches_NNS for_IN live_JJ streaming_NN use_NN application_NN multicast_JJ trees_NNS which_WDT are_VBP focused_VBN on_IN reducing_VBG end-to-end_JJ delay_NN and_CC being_VBG constructed_VBN efficiently_RB whenever_WRB a_DT client_NN joi_NN
+largest_JJS television_NN station_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- ._.
+They_PRP use_VBP these_DT results_NNS to_TO evaluate_VB the_DT scalability_NN of_IN P2P_NN approaches_NNS for_IN VoD_NN ._.
+Many_JJ other_JJ works_NNS focus_VB on_IN system_NN design_NN and_CC user_NN behaviors_NNS in_IN P2P_NN video_NN streaming_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 10_CD ,_, 13_CD ,_, 19_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+There_EX have_VBP been_VBN several_JJ recent_JJ efforts_NNS to_TO provide_VB DVD\/VCR_NN like_IN functions_NNS -LRB-_-LRB- i.e._FW ,_, seek_VB ,_, rewind_NN ,_, pause_NN -RRB-_-RRB- in_IN P2P_NN VoD_NN services_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 26_CD ,_, 27_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Such_JJ features_NNS might_MD be_VB more_RBR relevant_JJ in_IN the_DT context_NN of_IN tra_NN
+o._FW Existem_FW propostas_FW de_FW sistemas_FW par-a-par_FW de_FW vídeo_FW baseados_NNS na_TO arquitetura_FW em_FW árvore_FW que_FW definem_FW as_IN relações_NNS de_IN pai_NN e_SYM filho_FW de_FW acordo_FW com_NN o_NN tempo_NN de_FW reprodução_FW dos_FW participantes_NNS -LRB-_-LRB- Sharma_FW et_FW al._FW 2005_CD ,_, =_JJ -_: =_JJ Guo_FW et_FW al._FW 2003_CD -_: =-]_CD ._.
+A_DT idéia_FW básica_FW é_FW que_FW os_FW filhos_FW estejam_FW em_FW pontos_FW de_FW reprodução_FW anteriores_FW aos_FW dos_FW pais_FW ._.
+No_DT entanto_NN ,_, dependendo_NN do_VBP número_FW e_SYM do_VB tipo_FW das_FW interações_NNS ,_, a_DT frequência_NN de_FW reconstrução_FW da_NN árvore_FW pode_FW ser_FW al_FW
+QoS_NN parameters_NNS using_VBG NS-2_NN simulations_NNS -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+A._NN Simulation_NN Setup_NN We_PRP performed_VBD intensive_JJ simulations_NNS to_TO study_VB the_DT performance_NN of_IN K-overlay_NN in_IN order_NN to_TO quantify_VB the_DT overall_JJ QoS_NN parameters_NNS against_IN P2Cast_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN P2Cast_NN peers_NNS are_VBP organized_VBN in_IN a_DT tree_NN structure_NN ,_, where_WRB each_DT peer_VBP receive_VB the_DT requested_VBN stream_NN and_CC forwards_RB the_DT streams_NNS to_TO other_JJ peers_NNS ._.
+In_IN P2Cast_NN ,_, peers_NNS are_VBP distributed_VBN into_IN sessions_NNS according_VBG to_TO t_NN
+QoS_NN parameters_NNS using_VBG NS-2_NN simulations_NNS -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+A._NN Simulation_NN Setup_NN We_PRP performed_VBD intensive_JJ simulations_NNS to_TO study_VB the_DT performance_NN of_IN K-overlay_NN in_IN order_NN to_TO quantify_VB the_DT overall_JJ QoS_NN parameters_NNS against_IN P2Cast_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN P2Cast_NN peers_NNS are_VBP organized_VBN in_IN a_DT tree_NN structure_NN ,_, where_WRB each_DT peer_VBP receive_VB the_DT requested_VBN stream_NN and_CC forwards_RB the_DT streams_NNS to_TO other_JJ peers_NNS ._.
+In_IN P2Cast_NN ,_, peers_NNS are_VBP distributed_VBN into_IN sessions_NNS according_VBG to_TO t_NN
+ming_NN have_VBP their_PRP$ own_JJ advantages_NNS and_CC disadvantages_NNS ._.
+In_IN this_DT section_NN ,_, the_DT different_JJ ways_NNS of_IN how_WRB to_TO adapt_VB these_DT two_CD approaches_NNS to_TO providing_VBG VoD_NN services_NNS are_VBP described_VBN ._.
+3.1_CD Tree-based_JJ P2P_NN VoD_NN The_DT Patching_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ one_CD of_IN the_DT first_JJ IP_NNP multicast_NN policies_NNS introduced_VBN for_IN supporting_VBG VoD_NN services_NNS ._.
+Inspired_VBN on_IN this_DT scheme_NN ,_, P2Cast_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- was_VBD designed_VBN for_IN distributing_VBG video_NN content_NN among_IN asynchronous_JJ users_NNS ,_, where_WRB every_DT
+-_: like_IN operation_NN -LRB-_-LRB- temporal_JJ random_JJ access_NN -RRB-_-RRB- ,_, either_CC distribution_NN overlay_NN is_VBZ combined_VBN with_IN lookup_NN overlay_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, or_CC a_DT separate_JJ look-up_JJ overlay_NN is_VBZ built_VBN to_TO avoid_VB a_DT central_JJ look-up_JJ service_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- --_: -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+In_IN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, viewers_NNS are_VBP able_JJ to_TO watch_VB a_DT pre-recorded_JJ video_NN from_IN the_DT beginning_NN of_IN the_DT content_NN ._.
+Dynamic_NNP Skip_NNP List_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC oStream_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- provide_VBP users_NNS random_JJ temporal_JJ access_NN to_TO video_NN content_NN ._.
+The_DT mesh-ba_NN
+bandwidth_NN resources_NNS available_JJ at_IN the_DT peers_NNS ._.
+SplitStream_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- solves_VBZ this_DT problem_NN by_IN striping_VBG the_DT content_NN across_IN a_DT forest_NN of_IN inter-node-disjoint_JJ trees_NNS ._.
+Other_JJ solutions_NNS have_VBP also_RB been_VBN proposed_VBN including_VBG =_JJ -_: =[_NN 6_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT general_JJ argument_NN against_IN the_DT above_RB discussed_VBN multi-tree_JJ based_VBN approach_NN is_VBZ their_PRP$ relatively_RB higher_JJR cost_NN of_IN maintenance_NN in_IN a_DT dynamic_JJ environment_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+In_IN addition_NN ,_, since_IN the_DT transfer_NN of_IN content_NN is_VBZ n_NN
+om_NN ._.
+These_DT servants_NNS are_VBP clients_NNS that_WDT have_VBP received_VBN or_CC currently_RB receiving_VBG the_DT video_NN ._.
+The_DT new_JJ client_NN then_RB searches_VBZ for_IN an_DT available_JJ servant_NN from_IN which_WDT it_PRP downloads_NNS the_DT video_NN ._.
+We_PRP compare_VBP PBA_NNP to_TO P_NN 2_CD cast_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT multicast-tree_JJ based_JJ approach_NN proposed_VBN previously_RB ._.
+We_PRP investigate_VBP via_IN intensive_JJ simulations_NNS the_DT efficiency_NN of_IN PBA_NN and_CC P_NN 2_CD cast_NN ._.
+Our_PRP$ conclusion_NN is_VBZ that_IN PBA_NN does_VBZ not_RB only_RB simplify_VB the_DT server_NN as_IN comp_NN
+e_LS content_NN source_NN peer_VBP such_JJ as_IN CoopNet_NNP by_IN Padmanabhan_NNP et_FW al._FW -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, DirectStream_NN -LRB-_-LRB- 38_CD -RRB-_-RRB- ,_, or_CC in_IN a_DT centralized-decentralized_JJ fashion_NN at_IN source_NN and_CC intermediate_JJ peers_NNS of_IN the_DT distribution_NN tree_NN such_JJ as_IN P2Cast_NN =_JJ -_: =[_NN 39_CD -RRB-_-RRB- -_: =_JJ -_: ,_, PeerCast_NNP by_IN Deshpande_NNP et_FW al._FW -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+However_RB ,_, ALM_NNP is_VBZ essentially_RB a_DT point-to-point_JJ content_NN delivery_NN model_NN that_WDT relies_VBZ on_IN a_DT single_JJ connection_NN from_IN one_CD peer_VBP to_TO each_DT of_IN its_PRP$ child_NN peers_NNS ._.
+Failure_NN of_IN a_DT paren_NN
+ilt_NN upon_IN the_DT Gnutella_NNP -LRB-_-LRB- 86_CD -RRB-_-RRB- P2P-based_JJ file_NN distribution_NN network_NN ._.
+Gnutella_NNP is_VBZ primarily_RB a_DT system_NN for_IN download-based_JJ access_NN ,_, but_CC GnuStream_NNP allows_VBZ the_DT content_NN in_IN the_DT system_NN to_TO be_VB streamed_VBN instead_RB ._.
+P2Cast_NN =_SYM -_: =[_NN 37_CD -RRB-_-RRB- -_: =_JJ -_: adapts_NNS patching_VBG -LRB-_-LRB- 46_CD -RRB-_-RRB- to_TO achieve_VB P2P-based_JJ streaming_NN ._.
+DirectStream_NN -LRB-_-LRB- 38_CD -RRB-_-RRB- uses_VBZ a_DT directory_NN server_NN to_TO store_NN content_NN and_CC maintain_VB information_NN about_IN clients_NNS ._.
+In_IN PALS_NNS -LRB-_-LRB- 84_CD -RRB-_-RRB- ,_, adaptive_JJ layered_JJ streaming_NN is_VBZ sup_NN
+not_RB rely_VB on_IN multicast-capable_JJ routers_NNS and_CC can_MD be_VB directly_RB deployed_VBN on_IN the_DT current_JJ Internet_NNP ._.
+Typical_JJ examples_NNS include_VBP application-layer_NN multicast_NN -LRB-_-LRB- ALM_NN -RRB-_-RRB- -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 24_CD -RRB-_-RRB- --_: -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, P2P_NN video-ondemand_JJ systems_NNS =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, and_CC mesh-based_JJ streaming_NN systems_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 30_CD -RRB-_-RRB- ._.
+Trees_NNP with_IN no_DT Topology_NNP Information_NNP :_: Narada_NNP is_VBZ one_CD of_IN the_DT pioneering_JJ ALM_NNP protocols_NNS and_CC aims_NNS at_IN building_VBG a_DT low-delay_JJ overlay_NN tree_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+In_IN Narada_NNP ,_, a_DT j_NN
+ication_NN layer_NN ._.
+Based_VBN on_IN this_DT ,_, VMesh_NN is_VBZ a_DT pure_JJ P2P_NN architecture_NN and_CC does_VBZ not_RB assume_VB the_DT existence_NN of_IN IP_NNP multicast_NNS ._.
+Recently_RB ,_, researchers_NNS use_VBP peer-to-peer_NN -LRB-_-LRB- P2P_NN -RRB-_-RRB- approach_NN to_TO provide_VB VoD_NN services_NNS ._.
+P2Cast_NN =_SYM -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: uses_VBZ a_DT P2P_NN approach_NN to_TO cooperatively_RB stream_NN video_NN using_VBG patching_NN techniques_NNS ._.
+Similar_JJ to_TO traditional_JJ patching_NN schemes_NNS ,_, while_IN a_DT new_JJ peer_VB receives_VBZ a_DT base_NN stream_NN from_IN an_DT overlay_NN tree_NN formed_VBN by_IN the_DT peers_NNS
+rences_NNS within_IN -RRB-_-RRB- ._.
+In_IN this_DT approach_NN clients_NNS can_MD serve_VB other_JJ clients_NNS by_IN forwarding_NN the_DT video_NN stream_NN ._.
+Patching_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- is_VBZ a_DT multicast_JJ technique_NN and_CC has_VBZ been_VBN used_VBN in_IN recent_JJ works_NNS -LRB-_-LRB- 22,45,23_CD --_: 28_CD -RRB-_-RRB- ._.
+For_IN example_NN ,_, in_IN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: Patching_NN is_VBZ used_VBN to_TO provide_VB a_DT peer-to-peer_JJ video_NN streaming_NN service_NN ,_, and_CC in_IN -LRB-_-LRB- 45_CD -RRB-_-RRB- it_PRP is_VBZ integrated_VBN with_IN proxy_JJ caching_NN for_IN media_NNS distribution_NN ._.
+This_DT technique_NN is_VBZ especially_RB attractive_JJ because_IN of_IN its_PRP$ extr_NN
+k_NN traffic_NN and_CC always_RB assume_VB ideal_JJ cases_NNS without_IN malicious_JJ hosts_NNS ._.
+A_DT recovering_VBG from_IN failure_NN technique_NN is_VBZ proposed_VBN to_TO identify_VB the_DT failure_NN point_NN to_TO preferentially_RB recover_VB in_FW p2p_FW video-on-demand_JJ systems_NNS =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+If_IN a_DT host_NN X_NN fails_VBZ ,_, all_DT its_PRP$ descendants_NNS in_IN the_DT data_NNS delivery_NN tree_NN are_VBP affected_VBN ._.
+Therefore_RB ,_, X_NN will_MD initiate_VB the_DT recovery_NN process_NN and_CC inform_VB its_PRP$ descendants_NNS to_TO wait_VB ._.
+This_DT technique_NN only_RB distinguis_VBZ
+us_PRP more_RBR on_IN the_DT complementary_JJ problem_NN --_: how_WRB to_TO efficiently_RB stream_NN data_NNS mirrored_VBN or_CC stored_VBN at_IN multiple_JJ locations_NNS to_TO a_DT single_JJ client_NN and_CC enhance_VB its_PRP$ performance_NN through_IN P2P_NN style_NN interactions_NNS ._.
+In_IN P2Cast_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT authors_NNS propose_VBP a_DT similar_JJ overlay_NN construction_NN technique_NN for_IN a_DT video-on-demand_JJ service_NN ._.
+The_DT emphasis_NN of_IN their_PRP$ work_NN is_VBZ on_IN on_IN ``_`` patching_NN ''_'' by_IN which_WDT a_DT late_JJ joining_VBG client_NN retrieves_VBZ the_DT initial_JJ missin_NN
+content_NN from_IN this_DT server_NN then_RB joins_VBZ the_DT application_NN layer_NN multicast_JJ tree_NN rooted_VBN at_IN the_DT video_NN server_NN ._.
+Video_NNP content_NN is_VBZ then_RB propagated_VBN along_IN this_DT application_NN layer_NN multicast_JJ tree_NN to_TO the_DT video_NN clients_NNS =_JJ -_: =[_NN 13_CD ,_, 14_CD ,_, 42_CD ,_, 46_CD ,_, 53_CD ,_, 73_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One_CD major_JJ problem_NN for_IN live_JJ video_NN streaming_NN using_VBG application_NN layer_NN multicast_NN is_VBZ the_DT video_NN discontinuity_NN caused_VBN by_IN the_DT dynamics_NNS of_IN membership_NN ._.
+Since_IN the_DT clients_NNS in_IN the_DT group_NN can_MD leave_VB at_IN any_DT time_NN ,_, ot_NN
+尾节点的到达_FW 时间相差在缓冲区窗口内_FW ,_, 可以直接接到链尾_NN ,_, 否则_NN ,_, 服务器要产生另一条视频流_NN ._.
+3.2.2_FW 树状_FW -LRB-_-LRB- tree_NN -RRB-_-RRB- 结构_FW Chaining实际上是树状结构的极端情况_FW ._.
+在树状组播树中_NN ,_, 为了减小上层节点失败对下层节点的影响_NN ,_, 可以_FW 通过减少层次来实现_FW ._.
+在带宽和计算能力允许的情况下_NN ,_, 增加每个节点所带的子节点_NN ,_, 而且尽量保证上层节点的_FW 稳定性_FW ._.
+典型的策略有DirectStream_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, P2Cast_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: 等_NN ._.
+以_FW P2Cast为例_FW ,_, P2Cast是在_NN DirectStream的基础上改进的_NN ,_, 节点按照到达的时间加入一个应用层组播树_NN -LRB-_-LRB- 如_FW 图_FW 3所示_CD -RRB-_-RRB- ._.
+新节点加入组播树_NNP ,_, 选取与自己到达时间较为接近的节点为父节点_NNP ,_, 这个节点有可能已经把最开始的_NNP 一部分内容抛弃_NNP ,_, 即它们到达时间的间隔已经超过缓冲区的大小_NNP ,_, 如果是_NNP DirectStream_NNP 策略_NNP ,_, 该节点就无法成为_FW 新节点的父节点_FW ._.
+但在_FW P2Cast_FW 策略中_NN ,_, 如果_NN
+s_NN to_TO discuss_VB such_JJ as_IN social_JJ issues_NNS ,_, intellectual_JJ property_NN rights_NNS ,_, lookup_NN protocols_NNS ,_, bandwidth_NN efficiency_NN ,_, load_NN balance_NN ,_, streaming_NN ,_, data_NNS dissemination_NN ,_, security_NN ,_, reputation_NN ,_, pricing_NN and_CC business_NN model_NN =_JJ -_: =[_NN 9_CD ,_, 18_CD ,_, 20_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+With_IN the_DT increase_NN of_IN mobile_JJ devices_NNS as_RB well_RB as_IN progress_NN in_IN wireless_JJ communications_NNS ,_, ad_FW hoc_FW networking_NN is_VBZ drawing_VBG more_JJR and_CC more_JJR attention_NN ._.
+A_DT mobile_JJ ad_FW hoc_FW network_NN -LRB-_-LRB- MANET_NN -RRB-_-RRB- consists_VBZ of_IN mobile_JJ devices_NNS c_NN
+like_IN IP-TV_NN -RRB-_-RRB- ,_, it_PRP is_VBZ essential_JJ to_TO have_VB scalable_JJ streaming_NN solutions_NNS ._.
+P2P_NN streaming_NN fits_VBZ this_DT niche_NN nicely_RB to_TO provide_VB scalable_JJ streaming_NN services_NNS and_CC has_VBZ been_VBN a_DT very_RB active_JJ research_NN area_NN in_IN recent_JJ years_NNS =_JJ -_: =[_NN 5_CD ,_, 7_CD ,_, 8_CD ,_, 15_CD ,_, 16_CD ,_, 18_CD ,_, 21_CD ,_, 23_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN P2P_NN streaming_NN techniques_NNS for_IN live_JJ video_NN delivery_NN ,_, all_DT peers_NNS form_VBP a_DT delivery_NN tree_NN rooted_VBN at_IN a_DT server_NN ._.
+Every_DT non-leaf_JJ node_NN in_IN the_DT tree_NN relays_VBZ the_DT video_NN frames_NNS it_PRP receives_VBZ from_IN its_PRP$ parent_NN nodes_NNS to_TO i_FW
+d_NN networks_NNS such_JJ as_IN WWW_NN ,_, protein_NN networks_NNS ,_, e-mail_JJ networks_NNS ,_, actor_NN networks_NNS ,_, and_CC scientific_JJ collaboration_NN networks_NNS -LRB-_-LRB- 16,20,36_CD -RRB-_-RRB- ._.
+The_DT concept_NN of_IN peer-assisted_JJ video_NN streaming_NN has_VBZ been_VBN extensively_RB explored_VBN =_JJ -_: =[_NN 14_CD ,_, 22_CD ,_, 27_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS existing_VBG work_NN concentrate_NN on_IN the_DT protocol_NN design_NN under_IN various_JJ topological_JJ constraints_NNS -LRB-_-LRB- 18_CD ,_, 27_CD -RRB-_-RRB- ._.
+Our_PRP$ study_NN considers_VBZ the_DT potential_NN for_IN P2P_NN delivery_NN in_IN large-scale_JJ UGC_NNP systems_NNS ,_, which_WDT have_VBP unique_JJ
+rhead_NN scheduling_NN algorithm_NN to_TO intelligently_RB pull_VB data_NNS from_IN multiple_JJ partners_NNS ,_, which_WDT greatly_RB reduces_VBZ redundancy_NN ._.
+Several_JJ pioneering_JJ works_NNS on_IN peer-to-peer_JJ on-demand_JJ streaming_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- -RRB-_-RRB- are_VBP closely_RB related_JJ to_TO gossip_NN ,_, and_CC hence_RB to_TO DONet_NN as_RB well_RB ._.
+In_IN such_PDT a_DT scenario_NN ,_, the_DT video_NN data_NNS provided_VBN by_IN some_DT seeding_NN nodes_NNS are_VBP spread_VBN among_IN nodes_NNS of_IN asynchronous_JJ demands_NNS ,_, and_CC one_CD or_CC more_JJR node_NN
+to_TO zero_VB ,_, we_PRP obtain_VBP a_DT set_NN of_IN equations_NNS for_IN which_WDT the_DT roots_NNS can_MD be_VB found_VBN numerically_RB :_: 1_CD M_NN α1_NN j_NN =_JJ 1_CD ∂_NN D_NN -LRB-_-LRB- R1_NN ,_, Rj_NN -RRB-_-RRB- Cj_NN +_CC λ_NN =_JJ 0_CD -LRB-_-LRB- 11_CD -RRB-_-RRB- ∂_FW R1_FW Ci_FW αi_FW ∂_NN D_NN -LRB-_-LRB- R1_NN ,_, Ri_NN -RRB-_-RRB- +_CC λ_FW ∂_FW Ri_NN =_JJ 0_CD for_IN i_LS =_JJ 2_CD ,_, ..._: ,_, M_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- M_NN αlRl_FW −_FW RD_NN =_JJ 0_CD =_JJ -_: =-LRB-_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: l_NN =_JJ 1_CD In_IN Ref_NN ._.
+4_CD ,_, a_DT method_NN is_VBZ presented_VBN to_TO solve_VB these_DT simultaneous_JJ equations_NNS such_JJ that_IN after_IN optimization_NN Ri_NN -LRB-_-LRB- Ri_NN +1_NN holds_VBZ for_IN all_DT rates_NNS ._.
+Unfortunately_RB ,_, the_DT required_JJ conditions_NNS can_MD only_RB be_VB verified_VBN for_IN
+nt_NN server_NN ._.
+-LRB-_-LRB- 8_CD -RRB-_-RRB- supports_VBZ QoS_NN ,_, and_CC is_VBZ meant_VBN for_IN closed_JJ environments_NNS such_JJ as_IN large_JJ companies_NNS ,_, universities_NNS and_CC hotels_NNS ._.
+Gnustream_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- is_VBZ built_VBN upon_IN the_DT Gnutella_NNP -LRB-_-LRB- 10_CD -RRB-_-RRB- P2P_NN file_NN distribution_NN network_NN ._.
+P2Cast_NN =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: uses_VBZ the_DT patching_NN technique_NN for_IN P2P_NN based_JJ streaming_NN ._.
+DirectStream_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- uses_VBZ a_DT directory_NN server_NN for_IN storing_VBG content_NN and_CC keeping_VBG information_NN about_IN clients_NNS ._.
+PALS_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- uses_VBZ adaptive_JJ layered_JJ streaming_NN ._.
+Pr_NN
+s_NN ,_, while_IN the_DT ongoing_JJ scenes_NNS are_VBP received_VBN via_IN IP_NNP multicast_NN and_CC stored_VBD locally_RB for_IN later_RB viewing_VBG ._.
+For_IN other_JJ possible_JJ designs_NNS of_IN patching_NN in_IN multicast_JJ video_NN streaming_NN ,_, we_PRP refer_VBP to_TO a_DT good_JJ body_NN of_IN work_NN in_IN =_JJ -_: =[_NN 81,84,73_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT tracker_NN provides_VBZ an_DT up-to-date_JJ list_NN of_IN viewers_NNS for_IN each_DT channel_NN ._.
+We_PRP later_RB consider_VBP a_DT locality-aware_JJ P2P_NN system_NN where_WRB a_DT centralized_JJ tracker_NN keeps_VBZ information_NN about_IN which_WDT users_NNS are_VBP watching_VBG which_WDT ch_VBP
+1_LS -RRB-_-RRB- faced_VBD the_DT deployment_NN problems_NNS of_IN IP_NNP multicast_NNS ._.
+Later_RB on_IN ,_, there_EX are_VBP a_DT number_NN of_IN proposals_NNS for_IN peerassisted_JJ Video-on-Demand_NNP streaming_NN such_JJ as_IN tree-based_JJ approach_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- and_CC overlay_NN tree_NN based_JJ patching_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recently_RB Huang_NNP et_FW al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- have_VBP carried_VBN out_RP analysis_NN through_IN measurement_NN and_CC simulation_NN on_IN the_DT data_NNS trace_VBP from_IN an_DT existing_VBG client-server_JJ based_VBN VoD_NN system_NN ._.
+To_TO the_DT best_JJS of_IN our_PRP$ knowl1_NN 0.75_CD 0.5_CD 0.25_CD Rat_NN
+e_LS workload_NN of_IN source_NN peer_VBP and_CC workload_NN at_IN each_DT network_NN link_NN ._.
+Generally_RB ,_, this_DT architecture_NN has_VBZ been_VBN proposed_VBN for_IN autonomous_JJ networks_NNS e.g._FW ,_, universities_NNS ,_, hotels_NNS ,_, large_JJ companies_NNS ,_, and_CC institutes_NN etc._NN ._.
+In_IN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, an_DT architecture_NN `_`` P2CAST_NN '_'' is_VBZ presented_VBN for_IN the_DT VoD_NNP Services_NNP that_WDT uses_VBZ the_DT peer-to-peer_JJ approach_NN and_CC is_VBZ based_VBN on_IN patching_NN techniques_NNS ._.
+The_DT architecture_NN relies_VBZ on_IN only_JJ unicast_JJ connections_NNS among_IN the_DT peer_VBP
+sk_NN and_CC bandwidth_NN to_TO implement_VB VoD_NN and_CC live_JJ streaming_NN services_NNS ._.
+Zigzag_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- and_CC Nice_JJ -LRB-_-LRB- 26_CD -RRB-_-RRB- build_VB a_DT single_JJ overlay_NN tree_NN and_CC multicast_VB the_DT video_NN over_IN this_DT tree_NN ._.
+Splitstream_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, CoopNet_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- and_CC P2PCast_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: extend_VB this_DT idea_NN to_TO build_VB multiple_JJ multicast_JJ trees_NNS for_IN load_NN balancing_NN and_CC resiliency_NN against_IN failures_NNS ._.
+Swarming_VBG protocols_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- divide_NN content_NN into_IN fixed_JJ sized_VBN chunks_NNS ;_: peers_NNS form_VBP a_DT random_JJ mes_NN
+resources_NNS such_JJ as_IN information_NN and_CC bandwidth_NN ._.
+Peer-to-Peer_JJR systems_NNS are_VBP usually_RB associated_VBN with_IN file_NN sharing_NN ,_, but_CC have_VBP also_RB been_VBN in_IN applied_VBN to_TO other_JJ domains_NNS ,_, such_JJ as_IN telephony_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- and_CC Video-on-Demand_NN =_JJ -_: =[_NN 16_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT section_NN gives_VBZ an_DT overview_NN of_IN the_DT Peer-to-Peer_NNP systems_NNS that_WDT are_VBP relevant_JJ to_TO this_DT thesis_NN ._.
+Section_NN 1.2.1_CD discusses_VBZ general_JJ Peer-to-Peer_NNP technology_NN and_CC its_PRP$ advantages_NNS ,_, Section_NNP 1.2.2_NNP discusses_VBZ BitTo_NN
+stems_VBZ can_MD be_VB roughly_RB classified_VBN into_IN the_DT following_JJ four_CD categories_NNS :_: Best-fit_NN ,_, Random-selection_NN ,_, Preemption-based_JJ ,_, and_CC Reputation-based_JJ algorithms_NNS ._.
+The_DT Best-fit_JJ algorithms_NNS ,_, for_IN example_NN ,_, used_VBN in_IN P2Cast_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: and_CC ESM_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, aim_NN to_TO find_VB several_JJ existing_VBG peers_NNS with_IN the_DT largest_JJS available_JJ resource_NN -LRB-_-LRB- in_IN terms_NNS of_IN bandwidth_NN -RRB-_-RRB- for_IN this_DT newly_RB arriving_VBG peer_VB ._.
+At_IN its_PRP$ arrival_NN ,_, each_DT peer_VBP selects_VBZ peers_NNS with_IN the_DT largest_JJS ava_NN
+tems_NNS ,_, peer-to-peer_JJ steaming_VBG services_NNS ,_, and_CC available_JJ bandwidth_NN measurement_NN techniques_NNS ._.
+To_TO overcome_VB the_DT lack_NN of_IN IP_NNP multicast_JJ ,_, many_JJ application-level_JJ multicast_JJ systems_NNS have_VBP been_VBN proposed_VBN recently_RB ,_, e.g._FW ,_, =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 14_CD ,_, 8_CD ,_, 9_CD ,_, 15_CD ,_, 16_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Many_JJ of_IN them_PRP use_VBP the_DT delay_NN as_IN the_DT single_JJ or_CC primary_JJ metric_NN in_IN the_DT tree_NN construction_NN ,_, attempting_VBG to_TO minimize_VB the_DT average_JJ delay_NN among_IN peer_VB nodes_NNS ._.
+To_TO satisfy_VB the_DT high_JJ bandwidth_NN requirement_NN of_IN applicati_NNS
+aced_VBN by_IN VoD_NN service_NN ._.
+IP_NNP multicast_NN has_VBZ been_VBN proposed_VBN to_TO enhance_VB the_DT efficiency_NN of_IN one-to-many_JJ and_CC many-to-many_JJ communication_NN over_IN the_DT Internet_NNP ._.
+A_DT series_NN of_IN IP_NNP Multicast-based_JJ schemes_NNS ,_, such_JJ as_IN Patching_NN =_JJ -_: =[_NN 1_CD ,_, 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Periodic_JJ Broadcast_NNP -LRB-_-LRB- 3_CD ,_, 4_CD -RRB-_-RRB- ,_, and_CC Stream_NNP Merging_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, have_VBP been_VBN developed_VBN that_WDT can_MD drastically_RB decrease_VB the_DT aggregate_JJ bandwidth_NN requirement_NN at_IN the_DT server_NN by_IN leveraging_VBG the_DT native_JJ IP_NNP multicast_NN ._.
+For_IN inst_NN
+able_JJ bandwidth_NN in_IN the_DT base_NN tree_NN construction_NN ._.
+The_DT available_JJ bandwidth_NN larger_JJR than_IN the_DT playback_NN rate_NN is_VBZ guaranteed_VBN over_IN the_DT entire_JJ base_NN tree_NN ._.
+Several_JJ peer-to-peer_JJ streaming_NN systems_NNS have_VBP been_VBN developed_VBN =_JJ -_: =[_NN 18_CD ,_, 19_CD ,_, 20_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Peercast_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- and_CC CoopNet_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- are_VBP mainly_RB designed_VBN for_IN live_JJ media_NNS streaming_NN ._.
+CoopNet_NNP also_RB supports_VBZ VoD_NN service_NN ,_, and_CC employs_VBZ ``_`` distributed_VBN streaming_NN ''_'' to_TO obtain_VB the_DT content_NN from_IN multiple_JJ peers_NNS simultan_NN
+d_NN if_IN the_DT cushion_NN is_VBZ larger_JJR than_IN ._.
+Usually_RB the_DT cushion_NN -LRB-_-LRB- sum_NN of_IN playback_NN delay_NN and_CC patch_NN size_NN ,_, on_IN the_DT order_NN of_IN minutes_NNS -RRB-_-RRB- is_VBZ much_RB longer_JJR than_IN the_DT rejoining_VBG time_NN -LRB-_-LRB- usually_RB at_IN the_DT order_NN of_IN tens_NNS of_IN seconds_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, uninterrupted_JJ playback_NN of_IN the_DT base_NN stream_NN can_MD be_VB achieved_VBN with_IN high_JJ probability_NN ._.
+5.3_CD Threshold_NN adjustment_NN -_: balancing_VBG the_DT scalability_NN and_CC viewing_VBG quality_NN The_DT threshold_NN value_NN can_MD be_VB used_VBN as_IN a_DT knob_NN t_NN
+aced_VBN by_IN VoD_NN service_NN ._.
+IP_NNP multicast_NN has_VBZ been_VBN proposed_VBN to_TO enhance_VB the_DT efficiency_NN of_IN one-to-many_JJ and_CC many-to-many_JJ communication_NN over_IN the_DT Internet_NNP ._.
+A_DT series_NN of_IN IP_NNP Multicast-based_JJ schemes_NNS ,_, such_JJ as_IN Patching_NN =_JJ -_: =[_NN 1_CD ,_, 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Periodic_JJ Broadcast_NNP -LRB-_-LRB- 3_CD ,_, 4_CD -RRB-_-RRB- ,_, and_CC Stream_NNP Merging_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, have_VBP been_VBN developed_VBN that_WDT can_MD drastically_RB decrease_VB the_DT aggregate_JJ bandwidth_NN requirement_NN at_IN the_DT server_NN by_IN leveraging_VBG the_DT native_JJ IP_NNP multicast_NN ._.
+For_IN inst_NN
+and_CC the_DT clients_NNS that_WDT receive_VBP a_DT patch_NN or_CC the_DT base_NN stream_NN from_IN client_NN will_MD initiate_VB the_DT recovery_NN processes_NNS ._.
+We_PRP present_VBP the_DT signaling_NN protocol_NN used_VBN in_IN P2Cast_NN for_IN clients_NNS to_TO do_VB the_DT failure_NN recovery_NN in_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP consists_VBZ of_IN the_DT network_NN failure_NN recovery_NN protocol_NN and_CC the_DT client_NN departure_NN recovery_NN protocol_NN ,_, to_TO deal_VB with_IN network_NN failure_NN and_CC client_NN departure_NN ,_, respectively_RB ._.
+P2Cast_NN clients_NNS constantly_RB monitor_VBP th_DT
+enhance_VB the_DT efficiency_NN of_IN one-to-many_JJ and_CC many-to-many_JJ communication_NN over_IN the_DT Internet_NNP ._.
+A_DT series_NN of_IN IP_NNP Multicast-based_JJ schemes_NNS ,_, such_JJ as_IN Patching_NN -LRB-_-LRB- 1_CD ,_, 2_CD -RRB-_-RRB- ,_, Periodic_JJ Broadcast_NNP -LRB-_-LRB- 3_CD ,_, 4_CD -RRB-_-RRB- ,_, and_CC Stream_NNP Merging_VBG =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, have_VBP been_VBN developed_VBN that_WDT can_MD drastically_RB decrease_VB the_DT aggregate_JJ bandwidth_NN requirement_NN at_IN the_DT server_NN by_IN leveraging_VBG the_DT native_JJ IP_NNP multicast_NN ._.
+For_IN instance_NN ,_, under_IN Patching_NNP ,_, clients_NNS arriving_VBG close_NN in_IN tim_NN
+ticast_NN has_VBZ been_VBN proposed_VBN to_TO enhance_VB the_DT efficiency_NN of_IN one-to-many_JJ and_CC many-to-many_JJ communication_NN over_IN the_DT Internet_NNP ._.
+A_DT series_NN of_IN IP_NNP Multicast-based_JJ schemes_NNS ,_, such_JJ as_IN Patching_NN -LRB-_-LRB- 1_CD ,_, 2_CD -RRB-_-RRB- ,_, Periodic_JJ Broadcast_NNP =_SYM -_: =[_NN 3_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC Stream_NNP Merging_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, have_VBP been_VBN developed_VBN that_WDT can_MD drastically_RB decrease_VB the_DT aggregate_JJ bandwidth_NN requirement_NN at_IN the_DT server_NN by_IN leveraging_VBG the_DT native_JJ IP_NNP multicast_NN ._.
+For_IN instance_NN ,_, under_IN Patching_NN ,_, clien_NN
+tems_NNS ,_, peer-to-peer_JJ steaming_VBG services_NNS ,_, and_CC available_JJ bandwidth_NN measurement_NN techniques_NNS ._.
+To_TO overcome_VB the_DT lack_NN of_IN IP_NNP multicast_JJ ,_, many_JJ application-level_JJ multicast_JJ systems_NNS have_VBP been_VBN proposed_VBN recently_RB ,_, e.g._FW ,_, =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 14_CD ,_, 8_CD ,_, 9_CD ,_, 15_CD ,_, 16_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Many_JJ of_IN them_PRP use_VBP the_DT delay_NN as_IN the_DT single_JJ or_CC primary_JJ metric_NN in_IN the_DT tree_NN construction_NN ,_, attempting_VBG to_TO minimize_VB the_DT average_JJ delay_NN among_IN peer_VB nodes_NNS ._.
+To_TO satisfy_VB the_DT high_JJ bandwidth_NN requirement_NN of_IN applicati_NNS
+able_JJ bandwidth_NN in_IN the_DT base_NN tree_NN construction_NN ._.
+The_DT available_JJ bandwidth_NN larger_JJR than_IN the_DT playback_NN rate_NN is_VBZ guaranteed_VBN over_IN the_DT entire_JJ base_NN tree_NN ._.
+Several_JJ peer-to-peer_JJ streaming_NN systems_NNS have_VBP been_VBN developed_VBN =_JJ -_: =[_NN 18_CD ,_, 19_CD ,_, 20_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Peercast_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- and_CC CoopNet_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- are_VBP mainly_RB designed_VBN for_IN live_JJ media_NNS streaming_NN ._.
+CoopNet_NNP also_RB supports_VBZ VoD_NN service_NN ,_, and_CC employs_VBZ ``_`` distributed_VBN streaming_NN ''_'' to_TO obtain_VB the_DT content_NN from_IN multiple_JJ peers_NNS simultan_NN
+ticast_NN has_VBZ been_VBN proposed_VBN to_TO enhance_VB the_DT efficiency_NN of_IN one-to-many_JJ and_CC many-to-many_JJ communication_NN over_IN the_DT Internet_NNP ._.
+A_DT series_NN of_IN IP_NNP Multicast-based_JJ schemes_NNS ,_, such_JJ as_IN Patching_NN -LRB-_-LRB- 1_CD ,_, 2_CD -RRB-_-RRB- ,_, Periodic_JJ Broadcast_NNP =_SYM -_: =[_NN 3_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC Stream_NNP Merging_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, have_VBP been_VBN developed_VBN that_WDT can_MD drastically_RB decrease_VB the_DT aggregate_JJ bandwidth_NN requirement_NN at_IN the_DT server_NN by_IN leveraging_VBG the_DT native_JJ IP_NNP multicast_NN ._.
+For_IN instance_NN ,_, under_IN Patching_NN ,_, clien_NN
+region_NN ._.
+If_IN the_DT number_NN of_IN requesting_VBG clients_NNS is_VBZ very_RB large_JJ ,_, this_DT proxy_NN can_MD be_VB overwhelmed_VBN ._.
+Recently_RB ,_, peer-to-peer_JJ networks_NNS -LRB-_-LRB- P2P_NN -RRB-_-RRB- have_VBP been_VBN used_VBN for_IN file_NN sharing_NN ,_, application-level_JJ multicast_NN ,_, and_CC more_RBR =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 8_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Peer_JJR nodes_NNS bring_VBP computation_NN and_CC storage_NN resources_NNS into_IN the_DT system_NN ,_, hence_RB reducing_VBG the_DT workload_NN placed_VBN on_IN the_DT server_NN and_CC thereby_RB increasing_VBG the_DT overall_JJ scalability_NN ._.
+Whether_IN these_DT techniques_NNS can_MD be_VB i_FW
+tems_NNS ,_, peer-to-peer_JJ steaming_VBG services_NNS ,_, and_CC available_JJ bandwidth_NN measurement_NN techniques_NNS ._.
+To_TO overcome_VB the_DT lack_NN of_IN IP_NNP multicast_JJ ,_, many_JJ application-level_JJ multicast_JJ systems_NNS have_VBP been_VBN proposed_VBN recently_RB ,_, e.g._FW ,_, =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 14_CD ,_, 8_CD ,_, 9_CD ,_, 15_CD ,_, 16_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Many_JJ of_IN them_PRP use_VBP the_DT delay_NN as_IN the_DT single_JJ or_CC primary_JJ metric_NN in_IN the_DT tree_NN construction_NN ,_, attempting_VBG to_TO minimize_VB the_DT average_JJ delay_NN among_IN peer_VB nodes_NNS ._.
+To_TO satisfy_VB the_DT high_JJ bandwidth_NN requirement_NN of_IN applicati_NNS
+region_NN ._.
+If_IN the_DT number_NN of_IN requesting_VBG clients_NNS is_VBZ very_RB large_JJ ,_, this_DT proxy_NN can_MD be_VB overwhelmed_VBN ._.
+Recently_RB ,_, peer-to-peer_JJ networks_NNS -LRB-_-LRB- P2P_NN -RRB-_-RRB- have_VBP been_VBN used_VBN for_IN file_NN sharing_NN ,_, application-level_JJ multicast_NN ,_, and_CC more_RBR =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 8_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Peer_JJR nodes_NNS bring_VBP computation_NN and_CC storage_NN resources_NNS into_IN the_DT system_NN ,_, hence_RB reducing_VBG the_DT workload_NN placed_VBN on_IN the_DT server_NN and_CC thereby_RB increasing_VBG the_DT overall_JJ scalability_NN ._.
+Whether_IN these_DT techniques_NNS can_MD be_VB i_FW
+region_NN ._.
+If_IN the_DT number_NN of_IN requesting_VBG clients_NNS is_VBZ very_RB large_JJ ,_, this_DT proxy_NN can_MD be_VB overwhelmed_VBN ._.
+Recently_RB ,_, peer-to-peer_JJ networks_NNS -LRB-_-LRB- P2P_NN -RRB-_-RRB- have_VBP been_VBN used_VBN for_IN file_NN sharing_NN ,_, application-level_JJ multicast_NN ,_, and_CC more_RBR =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 8_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Peer_JJR nodes_NNS bring_VBP computation_NN and_CC storage_NN resources_NNS into_IN the_DT system_NN ,_, hence_RB reducing_VBG the_DT workload_NN placed_VBN on_IN the_DT server_NN and_CC thereby_RB increasing_VBG the_DT overall_JJ scalability_NN ._.
+Whether_IN these_DT techniques_NNS can_MD be_VB i_FW
+tems_NNS ,_, peer-to-peer_JJ steaming_VBG services_NNS ,_, and_CC available_JJ bandwidth_NN measurement_NN techniques_NNS ._.
+To_TO overcome_VB the_DT lack_NN of_IN IP_NNP multicast_JJ ,_, many_JJ application-level_JJ multicast_JJ systems_NNS have_VBP been_VBN proposed_VBN recently_RB ,_, e.g._FW ,_, =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 14_CD ,_, 8_CD ,_, 9_CD ,_, 15_CD ,_, 16_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Many_JJ of_IN them_PRP use_VBP the_DT delay_NN as_IN the_DT single_JJ or_CC primary_JJ metric_NN in_IN the_DT tree_NN construction_NN ,_, attempting_VBG to_TO minimize_VB the_DT average_JJ delay_NN among_IN peer_VB nodes_NNS ._.
+To_TO satisfy_VB the_DT high_JJ bandwidth_NN requirement_NN of_IN applicati_NNS
+able_JJ bandwidth_NN in_IN the_DT base_NN tree_NN construction_NN ._.
+The_DT available_JJ bandwidth_NN larger_JJR than_IN the_DT playback_NN rate_NN is_VBZ guaranteed_VBN over_IN the_DT entire_JJ base_NN tree_NN ._.
+Several_JJ peer-to-peer_JJ streaming_NN systems_NNS have_VBP been_VBN developed_VBN =_JJ -_: =[_NN 18_CD ,_, 19_CD ,_, 20_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Peercast_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- and_CC CoopNet_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- are_VBP mainly_RB designed_VBN for_IN live_JJ media_NNS streaming_NN ._.
+CoopNet_NNP also_RB supports_VBZ VoD_NN service_NN ,_, and_CC employs_VBZ ``_`` distributed_VBN streaming_NN ''_'' to_TO obtain_VB the_DT content_NN from_IN multiple_JJ peers_NNS simultan_NN
+region_NN ._.
+If_IN the_DT number_NN of_IN requesting_VBG clients_NNS is_VBZ very_RB large_JJ ,_, this_DT proxy_NN can_MD be_VB overwhelmed_VBN ._.
+Recently_RB ,_, peer-to-peer_JJ networks_NNS -LRB-_-LRB- P2P_NN -RRB-_-RRB- have_VBP been_VBN used_VBN for_IN file_NN sharing_NN ,_, application-level_JJ multicast_NN ,_, and_CC more_RBR =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 8_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Peer_JJR nodes_NNS bring_VBP computation_NN and_CC storage_NN resources_NNS into_IN the_DT system_NN ,_, hence_RB reducing_VBG the_DT workload_NN placed_VBN on_IN the_DT server_NN and_CC thereby_RB increasing_VBG the_DT overall_JJ scalability_NN ._.
+Whether_IN these_DT techniques_NNS can_MD be_VB i_FW
+able_JJ bandwidth_NN in_IN the_DT base_NN tree_NN construction_NN ._.
+The_DT available_JJ bandwidth_NN larger_JJR than_IN the_DT playback_NN rate_NN is_VBZ guaranteed_VBN over_IN the_DT entire_JJ base_NN tree_NN ._.
+Several_JJ peer-to-peer_JJ streaming_NN systems_NNS have_VBP been_VBN developed_VBN =_JJ -_: =[_NN 18_CD ,_, 19_CD ,_, 20_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Peercast_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- and_CC CoopNet_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- are_VBP mainly_RB designed_VBN for_IN live_JJ media_NNS streaming_NN ._.
+CoopNet_NNP also_RB supports_VBZ VoD_NN service_NN ,_, and_CC employs_VBZ ``_`` distributed_VBN streaming_NN ''_'' to_TO obtain_VB the_DT content_NN from_IN multiple_JJ peers_NNS simultan_NN
+ice_NN ,_, and_CC employs_VBZ ``_`` distributed_VBN streaming_NN ''_'' to_TO obtain_VB the_DT content_NN from_IN multiple_JJ peers_NNS simultaneously_RB ._.
+SplitStream_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- is_VBZ a_DT high-bandwidth_JJ content_NN streaming\/distribution_NN system_NN that_WDT is_VBZ built_VBN upon_IN Pastry_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT generic_JJ substrate_NN for_IN peer-to-peer_JJ applications_NNS ._.
+There_EX are_VBP several_JJ efforts_NNS put_VBN forth_RB by_IN industry_NN ,_, such_JJ as_IN Allcast_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, vTrails_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, and_CC Bluefalcon_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, that_WDT claim_VBP to_TO provide_VB live_JJ streaming_NN and_CC

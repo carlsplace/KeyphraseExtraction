@@ -1,0 +1,109 @@
+Using_VBG graphics_NNS processors_NNS for_IN high_JJ performance_NN IR_NN query_NN processing_NN
+Web_NN search_NN engines_NNS are_VBP facing_VBG formidable_JJ performance_NN challenges_NNS due_JJ to_TO data_NN sizes_NNS and_CC query_NN loads_NNS ._.
+The_DT major_JJ engines_NNS have_VBP to_TO process_VB tens_NNS of_IN thousands_NNS of_IN queries_NNS per_IN second_NN over_IN tens_NNS of_IN billions_NNS of_IN documents_NNS ._.
+To_TO deal_VB with_IN this_DT heavy_JJ workload_NN ,_, such_JJ engines_NNS employ_VBP massively_RB parallel_JJ systems_NNS consisting_VBG of_IN thousands_NNS of_IN machines_NNS ._.
+The_DT significant_JJ cost_NN of_IN operating_VBG these_DT systems_NNS has_VBZ motivated_VBN a_DT lot_NN of_IN recent_JJ research_NN into_IN more_RBR efficient_JJ query_NN processing_NN mechanisms_NNS ._.
+We_PRP investigate_VBP a_DT new_JJ way_NN to_TO build_VB such_JJ high_JJ performance_NN IR_NN systems_NNS using_VBG graphical_JJ processing_NN units_NNS -LRB-_-LRB- GPUs_NNS -RRB-_-RRB- ._.
+GPUs_NNS were_VBD originally_RB designed_VBN to_TO accelerate_VB computer_NN graphics_NNS applications_NNS through_IN massive_JJ on-chip_JJ parallelism_NN ._.
+Recently_RB a_DT number_NN of_IN researchers_NNS have_VBP studied_VBN how_WRB to_TO use_VB GPUs_NNS for_IN other_JJ problem_NN domains_NNS such_JJ as_IN databases_NNS and_CC scientific_JJ computing_NN ._.
+Our_PRP$ contribution_NN here_RB is_VBZ to_TO design_VB a_DT basic_JJ system_NN architecture_NN for_IN GPU-based_JJ high-performance_JJ IR_NN ,_, to_TO develop_VB suitable_JJ algorithms_NNS for_IN subtasks_NNS such_JJ as_IN inverted_JJ list_NN compression_NN ,_, list_NN intersection_NN ,_, and_CC top_JJ -_: $_$ k_NN $_$ scoring_VBG ,_, and_CC to_TO show_VB how_WRB to_TO achieve_VB highly_RB efficient_JJ query_NN processing_NN on_IN GPU-based_JJ systems_NNS ._.
+Our_PRP$ experimental_JJ results_NNS for_IN a_DT prototype_NN GPU-based_JJ system_NN on_IN $_$ 25.2_CD $_$ million_CD web_NN pages_NNS indicate_VBP that_IN significant_JJ gains_NNS in_IN query_NN processing_NN performance_NN can_MD be_VB obtained_VBN ._.
+ta_NN mining_NN -LRB-_-LRB- 8_CD ,_, 10_CD ,_, 27_CD -RRB-_-RRB- ,_, spatial_JJ databases_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, MapReduce_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, scatter\/gather_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- and_CC similarity_NN joins_VBZ -LRB-_-LRB- 23_CD -RRB-_-RRB- ._.
+GPU-based_JJ data_NNS compression_NN has_VBZ been_VBN applied_VBN on_IN the_DT inverted_JJ index_NN in_IN information_NN retrieval_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN comparison_NN ,_, we_PRP not_RB only_RB investigate_VB individual_JJ GPU-accelerated_JJ compression_NN schemes_NNS for_IN column-oriented_JJ databases_NNS ,_, but_CC also_RB the_DT combinations_NNS of_IN different_JJ schemes_NNS for_IN reducing_VBG the_DT overhead_NN of_IN data_NNS
+entation_NN of_IN SQL_NN is_VBZ capable_JJ of_IN automatically_RB accessing_VBG a_DT GPU_NNP ,_, even_RB though_IN SQL_NNP queries_NNS have_VBP been_VBN closely_RB emulated_VBN on_IN the_DT GPU_NNP to_TO prove_VB the_DT parallel_JJ architecture_NN 's_POS adaptability_NN to_TO such_JJ execution_NN patterns_NNS =_JJ -_: =[_NN 5_CD ,_, 6_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX exist_VBP limitations_NNS to_TO current_JJ GPU_NNP technology_NN that_WDT affect_VBP the_DT potential_JJ users_NNS of_IN such_PDT a_DT GPU_NNP SQL_NNP implementation_NN ._.
+The_DT two_CD most_RBS relevant_JJ technical_JJ limitations_NNS are_VBP the_DT GPU_NNP memory_NN size_NN and_CC the_DT host_NN t_NN
+R_NN query_NN processing_NN ._.
+Parallel_JJ Algorithms_NNS :_: Our_PRP$ approach_NN adapts_VBZ several_JJ techniques_NNS from_IN the_DT parallel_JJ algorithms_NNS literature_NN ._.
+We_PRP use_VBP previous_JJ work_NN on_IN parallel_JJ prefix_NN sums_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, recently_RB studied_VBN for_IN GPUs_NNS in_IN =_JJ -_: =[_NN 10_CD ,_, 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC on_IN merging_VBG sorted_VBN lists_NNS in_IN parallel_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, which_WDT we_PRP adapt_VBP to_TO the_DT problem_NN of_IN intersecting_VBG sorted_VBN lists_NNS ._.
+3_LS ._.
+CONTRIBUTIONS_NNS OF_IN THIS_NNP PAPER_NNP We_PRP study_VBD how_WRB to_TO implement_VB high-performance_JJ IR_NN query_NN processing_NN
+ach_NN adapts_VBZ several_JJ techniques_NNS from_IN the_DT parallel_JJ algorithms_NNS literature_NN ._.
+We_PRP use_VBP previous_JJ work_NN on_IN parallel_JJ prefix_NN sums_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, recently_RB studied_VBN for_IN GPUs_NNS in_IN -LRB-_-LRB- 10_CD ,_, 17_CD -RRB-_-RRB- ,_, and_CC on_IN merging_VBG sorted_VBN lists_NNS in_IN parallel_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT we_PRP adapt_VBP to_TO the_DT problem_NN of_IN intersecting_VBG sorted_VBN lists_NNS ._.
+3_LS ._.
+CONTRIBUTIONS_NNS OF_IN THIS_NNP PAPER_NNP We_PRP study_VBD how_WRB to_TO implement_VB high-performance_JJ IR_NN query_NN processing_NN mechanisms_NNS on_IN Graphical_JJ Processing_NN Units_NNS -LRB-_-LRB- GP_NN
+,_, that_WDT are_VBP crucial_JJ for_IN efficient_JJ IR_NN query_NN processing_NN ._.
+Parallel_JJ Algorithms_NNS :_: Our_PRP$ approach_NN adapts_VBZ several_JJ techniques_NNS from_IN the_DT parallel_JJ algorithms_NNS literature_NN ._.
+We_PRP use_VBP previous_JJ work_NN on_IN parallel_JJ prefix_NN sums_VBZ =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, recently_RB studied_VBN for_IN GPUs_NNS in_IN -LRB-_-LRB- 10_CD ,_, 17_CD -RRB-_-RRB- ,_, and_CC on_IN merging_VBG sorted_VBN lists_NNS in_IN parallel_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, which_WDT we_PRP adapt_VBP to_TO the_DT problem_NN of_IN intersecting_VBG sorted_VBN lists_NNS ._.
+3_LS ._.
+CONTRIBUTIONS_NNS OF_IN THIS_NNP PAPER_NNP We_PRP study_VBD how_WRB to_TO impleme_VB
+rocessing_VBG time_NN is_VBZ not_RB accurately_RB predicted_VBN ,_, the_DT load_NN on_IN CPU_NNP and_CC GPU_NNP may_MD become_VB unbalanced_JJ such_JJ that_IN one_CD processor_NN has_VBZ too_RB much_JJ work_NN and_CC the_DT other_JJ too_RB little_JJ ._.
+To_TO deal_VB with_IN this_DT we_PRP employ_VBP work_NN stealing_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: :_: When_WRB a_DT processor_NN is_VBZ idle_JJ ,_, it_PRP first_RB executes_VBZ the_DT oldest_JJS job_NN from_IN the_DT third_JJ group_NN ,_, and_CC if_IN there_EX is_VBZ no_DT such_JJ job_NN it_PRP will_MD steal_VB a_DT job_NN from_IN the_DT other_JJ processor_NN ._.
+Moreover_RB ,_, if_IN any_DT job_NN approaches_VBZ the_DT deadlin_NN
+owerful_JJ platforms_NNS for_IN more_RBR general_JJ classes_NNS of_IN compute-intensive_JJ tasks_NNS ._.
+In_IN particular_JJ ,_, researchers_NNS have_VBP recently_RB studied_VBN how_WRB to_TO apply_VB GPUs_NNS to_TO problem_NN domains_NNS such_JJ as_IN databases_NNS and_CC scientific_JJ computing_NN =_JJ -_: =[_NN 9_CD ,_, 8_CD ,_, 12_CD ,_, 19_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Given_VBN their_PRP$ extremely_RB high_JJ computing_NN demands_NNS ,_, we_PRP believe_VBP that_IN search_NN engines_NNS provide_VBP a_DT very_RB interesting_JJ potential_JJ application_NN domain_NN for_IN GPUs_NNS ._.
+However_RB ,_, we_PRP are_VBP not_RB aware_JJ of_IN previous_JJ published_VBN work_NN on_IN
+sect_VB a_DT short_JJ list_NN -LRB-_-LRB- or_CC the_DT result_NN of_IN intersecting_VBG several_JJ lists_NNS -RRB-_-RRB- with_IN a_DT much_RB longer_JJR list_NN ,_, an_DT efficient_JJ algorithm_NN should_MD be_VB able_JJ to_TO skip_VB over_IN most_JJS elements_NNS of_IN the_DT longer_JJR list_NN without_IN uncompressing_VBG them_PRP =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO do_VB this_DT ,_, we_PRP split_VBD each_DT list_NN into_IN chunks_NNS of_IN ,_, say_VB ,_, 128_CD docIDs_NN ,_, such_JJ that_IN each_DT chunk_NN can_MD be_VB compressed_VBN and_CC decompressed_VBN individually_RB ._.
+DAAT_NN can_MD implement_VB these_DT types_NNS of_IN optimizations_NNS in_IN a_DT very_RB elegan_JJ
+early_JJ termination_NN techniques_NNS ,_, which_WDT allow_VBP answering_NN of_IN top-k_NN queries_NNS without_IN traversing_VBG the_DT full_JJ index_NN structures_NNS ._.
+Such_JJ techniques_NNS could_MD in_IN principle_NN be_VB added_VBN to_TO our_PRP$ approach_NN ._.
+In_IN particular_JJ ,_, tiering_NN =_JJ -_: =[_NN 21_CD ,_, 6_CD -RRB-_-RRB- -_: =_JJ -_: could_MD be_VB trivially_RB combined_VBN with_IN our_PRP$ approach_NN as_IN it_PRP does_VBZ not_RB impact_VB query_NN processing_NN within_IN a_DT node_NN ._.
+5_CD ._.
+GPU-BASED_FW SEARCH_FW ARCHITECTURE_NN We_PRP now_RB describe_VBP and_CC discuss_VBP the_DT proposed_VBN query_NN processing_NN architec_NN
+ance_NN ._.
+2_CD ._.
+BACKGROUND_NN AND_CC RELATED_NNS WORK_VBP For_IN a_DT basic_JJ overview_NN of_IN IR_FW query_FW processing_NN ,_, see_VB -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+For_IN recent_JJ work_NN on_IN performance_NN optimizations_NNS such_JJ as_IN index_NN compression_NN ,_, caching_NN ,_, and_CC early_JJ termination_NN ,_, see_VBP =_JJ -_: =[_NN 2_CD ,_, 23_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP assume_VBP that_IN we_PRP are_VBP given_VBN a_DT collection_NN of_IN N_NN documents_NNS -LRB-_-LRB- web_NN pages_NNS covered_VBN by_IN the_DT search_NN engine_NN -RRB-_-RRB- ,_, where_WRB each_DT document_NN is_VBZ uniquely_RB identified_VBN by_IN a_DT document_NN ID_NN -LRB-_-LRB- docID_NN -RRB-_-RRB- between_IN 0_CD and_CC N_NN −_NN 1_CD ._.
+The_DT collect_VBP
+achieved_VBN using_VBG an_DT approach_NN called_VBN DocumentAt-A-Time_NNP -LRB-_-LRB- DAAT_NNP -RRB-_-RRB- query_NN processing_NN ,_, where_WRB we_PRP simultaneously_RB traverse_VBP all_DT relevant_JJ lists_NNS from_IN beginning_VBG to_TO end_VB and_CC compute_VB the_DT scores_NNS of_IN the_DT relevant_JJ documents_NNS =_JJ -_: =[_NN 24_CD ,_, 5_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP maintain_VBP one_CD pointer_NN into_IN each_DT inverted_JJ list_NN involved_VBN in_IN the_DT query_NN ,_, and_CC advance_VB these_DT pointers_NNS using_VBG forward_RB seeks_VBZ to_TO identify_VB postings_NNS with_IN matching_JJ docIDs_NN in_IN the_DT different_JJ lists_NNS ._.
+At_IN any_DT point_NN i_FW
+of_IN index_NN caching_NN within_IN the_DT GPU_NNP memory_NN ._.
+-LRB-_-LRB- 2_LS -RRB-_-RRB- We_PRP describe_VBP and_CC evaluate_VBP inverted_JJ index_NN compression_NN techniques_NNS for_IN GPUs_NNS ._.
+We_PRP describe_VBP how_WRB to_TO implement_VB two_CD state-of-the-art_JJ methods_NNS ,_, a_DT version_NN of_IN PForDelta_NN =_JJ -_: =[_NN 25_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC an_DT optimized_VBN Rice_NNP coder_NN ,_, and_CC compare_VB them_PRP to_TO CPU-based_JJ implementations_NNS ._.
+Our_PRP$ implementation_NN of_IN PForDelta_NN achieves_VBZ decompression_NN rates_NNS of_IN up_IN to_TO 2_CD billion_CD docIDs_NN per_IN second_NN on_IN longer_JJR inverted_JJ lists_NNS ._.
+on_IN methods_NNS that_WDT are_VBP known_VBN to_TO achieve_VB good_JJ compression_NN ratios_NNS and_CC that_IN we_PRP believe_VBP are_VBP particularly_RB suitable_JJ for_IN implementation_NN on_IN GPUs_NNS :_: the_DT well-known_JJ Rice_NNP coding_NN method_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, and_CC a_DT recent_JJ approach_NN in_IN =_JJ -_: =[_NN 25_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: called_VBN PForDelta_NN ._.
+To_TO compress_VB a_DT sequence_NN of_IN gaps_NNS with_IN Rice_NNP coding_NN ,_, we_PRP first_RB choose_VB an_DT integer_NN b_NN such_JJ that_IN 2_CD b_NN is_VBZ close_JJ to_TO the_DT average_NN of_IN the_DT gaps_NNS to_TO be_VB coded_VBN ._.
+Then_RB each_DT gap_NN n_NN is_VBZ encoded_VBN in_IN two_CD parts_NNS :_:
+ance_NN ._.
+2_CD ._.
+BACKGROUND_NN AND_CC RELATED_NNS WORK_VBP For_IN a_DT basic_JJ overview_NN of_IN IR_FW query_FW processing_NN ,_, see_VB -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+For_IN recent_JJ work_NN on_IN performance_NN optimizations_NNS such_JJ as_IN index_NN compression_NN ,_, caching_NN ,_, and_CC early_JJ termination_NN ,_, see_VBP =_JJ -_: =[_NN 2_CD ,_, 23_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP assume_VBP that_IN we_PRP are_VBP given_VBN a_DT collection_NN of_IN N_NN documents_NNS -LRB-_-LRB- web_NN pages_NNS covered_VBN by_IN the_DT search_NN engine_NN -RRB-_-RRB- ,_, where_WRB each_DT document_NN is_VBZ uniquely_RB identified_VBN by_IN a_DT document_NN ID_NN -LRB-_-LRB- docID_NN -RRB-_-RRB- between_IN 0_CD and_CC N_NN −_NN 1_CD ._.
+The_DT collect_VBP
+computer_NN graphics_NNS applications_NNS through_IN massive_JJ on-chip_JJ parallelism_NN ._.
+Recently_RB a_DT number_NN of_IN researchers_NNS have_VBP studied_VBN how_WRB to_TO use_VB GPUs_NNS for_IN other_JJ problem_NN domains_NNS such_JJ as_IN databases_NNS and_CC scientific_JJ computing_NN =_JJ -_: =[_NN 9_CD ,_, 8_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ contribution_NN here_RB is_VBZ to_TO design_VB a_DT basic_JJ system_NN architecture_NN for_IN GPU-based_JJ high-performance_JJ IR_NN ,_, to_TO develop_VB suitable_JJ algorithms_NNS for_IN subtasks_NNS such_JJ as_IN inverted_JJ list_NN compression_NN ,_, list_NN intersection_NN ,_, an_DT
+computer_NN graphics_NNS applications_NNS through_IN massive_JJ on-chip_JJ parallelism_NN ._.
+Recently_RB a_DT number_NN of_IN researchers_NNS have_VBP studied_VBN how_WRB to_TO use_VB GPUs_NNS for_IN other_JJ problem_NN domains_NNS such_JJ as_IN databases_NNS and_CC scientific_JJ computing_NN =_JJ -_: =[_NN 9_CD ,_, 8_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ contribution_NN here_RB is_VBZ to_TO design_VB a_DT basic_JJ system_NN architecture_NN for_IN GPU-based_JJ high-performance_JJ IR_NN ,_, to_TO develop_VB suitable_JJ algorithms_NNS for_IN subtasks_NNS such_JJ as_IN inverted_JJ list_NN compression_NN ,_, list_NN intersection_NN ,_, an_DT
+R_NN query_NN processing_NN ._.
+Parallel_JJ Algorithms_NNS :_: Our_PRP$ approach_NN adapts_VBZ several_JJ techniques_NNS from_IN the_DT parallel_JJ algorithms_NNS literature_NN ._.
+We_PRP use_VBP previous_JJ work_NN on_IN parallel_JJ prefix_NN sums_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, recently_RB studied_VBN for_IN GPUs_NNS in_IN =_JJ -_: =[_NN 10_CD ,_, 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC on_IN merging_VBG sorted_VBN lists_NNS in_IN parallel_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, which_WDT we_PRP adapt_VBP to_TO the_DT problem_NN of_IN intersecting_VBG sorted_VBN lists_NNS ._.
+3_LS ._.
+CONTRIBUTIONS_NNS OF_IN THIS_NNP PAPER_NNP We_PRP study_VBD how_WRB to_TO implement_VB high-performance_JJ IR_NN query_NN processing_NN
+ance_NN ._.
+2_CD ._.
+BACKGROUND_NN AND_CC RELATED_NNS WORK_VBP For_IN a_DT basic_JJ overview_NN of_IN IR_FW query_FW processing_NN ,_, see_VB -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+For_IN recent_JJ work_NN on_IN performance_NN optimizations_NNS such_JJ as_IN index_NN compression_NN ,_, caching_NN ,_, and_CC early_JJ termination_NN ,_, see_VBP =_JJ -_: =[_NN 2_CD ,_, 23_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP assume_VBP that_IN we_PRP are_VBP given_VBN a_DT collection_NN of_IN N_NN documents_NNS -LRB-_-LRB- web_NN pages_NNS covered_VBN by_IN the_DT search_NN engine_NN -RRB-_-RRB- ,_, where_WRB each_DT document_NN is_VBZ uniquely_RB identified_VBN by_IN a_DT document_NN ID_NN -LRB-_-LRB- docID_NN -RRB-_-RRB- between_IN 0_CD and_CC N_NN −_NN 1_CD ._.
+The_DT collect_VBP
+ver_RB ,_, all_DT postings_NNS have_VBP to_TO be_VB decompressed_VBN ,_, while_IN conjunctive_JJ queries_NNS can_MD skip_VB many_JJ blocks_NNS of_IN postings_NNS entirely_RB ._.
+There_EX are_VBP two_CD simple_JJ ideas_NNS for_IN improving_VBG performance_NN on_IN disjunctive_JJ queries_NNS ;_: see_VB ,_, e.g._FW ,_, =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One_CD is_VBZ to_TO store_NN precomputed_VBD quantized_VBN scores_NNS instead_RB of_IN frequency_NN values_NNS in_IN the_DT index_NN ;_: this_DT significantly_RB reduces_VBZ the_DT cost_NN of_IN score_NN computation_NN but_CC may_MD increase_VB index_NN size_NN ._.
+-LRB-_-LRB- Quantized_JJ scores_NNS usually_RB
+owerful_JJ platforms_NNS for_IN more_RBR general_JJ classes_NNS of_IN compute-intensive_JJ tasks_NNS ._.
+In_IN particular_JJ ,_, researchers_NNS have_VBP recently_RB studied_VBN how_WRB to_TO apply_VB GPUs_NNS to_TO problem_NN domains_NNS such_JJ as_IN databases_NNS and_CC scientific_JJ computing_NN =_JJ -_: =[_NN 9_CD ,_, 8_CD ,_, 12_CD ,_, 19_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Given_VBN their_PRP$ extremely_RB high_JJ computing_NN demands_NNS ,_, we_PRP believe_VBP that_IN search_NN engines_NNS provide_VBP a_DT very_RB interesting_JJ potential_JJ application_NN domain_NN for_IN GPUs_NNS ._.
+However_RB ,_, we_PRP are_VBP not_RB aware_JJ of_IN previous_JJ published_VBN work_NN on_IN
+computer_NN graphics_NNS applications_NNS through_IN massive_JJ on-chip_JJ parallelism_NN ._.
+Recently_RB a_DT number_NN of_IN researchers_NNS have_VBP studied_VBN how_WRB to_TO use_VB GPUs_NNS for_IN other_JJ problem_NN domains_NNS such_JJ as_IN databases_NNS and_CC scientific_JJ computing_NN =_JJ -_: =[_NN 9_CD ,_, 8_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ contribution_NN here_RB is_VBZ to_TO design_VB a_DT basic_JJ system_NN architecture_NN for_IN GPU-based_JJ high-performance_JJ IR_NN ,_, to_TO develop_VB suitable_JJ algorithms_NNS for_IN subtasks_NNS such_JJ as_IN inverted_JJ list_NN compression_NN ,_, list_NN intersection_NN ,_, an_DT
+achieved_VBN using_VBG an_DT approach_NN called_VBN DocumentAt-A-Time_NNP -LRB-_-LRB- DAAT_NNP -RRB-_-RRB- query_NN processing_NN ,_, where_WRB we_PRP simultaneously_RB traverse_VBP all_DT relevant_JJ lists_NNS from_IN beginning_VBG to_TO end_VB and_CC compute_VB the_DT scores_NNS of_IN the_DT relevant_JJ documents_NNS =_JJ -_: =[_NN 24_CD ,_, 5_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP maintain_VBP one_CD pointer_NN into_IN each_DT inverted_JJ list_NN involved_VBN in_IN the_DT query_NN ,_, and_CC advance_VB these_DT pointers_NNS using_VBG forward_RB seeks_VBZ to_TO identify_VB postings_NNS with_IN matching_JJ docIDs_NN in_IN the_DT different_JJ lists_NNS ._.
+At_IN any_DT point_NN i_FW
+rch_NN engines_NNS use_VBP far_RB more_RBR complex_JJ ranking_JJ functions_NNS than_IN the_DT simple_JJ BM25_NN variant_NN used_VBN by_IN us_PRP ._.
+Such_JJ engines_NNS often_RB rely_VBP on_IN hundreds_NNS of_IN features_NNS ,_, including_VBG link-based_JJ features_NNS derived_VBN ,_, e._NN g_NN ,_, using_VBG Pagerank_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, that_WDT are_VBP then_RB combined_VBN into_IN an_DT overall_JJ scoring_VBG function_NN using_VBG machine_NN learning_NN techniques_NNS ._.
+To_TO implement_VB such_PDT a_DT scoring_VBG function_NN ,_, search_NN engines_NNS typically_RB divide_VBP query_NN processing_NN into_IN two_CD phases_NNS :_: An_DT
+collection_NN ,_, and_CC maybe_RB the_DT locations_NNS of_IN the_DT occurrences_NNS in_IN the_DT documents_NNS ._.
+In_IN our_PRP$ experiments_NNS here_RB ,_, we_PRP use_VBP a_DT widely_RB used_VBN ranking_JJ function_NN called_VBN BM25_NN ,_, part_NN of_IN the_DT Okapi_NNP family_NN of_IN ranking_JJ function_NN ;_: see_VB =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: for_IN the_DT precise_JJ definition_NN ._.
+We_PRP could_MD also_RB use_VB a_DT cosine-based_JJ function_NN here_RB ,_, of_IN course_NN ;_: the_DT exact_JJ ranking_NN function_NN we_PRP use_VBP is_VBZ not_RB important_JJ here_RB as_RB long_RB as_IN it_PRP can_MD be_VB efficiently_RB computed_VBN from_IN the_DT data_NNS
+al_FW rate_NN ._.
+Each_DT arriving_VBG job_NN has_VBZ two_CD possible_JJ costs_NNS ,_, a_DT CPU_NNP cost_NN that_WDT would_MD be_VB incurred_VBN if_IN the_DT job_NN is_VBZ scheduled_VBN on_IN CPU_NNP ,_, and_CC a_DT GPU_NNP cost_NN ._.
+Thus_RB ,_, we_PRP are_VBP dealing_VBG with_IN a_DT job_NN scheduling_NN problem_NN on_IN two_CD machines_NNS =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT is_VBZ NP_NN Complete_JJ for_IN the_DT offline_JJ case_NN ._.
+Our_PRP$ problem_NN is_VBZ complicated_VBN by_IN several_JJ factors_NNS ._.
+First_RB ,_, we_PRP do_VBP not_RB actually_RB know_VB the_DT CPU_NNP and_CC GPU_NNP costs_NNS of_IN an_DT incoming_JJ query_NN ,_, but_CC have_VBP to_TO rely_VB on_IN estimates_NNS of_IN th_DT

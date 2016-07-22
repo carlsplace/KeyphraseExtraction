@@ -1,0 +1,82 @@
+Querying_VBG and_CC maintaining_VBG a_DT compact_JJ XML_NN storage_NN
+As_IN XML_NN database_NN sizes_NNS grow_VBP ,_, the_DT amount_NN of_IN space_NN used_VBN for_IN storing_VBG the_DT data_NNS and_CC auxiliary_JJ data_NNS structures_NNS becomes_VBZ a_DT major_JJ factor_NN in_IN query_NN and_CC update_VB performance_NN ._.
+This_DT paper_NN presents_VBZ a_DT new_JJ storage_NN scheme_NN for_IN XML_NN data_NNS that_WDT supports_VBZ all_DT navigational_JJ operations_NNS in_IN near_JJ constant_JJ time_NN ._.
+In_IN addition_NN to_TO supporting_VBG efficient_JJ queries_NNS ,_, the_DT space_NN requirement_NN of_IN the_DT proposed_VBN scheme_NN is_VBZ within_IN a_DT constant_JJ factor_NN of_IN the_DT information_NN theoretic_JJ minimum_NN ,_, while_IN insertions_NNS and_CC deletions_NNS can_MD be_VB performed_VBN in_IN near_JJ constant_JJ time_NN as_RB well_RB ._.
+As_IN a_DT result_NN ,_, the_DT proposed_VBN structure_NN features_VBZ a_DT small_JJ memory_NN footprint_NN that_WDT increases_VBZ cache_NN locality_NN ,_, whilst_IN still_RB supporting_VBG standard_JJ APIs_NNS ,_, such_JJ as_IN DOM_NNP ,_, and_CC necessary_JJ database_NN operations_NNS ,_, such_JJ as_IN queries_NNS and_CC updates_NNS ,_, efficiently_RB ._.
+Analysis_NN and_CC experiments_NNS show_VBP that_IN the_DT proposed_VBN structure_NN is_VBZ space_NN and_CC time_NN efficient_JJ ._.
+Algorithm_NN 2_CD with_IN 1077_CD improved_VBN primitives_NNS in_IN Algorithm_NNP 4_CD ._.
+Furthermore_RB ,_, since_IN the_DT depths_NNS of_IN real-world_JJ XML_NN documents_NNS are_VBP generally_RB less_JJR than_IN |_CD B_NN |_NN -LRB-_-LRB- even_RB the_DT depth_NN of_IN the_DT highly_RB nested_JJ Tree_NNP Bank_NNP dataset_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ much_RB less_JJR than_IN 100_CD -RRB-_-RRB- ,_, most_RBS matching_JJ parentheses_NNS lie_VBP within_IN the_DT same_JJ block_NN ,_, and_CC occasionally_RB are_VBP found_VBN in_IN neighboring_JJ blocks_NNS ._.
+Therefore_RB ,_, when_WRB FASTFORWARDEXCESS_NN is_VBZ called_VBN from_IN navigation_NN operations_NNS ,_,
+r_NN to_TO the_DT size_NN of_IN the_DT database_NN in_IN the_DT worst_JJS case_NN ._.
+Thus_RB ,_, the_DT storage_NN of_IN the_DT topology_NN can_MD require_VB quadratic_JJ space_NN in_IN the_DT worst_JJS case_NN ._.
+Finally_RB ,_, there_EX are_VBP several_JJ related_JJ proposals_NNS published_VBN recently_RB ,_, e.g._FW =_JJ -_: =[_NN 8,9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+-LRB-_-LRB- 9_CD -RRB-_-RRB- show_VBP that_IN all_DT XPath_NN axes_NNS can_MD be_VB handled_VBN using_VBG a_DT preorder\/postorder_NN labeling_NN ._.
+Instead_RB of_IN maintaining_VBG these_DT two_CD labels_NNS -LRB-_-LRB- i.e._FW ,_, two_CD integers_NNS -RRB-_-RRB- ,_, our_PRP$ proposed_VBN scheme_NN requires_VBZ less_JJR than_IN 3_CD bits_NNS per_IN node_NN
+bit_NN persistent_JJ object_NN identifier_NN for_IN each_DT node_NN in_IN the_DT document_NN ,_, we_PRP must_MD find_VB a_DT way_NN to_TO link_VB the_DT open_JJ parenthesis_NN of_IN x_NN in_IN tier_NN 0_CD to_TO the_DT actual_JJ label_NN itself_PRP ._.
+To_TO address_VB this_DT ,_, we_PRP adopt_VBP from_IN Munro_NNP 's_POS work_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: although_IN they_PRP do_VBP not_RB use_VB balanced_JJ parentheses_NNS encoding_VBG ._.
+Instead_RB ,_, they_PRP control_VBP the_DT topology_NN size_NN by_IN using_VBG multiple_JJ layers_NNS of_IN variable-sized_JJ pointers_NNS ,_, and_CC may_MD require_VB many_JJ levels_NNS of_IN indirection_NN ._.
+In_IN add_VB
+lg_NN -LRB-_-LRB- Cn_NN -RRB-_-RRB- =_JJ lg_NN -LRB-_-LRB- 4_CD n_NN ·_NN Θ_NN -LRB-_-LRB- n_NN −_NN 3_CD 2_CD -RRB-_-RRB- -RRB-_-RRB- =_JJ 2n_NN +_CC o_NN -LRB-_-LRB- n_NN -RRB-_-RRB- bits_NNS ,_, where_WRB the_DT Catalan_JJ number_NN Cn_NN is_VBZ the_DT number_NN of_IN possible_JJ binary_JJ trees_NNS over_IN n_NN nodes_NNS ._.
+Our_PRP$ storage_NN scheme_NN is_VBZ based_VBN on_IN the_DT balanced_JJ parentheses_NNS encoding_VBG from_IN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, representing_VBG the_DT topology_NN of_IN XML_NN ._.
+Different_JJ from_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, our_PRP$ topology_NN layer_NN -LRB-_-LRB- Figure_NN 3_CD -RRB-_-RRB- actually_RB supports_VBZ efficient_JJ node_NN navigation_NN and_CC updates_NNS ._.
+The_DT balanced_JJ parentheses_NNS encoding_VBG used_VBN in_IN tier_NN 0_CD reflect_VBP
+ressed_VBN by_IN various_JJ common_JJ compression_NN techniques_NNS and_CC referenced_VBN by_IN the_DT topology_NN layer_NN ._.
+sWWW_NN 2007_CD \/_: Track_NNP :_: XML_NN and_CC Web_NN Data_NN Session_NN :_: Parsing_NNP ,_, Normalizing_NNP ,_, and_CC Storing_VBG XML_NN 3.1_CD ISX_NNP Topology_NNP Layer_NNP Jacobson_NNP =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: showed_VBD that_IN the_DT lower_JJR bound_VBN space_NN requirement_NN for_IN representing_VBG a_DT binary_JJ tree_NN is_VBZ lg_NN -LRB-_-LRB- Cn_NN -RRB-_-RRB- =_JJ lg_NN -LRB-_-LRB- 4_CD n_NN ·_NN Θ_NN -LRB-_-LRB- n_NN −_NN 3_CD 2_CD -RRB-_-RRB- -RRB-_-RRB- =_JJ 2n_NN +_CC o_NN -LRB-_-LRB- n_NN -RRB-_-RRB- bits_NNS ,_, where_WRB the_DT Catalan_JJ number_NN Cn_NN is_VBZ the_DT number_NN of_IN possible_JJ binary_JJ trees_NNS ove_VBP
+al_FW worst_JJS case_NN time_NN of_IN O_NN -LRB-_-LRB- lg_NN 2_CD n_NN -RRB-_-RRB- ._.
+•_VB It_PRP must_MD support_VB efficient_JJ join_VB operations_NNS :_: Current_JJ query_JJ optimization_NN techniques_NNS for_IN XML_NN such_JJ as_IN work_NN of_IN Halverson_NNP et_FW al_FW -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, make_VBP heavy_JJ use_NN of_IN the_DT structural_JJ join_VB =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT relies_VBZ on_IN a_DT constant_JJ time_NN operator_NN to_TO determine_VB the_DT ancestordescendant_JJ relationship_NN between_IN two_CD nodes_NNS ._.
+Thus_RB ,_, any_DT general_JJ XML_NN storage_NN scheme_NN should_MD also_RB support_VB such_PDT an_DT operator_NN in_IN near_JJ constan_NN
+tion_NN is_VBZ needed_VBN -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+Since_IN only_RB the_DT compression_NN efficiency_NN was_VBD reported_VBN in_IN the_DT paper_NN ,_, both_CC query_NN and_CC navigation_NN performance_NN of_IN their_PRP$ proposed_VBN scheme_NN are_VBP unclear_JJ ._.
+1074_CD Most_JJS XML_NN storage_NN schemes_NNS ,_, such_JJ as_IN =_JJ -_: =[_NN 9_CD ,_, 10_CD ,_, 12_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, make_VB use_NN of_IN interval_NN and_CC preorder\/postorder_NN labeling_NN schemes_NNS to_TO support_VB constant_JJ time_NN order_NN lookup_NN ,_, but_CC fail_VBP to_TO address_VB the_DT issue_NN of_IN maintenance_NN of_IN these_DT labels_NNS during_IN updates_NNS ._.
+Recently_RB ,_, Silberstein_NNP
+tion_NN is_VBZ needed_VBN -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+Since_IN only_RB the_DT compression_NN efficiency_NN was_VBD reported_VBN in_IN the_DT paper_NN ,_, both_CC query_NN and_CC navigation_NN performance_NN of_IN their_PRP$ proposed_VBN scheme_NN are_VBP unclear_JJ ._.
+1074_CD Most_JJS XML_NN storage_NN schemes_NNS ,_, such_JJ as_IN =_JJ -_: =[_NN 9_CD ,_, 10_CD ,_, 12_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, make_VB use_NN of_IN interval_NN and_CC preorder\/postorder_NN labeling_NN schemes_NNS to_TO support_VB constant_JJ time_NN order_NN lookup_NN ,_, but_CC fail_VBP to_TO address_VB the_DT issue_NN of_IN maintenance_NN of_IN these_DT labels_NNS during_IN updates_NNS ._.
+Recently_RB ,_, Silberstein_NNP
+use_NN of_IN interval_NN and_CC preorder\/postorder_NN labeling_NN schemes_NNS to_TO support_VB constant_JJ time_NN order_NN lookup_NN ,_, but_CC fail_VBP to_TO address_VB the_DT issue_NN of_IN maintenance_NN of_IN these_DT labels_NNS during_IN updates_NNS ._.
+Recently_RB ,_, Silberstein_NNP et_FW al_FW =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT data_NN structure_NN to_TO handle_VB ordered_VBN XML_NN which_WDT guarantees_VBZ both_DT update_VB and_CC lookup_VB costs_NNS ._.
+Similarly_RB ,_, the_DT L-Tree_NN labeling_NN scheme_NN proposed_VBN by_IN Chen_NNP et_FW al_FW -LRB-_-LRB- 6_CD -RRB-_-RRB- addressed_VBD the_DT same_JJ problem_NN and_CC has_VBZ the_DT
+hen_NN use_NN bi-simulation_NN to_TO compress_VB the_DT documents_NNS that_WDT share_VBP the_DT same_JJ sub-tree_NN ,_, however_RB ,_, they_PRP can_MD only_RB support_VB node_NN navigations_NNS in_IN linear_JJ time_NN ._.
+With_IN a_DT similar_JJ idea_NN but_CC different_JJ technique_NN ,_, Maneth_NNP et_FW al_FW =_JJ -_: =[_NN 5_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: also_RB compress_VBP XML_NN by_IN calculating_VBG the_DT minimal_JJ sharing_NN graph_NN equivalent_JJ to_TO the_DT minimal_JJ regular_JJ tree_NN grammar_NN ._.
+In_IN order_NN to_TO provide_VB tree_NN navigations_NNS ,_, a_DT DOM_NNP proxy_NN that_WDT maintains_VBZ runtime_NN traversal_NN informati_NNS
+tion_NN is_VBZ needed_VBN -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+Since_IN only_RB the_DT compression_NN efficiency_NN was_VBD reported_VBN in_IN the_DT paper_NN ,_, both_CC query_NN and_CC navigation_NN performance_NN of_IN their_PRP$ proposed_VBN scheme_NN are_VBP unclear_JJ ._.
+1074_CD Most_JJS XML_NN storage_NN schemes_NNS ,_, such_JJ as_IN =_JJ -_: =[_NN 9_CD ,_, 10_CD ,_, 12_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, make_VB use_NN of_IN interval_NN and_CC preorder\/postorder_NN labeling_NN schemes_NNS to_TO support_VB constant_JJ time_NN order_NN lookup_NN ,_, but_CC fail_VBP to_TO address_VB the_DT issue_NN of_IN maintenance_NN of_IN these_DT labels_NNS during_IN updates_NNS ._.
+Recently_RB ,_, Silberstein_NNP
+stems_VBZ ._.
+Various_JJ approaches_NNS were_VBD proposed_VBN after_IN XMill_NN and_CC they_PRP share_VBP similar_JJ benefits_NNS and_CC drawbacks_NNS ,_, e.g._FW ,_, XMLPPM_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Related_JJ work_NN that_WDT share_VBP the_DT same_JJ motivations_NNS with_IN this_DT paper_NN includes_VBZ Maneth_NNP et_FW al_FW =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Tolani_NNP and_CC Haritsa_NNP -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, Min_NN et_FW al_FW -LRB-_-LRB- 19_CD -RRB-_-RRB- and_CC Buneman_NNP et_FW al_FW -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Compared_VBN to_TO XMill_NN ,_, XGrind_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- has_VBZ a_DT lower_JJR compression_NN ratio_NN but_CC supports_VBZ certain_JJ types_NNS of_IN queries_NNS ._.
+XPRESS_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- uses_VBZ reverse_JJ arithmetic_NN
+lg_FW lg_FW n_NN -RRB-_-RRB- time_NN ,_, and_CC also_RB includes_VBZ support_NN for_IN efficient_JJ structural_JJ joins_VBZ ._.
+•_VB It_PRP must_MD support_VB efficient_JJ insertions_NNS and_CC deletions_NNS :_: Several_JJ papers_NNS address_VBP the_DT space_NN issue_NN by_IN storing_VBG XML_NN in_IN compressed_VBN form_NN =_JJ -_: =[_NN 4,16,19,22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP also_RB support_VBP path_NN expression_NN queries_NNS or_CC fast_JJ navigational_JJ access_NN but_CC do_VBP not_RB allow_VB efficient_JJ update_VBP operations_NNS such_JJ as_IN node_NN insertion_NN ._.
+This_DT can_MD be_VB a_DT critical_JJ concern_NN in_IN many_JJ database_NN application_NN
+g_NN updates_NNS ._.
+Recently_RB ,_, Silberstein_NNP et_FW al_FW -LRB-_-LRB- 21_CD -RRB-_-RRB- proposed_VBD a_DT data_NN structure_NN to_TO handle_VB ordered_VBN XML_NN which_WDT guarantees_VBZ both_DT update_VB and_CC lookup_VB costs_NNS ._.
+Similarly_RB ,_, the_DT L-Tree_NN labeling_NN scheme_NN proposed_VBN by_IN Chen_NNP et_FW al_FW =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: addressed_VBD the_DT same_JJ problem_NN and_CC has_VBZ the_DT same_JJ time_NN and_CC space_NN complexity_NN as_IN -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, however_RB ,_, they_PRP do_VBP not_RB support_VB persistent_JJ identifiers_NNS ._.
+The_DT major_JJ difference_NN between_IN our_PRP$ proposal_NN and_CC these_DT two_CD work_NN is_VBZ tha_NN
+s_VBZ the_DT lack_NN of_IN support_NN for_IN query_NN and_CC update_VB -RRB-_-RRB- hinders_VBZ its_PRP$ broad_JJ application_NN in_IN database_NN systems_NNS ._.
+Various_JJ approaches_NNS were_VBD proposed_VBN after_IN XMill_NN and_CC they_PRP share_VBP similar_JJ benefits_NNS and_CC drawbacks_NNS ,_, e.g._FW ,_, XMLPPM_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Related_JJ work_NN that_WDT share_VBP the_DT same_JJ motivations_NNS with_IN this_DT paper_NN includes_VBZ Maneth_NNP et_FW al_FW -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, Tolani_NNP and_CC Haritsa_NNP -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, Min_NN et_FW al_FW -LRB-_-LRB- 19_CD -RRB-_-RRB- and_CC Buneman_NNP et_FW al_FW -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Compared_VBN to_TO XMill_NN ,_, XGrind_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- has_VBZ a_DT lower_JJR com_NN
+lg_FW lg_FW n_NN -RRB-_-RRB- time_NN ,_, and_CC also_RB includes_VBZ support_NN for_IN efficient_JJ structural_JJ joins_VBZ ._.
+•_VB It_PRP must_MD support_VB efficient_JJ insertions_NNS and_CC deletions_NNS :_: Several_JJ papers_NNS address_VBP the_DT space_NN issue_NN by_IN storing_VBG XML_NN in_IN compressed_VBN form_NN =_JJ -_: =[_NN 4,16,19,22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP also_RB support_VBP path_NN expression_NN queries_NNS or_CC fast_JJ navigational_JJ access_NN but_CC do_VBP not_RB allow_VB efficient_JJ update_VBP operations_NNS such_JJ as_IN node_NN insertion_NN ._.
+This_DT can_MD be_VB a_DT critical_JJ concern_NN in_IN many_JJ database_NN application_NN
+lg_FW lg_FW n_NN -RRB-_-RRB- time_NN ,_, and_CC also_RB includes_VBZ support_NN for_IN efficient_JJ structural_JJ joins_VBZ ._.
+•_VB It_PRP must_MD support_VB efficient_JJ insertions_NNS and_CC deletions_NNS :_: Several_JJ papers_NNS address_VBP the_DT space_NN issue_NN by_IN storing_VBG XML_NN in_IN compressed_VBN form_NN =_JJ -_: =[_NN 4,16,19,22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP also_RB support_VBP path_NN expression_NN queries_NNS or_CC fast_JJ navigational_JJ access_NN but_CC do_VBP not_RB allow_VB efficient_JJ update_VBP operations_NNS such_JJ as_IN node_NN insertion_NN ._.
+This_DT can_MD be_VB a_DT critical_JJ concern_NN in_IN many_JJ database_NN application_NN
+s_NN imperative_JJ that_IN the_DT storage_NN scheme_NN supports_VBZ fast_JJ traversal_NN of_IN the_DT XML_NN tree_NN ,_, in_IN all_DT possible_JJ directions_NNS ,_, preferably_RB in_IN constant_JJ time_NN or_CC near_IN constant_JJ time_NN ._.
+Previous_JJ work_NN ,_, such_JJ as_IN that_DT of_IN Zhang_NNP et_FW al_FW =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, has_VBZ addressed_VBN the_DT issue_NN of_IN succinctly_RB representing_VBG XML_NN ,_, but_CC at_IN the_DT cost_NN of_IN linear_JJ time_NN navigational_JJ operations_NNS ,_, which_WDT is_VBZ not_RB acceptable_JJ for_IN many_JJ practical_JJ applications_NNS ._.
+Our_PRP$ proposed_VBN structure_NN effici_NNS
+AM_NNP and_CC 160GB_NNP of_IN 7,200_CD RPM_NN IDE_NN hard_JJ drive_NN ._.
+The_DT memory_NN buffer_NN pool_NN of_IN ISX_NNP has_VBZ been_VBN fixed_VBN to_TO 64MB_NN for_IN all_PDT the_DT experiments_NNS ._.
+Three_CD XML_NN datasets_NNS were_VBD used_VBN ,_, namely_RB ,_, DBLP_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, Protein_NN Sequence_NN Database_NN -LRB-_-LRB- PSD_NN -RRB-_-RRB- =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, TreeBank_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+We_PRP found_VBD that_IN the_DT experiment_NN results_VBZ from_IN PSD_NNP are_VBP very_RB similar_JJ to_TO those_DT from_IN DBLP_NN due_JJ to_TO their_PRP$ regular_JJ ,_, shallow_JJ tree_NN structure_NN ._.
+Therefore_RB ,_, PSD_NNP results_NNS are_VBP skipped_VBN from_IN some_DT plots_NNS belo_VBP
+lg_FW lg_FW n_NN -RRB-_-RRB- time_NN ,_, and_CC also_RB includes_VBZ support_NN for_IN efficient_JJ structural_JJ joins_VBZ ._.
+•_VB It_PRP must_MD support_VB efficient_JJ insertions_NNS and_CC deletions_NNS :_: Several_JJ papers_NNS address_VBP the_DT space_NN issue_NN by_IN storing_VBG XML_NN in_IN compressed_VBN form_NN =_JJ -_: =[_NN 4,16,19,22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP also_RB support_VBP path_NN expression_NN queries_NNS or_CC fast_JJ navigational_JJ access_NN but_CC do_VBP not_RB allow_VB efficient_JJ update_VBP operations_NNS such_JJ as_IN node_NN insertion_NN ._.
+This_DT can_MD be_VB a_DT critical_JJ concern_NN in_IN many_JJ database_NN application_NN
