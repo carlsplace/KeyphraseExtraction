@@ -91,9 +91,9 @@ def read_node_features(node_list, raw_node_features, file_name):
         tmp1.append(t.split(':'))
     tmp2 = {}
     for t in tmp1:
-        print(t[1])
+        # print(t[1])
         features_t = re.search(r'\d.*', t[1]).group().split(',')
-        print(features_t)
+        # print(features_t)
         feature_num = len(features_t)
         for i in range(feature_num):
             features_t[i] = float(features_t[i])
