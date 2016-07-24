@@ -91,7 +91,9 @@ def read_node_features(node_list, raw_node_features, file_name):
         tmp1.append(t.split(':'))
     tmp2 = {}
     for t in tmp1:
+        print(t[1])
         features_t = re.search(r'\d.*', t[1]).group().split(',')
+        print(features_t)
         feature_num = len(features_t)
         for i in range(feature_num):
             features_t[i] = float(features_t[i])
@@ -385,14 +387,15 @@ ACCEPTED_TAGS = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']
 file_path = './data/KDD/abstracts'
 out_path = './data/KDD/omega_phi'
 raw_node_f = readfile('./data', 'KDD_node_features')
-# file_name_list = re.findall(r'\d{7,8}')
-file_name_list = os.listdir(file_path)
+file_name_list_ = re.findall(r'\n\d{7,8}', raw_node_f)
+file_name_list = []
+for file_name in file_name_list_:
+    if file_name not in file_name_list:
+        file_name_list += file_name.split()
 to_file = ''
 for file_name in file_name_list:
-    if file_name in raw_node_f:
-        print((file_name))
-        pi, omega, phi, node_list = rank_doc(file_path, file_name)
-        to_file = to_file + file_name + ':\n' + 'omega:' + str(omega) + '\n' + 'phi:' + str(phi)
+    pi, omega, phi, node_list = rank_doc(file_path, file_name)
+    to_file = to_file + file_name + ':\n' + 'omega:' + str(omega) + '\n' + 'phi:' + str(phi)
 write_file(to_file, out_path, 'file_name')
 
 # paper_name = '10351682'
