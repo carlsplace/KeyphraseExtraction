@@ -366,7 +366,7 @@ def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.0
         print(iteration)
     if iteration > max_iter:
         print("Over Max Iteration, iteration =", iteration)
-    return pi.T.tolist()[0], omega.T.tolist()[0], phi.T.tolist()[0], node_list, graph, filtered_text, P0, P
+    return pi.T.tolist()[0], omega.T.tolist()[0], phi.T.tolist()[0]#, node_list, graph, filtered_text, P0, P
 
 def top_n_words(pi, node_list, n):
     sort = sorted(pi, reverse=True)
@@ -394,7 +394,7 @@ for file_name in file_name_list_:
         file_name_list += file_name.split()
 to_file = ''
 for file_name in file_name_list:
-    pi, omega, phi, node_list = rank_doc(file_path, file_name)
+    pi, omega, phi = rank_doc(file_path, file_name)
     to_file = to_file + file_name + ':\n' + 'omega:' + str(omega) + '\n' + 'phi:' + str(phi)
 write_file(to_file, out_path, 'file_name')
 
