@@ -91,7 +91,7 @@ def read_node_features(node_list, raw_node_features, file_name):
         tmp1.append(t.split(':'))
     tmp2 = {}
     for t in tmp1:
-        # print(t[1])
+        # print(t)
         features_t = re.search(r'\d.*', t[1]).group().split(',')
         # print(features_t)
         feature_num = len(features_t)
@@ -228,12 +228,15 @@ def calc_pij_omegak(i, j, k, edge_features, node_list, omega):
     for j2 in range(n):
         for k2 in range(l):
             s1 += get_omegak(k2, omega) * get_xijk(i,j2,k2,edge_features,node_list)
+            # print('a',get_omegak(k2, omega))
+            # print('b',get_xijk(i,j2,k2,edge_features,node_list))
     s2 = 0
     for k2 in range(l):
         s2 += get_omegak(k2, omega) * get_xijk(i,j,k2,edge_features,node_list)
     s3 = 0
     for j2 in range(n):
         s3 += get_xijk(i,j2,k,edge_features,node_list)
+    # print('s1',s1,'s2',s2,'s3',s3)
     result = (get_xijk(i,j,k,edge_features,node_list) * s1 - s2 * s3)/(s1 * s1)
     return float(result)
 
@@ -290,7 +293,10 @@ def create_B(node_list, gold):
             keyphrases.pop(keyphrases.index(g))
 
     for keyphrase in keyphrases:
-        prefer = node_list.index(keyphrase)
+        try:
+            prefer = node_list.index(keyphrase)
+        except:
+            continue
         b = [0] * n
         b[prefer] = 1
         B = []
