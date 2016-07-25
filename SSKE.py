@@ -213,7 +213,7 @@ def calcGradientPi(pi3, P, B, mu, alpha, d):
 def get_xijk(i, j, k, edge_features, node_list):
     x = edge_features.get((node_list[i], node_list[j]), 0)
     if x == 0:
-        return 0
+        return 0.001
     else:
         return x[k]
     # return edge_features[(node_list[i], node_list[j])][k]
@@ -402,7 +402,7 @@ to_file = ''
 for file_name in file_name_list:
     pi, omega, phi = rank_doc(file_path, file_name)
     to_file = to_file + file_name + ':\n' + 'omega:' + str(omega) + '\n' + 'phi:' + str(phi)
-write_file(to_file, out_path, 'file_name')
+    write_file(to_file, out_path, 'file_name')
 
 # paper_name = '10351682'
 # pi, omega, phi, node_list, graph, filtered_text, P0, P = rank_doc('./data/KDD/abstracts',paper_name)
