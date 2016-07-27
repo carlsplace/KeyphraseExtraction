@@ -21,6 +21,7 @@ def readfile(file_path, file_name):
     return file_text
 
 def write_file(text, file_path, file_name):
+    """file_path示例：./path"""
     if not os.path.exists(file_path) : 
         os.mkdir(file_path)
     with open(file_path+'/'+file_name, 'w') as f:
@@ -213,7 +214,7 @@ def calcGradientPi(pi3, P, B, mu, alpha, d):
 def get_xijk(i, j, k, edge_features, node_list):
     x = edge_features.get((node_list[i], node_list[j]), 0)
     if x == 0:
-        return 0.001
+        return 0.01
     else:
         return x[k]
     # return edge_features[(node_list[i], node_list[j])][k]
@@ -369,7 +370,7 @@ def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.0
         # print(e)
         G0 = G1
         iteration += 1
-        print(iteration)
+        # print(iteration)
     if iteration > max_iter:
         print("Over Max Iteration, iteration =", iteration)
     return pi.T.tolist()[0], omega.T.tolist()[0], phi.T.tolist()[0]#, node_list, graph, filtered_text, P0, P
@@ -396,13 +397,16 @@ raw_node_f = readfile('./data', 'KDD_node_features')
 file_name_list_ = re.findall(r'\n\d{7,8}', raw_node_f)
 file_name_list = []
 for file_name in file_name_list_:
-    if file_name not in file_name_list:
-        file_name_list += file_name.split()
-to_file = ''
+    if file_name[1:] not in file_name_list:
+        file_name_list.append(file_name[1:])
+write_file(str(file_name_list), './data', 'KDD_filelist')
+# to_file = ''
 for file_name in file_name_list:
+    print(file_name, '......begin......\n')
     pi, omega, phi = rank_doc(file_path, file_name)
-    to_file = to_file + file_name + ':\n' + 'omega:' + str(omega) + '\n' + 'phi:' + str(phi)
-    write_file(to_file, out_path, 'file_name')
+    to_file = file_name + ',' + 'omega ,' + str(omega) + ',' + 'phi ,' + str(phi) + '\n'
+    write_file(to_file, out_path, file_name)
+    print(file_name, '......end......\n')
 
 # paper_name = '10351682'
 # pi, omega, phi, node_list, graph, filtered_text, P0, P = rank_doc('./data/KDD/abstracts',paper_name)
