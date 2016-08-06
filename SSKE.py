@@ -16,6 +16,7 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import CountVectorizer
 
 def readfile(file_path, file_name):
+    """file_path: ./data file_name"""
     with open(file_path+'/'+file_name, 'r') as f:
         file_text = f.read()
     return file_text
@@ -373,9 +374,11 @@ def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.0
         # print(iteration)
     if iteration > max_iter:
         print("Over Max Iteration, iteration =", iteration)
-    return pi.T.tolist()[0], omega.T.tolist()[0], phi.T.tolist()[0]#, node_list, graph, filtered_text, P0, P
+    return pi.T.tolist()[0], omega.T.tolist()[0], phi.T.tolist()[0], node_list#, graph, filtered_text, P0, P
 
-def top_n_words(pi, node_list, n):
+def top_n_words(pi, node_list, n=15):
+    if n > len(node_list):
+        n = len(node_list)
     sort = sorted(pi, reverse=True)
     top_n = []
     for rank in sort[:n]:
@@ -394,25 +397,34 @@ ACCEPTED_TAGS = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']
 file_path = './data/KDD/abstracts'
 out_path = './data/KDD/omega_phi'
 raw_node_f = readfile('./data', 'KDD_node_features')
-file_name_list_ = re.findall(r'\n\d{7,8}', raw_node_f)
-file_name_list = []
-for file_name in file_name_list_:
-    if file_name[1:] not in file_name_list:
-        file_name_list.append(file_name[1:])
-write_file(str(file_name_list), './data', 'KDD_filelist')
-# to_file = ''
+# file_name_list_ = re.findall(r'\n\d{7,8}', raw_node_f)
+# file_name_list = []
+# for file_name in file_name_list_:
+#     if file_name[1:] not in file_name_list:
+#         file_name_list.append(file_name[1:])
+# write_file(str(file_name_list), './data', 'KDD_filelist')
+file_name_list = readfile('./data/KDD', 'KDD_runable').split(',')
+precision = []
 for file_name in file_name_list:
-    print(file_name, '......begin......\n')
-    pi, omega, phi = rank_doc(file_path, file_name)
-    to_file = file_name + ',' + 'omega ,' + str(omega) + ',' + 'phi ,' + str(phi) + '\n'
-    write_file(to_file, out_path, file_name)
-    print(file_name, '......end......\n')
+    # print(file_name, '......begin......\n')
+    pi, omega, phi, node_list = rank_doc(file_path, file_name)
+    # to_file = file_name + ',' + 'omega ,' + str(omega) + ',' + 'phi ,' + str(phi) + '\n'
+    # write_file(to_file, out_path, file_name)
+    top_n = top_n_words(pi, node_list)
+    gold = readfile('./data/KDD/gold', file_name)
+    count = 0
+    for word in top_n:
+        if word in gold:
+            count += 1
+    precision.append(count/len(gold.split()))
+    # print(file_name, '......end......\n')
+print("precision:", precision)
+print("mean:", sum(precision)/len(precision))
+# paper_name = '10971362'
+# pi, omega, phi, node_list = rank_doc('./data/KDD/abstracts',paper_name)
+# top_n = top_n_words(pi, node_list, 20)
+# print(top_n)
 
-# paper_name = '10351682'
-# pi, omega, phi, node_list, graph, filtered_text, P0, P = rank_doc('./data/KDD/abstracts',paper_name)
-# top_n = top_n_words(pi, node_list, 10)
-# out_text = 'pi:\n' + str(pi) + '\nphi:\n' + str(phi) + '\nomega\n' + str(omega) + '\n first P\n' + str(P0) + '\n last P\n' + str(P) + '\n filtered text\n' + filtered_text + '\n top 10 words: \n' + str(top_n)
-# write_file(out_text, '/home/cal', 'output.txt')
 
 # print("pi:", pi)
 # print("omega:", omega)
@@ -423,3 +435,7 @@ for file_name in file_name_list:
 # tagged_tokens = nltk.pos_tag(tokens)
 # tagged_tokens = get_tagged_tokens(file_text)
 # edge_features这个量最重要, 向量存储成列matrix
+
+
+# WWW 1029161
+# KDD 1028607
