@@ -9,11 +9,12 @@ import re
 import networkx as nx
 import numpy as np
 import math
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from nltk.stem import SnowballStemmer
 from sklearn import feature_extraction
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import CountVectorizer
+import datetime
 
 def readfile(file_path, file_name):
     """file_path: ./data file_name"""
@@ -22,7 +23,7 @@ def readfile(file_path, file_name):
     return file_text
 
 def write_file(text, file_path, file_name):
-    """file_path示例：./path"""
+    """file_path：./path"""
     if not os.path.exists(file_path) : 
         os.mkdir(file_path)
     with open(file_path+'/'+file_name, 'w') as f:
@@ -353,7 +354,7 @@ def rank_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.0
 
     e = 1
     iteration = 0
-    while  e > epsilon and iteration < max_iter:
+    while  e > epsilon and iteration < max_iter and all(a >= 0 for a in phi) and all(b >= 0 for b in omega) and all(c >= 0 for c in pi):
         pi = updateVar(pi, g_pi, step_size)
         omega = updateVar(omega, g_omega, step_size)
         phi = updateVar(phi, g_phi, step_size)
@@ -393,6 +394,8 @@ def top_n_words(pi, node_list, n=15):
 #         keywords.append(node_list[pi.index(score)])
 #     return keywords
 
+starttime = datetime.datetime.now()
+
 ACCEPTED_TAGS = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']
 file_path = './data/KDD/abstracts'
 out_path = './data/KDD/omega_phi'
@@ -403,26 +406,30 @@ raw_node_f = readfile('./data', 'KDD_node_features')
 #     if file_name[1:] not in file_name_list:
 #         file_name_list.append(file_name[1:])
 # write_file(str(file_name_list), './data', 'KDD_filelist')
-file_name_list = readfile('./data/KDD', 'KDD_runable').split(',')
-precision = []
+file_name_list = readfile('./data', 'KDD_runable').split(',')
+precision = ''
+psum = 0
 for file_name in file_name_list:
     # print(file_name, '......begin......\n')
-    pi, omega, phi, node_list = rank_doc(file_path, file_name)
+    pi, omega, phi, node_list = rank_doc(file_path, file_name, alpha=0.5)
     # to_file = file_name + ',' + 'omega ,' + str(omega) + ',' + 'phi ,' + str(phi) + '\n'
     # write_file(to_file, out_path, file_name)
-    top_n = top_n_words(pi, node_list)
+    top_n = top_n_words(pi, node_list, n=15)
     gold = readfile('./data/KDD/gold', file_name)
     count = 0
     for word in top_n:
         if word in gold:
             count += 1
-    precision.append(count/len(gold.split()))
+    prcs = count/len(gold.split())
+    precision = precision + file_name + ',' + str(prcs) + '\n'
+    psum += prcs
     # print(file_name, '......end......\n')
-print("precision:", precision)
-print("mean:", sum(precision)/len(precision))
+precision = precision + 'average,' + str(psum/25)
+write_file(precision, './data/KDD', 'precision25-n15a0.5.csv')
+print(precision)
 # paper_name = '10971362'
 # pi, omega, phi, node_list = rank_doc('./data/KDD/abstracts',paper_name)
-# top_n = top_n_words(pi, node_list, 20)
+# top_n = top_n_words(pi, node_list)
 # print(top_n)
 
 
@@ -439,3 +446,6 @@ print("mean:", sum(precision)/len(precision))
 
 # WWW 1029161
 # KDD 1028607
+
+endtime = datetime.datetime.now()
+print('TIME USED: ', (endtime - starttime))
