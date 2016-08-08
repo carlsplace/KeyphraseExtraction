@@ -422,14 +422,14 @@ starttime = datetime.datetime.now()
 ACCEPTED_TAGS = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']
 file_path = './data/KDD/abstracts'
 out_path = './data/KDD/omega_phi'
-raw_node_f = readfile('./data', 'KDD_node_features')
+# raw_node_f = readfile('./data', 'KDD_node_features')
 # file_name_list_ = re.findall(r'\n\d{7,8}', raw_node_f)
 # file_name_list = []
 # for file_name in file_name_list_:
 #     if file_name[1:] not in file_name_list:
 #         file_name_list.append(file_name[1:])
 # write_file(str(file_name_list), './data', 'KDD_filelist')
-file_name_list = readfile('./data', 'KDD_runable').split(',')
+file_name_list = readfile('./data', 'KDD_filelist').split(',')
 
 # to_file = ''
 # for file_name in file_name_list:
@@ -451,15 +451,17 @@ phi = np.asmatrix([0.25, 0.24, 0.04, 0.25, 0.22]).T
 
 precision = ''
 for file_name in file_name_list:
+    print(file_name, 'begin......')
     pr = pagerank_doc(file_path, file_name, omega, phi)
     top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
     gold = readfile('./data/KDD/gold', file_name)
-    count = 0
-    for word in top_n:
-        if word in gold:
+    count = -1 #因为gold.split('\n')会多一个''空字符，每次计数多记一次
+    for phrase in gold.split('\n'):
+        if all(normalized_token(w) in top_n for w in phrase.split()):
             count += 1
-    prcs = count/len(gold.split())
-    precision = precision + file_name + ',' + str(prcs) + '\n'
+    prcs = count/10
+    precision = precision + file_name + ',' + str(prcs) + ',' + str(top_n) + '\n'
+    print(file_name, 'end......')
 write_file(precision, './data/KDD', 'rank_precision-top10.csv')
 # tokens = nltk.word_tokenize(text)
 # tagged_tokens = nltk.pos_tag(tokens)
@@ -468,7 +470,7 @@ write_file(precision, './data/KDD', 'rank_precision-top10.csv')
 
 
 # WWW 1029161
-# KDD 1028607
+# KDD 1028607 9642833
 
 endtime = datetime.datetime.now()
 print('TIME USED: ', (endtime - starttime))
