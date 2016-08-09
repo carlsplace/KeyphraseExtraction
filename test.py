@@ -1,7 +1,8 @@
 import re
 import datetime
+import networkx as nx
 
-
-a = [1,2,3]
-if all(i < 3 for i in a):
-    print('yes')
+graph = nx.Graph()
+graph.add_edges_from([(1,2),(2,3)])
+for node in graph.node:
+    print(node)

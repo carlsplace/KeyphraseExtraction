@@ -415,7 +415,35 @@ def pagerank_doc(file_path, file_name, omega, phi, d=0.85):
 
     pr = nx.pagerank(graph, alpha=d, personalization=node_weight)
 
-    return pr
+    return pr, graph
+
+def get_phrases(top_n, graph, file_path, file_name):
+    for node in list(graph.node):
+        if node not in top_n:
+            graph.remove_node(node)
+    text = rm_tags(readfile(file_path, file_name))
+    tokens = nltk.word_tokenize(text)
+    edges = graph.edge
+    phrases = set()
+
+    # Using a "sliding window" of size 2, 3, 4:
+    for n in range(2, 3):
+        
+        # Get the 2-grams, 3-grams, 4-grams
+        for ngram in nltk.ngrams(tokens, n):
+            
+            # For each n-gram, if all tokens are words, and if the normalized
+            # head and tail are found in the graph -- i.e. if both are nodes
+            # connected by an edge -- this n-gram is a key phrase.
+            if all(is_word(token) for token in ngram):
+                head, tail = normalized_token(ngram[0]), normalized_token(ngram[-1])
+                
+                if head in edges and tail in edges[head]:
+                    phrase = ' '.join(ngram)
+                    phrases.add(phrase)
+
+    sorted_phrases = sorted(phrases, key=str.lower)
+    return sorted_phrases
     
 starttime = datetime.datetime.now()
 
@@ -452,17 +480,19 @@ phi = np.asmatrix([0.25, 0.24, 0.04, 0.25, 0.22]).T
 precision = ''
 for file_name in file_name_list:
     print(file_name, 'begin......')
-    pr = pagerank_doc(file_path, file_name, omega, phi)
+    pr, graph = pagerank_doc(file_path, file_name, omega, phi)
     top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
     gold = readfile('./data/KDD/gold', file_name)
-    count = -1 #因为gold.split('\n')会多一个''空字符，每次计数多记一次
-    for phrase in gold.split('\n'):
-        if all(normalized_token(w) in top_n for w in phrase.split()):
-            count += 1
-    prcs = count/10
-    precision = precision + file_name + ',' + str(prcs) + ',' + str(top_n) + '\n'
+    keyphrases = get_phrases(top_n, graph, file_path, file_name)
+    print(keyphrases)
+    # count = -1 #因为gold.split('\n')会多一个''空字符，每次计数多记一次
+    # for phrase in gold.split('\n'):
+    #     if all(normalized_token(w) in top_n for w in phrase.split()):
+    #         count += 1
+    # prcs = count/10
+    # precision = precision + file_name + ',' + str(prcs) + ',' + str(top_n) + '\n'
     print(file_name, 'end......')
-write_file(precision, './data/KDD', 'rank_precision-top10.csv')
+# write_file(precision, './data/KDD', 'rank_precision-top10.csv')
 # tokens = nltk.word_tokenize(text)
 # tagged_tokens = nltk.pos_tag(tokens)
 # tagged_tokens = get_tagged_tokens(file_text)
