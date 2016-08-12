@@ -1,8 +1,11 @@
 import re
 import datetime
 import networkx as nx
+import nltk
 
-graph = nx.Graph()
-graph.add_edges_from([(1,2),(2,3)])
-for node in graph.node:
-    print(node)
+sentence = [("the", "DT"), ("little", "JJ"), ("yellow", "JJ"), ("dog", "NN"), ("barked", "VBD"), ("at", "IN"),  ("the", "DT"), ("cat", "NN")]
+
+grammar = "NP: {<DT>?<JJ>*<NN>}"
+cp = nltk.RegexpParser(grammar)
+result = cp.parse(sentence)
+print(result)

@@ -417,17 +417,14 @@ def pagerank_doc(file_path, file_name, omega, phi, d=0.85):
 
     return pr, graph
 
-def get_phrases(top_n, graph, file_path, file_name):
-    for node in list(graph.node):
-        if node not in top_n:
-            graph.remove_node(node)
+def get_phrases(pr, graph, file_path, file_name):
     text = rm_tags(readfile(file_path, file_name))
     tokens = nltk.word_tokenize(text)
     edges = graph.edge
     phrases = set()
 
     # Using a "sliding window" of size 2, 3, 4:
-    for n in range(2, 3):
+    for n in range(2, 5):
         
         # Get the 2-grams, 3-grams, 4-grams
         for ngram in nltk.ngrams(tokens, n):
@@ -441,9 +438,15 @@ def get_phrases(top_n, graph, file_path, file_name):
                 if head in edges and tail in edges[head]:
                     phrase = ' '.join(ngram)
                     phrases.add(phrase)
-
-    sorted_phrases = sorted(phrases, key=str.lower)
+    phrase_score = {}
+    for phrase in phrases:
+        score = 0
+        for word in phrase.split():
+            score += pr.get(normalized_token(word), 0)
+        phrase_score[phrase] = score
+    sorted_phrases= sorted(phrase_score.items(), key=lambda d:d[1], reverse = True)
     return sorted_phrases
+
     
 starttime = datetime.datetime.now()
 
@@ -483,7 +486,7 @@ for file_name in file_name_list:
     pr, graph = pagerank_doc(file_path, file_name, omega, phi)
     top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
     gold = readfile('./data/KDD/gold', file_name)
-    keyphrases = get_phrases(top_n, graph, file_path, file_name)
+    keyphrases = get_phrases(pr, graph, file_path, file_name)
     print(keyphrases)
     # count = -1 #因为gold.split('\n')会多一个''空字符，每次计数多记一次
     # for phrase in gold.split('\n'):
