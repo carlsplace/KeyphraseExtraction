@@ -417,14 +417,15 @@ def pagerank_doc(file_path, file_name, omega, phi, d=0.85):
 
     return pr, graph
 
-def get_phrases(pr, graph, file_path, file_name):
+def get_phrases(pr, graph, file_path, file_name, ng=3):
+    """返回一个list：[('large numbers', 0.04422558661923612), ('Internet criminal', 0.04402960178014231)]"""
     text = rm_tags(readfile(file_path, file_name))
     tokens = nltk.word_tokenize(text)
     edges = graph.edge
     phrases = set()
 
     # Using a "sliding window" of size 2, 3, 4:
-    for n in range(2, 5):
+    for n in range(2, ng):
         
         # Get the 2-grams, 3-grams, 4-grams
         for ngram in nltk.ngrams(tokens, n):
@@ -450,7 +451,7 @@ def get_phrases(pr, graph, file_path, file_name):
     
 starttime = datetime.datetime.now()
 
-ACCEPTED_TAGS = ['NN', 'NNS', 'NNP', 'NNPS', 'JJ']
+ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
 file_path = './data/KDD/abstracts'
 out_path = './data/KDD/omega_phi'
 # raw_node_f = readfile('./data', 'KDD_node_features')
@@ -480,22 +481,30 @@ file_name_list = readfile('./data', 'KDD_filelist').split(',')
 omega = np.asmatrix([0.5, 0.5]).T
 phi = np.asmatrix([0.25, 0.24, 0.04, 0.25, 0.22]).T
 
-precision = ''
+precision_recall = ''
 for file_name in file_name_list:
     print(file_name, 'begin......')
     pr, graph = pagerank_doc(file_path, file_name, omega, phi)
     top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
     gold = readfile('./data/KDD/gold', file_name)
     keyphrases = get_phrases(pr, graph, file_path, file_name)
-    print(keyphrases)
-    # count = -1 #因为gold.split('\n')会多一个''空字符，每次计数多记一次
-    # for phrase in gold.split('\n'):
-    #     if all(normalized_token(w) in top_n for w in phrase.split()):
-    #         count += 1
-    # prcs = count/10
-    # precision = precision + file_name + ',' + str(prcs) + ',' + str(top_n) + '\n'
+    top_phrases = []
+    tmp = []
+    for phrase in keyphrases:
+        if phrase[1] not in tmp:
+            tmp.append(phrase[1])
+            top_phrases.append(phrase[0])
+        if len(tmp) == 5:
+            break
+    count = 0
+    for phrase in top_phrases:
+        if phrase in gold:
+            count += 1
+    prcs = count / len(top_phrases)
+    recall = count / (len(gold.split('\n')) - 1)
+    precision_recall = precision_recall + file_name + ',precision,' + str(prcs) + ',recall,' + str(recall) + ',' + str(top_phrases) + '\n'
     print(file_name, 'end......')
-# write_file(precision, './data/KDD', 'rank_precision-top10.csv')
+write_file(precision_recall, './data/KDD', 'rank_precision_recall-top5.csv')
 # tokens = nltk.word_tokenize(text)
 # tagged_tokens = nltk.pos_tag(tokens)
 # tagged_tokens = get_tagged_tokens(file_text)
