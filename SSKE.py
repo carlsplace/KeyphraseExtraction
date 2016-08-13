@@ -494,17 +494,17 @@ for file_name in file_name_list:
         if phrase[1] not in tmp:
             tmp.append(phrase[1])
             top_phrases.append(phrase[0])
-        if len(tmp) == 5:
+        if len(tmp) == 10:
             break
-    count = 0
-    for phrase in top_phrases:
-        if phrase in gold:
+    count = -1 # gold.split('\n')之后多出一个空字符
+    for key in gold.split('\n'):
+        if key in str(top_phrases):
             count += 1
     prcs = count / len(top_phrases)
     recall = count / (len(gold.split('\n')) - 1)
     precision_recall = precision_recall + file_name + ',precision,' + str(prcs) + ',recall,' + str(recall) + ',' + str(top_phrases) + '\n'
     print(file_name, 'end......')
-write_file(precision_recall, './data/KDD', 'rank_precision_recall-top5.csv')
+write_file(precision_recall, './data/KDD', 'rank_precision_recall-top10.csv')
 # tokens = nltk.word_tokenize(text)
 # tagged_tokens = nltk.pos_tag(tokens)
 # tagged_tokens = get_tagged_tokens(file_text)
