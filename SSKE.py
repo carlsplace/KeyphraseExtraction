@@ -11,9 +11,9 @@ import numpy as np
 import math
 # import matplotlib.pyplot as plt
 from nltk.stem import SnowballStemmer
-from sklearn import feature_extraction
-from sklearn.feature_extraction.text import TfidfTransformer
-from sklearn.feature_extraction.text import CountVectorizer
+# from sklearn import feature_extraction
+# from sklearn.feature_extraction.text import TfidfTransformer
+# from sklearn.feature_extraction.text import CountVectorizer
 import datetime
 
 def readfile(file_path, file_name):
@@ -417,7 +417,7 @@ def pagerank_doc(file_path, file_name, omega, phi, d=0.85):
 
     return pr, graph
 
-def get_phrases(pr, graph, file_path, file_name, ng=3):
+def get_phrases(pr, graph, file_path, file_name, ng=2):
     """返回一个list：[('large numbers', 0.04422558661923612), ('Internet criminal', 0.04402960178014231)]"""
     text = rm_tags(readfile(file_path, file_name))
     tokens = nltk.word_tokenize(text)
@@ -425,7 +425,7 @@ def get_phrases(pr, graph, file_path, file_name, ng=3):
     phrases = set()
 
     # Using a "sliding window" of size 2, 3, 4:
-    for n in range(2, ng):
+    for n in range(2, ng+1):
         
         # Get the 2-grams, 3-grams, 4-grams
         for ngram in nltk.ngrams(tokens, n):
@@ -487,7 +487,7 @@ for file_name in file_name_list:
     pr, graph = pagerank_doc(file_path, file_name, omega, phi)
     top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
     gold = readfile('./data/KDD/gold', file_name)
-    keyphrases = get_phrases(pr, graph, file_path, file_name)
+    keyphrases = get_phrases(pr, graph, file_path, file_name, ng=2)
     top_phrases = []
     tmp = []
     for phrase in keyphrases:
@@ -505,6 +505,7 @@ for file_name in file_name_list:
     precision_recall = precision_recall + file_name + ',precision,' + str(prcs) + ',recall,' + str(recall) + ',' + str(top_phrases) + '\n'
     print(file_name, 'end......')
 write_file(precision_recall, './data/KDD', 'rank_precision_recall-top10.csv')
+
 # tokens = nltk.word_tokenize(text)
 # tagged_tokens = nltk.pos_tag(tokens)
 # tagged_tokens = get_tagged_tokens(file_text)
