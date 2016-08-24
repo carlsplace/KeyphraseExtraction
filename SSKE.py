@@ -15,10 +15,11 @@ from sklearn import feature_extraction
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import CountVectorizer
 import datetime
+import codecs
 
 def readfile(file_path, file_name):
     """file_path: ./data file_name"""
-    with open(file_path+'/'+file_name, 'r') as f:
+    with open(file_path+'/'+file_name, 'r', encoding='utf8') as f:
         file_text = f.read()
     return file_text
 
@@ -79,15 +80,10 @@ def get_filtered_text(tagged_tokens):
         if is_good_token(tagged_token):
             filtered_text = filtered_text + ' '+ normalized_token(tagged_token[0])
     return filtered_text
-    
-# def get_corpus(corpus, filtered_text):
-#     """返回一个list，每项为每个文本的内容，排列顺序按照file_list
-#        第一次调用之前，要先初始化corpus = []"""
-#     return corpus
 
 def read_node_features(node_list, raw_node_features, file_name):
     # 0 2 3 4 7
-    """node_list:{node1:[1,2,3], node2:[2,3,4]}"""
+    """node_features:{node1:[1,2,3], node2:[2,3,4]}"""
     file = re.findall(file_name+'.*', raw_node_features)
     tmp1 = []
     for t in file:
@@ -111,7 +107,7 @@ def read_node_features(node_list, raw_node_features, file_name):
     return node_features
 
 def calc_node_weight(node_features, phi):
-    """字典，{node: weight, node2: weight2}
+    """return字典，{node: weight, node2: weight2}
     """
     node_weight = {}
     for node in node_features:
@@ -396,7 +392,7 @@ def top_n_words(pi, node_list, n=15):
 #         keywords.append(node_list[pi.index(score)])
 #     return keywords
 
-def pagerank_doc(file_path, file_name, omega, phi, d=0.85):
+def pagerank_doc(file_path, file_name, file_names, omega, phi, d=0.85, num_topics=9, passes=20):
     file_text = readfile(file_path, file_name)
     tagged_tokens = get_tagged_tokens(file_text)
     filtered_text = get_filtered_text(tagged_tokens)
@@ -412,15 +408,19 @@ def pagerank_doc(file_path, file_name, omega, phi, d=0.85):
         raw_node_features = readfile('./data', 'WWW_node_features')
     node_features = read_node_features(node_list, raw_node_features, file_name)
     node_weight = calc_node_weight(node_features, phi)
-
-    pr = nx.pagerank(graph, alpha=d, personalization=node_weight)
+    ldamodel, corpus = lda_train(file_path, file_names, l_num_topics=num_topics, l_passes=passes)
+    word_prob = get_word_prob(file_name, file_names, node_list, ldamodel, corpus)
+    node_weight_topic = {}
+    for node in node_list:
+        node_weight_topic[node] = node_weight[node] * word_prob[node]
+    pr = nx.pagerank(graph, alpha=d, personalization=node_weight_topic)
 
     return pr, graph
 
 def get_phrases(pr, graph, file_path, file_name, ng=3):
     """返回一个list：[('large numbers', 0.04422558661923612), ('Internet criminal', 0.04402960178014231)]"""
     text = rm_tags(readfile(file_path, file_name))
-    tokens = nltk.word_tokenize(text)
+    tokens = nltk.word_tokenize(text.lower())
     edges = graph.edge
     phrases = set()
 
@@ -448,6 +448,33 @@ def get_phrases(pr, graph, file_path, file_name, ng=3):
     sorted_phrases= sorted(phrase_score.items(), key=lambda d:d[1], reverse = True)
     return sorted_phrases
 
+def lda_train(file_path, file_names, l_num_topics=20, l_passes=20):
+    from gensim import corpora, models
+    import gensim
+    texts = []
+    for file_name in file_names:
+        file_text = readfile(file_path, file_name)
+        tagged_tokens = get_tagged_tokens(file_text)
+        filtered_text = get_filtered_text(tagged_tokens)
+        texts.append(filtered_text.split())
+    dictionary = corpora.Dictionary(texts)
+    corpus = [dictionary.doc2bow(text) for text in texts]
+    ldamodel = gensim.models.ldamodel.LdaModel(corpus, num_topics=l_num_topics, id2word = dictionary, passes=l_passes)
+    return ldamodel, corpus
+
+def get_word_prob(file_name, file_names, node_list, ldamodel, corpus):
+    """word: 即node，已normalized
+    return一个dict:{word:prob, w2:p2}"""
+    word_prob = {}
+    for word in node_list:
+        doc_num = file_names.index(file_name)
+        d_t_prob = np.array(list(p for (t, p) in ldamodel.get_document_topics(corpus[doc_num], minimum_probability=0)))
+        # print(d_t_prob)
+        w_t_prob = np.array(list(p for (t, p) in ldamodel.get_term_topics(word, minimum_probability=0)))
+        # print(w_t_prob)
+        word_prob[word] = np.dot(d_t_prob, w_t_prob)/math.sqrt(np.dot(d_t_prob, d_t_prob) * np.dot(w_t_prob, w_t_prob))
+    return word_prob
+
     
 starttime = datetime.datetime.now()
 
@@ -455,16 +482,16 @@ ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
 file_path = './data/KDD/abstracts'
 out_path = './data/KDD/omega_phi'
 # raw_node_f = readfile('./data', 'KDD_node_features')
-# file_name_list_ = re.findall(r'\n\d{7,8}', raw_node_f)
-# file_name_list = []
-# for file_name in file_name_list_:
-#     if file_name[1:] not in file_name_list:
-#         file_name_list.append(file_name[1:])
-# write_file(str(file_name_list), './data', 'KDD_filelist')
-file_name_list = readfile('./data', 'KDD_filelist').split(',')
+# file_names_ = re.findall(r'\n\d{7,8}', raw_node_f)
+# file_names = []
+# for file_name in file_names_:
+#     if file_name[1:] not in file_names:
+#         file_names.append(file_name[1:])
+# write_file(str(file_names), './data', 'KDD_filelist')
+file_names = readfile('./data', 'KDD_filelist').split(',')
 
 # to_file = ''
-# for file_name in file_name_list:
+# for file_name in file_names:
 #     # print(file_name, '......begin......\n')
 #     pi, omega, phi, node_list = train_doc(file_path, file_name, alpha=0.5)
 #     top_n = top_n_words(pi, node_list, n=10)
@@ -482,9 +509,9 @@ omega = np.asmatrix([0.5, 0.5]).T
 phi = np.asmatrix([0.25, 0.24, 0.04, 0.25, 0.22]).T
 
 precision_recall = ''
-for file_name in file_name_list:
+for file_name in file_names:
     print(file_name, 'begin......')
-    pr, graph = pagerank_doc(file_path, file_name, omega, phi)
+    pr, graph = pagerank_doc(file_path, file_name, file_names, omega, phi)
     top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
     gold = readfile('./data/KDD/gold', file_name)
     keyphrases = get_phrases(pr, graph, file_path, file_name)
