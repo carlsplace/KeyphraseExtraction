@@ -16,6 +16,8 @@ from nltk.stem import SnowballStemmer
 # from sklearn.feature_extraction.text import CountVectorizer
 import datetime
 import codecs
+from gensim import corpora, models
+import gensim
 
 def readfile(file_path, file_name):
     """file_path: ./data file_name"""
@@ -392,7 +394,7 @@ def top_n_words(pi, node_list, n=15):
 #         keywords.append(node_list[pi.index(score)])
 #     return keywords
 
-def pagerank_doc(file_path, file_name, file_names, omega, phi, d=0.85, num_topics=9, passes=20):
+def pagerank_doc(file_path, file_name, file_names, omega, phi, d=0.85, num_topics=8, passes=1):
     file_text = readfile(file_path, file_name)
     tagged_tokens = get_tagged_tokens(file_text)
     filtered_text = get_filtered_text(tagged_tokens)
@@ -449,8 +451,6 @@ def get_phrases(pr, graph, file_path, file_name, ng=2):
     return sorted_phrases
 
 def lda_train(file_path, file_names, l_num_topics=20, l_passes=20):
-    from gensim import corpora, models
-    import gensim
     texts = []
     for file_name in file_names:
         file_text = readfile(file_path, file_name)
@@ -469,9 +469,9 @@ def get_word_prob(file_name, file_names, node_list, ldamodel, corpus):
     for word in node_list:
         doc_num = file_names.index(file_name)
         d_t_prob = np.array(list(p for (t, p) in ldamodel.get_document_topics(corpus[doc_num], minimum_probability=0)))
-        # print(d_t_prob)
+        print(d_t_prob)
         w_t_prob = np.array(list(p for (t, p) in ldamodel.get_term_topics(word, minimum_probability=0)))
-        # print(w_t_prob)
+        print(w_t_prob)
         word_prob[word] = np.dot(d_t_prob, w_t_prob)/math.sqrt(np.dot(d_t_prob, d_t_prob) * np.dot(w_t_prob, w_t_prob))
     return word_prob
 
