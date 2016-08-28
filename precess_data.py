@@ -12,3 +12,8 @@ for file in files:
 
 with open(path+'result.csv', 'w') as f:
     f.write(to_file)
+
+# with open('./data/KDD_filelist', 'r') as f:
+#     file = f.read()
+# filelist = file.split(',')
+# print(filelist[33])

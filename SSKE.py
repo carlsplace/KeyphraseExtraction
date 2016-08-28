@@ -536,10 +536,7 @@ for file_name in file_names:
 # edge_features这个量最重要, 向量存储成列matrix
 
 
-# WWW 1029161
-# KDD 1028607 9642833
+# KDD 10655059 11669627
 
 endtime = datetime.datetime.now()
 print('TIME USED: ', (endtime - starttime))
-
-#测试git
