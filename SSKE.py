@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import os
+from os.path import isfile, join
 import sys
 import string
 import itertools
@@ -482,7 +483,8 @@ out_path = './data/KDD/omega_phi'
 #         file_names.append(file_name[1:])
 # write_file(str(file_names), './data', 'KDD_filelist')
 file_names = readfile('./data', 'KDD_filelist').split(',')
-ldamodel, corpus = lda_train(file_path, file_names, l_num_topics=8, l_passes=1)
+file_names_lda = [f for f in os.listdir(file_path) if isfile(join(file_path, f))]
+ldamodel, corpus = lda_train(file_path, file_names_lda, l_num_topics=8, l_passes=1)
 
 for file_name in file_names:
     print(file_name, '......begin......\n')
@@ -536,7 +538,7 @@ for file_name in file_names:
 # edge_features这个量最重要, 向量存储成列matrix
 
 
-# KDD 10655059 11669627
+# KDD 10655059 11669627 11842174 1353138
 
 endtime = datetime.datetime.now()
 print('TIME USED: ', (endtime - starttime))
