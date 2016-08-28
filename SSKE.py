@@ -192,7 +192,7 @@ def getTransMatrix(graph):
     P = P.T
     return P
 
-def calcPi3(node_weight, node_list, pi, P, d):
+def calcPi3(node_weight, node_list, pi, P, d, word_prob_m):
     """
     r is the reset probability vector, pi3 is an important vertor for later use
     node_list = list(graph.node)
@@ -203,7 +203,7 @@ def calcPi3(node_weight, node_list, pi, P, d):
     r = np.matrix(r)
     r = r.T
     r = r / r.sum()
-    pi3 = d * P.T * pi - pi + (1 - d) * r
+    pi3 = d * P.T * pi - pi + (1 - d) * word_prob_m * r
     return pi3
 
 def calcGradientPi(pi3, P, B, mu, alpha, d):
@@ -259,13 +259,11 @@ def calcGradientOmega(edge_features, node_list, omega, pi3, pi, alpha, d):
     # g_omega算出来是行向量？
     return g_omega.T
 
-def calcGradientPhi(pi3, node_features, node_list, alpha, d):
+def calcGradientPhi(pi3, node_features, node_list, alpha, d, word_prob_m):
     #此处R有疑问, g_phi值有问题
-    R_temp = []
-    for key in node_list:
-        R_temp.append(node_features[key])
-    R = np.matrix(R_temp)
-    g_phi = (1 - alpha) * (1 - d) * pi3.T * R
+    R = np.matrix(list(node_features[key] for key in node_list))
+    # print(word_prob_m.shape, pi3.T.shape, R.shape)
+    g_phi = (1 - alpha) * (1 - d) * pi3.T * word_prob_m * R
     return g_phi.T
 
 def calcG(pi, pi3, B, mu, alpha, d):
@@ -310,7 +308,7 @@ def create_B(node_list, gold):
                 b[neg] = 0
     return np.matrix(B)
 
-def train_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.001, max_iter=1000):
+def train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.001, max_iter=1000):
     file_text = readfile(file_path, file_name)
     tagged_tokens = get_tagged_tokens(file_text)
     filtered_text = get_filtered_text(tagged_tokens)
@@ -323,6 +321,10 @@ def train_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.
     graph = build_graph(edge_weight)
 
     node_list = list(graph.node)
+    word_prob = get_word_prob(file_name, file_names, node_list, ldamodel, corpus)
+    wp = list(word_prob[word] for word in node_list)
+    word_prob_m = np.diag(wp)
+
     if 'KDD' in file_path:
         raw_node_features = readfile('./data', 'KDD_node_features')
     else:
@@ -339,12 +341,12 @@ def train_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.
     pi = init_value(len(node_list))
     P = getTransMatrix(graph)
     P0 = P
-    pi3 = calcPi3(node_weight, node_list, pi, P, d)
+    pi3 = calcPi3(node_weight, node_list, pi, P, d, word_prob_m)
     G0 = calcG(pi, pi3, B, mu, alpha, d)
     # print(pi3)
     g_pi = calcGradientPi(pi3, P, B, mu, alpha, d)
     g_omega = calcGradientOmega(edge_features, node_list, omega, pi3, pi, alpha, d)
-    g_phi = calcGradientPhi(pi3, node_features, node_list, alpha, d)
+    g_phi = calcGradientPhi(pi3, node_features, node_list, alpha, d, word_prob_m)
     
     pi = updateVar(pi, g_pi, step_size)
     omega = updateVar(omega, g_omega, step_size)
@@ -355,12 +357,12 @@ def train_doc(file_path, file_name, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.
     while  e > epsilon and iteration < max_iter and all(a >= 0 for a in phi) and all(b >= 0 for b in omega) and all(c >= 0 for c in pi):
         g_pi = calcGradientPi(pi3, P, B, mu, alpha, d)
         g_omega = calcGradientOmega(edge_features, node_list, omega, pi3, pi, alpha, d)
-        g_phi = calcGradientPhi(pi3, node_features, node_list, alpha, d)
+        g_phi = calcGradientPhi(pi3, node_features, node_list, alpha, d, word_prob_m)
 
         edge_weight = calc_edge_weight(edge_features, omega)
         graph = build_graph(edge_weight)
         P = getTransMatrix(graph)
-        pi3 = calcPi3(node_weight, node_list, pi, P, d)
+        pi3 = calcPi3(node_weight, node_list, pi, P, d, word_prob_m)
         G1 = calcG(pi, pi3, B, mu, alpha, d)
         e = abs(G1 - G0)
         # print(e)
@@ -385,16 +387,8 @@ def top_n_words(pi, node_list, n=15):
     for rank in sort[:n]:
         top_n.append(node_list[pi.index(rank)])
     return top_n
-# def get_keywords(pi, node_list):
-#     pi = pi.T.tolist()[0]
-#     pi_sort = sorted(pi, reverse=True)
-#     pi_sort = pi_sort[:len(pi_sort)//5]
-#     keywords = []
-#     for score in pi_sort:
-#         keywords.append(node_list[pi.index(score)])
-#     return keywords
 
-def pagerank_doc(file_path, file_name, file_names, omega, phi, d=0.85, num_topics=8, passes=1):
+def pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus, d=0.85):
     file_text = readfile(file_path, file_name)
     tagged_tokens = get_tagged_tokens(file_text)
     filtered_text = get_filtered_text(tagged_tokens)
@@ -410,7 +404,6 @@ def pagerank_doc(file_path, file_name, file_names, omega, phi, d=0.85, num_topic
         raw_node_features = readfile('./data', 'WWW_node_features')
     node_features = read_node_features(node_list, raw_node_features, file_name)
     node_weight = calc_node_weight(node_features, phi)
-    ldamodel, corpus = lda_train(file_path, file_names, l_num_topics=num_topics, l_passes=passes)
     word_prob = get_word_prob(file_name, file_names, node_list, ldamodel, corpus)
     node_weight_topic = {}
     for node in node_list:
@@ -469,9 +462,9 @@ def get_word_prob(file_name, file_names, node_list, ldamodel, corpus):
     for word in node_list:
         doc_num = file_names.index(file_name)
         d_t_prob = np.array(list(p for (t, p) in ldamodel.get_document_topics(corpus[doc_num], minimum_probability=0)))
-        print(d_t_prob)
+        # print(d_t_prob)
         w_t_prob = np.array(list(p for (t, p) in ldamodel.get_term_topics(word, minimum_probability=0)))
-        print(w_t_prob)
+        # print(w_t_prob)
         word_prob[word] = np.dot(d_t_prob, w_t_prob)/math.sqrt(np.dot(d_t_prob, d_t_prob) * np.dot(w_t_prob, w_t_prob))
     return word_prob
 
@@ -489,49 +482,53 @@ out_path = './data/KDD/omega_phi'
 #         file_names.append(file_name[1:])
 # write_file(str(file_names), './data', 'KDD_filelist')
 file_names = readfile('./data', 'KDD_filelist').split(',')
+ldamodel, corpus = lda_train(file_path, file_names, l_num_topics=8, l_passes=1)
 
-# to_file = ''
-# for file_name in file_names:
-#     # print(file_name, '......begin......\n')
-#     pi, omega, phi, node_list = train_doc(file_path, file_name, alpha=0.5)
-#     top_n = top_n_words(pi, node_list, n=10)
-#     gold = readfile('./data/KDD/gold', file_name)
-#     count = 0
-#     for word in top_n:
-#         if word in gold:
-#             count += 1
-#     prcs = count/len(gold.split())
-#     to_file = to_file + file_name + ',omega,' + str(omega) + ',phi,' + str(phi) + ',precision,' + str(prcs) + '\n'
-#     # print(file_name, '......end......\n')
-# write_file(to_file, './data/KDD/omega_phi', 'omegaphi-a0.5-top10.csv')
-
-omega = np.asmatrix([0.5, 0.5]).T
-phi = np.asmatrix([0.25, 0.24, 0.04, 0.25, 0.22]).T
-
-precision_recall = ''
 for file_name in file_names:
-    print(file_name, 'begin......')
-    pr, graph = pagerank_doc(file_path, file_name, file_names, omega, phi)
-    top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
+    print(file_name, '......begin......\n')
+    pi, omega, phi, node_list = train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=0.5)
+    top_n = top_n_words(pi, node_list, n=10)
     gold = readfile('./data/KDD/gold', file_name)
-    keyphrases = get_phrases(pr, graph, file_path, file_name, ng=2)
-    top_phrases = []
-    tmp = []
-    for phrase in keyphrases:
-        if phrase[1] not in tmp:
-            tmp.append(phrase[1])
-            top_phrases.append(phrase[0])
-        if len(tmp) == 10:
-            break
-    count = -1 # gold.split('\n')之后多出一个空字符
-    for key in gold.split('\n'):
-        if key in str(top_phrases):
+    count = 0
+    for word in top_n:
+        if word in gold:
             count += 1
-    prcs = count / len(top_phrases)
-    recall = count / (len(gold.split('\n')) - 1)
-    precision_recall = precision_recall + file_name + ',precision,' + str(prcs) + ',recall,' + str(recall) + ',' + str(top_phrases) + '\n'
-    print(file_name, 'end......')
-write_file(precision_recall, './data/KDD', 'rank_precision_recall-top10.csv')
+    prcs = count/len(gold.split())
+    to_file = file_name + ',omega,' + str(omega)[1:-1] + ',phi,' + str(phi)[1:-1] + ',precision,' + str(prcs) + '\n'
+    write_file(to_file, './data/KDD/omega_phi', file_name)
+    print(file_name, '......end......\n')
+
+
+
+
+
+# omega = np.asmatrix([0.5, 0.5]).T
+# phi = np.asmatrix([0.25, 0.24, 0.04, 0.25, 0.22]).T
+
+# precision_recall = ''
+# for file_name in file_names:
+#     print(file_name, 'begin......')
+#     pr, graph = pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus)
+#     top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
+#     gold = readfile('./data/KDD/gold', file_name)
+#     keyphrases = get_phrases(pr, graph, file_path, file_name, ng=2)
+#     top_phrases = []
+#     tmp = []
+#     for phrase in keyphrases:
+#         if phrase[1] not in tmp:
+#             tmp.append(phrase[1])
+#             top_phrases.append(phrase[0])
+#         if len(tmp) == 10:
+#             break
+#     count = -1 # gold.split('\n')之后多出一个空字符
+#     for key in gold.split('\n'):
+#         if key in str(top_phrases):
+#             count += 1
+#     prcs = count / len(top_phrases)
+#     recall = count / (len(gold.split('\n')) - 1)
+#     precision_recall = precision_recall + file_name + ',precision,' + str(prcs) + ',recall,' + str(recall) + ',' + str(top_phrases) + '\n'
+#     print(file_name, 'end......')
+# write_file(precision_recall, './data/KDD', 'rank_precision_recall-top10.csv')
 
 # tokens = nltk.word_tokenize(text)
 # tagged_tokens = nltk.pos_tag(tokens)
