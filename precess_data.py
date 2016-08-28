@@ -10,7 +10,7 @@ for file in files:
     with open(path+file, 'r') as f:
         to_file = to_file + f.readline()
 
-with open(path+'result.csv', 'w') as f:
+with open(path+'train-a0.5-top10.csv', 'w') as f:
     f.write(to_file)
 
 # with open('./data/KDD_filelist', 'r') as f:
