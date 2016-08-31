@@ -86,8 +86,17 @@ def get_filtered_text(tagged_tokens):
 
 def read_node_features(node_list, raw_node_features, file_name):
     # 0 2 3 4 7
+    # @attribute tfidf numeric
+    # @attribute tfidfOver {0, 1}
+    # @attribute relativePosition numeric
+    # @attribute firstPosition numeric
+    # @attribute firstPositionUnder numeric
+    # @attribute inCited {0, 1}
+    # @attribute inCiting {0, 1}
+    # @attribute citationTFIDF numeric
+    # @attribute isKeyword {-1, 1}
     """node_features:{node1:[1,2,3], node2:[2,3,4]}"""
-    file = re.findall(file_name+'.*', raw_node_features)
+    file = re.findall(file_name+'\s-.*', raw_node_features)
     tmp1 = []
     for t in file:
         tmp1.append(t.split(':'))
@@ -475,13 +484,13 @@ starttime = datetime.datetime.now()
 ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
 file_path = './data/KDD/abstracts'
 out_path = './data/KDD/omega_phi'
-# raw_node_f = readfile('./data', 'KDD_node_features')
-# file_names_ = re.findall(r'\n\d{7,8}', raw_node_f)
-# file_names = []
-# for file_name in file_names_:
-#     if file_name[1:] not in file_names:
-#         file_names.append(file_name[1:])
-# write_file(str(file_names), './data', 'KDD_filelist')
+raw_node_f = readfile('./data', 'KDD_node_features')
+
+# file_names_ = re.findall(r'\d+\s-', raw_node_f)
+# names = set(list(name[:-2] for name in file_names_))
+# write_file(str(names)[1:-1], './data', 'KDD_filelist') #输出有引号空格，还是得进一步处理
+
+
 file_names = readfile('./data', 'KDD_filelist').split(',')
 file_names_lda = [f for f in os.listdir(file_path) if isfile(join(file_path, f))]
 ldamodel, corpus = lda_train(file_path, file_names_lda, l_num_topics=8, l_passes=1)
@@ -538,7 +547,7 @@ for file_name in file_names:
 # edge_features这个量最重要, 向量存储成列matrix
 
 
-# KDD 10655059 11669627 11842174 1353138
+# KDD 10655059 11669627 11842174 1353138 1364456
 
 endtime = datetime.datetime.now()
 print('TIME USED: ', (endtime - starttime))
