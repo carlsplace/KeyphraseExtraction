@@ -87,14 +87,11 @@ def get_filtered_text(tagged_tokens):
 def read_node_features(node_list, raw_node_features, file_name):
     # 0 2 3 4 7
     # @attribute tfidf numeric
-    # @attribute tfidfOver {0, 1}
     # @attribute relativePosition numeric
     # @attribute firstPosition numeric
     # @attribute firstPositionUnder numeric
-    # @attribute inCited {0, 1}
-    # @attribute inCiting {0, 1}
     # @attribute citationTFIDF numeric
-    # @attribute isKeyword {-1, 1}
+
     """node_features:{node1:[1,2,3], node2:[2,3,4]}"""
     file = re.findall(file_name+'\s-.*', raw_node_features)
     tmp1 = []
@@ -105,13 +102,12 @@ def read_node_features(node_list, raw_node_features, file_name):
         # print(t)
         features_t = re.search(r'\d.*', t[1]).group().split(',')
         # print(features_t)
-        feature_num = len(features_t)
-        for i in range(feature_num):
-            features_t[i] = float(features_t[i])
-        tmp2[re.search('[a-zA-Z].*' ,t[0]).group()] = features_t
-    zero_feature = []
-    for i in range(feature_num):
-        zero_feature.append(0)
+        features_t = list(float(ft) for ft in features_t)
+        if re.search('[a-zA-Z].*' ,t[0]):
+            tmp2[re.search('[a-zA-Z].*' ,t[0]).group()] = features_t
+    zero_feature = [0] * len(features_t)
+    # for i in range(feature_num):
+    #     zero_feature.append(0)
     node_features = {}
     for node in node_list:
         f = tmp2.get(node, zero_feature)
@@ -292,11 +288,9 @@ def init_value(n):
     return np.asmatrix(value).T
 
 def create_B(node_list, gold):
-    keyphrases = gold.split()
-    for i in range(len(keyphrases)):
-        keyphrases[i] = normalized_token(keyphrases[i])
+    keyphrases = list(normalized_token(word) for word in gold.split())
     n = len(node_list)
-
+    B = [0] * n
     for g in keyphrases:
         if g not in node_list:
             keyphrases.pop(keyphrases.index(g))
@@ -547,7 +541,7 @@ for file_name in file_names:
 # edge_features这个量最重要, 向量存储成列matrix
 
 
-# KDD 10655059 11669627 11842174 1353138 1364456
+# KDD 1028607
 
 endtime = datetime.datetime.now()
 print('TIME USED: ', (endtime - starttime))
