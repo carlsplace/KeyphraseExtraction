@@ -274,6 +274,8 @@ def calcGradientPhi(pi3, node_features, node_list, alpha, d, word_prob_m):
 
 def calcG(pi, pi3, B, mu, alpha, d):
     one = np.matrix(np.ones(B.shape[0])).T
+    # print('pi3.T', pi3.T.shape, 'mu.T', mu.T.shape, 'one', one.shape, 'B', B.shape, 'pi', pi.shape)
+    # print(B)
     G = alpha * pi3.T * pi3 + (1 - alpha) * mu.T * (one - B * pi)
     return G
 
@@ -310,6 +312,8 @@ def create_B(node_list, gold):
                 c = b[:]
                 B.append(c)
                 b[neg] = 0
+    if B == []:
+        B = [0] * n
     return np.matrix(B)
 
 def train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.001, max_iter=1000):
@@ -542,6 +546,23 @@ for file_name in file_names:
 
 
 # KDD 1028607
+# file_name = '1028607'
+# print(file_name, '......begin......\n')
+# pi, omega, phi, node_list = train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=0.5)
+# top_n = top_n_words(pi, node_list, n=10)
+# gold = readfile('./data/KDD/gold', file_name)
+# count = 0
+# for word in top_n:
+#     if word in gold:
+#         count += 1
+# prcs = count/len(gold.split())
+# to_file = file_name + ',omega,' + str(omega)[1:-1] + ',phi,' + str(phi)[1:-1] + ',precision,' + str(prcs) + '\n'
+# write_file(to_file, './data/KDD/omega_phi', file_name)
+# print(file_name, '......end......\n')
+
+
+
+
 
 endtime = datetime.datetime.now()
 print('TIME USED: ', (endtime - starttime))
