@@ -480,16 +480,21 @@ def get_word_prob(file_name, file_names, node_list, ldamodel, corpus):
 starttime = datetime.datetime.now()
 
 ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
-file_path = './data/KDD/abstracts'
-out_path = './data/KDD/omega_phi'
-raw_node_f = readfile('./data', 'KDD_node_features')
+# file_path = './data/KDD/abstracts'
+# out_path = './data/KDD/omega_phi'
+# raw_node_f = readfile('./data', 'KDD_node_features')
+
+file_path = './data/WWW/abstracts'
+out_path = './data/WWW/omega_phi'
+raw_node_f = readfile('./data', 'WWW_node_features')
 
 # file_names_ = re.findall(r'\d+\s-', raw_node_f)
 # names = set(list(name[:-2] for name in file_names_))
-# write_file(str(names)[1:-1], './data', 'KDD_filelist') #输出有引号空格，还是得进一步处理
+# write_file(str(names)[1:-1], './data', 'WWW_filelist') #输出有引号空格，还是得进一步处理
 
 
-file_names = readfile('./data', 'KDD_filelist').split(',')
+# file_names = readfile('./data', 'KDD_filelist').split(',')
+file_names = readfile('./data', 'WWW_filelist').split(',')
 file_names_lda = [f for f in os.listdir(file_path) if isfile(join(file_path, f))]
 ldamodel, corpus = lda_train(file_path, file_names_lda, l_num_topics=8, l_passes=1)
 
@@ -497,14 +502,16 @@ for file_name in file_names:
     print(file_name, '......begin......\n')
     pi, omega, phi, node_list = train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=0.5)
     top_n = top_n_words(pi, node_list, n=10)
-    gold = readfile('./data/KDD/gold', file_name)
+    # gold = readfile('./data/KDD/gold', file_name)
+    gold = readfile('./data/WWW/gold', file_name)
     count = 0
     for word in top_n:
         if word in gold:
             count += 1
     prcs = count/len(gold.split())
     to_file = file_name + ',omega,' + str(omega)[1:-1] + ',phi,' + str(phi)[1:-1] + ',precision,' + str(prcs) + '\n'
-    write_file(to_file, './data/KDD/omega_phi', file_name)
+    # write_file(to_file, './data/KDD/omega_phi', file_name)
+    write_file(to_file, './data/WWW/omega_phi', file_name)
     print(file_name, '......end......\n')
 
 

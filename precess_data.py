@@ -1,7 +1,7 @@
 from os import listdir
 from os.path import isfile, join
 
-path = './data/KDD/omega_phi/'
+path = './data/WWW/omega_phi/'
 files = [f for f in listdir(path) if isfile(join(path, f))]
 
 
