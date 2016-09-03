@@ -30,7 +30,7 @@ def write_file(text, file_path, file_name):
     """file_path：./path"""
     if not os.path.exists(file_path) : 
         os.mkdir(file_path)
-    with open(file_path+'/'+file_name, 'w') as f:
+    with open(file_path+'/'+file_name, 'w', encoding='utf8') as f:
         f.write(text)
     return 0
 
@@ -85,12 +85,17 @@ def get_filtered_text(tagged_tokens):
     return filtered_text
 
 def read_node_features(node_list, raw_node_features, file_name):
-    # 0 2 3 4 7
-    # @attribute tfidf numeric
-    # @attribute relativePosition numeric
-    # @attribute firstPosition numeric
+    # @attribute tfidf numeric √
+    # @attribute tfidfOver {0, 1}
+    # @attribute relativePosition numeric √
+    # @attribute firstPosition numeric √
     # @attribute firstPositionUnder numeric
-    # @attribute citationTFIDF numeric
+    # @attribute inCited {0, 1}
+    # @attribute inCiting {0, 1}
+    # @attribute citationTFIDF numeric √
+    # @attribute keyphraseness numeric √
+    # @attribute conclusionTF numeric √
+    # @attribute isKeyword {-1, 1}
 
     """node_features:{node1:[1,2,3], node2:[2,3,4]}"""
     file = re.findall(file_name+'\s-.*', raw_node_features)
@@ -111,7 +116,7 @@ def read_node_features(node_list, raw_node_features, file_name):
     node_features = {}
     for node in node_list:
         f = tmp2.get(node, zero_feature)
-        node_features[node] = [f[0], f[2], f[3], f[4], f[7]]
+        node_features[node] = [f[0], f[2], f[3], f[7], f[8], f[9]]
     return node_features
 
 def calc_node_weight(node_features, phi):
@@ -476,100 +481,135 @@ def get_word_prob(file_name, file_names, node_list, ldamodel, corpus):
         word_prob[word] = np.dot(d_t_prob, w_t_prob)/math.sqrt(np.dot(d_t_prob, d_t_prob) * np.dot(w_t_prob, w_t_prob))
     return word_prob
 
-    
+def kdd_train(alpha_=0.5):
+    file_path = './data/KDD/abstracts'
+    out_path = './data/KDD/omega_phi'
+    raw_node_f = readfile('./data', 'KDD_node_features')
+    file_names = readfile('./data', 'KDD_filelist').split(',')
+    file_names_lda = [f for f in os.listdir(file_path) if isfile(join(file_path, f))]
+    ldamodel, corpus = lda_train(file_path, file_names_lda, l_num_topics=8, l_passes=1)
+
+    for file_name in file_names:
+        print(file_name, '......begin......\n')
+        pi, omega, phi, node_list = train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=alpha_)
+        top_n = top_n_words(pi, node_list, n=10)
+        gold = readfile('./data/KDD/gold', file_name)
+        count = 0
+        for word in top_n:
+            if word in gold:
+                count += 1
+        prcs = count/len(gold.split())
+        to_file = file_name + ',omega,' + str(omega)[1:-1] + ',phi,' + str(phi)[1:-1] + ',precision,' + str(prcs) + '\n'
+        write_file(to_file, './data/KDD/omega_phi', file_name)
+        print(file_name, '......end......\n')
+
+def www_train(alpha_=0.5):
+    file_path = './data/WWW/abstracts'
+    out_path = './data/WWW/omega_phi'
+    raw_node_f = readfile('./data', 'WWW_node_features')
+    file_names = readfile('./data', 'WWW_filelist').split(',')
+    file_names_lda = [f for f in os.listdir(file_path) if isfile(join(file_path, f))]
+    ldamodel, corpus = lda_train(file_path, file_names_lda, l_num_topics=8, l_passes=1)
+
+    for file_name in file_names:
+        print(file_name, '......begin......\n')
+        pi, omega, phi, node_list = train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=alpha_)
+        top_n = top_n_words(pi, node_list, n=10)
+        gold = readfile('./data/WWW/gold', file_name)
+        count = 0
+        for word in top_n:
+            if word in gold:
+                count += 1
+        prcs = count/len(gold.split())
+        to_file = file_name + ',omega,' + str(omega)[1:-1] + ',phi,' + str(phi)[1:-1] + ',precision,' + str(prcs) + '\n'
+        write_file(to_file, './data/WWW/omega_phi', file_name)
+        print(file_name, '......end......\n')
+
+def kdd_rank(omega, phi, topn):
+    file_path = './data/KDD/abstracts'
+    out_path = './data/KDD/omega_phi'
+    raw_node_f = readfile('./data', 'KDD_node_features')
+    file_names = readfile('./data', 'KDD_filelist').split(',')
+    file_names_lda = [f for f in os.listdir(file_path) if isfile(join(file_path, f))]
+    ldamodel, corpus = lda_train(file_path, file_names_lda, l_num_topics=8, l_passes=1)
+    precision_recall = ''
+    for file_name in file_names:
+        print(file_name, 'begin......')
+        pr, graph = pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus)
+        # top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
+        gold = readfile('./data/KDD/gold', file_name)
+        keyphrases = get_phrases(pr, graph, file_path, file_name, ng=2)
+        top_phrases = []
+        tmp = []
+        for phrase in keyphrases:
+            if phrase[1] not in tmp:
+                tmp.append(phrase[1])
+                top_phrases.append(phrase[0])
+            if len(tmp) == topn:
+                break
+        count = -1 # gold.split('\n')之后多出一个空字符
+        for key in gold.split('\n'):
+            if key in str(top_phrases):
+                count += 1
+        prcs = count / len(top_phrases)
+        recall = count / (len(gold.split('\n')) - 1)
+        precision_recall = precision_recall + file_name + ',precision,' + str(prcs) + ',recall,' + str(recall) + ',' + str(top_phrases) + '\n'
+        print(file_name, 'end......')
+    write_file(precision_recall, './data/KDD', 'kdd_rank_precision_recall-top' + str(topn) + '.csv')
+
+def www_rank(omega, phi, topn):
+    file_path = './data/WWW/abstracts'
+    out_path = './data/WWW/omega_phi'
+    raw_node_f = readfile('./data', 'WWW_node_features')
+    file_names = readfile('./data', 'WWW_filelist').split(',')
+    file_names_lda = [f for f in os.listdir(file_path) if isfile(join(file_path, f))]
+    ldamodel, corpus = lda_train(file_path, file_names_lda, l_num_topics=8, l_passes=1)
+    precision_recall = ''
+    for file_name in file_names:
+        print(file_name, 'begin......')
+        pr, graph = pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus)
+        # top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
+        gold = readfile('./data/WWW/gold', file_name)
+        keyphrases = get_phrases(pr, graph, file_path, file_name, ng=2)
+        top_phrases = []
+        tmp = []
+        for phrase in keyphrases:
+            if phrase[1] not in tmp:
+                tmp.append(phrase[1])
+                top_phrases.append(phrase[0])
+            if len(tmp) == topn:
+                break
+        count = -1 # gold.split('\n')之后多出一个空字符
+        for key in gold.split('\n'):
+            if key in str(top_phrases):
+                count += 1
+        if len(top_phrases)==0:
+            prcs = 0
+        else:
+            prcs = count / len(top_phrases)
+        recall = count / (len(gold.split('\n')) - 1)
+        precision_recall = precision_recall + file_name + ',precision,' + str(prcs) + ',recall,' + str(recall) + ',' + str(top_phrases) + '\n'
+        print(file_name, 'end......')
+    write_file(precision_recall, './data/WWW', 'www_rank_precision_recall-top' + str(topn) + '.csv')
+
 starttime = datetime.datetime.now()
 
 ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
-# file_path = './data/KDD/abstracts'
-# out_path = './data/KDD/omega_phi'
-# raw_node_f = readfile('./data', 'KDD_node_features')
 
-file_path = './data/WWW/abstracts'
-out_path = './data/WWW/omega_phi'
-raw_node_f = readfile('./data', 'WWW_node_features')
+omega_kdd = np.asmatrix([0.5, 0.5]).T
+phi_kdd = np.asmatrix([0.16, 0.16, 0.15, 0.2, 0.17, 0.16]).T
+# kdd_rank(omega_kdd, phi_kdd, 5)
+# kdd_rank(omega_kdd, phi_kdd, 10)
 
-# file_names_ = re.findall(r'\d+\s-', raw_node_f)
-# names = set(list(name[:-2] for name in file_names_))
-# write_file(str(names)[1:-1], './data', 'WWW_filelist') #输出有引号空格，还是得进一步处理
-
-
-# file_names = readfile('./data', 'KDD_filelist').split(',')
-file_names = readfile('./data', 'WWW_filelist').split(',')
-file_names_lda = [f for f in os.listdir(file_path) if isfile(join(file_path, f))]
-ldamodel, corpus = lda_train(file_path, file_names_lda, l_num_topics=8, l_passes=1)
-
-for file_name in file_names:
-    print(file_name, '......begin......\n')
-    pi, omega, phi, node_list = train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=0.5)
-    top_n = top_n_words(pi, node_list, n=10)
-    # gold = readfile('./data/KDD/gold', file_name)
-    gold = readfile('./data/WWW/gold', file_name)
-    count = 0
-    for word in top_n:
-        if word in gold:
-            count += 1
-    prcs = count/len(gold.split())
-    to_file = file_name + ',omega,' + str(omega)[1:-1] + ',phi,' + str(phi)[1:-1] + ',precision,' + str(prcs) + '\n'
-    # write_file(to_file, './data/KDD/omega_phi', file_name)
-    write_file(to_file, './data/WWW/omega_phi', file_name)
-    print(file_name, '......end......\n')
-
-
-
-
-
-# omega = np.asmatrix([0.5, 0.5]).T
-# phi = np.asmatrix([0.25, 0.24, 0.04, 0.25, 0.22]).T
-
-# precision_recall = ''
-# for file_name in file_names:
-#     print(file_name, 'begin......')
-#     pr, graph = pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus)
-#     top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
-#     gold = readfile('./data/KDD/gold', file_name)
-#     keyphrases = get_phrases(pr, graph, file_path, file_name, ng=2)
-#     top_phrases = []
-#     tmp = []
-#     for phrase in keyphrases:
-#         if phrase[1] not in tmp:
-#             tmp.append(phrase[1])
-#             top_phrases.append(phrase[0])
-#         if len(tmp) == 10:
-#             break
-#     count = -1 # gold.split('\n')之后多出一个空字符
-#     for key in gold.split('\n'):
-#         if key in str(top_phrases):
-#             count += 1
-#     prcs = count / len(top_phrases)
-#     recall = count / (len(gold.split('\n')) - 1)
-#     precision_recall = precision_recall + file_name + ',precision,' + str(prcs) + ',recall,' + str(recall) + ',' + str(top_phrases) + '\n'
-#     print(file_name, 'end......')
-# write_file(precision_recall, './data/KDD', 'rank_precision_recall-top10.csv')
+omega_www = np.asmatrix([0.5, 0.5]).T
+phi_www = np.asmatrix([0.17, 0.16, 0.12, 0.21, 0.17, 0.17]).T
+www_rank(omega_www, phi_www, 5)
+www_rank(omega_www, phi_www, 10)
 
 # tokens = nltk.word_tokenize(text)
 # tagged_tokens = nltk.pos_tag(tokens)
 # tagged_tokens = get_tagged_tokens(file_text)
 # edge_features这个量最重要, 向量存储成列matrix
-
-
-# KDD 1028607
-# file_name = '1028607'
-# print(file_name, '......begin......\n')
-# pi, omega, phi, node_list = train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=0.5)
-# top_n = top_n_words(pi, node_list, n=10)
-# gold = readfile('./data/KDD/gold', file_name)
-# count = 0
-# for word in top_n:
-#     if word in gold:
-#         count += 1
-# prcs = count/len(gold.split())
-# to_file = file_name + ',omega,' + str(omega)[1:-1] + ',phi,' + str(phi)[1:-1] + ',precision,' + str(prcs) + '\n'
-# write_file(to_file, './data/KDD/omega_phi', file_name)
-# print(file_name, '......end......\n')
-
-
-
-
 
 endtime = datetime.datetime.now()
 print('TIME USED: ', (endtime - starttime))
