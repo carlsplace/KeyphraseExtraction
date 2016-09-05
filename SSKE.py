@@ -600,33 +600,33 @@ def www_rank(omega, phi, topn, topics=20):
     write_file(precision_recall, './data/WWW', 'www_rank_precision_recall-top' + str(topn) + '.csv')
 
 ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
-import multiprocessing
-if __name__=='__main__':
-    starttime = datetime.datetime.now()
-    ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
-    print('Parent process %s.' % os.getpid())
-    p = []
-    for i in [0.4, 0.5, 0.6, 0.8]:
-        p.append(multiprocessing.Process(target=kdd_train, args=(i,)))
-        p.append(multiprocessing.Process(target=www_train, args=(i,)))
-        p.append(multiprocessing.Process(target=kdd_train, args=(i,50)))
-        p.append(multiprocessing.Process(target=www_train, args=(i,50)))
-    for precess in p:
-        precess.start()
-    for precess in p:
-        precess.join()
-    print('All subprocesses done.')
-    endtime = datetime.datetime.now()
-    print('TIME USED: ', (endtime - starttime))
+# import multiprocessing
+# if __name__=='__main__':
+#     starttime = datetime.datetime.now()
+#     ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
+#     print('Parent process %s.' % os.getpid())
+#     p = []
+#     for i in [0.4, 0.5, 0.6, 0.8]:
+#         p.append(multiprocessing.Process(target=kdd_train, args=(i,)))
+#         p.append(multiprocessing.Process(target=www_train, args=(i,)))
+#         p.append(multiprocessing.Process(target=kdd_train, args=(i,50)))
+#         p.append(multiprocessing.Process(target=www_train, args=(i,50)))
+#     for precess in p:
+#         precess.start()
+#     for precess in p:
+#         precess.join()
+#     print('All subprocesses done.')
+#     endtime = datetime.datetime.now()
+#     print('TIME USED: ', (endtime - starttime))
 
 
-# omega_kdd = np.asmatrix([0.5, 0.5]).T
-# phi_kdd = np.asmatrix([0.16, 0.16, 0.15, 0.2, 0.17, 0.16]).T
-# kdd_rank(omega_kdd, phi_kdd, 5)
-# kdd_rank(omega_kdd, phi_kdd, 10)
+omega_kdd = np.asmatrix([0.5, 0.5]).T
+phi_kdd = np.asmatrix([0.26, 0.26, 0.19, 0.29]).T
+kdd_rank(omega_kdd, phi_kdd, 5)
+kdd_rank(omega_kdd, phi_kdd, 10)
 
 # omega_www = np.asmatrix([0.5, 0.5]).T
-# phi_www = np.asmatrix([0.17, 0.16, 0.12, 0.21, 0.17, 0.17]).T
+# phi_www = np.asmatrix([0.25, 0.25, 0.20, 0.30]).T
 # www_rank(omega_www, phi_www, 5)
 # www_rank(omega_www, phi_www, 10)
 
