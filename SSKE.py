@@ -116,7 +116,7 @@ def read_node_features(node_list, raw_node_features, file_name):
     node_features = {}
     for node in node_list:
         f = tmp2.get(node, zero_feature)
-        node_features[node] = [f[0], f[2], f[3], f[7]]
+        node_features[node] = [f[0], f[2], f[7]]
     return node_features
 # 软件复杂度控制，complexity control，选取特征的改变=需求变更，怎样设计接口。
 def calc_node_weight(node_features, phi):
@@ -558,7 +558,7 @@ def kdd_rank(omega, phi, topn, topics=20):
         for key in gold.split('\n'):
             if key in str(top_phrases):
                 count += 1
-        prcs = count / len(top_phrases)
+        prcs = count / topn
         recall = count / (len(gold.split('\n')) - 1)
         precision_recall = precision_recall + file_name + ',precision,' + str(prcs) + ',recall,' + str(recall) + ',' + str(top_phrases) + '\n'
         print(file_name, 'end......')
@@ -593,7 +593,7 @@ def www_rank(omega, phi, topn, topics=20):
         if len(top_phrases)==0:
             prcs = 0
         else:
-            prcs = count / len(top_phrases)
+            prcs = count / topn
         recall = count / (len(gold.split('\n')) - 1)
         precision_recall = precision_recall + file_name + ',precision,' + str(prcs) + ',recall,' + str(recall) + ',' + str(top_phrases) + '\n'
         print(file_name, 'end......')
@@ -621,12 +621,12 @@ ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
 
 
 omega_kdd = np.asmatrix([0.5, 0.5]).T
-phi_kdd = np.asmatrix([0.26, 0.26, 0.19, 0.29]).T
+phi_kdd = np.asmatrix([0.33, 0.33, 0.34]).T
 kdd_rank(omega_kdd, phi_kdd, 5)
 kdd_rank(omega_kdd, phi_kdd, 10)
 
 # omega_www = np.asmatrix([0.5, 0.5]).T
-# phi_www = np.asmatrix([0.25, 0.25, 0.20, 0.30]).T
+# phi_www = np.asmatrix([0.32, 0.32, 0.36]).T
 # www_rank(omega_www, phi_www, 5)
 # www_rank(omega_www, phi_www, 10)
 
