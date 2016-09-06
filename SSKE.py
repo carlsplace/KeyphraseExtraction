@@ -85,16 +85,16 @@ def get_filtered_text(tagged_tokens):
     return filtered_text
 
 def read_node_features(node_list, raw_node_features, file_name):
-    # @attribute tfidf numeric √
-    # @attribute tfidfOver {0, 1}
-    # @attribute relativePosition numeric √
-    # @attribute firstPosition numeric √
-    # @attribute firstPositionUnder numeric
-    # @attribute inCited {0, 1}
-    # @attribute inCiting {0, 1}
-    # @attribute citationTFIDF numeric √
-    # @attribute keyphraseness numeric 
-    # @attribute conclusionTF numeric 
+    # 0@attribute tfidf numeric √
+    # 1@attribute tfidfOver {0, 1}
+    # 2@attribute relativePosition numeric √
+    # 3@attribute firstPosition numeric √
+    # 4@attribute firstPositionUnder {0, 1}
+    # 5@attribute inCited {0, 1}
+    # 6@attribute inCiting {0, 1}
+    # 7@attribute citationTFIDF numeric √
+    # 8@attribute keyphraseness numeric 
+    # 9@attribute conclusionTF numeric 
     # @attribute isKeyword {-1, 1}
 
     """node_features:{node1:[1,2,3], node2:[2,3,4]}"""
@@ -116,8 +116,9 @@ def read_node_features(node_list, raw_node_features, file_name):
     node_features = {}
     for node in node_list:
         f = tmp2.get(node, zero_feature)
-        node_features[node] = [f[0], f[2], f[7]]
+        node_features[node] = [f[2], f[7], f[8], f[9]]
     return node_features
+
 # 软件复杂度控制，complexity control，选取特征的改变=需求变更，怎样设计接口。
 def calc_node_weight(node_features, phi):
     """return字典，{node: weight, node2: weight2}
@@ -501,8 +502,10 @@ def kdd_train(alpha_=0.5, topics=20):
         for word in top_n:
             if word in gold:
                 count += 1
-        prcs = count/len(gold.split())
-        to_file = file_name + ',omega,' + str(omega)[1:-1] + ',phi,' + str(phi)[1:-1] + ',precision,' + str(prcs) + '\n'
+        recall = count/len(gold.split())
+        precision = count/len(top_n)
+        f1 = 2 * precision * recall / (precision + recall)
+        to_file = file_name + ',omega,' + str(omega)[1:-1] + ',phi,' + str(phi)[1:-1] + ',precision,' + str(precision) + '\n'
         write_file(to_file, out_path, file_name)
         print(file_name, '......end......\n')
     return 0
@@ -526,8 +529,10 @@ def www_train(alpha_=0.5, topics=20):
         for word in top_n:
             if word in gold:
                 count += 1
-        prcs = count/len(gold.split())
-        to_file = file_name + ',omega,' + str(omega)[1:-1] + ',phi,' + str(phi)[1:-1] + ',precision,' + str(prcs) + '\n'
+        recall = count/len(gold.split())
+        precision = count/len(top_n)
+        f1 = 2 * precision * recall / (precision + recall)
+        to_file = file_name + ',omega,' + str(omega)[1:-1] + ',phi,' + str(phi)[1:-1] + ',precision,' + str(precision) + '\n'
         write_file(to_file, out_path, file_name)
         print(file_name, '......end......\n')
     return 0
@@ -554,11 +559,11 @@ def kdd_rank(omega, phi, topn, topics=20):
                 top_phrases.append(phrase[0])
             if len(tmp) == topn:
                 break
-        count = -1 # gold.split('\n')之后多出一个空字符
-        for key in gold.split('\n'):
-            if key in str(top_phrases):
+        count = 0
+        for key in top_phrases:
+            if key in gold:
                 count += 1
-        prcs = count / topn
+        prcs = count / len(top_phrases)
         recall = count / (len(gold.split('\n')) - 1)
         precision_recall = precision_recall + file_name + ',precision,' + str(prcs) + ',recall,' + str(recall) + ',' + str(top_phrases) + '\n'
         print(file_name, 'end......')
@@ -586,14 +591,14 @@ def www_rank(omega, phi, topn, topics=20):
                 top_phrases.append(phrase[0])
             if len(tmp) == topn:
                 break
-        count = -1 # gold.split('\n')之后多出一个空字符
-        for key in gold.split('\n'):
-            if key in str(top_phrases):
+        count = 0
+        for key in top_phrases:
+            if key in gold:
                 count += 1
         if len(top_phrases)==0:
             prcs = 0
         else:
-            prcs = count / topn
+            prcs = count / len(top_phrases)
         recall = count / (len(gold.split('\n')) - 1)
         precision_recall = precision_recall + file_name + ',precision,' + str(prcs) + ',recall,' + str(recall) + ',' + str(top_phrases) + '\n'
         print(file_name, 'end......')
@@ -603,14 +608,12 @@ ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
 # import multiprocessing
 # if __name__=='__main__':
 #     starttime = datetime.datetime.now()
-#     ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
 #     print('Parent process %s.' % os.getpid())
 #     p = []
-#     for i in [0.4, 0.5, 0.6, 0.8]:
-#         p.append(multiprocessing.Process(target=kdd_train, args=(i,)))
-#         p.append(multiprocessing.Process(target=www_train, args=(i,)))
-#         p.append(multiprocessing.Process(target=kdd_train, args=(i,50)))
-#         p.append(multiprocessing.Process(target=www_train, args=(i,50)))
+
+#     p.append(multiprocessing.Process(target=kdd_train, args=(0.5,)))
+#     p.append(multiprocessing.Process(target=www_train, args=(0.5,)))
+
 #     for precess in p:
 #         precess.start()
 #     for precess in p:
@@ -621,13 +624,13 @@ ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
 
 
 omega_kdd = np.asmatrix([0.5, 0.5]).T
-phi_kdd = np.asmatrix([0.33, 0.33, 0.34]).T
+phi_kdd = np.asmatrix([0.23, 0.29, 0.25, 0.23]).T
 kdd_rank(omega_kdd, phi_kdd, 5)
-kdd_rank(omega_kdd, phi_kdd, 10)
+# kdd_rank(omega_kdd, phi_kdd, 10)
 
-# omega_www = np.asmatrix([0.5, 0.5]).T
-# phi_www = np.asmatrix([0.32, 0.32, 0.36]).T
-# www_rank(omega_www, phi_www, 5)
+omega_www = np.asmatrix([0.5, 0.5]).T
+phi_www = phi_kdd#np.asmatrix([0.20, 0.20, 0.35, 0.25]).T
+www_rank(omega_www, phi_www, 5)
 # www_rank(omega_www, phi_www, 10)
 
 # tokens = nltk.word_tokenize(text)
