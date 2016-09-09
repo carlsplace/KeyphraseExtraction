@@ -116,7 +116,7 @@ def read_node_features(node_list, raw_node_features, file_name):
     node_features = {}
     for node in node_list:
         f = tmp2.get(node, zero_feature)
-        node_features[node] = [f[7], f[8], f[9]]
+        node_features[node] = [f[2], f[7], f[9]]
     return node_features
 
 # 软件复杂度控制，complexity control，选取特征的改变=需求变更，怎样设计接口。
@@ -546,8 +546,13 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=20):
     file_names_lda = [f for f in os.listdir(file_path) if isfile(join(file_path, f))]
     ldamodel, corpus = lda_train(file_path, file_names_lda, l_num_topics=topics, l_passes=1)
     precision_recall = ''
+    sum_prcs = 0
+    sum_recall = 0
+    count = 0
+    gold_count = 0
+    extract_count = 0
     for file_name in file_names:
-        print(file_name, 'begin......')
+        # print(file_name, 'begin......')
         pr, graph = pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus)
         # top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
         gold = readfile(gold_path, file_name)
@@ -560,45 +565,63 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=20):
                 top_phrases.append(phrase[0])
             if len(tmp) == topn:
                 break
-        count = 0
         for key in top_phrases:
             if key in gold:
                 count += 1
-        prcs = count / len(top_phrases)
-        recall = count / (len(gold.split('\n')) - 1)
-        precision_recall = precision_recall + file_name + ',precision,' + str(prcs) + ',recall,' + str(recall) + ',' + str(top_phrases) + '\n'
-        print(file_name, 'end......')
-    write_file(precision_recall, out_path, dataset + '_rank_precision_recall-top' + str(topn) + '.csv')
+        gold_count += len(gold.split('\n')) - 1
+        extract_count += len(top_phrases)
+    prcs = count / extract_count
+    recall = count / gold_count
+    f1 = 2 * prcs * recall / (prcs + recall)
+    print(prcs, recall, f1)
+        # prcs = count / len(top_phrases)
+        # sum_prcs += prcs
+        # recall = count / (len(gold.split('\n')) - 1)
+        # sum_recall += recall
+        # precision_recall = precision_recall + file_name + ',precision,' + str(prcs) + ',recall,' + str(recall) + ',' + str(top_phrases) + '\n'
+        # print(file_name, 'done')
+    # avg_prcs = sum_prcs / len(file_names)
+    # avg_recall = sum_recall / len(file_names)
+    # avg_f1 = 2 * avg_prcs * avg_recall / (avg_prcs + avg_recall)
+    # precision_recall += 'avg_prcs,' + str(avg_prcs) + ',avg_recall,' + str(avg_recall)
+    # write_file(precision_recall, out_path, dataset + '_rank_precision_recall-top' + str(topn) + '.csv')
+    # print('avg_prcs:', avg_prcs, '\navg_recall:', avg_recall)
+    # tofile_result = str(phi.T) + ',topics,' + str(topics) + ',' + str(avg_prcs) + ',' + str(avg_recall) + ',' + str(avg_f1) + '\n'
+    # with open('./' + dataset + 'result.csv','a', encoding='utf8') as f:
+    #     f.write(tofile_result)
 
 ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
-import multiprocessing
-if __name__=='__main__':
-    starttime = datetime.datetime.now()
-    print('Parent process %s.' % os.getpid())
-    p = []
+# import multiprocessing
+# if __name__=='__main__':
+#     starttime = datetime.datetime.now()
+#     print('Parent process %s.' % os.getpid())
+#     p = []
 
-    p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5,)))
-    p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5,)))
+#     p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5,)))
+#     p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5,)))
 
-    for precess in p:
-        precess.start()
-    for precess in p:
-        precess.join()
-    print('All subprocesses done.')
-    endtime = datetime.datetime.now()
-    print('TIME USED: ', (endtime - starttime))
-
+#     for precess in p:
+#         precess.start()
+#     for precess in p:
+#         precess.join()
+#     print('All subprocesses done.')
+#     endtime = datetime.datetime.now()
+#     print('TIME USED: ', (endtime - starttime))
 
 omega_kdd = np.asmatrix([0.5, 0.5]).T
-phi_kdd = np.asmatrix([0.37, 0.33, 0.30]).T
-# kdd_rank(omega_kdd, phi_kdd, 5, topics=80)
-# kdd_rank(omega_kdd, phi_kdd, 10)
+# for i in range(100):
+#     for j in range(100-i):
+#         k = 100 - i - j
+#         phi = np.asmatrix([i/100, j/100, k/100]).T
+#         try:
+#             dataset_rank('kdd', omega_kdd, phi, topics=10)
+#         except:
+#             continue
+phi_kdd = np.asmatrix([0.01, 0.2, 0.79]).T
+dataset_rank('kdd', omega_kdd, phi_kdd, topics=20)
 
 omega_www = np.asmatrix([0.5, 0.5]).T
 phi_www = phi_kdd#np.asmatrix([0.20, 0.20, 0.35, 0.25]).T
-# for i in [5, 10, 15, 20, 30, 40, 50, 60, 80, 100]:
-#     www_rank(omega_www, phi_www, 5, topics=i)
-# www_rank(omega_www, phi_www, 10)
 
 # tokens = nltk.word_tokenize(text)
 # tagged_tokens = nltk.pos_tag(tokens)
