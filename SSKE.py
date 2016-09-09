@@ -528,33 +528,6 @@ def dataset_train(dataset, alpha_=0.5, topics=20):
         print(file_name, '......end......\n')
     return 0
 
-# def www_train(alpha_=0.5, topics=20):
-#     file_path = './data/WWW/abstracts'
-#     out_path = './data/WWW/omega_phi/alpha'+str(alpha_)+'topics'+str(topics)
-#     if not os.path.exists(out_path):
-#         os.mkdir(out_path)
-#     raw_node_f = readfile('./data', 'WWW_node_features')
-#     file_names = readfile('./data', 'WWW_filelist').split(',')
-#     file_names_lda = [f for f in os.listdir(file_path) if isfile(join(file_path, f))]
-#     ldamodel, corpus = lda_train(file_path, file_names_lda, l_num_topics=topics, l_passes=1)
-
-#     for file_name in file_names:
-#         # print(file_name, '......begin......\n')
-#         pi, omega, phi, node_list, iteration = train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=alpha_)
-#         top_n = top_n_words(pi, node_list, n=10)
-#         gold = readfile('./data/WWW/gold', file_name)
-#         count = 0
-#         for word in top_n:
-#             if word in gold:
-#                 count += 1
-#         recall = count/len(gold.split())
-#         precision = count/len(top_n)
-#         f1 = 2 * precision * recall / (precision + recall)
-#         to_file = file_name + ',omega,' + str(omega)[1:-1] + ',phi,' + str(phi)[1:-1] + ',precision recall f1 iter,' + str(precision) + ',' + str(recall) + ',' + str(f1) + ',' + str(iteration) + '\n'
-#         write_file(to_file, out_path, file_name)
-#         # print(file_name, '......end......\n')
-#     return 0
-
 def dataset_rank(dataset, omega, phi, topn=5, topics=20):
     if dataset == 'kdd':
         file_path = './data/KDD/abstracts'
@@ -596,41 +569,6 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=20):
         precision_recall = precision_recall + file_name + ',precision,' + str(prcs) + ',recall,' + str(recall) + ',' + str(top_phrases) + '\n'
         print(file_name, 'end......')
     write_file(precision_recall, out_path, dataset + '_rank_precision_recall-top' + str(topn) + '.csv')
-
-# def www_rank(omega, phi, topn, topics=20):
-#     file_path = './data/WWW/abstracts'
-#     out_path = './data/WWW/omega_phi'
-#     raw_node_f = readfile('./data', 'WWW_node_features')
-#     file_names = readfile('./data', 'WWW_filelist').split(',')
-#     file_names_lda = [f for f in os.listdir(file_path) if isfile(join(file_path, f))]
-#     ldamodel, corpus = lda_train(file_path, file_names_lda, l_num_topics=topics, l_passes=1)
-#     precision_recall = ''
-#     for file_name in file_names:
-#         print(file_name, 'begin......')
-#         pr, graph = pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus)
-#         # top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
-#         gold = readfile('./data/WWW/gold', file_name)
-#         keyphrases = get_phrases(pr, graph, file_path, file_name, ng=2)
-#         top_phrases = []
-#         tmp = []
-#         for phrase in keyphrases:
-#             if phrase[1] not in tmp:
-#                 tmp.append(phrase[1])
-#                 top_phrases.append(phrase[0])
-#             if len(tmp) == topn:
-#                 break
-#         count = 0
-#         for key in top_phrases:
-#             if key in gold:
-#                 count += 1
-#         if len(top_phrases)==0:
-#             prcs = 0
-#         else:
-#             prcs = count / len(top_phrases)
-#         recall = count / (len(gold.split('\n')) - 1)
-#         precision_recall = precision_recall + file_name + ',precision,' + str(prcs) + ',recall,' + str(recall) + ',' + str(top_phrases) + '\n'
-#         print(file_name, 'end......')
-#     write_file(precision_recall, './data/WWW', 'www_rank_precision_recall-top' + str(topn) + 'topic' + str(topics) + '.csv')
 
 ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
 import multiprocessing
