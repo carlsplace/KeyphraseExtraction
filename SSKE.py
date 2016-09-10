@@ -20,6 +20,8 @@ import codecs
 from gensim import corpora, models
 import gensim
 
+ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
+
 def readfile(file_path, file_name):
     """file_path: ./data file_name"""
     with open(file_path+'/'+file_name, 'r', encoding='utf8') as f:
@@ -455,8 +457,10 @@ def get_phrases(pr, graph, file_path, file_name, ng=2):
         for word in phrase.split():
             score += pr.get(normalized_token(word), 0)
         phrase_score[phrase] = score
-    sorted_phrases= sorted(phrase_score.items(), key=lambda d:d[1], reverse = True)
-    return sorted_phrases
+    sorted_phrases = sorted(phrase_score.items(), key=lambda d:d[1], reverse=True)
+    sorted_word = sorted(pr.items(), key=lambda d:d[1], reverse = True)
+    out_sorted = sorted(sorted_phrases+sorted_word, key=lambda d:d[1], reverse=True)
+    return out_sorted
 
 def lda_train(file_path, file_names, l_num_topics=20, l_passes=20):
     texts = []
@@ -528,18 +532,30 @@ def dataset_train(dataset, alpha_=0.5, topics=20):
         print(file_name, '......end......\n')
     return 0
 
-def dataset_rank(dataset, omega, phi, topn=5, topics=20):
+def dataset_rank(dataset, omega, phi, topn=5, topics=20, features=279):
     if dataset == 'kdd':
         file_path = './data/KDD/abstracts'
         out_path = './data/KDD'
         gold_path = './data/KDD/gold'
         file_names = readfile('./data', 'KDD_filelist').split(',')
         print('kdd start')
+    elif dataset == 'kdd2':
+        file_path = './data/KDD/abstracts'
+        out_path = './data/KDD'
+        gold_path = './data/KDD/gold2'
+        file_names = readfile('./data/KDD', 'newOverlappingFiles').split()
+        print('kdd start')
     elif dataset == 'www':
         file_path = './data/WWW/abstracts'
         out_path = './data/WWW'
         gold_path = './data/WWW/gold'
         file_names = readfile('./data', 'WWW_filelist').split(',')
+        print('www start')
+    elif dataset == 'www2':
+        file_path = './data/WWW/abstracts'
+        out_path = './data/WWW'
+        gold_path = './data/WWW/gold2'
+        file_names = readfile('./data/WWW', 'newOverlappingFiles').split()
         print('www start')
     else:
         print('wrong dataset name')
@@ -558,22 +574,26 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=20):
         gold = readfile(gold_path, file_name)
         keyphrases = get_phrases(pr, graph, file_path, file_name, ng=2)
         top_phrases = []
-        tmp = []
         for phrase in keyphrases:
-            if phrase[1] not in tmp:
-                tmp.append(phrase[1])
+            if phrase[0] not in str(top_phrases):
                 top_phrases.append(phrase[0])
-            if len(tmp) == topn:
+            if len(top_phrases) == topn:
                 break
+        tmp_count = []
+        golds = gold.split('\n')
+        if golds[-1] == '':
+            golds = golds[:-1]
         for key in top_phrases:
-            if key in gold:
-                count += 1
-        gold_count += len(gold.split('\n')) - 1
+            for g in golds:
+                if key in g:
+                    tmp_count.append(golds.index(g))
+        count += len(set(tmp_count))
+        gold_count += len(golds)
         extract_count += len(top_phrases)
     prcs = count / extract_count
     recall = count / gold_count
     f1 = 2 * prcs * recall / (prcs + recall)
-    print(prcs, recall, f1)
+    print(prcs, recall, f1, gold_count, extract_count)
         # prcs = count / len(top_phrases)
         # sum_prcs += prcs
         # recall = count / (len(gold.split('\n')) - 1)
@@ -586,19 +606,38 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=20):
     # precision_recall += 'avg_prcs,' + str(avg_prcs) + ',avg_recall,' + str(avg_recall)
     # write_file(precision_recall, out_path, dataset + '_rank_precision_recall-top' + str(topn) + '.csv')
     # print('avg_prcs:', avg_prcs, '\navg_recall:', avg_recall)
-    # tofile_result = str(phi.T) + ',topics,' + str(topics) + ',' + str(avg_prcs) + ',' + str(avg_recall) + ',' + str(avg_f1) + '\n'
-    # with open('./' + dataset + 'result.csv','a', encoding='utf8') as f:
-    #     f.write(tofile_result)
+    tofile_result = str(features) + ',' + str(phi.T) + ',topics,' + str(topics) + ',' + str(prcs) + ',' + str(recall) + ',' + str(f1) + '\n'
+    with open('./' + dataset + 'result.csv','a', encoding='utf8') as f:
+        f.write(tofile_result)
 
-ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
+def enum_phi(dataset, start, end, features=279):
+    omega_kdd = np.asmatrix([0.5, 0.5]).T
+    for i in range(start, end):
+        for j in range(start, end):
+            k = 100 - i - j
+            if k > 20:
+                phi = np.asmatrix([i/100, j/100, k/100]).T
+                try:
+                    dataset_rank(dataset, omega_kdd, phi, topics=10)
+                except:
+                    continue
+
 # import multiprocessing
 # if __name__=='__main__':
 #     starttime = datetime.datetime.now()
 #     print('Parent process %s.' % os.getpid())
 #     p = []
 
-#     p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5,)))
-#     p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5,)))
+#     # p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5,)))
+#     # p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5,)))
+#     p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 30,)))
+#     p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 30, 40,)))
+#     p.append(multiprocessing.Process(target=enum_phi, args=('kdd2', 20, 30,)))
+#     p.append(multiprocessing.Process(target=enum_phi, args=('kdd2', 30, 40,)))
+#     p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 30,)))
+#     p.append(multiprocessing.Process(target=enum_phi, args=('www', 30, 40,)))
+#     p.append(multiprocessing.Process(target=enum_phi, args=('www2', 20, 30,)))
+#     p.append(multiprocessing.Process(target=enum_phi, args=('www2', 30, 40,)))
 
 #     for precess in p:
 #         precess.start()
@@ -609,19 +648,12 @@ ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
 #     print('TIME USED: ', (endtime - starttime))
 
 omega_kdd = np.asmatrix([0.5, 0.5]).T
-# for i in range(100):
-#     for j in range(100-i):
-#         k = 100 - i - j
-#         phi = np.asmatrix([i/100, j/100, k/100]).T
-#         try:
-#             dataset_rank('kdd', omega_kdd, phi, topics=10)
-#         except:
-#             continue
-phi_kdd = np.asmatrix([0.01, 0.2, 0.79]).T
-dataset_rank('kdd', omega_kdd, phi_kdd, topics=20)
+phi_kdd = np.asmatrix([0.2, 0.2, 0.6]).T
+dataset_rank('kdd2', omega_kdd, phi_kdd, topics=10)
 
-omega_www = np.asmatrix([0.5, 0.5]).T
-phi_www = phi_kdd#np.asmatrix([0.20, 0.20, 0.35, 0.25]).T
+# omega_www = np.asmatrix([0.5, 0.5]).T
+# phi_www = np.asmatrix([0.37, 0.33, 0.30]).T
+# dataset_rank('www', omega_www, phi_www, topics=20)
 
 # tokens = nltk.word_tokenize(text)
 # tagged_tokens = nltk.pos_tag(tokens)
