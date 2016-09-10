@@ -436,17 +436,18 @@ def get_phrases(pr, graph, file_path, file_name, ng=2):
     edges = graph.edge
     phrases = set()
 
-    for ngram in nltk.ngrams(tokens, 2):
-        
-        # For each n-gram, if all tokens are words, and if the normalized
-        # head and tail are found in the graph -- i.e. if both are nodes
-        # connected by an edge -- this n-gram is a key phrase.
-        if all(is_word(token) for token in ngram):
-            head, tail = normalized_token(ngram[0]), normalized_token(ngram[-1])
+    for n in range(2, ng+1):
+        for ngram in nltk.ngrams(tokens, n):
             
-            if head in edges and tail in edges[head]:
-                phrase = ' '.join([head, tail])
-                phrases.add(phrase)
+            # For each n-gram, if all tokens are words, and if the normalized
+            # head and tail are found in the graph -- i.e. if both are nodes
+            # connected by an edge -- this n-gram is a key phrase.
+            if all(is_word(token) for token in ngram):
+                head, tail = normalized_token(ngram[0]), normalized_token(ngram[-1])
+                
+                if head in edges and tail in edges[head]:
+                    phrase = ' '.join(ngram)
+                    phrases.add(phrase)
     phrase_score = {}
     for phrase in phrases:
         score = 0
@@ -568,21 +569,25 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=20, features=279):
         pr, graph = pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus)
         # top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
         gold = readfile(gold_path, file_name)
-        keyphrases = get_phrases(pr, graph, file_path, file_name)
+        keyphrases = get_phrases(pr, graph, file_path, file_name, ng=2)
         top_phrases = []
         for phrase in keyphrases:
             if phrase[0] not in str(top_phrases):
                 top_phrases.append(phrase[0])
             if len(top_phrases) == topn:
                 break
-        tmp_count = []
         golds = gold.split('\n')
         if golds[-1] == '':
             golds = golds[:-1]
         golds = list(' '.join(list(normalized_token(w) for w in g.split())) for g in golds)
-        for key in top_phrases:
-            for g in golds:
-                if key in g:
+        tmp_count = []
+        # for key in top_phrases:
+        #     for g in golds:
+        #         if key in g:
+        #             tmp_count.append(golds.index(g))
+        for g in golds:
+            for key in top_phrases:
+                if g in key:
                     tmp_count.append(golds.index(g))
         count += len(set(tmp_count))
         gold_count += len(golds)
@@ -646,7 +651,7 @@ def enum_phi(dataset, start, end, features=279):
 
 omega_kdd = np.asmatrix([0.5, 0.5]).T
 phi_kdd = np.asmatrix([0.3, 0.3, 0.4]).T
-dataset_rank('kdd', omega_kdd, phi_kdd, topics=10)
+dataset_rank('www2', omega_kdd, phi_kdd, topics=10)
 
 # omega_www = np.asmatrix([0.5, 0.5]).T
 # phi_www = np.asmatrix([0.37, 0.33, 0.30]).T
