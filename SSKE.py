@@ -578,7 +578,7 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=20, features=279):
         tmp_count = []
         golds = gold.split('\n')
         if golds[-1] == '':
-            golds = golds_[:-1]
+            golds = golds[:-1]
         golds = list(' '.join(list(normalized_token(w) for w in g.split())) for g in golds)
         for key in top_phrases:
             for g in golds:
