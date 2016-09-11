@@ -118,7 +118,7 @@ def read_node_features(node_list, raw_node_features, file_name):
     node_features = {}
     for node in node_list:
         f = tmp2.get(node, zero_feature)
-        node_features[node] = [f[2], f[7], f[9]]
+        node_features[node] = [f[0], f[2], f[7]]
     return node_features
 
 # 软件复杂度控制，complexity control，选取特征的改变=需求变更，怎样设计接口。
@@ -438,24 +438,26 @@ def get_phrases(pr, graph, file_path, file_name, ng=2):
 
     for n in range(2, ng+1):
         for ngram in nltk.ngrams(tokens, n):
-            
+
             # For each n-gram, if all tokens are words, and if the normalized
             # head and tail are found in the graph -- i.e. if both are nodes
             # connected by an edge -- this n-gram is a key phrase.
             if all(is_word(token) for token in ngram):
                 head, tail = normalized_token(ngram[0]), normalized_token(ngram[-1])
                 
-                if head in edges and tail in edges[head]:
-                    phrase = ' '.join(ngram)
+                if head in edges and tail in edges[head] and nltk.pos_tag([ngram[-1]])[0][1] != 'JJ':
+                    phrase = ' '.join(list(normalized_token(word) for word in ngram))
                     phrases.add(phrase)
     phrase_score = {}
     for phrase in phrases:
         score = 0
         for word in phrase.split():
-            score += pr.get(normalized_token(word), 0)
-        phrase_score[phrase] = score
+            score += pr.get(word, 0)
+        phrase_score[phrase] = score/len(phrase.split())
     sorted_phrases = sorted(phrase_score.items(), key=lambda d:d[1], reverse=True)
+    # print(sorted_phrases)
     sorted_word = sorted(pr.items(), key=lambda d:d[1], reverse = True)
+    # print(sorted_word)
     out_sorted = sorted(sorted_phrases+sorted_word, key=lambda d:d[1], reverse=True)
     return out_sorted
 
@@ -529,7 +531,7 @@ def dataset_train(dataset, alpha_=0.5, topics=20):
         print(file_name, '......end......\n')
     return 0
 
-def dataset_rank(dataset, omega, phi, topn=5, topics=20, features=279):
+def dataset_rank(dataset, omega, phi, topn=5, topics=20, features='027', ngrams=2):
     if dataset == 'kdd':
         file_path = './data/KDD/abstracts'
         out_path = './data/KDD'
@@ -566,10 +568,10 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=20, features=279):
     extract_count = 0
     for file_name in file_names:
         # print(file_name, 'begin......')
-        pr, graph = pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus)
+        pr, graph = pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus, d=0.85)
         # top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
         gold = readfile(gold_path, file_name)
-        keyphrases = get_phrases(pr, graph, file_path, file_name, ng=2)
+        keyphrases = get_phrases(pr, graph, file_path, file_name, ng=ngrams)
         top_phrases = []
         for phrase in keyphrases:
             if phrase[0] not in str(top_phrases):
@@ -580,16 +582,19 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=20, features=279):
         if golds[-1] == '':
             golds = golds[:-1]
         golds = list(' '.join(list(normalized_token(w) for w in g.split())) for g in golds)
-        tmp_count = []
+        # tmp_count = []
         # for key in top_phrases:
         #     for g in golds:
         #         if key in g:
         #             tmp_count.append(golds.index(g))
-        for g in golds:
-            for key in top_phrases:
-                if g in key:
-                    tmp_count.append(golds.index(g))
-        count += len(set(tmp_count))
+        # for g in golds:
+        #     for key in top_phrases:
+        #         if g in key:
+        #             tmp_count.append(golds.index(g))
+        # count += len(set(tmp_count))
+        for phrase in top_phrases:
+            if phrase in golds:
+                count += 1
         gold_count += len(golds)
         extract_count += len(top_phrases)
     prcs = count / extract_count
@@ -612,15 +617,15 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=20, features=279):
     with open('./' + dataset + 'result.csv','a', encoding='utf8') as f:
         f.write(tofile_result)
 
-def enum_phi(dataset, start, end, features=279):
-    omega_kdd = np.asmatrix([0.5, 0.5]).T
+def enum_phi(dataset, start, end, features='027'):
+    omega = np.asmatrix([0.5, 0.5]).T
     for i in range(start, end):
         for j in range(start, end):
             k = 100 - i - j
             if k > 20:
                 phi = np.asmatrix([i/100, j/100, k/100]).T
                 try:
-                    dataset_rank(dataset, omega_kdd, phi, topics=10)
+                    dataset_rank(dataset, omega, phi, topics=10, features=features)
                 except:
                     continue
 
@@ -630,16 +635,12 @@ def enum_phi(dataset, start, end, features=279):
 #     print('Parent process %s.' % os.getpid())
 #     p = []
 
-#     # p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5,)))
-#     # p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5,)))
+# #     # p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5,)))
+# #     # p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5,)))
 #     p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 30,)))
 #     p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 30, 40,)))
-#     p.append(multiprocessing.Process(target=enum_phi, args=('kdd2', 20, 30,)))
-#     p.append(multiprocessing.Process(target=enum_phi, args=('kdd2', 30, 40,)))
 #     p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 30,)))
 #     p.append(multiprocessing.Process(target=enum_phi, args=('www', 30, 40,)))
-#     p.append(multiprocessing.Process(target=enum_phi, args=('www2', 20, 30,)))
-#     p.append(multiprocessing.Process(target=enum_phi, args=('www2', 30, 40,)))
 
 #     for precess in p:
 #         precess.start()
@@ -651,7 +652,7 @@ def enum_phi(dataset, start, end, features=279):
 
 omega_kdd = np.asmatrix([0.5, 0.5]).T
 phi_kdd = np.asmatrix([0.3, 0.3, 0.4]).T
-dataset_rank('www2', omega_kdd, phi_kdd, topics=10)
+dataset_rank('kdd', omega_kdd, phi_kdd, topn=5, topics=10, ngrams=3)
 
 # omega_www = np.asmatrix([0.5, 0.5]).T
 # phi_www = np.asmatrix([0.37, 0.33, 0.30]).T
