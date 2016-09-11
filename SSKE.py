@@ -86,11 +86,11 @@ def get_filtered_text(tagged_tokens):
             filtered_text = filtered_text + ' '+ normalized_token(tagged_token[0])
     return filtered_text
 
-def read_node_features(node_list, raw_node_features, file_name):
+def read_node_features(node_list, raw_node_features, file_name, nfselect='f027'):
     # 0@attribute tfidf numeric √
     # 1@attribute tfidfOver {0, 1}
     # 2@attribute relativePosition numeric √
-    # 3@attribute firstPosition numeric √
+    # 3@attribute firstPosition numeric 
     # 4@attribute firstPositionUnder {0, 1}
     # 5@attribute inCited {0, 1}
     # 6@attribute inCiting {0, 1}
@@ -118,7 +118,16 @@ def read_node_features(node_list, raw_node_features, file_name):
     node_features = {}
     for node in node_list:
         f = tmp2.get(node, zero_feature)
-        node_features[node] = [f[0], f[2], f[7]]
+        if nfselect == 'f027':
+            node_features[node] = [f[0], f[2], f[7]]
+        elif nfselect == 'f279':
+            node_features[node] = [f[2], f[7], f[9]]
+        elif nfselect == 'f029':
+            node_features[node] = [f[0], f[2], f[9]]
+        elif nfselect == 'f079':
+            node_features[node] = [f[0], f[7], f[9]]
+        else:
+            print('wrong feature selection')
     return node_features
 
 # 软件复杂度控制，complexity control，选取特征的改变=需求变更，怎样设计接口。
@@ -324,7 +333,7 @@ def create_B(node_list, gold):
         B = [0] * n
     return np.matrix(B)
 
-def train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.001, max_iter=1000):
+def train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.001, max_iter=1000, nfselect='f027'):
     file_text = readfile(file_path, file_name)
     tagged_tokens = get_tagged_tokens(file_text)
     filtered_text = get_filtered_text(tagged_tokens)
@@ -345,7 +354,7 @@ def train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=0.5, d=0
         raw_node_features = readfile('./data', 'KDD_node_features')
     else:
         raw_node_features = readfile('./data', 'WWW_node_features')
-    node_features = read_node_features(node_list, raw_node_features, file_name)
+    node_features = read_node_features(node_list, raw_node_features, file_name, nfselect=nfselect)
     len_phi = len(list(node_features.values())[0])
     phi = init_value(len_phi)
     node_weight = calc_node_weight(node_features, phi)
@@ -405,7 +414,7 @@ def top_n_words(pi, node_list, n=15):
         top_n.append(node_list[pi.index(rank)])
     return top_n
 
-def pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus, d=0.85):
+def pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus, d=0.85, nfselect='f027'):
     file_text = readfile(file_path, file_name)
     tagged_tokens = get_tagged_tokens(file_text)
     filtered_text = get_filtered_text(tagged_tokens)
@@ -419,7 +428,7 @@ def pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus,
         raw_node_features = readfile('./data', 'KDD_node_features')
     else:
         raw_node_features = readfile('./data', 'WWW_node_features')
-    node_features = read_node_features(node_list, raw_node_features, file_name)
+    node_features = read_node_features(node_list, raw_node_features, file_name, nfselect=nfselect)
     node_weight = calc_node_weight(node_features, phi)
     word_prob = get_word_prob(file_name, file_names, node_list, ldamodel, corpus)
     node_weight_topic = {}
@@ -453,7 +462,14 @@ def get_phrases(pr, graph, file_path, file_name, ng=2):
         score = 0
         for word in phrase.split():
             score += pr.get(word, 0)
-        phrase_score[phrase] = score/len(phrase.split())
+        plenth = len(phrase.split())
+        if plenth == 1:
+            phrase_score[phrase] = score * 0.3
+        elif plenth == 2:
+            phrase_score[phrase] = score * 0.6
+        else:
+            phrase_score[phrase] = score * 0.1
+        # phrase_score[phrase] = score/len(phrase.split())
     sorted_phrases = sorted(phrase_score.items(), key=lambda d:d[1], reverse=True)
     # print(sorted_phrases)
     sorted_word = sorted(pr.items(), key=lambda d:d[1], reverse = True)
@@ -487,7 +503,7 @@ def get_word_prob(file_name, file_names, node_list, ldamodel, corpus):
         word_prob[word] = np.dot(d_t_prob, w_t_prob)/math.sqrt(np.dot(d_t_prob, d_t_prob) * np.dot(w_t_prob, w_t_prob))
     return word_prob
 
-def dataset_train(dataset, alpha_=0.5, topics=20):
+def dataset_train(dataset, alpha_=0.5, topics=20, nfselect='f027'):
     if dataset == 'kdd':
         file_path = './data/KDD/abstracts'
         out_path = './data/KDD/omega_phi/alpha'+str(alpha_)+'topics'+str(topics)
@@ -513,7 +529,7 @@ def dataset_train(dataset, alpha_=0.5, topics=20):
 
     for file_name in file_names:
         print(file_name, '......begin......\n')
-        pi, omega, phi, node_list, iteration = train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=alpha_)
+        pi, omega, phi, node_list, iteration = train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=alpha_, nfselect=nfselect)
         top_n = top_n_words(pi, node_list, n=10)
         gold = readfile(gold_path, file_name)
         count = 0
@@ -531,7 +547,7 @@ def dataset_train(dataset, alpha_=0.5, topics=20):
         print(file_name, '......end......\n')
     return 0
 
-def dataset_rank(dataset, omega, phi, topn=5, topics=20, features='027', ngrams=2):
+def dataset_rank(dataset, omega, phi, topn=5, topics=20, nfselect='f027', ngrams=2):
     if dataset == 'kdd':
         file_path = './data/KDD/abstracts'
         out_path = './data/KDD'
@@ -568,7 +584,7 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=20, features='027', ngrams=
     extract_count = 0
     for file_name in file_names:
         # print(file_name, 'begin......')
-        pr, graph = pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus, d=0.85)
+        pr, graph = pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus, d=0.85, nfselect=nfselect)
         # top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
         gold = readfile(gold_path, file_name)
         keyphrases = get_phrases(pr, graph, file_path, file_name, ng=ngrams)
@@ -613,46 +629,60 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=20, features='027', ngrams=
     # precision_recall += 'avg_prcs,' + str(avg_prcs) + ',avg_recall,' + str(avg_recall)
     # write_file(precision_recall, out_path, dataset + '_rank_precision_recall-top' + str(topn) + '.csv')
     # print('avg_prcs:', avg_prcs, '\navg_recall:', avg_recall)
-    tofile_result = str(features) + ',' + str(phi.T) + ',topics,' + str(topics) + ',' + str(prcs) + ',' + str(recall) + ',' + str(f1) + '\n'
+    tofile_result = str(phi.T) + ',features-ngrams-topics,' + str(features) + ',' + str(ngrams) + ',' + str(topics) + ',' + str(prcs) + ',' + str(recall) + ',' + str(f1) + '\n'
     with open('./' + dataset + 'result.csv','a', encoding='utf8') as f:
         f.write(tofile_result)
 
-def enum_phi(dataset, start, end, features='027'):
+def enum_phi(dataset, start, end, ngrams=2, nfselect='f027'):
     omega = np.asmatrix([0.5, 0.5]).T
     for i in range(start, end):
         for j in range(start, end):
             k = 100 - i - j
             if k > 20:
+                print(i, j, k)
                 phi = np.asmatrix([i/100, j/100, k/100]).T
                 try:
-                    dataset_rank(dataset, omega, phi, topics=10, features=features)
+                    dataset_rank(dataset, omega, phi, topics=10, nfselect=nfselect, ngrams=ngrams)
                 except:
                     continue
 
-# import multiprocessing
-# if __name__=='__main__':
-#     starttime = datetime.datetime.now()
-#     print('Parent process %s.' % os.getpid())
-#     p = []
+import multiprocessing
+if __name__=='__main__':
+    starttime = datetime.datetime.now()
+    print('Parent process %s.' % os.getpid())
+    p = []
 
-# #     # p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5,)))
-# #     # p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5,)))
-#     p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 30,)))
-#     p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 30, 40,)))
-#     p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 30,)))
-#     p.append(multiprocessing.Process(target=enum_phi, args=('www', 30, 40,)))
+#     # p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5,)))
+#     # p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5,)))
+    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 50, 2, 'f027')))
+    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 50, 3, 'f027')))
+    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 50, 2, 'f279')))
+    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 50, 3, 'f279')))
+    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 50, 2, 'f079')))
+    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 50, 3, 'f079')))
+    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 50, 2, 'f029')))
+    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 50, 3, 'f029')))
+    p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 50, 2, 'f027')))
+    p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 50, 3, 'f027')))
+    p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 50, 2, 'f279')))
+    p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 50, 3, 'f279')))
+    p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 50, 2, 'f079')))
+    p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 50, 3, 'f079')))
+    p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 50, 2, 'f029')))
+    p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 50, 3, 'f029')))
 
-#     for precess in p:
-#         precess.start()
-#     for precess in p:
-#         precess.join()
-#     print('All subprocesses done.')
-#     endtime = datetime.datetime.now()
-#     print('TIME USED: ', (endtime - starttime))
+    for precess in p:
+        precess.start()
+    for precess in p:
+        precess.join()
+    print('All subprocesses done.')
+    endtime = datetime.datetime.now()
+    print('TIME USED: ', (endtime - starttime))
+    os.system("shutdown /s /t 10")
 
-omega_kdd = np.asmatrix([0.5, 0.5]).T
-phi_kdd = np.asmatrix([0.3, 0.3, 0.4]).T
-dataset_rank('kdd', omega_kdd, phi_kdd, topn=5, topics=10, ngrams=3)
+# omega_kdd = np.asmatrix([0.5, 0.5]).T
+# phi_kdd = np.asmatrix([0.3, 0.3, 0.4]).T
+# dataset_rank('kdd', omega_kdd, phi_kdd, topn=5, topics=10, ngrams=2)
 
 # omega_www = np.asmatrix([0.5, 0.5]).T
 # phi_www = np.asmatrix([0.37, 0.33, 0.30]).T
