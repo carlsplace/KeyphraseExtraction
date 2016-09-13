@@ -116,18 +116,37 @@ def read_node_features(node_list, raw_node_features, file_name, nfselect='f027')
     # for i in range(feature_num):
     #     zero_feature.append(0)
     node_features = {}
-    for node in node_list:
-        f = tmp2.get(node, zero_feature)
-        if nfselect == 'f027':
+    if nfselect == 'f027':
+        for node in node_list:
+            f = tmp2.get(node, zero_feature)
             node_features[node] = [f[0], f[2], f[7]]
-        elif nfselect == 'f279':
+    elif nfselect == 'f279':
+        for node in node_list:
+            f = tmp2.get(node, zero_feature)
             node_features[node] = [f[2], f[7], f[9]]
-        elif nfselect == 'f029':
+    elif nfselect == 'f029':
+        for node in node_list:
+            f = tmp2.get(node, zero_feature)
             node_features[node] = [f[0], f[2], f[9]]
-        elif nfselect == 'f079':
+    elif nfselect == 'f079':
+        for node in node_list:
+            f = tmp2.get(node, zero_feature)
             node_features[node] = [f[0], f[7], f[9]]
-        else:
-            print('wrong feature selection')
+    else:
+        print('wrong feature selection')
+
+    # for node in node_list:
+    #     f = tmp2.get(node, zero_feature)
+    #     if nfselect == 'f027':
+    #         node_features[node] = [f[0], f[2], f[7]]
+    #     elif nfselect == 'f279':
+    #         node_features[node] = [f[2], f[7], f[9]]
+    #     elif nfselect == 'f029':
+    #         node_features[node] = [f[0], f[2], f[9]]
+    #     elif nfselect == 'f079':
+    #         node_features[node] = [f[0], f[7], f[9]]
+    #     else:
+    #         print('wrong feature selection')
     return node_features
 
 # 软件复杂度控制，complexity control，选取特征的改变=需求变更，怎样设计接口。
@@ -669,8 +688,8 @@ if __name__=='__main__':
     print('Parent process %s.' % os.getpid())
     p = []
 
-    # # p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5,)))
-    # # p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5,)))
+    p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5, 10, 'f079')))
+    p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5, 10, 'f027')))
 
     # # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 40, 2, 'f279')))
     # # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 40, 3, 'f279')))
@@ -690,11 +709,11 @@ if __name__=='__main__':
     # # p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 40, 2, 'f027')))
     # p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 40, 3, 'f027')))
 
-    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 25, 3, 'f079', 4)))
-    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 30, 3, 'f079', 4)))
-    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 30, 35, 3, 'f079', 4)))
-    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 35, 40, 3, 'f079', 4)))
-    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 40, 45, 3, 'f079', 4)))
+    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 25, 3, 'f079', 4)))
+    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 30, 3, 'f079', 4)))
+    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 30, 35, 3, 'f079', 4)))
+    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 35, 40, 3, 'f079', 4)))
+    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 40, 45, 3, 'f079', 4)))
 
     for precess in p:
         precess.start()
