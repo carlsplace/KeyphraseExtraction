@@ -482,7 +482,7 @@ def get_phrases(pr, graph, file_path, file_name, ng=2):
         # phrase_score[phrase] = score/len(phrase.split())
     sorted_phrases = sorted(phrase_score.items(), key=lambda d:d[1], reverse=True)
     # print(sorted_phrases)
-    sorted_word = sorted(pr.items(), key=lambda d:d[1], reverse = True)
+    sorted_word = sorted(pr.items(), key=lambda d:d[1], reverse=True)
     # print(sorted_word)
     out_sorted = sorted(sorted_phrases+sorted_word, key=lambda d:d[1], reverse=True)
     return out_sorted
@@ -592,6 +592,7 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=20, nfselect='f027', ngrams
     count = 0
     gold_count = 0
     extract_count = 0
+    mrr = 0
     for file_name in file_names:
         # print(file_name, 'begin......')
         pr, graph = pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus, d=0.85, nfselect=nfselect)
@@ -618,14 +619,20 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=20, nfselect='f027', ngrams
         #         if g in key:
         #             tmp_count.append(golds.index(g))
         # count += len(set(tmp_count))
+        position = []
         for phrase in top_phrases:
             if phrase in golds:
                 count += 1
+                position.append(top_phrases.index(phrase))
+        if position != []:
+            mrr += 1/(position[0]+1)
         gold_count += len(golds)
         extract_count += len(top_phrases)
     prcs = count / extract_count
     recall = count / gold_count
     f1 = 2 * prcs * recall / (prcs + recall)
+    mrr /= len(file_names)
+
     print(prcs, recall, f1, gold_count, extract_count)
         # prcs = count / len(top_phrases)
         # sum_prcs += prcs
@@ -639,20 +646,20 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=20, nfselect='f027', ngrams
     # precision_recall += 'avg_prcs,' + str(avg_prcs) + ',avg_recall,' + str(avg_recall)
     # write_file(precision_recall, out_path, dataset + '_rank_precision_recall-top' + str(topn) + '.csv')
     # print('avg_prcs:', avg_prcs, '\navg_recall:', avg_recall)
-    tofile_result = str(phi.T) + ',features-ngrams-topics,' + str(nfselect) + ',' + str(ngrams) + ',' + str(topics) + ',' + str(prcs) + ',' + str(recall) + ',' + str(f1) + '\n'
+    tofile_result = str(phi.T) + ',features-ngrams-topics,' + str(nfselect) + ',' + str(ngrams) + ',' + str(topics) + ',' + str(prcs) + ',' + str(recall) + ',' + str(f1) + ',' + str(mrr) + ',top' + str(topn) + '\n'
     with open('./' + dataset + nfselect + 'result' + str(ngrams) + '.csv','a', encoding='utf8') as f:
         f.write(tofile_result)
 
-def enum_phi(dataset, start, end, ngrams, nfselect):
+def enum_phi(dataset, start, end, ngrams, nfselect, topn=5):
     omega = np.asmatrix([0.5, 0.5]).T
     for i in range(start, end):
-        for j in range(start, end):
+        for j in range(20, 45):
             k = 100 - i - j
             if k > 20:
                 print(i, j, k)
                 phi = np.asmatrix([i/100, j/100, k/100]).T
                 try:
-                    dataset_rank(dataset, omega, phi, topics=10, nfselect=nfselect, ngrams=ngrams)
+                    dataset_rank(dataset, omega, phi, topn=topn, topics=10, nfselect=nfselect, ngrams=ngrams)
                 except:
                     continue
 
@@ -662,27 +669,33 @@ if __name__=='__main__':
     print('Parent process %s.' % os.getpid())
     p = []
 
-    # p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5,)))
-    # p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5,)))
+    # # p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5,)))
+    # # p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5,)))
 
-    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 40, 2, 'f279')))
-    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 40, 3, 'f279')))
-    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 40, 2, 'f079')))
-    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 40, 3, 'f079')))
-    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 40, 2, 'f029')))
-    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 40, 3, 'f029')))
-    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 40, 2, 'f027')))
+    # # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 40, 2, 'f279')))
+    # # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 40, 3, 'f279')))
+    # # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 40, 2, 'f079')))
+    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 40, 3, 'f079')))
+    # # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 40, 2, 'f029')))
+    # # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 40, 3, 'f029')))
+    # # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 40, 2, 'f027')))
     # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 40, 3, 'f027')))
 
-    # p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 40, 2, 'f279')))
-    p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 40, 3, 'f279')))
-    # p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 40, 2, 'f079')))
-    p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 40, 3, 'f079')))
-    # p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 40, 2, 'f029')))
-    # p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 40, 3, 'f029')))
-    # p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 40, 2, 'f027')))
-    p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 40, 3, 'f027')))
-    
+    # # p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 40, 2, 'f279')))
+    # p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 40, 3, 'f279')))
+    # # p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 40, 2, 'f079')))
+    # p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 40, 3, 'f079')))
+    # # p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 40, 2, 'f029')))
+    # # p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 40, 3, 'f029')))
+    # # p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 40, 2, 'f027')))
+    # p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 40, 3, 'f027')))
+
+    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 20, 25, 3, 'f079', 4)))
+    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 30, 3, 'f079', 4)))
+    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 30, 35, 3, 'f079', 4)))
+    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 35, 40, 3, 'f079', 4)))
+    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 40, 45, 3, 'f079', 4)))
+
     for precess in p:
         precess.start()
     for precess in p:
@@ -693,12 +706,14 @@ if __name__=='__main__':
     os.system("shutdown /s /t 10")
 
 # omega_kdd = np.asmatrix([0.5, 0.5]).T
-# phi_kdd = np.asmatrix([0.2, 0.34, 0.46]).T
-# dataset_rank('kdd', omega_kdd, phi_kdd, topn=5, topics=10, ngrams=2, nfselect='f079')
+# phi_kdd = np.asmatrix([0.36, 0.28, 0.36]).T
+# dataset_rank('kdd', omega_kdd, phi_kdd, topn=4, topics=10, ngrams=2, nfselect='f079')
+# enum_phi('kdd', 20, 40, 3, 'f079', topn=4)
 
 # omega_www = np.asmatrix([0.5, 0.5]).T
-# phi_www = np.asmatrix([0.37, 0.33, 0.30]).T
-# dataset_rank('www', omega_www, phi_www, topics=20)
+# phi_www = np.asmatrix([0.24, 0.38, 0.38]).T
+# for t in [5,10,20,30,40,60,80,100]:
+#     dataset_rank('www', omega_www, phi_www, topics=t, ngrams=3, nfselect='f027')
 
 # tokens = nltk.word_tokenize(text)
 # tagged_tokens = nltk.pos_tag(tokens)
