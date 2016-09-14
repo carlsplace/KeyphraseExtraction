@@ -678,8 +678,8 @@ if __name__=='__main__':
     # p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5, 10, 'f079')))
     # p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5, 10, 'f027')))
 
-    p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 40, 3, 'f027')))
-    p.append(multiprocessing.Process(target=enum_phi, args=('www', 20, 40, 3, 'f027')))
+    p.append(multiprocessing.Process(target=enum_phi, args=('www', 22, 30, 3, 'f027')))
+    p.append(multiprocessing.Process(target=enum_phi, args=('www', 30, 40, 3, 'f027')))
 
     p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 30, 2, 'f079', 4, 5)))
     p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 30, 35, 2, 'f079', 4, 5)))
