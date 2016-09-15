@@ -493,11 +493,11 @@ def get_phrases(pr, graph, file_path, file_name, ng=2):
             score += pr.get(word, 0)
         plenth = len(phrase.split())
         if plenth == 1:
-            phrase_score[phrase] = score * 0.3
+            phrase_score[phrase] = score
         elif plenth == 2:
             phrase_score[phrase] = score * 0.6
         else:
-            phrase_score[phrase] = score * 0.1
+            phrase_score[phrase] = score / 3
         # phrase_score[phrase] = score/len(phrase.split())
     sorted_phrases = sorted(phrase_score.items(), key=lambda d:d[1], reverse=True)
     # print(sorted_phrases)
@@ -669,30 +669,30 @@ def enum_phi(dataset, start, end, ngrams, nfselect, topn=5, topics=10):
                 except:
                     continue
 
-# import multiprocessing
-# if __name__=='__main__':
-#     starttime = datetime.datetime.now()
-#     print('Parent process %s.' % os.getpid())
-#     p = []
+import multiprocessing
+if __name__=='__main__':
+    starttime = datetime.datetime.now()
+    print('Parent process %s.' % os.getpid())
+    p = []
 
-#     # p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5, 10, 'f079')))
-#     # p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5, 10, 'f027')))
+    # p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5, 10, 'f079')))
+    # p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5, 10, 'f027')))
 
-#     p.append(multiprocessing.Process(target=enum_phi, args=('www', 22, 30, 3, 'f027')))
-#     p.append(multiprocessing.Process(target=enum_phi, args=('www', 30, 40, 3, 'f027')))
+    # p.append(multiprocessing.Process(target=enum_phi, args=('www', 22, 30, 3, 'f027')))
+    # p.append(multiprocessing.Process(target=enum_phi, args=('www', 30, 40, 3, 'f027')))
 
-#     p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 30, 2, 'f079', 4, 5)))
-#     p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 30, 35, 2, 'f079', 4, 5)))
-#     p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 35, 40, 2, 'f079', 4, 5)))
-#     p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 40, 45, 2, 'f079', 4, 5)))
+    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 30, 2, 'f079', 4, 5)))
+    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 30, 35, 2, 'f079', 4, 5)))
+    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 35, 40, 2, 'f079', 4, 5)))
+    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 40, 45, 2, 'f079', 4, 5)))
 
-#     for precess in p:
-#         precess.start()
-#     for precess in p:
-#         precess.join()
-#     print('All subprocesses done.')
-#     endtime = datetime.datetime.now()
-#     print('TIME USED: ', (endtime - starttime))
+    for precess in p:
+        precess.start()
+    for precess in p:
+        precess.join()
+    print('All subprocesses done.')
+    endtime = datetime.datetime.now()
+    print('TIME USED: ', (endtime - starttime))
     # os.system("shutdown /s /t 10")
 
 # omega_kdd = np.asmatrix([0.5, 0.5]).T
