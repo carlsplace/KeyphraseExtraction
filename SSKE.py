@@ -22,7 +22,7 @@ import gensim
 
 ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
 
-def readfile(file_path, file_name):
+def read_file(file_path, file_name):
     """file_path: ./data file_name"""
     with open(file_path+'/'+file_name, 'r', encoding='utf8') as f:
         file_text = f.read()
@@ -353,7 +353,7 @@ def create_B(node_list, gold):
     return np.matrix(B)
 
 def train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.001, max_iter=1000, nfselect='f027'):
-    file_text = readfile(file_path, file_name)
+    file_text = read_file(file_path, file_name)
     tagged_tokens = get_tagged_tokens(file_text)
     filtered_text = get_filtered_text(tagged_tokens)
     edge_and_freq = get_edge_freq(filtered_text)
@@ -370,15 +370,15 @@ def train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=0.5, d=0
     word_prob_m = np.diag(wp)
 
     if 'KDD' in file_path:
-        raw_node_features = readfile('./data', 'KDD_node_features')
+        raw_node_features = read_file('./data', 'KDD_node_features')
     else:
-        raw_node_features = readfile('./data', 'WWW_node_features')
+        raw_node_features = read_file('./data', 'WWW_node_features')
     node_features = read_node_features(node_list, raw_node_features, file_name, nfselect=nfselect)
     len_phi = len(list(node_features.values())[0])
     phi = init_value(len_phi)
     node_weight = calc_node_weight(node_features, phi)
 
-    gold = readfile(file_path+'/../gold', file_name)
+    gold = read_file(file_path+'/../gold', file_name)
     B = create_B(node_list, gold)
     mu = init_value(len(B))
 
@@ -434,7 +434,7 @@ def top_n_words(pi, node_list, n=15):
     return top_n
 
 def pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus, d=0.85, nfselect='f027'):
-    file_text = readfile(file_path, file_name)
+    file_text = read_file(file_path, file_name)
     tagged_tokens = get_tagged_tokens(file_text)
     filtered_text = get_filtered_text(tagged_tokens)
     edge_and_freq = get_edge_freq(filtered_text)
@@ -444,9 +444,9 @@ def pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus,
     node_list = list(graph.node)
 
     if 'KDD' in file_path:
-        raw_node_features = readfile('./data', 'KDD_node_features')
+        raw_node_features = read_file('./data', 'KDD_node_features')
     else:
-        raw_node_features = readfile('./data', 'WWW_node_features')
+        raw_node_features = read_file('./data', 'WWW_node_features')
     node_features = read_node_features(node_list, raw_node_features, file_name, nfselect=nfselect)
     node_weight = calc_node_weight(node_features, phi)
     word_prob = get_word_prob(file_name, file_names, node_list, ldamodel, corpus)
@@ -459,7 +459,7 @@ def pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus,
 
 def get_phrases(pr, graph, file_path, file_name, ng=2):
     """返回一个list：[('large numbers', 0.04422558661923612), ('Internet criminal', 0.04402960178014231)]"""
-    text = rm_tags(readfile(file_path, file_name))
+    text = rm_tags(read_file(file_path, file_name))
     tokens = nltk.word_tokenize(text.lower())
     edges = graph.edge
     phrases = set()
@@ -509,7 +509,7 @@ def get_phrases(pr, graph, file_path, file_name, ng=2):
 def lda_train(file_path, file_names, l_num_topics=20, l_passes=20):
     texts = []
     for file_name in file_names:
-        file_text = readfile(file_path, file_name)
+        file_text = read_file(file_path, file_name)
         tagged_tokens = get_tagged_tokens(file_text)
         filtered_text = get_filtered_text(tagged_tokens)
         texts.append(filtered_text.split())
@@ -539,8 +539,8 @@ def dataset_train(dataset, alpha_=0.5, topics=20, nfselect='f027'):
         gold_path = './data/KDD/gold'
         if not os.path.exists(out_path):
             os.mkdir(out_path)
-        raw_node_f = readfile('./data', 'KDD_node_features')
-        file_names = readfile('./data', 'KDD_filelist').split(',')
+        raw_node_f = read_file('./data', 'KDD_node_features')
+        file_names = read_file('./data', 'KDD_filelist').split(',')
         print('kdd start')
     elif dataset == 'www':
         file_path = './data/WWW/abstracts'
@@ -548,8 +548,8 @@ def dataset_train(dataset, alpha_=0.5, topics=20, nfselect='f027'):
         gold_path = './data/WWW/gold'
         if not os.path.exists(out_path):
             os.mkdir(out_path)
-        raw_node_f = readfile('./data', 'WWW_node_features')
-        file_names = readfile('./data', 'WWW_filelist').split(',')
+        raw_node_f = read_file('./data', 'WWW_node_features')
+        file_names = read_file('./data', 'WWW_filelist').split(',')
         print('www start')
     else:
         print('wrong dataset name')
@@ -560,7 +560,7 @@ def dataset_train(dataset, alpha_=0.5, topics=20, nfselect='f027'):
         print(file_name, '......begin......\n')
         pi, omega, phi, node_list, iteration = train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=alpha_, nfselect=nfselect)
         top_n = top_n_words(pi, node_list, n=10)
-        gold = readfile(gold_path, file_name)
+        gold = read_file(gold_path, file_name)
         count = 0
         for word in top_n:
             if word in gold:
@@ -581,25 +581,25 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=20, nfselect='f027', ngrams
         file_path = './data/KDD/abstracts'
         out_path = './data/KDD'
         gold_path = './data/KDD/gold'
-        file_names = readfile('./data', 'KDD_filelist').split(',')
+        file_names = read_file('./data', 'KDD_filelist').split(',')
         print('kdd start')
     elif dataset == 'kdd2':
         file_path = './data/KDD/abstracts'
         out_path = './data/KDD'
         gold_path = './data/KDD/gold2'
-        file_names = readfile('./data/KDD', 'newOverlappingFiles').split()
+        file_names = read_file('./data/KDD', 'newOverlappingFiles').split()
         print('kdd start')
     elif dataset == 'www':
         file_path = './data/WWW/abstracts'
         out_path = './data/WWW'
         gold_path = './data/WWW/gold'
-        file_names = readfile('./data', 'WWW_filelist').split(',')
+        file_names = read_file('./data', 'WWW_filelist').split(',')
         print('www start')
     elif dataset == 'www2':
         file_path = './data/WWW/abstracts'
         out_path = './data/WWW'
         gold_path = './data/WWW/gold2'
-        file_names = readfile('./data/WWW', 'newOverlappingFiles').split()
+        file_names = read_file('./data/WWW', 'newOverlappingFiles').split()
         print('www start')
     else:
         print('wrong dataset name')
@@ -618,7 +618,7 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=20, nfselect='f027', ngrams
         # print(file_name, 'begin......')
         pr, graph = pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus, d=0.85, nfselect=nfselect)
         # top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
-        gold = readfile(gold_path, file_name)
+        gold = read_file(gold_path, file_name)
         keyphrases = get_phrases(pr, graph, file_path, file_name, ng=ngrams)
         top_phrases = []
         for phrase in keyphrases:
