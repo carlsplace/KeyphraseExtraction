@@ -1,0 +1,536 @@
+Flash_NN crowds_NNS and_CC denial_NN of_IN service_NN attacks_NNS :_: characterization_NN and_CC implications_NNS for_IN CDNs_NNS and_CC web_NN sites_NNS
+The_DT paper_NN studies_NNS two_CD types_NNS of_IN events_NNS that_WDT often_RB overload_NN Web_NN sites_NNS to_TO a_DT point_NN when_WRB their_PRP$ services_NNS are_VBP degraded_VBN or_CC disrupted_VBN entirely_RB -_: flash_NN events_NNS -LRB-_-LRB- FEs_NNS -RRB-_-RRB- and_CC denial_NN of_IN service_NN attacks_NNS -LRB-_-LRB- DoS_NN -RRB-_-RRB- ._.
+The_DT former_JJ are_VBP created_VBN by_IN legitimate_JJ requests_NNS and_CC the_DT latter_JJ contain_VBP malicious_JJ requests_NNS whose_WP$ goal_NN is_VBZ to_TO subvert_VB the_DT normal_JJ operation_NN of_IN the_DT site_NN ._.
+We_PRP study_VBD the_DT properties_NNS of_IN both_DT types_NNS of_IN events_NNS with_IN a_DT special_JJ attention_NN to_TO characteristics_NNS that_WDT distinguish_VBP the_DT two_CD ._.
+Identifying_VBG these_DT characteristics_NNS allows_VBZ a_DT formulation_NN of_IN a_DT strategy_NN for_IN Web_NN sites_NNS to_TO quickly_RB discard_VB malicious_JJ requests_NNS ._.
+We_PRP also_RB show_VBP that_IN some_DT content_JJ distribution_NN networks_NNS -LRB-_-LRB- CDNs_NNS -RRB-_-RRB- may_MD not_RB provide_VB the_DT desired_VBN level_NN of_IN protection_NN to_TO Web_NN sites_NNS against_IN flash_NN events_NNS ._.
+We_PRP therefore_RB propose_VBP an_DT enhancement_NN to_TO CDNs_NNS that_WDT offers_VBZ better_JJR protection_NN and_CC use_VB trace-driven_JJ simulations_NNS to_TO study_VB the_DT effect_NN of_IN our_PRP$ enhancement_NN on_IN CDNs_NNS and_CC Web_NN sites_NNS ._.
+these_DT objects_NNS ,_, forcing_VBG them_PRP to_TO reject_VB connections_NNS ._.
+Flash_NN crowds_NNS ,_, regularly_RB documented_VBN surges_VBZ in_IN the_DT popularity_NN of_IN certain_JJ content_NN ,_, are_VBP also_RB known_VBN to_TO cause_VB severe_JJ congestion_NN and_CC degradation_NN of_IN service_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Failing_VBG or_CC departing_VBG nodes_NNS further_RBR reduce_VB the_DT availability_NN of_IN various_JJ content_NN ._.
+Consequently_RB ,_, resources_NNS become_VBP scarce_JJ ,_, servers_NNS get_VBP overloaded_JJ and_CC throughput_NN can_MD diminish_VB due_JJ to_TO high_JJ workloads_NNS ._.
+Data_NN r_NN
+uce_VB the_DT availability_NN of_IN various_JJ content_NN ._.
+Consequently_RB ,_, resources_NNS become_VBP scarce_JJ ,_, servers_NNS get_VBP overloaded_JJ and_CC throughput_NN can_MD diminish_VB due_JJ to_TO high_JJ workloads_NNS that_WDT can_MD by_IN themselves_PRP cause_VBP denial_NN of_IN service_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Data_NN replication_NN techniques_NNS is_VBZ one_CD commonly_RB utilized_VBN solution_NN to_TO remedy_VB these_DT situations_NNS ._.
+Nevertheless_RB ,_, there_EX are_VBP cases_NNS in_IN which_WDT the_DT requested_VBN resources_NNS can_MD not_RB be_VB arbitrarily_RB replicated_VBN and_CC retrieve_VB
+es_RB ,_, these_DT skewed_JJ distributions_NNS take_VBP extreme_JJ forms_NNS :_: Flash_NN crowds_NNS ,_, regularly_RB documented_VBN surges_VBZ in_IN the_DT popularity_NN of_IN certain_JJ content_NN ,_, are_VBP also_RB known_VBN to_TO cause_VB severe_JJ congestion_NN and_CC degradation_NN of_IN service_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Data_NN replication_NN techniques_NNS is_VBZ one_CD commonly_RB utilized_VBN solution_NN to_TO remedy_VB these_DT situations_NNS ._.
+Nevertheless_RB ,_, there_EX are_VBP cases_NNS in_IN which_WDT the_DT requested_VBN resources_NNS can_MD not_RB be_VB arbitrarily_RB replicated_VBN ._.
+Distributed_VBN
+P_NN ,_, HTTP_NN and_CC SMTP_NN in_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+In_IN contrast_NN to_TO both_DT of_IN these_DT works_NNS ,_, our_PRP$ goal_NN in_IN this_DT work_NN is_VBZ to_TO build_VB behavior_NN profiles_NNS for_IN all_DT significant_JJ hosts_NNS or_CC services_NNS ,_, not_RB specific_JJ traffic_NN patterns_NNS or_CC applications_NNS ._.
+=_SYM -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: studies_NNS the_DT behavior_NN of_IN flash_NN crowds_NNS ,_, while_IN -LRB-_-LRB- 19_CD -RRB-_-RRB- --_: -LRB-_-LRB- 21_CD -RRB-_-RRB- focus_NN on_IN analyzing_NN worm_NN and_CC other_JJ exploit_VBP activities_NNS on_IN the_DT Internet_NN ._.
+Research_NN in_IN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 23_CD -RRB-_-RRB- applies_VBZ signal_NN processing_NN and_CC statistical_JJ inference_NN
+andom_NN query_NN string_NN appended_VBD to_TO the_DT URL_NN ,_, to_TO different_JJ edge_NN servers_NNS from_IN this_DT CDN_NN ._.
+-LRB-_-LRB- Different_JJ query_NN strings_NNS for_IN each_DT request_NN prevent_VBP the_DT possibility_NN of_IN edge_NN servers_NNS fetching_VBG the_DT content_NN from_IN each_DT other_JJ =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: and_CC thus_RB reducing_VBG the_DT strength_NN of_IN the_DT attack_NN ._. -RRB-_-RRB-
+After_IN establishing_VBG each_DT TCP_NN connection_NN and_CC sending_VBG the_DT HTTP_NNP request_NN ,_, the_DT attacker_NN drops_VBZ its_PRP$ connection_NN to_TO conserve_VB its_PRP$ bandwidth_NN ._.
+Every_DT edge_NN server_NN will_MD
+rmed_VBN ._.
+Recall_VB that_IN the_DT flow-based_JJ marking_VBG scheme_NN aims_NNS at_IN isolating_VBG and_CC marking_VBG the_DT flows_NNS containing_VBG the_DT most_RBS possible_JJ DDoS_NN attacking_VBG packets_NNS ,_, the_DT above_JJ design_NN can_MD not_RB differentiate_VB between_IN flash_NN crowds_NNS =_JJ -_: =[_NN 39_CD -RRB-_-RRB- -_: =_JJ -_: and_CC DDoS_JJ traffic_NN because_IN all_PDT the_DT npkts_NNS values_NNS are_VBP current_JJ values_NNS ,_, which_WDT can_MD not_RB reflect_VB the_DT accumulating_VBG effect_NN of_IN DDoS_NN attacks_NNS ._.
+In_IN some_DT cases_NNS ,_, normal_JJ burst_NN flows_NNS will_MD also_RB have_VB a_DT large_JJ probability_NN of_IN
+lume_VB or_CC involve_VB repeated_JJ activity_NN ._.
+Barford_NNP et_FW al._FW -LRB-_-LRB- 3_LS -RRB-_-RRB- use_NN wavelet_NN analysis_NN to_TO detect_VB large-scale_JJ network_NN events_NNS such_JJ as_IN flash_NN crowds_NNS ,_, denial_NN of_IN service_NN -LRB-_-LRB- DoS_NN -RRB-_-RRB- attacks_NNS ,_, network_NN outages_NNS ,_, and_CC Jung_NNP et_FW al._FW =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: use_VB statistical_JJ analysis_NN to_TO detect_VB flash_NN crowds_NNS based_VBN on_IN characteristics_NNS observed_VBN at_IN Web_NN servers_NNS ,_, such_JJ as_IN client_NN source_NN addresses_NNS ,_, traffic_NN volume_NN ,_, and_CC file_NN references_NNS ._.
+Krishnamurthy_NNP et_FW al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- devel_NN
+ing_IN the_DT access_NN pattern_NN of_IN web_NN server_NN and_CC propose_VBP a_DT benchmark_NN based_VBN on_IN server_NN log_NN of_IN Olympic_NNP games_NNS ._.
+Arlitt_FW et_FW al._FW -LRB-_-LRB- 3_CD -RRB-_-RRB- analyze_VBP the_DT bursty_JJ access_NN patterns_NNS of_IN the_DT FIFA_NNP World_NNP Cup_NNP 1998_CD servers_NNS ._.
+Jung_NNP et_FW al._FW =_SYM -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: point_NN out_IN the_DT insufficient_JJ protection_NN against_IN flashcrowd_NN from_IN some_DT CDN_NNP networks_NNS by_IN analyzing_VBG logs_NNS from_IN two_CD busy_JJ servers_NNS ._.
+Schwarz_NNP -LRB-_-LRB- 29_CD -RRB-_-RRB- shows_VBZ the_DT traffic_NN bursts_NNS for_IN a_DT website_NN recording_VBG earthquake_NN event_NN
+egress_NN node_NN reports_VBZ the_DT results_NNS to_TO the_DT central_JJ node_NN ._.
+5_CD -RRB-_-RRB- Dealing_VBG with_IN Flash_NNP Crowds_NNPS and_CC Delayed_VBN Media_NNP :_: In_IN practice_NN ,_, flash_NN crowds_NNS in_IN the_DT sense_NN of_IN exceptionally_RB large_JJ bursts_NNS of_IN call_NN arrivals_NNS are_VBP observed_VBN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: --_: -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, e.g._FW ,_, in_IN case_NN of_IN normal_JJ telephony_NN ,_, tele-voting_NN ,_, file_NN download_NN ,_, or_CC realtime_NN video_NN transmission_NN of_IN sport_NN events_NNS ._.
+In_IN addition_NN ,_, media_NNS start_VBP delayed_VBN after_IN admission_NN is_VBZ granted_VBN and_CC this_DT delay_NN may_MD be_VB
+lume_VB or_CC involve_VB repeated_JJ activity_NN ._.
+Barford_NNP et_FW al._FW -LRB-_-LRB- 3_LS -RRB-_-RRB- use_NN wavelet_NN analysis_NN to_TO detect_VB large-scale_JJ network_NN events_NNS such_JJ as_IN flash_NN crowds_NNS ,_, denial_NN of_IN service_NN -LRB-_-LRB- DoS_NN -RRB-_-RRB- attacks_NNS ,_, network_NN outages_NNS ,_, and_CC Jung_NNP et_FW al._FW =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: use_VB statistical_JJ analysis_NN to_TO detect_VB flash_NN crowds_NNS based_VBN on_IN characteristics_NNS observed_VBN at_IN Web_NN servers_NNS ,_, such_JJ as_IN client_NN source_NN addresses_NNS ,_, traffic_NN volume_NN ,_, and_CC file_NN references_NNS ._.
+Krishnamurthy_NNP et_FW al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- devel_NN
+wn_VB out_RB ._.
+A_DT minimal_JJ besteffort_NN solution_NN was_VBD selected_VBN ._.
+The_DT following_VBG design_NN is_VBZ based_VBN on_IN the_DT following_JJ sources_NNS :_: 1_LS -RRB-_-RRB- survey_NN of_IN various_JJ attacks_NNS :_: worms_NNS -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 32_CD -RRB-_-RRB- ,_, denial_NN of_IN service_NN attacks_NNS -LRB-_-LRB- 33_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 34_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 36_CD -RRB-_-RRB- and_CC port_NN scans_NNS -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 38_CD -RRB-_-RRB- ;_: and_CC 2_LS -RRB-_-RRB- study_NN of_IN the_DT Internet_NN intrusion_NN characterization_NN based_VBN on_IN one-month_JJ DShield_NN -LRB-_-LRB- 39_CD -RRB-_-RRB- data_NNS of_IN over_IN 600_CD million_CD scan_VBP records_NNS ._.
+The_DT format_NN of_IN the_DT disease_NN key_NN is_VBZ shown_VBN
+e_LS high_JJ false_JJ positives_NNS in_IN our_PRP$ detection_NN scheme_NN ._.
+For_IN the_DT flash_NN crowds_NNS ,_, it_PRP is_VBZ difficult_JJ ,_, if_IN not_RB impossible_JJ ,_, to_TO differentiate_VB it_PRP from_IN the_DT SYN_NNP flooding_NN attacks_NNS without_IN payload_NN information_NN as_IN discussed_VBN in_IN =_JJ -_: =[_NN 52_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Thus_RB we_PRP aim_VBP at_IN reducing_VBG the_DT false_JJ positives_NNS caused_VBN by_IN the_DT other_JJ two_CD behaviors_NNS listed_VBN above_IN ._.
+4.5.1_NN ._.
+Filters_NNS to_TO reduce_VB false_JJ positives_NNS caused_VBN by_IN bursty_JJ network\/server_NN congestions\/failures_NNS We_PRP believe_VBP a_DT
+hich_JJ server_NN is_VBZ contacted_VBN ,_, or_CC which_WDT ISP_NN is_VBZ used_VBN ._.
+Inherent_JJ in_IN this_DT approach_NN is_VBZ the_DT assumption_NN that_IN DNSbased_JJ control_NN responds_VBZ quickly_RB enough_JJ to_TO unexpected_JJ conditions_NNS ,_, such_JJ as_IN link_NN failures_NNS ,_, flash_NN crowds_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC increased_VBN congestion_NN ._.
+Responses_NNS to_TO name_VB resolution_NN requests_NNS have_VBP an_DT associated_VBN timeto-live_JJ -LRB-_-LRB- TTL_NN -RRB-_-RRB- value_NN that_WDT determines_VBZ how_WRB long_JJ the_DT response_NN should_MD be_VB cached_VBN by_IN the_DT client_NN 's_POS local_JJ nameserver_NN ._.
+Set_NN
+atic_JJ or_CC dynamic_JJ via_IN DNS_NN round_NN robin_NN or_CC via_IN more_JJR sophisticated_JJ policies_NNS such_JJ as_IN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+smultiplexing_NN of_IN IDC_NN resources_NNS ._.
+Namely_RB ,_, as_IN a_DT particular_JJ IDC_NN becomes_VBZ a_DT hot-spot_NN due_JJ to_TO flash_VB crowds_NNS -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: or_CC time-of-day_JJ effects_NNS -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, load_NN can_MD be_VB transparently_RB redirected_VBN to_TO other_JJ IDCs_NNS while_IN ensuring_VBG a_DT latency_NN benefit_NN to_TO clients_NNS ._.
+For_IN example_NN ,_, client_NN access_NN patterns_NNS have_VBP been_VBN observed_VBN to_TO follow_VB time-of-d_NN
+Most_JJS of_IN these_DT papers_NNS ,_, however_RB ,_, analyze_VBP workload_NN for_IN stateless_JJ Web_NN servers_NNS in_IN context_NN of_IN caching_NN ,_, prefetching_NN ,_, or_CC content_JJ distribution_NN networks_NNS ._.
+While_IN some_DT papers_NNS study_NN surges_VBZ ,_, spikes_NNS ,_, or_CC flash_NN crowds_NNS =_JJ -_: =[_NN 25_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, they_PRP concentrate_VBP only_RB on_IN the_DT increase_NN in_IN workload_NN volume_NN to_TO the_DT Web_NN server_NN ._.
+Most_JJS of_IN the_DT workload_NN generators_NNS -LRB-_-LRB- 4_CD ,_, 13_CD ,_, 2_CD ,_, 1_CD ,_, 6_CD -RRB-_-RRB- used_VBN to_TO evaluate_VB computer_NN systems_NNS or_CC Web_NN sites_NNS do_VBP not_RB support_VB either_DT volu_NN
+ed_IN that_DT most_RBS Internet-scale_JJ applications_NNS exhibit_VBP highly_RB skewed_VBN workloads_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 6_CD ,_, 9_CD -RRB-_-RRB- ,_, etc_NN -RRB-_-RRB- ._.
+The_DT demand_NN for_IN certain_JJ content_NN can_MD become_VB so_RB overwhelming_JJ that_IN forces_NNS serving_VBG peers_NNS to_TO reject_VB connections_NNS =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Failing_VBG or_CC departing_VBG nodes_NNS further_RBR reduce_VB content_NN availability_NN ._.
+Combined_VBN with_IN the_DT high_JJ fluctuation_NN rate_NN of_IN load_NN of_IN a_DT typical_JJ Internet_NN service_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, it_PRP is_VBZ obvious_JJ that_IN any_DT P2P_NN application_NN must_MD employ_VB
+o_NN flash_NN crowd_NN like_IN phenomena_NNS manifest_VBP in_IN the_DT context_NN of_IN such_PDT an_DT event_NN ?_.
+•_CD How_WRB does_VBZ the_DT presentation_NN model_NN impact_NN user_NN behavior_NN characteristics_NNS ?_.
+We_PRP present_VBP an_DT in-depth_JJ analysis_NN of_IN flash-crowd_JJ phenomena_NNS =_JJ -_: =[_NN 22_CD ,_, 24_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: observed_VBN in_IN our_PRP$ dataset_NN ._.
+First_RB ,_, as_IN a_DT consequence_NN of_IN the_DT way_NN a_DT live_JJ event_NN was_VBD presented_VBN in_IN near_JJ realtime_NN as_IN multiple_JJ smaller_JJR videos_NNS and_CC as_IN a_DT result_NN of_IN hidden_JJ semantic_JJ relationships_NNS across_IN videos_NNS ,_, we_PRP o_NN
+sion_NN of_IN proposed_VBN proxy_NN server_NN based_VBN upon_IN the_DT request_NN and_CC the_DT grant_NN ._.
+This_DT means_VBZ that_DT is_VBZ request_NN by_IN client_NN is_VBZ being_VBG granted_VBN then_RB caching_VBG the_DT information_NN with_IN local_JJ system_NN is_VBZ being_VBG started_VBN automatically_RB =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT internal_JJ caching_NN mechanism_NN design_NN in_IN figure_NN 4_CD ._.
+Above_IN diagram_NN shows_VBZ the_DT basic_JJ functionality_NN of_IN current_JJ proxy_NN server_NN ._.
+The_DT above_JJ proxy_NN does_VBZ not_RB scan_VB the_DT http_JJ requests_NNS into_IN the_DT cache_NN ,_, only_RB the_DT curre_NN
+-_: layer_NN DDoS_NN -LRB-_-LRB- App-DDoS_NN -RRB-_-RRB- attacks_NNS ._.
+The_DT MyDoom_NNP worm_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC the_DT CyberSlam_NNP -LRB-_-LRB- 6_CD -RRB-_-RRB- are_VBP all_DT instances_NNS of_IN this_DT type_NN attack_NN ._.
+On_IN the_DT other_JJ hand_NN ,_, a_DT new_JJ special_JJ phenomenon_NN of_IN network_NN traffic_NN called_VBN flash_NN crowd_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ been_VBN noticed_VBN by_IN researchers_NNS during_IN the_DT past_JJ several_JJ years_NNS ._.
+On_IN the_DT Web_NN ,_, ``_`` flash_VB crowd_NN ''_'' refers_VBZ to_TO the_DT situation_NN when_WRB a_DT very_RB large_JJ number_NN of_IN users_NNS simultaneously_RB accesses_VBZ a_DT popular_JJ Website_NNP ,_, which_WDT pro_NN
+ed_VBN as_IN part_NN of_IN solutions_NNS to_TO handle_VB Internet_NNP `_`` flash_NN crowds_NNS ,_, '_'' i.e._FW ,_, unexpected_JJ rapid_JJ increases_NNS in_IN the_DT demand_NN for_IN particular_JJ objects_NNS ,_, which_WDT challenge_VBP content_NN delivery_NN network_NN infrastructure_NN such_JJ as_IN Akamai_NNP =_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Indeed_RB many_JJ researchers_NNS ,_, including_VBG -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- have_VBP proposed_VBN the_DT use_NN of_IN P2P_NN overlay_NN networks_NNS on_IN top_NN of_IN online_JJ clients_NNS as_IN supplementary_JJ means_NNS for_IN providing_VBG web_NN content_NN in_IN order_NN to_TO alleviate_VB the_DT tra_NN
+ery_JJ high_JJ packet_NN rates_NNS as_IN reported_VBN in_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Unlike_IN most_JJS previous_JJ work_NN ,_, the_DT main_JJ focus_NN of_IN this_DT paper_NN is_VBZ to_TO develop_VB security_NN mechanisms_NNS tailored_VBN to_TO CDNs_NNS ._.
+Recent_JJ work_NN by_IN Jung_NNP et_FW al._FW on_IN flash_NN crows_NNS in_IN CDNs_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ closely_RB related_JJ ,_, but_CC is_VBZ different_JJ in_IN two_CD ways_NNS ._.
+First_RB ,_, our_PRP$ scheme_NN differentiates_VBZ attacks_NNS from_IN legitimate_JJ requests_NNS on-line_JJ ,_, while_IN Jung_NNP et_FW al._FW provide_VBP a_DT post-mortem_JJ analysis_NN ._.
+Second_RB ,_, our_PRP$ scheme_NN impro_NN
+equal_JJ to_TO B\/N_NN and_CC the_DT expected_VBN number_NN of_IN transferred_VBN bytes_NNS per_IN millisecond_NN is_VBZ N\/M_NNP ._.
+Furthermore_RB ,_, by_IN choosing_VBG the_DT same_JJ packet_NN size_NN for_IN all_DT packets_NNS ,_, we_PRP preserve_VBP -LRB-_-LRB- on_IN average_NN -RRB-_-RRB- the_DT often_RB assumed_VBN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =--RRB-_NN constant_JJ throughput_NN property_NN of_IN flows_NNS even_RB if_IN they_PRP are_VBP split_VBN over_IN two_CD intervals_NNS ._.
+Recently_RB ,_, the_DT authors_NNS of_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- presented_VBD empirical_JJ evidence_NN demonstrating_VBG that_IN the_DT constant_JJ throughput_NN property_NN is_VBZ a_DT g_NN
+h_NN as_IN hot-spot_NN and_CC slashdot_NN effect_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Most_JJS of_IN the_DT previous_JJ research_NN attempts_NNS to_TO provide_VB a_DT reactive_JJ approach_NN to_TO solving_VBG the_DT flash_NN crowd_NN problem_NN by_IN proposing_VBG replication_NN of_IN services_NNS -LRB-_-LRB- 23_CD -RRB-_-RRB- ._.
+Jung_NNP et_FW al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: attempt_NN to_TO prevent_VB flash_NN crowds_NNS by_IN blocking_VBG requests_NNS from_IN malicious_JJ clients_NNS ._.
+They_PRP achieve_VBP this_DT by_IN distinguishing_VBG between_IN the_DT characteristics_NNS of_IN a_DT flash_NN crowd_NN and_CC a_DT DDoS_NN attack_NN ._.
+Baryshnikov_NNP et_NNP ._.
+al._FW -LRB-_-LRB- 4_CD
+SH_NN CROWDS_NNS While_IN the_DT term_NN ``_`` flash_NN crowd_NN ''_'' is_VBZ in_IN widespread_JJ use_NN ,_, prior_JJ work_NN has_VBZ generally_RB not_RB defined_VBN what_WP constitutes_VBZ such_PDT a_DT crowd_NN -LRB-_-LRB- systems_NNS proposals_NNS can_MD be_VB qualitative_JJ ,_, and_CC previous_JJ measurement_NN studies_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: only_RB had_VBD traces_NNS of_IN one_CD or_CC two_CD such_JJ crowds_NNS -RRB-_-RRB- ._.
+To_TO detect_VB crowds_NNS in_IN such_PDT a_DT large_JJ dataset_NN ,_, we_PRP were_VBD pressed_VBN to_TO craft_VB a_DT working_VBG mathematical_JJ definition_NN of_IN ``_`` flash_NN crowd_NN ._. ''_''
+We_PRP present_VBP this_DT definition_NN both_DT to_TO d_NN
+n_NN of_IN the_DT traffic_NN ,_, but_CC an_DT increase_NN in_IN the_DT mean_NN does_VBZ not_RB always_RB occur_VB due_JJ to_TO a_DT malicious_JJ anomaly_NN or_CC attack_NN ._.
+Flash_NN crowds_NNS ,_, which_WDT might_MD occur_VB due_JJ to_TO the_DT Digg_NNP or_CC SlashDot_NNP effect_NN ,_, are_VBP not_RB malicious_JJ traffic_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC would_MD be_VB tagged_VBN as_IN anomalous_JJ ._.
+B._NNP Incorporating_NNP the_DT Packet-Size_NNP SPRT_NNP The_DT packet-size_JJ distribution_NN of_IN normal_JJ Internet_NN traffic_NN has_VBZ been_VBN characterized_VBN in_IN -LRB-_-LRB- 28_CD -RRB-_-RRB- as_IN mostly_RB bimodal_JJ at_IN 40_CD bytes_NNS and_CC 1500_CD
+paper_NN ,_, adaptation_NN is_VBZ necessary_JJ even_RB for_IN servers_NNS dealing_VBG with_IN relatively_RB stable_JJ access_NN patterns_NNS ._.
+Detecting_VBG and_CC handling_VBG drastic_JJ change_NN in_IN access_NN patterns_NNS ,_, 1_CD such_JJ as_IN flash_NN crowds_NNS ,_, has_VBZ been_VBN addressed_VBN in_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: and_CC is_VBZ not_RB the_DT focus_NN of_IN this_DT paper_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP focus_VBP on_IN adaptation_NN for_IN relatively_RB stable_JJ access_NN patterns_NNS ._.
+We_PRP employ_VBP an_DT approach_NN where_WRB the_DT best_JJS strategy_NN for_IN each_DT document_NN is_VBZ periodically_RB select_JJ
+problems_NNS ._.
+Perhaps_RB non-intuitively_RB ,_, they_PRP remain_VBP susceptible_JJ to_TO flash_VB crowds_NNS ,_, although_IN to_TO a_DT lesser_JJR extent_NN than_IN traditional_JJ content_JJ delivery_NN systems_NNS ._.
+This_DT phenomenon_NN has_VBZ been_VBN reported_VBN in_IN the_DT literature_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: and_CC empirically_RB verified_VBN by_IN the_DT I2-DSI_NN project_NN ._.
+I2DSI_NN is_VBZ a_DT replica-based_JJ content_NN distribution_NN network_NN that_WDT makes_VBZ Linux_NN ISO_NN images_NNS available_JJ to_TO the_DT Internet2_NN community_NN ._.
+During_IN the_DT four_CD days_NNS following_VBG
+ect_FW bystander_FW tra_FW #c_NN from_IN flash_NN crowds_NNS e_SYM #ciently_RB ._.
+1_CD Introduction_NN We_PRP design_VBP Network_NNP Early_NNP Warning_NNP System_NNP -LRB-_-LRB- NEWS_NN -RRB-_-RRB- to_TO adaptively_RB protect_VB server_NN and_CC networks_NNS from_IN persistent_JJ overloading_NN during_IN flash_NN crowds_NNS =_JJ -_: =[_NN 19_CD ,_, 22_CD ,_, 25_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Flash_JJ crowds_NNS usually_RB happen_VBP when_WRB many_JJ end-users_NNS simultaneously_RB send_VBP requests_NNS to_TO one_CD web_NN site_NN -LRB-_-LRB- the_DT target_NN server_NN -RRB-_-RRB- because_IN of_IN sudden_JJ events_NNS such_JJ as_IN earthquakes_NNS ,_, breaking_VBG news_NN stories_NNS ,_, or_CC links_NNS from_IN po_NN
+Control_NN -LRB-_-LRB- ACC_NN -RRB-_-RRB- is_VBZ introduced_VBN to_TO deal_VB with_IN such_JJ attacks_NNS by_IN limiting_VBG the_DT rate_NN of_IN -LRB-_-LRB- large_JJ -RRB-_-RRB- aggregate_JJ traffic_NN at_IN the_DT routers_NNS to_TO reduce_VB the_DT impact_NN of_IN the_DT added_VBN load_NN on_IN the_DT underlying_JJ network_NN and_CC end-servers_NN =_JJ -_: =[_NN 21_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP observed_VBD ,_, however_RB ,_, that_IN the_DT reaction_NN of_IN the_DT underlying_VBG traffic_NN to_TO a_DT rate-limiting_JJ policy_NN can_MD ,_, and_CC often_RB will_MD ,_, reduce_VB the_DT effectiveness_NN of_IN the_DT applied_JJ control_NN ._.
+This_DT can_MD be_VB better_RBR explained_VBN by_IN deco_NN
+ch_NN of_IN the_DT work_NN in_FW anomaly_FW detection_NN and_CC identification_NN has_VBZ been_VBN restricted_VBN to_TO point-solutions_NNS for_IN specific_JJ types_NNS of_IN anomalies_NNS ,_, e.g._FW ,_, portscans_NNS -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, worms_NNS -LRB-_-LRB- 17_CD ,_, 32_CD -RRB-_-RRB- ,_, DOS_NN attacks_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, and_CC flash_NN crowds_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT general_JJ anomaly_NN diagnosis_NN method_NN remains_VBZ elusive_JJ ,_, although_IN two_CD notable_JJ instances_NNS of_IN anomaly_NN classification_NN are_VBP -LRB-_-LRB- 34_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+The_DT authors_NNS of_IN -LRB-_-LRB- 34_CD -RRB-_-RRB- seek_VBP to_TO classify_VB anomalies_NNS by_IN exploiting_VBG correlati_NNS
+significant_JJ network_NN events_NNS of_IN interest_NN ._.
+For_IN example_NN ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- focus_NN on_IN efficient_JJ techniques_NNS for_IN identifying_VBG ``_`` heavyhitters_NNS ''_'' in_IN one_CD or_CC several_JJ dimensions_NNS ,_, and_CC -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- focus_NN on_IN identifying_VBG port_NN scans_NNS ._.
+=_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: studies_NNS the_DT behavior_NN of_IN flash_NN crowds_NNS ,_, while_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- focus_NN on_IN analyzing_NN worm_NN and_CC other_JJ exploit_VBP activities_NNS on_IN the_DT Internet_NN ._.
+Research_NN in_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- applies_VBZ signal_NN processing_NN and_CC statistic_NN
+ose_NN persistent_JJ dropping_VBG of_IN TCP_NNP SYN_NNP packets_NNS in_IN routers_NNS to_TO tackle_VB Flash_NNP Crowds_NNPS ._.
+Finally_RB ,_, A_DT number_NN of_IN paper_NN propose_VBP to_TO use_VB overlays_NNS and_CC peer-to-peer_JJ networks_NNS to_TO shed_VB load_NN off_IN servers_NNS during_IN Flash_NNP Crowds_NNPS =_SYM -_: =[_NN 24_CD ,_, 45_CD ,_, 47_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+KillBots_NNP is_VBZ a_DT light-weight_JJ admission_NN control_NN in_IN the_DT context_NN of_IN malicious_JJ clients_NNS and_CC connects_VBZ it_PRP with_IN authentication_NN ._.
+8_CD Limitations_NNPS &_CC Open_NNP Issues_NNP A_NNP few_JJ limitations_NNS and_CC open_JJ issues_NNS are_VBP worth_JJ discussi_NNS
+flooding_NN problem_NN by_IN giving_VBG a_DT packet_NN receiver_NN control_NN over_IN which_WDT packets_NNS the_DT network_NN delivers_VBZ to_TO it_PRP ._.
+1.1_CD Related_NNP Work_NNP Several_JJ researchers_NNS have_VBP studied_VBN the_DT frequency_NN and_CC nature_NN of_IN Internet_NN DoS_NN attacks_NN =_JJ -_: =[_NN 16_CD ,_, 17_CD ,_, 21_CD ,_, 24_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT section_NN ,_, we_PRP review_VBP related_JJ work_NN in_IN the_DT area_NN of_IN Internet_NN DoS_NN defenses_NNS ._.
+We_PRP distinguish_VBP the_DT research_NN into_IN two_CD general_JJ areas_NNS :_: defending_VBG against_IN IP_NNP source_NN address_NN spoofing_NN ,_, and_CC defending_VBG against_IN
+placement_NN of_IN proxies_NNS ._.
+1_CD Introduction_NN A_NN flash_NN crowd_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- is_VBZ a_DT large_JJ spike_NN or_CC surge_NN in_IN traffic_NN to_TO a_DT particular_JJ web_NN site_NN 1_CD ._.
+Many_JJ times_NNS it_PRP is_VBZ the_DT major_JJ news-webcast_JJ sites_NNS ,_, such_JJ as_IN MSNBC_NN -LRB-_-LRB- 7_CD ,_, 32_CD -RRB-_-RRB- and_CC CNN_NNP =_SYM -_: =[_NN 4_CD ,_, 26_CD -RRB-_-RRB- -_: =_JJ -_: ,_, that_WDT experience_VBP this_DT problem_NN during_IN major_JJ world_NN events_NNS ._.
+Other_JJ times_NNS it_PRP is_VBZ a_DT previously_RB unpopular_JJ web_NN site_NN becoming_VBG extremely_RB popular_JJ after_IN being_VBG mentioned_VBN in_IN a_DT popular_JJ news_NN feed_NN ._.
+The_DT latter_JJ case_NN is_VBZ
+d_NN create_VB new_JJ agents_NNS accordingly_RB -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+J._NNP Jung_NNP ,_, B._NNP Krishnamurthy_NNP ,_, and_CC M._NNP Rabinovich_NNP analyzed_VBD some_DT signatures_NNS that_WDT differentiate_VBP flash_NN events_NNS -LRB-_-LRB- FE_NNP -RRB-_-RRB- -LRB-_-LRB- also_RB called_VBN flash_NN crowds_NNS -RRB-_-RRB- and_CC denial_NN of_IN service_NN -LRB-_-LRB- DoS_NN -RRB-_-RRB- =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+During_IN FE_NNP ,_, the_DT average_JJ number_NN of_IN requests_NNS per_IN client_NN is_VBZ fairly_RB constant_JJ ._.
+On_IN the_DT contrary_NN ,_, during_IN a_DT DoS_NN attack_NN ,_, attacking_VBG clients_NNS have_VBP a_DT much_RB higher_JJR request_NN rate_NN than_IN normal_JJ clients_NNS ._.
+The_DT main_JJ differe_NN
+st_IN specific_JJ -RRB-_-RRB- BGP_NN routing_VBG prefix_NN for_IN the_DT IP_NNP address_NN ._.
+In_IN SC_NNP ,_, this_DT prefix_NN is_VBZ simply_RB a_DT fixed-length_JJ prefix_NN ,_, for_IN which_WDT we_PRP consider_VBP \/_: 8_CD ,_, \/_: 16_CD and_CC \/_: 24_CD in_IN this_DT section_NN ._.
+Learning_NNP for_IN NAC_NN and_CC SC_NN is_VBZ envisioned_VBN in_IN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: to_TO be_VB normalcy_NN learning_NN ,_, and_CC so_RB to_TO test_VB these_DT algorithms_NNS under_IN this_DT assumption_NN ,_, we_PRP utilized_VBD our_PRP$ thirteen-day_JJ training_NN set_VBN to_TO train_VB these_DT approaches_NNS ._.
+After_IN training_NN ,_, we_PRP employ_VBP the_DT following_JJ filtering_VBG
+s_NN of_IN new_JJ IP_NNP addresses_NNS when_WRB networks_NNS are_VBP attacked_VBN ._.
+Although_IN network_NN traffic_NN volume_NN monitoring_NN may_MD be_VB an_DT easy_JJ way_NN to_TO detect_VB DDoS_NN attacks_NNS ,_, it_PRP can_MD not_RB differentiate_VB flash_NN crowds_NNS from_IN the_DT real_JJ DDoS_NN attacks_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Hence_RB by_IN observing_VBG the_DT normal_JJ network_NN IP_NNP addresses_NNS pattern_NN and_CC comparing_VBG it_PRP with_IN the_DT current_JJ traffic_NN ,_, the_DT possible_JJ attacks_NNS can_MD be_VB detected_VBN ._.
+Therefore_RB the_DT detection_NN probability_NN P_NN d_NN ,_, false_JJ alarm_NN prob_NN
+y_NN appear_VBP as_IN malicious_JJ ._.
+sAs_NNS indicated_VBN by_IN Kuzmanovic_NNP and_CC Knightly_NNP -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, it_PRP is_VBZ very_RB difficult_JJ to_TO detect_VB such_PDT a_DT shrew_NN attack_NN ._.
+The_DT main_JJ challenge_NN lies_VBZ in_IN separating_VBG a_DT bogus_JJ traffic_NN flow_NN from_IN a_DT ``_`` flash_NN crowd_NN ''_'' =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: without_IN maintaining_VBG complicated_JJ and_CC expensive_JJ per_IN flow_NN state_NN information_NN at_IN the_DT routers_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP meet_VBP this_DT challenge_NN by_IN proposing_VBG a_DT novel_JJ effective_JJ detection_NN technique_NN ,_, called_VBN HAWK_NN †_NN -LRB-_-LRB- Halti_NN
+ds_JJ caused_VBN by_IN the_DT September_NNP 11_CD ,_, 2001_CD terrorist_JJ attacks_NNS in_IN the_DT U.S._NNP overwhelmed_VBD major_JJ news_NN sites_NNS such_JJ as_IN MSNBC_NNP and_CC CNN_NNP ,_, pushing_VBG site_NN availability_NN down_RB close_RB to_TO 0_CD \_CD %_NN and_CC response_NN times_NNS to_TO over_IN 45_CD seconds_NNS =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN addition_NN ,_, MSNBC_NNP quickly_RB switched_VBD to_TO serving_VBG static_JJ HTML_NNP and_CC the_DT percentage_NN of_IN error_NN status_NN codes_NNS dropped_VBD to_TO 6.7_CD %_NN ._.
+Thus_RB the_DT current_JJ information_NN systems_NNS have_VBP failed_VBN to_TO satisfy_VB the_DT Internet_NNP users_NNS re_VBP
+humble_JJ flash_NN crowd_NN can_MD overwhelm_VB the_DT server_NN ._.
+Obviously_RB ,_, current_JJ Internet_NNP information_NN systems_NNS are_VBP not_RB scalable_JJ and_CC have_VBP failed_VBN to_TO fulfill_VB the_DT stringent_JJ Internet_NNP users_NNS '_POS requirements_NNS in_IN such_JJ situations_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT complexity_NN and_CC dynamism_NN of_IN the_DT large-scale_JJ information_NN systems_NNS promote_VBP an_DT imperative_JJ need_NN for_IN high-assurance_NN in_IN these_DT systems_NNS ._.
+These_DT systems_NNS can_MD be_VB seen_VBN as_IN instances_NNS of_IN the_DT Complex_NN Adaptive_NNP Syst_NNP
+._.
+In_IN contrast_NN ,_, our_PRP$ solution_NN does_VBZ not_RB require_VB additional_JJ hosts_NNS ,_, and_CC is_VBZ simple_JJ to_TO construct_VB and_CC maintain_VB ._.
+There_EX are_VBP other_JJ several_JJ proposed_VBN methods_NNS to_TO filter_NN offending_VBG DoS_NN traffic_NN ._.
+Some_DT proposals_NNS ,_, e.g._FW ,_, =_JJ -_: =[_NN 10_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, filter_NN according_VBG to_TO the_DT source_NN IP_NNP address_NN ._.
+This_DT is_VBZ convenient_JJ and_CC efficient_JJ ,_, allowing_VBG implementation_NN in_IN existing_VBG packet_NN filtering_VBG routers_NNS ._.
+However_RB ,_, IP_NNP addresses_NNS are_VBP subject_JJ to_TO spoofing_NN ;_: furthermore_RB ,_,
+times_NNS to_TO transients_NNS and_CC emergencies_NNS ._.
+Data_NN center_NN conditions_NNS can_MD change_VB rapidly_RB ._.
+In_IN data_NN center_NN with_IN high_JJ heat_NN densities_NNS ,_, severe_JJ transient_JJ conditions_NNS --_: such_JJ as_IN those_DT caused_VBN by_IN utilization_NN spikes_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: or_CC cooling_JJ failure_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- --_: can_MD result_VB in_IN disruptive_JJ downtimes_NNS in_IN a_DT matter_NN of_IN minutes_NNS or_CC seconds_NNS ._.
+Increase_NN compaction_NN and_CC improve_VB operational_JJ efficiencies_NNS ._.
+A_DT high_JJ ratio_NN of_IN cooling_JJ power_NN to_TO compute_VB powe_NN
+ever_RB ,_, web_NN requests_NNS could_MD be_VB very_RB bursty_JJ ._.
+A_DT wellidentified_JJ problem_NN web_NN hotspots_NNS -LRB-_-LRB- also_RB known_VBN as_IN flash_NN crowds_NNS or_CC the_DT Slashdot_NNP effect_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- -RRB-_-RRB- may_MD trigger_VB a_DT large_JJ load_NN increase_NN but_CC only_RB last_JJ for_IN a_DT short_JJ time_NN =_JJ -_: =[_NN 14_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN such_JJ situations_NNS ,_, overprovisioning_VBG a_DT web_NN site_NN is_VBZ not_RB only_RB uneconomical_JJ but_CC also_RB difficult_JJ since_IN the_DT peak_NN load_NN is_VBZ hard_JJ to_TO predict_VB -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+To_TO handle_VB web_NN hotspots_NNS effectively_RB ,_, we_PRP advocate_VBP dynamic_JJ allo_NN
+ience_NN increased_VBD access_NN latency_NN ._.
+Performance_NNP failure_NN has_VBZ been_VBN further_RB acerbated_VBN by_IN the_DT phenomenon_NN known_VBN as_IN flash_NN crowds_NNS --_: a_DT situation_NN where_WRB very_RB large_JJ numbers_NNS of_IN users_NNS simultaneously_RB access_VBP a_DT Website_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Flash_FW crowding_FW is_VBZ becoming_VBG more_RBR prevalent_JJ and_CC technologies_NNS such_JJ as_IN Web_NN caches_NNS and_CC CDNs_NNS -LRB-_-LRB- Content_NN Distribution_NN Networks_NNP -RRB-_-RRB- ,_, previously_RB employed_VBN to_TO improve_VB webserver_NN performance_NN ,_, have_VBP been_VBN proven_VBN to_TO not_RB
+y_NN are_VBP now_RB faced_VBN with_IN demands_NNS of_IN serving_VBG web_NN pages_NNS with_IN heterogeneous_JJ contents_NNS of_IN varying_VBG demand_NN characteristics_NNS ._.
+Already_RB ,_, CDNs_NNS face_VBP difficulties_NNS in_IN provisioning_VBG of_IN web_NN sites_NNS in_IN flash_NN crowd_NN situations_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT future_NN ,_, we_PRP anticipate_VBP more_RBR acute_JJ problems_NNS when_WRB they_PRP will_MD be_VB required_VBN to_TO serve_VB personalised_JJ content_NN ,_, dynamic_JJ content_NN and_CC applications_NNS ._.
+Providing_VBG such_JJ capability_NN represents_VBZ a_DT unique_JJ opportunity_NN
+e_LS performance_NN during_IN overload_NN conditions_NNS such_JJ as_IN flash_NN crowds_NNS ._.
+The_DT client-server_JJ interaction_NN on_IN the_DT web_NN is_VBZ based_VBN on_IN HTTP_NNP ,_, which_WDT uses_VBZ TCP_NNP connections_NNS to_TO transfer_VB data_NNS between_IN the_DT end-points_NNS ._.
+Past_JJ work_NN =_JJ -_: =[_NN 47_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ reported_VBN that_IN the_DT escalation_NN in_IN traffic_NN during_IN flash_NN crowds_NNS occurs_VBZ largely_RB because_IN of_IN an_DT increase_NN in_IN the_DT number_NN of_IN clients_NNS ,_, resulting_VBG in_IN an_DT increase_NN in_IN the_DT number_NN of_IN TCP_NNP connections_NNS that_IN a_DT server_NN
+super_JJ destination_NN -RRB-_-RRB- in_IN real-time_JJ helps_VBZ balance_VB the_DT workload_NN and_CC improve_VB the_DT overall_JJ performance_NN of_IN the_DT network_NN ._.
+A_DT number_NN of_IN other_JJ variations_NNS of_IN the_DT above_JJ applications_NNS ,_, such_JJ as_IN detecting_VBG flash_NN crowds_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: and_CC reflector_NN attacks_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, also_RB motivate_VBP this_DT problem_NN ._.
+Techniques_NNS proposed_VBN in_IN the_DT literature_NN for_IN solving_VBG this_DT problem_NN typically_RB maintain_VBP per-flow_JJ state_NN ,_, and_CC can_MD not_RB scale_VB to_TO high_JJ link_NN speeds_NNS of_IN 10_CD or_CC
+hits_NNS ,_, IEEE_NNP INTERNET_NNP COMPUTING_NNP http:\/\/computer.org\/internet\/_NNP NOVEMBER_NNP •_NNP DECEMBER_NNP 2003_CD 69sSpotlight_NNP DI_NNP interacts_VBZ with_IN the_DT origin_NN server_NN to_TO get_VB the_DT object_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- HTTP_NN request_NN -LRB-_-LRB- by_IN a_DT client_NN to_TO a_DT proxy_NN cache_NN -RRB-_-RRB- =_JJ -_: =-LRB-_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: No_NNP No_NNP SS_NNP :_: Surrogate_NN server_NN RRI_NN :_: Request_NN routing_VBG infrastructure_NN DI_NN :_: Distribution_NN infrastructure_NN RRPS_NN :_: Request_NN routing_VBG peering_VBG system_NN Cache_NNP hit_VB ?_.
+No_DT Proxy_NNP forwards_RB request_NN to_TO RRI_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- Cache_NNP hit_VB ?_.
+No_DT No_DT Ye_NN
+llenged_VBN by_IN the_DT increasing_VBG growth_NN of_IN Web_NN usage_NN ._.
+A_DT massive_JJ wave_NN of_IN simultaneous_JJ clients_NNS ,_, might_MD decrease_VB the_DT performance_NN or_CC even_RB halt_VB a_DT state-of-the-art_JJ web_NN server_NN ,_, the_DT so-called_JJ ``_`` bottleneck_NN ''_'' phenomenon_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Therefore_RB ,_, clients_NNS may_MD experience_VB latency_NN or_CC even_RB denial_NN of_IN service_NN -LRB-_-LRB- DoS_NN -RRB-_-RRB- ._.
+Two_CD solutions_NNS have_VBP been_VBN proposed_VBN :_: Web_NN caching_VBG and_CC prefetching_VBG mainly_RB applied_VBN in_IN Web_NN proxy_NN servers_NNS and_CC content_NN replication_NN c_NN
+content_NN access_NN is_VBZ problematic_JJ ,_, because_IN they_PRP do_VBP not_RB improve_VB availability_NN during_IN ``_`` flash_VB crowd_NN events_NNS ''_'' 1_CD and_CC can_MD not_RB resolve_VB the_DT performance_NN problems_NNS related_VBN to_TO Web_NN server_NN processing_NN and_CC Internet_NN delays_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+From_IN the_DT above_IN it_PRP is_VBZ occurred_VBN that_IN standalone_JJ Web_NN servers_NNS are_VBP unable_JJ to_TO provide_VB reliable_JJ and_CC scalable_JJ services_NNS ._.
+In_IN contrast_NN ,_, distributed_VBN solutions_NNS are_VBP a_DT popular_JJ way_NN to_TO improve_VB the_DT efficiency_NN ,_, reliab_NN
+here_RB is_VBZ either_CC a_DT DoS_NN attack_NN or_CC a_DT flash_NN crowd_NN ,_, as_IN discussed_VBN in_IN -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+Decisions_NNS are_VBP taken_VBN by_IN consulting_VBG the_DT destination_NN entity_NN ._.
+Jung_NNP et_NNP al_NNP analyze_VB the_DT characteristics_NNS of_IN flash_NN crowds_NNS and_CC DoS_NN attacks_NNS in_IN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Their_PRP$ work_NN reveals_VBZ several_JJ distinguishable_JJ features_NNS between_IN these_DT two_CD ._.
+For_IN example_NN ,_, the_DT client_NN distribution_NN of_IN a_DT flash_NN crowd_NN event_NN follows_VBZ popular_JJ distribution_NN among_IN ISPs_NNS and_CC networks_NNS ,_, however_RB ,_, this_DT
+iveNuma_NN 2_CD 3_CD 4_CD 5_CD 6_CD 7_CD 8_CD 9_CD 10_CD log_NN -LRB-_-LRB- #_# processors_NNS -RRB-_-RRB- The_DT tree_NN saturation_NN problem_NN due_JJ to_TO hot_JJ spot_NN access_NN patterns_NNS is_VBZ not_RB unique_JJ to_TO shared_JJ memory_NN systems_NNS ._.
+Congestion_NN generated_VBN by_IN flood_NN attacks_NNS and_CC flash_NN crowds_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: presents_VBZ similar_JJ challenges_NNS for_IN Internet_NNP Service_NNP Providers_NNP ._.
+In_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- Mahajan_NNP et_FW al._FW propose_VBP a_DT technique_NN to_TO limit_VB the_DT disruption_NN generated_VBN by_IN hot_JJ spot_NN congestion_NN on_IN network_NN traffic_NN with_IN overlapping_VBG com_NN
+content_NN access_NN is_VBZ problematic_JJ ,_, because_IN it_PRP does_VBZ not_RB improve_VB availability_NN during_IN ``_`` flash_VB crowd_NN events_NNS ''_'' 1_CD and_CC can_MD not_RB resolve_VB the_DT performance_NN problems_NNS related_VBN to_TO Web_NN server_NN processing_NN and_CC Internet_NN delays_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT framework_NN ,_, the_DT Content_NNP Distribution_NN Networks_NNP -LRB-_-LRB- CDNs_NNS -RRB-_-RRB- ,_, -LRB-_-LRB- 12_CD ,_, 15_CD -RRB-_-RRB- are_VBP targeted_VBN to_TO resolve_VB such_JJ problems_NNS ,_, by_IN moving_VBG the_DT content_NN to_TO the_DT ``_`` edge_NN ''_'' of_IN the_DT Internet_NNP ,_, closer_RBR to_TO the_DT end-user_NN ._.
+With_IN the_DT ``_`` ke_FW
+rs_NNS block_VBP attacks_NNS worth_JJ huge_JJ sums_NNS on_IN the_DT black_JJ market_NN in_IN the_DT upper_JJ layers_NNS ._.
+1_CD Introduction_NN Infrastructure_NN must_MD serve_VB a_DT very_RB large_JJ population_NN as_RB faithfully_RB as_IN possible_JJ even_RB during_IN flash_NN crowds_NNS of_IN demand_NN =_JJ -_: =_JJ -LRB-_-LRB- JKR02_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+All_DT infrastructure_NN therefore_RB faces_VBZ a_DT dilemma_NN that_IN denial_NN of_IN service_NN -LRB-_-LRB- DoS_NN -RRB-_-RRB- attacks_NNS exploit_VBP ._.
+It_PRP must_MD be_VB able_JJ to_TO distinguish_VB a_DT flood_NN of_IN bogus_JJ requests_NNS from_IN a_DT flash_NN crowd_NN of_IN genuine_JJ demand_NN ,_, even_RB when_WRB bo_NN
+he_PRP size_VBP distributions_NNS of_IN Web_NN documents_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+Jung_NNP et_FW al._FW characterize_VBP transient_JJ overload_NN events_NNS -LRB-_-LRB- ``_`` flash_NN crowds_NNS ''_'' -RRB-_-RRB- and_CC suggest_VBP ways_NNS for_IN system_NN defenses_NNS to_TO distinguish_VB them_PRP from_IN denial-of-service_JJ attacks_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Clustering_NN techniques_NNS are_VBP frequently_RB employed_VBN to_TO simplify_VB workload_NN for_IN performance_NN modeling_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Often_RB workload_NN units_NNS are_VBP clustered_VBN according_VBG to_TO their_PRP$ resource_NN demands_NNS as_IN in_FW Magpie_FW -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC in_FW Esposi_FW
+traffic_NN ,_, the_DT partial_JJ score_NN becomes_VBZ less_JJR than_IN 1_CD ._.
+It_PRP ð1Þ_NN is_VBZ known_VBN that_IN some_DT IP_NNP header_NN fields_NNS are_VBP not_RB evenly_RB distributed_VBN over_IN all_DT possible_JJ values_NNS ;_: rather_RB a_DT unique_JJ distribution_NN pattern_NN exists_VBZ for_IN a_DT site_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 23_CD -RRB-_-RRB- ._.
+If_IN attackers_NNS do_VBP not_RB know_VB the_DT attribute_NN value_NN distribution_NN in_IN legitimate_JJ traffic_NN ,_, they_PRP are_VBP likely_JJ to_TO generate_VB random_JJ or_CC wrongly_RB guessed_VBN attribute_NN values_NNS ,_, which_WDT makes_VBZ most_JJS of_IN the_DT attack_NN pa_NN
+ing_VBG any_DT observed_VBN persistency_NN properties_NNS of_IN these_DT large_JJ Internet_NNP flows_NNS ._.
+Examples_NNS that_WDT follow_VBP this_DT basic_JJ approach_NN to_TO traffic_NN engineering_NN include_VBP ,_, among_IN others_NNS ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- measurement_NN support_NN and_CC accounting_NN -RRB-_-RRB- ,_, =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- Web_NN server_NN overload_NN control_NN -RRB-_-RRB- ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- -LRB-_-LRB- routing_VBG -RRB-_-RRB- ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- -LRB-_-LRB- scheduling_NN -RRB-_-RRB- ,_, etc._NN ._.
+Clearly_RB ,_, such_JJ approaches_NNS are_VBP more_RBR viable_JJ and_CC effective_JJ if_IN a_DT substantial_JJ portion_NN of_IN the_DT overall_JJ traffic_NN in_IN a_DT bin_NN is_VBZ due_JJ to_TO a_DT few_JJ he_PRP
+inst_IN the_DT markings_NNS in_IN the_DT attack_NN list_NN ._.
+It_PRP is_VBZ outside_IN the_DT scope_NN of_IN this_DT paper_NN to_TO define_VB an_DT algorithm_NN for_IN attack_NN packet_NN identification_NN ._.
+Jung_NNP ,_, Krishnamurthy_NNP and_CC Rabinovich_NNP further_RB discuss_VB this_DT problem_NN in_IN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Assuming_VBG such_JJ an_DT algorithm_NN ,_, we_PRP model_VBP our_PRP$ DDoS_NN attack_NN in_IN two_CD phases_NNS ._.
+In_IN the_DT first_JJ phase_NN ,_, the_DT learning_NN phase_NN ,_, all_DT packets_NNS are_VBP assumed_VBN to_TO be_VB analyzed_VBN by_IN the_DT victim_NN ,_, using_VBG the_DT packet_NN identification_NN func_NN
+filtering_VBG methods_NNS at_IN the_DT recipient_JJ side_NN ._.
+2.2_CD Cost-based_JJ Approach_NN A_NN cost-based_JJ approach_NN is_VBZ the_DT most_RBS promising_JJ general_JJ solution_NN for_IN resisting_VBG network_NN abuse_NN ,_, such_JJ as_IN spam_NN -LRB-_-LRB- 7_CD ,_, 8_CD -RRB-_-RRB- and_CC network_NN DoS_NN attacks_NN =_JJ -_: =[_NN 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Cost_NN takes_VBZ many_JJ forms_NNS ,_, such_JJ as_IN monetary_JJ payments_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, ``_`` hashcash_NN ''_'' -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, and_CC computational_JJ puzzles_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+By_IN requiring_VBG the_DT remote_JJ peer_VBP to_TO consume_VB some_DT computational_JJ resources_NNS before_IN granting_VBG the_DT servi_NNS
+rnet_NN generating_VBG more_RBR representative_JJ results_NNS ._.
+MFC_NNP 's_POS targeted_VBN requests_NNS exercise_VBP specific_JJ server_NN resources_NNS in_IN a_DT controlled_JJ way_NN yielding_VBG detailed_JJ and_CC fine-grained_JJ observations_NNS ._.
+Early_JJ work_NN on_IN flash_NN crowds_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBN server-side_JJ heuristics_NNS to_TO distinguish_VB flash_NN crowds_NNS and_CC DDoS_NN attacks_NNS ._.
+Chen_NNP et_NNP ._.
+al_FW identify_VB flash_NN crowds_NNS by_IN examining_VBG performance_NN degradation_NN in_IN responses_NNS from_IN a_DT Website_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+These_DT techniques_NNS
+flooding_NN problem_NN by_IN giving_VBG a_DT packet_NN receiver_NN control_NN over_IN which_WDT packets_NNS the_DT network_NN delivers_VBZ to_TO it_PRP ._.
+1.1_CD Related_NNP Work_NNP Several_JJ researchers_NNS have_VBP studied_VBN the_DT frequency_NN and_CC nature_NN of_IN Internet_NN DoS_NN attacks_NN =_JJ -_: =[_NN 16_CD ,_, 17_CD ,_, 21_CD ,_, 24_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT section_NN ,_, we_PRP review_VBP related_JJ work_NN in_IN the_DT area_NN of_IN Internet_NN DoS_NN defenses_NNS ._.
+We_PRP distinguish_VBP the_DT research_NN into_IN two_CD general_JJ areas_NNS :_: defending_VBG against_IN IP_NNP source_NN address_NN spoofing_NN ,_, and_CC defending_VBG against_IN
+rge_NN scale_NN attacks_NNS on_IN the_DT Internet_NN ,_, we_PRP focus_VBP on_IN these_DT four_CD categories_NNS ._.
+The_DT disease_NN key_JJ design_NN is_VBZ based_VBN on_IN the_DT following_JJ sources_NNS :_: 1_LS -RRB-_-RRB- survey_NN of_IN various_JJ attacks_NNS :_: worms_NNS -LRB-_-LRB- 28_CD ,_, 33_CD -RRB-_-RRB- ,_, denial_NN of_IN service_NN attacks_NN =_JJ -_: =[_NN 16_CD ,_, 17_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: and_CC port_JJ scans_NNS -LRB-_-LRB- 13_CD ,_, 18_CD -RRB-_-RRB- ;_: and_CC 2_LS -RRB-_-RRB- study_NN of_IN the_DT Internet_NN intrusion_NN characterization_NN based_VBN on_IN one-month_JJ DShield_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- data_NNS of_IN over_IN 600_CD million_CD scan_VBP records_NNS ._.
+The_DT format_NN of_IN disease_NN keys_NNS is_VBZ shown_VBN in_IN Figure_NNP 2_CD ._.
+ould_JJ track_NN access_NN patterns_NNS on_IN its_PRP$ site_NN and_CC selectively_RB redirect_VB requests_NNS for_IN rarely_RB requested_VBN URLs_NNS when_WRB the_DT number_NN of_IN requests_NNS exceed_VBP a_DT threshold_NN or_CC when_WRB they_PRP come_VBP from_IN BGP_NN prefixes_NNS never_RB seen_VBN before_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, this_DT requires_VBZ state_NN maintenance_NN about_IN URL_NN access_NN patterns_NNS and_CC tuning_NN when_WRB the_DT site_NN changes_NNS ._.
+6_CD Impairment_NN factors_NNS Below_IN we_PRP list_VBP various_JJ factors_NNS to_TO be_VB kept_VBN in_IN mind_NN while_IN considering_VBG impairmen_NNS
+ce_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+In_IN times_NNS of_IN extreme_JJ load_NN ,_, traditional_JJ static_JJ content_NN caching_NN techniques_NNS can_MD be_VB augmented_VBN with_IN more_RBR active_JJ approaches_NNS to_TO better_RBR meet_VB demand_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Peer-to-peer_JJ caching_NN schemes_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, adaptive_JJ CDNs_NNS =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC cooperative_JJ networking_NN models_NNS -LRB-_-LRB- where_WRB clients_NNS act_VBP as_IN proxy_JJ cache_NN servers_NNS to_TO newer_JJR clients_NNS -RRB-_-RRB- -LRB-_-LRB- 2_CD -RRB-_-RRB- are_VBP examples_NNS of_IN approaches_NNS to_TO mitigate_VB the_DT effects_NNS of_IN heavy_JJ request_NN loads_NNS for_IN static_JJ Web_NN content_NN ._.
+As_IN
+inst_IN the_DT markings_NNS in_IN the_DT attack_NN list_NN ._.
+It_PRP is_VBZ outside_IN the_DT scope_NN of_IN this_DT paper_NN to_TO define_VB an_DT algorithm_NN for_IN attack_NN packet_NN identification_NN ._.
+Jung_NNP ,_, Krishnamurthy_NNP and_CC Rabinovich_NNP further_RB discuss_VB this_DT problem_NN in_IN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Assuming_VBG such_JJ an_DT algorithm_NN ,_, we_PRP model_VBP our_PRP$ DDoS_NN attack_NN in_IN two_CD phases_NNS ._.
+In_IN the_DT first_JJ phase_NN ,_, the_DT learning_NN phase_NN ,_, all_DT packets_NNS are_VBP assumed_VBN to_TO be_VB analyzed_VBN by_IN the_DT victim_NN ,_, using_VBG the_DT packet_NN identification_NN func_NN
+the_DT download_NN time_NN of_IN pre-selected_JJ pages_NNS through_IN various_JJ CDNs_NNS ,_, whereas_IN we_PRP consider_VBP the_DT CDN_NNP effects_NNS on_IN a_DT Web_NN site_NN ._.
+Jung_NNP et_FW al._FW investigate_VBP the_DT ability_NN of_IN a_DT CDN_NN to_TO protect_VB a_DT Web_NN site_NN from_IN a_DT flash_NN crowd_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN they_PRP study_VBP known_JJ flash_NN events_NNS that_WDT occurred_VBD on_IN two_CD Web_NN sites_NNS ,_, we_PRP consider_VBP a_DT large_JJ set_NN of_IN Web_NN sites_NNS during_IN a_DT random_JJ 20_CD hour_NN time_NN period_NN ._.
+Ranuak_NNP et_FW al._FW studied_VBD the_DT benefits_NNS of_IN proxy_JJ caches_NNS on_IN th_DT
+ood_NN solution_NN ._.
+But_CC some_DT drawbacks_NNS may_MD hinder_VB its_PRP$ application_NN to_TO DNS_NNP because_IN of_IN the_DT false_JJ negative_JJ ratio_NN and_CC hop_NN count_NN learning_VBG issue_NN ._.
+Instead_RB of_IN using_VBG path_NN information_NN to_TO differentiate_VB packets_NNS ,_, papers_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- propose_VBP to_TO profile_VB the_DT source_NN IP_NNP addresses_NNS of_IN traffic_NN it_PRP receives_VBZ under_IN normal_JJ conditions_NNS to_TO create_VB a_DT normal_JJ client_NN model_NN ._.
+When_WRB DoS_NN attack_NN is_VBZ suspected_VBN ,_, packets_NNS whose_WP$ source_NN IP_NNP address_NN is_VBZ not_RB c_NN
+,_, whether_IN planned_VBN ones_NNS such_JJ as_IN sport_NN events_NNS -LRB-_-LRB- e.g._FW FIFA_NNP 1998_CD world_NN cup_NN event_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- -RRB-_-RRB- or_CC unplanned_JJ ones_NNS such_JJ as_IN ,_, terrorists_NNS attack_NN in_IN September_NNP ,_, 11_CD ,_, 2001_CD overwhelmed_VBD major_JJ news_NN sites_NNS such_JJ as_IN MSNBC_NNP and_CC CNN_NNP =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT push-model_NN fails_VBZ to_TO take_VB the_DT advantage_NN of_IN the_DT collaborative_JJ power_NN of_IN the_DT Internet_NN ,_, currently_RB ,_, 90_CD %_NN of_IN Internet_NNP resources_NNS are_VBP invisible_JJ and_CC untapped_JJ -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+It_PRP often_RB uses_VBZ a_DT one-to-many_JJ model_NN where_WRB th_DT
+uld_JJ only_JJ act_NN as_IN a_DT first-step_JJ defense_NN with_IN reference_NN to_TO our_PRP$ attacks_NNS ._.
+Distinguishing_VBG a_DT DDoS_NN attack_NN from_IN a_DT flash_NN crowd_NN has_VBZ also_RB proven_VBN difficult_JJ ._.
+Two_CD properties_NNS to_TO make_VB the_DT distinction_NN are_VBP identified_VBN in_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- a_DT DoS_NN event_NN is_VBZ due_JJ to_TO an_DT increase_NN in_IN the_DT request_NN rates_NNS for_IN a_DT small_JJ group_NN of_IN clients_NNS while_IN flash_NN crowds_NNS are_VBP due_JJ to_TO increase_VB in_IN the_DT number_NN of_IN clients_NNS ;_: and_CC -LRB-_-LRB- 2_LS -RRB-_-RRB- DoS_NN clients_NNS originate_VBP from_IN new_JJ client_NN
+Within_IN a_DT couple_NN of_IN years_NNS ,_, several_JJ companies_NNS became_VBD specialists_NNS in_IN providing_VBG fast_JJ and_CC reliable_JJ delivery_NN of_IN content_NN ,_, and_CC CDNs_NNS became_VBD a_DT huge_JJ market_NN for_IN generating_VBG large_JJ revenues_NNS ._.
+The_DT flash_NN crowd_NN events_NNS =_JJ -_: =[_NN 97_CD -RRB-_-RRB- -_: =_SYM -_: like_IN the_DT 9\/11_CD incident_NN in_IN USA_NN -LRB-_-LRB- 98_CD -RRB-_-RRB- ,_, resulted_VBD in_IN serious_JJ caching_NN problems_NNS for_IN some_DT site_NN ._.
+This_DT influenced_VBD the_DT CDN_NNP providers_NNS to_TO invest_VB more_RBR in_IN CDN_NNP infrastructure_NN development_NN ,_, since_IN CDNs_NNS provide_VBP desired_VBN
+cket_NN passing_NN through_IN the_DT router_NN to_TO facilitate_VB the_DT traceback_NN of_IN even_RB low_JJ volume_NN flows_VBZ ,_, it_PRP is_VBZ too_RB expensive_JJ to_TO implement_VB this_DT scheme_NN ,_, especially_RB for_IN high_JJ throughput_NN networks_NNS ._.
+More_RBR recently_RB ,_, Jung_NNP et_FW al._FW =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: independently_RB discovered_VBD the_DT fact_NN that_IN most_JJS of_IN the_DT IP_NNP addresses_NNS in_IN a_DT flash_NN crowd_NN appeared_VBD at_IN the_DT web_NN site_NN before_RB ,_, while_IN very_RB few_JJ IP_NNP addresses_NNS in_IN distributed_VBN denial_NN of_IN service_NN attacks_NNS appeared_VBD in_IN the_DT
+ish_VB a_DT baseline_NN characterization_NN of_IN the_DT reliability_NN for_IN end-to-end_JJ short_JJ message_NN transfer_NN during_IN normal_JJ traffic_NN conditions_NNS ._.
+We_PRP then_RB examine_VBP reliability_NN during_IN stress_NN conditions_NNS of_IN ``_`` flash-crowd_JJ ''_'' events_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT are_VBP frequently_RB observed_VBN during_IN special_JJ occasions_NNS such_JJ as_IN the_DT New_NNP Year_NNP 's_POS Eve_NNP ._.
+Two_CD factors_NNS that_WDT may_MD critically_RB affect_VB reliability_NN of_IN SMS_NNP in_IN the_DT near_JJ future_NN are_VBP further_RB investigated_VBN ._.
+The_DT first_JJ is_VBZ b_NN
+time_NN to_TO collect_VB reliable_JJ request_NN statistics_NNS for_IN each_DT object_NN ._.
+Such_JJ a_DT long_JJ interval_NN though_IN may_MD not_RB be_VB available_JJ ,_, when_WRB a_DT new_JJ site_NN is_VBZ published_VBN to_TO the_DT Internet_NN and_CC should_MD be_VB protected_VBN from_IN ``_`` flash_NN crowds_NNS ''_'' =_SYM -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Moreover_RB ,_, the_DT popularity_NN of_IN each_DT object_NN varies_VBZ considerably_RB -LRB-_-LRB- 3_CD ,_, 6_CD -RRB-_-RRB- -LRB-_-LRB- Sect_NNP ._.
+IV_CD -RRB-_-RRB- ;_: for_IN the_DT WorldCup_FW ’98_FW trace_NN ,_, only_RB 40_CD %_NN of_IN the_DT ``_`` popular_JJ ''_'' objects_NNS of_IN the_DT one_CD day_NN remain_VBP ``_`` popular_JJ ''_'' and_CC the_DT next_JJ day_NN ._.
+In_FW additi_FW
+eralization_NN of_IN Combining_VBG to_TO Internet_NNP Services_NNPS The_DT tree_NN saturation_NN problem_NN due_JJ to_TO hot_JJ spot_NN access_NN patterns_NNS is_VBZ not_RB unique_JJ to_TO shared_JJ memory_NN systems_NNS ._.
+Congestion_NN generated_VBN by_IN flood_NN attacks_NNS and_CC flash_NN crowds_NNS =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: presents_VBZ similar_JJ challenges_NNS for_IN Internet_NN network_NN service_NN providers_NNS ._.
+In_IN -LRB-_-LRB- 36_CD -RRB-_-RRB- Mahajan_NNP et_FW al._FW propose_VBP a_DT technique_NN to_TO limit_VB the_DT disruption_NN generated_VBN by_IN 160shot_NN spot_NN congestion_NN on_IN network_NN traffic_NN with_IN ove_NN
+ly_RB if_IN a_DT flow_NN crosses_VBZ the_DT border_NN of_IN an_DT aggregation_NN interval_NN -LRB-_-LRB- which_WDT occurs_VBZ rarely_RB -RRB-_-RRB- ._.
+Furthermore_RB ,_, by_IN choosing_VBG the_DT same_JJ packet_NN size_NN for_IN all_DT packets_NNS ,_, we_PRP preserve_VBP -LRB-_-LRB- on_IN average_NN -RRB-_-RRB- the_DT often_RB assumed_VBN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =--RRB-_NN constant_JJ throughput_NN property_NN of_IN flows_NNS even_RB if_IN they_PRP are_VBP split_VBN over_IN two_CD intervals_NNS ._.
+Recently_RB ,_, the_DT authors_NNS of_IN -LRB-_-LRB- 20_CD -RRB-_-RRB- presented_VBD empirical_JJ evidence_NN that_IN the_DT constant_JJ throughput_NN property_NN is_VBZ a_DT good_JJ approximat_NN
+eralization_NN of_IN Combining_VBG to_TO Internet_NNP Traffic_NNP The_DT tree_NN saturation_NN problem_NN due_JJ to_TO hot_JJ spot_NN access_NN patterns_NNS is_VBZ not_RB unique_JJ to_TO shared_JJ memory_NN systems_NNS ._.
+Congestion_NN generated_VBN by_IN flood_NN attacks_NNS and_CC flash_NN crowds_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: presents_VBZ similar_JJ challenges_NNS for_IN Internet_NNP Service_NNP Providers_NNP ._.
+In_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- Mahajan_NNP et_FW al._FW propose_VBP a_DT technique_NN to_TO limit_VB the_DT disruption_NN generated_VBN by_IN hot_JJ spot_NN congestion_NN on_IN network_NN traffic_NN with_IN overlapping_VBG com_NN
+ndling_VBG hot_JJ objects_NNS orsflash_JJ crowds_NNS wo_MD n't_RB be_VB a_DT problem_NN ._.
+Hot_JJ objects_NNS are_VBP objects_NNS thatsare_RB requested_VBD for_IN download_NN a_DT lot_NN ,_, when_WRB a_DT large_JJ amount_NN of_IN usersswants_NNS to_TO have_VB the_DT same_JJ file_NN ,_, flash_NN crowds_NNS arise_VBP ,_, see_VBP =_JJ -_: =_JJ -LRB-_-LRB- JUN02_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+sLoad_NN has_VBZ to_TO be_VB balanced_VBN ,_, which_WDT will_MD lead_VB to_TO the_DT fact_NN that_WDT thereswo_VBZ n't_RB be_VB any_DT servers_NNS withsa_NN veryshigh_NN or_CC a_DT very_RB low_JJ load_NN ._.
+sDecisionsshavestosbesbasedsonsinformationsthatsisslocallysavailable_NN ,_, so_IN that_IN
+continual_JJ ,_, reliable_JJ ,_, and_CC available_JJ information_NN services_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Obviously_RB ,_, current_JJ Internet_NNP information_NN systems_NNS have_VBP failed_VBN to_TO fulfill_VB the_DT stringent_JJ Internet_NNP users_NNS '_POS requirements_NNS in_IN such_JJ situations_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Consequently_RB there_EX are_VBP increasing_VBG needs_NNS to_TO design_VB an_DT assured_VBN information_NN system_NN that_WDT provides_VBZ information_NN that_WDT meets_VBZ the_DT users_NNS '_POS demands_NNS ._.
+To_TO ride_VB out_RP the_DT challenges_NNS above_IN ,_, we_PRP have_VBP been_VBN proposed_VBN the_DT c_NN
+eralization_NN of_IN Combining_VBG to_TO Internet_NNP Traffic_NNP The_DT tree_NN saturation_NN problem_NN due_JJ to_TO hot_JJ spot_NN access_NN patterns_NNS is_VBZ not_RB unique_JJ to_TO shared_JJ memory_NN systems_NNS ._.
+Congestion_NN generated_VBN by_IN flood_NN attacks_NNS and_CC flash_NN crowds_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: presents_VBZ similar_JJ challenges_NNS for_IN Internet_NNP Service_NNP Providers_NNP ._.
+In_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- Mahajan_NNP et_FW al._FW propose_VBP a_DT technique_NN to_TO limit_VB the_DT disruption_NN generated_VBN by_IN hot_JJ spot_NN congestion_NN on_IN network_NN traffic_NN with_IN overlapping_VBG com_NN
+ing_VBG any_DT observed_VBN persistency_NN properties_NNS of_IN these_DT large_JJ Internet_NNP flows_NNS ._.
+Examples_NNS that_WDT follow_VBP this_DT basic_JJ approach_NN to_TO traffic_NN engineering_NN include_VBP ,_, among_IN others_NNS ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- measurement_NN support_NN and_CC accounting_NN -RRB-_-RRB- ,_, =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- Web_NN server_NN overload_NN control_NN -RRB-_-RRB- ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- -LRB-_-LRB- routing_VBG -RRB-_-RRB- ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- -LRB-_-LRB- scheduling_NN -RRB-_-RRB- ,_, etc._NN ._.
+Clearly_RB ,_, such_JJ approaches_NNS are_VBP more_RBR viable_JJ and_CC effective_JJ if_IN a_DT substantial_JJ portion_NN of_IN the_DT overall_JJ traffic_NN in_IN a_DT bin_NN is_VBZ due_JJ to_TO a_DT few_JJ he_PRP
+end-point_JJ metrics_NNS include_VBP average_JJ connection_NN establishment_NN time_NN -LRB-_-LRB- E_NN -RRB-_-RRB- and_CC server_NN connection_NN completion_NN rates_NNS -LRB-_-LRB- E_NN -RRB-_-RRB- while_IN those_DT observable_JJ at_IN the_DT server-side_NN include_VBP the_DT per_IN client_NN connection_NN request_NN rate_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- I_NN -RRB-_-RRB- and_CC per-client_JJ goodput_NN -LRB-_-LRB- I_NN -RRB-_-RRB- ._.
+Link-level_JJ flow_NN metrics_NNS include_VBP the_DT per_IN flow_NN or_CC perconnection_NN throughput_NN observed_VBN at_IN the_DT link_NN ._.
+Examples_NNS of_IN end-to-end_JJ flow_NN metrics_NNS include_VBP those_DT used_VBN by_IN protocols_NNS like_IN
+ing_RB ,_, Amsterdam_NNP ,_, Netherlands_NNP ,_, December_NNP 4-6_CD ,_, 2006_CD flood_NN the_DT grid_NN from_IN all_DT nodes_NNS incurs_VBZ far_RB too_RB much_JJ overhead_NN ,_, and_CC -LRB-_-LRB- 2_LS -RRB-_-RRB- letting_VBG too_RB many_JJ schedulers_NNS know_VBP about_IN remote_JJ resources_NNS could_MD lead_VB to_TO flashcrowding_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Therefore_RB ,_, we_PRP aim_VBP for_IN ``_`` non-uniform_JJ ''_'' coverage_NN ,_, where_WRB the_DT frequency_NN of_IN updates_NNS at_IN a_DT node_NN varys_VBZ inversely_RB with_IN the_DT distance_NN from_IN the_DT dissemination_NN source_NN ._.
+Our_PRP$ recent_JJ work_NN focuses_VBZ on_IN building_NN adaptivity_NN
+because_IN it_PRP can_MD lead_VB to_TO schedulers_NNS that_WDT select_VBP nearby_JJ resources_NNS for_IN the_DT applications_NNS they_PRP are_VBP mapping_VBG onto_IN the_DT grid_NN ,_, which_WDT can_MD reduce_VB application_NN startup_NN costs_NNS and_CC avoid_VB problems_NNS such_JJ as_IN flashcrowding_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, when_WRB nearby_JJ resources_NNS can_MD not_RB satisfy_VB local_JJ queries_NNS ,_, it_PRP may_MD be_VB advantageous_JJ to_TO advertise_VB to_TO select_VB remote_JJ regions_NNS of_IN the_DT grid_NN ,_, without_IN necessarily_RB also_RB going_VBG through_IN all_DT intermediate_JJ nodes_NNS ._.
+ystems_NNS is_VBZ imposed_VBN by_IN flash_NN crowds_NNS -LRB-_-LRB- i.e._FW ,_, sudden_JJ massive_JJ number_NN of_IN non-malicious_JJ requests_NNS to_TO the_DT same_JJ server_NN -RRB-_-RRB- ._.
+A_DT number_NN of_IN attempts_NNS to_TO mitigate_VB flashcrowds_NNS have_VBP been_VBN proposed_VBN ._.
+For_IN example_NN ,_, Jung_NNP et_FW al._FW =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: find_VB characteristics_NNS of_IN flash_NN crowds_NNS ._.
+They_PRP use_VBP these_DT characteristics_NNS to_TO design_VB a_DT dynamic_JJ load-balancing_JJ algorithm_NN for_IN Web_NN caches_NNS ._.
+Chen_NNP et_FW al._FW -LRB-_-LRB- 4_CD -RRB-_-RRB- present_VBP a_DT flash_NN crowd_NN mitigation_NN system_NN based_VBN on_IN requ_NN
+128_CD bits_NNS instead_RB of_IN 32_CD bits_NNS is_VBZ transparent_JJ to_TO the_DT Pi_NN scheme_NN ._.
+17sVII_NN ._.
+Background_NN and_CC Related_NNP Work_NNP There_EX have_VBP been_VBN several_JJ studies_NNS of_IN the_DT frequency_NN and_CC nature_NN of_IN Internet_NN DoS_NN attacks_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Many_JJ approaches_NNS have_VBP been_VBN proposed_VBN for_IN securing_VBG against_IN DoS_NN and_CC DDoS_NN attacks_NNS ._.
+Ferguson_NNP and_CC Senie_NNP propose_VBP to_TO deploy_VB network_NN ingress_NN filtering_VBG to_TO limit_VB spoofing_NN of_IN the_DT source_NN IP_NNP address_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+However_RB
+ey_NN poison_NN more_JJR than_IN one_CD attackers_NNS address_NN -RRB-_-RRB- during_IN the_DT flooding_NN phase_NN of_IN their_PRP$ attack_NN ._.
+VII_NN ._.
+Related_NNP Work_NNP There_EX have_VBP been_VBN several_JJ studies_NNS of_IN the_DT frequency_NN and_CC nature_NN of_IN Internet_NN DoS_NN attacks_NNS -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 28_CD -RRB-_-RRB- ._.
+Many_JJ approaches_NNS have_VBP been_VBN proposed_VBN for_IN securing_VBG against_IN DoS_NN and_CC DDoS_NN attacks_NNS ._.
+Ferguson_NNP and_CC Senie_NNP propose_VBP to_TO deploy_VB network_NN ingress_NN filtering_VBG to_TO limit_VB spoofing_NN of_IN the_DT source_NN IP_NNP address_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+Ho_NNP
+tronics_NNS ,_, particularly_RB disk_NN drives_NNS ,_, by_IN 50_CD %_NN -LRB-_-LRB- 115_CD ,_, 7_CD ,_, 28_CD -RRB-_-RRB- •_FW Decrease_FW response_NN times_NNS to_TO transients_NNS and_CC emergencies_NNS ._.
+Data_NN center_NN conditions_NNS can_MD change_VB rapidly_RB ._.
+Sharp_JJ transient_JJ spikes_NNS in_IN server_NN utilization_NN =_JJ -_: =[_NN 10_CD ,_, 69_CD -RRB-_-RRB- -_: =_JJ -_: or_CC the_DT failure_NN of_IN a_DT CRAC_NN unit_NN can_MD upset_VB the_DT current_JJ environment_NN in_IN a_DT matter_NN of_IN minutes_NNS or_CC even_RB seconds_NNS ._.
+•_JJ Increase_NN densities_NNS and_CC improve_VB operational_JJ efficiencies_NNS ._.
+A_DT high_JJ ratio_NN of_IN cooling_JJ power_NN to_TO com_NN
+rred_VBN to_TO as_IN ``_`` superspreaders_NNS ''_'' in_IN literature_NN -LRB-_-LRB- 122_CD -RRB-_-RRB- ._.
+85sworkload_NN and_CC improve_VB the_DT overall_JJ performance_NN of_IN the_DT network_NN ._.
+A_DT number_NN of_IN other_JJ variations_NNS of_IN the_DT above_JJ applications_NNS ,_, such_JJ as_IN detecting_VBG flash_NN crowds_NNS =_JJ -_: =[_NN 67_CD -RRB-_-RRB- -_: =_JJ -_: and_CC reflector_NN attacks_NNS -LRB-_-LRB- 97_CD -RRB-_-RRB- ,_, also_RB motivate_VBP this_DT problem_NN ._.
+Techniques_NNS proposed_VBN in_IN the_DT literature_NN for_IN solving_VBG this_DT problem_NN typically_RB maintain_VBP per-flow_JJ state_NN ,_, and_CC hereby_RB suffer_VBP the_DT ``_`` too_RB much_JJ data_NN ''_'' problem_NN
+用扩展的三维_NNP Bloom_NNP Filter表存储_NN SDIAD_NN -LRB-_-LRB- source_NN and_CC destination_NN IP_NNP address_NN database_NN -RRB-_-RRB- ,_, 以节省存储空间和提高查找效率_NN ,_, 并采用_FW 改进的滑动窗口无参数_FW CUSUM算法对新的源目的_FW IP地址对进行累积分析_NN ,_, 以快速而准确地检测出_FW DDos攻击_FW ._.
+2_CD 策略描述_FW 研究表明_FW ,_, 现在的DDos攻击都是高分布式和高源IP地址伪装的_NN -LRB-_-LRB- 通过随机函数产生IP地址_NN -RRB-_-RRB- =_JJ -_: =[_NN 26,27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, 在一次s孙知信_FW 等_FW :_: 基于源目的_NNP IP_NNP 地址对数据库的防范_FW DDos_FW 攻击策略_FW 2615_CD DDos攻击中_NN ,_, 只有_CD 0.6_CD %_NN ~_NN 14_CD %_NN 的IP地址是在以前出现过的_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+Jung_NN -LRB-_-LRB- 26,27_CD -RRB-_-RRB- 发现_NNP ,_, 在一次正常的_NNP ``_`` flash_NN crowd_NN ''_'' 中_NN ,_, 大约_FW 有_FW 82.9_CD %_NN 的IP曾经发送过请求_NN ._.
+对网络流量的统计发现_NN ,_, 网络中出现的IP地址有很大的概率在一定时期内重复_NN 出现_NN ,_, 这就隐含着可以根据历史IP来检测异常_NN
+4_LS -RRB-_-RRB- ._.
+In_IN times_NNS of_IN extremely_RB heavy_JJ load_NN ,_, traditional_JJ caching_NN techniques_NNS can_MD be_VB augmented_VBN with_IN more_RBR active_JJ approaches_NNS to_TO better_RBR meet_VB demand_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+Peer-to-Peer_JJR caching_NN schemes_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, the_DT use_NN of_IN adaptive_JJ CDNs_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Cooperative_NNP networking_VBG models_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- where_WRB clients_NNS act_VBP as_IN proxy_JJ cache_NN servers_NNS to_TO newer_JJR clients_NNS have_VBP all_DT been_VBN investigated_VBN as_IN approaches_NNS to_TO mitigate_VB the_DT effects_NNS of_IN heavy_JJ request_NN loads_NNS for_IN static_JJ cont_NN
+ts_NNS and_CC the_DT layout_NN of_IN the_DT data_NNS center_NN --_: and_CC temperature-aware_JJ IT_NNP components_NNS can_MD decrease_VB cooling_JJ costs_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, increase_NN hardware_NN reliability_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, and_CC decrease_NN response_NN times_NNS to_TO transients_NNS and_CC emergencies_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Significant_JJ recent_JJ work_NN in_IN data_NNS center_NN management_NN focuses_VBZ on_IN formulating_VBG effective_JJ thermal_JJ management_NN policies_NNS ;_: Multiple_JJ projects_NNS reduce_VBP data_NNS center_NN cooling_NN costs_NNS ,_, such_JJ as_IN optimizing_VBG cooling_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, mi_FW
+nt-side_JJ computations_NNS for_IN handling_VBG HTTP_NNP cookies_NNS and_CC solving_VBG cryptographic_JJ challenges_NNS ._.
+Recent_JJ surveys_NNS indicate_VBP that_IN at_IN least_JJS 97_CD %_NN of_IN the_DT client_NN browsers_NNS support_VBP JavaScript_NNP and_CC Java_NNP -LRB-_-LRB- 43_CD -RRB-_-RRB- -LRB-_-LRB- 38_CD -RRB-_-RRB- ._.
+Jung_NNP et_FW al._FW =_SYM -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: characterizes_VBZ the_DT differences_NNS between_IN flash_NN crowds_NNS and_CC DoS_NN attacks_NNS ._.
+The_DT paper_NN proposes_VBZ to_TO use_VB client_NN IP_NNP address_NN based_VBN clustering_NN and_CC file_NN reference_NN characteristics_NNS to_TO distinguish_VB legitimate_JJ requests_NNS
+web_NN servers_NNS and_CC routers_NNS to_TO a_DT virtual_JJ standstill_NN ._.
+Papers_NNP on_IN hotspot_NN properties_NNS generally_RB refer_VBP to_TO their_PRP$ spontaneity_NN and_CC their_PRP$ sudden_JJ ,_, or_CC nearly_RB discontinuous_JJ rampup_NN of_IN traffic_NN -LRB-_-LRB- 1_CD ,_, 17_CD -RRB-_-RRB- ._.
+But_CC as_IN noted_VBN in_IN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, this_DT last_JJ property_NN is_VBZ only_RB valid_JJ on_IN large_JJ time_NN scales_NNS ,_, much_RB larger_JJR than_IN the_DT time_NN scale_NN needed_VBN to_TO react_VB to_TO an_DT approaching_VBG hotspot_NN ._.
+That_IN a_DT hotspot_NN is_VBZ visible_JJ in_IN the_DT distance_NN can_MD be_VB explained_VBN in_IN a_DT numb_JJ
+ing_VBG any_DT observed_VBN persistency_NN properties_NNS of_IN these_DT large_JJ Internet_NNP flows_NNS ._.
+Examples_NNS that_WDT follow_VBP this_DT basic_JJ approach_NN to_TO traffic_NN engineering_NN include_VBP ,_, among_IN others_NNS ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- measurement_NN support_NN and_CC accounting_NN -RRB-_-RRB- ,_, =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- Web_NN server_NN overload_NN control_NN -RRB-_-RRB- ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- -LRB-_-LRB- routing_VBG -RRB-_-RRB- ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- -LRB-_-LRB- scheduling_NN -RRB-_-RRB- ,_, etc._NN ._.
+Clearly_RB ,_, such_JJ approaches_NNS are_VBP more_RBR viable_JJ and_CC effective_JJ if_IN a_DT substantial_JJ portion_NN of_IN the_DT overall_JJ traffic_NN in_IN a_DT bin_NN is_VBZ due_JJ to_TO a_DT few_JJ he_PRP
+cult_NN is_VBZ the_DT situation_NN ,_, called_VBD a_DT flash_NN crowd_NN ._.
+A_DT flash_NN crowd_NN is_VBZ a_DT large_JJ volume_NN of_IN legitimate_JJ access_NN requests_NNS from_IN all_DT legitimate_JJ clients_NNS in_IN a_DT sense_NN that_IN the_DT sheer_JJ volume_NN of_IN requests_NNS overwhelms_VBZ a_DT server_NN =_JJ -_: =[_NN 15_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT primary_JJ cause_NN of_IN the_DT performance_NN degradation_NN during_IN a_DT flash_NN crowd_NN is_VBZ thrashing_VBG ,_, named_VBN ``_`` receive_VB live-lock_NN ''_'' by_IN Mogul_NNP -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+During_IN a_DT receive_VBP live-lock_NN ,_, the_DT server_NN throughput_NN could_MD drop_VB even_RB close_JJ t_NN
+reasonably_RB approximated_VBN ,_, but_CC also_RB to_TO new_JJ workloads_NNS as_IN user_NN behaviors_NNS change_VBP ,_, new_JJ kinds_NNS of_IN hacks_NNS ,_, denial-of-service_JJ attacks_NNS ,_, and_CC unanticipated_JJ flash_NN crowds_NNS ,_, giving_VBG peak_NN loads_NNS many_JJ times_NNS normal_JJ demand_NN =_JJ -_: =[_NN 76_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Moreover_RB ,_, the_DT variety_NN of_IN inputs_NNS users_NNS ,_, much_RB less_RBR malicious_JJ hackers_NNS ,_, can_MD send_VB to_TO a_DT service_NN exacerbate_VB this_DT unpredictability_NN ._.
+Combining_VBG this_DT new_JJ workload_NN with_IN the_DT large_JJ scale_NN of_IN the_DT production_NN system_NN
+brownouts_NNS or_CC cooling_JJ failures_NNS can_MD lead_VB to_TO a_DT reduced_VBN mean_NN time_NN between_IN failure_NN and_CC service_NN outages_NNS ,_, as_IN servers_NNS that_WDT overheat_VBP will_MD automatically_RB shut_VB down_RP ._.
+Furthermore_RB ,_, increases_NNS in_IN server_NN utilization_NN =_JJ -_: =[_NN 7_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: or_CC the_DT failure_NN of_IN a_DT CRAC_NN unit_NN can_MD upset_VB the_DT current_JJ environment_NN in_IN a_DT matter_NN of_IN minutes_NNS or_CC even_RB seconds_NNS ,_, requiring_VBG rapid_JJ response_NN strategies_NNS ,_, often_RB faster_RBR than_IN what_WP is_VBZ possible_JJ at_IN a_DT facilities_NNS level_NN ._.
+from_IN a_DT practice_NN perspective_NN ,_, it_PRP is_VBZ usually_RB unnecessary_JJ to_TO do_VB so_RB since_IN the_DT set_NN of_IN IP_NNP addresses_NNS which_WDT frequently_RB visits_VBZ a_DT normal_JJ site_NN usually_RB takes_VBZ a_DT relatively_RB small_JJ portion_NN of_IN all_DT live_JJ IP_NNP addresses_NNS -LRB-_-LRB- =_JJ -_: =_JJ Jung_NNP et_FW al._FW ,_, 2002_CD -_: =_JJ -_: ;_: Peng_NNP et_FW al._FW ,_, 2003_CD -RRB-_-RRB- ._.
+At_IN the_DT same_JJ time_NN ,_, building_VBG such_PDT a_DT mapping_NN table_NN containing_VBG only_RB frequently_RB contacted_VBN clients_NNS will_MD greatly_RB reduce_VB the_DT storage_NN requirement_NN and_CC lookup_NN time_NN of_IN an_DT Internet_NN server_NN ._.
+Th_NN
+,_, while_IN CDNs_NNS usually_RB require_VBP extremely_RB high_JJ investment_NN on_IN delivery_NN infrastructures_NNS and_CC demand_VB a_DT large_JJ amount_NN of_IN resources_NNS to_TO achieve_VB scalability_NN ._.
+As_IN a_DT result_NN ,_, it_PRP often_RB suffers_VBZ the_DT flash_NN crowd_NN problem_NN =_JJ -_: =[_NN 12_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: due_JJ to_TO its_PRP$ fixed_JJ resource_NN allocation_NN ._.
+On_IN the_DT other_JJ hand_NN ,_, P2P_NN streaming_NN approaches_NNS harvest_VBP peer_VB resources_NNS for_IN scalability_NN and_CC availability_NN and_CC thus_RB service_VB more_JJR clients_NNS with_IN low_JJ costs_NNS ._.
+Many_JJ P2P_NN stream_NN
+haviors_NNS ._.
+As_IN pointed_VBN out_RP in_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, there_EX are_VBP unfortunately_RB no_DT comprehensive_JJ studies_NNS yet_RB that_WDT provide_VBP detailed_JJ statistical_JJ descriptions_NNS of_IN a_DT broad_JJ set_NN of_IN volume_NN anomalies_NNS ._.
+There_EX are_VBP a_DT handful_NN of_IN studies_NNS =_JJ -_: =[_NN 2_CD ,_, 11_CD ,_, 16_CD ,_, 9_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT provide_VBP useful_JJ pieces_NNS of_IN information_NN towards_IN this_DT end_NN ._.
+The_DT characterization_NN part_NN of_IN these_DT studies_NNS often_RB touch_VBP briefly_NN on_IN a_DT wide_JJ variety_NN of_IN metrics_NNS ,_, from_IN attack_NN rate_NN and_CC duration_NN to_TO others_NNS such_PDT a_DT
+umber_NN of_IN ICMP_NN packets_NNS ,_, toward_IN a_DT victim_NN server_NN or_CC a_DT subnet_NN is_VBZ greatly_RB increased_VBN ._.
+To_TO enhance_VB the_DT accuracy_NN of_IN attack_NN detection_NN ,_, other_JJ techniques_NNS such_JJ as_IN source_NN address_NN distribution_NN within_IN PS_NN may_MD be_VB used_VBN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =-[_NN 17_CD -RRB-_-RRB- ._.
+Once_RB the_DT attackbearing_VBG PS_NN is_VBZ known_VBN ,_, any_DT rate-limiting_JJ algorithm_NN can_MD be_VB used_VBN ._.
+Here_RB we_PRP use_VBP a_DT simple_JJ rate_NN control_NN algorithm_NN as_IN following_VBG ._.
+We_PRP denote_VBP Number_NN of_IN observed_VBN PS_NNP 's_POS =_JJ P_NN The_DT maximum_NN link_NN
+of_IN different_JJ CDNs_NNS ._.
+Unlike_IN our_PRP$ work_NN ,_, Krishnamurthy_NNP et_FW al._FW are_VBP interested_JJ in_IN the_DT download_NN time_NN of_IN pre-selected_JJ pages_NNS through_IN various_JJ CDNs_NNS ,_, whereas_IN we_PRP consider_VBP the_DT CDN_NNP effects_NNS on_IN a_DT Web_NN site_NN ._.
+Jung_NNP et_FW al._FW =_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: investigate_VB the_DT UNCORRECTED_JJ PROOF_NN 74_CD 75_CD 76_CD 77_CD 78_CD 79_CD 80_CD 81_CD 82_CD 83_CD 84_CD 85_CD 86_CD 87_CD 88_CD 89_CD 90_CD 91_CD 92_CD 93_CD 94_CD 95_CD 96_CD 97_CD 98 99 100 101_CD 102 103 104 105_CD 106 107 108 109_CD 110 111 112 113_CD 114 115 116 117_CD 118_CD 119sAUTHOR_NN '_''
+cking_NN inbalances_NNS between_IN the_DT two_CD directions_NNS of_IN traffic_NN using_VBG a_DT data_NN structure_NN that_WDT adapts_VBZ to_TO the_DT currentdistribution_NN of_IN destination_NN addresses_NNS ._.
+Jung_NNP et_FW al._FW use_NN mappings_NNS from_IN IP_NNP addresses_NNS to_TO AS_JJ numbers_NNS =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: to_TO distinguishbetween_VB flooding_NN attacks_NNS and_CC flash_NN crowds_NNS ._.
+2.2_CD Differentiating_VBG between_IN the_DT attack_NN andthe_NN legitimate_JJ traffic_NN Some_DT denial_NN of_IN service_NN attacks_NNS achieve_VBP their_PRP$ goals_NNS withrelatively_RB little_JJ traf_NN
+his_PRP$ time_NN ,_, but_CC that_IN there_EX had_VBD better_RBR be_VB a_DT better_JJR answer_NN the_DT next_JJ time_NN ._.
+Twenty_CD years_NNS have_VBP now_RB passed_VBN and_CC unfortunately_RB ,_, there_EX is_VBZ no_DT better_JJR answer_NN ._.
+As_IN evidenced_VBN with_IN the_DT Nimda_NNP ,_, Code_NNP Red_NNP ,_, and_CC SQL_NN Slammer_NN =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD ,_, 6_CD -RRB-_-RRB- -_: =_JJ -_: worms_NNS ,_, the_DT Internet_NNP still_RB efficiently_RB spreads_VBZ worms_NNS and_CC viruses_NNS ._.
+As_IN recently_RB re_FW ∗_FW This_DT material_NN is_VBZ supported_VBN in_IN part_NN by_IN the_DT National_NNP Science_NNP Foundation_NNP under_IN Grant_NNP ANI-0230960_NN and_CC the_DT generous_JJ donatio_NN
+The_DT sudden_JJ increase_NN of_IN legitimate_JJ traffic_NN is_VBZ called_VBN flash_NN crowd_NN ._.
+There_EX are_VBP studies_NNS for_IN distinguishing_VBG an_DT attack_NN from_IN flash_NN crowd_NN by_IN observing_VBG the_DT subnet_JJ prefix_NN distribution_NN for_IN source_NN IP_NNP addresses_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =-[_NN 32_CD -RRB-_-RRB- ._.
+However_RB ,_, this_DT method_NN has_VBZ two_CD challenges_NNS ._.
+First_RB it_PRP is_VBZ necessary_JJ to_TO pre-establish_VB the_DT normal_JJ traffic_NN pattern_NN ,_, which_WDT is_VBZ cumbersome_JJ and_CC may_MD not_RB be_VB stable_JJ for_IN some_DT sites_NNS ._.
+Further_RB if_IN the_DT attacker_NN gene_NN
+common_JJ ``_`` low-profile_JJ ''_'' nature_NN ._.
+This_DT IP_NNP fingerprint_NN feature_NN can_MD be_VB utilized_VBN in_IN many_JJ aspects_NNS of_IN management_NN for_IN low-profile_JJ Web_NN servers_NNS such_JJ as_IN Web_NN QoS_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, admission_NN control_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, and_CC security_NN protection_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, etc._NN ._.
+The_DT remainder_NN of_IN the_DT paper_NN is_VBZ organized_VBN as_IN follows_VBZ ._.
+Section_NN 2_CD briefly_NN describes_VBZ the_DT procedure_NN of_IN data_NNS collection_NN ._.
+Section_NN 3_CD gives_VBZ a_DT broad_JJ view_NN of_IN the_DT spectrum_NN of_IN the_DT recorded_JJ IP_NNP addresses_NNS ._.
+Sect_VB
+Internet_NNP Measurement_NNP Conference_NNP 2005_CD 77s78_FW ance_FW the_DT workload_NN and_CC improve_VB the_DT overall_JJ performance_NN of_IN the_DT network_NN ._.
+A_DT number_NN of_IN other_JJ variations_NNS of_IN the_DT above_JJ applications_NNS ,_, such_JJ as_IN detecting_VBG flash_NN crowds_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: and_CC reflector_NN attacks_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, also_RB motivate_VBP this_DT problem_NN ._.
+Techniques_NNS proposed_VBN in_IN the_DT literature_NN for_IN solving_VBG this_DT problem_NN typically_RB maintain_VBP per-flow_JJ state_NN ,_, and_CC can_MD not_RB scale_VB to_TO high_JJ link_NN speeds_NNS of_IN 10_CD or_CC
+nd_NN performance_NN reasons_NNS ._.
+While_IN some_DT traffic_NN anomalies_NNS are_VBP relatively_RB benign_JJ and_CC tolerable_JJ ,_, others_NNS can_MD be_VB symptomatic_JJ of_IN potentially_RB serious_JJ problems_NNS such_JJ as_IN performance_NN bottlenecks_NNS due_JJ to_TO flash_VB crowds_NNS =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, network_NN element_NN failures_NNS ,_, malicious_JJ activities_NNS such_JJ as_IN denial_NN of_IN service_NN attacks_NNS -LRB-_-LRB- DoS_NN -RRB-_-RRB- -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, and_CC worm_NN propagation_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ._.
+It_PRP is_VBZ therefore_RB very_RB important_JJ to_TO be_VB able_JJ to_TO detect_VB traffic_NN anomalies_NNS accurate_JJ
+congest_VB the_DT network_NN access_NN link_NN ._.
+More_RBR seriously_RB ,_, a_DT larger-scale_JJ deployment_NN of_IN such_JJ attacks_NNS can_MD cause_VB an_DT uncontrolled_JJ increase_NN of_IN the_DT Internet_NN traffic_NN volumes_NNS and_CC more_RBR frequent_JJ flash_NN crowds_NNS at_IN servers_NNS =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, a_DT report_NN on_IN NLANR_NN web_NN caches_NNS pointed_VBD out_RP that_IN inappropriate_JJ settings_NNS of_IN Expires_NNS and_CC Last-Modified_JJ header_NN fields_NNS prevent_VBP ordinary_JJ caches_NNS from_IN effectively_RB dealing_VBG with_IN flash_NN crowds_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+congest_VB the_DT network_NN access_NN link_NN ._.
+More_RBR seriously_RB ,_, a_DT larger-scale_JJ deployment_NN of_IN such_JJ attacks_NNS can_MD cause_VB an_DT uncontrolled_JJ increase_NN of_IN the_DT Internet_NN traffic_NN volumes_NNS and_CC more_RBR frequent_JJ flash_NN crowds_NNS at_IN servers_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, a_DT report_NN on_IN NLANR_NN web_NN caches_NNS pointed_VBD out_RP that_IN inappropriate_JJ settings_NNS of_IN Expires_NNS and_CC Last-Modified_JJ header_NN fields_NNS prevent_VBP ordinary_JJ caches_NNS from_IN effectively_RB dealing_VBG with_IN flash_NN crowds_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+W_NN
+zation_NN -LRB-_-LRB- humans_NNS inhabiting_VBG other_JJ planets_NNS -RRB-_-RRB- ._.
+Second_RB ,_, the_DT ``_`` cool_JJ ''_'' site_NN of_IN the_DT day_NN ,_, which_WDT causes_VBZ severe_JJ network_NN and_CC server_NN congestions_NNS ,_, hops_VBZ from_IN one_CD site_NN to_TO another_DT ._.
+These_DT congestions_NNS ,_, called_VBN flash_NN crowds_NNS =_JJ -_: =[_NN 105_CD ,_, 134_CD -RRB-_-RRB- -_: =_JJ -_: ,_, are_VBP hard_JJ to_TO predict_VB ._.
+It_PRP is_VBZ not_RB possible_JJ to_TO quickly_RB deploy_VB additional_JJ bandwidth_NN and_CC server_NN resources_NNS to_TO avoid_VB their_PRP$ crippling_JJ effects_NNS ._.
+Caching_NN solutions_NNS can_MD address_VB these_DT two_CD problems_NNS ._.
+However_RB ,_, curre_NN
+the_DT victim_NN MR_NN and_CC are_VBP guaranteed_VBN to_TO be_VB present_JJ in_IN the_DT cache_NN with_IN a_DT large_JJ frequency_NN count_NN ._.
+s1568999093_NN 4_CD We_PRP can_MD distinguish_VB between_IN a_DT DoS_NN attack_NN and_CC link_NN congestion_NN using_VBG application_NN level_NN information_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP is_VBZ possible_JJ that_IN our_PRP$ scheme_NN can_MD misclassify_VB bursty_JJ flows_NNS as_IN an_DT attack_NN flow_NN ._.
+In_IN order_NN to_TO avoid_VB such_JJ false_JJ positives_NNS ,_, we_PRP compare_VBP the_DT frequency_NN count_NN of_IN this_DT flow_NN with_IN the_DT frequency_NN counts_NNS of_IN the_DT ot_NN
+regular_JJ changes_NNS in_IN traffic_NN patterns_NNS which_WDT may_MD not_RB be_VB obvious_JJ from_IN volume_NN alone_RB ._.
+For_IN example_NN ,_, the_DT subnet_JJ count_NN fingerprints_NNS provide_VBP valuable_JJ information_NN to_TO distinguish_VB a_DT flash_NN crowd_NN from_IN a_DT DDoS_NN attack_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP is_VBZ hard_JJ for_IN an_DT attacker_NN aiming_VBG to_TO orchestrate_VB a_DT DDoS_NN attack_NN on_IN a_DT single_JJ machine_NN or_CC on_IN the_DT ISP_NN infrastructure_NN to_TO circumvent_VB the_DT above_JJ mechanism_NN ._.
+Since_IN the_DT fingerprints_NNS at_IN each_DT router_NN keep_VB track_NN of_IN
+er_IN an_DT address_NN is_VBZ a_DT regular_JJ address_NN determines_VBZ its_PRP$ likelihood_NN of_IN being_VBG suspicious_JJ ._.
+We_PRP can_MD further_RB differentiate_VB between_IN a_DT suspicious_JJ and_CC legitimate_JJ source_NN address_NN by_IN considering_VBG its_PRP$ subnet_NN ._.
+Jung_NNP et_NNP al_NNP =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: observed_VBN that_IN a_DT new_JJ user_NN to_TO the_DT network_NN is_VBZ likely_JJ to_TO come_VB from_IN the_DT same_JJ subnet_NN as_IN a_DT regular_JJ user_NN ,_, while_IN a_DT worm_NN victim_NN is_VBZ much_RB less_RBR likely_JJ to_TO come_VB from_IN a_DT previously_RB seen_VBN subnet_NN ._.
+Hence_RB ,_, an_DT address_NN that_IN
+sioning_NN mitigates_VBZ the_DT negative_JJ effect_NN caused_VBN by_IN overload_NN but_CC at_IN very_RB high_JJ cost_NN ._.
+Moreover_RB ,_, simple_JJ over-provisioning_NN can_MD not_RB cope_VB with_IN flash_NN crowds_NNS ,_, the_DT typical_JJ events_NNS that_WDT often_RB overload_NN Web_NN sites_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN effective_JJ approaches_NNS to_TO overload_NN protection_NN in_IN Ecommerce_NNP Web_NN sites_NNS ,_, several_JJ admission_NN control_NN mechanisms_NNS have_VBP been_VBN proposed_VBN and_CC developed_VBN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+The_DT Web_NN traffic_NN of_IN E-commerce_NN is_VBZ session-b_NN
+problem_NN of_IN such_JJ external_JJ attacks_NNS on_IN the_DT infrastructure_NN -LRB-_-LRB- e.g._FW denial_NN of_IN service_NN attacks_NNS ,_, ``_`` link_VB clogging_VBG ''_'' ,_, etc._NN -RRB-_-RRB- ,_, we_PRP note_VBP that_IN solutions_NNS to_TO such_JJ attacks_NNS have_VBP been_VBN proposed_VBN in_IN several_JJ other_JJ works_NNS -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 66_CD ,_, 67_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Studying_VBG the_DT impact_NN and_CC ways_NNS to_TO integrate_VB different_JJ mechanisms_NNS against_IN attacks_NNS that_WDT target_VBP the_DT Surveyors_NNPS themselves_PRP is_VBZ then_RB still_RB to_TO be_VB considered_VBN in_IN our_PRP$ detections_NNS mechanisms_NNS ._.
+In_IN chapter_NN 5_CD ,_, we_PRP als_VBP
+l._NN -LRB-_-LRB- 14_CD -RRB-_-RRB- group_NN IP_NNP addresses_VBZ into_IN heterogeneously_RB sized_VBN network_NN aware_JJ clusters_NNS in_IN order_NN to_TO characterize_VB target_NN audiences_NNS for_IN networks_NNS ,_, and_CC demonstrate_VBP that_IN many_JJ sites_NNS have_VBP common_JJ audiences_NNS ._.
+Jung_NNP et_FW al._FW =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: use_NN network_NN aware_JJ clustering_NN for_IN DDoS_NN defense_NN ._.
+These_DT methods_NNS of_IN blocking_NN are_VBP predicated_VBN on_IN the_DT assumption_NN that_IN attack_NN traffic_NN differs_VBZ from_IN normal_JJ traffic_NN due_JJ to_TO a_DT limited_VBN and_CC clustered_VBN audience_NN for_IN a_DT
+d_NN but_CC a_DT DDoS_NN attack_NN ._.
+Pushback_NN can_MD also_RB be_VB invoked_VBN by_IN a_DT router_NN on_IN the_DT behest_NN of_IN a_DT directly_RB connected_VBN server_NN ,_, which_WDT can_MD use_VB application_NN level_NN information_NN to_TO distinguish_VB between_IN attacks_NNS and_CC flash_NN crowds_NNS =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Before_IN invoking_VBG pushback_NN ,_, the_DT ACC_NNP mechanism_NN divides_VBZ the_DT rate-limit_NN for_IN the_DT aggregate_NN among_IN the_DT contributing_JJ neighbors_NNS ._.
+In_IN the_DT general_JJ case_NN ,_, all_PDT the_DT contributing_JJ neighbors_NNS do_VBP not_RB contribute_VB the_DT same_JJ
+ify_JJ significant_JJ network_NN events_NNS of_IN interest_NN ._.
+For_IN example_NN ,_, -LRB-_-LRB- 1_CD ,_, 2_LS -RRB-_-RRB- focus_NN on_IN efficient_JJ techniques_NNS for_IN identifying_VBG ``_`` heavy-hitters_NNS ''_'' in_IN one_CD or_CC several_JJ dimensions_NNS ,_, and_CC -LRB-_-LRB- 3_CD ,_, 4_CD -RRB-_-RRB- focus_NN on_IN identifying_VBG port_NN scans_NNS ._.
+=_SYM -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: studies_NNS the_DT behavior_NN of_IN flash_NN crowds_NNS ,_, while_IN -LRB-_-LRB- 6_CD ,_, 7_CD ,_, 8_CD -RRB-_-RRB- focus_NN on_IN analyzing_NN worm_NN and_CC other_JJ exploit_VBP activities_NNS on_IN the_DT Internet_NN ._.
+Research_NN in_IN -LRB-_-LRB- 9_CD ,_, 10_CD ,_, 11_CD -RRB-_-RRB- applies_VBZ signal_NN processing_NN and_CC statistical_JJ inference_NN
+its_PRP$ resource_NN requirements_NNS by_IN half_NN ._.
+An_DT important_JJ property_NN of_IN a_DT utility_NN computing_NN platform_NN is_VBZ how_WRB quickly_RB it_PRP can_MD react_VB to_TO changing_VBG demand_NN ._.
+Flash_JJ crowds_NNS have_VBP been_VBN shown_VBN to_TO produce_VB rapid_JJ surges_VBZ in_IN demand_NN =_JJ -_: =[_NN 3_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC the_DT quicker_JJR the_DT system_NN can_MD reassign_VB resources_NNS the_DT less_RBR slack_JJ it_PRP needs_VBZ to_TO provision_NN for_IN each_DT application_NN and_CC the_DT more_RBR efficient_JJ its_PRP$ operation_NN will_MD be_VB ._.
+We_PRP refer_VBP to_TO the_DT capability_NN of_IN a_DT utility_NN comp_NN
+tterns_NNS of_IN DDoS_NN activity_NN after_IN the_DT fact_NN ,_, or_CC simple_JJ filtering_VBG and_CC statistical_JJ techniques_NNS that_WDT try_VBP to_TO identify_VB traffic_NN anomalies_NNS for_IN a_DT small_JJ number_NN of_IN suspected_JJ victim_NN destinations_NNS or_CC suspicious_JJ sources_NNS =_JJ -_: =[_NN 4_CD ,_, 26_CD ,_, 20_CD ,_, 27_CD ,_, 21_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Clearly_RB ,_, off-line_JJ techniques_NNS are_VBP 2snot_CD very_RB useful_JJ for_IN on-line_JJ ,_, real-time_JJ DDoS_NN detection_NN ._.
+Similarly_RB ,_, techniques_NNS that_WDT rely_VBP on_IN monitoring_NN traffic_NN patterns_NNS for_IN specific_JJ source\/destination_NN addresses_NNS are_VBP
+responding_VBG classification_NN of_IN detection_NN methodology_NN in_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Among_IN statistical_JJ anomalies_NNS ,_, a_DT prominant_JJ class_NN besides_IN DoS_NN is_VBZ the_DT Flash_NNP Crowd_NN phenomena_NNS which_WDT can_MD be_VB detrimental_JJ ,_, especially_RB to_TO web_NN server_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT present_JJ work_NN deals_NNS with_IN the_DT detection_NN of_IN all_PDT these_DT kinds_NNS of_IN statistical_JJ anomalies_NNS and_CC we_PRP will_MD use_VB the_DT classification_NN of_IN these_DT works_NNS so_RB as_IN to_TO describe_VB the_DT classes_NNS of_IN anomalies_NNS found_VBN in_IN the_DT databa_NN
+large_JJ enough_RB to_TO the_DT extent_NN that_IN their_PRP$ request_NN rate_NN is_VBZ lower_JJR than_IN or_CC equal_JJ to_TO legitimate_JJ clients_NNS ._.
+This_DT wide-range_JJ DDoS_NN attack_NN can_MD not_RB always_RB be_VB differentiated_VBN from_IN a_DT flash_NN crowd_NN of_IN legitimate_JJ clients_NNS =_JJ -_: =[_NN 28_CD ,_, 29_CD -RRB-_-RRB- -_: =_JJ -_: ,_, in_IN which_WDT case_NN limiting_VBG the_DT incoming_JJ request_NN rate_NN would_MD adversely_RB affect_VB both_DT attackers_NNS and_CC legitimate_JJ clients_NNS equally_RB ._.
+s6_NNP Simulation_NNP Study_NNP The_DT purpose_NN of_IN the_DT simulation_NN study_NN is_VBZ to_TO validate_VB our_PRP$ analy_NN
+have_VBP been_VBN presented_VBN and_CC analyzed_VBN in_IN previous_JJ research_NN ._.
+These_DT events_NNS include_VBP the_DT FIFA_NNP 1998_CD World_NNP Cup_NNP -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, September_NNP 11th_JJ terrorist_NN attack_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, play-along_JJ show_NN TV_NN site_NN and_CC Chilean_JJ presidential_JJ election_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC new_JJ Linux_NNP Redhat_NNP image_NN distribution_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Through_IN these_DT traces_NNS ,_, some_DT significant_JJ flash_NN characteristics_NNS can_MD be_VB observed_VBN as_IN follows_VBZ ._.
+1_CD ._.
+Sudden_JJ events_NNS of_IN great_JJ interests_NNS ,_, whether_IN planned_JJ or_CC unplanne_JJ
+remote_JJ IDC_NN web_NN tier_NN application_NN tier_NN database_NN tier_NN request_NN reply_NN Figure_NNP 3.1_CD :_: Server_NN Selection_NN using_VBG WARD_NN of_IN cluster_NN resources_NNS ._.
+Namely_RB ,_, as_IN a_DT particular_JJ cluster_NN becomes_VBZ a_DT hot-spot_NN due_JJ to_TO flash_VB crowds_NNS =_JJ -_: =[_NN 29,30_CD -RRB-_-RRB- -_: =_JJ -_: or_CC time-of-day_JJ effects_NNS -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, load_NN can_MD be_VB transparently_RB redirected_VBN to_TO other_JJ clusters_NNS while_IN ensuring_VBG a_DT latency_NN benefit_NN to_TO clients_NNS ._.
+For_IN example_NN ,_, client_NN access_NN patterns_NNS have_VBP been_VBN observed_VBN to_TO follow_VB time_NN -_:
+ving_JJ guidelines_NNS of_IN what_WP is_VBZ normal_JJ and_CC abnormal_JJ within_IN that_DT context_NN ._.
+Examples_NNS of_IN successful_JJ uses_NNS of_IN profiles_NNS include_VBP profiling_NN of_IN traffic_NN patterns_NNS on_IN server_NN links_NNS to_TO uncover_VB DoS_NN and_CC flash_NN crowd_NN events_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, web-server_JJ profiling_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, power_NN usage_NN profiles_NNS for_IN efficient_JJ power_NN management_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, profiling_VBG end-to-end_JJ paths_NNS to_TO detect_VB performance_NN problems_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, profiling_NN of_IN traffic_NN patterns_NNS on_IN aggregated_JJ gatewa_NN
+correlation_NN of_IN such_JJ information_NN with_IN other_JJ monitoring_NN sites_NNS ._.
+Correlation_NN of_IN measurement_NN and_CC monitoring_NN information_NN gathered_VBD elsewhere_RB can_MD aid_VB in_IN handling_VBG network_NN events_NNS such_JJ as_IN worms_NNS and_CC flash_NN crowds_NNS =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Geographically_RB distributed_VBN set_NN of_IN machines_NNS -LRB-_-LRB- 26_CD -RRB-_-RRB- and_CC network_NN beacons_NNS -LRB-_-LRB- 19_CD -RRB-_-RRB- are_VBP available_JJ as_IN part_NN of_IN a_DT testbed_NN for_IN such_JJ purposes_NNS ._.
+Hardwarebased_JJ packet_NN monitors_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC associated_VBN software_NN can_MD process_VB a_DT
+e_LS ability_NN to_TO capture_VB these_DT fine-grained_JJ aspects_NNS as_RB well_RB ._.
+There_EX are_VBP also_RB techniques_NNS that_IN study_NN differences_NNS in_IN client_NN request_NN patterns_NNS to_TO distinguish_VB legitimate_JJ flash_NN crowds_NNS from_IN malicious_JJ DDoS_NN attacks_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Another_DT technique_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- identifies_VBZ flash_NN crowds_NNS by_IN examining_VBG performance_NN degradation_NN in_IN responses_NNS ._.
+Such_JJ techniques_NNS primarily_RB act_VBP as_IN diagnostic_JJ aids_NNS when_WRB a_DT server_NN is_VBZ experiencing_VBG extreme_JJ load_NN ._.
+In_IN contr_NN
+unwanted_JJ traffic_NN both_CC in_IN the_DT network_NN and_CC at_IN the_DT recipient_JJ endhost_NN that_IN ShutUps_NNP complements_VBZ ._.
+In_IN the_DT network_NN ,_, traffic_NN can_MD be_VB classified_VBN as_IN portscans_NNS -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, worms_NNS -LRB-_-LRB- 24_CD ,_, 39_CD -RRB-_-RRB- ,_, DoS_NN attacks_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, flash_NN crowds_NNS =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC of_IN dubious_JJ origin_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Classification_NN can_MD be_VB performed_VBN through_IN correlation_NN -LRB-_-LRB- 47_CD -RRB-_-RRB- ,_, rule-based_JJ matching_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, or_CC entropy_NN in_IN feature_NN sets_NNS -LRB-_-LRB- 27_CD -RRB-_-RRB- in_IN ,_, potentially_RB aggregated_JJ ,_, flow_NN parameters_NNS ._.
+At_IN the_DT en_FW
+but_CC that_IN there_EX had_VBD better_RBR be_VB a_DT better_JJR answer_NN the_DT next_JJ time_NN ._.
+Twenty_CD years_NNS have_VBP now_RB passed_VBN and_CC unfortunately_RB ,_, there_EX is_VBZ no_DT better_JJR answer_NN ._.
+As_IN evidenced_VBN with_IN the_DT Nimda_NNP ,_, Code_NNP Red_NNP ,_, and_CC SQL_NN Slammer_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- worms_NNS ,_, the_DT Internet_NNP still_RB efficiently_RB spreads_VBZ worms_NNS and_CC viruses_NNS ._.
+As_IN recently_RB reported_VBN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, the_DT SQL_NNP Slammer_NNP worm_NN ,_, managed_VBD to_TO claim_VB the_DT dubious_JJ title_NN of_IN being_VBG the_DT first_JJ ``_`` Warhol_NNP ''_'' worm_NN ,_, a_DT worm_NN
+._.
+-LRB-_-LRB- 14_CD -RRB-_-RRB- use_VBP netblocks_NNS to_TO characterize_VB target_NN audiences_NNS for_IN networks_NNS ,_, and_CC demonstrate_VBP that_IN many_JJ sites_NNS have_VBP common_JJ audiences_NNS ._.
+This_DT leads_VBZ to_TO a_DT generalized_JJ netblock-level_JJ approach_NN developed_VBN by_IN Jung_NNP et_FW al._FW =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: for_IN DDoS_NN defense_NN ._.
+These_DT methods_NNS of_IN blocking_NN are_VBP predicated_VBN on_IN the_DT assumption_NN that_IN attack_NN traffic_NN differs_VBZ from_IN normal_JJ traffic_NN due_JJ to_TO a_DT limited_VBN and_CC clustered_VBN audience_NN for_IN any_DT normal_JJ service_NN ._.
+Our_PRP$ filter_NN
+ons_NNS ._.
+However_RB ,_, such_JJ solutions_NNS -LRB-_-LRB- e.g._FW ,_, Web_NN caching_NN -RRB-_-RRB- have_VBP become_VBN obsolete_JJ due_JJ to_TO their_PRP$ inability_NN to_TO keep_VB up_RP with_IN the_DT growing_VBG demands_NNS and_CC the_DT unexpected_JJ Web-related_JJ phenomena_NNS such_JJ as_IN the_DT flashcrowd_JJ events_NNS =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: occurring_VBG when_WRB numerous_JJ users_NNS access_VBP a_DT Web_NN server_NN content_NN simultaneously_RB -LRB-_-LRB- now_RB often_RB occurring_VBG on_IN the_DT Web_NN due_JJ to_TO its_PRP$ globalization_NN and_CC wide_JJ adoption_NN -RRB-_-RRB- ._.
+Content_NN distribution_NN networks_NNS -LRB-_-LRB- CDNs_NNS -RRB-_-RRB- have_VBP been_VBN pr_NN
+be_VB rejected_VBN ._.
+To_TO distinguish_VB between_IN flash_NN crowds_NNS and_CC DoS_NN attacks_NNS ,_, Jung_NNP et_FW al._FW characterizes_VBZ both_DT of_IN them_PRP based_VBN on_IN traffic_NN patterns_NNS ,_, topological_JJ client_NN distribution_NN ,_, and_CC file_NN reference_NN characteristics_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT authors_NNS identify_VBP three_CD major_JJ differences_NNS between_IN flash_NN crowds_NNS and_CC DoS_NN attacks_NNS ._.
+First_RB ,_, flash_NN crowds_NNS cause_VBP per-client_JJ request_NN rates_NNS to_TO decrease_VB ,_, as_IN the_DT origin_NN server_NN can_MD handle_VB fewer_JJR requests_NNS per_IN
+haviors_NNS ._.
+As_IN pointed_VBN out_RP in_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, there_EX are_VBP unfortunately_RB no_DT comprehensive_JJ studies_NNS yet_RB that_WDT provide_VBP detailed_JJ statistical_JJ descriptions_NNS of_IN a_DT broad_JJ set_NN of_IN volume_NN anomalies_NNS ._.
+There_EX are_VBP a_DT handful_NN of_IN studies_NNS =_JJ -_: =[_NN 2_CD ,_, 11_CD ,_, 16_CD ,_, 9_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT provide_VBP useful_JJ pieces_NNS of_IN information_NN towards_IN this_DT end_NN ._.
+The_DT characterization_NN part_NN of_IN these_DT studies_NNS often_RB touch_VBP briefly_NN on_IN a_DT wide_JJ variety_NN of_IN metrics_NNS ,_, from_IN attack_NN rate_NN and_CC duration_NN to_TO others_NNS such_PDT a_DT
+t_NN rate_NN ._.
+When_WRB the_DT request_NN rate_NN exceeds_VBZ a_DT certain_JJ threshold_NN ,_, the_DT system_NN starts_VBZ adapting_VBG to_TO the_DT new_JJ situation_NN ._.
+The_DT idea_NN behind_IN this_DT is_VBZ that_IN a_DT high_JJ request_NN rate_NN might_MD be_VB a_DT sign_NN of_IN an_DT upcoming_JJ flash-crowd_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Using_VBG a_DT single_JJ threshold_NN however_RB ,_, is_VBZ in_IN practice_NN not_RB always_RB enough_RB ;_: the_DT oscillating_VBG behavior_NN of_IN the_DT request_NN rate_NN could_MD result_VB in_IN a_DT lot_NN of_IN unnecessary_JJ system_NN adaptations_NNS ._.
+To_TO address_VB this_DT problem_NN ,_, sys_NNS
+al_FW networks_NNS enable_VBP an_DT arbitrary_JJ web_NN user_NN to_TO launch_VB and_CC amplify_VB the_DT effect_NN of_IN attacks_NNS ._.
+Many_JJ of_IN the_DT effects_NNS of_IN amplification_NN can_MD be_VB detected_VBN and_CC mitigated_VBN using_VBG a_DT variety_NN of_IN previously-known_JJ techniques_NNS =_JJ -_: =[_NN 26_CD ,_, 32_CD ,_, 28_CD ,_, 18_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, rather_RB than_IN mitigating_VBG the_DT symptoms_NNS of_IN amplification_NN attacks_NNS ,_, it_PRP is_VBZ better_JJR to_TO prevent_VB them_PRP at_IN the_DT source_NN ._.
+The_DT best_JJS solutions_NNS must_MD therefore_RB address_VB the_DT structural_JJ considerations_NNS of_IN social_JJ n_NN
+ameter_NN being_VBG estimated_VBN ,_, i.e._FW E_NN -LCB-_-LRB- ˆ_FW θ_FW -RCB-_-RRB- =_JJ θ_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+USC\/ISI_NNP TECHNICAL_NNP REPORT_NNP ISI-TR-663_NNP ,_, AUGUST_NNP 2009_CD 5_CD attack_NN ._.
+Flash_NN crowds_NNS ,_, which_WDT might_MD occur_VB due_JJ to_TO the_DT Digg_NNP or_CC SlashDot_NNP effect_NN ,_, are_VBP not_RB malicious_JJ traffic_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Since_IN our_PRP$ detection_NN methods_NNS are_VBP designed_VBN to_TO operate_VB on_IN aggregate_JJ traffic_NN ,_, to_TO allow_VB for_IN analysis_NN of_IN encrypted_JJ traffic_NN ,_, we_PRP can_MD not_RB employ_VB the_DT source_NN and_CC destination_NN IP_NNP addresses_NNS or_CC port_NN numbers_NNS to_TO deve_VB
+day_NN and_CC a_DT DDoS_NN attack_NN is_VBZ that_IN in_IN a_DT very_RB busy_JJ day_NN ,_, 82.9_CD %_NN of_IN the_DT IP_NNP addresses_NNS have_VBP appeared_VBN at_IN the_DT web_NN site_NN before_RB ._.
+However_RB ,_, in_IN a_DT DDoS_NN attack_NN event_NN only_RB 0.6-14_CD %_NN of_IN the_DT IP_NNP addresses_NNS have_VBP appeared_VBN before_IN =_JJ -_: =[_NN 88_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP can_MD assume_VB this_DT statistic_NN would_MD be_VB more_RBR extreme_JJ on_IN a_DT 52VoIP_NN server_NN ,_, because_IN people_NNS tend_VBP to_TO call_VB the_DT same_JJ destination_NN over_IN and_CC over_IN again_RB ._.
+Researchers_NNS -LRB-_-LRB- 89_CD -RRB-_-RRB- -LRB-_-LRB- 70_CD -RRB-_-RRB- have_VBP proposed_VBN history-based_JJ IP_NNP fil_NN
+heir_NN classification_NN ._.
+Most_JJS of_IN the_DT work_NN has_VBZ been_VBN restricted_JJ to_TO the_DT detection_NN of_IN specific_JJ types_NNS of_IN anomalies_NNS ,_, including_VBG portscans_NNS -LRB-_-LRB- see_VB -LRB-_-LRB- 20_CD -RRB-_-RRB- -RRB-_-RRB- ,_, worms_NNS -LRB-_-LRB- see_VB -LRB-_-LRB- 22_CD -RRB-_-RRB- -RRB-_-RRB- ,_, denial_NN of_IN service_NN -LRB-_-LRB- DoS_NN -RRB-_-RRB- attacks_NNS -LRB-_-LRB- see_VB -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 41_CD -RRB-_-RRB- -RRB-_-RRB- and_CC DDoS_NN attacks_NNS -LRB-_-LRB- see_VB -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 44_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+There_EX have_VBP been_VBN several_JJ attempts_NNS at_IN a_DT general_JJ approach_NN to_TO anomaly_JJ classification_NN ._.
+In_IN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, the_DT authors_NNS use_VBP wavelet_NN analysis_NN of_IN IP_NNP flow_NN and_CC Simple_JJ Network_NNP Mana_NNP

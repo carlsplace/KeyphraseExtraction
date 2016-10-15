@@ -1,0 +1,42 @@
+Large-scale_JJ behavioral_JJ targeting_NN
+Behavioral_JJ targeting_NN -LRB-_-LRB- BT_NNP -RRB-_-RRB- leverages_VBZ historical_JJ user_NN behavior_NN to_TO select_VB the_DT ads_NNS most_RBS relevant_JJ to_TO users_NNS to_TO display_VB ._.
+The_DT state-of-the-art_JJ of_IN BT_NNP derives_VBZ a_DT linear_JJ Poisson_NNP regression_NN model_NN from_IN fine-grained_JJ user_NN behavioral_JJ data_NNS and_CC predicts_VBZ click-through_JJ rate_NN -LRB-_-LRB- CTR_NN -RRB-_-RRB- from_IN user_NN history_NN ._.
+We_PRP designed_VBD and_CC implemented_VBD a_DT highly_RB scalable_JJ and_CC efficient_JJ solution_NN to_TO BT_NNP using_VBG Hadoop_NNP MapReduce_NNP framework_NN ._.
+With_IN our_PRP$ parallel_JJ algorithm_NN and_CC the_DT resulting_VBG system_NN ,_, we_PRP can_MD build_VB above_IN 450_CD BT-category_JJ models_NNS from_IN the_DT entire_JJ Yahoo_NNP 's_POS user_NN base_NN within_IN one_CD day_NN ,_, the_DT scale_NN that_IN one_PRP can_MD not_RB even_RB imagine_VB with_IN prior_JJ systems_NNS ._.
+Moreover_RB ,_, our_PRP$ approach_NN has_VBZ yielded_VBN 20_CD %_NN CTR_NN lift_NN over_IN the_DT existing_VBG production_NN system_NN by_IN leveraging_VBG the_DT well-grounded_JJ probabilistic_JJ model_NN fitted_VBN from_IN a_DT much_RB larger_JJR training_NN dataset_NN ._.
+Specifically_RB ,_, our_PRP$ major_JJ contributions_NNS include_VBP :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- A_DT MapReduce_NN statistical_JJ learning_NN algorithm_NN and_CC implementation_NN that_WDT achieve_VBP optimal_JJ data_NNS parallelism_NN ,_, task_NN parallelism_NN ,_, and_CC load_NN balance_NN in_IN spite_NN of_IN the_DT typically_RB skewed_JJ distribution_NN of_IN domain_NN data_NNS ._.
+-LRB-_-LRB- 2_LS -RRB-_-RRB- An_DT in-place_JJ feature_NN vector_NN generation_NN algorithm_NN with_IN linear_JJ time_NN complexity_NN O_NN -LRB-_-LRB- n_NN -RRB-_-RRB- regardless_RB of_IN the_DT granularity_NN of_IN sliding_VBG target_NN window_NN ._.
+-LRB-_-LRB- 3_LS -RRB-_-RRB- An_DT in-memory_JJ caching_NN scheme_NN that_WDT significantly_RB reduces_VBZ the_DT number_NN of_IN disk_NN IOs_NNS to_TO make_VB large-scale_JJ learning_NN practical_JJ ._.
+-LRB-_-LRB- 4_LS -RRB-_-RRB- Highly_RB efficient_JJ data_NN structures_NNS and_CC sparse_JJ representations_NNS of_IN models_NNS and_CC data_NNS to_TO enable_VB fast_JJ model_NN updates_NNS ._.
+We_PRP believe_VBP that_IN our_PRP$ work_NN makes_VBZ significant_JJ contributions_NNS to_TO solving_VBG large-scale_JJ machine_NN learning_NN problems_NNS of_IN industrial_JJ relevance_NN in_IN general_JJ ._.
+Finally_RB ,_, we_PRP report_VBP comprehensive_JJ experimental_JJ results_NNS ,_, using_VBG industrial_JJ proprietary_JJ codebase_NN and_CC datasets_NNS ._.
+tion_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+These_DT approaches_NNS could_MD be_VB inaccurate_JJ because_IN neither_CC user_NN friendship_NN nor_CC user_NN behavior_NN information_NN is_VBZ taken_VBN into_IN account_NN ._.
+Recent_JJ approaches_NNS resort_VBP to_TO collaborative_VB filtering_VBG -LRB-_-LRB- CF_NN -RRB-_-RRB- techniques_NNS =_JJ -_: =[_NN 3_CD ,_, 23_CD ,_, 1_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: to_TO profile_VB user_NN interests_NNS by_IN collaboratively_RB uncovering_VBG user_NN behaviors_NNS ,_, where_WRB users_NNS are_VBP assumed_VBN to_TO be_VB unrelated_JJ to_TO each_DT other_JJ ._.
+While_IN CF_NN performs_VBZ well_RB in_IN recommendation_NN systems_NNS where_WRB decisions_NNS are_VBP mai_FW
+tes_NNS ._.
+The_DT goal_NN of_IN segmentation_NN -LRB-_-LRB- for_IN this_DT paper_NN -RRB-_-RRB- is_VBZ to_TO partition_NN users_NNS into_IN zones_NNS of_IN self-similarity_NN -LRB-_-LRB- homogenous_JJ groups_NNS -RRB-_-RRB- that_WDT can_MD be_VB described_VBN using_VBG a_DT cluster_NN center_NN -LRB-_-LRB- the_DT result_NN of_IN a_DT k-means_NN clustering_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: or_CC SOM_NN Clustering_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- -RRB-_-RRB- or_CC a_DT rule_NN -LRB-_-LRB- a_DT rule_NN corresponds_VBZ to_TO one_CD path_NN from_IN the_DT root_NN node_NN to_TO a_DT leaf_NN node_NN of_IN a_DT learned_VBN decision_NN tree_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+The_DT segmentation_NN step_NN explores_VBZ both_CC unsupervised_JJ and_CC supervised_JJ appr_NN
+istribute_NN to_TO lists_NNS ,_, requires_VBZ prior_JJ specific_JJ permission_NN and\/or_CC a_DT fee_NN ._.
+VEE_NN '_'' 12_CD ,_, March_NNP 3_CD --_: 4_CD ,_, 2012_CD ,_, London_NNP ,_, England_NNP ,_, UK_NNP ._.
+Copyright_NN c_NN ○_NN 2012_CD ACM_NNP 978-1-4503-1175-5_CD \/_: 12\/03_CD ..._: $_$ 10.00_CD and_CC environmental_JJ sciences_NNS =_JJ -_: =[_NN 17_CD ,_, 18_CD ,_, 21_CD ,_, 42_CD ,_, 43_CD -RRB-_-RRB- -_: =_JJ -_: ,_, especially_RB for_IN processing_VBG large_JJ data_NNS sets_NNS -LRB-_-LRB- 10_CD ,_, 20_CD ,_, 27_CD -RRB-_-RRB- ._.
+Cloud-based_JJ systems_NNS rely_VBP on_IN abundantly_RB provisioned_VBN datacenters_NNS strategically_RB distributed_VBN in_IN geographic_JJ regions_NNS -LRB-_-LRB- 7_CD ,_, 24_CD -RRB-_-RRB- ._.
+A_DT datacenter_NN usually_RB c_SYM
+MapReduce_NN functions_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, and_CC the_DT research_NN community_NN uses_VBZ MapReduce_NNP and_CC Hadoop_NNP to_TO solve_VB data-intensive_JJ problems_NNS in_IN bioinformatics_NNS ,_, computational_JJ finance_NN ,_, chemistry_NN ,_, and_CC environmental_JJ science_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+On_IN the_DT other_JJ hand_NN ,_, the_DT MapReduce_NNP model_NN has_VBZ its_PRP$ discontents_NNS ._.
+DeWitt_NNP et_FW al._FW argues_VBZ that_IN MapReduce_NNP is_VBZ much_RB less_RBR sophisticated_JJ or_CC efficient_JJ than_IN parallel_JJ database_NN query_NN systems_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+It_PRP is_VBZ pointed_VBN out_RP th_DT
+each_DT user_NN profile_NN in_IN a_DT compact_JJ representation_NN chosen_VBN for_IN the_DT application_NN at_IN hand_NN ._.
+Examples_NNS of_IN such_JJ representations_NNS include_VBP advertiserdefined_JJ categories_NNS for_IN behavioral_JJ targeting_NN in_IN display_NN advertising_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =-[_NN 37_CD -RRB-_-RRB- and_CC low-dimensional_JJ latent_JJ topics_NNS in_IN collaborative_JJ filtering_VBG methods_NNS based_VBN on_IN matrix_NN decomposition_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+The_DT resulting_VBG profiles_NNS are_VBP used_VBN in_IN subsequent_JJ interactions_NNS with_IN the_DT user_NN to_TO adjust_VB the_DT out_RP
+g_NN users_NNS in_IN terms_NNS of_IN their_PRP$ affinity_NN to_TO defining_VBG characteristics_NNS of_IN segment_NN ,_, such_JJ as_IN a_DT topic_NN or_CC a_DT brand_NN ,_, by_IN essentially_RB learning_VBG a_DT click_VBP prediction_NN model_NN ._.
+Chen_NNP et_FW al_FW also_RB build_VB a_DT click_VBP prediction_NN model_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC they_PRP take_VBP a_DT probabilistic_JJ approach_NN ,_, where_WRB click_VBP and_CC impression_NN counts_NNS are_VBP modelled_VBN under_IN a_DT Poisson_NNP observation_NN model_NN ._.
+3_LS ._.
+BT_NNP USING_NNP CLICK_NNP PREDICTION_NNP Our_NNP approach_NN to_TO BT_NNP assumes_VBZ that_IN the_DT action_NN of_IN c_NN
+no_DT interaction_NN involving_VBG either_CC of_IN them_PRP as_IN in_IN a_DT cold-start_JJ setting_NN ,_, this_DT model_NN becomes_VBZ the_DT classical_JJ content-based_JJ relevance_NN model_NN commonly_RB used_VBN in_IN ,_, e.g._FW webpage_FW ranking_NN -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, advertisement_NN targeting_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC content_NN recommendation_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+4_LS ._.
+EXPERIMENTS_NNS Wereportexperimentalresultsontwotest-beds_NNS ._.
+First_RB ,_, we_PRP evaluate_VBP the_DT CCF_NNP models_NNS with_IN CF_NN baselines_NNS on_IN two_CD dyadic_JJ data_NNS sets_NNS with_IN simulated_JJ choice_NN contexts_NNS ._.
+h_NN substantially_RB outperform_VBP the_DT state-of-the-art_JJ methods_NNS in_IN prediction_NN accuracy_NN ._.
+For_IN BT_NNP in_IN particular_JJ ,_, the_DT ROC_NNP area_NN achieved_VBN by_IN GaP_NN is_VBZ exceeding_VBG 0.95_CD ,_, while_IN one_CD prior_JJ approach_NN using_VBG Poisson_NNP regression_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: yielded_VBD 0.83_CD ._.
+For_IN computational_JJ performance_NN ,_, we_PRP compare_VBP a_DT single-node_JJ sparse_JJ implementation_NN with_IN a_DT parallel_JJ implementation_NN using_VBG Hadoop_NNP MapReduce_NNP ,_, the_DT results_NNS are_VBP counterintuitive_JJ yet_CC quite_RB interesti_NN

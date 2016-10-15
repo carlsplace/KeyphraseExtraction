@@ -1,0 +1,131 @@
+Efficient_JJ search_NN in_IN large_JJ textual_JJ collections_NNS with_IN redundancy_NN
+Current_JJ web_NN search_NN engines_NNS focus_VBP on_IN searching_VBG only_JJ themost_NN recentsnapshot_NN of_IN the_DT web_NN ._.
+In_IN some_DT cases_NNS ,_, however_RB ,_, it_PRP would_MD be_VB desirableto_JJ search_NN over_IN collections_NNS that_WDT include_VBP many_JJ different_JJ crawls_VBZ andversions_NNS of_IN each_DT page_NN ._.
+One_CD important_JJ example_NN of_IN such_PDT a_DT collectionis_NN the_DT Internet_NNP Archive_NNP ,_, though_IN there_EX are_VBP many_JJ others_NNS ._.
+Sincethe_JJ data_NNS size_NN of_IN such_PDT an_DT archive_NN is_VBZ multiple_JJ times_NNS that_IN of_IN a_DT singlesnapshot_NN ,_, this_DT presents_VBZ us_PRP with_IN significant_JJ performance_NN challenges_NNS ._.
+Current_JJ engines_NNS use_VBP various_JJ techniques_NNS for_IN index_NN compression_NN andoptimized_VBD query_NN execution_NN ,_, but_CC these_DT techniques_NNS do_VBP not_RB exploit_VB thesignificant_JJ similarities_NNS between_IN different_JJ versions_NNS of_IN a_DT page_NN ,_, or_CC betweendifferent_JJ pages_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT general_JJ framework_NN for_IN indexing_NN andquery_NN processing_NN of_IN archival_JJ collections_NNS and_CC ,_, more_RBR generally_RB ,_, anycollections_NNS with_IN a_DT sufficient_JJ amount_NN of_IN redundancy_NN ._.
+Our_PRP$ approachresults_NNS in_IN significant_JJ reductions_NNS in_IN index_NN size_NN and_CC query_NN processingcosts_NNS on_IN such_JJ collections_NNS ,_, and_CC it_PRP is_VBZ orthogonal_JJ to_TO and_CC can_MD be_VB combinedwith_VBN the_DT existing_VBG techniques_NNS ._.
+It_PRP also_RB supports_VBZ highly_RB efficientupdates_NNS ,_, both_DT locally_RB and_CC over_IN a_DT network_NN ._.
+Within_IN this_DT framework_NN ,_, we_PRP describe_VBP and_CC evaluate_VBP different_JJ implementations_NNS that_IN trade_NN offindex_NN size_NN versus_CC CPU_NN cost_NN and_CC other_JJ factors_NNS ,_, and_CC discuss_VBP applicationsranging_NN from_IN archival_JJ web_NN search_NN to_TO local_JJ search_NN of_IN web_NN sites_NNS ,_, email_NN archives_NNS ,_, or_CC file_NN systems_NNS ._.
+We_PRP present_VBP experimental_JJ resultsbased_NN on_IN search_NN engine_NN query_NN log_NN and_CC a_DT large_JJ collection_NN consistingof_NN multiple_NN crawls_VBZ ._.
+dealing_VBG with_IN inverted_JJ indexes_NNS on_IN such_JJ collections_NNS ,_, including_VBG current_JJ index_NN compression_NN techniques_NNS ,_, are_VBP unable_JJ to_TO exploit_VB redundancy_NN across_IN version_NN boundaries_NNS -LRB-_-LRB- one_CD exception_NN is_VBZ the_DT very_RB recent_JJ work_NN in_IN =_JJ -_: =[_NN 7_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT we_PRP discuss_VBP later_RB -RRB-_-RRB- ._.
+In_IN this_DT paper_NN ,_, we_PRP focus_VBP on_IN this_DT problem_NN of_IN how_WRB to_TO efficiently_RB index_NN and_CC search_NN collections_NNS with_IN significant_JJ redundancy_NN ._.
+We_PRP propose_VBP a_DT complete_JJ framework_NN for_IN indexing_NN ,_, index_NN ma_NN
+has_VBZ focused_VBN on_IN the_DT problem_NN of_IN efficiently_RB storing_VBG and_CC transmitting_VBG redundant_JJ data_NNS collections_NNS ._.
+This_DT includes_VBZ work_NN on_IN differential_JJ compression_NN techniques_NNS ,_, e.g._FW ,_, for_IN storage_NN and_CC versioning_VBG file_NN systems_NNS =_JJ -_: =[_NN 22_CD ,_, 13_CD ,_, 26_CD ,_, 17_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, file_NN synchronization_NN techniques_NNS such_JJ as_IN rsync_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, and_CC redundancy-eliminating_JJ communication_NN protocols_NNS for_IN web_NN access_NN or_CC other_JJ tasks_NNS -LRB-_-LRB- 19_CD ,_, 25_CD ,_, 27_CD ,_, 34_CD -RRB-_-RRB- ._.
+Thus_RB ,_, we_PRP know_VBP how_WRB to_TO store_VB and_CC transmit_VB the_DT red_NN
+has_VBZ focused_VBN on_IN the_DT problem_NN of_IN efficiently_RB storing_VBG and_CC transmitting_VBG redundant_JJ data_NNS collections_NNS ._.
+This_DT includes_VBZ work_NN on_IN differential_JJ compression_NN techniques_NNS ,_, e.g._FW ,_, for_IN storage_NN and_CC versioning_VBG file_NN systems_NNS =_JJ -_: =[_NN 22_CD ,_, 13_CD ,_, 26_CD ,_, 17_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, file_NN synchronization_NN techniques_NNS such_JJ as_IN rsync_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, and_CC redundancy-eliminating_JJ communication_NN protocols_NNS for_IN web_NN access_NN or_CC other_JJ tasks_NNS -LRB-_-LRB- 19_CD ,_, 25_CD ,_, 27_CD ,_, 34_CD -RRB-_-RRB- ._.
+Thus_RB ,_, we_PRP know_VBP how_WRB to_TO store_VB and_CC transmit_VB the_DT red_NN
+edundant_JJ data_NNS collections_NNS ._.
+This_DT includes_VBZ work_NN on_IN differential_JJ compression_NN techniques_NNS ,_, e.g._FW ,_, for_IN storage_NN and_CC versioning_VBG file_NN systems_NNS -LRB-_-LRB- 22_CD ,_, 13_CD ,_, 26_CD ,_, 17_CD ,_, 10_CD -RRB-_-RRB- ,_, file_NN synchronization_NN techniques_NNS such_JJ as_IN rsync_NN =_JJ -_: =[_NN 37_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC redundancy-eliminating_JJ communication_NN protocols_NNS for_IN web_NN access_NN or_CC other_JJ tasks_NNS -LRB-_-LRB- 19_CD ,_, 25_CD ,_, 27_CD ,_, 34_CD -RRB-_-RRB- ._.
+Thus_RB ,_, we_PRP know_VBP how_WRB to_TO store_VB and_CC transmit_VB the_DT redundant_JJ document_NN collections_NNS themselves_PRP in_IN a_DT highly_RB e_SYM
+._.
+g._NN ,_, for_IN storage_NN and_CC versioning_VBG file_NN systems_NNS -LRB-_-LRB- 22_CD ,_, 13_CD ,_, 26_CD ,_, 17_CD ,_, 10_CD -RRB-_-RRB- ,_, file_NN synchronization_NN techniques_NNS such_JJ as_IN rsync_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, and_CC redundancy-eliminating_JJ communication_NN protocols_NNS for_IN web_NN access_NN or_CC other_JJ tasks_NNS =_JJ -_: =[_NN 19_CD ,_, 25_CD ,_, 27_CD ,_, 34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Thus_RB ,_, we_PRP know_VBP how_WRB to_TO store_VB and_CC transmit_VB the_DT redundant_JJ document_NN collections_NNS themselves_PRP in_IN a_DT highly_RB efficient_JJ manner_NN ._.
+However_RB ,_, almost_RB all_DT current_JJ techniques_NNS for_IN dealing_VBG with_IN inverted_JJ indexes_NNS on_IN such_JJ c_NN
+._.
+g._NN ,_, for_IN storage_NN and_CC versioning_VBG file_NN systems_NNS -LRB-_-LRB- 22_CD ,_, 13_CD ,_, 26_CD ,_, 17_CD ,_, 10_CD -RRB-_-RRB- ,_, file_NN synchronization_NN techniques_NNS such_JJ as_IN rsync_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, and_CC redundancy-eliminating_JJ communication_NN protocols_NNS for_IN web_NN access_NN or_CC other_JJ tasks_NNS =_JJ -_: =[_NN 19_CD ,_, 25_CD ,_, 27_CD ,_, 34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Thus_RB ,_, we_PRP know_VBP how_WRB to_TO store_VB and_CC transmit_VB the_DT redundant_JJ document_NN collections_NNS themselves_PRP in_IN a_DT highly_RB efficient_JJ manner_NN ._.
+However_RB ,_, almost_RB all_DT current_JJ techniques_NNS for_IN dealing_VBG with_IN inverted_JJ indexes_NNS on_IN such_JJ c_NN
+._.
+g._NN ,_, for_IN storage_NN and_CC versioning_VBG file_NN systems_NNS -LRB-_-LRB- 22_CD ,_, 13_CD ,_, 26_CD ,_, 17_CD ,_, 10_CD -RRB-_-RRB- ,_, file_NN synchronization_NN techniques_NNS such_JJ as_IN rsync_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, and_CC redundancy-eliminating_JJ communication_NN protocols_NNS for_IN web_NN access_NN or_CC other_JJ tasks_NNS =_JJ -_: =[_NN 19_CD ,_, 25_CD ,_, 27_CD ,_, 34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Thus_RB ,_, we_PRP know_VBP how_WRB to_TO store_VB and_CC transmit_VB the_DT redundant_JJ document_NN collections_NNS themselves_PRP in_IN a_DT highly_RB efficient_JJ manner_NN ._.
+However_RB ,_, almost_RB all_DT current_JJ techniques_NNS for_IN dealing_VBG with_IN inverted_JJ indexes_NNS on_IN such_JJ c_NN
+9_CD -RRB-_-RRB- ._.
+For_IN such_JJ cases_NNS ,_, several_JJ techniques_NNS have_VBP theÒ_NN been_VBN proposed_VBN that_IN partition_NN a_DT file_NN in_IN a_DT content-dependent_JJ manner_NN ,_, such_JJ that_IN two_CD similar_JJ files_NNS are_VBP likely_JJ to_TO contain_VB a_DT large_JJ number_NN of_IN common_JJ blocks_NNS =_JJ -_: =[_NN 20_CD ,_, 30_CD ,_, 29_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Among_IN these_DT ,_, we_PRP focus_VBP on_IN the_DT more_RBR recent_JJ winnowing_NN technique_NN proposed_VBN in_IN -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, which_WDT appears_VBZ to_TO perform_VB well_RB in_IN practice_NN ._.
+Given_VBN a_DT file_NN Ò_NNP ℄_NNP ,_, the_DT process_NN runs_VBZ in_IN two_CD phases_NNS :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- First_JJ ,_, we_PRP choose_VBP a_DT
+using_VBG an_DT approach_NN called_VBN document-at-a-time_JJ -LRB-_-LRB- DAAT_NN -RRB-_-RRB- query_NN processing_NN ,_, where_WRB we_PRP simultaneously_RB traverse_VBP the_DT relevant_JJ lists_NNS from_IN start_NN to_TO end_VB and_CC compute_VB the_DT scores_NNS of_IN the_DT relevant_JJ documents_NNS en_IN passant_NN =_JJ -_: =[_NN 6_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP later_RB need_VBP to_TO adapt_VB this_DT approach_NN to_TO our_PRP$ new_JJ index_NN structure_NN ,_, and_CC thus_RB we_PRP now_RB provide_VBP some_DT more_JJR discussion_NN ;_: additional_JJ details_NNS are_VBP available_JJ in_IN the_DT appendix_NN ._.
+In_IN the_DT DAAT_NNP approach_NN ,_, we_PRP maintain_VBP on_IN
+allows_VBZ much_RB faster_JJR decompression_NN than_IN many_JJ bitaligned_VBN schemes_NNS such_JJ as_IN Golomb_NNP ,_, Rice_NNP ,_, Gamma_NNP ,_, or_CC Delta_NNP coding_VBG that_IN in_IN turn_NN achieve_VBP a_DT smaller_JJR compressed_VBN size_NN ._.
+However_RB ,_, very_RB recent_JJ bit-aligned_JJ schemes_NNS in_IN =_JJ -_: =[_NN 1_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: manage_VBP to_TO outperform_VB var-byte_NN in_IN terms_NNS of_IN both_DT compressed_VBN size_NN and_CC decompression_NN speed_NN ._.
+In_IN our_PRP$ experiments_NNS ,_, we_PRP will_MD use_VB var-byte_NN as_RB well_RB as_IN the_DT recent_JJ Simple-9_NN scheme_NN from_IN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Our_PRP$ approach_NN here_RB is_VBZ o_NN
+king_NN ,_, OS_NN ,_, and_CC data_NN compression_NN researchers_NNS have_VBP studied_VBN the_DT problem_NN of_IN eliminating_VBG repeatedly_RB occurring_VBG blocks_NNS of_IN data_NNS from_IN large_JJ data_NNS sets_NNS ;_: see_VB ,_, e.g._FW ,_, -LRB-_-LRB- 37_CD ,_, 27_CD ,_, 34_CD ,_, 32_CD ,_, 22_CD ,_, 25_CD ,_, 13_CD ,_, 19_CD -RRB-_-RRB- ._.
+In_IN some_DT cases_NNS =_JJ -_: =[_NN 37_CD ,_, 32_CD ,_, 18_CD ,_, 26_CD -RRB-_-RRB- -_: =_JJ -_: ,_, it_PRP is_VBZ possible_JJ to_TO use_VB blocks_NNS of_IN fixed_JJ size_NN ,_, but_CC many_JJ other_JJ scenarios_NNS require_VBP the_DT use_NN of_IN content-dependent_JJ partitioning_VBG techniques_NNS such_JJ as_IN -LRB-_-LRB- 20_CD ,_, 30_CD ,_, 29_CD ,_, 35_CD -RRB-_-RRB- ._.
+We_PRP use_VBP the_DT winnowing_NN technique_NN in_IN -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, wh_NN
+has_VBZ focused_VBN on_IN the_DT problem_NN of_IN efficiently_RB storing_VBG and_CC transmitting_VBG redundant_JJ data_NNS collections_NNS ._.
+This_DT includes_VBZ work_NN on_IN differential_JJ compression_NN techniques_NNS ,_, e.g._FW ,_, for_IN storage_NN and_CC versioning_VBG file_NN systems_NNS =_JJ -_: =[_NN 22_CD ,_, 13_CD ,_, 26_CD ,_, 17_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, file_NN synchronization_NN techniques_NNS such_JJ as_IN rsync_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, and_CC redundancy-eliminating_JJ communication_NN protocols_NNS for_IN web_NN access_NN or_CC other_JJ tasks_NNS -LRB-_-LRB- 19_CD ,_, 25_CD ,_, 27_CD ,_, 34_CD -RRB-_-RRB- ._.
+Thus_RB ,_, we_PRP know_VBP how_WRB to_TO store_VB and_CC transmit_VB the_DT red_NN
+files_NNS ._.
+The_DT basic_JJ ideas_NNS underlying_VBG our_PRP$ approach_NN are_VBP almost_RB embarrassingly_RB simple_JJ ,_, and_CC we_PRP now_RB describe_VBP them_PRP very_RB briefly_RB ._.
+First_RB ,_, we_PRP use_VBP content-dependent_JJ string_NN partitioning_VBG techniques_NNS ,_, e.g._FW ,_, winnowing_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_JJ -_: or_CC Karp-Rabin_JJ partitioning_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, to_TO split_VB each_DT document_NN into_IN a_DT number_NN of_IN fragments_NNS ,_, say_VB ,_, to_TO on_IN average_NN ._.
+The_DT main_JJ characteristic_NN of_IN these_DT techniques_NNS is_VBZ that_IN similar_JJ files_NNS will_MD have_VB many_JJ fragments_NNS in_IN c_NN
+9_CD -RRB-_-RRB- ._.
+For_IN such_JJ cases_NNS ,_, several_JJ techniques_NNS have_VBP theÒ_NN been_VBN proposed_VBN that_IN partition_NN a_DT file_NN in_IN a_DT content-dependent_JJ manner_NN ,_, such_JJ that_IN two_CD similar_JJ files_NNS are_VBP likely_JJ to_TO contain_VB a_DT large_JJ number_NN of_IN common_JJ blocks_NNS =_JJ -_: =[_NN 20_CD ,_, 30_CD ,_, 29_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Among_IN these_DT ,_, we_PRP focus_VBP on_IN the_DT more_RBR recent_JJ winnowing_NN technique_NN proposed_VBN in_IN -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, which_WDT appears_VBZ to_TO perform_VB well_RB in_IN practice_NN ._.
+Given_VBN a_DT file_NN Ò_NNP ℄_NNP ,_, the_DT process_NN runs_VBZ in_IN two_CD phases_NNS :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- First_JJ ,_, we_PRP choose_VBP a_DT
+distinct_JJ words_NNS ,_, and_CC thus_RB a_DT naive_JJ scheme_NN for_IN disk-resident_JJ indexes_NNS would_MD require_VB several_JJ hundred_CD changes_NNS in_IN different_JJ locations_NNS on_IN disk_NN ._.
+A_DT number_NN of_IN optimizations_NNS for_IN index_NN updates_NNS have_VBP been_VBN proposed_VBN =_JJ -_: =[_NN 9_CD ,_, 36_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+If_IN a_DT very_RB high_JJ rate_NN of_IN updates_NNS needs_VBZ to_TO be_VB supported_VBN ,_, then_RB the_DT best_JJS approach_NN appears_VBZ to_TO be_VB based_VBN on_IN periodically_RB pushing_VBG updates_NNS to_TO the_DT index_NN ._.
+That_DT is_VBZ ,_, when_WRB new_JJ documents_NNS arrive_VBP in_IN the_DT system_NN ,_, we_PRP fi_VBP
+distinct_JJ words_NNS ,_, and_CC thus_RB a_DT naive_JJ scheme_NN for_IN disk-resident_JJ indexes_NNS would_MD require_VB several_JJ hundred_CD changes_NNS in_IN different_JJ locations_NNS on_IN disk_NN ._.
+A_DT number_NN of_IN optimizations_NNS for_IN index_NN updates_NNS have_VBP been_VBN proposed_VBN =_JJ -_: =[_NN 9_CD ,_, 36_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+If_IN a_DT very_RB high_JJ rate_NN of_IN updates_NNS needs_VBZ to_TO be_VB supported_VBN ,_, then_RB the_DT best_JJS approach_NN appears_VBZ to_TO be_VB based_VBN on_IN periodically_RB pushing_VBG updates_NNS to_TO the_DT index_NN ._.
+That_DT is_VBZ ,_, when_WRB new_JJ documents_NNS arrive_VBP in_IN the_DT system_NN ,_, we_PRP fi_VBP
+distinct_JJ words_NNS ,_, and_CC thus_RB a_DT naive_JJ scheme_NN for_IN disk-resident_JJ indexes_NNS would_MD require_VB several_JJ hundred_CD changes_NNS in_IN different_JJ locations_NNS on_IN disk_NN ._.
+A_DT number_NN of_IN optimizations_NNS for_IN index_NN updates_NNS have_VBP been_VBN proposed_VBN =_JJ -_: =[_NN 9_CD ,_, 36_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+If_IN a_DT very_RB high_JJ rate_NN of_IN updates_NNS needs_VBZ to_TO be_VB supported_VBN ,_, then_RB the_DT best_JJS approach_NN appears_VBZ to_TO be_VB based_VBN on_IN periodically_RB pushing_VBG updates_NNS to_TO the_DT index_NN ._.
+That_DT is_VBZ ,_, when_WRB new_JJ documents_NNS arrive_VBP in_IN the_DT system_NN ,_, we_PRP fi_VBP
+sely_RB related_JJ previous_JJ work_NN in_IN more_JJR detail_NN ._.
+For_IN basics_NNS of_IN search_NN engine_NN architecture_NN we_PRP refer_VBP to_TO -LRB-_-LRB- 5_CD ,_, 28_CD ,_, 14_CD -RRB-_-RRB- ._.
+For_IN background_NN on_IN indexing_NN ,_, ranking_NN ,_, and_CC query_NN execution_NN in_IN IR_NN and_CC web_NN search_NN engines_NNS ,_, see_VBP =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 38_CD ,_, 39_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Document-at-a-time_JJ query_NN processing_NN is_VBZ described_VBN and_CC evaluated_VBN ,_, e.g._FW ,_, in_IN -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Inverted_JJ Index_NN Compression_NN :_: There_EX are_VBP a_DT large_JJ number_NN of_IN techniques_NNS for_IN inverted_JJ index_NN compression_NN ;_: see_VB -LRB-_-LRB- 38_CD ,_, 39_CD -RRB-_-RRB- for_IN an_DT
+cription_NN of_IN this_DT technique_NN in_IN the_DT previous_JJ section_NN was_VBD adapted_VBN to_TO this_DT new_JJ scenario_NN ._. -RRB-_-RRB-
+Index_NN Updates_NNS :_: A_DT number_NN of_IN researchers_NNS have_VBP studied_VBN the_DT problem_NN of_IN efficiently_RB updating_VBG inverted_JJ index_NN structures_NNS =_JJ -_: =[_NN 9_CD ,_, 36_CD ,_, 11_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN mentioned_VBN ,_, current_JJ state-of-the-art_JJ methods_NNS generate_VBP posting_VBG updates_NNS that_WDT are_VBP only_RB periodically_RB merged_VBN into_IN the_DT disk-based_JJ structures_NNS ,_, rather_RB than_IN directly_RB applying_VBG changes_NNS on_IN disk_NN ._.
+Most_RBS relevant_JJ
+or_CC inserted_VBN character_NN at_IN the_DT beginning_NN ,_, none_NN of_IN the_DT blocks_NNS would_MD likely_RB match_VB ._. -RRB-_-RRB-
+In_IN some_DT cases_NNS ,_, this_DT can_MD be_VB resolved_VBN by_IN checking_NN for_IN all_DT possible_JJ alignments_NNS between_IN current_JJ and_CC previously_RB seen_VBN blocks_VBZ =_JJ -_: =[_NN 37_CD ,_, 34_CD ,_, 32_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC in_IN other_JJ scenarios_NNS this_DT is_VBZ infeasible_JJ -LRB-_-LRB- 22_CD ,_, 25_CD ,_, 13_CD ,_, 27_CD ,_, 19_CD -RRB-_-RRB- ._.
+For_IN such_JJ cases_NNS ,_, several_JJ techniques_NNS have_VBP theÒ_NN been_VBN proposed_VBN that_IN partition_NN a_DT file_NN in_IN a_DT content-dependent_JJ manner_NN ,_, such_JJ that_IN two_CD simila_NNS
+dealing_VBG with_IN inverted_JJ indexes_NNS on_IN such_JJ collections_NNS ,_, including_VBG current_JJ index_NN compression_NN techniques_NNS ,_, are_VBP unable_JJ to_TO exploit_VB redundancy_NN across_IN version_NN boundaries_NNS -LRB-_-LRB- one_CD exception_NN is_VBZ the_DT very_RB recent_JJ work_NN in_IN =_JJ -_: =[_NN 7_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT we_PRP discuss_VBP later_RB -RRB-_-RRB- ._.
+In_IN this_DT paper_NN ,_, we_PRP focus_VBP on_IN this_DT problem_NN of_IN how_WRB to_TO efficiently_RB index_NN and_CC search_NN collections_NNS with_IN significant_JJ redundancy_NN ._.
+We_PRP propose_VBP a_DT complete_JJ framework_NN for_IN indexing_NN ,_, index_NN ma_NN
+e_LS information_NN stored_VBN in_IN the_DT postings_NNS plus_CC usually_RB some_DT additional_JJ statistics_NNS stored_VBD separately_RB ._.
+For_IN various_JJ reasons_NNS ,_, many_JJ web_NN search_NN engines_NNS prefer_VBP to_TO return_VB documents_NNS that_WDT contain_VBP all_DT -LRB-_-LRB- or_CC almost_RB all_DT =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =--RRB-_NN of_IN the_DT query_NN terms_NNS ;_: in_IN this_DT case_NN ,_, it_PRP suffices_VBZ to_TO only_RB compute_VB the_DT score_NN of_IN any_DT document_NN whose_WP$ docID_NN is_VBZ in_IN the_DT intersection_NN of_IN the_DT relevant_JJ inverted_JJ lists_NNS ._.
+Document-at-a-Time_NNP Query_NNP Processing_NNP :_: The_DT co_NN
+ncy_NN ._.
+3_LS ._.
+DISCUSSION_NN OF_IN RELATED_NNS WORK_VBP We_PRP now_RB provide_VBP some_DT pointers_NNS to_TO related_JJ work_NN and_CC discuss_VBP the_DT most_RBS closely_RB related_JJ previous_JJ work_NN in_IN more_JJR detail_NN ._.
+For_IN basics_NNS of_IN search_NN engine_NN architecture_NN we_PRP refer_VBP to_TO =_JJ -_: =[_NN 5_CD ,_, 28_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN background_NN on_IN indexing_NN ,_, ranking_NN ,_, and_CC query_NN execution_NN in_IN IR_NN and_CC web_NN search_NN engines_NNS ,_, see_VB -LRB-_-LRB- 2_CD ,_, 3_CD ,_, 38_CD ,_, 39_CD -RRB-_-RRB- ._.
+Document-at-a-time_JJ query_NN processing_NN is_VBZ described_VBN and_CC evaluated_VBN ,_, e.g._FW ,_, in_IN -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Inverted_NNP Ind_NNP
+ion_NN with_IN any_DT of_IN these_DT techniques_NNS ._.
+We_PRP note_VBP that_IN improvements_NNS in_IN compression_NN rate_NN can_MD also_RB be_VB obtained_VBN by_IN assigning_VBG docIDs_NN to_TO pages_NNS based_VBN on_IN similarity_NN and_CC then_RB applying_VBG appropriate_JJ local_JJ coding_NN models_NNS =_JJ -_: =[_NN 4_CD ,_, 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, these_DT techniques_NNS give_VBP only_RB fairly_RB moderate_JJ improvements_NNS ,_, and_CC do_VBP no_RB effectively_RB exploit_VB redundancies_NNS when_WRB pages_NNS are_VBP very_RB similar_JJ ._.
+The_DT issue_NN of_IN assigning_VBG appropriate_JJ docIDs_NN -LRB-_-LRB- or_CC in_IN our_PRP$ case_NN ,_, d_NN
+allows_VBZ much_RB faster_JJR decompression_NN than_IN many_JJ bitaligned_VBN schemes_NNS such_JJ as_IN Golomb_NNP ,_, Rice_NNP ,_, Gamma_NNP ,_, or_CC Delta_NNP coding_VBG that_IN in_IN turn_NN achieve_VBP a_DT smaller_JJR compressed_VBN size_NN ._.
+However_RB ,_, very_RB recent_JJ bit-aligned_JJ schemes_NNS in_IN =_JJ -_: =[_NN 1_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: manage_VBP to_TO outperform_VB var-byte_NN in_IN terms_NNS of_IN both_DT compressed_VBN size_NN and_CC decompression_NN speed_NN ._.
+In_IN our_PRP$ experiments_NNS ,_, we_PRP will_MD use_VB var-byte_NN as_RB well_RB as_IN the_DT recent_JJ Simple-9_NN scheme_NN from_IN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Our_PRP$ approach_NN here_RB is_VBZ o_NN
+ion_NN with_IN any_DT of_IN these_DT techniques_NNS ._.
+We_PRP note_VBP that_IN improvements_NNS in_IN compression_NN rate_NN can_MD also_RB be_VB obtained_VBN by_IN assigning_VBG docIDs_NN to_TO pages_NNS based_VBN on_IN similarity_NN and_CC then_RB applying_VBG appropriate_JJ local_JJ coding_NN models_NNS =_JJ -_: =[_NN 4_CD ,_, 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, these_DT techniques_NNS give_VBP only_RB fairly_RB moderate_JJ improvements_NNS ,_, and_CC do_VBP no_RB effectively_RB exploit_VB redundancies_NNS when_WRB pages_NNS are_VBP very_RB similar_JJ ._.
+The_DT issue_NN of_IN assigning_VBG appropriate_JJ docIDs_NN -LRB-_-LRB- or_CC in_IN our_PRP$ case_NN ,_, d_NN
+ults_NNS are_VBP for_IN a_DT window_NN size_NN on_IN the_DT crawls_VBZ ,_, and_CC were_VBD performed_VBN on_IN a_DT machine_NN with_IN a_DT Ghz_NN Pentium-4_NN ._.
+We_PRP experimented_VBD with_IN two_CD different_JJ index_NN compression_NN techniques_NNS ,_, the_DT simple_JJ byte-aligned_JJ varbyte_NN method_NN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC the_DT very_RB recent_JJ word\/bit-aligned_JJ Simple-9_NN technique_NN in_IN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Both_DT schemes_NNS were_VBD reimplemented_VBN and_CC carefully_RB optimized_VBN by_IN us_PRP ,_, resulting_VBG in_IN decompression_NN speeds_NNS of_IN between_IN and_CC million_CD integers_NNS per_IN
+rios_NNS that_WDT can_MD be_VB addressed_VBN with_IN our_PRP$ approach_NN ._.
+General_JJ broadbased_JJ web_NN crawls_VBZ as_RB well_RB as_IN site-specific_JJ collections_NNS also_RB tend_VBP to_TO have_VB a_DT significant_JJ amount_NN of_IN redundancy_NN ,_, particularly_RB within_IN large_JJ sites_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT same_JJ is_VBZ true_JJ for_IN email_NN archives_NNS where_WRB replies_NNS often_RB quote_VBP from_IN previous_JJ messages_NNS in_IN the_DT thread_NN ._.
+In_IN these_DT cases_NNS ,_, our_PRP$ framework_NN also_RB reduces_VBZ the_DT index_NN size_NN ,_, though_IN by_IN a_DT more_RBR moderate_JJ factor_NN ._.
+It_PRP ca_MD
+._.
+g._NN ,_, for_IN storage_NN and_CC versioning_VBG file_NN systems_NNS -LRB-_-LRB- 22_CD ,_, 13_CD ,_, 26_CD ,_, 17_CD ,_, 10_CD -RRB-_-RRB- ,_, file_NN synchronization_NN techniques_NNS such_JJ as_IN rsync_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, and_CC redundancy-eliminating_JJ communication_NN protocols_NNS for_IN web_NN access_NN or_CC other_JJ tasks_NNS =_JJ -_: =[_NN 19_CD ,_, 25_CD ,_, 27_CD ,_, 34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Thus_RB ,_, we_PRP know_VBP how_WRB to_TO store_VB and_CC transmit_VB the_DT redundant_JJ document_NN collections_NNS themselves_PRP in_IN a_DT highly_RB efficient_JJ manner_NN ._.
+However_RB ,_, almost_RB all_DT current_JJ techniques_NNS for_IN dealing_VBG with_IN inverted_JJ indexes_NNS on_IN such_JJ c_NN
+sely_RB related_JJ previous_JJ work_NN in_IN more_JJR detail_NN ._.
+For_IN basics_NNS of_IN search_NN engine_NN architecture_NN we_PRP refer_VBP to_TO -LRB-_-LRB- 5_CD ,_, 28_CD ,_, 14_CD -RRB-_-RRB- ._.
+For_IN background_NN on_IN indexing_NN ,_, ranking_NN ,_, and_CC query_NN execution_NN in_IN IR_NN and_CC web_NN search_NN engines_NNS ,_, see_VBP =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 38_CD ,_, 39_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Document-at-a-time_JJ query_NN processing_NN is_VBZ described_VBN and_CC evaluated_VBN ,_, e.g._FW ,_, in_IN -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Inverted_JJ Index_NN Compression_NN :_: There_EX are_VBP a_DT large_JJ number_NN of_IN techniques_NNS for_IN inverted_JJ index_NN compression_NN ;_: see_VB -LRB-_-LRB- 38_CD ,_, 39_CD -RRB-_-RRB- for_IN an_DT
+sely_RB related_JJ previous_JJ work_NN in_IN more_JJR detail_NN ._.
+For_IN basics_NNS of_IN search_NN engine_NN architecture_NN we_PRP refer_VBP to_TO -LRB-_-LRB- 5_CD ,_, 28_CD ,_, 14_CD -RRB-_-RRB- ._.
+For_IN background_NN on_IN indexing_NN ,_, ranking_NN ,_, and_CC query_NN execution_NN in_IN IR_NN and_CC web_NN search_NN engines_NNS ,_, see_VBP =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 38_CD ,_, 39_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Document-at-a-time_JJ query_NN processing_NN is_VBZ described_VBN and_CC evaluated_VBN ,_, e.g._FW ,_, in_IN -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Inverted_JJ Index_NN Compression_NN :_: There_EX are_VBP a_DT large_JJ number_NN of_IN techniques_NNS for_IN inverted_JJ index_NN compression_NN ;_: see_VB -LRB-_-LRB- 38_CD ,_, 39_CD -RRB-_-RRB- for_IN an_DT

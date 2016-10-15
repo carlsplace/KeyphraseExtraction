@@ -1,0 +1,140 @@
+Detecting_VBG outliers_NNS using_VBG transduction_NN and_CC statistical_JJ testing_NN
+Outlier_NN detection_NN can_MD uncover_VB malicious_JJ behavior_NN in_IN fields_NNS like_IN intrusion_NN detection_NN and_CC fraud_NN analysis_NN ._.
+Although_IN there_EX has_VBZ been_VBN a_DT significant_JJ amount_NN of_IN work_NN in_IN outlier_NN detection_NN ,_, most_JJS of_IN the_DT algorithms_NNS proposed_VBN in_IN the_DT literature_NN are_VBP based_VBN on_IN a_DT particular_JJ definition_NN of_IN outliers_NNS -LRB-_-LRB- e.g._FW ,_, density-based_JJ -RRB-_-RRB- ,_, and_CC use_VB ad-hoc_JJ thresholds_NNS to_TO detect_VB them_PRP ._.
+In_IN this_DT paper_NN we_PRP present_VBP a_DT novel_JJ technique_NN to_TO detect_VB outliers_NNS with_IN respect_NN to_TO an_DT existing_VBG clustering_NN model_NN ._.
+However_RB ,_, the_DT test_NN can_MD also_RB be_VB successfully_RB utilized_VBN to_TO recognize_VB outliers_NNS when_WRB the_DT clustering_NN information_NN is_VBZ not_RB available_JJ ._.
+Our_PRP$ method_NN is_VBZ based_VBN on_IN Transductive_NNP Confidence_NNP Machines_NNP ,_, which_WDT have_VBP been_VBN previously_RB proposed_VBN as_IN a_DT mechanism_NN to_TO provide_VB individual_JJ confidence_NN measures_NNS on_IN classification_NN decisions_NNS ._.
+The_DT test_NN uses_VBZ hypothesis_NN testing_NN to_TO prove_VB or_CC disprove_VB whether_IN a_DT point_NN is_VBZ fit_JJ to_TO be_VB in_IN each_DT of_IN the_DT clusters_NNS of_IN the_DT model_NN ._.
+We_PRP experimentally_RB demonstrate_VBP that_IN the_DT test_NN is_VBZ highly_RB robust_JJ ,_, and_CC produces_VBZ very_RB few_JJ misdiagnosed_JJ points_NNS ,_, even_RB when_WRB no_DT clustering_NN information_NN is_VBZ available_JJ ._.
+Furthermore_RB ,_, our_PRP$ experiments_NNS demonstrate_VBP the_DT robustness_NN of_IN our_PRP$ method_NN under_IN the_DT circumstances_NNS of_IN data_NNS contaminated_VBN by_IN outliers_NNS ._.
+We_PRP finally_RB show_VBP that_IN our_PRP$ technique_NN can_MD be_VB successfully_RB applied_VBN to_TO identify_VB outliers_NNS in_IN a_DT noisy_JJ data_NN set_NN for_IN which_WDT no_DT information_NN is_VBZ available_JJ -LRB-_-LRB- e.g._FW ,_, ground_NN truth_NN ,_, clustering_NN structure_NN ,_, etc._NN -RRB-_-RRB- ._.
+As_IN such_JJ our_PRP$ proposed_VBN methodology_NN is_VBZ capable_JJ of_IN bootstrapping_VBG from_IN a_DT noisy_JJ data_NN set_VBD a_DT clean_JJ one_NN that_WDT can_MD be_VB used_VBN to_TO identify_VB future_JJ outliers_NNS ._.
+''_'' examples_NNS are_VBP the_DT points_NNS already_RB clustered_VBN ._.
+Transduction_NN has_VBZ been_VBN previously_RB used_VBN to_TO offer_VB confidence_NN measures_NNS for_IN the_DT decision_NN of_IN labeling_VBG a_DT point_NN as_IN belonging_VBG to_TO a_DT set_NN of_IN pre-defined_JJ classes_NNS -LRB-_-LRB- see_VB =_JJ -_: =[_NN 24_CD ,_, 33_CD ,_, 9_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+TCM_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- introduced_VBD the_DT computation_NN of_IN the_DT confidence_NN using_VBG Algorithmic_JJ Randomness_NN Theory_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+-LRB-_-LRB- The_DT first_JJ proposed_VBN application_NN of_IN Algorithmic_JJ Randomness_NN Theory_NNP to_TO machine_NN learning_NN problems_NNS ,_, however_RB
+dea_NN leads_VBZ to_TO elegant_JJ algorithms_NNS that_WDT use_VBP standard_JJ statistical_JJ tests_NNS to_TO compute_VB the_DT confidence_NN on_IN the_DT estimation_NN ._.
+Using_VBG transduction_NN ,_, researchers_NNS have_VBP built_VBN Transductive_NNP Confidence_NNP Machines_NNP -LRB-_-LRB- TCM_NNP -RRB-_-RRB- -LRB-_-LRB- see_VB =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =--RRB-_NN which_WDT are_VBP able_JJ to_TO estimate_VB the_DT unknown_JJ class_NN of_IN a_DT point_NN and_CC attach_VB confidence_NN to_TO the_DT estimate_NN ._.
+The_DT transductive_JJ reliability_NN estimation_NN process_NN has_VBZ its_PRP$ theoretical_JJ foundations_NNS in_IN the_DT algorithmic_JJ theo_NN
+to_TO avoid_VB the_DT costly_JJ computation_NN of_IN the_DT K-nearest_JJ neighbors_NNS of_IN each_DT data_NNS point_NN ._.
+The_DT technique_NN is_VBZ based_VBN on_IN transforming_VBG the_DT d-dimensional_NN points_NNS into_IN one-dimensional_JJ points_NNS lying_VBG on_IN a_DT Hilbert_NN or_CC zcurve_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT transformation_NN guarantees_VBZ that_IN two_CD points_NNS that_WDT are_VBP close_JJ in_IN the_DT curve_NN are_VBP also_RB close_JJ in_IN the_DT d_NN space_NN ._.
+However_RB ,_, two_CD points_NNS in_IN the_DT d_NN space_NN are_VBP not_RB necessarily_RB close_VB in_IN the_DT Hilbert_NNP curve_NN ,_, so_IN it_PRP is_VBZ n_NN
+._.
+,_, it_PRP is_VBZ equivalent_JJ to_TO consider_VB as_IN outliers_NNS those_DT points_NNS that_WDT are_VBP 3_CD or_CC more_JJR standard_JJ deviations_NNS away_RB from_IN the_DT centroid_NN ,_, which_WDT is_VBZ the_DT common_JJ practice_NN of_IN univariate_JJ statistical_JJ techniques_NNS ._.
+Moreover_RB ,_, in_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT uses_VBZ a_DT technique_NN based_VBN on_IN MCD_NNP to_TO find_VB multiple_JJ clusters_NNS and_CC diagnose_VB outliers_NNS ,_, the_DT authors_NNS argue_VBP that_IN not_RB every_DT data_NN set_NN will_MD give_VB rise_NN to_TO an_DT obvious_JJ separation_NN of_IN outliers_NNS and_CC non-outliers_NNS by_IN
+ccuracy_NN ._.
+Such_JJ technique_NN can_MD easily_RB be_VB employed_VBN in_IN StrOUD_NN to_TO speed_VB the_DT computation_NN ._.
+A_DT large_JJ body_NN of_IN work_NN has_VBZ been_VBN published_VBN in_IN the_DT area_NN of_IN discovering_VBG outliers_NNS with_IN respect_NN to_TO clustering_NN models_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 7_CD ,_, 23_CD ,_, 27_CD ,_, 29_CD ,_, 12_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, most_JJS of_IN these_DT algorithms_NNS do_VBP not_RB aim_VB at_IN the_DT discovery_NN of_IN outliers_NNS ,_, but_CC rather_RB offer_VBP ways_NNS to_TO deal_VB with_IN them_PRP ._.
+And_CC ,_, in_IN all_PDT the_DT cases_NNS ,_, the_DT discovery_NN of_IN outliers_NNS is_VBZ done_VBN by_IN careful_JJ setting_NN of_IN th_DT
+strong_JJ ._.
+We_PRP plan_VBP to_TO modify_VB our_PRP$ method_NN to_TO deal_VB with_IN correlated_VBN data_NNS by_IN introducing_VBG a_DT technique_NN that_WDT has_VBZ been_VBN used_VBN successfully_RB in_IN the_DT field_NN of_IN Relational_NNP Data_NNP Mining_NNP -LRB-_-LRB- e.g._FW -LRB-_-LRB- 16_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Randomization_NN testing_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT type_NN of_IN statistical_JJ test_NN which_WDT involves_VBZ generating_NN replicates_VBZ of_IN the_DT actual_JJ data_NNS set_VBN -_: called_VBN pseudo-samples_NNS ._.
+Randomization_NN has_VBZ been_VBN proven_VBN effective_JJ in_IN compensating_VBG the_DT effects_NNS of_IN autocorrelatio_NN
+class_NN of_IN a_DT point_NN and_CC attach_VB confidence_NN to_TO the_DT estimate_NN ._.
+The_DT transductive_JJ reliability_NN estimation_NN process_NN has_VBZ its_PRP$ theoretical_JJ foundations_NNS in_IN the_DT algorithmic_JJ theory_NN of_IN randomness_NN developed_VBN by_IN Kolmogorov_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Unlike_IN traditional_JJ methods_NNS in_IN machine_NN learning_NN ,_, transduction_NN can_MD offer_VB measures_NNS of_IN reliability_NN to_TO individual_JJ examples_NNS ,_, and_CC uses_VBZ very_RB broad_JJ assumptions_NNS -LRB-_-LRB- it_PRP only_RB assumes_VBZ that_IN the_DT data_NNS points_NNS are_VBP indep_JJ
+ume_VB a_DT clustering_NN model_NN or_CC a_DT known_JJ distribution_NN have_VBP been_VBN proposed_VBN ._.
+They_PRP fall_VBP under_IN two_CD categories_NNS ._.
+The_DT first_JJ is_VBZ distance-based_JJ techniques_NNS -LRB-_-LRB- see_VB -LRB-_-LRB- 2_CD ,_, 18_CD ,_, 26_CD -RRB-_-RRB- ._.
+The_DT second_NN is_VBZ density-based_JJ techniques_NNS -LRB-_-LRB- see_VB =_JJ -_: =[_NN 4_CD ,_, 17_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Again_RB ,_, in_IN all_PDT these_DT algorithms_NNS one_PRP must_MD threshold_JJ parameters_NNS to_TO obtain_VB the_DT set_NN of_IN outliers_NNS ._.
+The_DT method_NN of_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, which_WDT we_PRP use_VBP here_RB to_TO provide_VB a_DT comparison_NN to_TO ours_PRP ,_, uses_VBZ distance_NN and_CC density_NN calculat_NN
+arameters_NNS ._.
+Some_DT outlier_JJR detection_NN schemes_NNS that_WDT do_VBP not_RB assume_VB a_DT clustering_NN model_NN or_CC a_DT known_JJ distribution_NN have_VBP been_VBN proposed_VBN ._.
+They_PRP fall_VBP under_IN two_CD categories_NNS ._.
+The_DT first_JJ is_VBZ distance-based_JJ techniques_NNS -LRB-_-LRB- see_VB =_JJ -_: =[_NN 2_CD ,_, 18_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT second_NN is_VBZ density-based_JJ techniques_NNS -LRB-_-LRB- see_VB -LRB-_-LRB- 4_CD ,_, 17_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Again_RB ,_, in_IN all_PDT these_DT algorithms_NNS one_PRP must_MD threshold_JJ parameters_NNS to_TO obtain_VB the_DT set_NN of_IN outliers_NNS ._.
+The_DT method_NN of_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, which_WDT we_PRP use_VBP here_RB to_TO provide_VB a_DT c_NN
+%_NN 100_CD %_NN 100_CD %_NN 100_CD %_NN 100_CD %_NN 100_CD %_NN TP_NN 100_CD %_NN 100_CD %_NN 100_CD %_NN FP_NN 0_CD %_NN 0_CD %_NN 0_CD %_NN 0_CD %_NN 0_CD %_NN 0_CD %_NN 2_CD %_NN FP_NN 2_CD %_NN 0_CD %_NN 0_CD %_NN 4.3_CD The_DT on-line_JJ bookstore_NN data_NNS This_DT data_NN set_NN was_VBD generated_VBN from_IN an_DT e-commerce_NN workload_NN and_CC has_VBZ been_VBN used_VBN previously_RB in_IN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT logs_NNS correspond_VBP to_TO a_DT couple_NN of_IN weekdays_NNS in_IN which_WDT a_DT large_JJ number_NN of_IN HTTP_NN requests_NNS were_VBD processed_VBN ._.
+Entries_NNS corresponding_VBG to_TO images_NNS ,_, errors_NNS ,_, etc._NN ,_, were_VBD deleted_VBN and_CC the_DT URLs_NNS of_IN the_DT remaining_VBG entries_NNS
+can_MD reveal_VB clues_NNS to_TO solve_VB the_DT problem_NN at_IN hand_NN ._.
+In_IN other_JJ cases_NNS ,_, the_DT sudden_JJ appearance_NN of_IN a_DT large_JJ number_NN of_IN outliers_NNS can_MD point_VB to_TO a_DT change_NN in_IN the_DT underlying_JJ process_NN that_WDT is_VBZ generating_VBG the_DT data_NNS ._.
+Hawkins_NNP =_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: defines_VBZ an_DT outlier_NN as_IN ``_`` an_DT observation_NN that_WDT deviates_VBZ so_RB much_RB from_IN other_JJ observations_NNS as_IN to_TO arouse_VB suspicion_NN that_IN it_PRP was_VBD generated_VBN by_IN a_DT different_JJ mechanism_NN ._. ''_''
+This_DT suggests_VBZ the_DT possibility_NN of_IN detecting_VBG
+riate_JJ data_NNS ,_, and_CC all_DT of_IN them_PRP assume_VBP knowledge_NN of_IN the_DT underlying_JJ distribution_NN of_IN the_DT data_NNS ,_, which_WDT in_IN practice_NN is_VBZ very_RB restrictive_JJ ._.
+More_RBR recently_RB a_DT technique_NN for_IN spatial_JJ outlier_NN detection_NN was_VBD proposed_VBN in_IN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT method_NN uses_VBZ the_DT difference_NN between_IN the_DT attribute_NN value_NN at_IN location_NN x_NN and_CC the_DT average_JJ attribute_NN value_NN of_IN x_NN 's_POS neighbors_NNS to_TO determinesFigure_NN 5_CD :_: Histogram_NN of_IN distances_NNS to_TO the_DT closest_JJS centroid_NN for_IN th_DT
+ccuracy_NN ._.
+Such_JJ technique_NN can_MD easily_RB be_VB employed_VBN in_IN StrOUD_NN to_TO speed_VB the_DT computation_NN ._.
+A_DT large_JJ body_NN of_IN work_NN has_VBZ been_VBN published_VBN in_IN the_DT area_NN of_IN discovering_VBG outliers_NNS with_IN respect_NN to_TO clustering_NN models_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 7_CD ,_, 23_CD ,_, 27_CD ,_, 29_CD ,_, 12_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, most_JJS of_IN these_DT algorithms_NNS do_VBP not_RB aim_VB at_IN the_DT discovery_NN of_IN outliers_NNS ,_, but_CC rather_RB offer_VBP ways_NNS to_TO deal_VB with_IN them_PRP ._.
+And_CC ,_, in_IN all_PDT the_DT cases_NNS ,_, the_DT discovery_NN of_IN outliers_NNS is_VBZ done_VBN by_IN careful_JJ setting_NN of_IN th_DT
+ling_IN the_DT data_NNS -RRB-_-RRB- ._.
+We_PRP expect_VBP that_IN this_DT technique_NN will_MD result_VB in_IN a_DT decrease_NN in_IN false_JJ positives_NNS with_IN respect_NN to_TO the_DT rates_NNS obtained_VBN by_IN uniform_JJ sampling_NN ._.
+Multidimensional_JJ search_NN structures_NNS ,_, such_JJ as_IN Kd-trees_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: can_MD also_RB be_VB utilized_VBN to_TO speed_VB the_DT search_NN for_IN k-nearest_NN neighbors_NNS ._.
+A_DT more_RBR promising_JJ approach_NN is_VBZ to_TO employ_VB the_DT space-filling_JJ curves_NNS techniques_NNS in_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, based_VBN on_IN maintaining_VBG lists_NNS of_IN the_DT points_NNS ordered_VBD b_NN
+the_DT normal_JJ observations_NNS were_VBD generated_VBN and_CC testing_NN points_NNS for_IN ``_`` membership_NN ''_'' to_TO this_DT mechanism_NN ._.
+Indeed_RB ,_, that_WDT is_VBZ the_DT path_NN that_IN early_JJ work_NN in_IN outlier_NN detection_NN followed_VBD -LRB-_-LRB- in_IN the_DT statistical_JJ community_NN ;_: see_VB =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: for_IN a_DT comprehensive_JJ review_NN -RRB-_-RRB- :_: postulate_VB a_DT model_NN for_IN the_DT probability_NN distribution_NN of_IN normal_JJ points_NNS -LRB-_-LRB- e.g._FW ,_, a_DT Gaussian_JJ model_NN -RRB-_-RRB- ,_, and_CC compute_VB the_DT likelihood_NN of_IN a_DT point_NN being_VBG generated_VBN by_IN the_DT postulated_VBN mode_NN
+arameters_NNS ._.
+Some_DT outlier_JJR detection_NN schemes_NNS that_WDT do_VBP not_RB assume_VB a_DT clustering_NN model_NN or_CC a_DT known_JJ distribution_NN have_VBP been_VBN proposed_VBN ._.
+They_PRP fall_VBP under_IN two_CD categories_NNS ._.
+The_DT first_JJ is_VBZ distance-based_JJ techniques_NNS -LRB-_-LRB- see_VB =_JJ -_: =[_NN 2_CD ,_, 18_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT second_NN is_VBZ density-based_JJ techniques_NNS -LRB-_-LRB- see_VB -LRB-_-LRB- 4_CD ,_, 17_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Again_RB ,_, in_IN all_PDT these_DT algorithms_NNS one_PRP must_MD threshold_JJ parameters_NNS to_TO obtain_VB the_DT set_NN of_IN outliers_NNS ._.
+The_DT method_NN of_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, which_WDT we_PRP use_VBP here_RB to_TO provide_VB a_DT c_NN
+o_NN points_NNS in_IN the_DT d_NN space_NN are_VBP not_RB necessarily_RB close_VB in_IN the_DT Hilbert_NNP curve_NN ,_, so_IN it_PRP is_VBZ necessary_JJ to_TO produce_VB multiple_JJ transformations_NNS by_IN shifting_VBG the_DT curves_NNS ._.
+The_DT idea_NN of_IN shifted_VBN Hilbert_NNP curves_NNS ,_, described_VBN in_IN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: guarantees_VBZ that_IN a_DT search_NN for_IN a_DT nearest_JJS neighbor_NN of_IN a_DT query_NN point_NN conducted_VBN over_IN several_JJ lists_NNS of_IN linearized_VBN points_NNS -LRB-_-LRB- each_DT list_NN corresponding_VBG to_TO a_DT shifted_VBN Hilbert_NNP curve_NN -RRB-_-RRB- finds_VBZ the_DT true_JJ nearest_JJS neighbor_NN
+ifficult_NN as_IN the_DT original_JJ problem_NN of_IN finding_VBG outliers_NNS ._.
+This_DT approach_NN can_MD be_VB seen_VBN as_IN inducing_VBG amodel_NN over_IN the_DT normal_JJ data_NNS and_CC using_VBG it_PRP to_TO test_NN points_NNS ._.
+Recently_RB ,_, the_DT field_NN of_IN statistical_JJ learning_NN theory_NN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ developed_VBN alternatives_NNS to_TO induction_NN :_: instead_RB of_IN using_VBG all_PDT the_DT available_JJ points_NNS to_TO induce_VB a_DT model_NN ,_, one_PRP can_MD use_VB the_DT data_NNS -LRB-_-LRB- usually_RB a_DT small_JJ subset_NN of_IN it_PRP -RRB-_-RRB- to_TO estimate_VB unknown_JJ properties_NNS of_IN points_NNS that_IN
+.72_CD 100 100 100_CD FP_NN 4.97_CD 4.90_CD 5.37_CD 5.80_CD the_DT Laboratory_NN of_IN Image_NN Processing_NN and_CC Pattern_NN Recognition_NN -LRB-_-LRB- INPG-LTIRF_NN -RRB-_-RRB- in_IN Grenoble_NNP ,_, France_NNP ,_, using_VBG as_IN the_DT original_JJ source_NN the_DT material_NN in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, and_CC referenced_VBN in_IN =_JJ -_: =[_NN 10_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT data_NNS set_NN contains_VBZ a_DT large_JJ number_NN of_IN classes_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- and_CC a_DT high_JJ dimensionality_NN -LRB-_-LRB- 40_CD -RRB-_-RRB- ._.
+The_DT original_JJ aim_NN was_VBD to_TO distinguish_VB between_IN 11_CD different_JJ textures_NNS -LRB-_-LRB- Grass_NN lawn_NN ,_, Pressed_VBN calf_NN leather_NN ,_, Handmade_NN pap_NN
+.72_CD 100 100 100_CD FP_NN 4.97_CD 4.90_CD 5.37_CD 5.80_CD the_DT Laboratory_NN of_IN Image_NN Processing_NN and_CC Pattern_NN Recognition_NN -LRB-_-LRB- INPG-LTIRF_NN -RRB-_-RRB- in_IN Grenoble_NNP ,_, France_NNP ,_, using_VBG as_IN the_DT original_JJ source_NN the_DT material_NN in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, and_CC referenced_VBN in_IN =_JJ -_: =[_NN 10_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT data_NNS set_NN contains_VBZ a_DT large_JJ number_NN of_IN classes_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- and_CC a_DT high_JJ dimensionality_NN -LRB-_-LRB- 40_CD -RRB-_-RRB- ._.
+The_DT original_JJ aim_NN was_VBD to_TO distinguish_VB between_IN 11_CD different_JJ textures_NNS -LRB-_-LRB- Grass_NN lawn_NN ,_, Pressed_VBN calf_NN leather_NN ,_, Handmade_NN pap_NN
+data_NNS ,_, this_DT assumption_NN is_VBZ too_RB strong_JJ ._.
+We_PRP plan_VBP to_TO modify_VB our_PRP$ method_NN to_TO deal_VB with_IN correlated_VBN data_NNS by_IN introducing_VBG a_DT technique_NN that_WDT has_VBZ been_VBN used_VBN successfully_RB in_IN the_DT field_NN of_IN Relational_NNP Data_NNP Mining_NNP -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Randomization_NN testing_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- is_VBZ a_DT type_NN of_IN statistical_JJ test_NN which_WDT involves_VBZ generating_NN replicates_VBZ of_IN the_DT actual_JJ data_NNS set_VBN -_: called_VBN pseudo-samples_NNS ._.
+Randomization_NN has_VBZ been_VBN proven_VBN effective_JJ in_IN compensating_VBG t_NN
+new_JJ definition_NN will_MD make_VB the_DT strangeness_NN value_NN of_IN a_DT point_NN far_RB away_RB from_IN the_DT cluster_NN considerably_RB larger_JJR than_IN the_DT strangeness_NN of_IN points_NNS already_RB inside_IN the_DT cluster_NN ._.
+This_DT definition_NN has_VBZ been_VBN employed_VBN by_IN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- see_VB Section_NNP 5_CD -RRB-_-RRB- as_IN a_DT measure_NN of_IN isolation_NN ._.
+Using_VBG the_DT α_NN values_NNS ,_, we_PRP can_MD compute_VB a_DT series_NN of_IN p-values_NNS for_IN the_DT new_JJ point_NN ,_, one_CD for_IN each_DT cluster_NN y_NN =_JJ 1_CD ,_, ·_FW ·_FW ·_NN ,_, c_NN -LRB-_-LRB- where_WRB c_NN is_VBZ the_DT number_NN of_IN clusters_NNS -RRB-_-RRB- ._.
+We_PRP call_VBP th_DT
+is_VBZ possible_JJ to_TO use_VB a_DT sample_NN of_IN the_DT normal_JJ data_NNS to_TO capture_VB outliers_NNS without_IN significant_JJ loss_NN of_IN accuracy_NN ._.
+4.4_CD Texture_NN data_NNS This_DT is_VBZ one_CD of_IN the_DT real_JJ data_NN sets_NNS of_IN the_DT Elena_NNP project_NN ,_, which_WDT can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT data_NNS set_NN was_VBD generated_VBN bysFigure_NN 3_CD :_: Distance_NNP histogram_NN for_IN the_DT bookstore_NN data_NNS ._.
+Each_DT bar_NN shows_VBZ the_DT percentage_NN of_IN points_NNS within_IN each_DT group_NN -LRB-_-LRB- non-outliers_NNS ,_, outliers_NNS -RRB-_-RRB- with_IN distances_NNS to_TO the_DT closest_JJS ce_NN
+rmal_JJ distribution_NN for_IN the_DT non-spatial_JJ attribute_NN value_NN ._.
+An_DT exception_NN to_TO the_DT univariate_JJ restriction_NN in_IN the_DT statistics_NNS techniques_NNS is_VBZ the_DT work_NN of_IN Rousseeuw_NNP et_FW al_FW -LRB-_-LRB- whose_WP$ most_RBS recent_JJ survey_NN can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Their_PRP$ approach_NN is_VBZ to_TO find_VB a_DT robust_JJ fit_NN model_NN ,_, i.e._FW ,_, one_CD that_WDT is_VBZ similar_JJ to_TO the_DT fit_NN that_WDT would_MD have_VB been_VBN found_VBN without_IN the_DT outliers_NNS ,_, and_CC use_VB it_PRP to_TO diagnose_VB which_WDT points_NNS do_VBP not_RB fit_VB the_DT model_NN well_RB ._.
+Th_NN
+ume_VB a_DT clustering_NN model_NN or_CC a_DT known_JJ distribution_NN have_VBP been_VBN proposed_VBN ._.
+They_PRP fall_VBP under_IN two_CD categories_NNS ._.
+The_DT first_JJ is_VBZ distance-based_JJ techniques_NNS -LRB-_-LRB- see_VB -LRB-_-LRB- 2_CD ,_, 18_CD ,_, 26_CD -RRB-_-RRB- ._.
+The_DT second_NN is_VBZ density-based_JJ techniques_NNS -LRB-_-LRB- see_VB =_JJ -_: =[_NN 4_CD ,_, 17_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Again_RB ,_, in_IN all_PDT these_DT algorithms_NNS one_PRP must_MD threshold_JJ parameters_NNS to_TO obtain_VB the_DT set_NN of_IN outliers_NNS ._.
+The_DT method_NN of_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, which_WDT we_PRP use_VBP here_RB to_TO provide_VB a_DT comparison_NN to_TO ours_PRP ,_, uses_VBZ distance_NN and_CC density_NN calculat_NN
+''_'' examples_NNS are_VBP the_DT points_NNS already_RB clustered_VBN ._.
+Transduction_NN has_VBZ been_VBN previously_RB used_VBN to_TO offer_VB confidence_NN measures_NNS for_IN the_DT decision_NN of_IN labeling_VBG a_DT point_NN as_IN belonging_VBG to_TO a_DT set_NN of_IN pre-defined_JJ classes_NNS -LRB-_-LRB- see_VB =_JJ -_: =[_NN 24_CD ,_, 33_CD ,_, 9_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+TCM_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- introduced_VBD the_DT computation_NN of_IN the_DT confidence_NN using_VBG Algorithmic_JJ Randomness_NN Theory_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+-LRB-_-LRB- The_DT first_JJ proposed_VBN application_NN of_IN Algorithmic_JJ Randomness_NN Theory_NNP to_TO machine_NN learning_NN problems_NNS ,_, however_RB
+ample_JJ 10_CD %_NN sample_NN TP_NN 99.72_CD 100 100 100_CD FP_NN 4.97_CD 4.90_CD 5.37_CD 5.80_CD the_DT Laboratory_NN of_IN Image_NN Processing_NN and_CC Pattern_NN Recognition_NN -LRB-_-LRB- INPG-LTIRF_NN -RRB-_-RRB- in_IN Grenoble_NNP ,_, France_NNP ,_, using_VBG as_IN the_DT original_JJ source_NN the_DT material_NN in_IN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC referenced_VBN in_IN -LRB-_-LRB- 10_CD ,_, 11_CD -RRB-_-RRB- ._.
+The_DT data_NNS set_NN contains_VBZ a_DT large_JJ number_NN of_IN classes_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- and_CC a_DT high_JJ dimensionality_NN -LRB-_-LRB- 40_CD -RRB-_-RRB- ._.
+The_DT original_JJ aim_NN was_VBD to_TO distinguish_VB between_IN 11_CD different_JJ textures_NNS -LRB-_-LRB- Grass_NN lawn_NN ,_, Presse_NNP
+putation_NN of_IN the_DT confidence_NN using_VBG Algorithmic_JJ Randomness_NN Theory_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+-LRB-_-LRB- The_DT first_JJ proposed_VBN application_NN of_IN Algorithmic_JJ Randomness_NN Theory_NNP to_TO machine_NN learning_NN problems_NNS ,_, however_RB ,_, corresponds_VBZ to_TO Vovk_NNP et_FW al._FW =_SYM -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: ._. -RRB-_-RRB-
+The_DT confidence_NN measure_NN used_VBN in_IN TCM_NNP is_VBZ based_VBN upon_IN universal_JJ tests_NNS for_IN randomness_NN ,_, or_CC their_PRP$ approximation_NN ._.
+A_DT MartinLof_NNP randomness_NN deficiency_NN test_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- based_VBN on_IN such_JJ tests_NNS is_VBZ a_DT universal_JJ version_NN of_IN th_DT
+ccuracy_NN ._.
+Such_JJ technique_NN can_MD easily_RB be_VB employed_VBN in_IN StrOUD_NN to_TO speed_VB the_DT computation_NN ._.
+A_DT large_JJ body_NN of_IN work_NN has_VBZ been_VBN published_VBN in_IN the_DT area_NN of_IN discovering_VBG outliers_NNS with_IN respect_NN to_TO clustering_NN models_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 7_CD ,_, 23_CD ,_, 27_CD ,_, 29_CD ,_, 12_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, most_JJS of_IN these_DT algorithms_NNS do_VBP not_RB aim_VB at_IN the_DT discovery_NN of_IN outliers_NNS ,_, but_CC rather_RB offer_VBP ways_NNS to_TO deal_VB with_IN them_PRP ._.
+And_CC ,_, in_IN all_PDT the_DT cases_NNS ,_, the_DT discovery_NN of_IN outliers_NNS is_VBZ done_VBN by_IN careful_JJ setting_NN of_IN th_DT
+ccuracy_NN ._.
+Such_JJ technique_NN can_MD easily_RB be_VB employed_VBN in_IN StrOUD_NN to_TO speed_VB the_DT computation_NN ._.
+A_DT large_JJ body_NN of_IN work_NN has_VBZ been_VBN published_VBN in_IN the_DT area_NN of_IN discovering_VBG outliers_NNS with_IN respect_NN to_TO clustering_NN models_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 7_CD ,_, 23_CD ,_, 27_CD ,_, 29_CD ,_, 12_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, most_JJS of_IN these_DT algorithms_NNS do_VBP not_RB aim_VB at_IN the_DT discovery_NN of_IN outliers_NNS ,_, but_CC rather_RB offer_VBP ways_NNS to_TO deal_VB with_IN them_PRP ._.
+And_CC ,_, in_IN all_PDT the_DT cases_NNS ,_, the_DT discovery_NN of_IN outliers_NNS is_VBZ done_VBN by_IN careful_JJ setting_NN of_IN th_DT
+purposes_NNS of_IN this_DT paper_NN ,_, we_PRP will_MD limit_VB ourselves_PRP to_TO this_DT definition_NN ._.
+In_IN particular_JJ ,_, we_PRP use_VBP the_DT Euclidean_JJ distance_NN to_TO compute_VB the_DT distance_NN between_IN pairs_NNS of_IN points_NNS -LRB-_-LRB- as_IN done_VBN in_IN the_DT distance_NN based_JJ method_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: against_IN which_WDT we_PRP compare_VBP ours_PRP -RRB-_-RRB- ._.
+The_DT strangeness_NN being_VBG the_DT ratio_NN of_IN the_DT sum_NN of_IN the_DT K_NNP smallest_JJS distances_NNS from_IN the_DT same_JJ class_NN we_PRP propose_VBP to_TO put_VB i_FW in_FW ,_, to_TO the_DT sum_NN of_IN the_DT K_NNP smallest_JJS distances_NNS from_IN other_JJ cl_NN
+ccuracy_NN ._.
+Such_JJ technique_NN can_MD easily_RB be_VB employed_VBN in_IN StrOUD_NN to_TO speed_VB the_DT computation_NN ._.
+A_DT large_JJ body_NN of_IN work_NN has_VBZ been_VBN published_VBN in_IN the_DT area_NN of_IN discovering_VBG outliers_NNS with_IN respect_NN to_TO clustering_NN models_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 7_CD ,_, 23_CD ,_, 27_CD ,_, 29_CD ,_, 12_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, most_JJS of_IN these_DT algorithms_NNS do_VBP not_RB aim_VB at_IN the_DT discovery_NN of_IN outliers_NNS ,_, but_CC rather_RB offer_VBP ways_NNS to_TO deal_VB with_IN them_PRP ._.
+And_CC ,_, in_IN all_PDT the_DT cases_NNS ,_, the_DT discovery_NN of_IN outliers_NNS is_VBZ done_VBN by_IN careful_JJ setting_NN of_IN th_DT

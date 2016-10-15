@@ -1,0 +1,60 @@
+Efficient_JJ interactive_JJ fuzzy_JJ keyword_NN search_NN
+Traditional_JJ information_NN systems_NNS return_VBP answers_NNS after_IN a_DT user_NN submits_VBZ a_DT complete_JJ query_NN ._.
+Users_NNS often_RB feel_VBP ``_`` left_VBN in_IN the_DT dark_NN ''_'' when_WRB they_PRP have_VBP limited_VBN knowledge_NN about_IN the_DT underlying_VBG data_NNS ,_, and_CC have_VBP to_TO use_VB a_DT try-and-see_JJ approach_NN for_IN finding_VBG information_NN ._.
+A_DT recent_JJ trend_NN of_IN supporting_VBG autocomplete_NN in_IN these_DT systems_NNS is_VBZ a_DT first_JJ step_NN towards_IN solving_VBG this_DT problem_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP study_VBD a_DT new_JJ information-access_JJ paradigm_NN ,_, called_VBN ``_`` interactive_JJ ,_, fuzzy_JJ search_NN ,_, ''_'' in_IN which_WDT the_DT system_NN searches_VBZ the_DT underlying_VBG data_NNS ``_`` on_IN the_DT fly_NN ''_'' as_IN the_DT user_NN types_NNS in_IN query_NN keywords_NNS ._.
+It_PRP extends_VBZ autocomplete_JJ interfaces_NNS by_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- allowing_VBG keywords_NNS to_TO appear_VB in_IN multiple_JJ attributes_NNS -LRB-_-LRB- in_IN an_DT arbitrary_JJ order_NN -RRB-_-RRB- of_IN the_DT underlying_VBG data_NNS ;_: and_CC -LRB-_-LRB- 2_LS -RRB-_-RRB- finding_VBG relevant_JJ records_NNS that_WDT have_VBP keywords_NNS matching_VBG query_JJ keywords_NNS approximately_RB ._.
+This_DT framework_NN allows_VBZ users_NNS to_TO explore_VB data_NNS as_IN they_PRP type_NN ,_, even_RB in_IN the_DT presence_NN of_IN minor_JJ errors_NNS ._.
+We_PRP study_VBD research_NN challenges_NNS in_IN this_DT framework_NN for_IN large_JJ amounts_NNS of_IN data_NNS ._.
+Since_IN each_DT keystroke_NN of_IN the_DT user_NN could_MD invoke_VB a_DT query_NN on_IN the_DT backend_NN ,_, we_PRP need_VBP efficient_JJ algorithms_NNS to_TO process_VB each_DT query_NN within_IN milliseconds_NNS ._.
+We_PRP develop_VBP various_JJ incremental-search_JJ algorithms_NNS using_VBG previously_RB computed_VBN and_CC cached_VBN results_NNS in_IN order_NN to_TO achieve_VB an_DT interactive_JJ speed_NN ._.
+We_PRP have_VBP deployed_VBN several_JJ real_JJ prototypes_NNS using_VBG these_DT techniques_NNS ._.
+One_CD of_IN them_PRP has_VBZ been_VBN deployed_VBN to_TO support_VB interactive_JJ search_NN on_IN the_DT UC_NN Irvine_NNP people_NNS directory_NN ,_, which_WDT has_VBZ been_VBN used_VBN regularly_RB and_CC well_RB received_VBN by_IN users_NNS due_JJ to_TO its_PRP$ friendly_JJ interface_NN and_CC high_JJ efficiency_NN ._.
+join_VB on_IN string-valued_JJ attributes_NNS in_IN relational_JJ databases_NNS is_VBZ an_DT important_JJ operator_NN with_IN a_DT large_JJ number_NN of_IN applications_NNS ._.
+Examples_NNS include_VBP data_NNS cleaning_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, data_NN integration_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, fuzzy_JJ keyword_JJ search_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: and_CC many_JJ others_NNS -LRB-_-LRB- 5_CD ,_, 13_CD ,_, 28_CD -RRB-_-RRB- ._.
+The_DT edit_NN distance_NN Permission_NN to_TO make_VB digital_JJ or_CC hard_JJ copies_NNS of_IN all_DT or_CC part_NN of_IN this_DT work_NN for_IN personal_JJ or_CC classroom_NN use_NN is_VBZ granted_VBN without_IN fee_NN provided_VBN that_IN copies_NNS are_VBP not_RB
+friendly_JJ search_NN paradigm_NN that_WDT can_MD reduce_VB the_DT efforts_NNS of_IN users_NNS to_TO refine_VB their_PRP$ queries_NNS by_IN returning_VBG the_DT results_NNS instantly_RB as_IN they_PRP type_NN in_IN queries_NNS character_NN by_IN character_NN ._.
+Compared_VBN with_IN existing_JJ studies_NNS =_JJ -_: =[_NN 4_CD ,_, 5_CD ,_, 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT focus_VBP on_IN search-as-you-type_NN on_IN single-input-box_JJ interfaces_NNS ,_, Seaform_NNP allows_VBZ a_DT user_NN to_TO specify_VB her_PRP$ keywords_NNS in_IN multiple_JJ input_NN boxes_NNS on_IN a_DT form_NN and_CC get_VB the_DT results_NNS instantly_RB ._.
+Besides_IN returning_VBG the_DT
+h_NN first_JJ constructs_NNS a_DT trie_NN structure_NN for_IN all_DT strings_NNS in_IN R_NN ,_, 1220and_NN then_RB for_IN each_DT string_NN s_VBZ ∈_NNP S_NNP ,_, computes_VBZ the_DT active-node_JJ set_NN As_IN of_IN s_NN based_VBN on_IN subtrie_NN pruning_NN ._.
+We_PRP can_MD also_RB use_VB the_DT incremental_JJ algorithm_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: to_TO compute_VB the_DT active-node_JJ sets_NNS ._.
+For_IN each_DT r_NN ∈_NN As_IN ,_, if_IN r_NN is_VBZ a_DT leaf_NN node_NN -LRB-_-LRB- i.e._FW ,_, r_NN ∈_NN S_NN -RRB-_-RRB- ,_, 〈_CD s_NN ,_, r_NN 〉_NN is_VBZ a_DT similar_JJ string_NN pair_NN ._.
+For_IN example_NN ,_, in_IN Figure_NNP 2_CD ,_, given_VBN a_DT string_NN s_NN =_JJ ``_`` ebay_NN ''_'' ,_, A_DT ``_`` ebay_NN ''_'' =_JJ -LCB-_-LRB- 4_CD ,_, 11_CD ,_, 12_CD -RCB-_-RRB- ._.
+As_IN nod_NN
+c_NN related_JJ to_TO string_VB similarity_NN search_NN ._.
+While_IN traditional_JJ auto-completion_JJ functionality_NN only_RB supports_VBZ prefix_NN search_NN ,_, some_DT new_JJ studies_NNS have_VBP enabled_VBN auto-completion_NN based_VBN on_IN edit_NN distance_NN by_IN using_VBG tries_NNS =_JJ -_: =[_NN 7_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Approximate_JJ edit_NN distance_NN search_NN is_VBZ another_DT research_NN direction_NN in_IN the_DT literature_NN of_IN computer_NN algorithms_NNS ._.
+Ostrovsky_NNP and_CC Rabani_NNP -LRB-_-LRB- 17_CD -RRB-_-RRB- proved_VBD that_IN edit_NN distance_NN can_MD be_VB probabilistically_RB well_RB preserved_VBN b_NN
+ibution_NN of_IN these_DT papers_NNS is_VBZ limited_VBN to_TO classroom_NN use_NN ,_, and_CC personal_JJ use_NN by_IN others_NNS ._.
+WWW_NN 2011_CD ,_, March_NNP 28_CD --_: April_NNP 1_CD ,_, 2011_CD ,_, Hyderabad_NNP ,_, India_NNP ._.
+ACM_NN 978-1-4503-0632-4_CD \/_: 11\/03_CD ._.
+1_CD ._.
+INTRODUCTION_NNP Query_NNP auto_NN completion_NN =_JJ -_: =[_NN 4_CD ,_, 23_CD ,_, 14_CD ,_, 3_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ one_CD of_IN the_DT most_RBS visible_JJ features_NNS in_IN Web_NN Search_VBP today_NN ._.
+It_PRP is_VBZ offered_VBN by_IN all_DT major_JJ search_NN engines_NNS and_CC in_IN almost_RB all_DT their_PRP$ search_NN boxes_NNS ._.
+Query_JJ auto_NN completion_NN helps_VBZ the_DT user_NN formulate_VB her_PRP$ query_NN ,_, whil_NN
+-LRB-_-LRB- 5_CD -RRB-_-RRB- enable_VBP us_PRP to_TO enhance_VB Ajax-like_JJ interaction_NN in_IN such_JJ a_DT dense_JJ vectors_NNS space_NN like_IN the_DT one_CD in_IN LSI_NNP ,_, which_WDT is_VBZ considered_VBN to_TO be_VB difficult_JJ to_TO apply_VB with_IN inverted_JJ list_NN techniques_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Recently_RB ,_, Ji_FW et_FW al._FW =_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD the_DT interactive_JJ fuzzy_JJ keyword_NN search_NN ,_, where_WRB auto-complete_JJ keyword_NN search_NN is_VBZ enhanced_VBN to_TO support_VB approximate_JJ keyword_JJ matching_NN ._.
+They_PRP developed_VBD interactive_JJ tool_NN by_IN explored_VBN efficient_JJ indexing_NN a_DT
+rching_JJ mechanisms_NNS ._.
+To_TO overcome_VB this_DT exact_JJ match_NN searching_VBG method_NN another_DT method_NN was_VBD proposed_VBN ,_, called_VBN ``_`` fuzzy_JJ keyword_NN search_NN ''_'' ._.
+S._NNP Ji_NNP ,_, proposed_VBD a_DT new_JJ computing_NN paradigm_NN ,_, called_VBD interactive_JJ ,_, fuzzy_JJ search_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP has_VBZ two_CD unique_JJ features_NNS such_JJ as_IN Interactive_JJ -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC Fuzzy_JJ -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+This_DT uses_VBZ `_`` Straight_JJ forward_JJ method_NN '_'' for_IN keyword_JJ construction_NN ._.
+It_PRP gives_VBZ the_DT idea_NN about_IN the_DT queries_NNS with_IN a_DT single_JJ keyword_NN ,_, and_CC present_JJ
+a._JJ interactive_JJ search_NN ,_, auto-complete_JJ search_NN ,_, or_CC type-ahead_JJ search_NN -RRB-_-RRB- has_VBZ become_VBN in_IN many_JJ search_NN systems_NNS ._.
+Bast_NNP et_FW al._FW -LRB-_-LRB- 3,2_CD -RRB-_-RRB- proposed_VBN indexing_NN techniques_NNS for_IN efficient_JJ auto-complete_JJ search_NN ._.
+The_DT studies_NNS in_IN =_JJ -_: =[_NN 13_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: investigated_VBD how_WRB to_TO do_VB error-tolerant_JJ interactive_JJ search_NN ._.
+Li_NNP et_FW al._FW -LRB-_-LRB- 15_CD -RRB-_-RRB- studied_VBD type-ahead_JJ search_NN on_IN relational_JJ databases_NNS with_IN multiple_JJ tables_NNS ._.
+These_DT studies_NNS did_VBD not_RB focus_VB on_IN how_WRB to_TO answer_VB location_NN -_:
+tudied_VBN how_WRB to_TO extend_VB autocompletion_NN to_TO tolerate_VB errors_NNS ._.
+The_DT algorithms_NNS for_IN computing_VBG similar_JJ prefixes_NNS for_IN a_DT query_NN presented_VBN in_IN the_DT two_CD papers_NNS are_VBP similar_JJ ,_, while_IN our_PRP$ algorithm_NN was_VBD published_VBN earlier_RBR in_IN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN addition_NN ,_, our_PRP$ work_NN also_RB studied_VBD type-ahead_JJ search_NN of_IN multiple_JJ keywords_NNS ,_, which_WDT was_VBD not_RB studied_VBN in_IN their_PRP$ paper_NN ._.
+Fuzzy_JJ type-ahead_JJ search_NN :_: Different_NNP from_IN exact_JJ type-ahead_JJ search_NN ,_, the_DT query_JJ answer_NN of_IN
+milarity_NN functions_NNS ._.
+Then_RB ,_, we_PRP will_MD focus_VB on_IN listmerging_VBG search_NN algorithms_NNS -LRB-_-LRB- 26_CD ,_, 21_CD ,_, 11_CD -RRB-_-RRB- and_CC variable-length_JJ grams_NNS -LRB-_-LRB- 22_CD ,_, 29_CD -RRB-_-RRB- ._.
+Next_RB ,_, we_PRP will_MD focus_VB on_IN the_DT emerging_VBG problem_NN of_IN interactive_JJ approximate_JJ search_NN =_JJ -_: =[_NN 14_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Then_RB ,_, we_PRP will_MD present_VB a_DT detailed_JJ explanation_NN of_IN filtering_VBG techniques_NNS for_IN efficient_JJ candidate_NN generation_NN -LRB-_-LRB- 10_CD ,_, 28_CD ,_, 6_CD ,_, 1_CD ,_, 4_CD -RRB-_-RRB- ._.
+The_DT final_JJ part_NN of_IN the_DT tutorial_NN will_MD be_VB devoted_VBN to_TO selectivity-estimation_JJ te_NN
+te_VB simultaneously_RB ._.
+The_DT main_JJ challenge_NN for_IN this_DT problem_NN is_VBZ that_IN the_DT basic_JJ solution_NN of_IN simply_RB integrating_VBG approximate_JJ edit_NN distance_NN evaluation_NN techniques_NNS -LRB-_-LRB- e.g._FW ,_, based_VBN on_IN q-grams_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 17_CD -RRB-_-RRB- or_CC tries_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =--RRB-_NN into_IN a_DT normal_JJ R-tree_NN is_VBZ expensive_JJ and_CC impractical_JJ ._.
+Our_PRP$ main_JJ contributions_NNS are_VBP summarized_VBN as_IN follows_VBZ :_: •_CD We_PRP formalize_VBP the_DT notion_NN of_IN spatial_JJ approximate_JJ string_NN queries_NNS and_CC selectivity_NN estimation_NN for_IN sp_NN

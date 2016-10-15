@@ -1,0 +1,92 @@
+Large-scale_JJ matrix_NN factorization_NN with_IN distributed_VBN stochastic_JJ gradient_NN descent_NN
+We_PRP provide_VBP a_DT novel_JJ algorithm_NN to_TO approximately_RB factor_VB large_JJ matrices_NNS with_IN millions_NNS of_IN rows_NNS ,_, millions_NNS of_IN columns_NNS ,_, and_CC billions_NNS of_IN nonzero_JJ elements_NNS ._.
+Our_PRP$ approach_NN rests_VBZ on_IN stochastic_JJ gradient_NN descent_NN -LRB-_-LRB- SGD_NN -RRB-_-RRB- ,_, an_DT iterative_JJ stochastic_JJ optimization_NN algorithm_NN ._.
+We_PRP first_RB develop_VBP a_DT novel_JJ ``_`` stratified_JJ ''_'' SGD_NN variant_NN -LRB-_-LRB- SSGD_NN -RRB-_-RRB- that_WDT applies_VBZ to_TO general_JJ loss-minimization_NN problems_NNS in_IN which_WDT the_DT loss_NN function_NN can_MD be_VB expressed_VBN as_IN a_DT weighted_JJ sum_NN of_IN ``_`` stratum_NN losses_NNS ._. ''_''
+We_PRP establish_VBP sufficient_JJ conditions_NNS for_IN convergence_NN of_IN SSGD_NNP using_VBG results_NNS from_IN stochastic_JJ approximation_NN theory_NN and_CC regenerative_JJ process_NN theory_NN ._.
+We_PRP then_RB specialize_VBP SSGD_NNP to_TO obtain_VB a_DT new_JJ matrix-factorization_NN algorithm_NN ,_, called_VBN DSGD_NNP ,_, that_WDT can_MD be_VB fully_RB distributed_VBN and_CC run_VBN on_IN web-scale_JJ datasets_NNS using_VBG ,_, e.g._FW ,_, MapReduce_NNP ._.
+DSGD_NN can_MD handle_VB a_DT wide_JJ variety_NN of_IN matrix_NN factorizations_NNS ._.
+We_PRP describe_VBP the_DT practical_JJ techniques_NNS used_VBN to_TO optimize_VB performance_NN in_IN our_PRP$ DSGD_NNP implementation_NN ._.
+Experiments_NNS suggest_VBP that_IN DSGD_NN converges_VBZ significantly_RB faster_JJR and_CC has_VBZ better_JJR scalability_NN properties_NNS than_IN alternative_JJ algorithms_NNS ._.
+etails_NNS on_IN the_DT foregoing_JJ algorithms_NNS ._.
+Generic_JJ algorithms_NNS are_VBP able_JJ to_TO handle_VB all_DT differentiable_JJ loss_NN functions_NNS that_WDT decompose_VBP into_IN summation_NN form_NN ._.
+A_DT simple_JJ approach_NN is_VBZ distributed_VBN gradient_NN descent_NN -LRB-_-LRB- DGD_NN -RRB-_-RRB- =_JJ -_: =[_NN 9_CD ,_, 11_CD ,_, 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT distributes_VBZ gradient_NN computation_NN across_IN a_DT compute_VBP cluster_NN ,_, and_CC then_RB performs_VBZ centralized_JJ parameter_NN updates_NNS using_VBG ,_, for_IN example_NN ,_, quasi-Newton_JJ methods_NNS such_JJ as_IN L-BFGS-B_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Partitioned_VBN SGD_NN approa_NN
+GS-B_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Partitioned_VBN SGD_NN approaches_NNS make_VBP use_NN of_IN a_DT similar_JJ idea_NN :_: SGD_NNP is_VBZ run_VBN independently_RB and_CC in_IN parallel_JJ onpartitions_NNS of_IN the_DT dataset_NN ,_, and_CC parameters_NNS are_VBP averaged_VBN after_IN each_DT pass_NN over_IN the_DT data_NNS -LRB-_-LRB- PSGD_NN =_JJ -_: =[_NN 11_CD ,_, 18_CD -RRB-_-RRB- -_: =--RRB-_NN or_CC once_RB at_IN the_DT end_NN -LRB-_-LRB- ISGD_NN -LRB-_-LRB- 17_CD ,_, 18_CD ,_, 21_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+These_DT approaches_NNS have_VBP not_RB been_VBN applied_VBN to_TO matrix_NN factorization_NN before_RB ._.
+Similarly_RB to_TO L-BFGS-B_NN ,_, they_PRP exhibit_VBP slow_JJ convergence_NN in_IN practice_NN -LRB-_-LRB- see_VB Sec_NNP ._.
+7_CD -RRB-_-RRB- and_CC need_VBP
+s_NNS make_VBP use_NN of_IN a_DT similar_JJ idea_NN :_: SGD_NNP is_VBZ run_VBN independently_RB and_CC in_IN parallel_JJ onpartitions_NNS of_IN the_DT dataset_NN ,_, and_CC parameters_NNS are_VBP averaged_VBN after_IN each_DT pass_NN over_IN the_DT data_NNS -LRB-_-LRB- PSGD_NN -LRB-_-LRB- 11_CD ,_, 18_CD -RRB-_-RRB- -RRB-_-RRB- or_CC once_RB at_IN the_DT end_NN -LRB-_-LRB- ISGD_NN =_JJ -_: =[_NN 17_CD ,_, 18_CD ,_, 21_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+These_DT approaches_NNS have_VBP not_RB been_VBN applied_VBN to_TO matrix_NN factorization_NN before_RB ._.
+Similarly_RB to_TO L-BFGS-B_NN ,_, they_PRP exhibit_VBP slow_JJ convergence_NN in_IN practice_NN -LRB-_-LRB- see_VB Sec_NNP ._.
+7_CD -RRB-_-RRB- and_CC need_VBP to_TO store_VB the_DT full_JJ factor_NN matrices_NNS in_IN me_PRP
+ets_NN ._.
+For_IN this_DT reason_NN ,_, low-rank_JJ matrix_NN factorization_NN has_VBZ received_VBN much_JJ attention_NN in_IN recent_JJ years_NNS ;_: it_PRP is_VBZ fundamental_JJ to_TO a_DT variety_NN of_IN mining_NN tasks_NNS that_WDT are_VBP increasingly_RB being_VBG applied_VBN to_TO massive_JJ datasets_NNS =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Specifically_RB ,_, low-rank_JJ matrix_NN factorizations_NNS are_VBP effective_JJ tools_NNS for_IN analyzing_VBG ``_`` dyadic_JJ data_NNS ''_'' in_IN order_NN to_TO discover_VB and_CC quantify_VB the_DT interactions_NNS between_IN two_CD given_VBN entities_NNS ._.
+Successful_JJ applications_NNS in_IN
+ets_NN ._.
+For_IN this_DT reason_NN ,_, low-rank_JJ matrix_NN factorization_NN has_VBZ received_VBN much_JJ attention_NN in_IN recent_JJ years_NNS ;_: it_PRP is_VBZ fundamental_JJ to_TO a_DT variety_NN of_IN mining_NN tasks_NNS that_WDT are_VBP increasingly_RB being_VBG applied_VBN to_TO massive_JJ datasets_NNS =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Specifically_RB ,_, low-rank_JJ matrix_NN factorizations_NNS are_VBP effective_JJ tools_NNS for_IN analyzing_VBG ``_`` dyadic_JJ data_NNS ''_'' in_IN order_NN to_TO discover_VB and_CC quantify_VB the_DT interactions_NNS between_IN two_CD given_VBN entities_NNS ._.
+Successful_JJ applications_NNS in_IN
+ith_NN millions_NNS of_IN rows_NNS -LRB-_-LRB- e.g._FW ,_, distinct_JJ customers_NNS -RRB-_-RRB- ,_, millions_NNS of_IN columns_NNS -LRB-_-LRB- e.g._FW ,_, distinct_JJ items_NNS -RRB-_-RRB- ,_, and_CC billions_NNS of_IN entries_NNS -LRB-_-LRB- e.g._FW ,_, transactions_NNS between_IN customers_NNS and_CC items_NNS -RRB-_-RRB- ._.
+At_IN such_JJ massive_JJ scales_NNS ,_, parallel_NN =_JJ -_: =[_NN 6_CD ,_, 7_CD -RRB-_-RRB- -_: =_JJ -_: and_CC distributed_VBN -LRB-_-LRB- 1_CD ,_, 8_CD ,_, 5_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- algorithms_NNS for_IN matrix_NN factorization_NN are_VBP essential_JJ to_TO achieving_VBG reasonable_JJ performance_NN ._.
+In_IN this_DT paper_NN --_: an_DT extended_VBN abstract_JJ of_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- --_: we_PRP provide_VBP a_DT novel_JJ ,_, effective_JJ distri_NNS
+ith_NN millions_NNS of_IN rows_NNS -LRB-_-LRB- e.g._FW ,_, distinct_JJ customers_NNS -RRB-_-RRB- ,_, millions_NNS of_IN columns_NNS -LRB-_-LRB- e.g._FW ,_, distinct_JJ items_NNS -RRB-_-RRB- ,_, and_CC billions_NNS of_IN entries_NNS -LRB-_-LRB- e.g._FW ,_, transactions_NNS between_IN customers_NNS and_CC items_NNS -RRB-_-RRB- ._.
+At_IN such_JJ massive_JJ scales_NNS ,_, parallel_NN =_JJ -_: =[_NN 6_CD ,_, 7_CD -RRB-_-RRB- -_: =_JJ -_: and_CC distributed_VBN -LRB-_-LRB- 1_CD ,_, 8_CD ,_, 5_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- algorithms_NNS for_IN matrix_NN factorization_NN are_VBP essential_JJ to_TO achieving_VBG reasonable_JJ performance_NN ._.
+In_IN this_DT paper_NN --_: an_DT extended_VBN abstract_JJ of_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- --_: we_PRP provide_VBP a_DT novel_JJ ,_, effective_JJ distri_NNS
+._.
+g._RB ,_, distinct_JJ customers_NNS -RRB-_-RRB- ,_, millions_NNS of_IN columns_NNS -LRB-_-LRB- e.g._FW ,_, distinct_JJ items_NNS -RRB-_-RRB- ,_, and_CC billions_NNS of_IN entries_NNS -LRB-_-LRB- e.g._FW ,_, transactions_NNS between_IN customers_NNS and_CC items_NNS -RRB-_-RRB- ._.
+At_IN such_JJ massive_JJ scales_NNS ,_, parallel_NN -LRB-_-LRB- 6_CD ,_, 7_CD -RRB-_-RRB- and_CC distributed_VBN =_JJ -_: =[_NN 1_CD ,_, 8_CD ,_, 5_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: algorithms_NNS for_IN matrix_NN factorization_NN are_VBP essential_JJ to_TO achieving_VBG reasonable_JJ performance_NN ._.
+In_IN this_DT paper_NN --_: an_DT extended_VBN abstract_JJ of_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- --_: we_PRP provide_VBP a_DT novel_JJ ,_, effective_JJ distributed_VBN factorization_NN algorithm_NN bas_NN
+ch_NN Z_NN =_JJ -LCB-_-LRB- -LRB-_-LRB- i_LS ,_, j_NN -RRB-_-RRB- :_: V_NN ij_FW ̸_FW =_JJ 0_CD -RCB-_-RRB- ._.
+Such_JJ decompositions_NNS naturally_RB arise_VBP when_WRB zeros_NNS represent_VBP missing_VBG data_NNS as_IN in_IN the_DT case_NN of_IN recommender_NN systems_NNS ._.
+Our_PRP$ algorithms_NNS can_MD handle_VB other_JJ decompositions_NNS as_RB well_RB ;_: see_VB =_JJ -_: =[_NN 10_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+2_CD Matrix_NNP Factorization_NNP with_IN Stochastic_NNP Gradient_NNP Descent_NNP The_DT goal_NN of_IN SGD_NNP is_VBZ to_TO find_VB the_DT value_NN θ_FW ∗_FW ∈_FW ℜ_NN k_NN -LRB-_-LRB- k_NN ≥_NN 1_CD -RRB-_-RRB- that_WDT minimizes_VBZ a_DT given_JJ loss_NN L_NN -LRB-_-LRB- θ_NN -RRB-_-RRB- ._.
+The_DT algorithm_NN makes_VBZ use_NN of_IN noisy_JJ observations_NNS ˆ_CD L_NN ′_NN -LRB-_-LRB-
+f_FW DSGD_FW on_IN the_DT KDDCup_NN 2011_CD dataset_NN ,_, which_WDT consists_VBZ of_IN 252M_JJ music_NN ratings_NNS -LRB-_-LRB- 1M_NN users_NNS ,_, 624k_JJ items_NNS -RRB-_-RRB- along_IN with_IN the_DT time_NN of_IN rating_NN ;_: matrix_NN factorization_NN is_VBZ used_VBN to_TO predict_VB missing_JJ ratings_NNS ._.
+The_DT winning_VBG team_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: integrated_VBN more_JJR than_IN 80_CD different_JJ matrix_NN factorizations_NNS on_IN this_DT dataset_NN ._.
+Here_RB we_PRP show_VBP results_NNS for_IN a_DT ``_`` biased_VBN matrix_NN factorization_NN ''_'' ,_, in_IN which_WDT user_NN -LRB-_-LRB- ui_NN -RRB-_-RRB- and_CC movie_NN -LRB-_-LRB- mj_NN -RRB-_-RRB- preferences_NNS are_VBP integrated_VBN into_IN th_DT
+ets_NN ._.
+For_IN this_DT reason_NN ,_, low-rank_JJ matrix_NN factorization_NN has_VBZ received_VBN much_JJ attention_NN in_IN recent_JJ years_NNS ;_: it_PRP is_VBZ fundamental_JJ to_TO a_DT variety_NN of_IN mining_NN tasks_NNS that_WDT are_VBP increasingly_RB being_VBG applied_VBN to_TO massive_JJ datasets_NNS =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Specifically_RB ,_, low-rank_JJ matrix_NN factorizations_NNS are_VBP effective_JJ tools_NNS for_IN analyzing_VBG ``_`` dyadic_JJ data_NNS ''_'' in_IN order_NN to_TO discover_VB and_CC quantify_VB the_DT interactions_NNS between_IN two_CD given_VBN entities_NNS ._.
+Successful_JJ applications_NNS in_IN
+t_NN descent_NN -LRB-_-LRB- DGD_NN -RRB-_-RRB- -LRB-_-LRB- 9_CD ,_, 11_CD ,_, 17_CD -RRB-_-RRB- ,_, which_WDT distributes_VBZ gradient_NN computation_NN across_IN a_DT compute_VBP cluster_NN ,_, and_CC then_RB performs_VBZ centralized_JJ parameter_NN updates_NNS using_VBG ,_, for_IN example_NN ,_, quasi-Newton_JJ methods_NNS such_JJ as_IN L-BFGS-B_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Partitioned_VBN SGD_NN approaches_NNS make_VBP use_NN of_IN a_DT similar_JJ idea_NN :_: SGD_NNP is_VBZ run_VBN independently_RB and_CC in_IN parallel_JJ onpartitions_NNS of_IN the_DT dataset_NN ,_, and_CC parameters_NNS are_VBP averaged_VBN after_IN each_DT pass_NN over_IN the_DT data_NNS -LRB-_-LRB- PSGD_NN -LRB-_-LRB- 11_CD ,_, 18_CD -RRB-_-RRB-
+ets_NN ._.
+For_IN this_DT reason_NN ,_, low-rank_JJ matrix_NN factorization_NN has_VBZ received_VBN much_JJ attention_NN in_IN recent_JJ years_NNS ;_: it_PRP is_VBZ fundamental_JJ to_TO a_DT variety_NN of_IN mining_NN tasks_NNS that_WDT are_VBP increasingly_RB being_VBG applied_VBN to_TO massive_JJ datasets_NNS =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Specifically_RB ,_, low-rank_JJ matrix_NN factorizations_NNS are_VBP effective_JJ tools_NNS for_IN analyzing_VBG ``_`` dyadic_JJ data_NNS ''_'' in_IN order_NN to_TO discover_VB and_CC quantify_VB the_DT interactions_NNS between_IN two_CD given_VBN entities_NNS ._.
+Successful_JJ applications_NNS in_IN
+previously_RB unseen_JJ movie_NN ._.
+See_VB -LRB-_-LRB- 10_CD -RRB-_-RRB- for_IN a_DT treatment_NN of_IN other_JJ loss_NN functions_NNS ._.
+2_CD ._.
+EXAMPLE_NN AND_CC PRIOR_NN WORK_VBP To_TO gain_VB understanding_NN about_IN applications_NNS of_IN matrix_NN factorizations_NNS ,_, consider_VB the_DT ``_`` Netflix_NNP problem_NN ''_'' =_SYM -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: of_IN recommending_VBG movies_NNS to_TO customers_NNS ._.
+Netflix_NNP is_VBZ a_DT company_NN that_WDT offers_VBZ tens_NNS of_IN thousands_NNS of_IN movies_NNS for_IN rental_NN ._.
+The_DT company_NN has_VBZ more_JJR than_IN 15M_CD customers_NNS ,_, each_DT of_IN whom_WP can_MD provide_VB feedback_NN about_IN their_PRP$ pe_NN
+ince_FW −_FW L_NN ′_NN -LRB-_-LRB- θn_NN -RRB-_-RRB- is_VBZ the_DT direction_NN of_IN steepest_JJ descent_NN ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- constitutes_VBZ a_DT noisy_JJ version_NN of_IN gradient_NN descent_NN ._.
+Stochastic_JJ approximation_NN theory_NN can_MD be_VB used_VBN to_TO show_VB that_IN ,_, under_IN certain_JJ regularity_NN conditions_NNS =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT noise_NN in_IN the_DT gradient_NN estimates_VBZ ``_`` averages_NNS out_RP ''_'' and_CC SGD_NNP converges_VBZ to_TO the_DT set_NN of_IN stationary_JJ points_NNS satisfying_VBG L_NN ′_NN -LRB-_-LRB- θ_NN -RRB-_-RRB- =_JJ 0_CD ._.
+Of_IN course_NN ,_, these_DT stationary_JJ points_NNS can_MD be_VB minima_VBN ,_, maxima_NNS ,_, or_CC saddle_NN point_NN
+umns_NNS ._.
+Thus_RB the_DT more_JJR similarity_NN there_EX is_VBZ ,_, the_DT better_JJR SGD_NNP performs_VBZ ._.
+Ultimately_RB ,_, the_DT hope_NN is_VBZ that_IN the_DT increased_VBN number_NN of_IN steps_NNS leads_VBZ to_TO faster_JJR convergence_NN ._.
+This_DT behavior_NN can_MD be_VB proven_VBN for_IN some_DT problems_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC it_PRP has_VBZ been_VBN observed_VBN in_IN the_DT case_NN of_IN large-scale_JJ matrix_NN factorization_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+4_LS ._.
+STRATIFIED_VBN SGD_NN In_IN this_DT section_NN we_PRP develop_VBP a_DT general_JJ stratified_JJ stochastic_JJ gradient_NN descent_NN -LRB-_-LRB- SSGD_NN -RRB-_-RRB- algorithm_NN ,_, and_CC giv_NN
+to_TO post_VB on_IN servers_NNS or_CC to_TO redistribute_VB to_TO lists_NNS ,_, requires_VBZ prior_JJ specific_JJ permission_NN and\/or_CC a_DT fee_NN ._.
+KDD_NNP 2011_CD August_NNP 21-24_CD ,_, 2011_CD ,_, San_NNP Diego_NNP ,_, CA_NNP ._.
+Copyright_NN 2011_CD ACM_NN X-XXXXX-XX-X_NN \/_: XX\/XX_NN ..._: $_$ 10.00_CD ._.
+datasets_NNS =_JJ -_: =[_NN 8_CD ,_, 12_CD ,_, 13_CD ,_, 15_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Specifically_RB ,_, low-rank_JJ matrix_NN factorizations_NNS are_VBP effective_JJ tools_NNS for_IN analyzing_VBG ``_`` dyadic_JJ data_NNS ''_'' in_IN order_NN to_TO discover_VB and_CC quantify_VB the_DT interactions_NNS between_IN two_CD given_VBN entities_NNS ._.
+Successful_JJ applications_NNS in_IN
+column_NN j_NN of_IN matrix_NN A_NN ,_, respectively_RB ._.
+Many_JJ loss_NN functions_NNS used_VBN in_IN practice_NN --_: such_JJ as_IN squared_VBN loss_NN ,_, generalized_VBN Kullback-Leibler_NN divergence_NN -LRB-_-LRB- GKL_NN -RRB-_-RRB- ,_, and_CC Lp_NN regularization_NN --_: can_MD be_VB decomposed_VBN in_IN such_JJ a_DT manner_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Note_VB that_IN a_DT given_VBN loss_NN function_NN L_NN can_MD potentially_RB be_VB decomposed_VBN in_IN multiple_JJ ways_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP focus_VBP primarily_RB on_IN the_DT class_NN of_IN nonzero_NN decompositions_NNS ,_, in_IN which_WDT Z_NN =_JJ -LCB-_-LRB- -LRB-_-LRB- i_LS ,_, j_NN -RRB-_-RRB- :_: V_NN ij_FW ̸_FW =_JJ 0_CD -RCB-_-RRB- ._.
+As_IN me_PRP
+._.
+g._RB ,_, distinct_JJ customers_NNS -RRB-_-RRB- ,_, millions_NNS of_IN columns_NNS -LRB-_-LRB- e.g._FW ,_, distinct_JJ items_NNS -RRB-_-RRB- ,_, and_CC billions_NNS of_IN entries_NNS -LRB-_-LRB- e.g._FW ,_, transactions_NNS between_IN customers_NNS and_CC items_NNS -RRB-_-RRB- ._.
+At_IN such_JJ massive_JJ scales_NNS ,_, parallel_NN -LRB-_-LRB- 6_CD ,_, 7_CD -RRB-_-RRB- and_CC distributed_VBN =_JJ -_: =[_NN 1_CD ,_, 8_CD ,_, 5_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: algorithms_NNS for_IN matrix_NN factorization_NN are_VBP essential_JJ to_TO achieving_VBG reasonable_JJ performance_NN ._.
+In_IN this_DT paper_NN --_: an_DT extended_VBN abstract_JJ of_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- --_: we_PRP provide_VBP a_DT novel_JJ ,_, effective_JJ distributed_VBN factorization_NN algorithm_NN bas_NN
+ets_NN ._.
+For_IN this_DT reason_NN ,_, low-rank_JJ matrix_NN factorization_NN has_VBZ received_VBN much_JJ attention_NN in_IN recent_JJ years_NNS ;_: it_PRP is_VBZ fundamental_JJ to_TO a_DT variety_NN of_IN mining_NN tasks_NNS that_WDT are_VBP increasingly_RB being_VBG applied_VBN to_TO massive_JJ datasets_NNS =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Specifically_RB ,_, low-rank_JJ matrix_NN factorizations_NNS are_VBP effective_JJ tools_NNS for_IN analyzing_VBG ``_`` dyadic_JJ data_NNS ''_'' in_IN order_NN to_TO discover_VB and_CC quantify_VB the_DT interactions_NNS between_IN two_CD given_VBN entities_NNS ._.
+Successful_JJ applications_NNS in_IN

@@ -1,0 +1,118 @@
+StatSnowball_NNP :_: a_DT statistical_JJ approach_NN to_TO extracting_VBG entity_NN relationships_NNS
+Traditional_JJ relation_NN extraction_NN methods_NNS require_VBP pre-specified_JJ relations_NNS and_CC relation-specific_JJ human-tagged_JJ examples_NNS ._.
+Bootstrapping_VBG systems_NNS significantly_RB reduce_VB the_DT number_NN of_IN training_NN examples_NNS ,_, but_CC they_PRP usually_RB apply_VBP heuristic-based_JJ methods_NNS to_TO combine_VB a_DT set_NN of_IN strict_JJ hard_JJ rules_NNS ,_, which_WDT limit_VBP the_DT ability_NN to_TO generalize_VB and_CC thus_RB generate_VB a_DT low_JJ recall_NN ._.
+Furthermore_RB ,_, existing_VBG bootstrapping_NN methods_NNS do_VBP not_RB perform_VB open_JJ information_NN extraction_NN -LRB-_-LRB- Open_NNP IE_NN -RRB-_-RRB- ,_, which_WDT can_MD identify_VB various_JJ types_NNS of_IN relations_NNS without_IN requiring_VBG pre-specifications_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT statistical_JJ extraction_NN framework_NN called_VBN Statistical_NNP Snowball_NNP -LRB-_-LRB- StatSnowball_NNP -RRB-_-RRB- ,_, which_WDT is_VBZ a_DT bootstrapping_NN system_NN and_CC can_MD perform_VB both_DT traditional_JJ relation_NN extraction_NN and_CC Open_NNP IE_NN ._.
+StatSnowball_NNP uses_VBZ the_DT discriminative_JJ Markov_NNP logic_NN networks_NNS -LRB-_-LRB- MLNs_NNS -RRB-_-RRB- and_CC softens_VBZ hard_JJ rules_NNS by_IN learning_VBG their_PRP$ weights_NNS in_IN a_DT maximum_NN likelihood_NN estimate_NN sense_NN ._.
+MLN_NNP is_VBZ a_DT general_JJ model_NN ,_, and_CC can_MD be_VB configured_VBN to_TO perform_VB different_JJ levels_NNS of_IN relation_NN extraction_NN ._.
+In_IN StatSnwoball_NNP ,_, pattern_NN selection_NN is_VBZ performed_VBN by_IN solving_VBG an_DT l1-norm_NN penalized_VBD maximum_JJ likelihood_NN estimation_NN ,_, which_WDT enjoys_VBZ well-founded_JJ theories_NNS and_CC efficient_JJ solvers_NNS ._.
+We_PRP extensively_RB evaluate_VBP the_DT performance_NN of_IN StatSnowball_NNP in_IN different_JJ configurations_NNS on_IN both_CC a_DT small_JJ but_CC fully_RB labeled_VBN data_NNS set_NN and_CC large-scale_JJ Web_NN data_NNS ._.
+Empirical_JJ results_NNS show_VBP that_IN StatSnowball_NNP can_MD achieve_VB a_DT significantly_RB higher_JJR recall_NN without_IN sacrificing_VBG the_DT high_JJ precision_NN during_IN iterations_NNS with_IN a_DT small_JJ number_NN of_IN seeds_NNS ,_, and_CC the_DT joint_JJ inference_NN of_IN MLN_NNP can_MD improve_VB the_DT performance_NN ._.
+Finally_RB ,_, StatSnowball_NNP is_VBZ efficient_JJ and_CC we_PRP have_VBP developed_VBN a_DT working_VBG entity_NN relation_NN search_NN engine_NN called_VBN Renlifang_NNP based_VBN on_IN it_PRP ._.
+two_CD tasks_NNS into_IN one_CD probabilistic_JJ model_NN and_CC thus_RB can_MD achieve_VB a_DT higher_JJR performance_NN by_IN exploring_VBG their_PRP$ mutual_JJ enhancements_NNS ._.
+The_DT promise_NN of_IN integrated_VBN extraction_NN has_VBZ been_VBN shown_VBN in_IN different_JJ applications_NNS =_JJ -_: =[_NN 20_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+But_CC the_DT heuristic-based_JJ Snowball_NNP is_VBZ hard_JJ to_TO be_VB coherently_RB integrated_VBN with_IN the_DT state-of-the-art_JJ statistical_JJ named_VBN entity_NN extraction_NN systems_NNS ._.
+-LRB-_-LRB- b_LS -RRB-_-RRB- We_PRP extensively_RB evaluate_VBP StatSnowball_NNP and_CC empirically_RB s_NN
+e_LS ending_NN -RRB-_-RRB- ,_, that_DT is_VBZ ,_, ``'_CD s_NN ''_'' ._.
+4.2_CD Pattern_NN Selection_NN Selecting_VBG patterns_NNS is_VBZ a_DT feature_NN induction_NN problem_NN of_IN Markov_NNP random_JJ fields_NNS or_CC Markov_NNP networks_NNS -LRB-_-LRB- 19_CD ,_, 16_CD -RRB-_-RRB- ._.
+In_IN MLN_NNP ,_, the_DT problem_NN is_VBZ called_VBN structure_NN learning_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Alchemy_NNP uses_VBZ a_DT generative_JJ approach_NN to_TO learning_VBG the_DT structure_NN of_IN MLN_NN by_IN using_VBG beam_NN search_NN to_TO generate_VB candidate_NN formulae_NN and_CC selecting_VBG good_JJ candidates_NNS according_VBG to_TO the_DT gain_NN in_IN -LRB-_-LRB- weighted_JJ -RRB-_-RRB- pseudo-likel_NN
+w_VB the_DT query_NN predicates_VBZ and_CC the_DT evidence_NN predicates_VBZ a_DT prior_JJ ._.
+Thus_RB ,_, we_PRP partition_NN the_DT ground_NN atoms_NNS into_IN two_CD sets_NNS --_: the_DT set_NN of_IN evidence_NN atoms_NNS X_NN and_CC the_DT set_NN of_IN query_NN atoms_NNS Q_NNP ,_, and_CC define_VB a_DT discriminative_JJ MLN_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Discriminative_JJ models_NNS have_VBP shown_VBN great_JJ promise_NN as_IN compared_VBN to_TO generative_JJ models_NNS in_IN many_JJ applications_NNS -LRB-_-LRB- 15_CD ,_, 23_CD -RRB-_-RRB- ._.
+In_IN StatSnowball_NNP ,_, X_NN can_MD be_VB all_PDT the_DT possible_JJ features_NNS we_PRP can_MD extract_VB from_IN the_DT inputs_NNS ,_, and_CC
+The_DT task_NN has_VBZ been_VBN traditionally_RB studied_VBN so_RB as_IN to_TO extract_NN predefined_VBD semantic_JJ relations_NNS between_IN pairs_NNS of_IN entities_NNS in_IN text_NN ,_, e.g._FW ,_, in_IN supervised_JJ learning_NN methods_NNS -LRB-_-LRB- 27_CD ,_, 8_CD ,_, 9_CD ,_, 26_CD -RRB-_-RRB- and_CC bootstrapping_NN systems_NNS =_JJ -_: =[_NN 5_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Supervised_VBN methods_NNS require_VBP a_DT set_NN of_IN relation-specific_JJ human_JJ tagged_VBN examples_NNS to_TO learn_VB an_DT extractor_NN ._.
+Labeling_VBG training_NN examples_NNS is_VBZ tedious_JJ and_CC labor_NN intensive_JJ ,_, thus_RB ,_, it_PRP makes_VBZ supervised_JJ methods_NNS diffic_JJ
+xtract_NN predefined_VBD semantic_JJ relations_NNS between_IN pairs_NNS of_IN entities_NNS in_IN text_NN ._.
+The_DT supervised_JJ methods_NNS -LRB-_-LRB- 27_CD ,_, 8_CD ,_, 9_CD ,_, 26_CD -RRB-_-RRB- require_VBP a_DT set_NN of_IN human-tagged_JJ examples_NNS of_IN the_DT predefined_JJ relations_NNS ._.
+Bootstrapping_VBG methods_NNS =_JJ -_: =[_NN 5_CD ,_, 1_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: significantly_RB reduce_VB the_DT number_NN of_IN training_NN examples_NNS by_IN iteratively_RB discovering_VBG new_JJ extraction_NN patterns_NNS and_CC identifying_VBG entity_NN relations_NNS with_IN a_DT small_JJ set_NN of_IN seeds_NNS ,_, either_CC target_NN relation_NN tuples_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- o_NN
+oo_NN because_IN only_RB one_CD token_JJ is_VBZ tagged_VBN as_IN POS_NN -LRB-_-LRB- i.e._FW ,_, possessive_JJ ending_NN -RRB-_-RRB- ,_, that_DT is_VBZ ,_, ``'_CD s_NN ''_'' ._.
+4.2_CD Pattern_NN Selection_NN Selecting_VBG patterns_NNS is_VBZ a_DT feature_NN induction_NN problem_NN of_IN Markov_NNP random_JJ fields_NNS or_CC Markov_NNP networks_NNS =_JJ -_: =[_NN 19_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN MLN_NNP ,_, the_DT problem_NN is_VBZ called_VBN structure_NN learning_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+Alchemy_NNP uses_VBZ a_DT generative_JJ approach_NN to_TO learning_VBG the_DT structure_NN of_IN MLN_NN by_IN using_VBG beam_NN search_NN to_TO generate_VB candidate_NN formulae_NN and_CC selecting_VBG good_JJ cand_NN
+to_TO learn_VB an_DT extractor_NN ._.
+Labeling_VBG training_NN examples_NNS is_VBZ tedious_JJ and_CC labor_NN intensive_JJ ,_, thus_RB ,_, it_PRP makes_VBZ supervised_JJ methods_NNS difficult_JJ to_TO apply_VB to_TO Web-scale_JJ applications_NNS like_IN Renlifang_NNP ._.
+Bootstrapping_VBG methods_NNS =_JJ -_: =[_NN 5_CD ,_, 1_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: significantly_RB reduce_VB the_DT number_NN of_IN training_NN examples_NNS by_IN iteratively_RB discovering_VBG extraction_NN patterns_NNS and_CC identifying_VBG entity_NN relations_NNS with_IN a_DT small_JJ number_NN of_IN seeds_NNS ,_, either_CC target_NN relation_NN tuples_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- or_CC
+rmation_NN extraction_NN -LRB-_-LRB- Open_NNP IE_NN -RRB-_-RRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- to_TO identify_VB general_JJ types_NNS of_IN relations_NNS ._.
+Open_VB IE_NN is_VBZ a_DT novel_JJ domain-independent_JJ extraction_NN paradigm_NN ,_, which_WDT has_VBZ been_VBN studied_VBN in_IN both_CC the_DT natural_JJ language_NN document_NN corpus_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: and_CC the_DT Web_NN environment_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Although_IN the_DT existing_VBG Open_NNP IE_NN systems_NNS are_VBP self-supervised_JJ ,_, they_PRP require_VBP a_DT set_NN of_IN human-selected_JJ features_NNS in_IN order_NN to_TO learn_VB a_DT good_JJ extractor_NN ._.
+In_IN contrast_NN ,_, StatSnowball_NN aut_NN
+t_NN are_VBP not_RB completely_RB independent_JJ ,_, it_PRP may_MD be_VB desirable_JJ to_TO jointly_RB extract_VB these_DT related_JJ sentences_NNS ._.
+Joint_JJ inference_NN has_VBZ been_VBN shown_VBN to_TO be_VB effective_JJ to_TO get_VB globally_RB consistent_JJ extraction_NN results_NNS ,_, such_JJ as_IN =_JJ -_: =[_NN 17_CD ,_, 28_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Markov_NNP logic_NN network_NN -LRB-_-LRB- MLN_NN -RRB-_-RRB- has_VBZ the_DT full_JJ power_NN to_TO jointly_RB model_VB correlated_JJ data_NNS ._.
+We_PRP provide_VBP this_DT alternative_NN and_CC will_MD empirically_RB demonstrate_VB the_DT advantages_NNS of_IN joint_JJ inference_NN in_IN StatSnowball_NNP ._.
+As_IN we_PRP
+precision_NN ._.
+We_PRP present_VBP a_DT system_NN called_VBN Statistical_NNP Snowball_NNP -LRB-_-LRB- StatSnowball_NNP -RRB-_-RRB- ._.
+StatSnowball_NNP adopts_VBZ the_DT bootstrapping_NN architecture_NN and_CC applies_VBZ the_DT recently_RB developed_VBN feature_NN selection_NN method_NN using_VBG ℓ1-norm_NN =_JJ -_: =[_NN 25_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: to_TO select_VB extraction_NN patterns_NNS --_: both_DT keyword_RB matching_JJ and_CC general_JJ patterns_NNS ._.
+Starting_VBG with_IN a_DT handful_NN set_NN of_IN initial_JJ seeds_NNS ,_, it_PRP iteratively_RB generates_VBZ new_JJ extraction_NN patterns_NNS ;_: performs_VBZ an_DT ℓ1-norm_JJ regulariz_NN
+dels_NNS -LRB-_-LRB- HMM_NN -RRB-_-RRB- ._.
+By_IN incorporating_VBG general_JJ patterns_NNS ,_, StatSnowball_NNP can_MD perform_VB both_DT traditional_JJ relation_NN extraction_NN like_IN Snowball_NNP to_TO extract_VB pre-specified_JJ relations_NNS and_CC open_JJ information_NN extraction_NN -LRB-_-LRB- Open_NNP IE_NN -RRB-_-RRB- =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: to_TO identify_VB general_JJ types_NNS of_IN relations_NNS ._.
+Open_VB IE_NN is_VBZ a_DT novel_JJ domain-independent_JJ extraction_NN paradigm_NN ,_, which_WDT has_VBZ been_VBN studied_VBN in_IN both_CC the_DT natural_JJ language_NN document_NN corpus_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- and_CC the_DT Web_NN environment_NN -LRB-_-LRB- 3_CD -RRB-_-RRB-
+istical_JJ model_NN can_MD be_VB any_DT probabilistic_JJ model_NN ._.
+StatSnowball_NNP uses_VBZ the_DT general_JJ discriminative_JJ Markov_NNP logic_NN networks_NNS -LRB-_-LRB- MLN_NN -RRB-_-RRB- -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, which_WDT subsume_VBP logistic_JJ regression_NN -LRB-_-LRB- LR_NN -RRB-_-RRB- and_CC conditional_JJ random_JJ fields_NNS -LRB-_-LRB- CRF_NN -RRB-_-RRB- =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Discriminative_JJ models_NNS can_MD incorporate_VB arbitrary_JJ useful_JJ features_NNS without_IN strong_JJ independence_NN assumptions_NNS as_IN made_VBN in_IN generative_JJ models_NNS ,_, like_IN naïve_JJ Bayes_NNS -LRB-_-LRB- NB_NN -RRB-_-RRB- and_CC Hidden_NNP Markov_NNP Models_NNS -LRB-_-LRB- HMM_NN -RRB-_-RRB- ._.
+By_IN incorpo_NN
+omatic_JJ Content_NN Extraction_NN -LRB-_-LRB- ACE_NN -RRB-_-RRB- program_NN ._.
+The_DT task_NN has_VBZ been_VBN traditionally_RB studied_VBN so_RB as_IN to_TO extract_NN predefined_VBD semantic_JJ relations_NNS between_IN pairs_NNS of_IN entities_NNS in_IN text_NN ,_, e.g._FW ,_, in_IN supervised_JJ learning_NN methods_NNS =_JJ -_: =[_NN 27_CD ,_, 8_CD ,_, 9_CD ,_, 26_CD -RRB-_-RRB- -_: =_JJ -_: and_CC bootstrapping_VBG systems_NNS -LRB-_-LRB- 5_CD ,_, 1_CD -RRB-_-RRB- ._.
+Supervised_VBN methods_NNS require_VBP a_DT set_NN of_IN relation-specific_JJ human_JJ tagged_VBN examples_NNS to_TO learn_VB an_DT extractor_NN ._.
+Labeling_VBG training_NN examples_NNS is_VBZ tedious_JJ and_CC labor_NN intensive_JJ ,_, thus_RB ,_, i_FW
+nd_NN extracts_NNS new_JJ relation_NN tuples_NNS ._.
+StatSnowball_NNP is_VBZ a_DT general_JJ framework_NN and_CC the_DT statistical_JJ model_NN can_MD be_VB any_DT probabilistic_JJ model_NN ._.
+StatSnowball_NNP uses_VBZ the_DT general_JJ discriminative_JJ Markov_NNP logic_NN networks_NNS -LRB-_-LRB- MLN_NN -RRB-_-RRB- =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT subsume_VBP logistic_JJ regression_NN -LRB-_-LRB- LR_NN -RRB-_-RRB- and_CC conditional_JJ random_JJ fields_NNS -LRB-_-LRB- CRF_NN -RRB-_-RRB- -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Discriminative_JJ models_NNS can_MD incorporate_VB arbitrary_JJ useful_JJ features_NNS without_IN strong_JJ independence_NN assumptions_NNS as_IN made_VBN in_IN ge_NN
+omatic_JJ Content_NN Extraction_NN -LRB-_-LRB- ACE_NN -RRB-_-RRB- program_NN ._.
+The_DT task_NN has_VBZ been_VBN traditionally_RB studied_VBN so_RB as_IN to_TO extract_NN predefined_VBD semantic_JJ relations_NNS between_IN pairs_NNS of_IN entities_NNS in_IN text_NN ,_, e.g._FW ,_, in_IN supervised_JJ learning_NN methods_NNS =_JJ -_: =[_NN 27_CD ,_, 8_CD ,_, 9_CD ,_, 26_CD -RRB-_-RRB- -_: =_JJ -_: and_CC bootstrapping_VBG systems_NNS -LRB-_-LRB- 5_CD ,_, 1_CD -RRB-_-RRB- ._.
+Supervised_VBN methods_NNS require_VBP a_DT set_NN of_IN relation-specific_JJ human_JJ tagged_VBN examples_NNS to_TO learn_VB an_DT extractor_NN ._.
+Labeling_VBG training_NN examples_NNS is_VBZ tedious_JJ and_CC labor_NN intensive_JJ ,_, thus_RB ,_, i_FW
+hinge_NN loss_NN as_IN used_VBN in_IN support_NN vector_NN machines_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+In_IN this_DT paper_NN ,_, we_PRP focus_VBP on_IN the_DT logloss_NN ._.
+This_DT ℓ1-norm_NN regularized_VBD MLE_NN problem_NN yields_VBZ a_DT sparse_JJ estimate_NN by_IN setting_VBG some_DT components_NNS of_IN w_NN to_TO exact_JJ zeros_NNS =_JJ -_: =[_NN 24_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: and_CC has_VBZ efficient_JJ solvers_NNS ,_, such_JJ as_IN the_DT Orthant-Wise_NNP Limited-memory_JJ Quasi-Newton_NN -LRB-_-LRB- OWL-QN_NN -RRB-_-RRB- method_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+3_LS ._.
+THE_DT STATISTICAL_JJ MODEL_NN In_IN this_DT section_NN ,_, we_PRP define_VBP the_DT task_NN of_IN entity_NN relationship_NN identification_NN
+precision_NN ._.
+We_PRP present_VBP a_DT system_NN called_VBN Statistical_NNP Snowball_NNP -LRB-_-LRB- StatSnowball_NNP -RRB-_-RRB- ._.
+StatSnowball_NNP adopts_VBZ the_DT bootstrapping_NN architecture_NN and_CC applies_VBZ the_DT recently_RB developed_VBN feature_NN selection_NN method_NN using_VBG ℓ1-norm_NN =_JJ -_: =[_NN 25_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: to_TO select_VB extraction_NN patterns_NNS --_: both_DT keyword_RB matching_JJ and_CC general_JJ patterns_NNS ._.
+Starting_VBG with_IN a_DT handful_NN set_NN of_IN initial_JJ seeds_NNS ,_, it_PRP iteratively_RB generates_VBZ new_JJ extraction_NN patterns_NNS ;_: performs_VBZ an_DT ℓ1-norm_JJ regulariz_NN
+we_PRP have_VBP stated_VBN ,_, the_DT ℓ1-norm_JJ penalty_NN encourages_VBZ a_DT sparse_JJ estimate_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+Specifically_RB ,_, we_PRP first_RB use_VBP the_DT generated_VBN patterns_NNS to_TO formulate_VB a_DT set_NN of_IN candidate_NN formulae_NN of_IN MLN_NNP ._.
+Then_RB ,_, we_PRP apply_VBP the_DT algorithm_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: to_TO optimize_VB the_DT ℓ1-norm_NN penalized_VBD conditional_JJ likelihood_NN function_NN as_IN in_IN the_DT problem_NN P_NN ,_, which_WDT yields_VBZ a_DT sparse_JJ model_NN by_IN setting_VBG some_DT formulae_NN 's_POS weights_NNS to_TO zeros_NNS ._.
+The_DT zero-weighted_JJ formulae_NN are_VBP discarde_NN
+two_CD tasks_NNS into_IN one_CD probabilistic_JJ model_NN and_CC thus_RB can_MD achieve_VB a_DT higher_JJR performance_NN by_IN exploring_VBG their_PRP$ mutual_JJ enhancements_NNS ._.
+The_DT promise_NN of_IN integrated_VBN extraction_NN has_VBZ been_VBN shown_VBN in_IN different_JJ applications_NNS =_JJ -_: =[_NN 20_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+But_CC the_DT heuristic-based_JJ Snowball_NNP is_VBZ hard_JJ to_TO be_VB coherently_RB integrated_VBN with_IN the_DT state-of-the-art_JJ statistical_JJ named_VBN entity_NN extraction_NN systems_NNS ._.
+-LRB-_-LRB- b_LS -RRB-_-RRB- We_PRP extensively_RB evaluate_VBP StatSnowball_NNP and_CC empirically_RB s_NN
+ied_VBN ._.
+For_IN R_NN ,_, the_DT change_NN is_VBZ in_IN the_DT sense_NN that_IN new_JJ patterns_NNS are_VBP added_VBN ._.
+In_IN the_DT problem_NN P_NN ,_, the_DT loss_NN can_MD be_VB the_DT log-loss_NN as_IN used_VBN in_IN probabilistic_JJ models_NNS or_CC the_DT hinge_NN loss_NN as_IN used_VBN in_IN support_NN vector_NN machines_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP focus_VBP on_IN the_DT logloss_NN ._.
+This_DT ℓ1-norm_NN regularized_VBD MLE_NN problem_NN yields_VBZ a_DT sparse_JJ estimate_NN by_IN setting_VBG some_DT components_NNS of_IN w_NN to_TO exact_JJ zeros_NNS -LRB-_-LRB- 24_CD ,_, 11_CD -RRB-_-RRB- and_CC has_VBZ efficient_JJ solvers_NNS ,_, such_JJ as_IN the_DT O_NN
+omatic_JJ Content_NN Extraction_NN -LRB-_-LRB- ACE_NN -RRB-_-RRB- program_NN ._.
+The_DT task_NN has_VBZ been_VBN traditionally_RB studied_VBN so_RB as_IN to_TO extract_NN predefined_VBD semantic_JJ relations_NNS between_IN pairs_NNS of_IN entities_NNS in_IN text_NN ,_, e.g._FW ,_, in_IN supervised_JJ learning_NN methods_NNS =_JJ -_: =[_NN 27_CD ,_, 8_CD ,_, 9_CD ,_, 26_CD -RRB-_-RRB- -_: =_JJ -_: and_CC bootstrapping_VBG systems_NNS -LRB-_-LRB- 5_CD ,_, 1_CD -RRB-_-RRB- ._.
+Supervised_VBN methods_NNS require_VBP a_DT set_NN of_IN relation-specific_JJ human_JJ tagged_VBN examples_NNS to_TO learn_VB an_DT extractor_NN ._.
+Labeling_VBG training_NN examples_NNS is_VBZ tedious_JJ and_CC labor_NN intensive_JJ ,_, thus_RB ,_, i_FW
+rking_VBG on_IN object-level_JJ search_NN engines_NNS ,_, which_WDT automatically_RB extract_VBP and_CC integrate_VBP the_DT semantic_JJ information_NN about_IN entities_NNS and_CC return_VB a_DT list_NN of_IN ranked_VBN entities_NNS instead_RB of_IN webpages_NNS to_TO answer_VB user_NN queries_NNS =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN object-level_JJ search_NN engines_NNS ,_, it_PRP is_VBZ particularly_RB important_JJ to_TO mine_VB entity_NN relations_NNS from_IN the_DT Web_NN to_TO automatically_RB build_VB an_DT entity_NN relationship_NN graph_NN to_TO link_VB all_PDT the_DT extracted_VBN information_NN together_RB ._.
+d_NN from_IN predicates_NNS via_IN some_DT operators_NNS like_IN addition_NN and_CC flipping_VBG ._.
+Statistic_FW predicate_FW invention_NN in_IN Markov_NNP logic_NN networks_NNS ,_, also_RB known_VBN as_IN hidden_JJ variable_JJ discovery_NN in_IN statistical_JJ learning_NN ,_, is_VBZ studied_VBN in_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT can_MD generate_VB and_CC select_VB new_JJ predicates_NNS that_WDT are_VBP expressed_VBN in_IN terms_NNS of_IN existing_VBG ones_NNS via_IN iterative_JJ clustering_NN ._.
+Both_CC structure_NN learning_NN and_CC statistical_JJ predicate_NN invention_NN can_MD be_VB too_RB expensive_JJ t_NN
+ic_JJ to_TO model_NN complex_NN relational_JJ databases_NNS ._.
+In_IN the_DT experiments_NNS ,_, we_PRP will_MD show_VB examples_NNS of_IN using_VBG MLN_NNP to_TO do_VB joint_JJ inference_NN in_IN StatSnowball_NNP ._.
+In_IN StatSnowball_NNP ,_, we_PRP apply_VBP the_DT discriminative_JJ learning_NN algorithm_NN =_JJ -_: =[_NN 23_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: to_TO learn_VB the_DT model_NN weights_NNS with_IN a_DT sphere_NN Gaussian_JJ prior_JJ ,_, or_CC equivalently_RB the_DT ℓ2-norm_NN penalized_VBD MLE_NNP ,_, to_TO avoid_VB over-fitting_JJ ._.
+3.2.1_CD Special_JJ Case_NN 1_CD :_: Logistic_JJ Regression_NN As_IN we_PRP have_VBP stated_VBN ,_, logistic_JJ regres_NNS
+,_, while_IN StatSnwoball_NNP only_RB uses_VBZ cheaper_JJR and_CC more_RBR robust_JJ shallow_JJ parsing_NN techniques_NNS to_TO generate_VB its_PRP$ patterns_NNS ._.
+Finally_RB ,_, by_IN using_VBG the_DT MLN_NNP model_NN ,_, StatSnowball_NNP can_MD perform_VB joint_JJ inference_NN ,_, while_IN the_DT O-CRFs_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: treat_NN sentences_NNS independently_RB ._.
+Our_PRP$ empirical_JJ studies_NNS demonstrate_VBP the_DT promise_NN of_IN using_VBG joint_JJ inference_NN ._.
+To_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, StatSnwoball_NNP is_VBZ the_DT first_JJ working_NN system_NN that_WDT takes_VBZ a_DT bootstrappin_NN
+and_CC assign_VB relation_NN keywords_NNS to_TO them_PRP ._.
+The_DT missing_VBG keywords_NNS of_IN the_DT seeds_NNS can_MD be_VB filled_VBN in_IN this_DT part_NN ._.
+Currently_RB ,_, we_PRP treat_VBP it_PRP as_IN a_DT post-processing_JJ step_NN ._.
+Recent_JJ work_NN on_IN relational_JJ clustering_NN with_IN MLN_NN in_IN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: suggests_VBZ that_IN we_PRP can_MD 103WWW_VB 2009_CD MADRID_NNP !_.
+move_NN P3_NN into_IN P2_NN to_TO do_VB joint_JJ Open_NNP IE_NN ._.
+We_PRP will_MD discuss_VB this_DT more_RBR later_RB ._.
+Before_IN going_VBG into_IN the_DT full_JJ exposition_NN of_IN the_DT system_NN ,_, let_VB 's_POS end_VB this_DT section_NN with_IN a_DT stri_NN
+oo_NN because_IN only_RB one_CD token_JJ is_VBZ tagged_VBN as_IN POS_NN -LRB-_-LRB- i.e._FW ,_, possessive_JJ ending_NN -RRB-_-RRB- ,_, that_DT is_VBZ ,_, ``'_CD s_NN ''_'' ._.
+4.2_CD Pattern_NN Selection_NN Selecting_VBG patterns_NNS is_VBZ a_DT feature_NN induction_NN problem_NN of_IN Markov_NNP random_JJ fields_NNS or_CC Markov_NNP networks_NNS =_JJ -_: =[_NN 19_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN MLN_NNP ,_, the_DT problem_NN is_VBZ called_VBN structure_NN learning_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+Alchemy_NNP uses_VBZ a_DT generative_JJ approach_NN to_TO learning_VBG the_DT structure_NN of_IN MLN_NN by_IN using_VBG beam_NN search_NN to_TO generate_VB candidate_NN formulae_NN and_CC selecting_VBG good_JJ cand_NN

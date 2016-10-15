@@ -1,0 +1,39 @@
+Globetp_NNP :_: template-based_JJ database_NN replication_NN for_IN scalable_JJ web_NN applications_NNS
+Generic_JJ database_NN replication_NN algorithms_NNS do_VBP not_RB scale_VB linearly_RB in_IN throughput_NN as_IN all_DT update_VBP ,_, deletion_NN and_CC insertion_NN -LRB-_-LRB- UDI_NN -RRB-_-RRB- queries_NNS must_MD be_VB applied_VBN to_TO every_DT database_NN replica_NN ._.
+The_DT throughput_NN is_VBZ therefore_RB limited_VBN to_TO the_DT point_NN where_WRB the_DT number_NN of_IN UDI_NNP queries_NNS alone_RB is_VBZ sufficient_JJ to_TO overload_NN one_CD server_NN ._.
+In_IN such_JJ scenarios_NNS ,_, partial_JJ replication_NN of_IN a_DT database_NN can_MD help_VB ,_, as_IN UDI_NNP queries_NNS are_VBP executed_VBN only_RB by_IN a_DT subset_NN of_IN all_DT servers_NNS ._.
+In_IN this_DT paper_NN we_PRP propose_VBP GlobeTP_NN ,_, a_DT system_NN that_WDT employs_VBZ partial_JJ replication_NN to_TO improve_VB database_NN throughput_NN ._.
+GlobeTP_NN exploits_VBZ the_DT fact_NN that_IN a_DT Web_NN application_NN 's_POS query_NN workload_NN is_VBZ composed_VBN of_IN a_DT small_JJ set_NN of_IN read_NN and_CC write_VB templates_NNS ._.
+Using_VBG knowledge_NN of_IN these_DT templates_NNS and_CC their_PRP$ respective_JJ execution_NN costs_NNS ,_, GlobeTP_NN provides_VBZ database_NN table_NN placements_NNS that_WDT produce_VBP significant_JJ improvements_NNS in_IN database_NN throughput_NN ._.
+We_PRP demonstrate_VBP the_DT efficiency_NN of_IN this_DT technique_NN using_VBG two_CD different_JJ industry_NN standard_NN benchmarks_NNS ._.
+In_IN our_PRP$ experiments_NNS ,_, GlobeTP_NN increases_VBZ the_DT throughput_NN by_IN 57_CD %_NN to_TO 150_CD %_NN compared_VBN to_TO full_JJ replication_NN ,_, while_IN using_VBG identical_JJ hardware_NN configuration_NN ._.
+Furthermore_RB ,_, adding_VBG a_DT single_JJ query_NN cache_NN improves_VBZ the_DT throughput_NN by_IN another_DT 30_CD %_NN to_TO 60_CD %_NN ._.
+special_JJ server_NN ,_, which_WDT holds_VBZ the_DT full_JJ database_NN ,_, to_TO execute_VB complex_JJ queries_NNS ._.
+Thereby_RB ,_, it_PRP may_MD suffer_VB from_IN scalability_NN because_IN of_IN the_DT new_JJ throughput_NN bottleneck_NN represented_VBN by_IN the_DT special_JJ server_NN ._.
+GlobeTB_NN =_SYM -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: improves_VBZ the_DT approach_NN of_IN GlobeDB_NN with_IN the_DT goal_NN of_IN not_RB only_RB reducing_VBG the_DT latency_NN but_CC also_RB to_TO increase_VB the_DT throughput_NN of_IN the_DT replicated_VBN database_NN ._.
+To_TO this_DT aim_NN ,_, GlobeTP_NN relaxes_VBZ the_DT need_NN for_IN a_DT single_JJ cent_NN
+vocates_NNS for_IN an_DT architecture_NN in_IN which_WDT all_DT tiers_NNS except_IN the_DT database_NN should_MD be_VB offloaded_VBN to_TO the_DT edge_NN ._.
+For_IN centralized_VBN databases_NNS ,_, to_TO improve_VB database_NN scalability_NN ,_, C-JDBC_NN -LRB-_-LRB- 38_CD -RRB-_-RRB- ,_, Ganymed_JJ -LRB-_-LRB- 103_CD -RRB-_-RRB- ,_, and_CC GlobeTP_NN =_JJ -_: =[_NN 63_CD -RRB-_-RRB- -_: =_SYM -_: also_RB advocate_VBP the_DT use_NN of_IN an_DT interposition-based_JJ architecture_NN to_TO transparently_RB cluster_VB and_CC replicate_VB databases_NNS at_IN the_DT middleware_JJ level_NN ._.
+The_DT approaches_NNS of_IN these_DT architectures_NNS and_CC this_DT dissertation_NN are_VBP
+e_LS a_DT second_JJ assumption_NN that_IN in_IN the_DT case_NN of_IN a_DT Web-based_JJ application_NN we_PRP can_MD know_VB all_PDT the_DT incoming_JJ query_NN templates_NNS beforehand_RB because_IN the_DT user_NN interacts_VBZ through_IN a_DT possible_JJ Web_NN interface_NN such_JJ as_IN web_NN forms_VBZ =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT application_NN logic_NN executes_VBZ the_DT same_JJ hard_JJ wired_VBN queries_NNS over_RB and_CC over_RB again_RB for_IN the_DT same_JJ web_NN form_NN request_NN ._.
+We_PRP conceptualize_VBP the_DT database_NN layout_NN problem_NN as_IN a_DT state_NN search_NN problem_NN where_WRB each_DT state_NN
+f_LS web_NN applications_NNS such_JJ as_IN our_PRP$ ASSISTment_NN system_NN ,_, is_VBZ that_IN we_PRP know_VBP all_PDT the_DT incoming_JJ query_NN templates_NNS beforehand_RB as_IN the_DT users_NNS typically_RB interact_VBP with_IN the_DT system_NN through_IN a_DT web_NN interface_NN such_JJ as_IN web_NN forms_VBZ =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Traditional_JJ solutions_NNS for_IN distributing_VBG load_NN across_IN multiple_JJ database_NN servers_NNS ,_, on_IN the_DT other_JJ hand_NN ,_, do_VBP not_RB have_VB this_DT property_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+This_DT allows_VBZ us_PRP to_TO propose_VB additional_JJ solutions_NNS for_IN balancing_VBG load_NN acr_NN
+i_LS ,_, chaque_FW serveur_FW ne_FW reçoit_FW que_FW la_FW 1sfraction_FW des_FW requêtes_FW en_FW écriture_FW correspondant_FW à_FW la_FW fraction_NN de_FW la_FW base_NN qu’il_NN contient_NN ._.
+On_IN appelle_FW cette_FW approche_FW la_FW réplication_NN partielle_NN ,_, et_FW le_FW système_FW GlobeTP_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: utilise_VB cette_FW idée_FW ._.
+Vu_FW qu’aucun_FW serveur_FW ne_FW doit_FW contenir_FW toute_FW la_FW base_NN de_FW données_FW ,_, on_IN ne_FW peut_FW pas_FW traiter_FW toutes_FW les_FW requêtes_FW SQL_NN possibles_NNS ,_, car_NN faire_FW travailler_FW plusieurs_FW serveurs_FW sur_FW la_FW même_FW requêt_NN
+ontrol_NN at_IN the_DT customer_NN premises_NN ._.
+Different_JJ applications_NNS exhibit_VBP the_DT bottleneck_NN at_IN different_JJ tiers_NNS ._.
+Our_PRP$ researchfocusesontheJ2EEandtheWebtiers_NNS ._.
+Otherefforts_NNS have_VBP targeted_VBN the_DT back-end_JJ tier_NN -LRB-_-LRB- see_VB ,_, e.g._FW ,_, =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Running_VBG Internet_NN applications_NNS in_IN a_DT UCIA_NN environment_NN requires_VBZ support_NN from_IN application_NN servers_NNS for_IN software_NN and_CC data_NNS replication_NN ,_, client_NN session_NN state_NN management_NN ,_, fail-over_NN ,_, etc._NN ._.
+Most_RBS modern_JJ applica_NN
+L_NN query_NN whose_WP$ parameter_NN values_NNS are_VBP passed_VBN to_TO the_DT system_NN at_IN runtime_NN ._.
+Partial_JJ replication_NN techniques_NNS use_VBP similar_JJ information_NN to_TO reduce_VB the_DT data_NNS replication_NN degree_NN and_CC limit_VB the_DT cost_NN of_IN database_NN updates_NNS =_JJ -_: =[_NN 14_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, we_PRP observe_VBP that_IN these_DT techniques_NNS work_VBP best_RB under_IN very_RB simple_JJ workloads_NNS composed_VBN only_RB of_IN a_DT few_JJ different_JJ query_NN templates_NNS ._.
+When_WRB the_DT number_NN of_IN templates_NNS grows_VBZ ,_, an_DT increasing_VBG number_NN of_IN constrai_NNS
+e_LS transaction_NN to_TO all_DT other_JJ servers_NNS within_IN the_DT cluster_NN ,_, usually_RB using_VBG some_DT form_NN of_IN multicast_JJ transaction_NN propagation_NN primitive_JJ such_JJ as_IN Total_NNP Order_NNP Broadcast_NNP ,_, which_WDT will_MD be_VB detailed_VBN at_IN a_DT later_JJ time_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- =_SYM -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Update_NNP Everywhere_RB architecture_NN solves_VBZ the_DT bottleneck_NN and_CC single_JJ point_NN of_IN failure_NN problems_NNS of_IN Primary_JJ Copy_VBP by_IN providing_VBG multiple_JJ points_NNS of_IN data_NNS insertion_NN for_IN every_DT cluster_NN ._.
+However_RB ,_, implementing_VBG upda_NN

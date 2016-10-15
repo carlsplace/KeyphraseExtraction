@@ -1,0 +1,108 @@
+Discovering_VBG word_NN senses_NNS from_IN text_NN
+Inventories_NNS of_IN manually_RB compiled_VBN dictionaries_NNS usually_RB serve_VBP as_IN a_DT source_NN for_IN word_NN senses_NNS ._.
+However_RB ,_, they_PRP often_RB include_VBP many_JJ rare_JJ senses_NNS while_IN missing_VBG corpus\/domain-specific_JJ senses_NNS ._.
+We_PRP present_VBP a_DT clustering_NN algorithm_NN called_VBN CBC_NNP -LRB-_-LRB- Clustering_NNP By_IN Committee_NNP -RRB-_-RRB- that_WDT automatically_RB discovers_VBZ word_NN senses_NNS from_IN text_NN ._.
+It_PRP initially_RB discovers_VBZ a_DT set_NN of_IN tight_JJ clusters_NNS called_VBD committees_NNS that_WDT are_VBP well_RB scattered_VBN in_IN the_DT similarity_NN space_NN ._.
+The_DT centroid_NN of_IN the_DT members_NNS of_IN a_DT committee_NN is_VBZ used_VBN as_IN the_DT feature_NN vector_NN of_IN the_DT cluster_NN ._.
+We_PRP proceed_VBP by_IN assigning_VBG words_NNS to_TO their_PRP$ most_RBS similar_JJ clusters_NNS ._.
+After_IN assigning_VBG an_DT element_NN to_TO a_DT cluster_NN ,_, we_PRP remove_VBP their_PRP$ overlapping_VBG features_NNS from_IN the_DT element_NN ._.
+This_DT allows_VBZ CBC_NNP to_TO discover_VB the_DT less_RBR frequent_JJ senses_NNS of_IN a_DT word_NN and_CC to_TO avoid_VB discovering_VBG duplicate_VB senses_NNS ._.
+Each_DT cluster_NN that_IN a_DT word_NN belongs_VBZ to_TO represents_VBZ one_CD of_IN its_PRP$ senses_NNS ._.
+We_PRP also_RB present_VBP an_DT evaluation_NN methodology_NN for_IN automatically_RB measuring_VBG the_DT precision_NN and_CC recall_NN of_IN discovered_VBN senses_NNS ._.
+ame_NN contexts_NNS tend_VBP to_TO be_VB similar_JJ ._.
+This_DT is_VBZ known_VBN as_IN the_DT Distributional_JJ Hypothesis_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+There_EX have_VBP been_VBN many_JJ approaches_NNS to_TO compute_VB the_DT similarity_NN between_IN words_NNS based_VBN on_IN their_PRP$ distribution_NN in_IN a_DT corpus_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =-[_NN 12_CD -RRB-_-RRB- ._.
+The_DT output_NN of_IN these_DT programs_NNS is_VBZ a_DT ranked_VBN list_NN of_IN similar_JJ words_NNS to_TO each_DT word_NN ._.
+For_IN example_NN ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- outputs_VBZ the_DT following_JJ similar_JJ words_NNS for_IN wine_NN and_CC suit_NN :_: wine_NN :_: beer_NN ,_, white_JJ wine_NN ,_, red_JJ wine_NN ,_, Chardonnay_NNP
+ng_NN ,_, evaluation_NN ,_, machine_NN learning_NN ._.
+1_CD ._.
+INTRODUCTION_NN Using_VBG word_NN senses_NNS versus_CC word_NN forms_NNS is_VBZ useful_JJ in_IN many_JJ applications_NNS such_JJ as_IN information_NN retrieval_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, machine_NN translation_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC question-answering_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN previous_JJ approaches_NNS ,_, word_NN senses_NNS are_VBP usually_RB defined_VBN using_VBG a_DT manually_RB constructed_VBN lexicon_NN ._.
+There_EX are_VBP several_JJ disadvantages_NNS associated_VBN with_IN these_DT word_NN senses_NNS ._.
+First_RB ,_, manually_RB created_VBN lexicons_NNS ofte_VBP
+ds_JJ -RRB-_-RRB- ,_, the_DT frequency_NN counts_NNS of_IN the_DT synsets_NNS in_IN the_DT lower_JJR part_NN of_IN the_DT WordNet_NNP hierarchy_NN are_VBP very_RB sparse_JJ ._.
+We_PRP smooth_VBP the_DT probabilities_NNS by_IN assuming_VBG that_IN all_DT siblings_NNS are_VBP equally_RB likely_RB given_VBN the_DT parent_NN ._.
+Lin_NNP =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: defined_VBN the_DT similarity_NN between_IN two_CD WordNet_NNP synsets_NNS s1_NN and_CC s2_NN as_IN :_: sim_NN -LRB-_-LRB- s_NN ,_, s_NNS -RRB-_-RRB- 1_CD 2_CD ×_CD log_NN P_NN -LRB-_-LRB- -RRB-_-RRB- s_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- +_CC log_NN P_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- 2_CD =_JJ -LRB-_-LRB- 4_LS -RRB-_-RRB- log_NN P_NN where_WRB s_NN is_VBZ the_DT most_RBS specific_JJ synset_NN that_WDT subsumes_VBZ s_NN 1_CD and_CC s_NN 2_CD ._.
+For_IN exam_NN
+other_JJ alcoholic_JJ beverages_NNS tend_VBP to_TO occur_VB in_IN the_DT same_JJ contexts_NNS as_IN tezgüno_NN ._.
+The_DT intuition_NN is_VBZ that_IN words_NNS that_WDT occur_VBP in_IN the_DT same_JJ contexts_NNS tend_VBP to_TO be_VB similar_JJ ._.
+This_DT is_VBZ known_VBN as_IN the_DT Distributional_JJ Hypothesis_NN =_JJ -_: =_JJ -LRB-_-LRB- 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX have_VBP been_VBN many_JJ approaches_NNS to_TO compute_VB the_DT similarity_NN between_IN words_NNS based_VBN on_IN their_PRP$ distribution_NN in_IN a_DT corpus_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+The_DT output_NN of_IN these_DT programs_NNS is_VBZ a_DT ranked_VBN list_NN of_IN similar_JJ words_NNS to_TO each_DT wor_NN
+e_LS same_JJ contexts_NNS tend_VBP to_TO be_VB similar_JJ ._.
+This_DT is_VBZ known_VBN as_IN the_DT Distributional_JJ Hypothesis_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+There_EX have_VBP been_VBN many_JJ approaches_NNS to_TO compute_VB the_DT similarity_NN between_IN words_NNS based_VBN on_IN their_PRP$ distribution_NN in_IN a_DT corpus_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =-[_NN 8_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+The_DT output_NN of_IN these_DT programs_NNS is_VBZ a_DT ranked_VBN list_NN of_IN similar_JJ words_NNS to_TO each_DT word_NN ._.
+For_IN example_NN ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- outputs_VBZ the_DT following_JJ similar_JJ words_NNS for_IN wine_NN and_CC suit_NN :_: wine_NN :_: beer_NN ,_, white_JJ wine_NN ,_, red_JJ wine_NN ,_, Chardon_NNP
+is_VBZ high_JJ when_WRB both_CC precision_NN and_CC recall_NN are_VBP high_JJ ._.
+6_CD ._.
+EXPERIMENTAL_JJ RESULTS_NNS In_IN this_DT section_NN ,_, we_PRP describe_VBP our_PRP$ experimental_JJ setup_NN and_CC present_JJ evaluation_NN results_NNS of_IN our_PRP$ system_NN ._.
+6.1_CD Setup_NN We_PRP used_VBD Minipar_NNP 2_CD =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT broad-coverage_JJ English_NNP parser_NN ,_, to_TO parse_VB about_IN 1GB_NN -LRB-_-LRB- 144M_NN words_NNS -RRB-_-RRB- of_IN newspaper_NN text_NN from_IN the_DT TREC_NN collection_NN -LRB-_-LRB- 1988_CD AP_NNP Newswire_NNP ,_, 1989-90_CD LA_NNP Times_NNP ,_, and_CC 1991_CD San_NNP Jose_NNP Mercury_NNP -RRB-_-RRB- at_IN a_DT speed_NN of_IN about_IN 500_CD wo_MD
+is_VBZ high_JJ when_WRB both_CC precision_NN and_CC recall_NN are_VBP high_JJ ._.
+6_CD ._.
+EXPERIMENTAL_JJ RESULTS_NNS In_IN this_DT section_NN ,_, we_PRP describe_VBP our_PRP$ experimental_JJ setup_NN and_CC present_JJ evaluation_NN results_NNS of_IN our_PRP$ system_NN ._.
+6.1_CD Setup_NN We_PRP used_VBD Minipar_NNP 2_CD =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT broad-coverage_JJ English_NNP parser_NN ,_, to_TO parse_VB about_IN 1GB_NN -LRB-_-LRB- 144M_NN words_NNS -RRB-_-RRB- of_IN newspaper_NN text_NN from_IN the_DT TREC_NN collection_NN -LRB-_-LRB- 1988_CD AP_NNP Newswire_NNP ,_, 1989-90_CD LA_NNP Times_NNP ,_, and_CC 1991_CD San_NNP Jose_NNP Mercury_NNP -RRB-_-RRB- at_IN a_DT speed_NN of_IN about_IN 500_CD wo_MD
+tor_NN :_: F_NN F_NN c_NN c_NN -LRB-_-LRB- w_NN -RRB-_-RRB- -LRB-_-LRB- w_NN -RRB-_-RRB- +_CC ⎛_CD min_NN ⎜_FW ⎜_FW ×_FW ⎝_FW 1_CD ⎛_CD min_NN ⎜_NNP ⎜_NNP ⎝_NNP N_NNP ⎞_NNP ⎟_NNP ⎠_NNP ⎞_NNP ⎟_NNP ⎠_NNP ∑_NNP Fi_NNP -LRB-_-LRB- w_NN -RRB-_-RRB- ,_, ∑_NN Fc_NN -LRB-_-LRB- j_NN -RRB-_-RRB- i_FW j_FW ∑_FW F_NN -LRB-_-LRB- -RRB-_-RRB- -LRB-_-LRB- -RRB-_-RRB- ⎟_FW i_FW w_NN ,_, ∑_NN Fcj_NN +_CC 1_CD i_FW j_FW We_PRP compute_VBP the_DT similarity_NN between_IN two_CD words_NNS =_JJ -_: =_JJ wi_NN and_CC wj_NN using_VBG the_DT cosine_NN coefficient_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- of_IN their_PRP$ -_: =_JJ -_: mutual_JJ information_NN vectors_NNS :_: sim_NN -LRB-_-LRB- w_NN ,_, w_NN -RRB-_-RRB- i_FW j_FW =_JJ ∑_CD c_NN ∑_CD c_NN mi_FW mi_FW wic_FW 2_CD wic_JJ ×_NN mi_FW ×_FW ∑_FW c_NN w_NN jc_FW mi_FW 2_CD w_NN jc_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- -LRB-_-LRB- 3_LS -RRB-_-RRB- s4_NN ._.
+ALGORITHM_NN CBC_NN consists_VBZ of_IN three_CD phases_NNS ._.
+In_IN Phase_NN I_NN ,_, we_PRP compute_VBP each_DT element_NN 's_POS top_NN
+unterbalances_VBZ the_DT quadratic_JJ running_VBG time_NN of_IN average-link_NN to_TO make_VB Buckshot_NNP efficient_JJ :_: O_NN -LRB-_-LRB- K_NN ×_NN T_NN ×_CD n_NN +_CC nlogn_NN -RRB-_-RRB- ._.
+The_DT parameters_NNS K_NN and_CC T_NN are_VBP usually_RB considered_VBN to_TO be_VB small_JJ numbers_NNS ._.
+CBC_NNP is_VBZ a_DT descendent_NN of_IN UNICO_NN =_JJ -_: =_JJ N_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT also_RB uses_VBZ small_JJ and_CC tight_JJ clusters_NNS to_TO construct_VB initial_JJ centroids_NNS ._.
+We_PRP compare_VBP them_PRP in_IN Section_NNP 4.4_CD after_IN presenting_VBG the_DT CBC_NNP algorithm_NN ._.
+3_LS ._.
+WORD_NN SIMILARITY_NN Following_VBG -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, we_PRP represent_VBP each_DT word_NN
+y_NN defined_VBN using_VBG a_DT manually_RB constructed_VBN lexicon_NN ._.
+There_EX are_VBP several_JJ disadvantages_NNS associated_VBN with_IN these_DT word_NN senses_NNS ._.
+First_RB ,_, manually_RB created_VBN lexicons_NNS often_RB contain_VBP rare_JJ senses_NNS ._.
+For_IN example_NN ,_, WordNet_NNP 1.5_CD =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -LRB-_-LRB- he_PRP -_: =_SYM -_: reon_NN referred_VBN to_TO as_IN WordNet_NNP -RRB-_-RRB- included_VBD a_DT sense_NN of_IN computer_NN that_WDT means_VBZ `_`` the_DT person_NN who_WP computes_VBZ '_'' ._.
+Using_VBG WordNet_NNP to_TO expand_VB queries_NNS to_TO an_DT information_NN retrieval_NN system_NN ,_, the_DT expansion_NN of_IN computer_NN Permis_NN
+that_IN iteratively_RB assigns_VBZ each_DT element_NN to_TO one_CD of_IN K_NN clusters_NNS according_VBG to_TO the_DT centroid_NN closest_JJS to_TO it_PRP and_CC recomputes_VBZ the_DT centroid_NN of_IN each_DT cluster_NN as_IN the_DT average_NN of_IN the_DT cluster_NN 's_POS elements_NNS ._.
+Dubes_NNP and_CC Jain_NNP =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: showed_VBD that_IN K-means_NNS is_VBZ inferior_JJ to_TO agglomerative_JJ hierarchical_JJ algorithms_NNS ._.
+However_RB ,_, K-means_NNS has_VBZ complexity_NN O_NN -LRB-_-LRB- K_NN ×_NN T_NN ×_CD n_NN -RRB-_-RRB- and_CC is_VBZ efficient_JJ for_IN many_JJ clustering_NN tasks_NNS ._.
+Because_IN the_DT initial_JJ centroids_NNS are_VBP random_JJ
+d_NN sense_NN discovery_NN ,_, clustering_NN ,_, evaluation_NN ,_, machine_NN learning_NN ._.
+1_CD ._.
+INTRODUCTION_NN Using_VBG word_NN senses_NNS versus_CC word_NN forms_NNS is_VBZ useful_JJ in_IN many_JJ applications_NNS such_JJ as_IN information_NN retrieval_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, machine_NN translation_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: and_CC question-answering_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+In_IN previous_JJ approaches_NNS ,_, word_NN senses_NNS are_VBP usually_RB defined_VBN using_VBG a_DT manually_RB constructed_VBN lexicon_NN ._.
+There_EX are_VBP several_JJ disadvantages_NNS associated_VBN with_IN these_DT word_NN senses_NNS ._.
+First_RB ,_, ma_FW
+contexts_NNS tend_VBP to_TO be_VB similar_JJ ._.
+This_DT is_VBZ known_VBN as_IN the_DT Distributional_JJ Hypothesis_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+There_EX have_VBP been_VBN many_JJ approaches_NNS to_TO compute_VB the_DT similarity_NN between_IN words_NNS based_VBN on_IN their_PRP$ distribution_NN in_IN a_DT corpus_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT output_NN of_IN these_DT programs_NNS is_VBZ a_DT ranked_VBN list_NN of_IN similar_JJ words_NNS to_TO each_DT word_NN ._.
+For_IN example_NN ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- outputs_VBZ the_DT following_JJ similar_JJ words_NNS for_IN wine_NN and_CC suit_NN :_: wine_NN :_: beer_NN ,_, white_JJ wine_NN ,_, red_JJ wine_NN ,_, Chardonnay_NNP ,_, ch_NN
+erimentation_NN ._.
+Keywords_NNP Word_NNP sense_NN discovery_NN ,_, clustering_NN ,_, evaluation_NN ,_, machine_NN learning_NN ._.
+1_CD ._.
+INTRODUCTION_NN Using_VBG word_NN senses_NNS versus_CC word_NN forms_NNS is_VBZ useful_JJ in_IN many_JJ applications_NNS such_JJ as_IN information_NN retrieval_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, machine_NN translation_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC question-answering_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+In_IN previous_JJ approaches_NNS ,_, word_NN senses_NNS are_VBP usually_RB defined_VBN using_VBG a_DT manually_RB constructed_VBN lexicon_NN ._.
+There_EX are_VBP several_JJ disadvantages_NNS associated_VBN with_IN the_DT
+the_DT probability_NN that_IN a_DT randomly_RB selected_VBN noun_NN refers_VBZ to_TO an_DT instance_NN of_IN s_NN or_CC any_DT synset_NN below_IN it_PRP ._.
+These_DT probabilities_NNS are_VBP not_RB included_VBN in_IN WordNet_NNP ._.
+We_PRP use_VBP the_DT frequency_NN counts_NNS of_IN synsets_NNS in_IN the_DT SemCor_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: corpus_NN to_TO estimate_VB them_PRP ._.
+Since_IN SemCor_NNP is_VBZ a_DT fairly_RB small_JJ corpus_NN -LRB-_-LRB- 200K_NN 1_CD WordNet_NNP also_RB contains_VBZ other_JJ semantic_JJ relationships_NNS such_JJ as_IN meronyms_NNS -LRB-_-LRB- part-whole_JJ relationships_NNS -RRB-_-RRB- and_CC antonyms_NNS ,_, however_RB we_PRP do_VBP not_RB u_VB
+computes_VBZ this_DT similarity_NN as_IN the_DT average_JJ similarity_NN between_IN all_DT pairs_NNS of_IN elements_NNS across_IN clusters_NNS ._.
+The_DT complexity_NN of_IN these_DT algorithms_NNS is_VBZ O_NN -LRB-_-LRB- n_NN 2_CD logn_NN -RRB-_-RRB- ,_, where_WRB n_NN is_VBZ the_DT number_NN of_IN elements_NNS to_TO be_VB clustered_VBN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Chameleon_NNP is_VBZ a_DT hierarchical_JJ algorithm_NN that_WDT employs_VBZ dynamic_JJ modeling_NN to_TO improve_VB clustering_NN quality_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+When_WRB merging_VBG two_CD clusters_NNS ,_, one_PRP might_MD consider_VB the_DT sum_NN of_IN the_DT similarities_NNS between_IN pairs_NNS of_IN elem_NN
+._.
+Because_IN the_DT initial_JJ centroids_NNS are_VBP randomly_RB selected_VBN ,_, the_DT resulting_VBG clusters_NNS vary_VBP in_IN quality_NN ._.
+Some_DT sets_NNS of_IN initial_JJ centroids_NNS lead_VBP to_TO poor_JJ convergence_NN rates_NNS or_CC poor_JJ cluster_NN quality_NN ._.
+Bisecting_VBG K-means_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT variation_NN of_IN K-means_NNS ,_, begins_VBZ with_IN a_DT set_NN containing_VBG one_CD large_JJ cluster_NN consisting_VBG of_IN every_DT element_NN and_CC iteratively_RB picks_VBZ the_DT largest_JJS cluster_NN in_IN the_DT set_NN ,_, splits_VBZ it_PRP into_IN two_CD clusters_NNS and_CC replaces_VBZ it_PRP b_SYM
+Hybrid_NN clustering_NN algorithms_NNS combine_VBP hierarchical_JJ and_CC partitional_JJ algorithms_NNS in_IN an_DT attempt_NN to_TO have_VB the_DT high_JJ quality_NN of_IN hierarchical_JJ algorithms_NNS with_IN the_DT efficiency_NN of_IN partitional_JJ algorithms_NNS ._.
+Buckshot_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: addresses_VBZ the_DT problem_NN of_IN randomly_RB selecting_VBG initial_JJ centroids_NNS in_IN K-means_NNS by_IN combining_VBG it_PRP with_IN average-link_JJ clustering_NN ._.
+Cutting_VBG et_FW al._FW claim_VBP its_PRP$ clusters_NNS are_VBP comparable_JJ in_IN quality_NN to_TO hierarchical_JJ algo_NN
+complexity_NN of_IN these_DT algorithms_NNS is_VBZ O_NN -LRB-_-LRB- n_NN 2_CD logn_NN -RRB-_-RRB- ,_, where_WRB n_NN is_VBZ the_DT number_NN of_IN elements_NNS to_TO be_VB clustered_VBN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Chameleon_NNP is_VBZ a_DT hierarchical_JJ algorithm_NN that_WDT employs_VBZ dynamic_JJ modeling_NN to_TO improve_VB clustering_NN quality_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+When_WRB merging_VBG two_CD clusters_NNS ,_, one_PRP might_MD consider_VB the_DT sum_NN of_IN the_DT similarities_NNS between_IN pairs_NNS of_IN elements_NNS across_IN the_DT clusters_NNS -LRB-_-LRB- e.g._FW average-link_JJ clustering_NN -RRB-_-RRB- ._.
+A_DT drawback_NN of_IN this_DT approach_NN is_VBZ that_IN the_DT existe_NN
+t_NN the_DT true_JJ recall_NN ,_, it_PRP does_VBZ provide_VB a_DT relative_JJ ranking_NN of_IN the_DT algorithms_NNS used_VBN to_TO construct_VB the_DT pool_NN of_IN target_NN senses_NNS ._.
+The_DT overall_JJ recall_NN is_VBZ the_DT average_JJ recall_NN of_IN all_DT words_NNS ._.
+5.4_CD F-measure_NN The_DT F-measure_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: combines_VBZ precision_NN and_CC recall_NN aspects_NNS :_: RP_NN F_NN =_JJ R_NN +_CC P_NN 2_CD where_WRB R_NN is_VBZ the_DT recall_NN and_CC P_NN is_VBZ the_DT precision_NN ._.
+F_NN weights_NNS low_JJ values_NNS of_IN precision_NN and_CC recall_NN more_RBR heavily_RB than_IN higher_JJR values_NNS ._.
+It_PRP is_VBZ high_JJ when_WRB both_DT
+xistence_NN of_IN a_DT single_JJ pair_NN of_IN very_RB similar_JJ elements_NNS might_MD unduly_RB cause_VB the_DT merger_NN of_IN two_CD clusters_NNS ._.
+An_DT alternative_NN considers_VBZ the_DT number_NN of_IN pairs_NNS of_IN elements_NNS whose_WP$ similarity_NN exceeds_VBZ a_DT certain_JJ threshold_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, this_DT may_MD cause_VB undesirable_JJ mergers_NNS when_WRB there_EX are_VBP a_DT large_JJ number_NN of_IN pairs_NNS whose_WP$ similarities_NNS barely_RB exceed_VBP the_DT threshold_NN ._.
+Chameleon_NN clustering_NN combines_VBZ the_DT two_CD approaches_NNS ._.
+K-means_FW clusterin_FW

@@ -1,0 +1,44 @@
+Efficient_JJ methods_NNS for_IN topic_NN model_NN inference_NN on_IN streaming_NN document_NN collections_NNS
+Topic_NN models_NNS provide_VBP a_DT powerful_JJ tool_NN for_IN analyzing_VBG large_JJ text_NN collections_NNS by_IN representing_VBG high_JJ dimensional_JJ data_NNS in_IN a_DT low_JJ dimensional_JJ subspace_NN ._.
+Fitting_VBG a_DT topic_NN model_NN given_VBN a_DT set_NN of_IN training_NN documents_NNS requires_VBZ approximate_JJ inference_NN techniques_NNS that_WDT are_VBP computationally_RB expensive_JJ ._.
+With_IN today_NN 's_POS large-scale_JJ ,_, constantly_RB expanding_VBG document_NN collections_NNS ,_, it_PRP is_VBZ useful_JJ to_TO be_VB able_JJ to_TO infer_VB topic_NN distributions_NNS for_IN new_JJ documents_NNS without_IN retraining_VBG the_DT model_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP empirically_RB evaluate_VBP the_DT performance_NN of_IN several_JJ methods_NNS for_IN topic_NN inference_NN in_IN previously_RB unseen_JJ documents_NNS ,_, including_VBG methods_NNS based_VBN on_IN Gibbs_NNP sampling_NN ,_, variational_JJ inference_NN ,_, and_CC a_DT new_JJ method_NN inspired_VBN by_IN text_NN classification_NN ._.
+The_DT classification-based_JJ inference_NN method_NN produces_VBZ results_NNS similar_JJ to_TO iterative_JJ inference_NN methods_NNS ,_, but_CC requires_VBZ only_RB a_DT single_JJ matrix_NN multiplication_NN ._.
+In_IN addition_NN to_TO these_DT inference_NN methods_NNS ,_, we_PRP present_VBP SparseLDA_NN ,_, an_DT algorithm_NN and_CC data_NN structure_NN for_IN evaluating_VBG Gibbs_NNP sampling_NN distributions_NNS ._.
+Empirical_JJ results_NNS indicate_VBP that_IN SparseLDA_NN can_MD be_VB approximately_RB 20_CD times_NNS faster_RBR than_IN traditional_JJ LDA_NN and_CC provide_VB twice_RB the_DT speedup_NN of_IN previously_RB published_VBN fast_JJ sampling_NN methods_NNS ,_, while_IN also_RB using_VBG substantially_RB less_JJR memory_NN ._.
+ed_VBN values_NNS of_IN features_NNS computed_VBN using_VBG training_NN data_NNS ._.
+Given_VBN a_DT set_VBN Yof_NN classes_NNS ,_, and_CC features_NNS fk_VBP ,_, the_DT parameters_NNS to_TO be_VB estimated_VBN λk_NN ,_, the_DT learned_VBN distribution_NN p_NN -LRB-_-LRB- y_NN |_CD x_NN -RRB-_-RRB- is_VBZ of_IN the_DT parametric_JJ exponential_JJ form_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: :_: `_`` P_NN exp_NN k_NN λkfk_NN -LRB-_-LRB- x_NN ,_, y_NN -RRB-_-RRB- ´_NN P_NN -LRB-_-LRB- y_NN |_CD x_NN -RRB-_-RRB- =_JJ P_NN y_NN `_`` P_NN exp_NN k_NN λkfk_NN -LRB-_-LRB- x_NN ,_, ´_NN ._.
+-LRB-_-LRB- 13_CD -RRB-_-RRB- y_NN -RRB-_-RRB- Given_IN training_NN data_NNS D_NN =_JJ -LCB-_-LRB- 〈_NNP x1_NNP ,_, y1_NNP 〉_NNP ,_, 〈_NNP x2_NNP ,_, y2_NNP 〉_NNP ,_, ..._: ,_, 〈_FW xn_FW ,_, yn_FW 〉_FW -RCB-_-RRB- ,_, the_DT log_NN likelihood_NN of_IN parameters_NNS Λ_NN is_VBZ nY_NN !_.
+l_NN -LRB-_-LRB- Λ_NN |_NN D_NN -RRB-_-RRB- =_JJ log_NN p_NN -LRB-_-LRB- yi_FW |_FW xi_FW -RRB-_-RRB- −_NN X_NN =_JJ i_FW
+θd_RB ,_, and_CC the_DT topic-word_JJ distributions_NNS ,_, Φ_NN ._.
+MAP_NN estimation_NN in_IN this_DT model_NN is_VBZ intractable_JJ due_JJ to_TO the_DT interaction_NN between_IN these_DT terms_NNS ,_, but_CC relatively_RB efficient_JJ MCMC_NN and_CC variational_JJ methods_NNS are_VBP widely_RB used_VBN =_JJ -_: =[_NN 4_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Both_DT classes_NNS of_IN methods_NNS can_MD produce_VB estimates_NNS of_IN Φ_NN ,_, which_WDT we_PRP refer_VBP to_TO as_IN ˆ_NN Φ_NN ._.
+In_IN the_DT case_NN of_IN collapsed_JJ Gibbs_NNP sampling_NN ,_, the_DT Markov_NNP chain_NN state_NN consists_VBZ of_IN topic_NN assignments_NNS z_SYM for_IN each_DT token_JJ in_IN the_DT tr_NN
+ethod_NN is_VBZ a_DT variational_JJ equivalent_NN to_TO inference_NN method_NN Gibbs3_NN ,_, being_VBG appropriate_JJ for_IN parallelized_NN ,_, streaming_NN environments_NNS ._.
+More_RBR complicated_JJ variational_JJ distributions_NNS have_VBP been_VBN shown_VBN to_TO have_VB lower_JJR bias_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC are_VBP generally_RB more_RBR computationally_RB intensive_JJ per_IN iteration_NN than_IN the_DT simple_NN fully_RB factored_JJ variational_JJ distribution_NN ._.
+5_CD ._.
+CLASSIFICATION-BASED_NNP INFERENCE_NNP The_DT previous_JJ inference_NN methods_NNS theoretically_RB
+large_JJ collections_NNS ._.
+Even_RB with_IN fast_JJ sampling_NN methods_NNS ,_, training_NN topic_NN models_NNS remains_VBZ computationally_RB expensive_JJ ._.
+Parallel_JJ implementations_NNS are_VBP hindered_VBN by_IN the_DT need_NN for_IN frequent_JJ interprocess_NN communication_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP would_MD like_VB to_TO be_VB able_JJ to_TO train_VB Evaluation_NN measures_NNS 0.6_CD 0.7_CD 0.8_CD 0.9_CD 1.0_CD Accuracy_NN over_IN Training_NN size_NN on_IN Pubmed_NNP 0.1_CD 0.2_CD 0.3_CD 0.4_CD 0.5_CD 0.6_CD 0.7_CD Training_NN proportion_NN Cosine_NN distance_NN KL_NN divergence_NN F1_NN Figur_NN
+aid_NN to_TO the_DT practically_RB important_JJ problem_NN of_IN inferring_VBG topic_NN distributions_NNS given_VBN existing_VBG models_NNS ._.
+Exceptions_NNS include_VBP the_DT dynamic_JJ mixture_NN model_NN for_IN online_JJ pattern_NN discovery_NN in_IN multiple_JJ time-series_NNS data_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT online_JJ LDA_NN algorithm_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, and_CC especially_RB the_DT work_NN of_IN Banerjee_NNP and_CC Basu_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, who_WP advocate_VBP the_DT use_NN of_IN mixture_NN of_IN von_NNP Mises-Fisher_NNP distributions_NNS for_IN streaming_NN data_NNS based_VBN on_IN a_DT relatively_RB simple_JJ docu_NN
+er_JJR methods_NNS for_IN topic_NN model_NN inference_NN in_IN terms_NNS of_IN speed_NN and_CC accuracy_NN relative_JJ to_TO fully_RB retraining_VBG a_DT model_NN ._.
+We_PRP carried_VBD out_RP experiments_NNS on_IN two_CD datasets_NNS ,_, NIPS_NNP and_CC Pubmed_NNP ._.
+In_IN contrast_NN to_TO Banerjee_NNP and_CC Basu_NNP =_SYM -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, who_WP evaluate_VBP different_JJ statistical_JJ models_NNS on_IN streaming_NN text_NN data_NNS ,_, we_PRP focus_VBP on_IN a_DT single_JJ model_NN -LRB-_-LRB- LDA_NN -RRB-_-RRB- and_CC compare_VB different_JJ inference_NN methods_NNS based_VBN on_IN this_DT model_NN ._.
+Second_RB ,_, since_IN many_JJ of_IN the_DT methods_NNS we_PRP d_SYM
+he_PRP data_NNS by_IN removing_VBG stop_NN words_NNS ._.
+We_PRP implemented_VBD the_DT three_CD sampling-based_JJ inference_NN methods_NNS -LRB-_-LRB- using_VBG SparseLDA_NN -RRB-_-RRB- ,_, the_DT variational_JJ updated_VBN method_NN ,_, and_CC the_DT classification-based_JJ methods_NNS in_IN the_DT MALLET_NNP toolkit_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP will_MD be_VB available_JJ as_IN part_NN of_IN its_PRP$ standard_JJ open-source_NN release_NN ._.
+6.1_CD Evaluation_NN Measures_NNS It_PRP is_VBZ difficult_JJ to_TO evaluate_VB topic_NN distribution_NN prediction_NN results_NNS ,_, because_IN the_DT ``_`` true_JJ ''_'' topic_NN distribution_NN i_FW
+ts_NNS ,_, requires_VBZ prior_JJ specific_JJ permission_NN and\/or_CC a_DT fee_NN ._.
+KDD_NNP '_POS 09_CD ,_, June_NNP 28_CD --_: July_NNP 1_CD ,_, 2009_CD ,_, Paris_NNP ,_, France_NNP ._.
+Copyright_NN 2009_CD ACM_NNP 978-1-60558-495-9_CD \/_: 09\/06_CD ..._: $_$ 5.00_CD ._.
+models_NNS such_JJ as_IN latent_JJ Dirichlet_NNP allocation_NN -LRB-_-LRB- LDA_NN -RRB-_-RRB- =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP the_DT ability_NN to_TO identify_VB interpretable_JJ low_JJ dimensional_JJ components_NNS in_IN very_RB high_JJ dimensional_JJ data_NNS ._.
+Representing_VBG documents_NNS as_IN topic_NN distributions_NNS rather_RB than_IN bags_NN of_IN words_NNS reduces_VBZ the_DT effect_NN of_IN lexi_NN
+ampling_VBG performance_NN with_IN a_DT small_JJ memory_NN footprint_NN ._.
+SparseLDA_NN is_VBZ approximately_RB 20_CD times_NNS faster_RBR than_IN highly_RB optimized_VBN traditional_JJ LDA_NN and_CC twice_RB the_DT speedup_NN of_IN previously_RB published_VBN fast_JJ sampling_NN methods_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+2_CD ._.
+BACKGROUND_NN A_DT statistical_JJ topic_NN model_NN represents_VBZ the_DT words_NNS in_IN documents_NNS in_IN a_DT collection_NN W_NN as_IN mixtures_NNS of_IN T_NN ``_`` topics_NNS ,_, ''_'' whichare_JJ multinomials_NNS over_IN a_DT vocabulary_NN of_IN size_NN V_NN ._.
+Each_DT document_NN d_NN is_VBZ associa_NN

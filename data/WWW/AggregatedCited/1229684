@@ -1,0 +1,102 @@
+Bridging_VBG the_DT gap_NN between_IN OWL_NN and_CC relational_JJ databases_NNS
+Schema_NN statements_NNS in_IN OWL_NN are_VBP interpreted_VBN quite_RB differently_RB from_IN analogous_JJ statements_NNS in_IN relational_JJ databases_NNS ._.
+If_IN these_DT statements_NNS are_VBP meant_VBN to_TO be_VB interpreted_VBN as_IN integrity_NN constraints_NNS -LRB-_-LRB- ICs_NNS -RRB-_-RRB- ,_, OWL_NN 's_POS interpretation_NN may_MD seem_VB confusing_JJ and\/or_CC inappropriate_JJ ._.
+Therefore_RB ,_, we_PRP propose_VBP an_DT extension_NN of_IN OWL_NN with_IN ICs_NNS that_WDT captures_VBZ the_DT intuition_NN behind_IN ICs_NNS in_IN relational_JJ databases_NNS ._.
+We_PRP discuss_VBP the_DT algorithms_NNS for_IN checking_VBG IC_NN satisfaction_NN for_IN different_JJ types_NNS of_IN knowledge_NN bases_NNS ,_, and_CC show_VBP that_IN ,_, if_IN the_DT constraints_NNS are_VBP satisfied_VBN ,_, we_PRP can_MD disregard_VB them_PRP while_IN answering_VBG a_DT broad_JJ range_NN of_IN positive_JJ queries_NNS ._.
+ics_NNS expressed_VBN through_IN functional_JJ dependencies_NNS are_VBP equally_RB relevant_JJ when_WRB specifying_VBG a_DT conceptual_JJ model_NN by_IN means_NNS of_IN an_DT application_NN ontology_NN for_IN ontologydriven_JJ information_NN systems_NNS ._.
+It_PRP has_VBZ been_VBN observed_VBN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: that_IN in_IN datacentric_JJ applications_NNS ,_, users_NNS expect_VBP ontologies_NNS to_TO offer_VB mechanisms_NNS similar_JJ to_TO those_DT found_VBN in_IN the_DT database_NN area_NN that_WDT guarantee_VBP the_DT correctness_NN of_IN entered_VBN data_NNS ._.
+In_IN particular_JJ ,_, FDs_NNS allow_VBP use_NN
+ge_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP describe_VBP an_DT alternative_JJ Integrity_NN Constraint_NN -LRB-_-LRB- IC_NN -RRB-_-RRB- semantics_NNS for_IN OWL_NN axioms_NNS to_TO enable_VB closed_JJ world_NN constraint_NN validation_NN ._.
+Our_PRP$ work_NN is_VBZ in_IN line_NN with_IN recent_JJ research_NN by_IN Motik_NNP et_FW al._FW =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: where_WRB ICs_NNS are_VBP written_VBN as_IN standard_JJ OWL_NN axioms_NNS but_CC are_VBP interpreted_VBN with_IN a_DT different_JJ semantics_NNS for_IN data_NN validation_NN purposes_NNS ._.
+We_PRP start_VBP with_IN some_DT use_NN cases_NNS and_CC example_NN ICs_NNS -LRB-_-LRB- Section_NN 2_CD -RRB-_-RRB- ,_, discuss_VB why_WRB we_PRP are_VBP
+se_FW OBDBs_FW is_VBZ that_IN they_PRP are_VBP built_VBN around_IN only_RB one_CD single_JJ ontology_NN model_NN ._.
+Several_JJ debates_NNS have_VBP argued_VBN that_IN constructs_NNS proposed_VBN by_IN each_DT ontology_NN model_NN are_VBP complementary_JJ -LRB-_-LRB- 20_CD ,_, 11_CD ,_, 24_CD ,_, 13_CD ,_, 26_CD -RRB-_-RRB- ._.
+Many_JJ studies_NNS =_JJ -_: =[_NN 16_CD ,_, 21_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP also_RB being_VBG conducted_VBN showing_VBG -LRB-_-LRB- a_LS -RRB-_-RRB- the_DT feasibility_NN to_TO combine_VB the_DT semantics_NNS underlying_VBG Web_NN Semantic_JJ ontology_NN models_NNS and_CC database_NN semantics_NNS ,_, and_CC -LRB-_-LRB- b_LS -RRB-_-RRB- the_DT added_VBN value_NN that_WDT would_MD result_VB for_IN data_NNS inten_VBP
+d_NN call_NN query_NN by_IN the_DT receiver_NN type_NN ._.
+It_PRP does_VBZ not_RB support_VB hierarchical_JJ transitivity_NN ._.
+The_DT main_JJ drawback_NN of_IN a_DT relational_JJ model_NN approach_NN is_VBZ lack_NN of_IN support_NN for_IN AIQs_NNS since_IN it_PRP does_VBZ not_RB support_VB OWA_NNP inherently_RB =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX are_VBP also_RB some_DT projects_NNS provide_VBP high-level_JJ services_NNS such_JJ as_IN Code_NNP Conjurer_NNP -LRB-_-LRB- 18_CD -RRB-_-RRB- and_CC S_NN 6_CD -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+Their_PRP$ common_JJ approach_NN is_VBZ to_TO filter_NN the_DT retrieved_VBN code_NN from_IN other_JJ code_NN engines_NNS by_IN means_NNS of_IN keywords_NNS ,_,
+hakravarthy_NN et_FW al._FW 1992_CD ;_: Curé_NNP and_CC Squelbut_NNP 2005_CD ;_: Dietrich_NNP et_FW al._FW 1992_CD ;_: Vasilecas_NNP and_CC Bugaite_NNP 2007_CD -RRB-_-RRB- ._.
+Researchers_NNS are_VBP studying_VBG how_WRB to_TO bring_VB database_NN theory_NN into_IN the_DT Semantic_JJ Web_NN -LRB-_-LRB- Calvanese_NN et_FW al._FW 2005_CD ;_: =_JJ -_: =_JJ Motik_NNP et_FW al._FW 2007_CD -_: =--RRB-_NN ,_, but_CC more_JJR work_NN is_VBZ needed_VBN in_IN that_DT regard_NN ._.
+1_CD http:\/\/www.w3.org\/TR\/owl-features\/J_NN Intell_NNP Inf_NNP Syst_NNP 2.1.3_NNP Scalability_NNP Because_IN reasoning_NN in_IN general_JJ poses_VBZ scalability_NN concerns_NNS ,_, system_NN designers_NNS use_VBP the_DT Le_NNP
+here_RB are_VBP some_DT other_JJ proposals_NNS concerning_VBG on_IN integration_NN of_IN ICs_NNS with_IN OWL_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP focus_VBP on_IN approaches_NNS that_WDT reuse_VBP OWL_NN as_IN an_DT IC_NN language_NN ._.
+Our_PRP$ closest_JJS related_JJ work_NN is_VBZ a_DT proposal_NN by_IN Motik_NNP et_FW al._FW =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: based_VBN on_IN a_DT minimal_JJ Herbrand_NNP model_NN semantics_NNS of_IN OWL_NN :_: here_RB ,_, a_DT constraint_NN axiom_NN is_VBZ satisfied_VBN if_IN all_DT minimal_JJ Herbrand_NNP models_NNS satisfy_VBP it_PRP ._.
+This_DT approach_NN may_MD result_VB in_IN counterintuitive_JJ results_NNS or_CC a_DT signific_JJ
+for_IN the_DT concrete_JJ subclasses_NNS of_IN AtrioventricularValve_NNP and_CC Ventricle_NNP ._.
+Axiom_NN -LRB-_-LRB- 29_CD -RRB-_-RRB- can_MD then_RB be_VB interpreted_VBN as_IN a_DT check_NN which_WDT makes_VBZ sure_JJ that_IN this_DT abstract_JJ relationship_NN is_VBZ concretized_VBN at_IN a_DT lower_JJR level_NN ._.
+In_IN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT formalism_NN has_VBZ been_VBN presented_VBN that_WDT might_MD be_VB useful_JJ for_IN this_DT purpose_NN ._.
+Another_DT possibility_NN is_VBZ to_TO interpret_VB Ventricle_NN disjunctively_RB over_IN its_PRP$ subclasses_NNS :_: each_DT valve_NN is_VBZ connected_VBN to_TO either_CC left_NN or_CC the_DT r_NN
+ogic_JJ based_VBN ontology_NN language_NN which_WDT captures_VBZ features_NNS from_IN ER_NN and_CC UML_NN class_NN diagrams_NNS ._.
+It_PRP is_VBZ proven_VBN to_TO preserve_VB the_DT semantics_NNS of_IN the_DT constraints_NNS in_IN the_DT relational_JJ databases_NNS ._.
+Motik_NNP ,_, Horrocks_NNP and_CC Sattler_NNP =_SYM -_: =[_NN 41_CD -RRB-_-RRB- -_: =_JJ -_: showed_VBD that_IN integrity_NN constraints_NNS -LRB-_-LRB- ICs_NNS -RRB-_-RRB- can_MD be_VB disregarded_VBN while_IN answering_VBG positive_JJ queries_NNS against_IN an_DT OWL_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ontology_NN ,_, if_IN the_DT constraints_NNS are_VBP satisfied_VBN by_IN the_DT database_NN ._.
+This_DT theoretical_JJ research_NN al_FW
+archical_JJ ,_, set-oriented_JJ models_NNS -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+Furthermore_RB ,_, nested_JJ relational_JJ techniques_NNS can_MD not_RB be_VB directly_RB applied_VBN to_TO the_DT ontologies_NNS due_JJ to_TO the_DT inherent_JJ differences_NNS between_IN ontologies_NNS and_CC database_NN models_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 41_CD -RRB-_-RRB- ._.
+In_IN this_DT paper_NN ,_, our_PRP$ goal_NN is_VBZ to_TO support_VB that_IN techniques_NNS to_TO generate_VB integration-enabling_JJ mappings_NNS for_IN nested_JJ relational_JJ schemata_NN are_VBP not_RB directly_RB applicable_JJ to_TO the_DT semantic_JJ web_NN case_NN ,_, due_JJ t_NN
+only_RB focus_VB on_IN relational_JJ databases_NNS ._.
+Due_JJ to_TO some_DT similarity_NN ,_, OWL_NN ontologies_NNS are_VBP understood_VBN as_IN incomplete_JJ databases_NNS and_CC the_DT other_JJ way_NN around_IN ,_, databases_NNS can_MD be_VB treated_VBN as_IN OWL_NN with_IN Integrity_NN Constraints_NNS =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT following_NN we_PRP introduces_VBZ the_DT relevant_JJ concepts_NNS and_CC tools_NNS for_IN knowledgebased_JJ system_NN and_CC reasoning_NN ,_, which_WDT we_PRP used_VBD for_IN our_PRP$ implementation_NN ._.
+Protégé_NNP Protégé_NNP -LRB-_-LRB- 25_CD -RRB-_-RRB- is_VBZ used_VBN for_IN editing_NN the_DT ontology_NN ._.
+P_NN
+2_CD are_VBP total_JJ functions_NNS from_IN Cρ_NN to_TO D1_NN and_CC D2_NN ,_, respectively_RB ._.
+However_RB ,_, a_DT limitation_NN of_IN OWL_NN is_VBZ that_IN the_DT reasoner_NN does_VBZ not_RB show_VB any_DT inconsistency_NN if_IN we_PRP forget_VBP to_TO define_VB P1_NN or_CC P2_NN for_IN some_DT element_NN of_IN Cρ_NN -LRB-_-LRB- see_VB =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+This_DT type_NN of_IN mistake_NN could_MD obviously_RB avoided_VBN if_IN OWL_NN provided_VBD us_PRP with_IN relations_NNS of_IN arity_FW n._FW --_: The_DT axiom_NN -LRB-_-LRB- unique_JJ rep_NN -RRB-_-RRB- states_VBZ that_IN two_CD named_VBN individuals_NNS in_IN Cρ_NNP that_WDT have_VBP the_DT same_JJ projections_NNS should_MD be_VB
+antics_NNS of_IN OWL_NN to_TO support_VB the_DT epistemic_JJ operator_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+Motik_NNP et_FW al._FW proposed_VBN to_TO write_VB integrity_NN constraints_NNS as_IN standard_JJ OWL_NN axioms_NNS but_CC interpreted_VBD with_IN different_JJ semantics_NNS for_IN data_NN validation_NN purposes_NNS =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Tao_NNP et_FW al._FW showed_VBD that_IN integrity_NN constraint_NN validation_NN can_MD be_VB reduced_VBN to_TO SPARQL_FW query_FW answering_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Recently_RB ,_, Mehdi_NNP et_FW al._FW introduced_VBD a_DT way_NN to_TO answer_VB epistemic_JJ queries_NNS to_TO restricted_JJ OWL_NN ontologies_NNS
+social_JJ security_NN number_NN ._.
+Hence_RB ,_, the_DT ontology_NN is_VBZ satisfiable_JJ ;_: furthermore_RB ,_, if_IN we_PRP query_VBP for_IN the_DT social_JJ security_NN number_NN of_IN Peter_NNP ,_, we_PRP do_VBP not_RB get_VB an_DT answer_NN ,_, since_IN this_DT number_NN is_VBZ unknown_JJ ._.
+As_IN we_PRP discussed_VBD in_IN =_JJ -_: =[_NN 7,8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, OWL_NN ontologies_NNS can_MD be_VB understood_VBN as_IN incomplete_JJ databases_NNS ._.
+Many_JJ databases_NNS encountered_VBN in_IN practice_NN are_VBP ,_, however_RB ,_, complete_JJ ._.
+To_TO obtain_VB a_DT flexible_JJ schema_NN language_NN ,_, we_PRP would_MD like_VB to_TO explicitly_RB control_VB the_DT
+uery_NN evaluation_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+The_DT semantics_NNS expressed_VBN through_IN functional_JJ dependencies_NNS are_VBP equally_RB relevant_JJ when_WRB specifying_VBG a_DT conceptual_JJ schema_NN by_IN means_NNS of_IN ontologies_NNS ._.
+As_IN a_DT matter_NN of_IN fact_NN ,_, it_PRP has_VBZ been_VBN observed_VBN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: that_IN in_IN data-centric_JJ applications_NNS users_NNS expect_VBP ontologies_NNS to_TO offer_VB mechanisms_NNS similar_JJ tosthose_NN found_VBN in_IN the_DT database_NN area_NN that_WDT guarantee_VBP the_DT correctness_NN of_IN entered_VBN data_NNS ._.
+In_IN particular_JJ ,_, FDs_NNS allow_VBP user_NN
+esentation_NN by_IN applying_VBG normalization_NN rules_NNS ._.
+The_DT semantics_NNS expressed_VBN through_IN functional_JJ dependencies_NNS are_VBP equally_RB relevant_JJ when_WRB specifying_VBG a_DT conceptual_JJ schema_NN ._.
+As_IN a_DT matter_NN of_IN fact_NN ,_, it_PRP has_VBZ been_VBN observed_VBN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: that_IN in_IN data-centric_JJ applications_NNS users_NNS expect_VBP ontologies_NNS to_TO offer_VB mechanisms_NNS similar_JJ to_TO those_DT found_VBN in_IN the_DT database_NN area_NN that_WDT guarantee_VBP the_DT correctness_NN of_IN entered_VBN data_NNS ._.
+There_EX has_VBZ been_VBN quite_RB a_DT few_JJ wo_MD
+cribe_VB a_DT general_JJ framework_NN for_IN integrating_VBG databases_NNS with_IN ontologies_NNS via_IN a_DT first-order_JJ ontology_NN language_NN Web-PDDL_NN ._.
+Barrasa_FW et_FW al._FW -LRB-_-LRB- 3_LS -RRB-_-RRB- design_NN a_DT language_NN R2O_NN for_IN expressing_VBG complex_JJ mappings_NNS ._.
+Motik_NNP et_FW al._FW =_SYM -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP an_DT extension_NN of_IN OWL_NN with_IN ICs_NNS that_WDT captures_VBZ the_DT intuition_NN behind_IN ICs_NNS in_IN relational_JJ databases_NNS ._.
+An_DT et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- develop_VB a_DT prototype_NN MapOnto_NNP for_IN inferring_VBG complex_JJ semantic_JJ mappings_NNS formalized_VBN by_IN Ho_NNP
+rmore_NN ,_, the_DT end-points_NNS of_IN the_DT relationship_NN must_MD be_VB known_VBN to_TO be_VB instances_NNS of_IN GO_FW :0048601_FW ._.
+Such_JJ a_DT statement_NN can_MD not_RB be_VB formalized_VBN in_IN standard_JJ DLs_NNS ;_: however_RB ,_, it_PRP can_MD be_VB expressed_VBN in_IN various_JJ extensions_NNS of_IN DLs_NNS =_JJ -_: =[_NN 15_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN another_DT example_NN ,_, consider_VB the_DT natural-language_JJ explanation_NN of_IN the_DT semantics_NNS for_IN the_DT intersection_NN of_IN tag_NN :_: -LRB-_-LRB- ..._: -RRB-_-RRB- For_IN example_NN :_: intersection_NN of_IN :_: GO_NN :00001_CD intersection_NN of_IN :_: part_NN of_IN GO_FW :00002_FW This_DT means_VBZ
+uery_NN and_CC integrate_VB heterogeneous_JJ ontologies_NNS that_WDT are_VBP distributed_VBN with_IN mappings_NNS similar_JJ to_TO our_PRP$ previous_JJ work_NN in_IN -LRB-_-LRB- WHP07_NN ,_, HW07_NN -RRB-_-RRB- ._.
+On_IN the_DT other_JJ hand_NN ,_, we_PRP use_VBP the_DT approach_NN introduced_VBN by_IN Motik_NN and_CC colleagues_NNS =_JJ -_: =_JJ -LRB-_-LRB- MHS07_NN -RRB-_-RRB- -_: =_SYM -_: to_TO process_VB the_DT integration_NN of_IN local_JJ OWL_NN DL_NN ontologies_NNS and_CC relational_JJ databases_NNS ._.
+Based_VBN on_IN these_DT works_NNS ,_, we_PRP develop_VBP a_DT distributed_VBN database_NN integration_NN system_NN -LRB-_-LRB- Figure_NN 3.1_CD -RRB-_-RRB- to_TO support_VB querying_VBG distributed_VBN
+6_CD ,_, but_CC the_DT main_JJ idea_NN is_VBZ that_IN domain_NN and_CC range_NN restrictions_NNS are_VBP epistemic_JJ in_IN nature_NN -LRB-_-LRB- regards_VBZ the_DT state_NN of_IN knowledge_NN -RRB-_-RRB- ,_, but_CC an_DT inclusion_NN axiom_NN is_VBZ ``_`` knowledge_NN generating_NN ''_'' -LRB-_-LRB- advances_NNS the_DT state_NN of_IN knowledge_NN -RRB-_-RRB- =_JJ -_: =[_NN 19_CD ,_, 64_CD ,_, 75_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, if_IN someone_NN asserts_VBZ that_IN SisterOf_NN -LRB-_-LRB- janeDoe_NN ,_, buddyTheFrog_NN -RRB-_-RRB- ,_, a_DT range_NN restriction_NN allows_VBZ us_PRP to_TO reject_VB the_DT assertion_NN because_IN we_PRP know_VBP buddyTheFrog_NN is_VBZ not_RB a_DT Person_NN -LRB-_-LRB- it_PRP is_VBZ a_DT Frog_NN -RRB-_-RRB- ._.
+The_DT range_NN res_VBZ
+ular_JJ location_NN and_CC observation_NN reference_NN -LRB-_-LRB- a_DT BioPAX_NN publication_NN cross_NN reference_NN -RRB-_-RRB- ._.
+While_IN BioPAX_NN is_VBZ expressed_VBN in_IN OWL_NN there_EX are_VBP numerous_JJ problematic_JJ issues_NNS associated_VBN with_IN its_PRP$ modeling_NN technique_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- -LRB-_-LRB- 36_CD -RRB-_-RRB- =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One_CD of_IN the_DT most_RBS detrimental_JJ to_TO our_PRP$ requirements_NNS is_VBZ the_DT lack_NN of_IN context_NN or_CC meaning_NN when_WRB the_DT openControlledVocabulary_NN class_NN is_VBZ used_VBN to_TO include_VB links_NNS to_TO external_JJ terms_NNS ._.
+To_TO overcome_VB this_DT ,_, we_PRP developed_VBD a_DT
+cent_NN work_NN by_IN Paton_NNP and_CC Díaz_NNP -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, which_WDT examines_VBZ rules_NNS and_CC triggers_NNS in_IN active_JJ database_NN systems_NNS ._.
+Recent_JJ research_NN on_IN bridging_VBG the_DT gap_NN between_IN OWL_NN and_CC relational_JJ databases_NNS by_IN Motik_NNP ,_, Horrocks_NNP and_CC Sattler_NNP =_SYM -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: provides_VBZ unique_JJ insight_NN into_IN the_DT expressiveness_NN of_IN description_NN logics_NNS versus_CC relational_JJ databases_NNS ._.
+The_DT integrity_NN constraints_NNS in_IN databases_NNS can_MD be_VB described_VBN with_IN extended_VBN OWL_NN statements_NNS -LRB-_-LRB- axioms_NNS -RRB-_-RRB- ._.
+An_DT im_NN
+plete_NN knowledge_NN ,_, and_CC grow_VB with_IN the_DT manual_JJ discovery_NN of_IN new_JJ domain_NN knowledge_NN and_CC automatic_JJ inferences_NNS ._.
+Due_JJ to_TO this_DT difference_NN ,_, the_DT concept_NN of_IN a_DT constraint_NN has_VBZ very_RB different_JJ meanings_NNS in_IN the_DT two_CD worlds_NNS =_JJ -_: =_JJ -LRB-_-LRB- Mot07_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN a_DT database_NN setting_NN ,_, a_DT constraint_NN is_VBZ mainly_RB used_VBN for_IN validation_NN and_CC prevents_VBZ incorrect_JJ data_NNS from_IN entering_VBG the_DT database_NN ._.
+In_IN contrast_NN ,_, in_IN an_DT ontology_NN ,_, a_DT constraint_NN expresses_VBZ some_DT characteristics_NNS of_IN
+specification_NN or_CC automatic_JJ extraction_NN by_IN machine_NN from_IN -LRB-_-LRB- semi_NNS -_: -RRB-_-RRB- structured_JJ data_NN sources_NNS ._.
+There_EX are_VBP several_JJ approaches_NNS proposed_VBN to_TO investigate_VB the_DT transformation_NN of_IN relational_JJ schemas_NNS to_TO ontologies_NNS -LRB-_-LRB- see_VB =_JJ -_: =[_NN 27_CD ,_, 17_CD ,_, 19_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+The_DT proposed_VBN approach_NN generally_RB consists_VBZ of_IN following_VBG steps_NNS :_: first_RB ,_, parse_VB the_DT OWL_NN document_NN to_TO extract_VB both_DT its_PRP$ the_DT ontology_JJ structural_JJ information_NN and_CC data_NN instances_NNS ;_: second_JJ ,_, perform_VB the_DT object_NN rec_NN
+given_VBN OWL_NN 's_POS expressiveness_NN ,_, using_VBG it_PRP as_IN a_DT flexible_JJ ,_, abstract_JJ schema_NN language_NN for_IN heterogeneous_JJ data_NNS sources_NNS is_VBZ very_RB appealing_JJ ._.
+One_CD compelling_JJ response_NN to_TO these_DT problems_NNS described_VBN in_IN the_DT literature_NN is_VBZ =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Under_IN funding_NN from_IN NIST_NNP 's_POS SBIR_NNP program_NN ,_, we_PRP are_VBP working_VBG on_IN an_DT Integrity_NN Constraint_NN -LRB-_-LRB- IC_NN -RRB-_-RRB- system_NN integrated_VBN with_IN Pellet_NN in_IN response_NN ._.
+The_DT utility_NN of_IN a_DT robust_JJ IC_NN system_NN for_IN OWL_NN is_VBZ precisely_RB that_IN it_PRP will_MD
+tions_NNS are_VBP not_RB embedded_VBN but_CC specified_VBN by_IN means_NNS of_IN high_JJ level_NN rules_NNS and_CC therefore_RB they_PRP are_VBP customizable_JJ according_VBG to_TO the_DT different_JJ needs_NNS ._.
+A_DT number_NN of_IN formal_JJ approaches_NNS based_VBN on_IN description_NN logics_NNS exist_VBP =_JJ -_: =[_NN 16_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT can_MD not_RB be_VB compared_VBN with_IN our_PRP$ work_NN ,_, as_IN we_PRP concentrate_VBP on_IN structural_JJ aspects_NNS ,_, and_CC so_RB we_PRP do_VBP not_RB refer_VB to_TO reasoning_NN capabilities_NNS ._.
+However_RB ,_, these_DT pieces_NNS of_IN work_NN each_DT refer_VBP to_TO one_CD specific_JJ data_NNS model_NN
+not_RB capable_JJ of_IN treating_VBG policies_NNS ._.
+4.5_CD Other_JJ formal_JJ approaches_NNS Database-Style_NNP Integrity_NNP Constraints_NNPS for_IN OWL_NNP This_NNP approach_NN is_VBZ motivated_VBN from_IN data-centric_JJ problems_NNS in_IN DL\/OWL_NN based_VBN applications_NNS ._.
+Authors_NNS =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP established_VBN the_DT relationship_NN between_IN role_NN of_IN Integrity_NN Constraints_NNS -LRB-_-LRB- IC_NN -RRB-_-RRB- in_IN databases_NNS ,_, i.e._FW ,_, -LRB-_-LRB- 1_LS -RRB-_-RRB- data_NN reasoning_NN -LRB-_-LRB- e.g._FW ,_, in_IN checking_VBG the_DT integrity_NN of_IN a_DT database_NN -RRB-_-RRB- and_CC schema_NN reasoning_NN -LRB-_-LRB- e.g._FW ,_, in_IN comp_NN

@@ -1,0 +1,111 @@
+Performing_VBG grouping_NN and_CC aggregate_NN functions_NNS in_IN XML_NN queries_NNS
+Since_IN more_JJR and_CC more_JJR business_NN data_NNS are_VBP represented_VBN in_IN XML_NN format_NN ,_, there_EX is_VBZ a_DT compelling_JJ need_NN of_IN supporting_VBG analytical_JJ operations_NNS in_IN XML_NN queries_NNS ._.
+Particularly_RB ,_, the_DT latest_JJS version_NN of_IN XQuery_NN proposed_VBN by_IN W3C_NN ,_, XQuery_NN 1.1_CD ,_, introduces_VBZ a_DT new_JJ construct_NN to_TO explicitly_RB express_VB grouping_VBG operation_NN in_IN FLWOR_NN expression_NN ._.
+Existing_VBG works_NNS in_IN XML_NN query_NN processing_NN mainly_RB focus_VB on_IN physically_RB matching_VBG query_NN structure_NN over_IN XML_NN document_NN ._.
+Given_VBN the_DT explicit_JJ grouping_VBG operation_NN in_IN a_DT query_NN ,_, how_WRB to_TO efficiently_RB compute_VB grouping_NN and_CC aggregate_NN functions_NNS over_IN XML_NN document_NN is_VBZ not_RB well_RB studied_VBN yet_RB ._.
+In_IN this_DT paper_NN ,_, we_PRP extend_VBP our_PRP$ previous_JJ XML_NN query_NN processing_NN algorithm_NN ,_, VERT_NN ,_, to_TO efficiently_RB perform_VB grouping_NN and_CC aggregate_NN function_NN in_IN queries_NNS ._.
+The_DT main_JJ technique_NN of_IN our_PRP$ approach_NN is_VBZ introducing_VBG relational_JJ tables_NNS to_TO index_NN values_NNS ._.
+Query_JJ pattern_NN matching_NN and_CC aggregation_NN computing_NN are_VBP both_DT conducted_VBN with_IN table_NN indices_NNS ._.
+We_PRP also_RB propose_VBP two_CD semantic_JJ optimizations_NNS to_TO further_RB improve_VB the_DT query_NN performance_NN ._.
+Finally_RB we_PRP present_VBP experimental_JJ results_NNS to_TO validate_VB the_DT efficiency_NN of_IN our_PRP$ approach_NN ,_, over_IN other_JJ existing_VBG approaches_NNS ._.
+uery_NN processing_NN mainly_RB focus_VB on_IN how_WRB to_TO efficiently_RB match_VB the_DT query_NN pattern_NN to_TO XML_NN document_NN ,_, which_WDT is_VBZ considered_VBN as_IN a_DT core_NN operation_NN to_TO process_NN queries_NNS in_IN most_JJS standard_JJ XML_NN query_NN languages_NNS -LRB-_-LRB- e.g._FW XPath_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: and_CC XQuery_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+As_IN more_JJR and_CC more_JJR business_NN data_NNS are_VBP represented_VBN in_IN XML_NN format_NN ,_, analytical_JJ queries_NNS involving_VBG grouping_NN and_CC aggregate_NN operations_NNS have_VBP become_VBN more_RBR popular_JJ ._.
+To_TO process_VB an_DT analytical_JJ query_NN
+r_NN most_JJS cases_NNS ._.
+The_DT research_NN in_IN XML_NN grouping_NN in_IN native_JJ XML_NN databases_NNS mainly_RB focuses_VBZ on_IN three_CD directions_NNS ._.
+The_DT first_JJ direction_NN is_VBZ on_IN how_WRB to_TO support_VB grouping_VBG by_IN either_CC providing_VBG logical_JJ grouping_VBG operators_NNS =_JJ -_: =[_NN 13_CD ,_, 9_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC detecting_VBG grouping_NN in_IN nested_JJ queries_NNS and_CC rewriting_VBG queries_NNS -LRB-_-LRB- 10_CD ,_, 12_CD ,_, 20_CD ,_, 23_CD ,_, 24_CD -RRB-_-RRB- ._.
+Particularly_RB ,_, in_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- they_PRP provide_VBP algebraic_JJ operators_NNS for_IN grouping_NN ,_, and_CC achieve_VB efficient_JJ construction_NN of_IN XML_NN ele_NN
+r_NN most_JJS cases_NNS ._.
+The_DT research_NN in_IN XML_NN grouping_NN in_IN native_JJ XML_NN databases_NNS mainly_RB focuses_VBZ on_IN three_CD directions_NNS ._.
+The_DT first_JJ direction_NN is_VBZ on_IN how_WRB to_TO support_VB grouping_VBG by_IN either_CC providing_VBG logical_JJ grouping_VBG operators_NNS =_JJ -_: =[_NN 13_CD ,_, 9_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC detecting_VBG grouping_NN in_IN nested_JJ queries_NNS and_CC rewriting_VBG queries_NNS -LRB-_-LRB- 10_CD ,_, 12_CD ,_, 20_CD ,_, 23_CD ,_, 24_CD -RRB-_-RRB- ._.
+Particularly_RB ,_, in_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- they_PRP provide_VBP algebraic_JJ operators_NNS for_IN grouping_NN ,_, and_CC achieve_VB efficient_JJ construction_NN of_IN XML_NN ele_NN
+ving_NN normally_RB comes_VBZ with_IN group-by_JJ to_TO specify_VB the_DT qualifications_NNS over_IN groups_NNS ._.
+2.3_CD Related_JJ work_NN Grouping_NN and_CC aggregation_NN are_VBP well_RB supported_VBN by_IN SQL_NN in_IN relational_JJ databases_NNS ._.
+There_EX are_VBP also_RB research_NN works_VBZ =_JJ -_: =[_NN 16_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: to_TO generalize_VB or_CC optimize_VB such_JJ analytical_JJ operations_NNS in_IN RDBMS_NNP ._.
+Since_IN XQuery_NN 1.0_CD lacks_VBZ functions_NNS to_TO explicitly_RB support_VB grouping_VBG ,_, processing_VBG queries_NNS with_IN grouping_NN in_IN XML_NN is_VBZ addressed_VBN by_IN researchers_NNS in_IN
+ies_NNS ._.
+As_IN a_DT result_NN ,_, how_WRB to_TO efficiently_RB process_VB XML_NN queries_NNS with_IN grouping_NN becomes_VBZ a_DT new_JJ research_NN direction_NN ._.
+Since_IN RDBMS_NN is_VBZ the_DT dominant_JJ model_NN for_IN structured_JJ data_NNS ,_, in_IN the_DT early_JJ stage_NN there_EX are_VBP many_JJ works_NNS =_JJ -_: =[_NN 29_CD ,_, 28_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: on_IN storing_VBG and_CC querying_VBG XML_NN data_NNS using_VBG RDBMS_NN ._.
+In_IN these_DT relational_JJ approaches_NNS ,_, they_PRP normally_RB shred_NN XML_NN documents_NNS into_IN tables_NNS and_CC convert_VB XML_NN queries_NNS into_IN SQL_NNP to_TO query_VB the_DT database_NN ._.
+This_DT sort_NN of_IN approa_NN
+ies_NNS ._.
+As_IN a_DT result_NN ,_, how_WRB to_TO efficiently_RB process_VB XML_NN queries_NNS with_IN grouping_NN becomes_VBZ a_DT new_JJ research_NN direction_NN ._.
+Since_IN RDBMS_NN is_VBZ the_DT dominant_JJ model_NN for_IN structured_JJ data_NNS ,_, in_IN the_DT early_JJ stage_NN there_EX are_VBP many_JJ works_NNS =_JJ -_: =[_NN 29_CD ,_, 28_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: on_IN storing_VBG and_CC querying_VBG XML_NN data_NNS using_VBG RDBMS_NN ._.
+In_IN these_DT relational_JJ approaches_NNS ,_, they_PRP normally_RB shred_NN XML_NN documents_NNS into_IN tables_NNS and_CC convert_VB XML_NN queries_NNS into_IN SQL_NNP to_TO query_VB the_DT database_NN ._.
+This_DT sort_NN of_IN approa_NN
+ll_NN algorithms_NNS in_IN Java_NNP ._.
+The_DT experiments_NNS were_VBD performed_VBN on_IN a_DT dual-core_JJ 2.33_CD GHz_NN processor_NN with_IN 4G_NN RAM_NNP ._.
+We_PRP used_VBD real-world_JJ data_NNS sets_VBZ DBLP_NN -LRB-_-LRB- 91MB_NN -RRB-_-RRB- and_CC NASA_NNP -LRB-_-LRB- 23MB_NN -RRB-_-RRB- ,_, and_CC a_DT well_RB known_VBN synthetic_JJ data_NNS set_VBD XMark_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: in_IN our_PRP$ experiments_NNS ._.
+Note_VB that_IN DBLP_NNP data_NNS has_VBZ a_DT simple_JJ schema_NN ,_, while_IN NASA_NNP data_NNS has_VBZ a_DT complex_JJ schema_NN ._.
+The_DT characteristics_NNS of_IN queries_NNS used_VBN is_VBZ shown_VBN in_IN Fig._NNP 15_CD ._.
+Query_NNP Grouping_NNP Grouping_NNP Query_NNP Grouping_NNP G_NNP
+ving_NN normally_RB comes_VBZ with_IN group-by_JJ to_TO specify_VB the_DT qualifications_NNS over_IN groups_NNS ._.
+2.3_CD Related_JJ work_NN Grouping_NN and_CC aggregation_NN are_VBP well_RB supported_VBN by_IN SQL_NN in_IN relational_JJ databases_NNS ._.
+There_EX are_VBP also_RB research_NN works_VBZ =_JJ -_: =[_NN 16_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: to_TO generalize_VB or_CC optimize_VB such_JJ analytical_JJ operations_NNS in_IN RDBMS_NNP ._.
+Since_IN XQuery_NN 1.0_CD lacks_VBZ functions_NNS to_TO explicitly_RB support_VB grouping_VBG ,_, processing_VBG queries_NNS with_IN grouping_NN in_IN XML_NN is_VBZ addressed_VBN by_IN researchers_NNS in_IN
+expressed_VBN implicitly_RB using_VBG nesting_JJ ._.
+This_DT nested_JJ expression_NN for_IN grouping_NN can_MD be_VB neither_RB well_RB understood_VBN by_IN users_NNS ,_, nor_CC easily_RB detected_VBN by_IN query_NN optimizer_NN ,_, as_IN pointed_VBN out_RP by_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+There_EX are_VBP many_JJ efforts_NNS =_JJ -_: =[_NN 6_CD ,_, 3_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: on_IN extending_VBG the_DT expressive_JJ power_NN for_IN XQuery_NN to_TO support_VB grouping_VBG ,_, until_IN W3C_NN publishes_VBZ the_DT latest_JJS version_NN of_IN XQuery_NN ,_, XQuery_NN 1.1_CD -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, to_TO introduce_VB a_DT new_JJ construct_NN to_TO explicitly_RB express_VB grouping_VBG in_IN FLW_NNP
+ocuses_NNS on_IN three_CD directions_NNS ._.
+The_DT first_JJ direction_NN is_VBZ on_IN how_WRB to_TO support_VB grouping_VBG by_IN either_CC providing_VBG logical_JJ grouping_VBG operators_NNS -LRB-_-LRB- 13_CD ,_, 9_CD ,_, 22_CD -RRB-_-RRB- ,_, or_CC detecting_VBG grouping_NN in_IN nested_JJ queries_NNS and_CC rewriting_VBG queries_NNS =_JJ -_: =[_NN 10_CD ,_, 12_CD ,_, 20_CD ,_, 23_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Particularly_RB ,_, in_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- they_PRP provide_VBP algebraic_JJ operators_NNS for_IN grouping_NN ,_, and_CC achieve_VB efficient_JJ construction_NN of_IN XML_NN elements_NNS using_VBG their_PRP$ algebra_NN ._.
+-LRB-_-LRB- 9_CD ,_, 22_CD -RRB-_-RRB- focus_NN on_IN designing_VBG a_DT graphical_JJ query_NN language_NN sup_NN
+ocuses_NNS on_IN three_CD directions_NNS ._.
+The_DT first_JJ direction_NN is_VBZ on_IN how_WRB to_TO support_VB grouping_VBG by_IN either_CC providing_VBG logical_JJ grouping_VBG operators_NNS -LRB-_-LRB- 13_CD ,_, 9_CD ,_, 22_CD -RRB-_-RRB- ,_, or_CC detecting_VBG grouping_NN in_IN nested_JJ queries_NNS and_CC rewriting_VBG queries_NNS =_JJ -_: =[_NN 10_CD ,_, 12_CD ,_, 20_CD ,_, 23_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Particularly_RB ,_, in_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- they_PRP provide_VBP algebraic_JJ operators_NNS for_IN grouping_NN ,_, and_CC achieve_VB efficient_JJ construction_NN of_IN XML_NN elements_NNS using_VBG their_PRP$ algebra_NN ._.
+-LRB-_-LRB- 9_CD ,_, 22_CD -RRB-_-RRB- focus_NN on_IN designing_VBG a_DT graphical_JJ query_NN language_NN sup_NN
+on_IN pearing_JJ elements_NNS ._.
+For_IN such_JJ documents_NNS and_CC queries_NNS ,_, the_DT file_NN scan_VB to_TO select_VB relevant_JJ nodes_NNS in_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- may_MD fail_VB to_TO work_VB ,_, and_CC this_DT motivates_VBZ many_JJ pattern_NN matching_NN techniques_NNS -LRB-_-LRB- -LRB-_-LRB- 15_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+There_EX are_VBP also_RB works_NNS -LRB-_-LRB- =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =--RRB-_NN to_TO eliminate_VB duplicates_NNS during_IN grouping_VBG computation_NN so_IN that_IN better_JJR performance_NN can_MD be_VB retrieved_VBN ._.
+3_LS ._.
+QUERY_NNP EXPRESSION_NNP In_IN this_DT section_NN ,_, we_PRP describe_VBP the_DT general_JJ form_NN of_IN XML_NN queries_NNS with_IN grouping_NN ,_, which_WDT
+s_NN of_IN relational_JJ approaches_NNS in_IN query_JJ structural_JJ search_NN ,_, such_JJ as_IN the_DT inefficiency_NN to_TO answer_VB ``_`` \/_: \/_: ''_'' -_: axis_NN queries_NNS over_IN XML_NN documentwith_NN recursively_RB appearing_VBG elements_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, are_VBP a_DT big_JJ concern_NN ._.
+A_DT recent_JJ work_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD an_DT algorithm_NN to_TO compute_VB group-by_JJ queries_NNS natively_RB over_IN XML_NN document_NN ._.
+They_PRP scan_VBP the_DT document_NN for_IN each_DT query_NN and_CC prune_VB out_RP irrelevant_JJ nodes_NNS ._.
+For_IN the_DT relevant_JJ nodes_NNS ,_, they_PRP merge_VBP and_CC count_VBP the_DT an_DT
+expressed_VBN implicitly_RB using_VBG nesting_JJ ._.
+This_DT nested_JJ expression_NN for_IN grouping_NN can_MD be_VB neither_RB well_RB understood_VBN by_IN users_NNS ,_, nor_CC easily_RB detected_VBN by_IN query_NN optimizer_NN ,_, as_IN pointed_VBN out_RP by_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+There_EX are_VBP many_JJ efforts_NNS =_JJ -_: =[_NN 6_CD ,_, 3_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: on_IN extending_VBG the_DT expressive_JJ power_NN for_IN XQuery_NN to_TO support_VB grouping_VBG ,_, until_IN W3C_NN publishes_VBZ the_DT latest_JJS version_NN of_IN XQuery_NN ,_, XQuery_NN 1.1_CD -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, to_TO introduce_VB a_DT new_JJ construct_NN to_TO explicitly_RB express_VB grouping_VBG in_IN FLW_NNP
+iques_NNS ,_, e.g._FW TwigStack_FW -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, attract_VB lots_NNS of_IN research_NN attention_NN ._.
+To_TO solve_VB the_DT problem_NN in_IN structural_JJ search_NN in_IN existing_VBG work_NN for_IN XML_NN query_NN processing_NN with_IN grouping_NN ,_, we_PRP extend_VBP our_PRP$ previous_JJ algorithm_NN VERT_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_JJ -_: ,_, to_TO efficiently_RB compute_VB group-by_JJ operators_NNS in_IN XML_NN queries_NNS with_IN complex_JJ predicates_NNS ._.
+Given_VBN a_DT group-by_JJ query_NN ,_, we_PRP match_VBP the_DT query_NN pattern_NN to_TO the_DT document_NN based_VBN on_IN query_NN predicates_VBZ using_VBG VERT_NNP ._.
+VERT_NN can_MD ha_VB
+mainly_RB focus_VB on_IN how_WRB to_TO efficiently_RB match_VB the_DT query_NN pattern_NN to_TO XML_NN document_NN ,_, which_WDT is_VBZ considered_VBN as_IN a_DT core_NN operation_NN to_TO process_NN queries_NNS in_IN most_JJS standard_JJ XML_NN query_NN languages_NNS -LRB-_-LRB- e.g._FW XPath_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC XQuery_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+As_IN more_JJR and_CC more_JJR business_NN data_NNS are_VBP represented_VBN in_IN XML_NN format_NN ,_, analytical_JJ queries_NNS involving_VBG grouping_NN and_CC aggregate_NN operations_NNS have_VBP become_VBN more_RBR popular_JJ ._.
+To_TO process_VB an_DT analytical_JJ query_NN Copyright_NNP is_VBZ he_PRP
+Scalability_NN for_IN VERT_NN G_NN ,_, VERT_NN G_NN -_: op1_NN and_CC VERT_NN G_NN -_: op2_NN queries_NNS ._.
+In_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- they_PRP conducted_VBD experiments_NNS to_TO show_VB the_DT bad_JJ performance_NN using_VBG shredding_NN method_NN proposed_VBN in_IN -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+We_PRP tried_VBD another_DT shredding_NN method_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: in_IN our_PRP$ experiments_NNS ._.
+We_PRP issued_VBD a_DT query_NN with_IN 1-level_JJ grouping_NN to_TO an_DT XMark_NN document_NN of_IN 11MB_NN ._.
+The_DT relational_JJ database_NN system_NN takes_VBZ around_IN 10_CD minutes_NNS to_TO return_VB the_DT answer_NN ,_, whereas_IN in_IN our_PRP$ approach_NN such_JJ que_NN
+ng_NN in_IN XQuery_NN 1.0_CD can_MD only_RB be_VB expressed_VBN implicitly_RB using_VBG nesting_JJ ._.
+This_DT nested_JJ expression_NN for_IN grouping_NN can_MD be_VB neither_RB well_RB understood_VBN by_IN users_NNS ,_, nor_CC easily_RB detected_VBN by_IN query_NN optimizer_NN ,_, as_IN pointed_VBN out_RP by_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX are_VBP many_JJ efforts_NNS -LRB-_-LRB- 6_CD ,_, 3_CD ,_, 18_CD -RRB-_-RRB- on_IN extending_VBG the_DT expressive_JJ power_NN for_IN XQuery_NN to_TO support_VB grouping_VBG ,_, until_IN W3C_NN publishes_VBZ the_DT latest_JJS version_NN of_IN XQuery_NN ,_, XQuery_NN 1.1_CD -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, to_TO introduce_VB a_DT new_JJ construct_NN to_TO
+ocuses_NNS on_IN three_CD directions_NNS ._.
+The_DT first_JJ direction_NN is_VBZ on_IN how_WRB to_TO support_VB grouping_VBG by_IN either_CC providing_VBG logical_JJ grouping_VBG operators_NNS -LRB-_-LRB- 13_CD ,_, 9_CD ,_, 22_CD -RRB-_-RRB- ,_, or_CC detecting_VBG grouping_NN in_IN nested_JJ queries_NNS and_CC rewriting_VBG queries_NNS =_JJ -_: =[_NN 10_CD ,_, 12_CD ,_, 20_CD ,_, 23_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Particularly_RB ,_, in_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- they_PRP provide_VBP algebraic_JJ operators_NNS for_IN grouping_NN ,_, and_CC achieve_VB efficient_JJ construction_NN of_IN XML_NN elements_NNS using_VBG their_PRP$ algebra_NN ._.
+-LRB-_-LRB- 9_CD ,_, 22_CD -RRB-_-RRB- focus_NN on_IN designing_VBG a_DT graphical_JJ query_NN language_NN sup_NN
+ML_NN queries_NNS ._.
+Also_RB the_DT primeval_JJ drawbacks_NNS of_IN relational_JJ approaches_NNS in_IN query_JJ structural_JJ search_NN ,_, such_JJ as_IN the_DT inefficiency_NN to_TO answer_VB ``_`` \/_: \/_: ''_'' -_: axis_NN queries_NNS over_IN XML_NN documentwith_NN recursively_RB appearing_VBG elements_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, are_VBP a_DT big_JJ concern_NN ._.
+A_DT recent_JJ work_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- proposed_VBD an_DT algorithm_NN to_TO compute_VB group-by_JJ queries_NNS natively_RB over_IN XML_NN document_NN ._.
+They_PRP scan_VBP the_DT document_NN for_IN each_DT query_NN and_CC prune_VB out_RP irrelevant_JJ nodes_NNS ._.
+For_IN the_DT rele_NN
+ies_NNS ._.
+As_IN a_DT result_NN ,_, how_WRB to_TO efficiently_RB process_VB XML_NN queries_NNS with_IN grouping_NN becomes_VBZ a_DT new_JJ research_NN direction_NN ._.
+Since_IN RDBMS_NN is_VBZ the_DT dominant_JJ model_NN for_IN structured_JJ data_NNS ,_, in_IN the_DT early_JJ stage_NN there_EX are_VBP many_JJ works_NNS =_JJ -_: =[_NN 29_CD ,_, 28_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: on_IN storing_VBG and_CC querying_VBG XML_NN data_NNS using_VBG RDBMS_NN ._.
+In_IN these_DT relational_JJ approaches_NNS ,_, they_PRP normally_RB shred_NN XML_NN documents_NNS into_IN tables_NNS and_CC convert_VB XML_NN queries_NNS into_IN SQL_NNP to_TO query_VB the_DT database_NN ._.
+This_DT sort_NN of_IN approa_NN
+ocuses_NNS on_IN three_CD directions_NNS ._.
+The_DT first_JJ direction_NN is_VBZ on_IN how_WRB to_TO support_VB grouping_VBG by_IN either_CC providing_VBG logical_JJ grouping_VBG operators_NNS -LRB-_-LRB- 13_CD ,_, 9_CD ,_, 22_CD -RRB-_-RRB- ,_, or_CC detecting_VBG grouping_NN in_IN nested_JJ queries_NNS and_CC rewriting_VBG queries_NNS =_JJ -_: =[_NN 10_CD ,_, 12_CD ,_, 20_CD ,_, 23_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Particularly_RB ,_, in_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- they_PRP provide_VBP algebraic_JJ operators_NNS for_IN grouping_NN ,_, and_CC achieve_VB efficient_JJ construction_NN of_IN XML_NN elements_NNS using_VBG their_PRP$ algebra_NN ._.
+-LRB-_-LRB- 9_CD ,_, 22_CD -RRB-_-RRB- focus_NN on_IN designing_VBG a_DT graphical_JJ query_NN language_NN sup_NN
+r_NN most_JJS cases_NNS ._.
+The_DT research_NN in_IN XML_NN grouping_NN in_IN native_JJ XML_NN databases_NNS mainly_RB focuses_VBZ on_IN three_CD directions_NNS ._.
+The_DT first_JJ direction_NN is_VBZ on_IN how_WRB to_TO support_VB grouping_VBG by_IN either_CC providing_VBG logical_JJ grouping_VBG operators_NNS =_JJ -_: =[_NN 13_CD ,_, 9_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC detecting_VBG grouping_NN in_IN nested_JJ queries_NNS and_CC rewriting_VBG queries_NNS -LRB-_-LRB- 10_CD ,_, 12_CD ,_, 20_CD ,_, 23_CD ,_, 24_CD -RRB-_-RRB- ._.
+Particularly_RB ,_, in_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- they_PRP provide_VBP algebraic_JJ operators_NNS for_IN grouping_NN ,_, and_CC achieve_VB efficient_JJ construction_NN of_IN XML_NN ele_NN
+expressed_VBN implicitly_RB using_VBG nesting_JJ ._.
+This_DT nested_JJ expression_NN for_IN grouping_NN can_MD be_VB neither_RB well_RB understood_VBN by_IN users_NNS ,_, nor_CC easily_RB detected_VBN by_IN query_NN optimizer_NN ,_, as_IN pointed_VBN out_RP by_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+There_EX are_VBP many_JJ efforts_NNS =_JJ -_: =[_NN 6_CD ,_, 3_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: on_IN extending_VBG the_DT expressive_JJ power_NN for_IN XQuery_NN to_TO support_VB grouping_VBG ,_, until_IN W3C_NN publishes_VBZ the_DT latest_JJS version_NN of_IN XQuery_NN ,_, XQuery_NN 1.1_CD -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, to_TO introduce_VB a_DT new_JJ construct_NN to_TO explicitly_RB express_VB grouping_VBG in_IN FLW_NNP
+uery_JJ optimizer_NN ,_, as_IN pointed_VBN out_RP by_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+There_EX are_VBP many_JJ efforts_NNS -LRB-_-LRB- 6_CD ,_, 3_CD ,_, 18_CD -RRB-_-RRB- on_IN extending_VBG the_DT expressive_JJ power_NN for_IN XQuery_NN to_TO support_VB grouping_VBG ,_, until_IN W3C_NN publishes_VBZ the_DT latest_JJS version_NN of_IN XQuery_NN ,_, XQuery_NN 1.1_CD =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, to_TO introduce_VB a_DT new_JJ construct_NN to_TO explicitly_RB express_VB grouping_VBG in_IN FLWOR_NN expression_NN ._.
+For_IN example_NN ,_, consider_VB the_DT bookstore_NN document_NN shown_VBN in_IN Fig._NNP 1_CD ,_, and_CC a_DT query_NN to_TO find_VB the_DT average_JJ book_NN price_NN for_IN each_DT pub_NN

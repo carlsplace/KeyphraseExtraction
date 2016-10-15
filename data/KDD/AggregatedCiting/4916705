@@ -1,0 +1,131 @@
+BoostCluster_NNP :_: boosting_VBG clustering_NN by_IN pairwise_JJ constraints_NNS
+Data_NN clustering_NN is_VBZ an_DT important_JJ task_NN in_IN many_JJ disciplines_NNS ._.
+A_DT large_JJ number_NN of_IN studies_NNS have_VBP attempted_VBN to_TO improve_VB clustering_NN by_IN using_VBG the_DT side_NN information_NN that_WDT is_VBZ often_RB encoded_VBN as_IN pairwise_JJ constraints_NNS ._.
+However_RB ,_, these_DT studies_NNS focus_VBP on_IN designing_VBG special_JJ clustering_NN algorithms_NNS that_WDT can_MD effectively_RB exploit_VB the_DT pairwise_JJ constraints_NNS ._.
+We_PRP present_VBP a_DT boosting_VBG framework_NN for_IN data_NNS clustering_NN ,_, termed_VBN as_IN BoostCluster_NNP ,_, that_WDT is_VBZ able_JJ to_TO iteratively_RB improve_VB the_DT accuracy_NN of_IN any_DT given_VBN clustering_NN algorithm_NN by_IN exploiting_VBG the_DT pairwise_JJ constraints_NNS ._.
+The_DT key_JJ challenge_NN in_IN designing_VBG a_DT boosting_VBG framework_NN for_IN data_NN clustering_NN is_VBZ how_WRB to_TO influence_VB an_DT arbitrary_JJ clustering_NN algorithm_NN with_IN the_DT side_NN information_NN since_IN clustering_NN algorithms_NNS by_IN definition_NN are_VBP unsupervised_JJ ._.
+The_DT proposed_VBN framework_NN addresses_NNS this_DT problem_NN by_IN dynamically_RB generating_VBG new_JJ data_NNS representations_NNS at_IN each_DT iteration_NN that_WDT are_VBP ,_, on_IN the_DT one_CD hand_NN ,_, adapted_VBN to_TO the_DT clustering_NN results_VBZ at_IN previous_JJ iterations_NNS by_IN the_DT given_VBN algorithm_NN ,_, and_CC on_IN the_DT other_JJ hand_NN consistent_JJ with_IN the_DT given_VBN side_NN information_NN ._.
+Our_PRP$ empirical_JJ study_NN shows_VBZ that_IN the_DT proposed_JJ boosting_VBG framework_NN is_VBZ effective_JJ in_IN improving_VBG the_DT performance_NN of_IN a_DT number_NN of_IN popular_JJ clustering_NN algorithms_NNS -LRB-_-LRB- K-means_NNS ,_, partitional_JJ SingleLink_NNP ,_, spectral_JJ clustering_NN -RRB-_-RRB- ,_, and_CC its_PRP$ performance_NN is_VBZ comparable_JJ to_TO the_DT state-of-the-art_JJ algorithms_NNS for_IN data_NN clustering_NN with_IN side_NN information_NN ._.
+most_JJS of_IN the_DT constraints_NNS are_VBP satisfied_JJ ._.
+Although_IN the_DT idea_NN of_IN incorporating_VBG constraints_NNS into_IN clustering_NN through_IN the_DT generation_NN of_IN new_JJ data_NNS representations_NNS is_VBZ not_RB completely_RB new_JJ ,_, the_DT existing_VBG approaches_NNS =_JJ -_: =[_NN 12_CD ,_, 17_CD ,_, 19_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: do_VBP not_RB take_VB into_IN account_NN the_DT performance_NN of_IN the_DT clustering_NN algorithms_NNS while_IN generating_VBG the_DT data_NNS representations_NNS ,_, and_CC therefore_RB only_RB achieve_VB sub-optimal_JJ performance_NN ._.
+Figure_NN 1_CD illustrates_VBZ the_DT idea_NN of_IN i_FW
+algorithms_NNS through_IN the_DT Bayesian_JJ priors_NNS ._.
+In_IN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, the_DT authors_NNS modified_VBD the_DT mixture_NN model_NN for_IN data_NN clustering_NN by_IN redefining_VBG the_DT data_NNS generation_NN process_NN through_IN the_DT introduction_NN of_IN hidden_JJ variables_NNS ._.
+In_IN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT authors_NNS extend_VBP the_DT framework_NN of_IN semi-supervised_JJ clustering_NN by_IN selecting_VBG the_DT most_RBS informative_JJ pairwise_JJ constraints_NNS to_TO solicit_VB the_DT labeling_NN information_NN ._.
+In_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, the_DT authors_NNS study_VBP semi-supervised_JJ c_NN
+most_JJS of_IN the_DT constraints_NNS are_VBP satisfied_JJ ._.
+Although_IN the_DT idea_NN of_IN incorporating_VBG constraints_NNS into_IN clustering_NN through_IN the_DT generation_NN of_IN new_JJ data_NNS representations_NNS is_VBZ not_RB completely_RB new_JJ ,_, the_DT existing_VBG approaches_NNS =_JJ -_: =[_NN 12_CD ,_, 17_CD ,_, 19_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: do_VBP not_RB take_VB into_IN account_NN the_DT performance_NN of_IN the_DT clustering_NN algorithms_NNS while_IN generating_VBG the_DT data_NNS representations_NNS ,_, and_CC therefore_RB only_RB achieve_VB sub-optimal_JJ performance_NN ._.
+Figure_NN 1_CD illustrates_VBZ the_DT idea_NN of_IN i_FW
+the_DT proposed_JJ boosting_VBG framework_NN in_IN exploiting_VBG the_DT pairwise_JJ constraints_NNS for_IN data_NNS clustering_NN ,_, three_CD baseline_NN approaches_NNS are_VBP used_VBN :_: 1_CD ._.
+Metric_NNP Pairwise_NNP Constraints_NNPS K-means_NNS -LRB-_-LRB- MPCKmeans_NNS for_IN short_JJ -RRB-_-RRB- algorithm_NN =_JJ -_: =[_NN 2,4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT is_VBZ a_DT probabilistic_JJ framework_NN based_VBN on_IN Hidden_NNP Markov_NNP Random_NNP Fields_NNP ._.
+2_CD ._.
+Semi-supervised_JJ Kernel_NNP K-means_NNS -LRB-_-LRB- SSKK_NN for_IN short_JJ -RRB-_-RRB- algorithm_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, which_WDT exploits_VBZ the_DT pairwise_JJ constraints_NNS by_IN a_DT kernel_NN approa_NN
+mily_RB of_IN spectral_JJ methods_NNS for_IN data_NN clustering_NN ._.
+In_IN particular_JJ ,_, we_PRP follow_VBP the_DT algorithm_NN in_IN -LRB-_-LRB- 24_CD -RRB-_-RRB- for_IN the_DT implementation_NN of_IN spectral_JJ clustering_NN ._.
+Six_CD datasets_NNS drawn_VBN from_IN the_DT UCI_NNP machine_NN learning_NN repository_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP used_VBN in_IN our_PRP$ study_NN ._.
+Table_NNP 1_CD summarizes_VBZ the_DT information_NN about_IN these_DT datasets_NNS 3_CD ._.
+As_IN indicated_VBN in_IN Table_NNP 1_CD ,_, these_DT datasets_NNS vary_VBP significantly_RB in_IN their_PRP$ sizes_NNS ,_, number_NN of_IN clusters_NNS ,_, and_CC number_NN of_IN attribu_NN
+the_DT proposed_VBN algorithm_NN does_VBZ not_RB make_VB any_DT assumption_NN about_IN the_DT underlying_VBG clustering_NN algorithm_NN ,_, and_CC is_VBZ therefore_RB applicable_JJ to_TO any_DT clustering_NN algorithm_NN ._.
+Although_IN a_DT number_NN of_IN boosting_VBG algorithms_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =--RRB-_NN have_VBP been_VBN successfully_RB applied_VBN to_TO supervised_JJ learning_NN ,_, extending_VBG boosting_VBG algorithms_NNS to_TO data_NNS clustering_NN is_VBZ significantly_RB more_RBR challenging_JJ ._.
+The_DT key_JJ difficulty_NN is_VBZ how_WRB to_TO influence_VB an_DT arbitrary_JJ cluster_NN
+ction_NN of_IN kernels_NNS ._.
+Yang_NNP et_FW al._FW -LRB-_-LRB- 30_CD -RRB-_-RRB- proposed_VBD a_DT local_JJ distance_NN metric_JJ algorithm_NN that_WDT is_VBZ designed_VBN to_TO address_VB the_DT problem_NN of_IN distance_NN metric_JJ learning_NN for_IN multi-modal_JJ data_NNS distributions_NNS ._.
+Golderberg_NNP et_FW al._FW =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: presented_VBD the_DT neighborhood_NN component_NN analysis_NN algorithm_NN that_WDT learns_VBZ a_DT local_JJ distance_NN metric_NN by_IN extending_VBG the_DT nearest_JJS neighbor_NN classifier_NN ._.
+Weinberger_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- presented_VBD a_DT large_JJ margin_NN nearest-neighbor_JJ cl_NN
+udies_NNS have_VBP been_VBN devoted_VBN to_TO semi-supervised_JJ clustering_NN ,_, most_JJS of_IN them_PRP focus_VB on_IN designing_VBG special_JJ clustering_NN algorithms_NNS that_WDT can_MD effectively_RB exploit_VB the_DT pairwise_JJ constraints_NNS ._.
+For_IN instance_NN ,_, algorithms_NNS in_IN =_JJ -_: =[_NN 4_CD ,_, 5_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP designed_VBN to_TO improve_VB the_DT probabilistic_JJ models_NNS for_IN data_NN clustering_NN by_IN incorporating_VBG the_DT pairwise_JJ constraints_NNS into_IN the_DT priors_NNS of_IN the_DT probabilistic_JJ models_NNS ;_: the_DT constrained_VBN K-means_NNS algorithm_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- expl_NN
+ed_VBN distance_NN metric_NN ,_, and_CC a_DT clustering_NN algorithm_NN is_VBZ applied_VBN to_TO the_DT computed_JJ similarity_NN matrix_NN ._.
+The_DT key_NN to_TO this_DT approach_NN is_VBZ to_TO effectively_RB learn_VB a_DT distance_NN metric_NN from_IN the_DT side_NN information_NN ._.
+Zhang_NNP et_FW al._FW =_SYM -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBN to_TO learn_VB a_DT distance_NN metric_NN by_IN a_DT linear_JJ regression_NN model_NN ._.
+Xing_NNP et_FW al._FW -LRB-_-LRB- 29_CD -RRB-_-RRB- formulated_VBD the_DT distance_NN metric_JJ learning_NN problem_NN as_IN a_DT constrained_VBN convex_NN programming_NN problem_NN ._.
+This_DT algorithm_NN is_VBZ exten_VBN
+introduction_NN of_IN hidden_JJ variables_NNS ._.
+In_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, the_DT authors_NNS extend_VBP the_DT framework_NN of_IN semi-supervised_JJ clustering_NN by_IN selecting_VBG the_DT most_RBS informative_JJ pairwise_JJ constraints_NNS to_TO solicit_VB the_DT labeling_NN information_NN ._.
+In_IN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT authors_NNS study_VBP semi-supervised_JJ clustering_NN for_IN the_DT hierarchical_JJ clustering_NN algorithm_NN ._.
+In_IN -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, a_DT mean_JJ field_NN approximation_NN method_NN was_VBD proposed_VBN to_TO learn_VB from_IN constraint_NN data_NNS ._.
+In_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, a_DT spectral_JJ lea_NN
+most_JJS of_IN the_DT constraints_NNS are_VBP satisfied_JJ ._.
+Although_IN the_DT idea_NN of_IN incorporating_VBG constraints_NNS into_IN clustering_NN through_IN the_DT generation_NN of_IN new_JJ data_NNS representations_NNS is_VBZ not_RB completely_RB new_JJ ,_, the_DT existing_VBG approaches_NNS =_JJ -_: =[_NN 12_CD ,_, 17_CD ,_, 19_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: do_VBP not_RB take_VB into_IN account_NN the_DT performance_NN of_IN the_DT clustering_NN algorithms_NNS while_IN generating_VBG the_DT data_NNS representations_NNS ,_, and_CC therefore_RB only_RB achieve_VB sub-optimal_JJ performance_NN ._.
+Figure_NN 1_CD illustrates_VBZ the_DT idea_NN of_IN i_FW
+-LRB-_-LRB- 29_CD -RRB-_-RRB- formulated_VBD the_DT distance_NN metric_JJ learning_NN problem_NN as_IN a_DT constrained_VBN convex_NN programming_NN problem_NN ._.
+This_DT algorithm_NN is_VBZ extended_VBN to_TO the_DT nonlinear_JJ case_NN in_IN -LRB-_-LRB- 20_CD -RRB-_-RRB- by_IN the_DT introduction_NN of_IN kernels_NNS ._.
+Yang_NNP et_FW al._FW =_SYM -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT local_JJ distance_NN metric_JJ algorithm_NN that_WDT is_VBZ designed_VBN to_TO address_VB the_DT problem_NN of_IN distance_NN metric_JJ learning_NN for_IN multi-modal_JJ data_NNS distributions_NNS ._.
+Golderberg_NNP et_FW al._FW -LRB-_-LRB- 11_CD -RRB-_-RRB- presented_VBD the_DT neighborhood_NN co_NN
+8_CD -RRB-_-RRB- presented_VBD a_DT large_JJ margin_NN nearest-neighbor_JJ classifier_NN for_IN distance_NN metric_JJ learning_NN that_WDT extended_VBD the_DT neighborhood_NN component_NN analysis_NN to_TO a_DT maximum_JJ margin_NN framework_NN ._.
+Discriminative_JJ component_NN analysis_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: learns_VBZ a_DT distance_NN metric_NN by_IN extending_VBG the_DT relevance_NN component_NN analysis_NN to_TO effectively_RB explore_VB both_CC the_DT must-link_JJ and_CC the_DT cannot-link_JJ constraints_NNS simultaneously_RB ._.
+In_IN -LRB-_-LRB- 13,14_CD -RRB-_-RRB- ,_, the_DT authors_NNS extended_VBD the_DT b_NN
+ts_NNS ._.
+In_IN -LRB-_-LRB- 4,5,23_CD -RRB-_-RRB- ,_, the_DT authors_NNS present_VBP probabilistic_JJ models_NNS for_IN semi-supervised_JJ clustering_NN where_WRB the_DT pairwise_JJ constraints_NNS are_VBP incorporated_VBN into_IN the_DT clustering_NN algorithms_NNS through_IN the_DT Bayesian_JJ priors_NNS ._.
+In_IN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT authors_NNS modified_VBD the_DT mixture_NN model_NN for_IN data_NN clustering_NN by_IN redefining_VBG the_DT data_NNS generation_NN process_NN through_IN the_DT introduction_NN of_IN hidden_JJ variables_NNS ._.
+In_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, the_DT authors_NNS extend_VBP the_DT framework_NN of_IN semi-su_NN
+criminative_JJ component_NN analysis_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- learns_VBZ a_DT distance_NN metric_NN by_IN extending_VBG the_DT relevance_NN component_NN analysis_NN to_TO effectively_RB explore_VB both_CC the_DT must-link_JJ and_CC the_DT cannot-link_JJ constraints_NNS simultaneously_RB ._.
+In_IN =_JJ -_: =[_NN 13,14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT authors_NNS extended_VBD the_DT boosting_VBG algorithms_NNS to_TO learn_VB a_DT distance_NN function_NN from_IN given_VBN pairwise_JJ constraints_NNS ._.
+Schultz_NNP and_CC Joachims_NNP -LRB-_-LRB- 25_CD -RRB-_-RRB- extended_VBD the_DT framework_NN of_IN support_NN vector_NN machine_NN to_TO learn_VB distanc_NN
+ignment_NN ._.
+Early_JJ work_NN in_IN this_DT category_NN took_VBD the_DT side_NN information_NN as_IN hard_JJ constraints_NNS ,_, and_CC only_RB considered_VBN the_DT cluster_NN assignments_NNS that_WDT were_VBD absolutely_RB consistent_JJ with_IN the_DT given_VBN pairwise_JJ constraints_NNS ._.
+In_IN =_JJ -_: =[_NN 6_CD ,_, 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT authors_NNS proposed_VBD the_DT constrained_VBN K-means_NNS algorithm_NN by_IN adjusting_VBG the_DT cluster_NN memberships_NNS to_TO be_VB consistent_JJ with_IN the_DT pairwise_JJ constraints_NNS ._.
+In_IN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, a_DT generalized_JJ Expectation_NN Maximization_NN -LRB-_-LRB- EM_NN -RRB-_-RRB- algor_NN
+lity_NN for_IN the_DT cluster_NN memberships_NNS ._.
+One_CD problem_NN with_IN treating_VBG the_DT side_NN information_NN as_IN hard_JJ constraints_NNS is_VBZ that_IN we_PRP may_MD not_RB be_VB able_JJ to_TO find_VB feasible_JJ solutions_NNS that_WDT are_VBP consistent_JJ with_IN all_PDT the_DT constraints_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO overcome_VB this_DT problem_NN ,_, a_DT number_NN of_IN studies_NNS view_VBP the_DT side_NN information_NN as_IN soft_JJ constraints_NNS ._.
+The_DT key_JJ idea_NN is_VBZ to_TO penalize_VB ,_, not_RB to_TO exclude_VB ,_, the_DT cluster_NN assignments_NNS that_WDT are_VBP inconsistent_JJ with_IN the_DT given_VBN
+e_LS implementation_NN from_IN the_DT CLUTO_NN software_NN 2_CD 3_CD ._.
+k-way_NN spectral_JJ clustering_NN -LRB-_-LRB- ``_`` SPEC_NNP ''_'' for_IN short_JJ -RRB-_-RRB- ._.
+It_PRP represents_VBZ the_DT family_NN of_IN spectral_JJ methods_NNS for_IN data_NN clustering_NN ._.
+In_IN particular_JJ ,_, we_PRP follow_VBP the_DT algorithm_NN in_IN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: for_IN the_DT implementation_NN of_IN spectral_JJ clustering_NN ._.
+Six_CD datasets_NNS drawn_VBN from_IN the_DT UCI_NNP machine_NN learning_NN repository_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- are_VBP used_VBN in_IN our_PRP$ study_NN ._.
+Table_NNP 1_CD summarizes_VBZ the_DT information_NN about_IN these_DT datasets_NNS 3_CD ._.
+As_IN in_IN
+ustering_VBG by_IN selecting_VBG the_DT most_RBS informative_JJ pairwise_JJ constraints_NNS to_TO solicit_VB the_DT labeling_NN information_NN ._.
+In_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, the_DT authors_NNS study_VBP semi-supervised_JJ clustering_NN for_IN the_DT hierarchical_JJ clustering_NN algorithm_NN ._.
+In_IN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT mean_JJ field_NN approximation_NN method_NN was_VBD proposed_VBN to_TO learn_VB from_IN constraint_NN data_NNS ._.
+In_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, a_DT spectral_JJ learning_NN framework_NN was_VBD proposed_VBN to_TO incorporate_VB the_DT side_NN information_NN into_IN data_NNS clustering_NN ._.
+Another_DT ap_NN
+sistent_NN with_IN the_DT given_VBN pairwise_JJ constraints_NNS ._.
+In_IN -LRB-_-LRB- 6_CD ,_, 27_CD -RRB-_-RRB- ,_, the_DT authors_NNS proposed_VBD the_DT constrained_VBN K-means_NNS algorithm_NN by_IN adjusting_VBG the_DT cluster_NN memberships_NNS to_TO be_VB consistent_JJ with_IN the_DT pairwise_JJ constraints_NNS ._.
+In_IN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT generalized_JJ Expectation_NN Maximization_NN -LRB-_-LRB- EM_NN -RRB-_-RRB- algorithm_NN is_VBZ proposed_VBN to_TO incorporate_VB the_DT pairwise_JJ constraints_NNS into_IN the_DT EM_NNP algorithm_NN ._.
+In_IN particular_JJ ,_, the_DT cluster_NN assignments_NNS that_WDT are_VBP inconsistent_JJ with_IN the_DT
+criminative_JJ component_NN analysis_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- learns_VBZ a_DT distance_NN metric_NN by_IN extending_VBG the_DT relevance_NN component_NN analysis_NN to_TO effectively_RB explore_VB both_CC the_DT must-link_JJ and_CC the_DT cannot-link_JJ constraints_NNS simultaneously_RB ._.
+In_IN =_JJ -_: =[_NN 13,14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT authors_NNS extended_VBD the_DT boosting_VBG algorithms_NNS to_TO learn_VB a_DT distance_NN function_NN from_IN given_VBN pairwise_JJ constraints_NNS ._.
+Schultz_NNP and_CC Joachims_NNP -LRB-_-LRB- 25_CD -RRB-_-RRB- extended_VBD the_DT framework_NN of_IN support_NN vector_NN machine_NN to_TO learn_VB distanc_NN
+udies_NNS have_VBP been_VBN devoted_VBN to_TO semi-supervised_JJ clustering_NN ,_, most_JJS of_IN them_PRP focus_VB on_IN designing_VBG special_JJ clustering_NN algorithms_NNS that_WDT can_MD effectively_RB exploit_VB the_DT pairwise_JJ constraints_NNS ._.
+For_IN instance_NN ,_, algorithms_NNS in_IN =_JJ -_: =[_NN 4_CD ,_, 5_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP designed_VBN to_TO improve_VB the_DT probabilistic_JJ models_NNS for_IN data_NN clustering_NN by_IN incorporating_VBG the_DT pairwise_JJ constraints_NNS into_IN the_DT priors_NNS of_IN the_DT probabilistic_JJ models_NNS ;_: the_DT constrained_VBN K-means_NNS algorithm_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- expl_NN
+d_NN according_VBG to_TO the_DT pairwise_JJ constraints_NNS ._.
+In_IN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, the_DT authors_NNS proposed_VBN to_TO modify_VB the_DT similarity_NN matrix_NN by_IN linearly_RB combining_VBG the_DT original_JJ similarity_NN matrix_NN with_IN the_DT pairwise_JJ constraints_NNS ._.
+Klein_NNP et_FW al._FW =_SYM -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBN to_TO modify_VB the_DT similarity_NN matrix_NN by_IN propagating_VBG the_DT pairwise_JJ constraints_NNS through_IN the_DT nearest_JJS neighbors_NNS ._.
+3_LS ._.
+BOOSTING_NNP CLUSTERING_NNP Let_NNP X_NN =_JJ -LRB-_-LRB- x1_NN ,_, ..._: ,_, xn_NN -RRB-_-RRB- denote_VBP the_DT collection_NN of_IN examples_NNS to_TO be_VB
+e_LS must-link_JJ and_CC the_DT cannot-link_JJ constraints_NNS simultaneously_RB ._.
+In_IN -LRB-_-LRB- 13,14_CD -RRB-_-RRB- ,_, the_DT authors_NNS extended_VBD the_DT boosting_VBG algorithms_NNS to_TO learn_VB a_DT distance_NN function_NN from_IN given_VBN pairwise_JJ constraints_NNS ._.
+Schultz_NNP and_CC Joachims_NNP =_SYM -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: extended_VBD the_DT framework_NN of_IN support_NN vector_NN machine_NN to_TO learn_VB distance_NN metrics_NNS from_IN the_DT pairwise_JJ comparisons_NNS ._.
+Finally_RB ,_, a_DT few_JJ studies_NNS cluster_VBP data_NNS points_NNS by_IN a_DT similarity_NN matrix_NN that_WDT is_VBZ directly_RB modified_VBN a_DT
+4_CD ,_, 5_CD ,_, 23_CD -RRB-_-RRB- are_VBP designed_VBN to_TO improve_VB the_DT probabilistic_JJ models_NNS for_IN data_NN clustering_NN by_IN incorporating_VBG the_DT pairwise_JJ constraints_NNS into_IN the_DT priors_NNS of_IN the_DT probabilistic_JJ models_NNS ;_: the_DT constrained_VBN K-means_NNS algorithm_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: exploits_VBZ the_DT pairwise_JJ constraints_NNS by_IN adjusting_VBG the_DT cluster_NN memberships_NNS to_TO be_VB consistent_JJ with_IN the_DT given_VBN constraints_NNS ._.
+However_RB ,_, it_PRP is_VBZ often_RB the_DT case_NN that_IN we_PRP have_VBP a_DT specific_JJ clustering_NN algorithm_NN that_WDT is_VBZ
+-_: modal_JJ data_NNS distributions_NNS ._.
+Golderberg_NNP et_FW al._FW -LRB-_-LRB- 11_CD -RRB-_-RRB- presented_VBD the_DT neighborhood_NN component_NN analysis_NN algorithm_NN that_WDT learns_VBZ a_DT local_JJ distance_NN metric_NN by_IN extending_VBG the_DT nearest_JJS neighbor_NN classifier_NN ._.
+Weinberger_NN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: presented_VBD a_DT large_JJ margin_NN nearest-neighbor_JJ classifier_NN for_IN distance_NN metric_JJ learning_NN that_WDT extended_VBD the_DT neighborhood_NN component_NN analysis_NN to_TO a_DT maximum_JJ margin_NN framework_NN ._.
+Discriminative_JJ component_NN analysis_NN -LRB-_-LRB- 1_CD
+d_NN boosting_VBG algorithm_NN is_VBZ capable_JJ of_IN improving_VBG any_DT clustering_NN algorithm_NN by_IN exploiting_VBG the_DT pairwise_JJ constraints_NNS ,_, three_CD popular_JJ clustering_NN algorithms_NNS are_VBP used_VBN in_IN our_PRP$ study_NN ._.
+They_PRP are_VBP :_: 1_CD ._.
+K-means_JJ algorithm_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP represents_VBZ the_DT family_NN of_IN clustering_NN algorithms_NNS that_WDT try_VBP to_TO find_VB compact_JJ and_CC wellseparated_JJ clusters_NNS ._.
+We_PRP adopted_VBD the_DT implementation_NN from_IN the_DT Weka_NNP software_NN 1_CD ._.
+2_CD ._.
+Partitional_NNP SingleLink_NNP algorithm_NN -LRB-_-LRB- ``_``
+metric_NN by_IN a_DT linear_JJ regression_NN model_NN ._.
+Xing_NNP et_FW al._FW -LRB-_-LRB- 29_CD -RRB-_-RRB- formulated_VBD the_DT distance_NN metric_JJ learning_NN problem_NN as_IN a_DT constrained_VBN convex_NN programming_NN problem_NN ._.
+This_DT algorithm_NN is_VBZ extended_VBN to_TO the_DT nonlinear_JJ case_NN in_IN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: by_IN the_DT introduction_NN of_IN kernels_NNS ._.
+Yang_NNP et_FW al._FW -LRB-_-LRB- 30_CD -RRB-_-RRB- proposed_VBD a_DT local_JJ distance_NN metric_JJ algorithm_NN that_WDT is_VBZ designed_VBN to_TO address_VB the_DT problem_NN of_IN distance_NN metric_JJ learning_NN for_IN multi-modal_JJ data_NNS distributions_NNS ._.
+Gol_NN
+e_LS family_NN of_IN clustering_NN algorithms_NNS that_WDT try_VBP to_TO find_VB compact_JJ and_CC wellseparated_JJ clusters_NNS ._.
+We_PRP adopted_VBD the_DT implementation_NN from_IN the_DT Weka_NNP software_NN 1_CD ._.
+2_CD ._.
+Partitional_NNP SingleLink_NNP algorithm_NN -LRB-_-LRB- ``_`` SLINK_NNP ''_'' for_IN short_JJ -RRB-_-RRB- =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP represents_VBZ the_DT family_NN of_IN the_DT hierarchical_JJ clustering_NN algorithms_NNS ._.
+We_PRP adopted_VBD the_DT implementation_NN from_IN the_DT CLUTO_NN software_NN 2_CD 3_CD ._.
+k-way_NN spectral_JJ clustering_NN -LRB-_-LRB- ``_`` SPEC_NNP ''_'' for_IN short_JJ -RRB-_-RRB- ._.
+It_PRP represents_VBZ the_DT family_NN
+data_NNS points_NNS from_IN different_JJ clusters_NNS when_WRB the_DT number_NN of_IN clusters_NNS is_VBZ large_JJ ._.
+A_DT similar_JJ issue_NN arises_VBZ in_IN multi-class_JJ learning_NN ,_, and_CC that_DT is_VBZ why_WRB F-measure_NN is_VBZ widely_RB used_VBN for_IN evaluating_VBG multi-class_JJ learning_NN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO verify_VB the_DT efficacy_NN of_IN the_DT proposed_VBN boosting_VBG framework_NN in_IN exploiting_VBG the_DT pairwise_JJ constraints_NNS for_IN data_NNS clustering_NN ,_, three_CD baseline_NN approaches_NNS are_VBP used_VBN :_: 1_CD ._.
+Metric_NNP Pairwise_NNP Constraints_NNPS K-means_NNS -LRB-_-LRB- MPCK_NN

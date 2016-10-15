@@ -1,0 +1,102 @@
+Structured_VBN learning_NN for_IN non-smooth_JJ ranking_NN losses_NNS
+Learning_NNP to_TO rank_VB from_IN relevance_NN judgment_NN is_VBZ an_DT active_JJ research_NN area_NN ._.
+Itemwise_JJ score_NN regression_NN ,_, pairwise_JJ preference_NN satisfaction_NN ,_, and_CC listwise_NN structured_JJ learning_NN are_VBP the_DT major_JJ techniques_NNS in_IN use_NN ._.
+Listwise_JJ structured_JJ learning_NN has_VBZ been_VBN applied_VBN recently_RB to_TO optimize_VB important_JJ non-decomposable_JJ ranking_NN criteria_NNS like_IN AUC_NN -LRB-_-LRB- area_NN under_IN ROC_NN curve_NN -RRB-_-RRB- and_CC MAP_NN -LRB-_-LRB- mean_JJ average_JJ precision_NN -RRB-_-RRB- ._.
+We_PRP propose_VBP new_JJ ,_, almost-linear-time_JJ algorithms_NNS to_TO optimize_VB for_IN two_CD other_JJ criteria_NNS widely_RB used_VBN to_TO evaluate_VB search_NN systems_NNS :_: MRR_NN -LRB-_-LRB- mean_NN reciprocal_JJ rank_NN -RRB-_-RRB- and_CC NDCG_NN -LRB-_-LRB- normalized_VBN discounted_JJ cumulative_JJ gain_NN -RRB-_-RRB- in_IN the_DT max-margin_JJ structured_JJ learning_NN framework_NN ._.
+We_PRP also_RB demonstrate_VBP that_IN ,_, for_IN different_JJ ranking_JJ criteria_NNS ,_, one_PRP may_MD need_VB to_TO use_VB different_JJ feature_NN maps_NNS ._.
+Search_VB applications_NNS should_MD not_RB be_VB optimized_VBN in_IN favor_NN of_IN a_DT single_JJ criterion_NN ,_, because_IN they_PRP need_VBP to_TO cater_VB to_TO a_DT variety_NN of_IN queries_NNS ._.
+E.g._NN ,_, MRR_NN is_VBZ best_JJS for_IN navigational_JJ queries_NNS ,_, while_IN NDCG_NN is_VBZ best_JJS for_IN informational_JJ queries_NNS ._.
+A_DT key_JJ contribution_NN of_IN this_DT paper_NN is_VBZ to_TO fold_VB multiple_JJ ranking_JJ loss_NN functions_NNS into_IN a_DT multi-criteria_JJ max-margin_NN optimization_NN ._.
+The_DT result_NN is_VBZ a_DT single_JJ ,_, robust_JJ ranking_NN model_NN that_WDT is_VBZ close_JJ to_TO the_DT best_JJS accuracy_NN of_IN learners_NNS trained_VBN on_IN individual_JJ criteria_NNS ._.
+In_IN fact_NN ,_, experiments_NNS over_IN the_DT popular_JJ LETOR_NN and_CC TREC_NN data_NNS sets_NNS show_VBP that_IN ,_, contrary_JJ to_TO conventional_JJ wisdom_NN ,_, a_DT test_NN criterion_NN is_VBZ often_RB not_RB best_RBS served_VBN by_IN training_NN with_IN the_DT same_JJ individual_JJ criterion_NN ._.
+to_TO be_VB generally_RB better_JJR than_IN LambdaRank_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC FRank_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ;_: SoftRank_NNP is_VBZ comparable_JJ to_TO LambdaRank_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC both_DT are_VBP generally_RB better_JJR than_IN RankNet_NNP -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+McRank_NNP uses_VBZ a_DT boosted_VBN ensemble_NN of_IN regression_NN trees_NNS =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: to_TO learn_VB a_DT non-linear_JJ itemwise_JJ model_NN for_IN Pr_NN -LRB-_-LRB- z_SYM |_FW xqi_FW -RRB-_-RRB- ,_, i.e._FW ,_, the_DT probability_NN of_IN falling_VBG into_IN each_DT relevance_NN bucket_NN -LRB-_-LRB- in_IN this_DT paper_NN we_PRP have_VBP mostly_RB considered_VBN z_SYM ∈_CD -LCB-_-LRB- 0_CD ,_, 1_CD -RCB-_-RRB- -RRB-_-RRB- ._.
+The_DT interesting_JJ twist_NN is_VBZ that_IN ,_, in_IN
+,_, y_NN -RRB-_-RRB- P_NN i_FW A_NN -LRB-_-LRB- y_NN -LRB-_-LRB- i_LS -RRB-_-RRB- -RRB-_-RRB- -LRB-_-LRB- w_FW ⊤_FW xi_FW -RRB-_-RRB- −_CD P_NN D_NN -LRB-_-LRB- y_NN -LRB-_-LRB- i_LS -RRB-_-RRB- -RRB-_-RRB- i_FW DCG_FW ∗_FW zi_FW This_DT is_VBZ equivalent_JJ to_TO filling_NN in_IN a_DT permutation_NN matrix_NN -LRB-_-LRB- a_DT square_NN 0\/1_CD matrix_NN with_IN exactly_RB one_CD 1_CD in_IN each_DT row_NN and_CC column_NN -RRB-_-RRB- π_NN to_TO optimize_VB an_DT assignment_NN problem_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: of_IN the_DT form_NN P_NN arg_FW maxπ_FW i_FW ,_, j_NN πij_NN -LRB-_-LRB- siA_NN -LRB-_-LRB- j_NN -RRB-_-RRB- −_FW zidj_FW -RRB-_-RRB- ._.
+The_DT Kuhn-Munkres_NNP assignment_NN algorithm_NN takes_VBZ O_NN -LRB-_-LRB- n_NN 3_CD -RRB-_-RRB- time_NN in_IN the_DT worst_JJS case_NN ,_, which_WDT is_VBZ much_RB larger_JJR than_IN the_DT time_NN taken_VBN by_IN SVMndcg_NN ._.
+The_DT time_NN can_MD be_VB reduced_VBN
+eria_NN ,_, like_IN the_DT area_NN under_IN the_DT ROC_NN curve_NN -LRB-_-LRB- AUC_NN -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC mean_VB average_JJ precision_NN -LRB-_-LRB- MAP_NN -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+However_RB ,_, other_JJ widely-used_JJ criteria_NNS in_IN Information_NNP Retrieval_NNP and_CC Web_NN search_NN ,_, such_JJ as_IN mean_JJ reciprocal_JJ rank_NN -LRB-_-LRB- MRR_NN -RRB-_-RRB- =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: or_CC normalized_VBN discounted_JJ cumulative_JJ gain_NN -LRB-_-LRB- NDCG_NN -RRB-_-RRB- -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, had_VBD no_DT efficient_JJ direct_JJ optimizers_NNS ._.
+The_DT advantage_NN of_IN the_DT structured_JJ learning_NN approach_NN is_VBZ that_IN it_PRP helps_VBZ break_VB down_RP the_DT difficult_JJ non-convex_JJ rankin_NN
+mentation_NN ._.
+Keywords_NNS :_: Max-margin_JJ structured_JJ learning_NN to_TO rank_VB ,_, Nondecomposable_JJ loss_NN functions_NNS ._.
+1_CD ._.
+INTRODUCTION_NNP Learning_NNP to_TO rank_VB is_VBZ an_DT active_JJ research_NN area_NN where_WRB supervised_JJ learning_NN is_VBZ increasingly_RB used_VBN =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD ,_, 6_CD ,_, 7_CD ,_, 8_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT main_JJ challenge_NN in_IN adapting_VBG supervised_JJ learning_NN is_VBZ that_IN for_IN ranking_JJ problems_NNS ,_, the_DT evaluation_NN criterion_NN or_CC ``_`` loss_NN function_NN ''_'' is_VBZ usually_RB defined_VBN over_IN the_DT permutation_NN induced_VBN by_IN the_DT scoring_VBG function_NN o_NN
+ay_FW uma@cse.iitb.ac.in_FW Chiru_NNP Bhattacharyya_NNP IISc_NNP Bangalore_NNP chiru@csa.iisc.ernet.in_NN preference_NN pairs_NNS ;_: however_RB ,_, it_PRP is_VBZ thereby_RB not_RB sensitive_JJ to_TO absolute_JJ ranks_NNS ._.
+Listwise_NN -LRB-_-LRB- 4_CD ,_, 9_CD -RRB-_-RRB- ,_, and_CC use_VB structured_JJ learning_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: algorithms_NNS ,_, which_WDT is_VBZ our_PRP$ focus_NN here_RB ._.
+The_DT large-margin_JJ structured_JJ learning_NN framework_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- fits_VBZ a_DT model_NN to_TO minimize_VB the_DT loss_NN of_IN a_DT whole_JJ permutation_NN ,_, not_RB individual_JJ or_CC pairs_NNS of_IN items_NNS ._.
+This_DT approach_NN has_VBZ
+mentation_NN ._.
+Keywords_NNS :_: Max-margin_JJ structured_JJ learning_NN to_TO rank_VB ,_, Nondecomposable_JJ loss_NN functions_NNS ._.
+1_CD ._.
+INTRODUCTION_NNP Learning_NNP to_TO rank_VB is_VBZ an_DT active_JJ research_NN area_NN where_WRB supervised_JJ learning_NN is_VBZ increasingly_RB used_VBN =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD ,_, 6_CD ,_, 7_CD ,_, 8_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT main_JJ challenge_NN in_IN adapting_VBG supervised_JJ learning_NN is_VBZ that_IN for_IN ranking_JJ problems_NNS ,_, the_DT evaluation_NN criterion_NN or_CC ``_`` loss_NN function_NN ''_'' is_VBZ usually_RB defined_VBN over_IN the_DT permutation_NN induced_VBN by_IN the_DT scoring_VBG function_NN o_NN
+have_VB millions_NNS of_IN documents_NNS ._.
+Also_RB noteworthy_JJ is_VBZ the_DT very_RB small_JJ time_NN taken_VBN in_IN the_DT QP_NN optimizer_NN -LRB-_-LRB- invisible_JJ for_IN DORM_NNP ,_, barely_RB visible_JJ for_IN SVMndcg_NN -RRB-_-RRB- ._.
+We_PRP used_VBD a_DT very_RB recent_JJ and_CC fast_JJ implementation_NN of_IN LaRank_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT shows_VBZ that_IN solving_VBG the_DT `_`` argmax_NN '_'' problem_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- quickly_RB for_IN large_JJ data_NNS sets_NNS is_VBZ important_JJ ,_, because_IN the_DT QP_NN solver_NN is_VBZ not_RB the_DT bottleneck_NN ._.
+Figure_NN 9_CD compares_VBZ test_NN NDCG_NN at_IN rank_NN 10_CD for_IN different_JJ training_NN
+mentation_NN ._.
+Keywords_NNS :_: Max-margin_JJ structured_JJ learning_NN to_TO rank_VB ,_, Nondecomposable_JJ loss_NN functions_NNS ._.
+1_CD ._.
+INTRODUCTION_NNP Learning_NNP to_TO rank_VB is_VBZ an_DT active_JJ research_NN area_NN where_WRB supervised_JJ learning_NN is_VBZ increasingly_RB used_VBN =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD ,_, 6_CD ,_, 7_CD ,_, 8_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT main_JJ challenge_NN in_IN adapting_VBG supervised_JJ learning_NN is_VBZ that_IN for_IN ranking_JJ problems_NNS ,_, the_DT evaluation_NN criterion_NN or_CC ``_`` loss_NN function_NN ''_'' is_VBZ usually_RB defined_VBN over_IN the_DT permutation_NN induced_VBN by_IN the_DT scoring_VBG function_NN o_NN
+nd_IN many_JJ implementations_NNS are_VBP not_RB readily_RB available_JJ ._.
+As_IN a_DT result_NN ,_, there_EX are_VBP hardly_RB any_DT data_NNS sets_NNS over_IN which_WDT many_JJ algorithms_NNS have_VBP been_VBN compared_VBN directly_RB ._.
+We_PRP have_VBP implemented_VBN SVMauc_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, SVMmap_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, DORM_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, McRank_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, as_RB well_RB as_IN our_PRP$ new_JJ proposals_NNS SVMmrr_NN and_CC SVMndcg_NN ,_, in_IN a_DT common_JJ open-source_JJ Java_NNP testbed_NN -LRB-_-LRB- http_NN :_: \/_: \/_: www.cse.iitb.ac.in\/soumen\/doc\/StructRank\/_NN -RRB-_-RRB- ._.
+We_PRP ran_VBD all_PDT the_DT algorithms_NNS on_IN the_DT well-known_JJ L_NN
+then_RB sorts_NNS the_DT documents_NNS by_IN decreasing_VBG score_NN ._.
+Note_VB that_IN McRank_NNP has_VBZ no_DT direct_JJ hold_NN on_IN true_JJ loss_NN functions_NNS like_IN MAP_NN ,_, MRR_NN or_CC NDCG_NN ._.
+We_PRP implemented_VBD the_DT boosting_VBG code_NN in_IN Java_NNP ,_, taking_VBG advantage_NN of_IN the_DT WEKA_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: REPTree_NN implementation_NN ._.
+4_LS ._.
+EXPERIMENTS_NNS 4.1_CD Data_NNP preparation_NN Inside_IN the_DT LETOR_NN distribution_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- there_EX are_VBP three_CD data_NNS sets_NNS ,_, OHSUMED_NN -LRB-_-LRB- 106_CD queries_NNS ,_, 11303_CD bad_JJ documents_NNS ,_, 4837_CD q_NN l_NN ξ_NN l_NN q_FW 6good_FW documents_NNS -RRB-_-RRB- ,_,
+mentation_NN ._.
+Keywords_NNS :_: Max-margin_JJ structured_JJ learning_NN to_TO rank_VB ,_, Nondecomposable_JJ loss_NN functions_NNS ._.
+1_CD ._.
+INTRODUCTION_NNP Learning_NNP to_TO rank_VB is_VBZ an_DT active_JJ research_NN area_NN where_WRB supervised_JJ learning_NN is_VBZ increasingly_RB used_VBN =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD ,_, 6_CD ,_, 7_CD ,_, 8_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT main_JJ challenge_NN in_IN adapting_VBG supervised_JJ learning_NN is_VBZ that_IN for_IN ranking_JJ problems_NNS ,_, the_DT evaluation_NN criterion_NN or_CC ``_`` loss_NN function_NN ''_'' is_VBZ usually_RB defined_VBN over_IN the_DT permutation_NN induced_VBN by_IN the_DT scoring_VBG function_NN o_NN
+mentation_NN ._.
+Keywords_NNS :_: Max-margin_JJ structured_JJ learning_NN to_TO rank_VB ,_, Nondecomposable_JJ loss_NN functions_NNS ._.
+1_CD ._.
+INTRODUCTION_NNP Learning_NNP to_TO rank_VB is_VBZ an_DT active_JJ research_NN area_NN where_WRB supervised_JJ learning_NN is_VBZ increasingly_RB used_VBN =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD ,_, 6_CD ,_, 7_CD ,_, 8_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT main_JJ challenge_NN in_IN adapting_VBG supervised_JJ learning_NN is_VBZ that_IN for_IN ranking_JJ problems_NNS ,_, the_DT evaluation_NN criterion_NN or_CC ``_`` loss_NN function_NN ''_'' is_VBZ usually_RB defined_VBN over_IN the_DT permutation_NN induced_VBN by_IN the_DT scoring_VBG function_NN o_NN
+port_NN on_IN running_VBG time_NN and_CC scalability_NN comparisons_NNS between_IN structured_JJ rank_NN learners_NNS and_CC a_DT prominent_JJ recent_JJ contender_NN in_IN accuracy_NN -LRB-_-LRB- McRank_NN --_: boosted_VBD regression_NN trees_NNS -RRB-_-RRB- and_CC find_VB ,_, on_IN the_DT public_JJ LETOR_NN data_NNS set_VBD =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, that_IN structured_JJ learners_NNS are_VBP considerably_RB faster_JJR -LRB-_-LRB- Section_NN 3.8_CD -RRB-_-RRB- while_IN also_RB being_VBG more_RBR accurate_JJ in_IN two_CD out_IN of_IN three_CD data_NNS sets_NNS ._.
+2_CD ._.
+BACKGROUND_NN 2.1_CD Testbed_NN and_CC data_NN sets_NNS Figure_NNP 1_CD summarizes_VBZ the_DT leading_VBG a_DT
+,_, SVMmap_NN ,_, SVMmrr_NN ,_, SVMndcg_NN ,_, DORM_NN ,_, SVMcombo_NN -RRB-_-RRB- against_IN McRank_NNP ,_, which_WDT is_VBZ among_IN the_DT best_JJS of_IN the_DT lower_JJR half_NN of_IN Figure_NNP 1_CD ._.
+Li_NNP et_FW al._FW -LRB-_-LRB- 10_CD -RRB-_-RRB- have_VBP found_VBN McRank_NNP to_TO be_VB generally_RB better_JJR than_IN LambdaRank_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC FRank_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: ;_: SoftRank_NNP is_VBZ comparable_JJ to_TO LambdaRank_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC both_DT are_VBP generally_RB better_JJR than_IN RankNet_NNP -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+McRank_NNP uses_VBZ a_DT boosted_VBN ensemble_NN of_IN regression_NN trees_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- to_TO learn_VB a_DT non-linear_JJ itemwise_JJ model_NN for_IN Pr_NN -LRB-_-LRB- z_SYM |_FW xqi_FW -RRB-_-RRB- ,_, i_FW
+sets_NNS where_WRB they_PRP have_VBP been_VBN evaluated_VBN ._.
+``_`` MS_NN Web_NN ''_'' data_NNS is_VBZ from_IN Microsoft_NNP ,_, ``_`` Y_NN !_.
+Web_NN ''_'' data_NNS is_VBZ from_IN Yahoo_NNP ._.
+``_`` •_NN ''_'' means_VBZ the_DT evaluation_NN is_VBZ reported_VBN here_RB ._.
+``_`` ◦_NN ''_'' means_VBZ the_DT RAM\/CPU_NN requirements_NNS prevented_VBD evaluation_NN ._.
+=_SYM -_: =[_NN 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: predate_JJ OHSUMED_NN ,_, TD2003_NN ,_, TD2004_NN ._.
+TD2004_FW TREC2000_FW TREC2001_NN MS_NN Web1_NN MS_NN Web2_NN MS_NN Web3_NN MS_NN Web4_NN Y_NN !_.
+Web1_NN Y_NN !_.
+Web2_NN and_CC average_JJ NDCG_NN -LRB-_-LRB- q_NN -RRB-_-RRB- over_IN queries_NNS ._.
+G_NN -LRB-_-LRB- q_NN ,_, i_LS -RRB-_-RRB- is_VBZ usually_RB defined_VBN as_IN 2_CD zqi_NN −_NN 1_CD ._.
+Because_IN we_PRP focus_VBP o_NN
+g_NN all_PDT the_DT relevant_JJ documents_NNS to_TO the_DT top_NN ._.
+Now_RB define_VB NDCG_NN -LRB-_-LRB- q_NN -RRB-_-RRB- =_JJ DCG_NN -LRB-_-LRB- q_NN -RRB-_-RRB- DCG_NN ∗_NN -LRB-_-LRB- q_NN -RRB-_-RRB- =_JJ P_NN 0_CD ≤_FW i_FW -LRB-_-LRB- k_NN zqiD_NN -LRB-_-LRB- i_LS -RRB-_-RRB- DCG_NN ∗_NN -LRB-_-LRB- NDCG_NN -RRB-_-RRB- -LRB-_-LRB- q_NN -RRB-_-RRB- 2OHSUMED_FW TD2003_FW Public_NNP Not_RB public_JJ Algorithm_NN RankSVM_NN ,_, public_NN ,_, reimplemented_VBN here_RB -LRB-_-LRB- 2_LS -RRB-_-RRB- •_NN =_JJ -_: =[_NN 15_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: •_FW •_FW -LRB-_-LRB- 18_CD -RRB-_-RRB- -LRB-_-LRB- 17_CD -RRB-_-RRB- -LRB-_-LRB- 17_CD -RRB-_-RRB- SVMauc_NN ,_, public_NN ,_, reimplemented_VBN here_RB -LRB-_-LRB- 4_CD -RRB-_-RRB- •_FW •_FW •_FW •_FW -LRB-_-LRB- 9_CD -RRB-_-RRB- •_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- -LRB-_-LRB- 18_CD -RRB-_-RRB- SVMmap_NN ,_, public_NN ,_, reimplemented_VBN here_RB -LRB-_-LRB- 9_CD -RRB-_-RRB- •_FW •_FW •_FW •_FW -LRB-_-LRB- 9_CD -RRB-_-RRB- •_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- SVMmrr_NN ,_, proposed_VBN here_RB •_FW •_FW •_FW •_FW •_FW SVMndcg_FW ,_, proposed_VBN here_RB •_FW •_FW •_FW
+mentation_NN ._.
+Keywords_NNS :_: Max-margin_JJ structured_JJ learning_NN to_TO rank_VB ,_, Nondecomposable_JJ loss_NN functions_NNS ._.
+1_CD ._.
+INTRODUCTION_NNP Learning_NNP to_TO rank_VB is_VBZ an_DT active_JJ research_NN area_NN where_WRB supervised_JJ learning_NN is_VBZ increasingly_RB used_VBN =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD ,_, 6_CD ,_, 7_CD ,_, 8_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT main_JJ challenge_NN in_IN adapting_VBG supervised_JJ learning_NN is_VBZ that_IN for_IN ranking_JJ problems_NNS ,_, the_DT evaluation_NN criterion_NN or_CC ``_`` loss_NN function_NN ''_'' is_VBZ usually_RB defined_VBN over_IN the_DT permutation_NN induced_VBN by_IN the_DT scoring_VBG function_NN o_NN
+mentation_NN ._.
+Keywords_NNS :_: Max-margin_JJ structured_JJ learning_NN to_TO rank_VB ,_, Nondecomposable_JJ loss_NN functions_NNS ._.
+1_CD ._.
+INTRODUCTION_NNP Learning_NNP to_TO rank_VB is_VBZ an_DT active_JJ research_NN area_NN where_WRB supervised_JJ learning_NN is_VBZ increasingly_RB used_VBN =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 3_CD ,_, 4_CD ,_, 5_CD ,_, 6_CD ,_, 7_CD ,_, 8_CD ,_, 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT main_JJ challenge_NN in_IN adapting_VBG supervised_JJ learning_NN is_VBZ that_IN for_IN ranking_JJ problems_NNS ,_, the_DT evaluation_NN criterion_NN or_CC ``_`` loss_NN function_NN ''_'' is_VBZ usually_RB defined_VBN over_IN the_DT permutation_NN induced_VBN by_IN the_DT scoring_VBG function_NN o_NN
+mean_VB average_JJ precision_NN -LRB-_-LRB- MAP_NN -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+However_RB ,_, other_JJ widely-used_JJ criteria_NNS in_IN Information_NNP Retrieval_NNP and_CC Web_NN search_NN ,_, such_JJ as_IN mean_JJ reciprocal_JJ rank_NN -LRB-_-LRB- MRR_NN -RRB-_-RRB- -LRB-_-LRB- 13_CD -RRB-_-RRB- or_CC normalized_VBN discounted_JJ cumulative_JJ gain_NN -LRB-_-LRB- NDCG_NN -RRB-_-RRB- =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, had_VBD no_DT efficient_JJ direct_JJ optimizers_NNS ._.
+The_DT advantage_NN of_IN the_DT structured_JJ learning_NN approach_NN is_VBZ that_IN it_PRP helps_VBZ break_VB down_RP the_DT difficult_JJ non-convex_JJ ranking_JJ loss_NN optimization_NN problem_NN into_IN a_DT convex_JJ quadratic_JJ p_NN
+roximates_VBZ the_DT non-convex_JJ and_CC discontinuous_JJ ranking_JJ loss_NN function_NN with_IN a_DT somewhat_RB more_RBR benign_JJ -LRB-_-LRB- but_CC often_RB still_RB non-convex_JJ -RRB-_-RRB- surrogate_NN ,_, which_WDT is_VBZ then_RB optimized_VBN using_VBG gradient_NN descent_NN and_CC neural_JJ networks_NNS =_JJ -_: =[_NN 3_CD ,_, 7_CD ,_, 8_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT very_RB interesting_JJ variant_NN is_VBZ LambdaRank_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- which_WDT models_NNS only_RB the_DT gradient_NN ,_, with_IN an_DT unmaterialized_JJ objective_NN ._.
+A_DT potential_JJ problem_NN with_IN this_DT family_NN is_VBZ that_IN non-convex_JJ optimization_NN behavior_NN is_VBZ tricky_JJ
+e_LS is_VBZ dominated_VBN by_IN the_DT time_NN to_TO induce_VB CART_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- style_NN regression_NN trees_NNS ._.
+The_DT number_NN of_IN rounds_NNS of_IN boosting_VBG was_VBD set_VBN between_IN 1500_CD and_CC 2000_CD by_IN Li_NNP et_FW al._FW -LRB-_-LRB- 10_CD -RRB-_-RRB- ;_: we_PRP found_VBD this_DT too_RB slow_JJ -LRB-_-LRB- corroborated_VBN elsewhere_RB =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =--RRB-_NN and_CC also_RB unnecessary_JJ for_IN accuracy_NN ._.
+On_IN LETOR_NN more_JJR than_IN 30_CD --_: 40_CD rounds_NNS sometimes_RB hurt_VBP accuracy_NN ,_, so_IN we_PRP set_VBD the_DT number_NN of_IN boosting_VBG rounds_NNS to_TO 30_CD ;_: this_DT only_JJ tips_NNS the_DT scales_NNS against_IN us_PRP wrt_VBD performance_NN ._.
+Even_RB

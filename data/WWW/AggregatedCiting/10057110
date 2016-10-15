@@ -1,0 +1,71 @@
+A_DT client-server_JJ architecture_NN for_IN state-dependent_JJ dynamic_JJ visualizations_NNS on_IN the_DT web_NN
+As_IN sophisticated_JJ enterprise_NN applications_NNS move_VBP to_TO the_DT Web_NN ,_, some_DT advanced_JJ user_NN experiences_NNS become_VBP difficult_JJ to_TO migrate_VB due_JJ to_TO prohibitively_RB high_JJ computation_NN ,_, memory_NN ,_, and_CC bandwidth_NN requirements_NNS ._.
+State-dependent_JJ visualizations_NNS of_IN large-scale_JJ data_NNS sets_NNS are_VBP particularly_RB difficult_JJ since_IN a_DT change_NN in_IN the_DT client_NN 's_POS context_NN necessitates_VBZ a_DT change_NN in_IN the_DT displayed_VBN results_NNS ._.
+This_DT paper_NN describes_VBZ a_DT Web_NN architecture_NN where_WRB clients_NNS are_VBP served_VBN a_DT session-specific_JJ image_NN of_IN the_DT data_NNS ,_, with_IN this_DT image_NN divided_VBN into_IN tiles_NNS dynamically_RB generated_VBN by_IN the_DT server_NN ._.
+This_DT set_NN of_IN tiles_NNS is_VBZ supplemented_VBN with_IN a_DT corpus_NN of_IN metadata_NN describing_VBG the_DT immediate_JJ vicinity_NN of_IN interest_NN ;_: additional_JJ metadata_NN is_VBZ delivered_VBN as_IN needed_VBN in_IN a_DT progressive_JJ fashion_NN in_IN support_NN and_CC anticipation_NN of_IN the_DT user_NN 's_POS actions_NNS ._.
+We_PRP discuss_VBP how_WRB the_DT design_NN of_IN this_DT architecture_NN was_VBD motivated_VBN by_IN the_DT goal_NN of_IN delivering_VBG a_DT highly_RB responsive_JJ user_NN experience_NN ._.
+As_IN an_DT example_NN of_IN a_DT complete_JJ application_NN built_VBN upon_IN this_DT architecture_NN ,_, we_PRP present_VBP OrgMaps_NNP ,_, an_DT interactive_JJ system_NN for_IN navigating_VBG hierarchical_JJ data_NNS ,_, enabling_VBG fluid_NN ,_, low-latency_NN navigation_NN of_IN trees_NNS of_IN hundreds_NNS of_IN thousands_NNS of_IN nodes_NNS on_IN standard_JJ Web_NN browsers_NNS using_VBG only_RB HTML_NNP and_CC JavaScript_NNP ._.
+es_VBZ server-backings_NNS to_TO tie_VB multiple_JJ software_NN engineering_NN systemstogether_NN providing_VBG a_DT compact_JJ SVG_NNP output_NN to_TO the_DT server_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+They_PRP note_VBP the_DT SVG_NNP data_NNS and_CC rendering_VBG are_VBP performance_NN inhibiting_NN ._.
+Eick_NNP et_FW al._FW =_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: also_RB use_VB SVG_NNP output_NN to_TO Web_NN clients_NNS from_IN multiple_JJ server_NN backings_NNS in_IN a_DT generalized_JJ visualization_NN framework_NN ._.
+Because_IN of_IN the_DT use_NN of_IN SVG_NNP rather_RB than_IN rasterized_JJ images_NNS for_IN the_DT client_NN ,_, their_PRP$ performance_NN su_IN
+that_WDT do_VBP not_RB perform_VB look-ahead_JJ rendering_NN for_IN smooth_JJ navigation_NN ._.
+D’Ambros_FW et_FW al._FW uses_VBZ server-backings_NNS to_TO tie_VB multiple_JJ software_NN engineering_NN systemstogether_NN providing_VBG a_DT compact_JJ SVG_NNP output_NN to_TO the_DT server_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP note_VBP the_DT SVG_NNP data_NNS and_CC rendering_VBG are_VBP performance_NN inhibiting_NN ._.
+Eick_NNP et_FW al._FW -LRB-_-LRB- 4_LS -RRB-_-RRB- also_RB use_VBP SVG_NNP output_NN to_TO Web_NN clients_NNS from_IN multiple_JJ server_NN backings_NNS in_IN a_DT generalized_JJ visualization_NN framework_NN ._.
+Because_IN of_IN
+is_VBZ a_DT challenge_NN ._.
+In_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, the_DT authors_NNS provide_VBP a_DT programming_NN model_NN for_IN building_NN mashups_NNS by_IN end_NN users_NNS and_CC discuss_VBP the_DT implementation_NN and_CC evaluation_NN issues_NNS associated_VBN with_IN end-user_FW mashup_FW programming_NN ._.
+In_IN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: a_DT framework_NN that_WDT allows_VBZ users_NNS to_TO easily_RB build_VB mashups_NNS from_IN within_IN a_DT familiar_JJ spreadsheet_NN environment_NN by_IN making_VBG complex_JJ data_NNS as_IN first_JJ class_NN spreadsheet_NN cell_NN values_NNS is_VBZ presented_VBN ._.
+The_DT Marmite_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB- tool_NN
+work_NN is_VBZ those_DT systems_NNS that_WDT use_VBP servers_NNS to_TO perform_VB rendering_NN of_IN complex_JJ 3D_NN scenes_NNS for_IN simple_JJ clients_NNS ._.
+For_IN example_NN ,_, Poliakov_NNP et_FW al._FW took_VBD this_DT approach_NN because_IN of_IN the_DT lack_NN of_IN unified_JJ 3D_NN APIs_NNS for_IN the_DT Web_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT frameworks_NNS have_VBP typically_RB not_RB supported_VBN very_RB dynamic_JJ and_CC interactive_JJ behavior_NN ._.
+As_IN is_VBZ done_VBN with_IN image-based_JJ rendering_NN ,_, the_DT client_NN morphs_VBZ the_DT cached_JJ data_NNS without_IN a_DT server_NN round-trip_NN to_TO approxima_NN
+been_VBN employed_VBN in_IN web-based_JJ graphics_NNS and_CC visualization_NN ._.
+Web-based_JJ mashups_NNS or_CC service_NN compositions_NNS was_VBD one_CD of_IN our_PRP$ motivations_NNS to_TO make_VB OrgMaps_NNP a_DT Web-based_JJ service_NN ._.
+Making_VBG mashups_NNS easy_JJ is_VBZ a_DT challenge_NN ._.
+In_IN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT authors_NNS provide_VBP a_DT programming_NN model_NN for_IN building_NN mashups_NNS by_IN end_NN users_NNS and_CC discuss_VBP the_DT implementation_NN and_CC evaluation_NN issues_NNS associated_VBN with_IN end-user_FW mashup_FW programming_NN ._.
+In_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- a_DT framework_NN that_IN al_FW
+ngine_NN ._.
+Techniques_NNS ,_, known_VBN as_IN image-based_JJ rendering_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, have_VBP been_VBN devised_VBN to_TO incrementally_RB update_VB images_NNS for_IN small_JJ changes_NNS in_IN viewpoints_NNS without_IN having_VBG to_TO render_VB the_DT complete_JJ model_NN again_RB ._.
+Chang_NNP &_CC Ger_NNP =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: apply_VB image-based_JJ rendering_VBG techniques_NNS to_TO mobile_JJ devices_NNS and_CC send_VB rasterized_JJ images_NNS from_IN a_DT static_JJ scene_NN with_IN additional_JJ single-layered_JJ depth_NN images_NNS to_TO support_VB occlusioncorrect_JJ 3D_NN rotation_NN interaction_NN
+hitectures_NNS to_TO ours_PRP ,_, such_JJ as_IN those_DT that_WDT display_VBP geographic_JJ data_NNS ,_, allow_VBP zoom_NN and_CC pan_NN only_RB on_IN static_JJ tiles_NNS ._.
+While_IN Google_NNP Maps_NNP uses_VBZ pre-rendered_JJ images_NNS that_WDT are_VBP session_NN unspecific_JJ ,_, Sorokine_NNP &_CC Merzliakova_NNP =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: performs_VBZ session-aware_JJ server-side_JJ rendering_NN ,_, but_CC instead_RB output_NN simplified_VBD geometric_JJ primitives_NNS to_TO be_VB rendered_VBN client-side_JJ rendered_VBN in_IN the_DT browser_NN ._.
+They_PRP also_RB use_VBP limited_JJ navigation_NN controls_NNS that_WDT do_VBP
+within_IN a_DT browser_NN ._.
+Researchers_NNS in_IN 3D_NN computer_NN graphics_NNS have_VBP encountered_VBN the_DT challenges_NNS of_IN handling_VBG large_JJ numbers_NNS of_IN objects_NNS at_IN interactive_JJ rates_NNS ._.
+Multi-resolution_JJ ,_, view-dependent_JJ ,_, and_CC progressive_JJ mesh_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: representations_NNS of_IN 3D_NN models_NNS have_VBP been_VBN used_VBN to_TO reduce_VB the_DT number_NN of_IN polygons_NNS that_WDT are_VBP sent_VBN to_TO the_DT rendering_VBG engine_NN ._.
+Techniques_NNS ,_, known_VBN as_IN image-based_JJ rendering_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, have_VBP been_VBN devised_VBN to_TO incrementally_RB
+view-dependent_JJ ,_, and_CC progressive_JJ mesh_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- representations_NNS of_IN 3D_NN models_NNS have_VBP been_VBN used_VBN to_TO reduce_VB the_DT number_NN of_IN polygons_NNS that_WDT are_VBP sent_VBN to_TO the_DT rendering_VBG engine_NN ._.
+Techniques_NNS ,_, known_VBN as_IN image-based_JJ rendering_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, have_VBP been_VBN devised_VBN to_TO incrementally_RB update_VB images_NNS for_IN small_JJ changes_NNS in_IN viewpoints_NNS without_IN having_VBG to_TO render_VB the_DT complete_JJ model_NN again_RB ._.
+Chang_NNP &_CC Ger_NNP -LRB-_-LRB- 2_CD -RRB-_-RRB- apply_VBP image-based_JJ rendering_VBG techniques_NNS to_TO mobile_JJ d_NN
+latency_NN by_IN sending_VBG only_RB a_DT small_JJ set_NN of_IN higher-level_JJ graphics_NNS primitives_NNS that_WDT are_VBP transparently_RB mapped_VBN to_TO a_DT few_JJ simple_JJ low-level_JJ primitives_NNS rendered_VBN directly_RB by_IN graphics_NNS hardware_NN on_IN the_DT client_NN ._.
+pTHINC_NN =_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: extend_VB THINC_NN to_TO PDAs_NNS and_CC performs_VBZ server_NN side_NN scaling_VBG of_IN images_NNS ._.
+However_RB ,_, none_NN of_IN the_DT above_JJ techniques_NNS target_VBP specific_JJ Web-based_JJ applications_NNS ,_, such_JJ as_IN OrgMaps_NNP ,_, with_IN the_DT need_NN for_IN dynamic_NN and_CC independe_NN
+Generic_JJ mechanisms_NNS for_IN associating_VBG data_NNS ._.
+4_LS ._.
+Simple_JJ metaphors_NNS for_IN visualizing_VBG overlaid_JJ data_NNS ._.
+Our_PRP$ eventual_JJ choice_NN of_IN visual_JJ design_NN builds_VBZ upon_IN one_CD of_IN the_DT simplest_JJS hierarchical_JJ layouts_NNS ,_, the_DT icicle_NN plot_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Icicle_JJ plots_NNS place_VBP parents_NNS directly_RB above_IN their_PRP$ children_NNS ,_, keeping_VBG edges_NNS implicit_JJ rather_RB than_IN explicit_JJ ._.
+In_IN this_DT way_NN ,_, the_DT plot_NN can_MD be_VB called_VBN space-filling_JJ ._.
+Each_DT node_NN is_VBZ represented_VBN by_IN a_DT rectangle_NN whos_NNS
+graphics_NNS primitives_NNS ._.
+With_IN Citrix_NNP ICA_NNP and_CC Microsoft_NNP RDP_NNP ,_, rendering_VBG is_VBZ done_VBN on_IN the_DT server_NN and_CC display_NN updates_NNS are_VBP sent_VBN via_IN a_DT rich_JJ set_NN of_IN lowlevel_JJ graphics_NNS primitives_NNS to_TO the_DT client_NN ._.
+SLIM_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC THINC_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: also_RB perform_VB rendering_VBG on_IN the_DT server_NN but_CC take_VB an_DT intermediate_JJ approach_NN to_TO reduce_VB bandwidth_NN and_CC latency_NN by_IN sending_VBG only_RB a_DT small_JJ set_NN of_IN higher-level_JJ graphics_NNS primitives_NNS that_WDT are_VBP transparently_RB mapped_VBN to_TO
+,_, by_IN sending_VBG it_PRP graphics_NNS primitives_NNS ._.
+With_IN Citrix_NNP ICA_NNP and_CC Microsoft_NNP RDP_NNP ,_, rendering_VBG is_VBZ done_VBN on_IN the_DT server_NN and_CC display_NN updates_NNS are_VBP sent_VBN via_IN a_DT rich_JJ set_NN of_IN lowlevel_JJ graphics_NNS primitives_NNS to_TO the_DT client_NN ._.
+SLIM_NN =_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: and_CC THINC_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- also_RB perform_VBP rendering_VBG on_IN the_DT server_NN but_CC take_VB an_DT intermediate_JJ approach_NN to_TO reduce_VB bandwidth_NN and_CC latency_NN by_IN sending_VBG only_RB a_DT small_JJ set_NN of_IN higher-level_JJ graphics_NNS primitives_NNS that_WDT are_VBP transpare_NN
+ynamic_JJ and_CC interactive_JJ behavior_NN ._.
+As_IN is_VBZ done_VBN with_IN image-based_JJ rendering_NN ,_, the_DT client_NN morphs_VBZ the_DT cached_JJ data_NNS without_IN a_DT server_NN round-trip_JJ to_TO approximate_JJ a_DT basic_JJ translation_NN or_CC rotation_NN of_IN the_DT camera_NN ._.
+See_VB =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: for_IN a_DT more_RBR exhaustive_JJ set_NN of_IN related_JJ work_NN and_CC for_IN an_DT analysis_NN of_IN methods_NNS for_IN remote_JJ visualization_NN ._.
+Most_JJS similar_JJ architectures_NNS to_TO ours_PRP ,_, such_JJ as_IN those_DT that_WDT display_VBP geographic_JJ data_NNS ,_, allow_VBP zoom_NN and_CC pan_NN o_NN
+ng_NN ._.
+In_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- a_DT framework_NN that_WDT allows_VBZ users_NNS to_TO easily_RB build_VB mashups_NNS from_IN within_IN a_DT familiar_JJ spreadsheet_NN environment_NN by_IN making_VBG complex_JJ data_NNS as_IN first_JJ class_NN spreadsheet_NN cell_NN values_NNS is_VBZ presented_VBN ._.
+The_DT Marmite_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: tool_NN for_IN end-user_JJ programming_NN on_IN the_DT Web_NN works_VBZ by_IN displaying_VBG a_DT linked_VBN data_NN flow_NN spreadsheet_NN view_NN ,_, letting_VBG people_NNS see_VBP the_DT program_NN as_RB well_RB as_IN the_DT data_NNS simultaneously_RB ._.
+7_CD ._.
+CONCLUSION_NN In_IN this_DT paper_NN we_PRP hav_VBP
+in_IN a_DT generalized_JJ visualization_NN framework_NN ._.
+Because_IN of_IN the_DT use_NN of_IN SVG_NNP rather_RB than_IN rasterized_JJ images_NNS for_IN the_DT client_NN ,_, their_PRP$ performance_NN suffers_VBZ similarly_RB to_TO our_PRP$ initial_JJ client-rendered_JJ system_NN ._.
+Flashproxy_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: uses_VBZ server_NN proxies_NNS to_TO interact_VB with_IN Flash_JJ content_NN on_IN devices_NNS that_WDT lack_VBP the_DT run-time_NN ._.
+They_PRP use_VBP SWF_NNP binary_JJ re-writing_NN and_CC a_DT custom_NN JavaScript_NNP bridge_NN to_TO permit_VB interactions_NNS with_IN the_DT remotely-hosted_JJ SWF_NN

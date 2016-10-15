@@ -1,0 +1,122 @@
+Direct_JJ mining_NN of_IN discriminative_JJ and_CC essential_JJ frequent_JJ patterns_NNS via_IN model-based_JJ search_NN tree_NN
+Frequent_JJ patterns_NNS provide_VBP solutions_NNS to_TO datasets_NNS that_WDT do_VBP not_RB have_VB well-structured_JJ feature_NN vectors_NNS ._.
+However_RB ,_, frequent_JJ pattern_NN mining_NN is_VBZ non-trivial_JJ since_IN the_DT number_NN of_IN unique_JJ patterns_NNS is_VBZ exponential_JJ but_CC many_JJ are_VBP non-discriminative_JJ and_CC correlated_VBN ._.
+Currently_RB ,_, frequent_JJ pattern_NN mining_NN is_VBZ performed_VBN in_IN two_CD sequential_JJ steps_NNS :_: enumerating_VBG a_DT set_NN of_IN frequent_JJ patterns_NNS ,_, followed_VBN by_IN feature_NN selection_NN ._.
+Although_IN many_JJ methods_NNS have_VBP been_VBN proposed_VBN in_IN the_DT past_JJ few_JJ years_NNS on_IN how_WRB to_TO perform_VB each_DT separate_JJ step_NN efficiently_RB ,_, there_EX is_VBZ still_RB limited_JJ success_NN in_IN eventually_RB finding_VBG highly_RB compact_JJ and_CC discriminative_JJ patterns_NNS ._.
+The_DT culprit_NN is_VBZ due_JJ to_TO the_DT inherent_JJ nature_NN of_IN this_DT widely_RB adopted_VBN two-step_JJ approach_NN ._.
+This_DT paper_NN discusses_VBZ these_DT problems_NNS and_CC proposes_VBZ a_DT new_JJ and_CC different_JJ method_NN ._.
+It_PRP builds_VBZ a_DT decision_NN tree_NN that_WDT partitions_VBZ the_DT data_NNS onto_IN different_JJ nodes_NNS ._.
+Then_RB at_IN each_DT node_NN ,_, it_PRP directly_RB discovers_VBZ a_DT discriminative_JJ pattern_NN to_TO further_RB divide_VB its_PRP$ examples_NNS into_IN purer_JJR subsets_NNS ._.
+Since_IN the_DT number_NN of_IN examples_NNS towards_IN leaf_NN level_NN is_VBZ relatively_RB small_JJ ,_, the_DT new_JJ approach_NN is_VBZ able_JJ to_TO examine_VB patterns_NNS with_IN extremely_RB low_JJ global_JJ support_NN that_WDT could_MD not_RB be_VB enumerated_VBN on_IN the_DT whole_JJ dataset_NN by_IN the_DT two-step_JJ method_NN ._.
+The_DT discovered_VBN feature_NN vectors_NNS are_VBP more_RBR accurate_JJ on_IN some_DT of_IN the_DT most_RBS difficult_JJ graph_NN as_RB well_RB as_IN frequent_JJ itemset_NN problems_NNS than_IN most_RBS recently_RB proposed_VBN algorithms_NNS but_CC the_DT total_JJ size_NN is_VBZ typically_RB 50_CD %_NN or_CC more_JJR smaller_JJR ._.
+Importantly_RB ,_, the_DT minimum_JJ support_NN of_IN some_DT discriminative_JJ patterns_NNS can_MD be_VB extremely_RB low_JJ -LRB-_-LRB- e.g._FW 0.03_CD %_NN -RRB-_-RRB- ._.
+In_IN order_NN to_TO enumerate_VB these_DT low_JJ support_NN patterns_NNS ,_, state-of-the-art_JJ frequent_JJ pattern_NN algorithm_NN either_CC can_MD not_RB finish_VB due_JJ to_TO huge_JJ memory_NN consumption_NN or_CC have_VBP to_TO enumerate_VB 101_CD to_TO 103_CD times_NNS more_JJR patterns_NNS before_IN they_PRP can_MD even_RB be_VB found_VBN ._.
+Software_NNP and_CC datasets_NNS are_VBP available_JJ by_IN contacting_VBG the_DT author_NN ._.
+n_NN carried_VBD out_RP to_TO address_VB the_DT graph_NN classification_NN problem_NN ._.
+Basically_RB these_DT studies_NNS can_MD be_VB divided_VBN into_IN three_CD approaches_NNS :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- structure_NN or_CC fragment-based_JJ approach_NN -LRB-_-LRB- 15_CD ,_, 9_CD ,_, 22_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- kernelbased_JJ approach_NN =_JJ -_: =[_NN 20_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC -LRB-_-LRB- 3_LS -RRB-_-RRB- boosting_VBG method_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+Typically_RB ,_, the_DT basic_JJ idea_NN of_IN structure_NN or_CC fragment-based_JJ approach_NN is_VBZ to_TO extract_VB frequent_JJ substructures_NNS -LRB-_-LRB- 15_CD ,_, 9_CD -RRB-_-RRB- ,_, local_JJ graph_NN fragments_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, or_CC cyclic_JJ patterns_NNS and_CC trees_NNS
+lity_NN ._.
+On_IN the_DT other_JJ hand_NN ,_, if_IN the_DT support_NN is_VBZ set_VBN too_RB low_JJ -LRB-_-LRB- such_JJ as_IN -LRB-_-LRB- 3_CD %_NN -RRB-_-RRB- ,_, the_DT program_NN simply_RB may_MD not_RB finish_VB since_IN the_DT virtual_JJ memory_NN can_MD be_VB exhausted_VBN ._.
+State-of-the-art_JJ frequent_JJ pattern_NN mining_NN algorithms_NNS =_JJ -_: =[_NN 9_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: employ_VB a_DT batch_NN process_NN ,_, which_WDT first_RB enumerates_VBZ features_NNS above_IN the_DT given_VBN support_NN and_CC then_RB performs_VBZ feature_NN selection_NN on_IN this_DT initial_JJ pool_NN ,_, as_IN shown_VBN in_IN Figure_NNP 1_CD -LRB-_-LRB- a_DT -RRB-_-RRB- ._.
+Research_NN interests_NNS in_IN this_DT area_NN foc_NN
+nt_NN pattern_NN in_IN classification_NN has_VBZ been_VBN explored_VBN by_IN many_JJ recent_JJ studies_NNS ._.
+The_DT association_NN between_IN frequent_JJ patterns_NNS and_CC class_NN labels_NNS is_VBZ used_VBN for_IN prediction_NN ._.
+Earlier_JJR studies_NNS on_IN associative_JJ classification_NN =_JJ -_: =[_NN 19_CD ,_, 18_CD ,_, 27_CD -RRB-_-RRB- -_: =_JJ -_: mainly_RB focus_VB on_IN mining_NN high-support_JJ ,_, high-confidence_JJ rules_NNS and_CC building_VBG a_DT rule-based_JJ classifier_NN ._.
+Prediction_NN is_VBZ made_VBN based_VBN on_IN the_DT top_NN ranked_VBD rule_NN or_CC multiple_JJ rules_NNS ._.
+A_DT recent_JJ work_NN on_IN top-k_NN rule_NN mining_NN
+ata_NN mining_NN problems_NNS have_VBP no_DT pre-defined_JJ feature_NN vectors_NNS that_WDT can_MD be_VB given_VBN to_TO data_NN mining_NN algorithms_NNS to_TO construct_VB predictive_JJ models_NNS ._.
+Facing_VBG these_DT challenges_NNS ,_, frequent-patterns_NNS -LRB-_-LRB- e.g._FW ,_, frequent_JJ itemsets_NNS =_JJ -_: =[_NN 3_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, graph_NN mining_NN -LRB-_-LRB- 17_CD ,_, 25_CD -RRB-_-RRB- and_CC sequential_JJ pattern_NN mining_NN -LRB-_-LRB- 4_CD ,_, 21_CD -RRB-_-RRB- ,_, etc_NN -RRB-_-RRB- have_VBP been_VBN proposed_VBN and_CC actively_RB studied_VBN as_IN candidate_NN feature_NN sets_NNS ._.
+These_DT methods_NNS look_VBP for_IN statistically_RB significant_JJ structures_NNS hidde_VBP
+ata_NN mining_NN problems_NNS have_VBP no_DT pre-defined_JJ feature_NN vectors_NNS that_WDT can_MD be_VB given_VBN to_TO data_NN mining_NN algorithms_NNS to_TO construct_VB predictive_JJ models_NNS ._.
+Facing_VBG these_DT challenges_NNS ,_, frequent-patterns_NNS -LRB-_-LRB- e.g._FW ,_, frequent_JJ itemsets_NNS =_JJ -_: =[_NN 3_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, graph_NN mining_NN -LRB-_-LRB- 17_CD ,_, 25_CD -RRB-_-RRB- and_CC sequential_JJ pattern_NN mining_NN -LRB-_-LRB- 4_CD ,_, 21_CD -RRB-_-RRB- ,_, etc_NN -RRB-_-RRB- have_VBP been_VBN proposed_VBN and_CC actively_RB studied_VBN as_IN candidate_NN feature_NN sets_NNS ._.
+These_DT methods_NNS look_VBP for_IN statistically_RB significant_JJ structures_NNS hidde_VBP
+classification_NN problem_NN ._.
+Basically_RB these_DT studies_NNS can_MD be_VB divided_VBN into_IN three_CD approaches_NNS :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- structure_NN or_CC fragment-based_JJ approach_NN -LRB-_-LRB- 15_CD ,_, 9_CD ,_, 22_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- kernelbased_JJ approach_NN -LRB-_-LRB- 20_CD ,_, 10_CD -RRB-_-RRB- ,_, and_CC -LRB-_-LRB- 3_LS -RRB-_-RRB- boosting_VBG method_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Typically_RB ,_, the_DT basic_JJ idea_NN of_IN structure_NN or_CC fragment-based_JJ approach_NN is_VBZ to_TO extract_VB frequent_JJ substructures_NNS -LRB-_-LRB- 15_CD ,_, 9_CD -RRB-_-RRB- ,_, local_JJ graph_NN fragments_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, or_CC cyclic_JJ patterns_NNS and_CC trees_NNS -LRB-_-LRB- 14_CD -RRB-_-RRB- and_CC use_VB them_PRP as_IN descript_NN
+can_MD be_VB given_VBN to_TO data_NN mining_NN algorithms_NNS to_TO construct_VB predictive_JJ models_NNS ._.
+Facing_VBG these_DT challenges_NNS ,_, frequent-patterns_NNS -LRB-_-LRB- e.g._FW ,_, frequent_JJ itemsets_NNS -LRB-_-LRB- 3_CD ,_, 13_CD -RRB-_-RRB- ,_, graph_NN mining_NN -LRB-_-LRB- 17_CD ,_, 25_CD -RRB-_-RRB- and_CC sequential_JJ pattern_NN mining_NN =_JJ -_: =[_NN 4_CD ,_, 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, etc_NN -RRB-_-RRB- have_VBP been_VBN proposed_VBN and_CC actively_RB studied_VBN as_IN candidate_NN feature_NN sets_NNS ._.
+These_DT methods_NNS look_VBP for_IN statistically_RB significant_JJ structures_NNS hidden_VBN in_IN ``_`` raw_JJ ''_'' data_NNS ._.
+The_DT main_JJ challenge_NN and_CC research_NN interest_NN for_IN
+can_MD be_VB given_VBN to_TO data_NN mining_NN algorithms_NNS to_TO construct_VB predictive_JJ models_NNS ._.
+Facing_VBG these_DT challenges_NNS ,_, frequent-patterns_NNS -LRB-_-LRB- e.g._FW ,_, frequent_JJ itemsets_NNS -LRB-_-LRB- 3_CD ,_, 13_CD -RRB-_-RRB- ,_, graph_NN mining_NN -LRB-_-LRB- 17_CD ,_, 25_CD -RRB-_-RRB- and_CC sequential_JJ pattern_NN mining_NN =_JJ -_: =[_NN 4_CD ,_, 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, etc_NN -RRB-_-RRB- have_VBP been_VBN proposed_VBN and_CC actively_RB studied_VBN as_IN candidate_NN feature_NN sets_NNS ._.
+These_DT methods_NNS look_VBP for_IN statistically_RB significant_JJ structures_NNS hidden_VBN in_IN ``_`` raw_JJ ''_'' data_NNS ._.
+The_DT main_JJ challenge_NN and_CC research_NN interest_NN for_IN
+nt_NN pattern_NN in_IN classification_NN has_VBZ been_VBN explored_VBN by_IN many_JJ recent_JJ studies_NNS ._.
+The_DT association_NN between_IN frequent_JJ patterns_NNS and_CC class_NN labels_NNS is_VBZ used_VBN for_IN prediction_NN ._.
+Earlier_JJR studies_NNS on_IN associative_JJ classification_NN =_JJ -_: =[_NN 19_CD ,_, 18_CD ,_, 27_CD -RRB-_-RRB- -_: =_JJ -_: mainly_RB focus_VB on_IN mining_NN high-support_JJ ,_, high-confidence_JJ rules_NNS and_CC building_VBG a_DT rule-based_JJ classifier_NN ._.
+Prediction_NN is_VBZ made_VBN based_VBN on_IN the_DT top_NN ranked_VBD rule_NN or_CC multiple_JJ rules_NNS ._.
+A_DT recent_JJ work_NN on_IN top-k_NN rule_NN mining_NN
+n_NN carried_VBD out_RP to_TO address_VB the_DT graph_NN classification_NN problem_NN ._.
+Basically_RB these_DT studies_NNS can_MD be_VB divided_VBN into_IN three_CD approaches_NNS :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- structure_NN or_CC fragment-based_JJ approach_NN -LRB-_-LRB- 15_CD ,_, 9_CD ,_, 22_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- kernelbased_JJ approach_NN =_JJ -_: =[_NN 20_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC -LRB-_-LRB- 3_LS -RRB-_-RRB- boosting_VBG method_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+Typically_RB ,_, the_DT basic_JJ idea_NN of_IN structure_NN or_CC fragment-based_JJ approach_NN is_VBZ to_TO extract_VB frequent_JJ substructures_NNS -LRB-_-LRB- 15_CD ,_, 9_CD -RRB-_-RRB- ,_, local_JJ graph_NN fragments_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, or_CC cyclic_JJ patterns_NNS and_CC trees_NNS
+llenge_NN and_CC research_NN interest_NN for_IN frequent_JJ pattern_NN mining_NN is_VBZ how_WRB to_TO discover_VB those_DT discriminative_JJ and_CC essential_JJ patterns_NNS efficiently_RB ._.
+It_PRP has_VBZ been_VBN proved_VBN that_IN frequent-pattern_JJ enumeration_NN is_VBZ NPcomplete_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN some_DT graph_NN mining_NN problems_NNS ,_, when_WRB the_DT relative_JJ support_NN is_VBZ 5_CD %_NN ,_, the_DT number_NN of_IN mined_VBN closed_JJ subgraphs_NNS -LRB-_-LRB- obvious_JJ redundancy_NN excluded_VBN -RRB-_-RRB- ,_, can_MD be_VB up_IN to_TO ×_CD 10_CD 7_CD ._.
+However_RB ,_, importantly_RB ,_, most_RBS discovered_VBN patter_NN
+lity_NN ._.
+On_IN the_DT other_JJ hand_NN ,_, if_IN the_DT support_NN is_VBZ set_VBN too_RB low_JJ -LRB-_-LRB- such_JJ as_IN -LRB-_-LRB- 3_CD %_NN -RRB-_-RRB- ,_, the_DT program_NN simply_RB may_MD not_RB finish_VB since_IN the_DT virtual_JJ memory_NN can_MD be_VB exhausted_VBN ._.
+State-of-the-art_JJ frequent_JJ pattern_NN mining_NN algorithms_NNS =_JJ -_: =[_NN 9_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: employ_VB a_DT batch_NN process_NN ,_, which_WDT first_RB enumerates_VBZ features_NNS above_IN the_DT given_VBN support_NN and_CC then_RB performs_VBZ feature_NN selection_NN on_IN this_DT initial_JJ pool_NN ,_, as_IN shown_VBN in_IN Figure_NNP 1_CD -LRB-_-LRB- a_DT -RRB-_-RRB- ._.
+Research_NN interests_NNS in_IN this_DT area_NN foc_NN
+e_LS kernel_NN functions_NNS to_TO measure_VB the_DT similarity_NN between_IN graphs_NNS ._.
+Several_JJ recent_JJ proposals_NNS have_VBP discussed_VBN how_WRB to_TO make_VB frequent_JJ pattern_NN mining_NN more_RBR conscious_JJ of_IN memory_NN hierarchy_NN and_CC architecture_NN ,_, including_VBG =_JJ -_: =[_NN 11_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+-LRB-_-LRB- 11_CD -RRB-_-RRB- proposed_VBD a_DT cacheconscious_JJ prefix_NN tree_NN which_WDT improves_VBZ spacial_JJ locality_NN and_CC enhances_VBZ the_DT benefits_NNS from_IN hardware_NN cache_NN line_NN prefetching_NN ._.
+-LRB-_-LRB- 8_CD -RRB-_-RRB- proposed_VBD a_DT parallel_JJ mining_NN algorithm_NN of_IN sequential_JJ patt_NN
+as_IN a_DT state-of-art_NN integrated_VBN ``_`` two-step_JJ ''_'' approach_NN PatClass_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- for_IN frequent_JJ itemsets_NNS mining_NN ._.
+At_IN the_DT time_NN of_IN final_JJ copy_NN preparation_NN ,_, a_DT heuristic-based_JJ method_NN to_TO directly_RB mine_VB frequent_JJ itemsets_NNS DDPMine_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ just_RB published_VBN ._.
+A_DT comparison_NN on_IN performance_NN is_VBZ discussed_VBN at_IN the_DT end_NN of_IN Section_NN 4_CD ._.
+For_IN each_DT dataset_NN ,_, the_DT results_NNS reported_VBN below_IN are_VBP the_DT average_NN of_IN 5-fold_JJ CV_NN ._.
+3.1_CD Itemset_NNP Mining_NNP The_DT main_JJ concerns_NNS on_IN
+e_LS most_RBS difficult_JJ benchmark_NN datasets_NNS used_VBN in_IN the_DT community_NN and_CC specifically_RB excluded_VBN those_DT easier_JJR cases_NNS ._.
+We_PRP compared_VBD the_DT model-based_JJ search_NN tree_NN with_IN closed_JJ pattern_NN mining_NN methods_NNS -LRB-_-LRB- FPClose_NN for_IN itemset_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: and_CC CloseGraph_NNP for_IN subgraph_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- -RRB-_-RRB- followed_VBN by_IN feature_NN selection_NN ,_, as_RB well_RB as_IN a_DT state-of-art_NN integrated_VBN ``_`` two-step_JJ ''_'' approach_NN PatClass_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- for_IN frequent_JJ itemsets_NNS mining_NN ._.
+At_IN the_DT time_NN of_IN final_JJ copy_NN preparat_NN
+mainly_RB focus_VB on_IN mining_NN high-support_JJ ,_, high-confidence_JJ rules_NNS and_CC building_VBG a_DT rule-based_JJ classifier_NN ._.
+Prediction_NN is_VBZ made_VBN based_VBN on_IN the_DT top_NN ranked_VBD rule_NN or_CC multiple_JJ rules_NNS ._.
+A_DT recent_JJ work_NN on_IN top-k_NN rule_NN mining_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: discovers_VBZ top-k_NN covering_VBG rule_NN groups_NNS for_IN highdimensional_JJ gene_NN expression_NN profiles_NNS ._.
+A_DT classifier_NN RCBT_NN is_VBZ constructed_VBN from_IN the_DT top-k_NN covering_VBG rule_NN groups_NNS and_CC achieves_VBZ very_RB high_JJ accuracy_NN ._.
+Harmony_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- i_LS
+ve_IN no_DT pre-defined_JJ feature_NN vectors_NNS that_WDT can_MD be_VB given_VBN to_TO data_NN mining_NN algorithms_NNS to_TO construct_VB predictive_JJ models_NNS ._.
+Facing_VBG these_DT challenges_NNS ,_, frequent-patterns_NNS -LRB-_-LRB- e.g._FW ,_, frequent_JJ itemsets_NNS -LRB-_-LRB- 3_CD ,_, 13_CD -RRB-_-RRB- ,_, graph_NN mining_NN =_JJ -_: =[_NN 17_CD ,_, 25_CD -RRB-_-RRB- -_: =_JJ -_: and_CC sequential_JJ pattern_NN mining_NN -LRB-_-LRB- 4_CD ,_, 21_CD -RRB-_-RRB- ,_, etc_NN -RRB-_-RRB- have_VBP been_VBN proposed_VBN and_CC actively_RB studied_VBN as_IN candidate_NN feature_NN sets_NNS ._.
+These_DT methods_NNS look_VBP for_IN statistically_RB significant_JJ structures_NNS hidden_VBN in_IN ``_`` raw_JJ ''_'' data_NNS ._.
+The_DT ma_NN
+ng_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- discovers_VBZ top-k_NN covering_VBG rule_NN groups_NNS for_IN highdimensional_JJ gene_NN expression_NN profiles_NNS ._.
+A_DT classifier_NN RCBT_NN is_VBZ constructed_VBN from_IN the_DT top-k_NN covering_VBG rule_NN groups_NNS and_CC achieves_VBZ very_RB high_JJ accuracy_NN ._.
+Harmony_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ another_DT rule-based_JJ classifier_NN which_WDT directly_RB mines_NNS classification_NN rules_NNS ._.
+It_PRP uses_VBZ an_DT instance-centric_JJ rule-generation_NN approach_NN and_CC assures_VBZ for_IN each_DT training_NN instance_NN ,_, that_IN one_CD of_IN the_DT highest-confid_NN
+on_IN ._.
+In_IN recent_JJ years_NNS ,_, much_JJ work_NN has_VBZ been_VBN carried_VBN out_RP to_TO address_VB the_DT graph_NN classification_NN problem_NN ._.
+Basically_RB these_DT studies_NNS can_MD be_VB divided_VBN into_IN three_CD approaches_NNS :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- structure_NN or_CC fragment-based_JJ approach_NN =_JJ -_: =[_NN 15_CD ,_, 9_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- kernelbased_JJ approach_NN -LRB-_-LRB- 20_CD ,_, 10_CD -RRB-_-RRB- ,_, and_CC -LRB-_-LRB- 3_LS -RRB-_-RRB- boosting_VBG method_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+Typically_RB ,_, the_DT basic_JJ idea_NN of_IN structure_NN or_CC fragment-based_JJ approach_NN is_VBZ to_TO extract_VB frequent_JJ substructures_NNS -LRB-_-LRB- 15_CD ,_, 9_CD -RRB-_-RRB- ,_, local_JJ graph_NN fragments_NNS
+on_IN ._.
+In_IN recent_JJ years_NNS ,_, much_JJ work_NN has_VBZ been_VBN carried_VBN out_RP to_TO address_VB the_DT graph_NN classification_NN problem_NN ._.
+Basically_RB these_DT studies_NNS can_MD be_VB divided_VBN into_IN three_CD approaches_NNS :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- structure_NN or_CC fragment-based_JJ approach_NN =_JJ -_: =[_NN 15_CD ,_, 9_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- kernelbased_JJ approach_NN -LRB-_-LRB- 20_CD ,_, 10_CD -RRB-_-RRB- ,_, and_CC -LRB-_-LRB- 3_LS -RRB-_-RRB- boosting_VBG method_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+Typically_RB ,_, the_DT basic_JJ idea_NN of_IN structure_NN or_CC fragment-based_JJ approach_NN is_VBZ to_TO extract_VB frequent_JJ substructures_NNS -LRB-_-LRB- 15_CD ,_, 9_CD -RRB-_-RRB- ,_, local_JJ graph_NN fragments_NNS
+tion_NN problem_NN ,_, where_WRB the_DT class_NN labels_NNS are_VBP either_RB active_JJ or_CC inactive_JJ ._.
+The_DT active_JJ class_NN is_VBZ very_RB rare_JJ compared_VBN with_IN the_DT inactive_JJ class_NN ._.
+Another_DT dataset_NN is_VBZ obtained_VBN from_IN the_DT AIDS_NNP anti-viral_JJ screen_NN program_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT screening_JJ tests_NNS are_VBP evaluated_VBN in_IN one_CD of_IN the_DT following_JJ three_CD categories_NNS :_: confirmed_VBN active_JJ -LRB-_-LRB- CA_NNP -RRB-_-RRB- ,_, confirmed_VBD moderately_RB active_JJ -LRB-_-LRB- CM_NN -RRB-_-RRB- and_CC confirmed_VBD inactive_JJ -LRB-_-LRB- CI_NN -RRB-_-RRB- ._.
+Both_DT CA_NNP and_CC CM_NN classes_NNS are_VBP extremely_RB
+usually_RB much_RB larger_JJR and_CC the_DT graph_NN isomorphism_NN test_NN itself_PRP is_VBZ a_DT non-trivial_JJ research_NN problem_NN ._.
+Thus_RB ,_, frequent-subgraph_JJ mining_NN provides_VBZ an_DT exciting_JJ test_NN bed_NN for_IN the_DT proposed_VBN method_NN ._.
+From_IN PubChem_NNP project_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP selected_VBD a_DT series_NN of_IN graph_NN datasets_NNS with_IN rather_RB skewed_JJ distributions_NNS ._.
+As_IN commonly_RB recognized_VBN by_IN the_DT graph_NN mining_NN community_NN ,_, these_DT are_VBP some_DT of_IN the_DT most_RBS challenging_JJ tasks_NNS ._.
+Each_DT of_IN the_DT NCI_NN anti-canc_JJ
+and_CC -LRB-_-LRB- 3_LS -RRB-_-RRB- boosting_VBG method_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+Typically_RB ,_, the_DT basic_JJ idea_NN of_IN structure_NN or_CC fragment-based_JJ approach_NN is_VBZ to_TO extract_VB frequent_JJ substructures_NNS -LRB-_-LRB- 15_CD ,_, 9_CD -RRB-_-RRB- ,_, local_JJ graph_NN fragments_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, or_CC cyclic_JJ patterns_NNS and_CC trees_NNS =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: and_CC use_VB them_PRP as_IN descriptors_NNS to_TO represent_VB the_DT graph_NN data_NNS ._.
+Studies_NNS with_IN kernelbased_JJ approach_NN aim_NN at_IN designing_VBG effective_JJ kernel_NN functions_NNS to_TO measure_VB the_DT similarity_NN between_IN graphs_NNS ._.
+Several_JJ recent_JJ proposa_NN
+ve_IN no_DT pre-defined_JJ feature_NN vectors_NNS that_WDT can_MD be_VB given_VBN to_TO data_NN mining_NN algorithms_NNS to_TO construct_VB predictive_JJ models_NNS ._.
+Facing_VBG these_DT challenges_NNS ,_, frequent-patterns_NNS -LRB-_-LRB- e.g._FW ,_, frequent_JJ itemsets_NNS -LRB-_-LRB- 3_CD ,_, 13_CD -RRB-_-RRB- ,_, graph_NN mining_NN =_JJ -_: =[_NN 17_CD ,_, 25_CD -RRB-_-RRB- -_: =_JJ -_: and_CC sequential_JJ pattern_NN mining_NN -LRB-_-LRB- 4_CD ,_, 21_CD -RRB-_-RRB- ,_, etc_NN -RRB-_-RRB- have_VBP been_VBN proposed_VBN and_CC actively_RB studied_VBN as_IN candidate_NN feature_NN sets_NNS ._.
+These_DT methods_NNS look_VBP for_IN statistically_RB significant_JJ structures_NNS hidden_VBN in_IN ``_`` raw_JJ ''_'' data_NNS ._.
+The_DT ma_NN
+e_LS kernel_NN functions_NNS to_TO measure_VB the_DT similarity_NN between_IN graphs_NNS ._.
+Several_JJ recent_JJ proposals_NNS have_VBP discussed_VBN how_WRB to_TO make_VB frequent_JJ pattern_NN mining_NN more_RBR conscious_JJ of_IN memory_NN hierarchy_NN and_CC architecture_NN ,_, including_VBG =_JJ -_: =[_NN 11_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+-LRB-_-LRB- 11_CD -RRB-_-RRB- proposed_VBD a_DT cacheconscious_JJ prefix_NN tree_NN which_WDT improves_VBZ spacial_JJ locality_NN and_CC enhances_VBZ the_DT benefits_NNS from_IN hardware_NN cache_NN line_NN prefetching_NN ._.
+-LRB-_-LRB- 8_CD -RRB-_-RRB- proposed_VBD a_DT parallel_JJ mining_NN algorithm_NN of_IN sequential_JJ patt_NN
+nt_NN pattern_NN in_IN classification_NN has_VBZ been_VBN explored_VBN by_IN many_JJ recent_JJ studies_NNS ._.
+The_DT association_NN between_IN frequent_JJ patterns_NNS and_CC class_NN labels_NNS is_VBZ used_VBN for_IN prediction_NN ._.
+Earlier_JJR studies_NNS on_IN associative_JJ classification_NN =_JJ -_: =[_NN 19_CD ,_, 18_CD ,_, 27_CD -RRB-_-RRB- -_: =_JJ -_: mainly_RB focus_VB on_IN mining_NN high-support_JJ ,_, high-confidence_JJ rules_NNS and_CC building_VBG a_DT rule-based_JJ classifier_NN ._.
+Prediction_NN is_VBZ made_VBN based_VBN on_IN the_DT top_NN ranked_VBD rule_NN or_CC multiple_JJ rules_NNS ._.
+A_DT recent_JJ work_NN on_IN top-k_NN rule_NN mining_NN
+ng_NN task_NN and_CC can_MD be_VB applied_VBN to_TO further_RB improve_VB the_DT efficiency_NN of_IN the_DT proposed_VBN method_NN ._.
+Besides_IN these_DT efficient_JJ algorithms_NNS on_IN the_DT architecture_NN level_NN ,_, there_EX are_VBP some_DT up-to-date_JJ methods_NNS DDPMine_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC LEAP_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: on_IN algorithm_NN level_NN which_WDT directly_RB mines_NNS the_DT most_RBS discriminative_JJ pattern_NN via_IN specially_RB designed_VBN heuristics_NNS without_IN mining_VBG the_DT complete_JJ set_NN of_IN frequent_JJ patterns_NNS ._.
+Since_IN a_DT lot_NN of_IN search_NN space_NN can_MD be_VB prun_JJ

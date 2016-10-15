@@ -1,0 +1,75 @@
+A_DT search_NN engine_NN for_IN natural_JJ language_NN applications_NNS
+Many_JJ modern_JJ natural_JJ language-processing_NN applications_NNS utilize_VBP search_NN engines_NNS to_TO locate_VB large_JJ numbers_NNS of_IN Web_NN documents_NNS or_CC to_TO compute_VB statistics_NNS over_IN the_DT Web_NN corpus_NN ._.
+Yet_CC Web_NN search_NN engines_NNS are_VBP designed_VBN and_CC optimized_VBN for_IN simple_JJ human_JJ queries_NNS --_: they_PRP are_VBP not_RB well_RB suited_VBN to_TO support_VB such_JJ applications_NNS ._.
+As_IN a_DT result_NN ,_, these_DT applications_NNS are_VBP forced_VBN to_TO issue_VB millions_NNS of_IN successive_JJ queries_NNS resulting_VBG in_IN unnecessary_JJ search_NN engine_NN load_NN and_CC in_IN slow_JJ applications_NNS with_IN limited_JJ scalability_NN ._.
+In_IN response_NN ,_, this_DT paper_NN introduces_VBZ the_DT Bindings_NNP Engine_NNP -LRB-_-LRB- BE_VB -RRB-_-RRB- ,_, which_WDT supports_VBZ queries_NNS containing_VBG typed_VBN variables_NNS and_CC string-processing_JJ functions_NNS ._.
+For_IN example_NN ,_, in_IN response_NN to_TO the_DT query_NN ``_`` powerful_JJ `_`` noun_NN '_'' ''_'' BE_VB will_MD return_VB all_PDT the_DT nouns_NNS in_IN its_PRP$ index_NN that_WDT immediately_RB follow_VBP the_DT word_NN ``_`` powerful_JJ ''_'' ,_, sorted_VBN by_IN frequency_NN ._.
+In_IN response_NN to_TO the_DT query_NN ``_`` Cities_NNS such_JJ as_IN ProperNoun_NNP -LRB-_-LRB- Head_NNP -LRB-_-LRB- `_`` NounPhrase_NNP '_'' -RRB-_-RRB- -RRB-_-RRB- ''_'' ,_, BE_VB will_MD return_VB a_DT list_NN of_IN proper_JJ nouns_NNS likely_JJ to_TO be_VB city_NN names_NNS ._.
+BE_VB 's_POS novel_JJ neighborhood_NN index_NN enables_VBZ it_PRP to_TO do_VB so_RB with_IN O_NN -LRB-_-LRB- k_NN -RRB-_-RRB- random_JJ disk_NN seeks_VBZ and_CC O_NN -LRB-_-LRB- k_NN -RRB-_-RRB- serial_JJ disk_NN reads_VBZ ,_, where_WRB k_NN is_VBZ the_DT number_NN of_IN non-variable_JJ terms_NNS in_IN its_PRP$ query_NN ._.
+As_IN a_DT result_NN ,_, BE_VB can_MD yield_VB several_JJ orders_NNS of_IN magnitude_NN speedup_NN for_IN large-scale_JJ language-processing_JJ applications_NNS ._.
+The_DT main_JJ cost_NN is_VBZ a_DT modest_JJ increase_NN in_IN space_NN to_TO store_VB the_DT index_NN ._.
+We_PRP report_VBP on_IN experiments_NNS validating_VBG these_DT claims_NNS ,_, and_CC analyze_VB how_WRB BE_VB 's_POS space-time_JJ tradeoff_NN scales_NNS with_IN the_DT size_NN of_IN its_PRP$ index_NN and_CC the_DT number_NN of_IN variable_JJ types_NNS ._.
+Finally_RB ,_, we_PRP describe_VBP how_WRB a_DT BE-based_JJ application_NN extracts_NNS thousands_NNS of_IN facts_NNS from_IN the_DT Web_NN at_IN interactive_JJ speeds_NNS in_IN response_NN to_TO simple_JJ user_NN queries_NNS ._.
+een_NN efforts_NNS to_TO develop_VB search_NN engines_NNS that_WDT support_VBP different_JJ kinds_NNS of_IN linguistic_JJ queries_NNS ,_, but_CC so_RB far_RB these_DT have_VBP used_VBN much_RB smaller_JJR document_NN collections_NNS than_IN those_DT indexed_VBN by_IN commercial_JJ search_NN engines_NNS -LRB-_-LRB- =_JJ -_: =_JJ Cafarella_NNP and_CC Etzioni_NNP ,_, 2005_CD -_: =_JJ -_: ;_: Banko_NNP et_FW al._FW ,_, 2007_CD -RRB-_-RRB- ._.
+Another_DT option_NN is_VBZ to_TO apply_VB NLP-strength_JJ postprocessing_NN to_TO the_DT pages_NNS returned_VBN by_IN a_DT search_NN engine_NN for_IN a_DT particular_JJ query_NN -LRB-_-LRB- Nakov_NNP and_CC Hearst_NNP ,_, 2005_CD -RRB-_-RRB- ._.
+For_IN efficiency_NN reasons_NNS this_DT is_VBZ a_DT
+rmation_NN needs_NNS and_CC prior_JJ knowledge_NN differs_VBZ from_IN those_DT of_IN a_DT linguist_NN ._.
+Moreover_RB ,_, NETSPEAK_NNP outperforms_VBZ existing_VBG tools_NNS in_IN terms_NNS of_IN both_CC retrieval_NN speed_NN and_CC the_DT extent_NN of_IN the_DT indexed_VBN language_NN resources_NNS ._.
+In_IN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: the_DT authors_NNS propose_VBP an_DT index_NN data_NN structure_NN that_WDT supports_VBZ linguistic_JJ queries_NNS ;_: a_DT comparison_NN with_IN our_PRP$ approach_NN is_VBZ still_RB missing_VBG ._.
+Corpora_NN of_IN n-grams_NN are_VBP frequently_RB used_VBN in_IN natural_JJ language_NN processing_VBG an_DT
+ge_NN document_NN collections_NNS in_IN relation_NN extraction_NN -LRB-_-LRB- see_VB -LRB-_-LRB- 1_LS -RRB-_-RRB- for_IN an_DT overview_NN -RRB-_-RRB- ,_, including_VBG -LRB-_-LRB- heuristic_NN -RRB-_-RRB- filtering_VBG of_IN documents_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, the_DT use_NN of_IN very_RB simple_JJ extraction_NN patterns_NNS and_CC specialized_JJ index_NN structures_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT approaches_NNS are_VBP orthogonal_JJ to_TO ours_PRP and_CC may_MD be_VB combined_VBN with_IN it_PRP ._.
+The_DT problem_NN of_IN computing_VBG the_DT list-membership_NN and_CC crossdocument_NN features_NNS also_RB has_VBZ strong_JJ similarity_NN to_TO the_DT processing_NN of_IN join_VB and_CC
+onyms_NNS among_IN schema_NN elements_NNS ._.
+We_PRP can_MD also_RB foresee_VB the_DT application_NN of_IN techniques_NNS taken_VBN from_IN different_JJ areas_NNS in_IN which_WDT the_DT problem_NN of_IN search_NN in_IN semistructured_JJ or_CC non_JJ structured_JJ data_NNS was_VBD already_RB addressed_VBN =_JJ -_: =[_NN 8,1,6,15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN general_JJ ,_, multiple_JJ structured_JJ queries_NNS are_VBP constructed_VBN from_IN a_DT set_NN of_IN keywords_NNS ._.
+The_DT issue_NN that_WDT needs_VBZ to_TO be_VB addressed_VBN is_VBZ ,_, therefore_RB ,_, to_TO identify_VB the_DT queries_NNS that_WDT closely_RB meet_VBP user_NN expectations_NNS ._.
+Usage_NN
+a_DT variety_NN of_IN domains_NNS including_VBG documents_NNS with_IN numerical_JJ data_NNS -LRB-_-LRB- Agrawal_NNP and_CC Srikant_NNP 2003_CD -RRB-_-RRB- ,_, structured_JJ web_NN data_NNS -LRB-_-LRB- Spertus_NNP and_CC Stein_NNP 2000_CD ;_: Mendelzon_NNP ,_, Mihaila_NNP ,_, and_CC Milo_NNP 1996_CD -RRB-_-RRB- ,_, web-based_JJ question_NN answering_NN -LRB-_-LRB- =_JJ -_: =_JJ Cafarella_NNP and_CC Etzioni_NNP 2005_CD -_: =--RRB-_NN ,_, or_CC for_IN defining_VBG text_NN regions_NNS in_IN a_DT document_NN -LRB-_-LRB- Miller_NNP and_CC Myers_NNP 1999_CD -RRB-_-RRB- ._.
+We_PRP present_VBP a_DT query_JJ language_NN for_IN a_DT new_JJ domain_NN ,_, namely_RB algebra_NN problem_NN generation_NN ._.
+Past_JJ work_NN on_IN query_NN execution_NN has_VBZ been_VBN mainly_RB bui_NN
+ecall_NN ._.
+We_PRP quantify_VBP this_DT tradeoff_NN for_IN KNOWITNOW_NNP 's_POS 60,000,000_CD page_NN index_NN and_CC extrapolate_VB how_WRB the_DT tradeoff_NN would_MD change_VB with_IN larger_JJR indices_NNS ._.
+Our_PRP$ recent_JJ work_NN has_VBZ described_VBN the_DT BE_VB search_NN engine_NN in_IN detail_NN -LRB-_-LRB- =_JJ -_: =_JJ Cafarella_NNP and_CC Etzioni_NNP ,_, 2005_CD -_: =--RRB-_NN ,_, and_CC also_RB analyzed_VBD the_DT URNS_NNP model_NN 's_POS ability_NN to_TO compute_VB accurate_JJ probability_NN estimates_NNS for_IN extractions_NNS -LRB-_-LRB- Downey_NNP et_FW al._FW ,_, 2005_CD -RRB-_-RRB- ._.
+However_RB ,_, this_DT is_VBZ the_DT first_JJ paper_NN to_TO investigate_VB the_DT composition_NN of_IN these_DT
+al_FW queries_NNS can_MD do_VB substantially_RB better_RBR than_IN any_DT of_IN the_DT approaches_NNS listed_VBN above_IN ._.
+For_IN example_NN ,_, we_PRP could_MD construct_VB a_DT neighbor_NN index_NN ,_, which_WDT folds_VBZ small_JJ amounts_NNS of_IN the_DT document_NN text_NN into_IN an_DT inverted_JJ index_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT above_JJ example_NN ,_, such_PDT an_DT index_NN allows_VBZ us_PRP to_TO extract_VB values_NNS for_IN <string>_NN and_CC <date>_NN immediately_RB from_IN the_DT index_NN itself_PRP ,_, without_IN loading_VBG the_DT original_JJ 4sLike_NNP Gore_NNP ,_, Mr._NNP Orson_NNP Valleehad_NNP lived_VBD become_VBN
+ore_NN recently_RB ,_, Etzioni_NNP et_FW al._FW -LRB-_-LRB- 24_CD -RRB-_-RRB- used_VBD what_WP could_MD be_VB viewed_VBN as_IN an_DT instance_NN of_IN Automatic_NNP Query_NNP Generation_NNP to_TO query_VB generic_JJ search_NN engines_NNS for_IN extracting_VBG information_NN from_IN the_DT web_NN ._.
+Cafarella_NNP and_CC Etzioni_NNP =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: presented_VBD a_DT complementary_JJ approach_NN of_IN constructing_VBG a_DT special-purpose_JJ index_NN for_IN efficiently_RB retrieving_VBG promising_JJ text_NN passages_NNS for_IN information_NN extraction_NN ._.
+Such_JJ document_NN -LRB-_-LRB- and_CC passage_NN -RRB-_-RRB- retrieval_NN improve_VB
+per_IN query_NN ._.
+In_IN contrast_NN ,_, information_NN extraction_NN systems_NNS can_MD submit_VB sophisticated_JJ and_CC specific_JJ queries_NNS and_CC request_NN many_JJ or_CC all_DT query_JJ results_NNS ._.
+To_TO better_JJR support_NN information_NN extraction_NN ,_, Cafarella_NNP et_FW al._FW =_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: introduced_VBD the_DT Bindings_NNP Engine_NNP -LRB-_-LRB- BE_VB -RRB-_-RRB- ,_, which_WDT supports_VBZ queries_NNS containing_VBG typed_VBN variables_NNS and_CC some_DT linguistic_JJ functions_NNS ._.
+For_IN example_NN ,_, in_IN response_NN to_TO the_DT query_NN ``_`` Mayors_NNS such_JJ as_IN ProperNoun_NNP -LRB-_-LRB- Head_NNP -LRB-_-LRB- NP_NNP -RRB-_-RRB- -RRB-_-RRB- ''_'' ,_, BE_VB w_NN
+hin_VB the_DT word_NN distance_NN of_IN 10_CD ,_, ''_'' whether_IN they_PRP are_VBP permissible_JJ or_CC not_RB remains_VBZ unclear_JJ in_IN terms_NNS of_IN scalability_NN because_IN the_DT index_NN size_NN grows_VBZ very_RB rapidly_RB ._.
+A_DT search_NN engine_NN that_WDT is_VBZ specially_RB designed_VBN for_IN NLP_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: will_MD benefit_VB our_PRP$ research_NN greatly_RB if_IN it_PRP actuallysFigure_NN 19_CD :_: Overview_NN of_IN module_NN dependency_NN ._.
+Figure_NNP 20_CD :_: Relate-Identify_JJ process_NN of_IN Super_NNP Social_NNP Network_NNP Mining_NNP ._.
+scales_NNS properly_RB ._.
+Figure_NN 19_CD shows_VBZ an_DT overv_NN
+g_NN the_DT web_NN for_IN linguistic_JJ purposes_NNS ._.
+Commercial_JJ search_NN engines_NNS are_VBP optimized_VBN for_IN ordinary_JJ users_NNS ._.
+Therefore_RB ,_, it_PRP is_VBZ desirable_JJ to_TO crawl_VB the_DT web_NN and_CC to_TO develop_VB specific_JJ search_NN engines_NNS for_IN NLP_NN applications_NNS -LRB-_-LRB- =_JJ -_: =_JJ Cafarella_NNP and_CC Etzioni_NNP ,_, 2005_CD -_: =--RRB-_NN ._.
+However_RB ,_, considering_VBG that_IN great_JJ efforts_NNS are_VBP taken_VBN in_IN commercial_JJ search_NN engines_NNS to_TO maintain_VB quality_NN of_IN crawling_NN and_CC indexing_NN ,_, especially_RB against_IN spammers_NNS ,_, it_PRP is_VBZ still_RB important_JJ to_TO pursue_VB the_DT possibi_NN
+hard_JJ proximity_NN clauses_NNS across_IN tagged_VBN fields_NNS ,_, but_CC a_DT hard_JJ proximity_NN window_NN must_MD be_VB specified_VBN by_IN the_DT user_NN ;_: also_RB ,_, we_PRP do_VBP not_RB know_VB of_IN any_DT workload-sensitive_JJ index_NN optimization_NN in_IN INDRI_NNP ._.
+The_DT Bindings_NNP Engine_NNP =_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- BE_VB -RRB-_-RRB- is_VBZ a_DT critical_JJ breakthrough_NN toward_IN semantic_JJ pattern_NN searches_NNS ,_, and_CC is_VBZ specifically_RB optimized_VBN for_IN text_NN ,_, but_CC it_PRP depends_VBZ strongly_RB on_IN immediate_JJ juxtaposition_NN of_IN ground_NN constants_NNS with_IN patterns_NNS to_TO insta_VB
+m_NN abstractions_NNS such_JJ as_IN filesystems_NNS and_CC processes_NNS ._.
+Ideally_RB ,_, each_DT application_NN tailors_VBZ the_DT abstractions_NNS to_TO its_PRP$ needs_NNS and_CC pays_VBZ only_RB for_IN what_WP it_PRP uses_VBZ ._.
+For_IN example_NN ,_, the_DT distributed_VBN search_NN application_NN Nutch_NN =_JJ -_: =[_NN 8_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: needs_VBZ a_DT Java_NNP virtual_JJ machine_NN ,_, access_NN to_TO a_DT read-only_JJ store_NN ,_, and_CC a_DT simple_JJ networking_NN stack_VBP ;_: Section_NN 5.3_CD shows_VBZ that_IN simple_JJ implementations_NNS of_IN these_DT abstractions_NNS achieve_VBP good_JJ performance_NN ._.
+Unfortunately_RB ,_,
+;_: it_PRP is_VBZ also_RB fairly_RB unusable_JJ for_IN an_DT average_JJ library_NN user_NN ._.
+Therefore_RB we_PRP have_VBP investigated_VBN applying_VBG solutions_NNS that_WDT would_MD allow_VB users_NNS to_TO query_VB the_DT semantic_JJ database_NN of_IN the_DT library_NN using_VBG natural_JJ language_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP decided_VBD to_TO adopt_VB a_DT simple_NN ,_, syet_NN quite_RB powerful_JJ ,_, solution_NN based_VBN on_IN natural_JJ language_NN query_NN templates_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+The_DT templates_NNS were_VBD created_VBN from_IN favorite_JJ questions_NNS that_IN users_NNS of_IN a_DT certain_JJ JeromeDL_NN instance_NN
+gine_NN load_NN and_CC in_IN slow_JJ applications_NNS with_IN limited_JJ scalability_NN ._.
+In_IN response_NN ,_, we_PRP have_VBP designed_VBN the_DT Bindings_NNP Engine_NNP -LRB-_-LRB- BE_VB -RRB-_-RRB- ,_, which_WDT supports_VBZ queries_NNS containing_VBG typed_VBN variables_NNS and_CC string-processing_JJ functions_NNS -LRB-_-LRB- =_JJ -_: =_JJ Cafarella_NNP and_CC Etzioni_NNP ,_, 2005_CD -_: =--RRB-_NN ._.
+For_IN example_NN ,_, in_IN response_NN to_TO the_DT query_NN ``_`` powerful_JJ 〈_NN noun_NN 〉_NN ''_'' BE_VB will_MD return_VB all_PDT the_DT nouns_NNS in_IN its_PRP$ index_NN that_WDT immediately_RB follow_VBP the_DT word_NN ``_`` powerful_JJ ''_'' ,_, sorted_VBN by_IN frequency_NN ._.
+-LRB-_-LRB- Figure_NN 1_CD shows_VBZ several_JJ possible_JJ
+equently_RB ,_, these_DT queries_NNS are_VBP issued_VBN against_IN the_DT database_NN or_CC a_DT search_NN engine_NN to_TO retrieve_VB promising_JJ documents_NNS ._.
+Etzioni_NNP et_FW al._FW also_RB propose_VBP to_TO query_VB search_NN engines_NNS for_IN extracting_VBG information_NN from_IN the_DT web_NN =_JJ -_: =[_NN 6_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+None_NN of_IN these_DT techniques_NNS exploit_VBP the_DT overlap_VBP among_IN the_DT queries_NNS ,_, nor_CC do_VBP they_PRP consider_VB ``_`` hybrid_JJ ''_'' strategies_NNS that_WDT try_VBP to_TO trade-off_NN between_IN query_NN and_CC document_NN processing_NN costs_NNS ._.
+Their_PRP$ techniques_NNS if_IN adapte_NN
+s_NN into_IN a_DT span_NN and_CC then_RB measures_VBZ the_DT contribution_NN of_IN these_DT spans_NNS ._.
+More_RBR closely_RB related_JJ to_TO our_PRP$ work_NN are_VBP systems_NNS for_IN semantic_JJ search_NN ,_, information_NN extraction_NN ,_, question_NN answering_NN ,_, and_CC entity_NN search_NN ,_, e.g._FW ,_, =_JJ -_: =[_NN 6_CD ,_, 14_CD ,_, 7_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT Binding_NN Engine_NNP -LRB-_-LRB- 6_CD -RRB-_-RRB- supports_VBZ queries_NNS involving_VBG concepts_NNS ,_, but_CC depends_VBZ heavily_RB on_IN matches_NNS being_VBG very_RB close_RB to_TO each_DT other_JJ ._.
+Avatar_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- maps_VBZ rule-based_JJ annotators_NNS into_IN database_NN queries_NNS ,_, and_CC relies_VBZ on_IN

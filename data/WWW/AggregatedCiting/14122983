@@ -1,0 +1,122 @@
+Trains_NNS of_IN thought_NN :_: generating_VBG information_NN maps_NNS
+When_WRB information_NN is_VBZ abundant_JJ ,_, it_PRP becomes_VBZ increasingly_RB difficult_JJ to_TO fit_VB nuggets_NNS of_IN knowledge_NN into_IN a_DT single_JJ coherent_JJ picture_NN ._.
+Complex_NN stories_NNS spaghetti_NNS into_IN branches_NNS ,_, side_NN stories_NNS ,_, and_CC intertwining_VBG narratives_NNS ._.
+In_IN order_NN to_TO explore_VB these_DT stories_NNS ,_, one_CD needs_VBZ a_DT map_NN to_TO navigate_VB unfamiliar_JJ territory_NN ._.
+We_PRP propose_VBP a_DT methodology_NN for_IN creating_VBG structured_JJ summaries_NNS of_IN information_NN ,_, which_WDT we_PRP call_VBP metro_NN maps_NNS ._.
+Our_PRP$ proposed_VBN algorithm_NN generates_VBZ a_DT concise_JJ structured_JJ set_NN of_IN documents_NNS maximizing_VBG coverage_NN of_IN salient_JJ pieces_NNS of_IN information_NN ._.
+Most_RBS importantly_RB ,_, metro_NN maps_NNS explicitly_RB show_VBP the_DT relations_NNS among_IN retrieved_VBN pieces_NNS in_IN a_DT way_NN that_WDT captures_VBZ story_NN development_NN ._.
+We_PRP first_RB formalize_VBP characteristics_NNS of_IN good_JJ maps_NNS and_CC formulate_VB their_PRP$ construction_NN as_IN an_DT optimization_NN problem_NN ._.
+Then_RB we_PRP provide_VBP efficient_JJ methods_NNS with_IN theoretical_JJ guarantees_NNS for_IN generating_VBG maps_NNS ._.
+Finally_RB ,_, we_PRP integrate_VBP user_NN interaction_NN into_IN our_PRP$ framework_NN ,_, allowing_VBG users_NNS to_TO alter_VB the_DT maps_NNS to_TO better_RBR reflect_VB their_PRP$ interests_NNS ._.
+Pilot_NN user_NN studies_NNS with_IN a_DT real-world_JJ dataset_NN demonstrate_VBP that_IN the_DT method_NN is_VBZ able_JJ to_TO produce_VB maps_NNS which_WDT help_VBP users_NNS acquire_VB knowledge_NN efficiently_RB ._.
+eir_NN tradeoffs_NNS and_CC combine_VB them_PRP into_IN one_CD objective_NN function_NN ._.
+2.1_CD Coherence_NN How_WRB should_MD we_PRP measure_VB coherence_NN of_IN a_DT chain_NN of_IN articles_NNS ?_.
+We_PRP rely_VBP on_IN the_DT notion_NN of_IN coherence_NN developed_VBN in_IN Connectthe-Dots_NNP -LRB-_-LRB- CTD_NNP -RRB-_-RRB- =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT following_NN ,_, we_PRP briefly_RB review_VBP this_DT notion_NN ._.
+In_IN order_NN to_TO define_VB coherence_NN ,_, a_DT natural_JJ first_JJ step_NN is_VBZ to_TO measure_VB similarity_NN between_IN each_DT pair_NN of_IN consecutive_JJ articles_NNS along_IN the_DT chain_NN ._.
+Since_IN a_DT single_JJ
+,_, in_IN contrast_NN ,_, has_VBZ been_VBN limited_VBN largely_RB to_TO list-output_JJ models_NNS ._.
+In_IN the_DT summarization_NN task_NN -LRB-_-LRB- 14_CD ,_, 2_CD ,_, 15_CD -RRB-_-RRB- ,_, the_DT goal_NN is_VBZ often_RB to_TO summarize_VB a_DT corpus_NN of_IN texts_NNS by_IN extracting_VBG a_DT list_NN of_IN sentences_NNS ._.
+Other_JJ methods_NNS =_JJ -_: =[_NN 10_CD ,_, 20_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: discover_VB new_JJ events_NNS ,_, but_CC do_VBP not_RB attempt_VB to_TO string_VB them_PRP together_RB ._.
+Numerous_JJ prior_JJ efforts_NNS have_VBP moved_VBN beyond_IN list-output_NN ,_, and_CC proposed_VBD different_JJ notions_NNS of_IN storylines_NNS -LRB-_-LRB- 1_CD ,_, 17_CD ,_, 18_CD ,_, 2_CD -RRB-_-RRB- ._.
+Graph_NN representatio_NN
+them_PRP together_RB ._.
+Numerous_JJ prior_JJ efforts_NNS have_VBP moved_VBN beyond_IN list-output_NN ,_, and_CC proposed_VBD different_JJ notions_NNS of_IN storylines_NNS -LRB-_-LRB- 1_CD ,_, 17_CD ,_, 18_CD ,_, 2_CD -RRB-_-RRB- ._.
+Graph_NN representations_NNS are_VBP common_JJ across_IN a_DT variety_NN of_IN related_JJ problems_NNS =_JJ -_: =[_NN 9_CD ,_, 7_CD ,_, 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, from_IN topic_NN evolution_NN to_TO news_NN analysis_NN ._.
+However_RB ,_, in_IN all_DT of_IN those_DT methods_NNS ,_, there_EX is_VBZ no_DT notion_NN of_IN path-coherence_NN ._.
+In_IN other_JJ words_NNS ,_, the_DT edges_NNS in_IN the_DT graph_NN are_VBP selected_VBN because_IN they_PRP pass_VBP some_DT threshold_NN ,_,
+pired_VBN by_IN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Before_IN we_PRP measure_VBP the_DT coverage_NN of_IN an_DT entire_JJ map_NN ,_, we_PRP consider_VBP the_DT coverage_NN of_IN a_DT single_JJ document_NN ._.
+As_IN in_IN the_DT previous_JJ section_NN ,_, documents_NNS are_VBP feature_NN vectors_NNS ._.
+Let_VB function_NN coverdi_NN -LRB-_-LRB- w_NN -RRB-_-RRB- :_: W_NN →_NN =_JJ -_: =[_NN 0_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: quantify_VB the_DT amount_NN that_WDT document_VBP di_FW covers_VBZ feature_NN w._NN For_IN example_NN ,_, if_IN W_NN is_VBZ a_DT set_NN of_IN words_NNS ,_, we_PRP can_MD define_VB cover_NN ·_NN -LRB-_-LRB- ·_NN -RRB-_-RRB- as_IN tf-idf_JJ values_NNS ._.
+Next_RB ,_, we_PRP extend_VBP cover_NN ·_NN -LRB-_-LRB- ·_NN -RRB-_-RRB- to_TO maps_NNS ._.
+Since_IN in_IN our_PRP$ model_NN coverage_NN do_VBP
+hese_NN papers_NNS is_VBZ limited_VBN to_TO classroom_NN use_NN ,_, and_CC personal_JJ use_NN by_IN others_NNS ._.
+WWW_NN 2012_CD ,_, April_NNP 16_CD --_: 20_CD ,_, 2012_CD ,_, Lyon_NNP ,_, France_NNP ._.
+ACM_NN 978-1-4503-1229-5_CD \/_: 12\/04_CD ._.
+Previous_JJ news_NN summarization_NN systems_NNS with_IN structured_JJ output_NN =_JJ -_: =[_NN 17_CD ,_, 18_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP focused_VBN mostly_RB on_IN timeline_NN generation_NN ._.
+However_RB ,_, this_DT style_NN of_IN summarization_NN only_RB works_VBZ for_IN simple_JJ stories_NNS ,_, which_WDT are_VBP linear_JJ in_IN nature_NN ._.
+In_IN contrast_NN ,_, complex_NN stories_NNS display_VBP a_DT very_RB non-linear_JJ stru_NN
+t_NN :_: Not_RB only_RB does_VBZ our_PRP$ system_NN pick_NN nuggets_NNS of_IN information_NN ,_, it_PRP explicitly_RB shows_VBZ connections_NNS among_IN them_PRP ._.
+Prior_JJ work_NN ,_, in_IN contrast_NN ,_, has_VBZ been_VBN limited_VBN largely_RB to_TO list-output_JJ models_NNS ._.
+In_IN the_DT summarization_NN task_NN =_JJ -_: =[_NN 14_CD ,_, 2_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT goal_NN is_VBZ often_RB to_TO summarize_VB a_DT corpus_NN of_IN texts_NNS by_IN extracting_VBG a_DT list_NN of_IN sentences_NNS ._.
+Other_JJ methods_NNS -LRB-_-LRB- 10_CD ,_, 20_CD ,_, 19_CD -RRB-_-RRB- discover_VBP new_JJ events_NNS ,_, but_CC do_VBP not_RB attempt_VB to_TO string_VB them_PRP together_RB ._.
+Numerous_JJ prior_JJ efforts_NNS
+fter_VB already_RB reading_VBG articles_NNS A_NN provides_VBZ more_JJR coverage_NN than_IN reading_VBG v_LS after_IN reading_VBG a_DT superset_NN of_IN A_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Although_IN maximizing_VBG submodular_JJ functions_NNS is_VBZ still_RB NPhard_NN ,_, we_PRP can_MD exploit_VB the_DT classic_JJ result_NN of_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT shows_VBZ that_IN the_DT greedy_JJ algorithm_NN achieves_VBZ a_DT -LRB-_-LRB- 1_CD −_NN 1_CD -RRB-_-RRB- approximation_NN ._.
+e_LS In_IN other_JJ words_NNS ,_, we_PRP run_VBP K_NN iterations_NNS of_IN the_DT greedy_JJ algorithm_NN ._.
+In_IN each_DT iteration_NN ,_, we_PRP evaluate_VBP the_DT incremental_JJ coverage_NN of_IN eac_NN
+them_PRP together_RB ._.
+Numerous_JJ prior_JJ efforts_NNS have_VBP moved_VBN beyond_IN list-output_NN ,_, and_CC proposed_VBD different_JJ notions_NNS of_IN storylines_NNS -LRB-_-LRB- 1_CD ,_, 17_CD ,_, 18_CD ,_, 2_CD -RRB-_-RRB- ._.
+Graph_NN representations_NNS are_VBP common_JJ across_IN a_DT variety_NN of_IN related_JJ problems_NNS =_JJ -_: =[_NN 9_CD ,_, 7_CD ,_, 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, from_IN topic_NN evolution_NN to_TO news_NN analysis_NN ._.
+However_RB ,_, in_IN all_DT of_IN those_DT methods_NNS ,_, there_EX is_VBZ no_DT notion_NN of_IN path-coherence_NN ._.
+In_IN other_JJ words_NNS ,_, the_DT edges_NNS in_IN the_DT graph_NN are_VBP selected_VBN because_IN they_PRP pass_VBP some_DT threshold_NN ,_,
+budget_NN B_NN to_TO be_VB l_NN −_FW m._FW In_IN addition_NN ,_, we_PRP want_VBP f_SYM to_TO reflect_VB the_DT incremental_JJ coverage_NN of_IN path_NN p_NN given_VBN the_DT current_JJ map_NN ,_, so_IN we_PRP define_VBP f_LS -LRB-_-LRB- p_NN -RRB-_-RRB- =_JJ IncCover_NN -LRB-_-LRB- p_NN |_CD M_NN -RRB-_-RRB- We_PRP adapt_VBP the_DT submodular_JJ orienteering_NN algorithms_NNS of_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: to_TO our_PRP$ problem_NN ._.
+This_DT is_VBZ a_DT quasipolynomial_JJ time_NN recursive_JJ greedy_JJ algorithm_NN ._.
+Most_RBS importantly_RB ,_, it_PRP yields_VBZ an_DT α_NN =_JJ O_NN -LRB-_-LRB- log_NN OP_NN T_NN -RRB-_-RRB- approximation_NN ._.
+We_PRP combine_VBP the_DT greedy_JJ algorithm_NN with_IN submodular_JJ orienteering_NN ._.
+sers_NNS ._.
+Finally_RB ,_, different_JJ notions_NNS of_IN coherence_NN and_CC coverage_NN have_VBP been_VBN proposed_VBN in_IN the_DT literature_NN ._.
+For_IN example_NN ,_, enhancing_VBG coverage_NN has_VBZ been_VBN explored_VBN in_IN the_DT context_NN of_IN ranking_NN and_CC summarization_NN -LRB-_-LRB- see_VB MMR_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+We_PRP chose_VBD not_RB to_TO use_VB MMR_NNP as_IN it_PRP does_VBZ not_RB provide_VB approximation_NN guarantees_NNS ,_, and_CC could_MD not_RB be_VB combined_VBN with_IN our_PRP$ orienteering_VBG algorithm_NN ._.
+Modeling_NN coherence_NN via_IN lexical_JJ relations_NNS was_VBD studied_VBN in_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Howe_NNP
+aluate_VB a_DT large_JJ number_NN of_IN candidates_NNS ._.
+However_RB ,_, many_JJ of_IN those_DT re-evaluations_NNS are_VBP unnecessary_JJ ,_, since_IN the_DT incremental_JJ coverage_NN of_IN a_DT chain_NN can_MD only_RB decrease_VB as_IN our_PRP$ map_NN grows_VBZ larger_JJR ._.
+Therefore_RB ,_, we_PRP use_VBP CELF_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT provides_VBZ the_DT same_JJ approximation_NN guarantees_NNS ,_, but_CC uses_VBZ lazy_JJ evaluations_NNS ,_, often_RB leading_VBG to_TO dramatic_JJ speedups_NNS ._.
+3.3_CD Increasing_VBG connectivity_NN We_PRP now_RB know_VBP how_WRB to_TO find_VB a_DT high-coverage_JJ ,_, coherent_JJ map_NN M0_NN ._.
+polyfit_NN -LRB-_-LRB- FitDocs_FW ∗_FW -LRB-_-LRB- w_NN -RRB-_-RRB- ,_, degree_NN -RRB-_-RRB- ;_: 15_CD return_NN extractChains_NNS -LRB-_-LRB- FitDocs_NNP ,_, Model_NNP ∗_NNP new_JJ -RRB-_-RRB- ;_: We_PRP can_MD now_RB describe_VB our_PRP$ algorithm_NN for_IN finding_VBG good_JJ short_JJ chains_NNS -LRB-_-LRB- see_VB Algorithm_NNP 1_CD -RRB-_-RRB- ._.
+Our_PRP$ approach_NN is_VBZ inspired_VBN by_IN RANSAC_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+RANSAC_NN is_VBZ a_DT random_JJ sampling_NN method_NN ._.
+In_IN each_DT iteration_NN ,_, we_PRP randomly_RB select_VBP a_DT set_NN of_IN candidate_NN pairs_NNS of_IN articles_NNS ,_, -LCB-_-LRB- -LRB-_-LRB- d_NN ,_, d_FW ′_FW -RRB-_-RRB- -RCB-_-RRB- ,_, to_TO be_VB used_VBN as_IN chain_NN endpoints_NNS -LRB-_-LRB- Line_NN 2_CD -RRB-_-RRB- ._.
+We_PRP then_RB hypothesize_VBP a_DT model_NN for_IN t_NN
+generated_VBN site_NN that_IN aggregates_NNS headlines_NNS from_IN news_NN sources_NNS worldwide_RB ._.
+News-viewing_JJ tools_NNS are_VBP dominated_VBN by_IN portal_NN and_CC search_NN approaches_NNS ,_, and_CC Google_NNP News_NNP is_VBZ a_DT typical_JJ representative_NN of_IN those_DT tools_NNS ._.
+TDT_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT successful_JJ system_NN which_WDT captures_VBZ the_DT rich_JJ structure_NN of_IN events_NNS and_CC their_PRP$ dependencies_NNS in_IN a_DT news_NN topic_NN ._.
+We_PRP computed_VBD maps_NNS by_IN methods_NNS of_IN Section_NN 4_CD ._.
+We_PRP set_VBD m_NN =_JJ 3_CD for_IN quick_JJ computation_NN ._.
+After_IN experiment_NN
+t_NN :_: Not_RB only_RB does_VBZ our_PRP$ system_NN pick_NN nuggets_NNS of_IN information_NN ,_, it_PRP explicitly_RB shows_VBZ connections_NNS among_IN them_PRP ._.
+Prior_JJ work_NN ,_, in_IN contrast_NN ,_, has_VBZ been_VBN limited_VBN largely_RB to_TO list-output_JJ models_NNS ._.
+In_IN the_DT summarization_NN task_NN =_JJ -_: =[_NN 14_CD ,_, 2_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT goal_NN is_VBZ often_RB to_TO summarize_VB a_DT corpus_NN of_IN texts_NNS by_IN extracting_VBG a_DT list_NN of_IN sentences_NNS ._.
+Other_JJ methods_NNS -LRB-_-LRB- 10_CD ,_, 20_CD ,_, 19_CD -RRB-_-RRB- discover_VBP new_JJ events_NNS ,_, but_CC do_VBP not_RB attempt_VB to_TO string_VB them_PRP together_RB ._.
+Numerous_JJ prior_JJ efforts_NNS
+,_, in_IN contrast_NN ,_, has_VBZ been_VBN limited_VBN largely_RB to_TO list-output_JJ models_NNS ._.
+In_IN the_DT summarization_NN task_NN -LRB-_-LRB- 14_CD ,_, 2_CD ,_, 15_CD -RRB-_-RRB- ,_, the_DT goal_NN is_VBZ often_RB to_TO summarize_VB a_DT corpus_NN of_IN texts_NNS by_IN extracting_VBG a_DT list_NN of_IN sentences_NNS ._.
+Other_JJ methods_NNS =_JJ -_: =[_NN 10_CD ,_, 20_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: discover_VB new_JJ events_NNS ,_, but_CC do_VBP not_RB attempt_VB to_TO string_VB them_PRP together_RB ._.
+Numerous_JJ prior_JJ efforts_NNS have_VBP moved_VBN beyond_IN list-output_NN ,_, and_CC proposed_VBD different_JJ notions_NNS of_IN storylines_NNS -LRB-_-LRB- 1_CD ,_, 17_CD ,_, 18_CD ,_, 2_CD -RRB-_-RRB- ._.
+Graph_NN representatio_NN
+hese_NN papers_NNS is_VBZ limited_VBN to_TO classroom_NN use_NN ,_, and_CC personal_JJ use_NN by_IN others_NNS ._.
+WWW_NN 2012_CD ,_, April_NNP 16_CD --_: 20_CD ,_, 2012_CD ,_, Lyon_NNP ,_, France_NNP ._.
+ACM_NN 978-1-4503-1229-5_CD \/_: 12\/04_CD ._.
+Previous_JJ news_NN summarization_NN systems_NNS with_IN structured_JJ output_NN =_JJ -_: =[_NN 17_CD ,_, 18_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP focused_VBN mostly_RB on_IN timeline_NN generation_NN ._.
+However_RB ,_, this_DT style_NN of_IN summarization_NN only_RB works_VBZ for_IN simple_JJ stories_NNS ,_, which_WDT are_VBP linear_JJ in_IN nature_NN ._.
+In_IN contrast_NN ,_, complex_NN stories_NNS display_VBP a_DT very_RB non-linear_JJ stru_NN
+hese_NN papers_NNS is_VBZ limited_VBN to_TO classroom_NN use_NN ,_, and_CC personal_JJ use_NN by_IN others_NNS ._.
+WWW_NN 2012_CD ,_, April_NNP 16_CD --_: 20_CD ,_, 2012_CD ,_, Lyon_NNP ,_, France_NNP ._.
+ACM_NN 978-1-4503-1229-5_CD \/_: 12\/04_CD ._.
+Previous_JJ news_NN summarization_NN systems_NNS with_IN structured_JJ output_NN =_JJ -_: =[_NN 17_CD ,_, 18_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP focused_VBN mostly_RB on_IN timeline_NN generation_NN ._.
+However_RB ,_, this_DT style_NN of_IN summarization_NN only_RB works_VBZ for_IN simple_JJ stories_NNS ,_, which_WDT are_VBP linear_JJ in_IN nature_NN ._.
+In_IN contrast_NN ,_, complex_NN stories_NNS display_VBP a_DT very_RB non-linear_JJ stru_NN
+user_NN could_MD increase_VB the_DT importance_NN of_IN the_DT word_NN `_`` Germany_NNP '_'' and_CC decrease_VB the_DT importance_NN of_IN `_`` Wyclef_NNP Jean_NNP '_'' to_TO achieve_VB the_DT desired_VBN effect_NN ._.
+There_EX has_VBZ been_VBN growing_VBG recent_JJ interest_NN in_IN feature-based_JJ feedback_NN ._.
+=_SYM -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT discriminative_JJ semi-supervised_JJ learning_NN method_NN that_WDT incorporates_VBZ into_IN training_NN affinities_NNS between_IN features_NNS and_CC classes_NNS ._.
+For_IN example_NN ,_, in_IN a_DT baseball_NN vs._NN hockey_NN text_NN classification_NN problem_NN ,_, t_NN
+MMR_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+We_PRP chose_VBD not_RB to_TO use_VB MMR_NNP as_IN it_PRP does_VBZ not_RB provide_VB approximation_NN guarantees_NNS ,_, and_CC could_MD not_RB be_VB combined_VBN with_IN our_PRP$ orienteering_VBG algorithm_NN ._.
+Modeling_NN coherence_NN via_IN lexical_JJ relations_NNS was_VBD studied_VBN in_IN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, their_PRP$ notion_NN is_VBZ restricted_JJ to_TO chains_NNS of_IN related_JJ words_NNS -LRB-_-LRB- Machine_NNP ,_, Microprocessor_NNP ,_, Device_NNP -RRB-_-RRB- ._.
+In_IN contrast_NN ,_, we_PRP generate_VBP coherent_JJ chains_NNS of_IN articles_NNS by_IN taking_VBG multiple_JJ concepts_NNS into_IN account_NN ._.
+8_CD ._.
+CO_NN
+,_, in_IN contrast_NN ,_, has_VBZ been_VBN limited_VBN largely_RB to_TO list-output_JJ models_NNS ._.
+In_IN the_DT summarization_NN task_NN -LRB-_-LRB- 14_CD ,_, 2_CD ,_, 15_CD -RRB-_-RRB- ,_, the_DT goal_NN is_VBZ often_RB to_TO summarize_VB a_DT corpus_NN of_IN texts_NNS by_IN extracting_VBG a_DT list_NN of_IN sentences_NNS ._.
+Other_JJ methods_NNS =_JJ -_: =[_NN 10_CD ,_, 20_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: discover_VB new_JJ events_NNS ,_, but_CC do_VBP not_RB attempt_VB to_TO string_VB them_PRP together_RB ._.
+Numerous_JJ prior_JJ efforts_NNS have_VBP moved_VBN beyond_IN list-output_NN ,_, and_CC proposed_VBD different_JJ notions_NNS of_IN storylines_NNS -LRB-_-LRB- 1_CD ,_, 17_CD ,_, 18_CD ,_, 2_CD -RRB-_-RRB- ._.
+Graph_NN representatio_NN
+e_LS ,_, we_PRP need_VBP to_TO ensure_VB that_IN the_DT map_NN has_VBZ high_JJ coverage_NN ._.
+The_DT goal_NN of_IN coverage_NN is_VBZ twofold_JJ :_: we_PRP want_VBP to_TO both_DT cover_VBP important_JJ aspects_NNS of_IN the_DT story_NN ,_, but_CC also_RB encourage_VBP diversity_NN ._.
+Our_PRP$ definition_NN is_VBZ inspired_VBN by_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Before_IN we_PRP measure_VBP the_DT coverage_NN of_IN an_DT entire_JJ map_NN ,_, we_PRP consider_VBP the_DT coverage_NN of_IN a_DT single_JJ document_NN ._.
+As_IN in_IN the_DT previous_JJ section_NN ,_, documents_NNS are_VBP feature_NN vectors_NNS ._.
+Let_VB function_NN coverdi_NN -LRB-_-LRB- w_NN -RRB-_-RRB- :_: W_NN →_NN -LRB-_-LRB- 0_CD ,_, 1_LS -RRB-_-RRB- quant_NN

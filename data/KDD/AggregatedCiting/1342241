@@ -1,0 +1,128 @@
+Querying_VBG multiple_JJ sets_NNS of_IN discovered_VBN rules_NNS
+Rule_NN mining_NN is_VBZ an_DT important_JJ data_NN mining_NN task_NN that_WDT has_VBZ been_VBN applied_VBN to_TO numerous_JJ real-world_JJ applications_NNS ._.
+Often_RB a_DT rule_NN mining_NN system_NN generates_VBZ a_DT large_JJ number_NN of_IN rules_NNS and_CC only_RB a_DT small_JJ subset_NN of_IN them_PRP is_VBZ really_RB useful_JJ in_IN applications_NNS ._.
+Although_IN there_EX exist_VBP some_DT systems_NNS allowing_VBG the_DT user_NN to_TO query_VB the_DT discovered_VBN rules_NNS ,_, they_PRP are_VBP less_RBR suitable_JJ for_IN complex_NN ad_FW hoc_FW querying_VBG of_IN multiple_JJ data_NNS mining_NN rulebases_NNS to_TO retrieve_VB interesting_JJ rules_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT new_JJ powerful_JJ rule_NN query_NN language_NN Rule-QL_NN for_IN querying_VBG multiple_JJ rulebases_NNS that_WDT is_VBZ modeled_VBN after_IN SQL_NN and_CC has_VBZ rigorous_JJ theoretical_JJ foundations_NNS of_IN a_DT rule-based_JJ calculus_NN ._.
+In_IN particular_JJ ,_, we_PRP first_RB propose_VBP a_DT rule-based_JJ calculus_NN RC_NN based_VBN on_IN the_DT first-order_JJ logic_NN ,_, and_CC then_RB present_VB the_DT language_NN Rule-QL_NN that_WDT is_VBZ at_IN least_JJS as_RB expressive_JJ as_IN the_DT safe_JJ fragment_NN of_IN RC_NNP ._.
+We_PRP also_RB propose_VBP a_DT number_NN of_IN efficient_JJ query_JJ evaluation_NN techniques_NNS for_IN Rule-QL_NN and_CC test_VB them_PRP experimentally_RB on_IN some_DT representative_JJ queries_NNS to_TO demonstrate_VB the_DT feasibility_NN of_IN Rule-QL_NN ._.
+aturally_RB require_VBP multiple_JJ rulebases_NNS or_CC at_IN least_JJS a_DT join_VB of_IN a_DT rulebase_NN with_IN itself_PRP ._.
+Some_DT examples_NNS of_IN such_JJ queries_NNS are_VBP :_: •_CD In_IN a_DT rulebase_NN of_IN newly_RB discovered_VBN rules_NNS ,_, find_VB exceptions_NNS -LRB-_-LRB- unexpected_JJ refinements_NNS =_JJ -_: =[_NN 20,25_CD -RRB-_-RRB- -_: =--RRB-_NN for_IN the_DT set_NN of_IN previously_RB discovered_VBN rules_NNS -LRB-_-LRB- stored_VBN in_IN a_DT separate_JJ rulebase_NN -RRB-_-RRB- ._.
+•_RB Find_VB minimal_JJ rules_NNS in_IN a_DT rulebase_NN ._.
+A_DT minimal_JJ rule_NN is_VBZ a_DT most_RBS general_JJ rule_NN :_: its_PRP$ left-hand-side_NN -LRB-_-LRB- LHS_NN -RRB-_-RRB- and_CC right-hand-side_NN -LRB-_-LRB- R_NN
+above_IN ._.
+A_DT complex_JJ Conditional_Expression_NN is_VBZ defined_VBN in_IN terms_NNS of_IN simple_JJ conditional_JJ expressions_NNS in_IN the_DT same_JJ way_NN as_IN it_PRP is_VBZ done_VBN in_IN SQL_NNP as_IN a_DT disjunction_NN of_IN conjunctive_JJ clauses_NNS that_WDT also_RB support_VBP negations_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP next_RB give_VBP some_DT examples_NNS of_IN the_DT basic_JJ Rule-QL_NN queries_NNS ,_, starting_VBG with_IN the_DT queries_NNS introduced_VBN in_IN Section_NN 3_CD ._.
+Query_NN 1_CD ._.
+Simple_JJ selection_NN with_IN a_DT single_JJ rulebase_NN and_CC a_DT single_JJ variable_NN :_: Find_VB rules_NNS from_IN th_DT
+tion_NN domain_NN ,_, and_CC to_TO take_VB actions_NNS to_TO one_NN 's_POS advantage_NN ._.
+However_RB ,_, the_DT number_NN of_IN rules_NNS generated_VBN from_IN a_DT dataset_NN by_IN some_DT of_IN the_DT rule_NN mining_NN algorithms_NNS is_VBZ often_RB very_RB large_JJ ,_, in_IN thousands_NNS or_CC tens_NNS of_IN thousands_NNS =_JJ -_: =[_NN 4,13,15,16,17,20,21,24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Making_VBG sense_NN of_IN such_PDT a_DT large_JJ number_NN of_IN rules_NNS presents_VBZ a_DT significant_JJ challenge_NN ._.
+Past_JJ research_NN has_VBZ shown_VBN that_IN most_JJS of_IN the_DT rules_NNS are_VBP actually_RB not_RB useful_JJ or_CC interesting_JJ for_IN specific_JJ applications_NNS -LRB-_-LRB- 15,16_CD ,_,
+per_IN ._.
+Let_VB R1_NN ,_, R2_NN ,_, ..._: ,_, Rn_NN be_VB rulebases_NNS -LRB-_-LRB- which_WDT are_VBP also_RB called_VBN rule_NN sets_NNS -RRB-_-RRB- ._.
+To_TO be_VB specific_JJ ,_, we_PRP assume_VBP that_IN each_DT rulebase_NN contains_VBZ association_NN rules_NNS defined_VBN on_IN some_DT set_NN of_IN transactions_NNS T_NN over_IN the_DT itemset_NN I_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, our_PRP$ approach_NN is_VBZ not_RB limited_VBN to_TO association_NN rules_NNS and_CC can_MD also_RB be_VB applied_VBN to_TO a_DT broader_JJR set_NN of_IN rules_NNS ._.
+The_DT vocabulary_NN of_IN the_DT rule-based_JJ calculus_NN RC_NN is_VBZ defined_VBN over_IN •_FW Rulebases_FW R1_NN ,_, R_NN 2_CD ,_, ..._: ,_, R_NN n._NN
+thermore_RB ,_, it_PRP can_MD only_RB operate_VB on_IN one_CD rulebase_NN at_IN a_DT time_NN ._.
+In_IN contrast_NN to_TO MSQL_NN ,_, Rule-QL_NN operates_VBZ on_IN multiple_JJ rulebases_NNS at_IN a_DT time_NN and_CC can_MD also_RB support_VB queries_NNS expressing_VBG inter-relationships_NNS of_IN rules_NNS ._.
+In_IN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Agrawal_NNP et_NNP al_NNP reported_VBD a_DT language_NN for_IN querying_VBG shapes_NNS of_IN history_NN ._.
+The_DT shapes_NNS of_IN history_NN refer_VBP to_TO ups_NNS and_CC downs_NNS of_IN supports_NNS or_CC confidences_NNS of_IN a_DT rule_NN over_IN a_DT number_NN of_IN time_NN periods_NNS ._.
+This_DT language_NN enabl_NN
+tion_NN domain_NN ,_, and_CC to_TO take_VB actions_NNS to_TO one_NN 's_POS advantage_NN ._.
+However_RB ,_, the_DT number_NN of_IN rules_NNS generated_VBN from_IN a_DT dataset_NN by_IN some_DT of_IN the_DT rule_NN mining_NN algorithms_NNS is_VBZ often_RB very_RB large_JJ ,_, in_IN thousands_NNS or_CC tens_NNS of_IN thousands_NNS =_JJ -_: =[_NN 4,13,15,16,17,20,21,24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Making_VBG sense_NN of_IN such_PDT a_DT large_JJ number_NN of_IN rules_NNS presents_VBZ a_DT significant_JJ challenge_NN ._.
+Past_JJ research_NN has_VBZ shown_VBN that_IN most_JJS of_IN the_DT rules_NNS are_VBP actually_RB not_RB useful_JJ or_CC interesting_JJ for_IN specific_JJ applications_NNS -LRB-_-LRB- 15,16_CD ,_,
+tion_NN domain_NN ,_, and_CC to_TO take_VB actions_NNS to_TO one_NN 's_POS advantage_NN ._.
+However_RB ,_, the_DT number_NN of_IN rules_NNS generated_VBN from_IN a_DT dataset_NN by_IN some_DT of_IN the_DT rule_NN mining_NN algorithms_NNS is_VBZ often_RB very_RB large_JJ ,_, in_IN thousands_NNS or_CC tens_NNS of_IN thousands_NNS =_JJ -_: =[_NN 4,13,15,16,17,20,21,24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Making_VBG sense_NN of_IN such_PDT a_DT large_JJ number_NN of_IN rules_NNS presents_VBZ a_DT significant_JJ challenge_NN ._.
+Past_JJ research_NN has_VBZ shown_VBN that_IN most_JJS of_IN the_DT rules_NNS are_VBP actually_RB not_RB useful_JJ or_CC interesting_JJ for_IN specific_JJ applications_NNS -LRB-_-LRB- 15,16_CD ,_,
+ent_JJ time_NN periods_NNS ._.
+Moreover_RB ,_, we_PRP introduce_VBP statistical_JJ procedures_NNS to_TO find_VB various_JJ statistically_RB interesting_JJ rules_NNS ._.
+Only_RB using_VBG ups_NNS and_CC downs_NNS to_TO express_VB the_DT change_NN of_IN a_DT rule_NN lacks_VBZ statistical_JJ foundation_NN ._.
+=_SYM -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: proposes_VBZ an_DT index_NN for_IN retrieval_NN of_IN association_NN rules_NNS stored_VBN in_IN a_DT relational_JJ database_NN ._.
+The_DT purpose_NN is_VBZ to_TO retrieve_VB rules_NNS containing_VBG a_DT given_VBN subset_NN of_IN items_NNS in_IN their_PRP$ LHS_NNP or_CC RHS_NNP ._.
+Rule-QL_NN is_VBZ more_JJR expressi_NN
+ules_NNS ._.
+These_DT methods_NNS are_VBP different_JJ from_IN our_PRP$ query_JJ language_NN ._.
+In_IN fact_NN ,_, we_PRP will_MD show_VB that_IN the_DT task_NN of_IN finding_VBG unexpected_JJ rules_NNS can_MD be_VB formulated_VBN just_RB as_IN a_DT query_NN in_IN Rule-QL_NN ._.
+For_IN objective_JJ interestingness_NN ,_, =_JJ -_: =[_NN 12,26_CD -RRB-_-RRB- -_: =_JJ -_: present_JJ and_CC review_VB a_DT number_NN of_IN methods_NNS for_IN ranking_JJ rules_NNS according_VBG to_TO different_JJ measures_NNS ._.
+Such_JJ operations_NNS can_MD also_RB be_VB done_VBN in_IN Rule-QL_NN by_IN issuing_VBG appropriate_JJ queries_NNS ._.
+In_IN summary_NN ,_, there_EX have_VBP been_VBN sever_VB
+es_VBZ as_IN a_DT stress_NN test_NN of_IN Rule-QL_NN as_IN it_PRP involves_VBZ 6_CD rulebases_NNS and_CC a_DT large_JJ number_NN of_IN itemset_NN comparison_NN operations_NNS ._.
+Note_VB that_IN the_DT STABLE_RULES_NN predicate_NN in_IN Query_NNP 5_CD is_VBZ implemented_VBN using_VBG the_DT Chi-square_JJ test_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: in_IN our_PRP$ system_NN ._.
+The_DT execution_NN times_NNS of_IN these_DT queries_NNS are_VBP presented_VBN in_IN Figure_NNP 7_CD ._.
+Each_DT execution_NN time_NN is_VBZ the_DT average_JJ result_NN of_IN 10_CD runs_NNS of_IN the_DT query_NN ,_, and_CC includes_VBZ the_DT time_NN for_IN reading_NN in_IN rulebase_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- and_CC
+tion_NN domain_NN ,_, and_CC to_TO take_VB actions_NNS to_TO one_NN 's_POS advantage_NN ._.
+However_RB ,_, the_DT number_NN of_IN rules_NNS generated_VBN from_IN a_DT dataset_NN by_IN some_DT of_IN the_DT rule_NN mining_NN algorithms_NNS is_VBZ often_RB very_RB large_JJ ,_, in_IN thousands_NNS or_CC tens_NNS of_IN thousands_NNS =_JJ -_: =[_NN 4,13,15,16,17,20,21,24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Making_VBG sense_NN of_IN such_PDT a_DT large_JJ number_NN of_IN rules_NNS presents_VBZ a_DT significant_JJ challenge_NN ._.
+Past_JJ research_NN has_VBZ shown_VBN that_IN most_JJS of_IN the_DT rules_NNS are_VBP actually_RB not_RB useful_JJ or_CC interesting_JJ for_IN specific_JJ applications_NNS -LRB-_-LRB- 15,16_CD ,_,
+are_VBP similar_JJ to_TO DMQL_NNP ._.
+They_PRP are_VBP not_RB designed_VBN for_IN the_DT purpose_NN of_IN querying_VBG the_DT mined_VBN rules_NNS as_IN Rule-QL_NN ,_, but_CC enabling_VBG the_DT user_NN to_TO specify_VB the_DT data_NNS mining_NN task_NN to_TO perform_VB and_CC its_PRP$ required_JJ data_NNS ._.
+In_IN addition_NN ,_, =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: describes_VBZ different_JJ types_NNS of_IN constraints_NNS that_IN the_DT user_NN can_MD provide_VB for_IN focusing_VBG the_DT discovery_NN process_NN ._.
+-LRB-_-LRB- 14,28_CD -RRB-_-RRB- report_VBP a_DT more_RBR powerful_JJ data_NNS mining_NN query_NN language_NN ,_, called_VBD MSQL_NNP ._.
+MSQL_NN can_MD be_VB used_VBN not_RB onl_VB
+teresting_VBG for_IN specific_JJ applications_NNS -LRB-_-LRB- 15,16,17,20,21,24_CD -RRB-_-RRB- ._.
+To_TO help_VB the_DT user_NN find_VB interesting_JJ rules_NNS from_IN a_DT set_NN of_IN discovered_VBN rules_NNS ,_, several_JJ methods_NNS have_VBP been_VBN proposed_VBN ._.
+One_CD of_IN them_PRP is_VBZ data_NN mining_NN queries_VBZ =_JJ -_: =[_NN 10,14,15,18,23,28_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT allow_VBP the_DT user_NN to_TO focus_VB only_RB on_IN some_DT subsets_NNS of_IN the_DT rules_NNS that_WDT are_VBP of_IN interest_NN to_TO him\/her_NN by_IN asking_VBG appropriate_JJ queries_NNS ._.
+Although_IN there_EX have_VBP been_VBN several_JJ proposals_NNS reported_VBN in_IN the_DT literature_NN o_NN
+-LRB-_-LRB- rather_RB than_IN relational_JJ tables_NNS -RRB-_-RRB- ,_, and_CC a_DT more_RBR suitable_JJ index_NN of_IN inverted_JJ lists_NNS can_MD be_VB used_VBN to_TO access_VB them_PRP ._.
+Another_DT related_JJ research_NN is_VBZ the_DT subjective_JJ and_CC objective_JJ interestingness_NN of_IN data_NN mining_NN rules_NNS =_JJ -_: =[_NN 4,12,16,17,20,21,24,25,29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN subjective_JJ interestingness_NN ,_, -LRB-_-LRB- 16,20,21,24,25_CD -RRB-_-RRB- propose_VBP several_JJ methods_NNS for_IN finding_VBG unexpected_JJ rules_NNS ._.
+These_DT approaches_NNS first_RB ask_VB the_DT user_NN to_TO specify_VB his\/her_NN existing_VBG knowledge_NN about_IN the_DT domain_NN ._.
+The_DT
+tion_NN domain_NN ,_, and_CC to_TO take_VB actions_NNS to_TO one_NN 's_POS advantage_NN ._.
+However_RB ,_, the_DT number_NN of_IN rules_NNS generated_VBN from_IN a_DT dataset_NN by_IN some_DT of_IN the_DT rule_NN mining_NN algorithms_NNS is_VBZ often_RB very_RB large_JJ ,_, in_IN thousands_NNS or_CC tens_NNS of_IN thousands_NNS =_JJ -_: =[_NN 4,13,15,16,17,20,21,24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Making_VBG sense_NN of_IN such_PDT a_DT large_JJ number_NN of_IN rules_NNS presents_VBZ a_DT significant_JJ challenge_NN ._.
+Past_JJ research_NN has_VBZ shown_VBN that_IN most_JJS of_IN the_DT rules_NNS are_VBP actually_RB not_RB useful_JJ or_CC interesting_JJ for_IN specific_JJ applications_NNS -LRB-_-LRB- 15,16_CD ,_,
+tion_NN domain_NN ,_, and_CC to_TO take_VB actions_NNS to_TO one_NN 's_POS advantage_NN ._.
+However_RB ,_, the_DT number_NN of_IN rules_NNS generated_VBN from_IN a_DT dataset_NN by_IN some_DT of_IN the_DT rule_NN mining_NN algorithms_NNS is_VBZ often_RB very_RB large_JJ ,_, in_IN thousands_NNS or_CC tens_NNS of_IN thousands_NNS =_JJ -_: =[_NN 4,13,15,16,17,20,21,24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Making_VBG sense_NN of_IN such_PDT a_DT large_JJ number_NN of_IN rules_NNS presents_VBZ a_DT significant_JJ challenge_NN ._.
+Past_JJ research_NN has_VBZ shown_VBN that_IN most_JJS of_IN the_DT rules_NNS are_VBP actually_RB not_RB useful_JJ or_CC interesting_JJ for_IN specific_JJ applications_NNS -LRB-_-LRB- 15,16_CD ,_,
+tion_NN domain_NN ,_, and_CC to_TO take_VB actions_NNS to_TO one_NN 's_POS advantage_NN ._.
+However_RB ,_, the_DT number_NN of_IN rules_NNS generated_VBN from_IN a_DT dataset_NN by_IN some_DT of_IN the_DT rule_NN mining_NN algorithms_NNS is_VBZ often_RB very_RB large_JJ ,_, in_IN thousands_NNS or_CC tens_NNS of_IN thousands_NNS =_JJ -_: =[_NN 4,13,15,16,17,20,21,24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Making_VBG sense_NN of_IN such_PDT a_DT large_JJ number_NN of_IN rules_NNS presents_VBZ a_DT significant_JJ challenge_NN ._.
+Past_JJ research_NN has_VBZ shown_VBN that_IN most_JJS of_IN the_DT rules_NNS are_VBP actually_RB not_RB useful_JJ or_CC interesting_JJ for_IN specific_JJ applications_NNS -LRB-_-LRB- 15,16_CD ,_,
+teresting_VBG for_IN specific_JJ applications_NNS -LRB-_-LRB- 15,16,17,20,21,24_CD -RRB-_-RRB- ._.
+To_TO help_VB the_DT user_NN find_VB interesting_JJ rules_NNS from_IN a_DT set_NN of_IN discovered_VBN rules_NNS ,_, several_JJ methods_NNS have_VBP been_VBN proposed_VBN ._.
+One_CD of_IN them_PRP is_VBZ data_NN mining_NN queries_VBZ =_JJ -_: =[_NN 10,14,15,18,23,28_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT allow_VBP the_DT user_NN to_TO focus_VB only_RB on_IN some_DT subsets_NNS of_IN the_DT rules_NNS that_WDT are_VBP of_IN interest_NN to_TO him\/her_NN by_IN asking_VBG appropriate_JJ queries_NNS ._.
+Although_IN there_EX have_VBP been_VBN several_JJ proposals_NNS reported_VBN in_IN the_DT literature_NN o_NN
+._.
+Below_NNP ,_, we_PRP discuss_VBP the_DT inverted_JJ lists_NNS indexing_NN ._.
+B_NN +_CC trees_NNS will_MD not_RB be_VB described_VBN ,_, as_IN they_PRP are_VBP well_RB known_VBN ._.
+Inverted_JJ lists_NNS :_: Inverted_JJ lists_NNS are_VBP a_DT common_JJ indexing_NN method_NN used_VBN in_IN text_NN information_NN retrieval_NN =_JJ -_: =[_NN 9,30_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB each_DT document_NN is_VBZ regarded_VBN as_IN a_DT set_NN of_IN keywords_NNS or_CC items_NNS ._.
+This_DT indexing_NN was_VBD shown_VBN to_TO be_VB superior_JJ to_TO many_JJ other_JJ indexing_NN schemes_NNS for_IN text_NN retrieval_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- ._.
+They_PRP are_VBP very_RB efficient_JJ for_IN set-oriented_JJ
+teresting_VBG for_IN specific_JJ applications_NNS -LRB-_-LRB- 15,16,17,20,21,24_CD -RRB-_-RRB- ._.
+To_TO help_VB the_DT user_NN find_VB interesting_JJ rules_NNS from_IN a_DT set_NN of_IN discovered_VBN rules_NNS ,_, several_JJ methods_NNS have_VBP been_VBN proposed_VBN ._.
+One_CD of_IN them_PRP is_VBZ data_NN mining_NN queries_VBZ =_JJ -_: =[_NN 10,14,15,18,23,28_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT allow_VBP the_DT user_NN to_TO focus_VB only_RB on_IN some_DT subsets_NNS of_IN the_DT rules_NNS that_WDT are_VBP of_IN interest_NN to_TO him\/her_NN by_IN asking_VBG appropriate_JJ queries_NNS ._.
+Although_IN there_EX have_VBP been_VBN several_JJ proposals_NNS reported_VBN in_IN the_DT literature_NN o_NN
+teresting_VBG for_IN specific_JJ applications_NNS -LRB-_-LRB- 15,16,17,20,21,24_CD -RRB-_-RRB- ._.
+To_TO help_VB the_DT user_NN find_VB interesting_JJ rules_NNS from_IN a_DT set_NN of_IN discovered_VBN rules_NNS ,_, several_JJ methods_NNS have_VBP been_VBN proposed_VBN ._.
+One_CD of_IN them_PRP is_VBZ data_NN mining_NN queries_VBZ =_JJ -_: =[_NN 10,14,15,18,23,28_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT allow_VBP the_DT user_NN to_TO focus_VB only_RB on_IN some_DT subsets_NNS of_IN the_DT rules_NNS that_WDT are_VBP of_IN interest_NN to_TO him\/her_NN by_IN asking_VBG appropriate_JJ queries_NNS ._.
+Although_IN there_EX have_VBP been_VBN several_JJ proposals_NNS reported_VBN in_IN the_DT literature_NN o_NN
+ing_VBG some_DT running_VBG information_NN about_IN the_DT scanned_VBN rules_NNS ._.
+It_PRP is_VBZ similar_JJ to_TO that_DT in_IN relational_JJ databases_NNS ._.
+The_DT GROUP_NNP BY_NN operation_NN can_MD be_VB implemented_VBN using_VBG sorting_NN or_CC hashing_VBG as_IN in_IN relational_JJ databases_NNS -LRB-_-LRB- see_VB =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: for_IN more_JJR details_NNS -RRB-_-RRB- ._.
+5.3_CD ._.
+Queries_NNS Involving_VBG Multiple_JJ Variables_NNS As_IN was_VBD pointed_VBN out_RP in_IN Section_NNP 4_CD ,_, queries_NNS in_IN Rule-QL_NN can_MD involve_VB multiple_JJ rulebases_NNS and_CC multiple_JJ variables_NNS defined_VBN over_IN these_DT rulebases_NNS ._.
+Th_NN
+._.
+Below_NNP ,_, we_PRP discuss_VBP the_DT inverted_JJ lists_NNS indexing_NN ._.
+B_NN +_CC trees_NNS will_MD not_RB be_VB described_VBN ,_, as_IN they_PRP are_VBP well_RB known_VBN ._.
+Inverted_JJ lists_NNS :_: Inverted_JJ lists_NNS are_VBP a_DT common_JJ indexing_NN method_NN used_VBN in_IN text_NN information_NN retrieval_NN =_JJ -_: =[_NN 9,30_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB each_DT document_NN is_VBZ regarded_VBN as_IN a_DT set_NN of_IN keywords_NNS or_CC items_NNS ._.
+This_DT indexing_NN was_VBD shown_VBN to_TO be_VB superior_JJ to_TO many_JJ other_JJ indexing_NN schemes_NNS for_IN text_NN retrieval_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- ._.
+They_PRP are_VBP very_RB efficient_JJ for_IN set-oriented_JJ
+tion_NN domain_NN ,_, and_CC to_TO take_VB actions_NNS to_TO one_NN 's_POS advantage_NN ._.
+However_RB ,_, the_DT number_NN of_IN rules_NNS generated_VBN from_IN a_DT dataset_NN by_IN some_DT of_IN the_DT rule_NN mining_NN algorithms_NNS is_VBZ often_RB very_RB large_JJ ,_, in_IN thousands_NNS or_CC tens_NNS of_IN thousands_NNS =_JJ -_: =[_NN 4,13,15,16,17,20,21,24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Making_VBG sense_NN of_IN such_PDT a_DT large_JJ number_NN of_IN rules_NNS presents_VBZ a_DT significant_JJ challenge_NN ._.
+Past_JJ research_NN has_VBZ shown_VBN that_IN most_JJS of_IN the_DT rules_NNS are_VBP actually_RB not_RB useful_JJ or_CC interesting_JJ for_IN specific_JJ applications_NNS -LRB-_-LRB- 15,16_CD ,_,
+teresting_VBG for_IN specific_JJ applications_NNS -LRB-_-LRB- 15,16,17,20,21,24_CD -RRB-_-RRB- ._.
+To_TO help_VB the_DT user_NN find_VB interesting_JJ rules_NNS from_IN a_DT set_NN of_IN discovered_VBN rules_NNS ,_, several_JJ methods_NNS have_VBP been_VBN proposed_VBN ._.
+One_CD of_IN them_PRP is_VBZ data_NN mining_NN queries_VBZ =_JJ -_: =[_NN 10,14,15,18,23,28_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT allow_VBP the_DT user_NN to_TO focus_VB only_RB on_IN some_DT subsets_NNS of_IN the_DT rules_NNS that_WDT are_VBP of_IN interest_NN to_TO him\/her_NN by_IN asking_VBG appropriate_JJ queries_NNS ._.
+Although_IN there_EX have_VBP been_VBN several_JJ proposals_NNS reported_VBN in_IN the_DT literature_NN o_NN
+AnswerSet_NN -LRB-_-LRB- line_NN 1_CD and_CC 2_CD -RRB-_-RRB- ._.
+It_PRP then_RB performs_VBZ intersection_NN simultaneously_RB with_IN the_DT rest_NN of_IN the_DT lists_NNS ._.
+Search_VB in_IN each_DT list_NN is_VBZ done_VBN using_VBG binary_JJ search_NN ._.
+Note_VB that_IN some_DT other_JJ optimizations_NNS can_MD also_RB be_VB used_VBN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN simplicity_NN ,_, we_PRP do_VBP not_RB include_VB them_PRP in_IN the_DT algorithm_NN ._.
+Algorithm_NN :_: findSuperSets_NNS -LRB-_-LRB- S_NN ,_, L_NNP |_NNP RHS_NNP ,_, R_NNP -RRB-_-RRB- \/_: \*_SYM e.g._FW ,_, S_NN CONTAINED_EQ_IN_NN L_NN |_CD RHS_NN -LRB-_-LRB- r_NN -RRB-_-RRB- \*_SYM \/_: 1_CD Retrieve_VB the_DT L_NNP |_NNP RHS_NNP inverted_VBD lists_NNS of_IN R_NN for_IN all_DT items_NNS in_IN S_NN ;_: 2_CD S_NN

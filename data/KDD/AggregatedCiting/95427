@@ -1,0 +1,98 @@
+A_DT streaming_NN ensemble_NN algorithm_NN -LRB-_-LRB- SEA_NN -RRB-_-RRB- for_IN large-scale_JJ classification_NN
+Ensemble_NN methods_NNS have_VBP recently_RB garnered_VBN a_DT great_JJ deal_NN of_IN attention_NN in_IN the_DT machine_NN learning_NN community_NN ._.
+Techniques_NNS such_JJ as_IN Boosting_NNP and_CC Bagging_NNP have_VBP proven_VBN to_TO be_VB highly_RB effective_JJ but_CC require_VBP repeated_JJ resampling_NN of_IN the_DT training_NN data_NNS ,_, making_VBG them_PRP inappropriate_JJ in_IN a_DT data_NN mining_NN context_NN ._.
+The_DT methods_NNS presented_VBN in_IN this_DT paper_NN take_VBP advantage_NN of_IN plentiful_JJ data_NNS ,_, building_VBG separate_JJ classifiers_NNS on_IN sequential_JJ chunks_NNS of_IN training_NN points_NNS ._.
+These_DT classifiers_NNS are_VBP combined_VBN into_IN a_DT fixed-size_JJ ensemble_NN using_VBG a_DT heuristic_NN replacement_NN strategy_NN ._.
+The_DT result_NN is_VBZ a_DT fast_JJ algorithm_NN for_IN large-scale_JJ or_CC streaming_NN data_NNS that_WDT classifies_VBZ as_RB well_RB as_IN a_DT single_JJ decision_NN tree_NN built_VBN on_IN all_PDT the_DT data_NNS ,_, requires_VBZ approximately_RB constant_JJ memory_NN ,_, and_CC adjusts_VBZ quickly_RB to_TO concept_NN drift_NN ._.
+f_LS classiers_NNS in_IN which_WDT later_JJ individuals_NNS focus_VBP on_IN classifying_VBG the_DT more_JJR dicult_NN points_NNS ._.
+Several_JJ recent_JJ studies_NNS have_VBP examined_VBN the_DT relative_JJ strengths_NNS of_IN these_DT techniques_NNS ;_: see_VB for_IN instance_NN Bauer_NNP and_CC Kohavi_NNP -LRB-_-LRB- =_JJ -_: =_JJ 1_CD -_: =-]_NN ,_, and_CC Opitz_NNP and_CC Maclin_NNP -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+The_DT current_JJ evidence_NN seems_VBZ to_TO show_VB that_IN Bagging_NNP consistently_RB improves_VBZ on_IN the_DT accuracy_NN of_IN a_DT single_JJ classier_NN ,_, while_IN Boosting_VBG is_VBZ sometimes_RB better_JJR -LRB-_-LRB- or_CC even_RB much_RB better_JJR -RRB-_-RRB- than_IN
+LTS_NN 3.1_CD Accuracy_NN The_DT following_VBG real-world_JJ data_NNS sets_NNS were_VBD used_VBN to_TO evaluate_VB the_DT eectiveness_NN of_IN the_DT ensemble_NN construction_NN method_NN ._.
+Adult_NN :_: Data_NN from_IN the_DT U.S._NNP Census_NNP Bureau_NNP was_VBD originally_RB used_VBN by_IN Kohavi_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB- to_TO compare_VB dierent_JJ classication_NN methods_NNS ._.
+The_DT classication_NN problem_NN is_VBZ to_TO predict_VB whether_IN a_DT person_NN makes_VBZ more_JJR or_CC less_JJR than_IN $_$ 50,000_CD per_IN year_NN based_VBN on_IN 14_CD demographic_JJ features_NNS such_JJ as_IN age_NN ,_, education_NN le_FW
+in_IN a_DT single_JJ model_NN ._.
+The_DT next_JJ step_NN of_IN this_DT research_NN is_VBZ to_TO parallelize_VB the_DT algorithm_NN in_IN the_DT straightforward_JJ way_NN and_CC compare_VB results_NNS ,_, in_IN terms_NNS of_IN both_CC speedup_NN and_CC accuracy_NN ,_, to_TO other_JJ meta-learning_JJ methods_NNS =_JJ -_: =[_NN 7_CD ,_, 1_CD -_: =_JJ -3_CD -RRB-_-RRB- ._.
+In_IN the_DT long_JJ term_NN ,_, we_PRP will_MD focus_VB on_IN improving_VBG the_DT generalization_NN accuracy_NN of_IN the_DT method_NN ._.
+While_IN the_DT accuracy_NN appears_VBZ to_TO be_VB about_IN the_DT same_JJ as_IN a_DT single_JJ classier_NN ,_, our_PRP$ use_NN of_IN ensemble_NN classication_NN sugge_NN
+n_NN a_DT subset_NN of_IN the_DT data_NNS and_CC renes_NNS it_PRP iteratively_RB as_IN new_JJ data_NNS are_VBP read_VBN ,_, concluding_VBG with_IN a_DT tree_NN identical_JJ to_TO one_CD that_WDT would_MD be_VB built_VBN by_IN the_DT original_JJ algorithm_NN ._.
+The_DT VFDT_NNP algorithm_NN of_IN Domingos_NNP and_CC Hulten_NNP -LRB-_-LRB- =_JJ -_: =_JJ 8_CD -_: =-]_NN also_RB builds_VBZ a_DT decision_NN tree_NN incrementally_RB ,_, using_VBG a_DT small_JJ subset_NN of_IN examples_NNS to_TO determine_VB the_DT split_NN at_IN a_DT given_VBN node_NN ._.
+They_PRP employ_VBP Hoeding_NN bounds_NNS to_TO show_VB that_IN the_DT resulting_VBG tree_NN can_MD be_VB made_VBN arbitrarily_RB
+stimates_NNS are_VBP done_VBN by_IN testing_VBG the_DT new_JJ tree_NN -LRB-_-LRB- and_CC the_DT existing_VBG ensemble_NN -RRB-_-RRB- on_IN the_DT next_JJ chunk_NN of_IN data_NNS points_NNS ._.
+The_DT building_NN blocks_NNS of_IN all_DT of_IN our_PRP$ ensembles_NNS are_VBP decision_NN trees_NNS constructed_VBN using_VBG Quinlan_NNP 's_POS C4_NN .5_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT only_JJ operational_JJ parameter_NN of_IN C4_NN .5_NN examined_VBN here_RB is_VBZ whether_IN or_CC not_RB to_TO prune_VB the_DT trees_NNS ;_: when_WRB they_PRP are_VBP pruned_VBN ,_, the_DT default_NN setting_NN is_VBZ used_VBN ._.
+We_PRP performed_VBD some_DT preliminary_JJ experiments_NNS on_IN this_DT basic_NN
+The_DT data_NNS set_NN contains_VBZ 44,848_CD instances_NNS of_IN which_WDT 29.3_CD %_NN are_VBP in_IN the_DT \_NN over_IN 50k_NN ''_'' class_NN ._.
+SEER_NN breast_NN cancer_NN :_: The_DT breast_NN cancer_NN data_NNS set_VBN from_IN the_DT Surveillance_NNP ,_, Epidemiology_NNP ,_, and_CC End_NN Results_NNS -LRB-_-LRB- SEER_NN -RRB-_-RRB- prog_NN =_JJ -_: =_JJ ram_NN -LRB-_-LRB- 6_CD -_: =-]_CD of_IN the_DT National_NNP Institutes_NNPS of_IN Health_NNP contains_VBZ follow-up_JJ data_NNS on_IN over_IN 44,000_CD breast_NN cancer_NN patients_NNS ._.
+The_DT cases_NNS weresltered_VBD to_TO create_VB a_DT classication_NN problem_NN ._.
+Class_NN 1_CD contains_VBZ those_DT patients_NNS who_WP died_VBD o_NN
+t_NN training_NN sets_NNS ._.
+The_DT resulting_VBG classiers_NNS are_VBP combined_VBN with_IN voting_NN tosnd_VBD those_DT concepts_NNS that_WDT are_VBP most_RBS often_RB reinforced_VBN in_IN the_DT samples_NNS ._.
+Boosting_VBG -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, and_CC its_PRP$ variants_NNS such_JJ as_IN AdaBoost_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC Arcing_NN -LRB-_-LRB- =_JJ -_: =_JJ 5_CD -_: =-]_CD ,_, uses_VBZ a_DT weighted_JJ resampling_NN technique_NN ,_, creating_VBG a_DT series_NN of_IN classiers_NNS in_IN which_WDT later_JJ individuals_NNS focus_VBP on_IN classifying_VBG the_DT more_JJR dicult_NN points_NNS ._.
+Several_JJ recent_JJ studies_NNS have_VBP examined_VBN the_DT relative_JJ streng_NN
+ULTS_NN 3.1_CD Accuracy_NN The_DT following_VBG real-world_JJ data_NNS sets_NNS were_VBD used_VBN to_TO evaluate_VB the_DT effectiveness_NN of_IN the_DT ensemble_NN construction_NN method_NN ._.
+Adult_NN :_: Data_NN from_IN the_DT U.S._NNP Census_NNP Bureau_NNP was_VBD originally_RB used_VBN by_IN Kohavi_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: to_TO compare_VB different_JJ classification_NN methods_NNS ._.
+The_DT classification_NN problem_NN is_VBZ to_TO predict_VB whether_IN a_DT person_NN makes_VBZ more_JJR or_CC less_JJR than_IN $_$ 50,000_CD per_IN year_NN based_VBN on_IN 14_CD demographic_JJ features_NNS such_JJ as_IN age_NN ,_, education_NN
+expertise_NN is_VBZ somehow_RB dierent_JJ ._.
+Speci_NNP -_: cally_RB ,_, several_JJ analyses_NNS of_IN ensemble_NN methods_NNS have_VBP shown_VBN that_IN the_DT correctness_NN improved_VBD if_IN the_DT individual_JJ predictors_NNS make_VBP errors_NNS that_WDT are_VBP independent_JJ of_IN each_DT other_JJ -LRB-_-LRB- 1_CD =_JJ -_: =_JJ 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN recent_JJ years_NNS ,_, a_DT great_JJ deal_NN of_IN attention_NN in_IN the_DT machine_NN learning_NN community_NN has_VBZ been_VBN directed_VBN toward_IN methods_NNS such_JJ as_IN Bagging_NNP and_CC Boosting_NNP ._.
+Breiman_NNP 's_POS Bagging_NNP algorithm_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- is_VBZ a_DT variation_NN of_IN the_DT boot_NN
+resampling_VBG is_VBZ performed_VBN ._.
+Pruning_VBG the_DT individual_JJ trees_NNS resulted_VBD in_IN decreased_VBN ensemble_NN accuracy_NN ,_, even_RB though_IN the_DT accuracy_NN of_IN the_DT trees_NNS themselves_PRP was_VBD increased_VBN ._.
+This_DT is_VBZ consistent_JJ with_IN thesndings_NNS of_IN -LRB-_-LRB- =_JJ -_: =_JJ 2_CD -_: =_JJ -1_CD -RRB-_-RRB- who_WP concluded_VBD that_IN overtraining_VBG the_DT individual_JJ classiers_NNS was_VBD a_DT useful_JJ ensemble_NN strategy_NN ._.
+Simple_JJ variations_NNS on_IN majority_NN voting_NN had_VBD little_JJ or_CC no_DT effect_NN on_IN ensemble_NN accuracy_NN ._.
+Weighting_VBG the_DT votes_NNS base_NN
+ed_VBN ._.
+Anonymous_JJ Web_NN browsing_NN :_: This_DT data_NNS set_VBD records_NNS browsing_VBG patterns_NNS for_IN 32,710_CD anonymous_JJ visitors_NNS to_TO the_DT Microsoft_NNP Web_NN site_NN ._.
+We_PRP created_VBD a_DT classication_NN problem_NN in_IN a_DT manner_NN similar_JJ to_TO Breese_NNP ,_, et_FW al._FW -LRB-_-LRB- 3_CD =_JJ -_: =]_NN by_IN c_NN -_: =_JJ -_: hoosing_VBG to_TO predict_VB whether_IN a_DT visitor_NN browses_VBZ the_DT \_NNP Free_NNP downloads_NNS ''_'' page_NN ,_, based_VBN on_IN the_DT other_JJ pages_NNS the_DT user_NN visits_NNS ._.
+Filtered_VBN in_IN this_DT way_NN ,_, the_DT data_NNS set_NN contains_VBZ 10,835_CD -LRB-_-LRB- 33.1_CD %_NN -RRB-_-RRB- positive_JJ examples_NNS ,_, an_DT
+assifiers_NNS in_IN which_WDT later_JJ individuals_NNS focus_VBP on_IN classifying_VBG the_DT more_RBR difficult_JJ points_NNS ._.
+Several_JJ recent_JJ studies_NNS have_VBP examined_VBN the_DT relative_JJ strengths_NNS of_IN these_DT techniques_NNS ;_: see_VB for_IN instance_NN Bauer_NNP and_CC Kohavi_NNP =_SYM -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC Opitz_NNP and_CC Maclin_NNP -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+The_DT current_JJ evidence_NN seems_VBZ to_TO show_VB that_IN Bagging_NNP consistently_RB improves_VBZ on_IN the_DT accuracy_NN of_IN a_DT single_JJ classifier_NN ,_, while_IN Boosting_VBG is_VBZ sometimes_RB better_JJR -LRB-_-LRB- or_CC even_RB much_RB better_JJR -RRB-_-RRB- than_IN
+esampling_VBG is_VBZ performed_VBN ._.
+•_NNP Pruning_NNP the_DT individual_JJ trees_NNS resulted_VBD in_IN decreased_VBN ensemble_NN accuracy_NN ,_, even_RB though_IN the_DT accuracy_NN of_IN the_DT trees_NNS themselves_PRP was_VBD increased_VBN ._.
+This_DT is_VBZ consistent_JJ with_IN the_DT findings_NNS of_IN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: who_WP concluded_VBD that_IN overtraining_VBG the_DT individual_JJ ~_NN lassifiers_NNS was_VBD a_DT useful_JJ ensemble_NN strategy_NN ._.
+•_CD Simple_JJ variations_NNS on_IN majority_NN voting_NN had_VBD little_JJ or_CC no_DT effect_NN on_IN ensemble_NN accuracy_NN ._.
+Weighting_VBG the_DT votes_NNS bas_NN
+tion_NN of_IN different_JJ training_NN sets_NNS ._.
+The_DT resulting_VBG classiers_NNS are_VBP combined_VBN with_IN voting_NN tosnd_VBD those_DT concepts_NNS that_WDT are_VBP most_RBS often_RB reinforced_VBN in_IN the_DT samples_NNS ._.
+Boosting_VBG -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, and_CC its_PRP$ variants_NNS such_JJ as_IN AdaBoost_NNP -LRB-_-LRB- =_JJ -_: =_JJ 10_CD -_: =-]_NN and_CC Arcing_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, uses_VBZ a_DT weighted_JJ resampling_NN technique_NN ,_, creating_VBG a_DT series_NN of_IN classiers_NNS in_IN which_WDT later_JJ individuals_NNS focus_VBP on_IN classifying_VBG the_DT more_JJR dicult_NN points_NNS ._.
+Several_JJ recent_JJ studies_NNS have_VBP examined_VBN the_DT
+independent_JJ of_IN each_DT other_JJ -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+In_IN recent_JJ years_NNS ,_, a_DT great_JJ deal_NN of_IN attention_NN in_IN the_DT machine_NN learning_NN community_NN has_VBZ been_VBN directed_VBN toward_IN methods_NNS such_JJ as_IN Bagging_NNP and_CC Boosting_NNP ._.
+Breiman_NNP 's_POS Bagging_NNP algorithm_NN =_JJ -_: =[_NN 4_CD -_: =-]_CD is_VBZ a_DT variation_NN of_IN the_DT bootstrap_NN method_NN that_WDT resamples_VBZ the_DT data_NN points_NNS with_IN replacement_NN to_TO construct_VB a_DT collection_NN of_IN different_JJ training_NN sets_NNS ._.
+The_DT resulting_VBG classiers_NNS are_VBP combined_VBN with_IN voting_NN tosnd_NN th_DT
+ade_VB arbitrarily_RB similar_JJ to_TO one_CD that_WDT would_MD be_VB built_VBN from_IN all_PDT the_DT data_NNS ._.
+Other_JJ approaches_NNS to_TO scaling_VBG include_VBP those_DT developed_VBN for_IN support_NN vector_NN machines_NNS by_IN Mangasarian_NN and_CC colleagues_NNS ,_, including_VBG chunking_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: and_CC instance_NN selection_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+Finally_RB ,_, the_DT many_JJ formulations_NNS for_IN feature_NN selection_NN in_IN machine_NN learning_NN could_MD be_VB considered_VBN scaling_VBG mechanisms_NNS ,_, since_IN they_PRP result_VBP in_IN dimensionality_NN reduction_NN ,_, although_IN m_NN
+s_NN with_IN replacement_NN to_TO construct_VB a_DT collection_NN of_IN different_JJ training_NN sets_NNS ._.
+The_DT resulting_VBG classiers_NNS are_VBP combined_VBN with_IN voting_NN tosnd_VBD those_DT concepts_NNS that_WDT are_VBP most_RBS often_RB reinforced_VBN in_IN the_DT samples_NNS ._.
+Boosting_VBG -LRB-_-LRB- =_JJ -_: =_JJ 20_CD -_: =-]_CD ,_, and_CC its_PRP$ variants_NNS such_JJ as_IN AdaBoost_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC Arcing_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, uses_VBZ a_DT weighted_JJ resampling_NN technique_NN ,_, creating_VBG a_DT series_NN of_IN classiers_NNS in_IN which_WDT later_JJ individuals_NNS focus_VBP on_IN classifying_VBG the_DT more_JJR dicult_NN points_NNS ._.
+S_NN
+r_NN individuals_NNS focus_VBP on_IN classifying_VBG the_DT more_JJR dicult_NN points_NNS ._.
+Several_JJ recent_JJ studies_NNS have_VBP examined_VBN the_DT relative_JJ strengths_NNS of_IN these_DT techniques_NNS ;_: see_VB for_IN instance_NN Bauer_NNP and_CC Kohavi_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, and_CC Opitz_NN and_CC Maclin_NN =_JJ -_: =[_NN 18_CD -_: =-]_CD ._.
+The_DT current_JJ evidence_NN seems_VBZ to_TO show_VB that_IN Bagging_NNP consistently_RB improves_VBZ on_IN the_DT accuracy_NN of_IN a_DT single_JJ classier_NN ,_, while_IN Boosting_VBG is_VBZ sometimes_RB better_JJR -LRB-_-LRB- or_CC even_RB much_RB better_JJR -RRB-_-RRB- than_IN Bagging_NNP but_CC sometimes_RB worse_JJR
+ne_NN that_WDT would_MD be_VB built_VBN from_IN all_PDT the_DT data_NNS ._.
+Other_JJ approaches_NNS to_TO scaling_VBG include_VBP those_DT developed_VBN for_IN support_NN vector_NN machines_NNS by_IN Mangasarian_NN and_CC colleagues_NNS ,_, including_VBG chunking_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- and_CC instance_NN selection_NN =_JJ -_: =[_NN 11_CD -_: =-]_CD ._.
+Finally_RB ,_, the_DT many_JJ formulations_NNS for_IN feature_NN selection_NN in_IN machine_NN learning_NN could_MD be_VB considered_VBN scaling_VBG mechanisms_NNS ,_, since_IN they_PRP result_VBP in_IN dimensionality_NN reduction_NN ,_, although_IN most_JJS were_VBD motivated_VBN by_IN overt_JJ
+in_IN a_DT single_JJ model_NN ._.
+The_DT next_JJ step_NN of_IN this_DT research_NN is_VBZ to_TO parallelize_VB the_DT algorithm_NN in_IN the_DT straightforward_JJ way_NN and_CC compare_VB results_NNS ,_, in_IN terms_NNS of_IN both_CC speedup_NN and_CC accuracy_NN ,_, to_TO other_JJ meta-learning_JJ methods_NNS =_JJ -_: =[_NN 7_CD ,_, 1_CD -_: =_JJ -3_CD -RRB-_-RRB- ._.
+In_IN the_DT long_JJ term_NN ,_, we_PRP will_MD focus_VB on_IN improving_VBG the_DT generalization_NN accuracy_NN of_IN the_DT method_NN ._.
+While_IN the_DT accuracy_NN appears_VBZ to_TO be_VB about_IN the_DT same_JJ as_IN a_DT single_JJ classier_NN ,_, our_PRP$ use_NN of_IN ensemble_NN classication_NN sugge_NN
+as_IN discussed_VBN earlier_RBR ,_, classication_NN diversity_NN plays_VBZ an_DT important_JJ role_NN in_IN the_DT ensemble_NN 's_POS performance_NN ._.
+This_DT suggests_VBZ that_IN diversity_NN should_MD be_VB built_VBN directly_RB into_IN the_DT ensemble_NN objective_NN ,_, as_IN was_VBD done_VBN in_IN -LRB-_-LRB- =_JJ -_: =_JJ 17_CD -_: =-]_CD ._.
+However_RB ,_, in_IN addition_NN to_TO the_DT problem_NN of_IN determining_VBG the_DT right_JJ trade-o_NN between_IN accuracy_NN and_CC diversity_NN ,_, it_PRP turns_VBZ out_RP that_DT diversity_NN is_VBZ much_RB harder_JJR to_TO measure_VB in_IN our_PRP$ framework_NN ._.
+Estimates_NNS based_VBN on_IN a_DT sin_NN
+its_PRP$ ._.
+Filtered_VBN in_IN this_DT way_NN ,_, the_DT data_NNS set_NN contains_VBZ 10,835_CD -LRB-_-LRB- 33.1_CD %_NN -RRB-_-RRB- positive_JJ examples_NNS ,_, and_CC 296_CD binary_JJ features_NNS ._.
+Thesrst_NN and_CC third_JJ data_NNS sets_NNS are_VBP publicly_RB available_JJ from_IN the_DT UCI_NNP machine_NN learning_NN repository_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN all_DT cases_NNS ,_, the_DT ensemble_NN methods_NNS were_VBD compared_VBN to_TO the_DT results_NNS of_IN constructing_VBG single_JJ decision_NN trees_NNS on_IN the_DT entire_JJ training_NN set_NN ._.
+Data_NN sets_NNS were_VBD therefore_RB chosen_VBN to_TO be_VB large_JJ enough_RB to_TO reliably_RB test_VB
+raining_VBG sets_NNS ._.
+The_DT resulting_VBG classifiers_NNS are_VBP combined_VBN with_IN voting_NN to_TO find_VB those_DT concepts_NNS that_WDT are_VBP most_RBS often_RB reinforced_VBN in_IN the_DT samples_NNS ._.
+Boosting_VBG -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, and_CC its_PRP$ variants_NNS such_JJ as_IN AdaBoost_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC Arcing_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, uses_VBZ a_DT weighted_JJ resampling_NN technique_NN ,_, creating_VBG a_DT series_NN of_IN classifiers_NNS in_IN which_WDT later_JJ individuals_NNS focus_VBP on_IN classifying_VBG the_DT more_RBR difficult_JJ points_NNS ._.
+Several_JJ recent_JJ studies_NNS have_VBP examined_VBN the_DT relative_JJ st_NN
+uilding_VBG our_PRP$ classier_NN ._.
+Further_RB ,_, such_JJ problems_NNS are_VBP subject_JJ to_TO gradual_JJ or_CC sudden_JJ changes_NNS in_IN the_DT underlying_JJ concept_NN ,_, as_IN business_NN conditions_NNS not_RB re_VB
+approach_NN to_TO large-scale_JJ classication_NN is_VBZ to_TO improve_VB the_DT storage_NN eciency_NN of_IN the_DT induction_NN algorithm_NN ,_, allowing_VBG its_PRP$ use_NN on_IN much_JJ larger_JJR problems_NNS ._.
+This_DT approach_NN is_VBZ exempli_FW ed_FW by_IN the_DT work_NN of_IN Gehrke_NNP et_FW al._FW -LRB-_-LRB- =_JJ -_: =_JJ 12_CD -_: =-]_NN who_WP developed_VBD a_DT decision_NN tree_NN algorithm_NN with_IN dramatically_RB improved_VBN eciency_NN ._.
+Their_PRP$ BOAT_NN algorithm_NN builds_VBZ an_DT initial_JJ tree_NN on_IN a_DT subset_NN of_IN the_DT data_NNS and_CC renes_NNS it_PRP iteratively_RB as_IN new_JJ data_NNS are_VBP read_VBN ,_, conclud_NN

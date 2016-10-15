@@ -1,0 +1,171 @@
+Beyond_NNP blacklists_VBZ :_: learning_VBG to_TO detect_VB malicious_JJ web_NN sites_NNS from_IN suspicious_JJ URLs_NNS
+Malicious_JJ Web_NN sites_NNS are_VBP a_DT cornerstone_NN of_IN Internet_NNP criminal_JJ activities_NNS ._.
+As_IN a_DT result_NN ,_, there_EX has_VBZ been_VBN broad_JJ interest_NN in_IN developing_VBG systems_NNS to_TO prevent_VB the_DT end_NN user_NN from_IN visiting_VBG such_JJ sites_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP describe_VBP an_DT approach_NN to_TO this_DT problem_NN based_VBN on_IN automated_JJ URL_NN classification_NN ,_, using_VBG statistical_JJ methods_NNS to_TO discover_VB the_DT tell-tale_NN lexical_JJ and_CC host-based_JJ properties_NNS of_IN malicious_JJ Web_NN site_NN URLs_NNS ._.
+These_DT methods_NNS are_VBP able_JJ to_TO learn_VB highly_RB predictive_JJ models_NNS by_IN extracting_VBG and_CC automatically_RB analyzing_VBG tens_NNS of_IN thousands_NNS of_IN features_NNS potentially_RB indicative_JJ of_IN suspicious_JJ URLs_NNS ._.
+The_DT resulting_VBG classifiers_NNS obtain_VB 95-99_CD %_NN accuracy_NN ,_, detecting_VBG large_JJ numbers_NNS of_IN malicious_JJ Web_NN sites_NNS from_IN their_PRP$ URLs_NNS ,_, with_IN only_RB modest_JJ false_JJ positives_NNS ._.
+lassification_NN to_TO analyze_VB email_NN con-tent_JJ -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Abu-Nimeh_NNP et_FW al._FW compare_VBP different_JJ classifiers_NNS over_IN a_DT corpus_NN of_IN phishing_NN emails_NNS ,_, using_VBG as_IN features_NNS the_DT frequency_NN of_IN the_DT 43_CD most-popular_JJ words_NNS inthecorpus_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Kolarietal_JJ ._.
+useURLsfoundwithinablogpageasfeaturestodeterminewhetherthepageisspam_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+Theyusea_NNP ``_`` bag-of-words_NNS ''_'' representationof_JJ URL_NN tokens_NNS ,_, and_CC we_PRP useasimilar_JJ setof_NN features_NNS ._.
+6.3_CD Non-Machine_NNP LearningApp_NNP
+or_CC Yahoo_NNP 's_POS directory_NN ._.
+A_DT sample_NN of_IN this_DT directory_NN can_MD be_VB generated_VBN by_IN visitinghttp_NN :_: \/_: \/_: random.yahoo.com\/bin\/ryl_NN ._.
+We_PRP also_RB drew_VBD from_IN two_CD sources_NNS for_IN URLs_NNS to_TO malicious_JJ sites_NNS :_: PhishTank_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- and_CC Spamscatter_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+PhishTank_NNP is_VBZ a_DT blacklist_NN of_IN phishing_VBG URLs_NNS consisting_VBG of_IN manually-verified_JJ user_NN contributions_NNS ._.
+Spamscatter_NNP is_VBZ a_DT spam_NN collection_NN infrastructure_NN from_IN which_WDT we_PRP extract_VBP URLs_NNS from_IN the_DT bodies_NNS of_IN those_DT mess_NN
+rt_NN with_IN a_DT ``_`` Basic_JJ ''_'' feature_NN set_NN that_WDT corresponds_VBZ to_TO the_DT set_NN of_IN URL-related_JJ -LRB-_-LRB- not_RB content-related_JJ -RRB-_-RRB- heuristics_NNS commonly_RB chosen_VBN by_IN various_JJ anti-phishing_JJ studies_NNS ,_, including_VBG Fette_NNP et_FW al._FW -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, Bergholz_NNP et_FW al._FW =_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: and_CC CANTINA_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ._.
+This_DT set_NN consists_VBZ of_IN four_CD features_NNS :_: thenumberofdotsinaURL_NN ,_, whetherthehostnamecontainsanIP_NN address_NN ,_, the_DT WHOIS_NNP registration_NN date_NN -LRB-_-LRB- a_DT real-valued_JJ feature_NN -RRB-_-RRB- ,_, and_CC an_DT indicator_NN variable_NN for_IN
+heselabels_NNS -RRB-_-RRB- ._.
+Naive_JJ Bayes_NNS :_: Commonly_RB used_VBN in_IN spam_NN filters_NNS ,_, this_DT basic_JJ model_NN assumes_VBZ that_IN for_IN a_DT given_VBN label_NN ,_, the_DT individual_JJ features_NNS of_IN URLs_NNS aredistributed_VBN independently_RB of_IN the_DT values_NNS of_IN other_JJ features_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Letting_VBG P_NN -LRB-_-LRB- x_NN |_CD y_NN -RRB-_-RRB- denote_VBP the_DT conditional_JJ probability_NN of_IN the_DT feature_NN vector_NN given_VBN its_PRP$ label_NN ,_, the_DT model_NN assumes_VBZ P_NN -LRB-_-LRB- x_NN |_CD y_NN -RRB-_-RRB- =_JJ Qd_NN j_NN =_JJ 1_CD P_NN -LRB-_-LRB- xj_FW |_FW y_NN -RRB-_-RRB- ._.
+Then_RB ,_, from_IN Bayes_NNP rule_NN ,_, assuming_VBG that_IN malicious_JJ and_CC benign_JJ Web_NN site_NN
+ze_IN the_DT margin_NN of_IN correct_JJ classification_NN on_IN the_DT training_NN set_NN ._.
+The_DT required_JJ optimization_NN can_MD be_VB formulated_VBN as_IN an_DT instance_NN of_IN quadratic_JJ programming_NN ,_, a_DT problemforwhichmanyefficientsolvershavebeendeveloped_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN our_PRP$ study_NN ,_, we_PRP experimented_VBD with_IN both_CC linear_JJ and_CC radial_JJ basis_NN function_NN -LRB-_-LRB- RBF_NN -RRB-_-RRB- kernels_NNS ._.
+Logistic_JJ Regression_NN :_: This_DT is_VBZ a_DT simple_JJ parametric_JJ model_NN for_IN binaryclassificationwhereexamplesareclassifiedbasedon_NN
+n_NN issue_NN ,_, but_CC typical_JJ usage_NN was_VBD on_IN the_DT order_NN of_IN a_DT few_JJ hundred_CD megabytes_NNS ._.
+We_PRP implemented_VBD a_DT Naive_JJ Bayes_FW solver_FW in_IN MATLAB_NNP ._.
+For_IN the_DT SVM_NNP solvers_VBZ ,_, we_PRP used_VBD the_DT ._.
+mex_NN implementations_NNS of_IN LIBSVM_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC LIBLINEAR_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: that_IN interface_NN with_IN MATLAB_NNP ._.
+We_PRP Feature_NNP Sets_NNP Basic_NNP Botnet_NNP Blacklist_NNP Blacklist_NNP +_CC Botnet_NNP WHOIS_NNP Host_NNP −_NNP based_VBN Lexical_JJ Full_JJ w\/o_FW WHOIS\/Blacklist_FW DMOZ_FW −_FW PhishTank_NNP Yahoo_NNP −_NNP PhishTank_NNP DMOZ_NNP −_NNP Spamscatter_NNP Yahoo_NNP −_NNP Spamscatter_NNP
+ationaccuracy_NN ._.
+We_PRP start_VBP with_IN a_DT ``_`` Basic_JJ ''_'' feature_NN set_NN that_WDT corresponds_VBZ to_TO the_DT set_NN of_IN URL-related_JJ -LRB-_-LRB- not_RB content-related_JJ -RRB-_-RRB- heuristics_NNS commonly_RB chosen_VBN by_IN various_JJ anti-phishing_JJ studies_NNS ,_, including_VBG Fette_NNP et_FW al._FW =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Bergholz_NNP et_FW al._FW -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC CANTINA_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ._.
+This_DT set_NN consists_VBZ of_IN four_CD features_NNS :_: thenumberofdotsinaURL_NN ,_, whetherthehostnamecontainsanIP_NN address_NN ,_, the_DT WHOIS_NNP registration_NN date_NN -LRB-_-LRB- a_DT real-valued_JJ feature_NN -RRB-_-RRB- ,_, and_CC an_DT in_IN
+firm_NN '_'' --_: for_IN comparison_NN ,_, these_DT tokens_NNS the_DT model_NN learned_VBD automatically_RB are_VBP also_RB 7_CD out_IN of_IN the_DT 8_CD manually_RB chosen_VBN path_NN tokens_NNS that_WDT were_VBD considered_VBN tell-tale_NN phishing_NN features_NNS in_IN the_DT study_NN by_IN Garera_NNP et_FW al._FW =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Additional_JJ selected_VBN path_NN tokens_NNS include_VBP `_`` images_NNS '_POS ,_, `_`` com_NN '_'' ,_, `_`` www_NN '_'' ,_, and_CC `_`` paypal_NN '_'' ._.
+Tokens_NNS like_IN these_DT indicate_VBP attempts_NNS by_IN the_DT site_NN authors_NNS to_TO spoof_VB legitimate_JJ sites_NNS by_IN including_VBG domain_NN names_NNS within_IN the_DT U_NN
+near_JJ and_CC radial_JJ basis_NN function_NN -LRB-_-LRB- RBF_NN -RRB-_-RRB- kernels_NNS ._.
+Logistic_JJ Regression_NN :_: This_DT is_VBZ a_DT simple_JJ parametric_JJ model_NN for_IN binaryclassificationwhereexamplesareclassifiedbasedontheirdistancefromahyperplanedecisionboundary_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Thedecisionrule_JJ isexpressedintermsofthesigmoidfunction_NN σ_NN -LRB-_-LRB- z_SYM -RRB-_-RRB- =_JJ -LRB-_-LRB- 1_CD +_CC e_SYM −_CD z_SYM -RRB-_-RRB- −_NN 1_CD ,_, which_WDT converts_VBZ these_DT distances_NNS into_IN probabilities_NNS that_IN feature_NN vectors_NNS have_VBP positive_JJ or_CC negative_JJ labels_NNS ._.
+The_DT conditiona_NN
+eatures_NNS are_VBP the_DT textual_JJ properties_NNS of_IN the_DT URL_NN itself_PRP -LRB-_-LRB- not_RB the_DT content_NN of_IN the_DT page_NN it_PRP references_NNS -RRB-_-RRB- ._.
+We_PRP use_VBP a_DT combination_NN of_IN features_NNS suggested_VBN by_IN the_DT studies_NNS of_IN McGrath_NNP and_CC Gupta_NNP -LRB-_-LRB- 16_CD -RRB-_-RRB- and_CC Kolari_NNP et_FW al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT properties_NNS include_VBP the_DT length_NN of_IN the_DT hostname_NN ,_, thelengthoftheentireURL_NN ,_, aswellasthenumberofdotsin_VBG the_DT URL_NN --_: all_DT of_IN these_DT are_VBP real-valued_JJ features_NNS ._.
+Additionally_RB ,_, we_PRP create_VBP a_DT binary_JJ feature_NN for_IN ea_NN
+ures_VBZ for_IN classification_NN ._.
+An_DT open_JJ issue_NN is_VBZ how_WRB to_TO scale_VB our_PRP$ approach_NN to_TO handle_VB millions_NNS of_IN URLs_NNS whose_WP$ features_NNS evolve_VBP over_IN time_NN ._.
+We_PRP address_VBP the_DT issue_NN in_IN subsequentworkby_JJ usingonlinelearning_NN algorithms_NNS =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Acknowledgments_NNS Thanks_NNS go_VBP to_TO Alvin_NNP AuYoung_NNP ,_, Kirill_NNP Levchenko_NNP ,_, Patrick_NNP Verkaik_NNP andMichaelVrableforinsightfulcommentsonearlierdraftsofthis_NNP paper_NN ._.
+Thankstoanonymousreviewersfortheirvaluablefeedback_NN ._.
+Th_NN
+r\/index_NN ._.
+html_NN ._.
+Lexical_JJ features_NNS are_VBP the_DT textual_JJ properties_NNS of_IN the_DT URL_NN itself_PRP -LRB-_-LRB- not_RB the_DT content_NN of_IN the_DT page_NN it_PRP references_NNS -RRB-_-RRB- ._.
+We_PRP use_VBP a_DT combination_NN of_IN features_NNS suggested_VBN by_IN the_DT studies_NNS of_IN McGrath_NNP and_CC Gupta_NNP =_SYM -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Kolari_NNP et_FW al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+These_DT properties_NNS include_VBP the_DT length_NN of_IN the_DT hostname_NN ,_, thelengthoftheentireURL_NN ,_, aswellasthenumberofdotsin_VBG the_DT URL_NN --_: all_DT of_IN these_DT are_VBP real-valued_JJ features_NNS ._.
+Additionally_RB ,_, we_PRP create_VBP
+senginestodetectVMinfection_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Moshchuketal_JJ ._.
+also_RB construct_VB a_DT VM-based_JJ web_NN proxy_NN defense_NN that_WDT uses_VBZ behaviorbased_JJ detection_NN and_CC adds_VBZ only_RB a_DT few_JJ seconds_NNS of_IN overhead_NN to_TO page_NN renderingfor_NN theend-client_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+ManycommercialeffortsexisttodetectmaliciousURLs_NNS ,_, including_VBG McAfee_NNP SiteAdvisor_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, IronPort_NNP Web_NN Reputation_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, the_DT WebSenseThreatSeekerNetwork_NNP -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, WOTWebofTrust_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, and_CC GoogleToolbar_NNP -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Theseappr_NN
+t_NN a_DT network_NN intrusionagainst_JJ particular_JJ networks_NNS -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+Moshchuketal_JJ ._.
+useVMstoanalyzedownloadedtrojanexecutables_NNS ,_, relying_VBG on_IN third-party_JJ anti-spyware_JJ tools_NNS to_TO detect_VB whether_IN VMswereinfectedbyexecutables_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Wangetal.detectdrive-by_JJ exploitsbyusingbehavioraldetection_NN -LRB-_-LRB- monitoringanomalousstate_NN changesintheVM_NN -RRB-_-RRB- aswellasdetectingexploitsofknownvulnerabilities_NNS -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+Provosetal_NNP ._.
+monitorVMstatechangesandusemultiple_NN
+forbothtrainingandtesting_VBG canbecomeadifficultpracticalissue_NN ._.
+Malicioussiteshavedemonstrated_VBN the_DT ability_NN to_TO ``_`` cloak_VB ''_'' the_DT content_NN of_IN their_PRP$ Web_NN pages_NNS ,_, i.e._FW ,_, serving_VBG different_JJ content_NN to_TO different_JJ clients_NNS =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, a_DT malicious_JJ server_NN may_MD send_VB benign_JJ versions_NNS of_IN a_DT page_NN to_TO honeypot_VB IP_NNP addresses_NNS that_WDT belong_VBP to_TO security_NN practitioners_NNS ,_, but_CC send_VBP malicious_JJ versions_NNS to_TO other_JJ clients_NNS ._.
+Nonetheless_RB ,_, we_PRP show_VBP
+s_NN on_IN each_DT of_IN the_DT four_CD URL_NN data_NNS sets_NNS ._.
+Overall_RB ,_, using_VBG more_JJR features_NNS improves_VBZ classification_NN accuracy_NN ._.
+implementedacustomoptimizerfor_JJ ℓ1-regularizedlogisticregressioninMATLAB_NN usingmultiplicative_JJ updates_NNS =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4.2_CD FeatureComparison_NNP Our_NNP first_JJ experiments_NNS on_IN URL_NN classification_NN were_VBD designed_VBN to_TO explorethepotentialbenefitsofconsideringlargenumbersofautomatically_RB generated_VBN features_NNS as_IN opposed_VBN to_TO small_JJ numbers_NNS
+s_NN to_TO detect_VB whether_IN VMswereinfectedbyexecutables_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Wangetal.detectdrive-by_JJ exploitsbyusingbehavioraldetection_NN -LRB-_-LRB- monitoringanomalousstate_NN changesintheVM_NN -RRB-_-RRB- aswellasdetectingexploitsofknownvulnerabilities_NNS =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Provosetal.monitorVMstatechangesandusemultipleanti-virusenginestodetectVMinfection_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Moshchuketal_JJ ._.
+also_RB construct_VB a_DT VM-based_JJ web_NN proxy_NN defense_NN that_WDT uses_VBZ behaviorbased_JJ detection_NN and_CC adds_VBZ only_RB a_DT fe_NN
+3_CD Non-Machine_NNP LearningApproaches_NNP Highly_NNP Predictive_NNP Blacklists_NNPS use_VBP a_DT Page_NNP Rank-style_JJ algorithm_NN to_TO estimate_VB the_DT likelihood_NN that_IN an_DT IP_NNP address_NN will_MD conduct_VB a_DT network_NN intrusionagainst_JJ particular_JJ networks_NNS =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Moshchuketal_JJ ._.
+useVMstoanalyzedownloadedtrojanexecutables_NNS ,_, relying_VBG on_IN third-party_JJ anti-spyware_JJ tools_NNS to_TO detect_VB whether_IN VMswereinfectedbyexecutables_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Wangetal.detectdrive-by_JJ exploitsbyusingbehavior_NN
+''_'' feature_NN set_NN that_WDT corresponds_VBZ to_TO the_DT set_NN of_IN URL-related_JJ -LRB-_-LRB- not_RB content-related_JJ -RRB-_-RRB- heuristics_NNS commonly_RB chosen_VBN by_IN various_JJ anti-phishing_JJ studies_NNS ,_, including_VBG Fette_NNP et_FW al._FW -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, Bergholz_NNP et_FW al._FW -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC CANTINA_NN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT set_NN consists_VBZ of_IN four_CD features_NNS :_: thenumberofdotsinaURL_NN ,_, whetherthehostnamecontainsanIP_NN address_NN ,_, the_DT WHOIS_NNP registration_NN date_NN -LRB-_-LRB- a_DT real-valued_JJ feature_NN -RRB-_-RRB- ,_, and_CC an_DT indicator_NN variable_NN for_IN whether_IN the_DT regis_NN
+''_'' feature_NN set_NN that_WDT corresponds_VBZ to_TO the_DT set_NN of_IN URL-related_JJ -LRB-_-LRB- not_RB content-related_JJ -RRB-_-RRB- heuristics_NNS commonly_RB chosen_VBN by_IN various_JJ anti-phishing_JJ studies_NNS ,_, including_VBG Fette_NNP et_FW al._FW -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, Bergholz_NNP et_FW al._FW -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC CANTINA_NN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT set_NN consists_VBZ of_IN four_CD features_NNS :_: the_DT number_NN of_IN dots_NNS in_IN a_DT URL_NN ,_, whether_IN the_DT hostname_NN contains_VBZ an_DT IP_NNP address_NN ,_, the_DT WHOIS_NNP registration_NN date_NN -LRB-_-LRB- a_DT real-valued_JJ feature_NN -RRB-_-RRB- ,_, and_CC an_DT indicator_NN variable_NN for_IN wheth_NN
+infected_VBN by_IN executables_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Wang_NNP et_FW al._FW detect_VB drive-by_JJ exploits_NNS by_IN using_VBG behavioral_JJ detection_NN -LRB-_-LRB- monitoring_NN anomalous_JJ state_NN changes_NNS in_IN the_DT VM_NN -RRB-_-RRB- as_RB well_RB as_IN detecting_VBG exploits_NNS of_IN known_JJ vulnerabilities_NNS =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Provos_NNP et_FW al._FW monitor_NN VM_NN state_NN changes_NNS and_CC use_VB multiple_JJ anti-virus_JJ engines_NNS to_TO detect_VB VM_NN infection_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Moshchuk_NNP et_FW al._FW also_RB construct_VBP a_DT VM-based_JJ web_NN proxy_NN defense_NN that_WDT uses_VBZ behaviorbased_JJ detection_NN
+asis_NN function_NN -LRB-_-LRB- RBF_NN -RRB-_-RRB- kernels_NNS ._.
+Logistic_JJ Regression_NN :_: This_DT is_VBZ a_DT simple_JJ parametric_JJ model_NN for_IN binary_JJ classification_NN where_WRB examples_NNS are_VBP classified_VBN based_VBN on_IN their_PRP$ distance_NN from_IN a_DT hyperplane_NN decision_NN boundary_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT decision_NN rule_NN is_VBZ expressed_VBN in_IN terms_NNS of_IN the_DT sigmoid_JJ function_NN σ_NN -LRB-_-LRB- z_SYM -RRB-_-RRB- =_JJ -LRB-_-LRB- 1_CD +_CC e_SYM −_CD z_SYM -RRB-_-RRB- −_NN 1_CD ,_, which_WDT converts_VBZ these_DT distances_NNS into_IN probabilities_NNS that_IN feature_NN vectors_NNS have_VBP positive_JJ or_CC negative_JJ labels_NNS ._.
+The_DT c_NN
+rgin_NN of_IN correct_JJ classification_NN on_IN the_DT training_NN set_NN ._.
+The_DT required_JJ optimization_NN can_MD be_VB formulated_VBN as_IN an_DT instance_NN of_IN quadratic_JJ programming_NN ,_, a_DT problem_NN for_IN which_WDT many_JJ efficient_JJ solvers_NNS have_VBP been_VBN developed_VBN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN our_PRP$ study_NN ,_, we_PRP experimented_VBD with_IN both_CC linear_JJ and_CC radial_JJ basis_NN function_NN -LRB-_-LRB- RBF_NN -RRB-_-RRB- kernels_NNS ._.
+Logistic_JJ Regression_NN :_: This_DT is_VBZ a_DT simple_JJ parametric_JJ model_NN for_IN binary_JJ classification_NN where_WRB examples_NNS are_VBP classified_VBN
+to_TO detect_VB VM_NN infection_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Moshchuk_NNP et_FW al._FW also_RB construct_VBP a_DT VM-based_JJ web_NN proxy_NN defense_NN that_WDT uses_VBZ behaviorbased_JJ detection_NN and_CC adds_VBZ only_RB a_DT few_JJ seconds_NNS of_IN overhead_NN to_TO page_NN rendering_VBG for_IN the_DT end-client_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Many_JJ commercial_JJ efforts_NNS exist_VBP to_TO detect_VB malicious_JJ URLs_NNS ,_, including_VBG McAfee_NNP SiteAdvisor_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, IronPort_NNP Web_NN Reputation_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, the_DT WebSense_NNP ThreatSeeker_NNP Network_NNP -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, WOT_NN Web_NN of_IN Trust_NNP -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, and_CC Google_NNP Tool_NNP
+rbations_NNS of_IN the_DT feature_NN vectors_NNS ,_, thereby_RB providing_VBG a_DT hedge_NN against_IN overfitting_NN ._.
+The_DT superior_JJ generalization_NN abilities_NNS of_IN SVMs_NNS have_VBP been_VBN borne_VBN out_RP by_IN both_CC theoretical_JJ studies_NNS and_CC experimentalsuccesses_VBZ =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT decision_NN rule_NN in_IN SVMs_NNS is_VBZ expressed_VBN in_IN terms_NNS of_IN a_DT kernel_NN function_NN K_NN -LRB-_-LRB- x_NN ,_, x_NN ′_NN -RRB-_-RRB- thatcomputesthesimilaritybetweentwofeature_NN vectors_NNS and_CC non-negative_JJ coefficients_NNS -LCB-_-LRB- αi_FW -RCB-_-RRB- n_NN i_LS =_JJ 1_CD that_WDT indicate_VBP which_WDT training_NN
+r_LS Yahoo_NNP 's_POS directory_NN ._.
+A_DT sample_NN of_IN this_DT directory_NN can_MD be_VB generated_VBN by_IN visiting_VBG http:\/\/random.yahoo.com\/bin\/ryl_NN ._.
+We_PRP also_RB drew_VBD from_IN two_CD sources_NNS for_IN URLs_NNS to_TO malicious_JJ sites_NNS :_: PhishTank_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- and_CC Spamscatter_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+PhishTank_NNP is_VBZ a_DT blacklist_NN of_IN phishing_VBG URLs_NNS consisting_VBG of_IN manually-verified_JJ user_NN contributions_NNS ._.
+Spamscatter_NNP is_VBZ a_DT spam_NN collection_NN infrastructure_NN from_IN which_WDT we_PRP extract_VBP URLs_NNS from_IN the_DT bodies_NNS of_IN those_DT mess_NN
+ining_NN and_CC testing_NN can_MD become_VB a_DT difficult_JJ practical_JJ issue_NN ._.
+Malicious_JJ sites_NNS have_VBP demonstrated_VBN the_DT ability_NN to_TO ``_`` cloak_VB ''_'' the_DT content_NN of_IN their_PRP$ Web_NN pages_NNS ,_, i.e._FW ,_, serving_VBG different_JJ content_NN to_TO different_JJ clients_NNS =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, a_DT malicious_JJ server_NN may_MD send_VB benign_JJ versions_NNS of_IN a_DT page_NN to_TO honeypot_VB IP_NNP addresses_NNS that_WDT belong_VBP to_TO security_NN practitioners_NNS ,_, but_CC send_VBP malicious_JJ versions_NNS to_TO other_JJ clients_NNS ._.
+Nonetheless_RB ,_, we_PRP show_VBP
+ssification_NN to_TO analyze_VB email_NN con-tent_JJ -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Abu-Nimeh_NNP et_FW al._FW compare_VBP different_JJ classifiers_NNS over_IN a_DT corpus_NN of_IN phishing_NN emails_NNS ,_, using_VBG as_IN features_NNS the_DT frequency_NN of_IN the_DT 43_CD most-popular_JJ words_NNS in_IN the_DT corpus_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Kolari_FW et_FW al._FW use_NN URLs_NNS found_VBN within_IN a_DT blog_NN page_NN as_IN features_NNS to_TO determine_VB whether_IN the_DT page_NN is_VBZ spam_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+They_PRP use_VBP a_DT ``_`` bag-of-words_JJ ''_'' representation_NN of_IN URL_NN tokens_NNS ,_, and_CC we_PRP use_VBP a_DT similar_JJ set_NN of_IN features_NNS ._.
+ncorporating_VBG similar_JJ sources_NNS and_CC features_NNS into_IN our_PRP$ approach_NN ._.
+Provos_NNP et_FW al._FW perform_VB a_DT study_NN of_IN drive-by_NN exploit_VBP URLs_NNS and_CC use_VB a_DT patented_JJ machine_NN learning_NN algorithm_NN as_IN a_DT pre-filter_NN for_IN VM-based_JJ analysis_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Unlike_IN our_PRP$ approach_NN ,_, they_PRP extract_VBP content-based_JJ features_NNS from_IN the_DT page_NN ,_, including_VBG whether_IN IFrames_NNS are_VBP ``_`` out_IN of_IN place_NN ,_, ''_'' the_DT presence_NN of_IN obfuscated_VBN javascript_NN ,_, and_CC whether_IN IFrames_NNS point_VBP to_TO known_JJ exploi_NNS
+of_IN the_DT four_CD URL_NN data_NNS sets_NNS ._.
+Overall_RB ,_, using_VBG more_JJR features_NNS improves_VBZ classification_NN accuracy_NN ._.
+implemented_VBD a_DT custom_NN optimizer_NN for_IN ℓ1-regularized_JJ logistic_JJ regression_NN in_IN MATLAB_NNP using_VBG multiplicative_JJ updates_NNS =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4.2_CD Feature_NN Comparison_NN Our_PRP$ first_JJ experiments_NNS on_IN URL_NN classification_NN were_VBD designed_VBN to_TO explore_VB the_DT potential_JJ benefits_NNS of_IN considering_VBG large_JJ numbers_NNS of_IN automatically_RB generated_VBN features_NNS as_IN opposed_VBN to_TO smal_VB
+eatures_NNS are_VBP the_DT textual_JJ properties_NNS of_IN the_DT URL_NN itself_PRP -LRB-_-LRB- not_RB the_DT content_NN of_IN the_DT page_NN it_PRP references_NNS -RRB-_-RRB- ._.
+We_PRP use_VBP a_DT combination_NN of_IN features_NNS suggested_VBN by_IN the_DT studies_NNS of_IN McGrath_NNP and_CC Gupta_NNP -LRB-_-LRB- 16_CD -RRB-_-RRB- and_CC Kolari_NNP et_FW al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT properties_NNS include_VBP the_DT length_NN of_IN the_DT hostname_NN ,_, the_DT length_NN of_IN the_DT entire_JJ URL_NN ,_, as_RB well_RB as_IN the_DT number_NN of_IN dots_NNS in_IN the_DT URL_NN --_: all_DT of_IN these_DT are_VBP real-valued_JJ features_NNS ._.
+Additionally_RB ,_, we_PRP create_VBP a_DT binary_JJ
+rusion_NN against_IN particular_JJ networks_NNS -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+Moshchuk_NNP et_FW al._FW use_VB VMs_NNS to_TO analyze_VB downloaded_VBN trojan_JJ executables_NNS ,_, relying_VBG on_IN third-party_JJ anti-spyware_JJ tools_NNS to_TO detect_VB whether_IN VMs_NNS were_VBD infected_VBN by_IN executables_NNS =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Wang_NNP et_FW al._FW detect_VB drive-by_JJ exploits_NNS by_IN using_VBG behavioral_JJ detection_NN -LRB-_-LRB- monitoring_NN anomalous_JJ state_NN changes_NNS in_IN the_DT VM_NN -RRB-_-RRB- as_RB well_RB as_IN detecting_VBG exploits_NNS of_IN known_JJ vulnerabilities_NNS -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+Provos_NNP et_FW al._FW monitor_NN V_NN
+bations_NNS of_IN the_DT feature_NN vectors_NNS ,_, thereby_RB providing_VBG a_DT hedge_NN against_IN overfitting_NN ._.
+The_DT superior_JJ generalization_NN abilities_NNS of_IN SVMs_NNS have_VBP been_VBN borne_VBN out_RP by_IN both_CC theoretical_JJ studies_NNS and_CC experimental_JJ successes_NNS =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT decision_NN rule_NN in_IN SVMs_NNS is_VBZ expressed_VBN in_IN terms_NNS of_IN a_DT kernel_NN function_NN K_NN -LRB-_-LRB- x_NN ,_, x_NN ′_NN -RRB-_-RRB- that_WDT computes_VBZ the_DT similarity_NN between_IN two_CD feature_NN vectors_NNS and_CC non-negative_JJ coefficients_NNS -LCB-_-LRB- αi_FW -RCB-_-RRB- n_NN i_LS =_JJ 1_CD that_WDT indicate_VBP which_WDT t_NN
+tion_NN accuracy_NN ._.
+We_PRP start_VBP with_IN a_DT ``_`` Basic_JJ ''_'' feature_NN set_NN that_WDT corresponds_VBZ to_TO the_DT set_NN of_IN URL-related_JJ -LRB-_-LRB- not_RB content-related_JJ -RRB-_-RRB- heuristics_NNS commonly_RB chosen_VBN by_IN various_JJ anti-phishing_JJ studies_NNS ,_, including_VBG Fette_NNP et_FW al._FW =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Bergholz_NNP et_FW al._FW -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC CANTINA_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ._.
+This_DT set_NN consists_VBZ of_IN four_CD features_NNS :_: the_DT number_NN of_IN dots_NNS in_IN a_DT URL_NN ,_, whether_IN the_DT hostname_NN contains_VBZ an_DT IP_NNP address_NN ,_, the_DT WHOIS_NNP registration_NN date_NN -LRB-_-LRB- a_DT real-valued_JJ feature_NN
+firm_NN '_'' --_: for_IN comparison_NN ,_, these_DT tokens_NNS the_DT model_NN learned_VBD automatically_RB are_VBP also_RB 7_CD out_IN of_IN the_DT 8_CD manually_RB chosen_VBN path_NN tokens_NNS that_WDT were_VBD considered_VBN tell-tale_NN phishing_NN features_NNS in_IN the_DT study_NN by_IN Garera_NNP et_FW al._FW =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Additional_JJ selected_VBN path_NN tokens_NNS include_VBP `_`` images_NNS '_POS ,_, `_`` com_NN '_'' ,_, `_`` www_NN '_'' ,_, and_CC `_`` paypal_NN '_'' ._.
+Tokens_NNS like_IN these_DT indicate_VBP attempts_NNS by_IN the_DT site_NN authors_NNS to_TO spoof_VB legitimate_JJ sites_NNS by_IN including_VBG domain_NN names_NNS within_IN the_DT U_NN
+r\/index_NN ._.
+html_NN ._.
+Lexical_JJ features_NNS are_VBP the_DT textual_JJ properties_NNS of_IN the_DT URL_NN itself_PRP -LRB-_-LRB- not_RB the_DT content_NN of_IN the_DT page_NN it_PRP references_NNS -RRB-_-RRB- ._.
+We_PRP use_VBP a_DT combination_NN of_IN features_NNS suggested_VBN by_IN the_DT studies_NNS of_IN McGrath_NNP and_CC Gupta_NNP =_SYM -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Kolari_NNP et_FW al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+These_DT properties_NNS include_VBP the_DT length_NN of_IN the_DT hostname_NN ,_, the_DT length_NN of_IN the_DT entire_JJ URL_NN ,_, as_RB well_RB as_IN the_DT number_NN of_IN dots_NNS in_IN the_DT URL_NN --_: all_DT of_IN these_DT are_VBP real-valued_JJ features_NNS ._.
+Additional_JJ
+issue_NN ,_, but_CC typical_JJ usage_NN was_VBD on_IN the_DT order_NN of_IN a_DT few_JJ hundred_CD megabytes_NNS ._.
+We_PRP implemented_VBD a_DT Naive_JJ Bayes_FW solver_FW in_IN MATLAB_NNP ._.
+For_IN the_DT SVM_NNP solvers_VBZ ,_, we_PRP used_VBD the_DT ._.
+mex_NN implementations_NNS of_IN LIBSVM_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC LIBLINEAR_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: that_IN interface_NN with_IN MATLAB_NNP ._.
+We_PRP Feature_NNP Sets_NNP Basic_NNP Botnet_NNP Blacklist_NNP Blacklist_NNP +_CC Botnet_NNP WHOIS_NNP Host_NNP −_NNP based_VBN Lexical_JJ Full_JJ w\/o_FW WHOIS\/Blacklist_FW DMOZ_FW −_FW PhishTank_NNP Yahoo_NNP −_NNP PhishTank_NNP DMOZ_NNP −_NNP Spamscatter_NNP Yahoo_NNP −_NNP Spamscatter_NNP
+Non-Machine_NNP Learning_NNP Approaches_NNPS Highly_RB Predictive_JJ Blacklists_NNS use_VBP a_DT Page_NNP Rank-style_JJ algorithm_NN to_TO estimate_VB the_DT likelihood_NN that_IN an_DT IP_NNP address_NN will_MD conduct_VB a_DT network_NN intrusion_NN against_IN particular_JJ networks_NNS =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Moshchuk_NNP et_FW al._FW use_VB VMs_NNS to_TO analyze_VB downloaded_VBN trojan_JJ executables_NNS ,_, relying_VBG on_IN third-party_JJ anti-spyware_JJ tools_NNS to_TO detect_VB whether_IN VMs_NNS were_VBD infected_VBN by_IN executables_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Wang_NNP et_FW al._FW detect_VB drive-by_JJ explo_NN
+rt_NN with_IN a_DT ``_`` Basic_JJ ''_'' feature_NN set_NN that_WDT corresponds_VBZ to_TO the_DT set_NN of_IN URL-related_JJ -LRB-_-LRB- not_RB content-related_JJ -RRB-_-RRB- heuristics_NNS commonly_RB chosen_VBN by_IN various_JJ anti-phishing_JJ studies_NNS ,_, including_VBG Fette_NNP et_FW al._FW -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, Bergholz_NNP et_FW al._FW =_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: and_CC CANTINA_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ._.
+This_DT set_NN consists_VBZ of_IN four_CD features_NNS :_: the_DT number_NN of_IN dots_NNS in_IN a_DT URL_NN ,_, whether_IN the_DT hostname_NN contains_VBZ an_DT IP_NNP address_NN ,_, the_DT WHOIS_NNP registration_NN date_NN -LRB-_-LRB- a_DT real-valued_JJ feature_NN -RRB-_-RRB- ,_, and_CC an_DT indicator_NN v_LS
+n_NN and_CC adds_VBZ only_RB a_DT few_JJ seconds_NNS of_IN overhead_NN to_TO page_NN rendering_VBG for_IN the_DT end-client_JJ -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Many_JJ commercial_JJ efforts_NNS exist_VBP to_TO detect_VB malicious_JJ URLs_NNS ,_, including_VBG McAfee_NNP SiteAdvisor_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, IronPort_NNP Web_NN Reputation_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT WebSense_NNP ThreatSeeker_NNP Network_NNP -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, WOT_NN Web_NN of_IN Trust_NNP -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, and_CC Google_NNP Toolbar_NNP -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+These_DT approaches_NNS are_VBP based_VBN on_IN blacklist_NN construction_NN ,_, user_NN feedback_NN ,_, and_CC proprietary_NN feature_NN analysis_NN ._.
+7_CD ._.
+CONCL_NN
+for_IN classification_NN ._.
+An_DT open_JJ issue_NN is_VBZ how_WRB to_TO scale_VB our_PRP$ approach_NN to_TO handle_VB millions_NNS of_IN URLs_NNS whose_WP$ features_NNS evolve_VBP over_IN time_NN ._.
+We_PRP address_VBP the_DT issue_NN in_IN subsequent_JJ work_NN by_IN using_VBG online_JJ learning_NN algorithms_NNS =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Acknowledgments_NNS Thanks_NNS go_VBP to_TO Alvin_NNP AuYoung_NNP ,_, Kirill_NNP Levchenko_NNP ,_, Patrick_NNP Verkaik_NNP and_CC Michael_NNP Vrable_NNP for_IN insightful_JJ comments_NNS on_IN earlier_JJR drafts_NNS of_IN this_DT paper_NN ._.
+Thanks_NNS to_TO anonymous_JJ reviewers_NNS for_IN their_PRP$ valu_NN

@@ -1,0 +1,87 @@
+A_DT dynamic_JJ bayesian_JJ network_NN click_VBP model_NN for_IN web_NN search_NN ranking_NN
+As_IN with_IN any_DT application_NN of_IN machine_NN learning_NN ,_, web_NN search_NN ranking_NN requires_VBZ labeled_JJ data_NNS ._.
+The_DT labels_NNS usually_RB come_VBP in_IN the_DT form_NN of_IN relevance_NN assessments_NNS made_VBN by_IN editors_NNS ._.
+Click_VB logs_NNS can_MD also_RB provide_VB an_DT important_JJ source_NN of_IN implicit_JJ feedback_NN and_CC can_MD be_VB used_VBN as_IN a_DT cheap_JJ proxy_NN for_IN editorial_NN labels_NNS ._.
+The_DT main_JJ difficulty_NN however_RB comes_VBZ from_IN the_DT so_RB called_VBN position_NN bias_NN -_: urls_NNS appearing_VBG in_IN lower_JJR positions_NNS are_VBP less_RBR likely_JJ to_TO be_VB clicked_VBN even_RB if_IN they_PRP are_VBP relevant_JJ ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT Dynamic_NNP Bayesian_NNP Network_NNP which_WDT aims_VBZ at_IN providing_VBG us_PRP with_IN unbiased_JJ estimation_NN of_IN the_DT relevance_NN from_IN the_DT click_VBP logs_NNS ._.
+Experiments_NNS show_VBP that_IN the_DT proposed_VBN click_VBP model_NN outperforms_VBZ other_JJ existing_VBG click_VB models_NNS in_IN predicting_VBG both_CC click-through_JJ rate_NN and_CC relevance_NN ._.
+5_CD ,_, 17_CD ,_, 23_CD -RRB-_-RRB- ._.
+They_PRP also_RB construct_VBP machinelearned_JJ models_NNS to_TO predict_VB the_DT next_JJ action_NN of_IN the_DT user_NN using_VBG features_NNS derived_VBN from_IN their_PRP$ behavior_NN thus_RB far_RB ._.
+Very_RB recently_RB ,_, Guo_NNP et_NNP al_NNP -LRB-_-LRB- 11_CD -RRB-_-RRB- and_CC Chappelle_NNP and_CC Zhang_NNP =_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP Bayesian_JJ click_VBP models_NNS to_TO infer_VB relevance_NN of_IN search_NN results_NNS ._.
+Web_NN browsing_NN activity_NN beyond_IN search_NN has_VBZ also_RB been_VBN extensively_RB studied_VBN and_CC modeled_VBN ,_, e.g._FW ,_, -LRB-_-LRB- 5_CD ,_, 19_CD -RRB-_-RRB- ._.
+Bucklin_NNP and_CC Sismeiro_NNP -LRB-_-LRB- 4_CD -RRB-_-RRB- use_VBP a_DT se_FW
+the_DT bias_NN and_CC gathering_NN accurate_JJ evidence_NN for_IN improving_VBG ranking_NN for_IN search_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- -LRB-_-LRB- 2_CD -RRB-_-RRB- -LRB-_-LRB- 29_CD -RRB-_-RRB- or_CC advertisements_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- -LRB-_-LRB- 32_CD -RRB-_-RRB- ,_, detecting_VBG adversarial_JJ traffic_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, and_CC estimating_VBG the_DT user_NN perceived_VBN retrieval_NN quality_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =-[_NN 13_CD -RRB-_-RRB- -LRB-_-LRB- 26_CD -RRB-_-RRB- -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+Figure_NN 1_CD :_: A_DT histogram_NN of_IN the_DT position_NN differences_NNS between_IN two_CD adjacent_JJ clicks_NNS in_IN the_DT search_NN log_NN ._.
+Despite_IN these_DT successes_NNS ,_, the_DT depth-first_JJ model_NN is_VBZ a_DT simplification_NN that_WDT deserves_VBZ a_DT closer_JJR
+user_NN behavior_NN or_CC document_NN relevance_NN models_NNS from_IN passively_RB collected_VBN usage_NN logs_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 2_CD ,_, 7_CD ,_, 10_CD ,_, 21_CD ,_, 9_CD -RRB-_-RRB- ,_, often_RB with_IN the_DT goal_NN of_IN aiding_VBG the_DT retrieval_NN function_NN in_IN providing_VBG more_RBR relvant_JJ results_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 1_CD ,_, 8_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Our_PRP$ work_NN is_VBZ distinguished_VBN from_IN the_DT aforementioned_JJ work_NN on_IN user_NN modeling_NN in_IN at_IN least_JJS two_CD aspects_NNS ._.
+First_RB ,_, it_PRP is_VBZ set_VBN within_IN the_DT framework_NN of_IN a_DT well-controlled_JJ paired_JJ experiment_NN design_NN ._.
+We_PRP will_MD be_VB able_JJ
+ay_NN to_TO leverage_NN usage_NN data_NNS as_IN an_DT evaluation_NN metric_NN is_VBZ by_IN adjusting_VBG for_IN bias_NN post-collection_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+One_CD can_MD also_RB use_VB implicit_JJ feedback_NN to_TO design_VB new_JJ signals_NNS -LRB-_-LRB- or_CC features_NNS -RRB-_-RRB- to_TO be_VB used_VBN by_IN ranking_JJ functions_NNS =_JJ -_: =[_NN 1_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One_CD can_MD also_RB interactively_RB modify_VB rankings_NNS to_TO preemptively_RB control_VB for_IN position_NN bias_NN ._.
+For_IN example_NN ,_, if_IN two_CD competing_VBG results_NNS were_VBD randomly_RB shown_VBN in_IN the_DT the_DT original_JJ and_CC reversed_JJ orders_NNS equally_RB often_RB ,_,
+ata_NN ,_, which_WDT could_MD benefit_VB search_NN relevance_NN -LRB-_-LRB- Carterette_NN et_FW al._FW ,_, 2008_CD -RRB-_-RRB- -LRB-_-LRB- Fox_NNP et_FW al._FW ,_, 2005_CD -RRB-_-RRB- -LRB-_-LRB- Radlinski_NNP and_CC Joachims_NNP ,_, 2007_CD -RRB-_-RRB- -LRB-_-LRB- Wang_NNP and_CC Zhai_NNP ,_, 2007_CD -RRB-_-RRB- ._.
+The_DT information_NN can_MD be_VB expressed_VBN as_IN pair-wise_JJ preferences_NNS -LRB-_-LRB- =_JJ -_: =_JJ Chapelle_NNP and_CC Zhang_NNP ,_, 2009_CD -_: =--RRB-_NN -LRB-_-LRB- Ji_NN et_FW al._FW ,_, 2009_CD -RRB-_-RRB- -LRB-_-LRB- Radlinski_NNP et_FW al._FW ,_, 2008_CD -RRB-_-RRB- ,_, or_CC represented_VBN as_IN rank_JJ features_NNS -LRB-_-LRB- Agichtein_NNP et_FW al._FW ,_, 2006_CD -RRB-_-RRB- ._.
+Task-specific_JJ ranking_NN relies_VBZ on_IN the_DT accuracy_NN of_IN query_NN classification_NN ._.
+Query_JJ classification_NN or_CC qu_NN
+a_DT creative_JJ ,_, supposedly_RB produced_VBN by_IN an_DT ad_NN agency_NN ._. -RRB-_-RRB-
+Nevertheless_RB ,_, both_DT ads_NNS and_CC organic_JJ results_NNS provide_VBP information_NN to_TO the_DT user_NN ._.
+While_IN several_JJ papers_NNS considered_VBN the_DT interaction_NN of_IN the_DT user_NN with_IN the_DT ads_NNS =_JJ -_: =[_NN 2_CD ,_, 14_CD ,_, 13_CD ,_, 7_CD ,_, 5_CD ,_, 8_CD -RRB-_-RRB- -_: =_JJ -_: and_CC the_DT Web_NN results_NNS -LRB-_-LRB- 16_CD ,_, 17_CD ,_, 1_LS -RRB-_-RRB- in_IN isolation_NN ,_, to_TO the_DT best_JJS of_IN ourknowledge_NN ,_, no_DT study_NN considered_VBD the_DT interplay_NN between_IN these_DT two_CD sources_NNS of_IN information_NN ._.
+If_IN we_PRP take_VBP the_DT click_VBP rate_NN as_IN evidence_NN of_IN user_NN p_NN
+est_NN results_NNS ._.
+Also_RB note_VBP that_IN many_JJ methods_NNS exist_VBP for_IN modeling_NN a_DT user_NN 's_POS click_VBP behavior_NN and_CC predicting_VBG the_DT probability_NN of_IN click_VB for_IN search_NN results_NNS and_CC advertisements_NNS -LRB-_-LRB- see_VB our_PRP$ literature_NN survey_NN as_RB well_RB as_IN =_JJ -_: =[_NN 9,25_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, none_NN of_IN these_DT methods_NNS can_MD be_VB applied_VBN directly_RB as_IN we_PRP need_VBP to_TO predict_VB aggregate_JJ user_NN clicks_VBZ as_IN opposed_VBN to_TO individual_JJ user_NN behavior_NN ._.
+The_DT domains_NNS are_VBP also_RB very_RB different_JJ ._.
+Due_JJ to_TO the_DT complex_NN se_FW
+ges_NNS in_IN document_NN rankings_NNS were_VBD compared_VBN ,_, and_CC significant_JJ differences_NNS in_IN user_NN behavior_NN were_VBD observed_VBN ._.
+Further_JJ analysis_NN of_IN query_NN logs_NNS to_TO model_NN user_NN click_VBP behavior_NN was_VBD conducted_VBN by_IN many_JJ researchers_NNS ,_, e.g._FW =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Thomas_NNP et_FW al_FW -LRB-_-LRB- 25_CD -RRB-_-RRB- described_VBD another_DT preference_NN methodology_NN where_WRB two_CD sets_NNS of_IN search_NN results_NNS were_VBD presented_VBN side-by-side_RB to_TO users_NNS who_WP were_VBD then_RB asked_VBN which_WDT of_IN the_DT two_CD they_PRP preferred_VBD ._.
+The_DT method_NN was_VBD u_NN
+tion_NN bias_NN is_VBZ formulated_VBN as_IN the_DT probability_NN that_IN a_DT document_NN is_VBZ examined_VBN by_IN a_DT user_NN ._.
+Recently_RB ,_, many_JJ interesting_JJ studies_NNS have_VBP been_VBN made_VBN to_TO refine_VB click_VB models_NNS using_VBG the_DT examination_NN hypothesis_NN ._.
+UBM_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, DBN_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, CCM_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, BBM_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, GCM_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- are_VBP typical_JJ models_NNS which_WDT can_MD extend_VB the_DT capabilities_NNS of_IN the_DT examination_NN hypothesis_NN ._.
+The_DT examination_NN hypothesis_NN assumes_VBZ that_IN ,_, if_IN a_DT document_NN has_VBZ been_VBN examined_VBN ,_, the_DT click-throu_NN
+behavioral_JJ information_NN of_IN a_DT running_VBG system_NN to_TO detect_VB when_WRB users_NNS have_VBP found_VBN reldevant_JJ information_NN ._.
+This_DT approach_NN is_VBZ practiced_VBN in_IN web_NN search_NN when_WRB relevance_NN engineers_NNS monitor_VBP user_NN clickthrough_NN patterns_NNS =_JJ -_: =[_NN 5_CD ,_, 23_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Because_IN salient_JJ behavioral_JJ information_NN normally_RB occurs_VBZ after_IN a_DT query_NN is_VBZ issued_VBN ,_, we_PRP refer_VBP to_TO these_DT behavioral_JJ signals_NNS as_IN post-presentation_JJ signals_NNS ._.
+We_PRP are_VBP interested_JJ in_IN tuning_NN ranking_NN function_NN parame_NN
+only_RB on_IN top_JJ n_NN results_NNS ._.
+59WWW_NN 2011_CD --_: Poster_NNP March_NNP 28_CD --_: April_NNP 1_CD ,_, 2011_CD ,_, Hyderabad_NNP ,_, India_NNP 2.2_CD Click_NNP Models_NNS The_DT Position_NN Model_NNP -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, referred_VBN to_TO as_IN COEC_NN -LRB-_-LRB- clicks_NNS over_IN expected_VBN clicks_NNS -RRB-_-RRB- ,_, and_CC the_DT Cascade_NNP Model_NNP =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, referred_VBN as_IN DBN_NN -LRB-_-LRB- dynamic_JJ bayesian_JJ network_NN click_VBP model_NN -RRB-_-RRB- ,_, are_VBP chosen_VBN as_IN the_DT click_VBP models_NNS in_IN this_DT paper_NN ._.
+2.3_CD Using_VBG Unified_NNP Click_NNP Model_NNP to_TO Predict_NNP MultiLevel_NNP Labels_NNPS In_IN the_DT application_NN of_IN the_DT Unified_JJ Cli_NN
+iques_NNS from_IN probabilistic_JJ graphical_JJ models_NNS to_TO develop_VB more_RBR sophisticated_JJ alternatives_NNS with_IN dedicated_JJ user_NN behavior_NN assumptions_NNS ._.
+This_DT includes_VBZ the_DT click_VBP chain_NN model_NN -LRB-_-LRB- 50_CD -RRB-_-RRB- ,_, dynamic_JJ Bayesian_JJ network_NN model_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Bayesian_JJ browsing_NN model_NN -LRB-_-LRB- 72_CD -RRB-_-RRB- ._.
+Despite_IN the_DT improvement_NN over_IN click_VBP pre78diction_NN and_CC extended_JJ power_NN granted_VBN by_IN the_DT Bayesian_JJ modeling_NN -LRB-_-LRB- 73_CD -RRB-_-RRB- ,_, they_PRP share_VBP a_DT few_JJ simplifying_VBG assumptions_NNS such_JJ as_IN homogenous_JJ t_NN
+In_IN addition_NN ,_, the_DT meaning_NN of_IN user_NN click_VBP and_CC interaction_NN behavior_NN is_VBZ still_RB an_DT area_NN of_IN active_JJ research_NN ,_, and_CC its_PRP$ relationship_NN to_TO goal_NN success_NN and_CC user_NN satisfaction_NN is_VBZ still_RB only_RB approximately_RB understood_VBN =_JJ -_: =[_NN 7_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT second_JJ desirable_JJ property_NN is_VBZ to_TO understand_VB the_DT range_NN of_IN users_NNS well_RB ._.
+Finding_VBG study_NN populations_NNS in_IN universities_NNS allows_VBZ us_PRP to_TO study_VB the_DT users_NNS in_IN detail_NN ,_, including_VBG surveying_VBG their_PRP$ demographics_NNS ,_, and_CC ot_NN
+is_VBZ costly_JJ ,_, such_JJ as_IN for_IN large_JJ numbers_NNS of_IN Web_NN users_NNS ._.
+One_CD particular_JJ domain_NN that_WDT may_MD benefit_VB from_IN this_DT research_NN is_VBZ Web_NN search_NN ,_, in_IN which_WDT searcher_NN examination_NN behavior_NN represented_VBN by_IN probabilistic_JJ models_NNS =_JJ -_: =[_NN 8_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: may_MD be_VB improved_VBN by_IN uncovering_VBG the_DT latent_JJ variables_NNS representing_VBG which_WDT search_NN results_VBZ the_DT users_NNS examine_VBP ._.
+We_PRP study_VBD the_DT gaze-cursor_JJ alignment_NN of_IN 36_CD subjects_NNS and_CC 32_CD search_NN tasks_NNS with_IN an_DT eye-tracker_NN in_IN a_DT
+lenge_NN of_IN understanding_VBG interleaved_JJ sessions_NNS and_CC 2_LS -RRB-_-RRB- loss_NN of_IN detail_NN about_IN branching_VBG behavior_NN -LRB-_-LRB- when_WRB users_NNS open_VBP links_NNS in_IN new_JJ tabs_NNS or_CC windows_NNS -RRB-_-RRB- ._.
+Also_RB ,_, branching_VBG has_VBZ not_RB been_VBN captured_VBN in_IN click_VB models_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 2_CD ,_, 6_CD ,_, 7_CD ,_, 20_CD -RRB-_-RRB- -_: =--RRB-_NN that_IN treat_NN user_NN clicks_VBZ as_IN implicit_JJ relevance_NN feedback_NN ;_: thus_RB ,_, we_PRP evaluate_VBP the_DT effectiveness_NN of_IN adapting_VBG a_DT click_VBP model_NN that_WDT understands_VBZ branching_VBG ._.
+Our_PRP$ guiding_VBG research_NN questions_NNS are_VBP 1_LS -RRB-_-RRB- which_WDT users_NNS are_VBP
+f_LS items_NNS ._.
+Towards_IN this_DT end_NN we_PRP use_VBP a_DT graphical_JJ model_NN to_TO describe_VB both_CC the_DT click_VBP and_CC viewing_VBG behavior_NN of_IN a_DT user_NN in_IN a_DT fully_RB adaptive_JJ fashion_NN through_IN a_DT latent_JJ variable_JJ model_NN ,_, thereby_RB extending_VBG the_DT work_NN of_IN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Secondly_RB ,_, we_PRP propose_VBP an_DT information_NN gain_NN score_NN for_IN estimating_VBG the_DT click_VBP propensity_NN of_IN a_DT user_NN ._.
+This_DT is_VBZ a_DT departure_NN from_IN two_CD lines_NNS of_IN research_NN :_: the_DT classical_JJ relevance_NN ranking_NN approach_NN ,_, which_WDT views_NNS re_VBP
+ce_NN counts_NNS ._.
+We_PRP -LRB-_-LRB- 4_LS -RRB-_-RRB- then_RB train_VB a_DT second_JJ model_NN using_VBG statistics_NNS collected_VBN over_IN all_DT query-ad_JJ pair_NN impressions_NNS in_IN the_DT logs_NNS ._.
+Impressions_NNS are_VBP weighted_VBN by_IN ``_`` expected_JJ clicks_NNS ''_'' -LRB-_-LRB- ec_NN -RRB-_-RRB- based_VBN on_IN a_DT rank_NN normalization_NN =_JJ -_: =[_NN 36_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN an_DT ad_NN a_DT at_IN rank_JJ r_NN that_WDT has_VBZ been_VBN retrieved_VBN for_IN a_DT query_FW q_FW ,_, we_PRP define_VBP ec_RB as_IN :_: ec_NN -LRB-_-LRB- q_NN ,_, a_DT -RRB-_-RRB- =_JJ X_NN imp_NN -LRB-_-LRB- q_NN ,_, a_DT ,_, r_NN -RRB-_-RRB- P_NN -LRB-_-LRB- click_VB |_CD r_NN -RRB-_-RRB- -LRB-_-LRB- 5_CD -RRB-_-RRB- r_NN The_DT quantity_NN ec_NN -LRB-_-LRB- q_NN ,_, a_DT -RRB-_-RRB- is_VBZ the_DT expected_JJ number_NN of_IN clicks_NNS summed_VBN over_IN all_DT rank_JJ po_NN
+ads_NNS ._.
+Note_VB that_IN the_DT EC_NNP in_IN this_DT formulation_NN does_VBZ not_RB only_RB depend_VB on_IN rank_NN ,_, but_CC it_PRP also_RB depends_VBZ on_IN the_DT section_NN of_IN the_DT page_NN the_DT ad_NN was_VBD shown_VBN in_IN ._.
+While_IN it_PRP has_VBZ been_VBN shown_VBN that_IN the_DT COEC_NNP model_NN is_VBZ not_RB perfect_JJ =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, it_PRP provides_VBZ a_DT significant_JJ improvement_NN at_IN almost_RB no_DT computational_JJ cost_NN ._.
+We_PRP collect_VBP COEC_NNP and_CC EC_NNP statistics_NNS for_IN every_DT unique_JJ query_NN and_CC ad_NN pair_NN we_PRP observe_VBP ._.
+However_RB ,_, due_JJ to_TO the_DT dynamic_JJ nature_NN of_IN the_DT doma_NN
+ity_NN ._.
+To_TO account_VB for_IN this_DT position_NN bias_NN ,_, we_PRP use_VBP a_DT position-normalized_JJ CTR_NN metric_NN -LRB-_-LRB- nCTR_NN -RRB-_-RRB- that_WDT computes_VBZ the_DT number_NN of_IN clicks_NNS divided_VBN by_IN the_DT expected_VBN clicks_NNS of_IN an_DT item_NN as_IN a_DT rank_NN normalized_VBD version_NN of_IN CTR_NN =_JJ -_: =[_NN 19_CD ,_, 7_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT response_NN rk_NN ,_, i_FW can_MD alternately_RB be_VB estimated_VBN using_VBG a_DT machine_NN learned_VBD model_NN that_WDT predicts_VBZ the_DT probability_NN that_IN the_DT user_NN is_VBZ likely_JJ to_TO click_VB on_IN an_DT ad_NN for_IN a_DT query_NN P_NN -LRB-_-LRB- click_VB |_FW q_FW ,_, ad_NN -RRB-_-RRB- ._.
+We_PRP find_VBP that_IN learning_VBG
+improving_VBG search_NN result_NN ranking_NN ._.
+Learning_NNP to_TO rank_VB from_IN cursor_NN behavior_NN requires_VBZ methods_NNS to_TO separate_VB the_DT signal_NN from_IN noise_NN ,_, but_CC a_DT simple_JJ initial_JJ step_NN may_MD be_VB to_TO apply_VB cursor_NN data_NNS to_TO click_VB models_NNS -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =--RRB-_NN to_TO uncover_VB the_DT latent_JJ variables_NNS to_TO increase_VB the_DT models_NNS '_POS accuracy_NN ._.
+We_PRP can_MD also_RB gain_VB a_DT better_JJR understanding_NN of_IN result_NN examination_NN behavior_NN ,_, since_IN cursor_NN has_VBZ been_VBN shown_VBN to_TO correlate_VB with_IN gaze_VBP -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, and_CC
+simple_JJ and_CC easy_JJ to_TO solve_VB for_IN using_VBG maximum_NN likelihood_NN as_IN explained_VBN above_IN ._.
+This_DT model_NN is_VBZ not_RB dependent_JJ on_IN the_DT content_NN of_IN ads_NNS higher_JJR up_RP on_IN the_DT search_NN page_NN ,_, as_IN for_IN example_NN the_DT cascade_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- or_CC DBN_NN models_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT models_NNS are_VBP appropriate_JJ 5for_JJ search_NN results_NNS where_WRB users_NNS have_VBP a_DT high_JJ probability_NN of_IN clicking_VBG on_IN one_CD of_IN the_DT links_NNS ._.
+However_RB ,_, for_IN ads_NNS ,_, the_DT probability_NN of_IN clicking_VBG on_IN ad_NN links_NNS is_VBZ extremely_RB low_JJ ,_, usu_NN

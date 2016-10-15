@@ -1,0 +1,79 @@
+Abstracting_VBG application-level_JJ web_NN security_NN
+Application-level_JJ web_NN security_NN refers_VBZ to_TO vulnerabilities_NNS inherent_JJ in_IN the_DT code_NN of_IN a_DT web-application_NN itself_PRP -LRB-_-LRB- irrespective_RB of_IN the_DT technologies_NNS in_IN which_WDT it_PRP is_VBZ implemented_VBN or_CC the_DT security_NN of_IN the_DT web-server\/back-end_NN database_NN on_IN which_WDT it_PRP is_VBZ built_VBN -RRB-_-RRB- ._.
+In_IN the_DT last_JJ few_JJ months_NNS application-level_JJ vulnerabilities_NNS have_VBP been_VBN exploited_VBN with_IN serious_JJ consequences_NNS :_: hackers_NNS have_VBP tricked_VBN e-commerce_NN sites_NNS into_IN shipping_NN goods_NNS for_IN no_DT charge_NN ,_, user-names_NNS and_CC passwords_NNS have_VBP been_VBN harvested_VBN and_CC condential_JJ information_NN -LRB-_-LRB- such_JJ as_IN addresses_NNS and_CC credit-card_NN numbers_NNS -RRB-_-RRB- has_VBZ been_VBN leaked_VBN ._.
+In_IN this_DT paper_NN we_PRP investigate_VBP new_JJ tools_NNS and_CC techniques_NNS which_WDT address_VBP the_DT problem_NN of_IN application-level_JJ web_NN security_NN ._.
+We_PRP -LRB-_-LRB- i_LS -RRB-_-RRB- describe_VBP a_DT scalable_JJ structuring_VBG mechanism_NN facilitating_VBG the_DT abstraction_NN of_IN security_NN policies_NNS from_IN large_JJ web-applications_NNS developed_VBN in_IN heterogenous_JJ multi-platform_JJ environments_NNS ;_: -LRB-_-LRB- ii_LS -RRB-_-RRB- present_VBP a_DT tool_NN which_WDT assists_VBZ programmers_NNS develop_VBP secure_JJ applications_NNS which_WDT are_VBP resilient_JJ to_TO a_DT wide_JJ range_NN of_IN common_JJ attacks_NNS ;_: and_CC -LRB-_-LRB- iii_LS -RRB-_-RRB- report_NN results_NNS and_CC experience_NN arising_VBG from_IN our_PRP$ implementation_NN of_IN these_DT techniques_NNS ._.
+alidation_NN language_NN ._.
+The_DT content_NN of_IN the_DT validation_NN element_NN is_VBZ a_DT validation_NN expression_NN written_VBN in_IN a_DT simple_JJ ,_, call-by-value_JJ ,_, applicative_JJ language_NN which_WDT is_VBZ essentially_RB a_DT simply-typed_JJ subset_NN of_IN Standard_JJ ML_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+-LRB-_-LRB- Note_VB that_IN the_DT precise_JJ details_NNS of_IN the_DT language_NN are_VBP not_RB the_DT main_JJ focus_NN of_IN this_DT paper_NN ._.
+In_IN principle_NN any_DT language_NN could_MD be_VB used_VBN to_TO express_VB validation_NN constraints_NNS ._.
+For_IN expository_JJ purposes_NNS ,_, we_PRP choose_VBP to_TO
+ich_RB apply_VB user-specified_JJ validation_NN and_CC transformation_NN rules_NNS ._.
+Damiani_NNP et_FW al._FW -LRB-_-LRB- 10_CD -RRB-_-RRB- describe_VBP a_DT method_NN for_IN enforcing_VBG rôlebased_JJ access_NN control_NN policies_NNS for_IN remote_JJ method_NN invocations_NNS via_IN the_DT SOAP_NN protocol_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT type_NN of_IN policies_NNS described_VBN are_VBP very_RB different_JJ to_TO ours_PRP :_: they_PRP consider_VBP access_NN control_NN issues_NNS whereas_IN we_PRP try_VBP to_TO prevent_VB application-level_JJ attacks_NNS in_IN general_JJ ._.
+However_RB ,_, the_DT similarity_NN between_IN the_DT two_CD
+ansform_JJ whole_JJ HTTP_NN messages_NNS -LRB-_-LRB- see_VB Section_NNP 3.4_CD -RRB-_-RRB- ._.
+As_RB well_RB as_IN checking_VBG HTTP_NNP requests_NNS ,_, the_DT security_NN gateway_NN also_RB rewrites_VBZ the_DT HTML_NNP in_IN HTTP_NNP responses_NNS ,_, annotating_VBG it_PRP with_IN Message_NN Authentication_NN Codes_NNS -LRB-_-LRB- MACs_NNS -RRB-_-RRB- =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: to_TO protect_VB state_NN which_WDT may_MD have_VB been_VBN malliciously_RB modified_VBN by_IN clients_NNS -LRB-_-LRB- see_VB Section_NNP 3.4.2_CD -RRB-_-RRB- ._.
+Although_IN performing_VBG validation_NN checks_NNS on_IN the_DT server-side_NN is_VBZ sufficient_JJ for_IN security_NN purposes_NNS ,_, user-interface_JJ
+dential_JJ information_NN -LRB-_-LRB- e.g._FW usernames_NNS ,_, passwords_NNS ,_, credit-card_NN numbers_NNS -RRB-_-RRB- ,_, altering_VBG the_DT behavior_NN of_IN forms_NNS -LRB-_-LRB- e.g._FW posting_VBG data_NNS to_TO a_DT cracker_NN 's_POS machine_NN -RRB-_-RRB- and_CC exposing_VBG SSL-Encrypted_JJ connections_NNS ._.
+Clayton_NNP et_FW al._FW =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: describe_VBP the_DT details_NNS of_IN a_DT Java\/JavaScript_JJ XSS_NN attack_NN which_WDT reveals_VBZ the_DT IP-addresses_NNS of_IN clients_NNS using_VBG a_DT -LRB-_-LRB- supposedly_RB -RRB-_-RRB- anonymous_JJ dating_VBG service_NN ._.
+It_PRP is_VBZ well_RB known_VBN that_IN XSS_NN vulnerabilities_NNS can_MD be_VB fixed_VBN by_IN
+wall_NN to_TO enforce_VB restrictions_NNS at_IN the_DT HTTPlevel_NN ._.
+The_DT <bigwig>_NN project_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- consists_VBZ of_IN domain-specific_JJ languages_NNS and_CC tools_NNS for_IN the_DT development_NN of_IN web_NN services_NNS ._.
+A_DT part_NN of_IN the_DT <bigwig>_NN project_NN ,_, PowerForms_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, allows_VBZ constraints_NNS -LRB-_-LRB- expressed_VBN as_IN regular_JJ expressions_NNS -RRB-_-RRB- to_TO be_VB attached_VBN to_TO form_VB fields_NNS ._.
+A_DT compiler_NN generates_VBZ both_CC client-side_JJ JavaScript_NN and_CC code_NN for_IN server-side_JJ checks_NNS ._.
+Apart_RB from_IN the_DT lack_NN of_IN a_DT genera_NN
+c_NN website_NN itself_PRP ,_, a_DT trusted_VBN source_NN ._.
+The_DT implications_NNS of_IN XSS_NN are_VBP severe_JJ ;_: for_IN example_NN ,_, the_DT Same_JJ Origin_NNP Policy_NNP ,_, a_DT key_JJ part_NN of_IN JavaScript_NNP 's_POS security_NN model_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, is_VBZ subverted_VBN ._.
+A_DT CERT_NN advisory_NN -LRB-_-LRB- CA-2000-02_NN -RRB-_-RRB- =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: outlines_VBZ a_DT range_NN of_IN serious_JJ attacks_NNS which_WDT come_VBP under_IN the_DT general_JJ heading_VBG of_IN XSS_NN ._.
+The_DT list_NN of_IN attacks_NNS include_VBP stealing_VBG confidential_JJ information_NN -LRB-_-LRB- e.g._FW usernames_NNS ,_, passwords_NNS ,_, credit-card_NN numbers_NNS -RRB-_-RRB- ,_, alteri_NN
+explicitly_RB using_VBG HTML_NNP 's_POS #_# &_CC 〈_CD n_NN 〉_NN syntax_NN ,_, where_WRB 〈_CD n_NN 〉_NN is_VBZ the_DT numerical_JJ representation_NN of_IN the_DT encoded_VBN character_NN ._.
+However_RB ,_, the_DT flexibility_NN of_IN HTML_NNP makes_VBZ this_DT a_DT more_RBR complicated_JJ task_NN than_IN many_JJ people_NNS realize_VBP =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Furthermore_RB ,_, for_IN large_JJ applications_NNS ,_, it_PRP is_VBZ a_DT laborious_JJ and_CC error-prone_JJ task_NN to_TO ensure_VB that_IN all_DT input_NN from_IN the_DT user_NN has_VBZ been_VBN appropriately_RB HTML_NNP encoded_VBN ._.
+2.1_CD Motivation_NN and_CC Contributions_NNS In_IN this_DT secti_NN
+such_JJ firewalls_NNS include_VBP virus_NN protection_NN and_CC access_NN control_NN ._.
+However_RB ,_, we_PRP are_VBP not_RB aware_JJ of_IN any_DT application-level_JJ firewalls_NNS which_WDT apply_VBP user-specified_JJ validation_NN and_CC transformation_NN rules_NNS ._.
+Damiani_NNP et_FW al._FW =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: describe_VBP a_DT method_NN for_IN enforcing_VBG rôlebased_JJ access_NN control_NN policies_NNS for_IN remote_JJ method_NN invocations_NNS via_IN the_DT SOAP_NN protocol_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+The_DT type_NN of_IN policies_NNS described_VBN are_VBP very_RB different_JJ to_TO ours_PRP :_: they_PRP consider_VBP acc_NN
+icious_JJ content_NN it_PRP appears_VBZ to_TO come_VB from_IN the_DT dynamic_JJ website_NN itself_PRP ,_, a_DT trusted_VBN source_NN ._.
+The_DT implications_NNS of_IN XSS_NN are_VBP severe_JJ ;_: for_IN example_NN ,_, the_DT Same_JJ Origin_NNP Policy_NNP ,_, a_DT key_JJ part_NN of_IN JavaScript_NNP 's_POS security_NN model_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, is_VBZ subverted_VBN ._.
+A_DT CERT_NN advisory_NN -LRB-_-LRB- CA-2000-02_NN -RRB-_-RRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- outlines_VBZ a_DT range_NN of_IN serious_JJ attacks_NNS which_WDT come_VBP under_IN the_DT general_JJ heading_VBG of_IN XSS_NN ._.
+The_DT list_NN of_IN attacks_NNS include_VBP stealing_VBG confidential_JJ information_NN -LRB-_-LRB- e.g._FW us_PRP
+Policy_NN Description_NN Language_NN ,_, Component-based_JJ Design_NN 1_CD ._.
+INTRODUCTION_NN On_IN the_DT 25th_JJ January_NNP ,_, 2001_CD ,_, an_DT article_NN appeared_VBD in_IN a_DT respected_JJ British_JJ newspaper_NN entitled_VBN Security_NNP Hole_NNP Threatens_VBZ British_JJ E-tailers_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT article_NN described_VBN how_WRB a_DT journalist_NN hacked_VBD a_DT number_NN of_IN e-commerce_NN sites_NNS ,_, successfully_RB buying_VBG goods_NNS for_IN less_JJR than_IN their_PRP$ intended_JJ prices_NNS ._.
+The_DT attacks_NNS resulted_VBD in_IN a_DT number_NN of_IN purchases_NNS being_VBG made_VBN fo_NN
+ines_VBZ Figure_NNP 7_CD :_: Total_JJ throughput_NN of_IN a_DT single_JJ securitygateway_NN as_IN the_DT number_NN of_IN concurrently_RB connected_VBN clients_NNS varies_VBZ We_PRP experimented_VBD with_IN this_DT idea_NN by_IN programming_VBG our_PRP$ security_NN gateway_NN directly_RB in_IN OCAML_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, using_VBG a_DT comprehensive_JJ HTTP_NN library_NN to_TO process_VB HTTP_NNP requests_NNS and_CC responses_NNS ._.
+We_PRP found_VBD that_IN ,_, even_RB when_WRB using_VBG a_DT general_JJ purpose_NN programming_NN language_NN to_TO express_VB the_DT security_NN policy_NN ,_, using_VBG a_DT security_NN gate_NN
+involves_VBZ saving_VBG the_DT HTML_NNP form_NN to_TO disk_NN ,_, modifying_VBG the_DT price_NN -LRB-_-LRB- stored_VBN in_IN a_DT hidden_JJ form_NN field_NN -RRB-_-RRB- using_VBG a_DT text_NN editor_NN and_CC reloading_VBG the_DT HTML_NNP form_NN back_RB into_IN the_DT browser_NN ._.
+A_DT recent_JJ article_NN published_VBN in_IN ZD-Net_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: suggests_VBZ that_IN between_IN 30_CD %_NN and_CC 40_CD %_NN of_IN e-commerce_NN sites_NNS throughout_IN the_DT world_NN are_VBP vulnerable_JJ to_TO this_DT simple_JJ attack_NN ._.
+Internet_NNP Security_NNP Systems_NNP -LRB-_-LRB- ISS_NNP -RRB-_-RRB- identified_VBN eleven_NNS widely_RB deployed_VBD commercial_JJ shopping_NN -_:
+a_DT dynamic_JJ website_NN makes_VBZ application-level_JJ security_NN challenging_VBG in_IN general_JJ ._.
+Despite_IN numerous_JJ efforts_NNS to_TO tighten_VB application-level_JJ security_NN through_IN code-review_NN and_CC other_JJ software-engineering_JJ practices_NNS =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: the_DT fact_NN remains_VBZ that_IN a_DT large_JJ number_NN of_IN professionally_RB designed_VBN websites_NNS still_RB suffer_VBP from_IN serious_JJ application-level_JJ security_NN holes_NNS ._.
+This_DT evidence_NN suggests_VBZ that_IN higher-level_JJ tools_NNS and_CC techniques_NNS are_VBP
+modify_VB the_DT price_NN because_IN it_PRP is_VBZ stored_VBN in_IN a_DT hidden_JJ field_NN ._.
+Application-level_JJ security_NN vulnerabilities_NNS are_VBP well_RB known_VBN and_CC many_JJ articles_NNS have_VBP been_VBN published_VBN advising_VBG developers_NNS on_IN how_WRB they_PRP can_MD be_VB avoided_VBN =_JJ -_: =[_NN 22_CD ,_, 23_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Fixing_VBG a_DT single_JJ occurrence_NN of_IN a_DT vulnerability_NN is_VBZ usually_RB easy_JJ ._.
+However_RB ,_, the_DT massive_JJ number_NN of_IN interactions_NNS between_IN different_JJ components_NNS of_IN a_DT dynamic_JJ website_NN makes_VBZ application-level_JJ security_NN challeng_NN
+modify_VB the_DT price_NN because_IN it_PRP is_VBZ stored_VBN in_IN a_DT hidden_JJ field_NN ._.
+Application-level_JJ security_NN vulnerabilities_NNS are_VBP well_RB known_VBN and_CC many_JJ articles_NNS have_VBP been_VBN published_VBN advising_VBG developers_NNS on_IN how_WRB they_PRP can_MD be_VB avoided_VBN =_JJ -_: =[_NN 22_CD ,_, 23_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Fixing_VBG a_DT single_JJ occurrence_NN of_IN a_DT vulnerability_NN is_VBZ usually_RB easy_JJ ._.
+However_RB ,_, the_DT massive_JJ number_NN of_IN interactions_NNS between_IN different_JJ components_NNS of_IN a_DT dynamic_JJ website_NN makes_VBZ application-level_JJ security_NN challeng_NN
+major_JJ cause_NN of_IN application-level_JJ security_NN vulnerabilities_NNS is_VBZ a_DT general_JJ lack_NN of_IN language-level_JJ support_NN in_IN popular_JJ untyped_JJ scripting_NN languages_NNS ._.
+For_IN example_NN ,_, consider_VB the_DT languages_NNS PHP_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC VB-Script_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+When_WRB using_VBG these_DT languages_NNS it_PRP is_VBZ the_DT job_NN of_IN the_DT programmer_NN to_TO manually_RB verify_VB that_IN all_DT user_NN input_NN is_VBZ appropriately_RB HTML-encoded_JJ ._.
+Inadvertently_RB omitting_VBG a_DT call_NN to_TO the_DT HTML-encoding_JJ function_NN results_NNS i_LS
+using_VBG the_DT <bigwig>_NN languages_NNS and_CC tools_NNS ._.
+In_IN contrast_NN our_PRP$ security-gateway_NN works_VBZ at_IN the_DT HTTP-level_NN and_CC secures_VBZ web-applications_NNS written_VBN in_IN all_DT languages_NNS ._.
+Sanctum_NNP Inc._NNP provide_VBP a_DT product_NN called_VBN AppShield_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT ,_, like_IN our_PRP$ Security_NNP Gateway_NNP ,_, inspects_VBZ HTTP_NN messages_NNS in_IN an_DT attempt_NN to_TO prevent_VB application-level_JJ attacks_NNS ._.
+However_RB ,_, despite_IN this_DT apparent_JJ similarity_NN ,_, there_EX are_VBP significant_JJ differences_NNS between_IN the_DT t_NN
+lated_VBD MAC_NNP with_IN the_DT MAC_NNP returned_VBD from_IN the_DT client_NN in_IN order_NN to_TO determine_VB whether_IN any_DT parameters_NNS were_VBD tampered_VBN with_IN ._.
+When_WRB designing_VBG the_DT MAC_NNP algorithm_NN one_CD of_IN our_PRP$ major_JJ concerns_NNS was_VBD to_TO avoid_VB replay_NN attacks_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: where_WRB clients_NNS replay_NN messages_NNS already_RB annotated_JJ with_IN MACs_NNS in_IN unexpected_JJ contexts_NNS ._.
+We_PRP take_VBP two_CD steps_NNS to_TO avoid_VB such_JJ attacks_NNS :_: 1_CD ._.
+We_PRP include_VBP a_DT time-stamp_NN in_IN the_DT MAC_NNP and_CC do_VBP not_RB accept_VB MACs_NNS which_WDT are_VBP more_RBR
+._.
+Consider_VB an_DT ordered_VBN list_NN of_IN values_NNS ,_, l._VBP We_PRP write_VB ,_, mac_NN -LRB-_-LRB- l_NN -RRB-_-RRB- to_TO denote_VB the_DT message_NN authentication_NN code_NN corresponding_VBG to_TO l._VB In_IN our_PRP$ current_JJ implementation_NN the_DT value_NN of_IN mac_NN -LRB-_-LRB- l_NN -RRB-_-RRB- is_VBZ calculated_VBN as_IN the_DT MD5-hash_JJ =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: of_IN a_DT string_NN containing_VBG the_DT values_NNS of_IN l_NN concatenated_VBN together_RB along_IN with_IN a_DT time-stamp_NN and_CC a_DT secret_NN ._.
+The_DT secret_NN is_VBZ a_DT value_NN which_WDT is_VBZ not_RB known_VBN by_IN the_DT client_NN ;_: since_IN clients_NNS do_VBP not_RB know_VB the_DT secret_NN they_PRP ca_MD
+ver_NN ;_: Modify_NNP HTTP_NNP Response_NNP Return_NN HTTP_NNP Response_NNP Figure_NNP 4_CD :_: The_DT tasks_NNS performed_VBN by_IN the_DT security_NN gateway_NN too_RB inflexible_JJ ,_, there_EX is_VBZ no_DT reason_NN why_WRB more_RBR sophisticated_JJ type-systems_NNS -LRB-_-LRB- e.g._FW ML_NN style_NN polymorphism_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =--RRB-_NN could_MD not_RB be_VB employed_VBN in_IN future_JJ versions_NNS ._.
+3.4_CD The_DT Security_NNP Gateway_NNP Figure_NNP 4_CD shows_VBZ the_DT algorithm_NN executed_VBN by_IN the_DT Security_NNP Gateway_NNP on_IN receipt_NN of_IN an_DT HTTP_NN request_NN ._.
+First_RB ,_, the_DT URL_NN is_VBZ extracted_VBN from_IN the_DT H_NN

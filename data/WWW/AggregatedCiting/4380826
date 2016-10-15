@@ -1,0 +1,113 @@
+Identifying_VBG and_CC discriminating_VBG between_IN web_NN and_CC peer-to-peer_NN traffic_NN in_IN the_DT network_NN core_NN
+Traffic_NN classification_NN is_VBZ the_DT ability_NN to_TO identify_VB and_CC categorize_VB network_NN traffic_NN by_IN application_NN type_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP consider_VBP the_DT problem_NN of_IN traffic_NN classification_NN in_IN the_DT network_NN core_NN ._.
+Classification_NN at_IN the_DT core_NN is_VBZ challenging_JJ because_IN only_JJ partial_JJ information_NN about_IN the_DT flows_NNS and_CC their_PRP$ contributors_NNS is_VBZ available_JJ ._.
+We_PRP address_VBP this_DT problem_NN by_IN developing_VBG a_DT framework_NN that_WDT can_MD classify_VB a_DT flow_NN using_VBG only_RB unidirectional_JJ flow_NN information_NN ._.
+We_PRP evaluated_VBD this_DT approach_NN using_VBG recent_JJ packet_NN traces_NNS that_IN we_PRP collected_VBD and_CC pre-classified_JJ to_TO establish_VB a_DT ``_`` base_NN truth_NN ''_'' ._.
+From_IN our_PRP$ evaluation_NN ,_, we_PRP find_VBP that_IN flow_NN statistics_NNS for_IN the_DT server-to-client_JJ direction_NN of_IN a_DT TCP_NN connection_NN provide_VBP greater_JJR classification_NN accuracy_NN than_IN the_DT flow_NN statistics_NNS for_IN the_DT client-to-server_JJ direction_NN ._.
+Because_IN collection_NN of_IN the_DT server-to-client_JJ flow_NN statistics_NNS may_MD not_RB always_RB be_VB feasible_JJ ,_, we_PRP developed_VBD and_CC validated_VBD an_DT algorithm_NN that_WDT can_MD estimate_VB the_DT missing_JJ statistics_NNS froma_VBP unidirectional_JJ packet_NN trace_NN ._.
+a_DT pre-requisite_JJ to_TO many_JJ network_NN management_NN and_CC traffic_NN engineering_NN problems_NNS ._.
+The_DT classical_JJ traffic_NN classification_NN approach_NN of_IN mapping_NN traffic_NN to_TO applications_NNS based_VBN on_IN port_NN numbers_NNS is_VBZ now_RB ineffective_JJ =_JJ -_: =[_NN 18_CD ,_, 19_CD ,_, 22_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT ineffectiveness_NN arises_VBZ because_IN applications_NNS such_JJ as_IN network_NN games_NNS ,_, multimedia_NNS streaming_NN ,_, and_CC Peer-to-Peer_NNP file_NN sharing_NN use_VBP dynamic_JJ ports_NNS for_IN communication_NN ._.
+Some_DT P2P_NN applications_NNS are_VBP also_RB maskin_VBN
+umber_NN of_IN bytes_NNS transferred_VBN ,_, flow_NN duration_NN ,_, and_CC mean_VB inter-arrival_JJ time_NN of_IN packets_NNS ._.
+Due_JJ to_TO the_DT heavy-tailed_JJ distribution_NN of_IN many_JJ of_IN these_DT features_NNS ,_, we_PRP found_VBD it_PRP necessary_JJ to_TO transform_VB the_DT flow_NN features_VBZ =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ experiments_NNS with_IN many_JJ commonly_RB used_VBN transformations_NNS indicated_VBD that_IN logarithmic_JJ transformations_NNS yield_VBP the_DT best_JJS results_NNS ._.
+2.2_CD Classifier_NNP Our_NNP classifier_NN is_VBZ distance-based_JJ -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+A_DT new_JJ flow_NN is_VBZ assigned_VBN
+,_, ·_NNP ·_NNP ·_NNP ,_, xip_NN -RCB-_-RRB- ,_, and_CC a_DT set_NN of_IN traffic_NN classes_NNS C_NN =_JJ -LCB-_-LRB- C1_NN ,_, C2_NN ,_, ·_NNP ·_NNP ·_NNP ,_, Cm_NNP -RCB-_-RRB- ,_, the_DT goal_NN of_IN traffic_NN classification_NN is_VBZ to_TO define_VB a_DT mapping_NN f_SYM :_: X_NN →_NN C_NN such_JJ that_IN each_DT flow_NN fi_FW is_VBZ assigned_VBN to_TO only_RB one_CD traffic_NN class_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Examples_NNS of_IN flow_NN attributes_NNS include_VBP average_JJ packet_NN size_NN ,_, average_JJ flow_NN duration_NN ,_, and_CC flow_NN size_NN ,_, whereas_IN examples_NNS of_IN possible_JJ traffic_NN classes_NNS include_VBP Web_NN ,_, Peer-to-Peer_NNP ,_, and_CC FTP_NN ._.
+Machine_NN learning_NN techn_NN
+tics_NNS is_VBZ also_RB possible_JJ ,_, it_PRP is_VBZ generally_RB much_RB harder_JJR to_TO implement_VB ._.
+Third_RB ,_, classification_NN based_VBN on_IN flow_NN statistics_NNS can_MD benefit_VB from_IN the_DT large_JJ body_NN of_IN work_NN on_IN scalable_JJ flow_NN sampling\/estimation_NN techniques_NNS =_JJ -_: =[_NN 5,7,8,13,21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP and_CC evaluate_VBP a_DT machine_NN learning_NN approach_NN for_IN identifying_VBG and_CC grouping_VBG network_NN traffic_NN according_VBG to_TO traffic_NN classes_NNS -LRB-_-LRB- e.g._FW ,_, Web_NN ,_, P2P_NN ,_, FTP_NN ,_, Others_NNS -RRB-_-RRB- at_IN egress_NN and_CC ingress_NN point_NN
+tics_NNS is_VBZ also_RB possible_JJ ,_, it_PRP is_VBZ generally_RB much_RB harder_JJR to_TO implement_VB ._.
+Third_RB ,_, classification_NN based_VBN on_IN flow_NN statistics_NNS can_MD benefit_VB from_IN the_DT large_JJ body_NN of_IN work_NN on_IN scalable_JJ flow_NN sampling\/estimation_NN techniques_NNS =_JJ -_: =[_NN 5,7,8,13,21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP and_CC evaluate_VBP a_DT machine_NN learning_NN approach_NN for_IN identifying_VBG and_CC grouping_VBG network_NN traffic_NN according_VBG to_TO traffic_NN classes_NNS -LRB-_-LRB- e.g._FW ,_, Web_NN ,_, P2P_NN ,_, FTP_NN ,_, Others_NNS -RRB-_-RRB- at_IN egress_NN and_CC ingress_NN point_NN
+d_NN traffic_NN ;_: many_JJ P2P_NN applications_NNS are_VBP now_RB moving_VBG towards_IN using_VBG encryption_NN ._.
+The_DT diminished_VBN effectiveness_NN of_IN the_DT aforementioned_JJ techniques_NNS motivate_VBP use_NN of_IN flow_NN statistics_NNS for_IN classifying_VBG network_NN traffic_NN =_JJ -_: =[_NN 1_CD ,_, 25_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX are_VBP at_IN least_JJS three_CD reasons_NNS why_WRB this_DT approach_NN is_VBZ recommended_VBN ._.
+First_JJ ,_, different_JJ applications_NNS manifest_VBP dissimilar_JJ behaviors_NNS and_CC thus_RB exhibit_VBP different_JJ flow_NN statistics_NNS ._.
+For_IN instance_NN ,_, a_DT large_JJ file_NN
+-LRB-_-LRB- or_CC attributes_NNS -RRB-_-RRB- plays_VBZ an_DT important_JJ role_NN ._.
+Many_JJ statistics_NNS can_MD be_VB obtained_VBN from_IN a_DT flow_NN ._.
+Following_VBG extensive_JJ experimentation_NN with_IN over_IN 25_CD different_JJ statistics_NNS using_VBG standard_JJ feature_NN selection_NN algorithms_NNS =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP reduced_VBD the_DT set_NN of_IN flow_NN features_NNS to_TO the_DT following_NN :_: total_JJ number_NN of_IN packets_NNS ,_, mean_VB packet_NN size_NN ,_, mean_VB payload_NN size_NN excluding_VBG headers_NNS ,_, number_NN of_IN bytes_NNS transferred_VBN ,_, flow_NN duration_NN ,_, and_CC mean_VB inter-arriv_JJ
+mplements_NNS these_DT prior_JJ efforts_NNS ._.
+Traffic_NN identification_NN approaches_NNS that_WDT rely_VBP on_IN applicationlevel_NN behaviors_NNS such_JJ as_IN the_DT number_NN of_IN concurrent_JJ TCP\/UDP_NN connections_NNS to_TO an_DT IP_NNP address_NN have_VBP also_RB been_VBN developed_VBN =_JJ -_: =[_NN 6,19_CD ,_, 20,32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Karagiannis_NNP et_FW al._FW -LRB-_-LRB- 19_CD -RRB-_-RRB- proposed_VBN heuristics_NNS that_WDT capitalize_VBP on_IN the_DT unique_JJ behaviors_NNS -LRB-_-LRB- e.g._FW ,_, concurrent_JJ use_NN of_IN both_CC TCP_NN and_CC UDP_NN by_IN a_DT source\/destination_NN host_NN pair_NN -RRB-_-RRB- of_IN P2P_NN applications_NNS when_WRB they_PRP are_VBP tra_NN
+a_DT pre-requisite_JJ to_TO many_JJ network_NN management_NN and_CC traffic_NN engineering_NN problems_NNS ._.
+The_DT classical_JJ traffic_NN classification_NN approach_NN of_IN mapping_NN traffic_NN to_TO applications_NNS based_VBN on_IN port_NN numbers_NNS is_VBZ now_RB ineffective_JJ =_JJ -_: =[_NN 18_CD ,_, 19_CD ,_, 22_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT ineffectiveness_NN arises_VBZ because_IN applications_NNS such_JJ as_IN network_NN games_NNS ,_, multimedia_NNS streaming_NN ,_, and_CC Peer-to-Peer_NNP file_NN sharing_NN use_VBP dynamic_JJ ports_NNS for_IN communication_NN ._.
+Some_DT P2P_NN applications_NNS are_VBP also_RB maskin_VBN
+a_DT pre-requisite_JJ to_TO many_JJ network_NN management_NN and_CC traffic_NN engineering_NN problems_NNS ._.
+The_DT classical_JJ traffic_NN classification_NN approach_NN of_IN mapping_NN traffic_NN to_TO applications_NNS based_VBN on_IN port_NN numbers_NNS is_VBZ now_RB ineffective_JJ =_JJ -_: =[_NN 18_CD ,_, 19_CD ,_, 22_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT ineffectiveness_NN arises_VBZ because_IN applications_NNS such_JJ as_IN network_NN games_NNS ,_, multimedia_NNS streaming_NN ,_, and_CC Peer-to-Peer_NNP file_NN sharing_NN use_VBP dynamic_JJ ports_NNS for_IN communication_NN ._.
+Some_DT P2P_NN applications_NNS are_VBP also_RB maskin_VBN
+dentified_VBN by_IN examining_VBG the_DT flows_NNS that_WDT are_VBP grouped_VBN to_TO form_VB a_DT new_JJ cluster_NN ._.
+The_DT supervised_JJ approach_NN can_MD only_RB classify_VB traffic_NN for_IN which_WDT it_PRP has_VBZ labeled_VBN training_NN data_NNS ,_, and_CC can_MD not_RB discover_VB new_JJ applications_NNS =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP consider_VBP a_DT specific_JJ type_NN of_IN unsupervised_JJ learning_VBG called_VBN clustering_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+Clustering_NN is_VBZ the_DT partitioning_NN of_IN previously_RB unlabeled_JJ objects_NNS into_IN disjoint_NN groups_NNS ,_, referred_VBN to_TO as_IN ``_`` cluste_NN
+and_CC map_VB a_DT cluster_NN to_TO the_DT traffic_NN class_NN that_WDT makes_VBZ up_RP the_DT majority_NN of_IN flows_NNS in_IN that_DT cluster_NN ._.
+Our_PRP$ ongoing_JJ work_NN is_VBZ studying_VBG issues_NNS pertaining_VBG to_TO labeling_NN clusters_NNS and_CC mapping_NN clusters_NNS to_TO traffic_NN classes_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+3_LS ._.
+EXPERIMENTAL_JJ METHODOLOGY_NN This_DT section_NN outlines_VBZ our_PRP$ experimental_JJ methodology_NN ._.
+Section_NN 3.1_CD describes_VBZ the_DT empirical_JJ traces_NNS used_VBN in_IN this_DT work_NN ._.
+Section_NN 3.2_CD discusses_VBZ the_DT process_NN by_IN which_WDT we_PRP establishe_VBP
+P_NN -RRB-_-RRB- file-exchange_JJ applications_NNS have_VBP overtaken_VBN Web_NN applications_NNS as_IN the_DT major_JJ contributor_NN of_IN traffic_NN on_IN the_DT Internet_NN ._.
+Recent_JJ estimates_NNS put_VBD the_DT volume_NN of_IN P2P_NN traffic_NN at_IN 70_CD %_NN of_IN the_DT total_JJ broadband_NN traffic_NN =_JJ -_: =[_NN 3,22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+P2P_NN is_VBZ often_RB used_VBN for_IN illegally_RB sharing_VBG copyrighted_VBN music_NN ,_, video_NN ,_, games_NNS ,_, and_CC software_NN ;_: P2P_NN traffic_NN can_MD cause_VB network_NN congestion_NN and_CC performance_NN degradation_NN of_IN traditional_JJ client-server_JJ applications_NNS
+of_IN clusters_NNS ,_, k_NN ,_, the_DT task_NN of_IN clustering_NN is_VBZ to_TO define_VB a_DT mapping_NN f_SYM :_: D_NNP →_NNP -LCB-_-LRB- 1_CD ,_, 2_CD ,_, ·_FW ·_FW ·_NN ,_, k_NN -RCB-_-RRB- where_WRB each_DT flow_NN is_VBZ assigned_VBN to_TO only_RB one_CD cluster_NN Yi_NN ,_, 1_CD ≤_CD i_FW ≤_FW k_NN ,_, such_JJ that_IN D_NN =_JJ ∪_CD k_NN j_NN =_JJ 1Yj_NN and_CC Yi_FW ∩_FW Yj_NN =_JJ ∅_CD ,_, ∀_FW i_FW =_JJ j_NN =_JJ -_: =[_NN 9_CD ,_, 16_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT goal_NN of_IN clustering_NN is_VBZ to_TO group_NN together_RB objects_NNS that_WDT are_VBP similar_JJ ._.
+This_DT grouping_NN is_VBZ achieved_VBN using_VBG a_DT similarity_NN metric_NN ._.
+In_IN the_DT machine_NN learning_NN literature_NN ,_, several_JJ similarity_NN metrics_NNS have_VBP been_VBN de_IN
+d_NN traffic_NN ;_: many_JJ P2P_NN applications_NNS are_VBP now_RB moving_VBG towards_IN using_VBG encryption_NN ._.
+The_DT diminished_VBN effectiveness_NN of_IN the_DT aforementioned_JJ techniques_NNS motivate_VBP use_NN of_IN flow_NN statistics_NNS for_IN classifying_VBG network_NN traffic_NN =_JJ -_: =[_NN 1_CD ,_, 25_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX are_VBP at_IN least_JJS three_CD reasons_NNS why_WRB this_DT approach_NN is_VBZ recommended_VBN ._.
+First_JJ ,_, different_JJ applications_NNS manifest_VBP dissimilar_JJ behaviors_NNS and_CC thus_RB exhibit_VBP different_JJ flow_NN statistics_NNS ._.
+For_IN instance_NN ,_, a_DT large_JJ file_NN
+aA_NN is_VBZ known_VBN to_TO use_VB port_NN 80_CD ,_, which_WDT is_VBZ reserved_VBN for_IN Web_NN traffic_NN ._.
+An_DT alternative_JJ approach_NN is_VBZ payload-based_JJ analysis_NN where_WRB packet_NN payloads_NNS are_VBP searched_VBN for_IN characteristic_JJ signatures_NNS of_IN known_JJ applications_NNS =_JJ -_: =[_NN 4_CD ,_, 15_CD ,_, 24_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Application-layer_JJ analysis_NN of_IN packet_NN contents_NNS is_VBZ employed_VBN by_IN some_DT commercial_JJ bandwidth_NN management_NN tools_NNS -LRB-_-LRB- 2,26_CD -RRB-_-RRB- ._.
+This_DT general_JJ approach_NN ,_, however_RB ,_, poses_VBZ several_JJ technical_JJ challenges_NNS ._.
+First_RB ,_, these_DT techn_NN
+mplements_NNS these_DT prior_JJ efforts_NNS ._.
+Traffic_NN identification_NN approaches_NNS that_WDT rely_VBP on_IN applicationlevel_NN behaviors_NNS such_JJ as_IN the_DT number_NN of_IN concurrent_JJ TCP\/UDP_NN connections_NNS to_TO an_DT IP_NNP address_NN have_VBP also_RB been_VBN developed_VBN =_JJ -_: =[_NN 6,19_CD ,_, 20,32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Karagiannis_NNP et_FW al._FW -LRB-_-LRB- 19_CD -RRB-_-RRB- proposed_VBN heuristics_NNS that_WDT capitalize_VBP on_IN the_DT unique_JJ behaviors_NNS -LRB-_-LRB- e.g._FW ,_, concurrent_JJ use_NN of_IN both_CC TCP_NN and_CC UDP_NN by_IN a_DT source\/destination_NN host_NN pair_NN -RRB-_-RRB- of_IN P2P_NN applications_NNS when_WRB they_PRP are_VBP tra_NN
+me_PRP classification_NN of_IN flows_NNS and_CC is_VBZ an_DT idea_NN that_IN we_PRP are_VBP currently_RB exploring_VBG -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+7_CD ._.
+RELATED_NNS WORK_VBP The_DT use_NN of_IN flow_NN statistics_NNS for_IN clustering_NN network_NN traffic_NN has_VBZ received_VBN some_DT attention_NN in_IN the_DT literature_NN =_JJ -_: =[_NN 10_CD ,_, 23_CD ,_, 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT prior_JJ works_NNS only_RB considered_VBD the_DT model_NN building_NN stage_NN and_CC did_VBD not_RB evaluate_VB the_DT predictive_JJ power_NN of_IN classifiers_NNS obtained_VBN from_IN clustering_NN ._.
+The_DT classifier_NN proposed_VBN by_IN Bernaille_NNP et_FW al._FW is_VBZ the_DT close_NN
+me_PRP classification_NN of_IN flows_NNS and_CC is_VBZ an_DT idea_NN that_IN we_PRP are_VBP currently_RB exploring_VBG -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+7_CD ._.
+RELATED_NNS WORK_VBP The_DT use_NN of_IN flow_NN statistics_NNS for_IN clustering_NN network_NN traffic_NN has_VBZ received_VBN some_DT attention_NN in_IN the_DT literature_NN =_JJ -_: =[_NN 10_CD ,_, 23_CD ,_, 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT prior_JJ works_NNS only_RB considered_VBD the_DT model_NN building_NN stage_NN and_CC did_VBD not_RB evaluate_VB the_DT predictive_JJ power_NN of_IN classifiers_NNS obtained_VBN from_IN clustering_NN ._.
+The_DT classifier_NN proposed_VBN by_IN Bernaille_NNP et_FW al._FW is_VBZ the_DT close_NN
+ds_JJ and_CC signatures_NNS described_VBN by_IN Sen_NNP et_FW al._FW -LRB-_-LRB- 30_CD -RRB-_-RRB- and_CC Karagiannis_NNP et_FW al._FW -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+We_PRP augmented_VBD some_DT of_IN their_PRP$ P2P_NN signatures_NNS to_TO account_VB for_IN protocol_NN changes_NNS and_CC some_DT new_JJ P2P_NN applications_NNS ._.
+This_DT step_NN uses_VBZ Bro_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, whose_WP$ signature_NN matching_NN engine_NN generates_VBZ a_DT signature_NN match_NN event_NN when_WRB the_DT packet_NN payload_NN matches_VBZ a_DT regular_JJ expression_NN that_WDT is_VBZ specified_VBN for_IN a_DT particular_JJ rule_NN ._.
+Some_DT P2P_NN applications_NNS are_VBP now_RB using_VBG en_IN
+aA_NN is_VBZ known_VBN to_TO use_VB port_NN 80_CD ,_, which_WDT is_VBZ reserved_VBN for_IN Web_NN traffic_NN ._.
+An_DT alternative_JJ approach_NN is_VBZ payload-based_JJ analysis_NN where_WRB packet_NN payloads_NNS are_VBP searched_VBN for_IN characteristic_JJ signatures_NNS of_IN known_JJ applications_NNS =_JJ -_: =[_NN 4_CD ,_, 15_CD ,_, 24_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Application-layer_JJ analysis_NN of_IN packet_NN contents_NNS is_VBZ employed_VBN by_IN some_DT commercial_JJ bandwidth_NN management_NN tools_NNS -LRB-_-LRB- 2,26_CD -RRB-_-RRB- ._.
+This_DT general_JJ approach_NN ,_, however_RB ,_, poses_VBZ several_JJ technical_JJ challenges_NNS ._.
+First_RB ,_, these_DT techn_NN
+ering_NN generates_VBZ partitions_NNS with_IN high_JJ purity_NN and_CC thus_RB identification_NN of_IN a_DT small_JJ portion_NN of_IN the_DT flows_NNS in_IN a_DT cluster_NN may_MD be_VB sufficient_JJ to_TO map_VB a_DT cluster_NN to_TO a_DT traffic_NN class_NN with_IN a_DT high_JJ degree_NN of_IN confidence_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT work_NN ,_, we_PRP assume_VBP that_IN labels_NNS for_IN all_DT training_NN flows_NNS are_VBP available_JJ ,_, and_CC map_VB a_DT cluster_NN to_TO the_DT traffic_NN class_NN that_WDT makes_VBZ up_RP the_DT majority_NN of_IN flows_NNS in_IN that_DT cluster_NN ._.
+Our_PRP$ ongoing_JJ work_NN is_VBZ studying_VBG iss_NN
+d_NN traffic_NN ;_: many_JJ P2P_NN applications_NNS are_VBP now_RB moving_VBG towards_IN using_VBG encryption_NN ._.
+The_DT diminished_VBN effectiveness_NN of_IN the_DT aforementioned_JJ techniques_NNS motivate_VBP use_NN of_IN flow_NN statistics_NNS for_IN classifying_VBG network_NN traffic_NN =_JJ -_: =[_NN 1_CD ,_, 25_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX are_VBP at_IN least_JJS three_CD reasons_NNS why_WRB this_DT approach_NN is_VBZ recommended_VBN ._.
+First_JJ ,_, different_JJ applications_NNS manifest_VBP dissimilar_JJ behaviors_NNS and_CC thus_RB exhibit_VBP different_JJ flow_NN statistics_NNS ._.
+For_IN instance_NN ,_, a_DT large_JJ file_NN
+tics_NNS is_VBZ also_RB possible_JJ ,_, it_PRP is_VBZ generally_RB much_RB harder_JJR to_TO implement_VB ._.
+Third_RB ,_, classification_NN based_VBN on_IN flow_NN statistics_NNS can_MD benefit_VB from_IN the_DT large_JJ body_NN of_IN work_NN on_IN scalable_JJ flow_NN sampling\/estimation_NN techniques_NNS =_JJ -_: =[_NN 5,7,8,13,21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP and_CC evaluate_VBP a_DT machine_NN learning_NN approach_NN for_IN identifying_VBG and_CC grouping_VBG network_NN traffic_NN according_VBG to_TO traffic_NN classes_NNS -LRB-_-LRB- e.g._FW ,_, Web_NN ,_, P2P_NN ,_, FTP_NN ,_, Others_NNS -RRB-_-RRB- at_IN egress_NN and_CC ingress_NN point_NN
+tics_NNS is_VBZ also_RB possible_JJ ,_, it_PRP is_VBZ generally_RB much_RB harder_JJR to_TO implement_VB ._.
+Third_RB ,_, classification_NN based_VBN on_IN flow_NN statistics_NNS can_MD benefit_VB from_IN the_DT large_JJ body_NN of_IN work_NN on_IN scalable_JJ flow_NN sampling\/estimation_NN techniques_NNS =_JJ -_: =[_NN 5,7,8,13,21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP and_CC evaluate_VBP a_DT machine_NN learning_NN approach_NN for_IN identifying_VBG and_CC grouping_VBG network_NN traffic_NN according_VBG to_TO traffic_NN classes_NNS -LRB-_-LRB- e.g._FW ,_, Web_NN ,_, P2P_NN ,_, FTP_NN ,_, Others_NNS -RRB-_-RRB- at_IN egress_NN and_CC ingress_NN point_NN
+aA_NN is_VBZ known_VBN to_TO use_VB port_NN 80_CD ,_, which_WDT is_VBZ reserved_VBN for_IN Web_NN traffic_NN ._.
+An_DT alternative_JJ approach_NN is_VBZ payload-based_JJ analysis_NN where_WRB packet_NN payloads_NNS are_VBP searched_VBN for_IN characteristic_JJ signatures_NNS of_IN known_JJ applications_NNS =_JJ -_: =[_NN 4_CD ,_, 15_CD ,_, 24_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Application-layer_JJ analysis_NN of_IN packet_NN contents_NNS is_VBZ employed_VBN by_IN some_DT commercial_JJ bandwidth_NN management_NN tools_NNS -LRB-_-LRB- 2,26_CD -RRB-_-RRB- ._.
+This_DT general_JJ approach_NN ,_, however_RB ,_, poses_VBZ several_JJ technical_JJ challenges_NNS ._.
+First_RB ,_, these_DT techn_NN

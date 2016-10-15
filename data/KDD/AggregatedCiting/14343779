@@ -1,0 +1,139 @@
+Detecting_VBG adversarial_JJ advertisements_NNS in_IN the_DT wild_JJ
+In_IN a_DT large_JJ online_JJ advertising_NN system_NN ,_, adversaries_NNS may_MD attempt_VB to_TO profit_VB from_IN the_DT creation_NN of_IN low_JJ quality_NN or_CC harmful_JJ advertisements_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP present_VBP a_DT large_JJ scale_NN data_NNS mining_NN effort_NN that_WDT detects_VBZ and_CC blocks_VBZ such_JJ adversarial_JJ advertisements_NNS for_IN the_DT benefit_NN and_CC safety_NN of_IN our_PRP$ users_NNS ._.
+Because_IN both_CC false_JJ positives_NNS and_CC false_JJ negatives_NNS have_VBP high_JJ cost_NN ,_, our_PRP$ deployed_VBN system_NN uses_VBZ a_DT tiered_JJ strategy_NN combining_VBG automated_JJ and_CC semi-automated_JJ methods_NNS to_TO ensure_VB reliable_JJ classification_NN ._.
+We_PRP also_RB employ_VBP strategies_NNS to_TO address_VB the_DT challenges_NNS of_IN learning_VBG from_IN highly_RB skewed_JJ data_NNS at_IN scale_NN ,_, allocating_VBG the_DT effort_NN of_IN human_JJ experts_NNS ,_, leveraging_VBG domain_NN expert_NN knowledge_NN ,_, and_CC independently_RB assessing_VBG the_DT effectiveness_NN of_IN our_PRP$ system_NN ._.
+atisfactory_NN from_IN a_DT machine_NN learning_NN perspective_NN -LRB-_-LRB- 4_CD ,_, 28_CD -RRB-_-RRB- ._.
+SGD_NNP is_VBZ an_DT iterative_JJ solver_NN ,_, sequentially_RB examining_VBG data_NNS points_NNS one_CD at_IN a_DT time_NN in_IN a_DT random_JJ order_NN ._.
+The_DT basic_JJ SGD_NNP training_NN paradigm_NN for_IN linear_JJ SVM_NN =_JJ -_: =[_NN 38_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ given_VBN in_IN Algorithm_NN 1_CD ._.
+Algorithm_NN 1_CD Training_NN Linear_JJ SVM_NN using_VBG SGD_NNP ._.
+1_CD :_: w0_FW ←_FW 0_CD 2_CD :_: for_IN i_LS =_JJ 1_CD to_TO t_NN do_VB 3_CD :_: -LRB-_-LRB- x_NN ,_, y_NN -RRB-_-RRB- ←_CD RandomExample_NN -LRB-_-LRB- D_NN -RRB-_-RRB- 4_CD :_: η_FW ←_FW GetLearningRate_NN -LRB-_-LRB- t_NN -RRB-_-RRB- 5_CD :_: if_IN y_FW 〈_FW wi_FW −_FW 1_CD ,_, x_NN 〉_NN -LRB-_-LRB- 1.0_CD then_RB 6_CD :_: δ_FW ←_FW 1_CD 7_CD :_: else_RB 8_CD
+lem_NN in_IN a_DT bandit_NN setting_NN ;_: however_RB ,_, McMahan_NNP and_CC Streeter_NNP show_VBP that_IN the_DT use_NN of_IN bandit_NN algorithms_NNS is_VBZ problematic_JJ for_IN selecting_VBG data_NNS for_IN model-training_NN due_JJ to_TO the_DT non-stationarity_NN of_IN the_DT underlying_VBG models_NNS =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ approach_NN is_VBZ to_TO stratify_VB the_DT data_NNS across_IN several_JJ different_JJ dimensions_NNS ,_, as_IN shown_VBN in_IN Figure_NNP 7_CD ._.
+First_RB ,_, ads_NNS in_IN each_DT language_NN are_VBP considered_VBN separately_RB ._.
+Within_IN a_DT given_VBN language_NN ,_, ads_NNS are_VBP divided_VBN into_IN t_NN
+uential_JJ online_NN methodology_NN ,_, it_PRP is_VBZ nontrivial_JJ to_TO parallelize_VB SGD_NNP training_NN across_IN multiple_JJ machines_NNS ._.
+Approaches_NNS that_WDT have_VBP been_VBN analyzed_VBN include_VBP message_NN passing_NN approaches_NNS -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, lazy_JJ distributed_VBN updates_NNS =_JJ -_: =[_NN 39_CD -RRB-_-RRB- -_: =_JJ -_: ,_, training_NN on_IN multiple_JJ independent_JJ samples_NNS of_IN the_DT data_NNS -LRB-_-LRB- 40_CD -RRB-_-RRB- ,_, and_CC performing_VBG multiple_JJ chained_JJ MapReduce_NN steps_NNS -LRB-_-LRB- 35_CD -RRB-_-RRB- ._.
+However_RB ,_, these_DT methods_NNS all_DT add_VBP significant_JJ complexity_NN to_TO a_DT relatively_RB simple_JJ learning_NN
+-LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+But_CC because_IN SGD_NNP is_VBZ a_DT sequential_JJ online_NN methodology_NN ,_, it_PRP is_VBZ nontrivial_JJ to_TO parallelize_VB SGD_NNP training_NN across_IN multiple_JJ machines_NNS ._.
+Approaches_NNS that_WDT have_VBP been_VBN analyzed_VBN include_VBP message_NN passing_NN approaches_VBZ =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, lazy_JJ distributed_VBN updates_NNS -LRB-_-LRB- 39_CD -RRB-_-RRB- ,_, training_NN on_IN multiple_JJ independent_JJ samples_NNS of_IN the_DT data_NNS -LRB-_-LRB- 40_CD -RRB-_-RRB- ,_, and_CC performing_VBG multiple_JJ chained_JJ MapReduce_NN steps_NNS -LRB-_-LRB- 35_CD -RRB-_-RRB- ._.
+However_RB ,_, these_DT methods_NNS all_DT add_VBP significant_JJ complexity_NN
+osely_RB related_JJ work_NN ,_, Attenberg_NNP et_FW al._FW detected_VBN unsafe_JJ advertisements_NNS ,_, such_JJ as_IN those_DT containing_VBG adult_JJ content_NN or_CC hate_NN speech_NN ,_, and_CC used_VBD a_DT search-based_JJ methodology_NN over_IN active-learning_NN for_IN model_NN training_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP consider_VBP a_DT broader_JJR range_NN of_IN adversarial_JJ advertisements_NNS ,_, including_VBG many_JJ that_WDT are_VBP often_RB difficult_JJ for_IN non-experts_NNS to_TO distinguish_VB from_IN good-faith_NN advertisements_NNS without_IN aid_NN ._.
+The_DT field_NN of_IN email_NN spam_NN
+re_IN extracted_VBN from_IN the_DT text_NN of_IN advertisement_NN keywords_NNS ,_, creatives_NNS ,_, and_CC landing_NN pages_NNS ._.
+These_DT include_VBP term-level_JJ features_NNS ,_, and_CC semantically_RB related_JJ terms_NNS and_CC topic-level_JJ features_NNS using_VBG methods_NNS similar_JJ to_TO =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 3_LS -RRB-_-RRB- ._.
+Figure_NN 2_CD :_: Class_NN Structure_NN ._.
+There_EX is_VBZ a_DT clear_JJ distinction_NN between_IN adversarial_JJ and_CC non-adversarial_JJ ,_, but_CC members_NNS of_IN the_DT adversarial_JJ classes_NNS overlap_VBP in_IN places_NNS ._.
+•_CD String-based_JJ features_NNS are_VBP intende_NN
+ficiently_RB using_VBG stochastic_JJ gradient_NN descent_NN variants_NNS such_JJ as_IN the_DT Pegasos_NNP SVM_NNP algorithm_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ._.
+However_RB ,_, in_IN cases_NNS of_IN extreme_JJ class_NN imbalance_NN ,_, linear_JJ SVM_NNP 's_POS have_VBP been_VBN found_VBN to_TO give_VB less_JJR than_IN ideal_JJ results_NNS =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One_CD approach_NN is_VBZ to_TO set_VB per-class_JJ weights_NNS on_IN the_DT loss_NN function_NN to_TO emphasize_VB the_DT importance_NN of_IN the_DT minority_NN class_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, but_CC we_PRP have_VBP found_VBN -LRB-_-LRB- in_IN accordance_NN with_IN prior_JJ work_NN -LRB-_-LRB- 18_CD ,_, 26_CD -RRB-_-RRB- -RRB-_-RRB- that_IN using_VBG a_DT pairwise_JJ
+ective_JJ methods_NNS we_PRP have_VBP found_VBN are_VBP based_VBN on_IN sets_NNS of_IN binary-class_JJ linear_JJ classifiers_NNS deployed_VBN as_IN per-class_JJ classifiers_NNS ,_, including_VBG linear_JJ support_NN vector_NN machines_NNS -LRB-_-LRB- SVM_NNP 's_POS -RRB-_-RRB- -LRB-_-LRB- 16_CD ,_, 28_CD -RRB-_-RRB- ,_, linear_JJ rank-based_JJ SVM_NN 's_POS =_JJ -_: =[_NN 17_CD ,_, 26_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC linear_JJ models_NNS in_IN cascades_NNS -LRB-_-LRB- 33_CD -RRB-_-RRB- ._.
+These_DT methods_NNS will_MD be_VB the_DT focus_NN of_IN this_DT section_NN ._.
+3.2.1_CD One-vs-Good_NNP Multi-Class_NNP Classification_NN Typical_JJ strategies_NNS for_IN performing_VBG k-class_NN multi-class_JJ classification_NN
+SGD_NN training_NN across_IN multiple_JJ machines_NNS ._.
+Approaches_NNS that_WDT have_VBP been_VBN analyzed_VBN include_VBP message_NN passing_NN approaches_NNS -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, lazy_JJ distributed_VBN updates_NNS -LRB-_-LRB- 39_CD -RRB-_-RRB- ,_, training_NN on_IN multiple_JJ independent_JJ samples_NNS of_IN the_DT data_NN =_JJ -_: =[_NN 40_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC performing_VBG multiple_JJ chained_JJ MapReduce_NN steps_NNS -LRB-_-LRB- 35_CD -RRB-_-RRB- ._.
+However_RB ,_, these_DT methods_NNS all_DT add_VBP significant_JJ complexity_NN to_TO a_DT relatively_RB simple_JJ learning_NN algorithm_NN ,_, and_CC in_IN some_DT cases_NNS adversely_RB impact_VBP model_NN qualit_NN
+encountered_VBN in_IN practice_NN ._.
+Note_VB that_IN this_DT section_NN is_VBZ a_DT partial_JJ listing_NN intended_VBN to_TO guide_VB the_DT reader_NN 's_POS intuition_NN for_IN this_DT paper_NN ;_: official_JJ policies_NNS are_VBP available_JJ online_NN via_IN the_DT Google_NNP AdWords_NNP Help_NN Center_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+•_NNP Counterfeit_NNP goods_NNS ._.
+Some_DT adversaries_NNS attempt_VBP to_TO sell_VB counterfeit_NN or_CC otherwise_RB fraudulent_JJ goods_NNS while_IN representing_VBG the_DT goods_NNS as_IN authentic_JJ ._.
+Figure_NN 1_CD :_: System-Level_NNP Architecture_NNP ._.
+Our_PRP$ system_NN relies_VBZ both_DT
+rders_NNS of_IN magnitude_NN more_RBR expensive_JJ than_IN the_DT actual_JJ training_NN ._.
+Langford_NNP et_FW al._FW have_VBP found_VBN it_PRP effective_JJ to_TO reduce_VB this_DT cost_NN by_IN using_VBG a_DT specialized_JJ data_NN format_NN ,_, which_WDT significantly_RB reduces_VBZ disk-read_JJ times_NNS =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT observation_NN allows_VBZ us_PRP to_TO parallelize_VB our_PRP$ training_NN effort_NN with_IN a_DT simpler_JJR approach_NN than_IN those_DT described_VBN above_IN ._.
+As_IN shown_VBN in_IN Figure_NNP 6_CD our_PRP$ approach_NN is_VBZ summarized_VBN as_IN follows_VBZ :_: •_NNP Do_NNP expensive_JJ work_NN in_IN p_NN
+t_NN have_VBP been_VBN analyzed_VBN include_VBP message_NN passing_NN approaches_NNS -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, lazy_JJ distributed_VBN updates_NNS -LRB-_-LRB- 39_CD -RRB-_-RRB- ,_, training_NN on_IN multiple_JJ independent_JJ samples_NNS of_IN the_DT data_NNS -LRB-_-LRB- 40_CD -RRB-_-RRB- ,_, and_CC performing_VBG multiple_JJ chained_JJ MapReduce_NNP steps_VBZ =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, these_DT methods_NNS all_DT add_VBP significant_JJ complexity_NN to_TO a_DT relatively_RB simple_JJ learning_NN algorithm_NN ,_, and_CC in_IN some_DT cases_NNS adversely_RB impact_VBP model_NN quality_NN or_CC give_VB only_RB limited_JJ incremental_JJ benefit_NN as_IN more_JJR mac_NN
+ut_NN is_VBZ provably_RB independent_JJ of_IN the_DT number_NN of_IN training_NN examples_NNS ,_, making_VBG the_DT SGD_NNP framework_NN ideal_NN for_IN 3_CD MapReduce_NN is_VBZ a_DT paradigm_NN for_IN ``_`` embarrassingly_RB parallel_JJ ''_'' tasks_NNS ,_, widely_RB used_VBN in_IN cluster-based_JJ computing_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -.1_CD Cascade_NNP Model_NNP A_NNP Single_JJ Model_NNP A_NNP 1_CD Cascade_NNP Model_NNP B_NNP Single_JJ Model_NNP B_NN 1_CD Cascade_NNP Model_NNP C_NNP Single_JJ Model_NNP C_NNP 0.8_CD 0.8_CD 0.8_CD Scaled_VBN Precision_NN 0.6_CD 0.4_CD Scaled_VBN Precision_NN 0.6_CD 0.4_CD Scaled_VBN Precision_NN 0.6_CD 0.4_CD 0.2_CD 0.2_CD 0.2_CD
+fficulties_NNS ,_, the_DT presence_NN of_IN dynamically_RB changing_VBG content_NN ,_, and_CC the_DT need_NN for_IN trained_JJ expert_JJ human_JJ raters_NNS ._.
+Dalvi_NNP et_FW al._FW attempt_NN to_TO learn_VB classifiers_NNS in_IN adversarial_JJ situations_NNS by_IN modeling_NN the_DT adversaries_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC accurately_RB modeling_NN motivated_JJ adversaries_NNS is_VBZ problematic_JJ in_IN real-world_JJ settings_NNS ._.
+Lowd_NNP and_CC Meek_NNP point_VBP out_RP that_IN in_IN a_DT publicly-facing_JJ system_NN ,_, adversaries_NNS may_MD attempt_VB to_TO reverse-engineer_VB the_DT model_NN v_LS
+ve_RB less_JJR than_IN ideal_JJ results_NNS -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+One_CD approach_NN is_VBZ to_TO set_VB per-class_JJ weights_NNS on_IN the_DT loss_NN function_NN to_TO emphasize_VB the_DT importance_NN of_IN the_DT minority_NN class_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, but_CC we_PRP have_VBP found_VBN -LRB-_-LRB- in_IN accordance_NN with_IN prior_JJ work_NN =_JJ -_: =[_NN 18_CD ,_, 26_CD -RRB-_-RRB- -_: =--RRB-_NN that_IN using_VBG a_DT pairwise_JJ objective_NN function_NN both_CC improves_VBZ results_NNS and_CC eliminates_VBZ the_DT need_NN to_TO tune_VB special_JJ per-class_JJ weights_NNS ._.
+In_IN the_DT binary-class_JJ case_NN ,_, we_PRP refer_VBP to_TO this_DT pairwise_JJ method_NN as_IN the_DT ROC_NNP Area_NNP S_NNP
+oid_VBD the_DT possibility_NN that_IN adversaries_NNS may_MD exploit_VB alternate_JJ spellings_NNS or_CC typographical_JJ manipulation_NN to_TO avoid_VB detection_NN ._.
+We_PRP incorporate_VBP features_NNS that_WDT allow_VBP inexact_JJ string_NN matching_NN ,_, similar_JJ in_IN spirit_NN to_TO =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+•_NNP Structural_NNP features_NNS are_VBP extracted_VBN from_IN the_DT structural_JJ layout_NN of_IN the_DT landing_NN page_NN ._.
+•_CD Page-type_JJ features_NNS are_VBP given_VBN by_IN sub-classifiers_NNS that_WDT determine_VBP the_DT general_JJ landing_NN page_NN type_NN ,_, such_JJ as_IN a_DT blog_NN pos_NN
+here_RB ._.
+Interestingly_RB ,_, the_DT most_RBS effective_JJ methods_NNS we_PRP have_VBP found_VBN are_VBP based_VBN on_IN sets_NNS of_IN binary-class_JJ linear_JJ classifiers_NNS deployed_VBN as_IN per-class_JJ classifiers_NNS ,_, including_VBG linear_JJ support_NN vector_NN machines_NNS -LRB-_-LRB- SVM_NNP 's_POS -RRB-_-RRB- =_JJ -_: =[_NN 16_CD ,_, 28_CD -RRB-_-RRB- -_: =_JJ -_: ,_, linear_JJ rank-based_JJ SVM_NN 's_POS -LRB-_-LRB- 17_CD ,_, 26_CD -RRB-_-RRB- ,_, and_CC linear_JJ models_NNS in_IN cascades_NNS -LRB-_-LRB- 33_CD -RRB-_-RRB- ._.
+These_DT methods_NNS will_MD be_VB the_DT focus_NN of_IN this_DT section_NN ._.
+3.2.1_CD One-vs-Good_NNP Multi-Class_NNP Classification_NN Typical_JJ strategies_NNS for_IN performing_VBG
+ing_JJ motivated_JJ adversaries_NNS is_VBZ problematic_JJ in_IN real-world_JJ settings_NNS ._.
+Lowd_NNP and_CC Meek_NNP point_VBP out_RP that_IN in_IN a_DT publicly-facing_JJ system_NN ,_, adversaries_NNS may_MD attempt_VB to_TO reverse-engineer_VB the_DT model_NN via_IN membership_NN queries_NNS =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ inclusion_NN of_IN semi-automated_JJ methods_NNS involving_VBG human_JJ effort_NN helps_VBZ to_TO minimize_VB the_DT effectiveness_NN of_IN such_JJ strategies_NNS ._.
+Crowd-sourcing_JJ efforts_NNS like_IN reCAPTCHA_NN -LRB-_-LRB- 34_CD -RRB-_-RRB- attempt_NN to_TO use_VB the_DT effort_NN of_IN anonymo_NN
+ent_JJ goals_NNS are_VBP largely_RB disjoint_JJ ,_, making_VBG it_PRP non-trivial_JJ to_TO determine_VB which_WDT ads_NNS should_MD be_VB selected_VBN for_IN human_JJ rating_NN ._.
+4.2_CD Ensemble-Aided_JJ Stratification_NN We_PRP considered_VBD various_JJ forms_NNS of_IN model-aided_JJ sampling_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, using_VBG learned_VBN models_NNS to_TO induce_VB a_DT sampling_NN bias_NN towards_IN more_RBR useful_JJ ads_NNS for_IN human_JJ rating_NN ._.
+We_PRP first_RB tried_VBD to_TO define_VB an_DT aggregate_JJ ``_`` utility_NN ''_'' score_NN based_VBN on_IN these_DT different_JJ factors_NNS ,_, but_CC it_PRP was_VBD unclear_JJ ho_NN
+on-experts_NNS to_TO distinguish_VB from_IN good-faith_NN advertisements_NNS without_IN aid_NN ._.
+The_DT field_NN of_IN email_NN spam_NN filtering_VBG has_VBZ a_DT large_JJ body_NN of_IN literature_NN on_IN the_DT use_NN of_IN data_NNS mining_NN for_IN blocking_VBG adversarial_JJ messages_NNS -LRB-_-LRB- see_VB =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: for_IN an_DT informative_JJ survey_NN -RRB-_-RRB- ._.
+The_DT problem_NN of_IN adversarial_JJ advertisement_NN detection_NN differs_VBZ in_IN several_JJ ways_NNS ,_, including_VBG the_DT multi-class_JJ nature_NN of_IN the_DT problem_NN ,_, the_DT minority_NN class_NN difficulties_NNS ,_, the_DT presence_NN
+portion_NN of_IN the_DT data_NNS space_NN ,_, as_IN illustrated_VBN in_IN Figure_NNP 3_CD ._.
+This_DT approach_NN has_VBZ been_VBN particularly_RB successful_JJ in_IN the_DT field_NN of_IN computer_NN vision_NN for_IN tasks_NNS such_JJ as_IN face_NN recognition_NN -LRB-_-LRB- 33_CD -RRB-_-RRB- and_CC email_JJ spam_NN filtering_VBG =_JJ -_: =[_NN 37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN theory_NN ,_, there_EX is_VBZ no_DT limit_NN to_TO the_DT number_NN of_IN stages_NNS that_WDT may_MD be_VB applied_VBN -LRB-_-LRB- and_CC boosting_VBG approaches_NNS may_MD result_VB in_IN dozens_NNS of_IN stages_NNS -RRB-_-RRB- ._.
+In_IN practice_NN ,_, tuning_NN a_DT large_JJ number_NN of_IN cascade_NN stages_NNS requires_VBZ signi_NNS
+n_NN models_NNS ,_, and_CC to_TO keep_VB the_DT models_NNS current_JJ as_IN adversarial_JJ methods_NNS change_VBP over_IN time_NN ._.
+Examples_NNS which_WDT are_VBP most_RBS beneficial_JJ for_IN improved_VBN models_NNS -LRB-_-LRB- such_JJ as_IN may_MD be_VB selected_VBN by_IN various_JJ active_JJ learning_NN strategies_NNS =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =--RRB-_NN may_MD be_VB different_JJ from_IN hard_JJ adversaries_NNS ,_, above_RB ._.
+•_CD Detecting_VBG new_JJ trends_NNS ._.
+It_PRP is_VBZ helpful_JJ to_TO prioritize_VB the_DT review_NN of_IN new_JJ ads_NNS ,_, so_IN that_IN new_JJ trends_NNS from_IN adversaries_NNS are_VBP quickly_RB detected_VBN both_CC by_IN our_PRP$ automat_NN
+is_VBZ desirable_JJ to_TO maximize_VB the_DT impact_NN by_IN focusing_VBG on_IN advertisements_NNS that_WDT have_VBP high_JJ impression_NN counts_NNS ._.
+Algorithm_NN 3_CD Priority_NN Sampling_NN Ads_NNS from_IN a_DT Bin_NNP ._.
+We_PRP use_VBP the_DT following_JJ priority-sampling_JJ algorithm_NN from_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: to_TO select_VB ads_NNS from_IN a_DT given_VBN bin_NN for_IN near-optimally_RB low_JJ variance_NN ._.
+1_CD :_: for_IN each_DT advertisement_NN i_FW with_IN impressions_NNS wi_RB do_VBP 2_CD :_: pick_NN pi_NN uniformly_RB at_IN random_JJ from_IN -LRB-_-LRB- 0_CD ,_, 1_LS -RRB-_-RRB- 3_CD :_: let_VB priority_NN qi_IN =_JJ wi\/pi_NN 4_CD :_: end_NN for_IN 5_CD :_:
+e_LS variance_NN from_IN an_DT estimate_NN based_VBN on_IN k_NN samples_NNS selected_VBN with_IN this_DT strategy_NN is_VBZ provably_RB at_IN least_JJS as_RB low_JJ as_IN the_DT variance_NN of_IN k_NN +_CC 1_CD samples_NNS selected_VBN with_IN the_DT -LRB-_-LRB- computationally_RB infeasible_JJ -RRB-_-RRB- optimal_JJ strategy_NN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP also_RB has_VBZ the_DT attractive_JJ quality_NN of_IN tending_VBG to_TO prioritize_VB very-high_JJ impression_NN ads_NNS for_IN review_NN to_TO maximize_VB impact_NN of_IN human_JJ effort_NN while_IN maintaining_VBG good_JJ coverage_NN of_IN the_DT long_JJ tail_NN ._.
+Results_NNS ._.
+Using_VBG ou_NN
+n_NN sets_NNS of_IN binary-class_JJ linear_JJ classifiers_NNS deployed_VBN as_IN per-class_JJ classifiers_NNS ,_, including_VBG linear_JJ support_NN vector_NN machines_NNS -LRB-_-LRB- SVM_NNP 's_POS -RRB-_-RRB- -LRB-_-LRB- 16_CD ,_, 28_CD -RRB-_-RRB- ,_, linear_JJ rank-based_JJ SVM_NN 's_POS -LRB-_-LRB- 17_CD ,_, 26_CD -RRB-_-RRB- ,_, and_CC linear_JJ models_NNS in_IN cascades_NNS =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT methods_NNS will_MD be_VB the_DT focus_NN of_IN this_DT section_NN ._.
+3.2.1_CD One-vs-Good_NNP Multi-Class_NNP Classification_NN Typical_JJ strategies_NNS for_IN performing_VBG k-class_NN multi-class_JJ classification_NN with_IN binary_JJ classifiers_NNS include_VBP the_DT
+ective_JJ methods_NNS we_PRP have_VBP found_VBN are_VBP based_VBN on_IN sets_NNS of_IN binary-class_JJ linear_JJ classifiers_NNS deployed_VBN as_IN per-class_JJ classifiers_NNS ,_, including_VBG linear_JJ support_NN vector_NN machines_NNS -LRB-_-LRB- SVM_NNP 's_POS -RRB-_-RRB- -LRB-_-LRB- 16_CD ,_, 28_CD -RRB-_-RRB- ,_, linear_JJ rank-based_JJ SVM_NN 's_POS =_JJ -_: =[_NN 17_CD ,_, 26_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC linear_JJ models_NNS in_IN cascades_NNS -LRB-_-LRB- 33_CD -RRB-_-RRB- ._.
+These_DT methods_NNS will_MD be_VB the_DT focus_NN of_IN this_DT section_NN ._.
+3.2.1_CD One-vs-Good_NNP Multi-Class_NNP Classification_NN Typical_JJ strategies_NNS for_IN performing_VBG k-class_NN multi-class_JJ classification_NN
+problems_NNS such_JJ as_IN those_DT presented_VBN in_IN Section_NN 3.2.2_NN may_MD be_VB done_VBN efficiently_RB using_VBG SGD_NNP ,_, which_WDT quickly_RB converges_VBZ to_TO approximate_JJ solutions_NNS that_WDT are_VBP highly_RB satisfactory_JJ from_IN a_DT machine_NN learning_NN perspective_NN =_JJ -_: =[_NN 4_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+SGD_NNP is_VBZ an_DT iterative_JJ solver_NN ,_, sequentially_RB examining_VBG data_NNS points_NNS one_CD at_IN a_DT time_NN in_IN a_DT random_JJ order_NN ._.
+The_DT basic_JJ SGD_NNP training_NN paradigm_NN for_IN linear_JJ SVM_NN -LRB-_-LRB- 38_CD -RRB-_-RRB- is_VBZ given_VBN in_IN Algorithm_NN 1_CD ._.
+Algorithm_NN 1_CD Training_NN Line_NN
+ne-vs-all_JJ method_NN of_IN training_NN k_NN individual_JJ models_NNS to_TO distinguish_VB each_DT class_NN from_IN all_DT other_JJ classes_NNS ,_, and_CC the_DT one-vs-one_JJ method_NN of_IN training_VBG `_`` ´_CD k_NN 2_CD models_NNS to_TO distinguish_VB each_DT class_NN from_IN each_DT other_JJ class_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT class_NN labels_VBZ in_IN our_PRP$ setting_NN have_VBP a_DT special_JJ structure_NN ._.
+There_EX is_VBZ a_DT single_JJ large_JJ class_NN of_IN non-adversarial_JJ -LRB-_-LRB- or_CC ``_`` good_JJ ''_'' -RRB-_-RRB- ads_NNS ,_, and_CC then_RB a_DT large_JJ number_NN of_IN possibly_RB overlapping_VBG adversarial_JJ classes_NNS -LRB-_-LRB- see_VB F_NN
+cted_VBN from_IN the_DT text_NN of_IN advertisement_NN keywords_NNS ,_, creatives_NNS ,_, and_CC landing_NN pages_NNS ._.
+These_DT include_VBP term-level_JJ features_NNS ,_, and_CC semantically_RB related_JJ terms_NNS and_CC topic-level_JJ features_NNS using_VBG methods_NNS similar_JJ to_TO -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Figure_NN 2_CD :_: Class_NN Structure_NN ._.
+There_EX is_VBZ a_DT clear_JJ distinction_NN between_IN adversarial_JJ and_CC non-adversarial_JJ ,_, but_CC members_NNS of_IN the_DT adversarial_JJ classes_NNS overlap_VBP in_IN places_NNS ._.
+•_CD String-based_JJ features_NNS are_VBP intended_VBN to_TO avo_VB
+here_RB ._.
+Interestingly_RB ,_, the_DT most_RBS effective_JJ methods_NNS we_PRP have_VBP found_VBN are_VBP based_VBN on_IN sets_NNS of_IN binary-class_JJ linear_JJ classifiers_NNS deployed_VBN as_IN per-class_JJ classifiers_NNS ,_, including_VBG linear_JJ support_NN vector_NN machines_NNS -LRB-_-LRB- SVM_NNP 's_POS -RRB-_-RRB- =_JJ -_: =[_NN 16_CD ,_, 28_CD -RRB-_-RRB- -_: =_JJ -_: ,_, linear_JJ rank-based_JJ SVM_NN 's_POS -LRB-_-LRB- 17_CD ,_, 26_CD -RRB-_-RRB- ,_, and_CC linear_JJ models_NNS in_IN cascades_NNS -LRB-_-LRB- 33_CD -RRB-_-RRB- ._.
+These_DT methods_NNS will_MD be_VB the_DT focus_NN of_IN this_DT section_NN ._.
+3.2.1_CD One-vs-Good_NNP Multi-Class_NNP Classification_NN Typical_JJ strategies_NNS for_IN performing_VBG
+eer_VB the_DT model_NN via_IN membership_NN queries_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Our_PRP$ inclusion_NN of_IN semi-automated_JJ methods_NNS involving_VBG human_JJ effort_NN helps_VBZ to_TO minimize_VB the_DT effectiveness_NN of_IN such_JJ strategies_NNS ._.
+Crowd-sourcing_JJ efforts_NNS like_IN reCAPTCHA_NN =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_JJ -_: attempt_NN to_TO use_VB the_DT effort_NN of_IN anonymous_JJ users_NNS to_TO block_VB abuse_NN on_IN the_DT web_NN ._.
+This_DT approach_NN is_VBZ difficult_JJ in_IN the_DT case_NN of_IN advertisements_NNS because_IN it_PRP would_MD be_VB problematic_JJ to_TO keep_VB motivated_JJ adversaries_NNS from_IN poi_NN
+anteed_VBD to_TO cause_VB the_DT |_NNP |_NNP w_NNP |_NNP |_NNP 1_CD to_TO converge_VB to_TO radius_NN at_IN most_JJS λ_NN after_IN repeated_JJ calls_NNS ._.
+In_IN practice_NN ,_, we_PRP find_VBP this_DT work_NN well_RB ,_, is_VBZ fast_JJ to_TO compute_VB ,_, and_CC is_VBZ easier_JJR to_TO tune_VB than_IN the_DT truncated_VBN gradient_NN approach_NN of_IN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Algorithm_NN 2_CD Approximate_JJ projection_NN to_TO L1-ball_NN of_IN radius_NN at_IN most_JJS λ_NN ._.
+Repeated_VBN calls_NNS to_TO this_DT projection_NN will_MD converge_VB to_TO radius_FW λ_FW ._.
+1_CD :_: c_NN ←_CD max_NN -LRB-_-LRB- λ_FW −_FW |_FW |_FW w_FW |_FW |_FW 1,0_CD -RRB-_-RRB- 2_CD :_: d_FW ←_FW |_FW |_FW w_FW |_FW |_FW 0_CD 3_CD :_: τ_FW ←_FW c_NN d_NN 4_CD :_: for_IN each_DT non-zero_JJ
+Features_NNP Encode_NNP Data_NNP Figure_NNP 6_CD :_: SGD_NN learning_NN via_IN MapReduce_NNP ._.
+Preprocessing_VBG is_VBZ parallelized_VBN ;_: training_NN is_VBZ sequential_JJ ._.
+The_DT first_JJ of_IN these_DT is_VBZ to_TO use_VB a_DT feature-hashing_JJ approach_NN similar_JJ in_IN spirit_NN to_TO that_DT of_IN =_JJ -_: =[_NN 36_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+If_IN we_PRP think_VBP of_IN w_FW ∈_FW R_NN d_NN as_IN a_DT set_NN of_IN key-value_JJ pairs_NNS where_WRB many_JJ values_NNS are_VBP exactly_RB 0_CD ,_, then_RB it_PRP is_VBZ efficient_JJ to_TO store_VB the_DT non-zero_JJ values_NNS in_IN a_DT hash_JJ map_NN ._.
+Hashing_VBG the_DT keys_NNS ensures_VBZ that_IN the_DT model_NN size_NN will_MD
+it_PRP would_MD be_VB problematic_JJ to_TO keep_VB motivated_JJ adversaries_NNS from_IN poisoning_NN the_DT signal_NN ._.
+Sculley_NNP et_FW al._FW explored_VBD the_DT use_NN of_IN aggregate_JJ user-based_JJ signals_NNS such_JJ as_IN bounce-rate_NN for_IN determining_VBG user_NN satisfaction_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC this_DT approach_NN is_VBZ unsuitable_JJ for_IN making_VBG per-advertisement_JJ decisions_NNS with_IN high_JJ precision_NN due_JJ to_TO signal_NN noise_NN ._.
+Various_JJ approaches_NNS such_JJ as_IN that_DT of_IN Chakrabarti_NNP et_FW al._FW have_VBP used_VBN click-feedback_JJ to_TO dete_VB
+odel_NN size_NN manageable_JJ ._.
+The_DT second_JJ strategy_NN is_VBZ to_TO encourage_VB sparsity_NN in_IN the_DT learned_VBN model_NN ,_, so_IN that_IN many_JJ weight_NN values_NNS are_VBP indeed_RB exactly_RB 0_CD ._.
+We_PRP follow_VBP a_DT projected-gradient_JJ methodology_NN similar_JJ to_TO that_DT of_IN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, projecting_VBG w_NN to_TO an_DT L1-ball_NN of_IN a_DT specified_VBN radius_NN after_IN updates_NNS ._.
+This_DT is_VBZ done_VBN every_DT k_NN steps_NNS ,_, after_IN step_NN 10_CD in_IN Algorithm_NNP 1_CD ._.
+The_DT exact_JJ L1-projection_NN of_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- was_VBD somewhat_RB slow_JJ ,_, so_IN we_PRP use_VBP a_DT simpler_JJR and_CC f_SYM
+h_NN the_DT perception_NN of_IN common_JJ users_NNS ._.
+To_TO ensure_VB that_IN we_PRP get_VBP an_DT accurate_JJ reading_NN of_IN real_JJ user_NN perception_NN ,_, we_PRP additionally_RB perform_VBP regular_JJ large-scale_JJ evaluations_NNS using_VBG an_DT approach_NN similar_JJ to_TO crowdsourcing_VBG =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT evaluations_NNS are_VBP used_VBN to_TO calibrate_VB our_PRP$ understanding_NN of_IN real_JJ user_NN perception_NN and_CC ensure_VB that_IN our_PRP$ system_NN continues_VBZ to_TO protect_VB the_DT interests_NNS of_IN actual_JJ users_NNS ._.
+The_DT aggregate_NN results_VBZ from_IN these_DT inde_NN

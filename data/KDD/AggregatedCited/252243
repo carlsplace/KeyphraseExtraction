@@ -1,0 +1,195 @@
+Discovering_VBG evolutionary_JJ theme_NN patterns_NNS from_IN text_NN :_: an_DT exploration_NN of_IN temporal_JJ text_NN mining_NN
+Temporal_JJ Text_NN Mining_NN -LRB-_-LRB- TTM_NN -RRB-_-RRB- is_VBZ concerned_VBN with_IN discovering_VBG temporal_JJ patterns_NNS in_IN text_NN information_NN collected_VBN over_IN time_NN ._.
+Since_IN most_JJS text_NN information_NN bears_VBZ some_DT time_NN stamps_NNS ,_, TTM_NNP has_VBZ many_JJ applications_NNS in_IN multiple_JJ domains_NNS ,_, such_JJ as_IN summarizing_VBG events_NNS in_IN news_NN articles_NNS and_CC revealing_JJ research_NN trends_NNS in_IN scientific_JJ literature_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP study_VBD a_DT particular_JJ TTM_NN task_NN --_: discovering_VBG and_CC summarizing_VBG the_DT evolutionary_JJ patterns_NNS of_IN themes_NNS in_IN a_DT text_NN stream_NN ._.
+We_PRP define_VBP this_DT new_JJ text_NN mining_NN problem_NN and_CC present_JJ general_JJ probabilistic_JJ methods_NNS for_IN solving_VBG this_DT problem_NN through_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- discovering_VBG latent_JJ themes_NNS from_IN text_NN ;_: -LRB-_-LRB- 2_LS -RRB-_-RRB- constructing_VBG an_DT evolution_NN graph_NN of_IN themes_NNS ;_: and_CC -LRB-_-LRB- 3_LS -RRB-_-RRB- analyzing_NN life_NN cycles_NNS of_IN themes_NNS ._.
+Evaluation_NN of_IN the_DT proposed_VBN methods_NNS on_IN two_CD different_JJ domains_NNS -LRB-_-LRB- i.e._FW ,_, news_NN articles_NNS and_CC literature_NN -RRB-_-RRB- shows_VBZ that_IN the_DT proposed_VBN methods_NNS can_MD discover_VB interesting_JJ evolutionary_JJ theme_NN patterns_NNS effectively_RB ._.
+he_PRP selection_NN of_IN association_NN rules_NNS as_IN a_DT classification_NN task_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Related_VBN to_TO our_PRP$ work_NN is_VBZ trend_NN analysis_NN in_IN text_NN databases_NNS ,_, were_VBD the_DT aim_NN is_VBZ to_TO discover_VB increasing\/decreasing_JJ popularity_NN of_IN a_DT set_NN of_IN terms_NNS =_JJ -_: =[_NN 11_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT variant_NN of_IN temporal_JJ association_NN rule_NN mining_NN is_VBZ taking_VBG into_IN account_NN the_DT exhibition_NN periods_NNS of_IN items_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- .3_NN Preliminaries_NNS In_IN this_DT section_NN we_PRP outline_VBP the_DT underlying_VBG data_NNS model_NN for_IN our_PRP$ work_NN ,_, the_DT rule_NN
+t_NN beginning_NN for_IN various_JJ further_JJ analyses_NNS ,_, such_JJ as_IN extracting_VBG relationships_NNS among_IN events_NNS and_CC news_NN summarization_NN ._.
+One_CD of_IN the_DT issues_NNS of_IN the_DT tracking_NN problem_NN is_VBZ scalability_NN ._.
+Recent_JJ work_NN on_IN this_DT direction_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: use_VB variants_NNS of_IN probabilistic_JJ topic_NN models_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- to_TO infer_VB intensity_NN of_IN each_DT event_NN or_CC topic_NN documents_NNS ._.
+However_RB ,_, inference_NN algorithms_NNS of_IN these_DT topic_NN models_NNS often_RB require_VBP hundreds_NNS of_IN scans_NNS over_IN the_DT datase_NN
+erator_NN scheduling_NN strategy_NN to_TO minimize_VB runtime_NN memory_NN usage_NN during_IN bursty_JJ time_NN periods_NNS ._.
+Kumar_NNP et_FW al._FW -LRB-_-LRB- 9_CD -RRB-_-RRB- applied_VBD Kleinberg_NNP 's_POS algorithm_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- to_TO identify_VB bursty_JJ communities_NNS in_IN a_DT Weblog_NNP graph_NN ._.
+Mei_FW et_FW al._FW =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: further_RB summarized_VBD the_DT evolutionary_JJ thematic_JJ patterns_NNS of_IN a_DT text_NN stream_NN by_IN identifying_VBG bursty_JJ behavior_NN ._.
+Our_PRP$ approach_NN shares_VBZ some_DT common_JJ ideas_NNS as_IN the_DT work_NN of_IN Fung_NNP et_FW al._FW -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, who_WP clustered_VBD bursty_FW featu_FW
+;_: relative_JJ entropy_NN -LRB-_-LRB- Kullback_NNP &_CC Leibler_NNP ,_, 1951_CD -RRB-_-RRB- will_MD be_VB used_VBN as_IN a_DT measure_NN to_TO evaluate_VB whether_IN the_DT distributions_NNS of_IN references_NNS changed_VBN between_IN papers_NNS to_TO such_PDT an_DT extent_NN that_IN a_DT pathdependency_NN was_VBD created_VBN -LRB-_-LRB- =_JJ -_: =_JJ Mei_NNP &_CC Zhai_NNP ,_, 2005_CD -_: =--RRB-_NN ._.
+The_DT three_CD measurement_NN outputs_NNS can_MD then_RB be_VB combined_VBN into_IN the_DT visualization_NN of_IN HistCite_NNP :_: they_PRP show_VBP ,_, respectively_RB ,_, prominence_NN and_CC relevance_NN ,_, structural_JJ connectivity_NN ,_, and_CC evolutionary_JJ dynamics_NNS ._.
+While_IN r_NN
+topic_NN detection_NN and_CC tracking_NN -LRB-_-LRB- TDT_NN -RRB-_-RRB- or_CC temporal_JJ text_NN mining_NN -LRB-_-LRB- TTM_NN -RRB-_-RRB- where_WRB the_DT goal_NN is_VBZ to_TO detect_VB themes_NNS ,_, construct_VBP a_DT model_NN that_WDT shows_VBZ their_PRP$ evolution_NN over_IN time_NN ,_, and_CC finally_RB analyze_VB their_PRP$ theme_NN life_NN cycle_NN =_JJ -_: =[_NN 5_CD ,_, 74_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Some_DT projects_NNS have_VBP taken_VBN these_DT ideas_NNS further_RB ._.
+For_IN example_NN :_: analyze_VB the_DT development_NN of_IN a_DT collection_NN of_IN documents_NNS over_IN time_NN to_TO detect_VB main_JJ topics_NNS and_CC how_WRB these_DT topics_NNS evolve_VBP -LRB-_-LRB- 93_CD -RRB-_-RRB- ._.
+This_DT is_VBZ a_DT very_JJ inter_NN
+es_NNS for_IN social_JJ networks_NNS ._.
+Agrawal_NNP et_NNP ._.
+al_FW -LRB-_-LRB- 1_LS -RRB-_-RRB- use_VB newsgroups_NNS to_TO compare_VB between_IN statistical_JJ text_NN analysis_NN versus_CC using_VBG only_RB the_DT network_NN structure_NN as_IN a_DT basis_NN for_IN a_DT given_VBN classification_NN task_NN ._.
+Mei_NNP and_CC Zhai_NNP =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: develop_VB a_DT temporal_JJ text_NN mining_NN techniqueto_NN find_VBP interesting_JJ evolutionary_JJ theme_NN patterns_NNS ._.
+The_DT approach_NN focuses_VBZ on_IN the_DT evolution_NN and_CC transition_NN of_IN themes_NNS across_IN time_NN ._.
+In_IN another_DT approach_NN by_IN Mika_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_,
+@cs_NNS ._.
+kuleuven_NN ._.
+be_VB methods_NNS have_VBP focused_VBN on_IN mining_NN for_IN lower-level_JJ elements_NNS or_CC patterns_NNS such_JJ as_IN keywords_NNS or_CC n-grams\/term_NN sequences_NNS ._.
+We_PRP refer_VBP to_TO these_DT approaches_NNS collectively_RB as_IN temporal_JJ text_NN mining_NN -LRB-_-LRB- TTM_NN -RRB-_-RRB- =_JJ -_: =[_NN 11_CD ,_, 16_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT methods_NNS bear_VBP much_JJ promise_NN in_IN terms_NNS of_IN the_DT additional_JJ flexibility_NN afforded_VBN by_IN the_DT discovery_NN of_IN sub-sentential_JJ patterns_NNS ._.
+However_RB ,_, the_DT diversity_NN of_IN patterns_NNS and_CC the_DT absence_NN of_IN standardised_JJ tasks_NNS
+in_IN the_DT more_RBR realistic_JJ and_CC challenging_JJ setting_NN of_IN web_NN search_NN ._.
+Our_PRP$ methods_NNS for_IN original_JJ source_NN date_NN detection_NN and_CC timeline_NN construction_NN have_VBP similar_JJ intent_NN to_TO some_DT previous_JJ work_NN in_IN temporal_JJ data_NNS mining_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, temporal_JJ summarization_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, event_NN timeline_NN construction_NN -LRB-_-LRB- 27_CD ,_, 30_CD -RRB-_-RRB- and_CC tracking_VBG ``_`` information_NN epidemics_NNS ''_'' -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+All_DT of_IN the_DT above_JJ models_NNS include_VBP a_DT step_NN of_IN automatically_RB constructing_VBG a_DT depiction_NN of_IN topic_NN o_NN
+ons_NNS between_IN related_JJ email_NN messages_NNS ._.
+This_DT is_VBZ closer_JJR to_TO the_DT task_NN we_PRP have_VBP in_IN mind_NN ,_, but_CC much_RB easier_JJR ,_, since_IN email_NN usually_RB incorporates_VBZ a_DT strong_JJ structure_NN of_IN referenced_JJ messages_NNS ._.
+In_IN a_DT work_NN closest_JJS to_TO ours_PRP ,_, =_JJ -_: =[_NN 13_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: studied_VBN how_WRB to_TO discover_VB sub-clusters_NNS in_IN a_DT news_NN event_NN and_CC structure_VB them_PRP by_IN their_PRP$ dependency_NN ,_, generating_VBG a_DT graph_NN structure_NN ._.
+However_RB ,_, they_PRP do_VBP not_RB address_VB the_DT notion_NN of_IN coherence_NN at_IN all_DT ;_: constructing_VBG a_DT
+of_IN words_NNS ._.
+Latent_JJ space_NN models_NNS -LRB-_-LRB- 5,9,3_CD -RRB-_-RRB- were_VBD successfully_RB used_VBN to_TO model_VB documents_NNS and_CC thus_RB improved_VBD the_DT quality_NN of_IN text_NN retrieval_NN ._.
+Recently_RB ,_, a_DT diversity_NN of_IN text_NN mining_NN approaches_NNS for_IN different_JJ problems_NNS =_JJ -_: =[_NN 4,12,8_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN proposed_VBN ,_, which_WDT make_VBP use_NN of_IN probabilistic_JJ latent_JJ space_NN models_NNS ._.
+The_DT goal_NN of_IN this_DT work_NN is_VBZ to_TO show_VB by_IN example_NN how_WRB to_TO apply_VB text_NN retrieval_NN and_CC mining_NN methods_NNS to_TO biological_JJ data_NNS originating_VBG from_IN
+extracting_VBG relationships_NNS among_IN events_NNS and_CC blog_NN summarization_NN ._.
+There_EX are_VBP two_CD challenges_NNS of_IN the_DT tracking_NN problem_NN that_IN our_PRP$ methods_NNS address_NN ._.
+The_DT first_JJ is_VBZ regarding_VBG scalability_NN ._.
+Recent_JJ tracking_NN research_NN -LRB-_-LRB- =_JJ -_: =_JJ Mei_NNP and_CC Zhai_NNP ,_, 2005_CD -_: =--RRB-_NN ,_, -LRB-_-LRB- Zhou_NNP et_NNP ._.
+al._FW 2006_CD -RRB-_-RRB- use_VBP variants_NNS of_IN probabilistic_JJ topic_NN models_NNS -LRB-_-LRB- Blei_NNP ,_, Ng_NNP ,_, Jordan_NNP 2003_CD -RRB-_-RRB- to_TO infer_VB intensity_NN of_IN each_DT event_NN or_CC topic_NN ._.
+However_RB ,_, inference_NN algorithms_NNS of_IN topic_NN models_NNS that_WDT are_VBP based_VBN on_IN Gibb_NNP
+sociated_VBN with_IN a_DT tag_NN may_MD change_VB over_IN time_NN ._.
+Beside_FW AdaptivePLSA_FW -LRB-_-LRB- Gohr_NNP et_FW al._FW ,_, 2009_CD -RRB-_-RRB- that_WDT extends_VBZ PLSA_NNP -LRB-_-LRB- Hofmann_NNP ,_, 2001_CD -RRB-_-RRB- to_TO streaming_NN document_NN collections_NNS and_CC that_DT is_VBZ used_VBN in_IN this_DT study_NN ,_, other_JJ approaches_NNS -LRB-_-LRB- =_JJ -_: =_JJ Mei_NNP and_CC Zhai_NNP ,_, 2005_CD -_: =_JJ -_: ;_: Blei_NNP and_CC Lafferty_NNP ,_, 2006_CD ;_: Wang_NNP and_CC McCallum_NNP ,_, 2006_CD -RRB-_-RRB- model_NN dynamic_JJ document_NN collections_NNS ,_, too_RB ._.
+Some_DT allow_VBP for_IN words_NNS to_TO become_VB obsolete_JJ and_CC irrelevant_JJ while_IN others_NNS emerge_VBP -LRB-_-LRB- AlSumait_NNP et_FW al._FW ,_, 2008_CD ;_: Chou_NNP and_CC
+poral_JJ information_NN ,_, which_WDT are_VBP described_VBN by_IN two_CD distributions_NNS ,_, respectively_RB :_: a_DT word_NN distribution_NN describing_VBG the_DT semantics_NNS of_IN the_DT topic_NN and_CC a_DT time_NN distribution_NN describing_VBG the_DT topic_NN 's_POS intensity_NN over_IN time_NN =_JJ -_: =[_NN 3_CD ,_, 5_CD ,_, 7_CD ,_, 8_CD ,_, 10_CD ,_, 11_CD ,_, 12_CD ,_, 14_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN many_JJ real-world_JJ applications_NNS ,_, we_PRP are_VBP facing_VBG multiple_JJ text_NN streams_NNS that_WDT are_VBP correlated_VBN to_TO each_DT other_JJ by_IN sharing_VBG common_JJ topics_NNS ._.
+Intuitively_RB ,_, the_DT interactions_NNS among_IN these_DT streams_NNS could_MD provide_VB clues_NNS
+ommend_NN citations_NNS for_IN scientific_JJ researchers_NNS ._.
+Due_JJ to_TO its_PRP$ importance_NN and_CC great_JJ application_NN potential_NN ,_, topic_NN evolution_NN has_VBZ recently_RB attracted_VBN fast_RB growing_VBG interest_NN in_IN the_DT information_NN retrieval_NN community_NN =_JJ -_: =[_NN 18_CD ,_, 19_CD ,_, 20_CD ,_, 21_CD ,_, 22_CD ,_, 23_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Existing_VBG approaches_NNS -LRB-_-LRB- 24_CD ,_, 25_CD ,_, 26_CD ,_, 27_CD -RRB-_-RRB- for_IN topic_NN evolution_NN in_IN scientific_JJ literature_NN model_NN a_DT paper_NN as_IN a_DT bag_NN of_IN words_NNS ,_, and_CC detect_VB topics_NNS on_IN documents_NNS in_IN different_JJ time_NN periods_NNS ._.
+Then_RB ,_, topic_NN evolution_NN is_VBZ
+ccurs_NNS quite_RB often_RB in_IN real_JJ dynamic_JJ networks_NNS ,_, and_CC thus_RB ,_, they_PRP could_MD be_VB less_RBR useful_JJ for_IN real_JJ data_NNS ._.
+Third_RB ,_, there_EX have_VBP been_VBN few_JJ studies_NNS that_WDT discover_VBP communities_NNS by_IN using_VBG t-partite_NN graph_NN from_IN temporal_JJ data_NN =_JJ -_: =[_NN 11_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP perform_VBP clustering_NN for_IN each_DT network_NN ,_, construct_NN a_DT t-partite_NN graph_NN by_IN connecting_VBG between_IN similar_JJ local_JJ clusters_NNS at_IN different_JJ times_NNS ,_, and_CC find_VB a_DT sequence_NN of_IN local_JJ clusters_NNS as_IN a_DT community_NN ._.
+Especiall_NNP
+sually_RB do_VBP not_RB consider_VB textual_JJ topics_NNS evolving_VBG along_IN time_NN ,_, and_CC thus_RB hard_JJ to_TO be_VB applied_VBN to_TO our_PRP$ tasks_NNS ._.
+Topic_NNP Modeling_NNP ._.
+Topic_JJ modeling_NN approaches_NNS -LRB-_-LRB- 14_CD ,_, 3_CD -RRB-_-RRB- have_VBP been_VBN developed_VBN to_TO mine_VB variations_NNS of_IN topics_NNS =_JJ -_: =[_NN 39_CD ,_, 23_CD ,_, 8_CD ,_, 31_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Specially_RB ,_, incorporating_VBG network_NN regularization_NN into_IN topic_NN modeling_NN has_VBZ become_VBN a_DT popular_JJ tendency_NN ,_, such_JJ as_IN NetPLSA_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, Laplacian_JJ PLSI_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, iTopicModel_NN -LRB-_-LRB- 40_CD -RRB-_-RRB- and_CC locally-consistent_JJ Models_NNS -LRB-_-LRB- 5_CD ,_, 26_CD -RRB-_-RRB- ._.
+-LRB-_-LRB-
+e_LS in_IN tracking_VBG popular_JJ events_NNS in_IN social_JJ communities_NNS ._.
+Topic_NNP Modeling_NNP ._.
+Topic_JJ modeling_NN approaches_NNS -LRB-_-LRB- 12_CD -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- have_VBP been_VBN developed_VBN to_TO mine_VB variations_NNS of_IN topics_NNS in_IN different_JJ contexts_NNS -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, evolution_NN of_IN topics_NNS =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC correlated_VBD patterns_NNS in_IN multiple_JJ text_NN streams_NNS -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+These_DT methods_NNS generally_RB do_VBP not_RB consider_VB the_DT network_NN structures_NNS ._.
+Recently_RB ,_, incorporating_VBG network_NN regularization_NN in_IN topic_NN modeling_NN has_VBZ been_VBN propo_VBN
+related_JJ work_NN to_TO evolutionary_JJ network_NN clustering_NN isevolutionary_JJ topic_NN modeling_NN ,_, which_WDT tries_VBZ to_TO extract_VB the_DT best_JJS topic_NN models_NNS in_IN each_DT timestamp_NN that_WDT satisfy_VBP constraints_NNS of_IN temporal_JJ smooth_NN ,_, such_JJ as_IN in_IN =_JJ -_: =[_NN 3_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, merely_RB studying_VBG the_DT evolution_NN of_IN topics_NNS without_IN considering_VBG the_DT link_NN information_NN in_IN the_DT networks_NNS can_MD not_RB fully_RB reflect_VB the_DT evolution_NN of_IN communities_NNS ._.
+On_IN one_CD hand_NN ,_, a_DT community_NN containing_VBG diffe_NN
+ing_NN clusters_NNS in_IN which_WDT a_DT natural_JJ correspondence_NN can_MD be_VB maintained_VBN among_IN the_DT clusters_NNS across_IN different_JJ snapshots_NNS ._.
+This_DT broad_JJ technique_NN is_VBZ referred_VBN to_TO as_IN temporal_JJ smoothing_NN ._.
+A_DT variety_NN of_IN techniques_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN designed_VBN for_IN determining_VBG evolutionary_JJ clusters_NNS using_VBG temporal_JJ smoothing_NN ._.
+However_RB ,_, these_DT techniques_NNS are_VBP inherently_RB designed_VBN for_IN the_DT homogeneous_JJ case_NN ._.
+For_IN heterogeneous_JJ networks_NNS ,_, we_PRP wish_VBP to_TO c_NN
+ng_NN ._.
+Chapter_NN 4_CD Topic_NNP Dynamics_NNP and_CC Social_NNP Actions_NNPS 4.1_CD Topic_NNP Dynamics_NNP in_IN Social_NNP Documents_NNS While_IN there_EX are_VBP a_DT rich_JJ set_NN of_IN choices_NNS regarding_VBG temporal_JJ topic_NN discovery_NN in_IN sets_NNS of_IN temporally_RB related_JJ documents_NNS =_JJ -_: =[_NN 51_CD ,_, 49_CD -RRB-_-RRB- -_: =_JJ -_: ,_, our_PRP$ concern_NN is_VBZ when_WRB and_CC where_WRB these_DT topics_NNS evolve_VBP and_CC how_WRB the_DT topics_NNS relate_VBP ,_, if_IN any_DT ,_, dependencies_NNS with_IN each_DT other_JJ ._.
+In_IN Fig._NNP 4.1_CD ,_, for_IN example_NN ,_, we_PRP illustrate_VBP the_DT probability_NN of_IN appearance_NN in_IN documents_NNS
+nd_IN their_PRP$ dependencies_NNS in_IN news_NN stories_NNS ._.
+They_PRP generated_VBD a_DT graph_NN structure_NN by_IN discovering_VBG sub-clusters_NNS in_IN news_NN events_NNS and_CC organizing_VBG them_PRP by_IN their_PRP$ dependencies_NNS ._.
+In_IN a_DT similar_JJ approach_NN ,_, Mei_NN and_CC ChengXiang_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: discovered_VBD latent_JJ themes_NNS from_IN text_NN ,_, constructed_VBD an_DT evolution_NN graph_NN of_IN themes_NNS and_CC used_VBN HMMs_NNS to_TO analyze_VB the_DT life_NN cycle_NN of_IN these_DT themes_NNS ._.
+Recently_RB ,_, Shahaf_NNP and_CC Guestrin_NNP -LRB-_-LRB- 27_CD -RRB-_-RRB- studied_VBD the_DT problem_NN of_IN finding_VBG
+WORK_VB Research_NN relevant_JJ to_TO cluster_NN monitoring_NN can_MD be_VB categorized_VBN into_IN cluster_NN change_NN detection_NN methods_NNS and_CC spatiotemporal_JJ clustering_NN ._.
+We_PRP also_RB discuss_VBP methods_NNS on_IN the_DT specific_JJ subject_NN of_IN topic_NN evolution_NN =_JJ -_: =[_NN 11_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP omit_VBP methods_NNS on_IN the_DT comparison_NN of_IN clusterings_NNS -LRB-_-LRB- 12_CD ,_, 19_CD -RRB-_-RRB- ,_, because_IN they_PRP assume_VBP that_IN cluster_NN matching_NN has_VBZ been_VBN already_RB performed_VBN and_CC that_IN the_DT clusterss100_NN 80_CD 60_CD 40_CD 20_CD 0_CD 0_CD 20_CD 40_CD 60_CD 80_CD 100_CD are_VBP derived_VBN
+any_DT time_NN ._.
+Similar_JJ work_NN on_IN detecting_VBG and_CC visualizing_VBG topic_NN development_NN includes_VBZ visualization_NN methods_NNS such_JJ as_IN Temporal_JJ Cluster_NN Histograms_NNS -LRB-_-LRB- 34_CD -RRB-_-RRB- and_CC ThemeRiver_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, EM-based_JJ corpus_NN evolution_NN detection_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_JJ -_: ,_, temporal_JJ clustering_NN methods_NNS -LRB-_-LRB- 7_CD ,_, 37_CD -RRB-_-RRB- ,_, continuous_JJ time_NN clustering_NN models_NNS -LRB-_-LRB- 37_CD -RRB-_-RRB- ,_, Thread_NN Decomposition_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, Independent_NNP Component_NNP Analysis_NNP -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, topicintensity_NN tracking_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, and_CC Topical_JJ Precedence_NN -LRB-_-LRB- 27_CD -RRB-_-RRB-
+B_NN ,_, πdj_NN is_VBZ the_DT probability_NN of_IN choosing_VBG the_DT j-th_NN topic_NN in_IN document_NN d_NN ,_, and_CC -LCB-_-LRB- δj_FW ,_, d_NN ,_, F_NN ,_, δj_NN ,_, d_NN ,_, P_NN ,_, δj_NN ,_, d_NN ,_, N_NN -RCB-_-RRB- is_VBZ the_DT sentiment_NN coverage_NN of_IN topic_NN j_NN in_IN document_NN d_NN ,_, as_IN defined_VBN in_IN Section_NN 2_CD ._.
+Similar_JJ to_TO existing_VBG work_NN =_JJ -_: =[_NN 28_CD ,_, 16_CD ,_, 15_CD ,_, 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP also_RB regularize_VBP this_DT model_NN by_IN fixing_VBG some_DT parameters_NNS ._.
+λB_NN is_VBZ set_VBN to_TO an_DT empirical_JJ constant_NN between_IN 0_CD and_CC 1_CD ,_, which_WDT indicates_VBZ how_WRB much_JJ noise_NN that_IN we_PRP believe_VBP exists_VBZ in_IN the_DT weblog_NN collection_NN ._.
+We_PRP then_RB s_VBZ
+is_VBZ a_DT sequence_NN of_IN words_NNS from_IN a_DT vocabulary_NN set_NN V_NN =_JJ -LCB-_-LRB- w1_NN ,_, ..._: ,_, w_NNP |_NNP V_NNP |_NNP -RCB-_-RRB- ._.
+In_IN information_NN retrieval_NN and_CC text_NN mining_NN ,_, it_PRP is_VBZ quite_RB common_JJ to_TO use_VB a_DT word_NN distribution_NN to_TO model_NN topics_NNS ,_, subtopics_NNS ,_, or_CC themes_NNS in_IN text_NN =_JJ -_: =[_NN 3_CD ,_, 12_CD ,_, 1_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Following_VBG -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, we_PRP define_VBP a_DT theme_NN as_IN follows_VBZ :_: Definition_NN 1_CD -LRB-_-LRB- Theme_NN -RRB-_-RRB- A_DT theme_NN in_IN a_DT text_NN collection_NN C_NN is_VBZ a_DT probabilistic_JJ distribution_NN of_IN words_NNS characterizing_VBG a_DT semantically_RB coherent_JJ topic_NN or_CC subtopic_NN ._.
+F_NN
+ttention_NN recently_RB in_IN machine_NN learning_NN and_CC text_NN mining_NN -LRB-_-LRB- 11_CD ,_, 4_CD ,_, 28_CD ,_, 22_CD ,_, 9_CD ,_, 2_CD ,_, 16_CD ,_, 18_CD ,_, 14_CD ,_, 24_CD -RRB-_-RRB- due_JJ to_TO its_PRP$ broad_JJ applications_NNS ,_, including_VBG extracting_VBG scientific_JJ research_NN topics_NNS -LRB-_-LRB- 9_CD ,_, 2_CD -RRB-_-RRB- ,_, temporal_JJ text_NN mining_NN =_JJ -_: =[_NN 17_CD ,_, 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, spatiotemporal_JJ text_NN mining_NN -LRB-_-LRB- 16_CD ,_, 18_CD -RRB-_-RRB- ,_, authortopic_JJ analysis_NN -LRB-_-LRB- 22_CD ,_, 18_CD -RRB-_-RRB- ,_, opinion_NN extraction_NN -LRB-_-LRB- 28_CD ,_, 16_CD -RRB-_-RRB- ,_, and_CC information_NN retrieval_NN -LRB-_-LRB- 11_CD ,_, 27_CD ,_, 25_CD -RRB-_-RRB- ._.
+Common_JJ to_TO most_JJS of_IN this_DT work_NN is_VBZ the_DT idea_NN of_IN using_VBG a_DT multinomia_NN
+B_NN ,_, πdj_NN is_VBZ the_DT probability_NN of_IN choosing_VBG the_DT j-th_NN topic_NN in_IN document_NN d_NN ,_, and_CC -LCB-_-LRB- δj_FW ,_, d_NN ,_, F_NN ,_, δj_NN ,_, d_NN ,_, P_NN ,_, δj_NN ,_, d_NN ,_, N_NN -RCB-_-RRB- is_VBZ the_DT sentiment_NN coverage_NN of_IN topic_NN j_NN in_IN document_NN d_NN ,_, as_IN defined_VBN in_IN Section_NN 2_CD ._.
+Similar_JJ to_TO existing_VBG work_NN =_JJ -_: =[_NN 28_CD ,_, 16_CD ,_, 15_CD ,_, 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP also_RB regularize_VBP this_DT model_NN by_IN fixing_VBG some_DT parameters_NNS ._.
+λB_NN is_VBZ set_VBN to_TO an_DT empirical_JJ constant_NN between_IN 0_CD and_CC 1_CD ,_, which_WDT indicates_VBZ how_WRB much_JJ noise_NN that_IN we_PRP believe_VBP exists_VBZ in_IN the_DT weblog_NN collection_NN ._.
+We_PRP then_RB s_VBZ
+missing_VBG data_NNS fields_NNS or_CC duplication_NN -LRB-_-LRB- Saravanan_NNP et_FW al._FW ,_, 2003_CD -RRB-_-RRB- and_CC finally_RB the_DT data_NN has_VBZ to_TO be_VB cleaned_VBN of_IN unwanted_JJ information_NN or_CC the_DT results_NNS will_MD be_VB skewed_VBN ._.
+The_DT text_NN mining_NN software_NN used_VBN in_IN this_DT study_NN -LRB-_-LRB- =_JJ -_: =_JJ Mei_NNP and_CC Zhai_NNP ,_, 2005_CD -_: =--RRB-_NN uses_VBZ the_DT concept_NN of_IN a_DT theme_NN ._.
+Themes_NNS are_VBP defined_VBN as_IN ``_`` probability_NN distribution_NN of_IN words_NNS that_WDT characterizes_VBZ a_DT semantically_RB coherent_JJ topics_NNS or_CC subtopics_NNS ''_'' -LRB-_-LRB- Mei_NNP and_CC Zhai_NNP ,_, 2005_CD -RRB-_-RRB- ._.
+The_DT clusters_NNS of_IN themes_NNS wer_VBP
+is_VBZ a_DT sequence_NN of_IN words_NNS from_IN a_DT vocabulary_NN set_NN V_NN =_JJ -LCB-_-LRB- w1_NN ,_, ..._: ,_, w_NNP |_NNP V_NNP |_NNP -RCB-_-RRB- ._.
+In_IN information_NN retrieval_NN and_CC text_NN mining_NN ,_, it_PRP is_VBZ quite_RB common_JJ to_TO use_VB a_DT word_NN distribution_NN to_TO model_NN topics_NNS ,_, subtopics_NNS ,_, or_CC themes_NNS in_IN text_NN =_JJ -_: =[_NN 3_CD ,_, 12_CD ,_, 1_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Following_VBG -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, we_PRP define_VBP a_DT theme_NN as_IN follows_VBZ :_: Definition_NN 1_CD -LRB-_-LRB- Theme_NN -RRB-_-RRB- A_DT theme_NN in_IN a_DT text_NN collection_NN C_NN is_VBZ a_DT probabilistic_JJ distribution_NN of_IN words_NNS characterizing_VBG a_DT semantically_RB coherent_JJ topic_NN or_CC subtopic_NN ._.
+F_NN
+covered_VBN in_IN such_JJ data_NNS ._.
+Indeed_RB ,_, there_EX have_VBP been_VBN several_JJ recent_JJ studies_NNS in_IN this_DT direction_NN ._.
+For_IN example_NN ,_, the_DT time_NN stamps_NNS of_IN text_NN documents_NNS have_VBP been_VBN considered_VBN in_IN some_DT recent_JJ work_NN on_IN temporal_JJ text_NN mining_NN =_JJ -_: =[_NN 9_CD ,_, 16_CD ,_, 14_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Also_RB ,_, author-topic_JJ analysis_NN is_VBZ studied_VBN in_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, and_CC crosscollection_NN comparative_JJ text_NN mining_NN is_VBZ studied_VBN in_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+All_DT these_DT studies_NNS consider_VBP some_DT kinds_NNS of_IN context_NN information_NN ,_, i.e._FW ,_, time_NN ,_, authorship_NN ,_,
+describe_VBP the_DT same_JJ thing_NN ._.
+On_IN top_NN of_IN that_DT ,_, one_CD of_IN our_PRP$ key_JJ needs_NNS is_VBZ month-to-month_JJ tracking_NN ,_, which_WDT is_VBZ hard_JJ if_IN each_DT month_NN 's_POS clusters_NNS are_VBP different_JJ and_CC not_RB easily_RB linkable_JJ ._.
+The_DT recent_JJ work_NN by_IN Mei_NNP and_CC Zhai_NNP =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC the_DT somewhat_RB older_JJR ThemeRiver_NNP visualization_NN by_IN Havre_NNP et_FW al._FW -LRB-_-LRB- 9_CD -RRB-_-RRB- both_DT attempt_NN to_TO detect_VB the_DT emergence_NN of_IN themes_NNS and_CC track_VB their_PRP$ trends_NNS through_IN time_NN in_IN a_DT text_NN stream_NN via_IN clustering_NN ._.
+These_DT methods_NNS f_SYM
+of_IN having_VBG terms_NNS grouped_VBN together_RB ._.
+For_IN instance_NN ,_, we_PRP will_MD be_VB able_JJ to_TO study_VB the_DT emergence_NN and_CC evolution_NN of_IN different_JJ topics_NNS over_IN time_NN ._.
+This_DT type_NN of_IN analysis_NN usually_RB referred_VBN to_TO as_IN temporal_JJ text_NN mining_NN -LRB-_-LRB- =_JJ -_: =_JJ Mei_NNP &_CC Zhai_NNP ,_, 2005_CD -_: =--RRB-_NN ._.
+A_DT sample_NN question_NN that_WDT can_MD be_VB answered_VBN through_IN this_DT analysis_NN is_VBZ whether_IN or_CC not_RB topics_NNS appearing_VBG in_IN clusters_NNS correspond_VBP to_TO weekly_JJ topics_NNS initially_RB assigned_VBN by_IN the_DT instructor_NN in_IN the_DT syllabus_NN ._.
+Another_DT
+Mining_NNP Recently_RB ,_, there_EX has_VBZ been_VBN some_DT work_NN on_IN temporal_JJ mining_NN for_IN text_NN streams_NNS ._.
+In_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, text_NN streams_NNS are_VBP converted_VBN to_TO temporal_JJ frequency_NN data_NNS for_IN discovering_VBG burstiness_NN in_IN the_DT stream_NN ._.
+The_DT authors_NNS of_IN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: studied_VBD the_DT evolution_NN of_IN themes_NNS -LRB-_-LRB- probability_NN distributions_NNS over_IN words_NNS -RRB-_-RRB- in_IN a_DT stream_NN of_IN documents_NNS ._.
+Other_JJ works_NNS ,_, such_JJ as_IN by_IN Ma_NNP et_FW al._FW -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, look_NN for_IN temporal_JJ trends_NNS in_IN a_DT text_NN stream_NN ._.
+In_IN contrast_NN ,_, our_PRP$ wor_NN
+as_IN its_PRP$ lower_JJR bound_VBD ._.
+26_CD 0.3_CD 0.25_CD 0.4_CD 0.3_CD s5_NN .5_CD Document_NNP Theme_NNP Extraction_NNP :_: A_NNP Case_NNP Study_NNP Theme_NNP discovery_NN uses_VBZ knowledge_NN about_IN the_DT meaning_NN of_IN words_NNS in_IN a_DT text_NN to_TO identify_VB broad_JJ topics_NNS covered_VBN in_IN a_DT document_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One_CD way_NN to_TO find_VB themes_NNS from_IN text_NN document_NN is_VBZ to_TO extract_VB the_DT frequent_JJ patterns_NNS of_IN term_NN occurrence_NN ._.
+For_IN example_NN ,_, a_DT frequent_JJ pattern_NN of_IN ``_`` database_NN management_NN ..._: ''_'' indicates_VBZ that_IN the_DT document_NN might_MD be_VB rel_NN
+layer_NN or_CC themes\/sub-themes_NNS associated_VBN with_IN at_IN story_NN ._.
+We_PRP did_VBD not_RB attempt_VB to_TO solve_VB the_DT problem_NN of_IN detecting_VBG actors_NNS ourselves_PRP ._.
+Instead_RB we_PRP used_VBD a_DT simplified_VBN version_NN of_IN the_DT method_NN described_VBN by_IN Mei_FW et_FW ._.
+al._FW =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+With_IN the_DT concept_NN of_IN actor_NN at_IN hand_NN ,_, we_PRP discover_VBP the_DT key_JJ transformations_NNS ._.
+The_DT transformations_NNS are_VBP •_NNP Merge_NNP :_: Two_CD previously_RB non_JJ co-occurring_JJ actors_NNS are_VBP marked_VBN as_IN merged_VBN at_IN time_NN ti_IN if_IN they_PRP appear_VBP togethe_NN
+3_CD ,_, 20_CD -RRB-_-RRB- ,_, and_CC Web_NN social_JJ networks_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Research_NN in_IN Web_NN blogs_NNS and_CC social_JJ networks_NNS has_VBZ been_VBN especially_RB focused_VBN on_IN discovering_VBG the_DT latent_JJ communities_NNS -LRB-_-LRB- 10_CD ,_, 22_CD -RRB-_-RRB- ,_, detecting_VBG topics_NNS from_IN temporal_JJ text_NN streams_NNS =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC the_DT retrieval_NN of_IN such_JJ highly_RB dynamic_JJ information_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP focus_VBP on_IN the_DT social_JJ annotations_NNS 1_CD in_IN large_JJ part_NN motivated_VBN by_IN their_PRP$ increasing_VBG availability_NN across_IN many_JJ Web-based_JJ applications_NNS ._.
+ar_NN -LRB-_-LRB- and_CC maybe_RB re-appear_JJ -RRB-_-RRB- over_IN time_NN ,_, and_CC -LRB-_-LRB- c_LS -RRB-_-RRB- give_VBP users_NNS intuitive_JJ and_CC highly_RB interactive_JJ interfaces_NNS for_IN exploring_VBG the_DT topic_NN landscape_NN and_CC at_IN the_DT same_JJ time_NN the_DT underlying_VBG documents_NNS ._.
+In_IN an_DT extension_NN of_IN -LRB-_-LRB- =_JJ -_: =_JJ Mei_NNP and_CC Zhai_NNP 2005_CD -_: =--RRB-_NN ,_, we_PRP call_VBP the_DT resulting_VBG problem_NN evolutionary_JJ theme_NN patterns_NNS discovery_NN ,_, summary_NN and_CC exploration_NN -LRB-_-LRB- ETP3_NN -RRB-_-RRB- ._.
+In_IN the_DT past_JJ years_NNS ,_, a_DT number_NN of_IN powerful_JJ methods_NNS for_IN solving_VBG subsets_NNS of_IN these_DT three_CD requirements_NNS
+icient_JJ extraction_NN algorithm_NN is_VBZ presented_VBN for_IN the_DT text_NN data_NN streams_NNS with_IN noise_NN ._.
+There_EX are_VBP also_RB some_DT other_JJ related_JJ works_NNS ._.
+The_DT work_NN in_IN -LRB-_-LRB- 21_CD --_: 23_CD -RRB-_-RRB- focuses_VBZ on_IN the_DT problem_NN of_IN concept_NN drift_NN of_IN data_NNS streams_NNS ._.
+In_IN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT new_JJ mining_NN problem_NN called_VBN temporal_JJ text_NN mining_NN is_VBZ studied_VBN ,_, whose_WP$ purpose_NN is_VBZ to_TO discover_VB and_CC summarize_VB the_DT evolutionary_JJ theme_NN patterns_NNS in_IN text_NN data_NNS streams_NNS context_NN ._.
+In_IN -LRB-_-LRB- 25_CD --_: 29_CD -RRB-_-RRB- ,_, some_DT interesting_JJ pro_NN
+rends_VBZ in_IN academic_JJ research_NN papers_NNS have_VBP not_RB been_VBN well_RB addressed_VBN in_IN the_DT existing_VBG works_NNS ._.
+Some_DT existing_VBG text_NN mining_NN methods_NNS only_RB discover_VBP the_DT theme_NN patterns_NNS but_CC do_VBP not_RB investigate_VB the_DT technical_JJ trends_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =-[_NN 10_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+In_IN this_DT study_NN ,_, we_PRP define_VBP three_CD tasks_NNS for_IN exploring_VBG evolutionary_JJ technical_JJ trends_NNS in_IN academic_JJ research_NN papers_NNS :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- recognizing_VBG focused_JJ technical_JJ terms_NNS from_IN research_NN papers_NNS ;_: -LRB-_-LRB- 2_LS -RRB-_-RRB- classifying_VBG th_DT
+eing_NN ''_'' of_IN old_JJ objects_NNS and_CC does_VBZ not_RB require_VB that_IN the_DT density_NN function_NN of_IN a_DT moving_JJ cluster_NN is_VBZ invariant_JJ ._.
+Cluster_NN change_NN detection_NN is_VBZ also_RB relevant_JJ for_IN ``_`` topic_NN evolution_NN ''_'' in_IN text_NN streams_NNS ,_, as_IN dealt_VBN with_IN in_IN =_JJ -_: =[_NN 8_CD ,_, 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB a_DT ``_`` topic_NN ''_'' is_VBZ a_DT cluster_NN label_NN ,_, consisting_VBG of_IN the_DT dominant_JJ words_NNS inside_IN the_DT cluster_NN ._.
+In_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, the_DT emphasis_NN is_VBZ on_IN adapting_VBG the_DT clusters_NNS ,_, while_IN in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- a_DT topic_NN evolution_NN graph_NN is_VBZ built_VBN and_CC used_VBN to_TO t_NN
+,_, new_JJ interface_NN features_NNS and_CC examples_NNS from_IN a_DT new_JJ corpus_NN ._.
+II_CD ._.
+RELATED_NNS WORK_VBP Our_PRP$ work_NN builds_VBZ on_IN several_JJ areas_NNS of_IN research_NN ,_, whose_WP$ relevance_NN is_VBZ described_VBN in_IN detail_NN in_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- :_: temporal_JJ text_NN mining_NN -LRB-_-LRB- TTM_NN -RRB-_-RRB- ,_, e.g._FW =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, topic_NN detection_NN and_CC tracking_NN -LRB-_-LRB- TDT_NN -RRB-_-RRB- -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, burstiness_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, and_CC various_JJ summarisation_NN approaches_NNS using_VBG co-occurrence_NN ,_, such_JJ as_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+We_PRP aim_VBP at_IN more_JJR flexib_NN
+ation_NN ,_, event_NN segmentation_NN and_CC summarization_NN ,_, and_CC evolution_NN graph_NN construction_NN ._.
+Generally_RB ,_, the_DT content_NN of_IN a_DT topic_NN is_VBZ comprised_VBN of_IN several_JJ simultaneous_JJ themes_NNS ,_, each_DT representing_VBG an_DT episode_NN of_IN the_DT topic_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT theme_NN generation_NN process_NN tries_VBZ to_TO identify_VB the_DT themes_NNS of_IN a_DT topic_NN from_IN the_DT related_JJ documents_NNS ._.
+Over_IN the_DT lifespan_NN of_IN a_DT topic_NN ,_, the_DT focus_NN of_IN the_DT topic_NN 's_POS content_NN may_MD shift_VB from_IN one_CD theme_NN to_TO another_DT to_TO
+nd_RB disappear_VB -LRB-_-LRB- and_CC maybe_RB re-appear_JJ -RRB-_-RRB- over_IN time_NN ,_, and_CC -LRB-_-LRB- c_LS -RRB-_-RRB- give_VBP users_NNS intuitive_JJ interfaces_NNS for_IN interactively_RB exploring_VBG the_DT topic_NN landscape_NN and_CC at_IN the_DT same_JJ time_NN the_DT underlying_VBG documents_NNS ._.
+In_IN an_DT extension_NN of_IN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP call_VBP the_DT resulting_VBG problem_NN evolutionary_JJ theme_NN patterns_NNS discovery_NN ,_, summary_NN and_CC exploration_NN -LRB-_-LRB- ETP3_NN -RRB-_-RRB- ._.
+The_DT first_JJ contribution_NN of_IN the_DT paper_NN is_VBZ a_DT -LRB-_-LRB- re_SYM -_: -RRB-_-RRB- appraisal_NN of_IN the_DT ETP3_NN problem_NN as_IN one_CD that_WDT requires_VBZ
+nd_RB disappear_VB -LRB-_-LRB- and_CC maybe_RB re-appear_JJ -RRB-_-RRB- over_IN time_NN ;_: and_CC -LRB-_-LRB- c_LS -RRB-_-RRB- give_VBP users_NNS intuitive_JJ interfaces_NNS for_IN interactively_RB exploring_VBG the_DT topic_NN landscape_NN and_CC at_IN the_DT same_JJ time_NN the_DT underlying_VBG documents_NNS ._.
+In_IN an_DT extension_NN of_IN =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP call_VBP the_DT resulting_VBG problem_NN evolutionary_JJ theme_NN pattern_NN discovery_NN ,_, summary_NN and_CC exploration_NN -LRB-_-LRB- ETP3_NN -RRB-_-RRB- ._.
+In_IN the_DT past_JJ years_NNS ,_, a_DT number_NN of_IN powerful_JJ methods_NNS for_IN solving_VBG subsets_NNS of_IN these_DT three_CD requirements_NNS ha_IN
+ot_NN for_IN temporal_JJ smoothing_NN and_CC was_VBD not_RB presented_VBN in_IN a_DT formal_JJ definition_NN ._.
+In_IN addition_NN to_TO evolutionary_JJ clustering_NN ,_, there_EX have_VBP been_VBN few_JJ studies_NNS that_WDT discover_VBP a_DT kind_NN of_IN communities_NNS over_IN temporal_JJ text_NN data_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: or_CC blogosphere_NN data_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Mei_FW et_FW al._FW -LRB-_-LRB- 16_CD -RRB-_-RRB- proposed_VBD an_DT algorithm_NN for_IN discovering_VBG evolutionary_JJ theme_NN from_IN temporal_JJ text_NN data_NNS ._.
+This_DT algorithm_NN extracts_VBZ themes_NNS at_IN each_DT timestamp_NN ,_, constructs_NNS a_DT t-partite_NN gra_NN
+reduce_VB resource_NN consumption_NN ,_, to_TO speed_VB up_RP document_NN evaluation_NN ,_, and_CC to_TO improve_VB the_DT quality_NN of_IN results_NNS ._.
+Another_DT closely_RB related_JJ of_IN work_NN is_VBZ in_IN the_DT discovery_NN of_IN evolutionary_JJ theme_NN patterns_NNS -LRB-_-LRB- ETP_NN -RRB-_-RRB- from_IN text_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN ETP_NNP ,_, documents_NNS are_VBP partitioned_VBN into_IN possibly_RB overlapping_VBG subcollections_NNS according_VBG to_TO their_PRP$ publication_NN time_NN ._.
+The_DT most_RBS prominent_JJ themes_NNS -LRB-_-LRB- or_CC subtopics_NNS -RRB-_-RRB- are_VBP extracted_VBN from_IN each_DT subcollection_NN ._.
+For_IN an_DT
+ommend_NN citations_NNS for_IN scientific_JJ researchers_NNS ._.
+Due_JJ to_TO its_PRP$ importance_NN and_CC great_JJ application_NN potential_NN ,_, topic_NN evolution_NN has_VBZ recently_RB attracted_VBN fast_RB growing_VBG interest_NN in_IN the_DT information_NN retrieval_NN community_NN =_JJ -_: =[_NN 23_CD ,_, 19_CD ,_, 20_CD ,_, 28_CD ,_, 27_CD ,_, 33_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Existing_VBG approaches_NNS -LRB-_-LRB- 33_CD ,_, 6_CD ,_, 7_CD ,_, 13_CD -RRB-_-RRB- for_IN topic_NN evolution_NN in_IN scientific_JJ literature_NN model_NN a_DT paper_NN as_IN a_DT bag_NN of_IN words_NNS ,_, and_CC detect_VB topics_NNS on_IN documents_NNS in_IN different_JJ time_NN periods_NNS ._.
+Then_RB ,_, topic_NN evolution_NN is_VBZ an_DT
+uitively_RB closer_RBR to_TO the_DT volatile_JJ nature_NN of_IN the_DT Web_NN ._.
+However_RB ,_, evolutionary_JJ topic_NN detection_NN methods_NNS ,_, including_VBG recent_JJ ones_NNS based_VBN on_IN Probabilistic_JJ Latent_JJ Semantic_JJ Analysis_NN and_CC Latent_JJ Dirichlet_NN Allocation_NN =_JJ -_: =[_NN 11_CD ,_, 4_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: all_DT assume_VBP that_IN the_DT documents_NNS form_VBP a_DT nite_JJ sequence_NN ._.
+To_TO deal_VB with_IN a_DT document_NN stream_NN ,_, they_PRP take_VBP a_DT retrospective_JJ view_NN of_IN the_DT world_NN :_: at_IN each_DT new_JJ timepoint_NN ,_, all_DT information_NN seen_VBN so_RB far_RB is_VBZ used_VBN to_TO re-build_VB

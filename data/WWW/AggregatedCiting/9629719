@@ -1,0 +1,122 @@
+Online_JJ expansion_NN of_IN rare_JJ queries_NNS for_IN sponsored_VBN search_NN
+Sponsored_VBN search_NN systems_NNS are_VBP tasked_VBN with_IN matching_JJ queries_NNS to_TO relevant_JJ advertisements_NNS ._.
+The_DT current_JJ state-of-the-art_JJ matching_NN algorithms_NNS expand_VBP the_DT user_NN 's_POS query_NN using_VBG a_DT variety_NN of_IN external_JJ resources_NNS ,_, such_JJ as_IN Web_NN search_NN results_NNS ._.
+While_IN these_DT expansion-based_JJ algorithms_NNS are_VBP highly_RB effective_JJ ,_, they_PRP are_VBP largely_RB inefficient_JJ and_CC can_MD not_RB be_VB applied_VBN in_IN real-time_JJ ._.
+In_IN practice_NN ,_, such_JJ algorithms_NNS are_VBP applied_VBN offline_JJ to_TO popular_JJ queries_NNS ,_, with_IN the_DT results_NNS of_IN the_DT expensive_JJ operations_NNS cached_VBN for_IN fast_JJ access_NN at_IN query_NN time_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP describe_VBP an_DT efficient_JJ and_CC effective_JJ approach_NN for_IN matching_VBG ads_NNS against_IN rare_JJ queries_NNS that_WDT were_VBD not_RB processed_VBN offline_NN ._.
+The_DT approach_NN builds_VBZ an_DT expanded_VBN query_NN representation_NN by_IN leveraging_VBG offline_JJ processing_NN done_VBN for_IN related_JJ popular_JJ queries_NNS ._.
+Our_PRP$ experimental_JJ results_NNS show_VBP that_IN our_PRP$ approach_NN significantly_RB improves_VBZ the_DT effectiveness_NN of_IN advertising_NN on_IN rare_JJ queries_NNS with_IN only_RB a_DT negligible_JJ increase_NN in_IN computational_JJ cost_NN ._.
+eries_NNS ,_, and_CC the_DT results_NNS were_VBD stored_VBN in_IN a_DT database_NN for_IN efficient_JJ lookup_NN at_IN query_NN time_NN ._.
+Using_VBG Web_NN search_NN results_VBZ as_IN a_DT source_NN of_IN external_JJ expansion_NN has_VBZ also_RB been_VBN explored_VBN by_IN other_JJ researchers_NNS in_IN the_DT past_NN =_JJ -_: =[_NN 10_CD ,_, 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Query_NNP rewriting_VBG for_IN sponsored_VBN search_NN reported_VBN by_IN Jones_NNP et_FW al._FW -LRB-_-LRB- 15_CD -RRB-_-RRB- employed_VBN user_NN session_NN information_NN from_IN search_NN engine_NN query_NN logs_NNS to_TO produce_VB alternative_JJ queries_NNS for_IN ad_NN selection_NN ._.
+The_DT first_JJ step_NN in_IN
+ad_NN text_NN ,_, target_NN Web_NN site_NN -LRB-_-LRB- landing_NN page_NN -RRB-_-RRB- ,_, or_CC other_JJ information_NN related_VBN to_TO the_DT user_NN ,_, ad_NN ,_, or_CC advertiser_NN ._.
+It_PRP is_VBZ a_DT well_RB known_VBN fact_NN that_IN the_DT volume_NN distribution_NN of_IN Web_NN search_NN queries_NNS follows_VBZ the_DT power_NN law_NN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT most_RBS frequent_JJ queries_NNS compose_VBP the_DT head_NN and_CC torso_NN of_IN the_DT curve_NN ,_, while_IN the_DT low_JJ volume_NN ,_, rarer_JJR queries_NNS make_VBP up_RP the_DT tail_NN of_IN the_DT curve_NN ._.
+While_IN individually_RB rare_JJ ,_, tail_JJ queries_NNS make_VBP up_RP a_DT significant_JJ port_NN
+nto_VB a_DT completely_RB different_JJ query_NN ._.
+A_DT simple_JJ example_NN of_IN the_DT former_JJ is_VBZ stemming_VBG ,_, which_WDT removes_VBZ suffixes_NNS from_IN query_JJ words_NNS ,_, so_RB for_IN example_NN ,_, the_DT query_NN ``_`` cameras_NNS ''_'' would_MD match_VB documents_NNS with_IN the_DT word_NN ``_`` camera_NN ''_'' =_SYM -_: =[_NN 20_CD ,_, 16_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Other_JJ examples_NNS of_IN incremental_JJ changes_NNS include_VBP removing_VBG one_CD or_CC more_JJR query_NN words_NNS to_TO improve_VB recall_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, correcting_VBG the_DT spelling_NN of_IN words_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- or_CC using_VBG a_DT dictionary_NN and_CC thesaurus_NN to_TO find_VB synonyms_NNS of_IN qu_FW
+initially_RB retrieves_VBZ a_DT set_NN of_IN top-ranked_JJ documents_NNS and_CC uses_VBZ them_PRP for_IN query_NN augmentation_NN -LRB-_-LRB- 17_CD ,_, 32_CD ,_, 18_CD ,_, 24_CD ,_, 31_CD -RRB-_-RRB- ._.
+Common_JJ methods_NNS for_IN completely_RB transforming_VBG queries_NNS include_VBP Latent_JJ Semantic_JJ Indexing_NN -LRB-_-LRB- LSI_NNP -RRB-_-RRB- =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT maps_VBZ all_DT queries_NNS and_CC documents_NNS to_TO a_DT latent_JJ feature_NN space_NN ,_, as_RB well_RB as_IN rewriting_VBG queries_NNS into_IN related_JJ ,_, previously_RB observed_VBN queries_NNS -LRB-_-LRB- 3_CD ,_, 8_CD -RRB-_-RRB- ._.
+Query_NNP rewriting_VBG is_VBZ a_DT common_JJ technique_NN for_IN performing_VBG br_NN
+der_NN to_TO accumulate_VB enough_JJ ad_NN clicks_VBZ to_TO use_VB statistical_JJ and_CC explore-exploit_JJ methods_NNS to_TO identify_VB good_JJ ads_NNS ._.
+Search_VB engines_NNS normally_RB avoid_VBP displaying_VBG irrelevant_JJ ads_NNS in_IN order_NN not_RB to_TO degrade_VB user_NN experience_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC so_RB the_DT current_JJ practice_NN is_VBZ not_RB to_TO advertise_VB on_IN most_JJS of_IN the_DT tail_NN queries_NNS ._.
+In_IN this_DT paper_NN we_PRP propose_VBP a_DT method_NN for_IN online_NN rewriting_VBG of_IN tail_NN queries_NNS for_IN sponsored_VBN search_NN ._.
+In_IN our_PRP$ system_NN ,_, we_PRP preprocess_VBP
+ging_NN ._.
+If_IN we_PRP attempt_VBP to_TO match_VB just_RB the_DT text_NN of_IN the_DT query_NN against_IN the_DT ad_NN database_NN ,_, then_RB the_DT resulting_VBG matches_NNS are_VBP likely_JJ to_TO be_VB of_IN low_JJ quality_NN ,_, primarily_RB due_JJ to_TO the_DT so-called_JJ vocabulary_NN mismatch_NN problem_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO alleviate_VB this_DT problem_NN ,_, we_PRP first_RB run_VBP the_DT incoming_JJ query_NN against_IN the_DT inverted_JJ index_NN of_IN expanded_JJ queries_NNS and_CC retrieve_VB the_DT top_JJ k_NN expanded_JJ queries_NNS ._.
+We_PRP then_RB process_VBP the_DT retrieved_VBN queries_NNS to_TO generate_VB a_DT
+nary_DT and_CC thesaurus_NN to_TO find_VB synonyms_NNS of_IN query_JJ words_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+Yet_RB another_DT example_NN is_VBZ pseudo-relevance_JJ feedback_NN ,_, which_WDT initially_RB retrieves_VBZ a_DT set_NN of_IN top-ranked_JJ documents_NNS and_CC uses_VBZ them_PRP for_IN query_NN augmentation_NN =_JJ -_: =[_NN 17_CD ,_, 32_CD ,_, 18_CD ,_, 24_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Common_JJ methods_NNS for_IN completely_RB transforming_VBG queries_NNS include_VBP Latent_JJ Semantic_JJ Indexing_NN -LRB-_-LRB- LSI_NNP -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, which_WDT maps_VBZ all_DT queries_NNS and_CC documents_NNS to_TO a_DT latent_JJ feature_NN space_NN ,_, as_RB well_RB as_IN rewriting_VBG queries_NNS into_IN relat_NN
+rd_FW l2_FW vector_NN normalization_NN in_IN these_DT cases_NNS will_MD cause_VB short_JJ ads_NNS to_TO be_VB preferred_VBN over_IN long_JJ ads_NNS ,_, which_WDT is_VBZ undesirable_JJ ._.
+For_IN this_DT reason_NN ,_, we_PRP weight_VBP ad_NN features_NNS using_VBG the_DT well-studied_JJ BM25_NN weighting_NN scheme_NN =_JJ -_: =[_NN 23_CD ,_, 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT robustly_RB handles_VBZ document_NN length_NN normalization_NN and_CC term_NN frequency_NN saturation_NN ._.
+The_DT specific_JJ form_NN of_IN BM25_NN weighting_NN that_IN we_PRP use_VBP is_VBZ :_: w_NN -LRB-_-LRB- f_FW ,_, A_NN -RRB-_-RRB- =_JJ ``_`` k_NN ·_NN -LRB-_-LRB- 1_CD −_CD b_NN -RRB-_-RRB- +_CC b_NN ·_NN -LRB-_-LRB- k_NN +_CC 1_LS -RRB-_-RRB- ·_NN #_# -LRB-_-LRB- f_FW ,_, A_NN -RRB-_-RRB- |_NN A_NN |_FW |_FW A_DT |_FW avg_FW ''_'' +_CC
+-RRB-_-RRB- ._.
+To_TO be_VB rigorous_JJ ,_, we_PRP often_RB test_VBP whether_IN the_DT difference_NN observed_VBN between_IN two_CD algorithms_NNS is_VBZ statistically_RB significant_JJ or_CC not_RB ._.
+We_PRP use_VBP a_DT paired_JJ ,_, one-tailed_JJ non-parametric_JJ bootstrap_NN test_NN for_IN this_DT purpose_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT dagger_NN -LRB-_-LRB- †_NN -RRB-_-RRB- and_CC double_JJ dagger_NN -LRB-_-LRB- ‡_NN -RRB-_-RRB- represent_VBP significant_JJ improvements_NNS with_IN respect_NN to_TO the_DT baseline_NN at_IN the_DT p_NN -LRB-_-LRB- 0.05_CD and_CC p_NN -LRB-_-LRB- 0.10_CD levels_NNS ,_, respectively_RB ._.
+Baseline_NNP Online_NNP Expansion_NN DCG@1_NN 0.99_CD 1.07_CD -LRB-_-LRB- +8_CD ._.
+3_LS ._.
+RELATED_NNS WORK_VBP The_DT techniques_NNS presented_VBN in_IN this_DT paper_NN are_VBP related_JJ to_TO the_DT information_NN retrieval_NN research_NN areas_NNS of_IN query_NN expansion_NN and_CC query_NN rewriting_VBG ._.
+The_DT classical_JJ work_NN on_IN query_NN expansion_NN by_IN Rocchio_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: shows_VBZ how_WRB to_TO craft_VB the_DT best_JJS query_NN for_IN given_VBN sets_NNS of_IN relevant_JJ and_CC irrelevant_JJ documents_NNS ._.
+The_DT most_RBS common_JJ application_NN of_IN Rocchio_NNP 's_POS query_JJ expansion_NN technique_NN composes_VBZ an_DT expanded_JJ query_NN that_WDT is_VBZ a_DT linear_JJ c_NN
+amples_NNS of_IN incremental_JJ changes_NNS include_VBP removing_VBG one_CD or_CC more_JJR query_NN words_NNS to_TO improve_VB recall_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, correcting_VBG the_DT spelling_NN of_IN words_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- or_CC using_VBG a_DT dictionary_NN and_CC thesaurus_NN to_TO find_VB synonyms_NNS of_IN query_JJ words_NNS =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Yet_RB another_DT example_NN is_VBZ pseudo-relevance_JJ feedback_NN ,_, which_WDT initially_RB retrieves_VBZ a_DT set_NN of_IN top-ranked_JJ documents_NNS and_CC uses_VBZ them_PRP for_IN query_NN augmentation_NN -LRB-_-LRB- 17_CD ,_, 32_CD ,_, 18_CD ,_, 24_CD ,_, 31_CD -RRB-_-RRB- ._.
+Common_JJ methods_NNS for_IN completely_RB tra_NN
+a_DT PPC_NNP model_NN ,_, although_IN the_DT pricing_NN model_NN does_VBZ not_RB directly_RB effect_VB the_DT usefulness_NN of_IN our_PRP$ underlying_JJ model_NN ._.
+The_DT amount_NN paid_VBN by_IN the_DT advertiser_NN for_IN each_DT click_VBP is_VBZ typically_RB determined_VBN by_IN an_DT auction_NN process_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Advertisers_NNS place_VBP bids_NNS on_IN a_DT search_NN phrase_NN ,_, and_CC their_PRP$ position_NN on_IN the_DT search_NN result_NN page_NN is_VBZ determined_VBN by_IN their_PRP$ own_JJ bid_NN as_RB well_RB as_IN the_DT bids_NNS of_IN other_JJ advertisers_NNS ._.
+Each_DT sponsored_VBN search_NN ad_NN has_VBZ one_CD or_CC m_NN
+nto_VB a_DT completely_RB different_JJ query_NN ._.
+A_DT simple_JJ example_NN of_IN the_DT former_JJ is_VBZ stemming_VBG ,_, which_WDT removes_VBZ suffixes_NNS from_IN query_JJ words_NNS ,_, so_RB for_IN example_NN ,_, the_DT query_NN ``_`` cameras_NNS ''_'' would_MD match_VB documents_NNS with_IN the_DT word_NN ``_`` camera_NN ''_'' =_SYM -_: =[_NN 20_CD ,_, 16_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Other_JJ examples_NNS of_IN incremental_JJ changes_NNS include_VBP removing_VBG one_CD or_CC more_JJR query_NN words_NNS to_TO improve_VB recall_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, correcting_VBG the_DT spelling_NN of_IN words_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- or_CC using_VBG a_DT dictionary_NN and_CC thesaurus_NN to_TO find_VB synonyms_NNS of_IN qu_FW
+nary_DT and_CC thesaurus_NN to_TO find_VB synonyms_NNS of_IN query_JJ words_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+Yet_RB another_DT example_NN is_VBZ pseudo-relevance_JJ feedback_NN ,_, which_WDT initially_RB retrieves_VBZ a_DT set_NN of_IN top-ranked_JJ documents_NNS and_CC uses_VBZ them_PRP for_IN query_NN augmentation_NN =_JJ -_: =[_NN 17_CD ,_, 32_CD ,_, 18_CD ,_, 24_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Common_JJ methods_NNS for_IN completely_RB transforming_VBG queries_NNS include_VBP Latent_JJ Semantic_JJ Indexing_NN -LRB-_-LRB- LSI_NNP -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, which_WDT maps_VBZ all_DT queries_NNS and_CC documents_NNS to_TO a_DT latent_JJ feature_NN space_NN ,_, as_RB well_RB as_IN rewriting_VBG queries_NNS into_IN relat_NN
+words_NNS ,_, so_RB for_IN example_NN ,_, the_DT query_NN ``_`` cameras_NNS ''_'' would_MD match_VB documents_NNS with_IN the_DT word_NN ``_`` camera_NN ''_'' -LRB-_-LRB- 20_CD ,_, 16_CD ,_, 19_CD -RRB-_-RRB- ._.
+Other_JJ examples_NNS of_IN incremental_JJ changes_NNS include_VBP removing_VBG one_CD or_CC more_JJR query_NN words_NNS to_TO improve_VB recall_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, correcting_VBG the_DT spelling_NN of_IN words_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- or_CC using_VBG a_DT dictionary_NN and_CC thesaurus_NN to_TO find_VB synonyms_NNS of_IN query_JJ words_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+Yet_RB another_DT example_NN is_VBZ pseudo-relevance_JJ feedback_NN ,_, which_WDT initially_RB retrieves_VBZ a_DT set_NN of_IN to_TO
+nary_DT and_CC thesaurus_NN to_TO find_VB synonyms_NNS of_IN query_JJ words_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+Yet_RB another_DT example_NN is_VBZ pseudo-relevance_JJ feedback_NN ,_, which_WDT initially_RB retrieves_VBZ a_DT set_NN of_IN top-ranked_JJ documents_NNS and_CC uses_VBZ them_PRP for_IN query_NN augmentation_NN =_JJ -_: =[_NN 17_CD ,_, 32_CD ,_, 18_CD ,_, 24_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Common_JJ methods_NNS for_IN completely_RB transforming_VBG queries_NNS include_VBP Latent_JJ Semantic_JJ Indexing_NN -LRB-_-LRB- LSI_NNP -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, which_WDT maps_VBZ all_DT queries_NNS and_CC documents_NNS to_TO a_DT latent_JJ feature_NN space_NN ,_, as_RB well_RB as_IN rewriting_VBG queries_NNS into_IN relat_NN
+eries_NNS ,_, and_CC the_DT results_NNS were_VBD stored_VBN in_IN a_DT database_NN for_IN efficient_JJ lookup_NN at_IN query_NN time_NN ._.
+Using_VBG Web_NN search_NN results_VBZ as_IN a_DT source_NN of_IN external_JJ expansion_NN has_VBZ also_RB been_VBN explored_VBN by_IN other_JJ researchers_NNS in_IN the_DT past_NN =_JJ -_: =[_NN 10_CD ,_, 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Query_NNP rewriting_VBG for_IN sponsored_VBN search_NN reported_VBN by_IN Jones_NNP et_FW al._FW -LRB-_-LRB- 15_CD -RRB-_-RRB- employed_VBN user_NN session_NN information_NN from_IN search_NN engine_NN query_NN logs_NNS to_TO produce_VB alternative_JJ queries_NNS for_IN ad_NN selection_NN ._.
+The_DT first_JJ step_NN in_IN
+transforming_NN queries_NNS include_VBP Latent_JJ Semantic_JJ Indexing_NN -LRB-_-LRB- LSI_NNP -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, which_WDT maps_VBZ all_DT queries_NNS and_CC documents_NNS to_TO a_DT latent_JJ feature_NN space_NN ,_, as_RB well_RB as_IN rewriting_VBG queries_NNS into_IN related_JJ ,_, previously_RB observed_VBN queries_NNS =_JJ -_: =[_NN 3_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Query_NNP rewriting_VBG is_VBZ a_DT common_JJ technique_NN for_IN performing_VBG broad_JJ match_NN in_IN sponsored_VBN search_NN ._.
+Most_JJS of_IN the_DT prior_JJ work_NN reported_VBN in_IN the_DT literature_NN describes_VBZ offline_JJ query_NN rewriting_VBG by_IN using_VBG various_JJ sources_NNS of_IN
+being_VBG weighted_VBN higher_JJR than_IN description_NN and_CC display_NN URL_NN occurrences_NNS ._.
+This_DT method_NN of_IN combining_VBG evidence_NN from_IN multiple_JJ fields_NNS into_IN a_DT single_JJ weighting_NN function_NN has_VBZ been_VBN shown_VBN to_TO be_VB effective_JJ in_IN the_DT past_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN addition_NN ,_, k_NN and_CC b_NN are_VBP free_JJ parameters_NNS that_WDT control_VBP for_IN term_NN frequency_NN saturation_NN and_CC document_NN length_NN normalization_NN ._.
+As_IN before_RB ,_, idf_NN -LRB-_-LRB- f_LS -RRB-_-RRB- is_VBZ computed_VBN over_IN the_DT entire_JJ ad_NN corpus_NN ._.
+5.4.2_CD Title_NNP Match_NNP Boos_NNPS
+nto_VB a_DT completely_RB different_JJ query_NN ._.
+A_DT simple_JJ example_NN of_IN the_DT former_JJ is_VBZ stemming_VBG ,_, which_WDT removes_VBZ suffixes_NNS from_IN query_JJ words_NNS ,_, so_RB for_IN example_NN ,_, the_DT query_NN ``_`` cameras_NNS ''_'' would_MD match_VB documents_NNS with_IN the_DT word_NN ``_`` camera_NN ''_'' =_SYM -_: =[_NN 20_CD ,_, 16_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Other_JJ examples_NNS of_IN incremental_JJ changes_NNS include_VBP removing_VBG one_CD or_CC more_JJR query_NN words_NNS to_TO improve_VB recall_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, correcting_VBG the_DT spelling_NN of_IN words_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- or_CC using_VBG a_DT dictionary_NN and_CC thesaurus_NN to_TO find_VB synonyms_NNS of_IN qu_FW
+query_NN time_NN ._.
+Using_VBG Web_NN search_NN results_VBZ as_IN a_DT source_NN of_IN external_JJ expansion_NN has_VBZ also_RB been_VBN explored_VBN by_IN other_JJ researchers_NNS in_IN the_DT past_NN -LRB-_-LRB- 10_CD ,_, 27_CD -RRB-_-RRB- ._.
+Query_NNP rewriting_VBG for_IN sponsored_VBN search_NN reported_VBN by_IN Jones_NNP et_FW al._FW =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: employed_VBN user_NN session_NN information_NN from_IN search_NN engine_NN query_NN logs_NNS to_TO produce_VB alternative_JJ queries_NNS for_IN ad_NN selection_NN ._.
+The_DT first_JJ step_NN in_IN this_DT method_NN is_VBZ to_TO generate_VB candidate_NN substitutions_NNS by_IN examining_VBG pair_NN
+transforming_NN queries_NNS include_VBP Latent_JJ Semantic_JJ Indexing_NN -LRB-_-LRB- LSI_NNP -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, which_WDT maps_VBZ all_DT queries_NNS and_CC documents_NNS to_TO a_DT latent_JJ feature_NN space_NN ,_, as_RB well_RB as_IN rewriting_VBG queries_NNS into_IN related_JJ ,_, previously_RB observed_VBN queries_NNS =_JJ -_: =[_NN 3_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Query_NNP rewriting_VBG is_VBZ a_DT common_JJ technique_NN for_IN performing_VBG broad_JJ match_NN in_IN sponsored_VBN search_NN ._.
+Most_JJS of_IN the_DT prior_JJ work_NN reported_VBN in_IN the_DT literature_NN describes_VBZ offline_JJ query_NN rewriting_VBG by_IN using_VBG various_JJ sources_NNS of_IN
+d_NN matching_NN algorithms_NNS ,_, we_PRP employ_VBP discounted_JJ cumulative_JJ gain_NN -LRB-_-LRB- DCG_NN -RRB-_-RRB- and_CC precision-recall_JJ curves_NNS ._.
+The_DT DCG_NNP metric_NN is_VBZ commonly_RB used_VBN to_TO evaluate_VB ranking_JJ algorithms_NNS when_WRB there_EX are_VBP graded_VBN relevance_NN judgments_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Since_IN our_PRP$ judgments_NNS are_VBP on_IN a_DT scale_NN of_IN 1_CD to_TO 5_CD ,_, this_DT metric_NN is_VBZ an_DT appropriate_JJ choice_NN ._.
+The_DT DCG_NNP for_IN a_DT single_JJ query_NN is_VBZ defined_VBN as_IN as_IN follows_VBZ :_: DCG@K_NN -LRB-_-LRB- Q_NNP -RRB-_-RRB- =_JJ KX_FW i_FW =_JJ 1_CD g_NN -LRB-_-LRB- i_LS -RRB-_-RRB- log_NN -LRB-_-LRB- 1_CD +_CC i_LS -RRB-_-RRB- where_WRB g_NN -LRB-_-LRB- i_LS -RRB-_-RRB- is_VBZ the_DT gain_NN asso_NN
+ras_NN ''_'' would_MD match_VB documents_NNS with_IN the_DT word_NN ``_`` camera_NN ''_'' -LRB-_-LRB- 20_CD ,_, 16_CD ,_, 19_CD -RRB-_-RRB- ._.
+Other_JJ examples_NNS of_IN incremental_JJ changes_NNS include_VBP removing_VBG one_CD or_CC more_JJR query_NN words_NNS to_TO improve_VB recall_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, correcting_VBG the_DT spelling_NN of_IN words_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: or_CC using_VBG a_DT dictionary_NN and_CC thesaurus_NN to_TO find_VB synonyms_NNS of_IN query_JJ words_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+Yet_RB another_DT example_NN is_VBZ pseudo-relevance_JJ feedback_NN ,_, which_WDT initially_RB retrieves_VBZ a_DT set_NN of_IN top-ranked_JJ documents_NNS and_CC uses_VBZ them_PRP for_IN q_NN
+nary_DT and_CC thesaurus_NN to_TO find_VB synonyms_NNS of_IN query_JJ words_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+Yet_RB another_DT example_NN is_VBZ pseudo-relevance_JJ feedback_NN ,_, which_WDT initially_RB retrieves_VBZ a_DT set_NN of_IN top-ranked_JJ documents_NNS and_CC uses_VBZ them_PRP for_IN query_NN augmentation_NN =_JJ -_: =[_NN 17_CD ,_, 32_CD ,_, 18_CD ,_, 24_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Common_JJ methods_NNS for_IN completely_RB transforming_VBG queries_NNS include_VBP Latent_JJ Semantic_JJ Indexing_NN -LRB-_-LRB- LSI_NNP -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, which_WDT maps_VBZ all_DT queries_NNS and_CC documents_NNS to_TO a_DT latent_JJ feature_NN space_NN ,_, as_RB well_RB as_IN rewriting_VBG queries_NNS into_IN relat_NN
+nary_DT and_CC thesaurus_NN to_TO find_VB synonyms_NNS of_IN query_JJ words_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+Yet_RB another_DT example_NN is_VBZ pseudo-relevance_JJ feedback_NN ,_, which_WDT initially_RB retrieves_VBZ a_DT set_NN of_IN top-ranked_JJ documents_NNS and_CC uses_VBZ them_PRP for_IN query_NN augmentation_NN =_JJ -_: =[_NN 17_CD ,_, 32_CD ,_, 18_CD ,_, 24_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Common_JJ methods_NNS for_IN completely_RB transforming_VBG queries_NNS include_VBP Latent_JJ Semantic_JJ Indexing_NN -LRB-_-LRB- LSI_NNP -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, which_WDT maps_VBZ all_DT queries_NNS and_CC documents_NNS to_TO a_DT latent_JJ feature_NN space_NN ,_, as_RB well_RB as_IN rewriting_VBG queries_NNS into_IN relat_NN
+relevant_JJ ._.
+Furthermore_RB ,_, since_IN we_PRP only_RB retrieve_VBP three_CD ads_NNS per_IN query_NN ,_, plotting_VBG classical_JJ 11-point_JJ interpolated_JJ macroaveraged_JJ curves_NNS makes_VBZ little_JJ sense_NN ._.
+Instead_RB ,_, we_PRP plot_VBP interpolated_VBN microaveraged_JJ curves_NNS =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO be_VB rigorous_JJ ,_, we_PRP often_RB test_VBP whether_IN the_DT difference_NN observed_VBN between_IN two_CD algorithms_NNS is_VBZ statistically_RB significant_JJ or_CC not_RB ._.
+We_PRP use_VBP a_DT paired_JJ ,_, one-tailed_JJ non-parametric_JJ bootstrap_NN test_NN for_IN this_DT purpose_NN -LRB-_-LRB-
+ted_VBN from_IN Web_NN search_NN results_NNS and_CC store_VBP the_DT results_NNS in_IN a_DT lookup_NN table_NN ._.
+We_PRP have_VBP shown_VBN in_IN our_PRP$ previous_JJ work_NN that_IN such_JJ expanded_JJ queries_NNS can_MD be_VB effectively_RB be_VB used_VBN to_TO produce_VB query_NN rewrites_NNS for_IN broad_JJ match_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+At_IN runtime_NN ,_, we_PRP look_VBP queries_NNS up_RB in_IN the_DT table_NN ,_, and_CC if_IN the_DT query_NN is_VBZ present_JJ ,_, we_PRP use_VBP the_DT expanded_VBN query_NN to_TO search_VB the_DT ad_NN space_NN ._.
+While_IN this_DT approach_NN is_VBZ efficient_JJ for_IN head_NN and_CC torso_NN queries_NNS ,_, tail_NN queries_NNS
+s_NN offline_NN query_NN rewriting_VBG by_IN using_VBG various_JJ sources_NNS of_IN external_JJ knowledge_NN ,_, and_CC can_MD thus_RB be_VB applied_VBN only_RB to_TO repeating_VBG queries_NNS from_IN the_DT head_NN and_CC the_DT torso_NN of_IN the_DT query_JJ volume_NN curve_NN ._.
+In_IN our_PRP$ previous_JJ work_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP proposed_VBD query_NN rewriting_VBG by_IN using_VBG pseudo-relevance_JJ feedback_NN to_TO expand_VB ad_NN search_NN queries_NNS with_IN features_NNS from_IN the_DT algorithmic_JJ search_NN results_NNS ._.
+We_PRP used_VBD the_DT expanded_JJ queries_NNS to_TO select_VB an_DT initial_JJ set_NN of_IN
+stemmed_VBN and_CC a_DT small_JJ set_NN of_IN stop_NN words_NNS are_VBP dropped_VBN ._.
+Phrases_NNS are_VBP extracted_VBN using_VBG a_DT phrase_NN dictionary_NN that_WDT consists_VBZ of_IN approximately_RB 10_CD million_CD statistical_JJ phrases_NNS gathered_VBN from_IN query_JJ logs_NNS and_CC Web_NN pages_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN unigram_NN and_CC phrase_NN features_NNS represent_VBP a_DT query_NN 's_POS syntax_NN ,_, they_PRP fail_VBP to_TO accurately_RB represent_VB its_PRP$ semantics_NNS ._.
+Therefore_RB ,_, we_PRP also_RB extract_VBP a_DT set_NN of_IN semantic_JJ classes_NNS from_IN each_DT query_NN ._.
+This_DT is_VBZ done_VBN by_IN c_NN
+my_PRP$ consists_VBZ of_IN about_IN 6,000_CD nodes_NNS and_CC has_VBZ a_DT median_JJ depth_NN of_IN 5_CD ._.
+We_PRP annotate_VBP each_DT query_NN with_IN its_PRP$ five_CD most_RBS likely_JJ semantic_JJ classes_NNS within_IN the_DT hierarchy_NN ._.
+Further_JJ details_NNS on_IN the_DT classifier_NN can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Table_NNP 1_CD shows_VBZ an_DT example_NN of_IN the_DT features_NNS that_WDT may_MD be_VB extracted_VBN for_IN the_DT query_NN ``_`` low_JJ sodium_NN tomato_NN soup_NN recipes_NNS ''_'' ._.
+Five_CD unigram_JJ features_NNS are_VBP extracted_VBN corresponding_VBG to_TO the_DT query_NN terms_NNS ._.
+Three_CD phrase_NN feat_NN

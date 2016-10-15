@@ -1,0 +1,102 @@
+Modeling_NN and_CC predicting_VBG behavioral_JJ dynamics_NNS on_IN the_DT web_NN
+User_NN behavior_NN on_IN the_DT Web_NN changes_NNS over_IN time_NN ._.
+For_IN example_NN ,_, the_DT queries_NNS that_IN people_NNS issue_VBP to_TO search_VB engines_NNS ,_, and_CC the_DT underlying_VBG informational_JJ goals_NNS behind_IN the_DT queries_NNS vary_VBP over_IN time_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP examine_VBP how_WRB to_TO model_VB and_CC predict_VB this_DT temporal_JJ user_NN behavior_NN ._.
+We_PRP develop_VBP a_DT temporal_JJ modeling_NN framework_NN adapted_VBN from_IN physics_NNS and_CC signal_NN processing_NN that_WDT can_MD be_VB used_VBN to_TO predict_VB time-varying_JJ user_NN behavior_NN using_VBG smoothing_NN and_CC trends_NNS ._.
+We_PRP also_RB explore_VBP other_JJ dynamics_NNS of_IN Web_NN behaviors_NNS ,_, such_JJ as_IN the_DT detection_NN of_IN periodicities_NNS and_CC surprises_NNS ._.
+We_PRP develop_VBP a_DT learning_NN procedure_NN that_WDT can_MD be_VB used_VBN to_TO construct_VB models_NNS of_IN users_NNS '_POS activities_NNS based_VBN on_IN features_NNS of_IN current_JJ and_CC historical_JJ behaviors_NNS ._.
+The_DT results_NNS of_IN experiments_NNS indicate_VBP that_IN by_IN using_VBG our_PRP$ framework_NN to_TO predict_VB user_NN behavior_NN ,_, we_PRP can_MD achieve_VB significant_JJ improvements_NNS in_IN prediction_NN compared_VBN to_TO baseline_NN models_NNS that_WDT weight_VBP historical_JJ evidence_NN the_DT same_JJ for_IN all_DT queries_NNS ._.
+We_PRP also_RB develop_VBP a_DT novel_JJ learning_NN algorithm_NN that_WDT explicitly_RB learns_VBZ when_WRB to_TO apply_VB a_DT given_VBN prediction_NN model_NN among_IN a_DT set_NN of_IN such_JJ models_NNS ._.
+Our_PRP$ improved_JJ temporal_JJ modeling_NN of_IN user_NN behavior_NN can_MD be_VB used_VBN to_TO enhance_VB query_NN suggestions_NNS ,_, crawling_VBG policies_NNS ,_, and_CC result_NN ranking_NN ._.
+e_LS content_NN via_IN a_DT time_NN series_NN clustering_NN approach_NN that_WDT uses_VBZ a_DT similarity_NN metric_NN that_WDT is_VBZ invariant_JJ to_TO scaling_VBG and_CC shifting_VBG ._.
+Information_NN about_IN time-varying_JJ user_NN behavior_NN was_VBD also_RB explored_VBN by_IN Koren_NNP et_FW al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, who_WP used_VBD matrix_NN factorization_NN to_TO model_VB user_NN biases_NNS ,_, item_NN biases_NNS ,_, and_CC user_NN preferences_NNS over_IN time_NN ._.
+Although_IN much_JJ has_VBZ been_VBN done_VBN in_IN the_DT investigation_NN of_IN user_NN behavior_NN over_IN time_NN on_IN the_DT Web_NN ,_, few_JJ have_VBP purs_NNS
+lead_NN or_CC lag_NN behind_RB mentions_VBZ in_IN both_CC traditional_JJ media_NNS and_CC blogs_NNS ._.
+From_IN a_DT Web_NN search_NN perspective_NN ,_, breaking_VBG news_NN events_NNS are_VBP a_DT particularly_RB interesting_JJ type_NN of_IN evolving_VBG content_NN ._.
+Diaz_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC Dong_NNP et_FW al._FW =_SYM -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: developed_VBD algorithms_NNS for_IN identifying_VBG queries_NNS that_WDT are_VBP related_JJ to_TO breaking_JJ news_NN and_CC for_IN blending_VBG relevant_JJ news_NN results_NNS into_IN core_NN search_NN results_NNS ._.
+Yang_NNP and_CC Leskovec_NNP -LRB-_-LRB- 22_CD -RRB-_-RRB- studied_VBD temporal_JJ patterns_NNS associ_VBP
+content_NN ._.
+Diaz_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC Dong_NNP et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- developed_VBD algorithms_NNS for_IN identifying_VBG queries_NNS that_WDT are_VBP related_JJ to_TO breaking_JJ news_NN and_CC for_IN blending_VBG relevant_JJ news_NN results_NNS into_IN core_NN search_NN results_NNS ._.
+Yang_NN and_CC Leskovec_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: studied_VBN temporal_JJ patterns_NNS associated_VBN with_IN online_JJ content_NN via_IN a_DT time_NN series_NN clustering_NN approach_NN that_WDT uses_VBZ a_DT similarity_NN metric_NN that_WDT is_VBZ invariant_JJ to_TO scaling_VBG and_CC shifting_VBG ._.
+Information_NN about_IN time-varying_JJ
+series_NN ,_, we_PRP consider_VBP the_DT topical_JJ distribution_NN of_IN the_DT URL_NN or_CC query_NN ._.
+We_PRP used_VBD a_DT standard_JJ topical_JJ classifier_NN which_WDT classifies_VBZ queries_NNS into_IN topics_NNS based_VBN on_IN categories_NNS from_IN the_DT Open_NNP Directory_NNP Project_NNP -LRB-_-LRB- ODP_NNP -RRB-_-RRB- =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP chose_VBD to_TO classify_VB into_IN approximately_RB 40_CD overlapping_VBG topics_NNS ,_, such_JJ as_IN travel_NN ,_, health_NN ,_, and_CC so_RB on_RB ._.
+4.3_CD Learning_NNP To_TO Detect_VB Periodicity_NN Detecting_VBG the_DT periodicity_NN size_NN of_IN a_DT time_NN series_NN is_VBZ crucial_JJ for_IN pe_NN
+r_NN average_JJ precision_NN ._.
+Some_DT studies_NNS -LRB-_-LRB- 5_CD ,_, 16_CD -RRB-_-RRB- used_VBD temporal_JJ patterns_NNS of_IN queries_NNS to_TO identify_VB similar_JJ queries_NNS or_CC words_NNS ._.
+Shokouhi_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- identified_VBD seasonal_JJ queries_NNS using_VBG time-series_JJ analysis_NN ._.
+Kulkarni_NNP et_FW al._FW =_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: explored_VBN how_WRB queries_NNS ,_, their_PRP$ associated_VBN documents_NNS ,_, and_CC the_DT intentions_NNS behind_IN the_DT queries_NNS change_NN over_IN time_NN ._.
+The_DT authors_NNS identify_VBP several_JJ features_NNS by_IN which_WDT changes_NNS to_TO query_NN popularity_NN can_MD be_VB classified_VBN ,_,
+ambiguous_JJ -LRB-_-LRB- contain_VBP more_JJR than_IN one_CD spike_NN -RRB-_-RRB- ._.
+They_PRP further_RB showed_VBD that_IN query_NN profiles_NNS were_VBD related_JJ to_TO search_NN performance_NN ,_, with_IN atemporal_JJ queries_NNS being_VBG associated_VBN with_IN lower_JJR average_JJ precision_NN ._.
+Some_DT studies_NNS =_JJ -_: =[_NN 5_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: used_VBN temporal_JJ patterns_NNS of_IN queries_NNS to_TO identify_VB similar_JJ queries_NNS or_CC words_NNS ._.
+Shokouhi_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- identified_VBD seasonal_JJ queries_NNS using_VBG time-series_JJ analysis_NN ._.
+Kulkarni_NNP et_FW al._FW -LRB-_-LRB- 14_CD -RRB-_-RRB- explored_VBD how_WRB queries_NNS ,_, their_PRP$ associat_NN
+marizing_VBG the_DT temporal_JJ dynamics_NNS of_IN textual_JJ content_NN and_CC for_IN identifying_VBG bursts_NNS of_IN terms_NNS within_IN content_NN ._.
+Researchers_NNS have_VBP also_RB examined_VBN the_DT relationship_NN between_IN query_NN behavior_NN and_CC events_NNS ._.
+Radinsky_NNP et_FW al._FW =_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: showed_VBD that_IN queries_NNS reflect_VBP real-world_JJ news_NN events_NNS ,_, and_CC Ginsberg_NNP et_FW al._FW -LRB-_-LRB- 8_CD -RRB-_-RRB- used_VBN queries_NNS for_IN predicting_VBG H1N1_NN influenza_NN outbreak_NN ._.
+Similarly_RB ,_, Adar_NNP et_FW al._FW -LRB-_-LRB- 2_CD -RRB-_-RRB- identified_VBN when_WRB changes_NNS in_IN query_NN frequencie_NN
+ery_NN popularity_NN can_MD be_VB classified_VBN ,_, and_CC show_VBP that_IN presence_NN of_IN these_DT features_NNS ,_, when_WRB accompanied_VBN by_IN changes_NNS in_IN result_NN content_NN ,_, can_MD be_VB a_DT good_JJ indicator_NN of_IN change_NN in_IN the_DT intention_NN behind_IN queries_NNS ._.
+Kleinberg_NN =_JJ -_: =[_NN 11_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: developed_VBD general_JJ techniques_NNS for_IN summarizing_VBG the_DT temporal_JJ dynamics_NNS of_IN textual_JJ content_NN and_CC for_IN identifying_VBG bursts_NNS of_IN terms_NNS within_IN content_NN ._.
+Researchers_NNS have_VBP also_RB examined_VBN the_DT relationship_NN between_IN query_NN
+e_LS SSM_NN can_MD be_VB applied_VBN to_TO model_VB the_DT search_NN behavior_NN of_IN a_DT population_NN of_IN people_NNS searching_VBG on_IN the_DT Web_NN ._.
+We_PRP model_VBP the_DT state_NN Xt_NN using_VBG a_DT trend_NN and_CC seasonal_JJ component_NN ,_, as_IN is_VBZ often_RB done_VBN for_IN modeling_NN time-series_NNS =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT trend_NN represents_VBZ the_DT long-term_JJ direction_NN of_IN the_DT time_NN series_NN ._.
+The_DT seasonal_JJ -LRB-_-LRB- or_CC periodicity_NN -RRB-_-RRB- component_NN is_VBZ a_DT pattern_NN that_WDT repeats_VBZ itself_PRP with_IN a_DT known_JJ periodicity_NN ,_, such_JJ as_IN every_DT week_NN or_CC every_DT year_NN ._.
+ated_VBN to_TO search_VB performance_NN ,_, with_IN atemporal_JJ queries_NNS being_VBG associated_VBN with_IN lower_JJR average_JJ precision_NN ._.
+Some_DT studies_NNS -LRB-_-LRB- 5_CD ,_, 16_CD -RRB-_-RRB- used_VBD temporal_JJ patterns_NNS of_IN queries_NNS to_TO identify_VB similar_JJ queries_NNS or_CC words_NNS ._.
+Shokouhi_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: identified_VBN seasonal_JJ queries_NNS using_VBG time-series_JJ analysis_NN ._.
+Kulkarni_NNP et_FW al._FW -LRB-_-LRB- 14_CD -RRB-_-RRB- explored_VBD how_WRB queries_NNS ,_, their_PRP$ associated_VBN documents_NNS ,_, and_CC the_DT intentions_NNS behind_IN the_DT queries_NNS change_NN over_IN time_NN ._.
+The_DT authors_NNS iden_VBP
+xk_NN represents_VBZ the_DT k-th_JJ frequency_NN of_IN the_DT time_NN series_NN ._.
+Application_NN of_IN a_DT log_NN function_NN on_IN the_DT resulting_VBG frequency_NN vector_NN and_CC an_DT additional_JJ FFT_NN operator_NN transforms_VBZ it_PRP to_TO what_WP is_VBZ called_VBN the_DT cepstral_JJ domain_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC the_DT values_NNS of_IN x_NN in_IN this_DT product_NN are_VBP called_VBN quefrencies_NNS ._.
+We_PRP consider_VBP these_DT features_NNS to_TO represent_VB the_DT shape_NN of_IN the_DT series_NN ._.
+Domain-Specific_JJ Features_NNS ._.
+We_PRP also_RB consider_VBP a_DT set_NN of_IN temporal_JJ and_CC static_JJ f_SYM
+me_PRP changes_NNS over_IN time_NN ._.
+For_IN example_NN ,_, some_DT researchers_NNS have_VBP investigated_VBN aggregations_NNS of_IN queries_NNS over_IN time_NN to_TO understand_VB changes_NNS in_IN the_DT popularity_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- and_CC uniqueness_NN of_IN topics_NNS at_IN different_JJ times_NNS of_IN day_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Vlachos_NNP et_FW al._FW -LRB-_-LRB- 20_CD -RRB-_-RRB- were_VBD among_IN the_DT first_JJ to_TO examine_VB and_CC model_VB periodicities_NNS and_CC bursts_NNS in_IN Web_NN queries_NNS using_VBG methods_NNS from_IN Fourier_NN analysis_NN ._.
+They_PRP also_RB developed_VBD a_DT method_NN to_TO discover_VB important_JJ periods_NNS
+examine_VB and_CC model_VB periodicities_NNS and_CC bursts_NNS in_IN Web_NN queries_NNS using_VBG methods_NNS from_IN Fourier_NN analysis_NN ._.
+They_PRP also_RB developed_VBD a_DT method_NN to_TO discover_VB important_JJ periods_NNS and_CC to_TO identify_VB query_NN bursts_NNS ._.
+Jones_NNP and_CC Diaz_NNP =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: identified_VBD three_CD general_JJ types_NNS of_IN temporal_JJ query_NN profiles_NNS :_: atemporal_NN -LRB-_-LRB- no_DT periodicities_NNS -RRB-_-RRB- ,_, temporally_RB unambiguous_JJ -LRB-_-LRB- contain_VBP a_DT single_JJ spike_NN -RRB-_-RRB- ,_, and_CC temporally_RB ambiguous_JJ -LRB-_-LRB- contain_VBP more_JJR than_IN one_CD spike_NN -RRB-_-RRB- ._.
+They_PRP
+._.
+For_IN example_NN ,_, some_DT researchers_NNS have_VBP investigated_VBN aggregations_NNS of_IN queries_NNS over_IN time_NN to_TO understand_VB changes_NNS in_IN the_DT popularity_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- and_CC uniqueness_NN of_IN topics_NNS at_IN different_JJ times_NNS of_IN day_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Vlachos_NNP et_FW al._FW =_SYM -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: were_VBD among_IN the_DT first_JJ to_TO examine_VB and_CC model_VB periodicities_NNS and_CC bursts_NNS in_IN Web_NN queries_NNS using_VBG methods_NNS from_IN Fourier_NN analysis_NN ._.
+They_PRP also_RB developed_VBD a_DT method_NN to_TO discover_VB important_JJ periods_NNS and_CC to_TO identify_VB query_NN
+ises_NNS ._.
+3.4_CD Parameter_NN Estimation_NN The_DT SSM_NN family_NN provides_VBZ a_DT predefined_JJ structure_NN for_IN forecasting_NN ,_, where_WRB the_DT specific_JJ parameters_NNS of_IN the_DT model_NN need_VBP to_TO be_VB evaluated_VBN from_IN the_DT data_NNS ._.
+We_PRP apply_VBP gradient_NN descent_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: to_TO optimize_VB the_DT model_NN parameters_NNS based_VBN on_IN training_NN data_NNS ._.
+We_PRP assume_VBP here_RB the_DT following_JJ loss_NN function_NN ,_, which_WDT is_VBZ a_DT common_JJ criteria_NNS for_IN measuring_VBG forecast_NN error_NN :_: F_NN =_JJ T_NN ∑_CD t_NN =_JJ 1_CD ɛ_NN 2_CD t_NN ._.
+-LRB-_-LRB- 8_CD -RRB-_-RRB- We_PRP define_VBP this_DT to_TO
+ambiguous_JJ -LRB-_-LRB- contain_VBP more_JJR than_IN one_CD spike_NN -RRB-_-RRB- ._.
+They_PRP further_RB showed_VBD that_IN query_NN profiles_NNS were_VBD related_JJ to_TO search_NN performance_NN ,_, with_IN atemporal_JJ queries_NNS being_VBG associated_VBN with_IN lower_JJR average_JJ precision_NN ._.
+Some_DT studies_NNS =_JJ -_: =[_NN 5_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: used_VBN temporal_JJ patterns_NNS of_IN queries_NNS to_TO identify_VB similar_JJ queries_NNS or_CC words_NNS ._.
+Shokouhi_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- identified_VBD seasonal_JJ queries_NNS using_VBG time-series_JJ analysis_NN ._.
+Kulkarni_NNP et_FW al._FW -LRB-_-LRB- 14_CD -RRB-_-RRB- explored_VBD how_WRB queries_NNS ,_, their_PRP$ associat_NN
+ery_NN popularity_NN can_MD be_VB classified_VBN ,_, and_CC show_VBP that_IN presence_NN of_IN these_DT features_NNS ,_, when_WRB accompanied_VBN by_IN changes_NNS in_IN result_NN content_NN ,_, can_MD be_VB a_DT good_JJ indicator_NN of_IN change_NN in_IN the_DT intention_NN behind_IN queries_NNS ._.
+Kleinberg_NN =_JJ -_: =[_NN 11_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: developed_VBD general_JJ techniques_NNS for_IN summarizing_VBG the_DT temporal_JJ dynamics_NNS of_IN textual_JJ content_NN and_CC for_IN identifying_VBG bursts_NNS of_IN terms_NNS within_IN content_NN ._.
+Researchers_NNS have_VBP also_RB examined_VBN the_DT relationship_NN between_IN query_NN
+ime_NN ._.
+Researchers_NNS have_VBP examined_VBN previously_RB how_WRB query_JJ volume_NN changes_NNS over_IN time_NN ._.
+For_IN example_NN ,_, some_DT researchers_NNS have_VBP investigated_VBN aggregations_NNS of_IN queries_NNS over_IN time_NN to_TO understand_VB changes_NNS in_IN the_DT popularity_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: and_CC uniqueness_NN of_IN topics_NNS at_IN different_JJ times_NNS of_IN day_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Vlachos_NNP et_FW al._FW -LRB-_-LRB- 20_CD -RRB-_-RRB- were_VBD among_IN the_DT first_JJ to_TO examine_VB and_CC model_VB periodicities_NNS and_CC bursts_NNS in_IN Web_NN queries_NNS using_VBG methods_NNS from_IN Fourier_NN analysis_NN ._.
+They_PRP
+ion_NN 3.4_CD -RRB-_-RRB- ,_, and_CC how_WRB forecasting_NN is_VBZ performed_VBN using_VBG these_DT models_NNS -LRB-_-LRB- Section_NN 3.3_CD -RRB-_-RRB- ._.
+3.1_CD State-Space_NNP Model_NNP The_DT state-space_JJ model_NN -LRB-_-LRB- SSM_NN -RRB-_-RRB- is_VBZ a_DT mathematical_JJ formulation_NN used_VBN frequently_RB in_IN work_NN on_IN systems_NNS control_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: toNormalized_FW #Clicks_FW -LRB-_-LRB- 10_CD ^_CD -6_CD -RRB-_-RRB- represent_VBP a_DT physical_JJ system_NN as_IN a_DT set_NN of_IN input_NN ,_, output_NN ,_, and_CC state_NN variables_NNS related_VBN by_IN first-order_JJ differential_JJ equations_NNS ._.
+It_PRP provides_VBZ an_DT easy_JJ and_CC compact_JJ approach_NN for_IN an_DT
+query_NN behavior_NN and_CC events_NNS ._.
+Radinsky_NNP et_FW al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- showed_VBD that_IN queries_NNS reflect_VBP real-world_JJ news_NN events_NNS ,_, and_CC Ginsberg_NNP et_FW al._FW -LRB-_-LRB- 8_CD -RRB-_-RRB- used_VBN queries_NNS for_IN predicting_VBG H1N1_NN influenza_NN outbreak_NN ._.
+Similarly_RB ,_, Adar_NNP et_FW al._FW =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: identified_VBN when_WRB changes_NNS in_IN query_NN frequencies_NNS lead_VBP or_CC lag_VBP behind_RB mentions_VBZ in_IN both_CC traditional_JJ media_NNS and_CC blogs_NNS ._.
+From_IN a_DT Web_NN search_NN perspective_NN ,_, breaking_VBG news_NN events_NNS are_VBP a_DT particularly_RB interesting_JJ type_NN o_NN
+of_IN terms_NNS within_IN content_NN ._.
+Researchers_NNS have_VBP also_RB examined_VBN the_DT relationship_NN between_IN query_NN behavior_NN and_CC events_NNS ._.
+Radinsky_NNP et_FW al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- showed_VBD that_IN queries_NNS reflect_VBP real-world_JJ news_NN events_NNS ,_, and_CC Ginsberg_NNP et_FW al._FW =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: used_VBN queries_NNS for_IN predicting_VBG H1N1_NN influenza_NN outbreak_NN ._.
+Similarly_RB ,_, Adar_NNP et_FW al._FW -LRB-_-LRB- 2_CD -RRB-_-RRB- identified_VBN when_WRB changes_NNS in_IN query_NN frequencies_NNS lead_VBP or_CC lag_VBP behind_RB mentions_VBZ in_IN both_CC traditional_JJ media_NNS and_CC blogs_NNS ._.
+From_IN a_DT We_PRP
+in_IN query_JJ frequencies_NNS lead_VBP or_CC lag_VBP behind_RB mentions_VBZ in_IN both_CC traditional_JJ media_NNS and_CC blogs_NNS ._.
+From_IN a_DT Web_NN search_NN perspective_NN ,_, breaking_VBG news_NN events_NNS are_VBP a_DT particularly_RB interesting_JJ type_NN of_IN evolving_VBG content_NN ._.
+Diaz_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Dong_NNP et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- developed_VBD algorithms_NNS for_IN identifying_VBG queries_NNS that_WDT are_VBP related_JJ to_TO breaking_JJ news_NN and_CC for_IN blending_VBG relevant_JJ news_NN results_NNS into_IN core_NN search_NN results_NNS ._.
+Yang_NNP and_CC Leskovec_NNP -LRB-_-LRB- 22_CD -RRB-_-RRB- studied_VBN temp_NN

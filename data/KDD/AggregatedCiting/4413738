@@ -1,0 +1,104 @@
+Using_VBG structure_NN indices_NNS for_IN efficient_JJ approximation_NN of_IN network_NN properties_NNS
+Statistics_NNS on_IN networks_NNS have_VBP become_VBN vital_JJ to_TO the_DT study_NN of_IN relational_JJ data_NNS drawn_VBN from_IN areas_NNS such_JJ as_IN bibliometrics_NNS ,_, fraud_NN detection_NN ,_, bioinformatics_NNS ,_, and_CC the_DT Internet_NN ._.
+Calculating_VBG many_JJ of_IN the_DT most_RBS important_JJ measures_NNS -_: such_JJ as_IN betweenness_NN centrality_NN ,_, closeness_NN centrality_NN ,_, and_CC graph_NN diameter-requires_NNS identifying_VBG short_JJ paths_NNS in_IN these_DT networks_NNS ._.
+However_RB ,_, finding_VBG these_DT short_JJ paths_NNS can_MD be_VB intractable_JJ for_IN even_RB moderate-size_JJ networks_NNS ._.
+We_PRP introduce_VBP the_DT concept_NN of_IN a_DT network_NN structure_NN index_NN -LRB-_-LRB- NSI_NN -RRB-_-RRB- ,_, a_DT composition_NN of_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- a_DT set_NN of_IN annotations_NNS on_IN every_DT node_NN in_IN the_DT network_NN and_CC -LRB-_-LRB- 2_LS -RRB-_-RRB- a_DT function_NN that_WDT uses_VBZ the_DT annotations_NNS to_TO estimate_VB graph_NN distance_NN between_IN pairs_NNS of_IN nodes_NNS ._.
+We_PRP present_VBP several_JJ varieties_NNS of_IN NSIs_NNS ,_, examine_VB their_PRP$ time_NN and_CC space_NN complexity_NN ,_, and_CC analyze_VB their_PRP$ performance_NN on_IN synthetic_JJ and_CC real_JJ data_NNS sets_NNS ._.
+We_PRP show_VBP that_IN creating_VBG an_DT NSI_NN for_IN a_DT given_VBN network_NN enables_VBZ extremely_RB efficient_JJ and_CC accurate_JJ estimation_NN of_IN a_DT wide_JJ variety_NN of_IN network_NN statistics_NNS on_IN that_DT network_NN ._.
+f_LS Computer_NNP Science_NNP University_NNP of_IN Massachusetts_NNP Amherst_NNP jensen@cs.umass.edu_NN whether_IN he_PRP is_VBZ near_IN the_DT periphery_NN ._.
+Several_JJ researchers_NNS have_VBP used_VBN such_JJ measures_NNS to_TO construct_VB statistical_JJ models_NNS of_IN networks_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recent_JJ work_NN in_IN knowledge_NN discovery_NN has_VBZ begun_VBN to_TO study_VB very_RB large_JJ networks_NNS ,_, often_RB comprising_VBG millions_NNS of_IN nodes_NNS ._.
+Given_VBN networks_NNS of_IN this_DT size_NN ,_, even_RB the_DT most_RBS efficient_JJ algorithms_NNS for_IN calculating_VBG network_NN
+able_JJ ._.
+For_IN example_NN ,_, the_DT most_RBS efficient_JJ known_JJ algorithms_NNS for_IN calculating_VBG betweenness_NN centrality_NN and_CC closeness_NN centrality_NN are_VBP O_NN -LRB-_-LRB- ne_NN +_CC n_NN 2_CD logn_NN -RRB-_-RRB- ,_, where_WRB n_NN and_CC e_SYM are_VBP the_DT number_NN of_IN nodes_NNS and_CC edges_NNS in_IN the_DT graph_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Ad_FW hoc_FW calculations_NNS that_WDT use_VBP basic_JJ path_NN finding_NN can_MD have_VB even_RB higher_JJR complexity_NN ,_, as_IN they_PRP require_VBP bidirectional_JJ breadth-first_JJ search_NN ._.
+Figure_NN 1_CD :_: The_DT average_JJ number_NN of_IN nodes_NNS explored_VBN by_IN bidirectional_JJ b_NN
+e.g._FW ,_, actors_NNS that_WDT sit_VBP between_IN winners_NNS of_IN Academy_NNP Awards_NNS for_IN best_JJS picture_NN and_CC the_DT IMDb_NNP 's_POS ``_`` Bottom_NNP 100_CD ,_, ''_'' the_DT worst_JJS 100_CD movies_NNS as_IN voted_VBN by_IN users_NNS of_IN the_DT Internet_NNP Movie_NNP Database_NNP -RRB-_-RRB- ._.
+5_CD ._.
+RELATED_NNS WORK_VBP Kleinberg_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =-[_NN 11_CD -RRB-_-RRB- demonstrates_VBZ the_DT notion_NN of_IN similarity-based_JJ navigation_NN in_IN small-world_JJ networks_NNS ._.
+He_PRP demonstrates_VBZ how_WRB the_DT presence_NN of_IN network_NN homophily_RB can_MD provide_VB a_DT gradient_NN that_IN guides_NNS search_VBP using_VBG local_JJ informa_NN
+into_IN this_DT table_NN ._.
+While_IN this_DT strategy_NN yields_VBZ optimal_JJ results_NNS when_WRB searching_VBG for_IN paths_NNS ,_, in_IN many_JJ cases_NNS it_PRP may_MD be_VB infeasible_JJ in_IN terms_NNS of_IN annotation_NN complexity_NN --_: the_DT Floyd-Warshall_NNP algorithm_NN runs_VBZ in_IN O_NN -LRB-_-LRB- n_NN 3_CD -RRB-_-RRB- =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, while_IN more_RBR complex_JJ approaches_NNS using_VBG fast_JJ matrix_NN multiplication_NN can_MD reduce_VB the_DT exponent_NN to_TO 2.376_CD -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Furthermore_RB ,_, APSP_NN requires_VBZ O_NN -LRB-_-LRB- n_NN 2_CD -RRB-_-RRB- to_TO store_VB the_DT distances_NNS themselves_PRP ._.
+Although_IN APSP_NN may_MD seem_VB triv_NN
+icate_VB pathologically_RB poor_JJ search_NN performance_NN ._.
+r_LS i_LS =_JJ 1_CD We_PRP evaluate_VBP the_DT NSIs_NNS from_IN Section_NN 2_CD on_IN synthetic_JJ graphs_NNS of_IN 10,000_CD nodes_NNS generated_VBN using_VBG three_CD models_NNS :_: random_JJ networks_NNS as_IN defined_VBN by_IN Erdős_NNP and_CC Rényi_NNP =_SYM -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, rewired_JJ lattices_NNS defined_VBN by_IN Watts_NNP and_CC Strogatz_NNP -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, and_CC the_DT Forest_NNP Fire_NNP graph_NN model_NN recently_RB introduced_VBN by_IN Leskovic_JJ -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+-LRB-_-LRB- See_VB Appendix_NN A_NN for_IN more_JJR detail_NN on_IN the_DT network_NN generation_NN procedures_NNS ._. -RRB-_-RRB-
+In_IN F_NN
+nness_NN centrality_NN --_: the_DT proportion_NN of_IN all_DT shortest_JJS paths_NNS in_IN the_DT network_NN that_WDT run_VBP through_IN a_DT given_VBN node_NN --_: and_CC closeness_NN centrality_NN --_: the_DT average_JJ distance_NN from_IN the_DT given_VBN node_NN to_TO every_DT other_JJ node_NN in_IN the_DT network_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, centrality_NN measures_NNS can_MD help_VB evaluate_VB whether_IN Mr._NNP Bacon_NNP lies_VBZ near_IN the_DT center_NN of_IN the_DT Hollywood_NNP universe_NN or_CC Marc_NNP Maier_NNP Knowledge_NNP Discovery_NNP Laboratory_NNP Department_NNP of_IN Computer_NNP Science_NNP Univer_NNP
+sence_NN of_IN network_NN homophily_RB can_MD provide_VB a_DT gradient_NN that_IN guides_NNS search_VBP using_VBG local_JJ information_NN ._.
+Watts_NNP investigated_VBD a_DT similar_JJ approach_NN by_IN constructing_VBG a_DT hierarchical_JJ model_NN from_IN which_WDT to_TO derive_VB homophily_RB ._.
+=_SYM -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: In_IN this_DT paper_NN ,_, we_PRP present_VBP methods_NNS for_IN creating_VBG such_JJ homophily_RB in_IN domains_NNS that_WDT may_MD lack_VB local_JJ information_NN ._.
+We_PRP detail_NN a_DT number_NN of_IN ways_NNS in_IN which_WDT this_DT information_NN can_MD be_VB obtained_VBN for_IN both_CC synthetic_JJ and_CC r_NN
+approach_NN that_WDT does_VBZ not_RB rely_VB on_IN selection_NN of_IN landmark_NN nodes_NNS ._.
+-LRB-_-LRB- 26_CD -RRB-_-RRB- This_DT concept_NN has_VBZ recently_RB been_VBN explored_VBN theoretically_RB as_IN a_DT technique_NN for_IN distance_NN estimation_NN and_CC nearest_JJS neighbor_NN searches_NNS by_IN Slivkins_NNS =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Krauthgamer_NNP -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+However_RB ,_, it_PRP is_VBZ unclear_JJ how_WRB accurately_RB any_DT of_IN these_DT strategies_NNS perform_VBP on_IN domains_NNS other_JJ than_IN the_DT Internet_NN or_CC for_IN the_DT purposes_NNS of_IN approximating_VBG network_NN statistics_NNS ._.
+Additionally_RB ,_, o_NN
+s_NN generated_VBD using_VBG three_CD models_NNS :_: random_JJ networks_NNS as_IN defined_VBN by_IN Erdős_NNP and_CC Rényi_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, rewired_VBD lattices_NNS defined_VBN by_IN Watts_NNP and_CC Strogatz_NNP -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, and_CC the_DT Forest_NNP Fire_NNP graph_NN model_NN recently_RB introduced_VBN by_IN Leskovic_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+-LRB-_-LRB- See_VB Appendix_NN A_NN for_IN more_JJR detail_NN on_IN the_DT network_NN generation_NN procedures_NNS ._. -RRB-_-RRB-
+In_IN Figure_NNP 5_CD ,_, we_PRP compare_VBP the_DT performance_NN of_IN DEGREE_NN ,_, LANDMARK_NN ,_, ZONE_NN ,_, and_CC DTZ_NNP when_WRB implemented_VBN with_IN increasing_VBG numbers_NNS of_IN dimensio_NN
+s_NNS have_VBP pioneered_VBN work_NN in_IN this_DT area_NN by_IN identifying_VBG efficient_JJ methods_NNS for_IN finding_VBG connection_NN subgraphs_NNS --_: sets_NNS of_IN short_JJ paths_NNS between_IN nodes_NNS --_: and_CC for_IN approximating_VBG the_DT size_NN of_IN the_DT neighborhood_NN of_IN a_DT node_NN ._.
+-LRB-_-LRB- 6_CD -RRB-_-RRB- =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: NSIs_NNS may_MD provide_VB an_DT alternative_JJ way_NN of_IN representing_VBG much_JJ of_IN the_DT information_NN needed_VBN for_IN both_DT of_IN these_DT tasks_NNS ._.
+7_CD ._.
+ACKNOWLEGEMENTS_NNP This_NNP research_NN is_VBZ supported_VBN by_IN Lawrence_NNP Livermore_NNP National_NNP Laboratory_NNP and_CC
+et_CC community_NN as_IN a_DT basis_NN for_IN determining_VBG network_NN latency_NN between_IN hosts_NNS on_IN the_DT Internet_NN ._.
+Most_JJS of_IN the_DT Internet_NN coordinate_NN approaches_VBZ attempt_NN to_TO minimize_VB network_NN latency_NN through_IN extensions_NNS of_IN GNP_NNP -LRB-_-LRB- 22_CD -RRB-_-RRB- -LRB-_-LRB- 19_CD -RRB-_-RRB- =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Kleinberg_NNP provides_VBZ a_DT theoretical_JJ analysis_NN and_CC framework_NN of_IN all_DT beacon-based_JJ strategies_NNS ,_, such_JJ as_IN GNP_NNP and_CC others_NNS -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+This_DT mostly_RB describes_VBZ the_DT effectiveness_NN of_IN triangulation_NN -LRB-_-LRB- determining_JJ positions_NNS o_NN
+ternet_NN community_NN as_IN a_DT basis_NN for_IN determining_VBG network_NN latency_NN between_IN hosts_NNS on_IN the_DT Internet_NN ._.
+Most_JJS of_IN the_DT Internet_NN coordinate_NN approaches_VBZ attempt_NN to_TO minimize_VB network_NN latency_NN through_IN extensions_NNS of_IN GNP_NNP -LRB-_-LRB- 22_CD -RRB-_-RRB- =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =-[_NN 18_CD -RRB-_-RRB- ._.
+Kleinberg_NNP provides_VBZ a_DT theoretical_JJ analysis_NN and_CC framework_NN of_IN all_DT beacon-based_JJ strategies_NNS ,_, such_JJ as_IN GNP_NNP and_CC others_NNS -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+This_DT mostly_RB describes_VBZ the_DT effectiveness_NN of_IN triangulation_NN -LRB-_-LRB- determining_NN positio_NN
+s\/Internet_NN community_NN as_IN a_DT basis_NN for_IN determining_VBG network_NN latency_NN between_IN hosts_NNS on_IN the_DT Internet_NN ._.
+Most_JJS of_IN the_DT Internet_NN coordinate_NN approaches_VBZ attempt_NN to_TO minimize_VB network_NN latency_NN through_IN extensions_NNS of_IN GNP_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =-[_NN 19_CD -RRB-_-RRB- -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Kleinberg_NNP provides_VBZ a_DT theoretical_JJ analysis_NN and_CC framework_NN of_IN all_DT beacon-based_JJ strategies_NNS ,_, such_JJ as_IN GNP_NNP and_CC others_NNS -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+This_DT mostly_RB describes_VBZ the_DT effectiveness_NN of_IN triangulation_NN -LRB-_-LRB- determining_NN pos_NN
+hors_NNS have_VBP pioneered_VBN work_NN in_IN this_DT area_NN by_IN identifying_VBG efficient_JJ methods_NNS for_IN finding_VBG connection_NN subgraphs_NNS --_: sets_NNS of_IN short_JJ paths_NNS between_IN nodes_NNS --_: and_CC for_IN approximating_VBG the_DT size_NN of_IN the_DT neighborhood_NN of_IN a_DT node_NN ._.
+=_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =-[_NN 17_CD -RRB-_-RRB- NSIs_NNS may_MD provide_VB an_DT alternative_JJ way_NN of_IN representing_VBG much_JJ of_IN the_DT information_NN needed_VBN for_IN both_DT of_IN these_DT tasks_NNS ._.
+7_CD ._.
+ACKNOWLEGEMENTS_NNP This_NNP research_NN is_VBZ supported_VBN by_IN Lawrence_NNP Livermore_NNP National_NNP Laboratory_NNP
+NSI_NN does_VBZ not_RB perform_VB well_RB in_IN practice_NN ,_, as_IN we_PRP show_VBP in_IN Section_NN 3_CD ._.
+2.3_CD LANDMARKS_NN Previous_JJ work_NN in_IN network_NN path_NN finding_NN has_VBZ utilized_VBN a_DT system_NN of_IN network_NN landmarks_NNS to_TO efficiently_RB navigate_VB graph_NN structure_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =-[_NN 16_CD -RRB-_-RRB- ._.
+With_IN this_DT technique_NN ,_, we_PRP randomly_RB designate_VB a_DT small_JJ number_NN of_IN nodes_NNS in_IN the_DT network_NN to_TO serve_VB as_IN navigational_JJ beacons_NNS ._.
+Then_RB ,_, we_PRP annotate_VBP nodes_NNS in_IN the_DT graph_NN by_IN flooding_VBG out_RP from_IN each_DT landmark_NN and_CC re_NN
+t_NN may_MD be_VB infeasible_JJ in_IN terms_NNS of_IN annotation_NN complexity_NN --_: the_DT Floyd-Warshall_NNP algorithm_NN runs_VBZ in_IN O_NN -LRB-_-LRB- n_NN 3_CD -RRB-_-RRB- -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, while_IN more_RBR complex_JJ approaches_NNS using_VBG fast_JJ matrix_NN multiplication_NN can_MD reduce_VB the_DT exponent_NN to_TO 2.376_CD =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Furthermore_RB ,_, APSP_NN requires_VBZ O_NN -LRB-_-LRB- n_NN 2_CD -RRB-_-RRB- to_TO store_VB the_DT distances_NNS themselves_PRP ._.
+Although_IN APSP_NN may_MD seem_VB trivial_JJ ,_, the_DT use_NN of_IN structure_NN indices_NNS is_VBZ a_DT general_JJ approach_NN ,_, not_RB specific_JJ to_TO a_DT single_JJ implementation_NN or_CC a_DT
+ot_RB rely_VB on_IN selection_NN of_IN landmark_NN nodes_NNS ._.
+-LRB-_-LRB- 26_CD -RRB-_-RRB- This_DT concept_NN has_VBZ recently_RB been_VBN explored_VBN theoretically_RB as_IN a_DT technique_NN for_IN distance_NN estimation_NN and_CC nearest_JJS neighbor_NN searches_NNS by_IN Slivkins_NNS -LRB-_-LRB- 20_CD -RRB-_-RRB- and_CC Krauthgamer_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, it_PRP is_VBZ unclear_JJ how_WRB accurately_RB any_DT of_IN these_DT strategies_NNS perform_VBP on_IN domains_NNS other_JJ than_IN the_DT Internet_NN or_CC for_IN the_DT purposes_NNS of_IN approximating_VBG network_NN statistics_NNS ._.
+Additionally_RB ,_, our_PRP$ current_JJ work_NN focus_NN
+e_LS approaches_VBZ attempt_NN to_TO minimize_VB network_NN latency_NN through_IN extensions_NNS of_IN GNP_NNP -LRB-_-LRB- 22_CD -RRB-_-RRB- -LRB-_-LRB- 19_CD -RRB-_-RRB- -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Kleinberg_NNP provides_VBZ a_DT theoretical_JJ analysis_NN and_CC framework_NN of_IN all_DT beacon-based_JJ strategies_NNS ,_, such_JJ as_IN GNP_NNP and_CC others_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT mostly_RB describes_VBZ the_DT effectiveness_NN of_IN triangulation_NN -LRB-_-LRB- determining_JJ positions_NNS of_IN uncertain_JJ nodes_NNS -RRB-_-RRB- in_IN beacon-based_JJ approaches_NNS ._.
+Other_JJ strategies_NNS in_IN the_DT Internet_NN domain_NN have_VBP attempted_VBN to_TO create_VB netwo_NN
+ortunately_RB ,_, this_DT strategy_NN performs_VBZ !_.
+rather_RB poorly_RB in_IN practice_NN ._.
+Many_JJ of_IN today_NN 's_POS ``_`` small-world_JJ ''_'' data_NNS sets_NNS are_VBP characterized_VBN by_IN small_JJ diameters_NNS due_JJ to_TO the_DT existence_NN of_IN ``_`` short_JJ cut_NN ''_'' links_NNS in_IN the_DT graph_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN a_DT result_NN ,_, a_DT found_VBN path_NN that_WDT passes_VBZ through_IN a_DT landmark_NN often_RB forms_VBZ two_CD sides_NNS of_IN a_DT triangle_NN ,_, resulting_VBG in_IN artificially_RB long_JJ paths_NNS ._.
+s2_NN .4_CD ZONES_NNS The_DT ZONE_NN NSI_NN utilizes_VBZ multiple_JJ dimensions_NNS ,_, where_WRB each_DT di_FW
+beacon-based_JJ approaches_NNS ._.
+Other_JJ strategies_NNS in_IN the_DT Internet_NN domain_NN have_VBP attempted_VBN to_TO create_VB network_NN overlay_NN structures_NNS ,_, such_JJ as_IN a_DT rings-based_JJ approach_NN that_WDT does_VBZ not_RB rely_VB on_IN selection_NN of_IN landmark_NN nodes_NNS ._.
+=_SYM -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: This_DT concept_NN has_VBZ recently_RB been_VBN explored_VBN theoretically_RB as_IN a_DT technique_NN for_IN distance_NN estimation_NN and_CC nearest_JJS neighbor_NN searches_NNS by_IN Slivkins_NNS -LRB-_-LRB- 20_CD -RRB-_-RRB- and_CC Krauthgamer_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+However_RB ,_, it_PRP is_VBZ unclear_JJ how_WRB accurately_RB
+t_NN of_IN Computer_NNP Science_NNP University_NNP of_IN Massachusetts_NNP Amherst_NNP jensen@cs.umass.edu_NN whether_IN he_PRP is_VBZ near_IN the_DT periphery_NN ._.
+Several_JJ researchers_NNS have_VBP used_VBN such_JJ measures_NNS to_TO construct_VB statistical_JJ models_NNS of_IN networks_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =-[_NN 15_CD -RRB-_-RRB- ._.
+Recent_JJ work_NN in_IN knowledge_NN discovery_NN has_VBZ begun_VBN to_TO study_VB very_RB large_JJ networks_NNS ,_, often_RB comprising_VBG millions_NNS of_IN nodes_NNS ._.
+Given_VBN networks_NNS of_IN this_DT size_NN ,_, even_RB the_DT most_RBS efficient_JJ algorithms_NNS for_IN calculating_VBG net_NN
+Unfortunately_RB ,_, this_DT strategy_NN performs_VBZ !_.
+rather_RB poorly_RB in_IN practice_NN ._.
+Many_JJ of_IN today_NN 's_POS ``_`` small-world_JJ ''_'' data_NNS sets_NNS are_VBP characterized_VBN by_IN small_JJ diameters_NNS due_JJ to_TO the_DT existence_NN of_IN ``_`` short_JJ cut_NN ''_'' links_NNS in_IN the_DT graph_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =-[_NN 24_CD -RRB-_-RRB- ._.
+As_IN a_DT result_NN ,_, a_DT found_VBN path_NN that_WDT passes_VBZ through_IN a_DT landmark_NN often_RB forms_VBZ two_CD sides_NNS of_IN a_DT triangle_NN ,_, resulting_VBG in_IN artificially_RB long_JJ paths_NNS ._.
+s2_NN .4_CD ZONES_NNS The_DT ZONE_NN NSI_NN utilizes_VBZ multiple_JJ dimensions_NNS ,_, where_WRB eac_NN
+Is_VBZ is_VBZ provided_VBN by_IN previous_JJ work_NN that_WDT has_VBZ shown_VBN that_IN path_NN finding_NN can_MD be_VB surprisingly_RB efficient_JJ in_IN a_DT network_NN that_WDT exhibits_VBZ homophily_RB ,_, the_DT tendency_NN of_IN neighboring_VBG nodes_NNS to_TO have_VB similar_JJ attribute_NN values_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Unfortunately_RB ,_, many_JJ networks_NNS do_VBP not_RB ``_`` naturally_RB ''_'' have_VBP attributes_NNS that_WDT exhibit_VBP homophily_RB ._.
+However_RB ,_, we_PRP can_MD synthetically_RB generate_VB and_CC annotate_VB any_DT arbitrary_JJ graph_NN with_IN such_JJ an_DT attribute_NN and_CC use_VB it_PRP for_IN
+date_NN NSIs_NNS when_WRB nodes_NNS and_CC links_NNS are_VBP added_VBN to_TO the_DT network_NN so_IN that_IN dynamic_JJ graphs_NNS can_MD be_VB successfully_RB indexed_VBN ._.
+Finally_RB ,_, we_PRP are_VBP investigating_VBG how_WRB to_TO apply_VB our_PRP$ own_JJ recent_JJ developments_NNS in_IN network_NN searching_VBG =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: to_TO more_RBR effectively_RB use_VB NSI_NNP annotations_NNS to_TO find_VB short_JJ paths_NNS ._.
+We_PRP are_VBP actively_RB exploring_VBG additional_JJ applications_NNS of_IN network_NN structure_NN indices_NNS ._.
+Two_CD of_IN the_DT most_RBS promising_JJ directions_NNS are_VBP finding_VBG connectio_NN
+I_PRP does_VBZ not_RB perform_VB well_RB in_IN practice_NN ,_, as_IN we_PRP show_VBP in_IN Section_NN 3_CD ._.
+2.3_CD LANDMARKS_NN Previous_JJ work_NN in_IN network_NN path_NN finding_NN has_VBZ utilized_VBN a_DT system_NN of_IN network_NN landmarks_NNS to_TO efficiently_RB navigate_VB graph_NN structure_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+With_IN this_DT technique_NN ,_, we_PRP randomly_RB designate_VB a_DT small_JJ number_NN of_IN nodes_NNS in_IN the_DT network_NN to_TO serve_VB as_IN navigational_JJ beacons_NNS ._.
+Then_RB ,_, we_PRP annotate_VBP nodes_NNS in_IN the_DT graph_NN by_IN flooding_VBG out_RP from_IN each_DT landmark_NN and_CC record_NN

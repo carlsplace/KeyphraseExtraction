@@ -1,0 +1,141 @@
+Diagnosing_VBG memory_NN leaks_NNS using_VBG graph_NN mining_NN on_IN heap_NN dumps_NNS
+Memory_NN leaks_NNS are_VBP caused_VBN by_IN software_NN programs_NNS that_WDT prevent_VBP the_DT reclamation_NN of_IN memory_NN that_WDT is_VBZ no_DT longer_RBR in_IN use_NN ._.
+They_PRP can_MD cause_VB significant_JJ slowdowns_NNS ,_, exhaustion_NN of_IN available_JJ storage_NN space_NN and_CC ,_, eventually_RB ,_, application_NN crashes_NNS ._.
+Detecting_VBG memory_NN leaks_NNS is_VBZ challenging_JJ because_IN real-world_JJ applications_NNS are_VBP built_VBN on_IN multiple_JJ layers_NNS of_IN software_NN frameworks_NNS ,_, making_VBG it_PRP difficult_JJ for_IN a_DT developer_NN to_TO know_VB whether_IN observed_VBN references_NNS to_TO objects_NNS are_VBP legitimate_JJ or_CC the_DT cause_NN of_IN a_DT leak_NN ._.
+We_PRP present_VBP a_DT graph_NN mining_NN solution_NN to_TO this_DT problem_NN wherein_WRB we_PRP analyze_VBP heap_NN dumps_VBZ to_TO automatically_RB identify_VB subgraphs_NNS which_WDT could_MD represent_VB potential_JJ memory_NN leak_NN sources_NNS ._.
+Although_IN heap_NN dumps_NNS are_VBP commonly_RB analyzed_VBN in_IN existing_VBG heap_NN profiling_NN tools_NNS ,_, our_PRP$ work_NN is_VBZ the_DT first_JJ to_TO apply_VB a_DT graph_NN grammar_NN mining_NN solution_NN to_TO this_DT problem_NN ._.
+Unlike_IN classical_JJ graph_NN mining_NN work_NN ,_, we_PRP show_VBP that_IN it_PRP suffices_VBZ to_TO mine_VB the_DT dominator_NN tree_NN of_IN the_DT heap_NN dump_NN ,_, which_WDT is_VBZ significantly_RB smaller_JJR than_IN the_DT underlying_JJ graph_NN ._.
+Our_PRP$ approach_NN identifies_VBZ not_RB just_RB leaking_VBG candidates_NNS and_CC their_PRP$ structure_NN ,_, but_CC also_RB provides_VBZ aggregate_JJ information_NN about_IN the_DT access_NN path_NN to_TO the_DT leaks_NNS ._.
+We_PRP demonstrate_VBP several_JJ synthetic_NN as_RB well_RB as_IN real-world_JJ examples_NNS of_IN heap_NN dumps_VBZ for_IN which_WDT our_PRP$ approach_NN provides_VBZ more_JJR insight_NN into_IN the_DT problem_NN than_IN state-of-the-art_JJ tools_NNS such_JJ as_IN Eclipse_NNP 's_POS MAT_NNP ._.
+thus_RB making_VBG it_PRP less_RBR likely_JJ for_IN them_PRP to_TO be_VB leaks_NNS ._.
+4.3.2_FW MVEL_FW In_IN a_DT separate_JJ project_NN ,_, one_CD of_IN the_DT authors_NNS developed_VBD a_DT rulebased_JJ system_NN for_IN the_DT application_NN of_IN software_NN engineering_NN patterns_NNS to_TO enhance_VB code_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+During_IN the_DT development_NN of_IN this_DT project_NN ,_, out_IN of_IN memory_NN situations_NNS occurred_VBD when_WRB certain_JJ input_NN was_VBD fed_VBN to_TO the_DT rule_NN engine_NN ,_, which_WDT was_VBD written_VBN using_VBG the_DT Drools_NNP rule_NN engine_NN framework_NN ._.
+In_IN this_DT system_NN ,_, rul_NN
+f_LS discovering_VBG frequent_JJ subgraphs_NNS and_CC these_DT algorithms_NNS have_VBP been_VBN expanded_VBN in_IN several_JJ directions_NNS over_IN the_DT past_JJ decade_NN -LRB-_-LRB- 6_CD ,_, 7_CD ,_, 34_CD ,_, 36_CD ,_, 37_CD -RRB-_-RRB- ._.
+Building_NN upon_IN FPtree_NN data_NNS structures_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, fast_JJ data_NNS structures_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP also_RB been_VBN developed_VBN ._.
+Similar_JJ to_TO our_PRP$ work_NN ,_, graph_NN mining_NN algorithms_NNS have_VBP been_VBN tailored_VBN toward_IN specific_JJ application_NN domains_NNS where_WRB the_DT structure_NN of_IN the_DT desired_VBN subgrahs_NNS can_MD be_VB exploited_VBN in_IN the_DT disco_NN
+have_VBP been_VBN mined_VBN for_IN frequent_JJ closed_JJ subgraphs_NNS that_WDT become_VBP features_NNS in_IN a_DT classifier_NN to_TO predict_VB the_DT existence_NN of_IN ``_`` noncrashing_JJ ''_'' bugs_NNS -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+Behavior_NN graphs_NNS were_VBD also_RB mined_VBN with_IN the_DT LEAP_NN algorithm_NN -LRB-_-LRB- 34_CD -RRB-_-RRB- in_IN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: to_TO identify_VB discriminative_JJ subgraphs_NNS signifying_VBG bug_NN signatures_NNS ._.
+However_RB ,_, to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, nobody_NN has_VBZ investigated_VBN the_DT role_NN of_IN mining_NN heap_NN dumps_VBZ for_IN detecting_VBG memory_NN leaks_NNS or_CC used_VBD a_DT graph_NN
+ition_NN Builder_NN ,_, a_DT complex_JJ J2EE_NN web_NN application_NN -LRB-_-LRB- S_NN -RRB-_-RRB- OOML_NN next_IN OOML_NN java_NN ._.
+lang_NN ._.
+String_NNP payload_NN Figure_NNP 9_CD :_: Most_RBS frequent_JJ grammar_NN in_IN synthetic_JJ linked_VBN list_NN example_NN ._.
+that_WDT makes_VBZ heavy_JJ use_NN of_IN multiple_JJ frameworks_NNS =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: including_VBG the_DT Apache_NNP Tomcat_NNP 5.5_CD servlet_NN container_NN ._.
+These_DT heap_NN dumps_NNS were_VBD generated_VBN over_IN a_DT period_NN of_IN several_JJ months_NNS ._.
+When_WRB the_DT server_NN ran_VBD out_IN of_IN memory_NN during_IN intense_JJ testing_NN ,_, developers_NNS would_MD simply_RB s_NN
+behind_IN this_DT approach_NN and_CC algorithmic_JJ design_NN decisions_NNS in_IN this_DT section_NN ._.
+3.1_CD Dominator_NNP Tree_NNP Computation_NNP The_DT computation_NN of_IN dominators_NNS is_VBZ a_DT well_RB studied_VBN topic_NN and_CC we_PRP adopt_VBP the_DT Lengauer-Tarjan_JJ algorithm_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: from_IN the_DT Boost_NNP graph_NN library_NN implementation_NN ._.
+This_DT algorithm_NN runs_VBZ in_IN O_NN -LRB-_-LRB- -LRB-_-LRB- |_CD V_NN |_NN +_CC |_NN E_NN |_NN -RRB-_-RRB- log_NN -LRB-_-LRB- |_CD V_NNP |_NNP +_CC |_NNP E_NNP |_NNP -RRB-_-RRB- -RRB-_-RRB- time_NN ,_, where_WRB |_NNP V_NNP |_NNP is_VBZ the_DT number_NN of_IN vertices_NNS and_CC |_NNP E_NNP |_NNP is_VBZ the_DT number_NN of_IN edges_NNS ._.
+Formally_RB ,_, the_DT dominator_NN
+rent_NN combinations_NNS ._.
+Dashed_VBN edges_NNS represent_VBP a_DT ``_`` dominates_VBZ ''_'' edge_NN produced_VBD only_RB for_IN D._NNP 3.3_CD Inducing_NNP Graph_NNP Grammars_NNPS To_TO mine_VB patterns_NNS in_IN the_DT dominator_NN tree_NN ,_, we_PRP explore_VBP the_DT use_NN of_IN context-free_JJ graph_NN grammars_NNS =_JJ -_: =[_NN 10_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: instead_RB of_IN mere_JJ subgraphs_NNS ._.
+Graph_NN grammars_NNS are_VBP necessary_JJ because_IN leaking_VBG objects_NNS are_VBP often_RB recursive_JJ in_IN nature_NN and_CC we_PRP require_VBP the_DT expressiveness_NN of_IN graph_NN grammars_NNS ._.
+Furthermore_RB ,_, it_PRP is_VBZ not_RB necessarily_RB t_NN
+in_IN each_DT of_IN these_DT areas_NNS ._.
+5.1_CD Memory_NN Leak_NN Detection_NN Tools_NNS One_CD of_IN the_DT first_JJ systems_NNS to_TO debug_VB leaks_NNS exploited_VBD visualization_NN ,_, allowing_VBG a_DT user_NN to_TO interactively_RB focus_VB on_IN suspected_JJ problem_NN areas_NNS in_IN the_DT heap_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_RBS recent_JJ existing_VBG leak_NN detection_NN tools_NNS use_VBP temporal_JJ information_NN ,_, including_VBG object_NN age_NN and_CC staleness_NN ,_, that_WDT is_VBZ obtained_VBN by_IN monitoring_VBG a_DT program_NN as_IN it_PRP runs_VBZ ._.
+For_IN instance_NN ,_, IBM_NNP 's_POS Leakbot_NN -LRB-_-LRB- 21_CD --_: 23_CD -RRB-_-RRB- acqui_NNS
+5_CD -RRB-_-RRB- focused_VBD on_IN the_DT problem_NN of_IN discovering_VBG frequent_JJ subgraphs_NNS and_CC these_DT algorithms_NNS have_VBP been_VBN expanded_VBN in_IN several_JJ directions_NNS over_IN the_DT past_JJ decade_NN -LRB-_-LRB- 6_CD ,_, 7_CD ,_, 34_CD ,_, 36_CD ,_, 37_CD -RRB-_-RRB- ._.
+Building_NN upon_IN FPtree_NN data_NNS structures_NNS =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, fast_JJ data_NNS structures_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- have_VBP also_RB been_VBN developed_VBN ._.
+Similar_JJ to_TO our_PRP$ work_NN ,_, graph_NN mining_NN algorithms_NNS have_VBP been_VBN tailored_VBN toward_IN specific_JJ application_NN domains_NNS where_WRB the_DT structure_NN of_IN the_DT desired_VBN subgrahs_NNS can_MD
+rent_NN combinations_NNS ._.
+Dashed_VBN edges_NNS represent_VBP a_DT ``_`` dominates_VBZ ''_'' edge_NN produced_VBD only_RB for_IN D._NNP 3.3_CD Inducing_NNP Graph_NNP Grammars_NNPS To_TO mine_VB patterns_NNS in_IN the_DT dominator_NN tree_NN ,_, we_PRP explore_VBP the_DT use_NN of_IN context-free_JJ graph_NN grammars_NNS =_JJ -_: =[_NN 10_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: instead_RB of_IN mere_JJ subgraphs_NNS ._.
+Graph_NN grammars_NNS are_VBP necessary_JJ because_IN leaking_VBG objects_NNS are_VBP often_RB recursive_JJ in_IN nature_NN and_CC we_PRP require_VBP the_DT expressiveness_NN of_IN graph_NN grammars_NNS ._.
+Furthermore_RB ,_, it_PRP is_VBZ not_RB necessarily_RB t_NN
+memory_NN management_NN ,_, several_JJ static_JJ analyses_NNS have_VBP been_VBN developed_VBN that_WDT identify_VBP where_WRB a_DT programmer_NN failed_VBD to_TO deallocate_VB memory_NN -LRB-_-LRB- 8_CD ,_, 14,25,32_CD -RRB-_-RRB- ._.
+Similarly_RB ,_, trace-based_JJ tools_NNS such_JJ as_IN Purify_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- or_CC Valgrind_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: can_MD identify_VB unreachable_JJ objects_NNS in_IN such_JJ environments_NNS ._.
+By_IN comparison_NN ,_, the_DT garbage_NN collected_VBD languages_NNS at_IN which_WDT our_PRP$ analysis_NN aims_NNS do_VBP not_RB employ_VB explicit_JJ deallocation_NN ;_: we_PRP aim_VBP to_TO identify_VB reachable_JJ obje_NN
+replaced_VBN with_IN any_DT subgraph_NN ._.
+These_DT grammars_NNS take_VBP the_DT form_NN of_IN S_NN →_NN P_NN ,_, where_WRB S_NN is_VBZ a_DT single_JJ non-terminal_JJ node_NN ,_, P_NN can_MD be_VB any_DT subgraph_NN ,_, and_CC the_DT arrow_NN implies_VBZ a_DT production\/replacement_NN rule_NN ._.
+As_IN described_VBN in_IN =_JJ -_: =[_NN 9_CD ,_, 15_CD ,_, 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP build_VBP graph_NN grammars_NNS in_IN a_DT priori_FW fashion_NN where_WRB we_PRP find_VBP a_DT production_NN rule_NN capturing_VBG a_DT significant_JJ portion_NN of_IN the_DT input_NN graph_NN ,_, replacing_VBG instances_NNS of_IN the_DT production_NN by_IN its_PRP$ non-terminal_JJ symbol_NN ,_, and_CC
+e_LS systems_NNS implement_VBP mitigation_NN strategies_NNS such_JJ as_IN swapping_VBG objects_NNS to_TO disk_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+5.2_CD Graph_NNP Mining_NNP Graph_NNP mining_NN is_VBZ a_DT well_RB studied_VBN field_NN that_WDT expands_VBZ far_RB in_IN both_CC breadth_NN and_CC depth_NN ._.
+Initial_JJ works_NNS such_JJ as_IN =_JJ -_: =[_NN 18_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: focused_VBN on_IN the_DT problem_NN of_IN discovering_VBG frequent_JJ subgraphs_NNS and_CC these_DT algorithms_NNS have_VBP been_VBN expanded_VBN in_IN several_JJ directions_NNS over_IN the_DT past_JJ decade_NN -LRB-_-LRB- 6_CD ,_, 7_CD ,_, 34_CD ,_, 36_CD ,_, 37_CD -RRB-_-RRB- ._.
+Building_NN upon_IN FPtree_NN data_NNS structures_NNS -LRB-_-LRB- 1_CD
+lers_NNS ,_, notably_RB the_DT NetBeans_NNP profiler_NN ,_, use_NN information_NN already_RB kept_VBN by_IN generational_JJ collectors_NNS to_TO determine_VB object_NN age_NN ._.
+Lastly_RB ,_, hardware_NN support_NN for_IN monitoring_VBG memory_NN access_NN events_NNS has_VBZ been_VBN proposed_VBN in_IN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+By_IN contrast_NN ,_, our_PRP$ approach_NN explores_VBZ mining_NN information_NN from_IN a_DT single_JJ heap_NN dump_NN ,_, which_WDT is_VBZ often_RB the_DT only_JJ source_NN of_IN information_NN available_JJ when_WRB out-of-memory_JJ errors_NNS occur_VBP unexpectedly_RB ,_, which_WDT is_VBZ the_DT comm_NN
+uously_RB updated_VBN ._.
+Bell_NNP and_CC Sleigh_NNP -LRB-_-LRB- 3_CD -RRB-_-RRB- use_VBP a_DT novel_JJ encoding_NN to_TO minimize_VB space_NN overhead_NN for_IN allocation_NN sites_NNS ._.
+To_TO minimize_VB the_DT runtime_NN cost_NN ,_, statistical_JJ profiling_NN approaches_NNS have_VBP been_VBN developed_VBN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+Cork_NN =_SYM -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: combines_VBZ low-overhead_JJ statistic_NN profiling_VBG with_IN type-slicing_NN ._.
+Some_DT profilers_NNS ,_, notably_RB the_DT NetBeans_NNP profiler_NN ,_, use_NN information_NN already_RB kept_VBN by_IN generational_JJ collectors_NNS to_TO determine_VB object_NN age_NN ._.
+Lastly_RB ,_, ha_FW
+t_NN be_VB continuously_RB updated_VBN ._.
+Bell_NNP and_CC Sleigh_NNP -LRB-_-LRB- 3_CD -RRB-_-RRB- use_VBP a_DT novel_JJ encoding_NN to_TO minimize_VB space_NN overhead_NN for_IN allocation_NN sites_NNS ._.
+To_TO minimize_VB the_DT runtime_NN cost_NN ,_, statistical_JJ profiling_NN approaches_NNS have_VBP been_VBN developed_VBN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Cork_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- combines_VBZ low-overhead_JJ statistic_NN profiling_VBG with_IN type-slicing_NN ._.
+Some_DT profilers_NNS ,_, notably_RB the_DT NetBeans_NNP profiler_NN ,_, use_NN information_NN already_RB kept_VBN by_IN generational_JJ collectors_NNS to_TO determine_VB object_NN age_NN ._.
+ontainers_NNS to_TO identify_VB leaks_NNS -LRB-_-LRB- 33_CD -RRB-_-RRB- ._.
+In_IN the_DT context_NN of_IN languages_NNS with_IN explicit_JJ memory_NN management_NN ,_, several_JJ static_JJ analyses_NNS have_VBP been_VBN developed_VBN that_WDT identify_VBP where_WRB a_DT programmer_NN failed_VBD to_TO deallocate_VB memory_NN =_JJ -_: =[_NN 8_CD ,_, 14,25,32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Similarly_RB ,_, trace-based_JJ tools_NNS such_JJ as_IN Purify_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- or_CC Valgrind_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- can_MD identify_VB unreachable_JJ objects_NNS in_IN such_JJ environments_NNS ._.
+By_IN comparison_NN ,_, the_DT garbage_NN collected_VBD languages_NNS at_IN which_WDT our_PRP$ analysis_NN aims_NNS do_VBP
+r_NN in_IN both_CC breadth_NN and_CC depth_NN ._.
+Initial_JJ works_NNS such_JJ as_IN -LRB-_-LRB- 18_CD ,_, 35_CD -RRB-_-RRB- focused_VBD on_IN the_DT problem_NN of_IN discovering_VBG frequent_JJ subgraphs_NNS and_CC these_DT algorithms_NNS have_VBP been_VBN expanded_VBN in_IN several_JJ directions_NNS over_IN the_DT past_JJ decade_NN =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 34_CD ,_, 36_CD ,_, 37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Building_NN upon_IN FPtree_NN data_NNS structures_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, fast_JJ data_NNS structures_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- have_VBP also_RB been_VBN developed_VBN ._.
+Similar_JJ to_TO our_PRP$ work_NN ,_, graph_NN mining_NN algorithms_NNS have_VBP been_VBN tailored_VBN toward_IN specific_JJ application_NN domains_NNS wher_VBP
+ontainers_NNS to_TO identify_VB leaks_NNS -LRB-_-LRB- 33_CD -RRB-_-RRB- ._.
+In_IN the_DT context_NN of_IN languages_NNS with_IN explicit_JJ memory_NN management_NN ,_, several_JJ static_JJ analyses_NNS have_VBP been_VBN developed_VBN that_WDT identify_VBP where_WRB a_DT programmer_NN failed_VBD to_TO deallocate_VB memory_NN =_JJ -_: =[_NN 8_CD ,_, 14,25,32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Similarly_RB ,_, trace-based_JJ tools_NNS such_JJ as_IN Purify_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- or_CC Valgrind_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- can_MD identify_VB unreachable_JJ objects_NNS in_IN such_JJ environments_NNS ._.
+By_IN comparison_NN ,_, the_DT garbage_NN collected_VBD languages_NNS at_IN which_WDT our_PRP$ analysis_NN aims_NNS do_VBP
+n_NN that_IN a_DT leak_NN would_MD manifest_VB as_IN a_DT heap_NN dump_NN containing_VBG many_JJ similar_JJ subgraphs_NNS ._.
+Rather_RB than_IN directly_RB mine_VB the_DT heap_NN dump_NN ,_, we_PRP compute_VBP the_DT dominator_NN tree_NN of_IN the_DT heap_NN dump_NN and_CC mine_NN frequent_JJ graph_NN grammars_NNS =_JJ -_: =[_NN 15_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: in_IN the_DT dominator_NN tree_NN ._.
+We_PRP describe_VBP the_DT rationale_NN behind_IN this_DT approach_NN and_CC algorithmic_JJ design_NN decisions_NNS in_IN this_DT section_NN ._.
+3.1_CD Dominator_NNP Tree_NNP Computation_NNP The_DT computation_NN of_IN dominators_NNS is_VBZ a_DT well_RB studied_VBN
+r_NN in_IN both_CC breadth_NN and_CC depth_NN ._.
+Initial_JJ works_NNS such_JJ as_IN -LRB-_-LRB- 18_CD ,_, 35_CD -RRB-_-RRB- focused_VBD on_IN the_DT problem_NN of_IN discovering_VBG frequent_JJ subgraphs_NNS and_CC these_DT algorithms_NNS have_VBP been_VBN expanded_VBN in_IN several_JJ directions_NNS over_IN the_DT past_JJ decade_NN =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 34_CD ,_, 36_CD ,_, 37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Building_NN upon_IN FPtree_NN data_NNS structures_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, fast_JJ data_NNS structures_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- have_VBP also_RB been_VBN developed_VBN ._.
+Similar_JJ to_TO our_PRP$ work_NN ,_, graph_NN mining_NN algorithms_NNS have_VBP been_VBN tailored_VBN toward_IN specific_JJ application_NN domains_NNS wher_VBP
+n_NN that_IN a_DT leak_NN would_MD manifest_VB as_IN a_DT heap_NN dump_NN containing_VBG many_JJ similar_JJ subgraphs_NNS ._.
+Rather_RB than_IN directly_RB mine_VB the_DT heap_NN dump_NN ,_, we_PRP compute_VBP the_DT dominator_NN tree_NN of_IN the_DT heap_NN dump_NN and_CC mine_NN frequent_JJ graph_NN grammars_NNS =_JJ -_: =[_NN 15_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: in_IN the_DT dominator_NN tree_NN ._.
+We_PRP describe_VBP the_DT rationale_NN behind_IN this_DT approach_NN and_CC algorithmic_JJ design_NN decisions_NNS in_IN this_DT section_NN ._.
+3.1_CD Dominator_NNP Tree_NNP Computation_NNP The_DT computation_NN of_IN dominators_NNS is_VBZ a_DT well_RB studied_VBN
+om_NN programming_NN projects_NNS -LRB-_-LRB- code_NN ,_, bug_NN reports_NNS ,_, documentation_NN ,_, runtime_NN snapshots_NNS ,_, heap_NN dumps_VBZ -RRB-_-RRB- is_VBZ now_RB so_RB plentiful_JJ that_IN data_NN mining_NN approaches_NNS have_VBP been_VBN investigated_VBN toward_IN software_NN engineering_NN goals_NNS -LRB-_-LRB- see_VB =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: for_IN a_DT survey_NN -RRB-_-RRB- ._.
+Graph_NN data_NNS ,_, in_IN particular_JJ ,_, resurfaces_VBZ in_IN many_JJ guises_NNS such_JJ as_IN call_JJ graphs_NNS ,_, dependencies_NNS across_IN subprojects_NNS ,_, and_CC heap_NN dumps_NNS ._.
+Graph_NN mining_NN techniques_NNS have_VBP been_VBN used_VBN minimally_RB for_IN program_NN
+tense_JJ study_NN ._.
+Space_NN overhead_NN is_VBZ incurred_VBN because_IN object_NN allocation_NN sites_NNS and_CC last_JJ access_NN times_NNS must_MD be_VB recorded_VBN ;_: runtime_NN overhead_NN because_IN this_DT information_NN must_MD be_VB continuously_RB updated_VBN ._.
+Bell_NNP and_CC Sleigh_NNP =_SYM -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: use_VB a_DT novel_JJ encoding_NN to_TO minimize_VB space_NN overhead_NN for_IN allocation_NN sites_NNS ._.
+To_TO minimize_VB the_DT runtime_NN cost_NN ,_, statistical_JJ profiling_NN approaches_NNS have_VBP been_VBN developed_VBN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+Cork_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- combines_VBZ low-overhead_JJ statisti_NNS
+fy_IN reachable_JJ objects_NNS that_WDT are_VBP unlikely_JJ to_TO be_VB accessed_VBN in_IN the_DT future_NN ._.
+Lastly_RB ,_, rather_RB than_IN eliminating_VBG the_DT source_NN of_IN leaks_NNS ,_, some_DT systems_NNS implement_VBP mitigation_NN strategies_NNS such_JJ as_IN swapping_VBG objects_NNS to_TO disk_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+5.2_CD Graph_NNP Mining_NNP Graph_NNP mining_NN is_VBZ a_DT well_RB studied_VBN field_NN that_WDT expands_VBZ far_RB in_IN both_CC breadth_NN and_CC depth_NN ._.
+Initial_JJ works_NNS such_JJ as_IN -LRB-_-LRB- 18_CD ,_, 35_CD -RRB-_-RRB- focused_VBD on_IN the_DT problem_NN of_IN discovering_VBG frequent_JJ subgraphs_NNS and_CC these_DT al_FW
+exploited_VBN to_TO automatically_RB infer_VB which_WDT operations_NNS are_VBP add\/delete_JJ operations_NNS on_IN containers_NNS ,_, which_WDT could_MD benefit_VB approaches_NNS that_WDT rely_VBP on_IN monitoring_VBG the_DT membership_NN of_IN object_NN containers_NNS to_TO identify_VB leaks_NNS =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT context_NN of_IN languages_NNS with_IN explicit_JJ memory_NN management_NN ,_, several_JJ static_JJ analyses_NNS have_VBP been_VBN developed_VBN that_WDT identify_VBP where_WRB a_DT programmer_NN failed_VBD to_TO deallocate_VB memory_NN -LRB-_-LRB- 8_CD ,_, 14,25,32_CD -RRB-_-RRB- ._.
+Similarly_RB ,_, trace_NN -_:
+ontainers_NNS to_TO identify_VB leaks_NNS -LRB-_-LRB- 33_CD -RRB-_-RRB- ._.
+In_IN the_DT context_NN of_IN languages_NNS with_IN explicit_JJ memory_NN management_NN ,_, several_JJ static_JJ analyses_NNS have_VBP been_VBN developed_VBN that_WDT identify_VBP where_WRB a_DT programmer_NN failed_VBD to_TO deallocate_VB memory_NN =_JJ -_: =[_NN 8_CD ,_, 14,25,32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Similarly_RB ,_, trace-based_JJ tools_NNS such_JJ as_IN Purify_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- or_CC Valgrind_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- can_MD identify_VB unreachable_JJ objects_NNS in_IN such_JJ environments_NNS ._.
+By_IN comparison_NN ,_, the_DT garbage_NN collected_VBD languages_NNS at_IN which_WDT our_PRP$ analysis_NN aims_NNS do_VBP
+e_LS systems_NNS implement_VBP mitigation_NN strategies_NNS such_JJ as_IN swapping_VBG objects_NNS to_TO disk_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+5.2_CD Graph_NNP Mining_NNP Graph_NNP mining_NN is_VBZ a_DT well_RB studied_VBN field_NN that_WDT expands_VBZ far_RB in_IN both_CC breadth_NN and_CC depth_NN ._.
+Initial_JJ works_NNS such_JJ as_IN =_JJ -_: =[_NN 18_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: focused_VBN on_IN the_DT problem_NN of_IN discovering_VBG frequent_JJ subgraphs_NNS and_CC these_DT algorithms_NNS have_VBP been_VBN expanded_VBN in_IN several_JJ directions_NNS over_IN the_DT past_JJ decade_NN -LRB-_-LRB- 6_CD ,_, 7_CD ,_, 34_CD ,_, 36_CD ,_, 37_CD -RRB-_-RRB- ._.
+Building_NN upon_IN FPtree_NN data_NNS structures_NNS -LRB-_-LRB- 1_CD
+ontainers_NNS to_TO identify_VB leaks_NNS -LRB-_-LRB- 33_CD -RRB-_-RRB- ._.
+In_IN the_DT context_NN of_IN languages_NNS with_IN explicit_JJ memory_NN management_NN ,_, several_JJ static_JJ analyses_NNS have_VBP been_VBN developed_VBN that_WDT identify_VBP where_WRB a_DT programmer_NN failed_VBD to_TO deallocate_VB memory_NN =_JJ -_: =[_NN 8_CD ,_, 14,25,32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Similarly_RB ,_, trace-based_JJ tools_NNS such_JJ as_IN Purify_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- or_CC Valgrind_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- can_MD identify_VB unreachable_JJ objects_NNS in_IN such_JJ environments_NNS ._.
+By_IN comparison_NN ,_, the_DT garbage_NN collected_VBD languages_NNS at_IN which_WDT our_PRP$ analysis_NN aims_NNS do_VBP
+es_NNS with_IN explicit_JJ memory_NN management_NN ,_, several_JJ static_JJ analyses_NNS have_VBP been_VBN developed_VBN that_WDT identify_VBP where_WRB a_DT programmer_NN failed_VBD to_TO deallocate_VB memory_NN -LRB-_-LRB- 8_CD ,_, 14,25,32_CD -RRB-_-RRB- ._.
+Similarly_RB ,_, trace-based_JJ tools_NNS such_JJ as_IN Purify_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: or_CC Valgrind_NNP -LRB-_-LRB- 24_CD -RRB-_-RRB- can_MD identify_VB unreachable_JJ objects_NNS in_IN such_JJ environments_NNS ._.
+By_IN comparison_NN ,_, the_DT garbage_NN collected_VBD languages_NNS at_IN which_WDT our_PRP$ analysis_NN aims_NNS do_VBP not_RB employ_VB explicit_JJ deallocation_NN ;_: we_PRP aim_VBP to_TO identi_VB
+inimally_RB for_IN program_NN diagnosis_NN ._.
+For_IN instance_NN ,_, program_NN behavior_NN graphs_NNS have_VBP been_VBN mined_VBN for_IN frequent_JJ closed_JJ subgraphs_NNS that_WDT become_VBP features_NNS in_IN a_DT classifier_NN to_TO predict_VB the_DT existence_NN of_IN ``_`` noncrashing_JJ ''_'' bugs_NNS =_SYM -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Behavior_NN graphs_NNS were_VBD also_RB mined_VBN with_IN the_DT LEAP_NN algorithm_NN -LRB-_-LRB- 34_CD -RRB-_-RRB- in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- to_TO identify_VB discriminative_JJ subgraphs_NNS signifying_VBG bug_NN signatures_NNS ._.
+However_RB ,_, to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, nobody_NN has_VBZ investigated_VBN the_DT
+ons_NNS require_VBP the_DT definition_NN of_IN a_DT metric_NN ,_, which_WDT could_MD be_VB derived_VBN by_IN approximating_VBG the_DT number_NN of_IN lines_NNS of_IN code_NN a_DT user_NN would_MD have_VB to_TO investigate_VB to_TO verify_VB the_DT presence_NN or_CC absence_NN of_IN a_DT bug_NN ,_, as_IN proposed_VBN in_IN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Acknowledgements_NNP This_NNP work_NN is_VBZ supported_VBN in_IN part_NN by_IN US_NNP NSF_NNP grant_NN CCF0937133_NN and_CC the_DT Institute_NNP for_IN Critical_JJ Technology_NNP and_CC Applied_NNP Science_NNP -LRB-_-LRB- ICTAS_NNP -RRB-_-RRB- at_IN Virginia_NNP Tech_NNP ._.
+Also_RB ,_, we_PRP would_MD like_VB to_TO thank_VB Jongso_NNP
+r_NN in_IN both_CC breadth_NN and_CC depth_NN ._.
+Initial_JJ works_NNS such_JJ as_IN -LRB-_-LRB- 18_CD ,_, 35_CD -RRB-_-RRB- focused_VBD on_IN the_DT problem_NN of_IN discovering_VBG frequent_JJ subgraphs_NNS and_CC these_DT algorithms_NNS have_VBP been_VBN expanded_VBN in_IN several_JJ directions_NNS over_IN the_DT past_JJ decade_NN =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 34_CD ,_, 36_CD ,_, 37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Building_NN upon_IN FPtree_NN data_NNS structures_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, fast_JJ data_NNS structures_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- have_VBP also_RB been_VBN developed_VBN ._.
+Similar_JJ to_TO our_PRP$ work_NN ,_, graph_NN mining_NN algorithms_NNS have_VBP been_VBN tailored_VBN toward_IN specific_JJ application_NN domains_NNS wher_VBP
+r_NN in_IN both_CC breadth_NN and_CC depth_NN ._.
+Initial_JJ works_NNS such_JJ as_IN -LRB-_-LRB- 18_CD ,_, 35_CD -RRB-_-RRB- focused_VBD on_IN the_DT problem_NN of_IN discovering_VBG frequent_JJ subgraphs_NNS and_CC these_DT algorithms_NNS have_VBP been_VBN expanded_VBN in_IN several_JJ directions_NNS over_IN the_DT past_JJ decade_NN =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 34_CD ,_, 36_CD ,_, 37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Building_NN upon_IN FPtree_NN data_NNS structures_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, fast_JJ data_NNS structures_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- have_VBP also_RB been_VBN developed_VBN ._.
+Similar_JJ to_TO our_PRP$ work_NN ,_, graph_NN mining_NN algorithms_NNS have_VBP been_VBN tailored_VBN toward_IN specific_JJ application_NN domains_NNS wher_VBP
+r_NN in_IN both_CC breadth_NN and_CC depth_NN ._.
+Initial_JJ works_NNS such_JJ as_IN -LRB-_-LRB- 18_CD ,_, 35_CD -RRB-_-RRB- focused_VBD on_IN the_DT problem_NN of_IN discovering_VBG frequent_JJ subgraphs_NNS and_CC these_DT algorithms_NNS have_VBP been_VBN expanded_VBN in_IN several_JJ directions_NNS over_IN the_DT past_JJ decade_NN =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 34_CD ,_, 36_CD ,_, 37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Building_NN upon_IN FPtree_NN data_NNS structures_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, fast_JJ data_NNS structures_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- have_VBP also_RB been_VBN developed_VBN ._.
+Similar_JJ to_TO our_PRP$ work_NN ,_, graph_NN mining_NN algorithms_NNS have_VBP been_VBN tailored_VBN toward_IN specific_JJ application_NN domains_NNS wher_VBP

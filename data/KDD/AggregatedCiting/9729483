@@ -1,0 +1,94 @@
+Ranking-based_JJ clustering_NN of_IN heterogeneous_JJ information_NN networks_NNS with_IN star_NN network_NN schema_NN
+A_DT heterogeneous_JJ information_NN network_NN is_VBZ an_DT information_NN network_NN composed_VBN of_IN multiple_JJ types_NNS of_IN objects_NNS ._.
+Clustering_VBG on_IN such_PDT a_DT network_NN may_MD lead_VB to_TO better_JJR understanding_NN of_IN both_CC hidden_JJ structures_NNS of_IN the_DT network_NN and_CC the_DT individual_JJ role_NN played_VBN by_IN every_DT object_NN in_IN each_DT cluster_NN ._.
+However_RB ,_, although_IN clustering_NN on_IN homogeneous_JJ networks_NNS has_VBZ been_VBN studied_VBN over_IN decades_NNS ,_, clustering_VBG on_IN heterogeneous_JJ networks_NNS has_VBZ not_RB been_VBN addressed_VBN until_IN recently_RB ._.
+A_DT recent_JJ study_NN proposed_VBD a_DT new_JJ algorithm_NN ,_, RankClus_NN ,_, for_IN clustering_NN on_IN bi-typed_JJ heterogeneous_JJ networks_NNS ._.
+However_RB ,_, a_DT real-world_JJ network_NN may_MD consist_VB of_IN more_JJR than_IN two_CD types_NNS ,_, and_CC the_DT interactions_NNS among_IN multi-typed_JJ objects_NNS play_VBP a_DT key_JJ role_NN at_IN disclosing_VBG the_DT rich_JJ semantics_NNS that_IN a_DT network_NN carries_VBZ ._.
+In_IN this_DT paper_NN ,_, we_PRP study_VBD clustering_NN of_IN multi-typed_JJ heterogeneous_JJ networks_NNS with_IN a_DT star_NN network_NN schema_NN and_CC propose_VBP a_DT novel_JJ algorithm_NN ,_, NetClus_NNP ,_, that_WDT utilizes_VBZ links_NNS across_IN multityped_JJ objects_NNS to_TO generate_VB high-quality_JJ net-clusters_NNS ._.
+An_DT iterative_JJ enhancement_NN method_NN is_VBZ developed_VBN that_WDT leads_VBZ to_TO effective_JJ ranking-based_JJ clustering_NN in_IN such_JJ heterogeneous_JJ networks_NNS ._.
+Our_PRP$ experiments_NNS on_IN DBLP_NN data_NNS show_VBP that_IN NetClus_NNP generates_VBZ more_RBR accurate_JJ clustering_NN results_NNS than_IN the_DT baseline_NN topic_NN model_NN algorithm_NN PLSA_NN and_CC the_DT recently_RB proposed_VBN algorithm_NN ,_, RankClus_NN ._.
+Further_RB ,_, NetClus_NNP generates_VBZ informative_JJ clusters_NNS ,_, presenting_VBG good_JJ ranking_NN and_CC cluster_NN membership_NN information_NN for_IN each_DT attribute_NN object_NN in_IN each_DT net-cluster_NN ._.
+can_MD not_RB directly_RB applied_VBN to_TO heterogeneous_JJ network_NN clustering_NN with_IN four_CD types_NNS of_IN objects_NNS ,_, for_IN each_DT algorithm_NN ,_, we_PRP will_MD simplify_VB the_DT network_NN when_WRB necessary_JJ to_TO make_VB all_PDT the_DT algorithms_NNS comparable_JJ ._.
+For_IN PLSA_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, only_RB the_DT term_NN type_NN and_CC paper_NN type_NN in_IN the_DT network_NN are_VBP used_VBN ._.
+No6_NN Actually_RB ,_, the_DT extremely_RB poor_JJ quality_NN when_WRB λP_NN is_VBZ very_RB small_JJ is_VBZ partially_RB caused_VBN by_IN the_DT improper_JJ accuracy_NN measure_NN at_IN those_DT occasions_NNS ._.
+Whe_NN
+,_, given_VBN any_DT star_NN network_NN ._.
+Other_JJ related_JJ studies_NNS include_VBP topic_NN model_NN ,_, such_JJ as_IN PLSA_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, which_WDT purely_RB uses_VBZ text_NN information_NN and_CC does_VBZ not_RB consider_VB link_NN information_NN ._.
+Some_DT works_NNS such_JJ as_IN author-topic_JJ model_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: utilizes_VBZ additional_JJ information_NN other_JJ than_IN text_NN by_IN designing_VBG complex_JJ generative_JJ models_NNS that_WDT include_VBP additional_JJ types_NNS of_IN objects_NNS ._.
+Other_JJ works_NNS such_JJ as_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- intend_VBP to_TO optimize_VB a_DT combined_JJ objective_NN funct_NN
+network_NN G_NN ,_, it_PRP can_MD output_NN a_DT ranking_JJ distribution_NN P_NN -LRB-_-LRB- X_NN -RRB-_-RRB- on_IN X._NNP Ranking_NNP is_VBZ usually_RB used_VBN to_TO evaluate_VB the_DT importance_NN or_CC relevance_NN of_IN objects_NNS in_IN a_DT collection_NN ._.
+For_IN example_NN ,_, PageRank_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC authority_NN of_IN HITS_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: stand_VB for_IN the_DT static_JJ importance_NN of_IN webpages_NNS ,_, while_IN the_DT rank_NN of_IN a_DT document_NN to_TO a_DT given_VBN query_NN in_IN text_NN retrieval_NN reflects_VBZ the_DT relevance_NN of_IN the_DT document_NN to_TO that_DT query_NN ._.
+Here_RB ,_, we_PRP use_VBP ranking_JJ distribution_NN to_TO
+e_LS posterior_JJ probabilities_NNS for_IN each_DT attribute_NN object_NN -LRB-_-LRB- p_NN -LRB-_-LRB- C_NN ∗_NN k_NN |_CD x_NN -RRB-_-RRB- -RRB-_-RRB- in_IN each_DT net-cluster_NN ._.
+4.2_CD Probabilistic_NNP Generative_NNP Model_NNP for_IN Target_NN Objects_NNS in_IN a_DT Net-Cluster_NN According_VBG to_TO many_JJ studies_NNS in_IN real_JJ networks_NNS =_JJ -_: =[_NN 5_CD ,_, 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, preferential_JJ attachment_NN and_CC assortative_JJ mixing_VBG exist_VBP in_IN many_JJ real_JJ networks_NNS ,_, which_WDT means_VBZ an_DT object_NN with_IN a_DT higher_JJR degree_NN -LRB-_-LRB- i.e._FW ,_, high_JJ occurrences_NNS -RRB-_-RRB- has_VBZ more_JJR probability_NN to_TO be_VB attached_VBN with_IN an_DT edge_NN ,_, and_CC
+often_RB called_VBN graph_NN partition_NN ,_, aims_VBZ at_IN partitioning_VBG a_DT given_VBN graph_NN into_IN a_DT set_NN of_IN subgraphs_NNS based_VBN on_IN different_JJ criteria_NNS ,_, such_JJ as_IN minimum_JJ cut_NN ,_, min-max_JJ cut_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC normalized_VBN cut_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+Spectral_JJ clustering_NN =_JJ -_: =[_NN 7_CD ,_, 18_CD -RRB-_-RRB- -_: =_JJ -_: provides_VBZ an_DT efficient_JJ method_NN to_TO get_VB graph_NN partitions_NNS which_WDT is_VBZ in_IN fact_NN an_DT NP-hard_JJ problem_NN ._.
+Rather_RB than_IN investigate_VB the_DT global_JJ structure_NN like_IN spectral_JJ clustering_NN ,_, several_JJ density-based_JJ methods_NNS -LRB-_-LRB- 19_CD ,_, 21_CD -RRB-_-RRB-
+odel_NN framework_NN ,_, and_CC treat_NN text_NN especially_RB important_JJ ._.
+In_IN our_PRP$ algorithm_NN ,_, we_PRP treat_VBP text_NN information_NN just_RB as_IN one_CD common_JJ type_NN of_IN objects_NNS ._.
+Recently_RB ,_, a_DT different_JJ view_NN of_IN clustering_NN on_IN heterogeneous_JJ networks_NNS =_JJ -_: =[_NN 9_CD ,_, 1_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: appears_VBZ ,_, which_WDT aims_VBZ at_IN clustering_NN objects_NNS from_IN different_JJ types_NNS simultaneously_RB ._.
+Given_VBN different_JJ cluster_NN number_NN needed_VBN for_IN each_DT type_NN of_IN objects_NNS ,_, clusters_NNS for_IN each_DT type_NN are_VBP generated_VBN by_IN maximizing_VBG some_DT
+odel_NN framework_NN ,_, and_CC treat_NN text_NN especially_RB important_JJ ._.
+In_IN our_PRP$ algorithm_NN ,_, we_PRP treat_VBP text_NN information_NN just_RB as_IN one_CD common_JJ type_NN of_IN objects_NNS ._.
+Recently_RB ,_, a_DT different_JJ view_NN of_IN clustering_NN on_IN heterogeneous_JJ networks_NNS =_JJ -_: =[_NN 9_CD ,_, 1_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: appears_VBZ ,_, which_WDT aims_VBZ at_IN clustering_NN objects_NNS from_IN different_JJ types_NNS simultaneously_RB ._.
+Given_VBN different_JJ cluster_NN number_NN needed_VBN for_IN each_DT type_NN of_IN objects_NNS ,_, clusters_NNS for_IN each_DT type_NN are_VBP generated_VBN by_IN maximizing_VBG some_DT
+odel_NN framework_NN ,_, and_CC treat_NN text_NN especially_RB important_JJ ._.
+In_IN our_PRP$ algorithm_NN ,_, we_PRP treat_VBP text_NN information_NN just_RB as_IN one_CD common_JJ type_NN of_IN objects_NNS ._.
+Recently_RB ,_, a_DT different_JJ view_NN of_IN clustering_NN on_IN heterogeneous_JJ networks_NNS =_JJ -_: =[_NN 9_CD ,_, 1_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: appears_VBZ ,_, which_WDT aims_VBZ at_IN clustering_NN objects_NNS from_IN different_JJ types_NNS simultaneously_RB ._.
+Given_VBN different_JJ cluster_NN number_NN needed_VBN for_IN each_DT type_NN of_IN objects_NNS ,_, clusters_NNS for_IN each_DT type_NN are_VBP generated_VBN by_IN maximizing_VBG some_DT
+abilities_NNS for_IN target_NN objects_NNS :_: PS_NNP -LRB-_-LRB- X_NNP |_NNP TX_NNP ,_, Gk_NNP -RRB-_-RRB- =_JJ -LRB-_-LRB- 1_CD −_NN λS_NN -RRB-_-RRB- P_NN -LRB-_-LRB- X_NN |_NNP TX_NNP ,_, Gk_NNP -RRB-_-RRB- +_CC λSP_NN -LRB-_-LRB- X_NN |_NNP TX_NNP ,_, G_NNP -RRB-_-RRB- where_WRB λS_NN is_VBZ a_DT parameter_NN that_WDT denotes_VBZ how_WRB much_RB we_PRP should_MD utilize_VB the_DT ranking_JJ distribution_NN from_IN global_JJ ranking_NN ._.
+Smoothing_VBG =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT well-known_JJ technology_NN in_IN information_NN retrieval_NN ._.
+One_CD of_IN the_DT reasons_NNS that_IN smoothing_NN is_VBZ required_VBN in_IN the_DT language_NN model_NN is_VBZ to_TO deal_VB with_IN the_DT zero_CD probability_NN problem_NN for_IN missing_VBG terms_NNS in_IN a_DT document_NN ._.
+of_IN objects_NNS as_IN indexed_VBN ,_, and_CC can_MD be_VB normalized_VBN when_WRB necessary_JJ ._.
+Generally_RB ,_, authority_NN score_NN of_IN one_CD type_NN of_IN objects_NNS could_MD be_VB a_DT combination_NN of_IN scores_NNS from_IN different_JJ types_NNS of_IN objects_NNS ,_, e.g._FW ,_, that_WDT proposed_VBD in_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP turns_VBZ out_RP that_IN the_DT iteration_NN method_NN of_IN calculating_VBG ranking_JJ distribution_NN is_VBZ the_DT power_NN method_NN to_TO calculate_VB the_DT primary_JJ eigenvector_NN of_IN a_DT square_JJ matrix_NN denoting_VBG the_DT strength_NN between_IN pairs_NNS of_IN objects_NNS
+information_NN network_NN based_VBN on_IN links_NNS between_IN objects_NNS may_MD give_VB us_PRP a_DT grand_JJ view_NN of_IN the_DT huge_JJ network_NN ._.
+For_IN example_NN ,_, communities_NNS can_MD be_VB detected_VBN by_IN clustering_NN on_IN co-author_NN network_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+Most_JJS current_JJ studies_NNS =_JJ -_: =[_NN 20_CD ,_, 17_CD ,_, 19_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: on_IN information_NN network_NN are_VBP on_IN homogeneous_JJ networks_NNS ,_, i.e._FW ,_, networks_NNS consisting_VBG of_IN single_JJ type_NN of_IN objects_NNS ,_, as_IN shown_VBN above_IN ._.
+However_RB ,_, in_IN reality_NN ,_, objects_NNS could_MD be_VB of_IN multiple_JJ types_NNS ,_, forming_VBG a_DT heterogeneo_NN
+often_RB called_VBN graph_NN partition_NN ,_, aims_VBZ at_IN partitioning_VBG a_DT given_VBN graph_NN into_IN a_DT set_NN of_IN subgraphs_NNS based_VBN on_IN different_JJ criteria_NNS ,_, such_JJ as_IN minimum_JJ cut_NN ,_, min-max_JJ cut_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC normalized_VBN cut_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+Spectral_JJ clustering_NN =_JJ -_: =[_NN 7_CD ,_, 18_CD -RRB-_-RRB- -_: =_JJ -_: provides_VBZ an_DT efficient_JJ method_NN to_TO get_VB graph_NN partitions_NNS which_WDT is_VBZ in_IN fact_NN an_DT NP-hard_JJ problem_NN ._.
+Rather_RB than_IN investigate_VB the_DT global_JJ structure_NN like_IN spectral_JJ clustering_NN ,_, several_JJ density-based_JJ methods_NNS -LRB-_-LRB- 19_CD ,_, 21_CD -RRB-_-RRB-
+information_NN network_NN based_VBN on_IN links_NNS between_IN objects_NNS may_MD give_VB us_PRP a_DT grand_JJ view_NN of_IN the_DT huge_JJ network_NN ._.
+For_IN example_NN ,_, communities_NNS can_MD be_VB detected_VBN by_IN clustering_NN on_IN co-author_NN network_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+Most_JJS current_JJ studies_NNS =_JJ -_: =[_NN 20_CD ,_, 17_CD ,_, 19_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: on_IN information_NN network_NN are_VBP on_IN homogeneous_JJ networks_NNS ,_, i.e._FW ,_, networks_NNS consisting_VBG of_IN single_JJ type_NN of_IN objects_NNS ,_, as_IN shown_VBN above_IN ._.
+However_RB ,_, in_IN reality_NN ,_, objects_NNS could_MD be_VB of_IN multiple_JJ types_NNS ,_, forming_VBG a_DT heterogeneo_NN
+X_NN ,_, if_IN given_VBN an_DT information_NN network_NN G_NN ,_, it_PRP can_MD output_NN a_DT ranking_JJ distribution_NN P_NN -LRB-_-LRB- X_NN -RRB-_-RRB- on_IN X._NNP Ranking_NNP is_VBZ usually_RB used_VBN to_TO evaluate_VB the_DT importance_NN or_CC relevance_NN of_IN objects_NNS in_IN a_DT collection_NN ._.
+For_IN example_NN ,_, PageRank_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: and_CC authority_NN of_IN HITS_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- stand_VB for_IN the_DT static_JJ importance_NN of_IN webpages_NNS ,_, while_IN the_DT rank_NN of_IN a_DT document_NN to_TO a_DT given_VBN query_NN in_IN text_NN retrieval_NN reflects_VBZ the_DT relevance_NN of_IN the_DT document_NN to_TO that_DT query_NN ._.
+Here_RB ,_, we_PRP u_VBP
+e_LS posterior_JJ probabilities_NNS for_IN each_DT attribute_NN object_NN -LRB-_-LRB- p_NN -LRB-_-LRB- C_NN ∗_NN k_NN |_CD x_NN -RRB-_-RRB- -RRB-_-RRB- in_IN each_DT net-cluster_NN ._.
+4.2_CD Probabilistic_NNP Generative_NNP Model_NNP for_IN Target_NN Objects_NNS in_IN a_DT Net-Cluster_NN According_VBG to_TO many_JJ studies_NNS in_IN real_JJ networks_NNS =_JJ -_: =[_NN 5_CD ,_, 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, preferential_JJ attachment_NN and_CC assortative_JJ mixing_VBG exist_VBP in_IN many_JJ real_JJ networks_NNS ,_, which_WDT means_VBZ an_DT object_NN with_IN a_DT higher_JJR degree_NN -LRB-_-LRB- i.e._FW ,_, high_JJ occurrences_NNS -RRB-_-RRB- has_VBZ more_JJR probability_NN to_TO be_VB attached_VBN with_IN an_DT edge_NN ,_, and_CC
+rs_NNS ._.
+Clustering_NN on_IN graphs_NNS ,_, often_RB called_VBN graph_NN partition_NN ,_, aims_VBZ at_IN partitioning_VBG a_DT given_VBN graph_NN into_IN a_DT set_NN of_IN subgraphs_NNS based_VBN on_IN different_JJ criteria_NNS ,_, such_JJ as_IN minimum_JJ cut_NN ,_, min-max_JJ cut_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC normalized_VBD cut_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Spectral_JJ clustering_NN -LRB-_-LRB- 7_CD ,_, 18_CD -RRB-_-RRB- provides_VBZ an_DT efficient_JJ method_NN to_TO get_VB graph_NN partitions_NNS which_WDT is_VBZ in_IN fact_NN an_DT NP-hard_JJ problem_NN ._.
+Rather_RB than_IN investigate_VB the_DT global_JJ structure_NN like_IN spectral_JJ clustering_NN ,_, several_JJ d_NN
+ain_VB one_CD type_NN of_IN objects_NNS ._.
+In_IN contrast_NN ,_, our_PRP$ algorithm_NN can_MD generate_VB net-clusters_NNS comprised_VBN of_IN objects_NNS from_IN multiple_JJ types_NNS ,_, given_VBN any_DT star_NN network_NN ._.
+Other_JJ related_JJ studies_NNS include_VBP topic_NN model_NN ,_, such_JJ as_IN PLSA_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT purely_RB uses_VBZ text_NN information_NN and_CC does_VBZ not_RB consider_VB link_NN information_NN ._.
+Some_DT works_NNS such_JJ as_IN author-topic_JJ model_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- utilizes_VBZ additional_JJ information_NN other_JJ than_IN text_NN by_IN designing_VBG complex_JJ generative_NN
+information_NN network_NN based_VBN on_IN links_NNS between_IN objects_NNS may_MD give_VB us_PRP a_DT grand_JJ view_NN of_IN the_DT huge_JJ network_NN ._.
+For_IN example_NN ,_, communities_NNS can_MD be_VB detected_VBN by_IN clustering_NN on_IN co-author_NN network_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+Most_JJS current_JJ studies_NNS =_JJ -_: =[_NN 20_CD ,_, 17_CD ,_, 19_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: on_IN information_NN network_NN are_VBP on_IN homogeneous_JJ networks_NNS ,_, i.e._FW ,_, networks_NNS consisting_VBG of_IN single_JJ type_NN of_IN objects_NNS ,_, as_IN shown_VBN above_IN ._.
+However_RB ,_, in_IN reality_NN ,_, objects_NNS could_MD be_VB of_IN multiple_JJ types_NNS ,_, forming_VBG a_DT heterogeneo_NN
+mation_NN ._.
+Some_DT works_NNS such_JJ as_IN author-topic_JJ model_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- utilizes_VBZ additional_JJ information_NN other_JJ than_IN text_NN by_IN designing_VBG complex_JJ generative_JJ models_NNS that_WDT include_VBP additional_JJ types_NNS of_IN objects_NNS ._.
+Other_JJ works_NNS such_JJ as_IN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: intend_VBP to_TO optimize_VB a_DT combined_JJ objective_JJ function_NN with_IN both_CC text_NN and_CC graph_NN constraints_NNS ._.
+All_DT of_IN these_DT studies_NNS are_VBP extensionsConference_NNP Rank_NNP Score_NN Author_NN Rank_NNP Score_NN Term_NNP Rank_NNP Score_NN SIGMOD_NN 0.315_CD VLDB_NN 0_CD ._.
+us_PRP networks_NNS ,_, i.e._FW ,_, networks_NNS consisting_VBG of_IN single_JJ type_NN of_IN objects_NNS ,_, as_IN shown_VBN above_IN ._.
+However_RB ,_, in_IN reality_NN ,_, objects_NNS could_MD be_VB of_IN multiple_JJ types_NNS ,_, forming_VBG a_DT heterogeneous_JJ network_NN ._.
+A_DT recent_JJ algorithm_NN RankClus_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: deals_NNS with_IN bi-typed_JJ heterogeneous_JJ networks_NNS ._.
+Unfortunately_RB ,_, in_IN reality_NN there_RB often_RB exists_VBZ more_JJR than_IN two_CD types_NNS of_IN interacting_VBG objects_NNS in_IN a_DT network_NN ._.
+Among_IN them_PRP ,_, networks_NNS with_IN star_NN network_NN schema_NN -LRB-_-LRB- called_VBN
+information_NN network_NN based_VBN on_IN links_NNS between_IN objects_NNS may_MD give_VB us_PRP a_DT grand_JJ view_NN of_IN the_DT huge_JJ network_NN ._.
+For_IN example_NN ,_, communities_NNS can_MD be_VB detected_VBN by_IN clustering_NN on_IN co-author_NN network_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+Most_JJS current_JJ studies_NNS =_JJ -_: =[_NN 20_CD ,_, 17_CD ,_, 19_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: on_IN information_NN network_NN are_VBP on_IN homogeneous_JJ networks_NNS ,_, i.e._FW ,_, networks_NNS consisting_VBG of_IN single_JJ type_NN of_IN objects_NNS ,_, as_IN shown_VBN above_IN ._.
+However_RB ,_, in_IN reality_NN ,_, objects_NNS could_MD be_VB of_IN multiple_JJ types_NNS ,_, forming_VBG a_DT heterogeneo_NN
+space_NN 2_CD ._.
+Clustering_NN on_IN an_DT information_NN network_NN based_VBN on_IN links_NNS between_IN objects_NNS may_MD give_VB us_PRP a_DT grand_JJ view_NN of_IN the_DT huge_JJ network_NN ._.
+For_IN example_NN ,_, communities_NNS can_MD be_VB detected_VBN by_IN clustering_NN on_IN co-author_NN network_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Most_JJS current_JJ studies_NNS -LRB-_-LRB- 20_CD ,_, 17_CD ,_, 19_CD ,_, 21_CD -RRB-_-RRB- on_IN information_NN network_NN are_VBP on_IN homogeneous_JJ networks_NNS ,_, i.e._FW ,_, networks_NNS consisting_VBG of_IN single_JJ type_NN of_IN objects_NNS ,_, as_IN shown_VBN above_IN ._.
+However_RB ,_, in_IN reality_NN ,_, objects_NNS could_MD be_VB o_NN
+y_NN studied_VBN in_IN recent_JJ years_NNS ._.
+Clustering_NN on_IN graphs_NNS ,_, often_RB called_VBN graph_NN partition_NN ,_, aims_VBZ at_IN partitioning_VBG a_DT given_VBN graph_NN into_IN a_DT set_NN of_IN subgraphs_NNS based_VBN on_IN different_JJ criteria_NNS ,_, such_JJ as_IN minimum_JJ cut_NN ,_, min-max_JJ cut_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: and_CC normalized_VBN cut_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+Spectral_JJ clustering_NN -LRB-_-LRB- 7_CD ,_, 18_CD -RRB-_-RRB- provides_VBZ an_DT efficient_JJ method_NN to_TO get_VB graph_NN partitions_NNS which_WDT is_VBZ in_IN fact_NN an_DT NP-hard_JJ problem_NN ._.
+Rather_RB than_IN investigate_VB the_DT global_JJ structure_NN like_IN spectr_NN

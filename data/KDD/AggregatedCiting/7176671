@@ -1,0 +1,114 @@
+Information_NN extraction_NN from_IN Wikipedia_NNP :_: moving_VBG down_IN the_DT long_JJ tail_NN
+Not_RB only_RB is_VBZ Wikipedia_NNP a_DT comprehensive_JJ source_NN of_IN quality_NN information_NN ,_, it_PRP has_VBZ several_JJ kinds_NNS of_IN internal_JJ structure_NN -LRB-_-LRB- e.g._FW ,_, relational_JJ summaries_NNS known_VBN as_IN infoboxes_NNS -RRB-_-RRB- ,_, which_WDT enable_VBP self-supervised_JJ information_NN extraction_NN ._.
+While_IN previous_JJ efforts_NNS at_IN extraction_NN from_IN Wikipedia_NNP achieve_VB high_JJ precision_NN and_CC recall_NN on_IN well-populated_JJ classes_NNS of_IN articles_NNS ,_, they_PRP fail_VBP in_IN a_DT larger_JJR number_NN of_IN cases_NNS ,_, largely_RB because_IN incomplete_JJ articles_NNS and_CC infrequent_JJ use_NN of_IN infoboxes_NNS lead_VBP to_TO insufficient_JJ training_NN data_NNS ._.
+This_DT paper_NN presents_VBZ three_CD novel_JJ techniques_NNS for_IN increasing_VBG recall_NN from_IN Wikipedia_NNP 's_POS long_JJ tail_NN of_IN sparse_JJ classes_NNS :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- shrinkage_NN over_IN an_DT automatically-learned_JJ subsumption_NN taxonomy_NN ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- a_DT retraining_VBG technique_NN for_IN improving_VBG the_DT training_NN data_NNS ,_, and_CC -LRB-_-LRB- 3_LS -RRB-_-RRB- supplementing_VBG results_NNS by_IN extracting_VBG from_IN the_DT broader_JJR Web_NN ._.
+Our_PRP$ experiments_NNS compare_VBP design_NN variations_NNS and_CC show_VBP that_IN ,_, used_VBN in_IN concert_NN ,_, these_DT techniques_NNS increase_VBP recall_NN by_IN a_DT factor_NN of_IN 1.76_CD to_TO 8.71_CD while_IN maintaining_VBG or_CC increasing_VBG precision_NN ._.
+rst_NN patterns_NNS to_TO annotate_VB named_VBN entities_NNS in_IN documents_NNS ._.
+Matuszek_NNP et_FW al._FW uses_VBZ Cyc_NNP to_TO specify_VB Web_NN searches_NNS to_TO identify_VB and_CC verify_VB common_JJ senses_NNS candidates_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+The_DT similar_JJ idea_NN is_VBZ utilized_VBN in_IN OntoSyphon_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: where_WRB ontology_NN combined_VBN with_IN search_NN engines_NNS are_VBP used_VBN to_TO identify_VB semantic_JJ instances_NNS and_CC relations_NNS ._.
+In_IN contrast_NN ,_, Kylinautomatically_NNP constructs_NNS the_DT Wikipedia_NNP infobox_NN ontology_NN and_CC uses_VBZ it_PRP to_TO help_VB train_VB
+f_LS this_DT form_NN have_VBP been_VBN proposed_VBN ._.
+SNOWBALL_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- iteratively_RB generates_VBZ extraction_NN patterns_NNS based_VBN on_IN occurrences_NNS of_IN known_JJ tuples_NNS in_IN documents_NNS to_TO extract_VB new_JJ tuples_NNS from_IN plain_JJ texts_NNS ._.
+MULDER_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC AskMSR_NN =_JJ -_: =[_NN 5_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: use_VB the_DT Web_NN to_TO answer_VB questions_NNS ,_, exploiting_VBG the_DT fact_NN that_IN most_JJS important_JJ facts_NNS are_VBP stated_VBN multiple_JJ times_NNS in_IN different_JJ ways_NNS ,_, which_WDT licenses_VBZ the_DT use_NN of_IN simple_JJ syntactic_JJ processing_NN ._.
+Instead_RB of_IN utilizing_VBG
+ipedia_NN article_NN is_VBZ superficial_JJ ._.
+1.2_CD Contributions_NNS In_IN this_DT paper_NN we_PRP describe_VBP three_CD novel_JJ approaches_NNS for_IN improving_VBG the_DT recall_NN of_IN extraction_NN of_IN Wikipedia_NNP infobox_NN attribute_NN values_NNS ._.
+•_NN By_IN applying_VBG shrinkage_NN =_JJ -_: =[_NN 24_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: over_IN an_DT automatically-learned_JJ subsumption_NN taxonomy_NN ,_, we_PRP allow_VBP Kylin_NNP to_TO substantially_RB improve_VB the_DT recall_NN of_IN its_PRP$ extractors_NNS for_IN sparse_JJ infobox_NN classes_NNS ._.
+•_NN By_IN mapping_VBG the_DT contents_NNS of_IN known_JJ Wikipedia_NNP infob_NN
+infoboxes_NNS ._.
+This_DT would_MD lead_VB to_TO a_DT cotraining_VBG approach_NN rather_RB than_IN simple_JJ retraining_VBG ._.
+One_CD could_MD iterate_VB the_DT process_NN of_IN getting_VBG more_JJR training_NN date_NN from_IN TextRunner_NNP with_IN improvements_NNS to_TO the_DT Kylin_NNP extractor_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+By_IN adding_VBG new_JJ positive_JJ examples_NNS and_CC excluding_VBG sentences_NNS which_WDT might_MD be_VB false_JJ negatives_NNS ,_, retraining_VBG generates_VBZ a_DT greatly_RB improved_VBN training_NN set_NN ,_, as_IN we_PRP show_VBP in_IN the_DT next_JJ subsection_NN ._.
+4.2_CD Retraining_NNP Experi_NNP
+levant_JJ sentences_NNS and_CC trains_NNS a_DT CRF_NNP model_NN for_IN extractions_NNS ._.
+ONTOLOGY-DRIVEN_NNP INFORMATION_NNP EXTRACTION_NNP :_: There_EX have_VBP been_VBN a_DT lot_NN of_IN work_NN on_IN leveraging_VBG ontology_NN for_IN information_NN extraction_NN ._.
+The_DT SemTag_NNP and_CC Seeker_NNP =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: systems_NNS perform_VBP automated_JJ semantic_JJ tagging_NN of_IN large_JJ corpora_NN ._.
+They_PRP use_VBP the_DT TAP_NN knowledge_NN base_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- as_IN the_DT standard_JJ ontology_NN ,_, and_CC match_VB it_PRP with_IN instances_NNS on_IN the_DT Web_NN ._.
+PANKOW_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- queries_VBZ Google_NNP with_IN onto_IN
+ification_NN ,_, i.e._FW predicting_VBG which_WDT attribute_NN values_NNS -LRB-_-LRB- if_IN any_DT -RRB-_-RRB- are_VBP contained_VBN in_IN a_DT given_VBN sentence_NN ,_, can_MD be_VB seen_VBN as_IN a_DT multi-class_JJ ,_, multi-label_JJ text_NN classification_NN problem_NN ._.
+Kylin_NNP uses_VBZ a_DT Maximum_NNP Entropy_NNP model_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: with_IN a_DT variety_NN of_IN features_NNS :_: bag_NN of_IN words_NNS ,_, augmented_VBD with_IN part_NN of_IN speech_NN -LRB-_-LRB- POS_NN -RRB-_-RRB- tags_NNS ._.
+To_TO decrease_VB the_DT impact_NN of_IN the_DT noisy_JJ and_CC incomplete_JJ training_NN dataset_NN ,_, Kylin_NNP applies_VBZ bagging_VBG -LRB-_-LRB- instead_RB of_IN boosting_VBG -LRB-_-LRB- 19_CD
+l_NN cotraining_NN ._.
+There_EX are_VBP several_JJ ways_NNS to_TO better_RBR integrate_VB extraction_NN of_IN Web_NN content_NN with_IN that_DT of_IN Wikipedia_NNP ,_, ranging_VBG from_IN improved_VBN Google_NNP querying_VBG policies_NNS to_TO DIRT-style_JJ analysis_NN of_IN extraction_NN patterns_NNS =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+8_CD ._.
+ACKNOWLEDGEMENTS_NNS We_PRP thank_VBP Eytan_NNP Adar_NNP ,_, Michelle_NNP Banko_NNP ,_, Ivan_NNP Beschastnikh_NNP ,_, Doug_NNP Downey_NNP ,_, Oren_NNP Etzioni_NNP ,_, Travis_NNP Kriplean_NNP ,_, Cynthia_NNP Matuszek_NNP ,_, David_NNP McDonald_NNP ,_, Alan_NNP Ritter_NNP ,_, Stefan_NNP Schoenmackers_NNP ,_, Jue_NNP Wang_NNP ,_,
+on_IN information_NN retrieval_NN ,_, question_NN answering_NN and_CC much_RB more_JJR ._.
+Autonomy_NN is_VBZ crucial_JJ ,_, since_IN the_DT scale_NN of_IN available_JJ knowledge_NN is_VBZ vast_JJ ._.
+We_PRP share_VBP this_DT vision_NN with_IN a_DT number_NN of_IN other_JJ projects_NNS ,_, such_JJ as_IN Snowball_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, KnowItAll_NNP -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC Textrunner_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, but_CC in_IN contrast_NN to_TO systems_NNS which_WDT seek_VBP to_TO extract_VB from_IN arbitrary_JJ Web_NN text_NN ,_, we_PRP argue_VBP that_IN Wikipedia_NNP is_VBZ an_DT important_JJ focus_NN for_IN extraction_NN ._.
+If_IN we_PRP can_MD render_VB much_JJ of_IN Wi_NN
+RF_NN extractors_NNS by_IN shrinkage_NN ._.
+OTHER_NNP WIKIPEDIA-BASED_NNP SYSTEMS_NNP :_: Dakka_NNP and_CC Cucerzan_NNP trained_VBD a_DT classifier_NN to_TO label_VB Wikipedia_NNP pages_NNS with_IN standard_JJ named_VBN entity_NN tags_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+Auer_NNP and_CC Lehmann_NNP developed_VBD the_DT DBpedia_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: system_NN which_WDT extracts_VBZ information_NN from_IN existing_VBG infoboxes_NNS within_IN articles_NNS and_CC encapsulate_VB them_PRP in_IN a_DT semantic_JJ form_NN for_IN query_NN ._.
+In_IN contrast_NN ,_, Kylin_NNP populates_VBZ infoboxes_NNS with_IN new_JJ attribute_NN values_NNS ._.
+Suchanek_NNP
+ng-tailed_JJ distribution_NN ._.
+Focusing_VBG on_IN Wikipedia_NNP largely_RB solves_VBZ the_DT problem_NN of_IN inaccurate_JJ and_CC unreliable_JJ source_NN data_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, but_CC introduces_VBZ new_JJ challenges_NNS ._.
+For_IN example_NN ,_, many_JJ previous_JJ systems_NNS -LRB-_-LRB- e.g._FW ,_, Mulder_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, AskMSR_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, and_CC KnowItAll_NNP -LRB-_-LRB- 10_CD -RRB-_-RRB- -RRB-_-RRB- exploit_VBP the_DT presence_NN of_IN redundant_JJ information_NN on_IN the_DT Web_NN ,_, enabling_VBG powerful_JJ statistical_JJ techniques_NNS ;_: however_RB ,_, the_DT Wikipedia_NNP corpus_NN has_VBZ greatly_RB reduced_VBN duplication_NN ._.
+On_IN
+retrieval_NN ,_, question_NN answering_NN and_CC much_RB more_JJR ._.
+Autonomy_NN is_VBZ crucial_JJ ,_, since_IN the_DT scale_NN of_IN available_JJ knowledge_NN is_VBZ vast_JJ ._.
+We_PRP share_VBP this_DT vision_NN with_IN a_DT number_NN of_IN other_JJ projects_NNS ,_, such_JJ as_IN Snowball_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, KnowItAll_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Textrunner_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, but_CC in_IN contrast_NN to_TO systems_NNS which_WDT seek_VBP to_TO extract_VB from_IN arbitrary_JJ Web_NN text_NN ,_, we_PRP argue_VBP that_IN Wikipedia_NNP is_VBZ an_DT important_JJ focus_NN for_IN extraction_NN ._.
+If_IN we_PRP can_MD render_VB much_JJ of_IN Wikipedia_NNP into_IN sem_NN
+icles_NNS contained_VBD -RRB-_-RRB- Figure_NNP 1_CD :_: The_DT number_NN of_IN article_NN instances_NNS per_IN infobox_NN class_NN has_VBZ a_DT long-tailed_JJ distribution_NN ._.
+Focusing_VBG on_IN Wikipedia_NNP largely_RB solves_VBZ the_DT problem_NN of_IN inaccurate_JJ and_CC unreliable_JJ source_NN data_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC introduces_VBZ new_JJ challenges_NNS ._.
+For_IN example_NN ,_, many_JJ previous_JJ systems_NNS -LRB-_-LRB- e.g._FW ,_, Mulder_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, AskMSR_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, and_CC KnowItAll_NNP -LRB-_-LRB- 10_CD -RRB-_-RRB- -RRB-_-RRB- exploit_VBP the_DT presence_NN of_IN redundant_JJ information_NN on_IN the_DT Web_NN ,_, enabling_VBG powerful_JJ stat_NN
+from_IN existing_VBG infoboxes_NNS within_IN articles_NNS and_CC encapsulate_VB them_PRP in_IN a_DT semantic_JJ form_NN for_IN query_NN ._.
+In_IN contrast_NN ,_, Kylin_NNP populates_VBZ infoboxes_NNS with_IN new_JJ attribute_NN values_NNS ._.
+Suchanek_NNP et_FW al._FW implement_VB the_DT YAGO_NN system_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT extends_VBZ WordNet_NNP using_VBG facts_NNS extracted_VBN from_IN Wikipedia_NNP 's_POS category_NN tags_NNS ._.
+But_CC in_IN contrast_NN to_TO Kylin_NNP ,_, which_WDT can_MD learn_VB to_TO extract_VB values_NNS for_IN any_DT attribute_NN ,_, YAGO_NNP only_RB extracts_VBZ values_NNS for_IN a_DT limited_JJ numb_JJ
+answering_VBG and_CC much_RB more_JJR ._.
+Autonomy_NN is_VBZ crucial_JJ ,_, since_IN the_DT scale_NN of_IN available_JJ knowledge_NN is_VBZ vast_JJ ._.
+We_PRP share_VBP this_DT vision_NN with_IN a_DT number_NN of_IN other_JJ projects_NNS ,_, such_JJ as_IN Snowball_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, KnowItAll_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC Textrunner_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC in_IN contrast_NN to_TO systems_NNS which_WDT seek_VBP to_TO extract_VB from_IN arbitrary_JJ Web_NN text_NN ,_, we_PRP argue_VBP that_IN Wikipedia_NNP is_VBZ an_DT important_JJ focus_NN for_IN extraction_NN ._.
+If_IN we_PRP can_MD render_VB much_JJ of_IN Wikipedia_NNP into_IN semantic_JJ form_NN ,_, then_RB it_PRP
+tribution_NN ._.
+Focusing_VBG on_IN Wikipedia_NNP largely_RB solves_VBZ the_DT problem_NN of_IN inaccurate_JJ and_CC unreliable_JJ source_NN data_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, but_CC introduces_VBZ new_JJ challenges_NNS ._.
+For_IN example_NN ,_, many_JJ previous_JJ systems_NNS -LRB-_-LRB- e.g._FW ,_, Mulder_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, AskMSR_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC KnowItAll_NNP -LRB-_-LRB- 10_CD -RRB-_-RRB- -RRB-_-RRB- exploit_VBP the_DT presence_NN of_IN redundant_JJ information_NN on_IN the_DT Web_NN ,_, enabling_VBG powerful_JJ statistical_JJ techniques_NNS ;_: however_RB ,_, the_DT Wikipedia_NNP corpus_NN has_VBZ greatly_RB reduced_VBN duplication_NN ._.
+On_IN the_DT other_JJ ha_NN
+em_NN 's_POS basic_JJ architecture_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+As_IN shown_VBN in_IN Figure_NNP 2_CD ,_, Kylin_NNP has_VBZ three_CD primary_JJ components_NNS :_: the_DT preprocessor_NN ,_, a_DT module_NN which_WDT generates_VBZ classifiers_NNS ,_, and_CC one_CD which_WDT generates_VBZ Conditional_NNP Random_NNP Fields_NNP -LRB-_-LRB- CRF_NNP -RRB-_-RRB- =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: extractors_NNS ._.
+The_DT figure_NN shows_VBZ the_DT data_NN flow_NN ,_, but_CC the_DT components_NNS are_VBP invoked_VBN in_IN a_DT pipeline_NN in_IN the_DT order_NN described_VBN above_IN ._.
+We_PRP describe_VBP them_PRP in_IN turn_NN ._.
+2.1_CD Preprocessor_NN The_DT preprocessor_NN selects_VBZ and_CC refines_VBZ
+ags_RB ,_, Hearst_NNP patterns_NNS search-engine_JJ statistics_NNS ,_, and_CC WordNet_NNP mappings_NNS ._.
+These_DT features_NNS are_VBP combined_VBN using_VBG statistical-relational_JJ machine_NN learning_NN ,_, specifically_RB joint_JJ inference_NN over_IN Markov_NNP logic_NN networks_NNS =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, extending_VBG -LRB-_-LRB- 23_CD -RRB-_-RRB- ._.
+Figure_NN 3_CD shows_VBZ KOG_NNP 's_POS architecture_NN ._.
+First_RB ,_, its_PRP$ schema_NN cleaner_NN scans_VBZ the_DT infobox_NN system_NN to_TO merge_VB duplicate_VB classes_NNS and_CC attributes_NNS ,_, and_CC infer_VB the_DT type_NN signature_NN of_IN each_DT attribute_NN ._.
+Then_RB ,_,
+ured_JJ text_NN ._.
+3_LS -RRB-_-RRB- Wikipedia_NNP lists_NNS and_CC categories_NNS provide_VBP valuable_JJ features_NNS for_IN classifying_VBG pages_NNS ._.
+In_IN previous_JJ work_NN ,_, we_PRP developed_VBD Kylin_NNP --_: a_DT self-supervised_JJ system_NN for_IN information_NN extraction_NN from_IN Wikipedia_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Kylin_NNP looks_VBZ for_IN sets_NNS of_IN pages_NNS with_IN similar_JJ infoboxes_NNS ,_, determines_VBZ common_JJ attributes_NNS for_IN each_DT class_NN ,_, creates_VBZ training_NN examples_NNS ,_, learns_VBZ extractors_NNS ,_, and_CC runs_VBZ them_PRP on_IN each_DT page_NN --_: creating_VBG new_JJ infoboxes_NNS a_DT
+n._NNP The_NNP SemTag_NNP and_CC Seeker_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- systems_NNS perform_VBP automated_JJ semantic_JJ tagging_NN of_IN large_JJ corpora_NN ._.
+They_PRP use_VBP the_DT TAP_NN knowledge_NN base_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- as_IN the_DT standard_JJ ontology_NN ,_, and_CC match_VB it_PRP with_IN instances_NNS on_IN the_DT Web_NN ._.
+PANKOW_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: queries_VBZ Google_NNP with_IN ontology-based_JJ Hearst_NNP patterns_NNS to_TO annotate_VB named_VBN entities_NNS in_IN documents_NNS ._.
+Matuszek_NNP et_FW al._FW uses_VBZ Cyc_NNP to_TO specify_VB Web_NN searches_NNS to_TO identify_VB and_CC verify_VB common_JJ senses_NNS candidates_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+The_DT
+There_EX have_VBP been_VBN a_DT lot_NN of_IN work_NN on_IN leveraging_VBG ontology_NN for_IN information_NN extraction_NN ._.
+The_DT SemTag_NNP and_CC Seeker_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- systems_NNS perform_VBP automated_JJ semantic_JJ tagging_NN of_IN large_JJ corpora_NN ._.
+They_PRP use_VBP the_DT TAP_NN knowledge_NN base_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: as_IN the_DT standard_JJ ontology_NN ,_, and_CC match_VB it_PRP with_IN instances_NNS on_IN the_DT Web_NN ._.
+PANKOW_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- queries_VBZ Google_NNP with_IN ontology-based_JJ Hearst_NNP patterns_NNS to_TO annotate_VB named_VBN entities_NNS in_IN documents_NNS ._.
+Matuszek_NNP et_FW al._FW uses_VBZ Cyc_NNP to_TO sp_VB
+18_CD -RRB-_-RRB- with_IN a_DT variety_NN of_IN features_NNS :_: bag_NN of_IN words_NNS ,_, augmented_VBD with_IN part_NN of_IN speech_NN -LRB-_-LRB- POS_NN -RRB-_-RRB- tags_NNS ._.
+To_TO decrease_VB the_DT impact_NN of_IN the_DT noisy_JJ and_CC incomplete_JJ training_NN dataset_NN ,_, Kylin_NNP applies_VBZ bagging_VBG -LRB-_-LRB- instead_RB of_IN boosting_VBG =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+2.3_CD Learning_NNP Extractors_NNPS Extracting_VBG attribute_NN values_NNS from_IN a_DT sentence_NN is_VBZ best_RB viewed_VBN as_IN a_DT sequential_JJ data-labelling_JJ problem_NN ._.
+Kylin_NNP uses_VBZ the_DT CRF_NNP model_NN with_IN a_DT wide_JJ variety_NN of_IN features_NNS -LRB-_-LRB- e.g._FW ,_, POS_NN tags_NNS ,_,
+obox_NN ontology_NN and_CC uses_VBZ it_PRP to_TO help_VB training_NN CRF_NN extractors_NNS by_IN shrinkage_NN ._.
+OTHER_NNP WIKIPEDIA-BASED_NNP SYSTEMS_NNP :_: Dakka_NNP and_CC Cucerzan_NNP trained_VBD a_DT classifier_NN to_TO label_VB Wikipedia_NNP pages_NNS with_IN standard_JJ named_VBN entity_NN tags_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Auer_NNP and_CC Lehmann_NNP developed_VBD the_DT DBpedia_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- system_NN which_WDT extracts_VBZ information_NN from_IN existing_VBG infoboxes_NNS within_IN articles_NNS and_CC encapsulate_VB them_PRP in_IN a_DT semantic_JJ form_NN for_IN query_NN ._.
+In_IN contrast_NN ,_, Kylin_FW populates_FW i_FW
+ion_NN system_NN by_IN first_RB creating_VBG a_DT self-trained_JJ relevant_JJ sentence_NN classifier_NN to_TO identify_VB relevant_JJ regions_NNS ,_, and_CC using_VBG a_DT semantic_JJ affinity_NN measure_NN to_TO automatically_RB learn_VB domain-relevant_JJ extraction_NN patterns_NNS =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Kylin_NNP uses_VBZ the_DT similar_JJ idea_NN of_IN decoupling_VBG when_WRB applying_VBG extractors_NNS to_TO the_DT general_JJ Web_NN ._.
+Differently_RB ,_, Kylin_NNP uses_VBZ IR-based_JJ techniques_NNS to_TO select_VB relevant_JJ sentences_NNS and_CC trains_NNS a_DT CRF_NNP model_NN for_IN extractions_NNS
+ipedia_NN article_NN is_VBZ superficial_JJ ._.
+1.2_CD Contributions_NNS In_IN this_DT paper_NN we_PRP describe_VBP three_CD novel_JJ approaches_NNS for_IN improving_VBG the_DT recall_NN of_IN extraction_NN of_IN Wikipedia_NNP infobox_NN attribute_NN values_NNS ._.
+•_NN By_IN applying_VBG shrinkage_NN =_JJ -_: =[_NN 24_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: over_IN an_DT automatically-learned_JJ subsumption_NN taxonomy_NN ,_, we_PRP allow_VBP Kylin_NNP to_TO substantially_RB improve_VB the_DT recall_NN of_IN its_PRP$ extractors_NNS for_IN sparse_JJ infobox_NN classes_NNS ._.
+•_NN By_IN mapping_VBG the_DT contents_NNS of_IN known_JJ Wikipedia_NNP infob_NN
+erns_VBZ search-engine_JJ statistics_NNS ,_, and_CC WordNet_NNP mappings_NNS ._.
+These_DT features_NNS are_VBP combined_VBN using_VBG statistical-relational_JJ machine_NN learning_NN ,_, specifically_RB joint_JJ inference_NN over_IN Markov_NNP logic_NN networks_NNS -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, extending_VBG =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Figure_NN 3_CD shows_VBZ KOG_NNP 's_POS architecture_NN ._.
+First_RB ,_, its_PRP$ schema_NN cleaner_NN scans_VBZ the_DT infobox_NN system_NN to_TO merge_VB duplicate_VB classes_NNS and_CC attributes_NNS ,_, and_CC infer_VB the_DT type_NN signature_NN of_IN each_DT attribute_NN ._.
+Then_RB ,_, the_DT subsumption_NN
+PANKOW_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- queries_VBZ Google_NNP with_IN ontology-based_JJ Hearst_NNP patterns_NNS to_TO annotate_VB named_VBN entities_NNS in_IN documents_NNS ._.
+Matuszek_NNP et_FW al._FW uses_VBZ Cyc_NNP to_TO specify_VB Web_NN searches_NNS to_TO identify_VB and_CC verify_VB common_JJ senses_NNS candidates_NNS =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT similar_JJ idea_NN is_VBZ utilized_VBN in_IN OntoSyphon_NNP -LRB-_-LRB- 17_CD -RRB-_-RRB- where_WRB ontology_NN combined_VBN with_IN search_NN engines_NNS are_VBP used_VBN to_TO identify_VB semantic_JJ instances_NNS and_CC relations_NNS ._.
+In_IN contrast_NN ,_, Kylinautomatically_NNP constructs_NNS the_DT Wik_NN

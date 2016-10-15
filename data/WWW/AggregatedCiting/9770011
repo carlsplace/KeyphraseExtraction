@@ -1,0 +1,61 @@
+Anycast-aware_JJ transport_NN for_IN content_JJ delivery_NN networks_NNS
+Anycast-based_JJ content_NN delivery_NN networks_NNS -LRB-_-LRB- CDNs_NNS -RRB-_-RRB- have_VBP many_JJ properties_NNS that_WDT make_VBP them_PRP ideal_JJ for_IN the_DT large_JJ scale_NN distribution_NN of_IN content_NN on_IN the_DT Internet_NN ._.
+However_RB ,_, because_IN routing_VBG changes_NNS can_MD result_VB in_IN a_DT change_NN of_IN the_DT endpoint_NN that_WDT terminates_VBZ the_DT TCP_NNP session_NN ,_, TCP_NN session_NN disruption_NN remains_VBZ a_DT concern_NN for_IN anycast_JJ CDNs_NNS ,_, especially_RB for_IN large_JJ file_NN downloads_NNS ._.
+In_IN this_DT paper_NN we_PRP demonstrate_VBP that_IN this_DT problem_NN does_VBZ not_RB require_VB any_DT complex_JJ solutions_NNS ._.
+In_IN particular_JJ ,_, we_PRP present_VBP the_DT design_NN of_IN a_DT simple_NN ,_, yet_RB efficient_JJ ,_, mechanism_NN to_TO handle_VB session_NN disruptions_NNS due_JJ to_TO endpoint_JJ changes_NNS ._.
+With_IN our_PRP$ mechanism_NN ,_, a_DT client_NN can_MD continue_VB the_DT download_NN of_IN the_DT content_NN from_IN the_DT point_NN at_IN which_WDT it_PRP was_VBD before_IN the_DT endpoint_JJ change_NN ._.
+Furthermore_RB ,_, CDN_NN servers_NNS purge_VBP the_DT TCP_NN connection_NN state_NN quickly_RB to_TO handle_VB frequent_JJ switching_NN with_IN low_JJ system_NN overhead_NN ._.
+We_PRP demonstrate_VBP experimentally_RB the_DT effectiveness_NN of_IN our_PRP$ proposed_VBN mechanism_NN and_CC show_VBP that_IN more_RBR complex_JJ mechanisms_NNS are_VBP not_RB required_VBN ._.
+Specifically_RB ,_, we_PRP find_VBP that_IN our_PRP$ mechanism_NN maintains_VBZ high_JJ download_NN throughput_NN even_RB with_IN a_DT reasonably_RB high_JJ rate_NN of_IN endpoint_NN switching_NN ,_, which_WDT is_VBZ attractive_JJ for_IN load_NN balancing_NN scenarios_NNS ._.
+Moreover_RB ,_, our_PRP$ results_NNS show_VBP that_IN edge_NN servers_NNS can_MD purge_VB TCP_NN connection_NN state_NN after_IN a_DT single_JJ timeout-triggered_JJ retransmission_NN without_IN any_DT tangible_JJ impact_NN on_IN ongoing_JJ connections_NNS ._.
+Besides_IN improving_VBG server_NN performance_NN ,_, this_DT behavior_NN improves_VBZ the_DT resiliency_NN of_IN the_DT CDN_NN to_TO certain_JJ denial_NN of_IN service_NN attacks_NNS ._.
+ad_NN practice_NN of_IN clients_NNS disobeying_VBG time-to-live_JJ directives_NNS returned_VBD with_IN the_DT DNS_NN responses_NNS ,_, which_WDT in_IN principle_NN control_NN how_WRB long_RB the_DT clients_NNS can_MD reuse_VB a_DT response_NN ,_, and_CC using_VBG cached_JJ responses_NNS much_RB longer_RBR =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Furthermore_RB ,_, malicious_JJ users_NNS can_MD intentionally_RB bypass_VB DNS_NN responses_NNS and_CC stick_NN to_TO a_DT particular_JJ server_NN ,_, potentially_RB causing_VBG significant_JJ degradation_NN of_IN the_DT system_NN performance_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Finally_RB ,_, because_IN loc_NN
+ver_NN based_VBN on_IN its_PRP$ proximity_NN to_TO the_DT client_NN DNS_NN server_NN ,_, not_RB the_DT client_NN that_WDT will_MD be_VB performing_VBG the_DT download_NN ,_, and_CC clients_NNS -LRB-_-LRB- especially_RB residential_JJ clients_NNS -RRB-_-RRB- are_VBP sometimes_RB far_RB removed_VBN from_IN their_PRP$ DNS_NNP servers_NNS =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Second_RB ,_, this_DT method_NN affords_VBZ a_DT CDN_NNP only_RB limited_VBD control_NN over_IN load_NN balancing_NN decisions_NNS :_: caching_NN of_IN DNS_NN responses_NNS by_IN the_DT clients_NNS makes_VBZ server_NN selection_NN decisions_NNS persist_VBP for_IN a_DT long_JJ time_NN ,_, regardless_RB of_IN
+IPv6_NN becomes_VBZ available_JJ ,_, this_DT aspect_NN can_MD be_VB combined_VBN with_IN our_PRP$ approach_NN to_TO avoid_VB socket_NN migration_NN ._.
+Another_DT way_NN to_TO handle_VB connection_NN disruption_NN is_VBZ to_TO use_VB a_DT stateless_JJ transport_NN protocol_NN such_JJ as_IN Trickles_NNPS =_SYM -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO enable_VB the_DT stateless_JJ operation_NN for_IN servers_NNS ,_, Trickles_NNP encodes_VBZ the_DT connection_NN state_NN in_IN every_DT packet_NN in_IN both_DT directions_NNS of_IN the_DT connection_NN -LRB-_-LRB- data_NN and_CC acknowledgment_NN packets_NNS -RRB-_-RRB- ._.
+This_DT entails_VBZ a_DT significan_NN
+e_LS IP_NNP routing_VBG typically_RB does_VBZ not_RB use_VB application-level_JJ data_NNS ,_, the_DT routing_VBG decision_NN can_MD lead_VB to_TO server_NN load_NN imbalance_NN ._.
+Our_PRP$ previous_JJ work_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- addresses_NNS this_DT issue_NN by_IN using_VBG a_DT fine-grained_JJ route_NN controller_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT monitors_VBZ server_NN load_NN and_CC informs_VBZ route_NN selection_NN in_IN the_DT anycast_NN enabled_VBD network_NN to_TO realize_VB load_NN aware_JJ anycast_NN ._.
+Specifically_RB ,_, in_IN this_DT load_NN aware_JJ anycast_NN CDN_NN ,_, we_PRP override_VBP the_DT default_NN route_NN selecti_NNS
+dramatically_RB ._.
+timeout_NN TCP_NN -LRB-_-LRB- the_DT number_NN of_IN retries_NNS is_VBZ an_DT experimental_JJ parameter_NN with_IN 0_CD retries_NNS corresponds_VBZ to_TO 1_CD RTO_NN timeout_NN ,_, 1_CD retry_VBP corresponds_VBZ to_TO 3_CD RTOs_NNS timeout_NN ,_, and_CC so_RB on_IN -RRB-_-RRB- ._.
+We_PRP sign_VBP up_RP for_IN 59_CD Keynote_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: clients_NNS distributed_VBN across_IN the_DT Internet_NN ._.
+-LRB-_-LRB- Most_JJS agents_NNS were_VBD in_IN the_DT United_NNP States_NNPS ,_, and_CC some_DT in_IN Europe_NNP and_CC Asia_NNP -RRB-_-RRB- ._.
+Each_DT client_NN issues_NNS one_CD request_NN to_TO download_VB a_DT 2_CD MB_NN file_NN from_IN each_DT of_IN the_DT two_CD servers_NNS ever_RB
+ending_VBG rate_NN ._.
+An_DT alternative_JJ approach_NN to_TO improve_VB the_DT performance_NN of_IN large_JJ file_NN downloads_NNS is_VBZ to_TO divide_VB the_DT file_NN into_IN smaller_JJR pieces_NNS and_CC request_VB each_DT of_IN these_DT pieces_NNS in_IN a_DT separate_JJ connection_NN in_IN parallel_NN =_JJ -_: =[_NN 12_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT approach_NN is_VBZ only_RB effective_JJ when_WRB a_DT single_JJ connection_NN can_MD not_RB fully_RB utilize_VB the_DT link_NN capacity_NN of_IN the_DT client_NN ,_, that_DT is_VBZ ,_, when_WRB the_DT connection_NN bottleneck_NN is_VBZ in_IN the_DT core_NN network_NN or_CC at_IN the_DT CDN_NNP servers_NNS ._.
+H_NN
+ycast_JJ CDNs_NNS is_VBZ to_TO use_VB static_JJ binding_NN based_VBN on_IN HTTP_NN redirection_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+We_PRP can_MD potentially_RB apply_VB other_JJ existing_VBG schemes_NNS to_TO address_VB the_DT issue_NN of_IN connection_NN disruption_NN ._.
+One_CD option_NN is_VBZ to_TO use_VB socket_NN migration_NN =_JJ -_: =[_NN 10,20,22_CD -RRB-_-RRB- -_: =_JJ -_: and_CC transfer_VB the_DT connection_NN state_NN between_IN the_DT old_JJ and_CC new_JJ servers_NNS when_WRB a_DT server_NN redirection_NN occurs_VBZ ._.
+However_RB ,_, socket_NN migration_NN requires_VBZ complex_JJ and_CC reliable_JJ coordination_NN between_IN the_DT newand_JJ old_JJ server_NN
+kets_NNS to_TO the_DT anycast_JJ IP_NNP address_NN ._.
+Typically_RB ,_, such_JJ anycast_NN endpoints_NNS are_VBP configured_VBN to_TO provide_VB the_DT same_JJ service_NN ._.
+For_IN example_NN ,_, the_DT multiple_JJ DNS_NN root_NN servers_NNS use_VBP a_DT single_JJ IP_NNP anycast_NN address_NN for_IN redundancy_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Among_IN those_DT endpoints_NNS ,_, an_DT IP_NNP anycast_NN packet_NN is_VBZ routed_VBN to_TO the_DT ``_`` optimal_JJ ''_'' endpoint_NN from_IN an_DT IP_NNP forwarding_NN perspective_NN -LRB-_-LRB- e.g._FW ,_, proximity_NN -RRB-_-RRB- ._.
+As_IN a_DT result_NN ,_, by_IN configuring_VBG an_DT IP_NNP anycast_NN address_NN for_IN multiple_JJ CD_NN
+ider_NN ._.
+IP_NNP anycast_NN is_VBZ a_DT promising_JJ alternative_JJ request_NN distribution_NN mechanism_NN ;_: it_PRP was_VBD initially_RB considered_VBN for_IN CDNs_NNS and_CC dismissed_VBD ,_, but_CC recently_RB re-emerged_VBD as_IN a_DT practical_JJ approach_NN for_IN single-network_JJ CDNs_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+An_DT anycast_JJ CDN_NN assigns_VBZ the_DT same_JJ IP_NNP address_NN to_TO multiple_JJ edge_NN servers_NNS and_CC relies_VBZ on_IN IP_NNP routing_VBG to_TO deliver_VB requests_NNS to_TO the_DT servers_NNS that_WDT are_VBP close_JJ in_IN the_DT network_NN to_TO the_DT clients_NNS originating_VBG the_DT requests_NNS ._.
+ending_VBG rate_NN ._.
+An_DT alternative_JJ approach_NN to_TO improve_VB the_DT performance_NN of_IN large_JJ file_NN downloads_NNS is_VBZ to_TO divide_VB the_DT file_NN into_IN smaller_JJR pieces_NNS and_CC request_VB each_DT of_IN these_DT pieces_NNS in_IN a_DT separate_JJ connection_NN in_IN parallel_NN =_JJ -_: =[_NN 12_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT approach_NN is_VBZ only_RB effective_JJ when_WRB a_DT single_JJ connection_NN can_MD not_RB fully_RB utilize_VB the_DT link_NN capacity_NN of_IN the_DT client_NN ,_, that_DT is_VBZ ,_, when_WRB the_DT connection_NN bottleneck_NN is_VBZ in_IN the_DT core_NN network_NN or_CC at_IN the_DT CDN_NNP servers_NNS ._.
+H_NN
+responses_NNS much_RB longer_JJR -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Furthermore_RB ,_, malicious_JJ users_NNS can_MD intentionally_RB bypass_VB DNS_NN responses_NNS and_CC stick_NN to_TO a_DT particular_JJ server_NN ,_, potentially_RB causing_VBG significant_JJ degradation_NN of_IN the_DT system_NN performance_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Finally_RB ,_, because_IN local_JJ DNS_NN servers_NNS cache_NN results_NNS ,_, not_RB all_DT DNS_NN requests_NNS represent_VBP the_DT same_JJ client_NN workload_NN ._.
+For_IN example_NN ,_, we_PRP expect_VBP a_DT significant_JJ difference_NN in_IN workload_NN between_IN a_DT DNS_NNP server_NN serving_VBG a_DT
+ycast_JJ CDNs_NNS is_VBZ to_TO use_VB static_JJ binding_NN based_VBN on_IN HTTP_NN redirection_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+We_PRP can_MD potentially_RB apply_VB other_JJ existing_VBG schemes_NNS to_TO address_VB the_DT issue_NN of_IN connection_NN disruption_NN ._.
+One_CD option_NN is_VBZ to_TO use_VB socket_NN migration_NN =_JJ -_: =[_NN 10,20,22_CD -RRB-_-RRB- -_: =_JJ -_: and_CC transfer_VB the_DT connection_NN state_NN between_IN the_DT old_JJ and_CC new_JJ servers_NNS when_WRB a_DT server_NN redirection_NN occurs_VBZ ._.
+However_RB ,_, socket_NN migration_NN requires_VBZ complex_JJ and_CC reliable_JJ coordination_NN between_IN the_DT newand_JJ old_JJ server_NN
+paths_NNS ,_, a_DT careful_JJ study_NN of_IN its_PRP$ effect_NN on_IN the_DT benefits_NNS of_IN the_DT anycast_JJ CDNs_NNS remains_VBZ a_DT topic_NN for_IN future_JJ work_NN ._.
+With_IN large_JJ file_NN and_CC progressive_JJ streaming_NN downloads_NNS taking_VBG a_DT growing_VBG part_NN of_IN Internet_NN traffic_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP believe_VBP our_PRP$ mechanism_NN fills_VBZ an_DT important_JJ emerging_VBG gap_NN in_IN the_DT CDN_NNP capabilities_NNS ._.
+Furthermore_RB ,_, the_DT simplicity_NN of_IN our_PRP$ mechanism_NN increases_VBZ its_PRP$ chances_NNS of_IN being_VBG employed_VBN in_IN a_DT real_JJ network_NN ._.
+6_CD ._.
+REFERENCE_NN

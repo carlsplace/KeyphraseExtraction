@@ -1,0 +1,143 @@
+Automated_NNP construction_NN of_IN web_NN accessibility_NN models_NNS from_IN transaction_NN click-streams_NNS
+Screen_NN readers_NNS ,_, the_DT dominant_JJ assistive_JJ technology_NN used_VBN by_IN visually_RB impaired_JJ people_NNS to_TO access_VB the_DT Web_NN ,_, function_NN by_IN speaking_VBG out_RP the_DT content_NN of_IN the_DT screen_NN serially_RB ._.
+Using_VBG screen_NN readers_NNS for_IN conducting_VBG online_JJ transactions_NNS can_MD cause_VB considerable_JJ information_NN overload_NN ,_, because_IN transactions_NNS ,_, such_JJ as_IN shopping_VBG and_CC paying_VBG bills_NNS ,_, typically_RB involve_VBP a_DT number_NN of_IN steps_NNS spanning_VBG several_JJ web_NN pages_NNS ._.
+One_CD can_MD combat_VB this_DT overload_NN by_IN using_VBG a_DT transaction_NN model_NN for_IN web_NN accessibility_NN that_WDT presents_VBZ only_JJ fragments_NNS of_IN web_NN pages_NNS that_WDT are_VBP needed_VBN for_IN doing_VBG transactions_NNS ._.
+We_PRP can_MD realize_VB such_PDT a_DT model_NN by_IN coupling_NN a_DT process_NN automaton_NN ,_, encoding_VBG states_NNS of_IN a_DT transaction_NN ,_, with_IN concept_NN classifiers_NNS that_WDT identify_VBP page_NN fragments_NNS ``_`` relevant_JJ ''_'' to_TO a_DT particular_JJ state_NN of_IN the_DT transaction_NN ._.
+In_IN this_DT paper_NN we_PRP present_VBP a_DT fully_RB automated_VBN process_NN that_WDT synergistically_RB combines_VBZ several_JJ techniques_NNS for_IN transforming_VBG unlabeled_JJ click-stream_JJ data_NNS generated_VBN by_IN transactions_NNS into_IN a_DT transactionmodel_NN ._.
+These_DT techniques_NNS include_VBP web_NN content_NN analysis_NN to_TO partition_NN a_DT web_NN page_NN into_IN segments_NNS consisting_VBG of_IN semantically_RB related_JJ content_NN ,_, contextual_JJ analysis_NN of_IN data_NNS surrounding_VBG clickable_JJ objects_NNS in_IN a_DT page_NN ,_, and_CC machine_NN learning_NN methods_NNS ,_, such_JJ as_IN clustering_NN of_IN page_NN segments_NNS based_VBN on_IN contextual_JJ analysis_NN ,_, statistical_JJ classification_NN ,_, and_CC automata_NN learning_NN ._.
+The_DT use_NN of_IN unlabeled_JJ click_VBP streams_NNS in_IN building_NN transaction_NN models_NNS has_VBZ important_JJ benefits_NNS :_: -LRB-_-LRB- i_LS -RRB-_-RRB- visually_RB impaired_JJ users_NNS do_VBP not_RB have_VB to_TO depend_VB on_IN sighted_JJ users_NNS for_IN creating_VBG manually_RB labeled_VBN training_NN data_NNS to_TO construct_VB the_DT models_NNS ;_: -LRB-_-LRB- ii_LS -RRB-_-RRB- it_PRP is_VBZ possible_JJ to_TO mine_VB personalized_JJ models_NNS from_IN unlabeled_JJ transaction_NN click-streams_NNS associated_VBN with_IN sites_NNS that_WDT visually_RB impaired_JJ users_NNS visit_VBP regularly_RB ;_: -LRB-_-LRB- iii_LS -RRB-_-RRB- since_IN unlabeled_JJ data_NNS is_VBZ relatively_RB easy_JJ to_TO obtain_VB ,_, it_PRP is_VBZ feasible_JJ to_TO scale_VB up_RP the_DT construction_NN of_IN domain-specific_JJ transaction_NN models_NNS -LRB-_-LRB- e.g._FW ,_, separate_JJ models_NNS for_IN shopping_NN ,_, airline_NN reservations_NNS ,_, bill_NN payments_NNS ,_, etc._NN -RRB-_-RRB- ;_: -LRB-_-LRB- iv_LS -RRB-_-RRB- adjusting_VBG the_DT performance_NN of_IN deployed_VBN models_NNS over_IN timtime_NN with_IN new_JJ training_NN data_NNS is_VBZ also_RB doable_JJ ._.
+We_PRP provide_VBP preliminary_JJ experimental_JJ evidence_NN of_IN the_DT practical_JJ effectiveness_NN of_IN both_CC domain-specific_JJ ,_, as_RB well_RB as_IN personalized_JJ accessibility_NN transaction_NN models_NNS built_VBN using_VBG our_PRP$ approach_NN ._.
+Finally_RB ,_, this_DT approach_NN is_VBZ applicable_JJ for_IN building_VBG transaction_NN models_NNS for_IN mobile_JJ devices_NNS with_IN limited-size_JJ displays_NNS ,_, as_RB well_RB as_IN for_IN creating_VBG wrappers_NNS for_IN information_NN extraction_NN from_IN web_NN sites_NNS ._.
+tion_NN overload_NN when_WRB performing_VBG web_NN transaction_NN non-visually_RB ._.
+Process_VB Automata_NNP LearningConstructing_NNP the_DT transaction_NN model_NN is_VBZ also_RB related_JJ to_TO research_NN in_IN mining_NN workflow_NN process_NN models_NNS -LRB-_-LRB- 27_CD ,_, 12_CD ,_, 28_CD -RRB-_-RRB- -LRB-_-LRB- see_VB =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: for_IN a_DT survey_NN -RRB-_-RRB- ._.
+However_RB ,_, our_PRP$ definition_NN of_IN a_DT transaction_NN is_VBZ simpler_JJR than_IN the_DT traditional_JJ notions_NNS of_IN workflows_NNS -LRB-_-LRB- e.g._FW ,_, we_PRP do_VBP not_RB use_VB sophisticated_JJ synchronization_NN primitives_NNS -RRB-_-RRB- ._.
+Hence_RB ,_, we_PRP are_VBP able_JJ to_TO model_VB
+:_: Learning_NNP Concept_NNP Classifiers_NNP -LRB-_-LRB- Unsupervised_JJ -RRB-_-RRB- :_: In_IN the_DT previous_JJ step_NN all_PDT the_DT concept_NN classes_NNS relevant_JJ for_IN transactions_NNS were_VBD mined_VBN and_CC labeled_VBN ._.
+In_IN this_DT step_NN we_PRP automatically_RB learn_VBP SVM-based_JJ classifiers_NNS =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_SYM -_: for_IN each_DT concept_NN class_NN ._.
+The_DT segments_NNS in_IN a_DT concept_NN class_NN serve_VBP as_IN the_DT labeled_JJ training_NN examples_NNS ._.
+Recall_VB that_IN their_PRP$ features_NNS were_VBD extracted_VBN in_IN Step_NN 1_CD ._.
+Note_VB that_IN the_DT labels_NNS for_IN the_DT concept_NN segments_NNS were_VBD
+tion_NN process_NN ,_, clustering_NN is_VBZ just_RB one_CD of_IN several_JJ steps_NNS ._.
+Click-stream_FW AnalysisBuilding_FW Web_NN accessibility_NN models_NNS from_IN transaction_NN click-streams_NNS is_VBZ related_JJ to_TO research_NN in_IN click-stream_JJ analysis_NN and_CC mining_NN =_JJ -_: =[_NN 25_CD ,_, 6_CD ,_, 17_CD ,_, 24_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Click-stream_JJ data_NNS are_VBP mined_VBN to_TO create_VB user_NN profiles_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, suggest_VBP context-aware_JJ query_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, predicting_VBG the_DT next_JJ request_NN of_IN the_DT user_NN as_IN s\/he_NN visits_VBZ the_DT same_JJ Web_NN site_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, etc._NN ._.
+Clustering_NN and_CC categori_NN
+tion_NN process_NN ,_, clustering_NN is_VBZ just_RB one_CD of_IN several_JJ steps_NNS ._.
+Click-stream_FW AnalysisBuilding_FW Web_NN accessibility_NN models_NNS from_IN transaction_NN click-streams_NNS is_VBZ related_JJ to_TO research_NN in_IN click-stream_JJ analysis_NN and_CC mining_NN =_JJ -_: =[_NN 25_CD ,_, 6_CD ,_, 17_CD ,_, 24_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Click-stream_JJ data_NNS are_VBP mined_VBN to_TO create_VB user_NN profiles_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, suggest_VBP context-aware_JJ query_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, predicting_VBG the_DT next_JJ request_NN of_IN the_DT user_NN as_IN s\/he_NN visits_VBZ the_DT same_JJ Web_NN site_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, etc._NN ._.
+Clustering_NN and_CC categori_NN
+Process_VB automaton_NN can_MD also_RB be_VB used_VBN to_TO rank_VB different_JJ concepts_NNS occurring_VBG in_IN a_DT page_NN ._.
+End_NN User_NN ProgrammingThe_NN research_NN on_IN end-user_JJ programming_NN relating_VBG to_TO our_PRP$ work_NN includes_VBZ programming_NN by_IN demonstration_NN =_JJ -_: =[_NN 9_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, agent_NN learning_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, query_NN from_IN demonstrations_NNS -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, etc._NN ._.
+Programming_NN by_IN demonstration_NN allows_VBZ users_NNS to_TO construct_VB a_DT program_NN by_IN simply_RB performing_VBG actions_NNS in_IN the_DT user_NN interface_NN ,_, with_IN which_WDT they_PRP are_VBP alre_JJ
+in_IN knowledge_NN to_TO learn_VB a_DT task_NN model_NN ._.
+In_IN contrast_NN ,_, our_PRP$ construction_NN process_NN is_VBZ fully_RB automated_VBN ._.
+Automatic_NNP Information_NNP ExtractionThere_NNP are_VBP several_JJ works_NNS describing_VBG automatic_JJ information_NN extraction_NN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 18_CD ,_, 8_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+-LRB-_-LRB- 18_CD -RRB-_-RRB- describes_VBZ automatic_JJ labeling_NN of_IN web_NN service_NN data_NNS using_VBG a_DT classifier_NN ._.
+However_RB ,_, the_DT classifier_NN has_VBZ to_TO be_VB trained_VBN a_DT priori_FW using_VBG labeled_JJ data_NNS ._.
+In_IN contrast_NN ,_, we_PRP do_VBP not_RB depend_VB on_IN user_NN supplied_VBD label_NN
+tion_NN process_NN ,_, clustering_NN is_VBZ just_RB one_CD of_IN several_JJ steps_NNS ._.
+Click-stream_FW AnalysisBuilding_FW Web_NN accessibility_NN models_NNS from_IN transaction_NN click-streams_NNS is_VBZ related_JJ to_TO research_NN in_IN click-stream_JJ analysis_NN and_CC mining_NN =_JJ -_: =[_NN 25_CD ,_, 6_CD ,_, 17_CD ,_, 24_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Click-stream_JJ data_NNS are_VBP mined_VBN to_TO create_VB user_NN profiles_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, suggest_VBP context-aware_JJ query_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, predicting_VBG the_DT next_JJ request_NN of_IN the_DT user_NN as_IN s\/he_NN visits_VBZ the_DT same_JJ Web_NN site_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, etc._NN ._.
+Clustering_NN and_CC categori_NN
+fective_JJ procedure_NN for_IN constructing_VBG the_DT transaction_NN automaton_NN ._.
+For_IN each_DT regular_JJ expression_NN in_IN R_NN -LRB-_-LRB- T_NN -RRB-_-RRB- we_PRP construct_VBP the_DT corresponding_JJ nondeterministic_JJ finite_JJ automaton_NN -LRB-_-LRB- NDFA_NN -RRB-_-RRB- using_VBG Thomson_NNP 's_POS construction_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT automaton_NN for_IN L_NN -LRB-_-LRB- R_NN -LRB-_-LRB- T_NN -RRB-_-RRB- -RRB-_-RRB- is_VBZ simply_RB the_DT union_NN of_IN all_PDT the_DT individual_JJ automata_NN ._.
+Based_VBN on_IN the_DT argument_NN above_IN on_IN the_DT size_NN of_IN R_NN -LRB-_-LRB- T_NN -RRB-_-RRB- and_CC Thomson_NNP 's_POS construction_NN ,_, it_PRP follows_VBZ that_IN if_IN k_NN is_VBZ the_DT length_NN of_IN the_DT
+c_NN segments_NNS ._.
+Three_CD kinds_NNS of_IN features_NNS are_VBP extracted_VBN from_IN each_DT of_IN the_DT segments_NNS :_: Word_NN Features_NNS are_VBP words_NNS in_IN the_DT text_NN appearing_VBG in_IN the_DT segment_NN ._.
+Linguistic_JJ Features_NNS are_VBP bigrams_NNS ,_, trigrams_NNS ,_, and_CC their_PRP$ stemmed_VBN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_JJ -_: counterparts_NNS in_IN the_DT segment_NN 's_POS text_NN ._.
+Pattern_NN Features_NNS are_VBP features_NNS representing_VBG the_DT visual_JJ presentation_NN of_IN the_DT content_NN in_IN the_DT segment_NN ._.
+e._NN g_NN :_: in_IN Figure_NNP 1_CD -LRB-_-LRB- a_DT -RRB-_-RRB- ,_, some_DT of_IN the_DT pattern_NN features_NNS extracted_VBN from_IN
+tion_NN process_NN ,_, clustering_NN is_VBZ just_RB one_CD of_IN several_JJ steps_NNS ._.
+Click-stream_FW AnalysisBuilding_FW Web_NN accessibility_NN models_NNS from_IN transaction_NN click-streams_NNS is_VBZ related_JJ to_TO research_NN in_IN click-stream_JJ analysis_NN and_CC mining_NN =_JJ -_: =[_NN 25_CD ,_, 6_CD ,_, 17_CD ,_, 24_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Click-stream_JJ data_NNS are_VBP mined_VBN to_TO create_VB user_NN profiles_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, suggest_VBP context-aware_JJ query_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, predicting_VBG the_DT next_JJ request_NN of_IN the_DT user_NN as_IN s\/he_NN visits_VBZ the_DT same_JJ Web_NN site_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, etc._NN ._.
+Clustering_NN and_CC categori_NN
+wing_NN a_DT taxonomy_NN of_IN items_NNS in_IN that_DT category_NN -RRB-_-RRB- and_CC the_DT search_NN form_NN -LRB-_-LRB- for_IN doing_VBG a_DT new_JJ search_NN if_IN needed_VBN -RRB-_-RRB- are_VBP among_IN the_DT most_RBS relevant_JJ concepts_NNS for_IN the_DT next_JJ step_NN of_IN the_DT transaction_NN in_IN step_NN -LRB-_-LRB- b_NN -RRB-_-RRB- of_IN Figure_NNP 1_CD ._.
+In_IN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_JJ -_: we_PRP had_VBD developed_VBN a_DT transaction_NN model_NN for_IN web_NN accessibility_NN to_TO identify_VB ,_, extract_NN ,_, and_CC aurally_RB render_VBP only_RB the_DT ``_`` relevant_JJ ''_'' page_NN fragments_NNS in_IN each_DT step_NN of_IN a_DT transaction_NN ._.
+The_DT use_NN of_IN a_DT transaction_NN model_NN fo_NN
+owsers_NNS ,_, sighted_VBN users_NNS can_MD quickly_RB go_VB through_IN the_DT transaction_NN steps_NNS ._.
+However_RB ,_, non-visual_JJ transactions_NNS pose_VBP serious_JJ challenges_NNS to_TO blind_JJ individuals_NNS ,_, because_IN screen_NN readers_NNS -LRB-_-LRB- e.g._FW ,_, JAWS_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, Windows_NNP Eyes_NNS =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, the_DT dominant_JJ assistive_JJ technology_NN used_VBN by_IN blind_JJ users_NNS ,_, typically_RB narrate_VBP the_DT content_NN of_IN web_NN pages_NNS sequentially_RB ._.
+Although_IN screen-readers_NNS provide_VBP shortcuts_NNS to_TO move_VB backward_RB and_CC forward_RB within_IN a_DT page_NN ,_,
+oncepts_NNS occurring_VBG in_IN a_DT page_NN ._.
+End_NN User_NN ProgrammingThe_NN research_NN on_IN end-user_JJ programming_NN relating_VBG to_TO our_PRP$ work_NN includes_VBZ programming_NN by_IN demonstration_NN -LRB-_-LRB- 9_CD ,_, 16_CD -RRB-_-RRB- ,_, agent_NN learning_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, query_NN from_IN demonstrations_NNS =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_JJ -_: ,_, etc._NN ._.
+Programming_NN by_IN demonstration_NN allows_VBZ users_NNS to_TO construct_VB a_DT program_NN by_IN simply_RB performing_VBG actions_NNS in_IN the_DT user_NN interface_NN ,_, with_IN which_WDT they_PRP are_VBP already_RB familiar_JJ ._.
+CoScripter_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- uses_VBZ this_DT approach_NN to_TO
+lso_NN be_VB used_VBN to_TO rank_VB different_JJ concepts_NNS occurring_VBG in_IN a_DT page_NN ._.
+End_NN User_NN ProgrammingThe_NN research_NN on_IN end-user_JJ programming_NN relating_VBG to_TO our_PRP$ work_NN includes_VBZ programming_NN by_IN demonstration_NN -LRB-_-LRB- 9_CD ,_, 16_CD -RRB-_-RRB- ,_, agent_NN learning_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, query_NN from_IN demonstrations_NNS -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, etc._NN ._.
+Programming_NN by_IN demonstration_NN allows_VBZ users_NNS to_TO construct_VB a_DT program_NN by_IN simply_RB performing_VBG actions_NNS in_IN the_DT user_NN interface_NN ,_, with_IN which_WDT they_PRP are_VBP already_RB familiar_JJ ._.
+CoScri_NNP
+in_IN knowledge_NN to_TO learn_VB a_DT task_NN model_NN ._.
+In_IN contrast_NN ,_, our_PRP$ construction_NN process_NN is_VBZ fully_RB automated_VBN ._.
+Automatic_NNP Information_NNP ExtractionThere_NNP are_VBP several_JJ works_NNS describing_VBG automatic_JJ information_NN extraction_NN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 18_CD ,_, 8_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+-LRB-_-LRB- 18_CD -RRB-_-RRB- describes_VBZ automatic_JJ labeling_NN of_IN web_NN service_NN data_NNS using_VBG a_DT classifier_NN ._.
+However_RB ,_, the_DT classifier_NN has_VBZ to_TO be_VB trained_VBN a_DT priori_FW using_VBG labeled_JJ data_NNS ._.
+In_IN contrast_NN ,_, we_PRP do_VBP not_RB depend_VB on_IN user_NN supplied_VBD label_NN
+ntic_JJ ''_'' relationship_NN between_IN the_DT content_NN elements_NNS ._.
+A_DT number_NN of_IN papers_NNS have_VBP exploited_VBN this_DT observation_NN to_TO partition_NN web_NN pages_NNS into_IN geometric_JJ segments_NNS containing_VBG such_JJ semantically_RB related_JJ elements_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 22_CD ,_, 34_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+We_PRP define_VBP the_DT context_NN of_IN a_DT clickable_JJ object_NN Obj_NN to_TO be_VB the_DT text_NN around_IN the_DT Obj_NN that_WDT maintains_VBZ the_DT same_JJ topic_NN as_IN the_DT text_NN of_IN the_DT Obj_NNP ._.
+To_TO collect_VB the_DT context_NN ,_, a_DT simple_JJ topic-detection_JJ algorithm_NN based_VBN
+around_IN the_DT links_NNS in_IN other_JJ pages_NNS that_WDT are_VBP pointing_VBG to_TO that_DT web_NN page_NN ._.
+The_DT context_NN is_VBZ then_RB used_VBN to_TO obtain_VB a_DT summary_NN of_IN the_DT page_NN ._.
+Summarization_NN using_VBG context_NN is_VBZ also_RB explored_VBN by_IN the_DT InCommonSense_NNP system_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB search_NN engine_NN results_NNS are_VBP summarized_VBN to_TO generate_VB text_NN snippets_NNS ._.
+All_DT of_IN these_DT works_NNS define_VBP the_DT context_NN of_IN the_DT link_NN as_IN an_DT ad-hoc_JJ collection_NN of_IN words_NNS surrounding_VBG it_PRP ._.
+In_IN contrast_NN ,_, our_PRP$ notion_NN of_IN co_NN
+gs_NNS from_IN a_DT simple_JJ ,_, less_RBR expressive_JJ language_NN for_IN representing_VBG transaction_NN sequences_NNS ._.
+Contextual_NNP AnalysisThe_NNP notion_NN of_IN context_NN has_VBZ been_VBN used_VBN in_IN different_JJ areas_NNS of_IN computer_NN science_NN research_NN ._.
+For_IN example_NN ,_, =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: defines_VBZ the_DT context_NN of_IN a_DT web_NN page_NN as_IN a_DT collection_NN of_IN text_NN ,_, gathered_VBN around_IN the_DT links_NNS in_IN other_JJ pages_NNS that_WDT are_VBP pointing_VBG to_TO that_DT web_NN page_NN ._.
+The_DT context_NN is_VBZ then_RB used_VBN to_TO obtain_VB a_DT summary_NN of_IN the_DT page_NN ._.
+Summa_NN
+ying_JJ template_NN of_IN Web_NN sites_NNS from_IN sample_NN pages_NNS and_CC uses_VBZ it_PRP to_TO automatically_RB extract_VB data_NNS from_IN Web_NN sites_NNS ._.
+However_RB ,_, the_DT use_NN of_IN templates_NNS will_MD not_RB suffice_VB for_IN constructing_VBG a_DT transaction_NN model_NN ._.
+Dong_NNP et_FW al._FW =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: describes_VBZ Woogle_NNP ,_, a_DT search_NN engine_NN that_WDT supports_VBZ similarity_NN search_NN for_IN web_NN services_NNS through_IN a_DT process_NN of_IN clustering_NN ._.
+In_IN our_PRP$ construction_NN process_NN ,_, clustering_NN is_VBZ just_RB one_CD of_IN several_JJ steps_NNS ._.
+Click-stream_NN
+ame_JJ concept_NN class_NN ._.
+Towards_IN this_DT goal_NN we_PRP use_VBP the_DT well_RB known_VBN notion_NN of_IN Jaccard_NNP 's_POS similarity_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- and_CC the_DT notions_NNS of_IN intra-cluster_JJ ,_, inter-cluster_JJ similarity_NN and_CC quality_NN metrics_NNS for_IN clusters_NNS developed_VBN in_IN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Jaccard_NN similarity_NN computes_VBZ the_DT similarity_NN between_IN any_DT pair_NN of_IN concept_NN segments_NNS ._.
+Let_NNP Si_NNP and_CC Sj_NNP be_VB two_CD such_JJ segments_NNS with_IN feature_NN sets_NNS F_NN -LRB-_-LRB- Si_NNP -RRB-_-RRB- and_CC F_NN -LRB-_-LRB- Sj_NN -RRB-_-RRB- respectively_RB ._.
+This_DT similarity_NN ,_, denoted_VBN J_NN -LRB-_-LRB- Si_NNP ,_, Sj_NN
+ry_NN from_IN demonstrations_NNS -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, etc._NN ._.
+Programming_NN by_IN demonstration_NN allows_VBZ users_NNS to_TO construct_VB a_DT program_NN by_IN simply_RB performing_VBG actions_NNS in_IN the_DT user_NN interface_NN ,_, with_IN which_WDT they_PRP are_VBP already_RB familiar_JJ ._.
+CoScripter_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: uses_VBZ this_DT approach_NN to_TO build_VB a_DT collaborative_JJ scripting_NN environment_NN for_IN recording_NN ,_, automating_VBG ,_, and_CC sharing_VBG web-based_JJ processes_NNS ._.
+Other_JJ browser_NN recording_NN and_CC playback_NN tools_NNS ,_, e.g._FW ,_, iMacros_NN -LRB-_-LRB- www.iopus.com_NN \/_: i_LS
+o_NN Models_NNS :_: Transformation_NN Process_VBP step_NN all_PDT the_DT concept_NN segments_NNS in_IN a_DT single_JJ cluster_NN are_VBP said_VBN to_TO belong_VB to_TO the_DT same_JJ concept_NN class_NN ._.
+Towards_IN this_DT goal_NN we_PRP use_VBP the_DT well_RB known_VBN notion_NN of_IN Jaccard_NNP 's_POS similarity_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: and_CC the_DT notions_NNS of_IN intra-cluster_JJ ,_, inter-cluster_JJ similarity_NN and_CC quality_NN metrics_NNS for_IN clusters_NNS developed_VBN in_IN -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+Jaccard_NN similarity_NN computes_VBZ the_DT similarity_NN between_IN any_DT pair_NN of_IN concept_NN segments_NNS ._.
+Let_NNP Si_NNP
+uences_NNS generated_VBN in_IN the_DT previous_JJ step_NN ._.
+In_IN general_JJ ,_, DFA_NN learning_NN requires_VBZ sizable_JJ number_NN of_IN negative_JJ examples_NNS which_WDT are_VBP relatively_RB more_RBR difficult_JJ to_TO obtain_VB especially_RB from_IN logs_NNS of_IN user_NN activities_NNS -LRB-_-LRB- see_VB =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Instead_RB ,_, we_PRP propose_VBP a_DT simple_JJ learning_NN algorithm_NN from_IN positive_JJ examples_NNS only_RB ,_, in_IN particular_JJ the_DT completed_VBN transaction_NN sequences_NNS generated_VBN in_IN the_DT previous_JJ step_NN ._.
+It_PRP is_VBZ motivated_VBN by_IN the_DT following_VBG obser_NN
+To_TO collect_VB the_DT context_NN ,_, a_DT simple_JJ topic-detection_JJ algorithm_NN based_VBN on_IN cosine_NN similarity_NN is_VBZ applied_VBN to_TO the_DT text_NN surrounding_VBG the_DT object_NN within_IN the_DT geometric_JJ segment_NN containing_VBG the_DT object_NN ,_, as_IN described_VBN in_IN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, the_DT dashed_VBN boxes_NNS in_IN Figures_NNS 1_CD -LRB-_-LRB- b_NN -RRB-_-RRB- and_CC -LRB-_-LRB- c_LS -RRB-_-RRB- enclose_VB 873WWW_NN 2009_CD MADRID_NNP !_.
+Track_NNP :_: Web_NN Engineering_NNP \/_: Session_NN :_: End_NN User_NN Web_NN Engineering_NNP Click-stream_NNP Website_NNP Name_NN -LRB-_-LRB- select_category_NN -LRB-_-LRB- 145AB2D1_NN -RRB-_-RRB- ,_,
+etailed_VBN description_NN of_IN an_DT item_NN in_IN a_DT web_NN page_NN -RRB-_-RRB- ,_, which_WDT is_VBZ not_RB represented_VBN in_IN our_PRP$ model_NN ,_, the_DT transaction_NN support_NN layer_NN can_MD be_VB combined_VBN with_IN the_DT context-browsing_JJ layer_NN ,_, which_WDT helps_VBZ identify_VB such_JJ segments_NNS =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Coming_VBG back_RB to_TO the_DT example_NN displayed_VBD in_IN Figure_NNP 1_CD -LRB-_-LRB- a_DT -RRB-_-RRB- ,_, the_DT transaction_NN support_NN module_NN will_MD match_VB the_DT web_NN page_NN to_TO S0_NN ,_, the_DT beginning_VBG state_NN of_IN the_DT learned_VBN process_NN automaton_NN -LRB-_-LRB- a_DT fragment_NN of_IN which_WDT is_VBZ shown_VBN
+unding_VBG it_PRP ._.
+In_IN contrast_NN ,_, our_PRP$ notion_NN of_IN context_NN ,_, used_VBN in_IN our_PRP$ earlier_JJR paper_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, is_VBZ based_VBN on_IN topic_NN similarity_NN of_IN words_NNS around_IN the_DT link_NN ._.
+We_PRP identify_VBP context_NN with_IN a_DT simple_JJ topic_NN boundary_NN detection_NN method_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, confined_VBN to_TO geometric_JJ segments_NNS that_WDT have_VBP semantically_RB related_VBN content_NN ._.
+Our_PRP$ earlier_JJR paper_NN on_IN context-directed_JJ browsing_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- used_VBD this_DT notion_NN of_IN context_NN to_TO identify_VB the_DT most_RBS relevant_JJ segment_NN on_IN the_DT ne_NN
+to_TO combat_VB information_NN overload_NN when_WRB performing_VBG web_NN transaction_NN non-visually_RB ._.
+Process_VB Automata_NNP LearningConstructing_NNP the_DT transaction_NN model_NN is_VBZ also_RB related_JJ to_TO research_NN in_IN mining_NN workflow_NN process_NN models_NNS =_JJ -_: =[_NN 27_CD ,_, 12_CD ,_, 28_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- see_VB -LRB-_-LRB- 32_CD -RRB-_-RRB- for_IN a_DT survey_NN -RRB-_-RRB- ._.
+However_RB ,_, our_PRP$ definition_NN of_IN a_DT transaction_NN is_VBZ simpler_JJR than_IN the_DT traditional_JJ notions_NNS of_IN workflows_NNS -LRB-_-LRB- e.g._FW ,_, we_PRP do_VBP not_RB use_VB sophisticated_JJ synchronization_NN primitives_NNS -RRB-_-RRB- ._.
+Hence_RB ,_, we_PRP are_VBP abl_NN
+Process_VB automaton_NN can_MD also_RB be_VB used_VBN to_TO rank_VB different_JJ concepts_NNS occurring_VBG in_IN a_DT page_NN ._.
+End_NN User_NN ProgrammingThe_NN research_NN on_IN end-user_JJ programming_NN relating_VBG to_TO our_PRP$ work_NN includes_VBZ programming_NN by_IN demonstration_NN =_JJ -_: =[_NN 9_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, agent_NN learning_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, query_NN from_IN demonstrations_NNS -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_, etc._NN ._.
+Programming_NN by_IN demonstration_NN allows_VBZ users_NNS to_TO construct_VB a_DT program_NN by_IN simply_RB performing_VBG actions_NNS in_IN the_DT user_NN interface_NN ,_, with_IN which_WDT they_PRP are_VBP alre_JJ
+per_IN has_VBZ broad_JJ connections_NNS to_TO a_DT number_NN of_IN research_NN areas_NNS ._.
+Web_NN Accessibility_NN ResearchExtent_JJ assistive_JJ technologies_NNS ,_, such_JJ as_IN screen-readers_NNS and_CC nonvisual_JJ browsers_NNS -LRB-_-LRB- e.g._FW ,_, JAWS_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, IBM_NNP 's_POS Home_NNP Page_NNP Reader_NNP =_SYM -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Windows_NNP Eyes_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, BrookesTalk_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- ,_, etc._NN -RRB-_-RRB- provide_VBP shortcuts_NNS or_CC summaries_NNS as_IN a_DT way_NN to_TO combat_VB information_NN overload_NN in_IN a_DT single_JJ page_NN ._.
+In_IN contrast_NN ,_, our_PRP$ transaction_NN model_NN uses_VBZ a_DT global_JJ view_NN of_IN the_DT conte_NN
+tion_NN process_NN ,_, clustering_NN is_VBZ just_RB one_CD of_IN several_JJ steps_NNS ._.
+Click-stream_FW AnalysisBuilding_FW Web_NN accessibility_NN models_NNS from_IN transaction_NN click-streams_NNS is_VBZ related_JJ to_TO research_NN in_IN click-stream_JJ analysis_NN and_CC mining_NN =_JJ -_: =[_NN 25_CD ,_, 6_CD ,_, 17_CD ,_, 24_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Click-stream_JJ data_NNS are_VBP mined_VBN to_TO create_VB user_NN profiles_NNS -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, suggest_VBP context-aware_JJ query_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, predicting_VBG the_DT next_JJ request_NN of_IN the_DT user_NN as_IN s\/he_NN visits_VBZ the_DT same_JJ Web_NN site_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, etc._NN ._.
+Clustering_NN and_CC categori_NN
+ntic_JJ ''_'' relationship_NN between_IN the_DT content_NN elements_NNS ._.
+A_DT number_NN of_IN papers_NNS have_VBP exploited_VBN this_DT observation_NN to_TO partition_NN web_NN pages_NNS into_IN geometric_JJ segments_NNS containing_VBG such_JJ semantically_RB related_JJ elements_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 22_CD ,_, 34_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+We_PRP define_VBP the_DT context_NN of_IN a_DT clickable_JJ object_NN Obj_NN to_TO be_VB the_DT text_NN around_IN the_DT Obj_NN that_WDT maintains_VBZ the_DT same_JJ topic_NN as_IN the_DT text_NN of_IN the_DT Obj_NNP ._.
+To_TO collect_VB the_DT context_NN ,_, a_DT simple_JJ topic-detection_JJ algorithm_NN based_VBN
+r_NN of_IN research_NN areas_NNS ._.
+Web_NN Accessibility_NN ResearchExtent_JJ assistive_JJ technologies_NNS ,_, such_JJ as_IN screen-readers_NNS and_CC nonvisual_JJ browsers_NNS -LRB-_-LRB- e.g._FW ,_, JAWS_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, IBM_NNP 's_POS Home_NNP Page_NNP Reader_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, Windows_NNP Eyes_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, BrookesTalk_NN =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =_JJ -_: ,_, etc._NN -RRB-_-RRB- provide_VBP shortcuts_NNS or_CC summaries_NNS as_IN a_DT way_NN to_TO combat_VB information_NN overload_NN in_IN a_DT single_JJ page_NN ._.
+In_IN contrast_NN ,_, our_PRP$ transaction_NN model_NN uses_VBZ a_DT global_JJ view_NN of_IN the_DT content_NN in_IN a_DT set_NN of_IN pages_NNS to_TO determine_VB wha_NN
+to_TO combat_VB information_NN overload_NN when_WRB performing_VBG web_NN transaction_NN non-visually_RB ._.
+Process_VB Automata_NNP LearningConstructing_NNP the_DT transaction_NN model_NN is_VBZ also_RB related_JJ to_TO research_NN in_IN mining_NN workflow_NN process_NN models_NNS =_JJ -_: =[_NN 27_CD ,_, 12_CD ,_, 28_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- see_VB -LRB-_-LRB- 32_CD -RRB-_-RRB- for_IN a_DT survey_NN -RRB-_-RRB- ._.
+However_RB ,_, our_PRP$ definition_NN of_IN a_DT transaction_NN is_VBZ simpler_JJR than_IN the_DT traditional_JJ notions_NNS of_IN workflows_NNS -LRB-_-LRB- e.g._FW ,_, we_PRP do_VBP not_RB use_VB sophisticated_JJ synchronization_NN primitives_NNS -RRB-_-RRB- ._.
+Hence_RB ,_, we_PRP are_VBP abl_NN

@@ -1,0 +1,239 @@
+Learning_NNP nonstationary_JJ models_NNS of_IN normal_JJ network_NN traffic_NN for_IN detecting_VBG novel_JJ attacks_NNS
+Traditional_JJ intrusion_NN detection_NN systems_NNS -LRB-_-LRB- IDS_NNP -RRB-_-RRB- detect_VBP attacks_NNS by_IN comparing_VBG current_JJ behavior_NN to_TO signatures_NNS of_IN known_JJ attacks_NNS ._.
+One_CD main_JJ drawback_NN is_VBZ the_DT inability_NN of_IN detecting_VBG new_JJ attacks_NNS which_WDT do_VBP not_RB have_VB known_VBN signatures_NNS ._.
+In_IN this_DT paper_NN we_PRP propose_VBP a_DT learning_NN algorithm_NN that_IN constructs_NNS models_NNS of_IN normal_JJ behavior_NN from_IN attack-free_JJ network_NN traffic_NN ._.
+Behavior_NN that_WDT deviates_VBZ from_IN the_DT learned_VBN normal_JJ model_NN signals_NNS possible_JJ novel_JJ attacks_NNS ._.
+Our_PRP$ IDS_NNP is_VBZ unique_JJ in_IN two_CD respects_NNS ._.
+First_RB ,_, it_PRP is_VBZ nonstationary_JJ ,_, modeling_NN probabilities_NNS based_VBN on_IN the_DT time_NN since_IN the_DT last_JJ event_NN rather_RB than_IN on_IN average_JJ rate_NN ._.
+This_DT prevents_VBZ alarm_NN floods_NNS ._.
+Second_RB ,_, the_DT IDS_NNP learns_VBZ protocol_NN vocabularies_NNS -LRB-_-LRB- at_IN the_DT data_NNS link_VBP through_IN application_NN layers_NNS -RRB-_-RRB- in_IN order_NN to_TO detect_VB unknown_JJ attacks_NNS that_WDT attempt_VBP to_TO exploit_VB implementation_NN errors_NNS in_IN poorly_RB tested_VBN features_NNS of_IN the_DT target_NN software_NN ._.
+On_IN the_DT 1999_CD DARPA_NNP IDS_NNP evaluation_NN data_NN set_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, we_PRP detect_VBP 70_CD of_IN 180_CD attacks_NNS -LRB-_-LRB- with_IN 100_CD false_JJ alarms_NNS -RRB-_-RRB- ,_, about_RB evenly_RB divided_VBN between_IN user_NN behavioral_JJ anomalies_NNS -LRB-_-LRB- IP_NNP addresses_NNS and_CC ports_NNS ,_, as_IN modeled_VBN by_IN most_JJS other_JJ systems_NNS -RRB-_-RRB- and_CC protocol_NN anomalies_NNS ._.
+Because_IN our_PRP$ methods_NNS are_VBP unconventional_JJ there_EX is_VBZ a_DT significant_JJ non-overlap_NN of_IN our_PRP$ IDS_NNP with_IN the_DT original_JJ DARPA_NNP participants_NNS ,_, which_WDT implies_VBZ that_IN they_PRP could_MD be_VB combined_VBN to_TO increase_VB coverage_NN ._.
+onarity_NN ._.
+This_DT means_VBZ that_IN the_DT concept_NN of_IN normal_JJ behavior_NN is_VBZ assumed_VBN not_RB to_TO change_VB while_IN the_DT system_NN is_VBZ being_VBG trained_VBN and_CC tested_VBN ._.
+This_DT assumption_NN violates_VBZ the_DT adaptable_JJ principle_NN ,_, a_DT problem_NN addressed_VBN in_IN =_JJ -_: =[_NN 48_CD -RRB-_-RRB- -_: =_SYM -_: for_IN network_NN traffic_NN ,_, where_WRB probabilities_NNS were_VBD based_VBN on_IN the_DT time_NN since_IN the_DT last_JJ event_NN rather_RB than_IN on_IN average_JJ rate_NN ._.
+Data_NN mining_NN seeks_VBZ to_TO discover_VB what_WP features_NNS are_VBP most_RBS important_JJ out_IN of_IN a_DT large_JJ collect_VB
+-LRB-_-LRB- 33_CD -RRB-_-RRB- ,_, use_VBP known_JJ rules_NNS to_TO identify_VB known_JJ attacks_NNS ,_, such_JJ as_IN requests_NNS for_IN nonexistent_JJ services_NNS or_CC virus_NN attack_NN signatures_NNS or_CC malicious_JJ strings_NNS in_IN packet_NN payloads_NNS ._.
+Anomaly_JJ detection_NN systems_NNS ,_, such_JJ as_IN ALAD_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, SPADE_NN -LRB-_-LRB- 35_CD -RRB-_-RRB- ,_, and_CC NIDES_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- compute_VBP statistical_JJ models_NNS for_IN normal_JJ network_NN traffic_NN and_CC generate_VB alarms_NNS when_WRB there_EX are_VBP large_JJ differences_NNS from_IN the_DT normal_JJ model_NN ._.
+These_DT methods_NNS apply_VBP statistical_JJ tests_NNS to_TO d_NN
+attacks_NNS ,_, their_PRP$ presence_NN is_VBZ necessary_JJ for_IN two_CD reasons_NNS :_: to_TO help_VB detect_VB an_DT attack_NN in_IN progress_NN ,_, as_RB well_RB as_IN to_TO determine_VB probes_NNS of_IN the_DT service_NN network_NN ,_, which_WDT may_MD be_VB a_DT precursor_NN sign_NN to_TO an_DT impending_JJ attack_NN =_JJ -_: =[_NN 45_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+SABER_NN employs_VBZ both_CC the_DT two_CD most_RBS common_JJ forms_NNS of_IN intrusion_NN detection_NN :_: Surveillance_NN detection_NN looks_VBZ for_IN known_JJ bad_JJ types_NNS of_IN network_NN traffic_NN ,_, an_DT excess_NN of_IN which_WDT might_MD indicate_VB an_DT attempt_NN at_IN a_DT stealthy_JJ s_NN
+is_VBZ presented_VBN in_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+One_CD approach_NN uses_VBZ a_DT prediction_NN model_NN obtained_VBN by_IN training_NN decision_NN trees_NNS over_IN normal_JJ data_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, while_IN others_NNS use_VBP neural_JJ networks_NNS to_TO obtain_VB the_DT model_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- or_CC non-stationary_JJ models_NNS =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: to_TO detect_VB novel_JJ attacks_NNS ._.
+Lane_NNP and_CC Brodley_NNP -LRB-_-LRB- 17_CD -RRB-_-RRB- performed_VBD anomaly_RB detection_NN on_IN unlabeled_JJ data_NNS by_IN looking_VBG at_IN user_NN profiles_NNS and_CC comparing_VBG the_DT activity_NN during_IN an_DT intrusion_NN to_TO the_DT activity_NN during_IN normal_JJ u_NN
+dentify_VB ``_`` normal_JJ ''_'' system_NN call_NN sequences_NNS for_IN a_DT certain_JJ application_NN ._.
+These_DT application-specific_JJ profiles_NNS are_VBP then_RB used_VBN to_TO identifyattacks_NNS that_WDT produce_VBP previouslyunseen_NN sequences_NNS ._.
+As_IN another_DT example_NN ,_, in_IN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: the_DT authors_NNS use_VBP statistical_JJ analysis_NN of_IN network_NN traffic_NN to_TO learn_VB the_DT normal_JJ behavior_NN of_IN network-based_JJ applications_NNS ._.
+This_DT is_VBZ done_VBN byanalyzing_VBG both_CC packet_NN header_NN information_NN -LRB-_-LRB- e.g._FW ,_, source\/destination_NN p_NN
+succeed_VB ,_, since_IN network_NN characteristics_NNS can_MD change_VB only_RB upon_IN a_DT successful_JJ attack_NN ._.
+Several_JJ other_JJ works_NNS identify_VBP low-volume_JJ attack_NN activity_NN using_VBG only_JJ analysis_NN of_IN network_NN characteristics_NNS ._.
+Mahoney_NNP et_FW al._FW =_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: build_VB models_NNS of_IN IP_NNP and_CC TCP_NNP header_NN fields_NNS ,_, as_RB well_RB as_IN application-level_JJ fields_NNS for_IN protocols_NNS like_IN HTTP_NNP ._.
+Their_PRP$ approach_NN uses_VBZ Bayesian_JJ estimation_NN techniques_NNS for_IN detecting_VBG deviations_NNS from_IN this_DT model_NN ._.
+ADA_NN
+succeed_VB ,_, since_IN network_NN characteristics_NNS can_MD change_VB only_RB upon_IN a_DT successful_JJ attack_NN ._.
+Several_JJ other_JJ works_NNS identify_VBP low-volume_JJ attack_NN activity_NN using_VBG only_JJ analysis_NN of_IN network_NN characteristics_NNS ._.
+Mahoney_NNP et_FW al._FW =_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: build_VB models_NNS of_IN IP_NNP and_CC TCP_NNP header_NN fields_NNS ,_, as_RB well_RB as_IN application-level_JJ fields_NNS for_IN protocols_NNS like_IN HTTP_NNP ._.
+Their_PRP$ approach_NN uses_VBZ Bayesian_JJ estimation_NN techniques_NNS for_IN detecting_VBG deviations_NNS from_IN this_DT model_NN ._.
+ADA_NN
+vasan_VB Parthasarathy_NNP Department_NNP of_IN Computer_NNP Science_NNP and_CC Engineering_NNP The_NNP Ohio_NNP State_NNP University_NNP Columbus_NNP ,_, USA_NNP Contact_NN Author_NN Email:srini@cse.ohio-state.edu_NN analysis_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, and_CC network_NN intrusion_NN detection_NN =_JJ -_: =[_NN 16_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: to_TO its_PRP$ use_NN as_IN a_DT preprocessing_VBG step_NN for_IN assessing_VBG the_DT quality_NN of_IN data_NNS and_CC as_IN a_DT precursor_NN to_TO various_JJ data_NNS mining_NN algorithms_NNS that_WDT are_VBP heavily_RB influenced_VBN by_IN the_DT presence_NN of_IN outliers_NNS ._.
+In_IN layman_NN 's_POS terms_NNS ,_, t_NN
+nnesota_RB ,_, more_JJR than_IN one_CD million_CD flows_NNS are_VBP collected_VBN in_IN every_DT 10_CD minute_NN window_NN ._.
+Manual_JJ monitoring_NN of_IN this_DT data_NN is_VBZ impossible_JJ and_CC motivates_VBZ the_DT need_NN for_IN data_NN mining_NN techniques_NNS ._.
+Anomaly_JJ detection_NN systems_NNS =_JJ -_: =[_NN 9_CD ,_, 17_CD ,_, 4_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: can_MD be_VB used_VBN to_TO score_VB these_DT flows_NNS ,_, and_CC the_DT analyst_NN typically_RB looks_VBZ at_IN only_RB the_DT most_RBS anomalous_JJ flows_NNS to_TO identify_VB attacks_NNS or_CC other_JJ undesirable_JJ behavior_NN ._.
+In_IN a_DT typical_JJ window_NN of_IN data_NNS being_VBG analyzed_VBN ,_, there_EX
+nnesota_RB ,_, more_JJR than_IN one_CD million_CD flows_NNS are_VBP collected_VBN in_IN every_DT 10_CD minute_NN window_NN ._.
+Manual_JJ monitoring_NN of_IN this_DT data_NN is_VBZ impossible_JJ and_CC motivates_VBZ the_DT need_NN for_IN data_NN mining_NN techniques_NNS ._.
+Anomaly_JJ detection_NN systems_NNS =_JJ -_: =[_NN 8_CD ,_, 16_CD ,_, 4_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: can_MD be_VB used_VBN to_TO score_VB these_DT flows_NNS ,_, and_CC the_DT analyst_NN typically_RB looks_VBZ at_IN only_RB the_DT most_RBS anomalous_JJ flows_NNS to_TO identify_VB attacks_NNS or_CC other_JJ undesirable_JJ behavior_NN ._.
+Table_NNP 2_CD shows_VBZ 17_CD flows_NNS which_WDT were_VBD ranked_VBN as_IN most_JJS
+,_, etc._NN deemed_VBD to_TO be_VB relevant_JJ for_IN detection_NN of_IN specific_JJ attacks_NNS ._.
+Similar_JJ features_NNS comprising_VBG selected_VBN keywords_NNS from_IN application_NN layer_NN protocols_NNS have_VBP been_VBN used_VBN by_IN Mahoney_NNP and_CC Chan_NNP for_IN anomaly_RB detection_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+General_JJ content-based_JJ features_NNS using_VBG payload_NN distribution_NN of_IN specific_JJ byte_NN groups_NNS have_VBP been_VBN first_RB proposed_VBN by_IN Kruegel_NNP et_FW al._FW -LRB-_-LRB- 7_CD -RRB-_-RRB- in_IN the_DT context_NN of_IN servicespecific_JJ anomaly_NN detection_NN using_VBG separate_JJ no_DT
+res_NNS -LRB-_-LRB- e.g._FW ,_, unusual_JJ input_NN that_WDT exploit_VBP bugs_NNS in_IN software_NN -RRB-_-RRB- ._.
+Details_NNS of_IN our_PRP$ findings_NNS are_VBP described_VBN in_IN -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Furthermore_RB ,_, details_NNS of_IN our_PRP$ results_NNS of_IN our_PRP$ earlier_JJR and_CC simplier_JJR algorithms_NNS PHAD_NNP and_CC ALAD_NNP are_VBP in_IN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ PHAD_NNP algorithm_NN was_VBD adapted_VBN to_TO detect_VB attacks_NNS by_IN modeling_NN accesses_VBZ to_TO the_DT Registry_NNP in_IN the_DT Windows_NNP OS_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+4_CD Clustering_NN for_IN Anomaly_JJ Detection_NN -LRB-_-LRB- CLAD_NN -RRB-_-RRB- LEARD_NN assumes_VBZ the_DT training_NN data_NNS are_VBP free_JJ of_IN att_NN
+f_LS network-based_JJ IDS_NNP ,_, where_WRB detection_NN is_VBZ accomplished_VBN by_IN analyzing_VBG payload_NN features_NNS such_JJ as_IN byte_NN distributions_NNS or_CC ,_, more_RBR generally_RB ,_, n-gram_NN or_CC more_JJR complex_JJ models_NNS -LRB-_-LRB- such_JJ as_IN ,_, e.g._FW ,_, -LRB-_-LRB- 43_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 44_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Fogla_FW et_FW al._FW introduced_VBN in_IN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- polymorphic_JJ blending_NN attacks_NNS ,_, where_WRB the_DT main_JJ idea_NN is_VBZ to_TO generate_VB each_DT attack_NN instance_NN in_IN such_PDT a_DT way_NN that_IN its_PRP$ statistics_NNS match_VBP the_DT profile_NN of_IN normalcy_NN
+,_, etc._NN deemed_VBD to_TO be_VB relevant_JJ for_IN detection_NN of_IN specific_JJ attacks_NNS ._.
+Similar_JJ features_NNS comprising_VBG selected_VBN keywords_NNS from_IN application_NN layer_NN protocols_NNS have_VBP been_VBN used_VBN by_IN Mahoney_NNP and_CC Chan_NNP for_IN anomaly_RB detection_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+General_JJ content-based_JJ features_NNS using_VBG payload_NN distribution_NN of_IN specific_JJ byte_NN groups_NNS have_VBP been_VBN first_RB proposed_VBN by_IN Kruegel_NNP et_FW al._FW -LRB-_-LRB- 6_CD -RRB-_-RRB- in_IN the_DT context_NN of_IN service-specific_JJ anomaly_NN detection_NN using_VBG separate_JJ n_NN
+here_RB exists_VBZ several_JJ possibilities_NNS for_IN implicit_JJ definitions_NNS ;_: we_PRP herein_RB focus_VB on_IN two_CD concepts_NNS of_IN string_NN features_NNS which_WDT have_VBP been_VBN widely_RB studied_VBN in_IN the_DT context_NN of_IN payload-based_JJ anomaly_NN detection_NN :_: tokens_NNS =_JJ -_: =[_NN 6_CD ;_: 7_CD ;_: 9_CD ;_: 10_CD -RRB-_-RRB- -_: =_JJ -_: and_CC q-grams_NN -LRB-_-LRB- 8_CD ;_: 12_CD --_: 14_CD -RRB-_-RRB- ._.
+Tokens_NNS :_: Several_JJ network_NN protocols_NNS at_IN the_DT application_NN layer_NN ,_, ranging_VBG from_IN first_JJ versions_NNS of_IN FTP_NN to_TO the_DT modern_JJ signaling_NN protocols_NNS ,_, employ_VBP a_DT textual_JJ representation_NN ,_, that_DT is_VBZ ,_, the_DT
+as_IN SPAD_NNP does_VBZ -RRB-_-RRB- ,_, it_PRP also_RB monitors_VBZ subnets_NNS ,_, TCP_NN state_NN flags_NNS ._.
+Sessions_NNP which_WDT do_VBP not_RB match_VB any_DT learned_VBN category_NN -LRB-_-LRB- normal_JJ or_CC known_JJ attack_NN -RRB-_-RRB- are_VBP flagged_VBN as_IN anomalous_JJ -LRB-_-LRB- novel_JJ attack_NN -RRB-_-RRB- ._.
+PHAD_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, ALAD_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, LERAD_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, NETAD_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- differ_VBP in_IN the_DT attributes_NNS that_IN they_PRP monitor_VBP ._.
+PHAD_NN -LRB-_-LRB- Packet_NN Header_NNP Anomaly_NNP Detector_NNP -RRB-_-RRB- has_VBZ 34_CD attributes_NNS ,_, corresponding_VBG to_TO the_DT Ethernet_NNP ,_, IP_NNP ,_, TCP_NNP ,_, UDP_NNP ,_, and_CC ICMP_NN packet_NN header_NN fields_NNS ._.
+It_PRP builds_VBZ a_DT
+deviations_NNS -LRB-_-LRB- or_CC changes_NNS -RRB-_-RRB- in_IN daily_JJ network_NN traffic_NN ._.
+Hence_RB ,_, we_PRP concentrate_VBP on_IN detecting_VBG anomalies_NNS from_IN network_NN connection_NN data_NNS ._.
+Although_IN anomaly_JJ detection_NN has_VBZ been_VBN deeply_RB investigated_VBN in_IN the_DT literature_NN =_JJ -_: =[_NN 7,8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, all_DT proposed_VBN methods_NNS assume_VBP that_IN data_NNS are_VBP stored_VBN in_IN a_DT single_JJ table_NN of_IN a_DT relational_JJ database_NN -LRB-_-LRB- attribute-value_JJ representation_NN -RRB-_-RRB- ._.
+This_DT representation_NN allows_VBZ efficient_JJ algorithmic_JJ solution_NN but_CC it_PRP does_VBZ no_DT
+._.
+Paxson_NNP ,_, 1999_CD -RRB-_-RRB- ._.
+Because_IN this_DT approach_NN often_RB fails_VBZ to_TO detect_VB novel_JJ intrusions_NNS ,_, a_DT variety_NN of_IN researchers_NNS have_VBP proposed_VBN incorporating_VBG machine_NN learning_NN techniques_NNS into_IN intrusion_NN detection_NN systems_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =_JJ Mahoney_NNP and_CC Chan_NNP ,_, 2002_CD -_: =_JJ -_: ,_, Lazarevic_NNP et_FW al._FW ,_, 2003_CD ,_, Mukkamala_NNP et_FW al._FW ,_, 2002_CD ,_, Eskin_NNP et_FW al._FW ,_, 2002_CD -RRB-_-RRB- ._.
+Machine_NN learning_NN techniques_NNS offer_VBP the_DT benefit_NN that_IN they_PRP can_MD detect_VB novel_JJ differences_NNS in_IN traffic_NN -LRB-_-LRB- which_WDT presumably_RB represent_VBP attac_NN
+in_IN many_JJ cases_NNS ,_, finding_VBG a_DT matching_JJ distribution_NN is_VBZ very_RB hard_JJ ._.
+Probabilistic_JJ models_NNS that_WDT infer_VBP distribution_NN based_VBN on_IN sample_NN data_NNS compensate_VBP for_IN this_DT difficulty_NN but_CC often_RB show_VBP high_JJ false_JJ positive_JJ rates_NNS =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Non-parametric_JJ approaches_NNS using_VBG distancebased_JJ and_CC density-based_JJ methods_NNS attempt_VBP to_TO overcome_VB this_DT limitation_NN ._.
+Knorr_NN and_CC Ng_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- proposed_VBD the_DT first_JJ distance-based_JJ algorithm_NN ,_, where_WRB a_DT point_NN is_VBZ regarded_VBN
+tes_NNS in_IN a_DT 20_CD grid_NN network_NN ,_, with_IN a_DT source_NN node_NN at_IN -LRB-_-LRB- 0,0_CD -RRB-_-RRB- ._.
+xi_NN -LRB-_-LRB- k_NN +1_NN -RRB-_-RRB- =_JJ 1_CD |_FW Ni_FW |_FW +1_FW ∑_FW j_FW ∈_FW Ni_NN -LRB-_-LRB- k_NN -RRB-_-RRB- xj_NN -LRB-_-LRB- k_NN -RRB-_-RRB- -LRB-_-LRB- 1_LS -RRB-_-RRB- The_DT source_NN node_NN v1_NN uses_VBZ a_DT slightly_RB different_JJ state_NN update_VBP equation_NN :_: ⎛_NN 1_CD x1_NN -LRB-_-LRB- k_NN +1_NN -RRB-_-RRB- =_JJ ⎝_FW |_FW N1_FW |_FW +1_FW ⎞_FW xj_FW -LRB-_-LRB- k_NN -RRB-_-RRB- +_CC s_NN ⎠_NN ,_, =_JJ -_: =-LRB-_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: j_FW ∈_FW N1_NN -LRB-_-LRB- k_NN -RRB-_-RRB- where_WRB s_NN ,_, called_VBD the_DT source_NN strength_NN ,_, is_VBZ a_DT user_NN specified_JJ scalar_NN ._.
+Previously_RB it_PRP was_VBD proved_VBN that_IN the_DT state_NN of_IN each_DT node_NN converges_VBZ ,_, after_IN a_DT number_NN of_IN iterations_NNS ,_, to_TO a_DT positive_JJ value_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+We_PRP defi_VBP
+Of_IN particular_JJ interest_NN to_TO this_DT study_NN ,_, statistical_JJ learning_NN is_VBZ being_VBG employed_VBN in_IN security-sensitive_JJ applications_NNS such_JJ as_IN spam_NN filtering_VBG -LRB-_-LRB- 47_CD ,_, 66_CD -RRB-_-RRB- ,_, virus_NN detection_NN -LRB-_-LRB- 74_CD ,_, 75_CD -RRB-_-RRB- ,_, adaptive_JJ intrusion_NN detection_NN =_JJ -_: =[_NN 38_CD -RRB-_-RRB- -_: =_JJ -_: ,_, fault_NN detection_NN -LRB-_-LRB- 89_CD -RRB-_-RRB- ,_, and_CC fraud_NN detection_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- systems_NNS ._.
+In_IN such_JJ environments_NNS ,_, there_EX is_VBZ a_DT potential_JJ and_CC very_RB real_JJ threat_NN of_IN malicious_JJ users_NNS attempting_VBG to_TO subvert_VB these_DT statistical_JJ learning_NN techniques_NNS
+lly_RB come_VBN up_RP with_IN new_JJ ways_NNS to_TO avoid_VB detection_NN ._.
+Similar_JJ arms_NNS races_NNS are_VBP found_VBN in_IN many_JJ other_JJ domains_NNS :_: computer_NN intrusion_NN detection_NN ,_, where_WRB new_JJ attacks_NNS circumvent_VBP the_DT defenses_NNS put_VBN in_IN place_NN against_IN old_JJ ones_NNS =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ;_: fraud_NN detection_NN ,_, where_WRB perpetrators_NNS learn_VBP to_TO avoid_VB the_DT actions_NNS that_WDT previously_RB gave_VBD them_PRP away_RB -LRB-_-LRB- 5_CD ,_, 25_CD -RRB-_-RRB- ;_: counter-terrorism_NN ,_, where_WRB terrorists_NNS disguise_VBP their_PRP$ identity_NN and_CC activities_NNS in_IN ever-shifting_JJ way_NN
+rules_NNS to_TO identify_VB known_JJ attacks_NNS ,_, for_IN example_NN ,_, virus_NN signatures_NNS in_IN the_DT application_NN payload_NN ,_, and_CC requests_NNS to_TO nonexistent_JJ services_NNS or_CC hosts_NNS ._.
+Anomaly_JJ detection_NN systems_NNS such_JJ as_IN SPADE_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, NIDES_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, PHAD_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, ALAD_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- compute_VB -LRB-_-LRB- statistical_JJ -RRB-_-RRB- models_NNS for_IN normal_JJ network_NN traffic_NN and_CC generate_VB alarms_NNS when_WRB there_EX is_VBZ a_DT large_JJ deviation_NN from_IN the_DT normal_JJ model_NN ._.
+These_DT systems_NNS differ_VBP in_IN the_DT features_NNS extracted_VBN from_IN avail_NN
+uch_NN as_IN those_DT on_IN the_DT HTTP_NN protocol_NN ,_, and_CC worms_NNS -LRB-_-LRB- see_VB Wang_NNP and_CC Stolfo_NNP -LRB-_-LRB- 31_CD -RRB-_-RRB- and_CC Costa_NNP et_FW al._FW -LRB-_-LRB- 9_CD -RRB-_-RRB- for_IN a_DT discussion_NN -RRB-_-RRB- ._.
+Notably_RB ,_, PAYL_NN and_CC the_DT system_NN of_IN Kruegel_NNP et_FW al._FW -LRB-_-LRB- 19_CD -RRB-_-RRB- are_VBP mainly_RB payload-based_JJ ,_, while_IN PHAD_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ partly_RB payload_NN based_VBN ._.
+Contribution_NN In_IN this_DT paper_NN we_PRP propose_VBP POSEIDON_NNP -LRB-_-LRB- Payl_NNP Over_NNP Som_NNP for_IN Intrusion_NNP DetectiON_NNP -RRB-_-RRB- :_: a_DT two-tier_JJ network_NN intrusion_NN detection_NN architecture_NN ._.
+The_DT first_JJ tier_NN consists_VBZ of_IN a_DT self_NN
+1_LS -RRB-_-RRB- ,_, -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+2_LS -RRB-_-RRB- Positive_JJ characterization_NN :_: The_DT normal_JJ samples_NNS are_VBP used_VBN for_IN building_VBG a_DT model_NN of_IN the_DT normal_JJ space_NN ,_, for_IN example_NN a_DT set_NN of_IN rules_NNS that_WDT define_VBP the_DT normal_JJ space_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+3_LS -RRB-_-RRB- Artificial_JJ anomaly_NN generation_NN :_: The_DT normal_JJ samples_NNS are_VBP used_VBN for_IN generating_VBG artificial_JJ anomalies_NNS ,_, samples_NNS that_WDT belong_VBP to_TO the_DT positive_JJ class_NN ,_, and_CC then_RB a_DT classifier_NN learning_NN technique_NN is_VBZ used_VBN for_IN gen_NN
+s_NNS -RRB-_-RRB- ._.
+5_CD Related_NNP Work_NNP Even_RB though_IN feature_NN selection_NN is_VBZ well_RB known_VBN as_IN a_DT critical_JJ step_NN for_IN intrusion_NN detection_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, most_JJS research_NN on_IN AID_NN techniques_NNS utilize_VBP expert_JJ knowledge_NN to_TO select_VB the_DT features_NNS manually_RB =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC there_EX are_VBP only_RB a_DT few_JJ reported_VBN work_NN relating_VBG to_TO feature_VB evaluation_NN for_IN intrusion_NN detection_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+In_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, feature_NN ranking_NN is_VBZ done_VBN by_IN evaluating_VBG the_DT whole_JJ performance_NN for_IN intrusion_NN detection_NN ._.
+In_IN
+computing_NN resource_NN ._.
+To_TO make_VB up_RP for_IN the_DT incompleteness_NN ,_, most_JJS existing_VBG `_`` model_NN building_NN '_'' techniques_NNS try_VBP to_TO infer_VB the_DT unknown_JJ behaviors_NNS via_IN model_NN generalization_NN -LRB-_-LRB- Debar_NNP et_FW al._FW -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, Lee_NNP et_FW al._FW -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, Chan_NNP et_FW al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, model_NN generalization_NN may_MD lead_VB to_TO model_NN inaccuracy_NN -LRB-_-LRB- Figure_NN 1_CD -RRB-_-RRB- ,_, and_CC model_NN generalization_NN can_MD not_RB solve_VB the_DT incompleteness_NN problem_NN completely_RB under_IN most_JJS scenarios_NNS where_WRB it_PRP infers_VBZ part_NN but_CC not_RB
+usion_NN detection_NN ._.
+For_IN example_NN ,_, SID_NNP only_RB uses_VBZ the_DT knowledge_NN about_IN well-known_JJ intrusions_NNS -LRB-_-LRB- e.g._FW ,_, Snort_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+For_IN AID_NNP ,_, it_PRP is_VBZ the_DT knowledge_NN about_IN the_DT normal_JJ behaviors_NNS of_IN the_DT computing_NN resources_NNS -LRB-_-LRB- e.g._FW ,_, LERAD_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, MADAM_NNP ID_NNP -LRB-_-LRB- 7_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+In_IN our_PRP$ research_NN ,_, we_PRP try_VBP to_TO use_VB all_PDT the_DT available_JJ knowledge_NN about_IN the_DT behaviors_NNS -LRB-_-LRB- intrusive_JJ and_CC normal_JJ -RRB-_-RRB- in_IN the_DT historical_JJ data_NNS to_TO detect_VB intrusions_NNS ._.
+Our_PRP$ main_JJ contributions_NNS in_IN this_DT paper_NN
+the_DT limits_NNS of_IN the_DT knowledge_NN collection_NN tools_NNS ._.
+To_TO make_VB up_RP for_IN the_DT knowledge_NN incompleteness_NN ,_, most_JJS existing_VBG intrusion_NN detection_NN techniques_NNS try_VBP to_TO infer_VB the_DT unknown_JJ behaviors_NNS via_IN model_NN generalization_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, as_IN a_DT part_NN of_IN effort_NN to_TO analyze_VB the_DT problems_NNS in_IN intrusion_NN detection_NN ,_, we_PRP evaluate_VBP the_DT usefulness_NN of_IN the_DT model_NN generalization_NN led_VBD to_TO by_IN M_NN of_IN N_NN features_NNS in_IN a_DT signature_NN with_IN respect_NN to_TO its_PRP$
+me_PRP way_NN as_IN a_DT virus_NN scanner_NN by_IN search1_NN ing_NN for_IN a_DT known_JJ identity_NN or_CC signature_NN for_IN each_DT specific_JJ intrusion_NN event_NN ._.
+In_IN contrast_NN ,_, an_DT anomaly_JJ detection_NN system_NN such_JJ as_IN SPADE_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, NIDES_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, ADAM_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, or_CC PHAD_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: builds_VBZ a_DT model_NN of_IN normal_JJ traffic_NN and_CC detects_VBZ deviations_NNS from_IN the_DT normal_JJ model_NN ._.
+A_DT large_JJ departure_NN of_IN any_DT traffic_NN from_IN the_DT normal_JJ model_NN is_VBZ likely_JJ to_TO be_VB anomalous_JJ ._.
+An_DT extensive_JJ review_NN of_IN various_JJ approac_NN
+the_DT CLP_NNP of_IN each_DT packet_NN with_IN a_DT dynamic_JJ threshold_NN ._.
+The_DT concept_NN of_IN using_VBG a_DT baseline_NN profile_NN with_IN Bayesian_JJ theorem_NN has_VBZ been_VBN used_VBN previously_RB in_IN anomaly-based_JJ IDS_NNP -LRB-_-LRB- Intrusion_NNP Detection_NN System_NN -RRB-_-RRB- applications_NNS =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB the_DT goals_NNS are_VBP generally_RB attack_NN detection_NN rather_RB than_IN real-time_JJ packet_NN filtering_VBG ._.
+In_IN this_DT research_NN ,_, we_PRP extend_VBP the_DT basic_JJ concept_NN to_TO a_DT practical_JJ real-time_JJ packet_NN filtering_VBG scheme_NN using_VBG elaborate_JJ
+her_PRP the_DT test_NN data_NNS belongs_VBZ to_TO ``_`` normal_JJ ''_'' or_CC to_TO an_DT anomalous_JJ behavior_NN ._.
+Recently_RB ,_, there_EX have_VBP been_VBN several_JJ efforts_NNS in_IN designing_VBG supervised_JJ network-based_JJ anomaly_NN detection_NN algorithms_NNS ,_, such_JJ as_IN ADAM_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, PHAD_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, NIDES_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, and_CC other_JJ techniques_NNS that_WDT use_VBP neural_JJ networks_NNS -LRB-_-LRB- 32_CD -RRB-_-RRB- ,_, information_NN theoretic_JJ measures_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, network_NN activity_NN models_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- etc._NN ._.
+Unlike_IN supervised_JJ anomaly_NN detection_NN where_WRB the_DT models_NNS are_VBP built_VBN on_IN
+Some_DT systems_NNS treat_VBP web_NN servers_NNS as_IN a_DT generic_JJ network_NN service_NN ._.
+Incoming_JJ and_CC outgoing_JJ traffic_NN are_VBP modeled_VBN as_IN a_DT stream_NN of_IN bytes_NNS or_CC as_IN discrete_JJ packets_NNS ._.
+Some_DT approaches_NNS search_VBP for_IN anomalous_JJ packet_NN headers_NNS =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_JJ -_: ,_, while_IN others_NNS look_VBP for_IN patterns_NNS in_IN the_DT first_JJ few_JJ packets_NNS of_IN connections_NNS -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+Packet_NN payloads_NNS are_VBP natural_JJ places_NNS to_TO look_VB for_IN malicious_JJ content_NN ._.
+Wang_NNP and_CC Stolfo_NNP -LRB-_-LRB- 33_CD -RRB-_-RRB- modeled_VBD packet_NN payloads_NNS by_IN compari_NNS
+t_NN network_NN intrusions_NNS ._.
+This_DT technique_NN extended_VBD the_DT network_NN traffic_NN model_NN to_TO include_VB a_DT larger_JJR number_NN of_IN attributes_NNS ._.
+They_PRP also_RB introduced_VBD and_CC used_VBD the_DT concept_NN of_IN a_DT non-stationary_JJ model_NN in_IN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 14_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, in_IN which_WDT the_DT probability_NN of_IN an_DT event_NN depends_VBZ upon_IN its_PRP$ most_RBS recent_JJ occurrence_NN and_CC not_RB on_IN the_DT frequency_NN ._.
+LERAD_NN is_VBZ a_DT conditional_JJ rule-learning_JJ algorithm_NN that_WDT selects_VBZ good_JJ rules_NNS from_IN a_DT vast_JJ rule_NN space_NN ._.
+e_LS probability_NN of_IN detection_NN is_VBZ highest_JJS for_IN the_DT most_RBS malicious_JJ attack_NN -LRB-_-LRB- the_DT inside_NN scan_VB -RRB-_-RRB- ,_, and_CC lowest_JJS for_IN the_DT two_CD probes_NNS ._.
+LERAD_NNP is_VBZ based_VBN on_IN our_PRP$ simpler_JJR algorithms_NNS PHAD_NNP and_CC ALAD_NNP ,_, which_WDT use_VBP fixed_JJ rule_NN sets_VBZ =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+PHAD_NN was_VBD also_RB adapted_VBN to_TO detect_VB attacks_NNS by_IN modeling_NN accesses_VBZ to_TO the_DT Registry_NNP in_IN the_DT Windows_NNP OS_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+4_LS ._.
+Clustering_NN for_IN Anomaly_JJ Detection_NN -LRB-_-LRB- CLAD_NN -RRB-_-RRB- LERAD_NN assumes_VBZ the_DT training_NN data_NNS are_VBP free_JJ of_IN attacks_NNS ,_, ho_FW
+systems_NNS and_CC networking_VBG domain_NN as_IN an_DT analysis_NN and_CC detection_NN tool_NN ._.
+This_DT trend_NN has_VBZ emerged_VBN in_IN several_JJ fields_NNS including_VBG spam_NN filtering_VBG -LRB-_-LRB- 8_CD ,_, 11_CD -RRB-_-RRB- ,_, virus_NN detection_NN -LRB-_-LRB- 13_CD ,_, 14_CD -RRB-_-RRB- ,_, and_CC adaptive_JJ intrusion_NN detection_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, deployments_NNS of_IN learning_VBG techniques_NNS in_IN security-sensitive_JJ systems_NNS and_CC networking_VBG applications_NNS raises_VBZ the_DT question_NN of_IN whether_IN or_CC not_RB these_DT learners_NNS could_MD be_VB misled_VBN by_IN a_DT cleverly_RB crafted_VBN attac_NN
+entify_VB ``_`` normal_JJ ''_'' system_NN call_NN sequences_NNS for_IN a_DT certain_JJ application_NN ._.
+These_DT application-specific_JJ profiles_NNS are_VBP then_RB used_VBN to_TO identifysattacks_NNS that_WDT produce_VBP previously_RB unseen_JJ sequences_NNS ._.
+As_IN another_DT example_NN ,_, in_IN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: the_DT authors_NNS use_VBP statistical_JJ analysis_NN of_IN network_NN traffic_NN to_TO learn_VB the_DT normal_JJ behavior_NN of_IN network-based_JJ applications_NNS ._.
+This_DT is_VBZ done_VBN by_IN analyzing_VBG both_CC packet_NN header_NN information_NN -LRB-_-LRB- e.g._FW ,_, source\/destination_NN
+eir_NN systems_NNS ,_, both_DT as_IN part_NN of_IN the_DT DARPA_NNP evaluation_NN ,_, as_RB well_RB as_IN independently_RB -LRB-_-LRB- Lippmann_NNP and_CC Cunningham_NNP 1999_CD ;_: Lee_NNP 1999_CD ;_: Lee_NNP et_FW al._FW 1999a_CD ;_: Lee_NNP et_FW al._FW 1999b_CD ;_: Neri_NNP 2000a_CD ;_: Ghosh_NNP et_FW al._FW 1999_CD ;_: Li_NNP et_FW al._FW 2002_CD ;_: =_JJ -_: =_JJ Mahoney_NNP and_CC Chan_NNP 2002_CD -_: =--RRB-_NN ._.
+In_IN response_NN to_TO the_DT 1998_CD challenge_NN ,_, McHugh_NNP wrote_VBD a_DT rather_RB scathing_JJ critique_NN of_IN 13sthe_NN evaluation_NN -LRB-_-LRB- 2000_CD -RRB-_-RRB- ._.
+While_IN he_PRP presents_VBZ many_JJ good_JJ points_NNS on_IN how_WRB an_DT evaluation_NN of_IN IDSs_NNS should_MD be_VB performed_VBN ,_, he_PRP also_RB
+is_VBZ presented_VBN in_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+One_CD approach_NN uses_VBZ a_DT prediction_NN model_NN obtained_VBN by_IN training_NN decision_NN trees_NNS over_IN normal_JJ data_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, while_IN others_NNS use_VBP neural_JJ networks_NNS to_TO obtain_VB the_DT model_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- or_CC non-stationary_JJ models_NNS =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: to_TO detect_VB novel_JJ attacks_NNS ._.
+Lane_NNP and_CC Brodley_NNP -LRB-_-LRB- 17_CD -RRB-_-RRB- performed_VBD anomaly_RB detection_NN on_IN unlabeled_JJ data_NNS by_IN looking_VBG at_IN user_NN profiles_NNS and_CC comparing_VBG the_DT activity_NN during_IN an_DT intrusion_NN to_TO the_DT activity_NN during_IN normal_JJ u_NN
+s_NNS such_JJ as_IN those_DT on_IN intrusion_NN detecChris_NNP Clifton_NNP Purdue_NNP University_NNP West_NNP Lafayette_NNP ,_, IN_IN 47907_CD ,_, USA_NNP clifton@cs.purdue.edu_NNP Bowei_NNP Xi_NN Purdue_NNP University_NNP West_NNP Lafayette_NNP ,_, IN_IN 47907_CD ,_, USA_NN xbw@stat.purdue.edu_NN tion_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: These_DT problems_NNS pose_VBP a_DT significant_JJ new_JJ challenge_NN not_RB addressed_VBN in_IN previous_JJ research_NN :_: The_DT behavior_NN of_IN a_DT class_NN -LRB-_-LRB- the_DT adversary_NN -RRB-_-RRB- may_MD adapt_VB to_TO avoid_VB detection_NN ._.
+A_DT classifier_NN constructed_VBN by_IN the_DT data_NNS miner_NN in_IN
+Some_DT systems_NNS treat_VBP web_NN servers_NNS as_IN a_DT generic_JJ network_NN service_NN ._.
+Incoming_JJ and_CC outgoing_JJ traffic_NN are_VBP modeled_VBN as_IN a_DT stream_NN of_IN bytes_NNS or_CC as_IN discrete_JJ packets_NNS ._.
+Some_DT approaches_NNS search_VBP for_IN anomalous_JJ packet_NN headers_NNS =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_JJ -_: ,_, while_IN others_NNS look_VBP for_IN patterns_NNS in_IN the_DT first_JJ few_JJ packets_NNS of_IN connections_NNS -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+Packet_NN payloads_NNS are_VBP natural_JJ places_NNS to_TO look_VB for_IN malicious_JJ content_NN ._.
+Wang_NNP and_CC Stolfo_NNP -LRB-_-LRB- 33_CD -RRB-_-RRB- modeled_VBD packet_NN payloads_NNS by_IN compari_NNS
+e_LS realistic_JJ settings_NNS ._.
+We_PRP discuss_VBP an_DT outlier_NN detection_NN technique_NN ._.
+Outlier_NN detection_NN is_VBZ the_DT task_NN of_IN identifying_VBG anomalous_JJ data_NNS and_CC is_VBZ a_DT widely_RB used_VBN paradigm_NN in_IN fault_NN detection_NN -LRB-_-LRB- 40_CD -RRB-_-RRB- ,_, intrusion_NN detection_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC virus_NN detection_NN -LRB-_-LRB- 33_CD ,_, 34_CD -RRB-_-RRB- ._.
+We_PRP find_VBP the_DT smallest_JJS region_NN that_WDT contains_VBZ some_DT fixed_JJ percentage_NN of_IN the_DT observed_VBN data_NNS ,_, which_WDT is_VBZ called_VBN the_DT support_NN of_IN the_DT data_NN 's_POS distribution_NN ._.
+The_DT outlier_NN detector_NN class_NN
+is_VBZ presented_VBN in_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+One_CD approach_NN uses_VBZ a_DT prediction_NN model_NN obtained_VBN by_IN training_NN decision_NN trees_NNS over_IN normal_JJ data_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, while_IN others_NNS use_VBP neural_JJ networks_NNS to_TO obtain_VB the_DT model_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- or_CC nonstationary_JJ models_NNS =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: to_TO detect_VB novel_JJ attacks_NNS ._.
+Lane_NNP and_CC Brodley_NNP -LRB-_-LRB- 17_CD -RRB-_-RRB- performed_VBD anomaly_RB detection_NN on_IN unlabeled_JJ data_NNS by_IN looking_VBG at_IN user_NN profiles_NNS and_CC comparing_VBG the_DT activity_NN during_IN an_DT intrusion_NN to_TO the_DT activity_NN during_IN normal_JJ u_NN
+her_PRP the_DT test_NN data_NNS belongs_VBZ to_TO ``_`` normal_JJ ''_'' or_CC to_TO an_DT anomalous_JJ behavior_NN ._.
+Recently_RB ,_, there_EX have_VBP been_VBN several_JJ efforts_NNS in_IN designing_VBG supervised_JJ network-based_JJ anomaly_NN detection_NN algorithms_NNS ,_, such_JJ as_IN ADAM_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, PHAD_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, NIDES_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, and_CC other_JJ techniques_NNS that_WDT use_VBP neural_JJ networks_NNS -LRB-_-LRB- 32_CD -RRB-_-RRB- ,_, information_NN theoretic_JJ measures_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, network_NN activity_NN models_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- etc._NN ._.
+Unlike_IN supervised_JJ anomaly_NN detection_NN where_WRB the_DT models_NNS are_VBP built_VBN on_IN
+in_IN computer_NN systems_NNS was_VBD proposed_VBN by_IN Anderson_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, many_JJ research_NN studies_NNS have_VBP been_VBN carried_VBN out_RP to_TO find_VB appropriate_JJ intrusion_NN detection_NN techniques_NNS to_TO protect_VB the_DT resources_NNS in_IN computers_NNS or_CC networks_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, the_DT network_NN disaster_NN caused_VBD recently_RB by_IN Nimda_NNP ,_, MSBlast_NN ,_, and_CC MSSasser_NN highlights_VBZ the_DT shortcomings_NNS of_IN the_DT intrusion_NN detection_NN techniques_NNS deployed_VBN in_IN our_PRP$ network_NN infrastructures_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, and_CC indic_JJ
+le_DT and_CC benign_JJ traffic_NN ._.
+To_TO use_VB more_JJR features_NNS of_IN traffic_NN ,_, Mahoney_NNP presented_VBD several_JJ methods_NNS in_IN his_PRP$ paper_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+They_PRP are_VBP PHAD_NNP ,_, ALAD_NNP ,_, LERAD_NNP ,_, and_CC NETAD_NN -LRB-_-LRB- 4_CD ,_, 9_CD ,_, and_CC 10_CD -RRB-_-RRB- ._.
+PHAD_NN -LRB-_-LRB- Packet_NN Header_NNP Anomaly_NNP Detector_NNP -RRB-_-RRB- =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT system_NN that_WDT learns_VBZ the_DT normal_JJ range_NN of_IN values_NNS for_IN 33_CD fields_NNS of_IN the_DT Ethernet_NNP ,_, IP_NNP ,_, TCP_NNP ,_, UDP_NNP ,_, and_CC ICMP_NN protocols_NNS ._.
+It_PRP is_VBZ implemented_VBN by_IN using_VBG simple_JJ nonstationary_JJ models_NNS that_WDT estimate_VBP probabilities_NNS
+method_NN serves_VBZ high_JJ accuracy_NN and_CC ability_NN in_IN real-time_JJ detection_NN ,_, it_PRP has_VBZ a_DT problem_NN that_IN more_JJR time_NN is_VBZ required_VBN to_TO make_VB rules_NNS because_IN experts_NNS have_VBP to_TO analyze_VB the_DT attacks_NNS and_CC generate_VB the_DT detection_NN rules_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT problem_NN can_MD cause_VB heavy_JJ damages_NNS due_JJ to_TO delay_NN of_IN response_NN against_IN new_JJ attacks_NNS ._.
+This_DT is_VBZ why_WRB we_PRP begin_VBP to_TO study_VB about_IN generation_NN method_NN of_IN rules_NNS for_IN detecting_VBG attacks_NNS without_IN any_DT help_NN of_IN the_DT expert_NN
+teristic_JJ queries_NNS among_IN infected_JJ users_NNS ._.
+We_PRP give_VBP an_DT evaluation_NN example_NN in_IN section_NN 5_CD ._.
+2_CD ._.
+RELATED_NNS WORK_VBP There_EX is_VBZ a_DT lot_NN of_IN work_NN that_WDT has_VBZ taken_VBN the_DT approach_NN of_IN data_NNS mining_NN to_TO detect_VB anomalous_JJ hosts_NNS or_CC worms_NNS =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 9_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, Schultz_NNP et_FW al._FW proposed_VBD a_DT method_NN to_TO detect_VB new_JJ ,_, previously_RB unseen_JJ malicious_JJ executables_NNS -LRB-_-LRB- e.g._FW attached_VBN files_NNS in_IN virus_NN e-mail_JJ -RRB-_-RRB- using_VBG Bayesian_JJ inference_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+As_IN in_IN the_DT usual_JJ Bayesian_JJ est_NN
+em_IN call_JJ sequences_NNS ._.
+Recently_RB ,_, a_DT more_RBR sophisticated_JJ mimicry_NN attack_NN was_VBD proposed_VBN by_IN Kruegel_NNP et_FW al._FW -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, which_WDT can_MD evade_VB most_JJS system_NN call_NN based_VBN anomaly_RB IDS_NNP ._.
+Several_JJ application_NN payload-based_JJ anomaly_NN IDS_NNP =_SYM -_: =[_NN 30_CD ,_, 35_CD ,_, 36_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN proposed_VBN which_WDT monitor_VBP the_DT payload_NN of_IN a_DT packet_NN for_IN anomalies_NNS ._.
+NETAD_NN and_CC LERAD_NN -LRB-_-LRB- 35_CD ,_, 30_CD -RRB-_-RRB- models_NNS the_DT first_JJ few_JJ bytes_NNS of_IN the_DT application_NN layer_NN headers_NNS of_IN a_DT packet_NN using_VBG a_DT set_NN of_IN rules_NNS ._.
+In_IN -LRB-_-LRB- 31_CD -RRB-_-RRB- ,_,
+chers_NNS at_IN Florida_NNP Institute_NNP of_IN Technology_NNP have_VBP created_VBN an_DT intrusion_NN detection_NN system_NN -LRB-_-LRB- IDS_NNP -RRB-_-RRB- that_WDT is_VBZ nonstationary_JJ and_CC models_NNS probabilities_NNS based_VBN on_IN time_NN since_IN the_DT last_JJ event_NN rather_RB than_IN on_IN average_JJ rate_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT IDS_NNP operates_VBZ on_IN many_JJ of_IN the_DT same_JJ fields_NNS our_PRP$ detector_NN monitors_VBZ and_CC has_VBZ similar_JJ training_NN requirements_NNS to_TO set_VB up_RP initial_JJ thresholds_NNS and_CC baselines_NNS ._.
+The_DT system_NN has_VBZ two_CD components_NNS ,_, PHAD_NNP and_CC ALAD_NNP ._.
+PHA_NN
+tested_VBN on_IN a_DT broader_JJR data_NN set_NN ,_, their_PRP$ performance_NN suffers_VBZ ;_: confirmation_NN of_IN this_DT assertion_NN appears_VBZ in_IN this_DT paper_NN ._.
+In_IN spite_NN of_IN these_DT limitations_NNS ,_, Wang_NNP and_CC Stolfo_NNP -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, Mahoney_NNP -LRB-_-LRB- 24_CD -RRB-_-RRB- ,_, and_CC Mahoney_NNP and_CC Chan_NNP =_SYM -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: Vargiya_NNP and_CC Chan_NNP -LRB-_-LRB- 26_CD -RRB-_-RRB- used_VBD one_CD or_CC both_DT of_IN these_DT data_NNS sets_NNS for_IN testing_VBG their_PRP$ IDSs_NNS ,_, at_IN least_JJS a_DT portion_NN of_IN which_WDT were_VBD for_IN protecting_VBG web_NN servers_NNS ._.
+Estévez-Tapiador_NNP et_FW al._FW -LRB-_-LRB- 27_CD -RRB-_-RRB- used_VBD these_DT data_NNS as_IN normal_JJ b_NN
+cal_JJ character_NN compared_VBN with_IN that_DT without_IN attack_NN ._.
+The_DT main_JJ difficulties_NNS of_IN anomaly_JJ detection_NN lie_NN in_IN two_CD aspects_NNS ._.
+On_IN one_CD hand_NN ,_, there_EX are_VBP a_DT lot_NN of_IN different_JJ kinds_NNS of_IN attacks_NNS ._.
+For_IN example_NN ,_, the_DT authors_NNS in_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: identified_VBD five_CD cases_NNS where_WRB anomalies_NNS present_JJ in_IN attack_NN traffic_NN ,_, including_VBG user_NN behavior_NN ,_, bug_NN exploits_NNS ,_, response_NN anomalies_NNS ,_, bugs_NNS in_IN the_DT attack_NN and_CC evasion_NN ._.
+The_DT statistical_JJ nature_NN of_IN attack_NN traffic_NN mi_FW
+TP_NN service_NN and_CC the_DT other_JJ attack_NN against_IN the_DT FTP_NN service_NN ._.
+InteligentIDS_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- is_VBZ based_VBN on_IN a_DT Self-organizing_JJ Map_NN and_CC extracts_NNS information_NN from_IN the_DT connection_NN meta_NN data_NNS once_IN it_PRP has_VBZ been_VBN reassembled_VBN ._.
+PHAD_NN =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: combines_VBZ 34_CD different_JJ values_NNS extracted_VBN from_IN the_DT packet_NN headers_NNS ._.
+MADAM_FW ID_FW -LRB-_-LRB- 16_CD -RRB-_-RRB- extracts_NNS information_NN from_IN audit_NN traffic_NN and_CC builds_VBZ classification_NN models_NNS -LRB-_-LRB- specifically_RB designed_VBN for_IN certain_JJ types_NNS of_IN intr_NN
+even_RB moderately_RB high-dimensional_JJ -LRB-_-LRB- multivariate_JJ -RRB-_-RRB- spaces_NNS ,_, and_CC finding_VBG the_DT right_JJ model_NN is_VBZ often_RB a_DT difficult_JJ task_NN in_IN its_PRP$ own_JJ right_NN ._.
+Simplified_VBN probabilistic_JJ models_NNS suffer_VBP from_IN a_DT high_JJ false_JJ positive_JJ rate_NN =_JJ -_: =[_NN 16_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Also_RB ,_, methods_NNS based_VBN on_IN computational_JJ geometry_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- do_VBP not_RB scale_VB well_RB as_IN the_DT number_NN of_IN dimensions_NNS increase_NN ._.
+To_TO overcome_VB these_DT limitations_NNS ,_, researchers_NNS have_VBP turned_VBN to_TO various_JJ non-parametric_JJ approaches_NNS
+em_IN call_JJ sequences_NNS ._.
+Recently_RB ,_, a_DT more_RBR sophisticated_JJ mimicry_NN attack_NN was_VBD proposed_VBN by_IN Kruegel_NNP et_FW al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, which_WDT can_MD evade_VB most_JJS system_NN call_NN based_VBN anomaly_RB IDS_NNP ._.
+Several_JJ application_NN payload-based_JJ anomaly_NN IDS_NNP =_SYM -_: =[_NN 15_CD ,_, 18_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN proposed_VBN which_WDT monitor_VBP the_DT payload_NN of_IN a_DT packet_NN for_IN anomalies_NNS ._.
+In_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, Kruegel_NNP et_FW al._FW proposed_VBN four_CD different_JJ models_NNS ,_, namely_RB ,_, length_NN ,_, character_NN distribution_NN ,_, probabilistic_JJ grammar_NN ,_, and_CC toke_NN
+irst_NN class_NN comprises_VBZ of_IN anomaly_NN detectors_NNS which_WDT take_VBP into_IN account_NN the_DT header_NN only_RB -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 11_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+However_RB the_DT second_JJ class_NN comprises_VBZ of_IN anomaly_NN detectors_NNS that_WDT operates_VBZ on_IN both_CC header_NN and_CC payload_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 14_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+All_PDT the_DT anomaly_JJ detectors_NNS ,_, evaluated_VBN in_IN this_DT work_NN ,_, employ_VBP very_RB different_JJ theoretical_JJ frameworks_NNS for_IN building_NN profiles_NNS ._.
+The_DT first_JJ objective_NN of_IN this_DT study_NN is_VBZ to_TO propose_VB a_DT framework_NN whic_NN
+for_IN years_NNS ._.
+Also_RB ,_, network-level_JJ properties_NNS -LRB-_-LRB- such_JJ as_IN the_DT number_NN of_IN flows_NNS that_WDT were_VBD transferred_VBN -RRB-_-RRB- have_VBP been_VBN used_VBN extensively_RB to_TO model_VB normal_JJ network_NN traffic_NN and_CC to_TO detect_VB deviations_NNS that_WDT indicate_VBP attacks_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ proposed_VBN work_NN complements_VBZ existing_VBG network-based_JJ IDSs_NNS by_IN automatically_RB generating_VBG the_DT inputs_NNS needed_VBN by_IN these_DT systems_NNS to_TO detect_VB machines_NNS that_WDT are_VBP infected_VBN by_IN bots_NNS ._.
+Signature_NN generation_NN ._.
+As_IN part_NN o_NN
+for_IN years_NNS ._.
+Also_RB ,_, network-level_JJ properties_NNS -LRB-_-LRB- such_JJ as_IN the_DT number_NN of_IN flows_NNS that_WDT were_VBD transferred_VBN -RRB-_-RRB- have_VBP been_VBN used_VBN extensively_RB to_TO model_VB normal_JJ network_NN traffic_NN and_CC to_TO detect_VB deviations_NNS that_WDT indicate_VBP attacks_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ proposed_VBN work_NN complements_VBZ existing_VBG network-based_JJ IDSs_NNS by_IN automatically_RB generating_VBG the_DT inputs_NNS needed_VBN by_IN these_DT systems_NNS to_TO detect_VB machines_NNS that_WDT are_VBP infected_VBN by_IN bots_NNS ._.
+Signature_NN generation_NN ._.
+As_IN part_NN o_NN
+provide_VB further_JJ reduction_NN of_IN monitoring_NN data_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+In_IN the_DT context_NN of_IN attack_NN detection_NN ,_, three_CD approaches_NNS should_MD be_VB mentioned_VBN ._.
+Mahoney_NNP et_FW al._FW developed_VBD a_DT self-learning_JJ system_NN for_IN traffic_NN classification_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Conti_NNP et_FW al._FW analyzed_VBN fingerprints_NNS of_IN attack_NN tools_NNS -LRB-_-LRB- 4_LS -RRB-_-RRB- These_DT studies_NNS open_VBP a_DT new_JJ research_NN field_NN for_IN signature-based_JJ traffic_NN analysis_NN using_VBG flow_NN data_NNS ._.
+3_CD Lab_NN Environment_NNP Honeypot_NNP lab_NN --_: For_IN our_PRP$ tests_NNS
+e_LS data_NN stream_NN as_IN a_DT sequence_NN of_IN characters_NNS ,_, and_CC applied_VBD statistics_NNS to_TO the_DT characters_NNS ._.
+For_IN example_NN ,_, Wang_NNP and_CC Stolfo_NNP -LRB-_-LRB- 263_CD -RRB-_-RRB- modeled_VBD the_DT character_NN distribution_NN of_IN different_JJ sized_VBN packets_NNS ._.
+Mahoney_NNP and_CC Chan_NNP =_SYM -_: =[_NN 179_CD -RRB-_-RRB- -_: =_JJ -_: sChapter_NN 2_CD ._.
+Background_NN 19_CD performed_VBN statistics_NNS on_IN packet_NN headers_NNS ,_, with_IN some_DT statistics_NNS on_IN the_DT application-layer_JJ data_NNS -LRB-_-LRB- e.g._FW ,_, HTTP_NN keywords_NNS -RRB-_-RRB- ._.
+Mahoney_NNP -LRB-_-LRB- 178_CD -RRB-_-RRB- then_RB modeled_VBD the_DT first_JJ 48_CD bytes_NNS of_IN the_DT applica_NN
+maly_RB detection_NN ,_, several_JJ previous_JJ works_NNS have_VBP focussed_VBN on_IN wireless_JJ networks_NNS ._.
+These_DT works_NNS have_VBP used_VBN both_DT machine-learning_JJ based_JJ and_CC timeseries_JJ analysis_NN based_VBN techniques_NNS for_IN anomaly_JJ detection_NN -LRB-_-LRB- -LRB-_-LRB- 11_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 14_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+However_RB ,_, the_DT primary_JJ focus_NN of_IN these_DT works_NNS has_VBZ been_VBN on_IN detecting_VBG security_NN attacks_NNS -LRB-_-LRB- such_JJ as_IN DDoS_NN and_CC wormhole_NN attacks_NNS -RRB-_-RRB- ,_, and_CC not_RB performance_NN degradations_NNS and_CC failures_NNS ._.
+The_DT work_NN that_WDT is_VBZ closest_JJS to_TO

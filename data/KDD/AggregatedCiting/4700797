@@ -1,0 +1,63 @@
+Outlier_NN detection_NN by_IN sampling_NN with_IN accuracy_NN guarantees_NNS
+An_DT effective_JJ approach_NN to_TO detecting_VBG anomalous_JJ points_NNS in_IN a_DT data_NN set_NN is_VBZ distance-based_JJ outlier_NN detection_NN ._.
+This_DT paper_NN describes_VBZ a_DT simple_JJ sampling_NN algorithm_NN to_TO effciently_RB detect_VB distance-based_JJ outliers_NNS in_IN domains_NNS where_WRB each_DT and_CC every_DT distance_NN computation_NN is_VBZ very_RB expensive_JJ ._.
+Unlike_IN any_DT existing_VBG algorithms_NNS ,_, the_DT sampling_NN algorithm_NN requires_VBZ a_DT xed_JJ number_NN of_IN distance_NN computations_NNS and_CC can_MD return_VB good_JJ results_NNS with_IN accuracy_NN guarantees_NNS ._.
+The_DT most_RBS computationally_RB expensive_JJ aspect_NN of_IN estimating_VBG the_DT accuracy_NN of_IN the_DT result_NN is_VBZ sorting_VBG all_DT of_IN the_DT distances_NNS computed_VBN by_IN the_DT sampling_NN algorithm_NN ._.
+The_DT experimental_JJ study_NN on_IN two_CD expensive_JJ domains_NNS as_RB well_RB as_IN ten_CD additional_JJ real-life_JJ datasets_NNS demonstrates_VBZ both_CC the_DT effciency_NN and_CC effectiveness_NN of_IN the_DT sampling_NN algorithm_NN in_IN comparison_NN with_IN the_DT state-of-the-art_JJ algorithm_NN and_CC there_EX liability_NN of_IN the_DT accuracy_NN guarantees_NNS ._.
+3_LS -RRB-_-RRB- V_NN ar_NN -LRB-_-LRB- Ti_NN -RRB-_-RRB- 1_CD In_IN general_JJ ,_, Ti_NNP is_VBZ normally_RB distributed_VBN due_JJ to_TO the_DT Lyapounov_NNP Central_NNP Limit_NNP Theorem_NNP ._.
+Since_IN Ti_NN is_VBZ the_DT sum_NN of_IN n_NN −_NN 1_CD independent_JJ Bernoulli_NNP random_JJ variables_NNS ,_, this_DT Theorem_NNP applies_VBZ ;_: see_VB Lehmann_NNP =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Corollary_NNP 2.7.1_CD ._.
+sIn_NN Equation_NN 3_CD ,_, Φ_NN -LRB-_-LRB- x_NN -RRB-_-RRB- is_VBZ the_DT standard_JJ normal_JJ cumulative_JJ distribution_NN function_NN ._.
+In_IN order_NN to_TO make_VB use_NN of_IN Φ_NN -LRB-_-LRB- x_NN -RRB-_-RRB- ,_, we_PRP need_VBP to_TO calculate_VB the_DT mean_NN and_CC variance_NN of_IN Ti_NNP ._.
+Before_IN we_PRP do_VBP this_DT ,_, for_IN e_SYM
+rmain@cise.ufl.edu_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, the_DT ERP_NN distance_NN function_NN for_IN time_NN series_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, the_DT quadraticform_JJ distance_NN function_NN for_IN color_NN histograms_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC various_JJ scoring_VBG matrices_NNS for_IN aligning_VBG bioinformatics_NNS sequences_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: all_DT are_VBP computationally_RB expensive_JJ ._.
+Given_VBN two_CD input_NN points_NNS that_WDT are_VBP both_DT of_IN dimension_NN n_NN ,_, the_DT aforementioned_JJ distance_NN functions_NNS require_VBP Θ_NN -LRB-_-LRB- cn_NN 2_CD -RRB-_-RRB- time_NN ._.
+In_IN these_DT domains_NNS ,_, state-of-the-art_JJ algorithms_NNS may_MD
+ance_NN computations_NNS in_IN DB-outlier_JJ mining_NN ?_.
+For_IN certain_JJ distance_NN measures_NNS and_CC data_NNS sets_NNS ,_, indexing_NN and_CC pruning_NN techniques_NNS can_MD be_VB used_VBN to_TO reduce_VB the_DT number_NN of_IN distance_NN computations_NNS ._.
+Unfortunately_RB ,_, indexing_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ not_RB useful_JJ in_IN the_DT domains_NNS mentioned_VBD above_RB due_JJ to_TO high_JJ data_NNS dimensionality_NN ,_, and_CC pruning_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- tends_VBZ only_RB to_TO reduce_VB the_DT required_JJ number_NN of_IN distance_NN computations_NNS to_TO a_DT few_JJ hundred_CD or_CC a_DT few_JJ thousand_CD per_IN
+algorithms_NNS ,_, statistical_JJ modeling_NN ,_, approximate_JJ algorithms_NNS ,_, nearest_JJS neighbor_NN 1_CD ._.
+INTRODUCTION_NN One_CD effective_JJ approach_NN for_IN detecting_VBG anomalous_JJ data_NNS points_NNS in_IN a_DT set_NN is_VBZ distance-based_JJ -LRB-_-LRB- DB_NN -RRB-_-RRB- outlier_NN detection_NN =_JJ -_: =[_NN 6_CD ,_, 11_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN DB-outlier_JJ detection_NN ,_, each_DT data_NNS point_NN is_VBZ represented_VBN as_IN a_DT point_NN in_IN a_DT multi-dimensional_JJ feature_NN space_NN and_CC a_DT distance_NN function_NN is_VBZ chosen_VBN based_VBN on_IN domain-specific_JJ requirements_NNS ._.
+Data_NN points_NNS that_WDT are_VBP
+t_NN 2006_CD ACM_NNP 1-59593-339-5_CD \/_: 06\/0008_CD ..._: $_$ 5.00_CD ._.
+Christopher_NNP Jermaine_NNP Department_NNP of_IN Computer_NNP and_CC Information_NNP Sciences_NNPS and_CC Engineering_NNP University_NNP of_IN Florida_NNP Gainesville_NNP ,_, FL_NN ,_, USA_NN ,_, 32611_CD cjermain@cise.ufl.edu_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT ERP_NN distance_NN function_NN for_IN time_NN series_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, the_DT quadraticform_JJ distance_NN function_NN for_IN color_NN histograms_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC various_JJ scoring_VBG matrices_NNS for_IN aligning_VBG bioinformatics_NNS sequences_NNS -LRB-_-LRB- 4_LS -RRB-_-RRB- all_DT are_VBP computation_NN
+algorithms_NNS ,_, statistical_JJ modeling_NN ,_, approximate_JJ algorithms_NNS ,_, nearest_JJS neighbor_NN 1_CD ._.
+INTRODUCTION_NN One_CD effective_JJ approach_NN for_IN detecting_VBG anomalous_JJ data_NNS points_NNS in_IN a_DT set_NN is_VBZ distance-based_JJ -LRB-_-LRB- DB_NN -RRB-_-RRB- outlier_NN detection_NN =_JJ -_: =[_NN 6_CD ,_, 11_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN DB-outlier_JJ detection_NN ,_, each_DT data_NNS point_NN is_VBZ represented_VBN as_IN a_DT point_NN in_IN a_DT multi-dimensional_JJ feature_NN space_NN and_CC a_DT distance_NN function_NN is_VBZ chosen_VBN based_VBN on_IN domain-specific_JJ requirements_NNS ._.
+Data_NN points_NNS that_WDT are_VBP
+s_NN and_CC Engineering_NNP University_NNP of_IN Florida_NNP Gainesville_NNP ,_, FL_NN ,_, USA_NN ,_, 32611_CD cjermain@cise.ufl.edu_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, the_DT ERP_NN distance_NN function_NN for_IN time_NN series_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, the_DT quadraticform_JJ distance_NN function_NN for_IN color_NN histograms_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: and_CC various_JJ scoring_VBG matrices_NNS for_IN aligning_VBG bioinformatics_NNS sequences_NNS -LRB-_-LRB- 4_LS -RRB-_-RRB- all_DT are_VBP computationally_RB expensive_JJ ._.
+Given_VBN two_CD input_NN points_NNS that_WDT are_VBP both_DT of_IN dimension_NN n_NN ,_, the_DT aforementioned_JJ distance_NN functions_NNS re_VBP
+human_JJ chromosome_NN 18_CD -LRB-_-LRB- Chr18_NN -RRB-_-RRB- ._.
+We_PRP employed_VBD Needleman-Wunsch_JJ algorithm_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- to_TO compute_VB the_DT Edit_NNP distance_NN between_IN two_CD subsequences_NNS ._.
+The_DT second_JJ task_NN we_PRP consider_VBP is_VBZ detecing_VBG outlier_NN images_NNS in_IN UCID_NN version_NN 2_CD =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT is_VBZ an_DT image_NN database_NN containing_VBG 1338_CD uncompressed_JJ color_NN images_NNS ._.
+We_PRP transformed_VBD each_DT image_NN to_TO a_DT 576_CD dimensional_JJ color_NN histogram_NN ._.
+The_DT quadratic_JJ distance_NN between_IN two_CD histograms_NNS was_VBD used_VBN -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+The_DT
+algorithms_NNS ,_, statistical_JJ modeling_NN ,_, approximate_JJ algorithms_NNS ,_, nearest_JJS neighbor_NN 1_CD ._.
+INTRODUCTION_NN One_CD effective_JJ approach_NN for_IN detecting_VBG anomalous_JJ data_NNS points_NNS in_IN a_DT set_NN is_VBZ distance-based_JJ -LRB-_-LRB- DB_NN -RRB-_-RRB- outlier_NN detection_NN =_JJ -_: =[_NN 6_CD ,_, 11_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN DB-outlier_JJ detection_NN ,_, each_DT data_NNS point_NN is_VBZ represented_VBN as_IN a_DT point_NN in_IN a_DT multi-dimensional_JJ feature_NN space_NN and_CC a_DT distance_NN function_NN is_VBZ chosen_VBN based_VBN on_IN domain-specific_JJ requirements_NNS ._.
+Data_NN points_NNS that_WDT are_VBP
+for_IN the_DT actual_JJ neighbor_NN distances_NNS -LCB-_-LRB- d1_NN ,_, d2_NN ,_, ..._: ,_, dn_FW −_FW 1_CD -RCB-_-RRB- of_IN i._NNP This_NNP reconstruction_NN is_VBZ identical_JJ to_TO a_DT type_NN of_IN reconstruction_NN advocated_VBN when_WRB making_VBG use_NN of_IN the_DT without-replacement_JJ bootstrap_NN from_IN statistics_NNS =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT second_JJ step_NN ,_, an_DT exact_JJ ,_, statistical_JJ analysis_NN of_IN the_DT quality_NN of_IN the_DT sampling_NN algorithm_NN for_IN the_DT database_NN D_NN ′_NN is_VBZ performed_VBN ,_, and_CC the_DT result_NN is_VBZ returned_VBN to_TO the_DT user_NN as_IN an_DT indication_NN of_IN the_DT accuracy_NN
+s_NNS are_VBP generally_RB unavoidable_JJ in_IN statistical_JJ analysis_NN ._.
+An_DT analogous_JJ assumption_NN in_IN classical_JJ sampling_NN theory_NN is_VBZ that_IN the_DT sample_NN variance_NN can_MD be_VB used_VBN as_IN a_DT reasonable_JJ surrogate_NN for_IN the_DT population_NN variance_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN order_NN to_TO address_VB this_DT concern_NN ,_, Section_NNP 5_CD of_IN the_DT paper_NN shows_VBZ that_IN over_IN twelve_CD real-life_JJ data_NNS sets_NNS ,_, for_IN various_JJ sample_NN sizes_NNS ,_, the_DT bounds_NNS derived_VBN by_IN our_PRP$ method_NN do_VBP in_IN fact_NN reliably_RB predict_VBP the_DT accura_NN
+ownloaded_VBN from_IN NCBI_NN ftp_NN site_NN ._.
+This_DT data_NN set_NN was_VBD created_VBN by_IN randomly_RB selecting_VBG 4000_CD non-overlapping_JJ subsequences_NNS of_IN length_NN 2000_CD from_IN human_JJ chromosome_NN 18_CD -LRB-_-LRB- Chr18_NN -RRB-_-RRB- ._.
+We_PRP employed_VBD Needleman-Wunsch_JJ algorithm_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: to_TO compute_VB the_DT Edit_NNP distance_NN between_IN two_CD subsequences_NNS ._.
+The_DT second_JJ task_NN we_PRP consider_VBP is_VBZ detecing_VBG outlier_NN images_NNS in_IN UCID_NN version_NN 2_CD -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, which_WDT is_VBZ an_DT image_NN database_NN containing_VBG 1338_CD uncompressed_JJ color_NN ima_NN
+state-of-theart_JJ algorithm_NN and_CC the_DT reliability_NN of_IN the_DT accuracy_NN guarantees_NNS ._.
+1_CD ._.
+INTRODUCTION_NN One_CD effective_JJ approach_NN for_IN detecting_VBG anomalous_JJ data_NNS points_NNS in_IN a_DT set_NN is_VBZ distance-based_JJ -LRB-_-LRB- DB_NN -RRB-_-RRB- outlier_NN detection_NN =_JJ -_: =[_NN 7_CD ,_, 12_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN DB-outlier_JJ detection_NN ,_, each_DT data_NNS point_NN is_VBZ represented_VBN as_IN a_DT point_NN in_IN a_DT multi-dimensional_JJ feature_NN space_NN and_CC a_DT distance_NN function_NN is_VBZ chosen_VBN based_VBN on_IN domain-specific_JJ requirements_NNS ._.
+Data_NN points_NNS that_WDT are_VBP
+iers_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+Given_VBN integer_NN parameters_NNS k_NN and_CC γ_NN ,_, the_DT kth-NN_JJ outliers_NNS are_VBP the_DT top_JJ γ_NN points_NNS whose_WP$ distance_NN to_TO its_PRP$ kth-NN_NN is_VBZ greatest_JJS ._.
+Sampling_NN has_VBZ been_VBN considered_VBN before_RB as_IN an_DT option_NN for_IN detecting_VBG outliers_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC never_RB along_IN with_IN a_DT rigorous_JJ treatment_NN of_IN the_DT effect_NN on_IN result_NN quality_NN ._.
+If_IN the_DT user_NN is_VBZ able_JJ to_TO tolerate_VB some_DT rigorously-measured_JJ inaccuracy_NN ,_, our_PRP$ algorithm_NN can_MD give_VB arbitrarily_RB fast_JJ response_NN times_NNS
+topher_VB Jermaine_NNP Department_NNP of_IN Computer_NNP and_CC Information_NNP Sciences_NNPS and_CC Engineering_NNP University_NNP of_IN Florida_NNP Gainesville_NNP ,_, FL_NN ,_, USA_NN ,_, 32611_CD cjermain@cise.ufl.edu_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, the_DT ERP_NN distance_NN function_NN for_IN time_NN series_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT quadraticform_JJ distance_NN function_NN for_IN color_NN histograms_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC various_JJ scoring_VBG matrices_NNS for_IN aligning_VBG bioinformatics_NNS sequences_NNS -LRB-_-LRB- 4_LS -RRB-_-RRB- all_DT are_VBP computationally_RB expensive_JJ ._.
+Given_VBN two_CD input_NN points_NNS that_WDT are_VBP
+een_VB them_PRP is_VBZ computed_VBN by_IN the_DT quadratic_JJ distance_NN function_NN -LRB-_-LRB- h1_FW −_FW h2_NN -RRB-_-RRB- T_NN A_NN -LRB-_-LRB- h1_FW −_FW h2_NN -RRB-_-RRB- ._.
+The_DT entry_NN aij_NN in_IN the_DT color_NN similarity_NN matrix_NN A_NN is_VBZ determined_VBN by_IN Equation_NN 3_CD given_VBN in_IN Section_NN 3.1_CD of_IN the_DT VisualSeek_NNP paper_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT experiments_NNS were_VBD performed_VBN on_IN a_DT Linux_NNP workstation_NN having_VBG an_DT Intel_NNP Xeon_NNP 2.4_CD GHz_NNP Processor_NNP with_IN 1GB_NN of_IN RAM_NNP ._.
+All_PDT the_DT algorithms_NNS were_VBD implemented_VBN in_IN C_NN +_CC +_CC and_CC compliedsAlgorithm_NN Chr18_NN Distance_NNP computat_NN

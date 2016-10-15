@@ -1,0 +1,26 @@
+Dtwiki_NNP :_: a_DT disconnection_NN and_CC intermittency_NN tolerant_JJ wiki_NNS
+Wikis_NNP have_VBP proven_VBN to_TO be_VB a_DT valuable_JJ tool_NN for_IN collaboration_NN and_CC content_NN generation_NN on_IN the_DT web_NN ._.
+Simple_JJ semantics_NNS and_CC ease-of-use_JJ make_NN wiki_NN systems_NNS well_RB suited_VBN for_IN meeting_VBG many_JJ emerging_VBG region_NN needs_NNS in_IN the_DT areas_NNS of_IN education_NN ,_, collaboration_NN and_CC local_JJ content_NN generation_NN ._.
+Despite_IN their_PRP$ usefulness_NN ,_, current_JJ wiki_NN software_NN does_VBZ not_RB work_VB well_RB in_IN the_DT network_NN environments_NNS found_VBN in_IN emerging_VBG regions_NNS ._.
+For_IN example_NN ,_, it_PRP is_VBZ common_JJ to_TO have_VB long-lasting_JJ network_NN partitions_NNS due_JJ to_TO cost_NN ,_, power_NN and_CC poor_JJ connectivity_NN ._.
+Network_NNP partitions_NNS make_VBP a_DT traditional_JJ centralized_JJ wiki_NN architecture_NN unusable_JJ due_JJ to_TO the_DT unavailability_NN of_IN the_DT central_JJ server_NN ._.
+Existing_VBG solutions_NNS towards_IN addressing_VBG connectivity_NN problems_NNS include_VBP web-caching_JJ proxies_NNS and_CC snapshot_NN distribution_NN ._.
+While_IN proxies_NNS and_CC snapshots_NNS allow_VBP wiki_NN data_NNS to_TO be_VB read_VBN while_IN disconnected_VBN ,_, they_PRP prevent_VBP users_NNS from_IN contributing_VBG updates_NNS back_RB to_TO the_DT wiki_NN ._.
+In_IN this_DT paper_NN we_PRP detail_NN the_DT design_NN and_CC implementation_NN of_IN DTWiki_NN ,_, a_DT wiki_NN system_NN which_WDT explicitly_RB addresses_VBZ the_DT problem_NN of_IN operating_VBG a_DT wiki_NN system_NN in_IN an_DT intermittent_JJ environment_NN ._.
+The_DT DTWiki_NN system_NN is_VBZ able_JJ to_TO cope_VB with_IN long-lasting_JJ partitions_NNS and_CC bad_JJ connectivity_NN while_IN providing_VBG the_DT functionality_NN of_IN popular_JJ wiki_NN software_NN such_JJ as_IN MediaWiki_NN and_CC TWiki_NN ._.
+raditional_JJ version_NN control_NN systems_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- are_VBP mainly_RB used_VBN for_IN source_NN code_NN tracking_NN in_IN which_WDT a_DT source_NN repository_NN maintains_VBZ and_CC merges_VBZ newly_RB committed_VBN changes_NNS ._.
+Recent_JJ decentralized_VBN version_NN control_NN systems_NNS =_JJ -_: =[_NN 9_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: replicate_VB documents_NNS on_IN multiple_JJ sites_NNS to_TO improve_VB availability_NN and_CC scalability_NN ._.
+In_IN these_DT systems_NNS ,_, concurrent_JJ update_VBP conflicts_NNS will_MD be_VB presented_VBN to_TO users_NNS for_IN manual_JJ resolution_NN ._.
+These_DT systems_NNS do_VBP not_RB tar_NN
+y_NN ,_, the_DT Integrator_NNP sends_VBZ the_DT necessary_JJ patches_NNS to_TO be_VB sure_JJ that_IN all_DT copies_NNS remain_VBP consistent_JJ ._.
+4_LS ._.
+Related_JJ Work_NN Few_JJ decentralized_JJ wiki_NN engines_NNS have_VBP been_VBN proposed_VBN such_JJ as_IN DistriWiki_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, Wooki_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, DTWiki_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Piki_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, RepliWiki_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- or_CC the_DT transactional_JJ system_NN described_VBN in_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+These_DT approaches_NNS have_VBP one_CD or_CC more_JJR of_IN the_DT following_JJ drawbacks_NNS :_: they_PRP require_VBP that_IN the_DT wiki_NN content_NN is_VBZ fully_RB replicated_VBN on_IN every_DT p_NN
+nfrastructure_NN ._.
+Existing_VBG aproaches_NNS to_TO deploy_VB a_DT collaborative_JJ system_NN on_IN a_DT distribted_JJ network_NN include_VBP Wooki_NNP -LRB-_-LRB- 33_CD -RRB-_-RRB- ,_, DistriWiki_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, RepliWiki_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, Distributed_VBN Version_NNP Control_NNP systems_NNS -LRB-_-LRB- 1_CD ,_, 11_CD ,_, 37_CD -RRB-_-RRB- ,_, DTWiki_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Piki_NNP -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+Several_JJ drawback_NN prevent_VBP these_DT systems_NNS from_IN being_VBG used_VBN in_IN our_PRP$ target_NN scenario_NN ._.
+They_PRP either_RB require_VBP total_JJ replication_NN of_IN content_NN ,_, requiring_VBG all_DT wiki_JJ pages_NNS are_VBP replicated_VBN at_IN all_DT nodes_NNS ,_, o_NN
+and_CC navigation_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, it_PRP is_VBZ not_RB easy_JJ to_TO find_VB information_NN in_IN wikis_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+They_PRP have_VBP also_RB scalability_NN ,_, availability_NN and_CC performance_NN problems_NNS -LRB-_-LRB- 3_CD ,_, 4_CD -RRB-_-RRB- and_CC they_PRP do_VBP not_RB support_VB offline_JJ works_NNS and_CC atomic_JJ changes_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO overcome_VB these_DT limitations_NNS ,_, wiki_NN systems_NNS have_VBP evolved_VBN in_IN two_CD different_JJ ways_NNS :_: semantic_JJ wikis_NN and_CC peer-to-peer_NN wikis_NN ._.
+Semantic_NNP Wikis_NNP Semantic_NNP wikis_NNS are_VBP a_DT new_JJ generation_NN of_IN collaborative_JJ editing_NN too_RB

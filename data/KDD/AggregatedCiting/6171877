@@ -1,0 +1,153 @@
+Detecting_VBG anomalous_JJ records_NNS in_IN categorical_JJ datasets_NNS
+We_PRP consider_VBP the_DT problem_NN of_IN detecting_VBG anomalies_NNS in_IN high_JJ aritycategorical_JJ datasets_NNS ._.
+In_IN most_JJS applications_NNS ,_, anomalies_NNS are_VBP defined_VBN as_IN datapoints_NNS that_WDT are_VBP ``_`` abnormal_JJ ''_'' ._.
+Quite_RB often_RB we_PRP have_VBP access_NN to_TO data_NNS which_WDT consists_VBZ mostly_RB of_IN normal_JJ records_NNS ,_, a_DT long_JJ with_IN a_DT small_JJ percentage_NN of_IN unlabelled_JJ anomalous_JJ records_NNS ._.
+We_PRP are_VBP interested_JJ in_IN the_DT problem_NN of_IN unsupervised_JJ anomaly_NN detection_NN ,_, where_WRB we_PRP use_VBP the_DT unlabelled_JJ data_NNS for_IN training_NN ,_, and_CC detect_VB records_NNS that_WDT do_VBP not_RB follow_VB the_DT definition_NN of_IN normality_NN ._.
+A_DT standard_JJ approach_NN is_VBZ to_TO create_VB a_DT model_NN of_IN normal_JJ data_NNS ,_, and_CC compare_VB test_NN records_NNS against_IN it_PRP ._.
+A_DT probabilistic_JJ approach_NN builds_VBZ a_DT likelihood_NN model_NN from_IN the_DT training_NN data_NNS ._.
+Records_NNPS are_VBP tested_VBN for_IN anomalies_NNS based_VBN on_IN the_DT complete_JJ record_NN likelihood_NN given_VBN the_DT probability_NN model_NN ._.
+For_IN categorical_JJ attributes_NNS ,_, bayes_NNS nets_NNS give_VBP a_DT standard_JJ representation_NN of_IN the_DT likelihood_NN ._.
+While_IN this_DT approach_NN is_VBZ good_JJ at_IN finding_VBG outliers_NNS in_IN the_DT dataset_NN ,_, it_PRP often_RB tends_VBZ to_TO detect_VB records_NNS with_IN attribute_NN values_NNS that_WDT are_VBP rare_JJ ._.
+Sometimes_RB ,_, just_RB detecting_VBG rare_JJ values_NNS of_IN an_DT attribute_NN is_VBZ not_RB desired_VBN and_CC such_JJ outliers_NNS are_VBP not_RB considered_VBN as_IN anomalies_NNS in_IN that_DT context_NN ._.
+We_PRP present_VBP an_DT alternative_JJ definition_NN of_IN anomalies_NNS ,_, and_CC propose_VBP an_DT approach_NN of_IN comparing_VBG against_IN marginal_JJ distribution_NN of_IN attribute_NN subsets_NNS ._.
+We_PRP show_VBP that_IN this_DT is_VBZ a_DT more_RBR meaningful_JJ way_NN of_IN detecting_VBG anomalies_NNS ,_, and_CC has_VBZ a_DT better_JJR performance_NN over_IN semi-synthetic_JJ as_RB well_RB as_IN real_JJ world_NN datasets_NNS ._.
+c_NN Algorithms_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- have_VBP also_RB been_VBN used_VBN to_TO classify_VB anomalies_NNS in_IN this_DT context_NN ._.
+Anomaly_RB detection_NN is_VBZ also_RB commonly_RB applied_VBN in_IN time_NN series_NN data_NNS to_TO detect_VB unusual_JJ fluctuations_NNS compared_VBN to_TO past_JJ data_NN points_NNS =_JJ -_: =[_NN 4_CD ,_, 18_CD ,_, 7_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Another_DT area_NN of_IN considerable_JJ recent_JJ interest_NN is_VBZ spatial_JJ anomaly_NN detection_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+The_DT methods_NNS described_VBN so_RB far_RB apply_VB to_TO real_JJ valued_VBN data_NNS or_CC work_NN in_IN a_DT supervised_JJ setting_NN when_WRB we_PRP have_VBP labeled_VBN training_NN d_NN
+es_NNS for_IN categorical_JJ data_NNS because_IN of_IN its_PRP$ parsimonious_JJ use_NN of_IN parameters_NNS ,_, and_CC efficient_JJ learning_NN and_CC inference_NN techniques_NNS ._.
+Bayes_NNP Net_NNP have_VBP been_VBN used_VBN for_IN detecting_VBG anomalies_NNS in_IN network_NN intrusion_NN detection_NN =_JJ -_: =[_NN 2_CD ,_, 33_CD -RRB-_-RRB- -_: =_JJ -_: ,_, detecting_VBG malicious_JJ emails_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC disease_NN outbreak_NN detection_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+Any_DT good_JJ structure_NN and_CC parameter_NN learning_NN algorithm_NN is_VBZ appropriate_JJ to_TO learn_VB the_DT model_NN ._.
+For_IN our_PRP$ experiments_NNS ,_, we_PRP used_VBD the_DT optimal_JJ re_NN
+vents_NNS that_IN an_DT attribute_NN of_IN T_NN takes_VBZ some_DT particular_JJ values_NNS ._.
+Association_NN rule_NN mining_NN is_VBZ commonly_RB used_VBN in_IN the_DT analysis_NN of_IN market-basket_JJ data_NNS ,_, where_WRB the_DT target_NN of_IN mining_NN is_VBZ not_RB predetermined_VBN ._.
+Chan_NNP et_FW al._FW =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP developed_VBN a_DT rule_NN learning_NN method_NN LERAD_NN to_TO detect_VB anomalies_NNS ._.
+They_PRP consider_VBP rules_NNS of_IN the_DT form_NN X_NN ⇒_NN Y_NN ,_, whereX_NN and_CC Y_NN are_VBP mutually_RB exclusive_JJ subsets_NNS of_IN attributes_NNS taking_VBG on_IN particular_JJ values_NNS ._.
+They_PRP see_VBP
+c_NN Algorithms_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- have_VBP also_RB been_VBN used_VBN to_TO classify_VB anomalies_NNS in_IN this_DT context_NN ._.
+Anomaly_RB detection_NN is_VBZ also_RB commonly_RB applied_VBN in_IN time_NN series_NN data_NNS to_TO detect_VB unusual_JJ fluctuations_NNS compared_VBN to_TO past_JJ data_NN points_NNS =_JJ -_: =[_NN 4_CD ,_, 18_CD ,_, 7_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Another_DT area_NN of_IN considerable_JJ recent_JJ interest_NN is_VBZ spatial_JJ anomaly_NN detection_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+The_DT methods_NNS described_VBN so_RB far_RB apply_VB to_TO real_JJ valued_VBN data_NNS or_CC work_NN in_IN a_DT supervised_JJ setting_NN when_WRB we_PRP have_VBP labeled_VBN training_NN d_NN
+es_NNS for_IN categorical_JJ data_NNS because_IN of_IN its_PRP$ parsimonious_JJ use_NN of_IN parameters_NNS ,_, and_CC efficient_JJ learning_NN and_CC inference_NN techniques_NNS ._.
+Bayes_NNP Net_NNP have_VBP been_VBN used_VBN for_IN detecting_VBG anomalies_NNS in_IN network_NN intrusion_NN detection_NN =_JJ -_: =[_NN 2_CD ,_, 33_CD -RRB-_-RRB- -_: =_JJ -_: ,_, detecting_VBG malicious_JJ emails_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC disease_NN outbreak_NN detection_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+Any_DT good_JJ structure_NN and_CC parameter_NN learning_NN algorithm_NN is_VBZ appropriate_JJ to_TO learn_VB the_DT model_NN ._.
+For_IN our_PRP$ experiments_NNS ,_, we_PRP used_VBD the_DT optimal_JJ re_NN
+from_IN the_DT training_NN data_NNS to_TO determine_VB anomalous_JJ data_NNS ._.
+They_PRP use_VBP a_DT mixture_NN model_NN to_TO explain_VB the_DT presence_NN of_IN anomalies_NNS ._.
+A_DT clustering_NN based_VBN approach_NN to_TO detecting_VBG anomalies_NNS in_IN a_DT dataset_NN is_VBZ used_VBN in_IN -LRB-_-LRB- 22_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One-class_JJ SVMs_NNS -LRB-_-LRB- 23_CD ,_, 14_CD -RRB-_-RRB- and_CC Genetic_JJ Algorithms_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- have_VBP also_RB been_VBN used_VBN to_TO classify_VB anomalies_NNS in_IN this_DT context_NN ._.
+Anomaly_RB detection_NN is_VBZ also_RB commonly_RB applied_VBN in_IN time_NN series_NN data_NNS to_TO detect_VB unusual_JJ fluctu_NN
+s_NN emails_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC disease_NN outbreak_NN detection_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+Any_DT good_JJ structure_NN and_CC parameter_NN learning_NN algorithm_NN is_VBZ appropriate_JJ to_TO learn_VB the_DT model_NN ._.
+For_IN our_PRP$ experiments_NNS ,_, we_PRP used_VBD the_DT optimal_JJ reinsertion_NN algorithm_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: to_TO learn_VB the_DT structure_NN ,_, and_CC then_RB did_VBD a_DT maximum_NN likelihood_NN estimation_NN of_IN the_DT network_NN parameters_NNS ._.
+Once_RB the_DT model_NN is_VBZ built_VBN ,_, to_TO test_VB any_DT record_NN we_PRP find_VBP its_PRP$ complete_JJ record_NN likelihood_NN given_VBN the_DT probabilit_NN
+t_NN -RRB-_-RRB- andC_NN -LRB-_-LRB- bt_NN -RRB-_-RRB- are_VBP greater_JJR than_IN this_DT bound_VBD ._.
+3.1.6_CD Using_VBG AD_NN Trees_NNP for_IN computing_NN counts_VBZ The_DT required_JJ counts_NNS are_VBP conjunctive_JJ counting_VBG queries_NNS on_IN the_DT dataset_NN ,_, and_CC can_MD be_VB efficiently_RB queried_VBN using_VBG an_DT AD_NN Tree_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT AD_NN Tree_NN building_NN algorithm_NN scans_VBZ the_DT dataset_NN once_RB ,_, and_CC precomputes_NNS information_NN needed_VBN to_TO answer_VB every_DT possible_JJ query_NN in_IN time_NN independent_JJ of_IN the_DT number_NN of_IN records_NNS ._.
+The_DT parameter_NN leaflist_NN size_NN can_MD
+is_VBZ much_RB higher_JJR than_IN the_DT probability_NN ex_FW -LRB-_-LRB- 1_LS -RRB-_-RRB- spected_VBN in_IN case_NN of_IN statistical_JJ independence_NN P_NN -LRB-_-LRB- A_NN -RRB-_-RRB- P_NN -LRB-_-LRB- B_NN -RRB-_-RRB- ._.
+It_PRP has_VBZ also_RB been_VBN used_VBN to_TO investigate_VB unsupervised_JJ learning_NN of_IN complex_JJ visual_JJ stimuli_NNS by_IN human_JJ subjects_NNS =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Here_RB large_JJ values_NNS of_IN r_NN are_VBP interesting_JJ as_IN it_PRP signifies_VBZ a_DT suspicious_JJ coincidence_NN of_IN the_DT events_NNS co-occurring_JJ ._.
+We_PRP are_VBP interested_JJ in_IN exactly_RB the_DT opposite_JJ situation_NN ,_, where_WRB low_JJ r_NN values_NNS signify_VBP that_IN the_DT e_SYM
+ta_NN to_TO determine_VB anomalous_JJ data_NNS ._.
+They_PRP use_VBP a_DT mixture_NN model_NN to_TO explain_VB the_DT presence_NN of_IN anomalies_NNS ._.
+A_DT clustering_NN based_VBN approach_NN to_TO detecting_VBG anomalies_NNS in_IN a_DT dataset_NN is_VBZ used_VBN in_IN -LRB-_-LRB- 22_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+One-class_JJ SVMs_NNS =_JJ -_: =[_NN 23_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Genetic_JJ Algorithms_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- have_VBP also_RB been_VBN used_VBN to_TO classify_VB anomalies_NNS in_IN this_DT context_NN ._.
+Anomaly_RB detection_NN is_VBZ also_RB commonly_RB applied_VBN in_IN time_NN series_NN data_NNS to_TO detect_VB unusual_JJ fluctuations_NNS compared_VBN to_TO past_JJ d_NN
+ed_VBN such_JJ as_IN by_IN zip_NN code_NN or_CC area_NN ._.
+It_PRP can_MD also_RB be_VB computed_VBN dynamically_RB similar_JJ to_TO spatial_JJ scan_VB ._.
+Apart_RB from_IN this_DT ,_, we_PRP can_MD also_RB use_VB the_DT association_NN based_JJ dissimilarity_NN measures_NNS such_JJ as_IN methods_NNS presented_VBN in_IN =_JJ -_: =[_NN 20_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: for_IN grouping_VBG records_NNS ._.
+Another_DT possible_JJ improvement_NN is_VBZ the_DT way_NN we_PRP deal_VBP with_IN real_JJ valued_VBN attributes_NNS ._.
+Since_IN we_PRP deal_VBP with_IN actual_JJ probability_NN values_NNS P_NN rather_RB than_IN probability_NN densities_NNS p_NN ,_, allthereal_JJ value_NN
+algorithms_NNS ._.
+Balderas_FW et_FW al._FW -LRB-_-LRB- 5_CD -RRB-_-RRB- mine_VBP hidden_JJ association_NN rules_NNS ,_, or_CC rules_NNS that_WDT are_VBP not_RB common_JJ ,_, but_CC confident_JJ ._.
+Such_JJ rules_NNS are_VBP assumed_VBN to_TO represent_VB the_DT rare_JJ anomaly_JJ class_NN ._.
+WSARE_NN developed_VBN by_IN Wong_NNP et_FW al._FW =_SYM -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: also_RB uses_VBZ rules_NNS to_TO identify_VB anomalies_NNS ._.
+But_CC in_IN this_DT case_NN ,_, the_DT rules_NNS are_VBP learned_VBN from_IN a_DT historical_JJ dataset_NN ,_, and_CC are_VBP applied_VBN on_IN a_DT collection_NN of_IN records_NNS from_IN the_DT current_JJ time_NN interval_NN ,_, to_TO detect_VB unusual_JJ c_NN
+ces_NNS is_VBZ presented_VBN in_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, and_CC a_DT statistical_JJ method_NN to_TO determine_VB frequent_JJ sequences_NNS in_IN intrusion_NN data_NNS is_VBZ presented_VBN in_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Lee_NNP et_FW al._FW -LRB-_-LRB- 21_CD -RRB-_-RRB- uses_VBZ a_DT decision_NN tree_NN model_NN over_IN normal_JJ data_NNS andsGhosh_NN et_FW al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: uses_VBZ a_DT neural_JJ network_NN to_TO obtain_VB the_DT model_NN ._.
+Eskin_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- uses_VBZ a_DT probability_NN distribution_NN model_NN from_IN the_DT training_NN data_NNS to_TO determine_VB anomalous_JJ data_NNS ._.
+They_PRP use_VBP a_DT mixture_NN model_NN to_TO explain_VB the_DT presence_NN of_IN ano_NN
+ling_NN normal_JJ sequences_NNS using_VBG look_NN ahead_RB pairs_NNS and_CC contiguous_JJ sequences_NNS is_VBZ presented_VBN in_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, and_CC a_DT statistical_JJ method_NN to_TO determine_VB frequent_JJ sequences_NNS in_IN intrusion_NN data_NNS is_VBZ presented_VBN in_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Lee_NNP et_FW al._FW =_SYM -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: uses_VBZ a_DT decision_NN tree_NN model_NN over_IN normal_JJ data_NNS andsGhosh_NN et_FW al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- uses_VBZ a_DT neural_JJ network_NN to_TO obtain_VB the_DT model_NN ._.
+Eskin_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- uses_VBZ a_DT probability_NN distribution_NN model_NN from_IN the_DT training_NN data_NNS to_TO determine_VB anoma_NN
+s_NNS proposed_VBN by_IN Denning_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ._.
+Traditional_JJ anomaly_JJ detection_NN approaches_NNS build_VBP models_NNS of_IN normal_JJ data_NNS and_CC detect_VB deviations_NNS from_IN the_DT normal_JJ model_NN in_IN observed_VBN data_NNS ._.
+A_DT survey_NN of_IN these_DT techniques_NNS is_VBZ given_VBN in_IN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One_CD approach_NN is_VBZ to_TO use_VB sequence_NN analysis_NN to_TO determine_VB anomalies_NNS ._.
+A_DT method_NN of_IN modeling_NN normal_JJ sequences_NNS using_VBG look_NN ahead_RB pairs_NNS and_CC contiguous_JJ sequences_NNS is_VBZ presented_VBN in_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, and_CC a_DT statistical_JJ method_NN
+determine_VBN frequent_JJ sequences_NNS in_IN intrusion_NN data_NNS is_VBZ presented_VBN in_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Lee_NNP et_FW al._FW -LRB-_-LRB- 21_CD -RRB-_-RRB- uses_VBZ a_DT decision_NN tree_NN model_NN over_IN normal_JJ data_NNS andsGhosh_NN et_FW al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- uses_VBZ a_DT neural_JJ network_NN to_TO obtain_VB the_DT model_NN ._.
+Eskin_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: uses_VBZ a_DT probability_NN distribution_NN model_NN from_IN the_DT training_NN data_NNS to_TO determine_VB anomalous_JJ data_NNS ._.
+They_PRP use_VBP a_DT mixture_NN model_NN to_TO explain_VB the_DT presence_NN of_IN anomalies_NNS ._.
+A_DT clustering_NN based_VBN approach_NN to_TO detecting_VBG anoma_NN
+A_DT method_NN of_IN modeling_NN normal_JJ sequences_NNS using_VBG look_NN ahead_RB pairs_NNS and_CC contiguous_JJ sequences_NNS is_VBZ presented_VBN in_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, and_CC a_DT statistical_JJ method_NN to_TO determine_VB frequent_JJ sequences_NNS in_IN intrusion_NN data_NNS is_VBZ presented_VBN in_IN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Lee_NNP et_FW al._FW -LRB-_-LRB- 21_CD -RRB-_-RRB- uses_VBZ a_DT decision_NN tree_NN model_NN over_IN normal_JJ data_NNS andsGhosh_NN et_FW al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- uses_VBZ a_DT neural_JJ network_NN to_TO obtain_VB the_DT model_NN ._.
+Eskin_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- uses_VBZ a_DT probability_NN distribution_NN model_NN from_IN the_DT training_NN data_NNS t_NN
+thods_VBZ Applied_NNP to_TO Categorical_NNP Datasets_NNP 2.1.1_NNP Association_NNP Rule_NNP Based_VBD Approaches_NNS The_DT task_NN of_IN association_NN rule_NN mining_NN has_VBZ received_VBN considerable_JJ attention_NN especially_RB ,_, in_IN the_DT case_NN of_IN market_NN basket_NN analysis_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+An_DT association_NN rule_NN is_VBZ an_DT expression_NN of_IN the_DT form_NN X_NN ⇒_NN Y_NN ,_, whereX_NN and_CC Y_NN are_VBP sets_NNS of_IN items_NNS ._.
+Given_VBN a_DT database_NN of_IN records_NNS -LRB-_-LRB- or_CC transactions_NNS -RRB-_-RRB- D_NN ,_, where_WRB each_DT record_NN T_NN ∈_NN D_NN is_VBZ a_DT set_NN of_IN items_NNS ,_, X_NN ⇒_NN Y_NN expresses_VBZ th_DT
+ion_NN model_NN from_IN the_DT training_NN data_NNS to_TO determine_VB anomalous_JJ data_NNS ._.
+They_PRP use_VBP a_DT mixture_NN model_NN to_TO explain_VB the_DT presence_NN of_IN anomalies_NNS ._.
+A_DT clustering_NN based_VBN approach_NN to_TO detecting_VBG anomalies_NNS in_IN a_DT dataset_NN is_VBZ used_VBN in_IN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+One-class_JJ SVMs_NNS -LRB-_-LRB- 23_CD ,_, 14_CD -RRB-_-RRB- and_CC Genetic_JJ Algorithms_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- have_VBP also_RB been_VBN used_VBN to_TO classify_VB anomalies_NNS in_IN this_DT context_NN ._.
+Anomaly_RB detection_NN is_VBZ also_RB commonly_RB applied_VBN in_IN time_NN series_NN data_NNS to_TO detect_VB unusu_NN
+a_DT discussion_NN of_IN possible_JJ extensions_NNS of_IN the_DT current_JJ work_NN ._.
+2_CD ._.
+RELATED_NNS WORK_VBP Anomaly_JJ detection_NN applied_VBN to_TO network_NN intrusion_NN detection_NN has_VBZ been_VBN an_DT active_JJ area_NN of_IN research_NN since_IN it_PRP was_VBD proposed_VBN by_IN Denning_NN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Traditional_JJ anomaly_JJ detection_NN approaches_NNS build_VBP models_NNS of_IN normal_JJ data_NNS and_CC detect_VB deviations_NNS from_IN the_DT normal_JJ model_NN in_IN observed_VBN data_NNS ._.
+A_DT survey_NN of_IN these_DT techniques_NNS is_VBZ given_VBN in_IN -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+One_CD approach_NN is_VBZ to_TO u_NN
+disadvantage_NN of_IN this_DT method_NN is_VBZ that_IN it_PRP learns_VBZ a_DT very_RB small_JJ subset_NN of_IN all_PDT the_DT possible_JJ rules_NNS ._.
+We_PRP have_VBP used_VBN this_DT method_NN as_IN one_CD of_IN the_DT baseline_NN methods_NNS for_IN comparison_NN of_IN our_PRP$ algorithms_NNS ._.
+Balderas_FW et_FW al._FW =_SYM -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: mine_JJ hidden_JJ association_NN rules_NNS ,_, or_CC rules_NNS that_WDT are_VBP not_RB common_JJ ,_, but_CC confident_JJ ._.
+Such_JJ rules_NNS are_VBP assumed_VBN to_TO represent_VB the_DT rare_JJ anomaly_JJ class_NN ._.
+WSARE_NN developed_VBN by_IN Wong_NNP et_FW al._FW -LRB-_-LRB- 30_CD -RRB-_-RRB- also_RB uses_VBZ rules_NNS to_TO identify_VB
+ts_IN parsimonious_JJ use_NN of_IN parameters_NNS ,_, and_CC efficient_JJ learning_NN and_CC inference_NN techniques_NNS ._.
+Bayes_NNP Net_NNP have_VBP been_VBN used_VBN for_IN detecting_VBG anomalies_NNS in_IN network_NN intrusion_NN detection_NN -LRB-_-LRB- 2_CD ,_, 33_CD -RRB-_-RRB- ,_, detecting_VBG malicious_JJ emails_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: and_CC disease_NN outbreak_NN detection_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+Any_DT good_JJ structure_NN and_CC parameter_NN learning_NN algorithm_NN is_VBZ appropriate_JJ to_TO learn_VB the_DT model_NN ._.
+For_IN our_PRP$ experiments_NNS ,_, we_PRP used_VBD the_DT optimal_JJ reinsertion_NN algorithm_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- to_TO lear_VB
+ed_VBN such_JJ as_IN by_IN zip_NN code_NN or_CC area_NN ._.
+It_PRP can_MD also_RB be_VB computed_VBN dynamically_RB similar_JJ to_TO spatial_JJ scan_VB ._.
+Apart_RB from_IN this_DT ,_, we_PRP can_MD also_RB use_VB the_DT association_NN based_JJ dissimilarity_NN measures_NNS such_JJ as_IN methods_NNS presented_VBN in_IN =_JJ -_: =[_NN 20_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: for_IN grouping_VBG records_NNS ._.
+Another_DT possible_JJ improvement_NN is_VBZ the_DT way_NN we_PRP deal_VBP with_IN real_JJ valued_VBN attributes_NNS ._.
+Since_IN we_PRP deal_VBP with_IN actual_JJ probability_NN values_NNS P_NN rather_RB than_IN probability_NN densities_NNS p_NN ,_, allthereal_JJ value_NN
+ta_NN to_TO determine_VB anomalous_JJ data_NNS ._.
+They_PRP use_VBP a_DT mixture_NN model_NN to_TO explain_VB the_DT presence_NN of_IN anomalies_NNS ._.
+A_DT clustering_NN based_VBN approach_NN to_TO detecting_VBG anomalies_NNS in_IN a_DT dataset_NN is_VBZ used_VBN in_IN -LRB-_-LRB- 22_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+One-class_JJ SVMs_NNS =_JJ -_: =[_NN 23_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Genetic_JJ Algorithms_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- have_VBP also_RB been_VBN used_VBN to_TO classify_VB anomalies_NNS in_IN this_DT context_NN ._.
+Anomaly_RB detection_NN is_VBZ also_RB commonly_RB applied_VBN in_IN time_NN series_NN data_NNS to_TO detect_VB unusual_JJ fluctuations_NNS compared_VBN to_TO past_JJ d_NN
+malous_JJ ._.
+For_IN multivariate_JJ categorical_JJ data_NNS ,_, dependency_NN trees_NNS and_CC bayesian_JJ networks_NNS are_VBP common_JJ representations_NNS of_IN a_DT probability_NN density_NN model_NN ._.
+Dependency_NN trees_NNS have_VBP been_VBN 221_CD used_VBN to_TO detect_VB anomalies_NNS in_IN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP choose_VBP a_DT bayesian_JJ network_NN as_IN the_DT standard_JJ model_NN against_IN which_WDT we_PRP compare_VBP our_PRP$ algorithm_NN ._.
+Hence_RB ,_, we_PRP give_VBP an_DT overview_NN of_IN this_DT method_NN next_RB ._.
+2.1.3_FW Anomaly_FW Detection_NN Using_VBG Bayes_NNP Network_NNP A_NNP Bayesian_JJ netw_NN
+They_PRP use_VBP a_DT mixture_NN model_NN to_TO explain_VB the_DT presence_NN of_IN anomalies_NNS ._.
+A_DT clustering_NN based_VBN approach_NN to_TO detecting_VBG anomalies_NNS in_IN a_DT dataset_NN is_VBZ used_VBN in_IN -LRB-_-LRB- 22_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+One-class_JJ SVMs_NNS -LRB-_-LRB- 23_CD ,_, 14_CD -RRB-_-RRB- and_CC Genetic_NNP Algorithms_NNPS =_SYM -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP also_RB been_VBN used_VBN to_TO classify_VB anomalies_NNS in_IN this_DT context_NN ._.
+Anomaly_RB detection_NN is_VBZ also_RB commonly_RB applied_VBN in_IN time_NN series_NN data_NNS to_TO detect_VB unusual_JJ fluctuations_NNS compared_VBN to_TO past_JJ data_NN points_NNS -LRB-_-LRB- 4_CD ,_, 18_CD ,_, 7_CD ,_, 26_CD -RRB-_-RRB- ._.
+A_DT
+ese_NN techniques_NNS is_VBZ given_VBN in_IN -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+One_CD approach_NN is_VBZ to_TO use_VB sequence_NN analysis_NN to_TO determine_VB anomalies_NNS ._.
+A_DT method_NN of_IN modeling_NN normal_JJ sequences_NNS using_VBG look_NN ahead_RB pairs_NNS and_CC contiguous_JJ sequences_NNS is_VBZ presented_VBN in_IN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC a_DT statistical_JJ method_NN to_TO determine_VB frequent_JJ sequences_NNS in_IN intrusion_NN data_NNS is_VBZ presented_VBN in_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Lee_NNP et_FW al._FW -LRB-_-LRB- 21_CD -RRB-_-RRB- uses_VBZ a_DT decision_NN tree_NN model_NN over_IN normal_JJ data_NNS andsGhosh_NN et_FW al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- uses_VBZ a_DT neural_JJ netwo_NN
+c_NN Algorithms_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- have_VBP also_RB been_VBN used_VBN to_TO classify_VB anomalies_NNS in_IN this_DT context_NN ._.
+Anomaly_RB detection_NN is_VBZ also_RB commonly_RB applied_VBN in_IN time_NN series_NN data_NNS to_TO detect_VB unusual_JJ fluctuations_NNS compared_VBN to_TO past_JJ data_NN points_NNS =_JJ -_: =[_NN 4_CD ,_, 18_CD ,_, 7_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Another_DT area_NN of_IN considerable_JJ recent_JJ interest_NN is_VBZ spatial_JJ anomaly_NN detection_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+The_DT methods_NNS described_VBN so_RB far_RB apply_VB to_TO real_JJ valued_VBN data_NNS or_CC work_NN in_IN a_DT supervised_JJ setting_NN when_WRB we_PRP have_VBP labeled_VBN training_NN d_NN
+and_CC efficient_JJ learning_NN and_CC inference_NN techniques_NNS ._.
+Bayes_NNP Net_NNP have_VBP been_VBN used_VBN for_IN detecting_VBG anomalies_NNS in_IN network_NN intrusion_NN detection_NN -LRB-_-LRB- 2_CD ,_, 33_CD -RRB-_-RRB- ,_, detecting_VBG malicious_JJ emails_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC disease_NN outbreak_NN detection_NN =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Any_DT good_JJ structure_NN and_CC parameter_NN learning_NN algorithm_NN is_VBZ appropriate_JJ to_TO learn_VB the_DT model_NN ._.
+For_IN our_PRP$ experiments_NNS ,_, we_PRP used_VBD the_DT optimal_JJ reinsertion_NN algorithm_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- to_TO learn_VB the_DT structure_NN ,_, and_CC then_RB did_VBD a_DT maxi_NN
+ly_RB exclusive_JJ subsets_NNS having_VBG up_RB to_TO k_NN attributes_NNS ,_, and_CC calculate_VB the_DT corresponding_JJ r-values_NN ._.
+P_NN -LRB-_-LRB- A_NN ,_, B_NN -RRB-_-RRB- A_DT ratio_NN of_IN the_DT form_NN r_NN =_JJ has_VBZ been_VBN proposed_VBN as_IN a_DT P_NN -LRB-_-LRB- A_NN -RRB-_-RRB- P_NN -LRB-_-LRB- B_NN -RRB-_-RRB- measure_NN of_IN suspicious_JJ coincidence_NN by_IN Barlow_NNP =_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP states_VBZ that_IN two_CD candidate_NN fragments_NNS A_NN and_CC B_NN should_MD be_VB combined_VBN into_IN a_DT composite_JJ object_NN AB_NNP if_IN the_DT probability_NN of_IN their_PRP$ joint_JJ appearance_NN P_NN -LRB-_-LRB- A_NN ,_, B_NN -RRB-_-RRB- is_VBZ much_RB higher_JJR than_IN the_DT probability_NN ex_FW -LRB-_-LRB- 1_LS -RRB-_-RRB- spected_VBN in_IN
+tion_NN is_VBZ also_RB commonly_RB applied_VBN in_IN time_NN series_NN data_NNS to_TO detect_VB unusual_JJ fluctuations_NNS compared_VBN to_TO past_JJ data_NN points_NNS -LRB-_-LRB- 4_CD ,_, 18_CD ,_, 7_CD ,_, 26_CD -RRB-_-RRB- ._.
+Another_DT area_NN of_IN considerable_JJ recent_JJ interest_NN is_VBZ spatial_JJ anomaly_RB detection_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT methods_NNS described_VBN so_RB far_RB apply_VB to_TO real_JJ valued_VBN data_NNS or_CC work_NN in_IN a_DT supervised_JJ setting_NN when_WRB we_PRP have_VBP labeled_VBN training_NN data_NNS ._.
+We_PRP now_RB describe_VBP methods_NNS that_WDT apply_VBP to_TO the_DT problem_NN of_IN interest_NN ,_, i.e._FW ,_, on_IN cat_NN
+c_NN Algorithms_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- have_VBP also_RB been_VBN used_VBN to_TO classify_VB anomalies_NNS in_IN this_DT context_NN ._.
+Anomaly_RB detection_NN is_VBZ also_RB commonly_RB applied_VBN in_IN time_NN series_NN data_NNS to_TO detect_VB unusual_JJ fluctuations_NNS compared_VBN to_TO past_JJ data_NN points_NNS =_JJ -_: =[_NN 4_CD ,_, 18_CD ,_, 7_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Another_DT area_NN of_IN considerable_JJ recent_JJ interest_NN is_VBZ spatial_JJ anomaly_NN detection_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ._.
+The_DT methods_NNS described_VBN so_RB far_RB apply_VB to_TO real_JJ valued_VBN data_NNS or_CC work_NN in_IN a_DT supervised_JJ setting_NN when_WRB we_PRP have_VBP labeled_VBN training_NN d_NN

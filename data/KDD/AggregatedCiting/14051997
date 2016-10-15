@@ -1,0 +1,144 @@
+Sparsification_NN of_IN influence_NN networks_NNS
+We_PRP present_VBP Spine_NNP ,_, an_DT efficient_JJ algorithm_NN for_IN finding_VBG the_DT ``_`` backbone_NN ''_'' of_IN an_DT influence_NN network_NN ._.
+Given_VBN a_DT social_JJ graph_NN and_CC a_DT log_NN of_IN past_JJ propagations_NNS ,_, we_PRP build_VBP an_DT instance_NN of_IN the_DT independent-cascade_JJ model_NN that_WDT describes_VBZ the_DT propagations_NNS ._.
+We_PRP aim_VBP at_IN reducing_VBG the_DT complexity_NN of_IN that_DT model_NN ,_, while_IN preserving_VBG most_JJS of_IN its_PRP$ accuracy_NN in_IN describing_VBG the_DT data_NNS ._.
+We_PRP show_VBP that_IN the_DT problem_NN is_VBZ inapproximable_JJ and_CC we_PRP present_VBP an_DT optimal_JJ ,_, dynamic-programming_JJ algorithm_NN ,_, whose_WP$ search_NN space_NN ,_, albeit_IN exponential_NN ,_, is_VBZ typically_RB much_RB smaller_JJR than_IN that_DT of_IN the_DT brute_JJ force_NN ,_, exhaustive-search_JJ approach_NN ._.
+Seeking_VBG a_DT practical_JJ ,_, scalable_JJ approach_NN to_TO sparsification_NN ,_, we_PRP devise_VBP Spine_NN ,_, a_DT greedy_JJ ,_, efficient_JJ algorithm_NN with_IN practically_RB little_JJ compromise_NN in_IN quality_NN ._.
+We_PRP claim_VBP that_IN sparsification_NN is_VBZ a_DT fundamental_JJ data-reduction_NN operation_NN with_IN many_JJ applications_NNS ,_, ranging_VBG from_IN visualization_NN to_TO exploratory_JJ and_CC descriptive_JJ data_NN analysis_NN ._.
+As_IN a_DT proof_NN of_IN concept_NN ,_, we_PRP use_VBP Spine_NN on_IN real-world_JJ datasets_NNS ,_, revealing_VBG the_DT backbone_NN of_IN their_PRP$ influence-propagation_NN networks_NNS ._.
+Moreover_RB ,_, we_PRP apply_VBP Spine_NN as_IN a_DT pre-processing_JJ step_NN for_IN the_DT influence-maximization_NN problem_NN ,_, showing_VBG that_IN computations_NNS on_IN sparsified_JJ models_NNS give_VBP up_RP little_JJ accuracy_NN ,_, but_CC yield_NN significant_JJ improvements_NNS in_IN terms_NNS of_IN scalability_NN ._.
+sacrificing_VBG little_RB in_IN terms_NNS of_IN accuracy_NN ._.
+Even_RB though_IN there_EX has_VBZ been_VBN a_DT lot_NN of_IN work_NN recently_RB on_IN studying_VBG information_NN propagation_NN ,_, mostly_RB devoted_JJ either_CC toempirical_JJ analysis_NN of_IN real-world_JJ propagations_NNS =_JJ -_: =[_NN 1_CD ,_, 14_CD ,_, 19_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC to_TO devise_VB methods_NNS for_IN influence_NN maximization_NN -LRB-_-LRB- 6_CD ,_, 18_CD ,_, 27_CD -RRB-_-RRB- ,_, not_RB much_JJ effort_NN has_VBZ been_VBN devoted_VBN to_TO develop_VB techniques_NNS to_TO mine_VB large_JJ logs_NNS of_IN propagation_NN traces_NNS ._.
+On_IN the_DT other_JJ hand_NN ,_, there_EX is_VBZ extensive_JJ li_NN
+in_IN social_JJ sciences_NNS ._.
+Early_JJ work_NN studied_VBD the_DT adoption_NN of_IN medical_JJ and_CC agricultural_JJ innovations_NNS -LRB-_-LRB- 5_CD ,_, 32_CD -RRB-_-RRB- ._.
+Later_RB ,_, marketing_NN researchers_NNS investigated_VBD the_DT ``_`` word-of-mouth_JJ ''_'' diffusion_NN process_NN for_IN viral_JJ marketing_NN =_JJ -_: =[_NN 2_CD ,_, 9_CD ,_, 17_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+From_IN a_DT computational_JJ perspective_NN ,_, a_DT basic_JJ problem_NN in_IN viral_JJ marketing_NN is_VBZ that_DT of_IN influence_NN maximization_NN :_: given_VBN a_DT social_JJ network_NN ,_, find_VB k_NN nodes_NNS to_TO target_VB in_IN order_NN to_TO maximize_VB the_DT spread_NN of_IN influence_NN ._.
+T_NN
+apers_NNS that_WDT share_VBP our_PRP$ approach_NN of_IN simultaneously_RB mining_VBG the_DT social_JJ graph_NN and_CC network_NN activity_NN include_VBP the_DT work_NN of_IN Goyaletal_NNP ._.
+-LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, onextractingfrequentpatternsofinfluence_NN ,_, and_CC the_DT works_NNS of_IN Goyal_NNP et_FW al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Saito_NNP et_FW al._FW -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, on_IN learning_VBG influence_NN models_NNS from_IN observed_VBN activity_NN ._.
+However_RB ,_, they_PRP do_VBP not_RB consider_VB any_DT notion_NN of_IN sparsification_NN or_CC other_JJ summarization_NN operation_NN ._.
+3_LS ._.
+INFLUENCE_NN MODEL_NN Consider_VB a_DT
+hose_NN actions_NNS have_VBP propagated_VBN in_IN the_DT network_NN via_IN the_DT independent_JJ cascade_NN model_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+The_DT maximum_NN likelihood_NN parameters_NNS of_IN this_DT model_NN can_MD be_VB found_VBN for_IN instance_NN by_IN using_VBG the_DT EM_NN algorithm_NN of_IN Saito_NNP et_FW al._FW =_SYM -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Given_VBN the_DT parameters_NNS we_PRP formulate_VBP the_DT sparsification_NN problem_NN ,_, which_WDT is_VBZ the_DT focus_NN of_IN this_DT paper_NN :_: we_PRP ask_VBP to_TO preserve_VB the_DT k_NN most_RBS important_JJ links_NNS in_IN the_DT model_NN ,_, i.e._FW ,_, the_DT set_NN of_IN k_NN links_NNS that_WDT maximize_VBP the_DT
+maximization_NN ._.
+Conceptually_RB ,_, our_PRP$ work_NN can_MD be_VB collocated_VBN with_IN works_NNS on_IN network_NN simplification_NN ,_, the_DT goal_NN of_IN which_WDT is_VBZ to_TO identify_VB subnetworks_NNS that_WDT preserve_VBP properties_NNS of_IN a_DT given_VBN network_NN ._.
+Toivonen_NNP et_FW al._FW =_SYM -_: =[_NN 31_CD ,_, 33_CD -RRB-_-RRB- -_: =_JJ -_: ,_, for_IN instance_NN ,_, prune_VB edges_NNS while_IN keeping_VBG the_DT original_JJ quality_NN of_IN best_JJS paths_NNS between_IN all_DT pairs_NNS of_IN nodes_NNS ._.
+Here_RB ,_, quality_NN is_VBZ defined_VBN on_IN path-based_JJ concepts_NNS ,_, such_JJ as_IN shortest_JJS path_NN or_CC maximum_NN flow_NN ._.
+Misiole_NNP
+nce_NN ,_, prune_VB edges_NNS while_IN keeping_VBG the_DT original_JJ quality_NN of_IN best_JJS paths_NNS between_IN all_DT pairs_NNS of_IN nodes_NNS ._.
+Here_RB ,_, quality_NN is_VBZ defined_VBN on_IN path-based_JJ concepts_NNS ,_, such_JJ as_IN shortest_JJS path_NN or_CC maximum_NN flow_NN ._.
+Misiolek_NNP and_CC Chen_NNP =_SYM -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: prune_VB arcs_NNS while_IN maintainingthe_NN source-to-sinkflow_NN for_IN each_DT pair_NN of_IN nodes_NNS ._.
+In_IN the_DT theory_NN community_NN ,_, the_DT notion_NN of_IN kspanner_NN refers_VBZ to_TO a_DT sparse_JJ subgraph_NN that_WDT maintains_VBZ the_DT distances_NNS in_IN the_DT original_JJ gra_NN
+network_NN ,_, and_CC not_RB just_RB in_IN terms_NNS of_IN the_DT structural_JJ properties_NNS of_IN the_DT network_NN ._.
+A_DT recent_JJ line_NN of_IN work_NN ,_, perhaps_RB the_DT closest_JJS to_TO ours_PRP ,_, assumes_VBZ instead_RB that_IN the_DT propagations_NNS are_VBP known_VBN ,_, but_CC the_DT network_NN is_VBZ not_RB =_JJ -_: =[_NN 10_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN their_PRP$ research_NN ,_, Gomez-Rodriguez_NNP et_FW al._FW assume_VB that_IN connections_NNS between_IN nodes_NNS can_MD not_RB be_VB observed_VBN ,_, and_CC they_PRP use_VBP observed_VBN traces_NNS of_IN activity_NN to_TO infer_VB a_DT sparse_NN ,_, ``_`` hidden_JJ ''_'' network_NN of_IN information_NN diffusi_NNS
+iral_JJ marketing_NN :_: Finding_VBG the_DT set_NN of_IN users_NNS to_TO target_VB in_IN order_NN to_TO maximize_VB the_DT spread_NN of_IN influence_NN is_VBZ a_DT problem_NN that_WDT has_VBZ received_VBN a_DT lot_NN of_IN attention_NN ,_, yet_RB there_EX are_VBP still_RB serious_JJ computational_JJ challenges_NNS =_JJ -_: =[_NN 3_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN we_PRP show_VBP in_IN Section_NN 7_CD ,_, sparsification_NN yields_VBZ significant_JJ improvement_NN for_IN this_DT problem_NN ,_, in_IN terms_NNS of_IN efficiency_NN and_CC scalability_NN ,_, while_IN sacrificing_VBG little_RB in_IN terms_NNS of_IN accuracy_NN ._.
+Even_RB though_IN there_EX has_VBZ
+kbone_NN of_IN actual_JJ news_NN and_CC that_DT of_IN false_JJ rumors_NNS ?_. ''_''
+Feed_NN ranking_NN :_: As_IN users_NNS in_IN social_JJ networks_NNS receive_VBP a_DT continuous_JJ feed_NN of_IN information_NN ,_, ranking_VBG the_DT most_RBS interesting_JJ feeds_VBZ is_VBZ becoming_VBG an_DT important_JJ problem_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Sparsification_NN providesausefulfeatureinthisrankingproblembyhighlighting_VBG the_DT most_RBS important_JJ links_NNS ._.
+Viral_JJ marketing_NN :_: Finding_VBG the_DT set_NN of_IN users_NNS to_TO target_VB in_IN order_NN to_TO maximize_VB the_DT spread_NN of_IN influence_NN is_VBZ
+iral_JJ marketing_NN :_: Finding_VBG the_DT set_NN of_IN users_NNS to_TO target_VB in_IN order_NN to_TO maximize_VB the_DT spread_NN of_IN influence_NN is_VBZ a_DT problem_NN that_WDT has_VBZ received_VBN a_DT lot_NN of_IN attention_NN ,_, yet_RB there_EX are_VBP still_RB serious_JJ computational_JJ challenges_NNS =_JJ -_: =[_NN 3_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN we_PRP show_VBP in_IN Section_NN 7_CD ,_, sparsification_NN yields_VBZ significant_JJ improvement_NN for_IN this_DT problem_NN ,_, in_IN terms_NNS of_IN efficiency_NN and_CC scalability_NN ,_, while_IN sacrificing_VBG little_RB in_IN terms_NNS of_IN accuracy_NN ._.
+Even_RB though_IN there_EX has_VBZ
+t_NN weighted_JJ edges_NNS that_WDT do_VBP not_RB violate_VB the_DT triangular_JJ inequality_NN ._.
+Moreover_RB ,_, Fung_NNP et_FW al._FW -LRB-_-LRB- 35_CD -RRB-_-RRB- study_NN cut-sparsifiers_NNS ,_, i.e._FW subsets_NNS of_IN edges_NNS that_WDT preserve_VBP cuts_NNS up_IN to_TO a_DT multiplicative_JJ error_NN ._.
+Serrano_NNP et_FW al._FW =_SYM -_: =[_NN 30_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC Foti_NNP et_FW al._FW -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, focus_NN on_IN weighted_JJ networks_NNS and_CC select_JJ edges_NNS that_WDT represent_VBP statistically_RB significantdeviationswithrespecttoanullmodel_JJ ._.
+Inasimilarsetting_NNP ,_, Arenas_NNP et_FW al._FW -LRB-_-LRB- 34_CD -RRB-_-RRB- select_JJ edges_NNS that_WDT pr_VBP
+odes_NNS ._.
+In_IN the_DT theory_NN community_NN ,_, the_DT notion_NN of_IN kspanner_NN refers_VBZ to_TO a_DT sparse_JJ subgraph_NN that_WDT maintains_VBZ the_DT distances_NNS in_IN the_DT original_JJ graph_NN up_IN to_TO a_DT factor_NN of_IN k._NN The_DT problem_NN is_VBZ to_TO find_VB the_DT sparsest_JJS k-spanner_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN pathfinder_NN networks_NNS -LRB-_-LRB- 26_CD ,_, 29_CD -RRB-_-RRB- the_DT approach_NN is_VBZ to_TO select_VB weighted_JJ edges_NNS that_WDT do_VBP not_RB violate_VB the_DT triangular_JJ inequality_NN ._.
+Moreover_RB ,_, Fung_NNP et_FW al._FW -LRB-_-LRB- 35_CD -RRB-_-RRB- study_NN cut-sparsifiers_NNS ,_, i.e._FW subsets_NNS of_IN edges_NNS that_IN p_NN
+network_NN ,_, and_CC not_RB just_RB in_IN terms_NNS of_IN the_DT structural_JJ properties_NNS of_IN the_DT network_NN ._.
+A_DT recent_JJ line_NN of_IN work_NN ,_, perhaps_RB the_DT closest_JJS to_TO ours_PRP ,_, assumes_VBZ instead_RB that_IN the_DT propagations_NNS are_VBP known_VBN ,_, but_CC the_DT network_NN is_VBZ not_RB =_JJ -_: =[_NN 10_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN their_PRP$ research_NN ,_, Gomez-Rodriguez_NNP et_FW al._FW assume_VB that_IN connections_NNS between_IN nodes_NNS can_MD not_RB be_VB observed_VBN ,_, and_CC they_PRP use_VBP observed_VBN traces_NNS of_IN activity_NN to_TO infer_VB a_DT sparse_NN ,_, ``_`` hidden_JJ ''_'' network_NN of_IN information_NN diffusi_NNS
+do_VB not_RB violate_VB the_DT triangular_JJ inequality_NN ._.
+Moreover_RB ,_, Fung_NNP et_FW al._FW -LRB-_-LRB- 35_CD -RRB-_-RRB- study_NN cut-sparsifiers_NNS ,_, i.e._FW subsets_NNS of_IN edges_NNS that_WDT preserve_VBP cuts_NNS up_IN to_TO a_DT multiplicative_JJ error_NN ._.
+Serrano_NNP et_FW al._FW -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, and_CC Foti_NNP et_FW al._FW =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, focus_NN on_IN weighted_JJ networks_NNS and_CC select_JJ edges_NNS that_WDT represent_VBP statistically_RB significantdeviationswithrespecttoanullmodel_JJ ._.
+Inasimilarsetting_NNP ,_, Arenas_NNP et_FW al._FW -LRB-_-LRB- 34_CD -RRB-_-RRB- select_JJ edges_NNS that_WDT preserve_VBP modularity_NN ,_, a_DT
+y_NN ,_, the_DT notion_NN of_IN kspanner_NN refers_VBZ to_TO a_DT sparse_JJ subgraph_NN that_WDT maintains_VBZ the_DT distances_NNS in_IN the_DT original_JJ graph_NN up_IN to_TO a_DT factor_NN of_IN k._NN The_DT problem_NN is_VBZ to_TO find_VB the_DT sparsest_JJS k-spanner_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+In_IN pathfinder_NN networks_NNS =_JJ -_: =[_NN 26_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: the_DT approach_NN is_VBZ to_TO select_VB weighted_JJ edges_NNS that_WDT do_VBP not_RB violate_VB the_DT triangular_JJ inequality_NN ._.
+Moreover_RB ,_, Fung_NNP et_FW al._FW -LRB-_-LRB- 35_CD -RRB-_-RRB- study_NN cut-sparsifiers_NNS ,_, i.e._FW subsets_NNS of_IN edges_NNS that_WDT preserve_VBP cuts_NNS up_IN to_TO a_DT multiplicati_NNS
+y_NN ,_, the_DT notion_NN of_IN kspanner_NN refers_VBZ to_TO a_DT sparse_JJ subgraph_NN that_WDT maintains_VBZ the_DT distances_NNS in_IN the_DT original_JJ graph_NN up_IN to_TO a_DT factor_NN of_IN k._NN The_DT problem_NN is_VBZ to_TO find_VB the_DT sparsest_JJS k-spanner_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+In_IN pathfinder_NN networks_NNS =_JJ -_: =[_NN 26_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: the_DT approach_NN is_VBZ to_TO select_VB weighted_JJ edges_NNS that_WDT do_VBP not_RB violate_VB the_DT triangular_JJ inequality_NN ._.
+Moreover_RB ,_, Fung_NNP et_FW al._FW -LRB-_-LRB- 35_CD -RRB-_-RRB- study_NN cut-sparsifiers_NNS ,_, i.e._FW subsets_NNS of_IN edges_NNS that_WDT preserve_VBP cuts_NNS up_IN to_TO a_DT multiplicati_NNS
+maximization_NN ._.
+Conceptually_RB ,_, our_PRP$ work_NN can_MD be_VB collocated_VBN with_IN works_NNS on_IN network_NN simplification_NN ,_, the_DT goal_NN of_IN which_WDT is_VBZ to_TO identify_VB subnetworks_NNS that_WDT preserve_VBP properties_NNS of_IN a_DT given_VBN network_NN ._.
+Toivonen_NNP et_FW al._FW =_SYM -_: =[_NN 31_CD ,_, 33_CD -RRB-_-RRB- -_: =_JJ -_: ,_, for_IN instance_NN ,_, prune_VB edges_NNS while_IN keeping_VBG the_DT original_JJ quality_NN of_IN best_JJS paths_NNS between_IN all_DT pairs_NNS of_IN nodes_NNS ._.
+Here_RB ,_, quality_NN is_VBZ defined_VBN on_IN path-based_JJ concepts_NNS ,_, such_JJ as_IN shortest_JJS path_NN or_CC maximum_NN flow_NN ._.
+Misiole_NNP
+of_IN k._NN The_DT problem_NN is_VBZ to_TO find_VB the_DT sparsest_JJS k-spanner_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+In_IN pathfinder_NN networks_NNS -LRB-_-LRB- 26_CD ,_, 29_CD -RRB-_-RRB- the_DT approach_NN is_VBZ to_TO select_VB weighted_JJ edges_NNS that_WDT do_VBP not_RB violate_VB the_DT triangular_JJ inequality_NN ._.
+Moreover_RB ,_, Fung_NNP et_FW al._FW =_SYM -_: =[_NN 35_CD -RRB-_-RRB- -_: =_JJ -_: study_NN cut-sparsifiers_NNS ,_, i.e._FW subsets_NNS of_IN edges_NNS that_WDT preserve_VBP cuts_NNS up_IN to_TO a_DT multiplicative_JJ error_NN ._.
+Serrano_NNP et_FW al._FW -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, and_CC Foti_NNP et_FW al._FW -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, focus_NN on_IN weighted_JJ networks_NNS and_CC select_JJ edges_NNS that_WDT represent_VBP stat_NN
+is_VBZ ,_, Dsp_NNP is_VBZ also_RB a_DT superset_NN of_IN D0_NN and_CC it_PRP has_VBZ k_NN arcs_NNS ._.
+Then_RB ,_, provided_VBN that_IN logL_NN -LRB-_-LRB- G0_NN -RRB-_-RRB- -RRB-_-RRB- −_FW ∞_FW ,_, we_PRP have_VBP logL_NN -LRB-_-LRB- Gsp_NN -RRB-_-RRB- ≥_NN 1_CD e_SYM 1_CD logL_NN -LRB-_-LRB- G0_NN -RRB-_-RRB- +_CC -LRB-_-LRB- 1_CD −_NN -RRB-_-RRB- logL_NN -LRB-_-LRB- Dopt_NN -RRB-_-RRB- ._.
+-LRB-_-LRB- 9_CD -RRB-_-RRB- e_SYM Proof_NNP ._.
+We_PRP use_VBP a_DT well-known_JJ theorem_NN by_IN Nemhauser_NNP et_FW al._FW =_SYM -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: on_IN maximizing_VBG submodular_JJ set_NN functions_NNS ._.
+A_DT set_JJ function_NN f_FW is_VBZ submodular_JJ ,_, when_WRB for_IN any_DT S_NN ⊆_NN T_NN we_PRP have_VBP f_LS -LRB-_-LRB- S_NN ∪_FW u_FW -RRB-_-RRB- −_FW f_FW -LRB-_-LRB- S_NN -RRB-_-RRB- ≥_FW f_FW -LRB-_-LRB- T_NN ∪_FW u_FW -RRB-_-RRB- −_FW f_FW -LRB-_-LRB- T_NN -RRB-_-RRB- ._.
+The_DT theorem_NN in_IN -LRB-_-LRB- 25_CD -RRB-_-RRB- states_VBZ that_IN for_IN non-negative_JJ set_NN functions_NNS f_LS ,_,
+in_IN social_JJ sciences_NNS ._.
+Early_JJ work_NN studied_VBD the_DT adoption_NN of_IN medical_JJ and_CC agricultural_JJ innovations_NNS -LRB-_-LRB- 5_CD ,_, 32_CD -RRB-_-RRB- ._.
+Later_RB ,_, marketing_NN researchers_NNS investigated_VBD the_DT ``_`` word-of-mouth_JJ ''_'' diffusion_NN process_NN for_IN viral_JJ marketing_NN =_JJ -_: =[_NN 2_CD ,_, 9_CD ,_, 17_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+From_IN a_DT computational_JJ perspective_NN ,_, a_DT basic_JJ problem_NN in_IN viral_JJ marketing_NN is_VBZ that_DT of_IN influence_NN maximization_NN :_: given_VBN a_DT social_JJ network_NN ,_, find_VB k_NN nodes_NNS to_TO target_VB in_IN order_NN to_TO maximize_VB the_DT spread_NN of_IN influence_NN ._.
+T_NN
+een_VB a_DT lot_NN of_IN work_NN recently_RB on_IN studying_VBG information_NN propagation_NN ,_, mostly_RB devoted_JJ either_CC toempirical_JJ analysis_NN of_IN real-world_JJ propagations_NNS -LRB-_-LRB- 1_CD ,_, 14_CD ,_, 19_CD ,_, 22_CD -RRB-_-RRB- ,_, or_CC to_TO devise_VB methods_NNS for_IN influence_NN maximization_NN =_JJ -_: =[_NN 6_CD ,_, 18_CD ,_, 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, not_RB much_JJ effort_NN has_VBZ been_VBN devoted_VBN to_TO develop_VB techniques_NNS to_TO mine_VB large_JJ logs_NNS of_IN propagation_NN traces_NNS ._.
+On_IN the_DT other_JJ hand_NN ,_, there_EX is_VBZ extensive_JJ literature_NN on_IN the_DT problem_NN of_IN network_NN simplification_NN ,_, but_CC the_DT sc_NN
+een_VB a_DT lot_NN of_IN work_NN recently_RB on_IN studying_VBG information_NN propagation_NN ,_, mostly_RB devoted_JJ either_CC toempirical_JJ analysis_NN of_IN real-world_JJ propagations_NNS -LRB-_-LRB- 1_CD ,_, 14_CD ,_, 19_CD ,_, 22_CD -RRB-_-RRB- ,_, or_CC to_TO devise_VB methods_NNS for_IN influence_NN maximization_NN =_JJ -_: =[_NN 6_CD ,_, 18_CD ,_, 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, not_RB much_JJ effort_NN has_VBZ been_VBN devoted_VBN to_TO develop_VB techniques_NNS to_TO mine_VB large_JJ logs_NNS of_IN propagation_NN traces_NNS ._.
+On_IN the_DT other_JJ hand_NN ,_, there_EX is_VBZ extensive_JJ literature_NN on_IN the_DT problem_NN of_IN network_NN simplification_NN ,_, but_CC the_DT sc_NN
+ng_NN an_DT online_JJ community_NN or_CC an_DT interest_NN group_NN ,_, buying_VBG a_DT paid_VBN subscription_NN in_IN an_DT on-line_JJ service_NN ,_, and_CC so_RB on_RB ._.
+We_PRP assume_VBP that_IN those_DT actions_NNS have_VBP propagated_VBN in_IN the_DT network_NN via_IN the_DT independent_JJ cascade_NN model_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT maximum_NN likelihood_NN parameters_NNS of_IN this_DT model_NN can_MD be_VB found_VBN for_IN instance_NN by_IN using_VBG the_DT EM_NN algorithm_NN of_IN Saito_NNP et_FW al._FW -LRB-_-LRB- 28_CD -RRB-_-RRB- ._.
+Given_VBN the_DT parameters_NNS we_PRP formulate_VBP the_DT sparsification_NN problem_NN ,_, which_WDT is_VBZ the_DT f_SYM
+in_IN social_JJ sciences_NNS ._.
+Early_JJ work_NN studied_VBD the_DT adoption_NN of_IN medical_JJ and_CC agricultural_JJ innovations_NNS -LRB-_-LRB- 5_CD ,_, 32_CD -RRB-_-RRB- ._.
+Later_RB ,_, marketing_NN researchers_NNS investigated_VBD the_DT ``_`` word-of-mouth_JJ ''_'' diffusion_NN process_NN for_IN viral_JJ marketing_NN =_JJ -_: =[_NN 2_CD ,_, 9_CD ,_, 17_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+From_IN a_DT computational_JJ perspective_NN ,_, a_DT basic_JJ problem_NN in_IN viral_JJ marketing_NN is_VBZ that_DT of_IN influence_NN maximization_NN :_: given_VBN a_DT social_JJ network_NN ,_, find_VB k_NN nodes_NNS to_TO target_VB in_IN order_NN to_TO maximize_VB the_DT spread_NN of_IN influence_NN ._.
+T_NN
+d_NN scalability_NN -LRB-_-LRB- Section_NN 7_CD -RRB-_-RRB- ._.
+2_CD ._.
+RELATED_NNS WORK_VBP Thestudyofinformationdiffusionin_NN socialnetworkshasa_NN long_JJ history_NN in_IN social_JJ sciences_NNS ._.
+Early_JJ work_NN studied_VBD the_DT adoption_NN of_IN medical_JJ and_CC agricultural_JJ innovations_NNS =_JJ -_: =[_NN 5_CD ,_, 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Later_RB ,_, marketing_NN researchers_NNS investigated_VBD the_DT ``_`` word-of-mouth_JJ ''_'' diffusion_NN process_NN for_IN viral_JJ marketing_NN -LRB-_-LRB- 2_CD ,_, 9_CD ,_, 17_CD ,_, 23_CD -RRB-_-RRB- ._.
+From_IN a_DT computational_JJ perspective_NN ,_, a_DT basic_JJ problem_NN in_IN viral_JJ marketing_NN is_VBZ that_DT of_IN infl_NN
+sacrificing_VBG little_RB in_IN terms_NNS of_IN accuracy_NN ._.
+Even_RB though_IN there_EX has_VBZ been_VBN a_DT lot_NN of_IN work_NN recently_RB on_IN studying_VBG information_NN propagation_NN ,_, mostly_RB devoted_JJ either_CC toempirical_JJ analysis_NN of_IN real-world_JJ propagations_NNS =_JJ -_: =[_NN 1_CD ,_, 14_CD ,_, 19_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC to_TO devise_VB methods_NNS for_IN influence_NN maximization_NN -LRB-_-LRB- 6_CD ,_, 18_CD ,_, 27_CD -RRB-_-RRB- ,_, not_RB much_JJ effort_NN has_VBZ been_VBN devoted_VBN to_TO develop_VB techniques_NNS to_TO mine_VB large_JJ logs_NNS of_IN propagation_NN traces_NNS ._.
+On_IN the_DT other_JJ hand_NN ,_, there_EX is_VBZ extensive_JJ li_NN
+problem_NN for_IN a_DT different_JJ family_NN of_IN influence_NN models_NNS ._.
+Part_NN of_IN their_PRP$ contributionwas_NNS to_TO provide_VB approximation_NN algorithms_NNS for_IN the_DT independent_JJ cascade_NN model_NN ,_, which_WDT we_PRP also_RB adopt_VBP in_IN this_DT paper_NN ._.
+Recent_JJ work_NN =_JJ -_: =[_NN 3_CD ,_, 4_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: improves_VBZ the_DT efficiency_NN of_IN influence_NN maximization_NN ._.
+Conceptually_RB ,_, our_PRP$ work_NN can_MD be_VB collocated_VBN with_IN works_NNS on_IN network_NN simplification_NN ,_, the_DT goal_NN of_IN which_WDT is_VBZ to_TO identify_VB subnetworks_NNS that_WDT preserve_VBP properties_NNS
+in_IN social_JJ sciences_NNS ._.
+Early_JJ work_NN studied_VBD the_DT adoption_NN of_IN medical_JJ and_CC agricultural_JJ innovations_NNS -LRB-_-LRB- 5_CD ,_, 32_CD -RRB-_-RRB- ._.
+Later_RB ,_, marketing_NN researchers_NNS investigated_VBD the_DT ``_`` word-of-mouth_JJ ''_'' diffusion_NN process_NN for_IN viral_JJ marketing_NN =_JJ -_: =[_NN 2_CD ,_, 9_CD ,_, 17_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+From_IN a_DT computational_JJ perspective_NN ,_, a_DT basic_JJ problem_NN in_IN viral_JJ marketing_NN is_VBZ that_DT of_IN influence_NN maximization_NN :_: given_VBN a_DT social_JJ network_NN ,_, find_VB k_NN nodes_NNS to_TO target_VB in_IN order_NN to_TO maximize_VB the_DT spread_NN of_IN influence_NN ._.
+T_NN
+d_NN scalability_NN -LRB-_-LRB- Section_NN 7_CD -RRB-_-RRB- ._.
+2_CD ._.
+RELATED_NNS WORK_VBP Thestudyofinformationdiffusionin_NN socialnetworkshasa_NN long_JJ history_NN in_IN social_JJ sciences_NNS ._.
+Early_JJ work_NN studied_VBD the_DT adoption_NN of_IN medical_JJ and_CC agricultural_JJ innovations_NNS =_JJ -_: =[_NN 5_CD ,_, 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Later_RB ,_, marketing_NN researchers_NNS investigated_VBD the_DT ``_`` word-of-mouth_JJ ''_'' diffusion_NN process_NN for_IN viral_JJ marketing_NN -LRB-_-LRB- 2_CD ,_, 9_CD ,_, 17_CD ,_, 23_CD -RRB-_-RRB- ._.
+From_IN a_DT computational_JJ perspective_NN ,_, a_DT basic_JJ problem_NN in_IN viral_JJ marketing_NN is_VBZ that_DT of_IN infl_NN
+Hitting_NNP Set_NNP --_: that_DT is_VBZ ,_, for_IN each_DT node_NN v_LS ∈_NN V_NN we_PRP seek_VBP for_IN a_DT hitting_VBG set_NN of_IN collection_NN C_NN -LRB-_-LRB- v_LS -RRB-_-RRB- =_JJ -LCB-_-LRB- D_NN +_CC α_NN -LRB-_-LRB- v_LS -RRB-_-RRB- ̸_NN =_JJ ∅_NN ;_: α_NNP ∈_NNP A_NNP -RCB-_-RRB- ._.
+As_IN Hitting_NNP Set_NNP is_VBZ NP-hard_JJ ,_, we_PRP employ_VBP the_DT greedy_JJ approximation_NN algorithm_NN described_VBN in_IN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- Algorithm_NN 2_CD ,_, Lines_NNP 1-8_CD -RRB-_-RRB- ._.
+According_VBG to_TO that_DT algorithm_NN ,_, arcs_NNS -LRB-_-LRB- u_NN ,_, v_LS -RRB-_-RRB- are_VBP ordered_VBN by_IN the_DT number_NN n_NN -LRB-_-LRB- u_NN ,_, v_LS -RRB-_-RRB- of_IN actions_NNS for_IN which_WDT u_NN possibly_RB influenced_VBD v_LS n_NN -LRB-_-LRB- u_NN ,_, v_LS -RRB-_-RRB- =_JJ ∣_FW ∣_FW -LCB-_-LRB- D_NN +_CC α_NN -LRB-_-LRB- v_LS -RRB-_-RRB- ∈_NN C_NN -LRB-_-LRB- v_LS -RRB-_-RRB- ;_: -LRB-_-LRB- u_NN ,_, v_LS -RRB-_-RRB- ∈_NN D_NN +_CC α_NN -LRB-_-LRB- v_LS -RRB-_-RRB- -RCB-_-RRB- ∣_FW ∣_FW ._.
+-LRB-_-LRB-
+sacrificing_VBG little_RB in_IN terms_NNS of_IN accuracy_NN ._.
+Even_RB though_IN there_EX has_VBZ been_VBN a_DT lot_NN of_IN work_NN recently_RB on_IN studying_VBG information_NN propagation_NN ,_, mostly_RB devoted_JJ either_CC toempirical_JJ analysis_NN of_IN real-world_JJ propagations_NNS =_JJ -_: =[_NN 1_CD ,_, 14_CD ,_, 19_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC to_TO devise_VB methods_NNS for_IN influence_NN maximization_NN -LRB-_-LRB- 6_CD ,_, 18_CD ,_, 27_CD -RRB-_-RRB- ,_, not_RB much_JJ effort_NN has_VBZ been_VBN devoted_VBN to_TO develop_VB techniques_NNS to_TO mine_VB large_JJ logs_NNS of_IN propagation_NN traces_NNS ._.
+On_IN the_DT other_JJ hand_NN ,_, there_EX is_VBZ extensive_JJ li_NN
+to_TO find_VB the_DT most_RBS important_JJ connections_NNS ,_, and_CC to_TO obtain_VB the_DT network_NN backbone_NN ._.
+Papers_NNP that_WDT share_VBP our_PRP$ approach_NN of_IN simultaneously_RB mining_VBG the_DT social_JJ graph_NN and_CC network_NN activity_NN include_VBP the_DT work_NN of_IN Goyaletal_NNP ._.
+=_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, onextractingfrequentpatternsofinfluence_NN ,_, and_CC the_DT works_NNS of_IN Goyal_NNP et_FW al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC Saito_NNP et_FW al._FW -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, on_IN learning_VBG influence_NN models_NNS from_IN observed_VBN activity_NN ._.
+However_RB ,_, they_PRP do_VBP not_RB consider_VB any_DT notion_NN of_IN sp_NN
+atform_NN from_IN 2008_CD to_TO early_JJ 2010_CD ._.
+The_DT second_JJ data_NN source_NN ,_, referred_VBN to_TO as_IN MTrack_NN in_IN the_DT following_NN ,_, is_VBZ a_DT set_NN of_IN phrases_NNS propagated_VBN over_IN prominent_JJ online_JJ news_NN sites_NNS in_IN March_NNP 2009_CD ,_, obtained_VBN by_IN Meme_NNP Tracker_NNP =_SYM -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Nodes_NNS are_VBP mostly_RB news_NN portals_NNS or_CC news_NN blogs_NNS and_CC actions_NNS correspond_VBP to_TO phrases_NNS that_WDT are_VBP found_VBN by_IN the_DT Meme_NNP Tracker_NNP algorithm_NN to_TO be_VB repeated_VBN across_IN several_JJ sites_NNS ._.
+In_IN absence_NN of_IN explicitly_RB declared_VBN ``_`` foll_NN
+rror_NN ._.
+Serrano_NNP et_FW al._FW -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, and_CC Foti_NNP et_FW al._FW -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, focus_NN on_IN weighted_JJ networks_NNS and_CC select_JJ edges_NNS that_WDT represent_VBP statistically_RB significantdeviationswithrespecttoanullmodel_JJ ._.
+Inasimilarsetting_NNP ,_, Arenas_NNP et_FW al._FW =_SYM -_: =[_NN 34_CD -RRB-_-RRB- -_: =_JJ -_: select_JJ edges_NNS that_WDT preserve_VBP modularity_NN ,_, a_DT measure_NN that_WDT quantifies_VBZ quality_NN of_IN commumity_NN detection_NN ._.
+The_DT approach_NN we_PRP take_VBP in_IN this_DT paper_NN is_VBZ substantially_RB different_JJ than_IN the_DT approach_NN considered_VBN in_IN the_DT abov_NN

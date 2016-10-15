@@ -1,0 +1,139 @@
+On_IN mining_NN cross-graph_NN quasi-cliques_NNS
+Joint_JJ mining_NN of_IN multiple_JJ data_NNS sets_NNS can_MD often_RB discover_VB interesting_JJ ,_, novel_JJ ,_, and_CC reliable_JJ patterns_NNS which_WDT can_MD not_RB be_VB obtained_VBN solely_RB from_IN any_DT single_JJ source_NN ._.
+For_IN example_NN ,_, in_IN cross-market_JJ customer_NN segmentation_NN ,_, a_DT group_NN of_IN customers_NNS who_WP behave_VBP similarly_RB in_IN multiple_JJ markets_NNS should_MD be_VB considered_VBN as_IN a_DT more_RBR coherent_JJ and_CC more_RBR reliable_JJ cluster_NN than_IN clusters_NNS found_VBN in_IN a_DT single_JJ market_NN ._.
+As_IN another_DT example_NN ,_, in_IN bioinformatics_NNS ,_, by_IN joint_JJ mining_NN of_IN gene_NN expression_NN data_NNS and_CC protein_NN interaction_NN data_NNS ,_, we_PRP can_MD find_VB clusters_NNS of_IN genes_NNS which_WDT show_VBP coherent_JJ expression_NN patterns_NNS and_CC also_RB produce_VBP interacting_NN proteins_NNS ._.
+Such_JJ clusters_NNS may_MD be_VB potential_JJ pathways_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP investigate_VBP a_DT novel_JJ data_NN mining_NN problem_NN ,_, mining_VBG cross-graph_JJ quasi-cliques_NNS ,_, which_WDT is_VBZ generalized_VBN from_IN several_JJ interesting_JJ applications_NNS such_JJ as_IN cross-market_NN customer_NN segmentation_NN and_CC joint_JJ mining_NN of_IN gene_NN expression_NN data_NNS and_CC protein_NN interaction_NN data_NNS ._.
+We_PRP build_VBP a_DT general_JJ model_NN for_IN mining_NN cross-graph_JJ quasi-cliques_NNS ,_, show_VBP why_WRB the_DT complete_JJ set_NN of_IN cross-graph_JJ quasi-cliques_NNS can_MD not_RB be_VB found_VBN by_IN previous_JJ data_NNS mining_NN methods_NNS ,_, and_CC study_VB the_DT complexity_NN of_IN the_DT problem_NN ._.
+While_IN the_DT problem_NN is_VBZ difficult_JJ ,_, we_PRP develop_VBP an_DT efficient_JJ algorithm_NN ,_, Crochet_NNP ,_, which_WDT exploits_VBZ several_JJ interesting_JJ and_CC effective_JJ techniques_NNS and_CC heuristics_NNS to_TO efficaciously_RB mine_VB cross-graph_JJ quasi-cliques_NNS ._.
+A_DT systematic_JJ performance_NN study_NN is_VBZ reported_VBN on_IN both_CC synthetic_JJ and_CC real_JJ data_NNS sets_NNS ._.
+We_PRP demonstrate_VBP some_DT interesting_JJ and_CC meaningful_JJ cross-graph_JJ quasi-cliques_NNS in_IN bioinformatics_NNS ._.
+The_DT experimental_JJ results_NNS also_RB show_VBP that_IN algorithm_NN Crochet_NNP is_VBZ efficient_JJ and_CC scalable_JJ ._.
+tering_NN method_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- to_TO analyze_VB the_DT topological_JJ structure_NN in_IN the_DT protein_NN interaction_NN graphs_NNS ._.
+Moreover_RB ,_, Bader_NNP et_FW al._FW -LRB-_-LRB- 2_CD -RRB-_-RRB- proposed_VBD a_DT heuristic_NN approach_NN ,_, MCODE_NNP ,_, based_VBN on_IN the_DT concept_NN of_IN scale-free_JJ networks_NNS =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: to_TO find_VB molecular_JJ complexes_NNS in_IN large_JJ protein_NN interaction_NN graphs_NNS ._.
+Recently_RB ,_, joint_JJ mining_NN of_IN multiple_JJ biological_JJ data_NNS sets_NNS has_VBZ received_VBN intense_JJ interest_NN ._.
+As_IN a_DT pioneer_NN work_NN ,_, Segal_NNP et_FW al._FW -LRB-_-LRB- 25_CD -RRB-_-RRB- proposed_VBD a_DT
+d_NN protein-protein_JJ interactions_NNS ._.
+Various_JJ clustering_NN approaches_NNS ,_, including_VBG the_DT graph-based_JJ algorithms_NNS ,_, have_VBP been_VBN developed_VBN to_TO explore_VB interesting_JJ patterns_NNS in_IN those_DT data_NNS sets_NNS ._.
+For_IN example_NN ,_, Hartuv_NNP et_FW al._FW =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD an_DT algorithm_NN ,_, HCS_NN ,_, to_TO find_VB groups_NNS of_IN genes_NNS that_WDT have_VBP similar_JJ expression_NN patterns_NNS ._.
+HCS_NN recursively_RB splits_VBZ the_DT weighted_JJ gene_NN graph_NN G_NN into_IN a_DT set_NN of_IN highly_RB connected_VBN components_NNS along_IN the_DT minimum_NN
+nal_JJ data_NNS mining_NN approaches_NNS ._.
+Finding_VBG cliques_NNS in_IN a_DT graph_NN is_VBZ a_DT problem_NN that_WDT has_VBZ been_VBN investigated_VBN for_IN a_DT long_JJ time_NN ._.
+Computing_NNP quasi-cliques_NNS in_IN one_CD graph_NN was_VBD also_RB the_DT topic_NN of_IN some_DT recent_JJ studies_NNS ,_, such_JJ as_IN =_JJ -_: =[_NN 1_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One_CD may_MD wonder_VB ,_, ``_`` Can_MD the_DT complete_JJ set_NN of_IN cross-graph_JJ quasi-cliques_NNS be_VB mined_VBN easily_RB by_IN extending_VBG the_DT existing_VBG algorithms_NNS for_IN finding_VBG cliques_NNS or_CC quasi-cliques_NNS in_IN an_DT `_`` integrated_JJ '_'' graph_NN ?_. ''_''
+EXAMPLE_NN 3_CD ._.
+-LRB-_-LRB- CA_NNP
+al._FW -LRB-_-LRB- 30_CD -RRB-_-RRB- generated_VBD a_DT Minimum_NNP Spanning_NNP Tree_NNP -LRB-_-LRB- MST_NNP -RRB-_-RRB- from_IN the_DT weighted_JJ gene_NN graph_NN G._NNP By_IN removing_VBG -LRB-_-LRB- K_NNP −_NNP 1_LS -RRB-_-RRB- edges_VBZ from_IN the_DT generated_VBN MST_NNP ,_, the_DT data_NNS set_NN is_VBZ partitioned_VBN into_IN K_NN clusters_NNS ._.
+Moreover_RB ,_, Enright_NNP et_FW al._FW =_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: developed_JJ TRIBE-MCL_NN based_VBN on_IN MCL_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, a_DT graph-based_JJ algorithm_NN using_VBG flow_NN simulation_NN ,_, to_TO efficiently_RB detect_VB protein_NN families_NNS from_IN large_JJ protein_NN sequence_NN databases_NNS ._.
+Bu_FW et_FW al._FW -LRB-_-LRB- 6_CD -RRB-_-RRB- used_VBD the_DT spectral_JJ clu_NN
+pic_NN in_IN data_NN mining_NN ._.
+For_IN example_NN ,_, mining_NN frequent_JJ substructures_NNS and_CC subgraph_JJ patterns_NNS from_IN many_JJ graphs_NNS -LRB-_-LRB- i.e._FW ,_, a_DT graph_NN database_NN -RRB-_-RRB- has_VBZ been_VBN studied_VBN intensively_RB -LRB-_-LRB- 4_CD ,_, 27_CD ,_, 16_CD ,_, 17_CD ,_, 20_CD ,_, 32_CD ,_, 31_CD ,_, 28_CD -RRB-_-RRB- ._.
+Yan_NNP et_FW al._FW =_SYM -_: =[_NN 33_CD -RRB-_-RRB- -_: =_SYM -_: used_VBN frequent_JJ graph_NN patterns_NNS to_TO index_NN graphs_NNS ._.
+Frequent_JJ graph_NN pattern_NN mining_NN in_IN those_DT previous_JJ studies_NNS focuses_VBZ on_IN finding_VBG the_DT common_JJ embedded_JJ subgraphs_NNS that_WDT appear_VBP in_IN many_JJ graphs_NNS ,_, which_WDT is_VBZ very_RB differ_VB
+256_CD MB_NN main_JJ memory_NN ._.
+4.1_CD The_DT Data_NN Sets_VBZ 4.1.1_CD The_DT Genomic_JJ Data_NNP Set_NNP We_PRP used_VBD a_DT real_JJ data_NN set_NN consisting_VBG of_IN the_DT gene_NN expression_NN data_NNS CDC28_NN and_CC the_DT protein-protein_JJ interaction_NN data_NNS DIP_NN ._.
+The_DT CDC28_NN data_NN set_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: records_VBZ the_DT mRNA_NN transcript_NN levels_NNS of_IN the_DT budding_JJ yeast_NN S._FW cerevisiae_FW during_IN the_DT cell_NN cycle_NN ._.
+It_PRP contains_VBZ the_DT expression_NN values_NNS of_IN 6_CD ,_, 096_CD ORFs_NNS -LRB-_-LRB- genes_NNS -RRB-_-RRB- during_IN a_DT 17-point_JJ timeseries_NNS ,_, and_CC is_VBZ publicly_RB ava_NN
+uning_VBG the_DT unfruitful_JJ subsets_NNS ._.
+Given_VBN a_DT set_VBN S_NN of_IN n_NN elements_NNS and_CC a_DT total_JJ order_NN ≺_NN on_IN S_NN ,_, the_DT complete_JJ set_NN of_IN various_JJ subsets_NNS of_IN S_NN -LRB-_-LRB- i.e._FW ,_, 2_CD S_NN -RRB-_-RRB- can_MD be_VB enumerated_VBN systematically_RB using_VBG a_DT set_VBN enumeration_NN tree_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN example_NN ,_, the_DT set_VBN enumeration_NN tree_NN for_IN set_NN -LCB-_-LRB- a_DT ,_, b_NN ,_, c_NN ,_, d_NN -RCB-_-RRB- with_IN respect_NN to_TO order_VB a_DT ≺_NN b_NN ≺_CD c_NN ≺_FW d_FW is_VBZ shown_VBN in_IN Figure_NNP 8_CD ._.
+In_IN a_DT set_VBN enumeration_NN tree_NN of_IN vertices_NNS ,_, each_DT node_NN is_VBZ a_DT subset_NN of_IN vertices_NNS ._.
+Some_DT no_DT
+ttern_JJ mining_NN ,_, Palmer_NNP et_FW al._FW -LRB-_-LRB- 23_CD -RRB-_-RRB- developed_VBD a_DT fast_JJ and_CC scalable_JJ tool_NN ANF_NN to_TO answer_VB various_JJ complex_JJ analytical_JJ queries_NNS from_IN massive_JJ graphs_NNS that_WDT may_MD not_RB be_VB able_JJ to_TO fit_VB into_IN main_JJ memory_NN ._.
+Faloutsos_NNP et_FW al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: investigated_VBD the_DT problem_NN of_IN fast_JJ discovery_NN of_IN connection_NN subgraphs_NNS which_WDT nicely_RB capture_VBP the_DT relationship_NN between_IN pairs_NNS of_IN nodes_NNS in_IN large_JJ social_JJ networks_NNS graphs_NNS ._.
+In_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, Jeh_NNP and_CC Widom_NNP proposed_VBD the_DT pr_NN
+ent_NN ,_, graph_NN mining_NN has_VBZ become_VBN an_DT important_JJ topic_NN in_IN data_NN mining_NN ._.
+For_IN example_NN ,_, mining_NN frequent_JJ substructures_NNS and_CC subgraph_JJ patterns_NNS from_IN many_JJ graphs_NNS -LRB-_-LRB- i.e._FW ,_, a_DT graph_NN database_NN -RRB-_-RRB- has_VBZ been_VBN studied_VBN intensively_RB =_JJ -_: =[_NN 4_CD ,_, 27_CD ,_, 16_CD ,_, 17_CD ,_, 20_CD ,_, 32_CD ,_, 31_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Yan_NNP et_FW al._FW -LRB-_-LRB- 33_CD -RRB-_-RRB- used_VBD frequent_JJ graph_NN patterns_NNS to_TO index_NN graphs_NNS ._.
+Frequent_JJ graph_NN pattern_NN mining_NN in_IN those_DT previous_JJ studies_NNS focuses_VBZ on_IN finding_VBG the_DT common_JJ embedded_JJ subgraphs_NNS that_WDT appear_VBP in_IN many_JJ graphs_NNS ,_, whi_NN
+he_PRP problem_NN of_IN counting_VBG the_DT number_NN of_IN cross-graph_JJ quasi-cliques_NNS contains_VBZ a_DT #P_NN -_: Complete_JJ problem_NN as_IN a_DT special_JJ case_NN ._.
+In_IN fact_NN ,_, the_DT problem_NN of_IN counting_VBG the_DT number_NN of_IN cliques_NNS from_IN one_CD graph_NN is_VBZ in_IN #PComplete_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC is_VBZ a_DT special_JJ case_NN of_IN the_DT problem_NN of_IN counting_VBG the_DT number_NN of_IN cross-graph_JJ quasi-cliques_NNS where_WRB n_NN =_JJ 1_CD and_CC γ_NN =_JJ 1_CD ._.
+Thus_RB ,_, the_DT problem_NN of_IN mining_NN -LRB-_-LRB- i.e._FW ,_, enumerating_VBG -RRB-_-RRB- the_DT complete_JJ set_NN of_IN cross-graph_JJ quasi_NNS -_:
+n_NN families_NNS from_IN large_JJ protein_NN sequence_NN databases_NNS ._.
+Bu_FW et_FW al._FW -LRB-_-LRB- 6_CD -RRB-_-RRB- used_VBD the_DT spectral_JJ clustering_NN method_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- to_TO analyze_VB the_DT topological_JJ structure_NN in_IN the_DT protein_NN interaction_NN graphs_NNS ._.
+Moreover_RB ,_, Bader_NNP et_FW al._FW =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT heuristic_NN approach_NN ,_, MCODE_NNP ,_, based_VBN on_IN the_DT concept_NN of_IN scale-free_JJ networks_NNS -LRB-_-LRB- 3_LS -RRB-_-RRB- to_TO find_VB molecular_JJ complexes_NNS in_IN large_JJ protein_NN interaction_NN graphs_NNS ._.
+Recently_RB ,_, joint_JJ mining_NN of_IN multiple_JJ biological_JJ da_NN
+._.
+Motivated_VBN by_IN HCS_NN ,_, Shamir_NNP et_FW al._FW developed_VBD the_DT algorithm_NN CLICK_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+In_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, Ben-dor_JJ et_FW al._FW presented_VBD a_DT heuristic_NN algorithm_NN CAST_NN to_TO iteratively_RB identify_VB the_DT maximal_JJ cliques_NNS once_RB at_IN a_DT time_NN ._.
+Xu_FW et_FW al._FW =_SYM -_: =[_NN 30_CD -RRB-_-RRB- -_: =_SYM -_: generated_VBD a_DT Minimum_NNP Spanning_NNP Tree_NNP -LRB-_-LRB- MST_NNP -RRB-_-RRB- from_IN the_DT weighted_JJ gene_NN graph_NN G._NNP By_IN removing_VBG -LRB-_-LRB- K_NNP −_NNP 1_LS -RRB-_-RRB- edges_VBZ from_IN the_DT generated_VBN MST_NNP ,_, the_DT data_NNS set_NN is_VBZ partitioned_VBN into_IN K_NN clusters_NNS ._.
+Moreover_RB ,_, Enright_NNP et_FW al._FW -LRB-_-LRB- 12_CD -RRB-_-RRB- dev_NN
+genes_NNS ,_, and_CC two_CD genes_NNS are_VBP connected_VBN if_IN their_PRP$ expression_NN patterns_NNS are_VBP similar_JJ according_VBG to_TO a_DT user-specified_JJ similarity_NN measure_NN -LRB-_-LRB- e.g._FW ,_, Euclidean_JJ distance_NN ,_, Pearson_NNP 's_POS correlation_NN coefficient_NN ,_, KL-distance_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC pattern-based_JJ similarity_NN measures_NNS -LRB-_-LRB- 7_CD ,_, 29_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+In_IN the_DT protein_NN interaction_NN graph_NN Gp_NN ,_, the_DT vertices_NNS are_VBP proteins_NNS ,_, and_CC two_CD proteins_NNS are_VBP connected_VBN if_IN they_PRP interact_VBP with_IN each_DT other_JJ ._.
+We_PRP use_VBP a_DT surjective_JJ -LRB-_-LRB- i_LS
+can_MD be_VB viewed_VBN as_IN finding_VBG the_DT relaxed_VBN optimal_JJ normalized_VBD cuts_NNS in_IN a_DT weighted_JJ graph_NN ._.
+A_DT spectral_JJ clustering_NN algorithm_NN that_WDT uses_VBZ the_DT k_NN eigenvectors_NNS of_IN the_DT adjacency_NN matrix_NN simultaneously_RB was_VBD presented_VBN in_IN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN another_DT frontier_NN of_IN data_NNS mining_NN research_NN ,_, mining_NN from_IN multiple_JJ sources_NNS has_VBZ received_VBN more_JJR and_CC more_JJR attention_NN ._.
+The_DT papers_NNS in_IN -LRB-_-LRB- 11_CD -RRB-_-RRB- provided_VBD good_JJ examples_NNS for_IN techniques_NNS and_CC applications_NNS of_IN mining_NN mu_NN
+ent_NN ,_, graph_NN mining_NN has_VBZ become_VBN an_DT important_JJ topic_NN in_IN data_NN mining_NN ._.
+For_IN example_NN ,_, mining_NN frequent_JJ substructures_NNS and_CC subgraph_JJ patterns_NNS from_IN many_JJ graphs_NNS -LRB-_-LRB- i.e._FW ,_, a_DT graph_NN database_NN -RRB-_-RRB- has_VBZ been_VBN studied_VBN intensively_RB =_JJ -_: =[_NN 4_CD ,_, 27_CD ,_, 16_CD ,_, 17_CD ,_, 20_CD ,_, 32_CD ,_, 31_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Yan_NNP et_FW al._FW -LRB-_-LRB- 33_CD -RRB-_-RRB- used_VBD frequent_JJ graph_NN patterns_NNS to_TO index_NN graphs_NNS ._.
+Frequent_JJ graph_NN pattern_NN mining_NN in_IN those_DT previous_JJ studies_NNS focuses_VBZ on_IN finding_VBG the_DT common_JJ embedded_JJ subgraphs_NNS that_WDT appear_VBP in_IN many_JJ graphs_NNS ,_, whi_NN
+r_NN expression_NN patterns_NNS are_VBP similar_JJ according_VBG to_TO a_DT user-specified_JJ similarity_NN measure_NN -LRB-_-LRB- e.g._FW ,_, Euclidean_JJ distance_NN ,_, Pearson_NNP 's_POS correlation_NN coefficient_NN ,_, KL-distance_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, or_CC pattern-based_JJ similarity_NN measures_NNS =_JJ -_: =[_NN 7_CD ,_, 29_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+In_IN the_DT protein_NN interaction_NN graph_NN Gp_NN ,_, the_DT vertices_NNS are_VBP proteins_NNS ,_, and_CC two_CD proteins_NNS are_VBP connected_VBN if_IN they_PRP interact_VBP with_IN each_DT other_JJ ._.
+We_PRP use_VBP a_DT surjective_JJ -LRB-_-LRB- i.e._FW ,_, onto_IN -RRB-_-RRB- mapping_NN m_NN -LRB-_-LRB- p_NN -RRB-_-RRB- =_JJ g_NN from_IN proteins_NNS to_TO g_NN
+over_RB ,_, Enright_NNP et_FW al._FW -LRB-_-LRB- 12_CD -RRB-_-RRB- developed_VBD TRIBE-MCL_NN based_VBN on_IN MCL_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, a_DT graph-based_JJ algorithm_NN using_VBG flow_NN simulation_NN ,_, to_TO efficiently_RB detect_VB protein_NN families_NNS from_IN large_JJ protein_NN sequence_NN databases_NNS ._.
+Bu_FW et_FW al._FW =_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: used_VBD the_DT spectral_JJ clustering_NN method_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- to_TO analyze_VB the_DT topological_JJ structure_NN in_IN the_DT protein_NN interaction_NN graphs_NNS ._.
+Moreover_RB ,_, Bader_NNP et_FW al._FW -LRB-_-LRB- 2_CD -RRB-_-RRB- proposed_VBD a_DT heuristic_NN approach_NN ,_, MCODE_NNP ,_, based_VBN on_IN the_DT concept_NN
+main_JJ memory_NN ._.
+Faloutsos_NNP et_FW al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- investigated_VBD the_DT problem_NN of_IN fast_JJ discovery_NN of_IN connection_NN subgraphs_NNS which_WDT nicely_RB capture_VBP the_DT relationship_NN between_IN pairs_NNS of_IN nodes_NNS in_IN large_JJ social_JJ networks_NNS graphs_NNS ._.
+In_IN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Jeh_NNP and_CC Widom_NNP proposed_VBD the_DT problem_NN of_IN mining_VBG the_DT space_NN of_IN graph_NN properties_NNS ._.
+Besides_IN graph_NN mining_NN ,_, graph-based_JJ algorithms_NNS are_VBP applied_VBN to_TO cluster_VB large_JJ data_NNS sets_NNS ._.
+A_DT data_NN set_NN can_MD be_VB modeled_VBN as_IN a_DT graph_NN ,_,
+ent_NN ,_, graph_NN mining_NN has_VBZ become_VBN an_DT important_JJ topic_NN in_IN data_NN mining_NN ._.
+For_IN example_NN ,_, mining_NN frequent_JJ substructures_NNS and_CC subgraph_JJ patterns_NNS from_IN many_JJ graphs_NNS -LRB-_-LRB- i.e._FW ,_, a_DT graph_NN database_NN -RRB-_-RRB- has_VBZ been_VBN studied_VBN intensively_RB =_JJ -_: =[_NN 4_CD ,_, 27_CD ,_, 16_CD ,_, 17_CD ,_, 20_CD ,_, 32_CD ,_, 31_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Yan_NNP et_FW al._FW -LRB-_-LRB- 33_CD -RRB-_-RRB- used_VBD frequent_JJ graph_NN patterns_NNS to_TO index_NN graphs_NNS ._.
+Frequent_JJ graph_NN pattern_NN mining_NN in_IN those_DT previous_JJ studies_NNS focuses_VBZ on_IN finding_VBG the_DT common_JJ embedded_JJ subgraphs_NNS that_WDT appear_VBP in_IN many_JJ graphs_NNS ,_, whi_NN
+r_NN expression_NN patterns_NNS are_VBP similar_JJ according_VBG to_TO a_DT user-specified_JJ similarity_NN measure_NN -LRB-_-LRB- e.g._FW ,_, Euclidean_JJ distance_NN ,_, Pearson_NNP 's_POS correlation_NN coefficient_NN ,_, KL-distance_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, or_CC pattern-based_JJ similarity_NN measures_NNS =_JJ -_: =[_NN 7_CD ,_, 29_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+In_IN the_DT protein_NN interaction_NN graph_NN Gp_NN ,_, the_DT vertices_NNS are_VBP proteins_NNS ,_, and_CC two_CD proteins_NNS are_VBP connected_VBN if_IN they_PRP interact_VBP with_IN each_DT other_JJ ._.
+We_PRP use_VBP a_DT surjective_JJ -LRB-_-LRB- i.e._FW ,_, onto_IN -RRB-_-RRB- mapping_NN m_NN -LRB-_-LRB- p_NN -RRB-_-RRB- =_JJ g_NN from_IN proteins_NNS to_TO g_NN
+graph_NN G_NN into_IN a_DT set_NN of_IN highly_RB connected_VBN components_NNS along_IN the_DT minimum_JJ cut_NN ._.
+Each_DT highly_RB connected_VBN component_NN is_VBZ considered_VBN as_IN a_DT gene_NN cluster_NN ._.
+Motivated_VBN by_IN HCS_NN ,_, Shamir_NNP et_FW al._FW developed_VBD the_DT algorithm_NN CLICK_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, Ben-dor_JJ et_FW al._FW presented_VBD a_DT heuristic_NN algorithm_NN CAST_NN to_TO iteratively_RB identify_VB the_DT maximal_JJ cliques_NNS once_RB at_IN a_DT time_NN ._.
+Xu_FW et_FW al._FW -LRB-_-LRB- 30_CD -RRB-_-RRB- generated_VBD a_DT Minimum_NNP Spanning_NNP Tree_NNP -LRB-_-LRB- MST_NNP -RRB-_-RRB- from_IN the_DT weighted_JJ gene_NN
+nal_JJ data_NNS mining_NN approaches_NNS ._.
+Finding_VBG cliques_NNS in_IN a_DT graph_NN is_VBZ a_DT problem_NN that_WDT has_VBZ been_VBN investigated_VBN for_IN a_DT long_JJ time_NN ._.
+Computing_NNP quasi-cliques_NNS in_IN one_CD graph_NN was_VBD also_RB the_DT topic_NN of_IN some_DT recent_JJ studies_NNS ,_, such_JJ as_IN =_JJ -_: =[_NN 1_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One_CD may_MD wonder_VB ,_, ``_`` Can_MD the_DT complete_JJ set_NN of_IN cross-graph_JJ quasi-cliques_NNS be_VB mined_VBN easily_RB by_IN extending_VBG the_DT existing_VBG algorithms_NNS for_IN finding_VBG cliques_NNS or_CC quasi-cliques_NNS in_IN an_DT `_`` integrated_JJ '_'' graph_NN ?_. ''_''
+EXAMPLE_NN 3_CD ._.
+-LRB-_-LRB- CA_NNP
+ent_NN ,_, graph_NN mining_NN has_VBZ become_VBN an_DT important_JJ topic_NN in_IN data_NN mining_NN ._.
+For_IN example_NN ,_, mining_NN frequent_JJ substructures_NNS and_CC subgraph_JJ patterns_NNS from_IN many_JJ graphs_NNS -LRB-_-LRB- i.e._FW ,_, a_DT graph_NN database_NN -RRB-_-RRB- has_VBZ been_VBN studied_VBN intensively_RB =_JJ -_: =[_NN 4_CD ,_, 27_CD ,_, 16_CD ,_, 17_CD ,_, 20_CD ,_, 32_CD ,_, 31_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Yan_NNP et_FW al._FW -LRB-_-LRB- 33_CD -RRB-_-RRB- used_VBD frequent_JJ graph_NN patterns_NNS to_TO index_NN graphs_NNS ._.
+Frequent_JJ graph_NN pattern_NN mining_NN in_IN those_DT previous_JJ studies_NNS focuses_VBZ on_IN finding_VBG the_DT common_JJ embedded_JJ subgraphs_NNS that_WDT appear_VBP in_IN many_JJ graphs_NNS ,_, whi_NN
+nto_VB a_DT set_NN of_IN highly_RB connected_VBN components_NNS along_IN the_DT minimum_JJ cut_NN ._.
+Each_DT highly_RB connected_VBN component_NN is_VBZ considered_VBN as_IN a_DT gene_NN cluster_NN ._.
+Motivated_VBN by_IN HCS_NN ,_, Shamir_NNP et_FW al._FW developed_VBD the_DT algorithm_NN CLICK_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+In_IN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Ben-dor_JJ et_FW al._FW presented_VBD a_DT heuristic_NN algorithm_NN CAST_NN to_TO iteratively_RB identify_VB the_DT maximal_JJ cliques_NNS once_RB at_IN a_DT time_NN ._.
+Xu_FW et_FW al._FW -LRB-_-LRB- 30_CD -RRB-_-RRB- generated_VBD a_DT Minimum_NNP Spanning_NNP Tree_NNP -LRB-_-LRB- MST_NNP -RRB-_-RRB- from_IN the_DT weighted_JJ gene_NN graph_NN G._NNP
+a_DT graph_NN ,_, and_CC the_DT problem_NN of_IN clustering_NN can_MD be_VB converted_VBN to_TO some_DT traditional_JJ graph_NN problems_NNS ,_, such_JJ as_IN finding_NN -LRB-_-LRB- quasi_JJ -_: -RRB-_-RRB- cliques_NNS or_CC minimum_JJ cut_NN in_IN the_DT graph_NN ._.
+For_IN example_NN ,_, the_DT spectral_JJ clustering_NN approach_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: can_MD be_VB viewed_VBN as_IN finding_VBG the_DT relaxed_VBN optimal_JJ normalized_VBD cuts_NNS in_IN a_DT weighted_JJ graph_NN ._.
+A_DT spectral_JJ clustering_NN algorithm_NN that_WDT uses_VBZ the_DT k_NN eigenvectors_NNS of_IN the_DT adjacency_NN matrix_NN simultaneously_RB was_VBD presented_VBN in_IN
+Tree_NN -LRB-_-LRB- MST_NN -RRB-_-RRB- from_IN the_DT weighted_JJ gene_NN graph_NN G._NNP By_IN removing_VBG -LRB-_-LRB- K_NNP −_NNP 1_LS -RRB-_-RRB- edges_VBZ from_IN the_DT generated_VBN MST_NNP ,_, the_DT data_NNS set_NN is_VBZ partitioned_VBN into_IN K_NN clusters_NNS ._.
+Moreover_RB ,_, Enright_NNP et_FW al._FW -LRB-_-LRB- 12_CD -RRB-_-RRB- developed_VBD TRIBE-MCL_NN based_VBN on_IN MCL_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT graph-based_JJ algorithm_NN using_VBG flow_NN simulation_NN ,_, to_TO efficiently_RB detect_VB protein_NN families_NNS from_IN large_JJ protein_NN sequence_NN databases_NNS ._.
+Bu_FW et_FW al._FW -LRB-_-LRB- 6_CD -RRB-_-RRB- used_VBD the_DT spectral_JJ clustering_NN method_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- to_TO analyze_VB the_DT top_NN
+ent_NN ,_, graph_NN mining_NN has_VBZ become_VBN an_DT important_JJ topic_NN in_IN data_NN mining_NN ._.
+For_IN example_NN ,_, mining_NN frequent_JJ substructures_NNS and_CC subgraph_JJ patterns_NNS from_IN many_JJ graphs_NNS -LRB-_-LRB- i.e._FW ,_, a_DT graph_NN database_NN -RRB-_-RRB- has_VBZ been_VBN studied_VBN intensively_RB =_JJ -_: =[_NN 4_CD ,_, 27_CD ,_, 16_CD ,_, 17_CD ,_, 20_CD ,_, 32_CD ,_, 31_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Yan_NNP et_FW al._FW -LRB-_-LRB- 33_CD -RRB-_-RRB- used_VBD frequent_JJ graph_NN patterns_NNS to_TO index_NN graphs_NNS ._.
+Frequent_JJ graph_NN pattern_NN mining_NN in_IN those_DT previous_JJ studies_NNS focuses_VBZ on_IN finding_VBG the_DT common_JJ embedded_JJ subgraphs_NNS that_WDT appear_VBP in_IN many_JJ graphs_NNS ,_, whi_NN
+ent_NN ,_, graph_NN mining_NN has_VBZ become_VBN an_DT important_JJ topic_NN in_IN data_NN mining_NN ._.
+For_IN example_NN ,_, mining_NN frequent_JJ substructures_NNS and_CC subgraph_JJ patterns_NNS from_IN many_JJ graphs_NNS -LRB-_-LRB- i.e._FW ,_, a_DT graph_NN database_NN -RRB-_-RRB- has_VBZ been_VBN studied_VBN intensively_RB =_JJ -_: =[_NN 4_CD ,_, 27_CD ,_, 16_CD ,_, 17_CD ,_, 20_CD ,_, 32_CD ,_, 31_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Yan_NNP et_FW al._FW -LRB-_-LRB- 33_CD -RRB-_-RRB- used_VBD frequent_JJ graph_NN patterns_NNS to_TO index_NN graphs_NNS ._.
+Frequent_JJ graph_NN pattern_NN mining_NN in_IN those_DT previous_JJ studies_NNS focuses_VBZ on_IN finding_VBG the_DT common_JJ embedded_JJ subgraphs_NNS that_WDT appear_VBP in_IN many_JJ graphs_NNS ,_, whi_NN
+ferent_JJ from_IN graph_NN to_TO graph_NN ._.
+Therefore_RB ,_, those_DT frequent_JJ graph_NN pattern_NN mining_NN algorithms_NNS can_MD not_RB be_VB extended_VBN to_TO mine_VB cross-graph_JJ quasi-cliques_NNS ._.
+In_IN addition_NN to_TO frequent_JJ graph_NN pattern_NN mining_NN ,_, Palmer_NNP et_FW al._FW =_SYM -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: developed_VBD a_DT fast_JJ and_CC scalable_JJ tool_NN ANF_NN to_TO answer_VB various_JJ complex_JJ analytical_JJ queries_NNS from_IN massive_JJ graphs_NNS that_WDT may_MD not_RB be_VB able_JJ to_TO fit_VB into_IN main_JJ memory_NN ._.
+Faloutsos_NNP et_FW al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- investigated_VBD the_DT problem_NN of_IN
+gene_NN expression_NN data_NNS and_CC protein_NN interaction_NN data_NNS still_RB carry_VBP different_JJ biological_JJ meaning_NN ._.
+The_DT coincidence_NN of_IN co-expressed_VBN genes_NNS and_CC interacting_NN proteins_NNS is_VBZ biologically_RB significant_JJ ._.
+As_IN indicated_VBN in_IN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, many_JJ pathways_NNS exhibit_VBP two_CD properties_NNS :_: their_PRP$ genes_NNS exhibit_VBP a_DT similar_JJ gene_NN expression_NN profile_NN ,_, and_CC the_DT protein_NN products_NNS of_IN the_DT genes_NNS often_RB interact_VBP ._.
+Technically_NNP ,_, the_DT gene_NN expression_NN data_NNS and_CC the_DT prote_NN
+ent_NN ,_, graph_NN mining_NN has_VBZ become_VBN an_DT important_JJ topic_NN in_IN data_NN mining_NN ._.
+For_IN example_NN ,_, mining_NN frequent_JJ substructures_NNS and_CC subgraph_JJ patterns_NNS from_IN many_JJ graphs_NNS -LRB-_-LRB- i.e._FW ,_, a_DT graph_NN database_NN -RRB-_-RRB- has_VBZ been_VBN studied_VBN intensively_RB =_JJ -_: =[_NN 4_CD ,_, 27_CD ,_, 16_CD ,_, 17_CD ,_, 20_CD ,_, 32_CD ,_, 31_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Yan_NNP et_FW al._FW -LRB-_-LRB- 33_CD -RRB-_-RRB- used_VBD frequent_JJ graph_NN patterns_NNS to_TO index_NN graphs_NNS ._.
+Frequent_JJ graph_NN pattern_NN mining_NN in_IN those_DT previous_JJ studies_NNS focuses_VBZ on_IN finding_VBG the_DT common_JJ embedded_JJ subgraphs_NNS that_WDT appear_VBP in_IN many_JJ graphs_NNS ,_, whi_NN
+ent_NN ,_, graph_NN mining_NN has_VBZ become_VBN an_DT important_JJ topic_NN in_IN data_NN mining_NN ._.
+For_IN example_NN ,_, mining_NN frequent_JJ substructures_NNS and_CC subgraph_JJ patterns_NNS from_IN many_JJ graphs_NNS -LRB-_-LRB- i.e._FW ,_, a_DT graph_NN database_NN -RRB-_-RRB- has_VBZ been_VBN studied_VBN intensively_RB =_JJ -_: =[_NN 4_CD ,_, 27_CD ,_, 16_CD ,_, 17_CD ,_, 20_CD ,_, 32_CD ,_, 31_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Yan_NNP et_FW al._FW -LRB-_-LRB- 33_CD -RRB-_-RRB- used_VBD frequent_JJ graph_NN patterns_NNS to_TO index_NN graphs_NNS ._.
+Frequent_JJ graph_NN pattern_NN mining_NN in_IN those_DT previous_JJ studies_NNS focuses_VBZ on_IN finding_VBG the_DT common_JJ embedded_JJ subgraphs_NNS that_WDT appear_VBP in_IN many_JJ graphs_NNS ,_, whi_NN

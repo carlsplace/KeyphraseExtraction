@@ -1,0 +1,213 @@
+Inferring_VBG networks_NNS of_IN diffusion_NN and_CC influence_NN
+Information_NN diffusion_NN and_CC virus_NN propagation_NN are_VBP fundamental_JJ processes_NNS talking_VBG place_NN in_IN networks_NNS ._.
+While_IN it_PRP is_VBZ often_RB possible_JJ to_TO directly_RB observe_VB when_WRB nodes_NNS become_VBP infected_JJ ,_, observing_VBG individual_JJ transmissions_NNS -LRB-_-LRB- i.e._FW ,_, who_WP infects_VBZ whom_WP or_CC who_WP influences_VBZ whom_WP -RRB-_-RRB- is_VBZ typically_RB very_RB difficult_JJ ._.
+Furthermore_RB ,_, in_IN many_JJ applications_NNS ,_, the_DT underlying_VBG network_NN over_IN which_WDT the_DT diffusions_NNS and_CC propagations_NNS spread_NN is_VBZ actually_RB unobserved_JJ ._.
+We_PRP tackle_VBP these_DT challenges_NNS by_IN developing_VBG a_DT method_NN for_IN tracing_VBG paths_NNS of_IN diffusion_NN and_CC influence_NN through_IN networks_NNS and_CC inferring_VBG the_DT networks_NNS over_IN which_WDT contagions_NNS propagate_VBP ._.
+Given_VBN the_DT times_NNS when_WRB nodes_NNS adopt_VBP pieces_NNS of_IN information_NN or_CC become_VB infected_JJ ,_, we_PRP identify_VBP the_DT optimal_JJ network_NN that_WDT best_RB explains_VBZ the_DT observed_VBN infection_NN times_NNS ._.
+Since_IN the_DT optimization_NN problem_NN is_VBZ NP-hard_JJ to_TO solve_VB exactly_RB ,_, we_PRP develop_VBP an_DT efficient_JJ approximation_NN algorithm_NN that_IN scales_NNS to_TO large_JJ datasets_NNS and_CC in_IN practice_NN gives_VBZ provably_RB near-optimal_JJ performance_NN ._.
+We_PRP demonstrate_VBP the_DT effectiveness_NN of_IN our_PRP$ approach_NN by_IN tracing_VBG information_NN cascades_NNS in_IN a_DT set_NN of_IN 170_CD million_CD blogs_NNS and_CC news_NN articles_NNS over_IN a_DT one_CD year_NN period_NN to_TO infer_VB how_WRB information_NN flows_VBZ through_IN the_DT online_JJ media_NNS space_NN ._.
+We_PRP find_VBP that_IN the_DT diffusion_NN network_NN of_IN news_NN tends_VBZ to_TO have_VB a_DT core-periphery_JJ structure_NN with_IN a_DT small_JJ set_NN of_IN core_NN media_NNS sites_NNS that_WDT diffuse_VBP information_NN to_TO the_DT rest_NN of_IN the_DT Web_NN ._.
+These_DT sites_NNS tend_VBP to_TO have_VB stable_JJ circles_NNS of_IN influence_NN with_IN more_RBR general_JJ news_NN media_NNS sites_NNS acting_VBG as_IN connectors_NNS between_IN them_PRP ._.
+e_LS choosing_VBG a_DT more_RBR complex_JJ transmission_NN model_NN ._.
+5_CD ._.
+RELATED_NNS WORK_VBP There_EX are_VBP several_JJ lines_NNS of_IN work_NN we_PRP build_VBP upon_IN ._.
+Although_IN the_DT information_NN diffusion_NN in_IN on-line_JJ settings_NNS has_VBZ received_VBN considerable_JJ attention_NN =_JJ -_: =[_NN 2_CD ,_, 11_CD ,_, 16_CD ,_, 17_CD ,_, 23_CD ,_, 24_CD ,_, 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, only_RB a_DT few_JJ studies_NNS were_VBD able_JJ to_TO study_VB the_DT actual_JJ shapes_NNS of_IN cascades_NNS -LRB-_-LRB- 23_CD ,_, 25_CD -RRB-_-RRB- ._.
+The_DT problem_NN of_IN inferring_VBG links_NNS of_IN diffusion_NN was_VBD first_RB studied_VBN by_IN Adar_NNP and_CC Adamic_NNP -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, who_WP formulated_VBD it_PRP as_IN a_DT supervised_VBN
+-RRB-_-RRB- performed_VBD poorly_RB while_IN our_PRP$ method_NN -LRB-_-LRB- c_NN -RRB-_-RRB- almost_RB recovered_VBD G_NN ∗_NN perfectlybymaking_VBG only_JJ twoerrors_NNS ._.
+Experimental_JJ setup_NN ._.
+We_PRP consider_VBP two_CD models_NNS of_IN directed_JJ realworld_NN networks_NNS ,_, namely_RB ,_, the_DT Forest_NNP Fire_NNP model_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: and_CC the_DT Kronecker_NNP Graphs_NNP model_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- to_TO generate_VB G_NNP ∗_NNP ._.
+For_IN Kronecker_NNP graphs_NNS ,_, we_PRP consider_VBP three_CD sets_NNS of_IN parameters_NNS that_WDT produce_VBP networks_NNS with_IN a_DT very_RB different_JJ structure_NN :_: a_DT random_JJ graph_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- -LRB-_-LRB- Kronecker_NN p_NN
+ing_RB ,_, Social_NNP networks_NNS ._.
+1_CD ._.
+INTRODUCTION_NNP Cascading_NNP behavior_NN ,_, diffusion_NN and_CC spreading_NN of_IN ideas_NNS ,_, innovation_NN ,_, information_NN ,_, influence_NN ,_, viruses_NNS and_CC diseases_NNS are_VBP fundamental_JJ processes_NNS taking_VBG place_NN in_IN networks_NNS =_JJ -_: =[_NN 12_CD ,_, 28_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN order_NN to_TO study_VB network_NN diffusion_NN there_EX are_VBP two_CD fundamental_JJ challenges_NNS one_PRP has_VBZ to_TO address_VB ._.
+First_RB ,_, to_TO be_VB able_JJ to_TO track_VB cascading_VBG processes_NNS taking_VBG place_NN in_IN a_DT network_NN ,_, one_CD needs_VBZ to_TO identify_VB the_DT conta_NN
+ing_RB ,_, Social_NNP networks_NNS ._.
+1_CD ._.
+INTRODUCTION_NNP Cascading_NNP behavior_NN ,_, diffusion_NN and_CC spreading_NN of_IN ideas_NNS ,_, innovation_NN ,_, information_NN ,_, influence_NN ,_, viruses_NNS and_CC diseases_NNS are_VBP fundamental_JJ processes_NNS taking_VBG place_NN in_IN networks_NNS =_JJ -_: =[_NN 12_CD ,_, 28_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN order_NN to_TO study_VB network_NN diffusion_NN there_EX are_VBP two_CD fundamental_JJ challenges_NNS one_PRP has_VBZ to_TO address_VB ._.
+First_RB ,_, to_TO be_VB able_JJ to_TO track_VB cascading_VBG processes_NNS taking_VBG place_NN in_IN a_DT network_NN ,_, one_CD needs_VBZ to_TO identify_VB the_DT conta_NN
+hyperplane_NN in_IN case_NN of_IN SVMs_NNS -RRB-_-RRB- and_CC predicts_VBZ individually_RB the_DT most_RBS probable_JJ links_NNS ._.
+Network_NNP structure_NN learning_NN has_VBZ been_VBN considered_VBN for_IN estimating_VBG the_DT dependency_NN structure_NN of_IN probabilistic_JJ graphical_JJ models_NNS =_JJ -_: =[_NN 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: and_CC for_IN estimating_VBG epidemiological_JJ networks_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+In_IN both_DT cases_NNS ,_, the_DT problem_NN is_VBZ formulated_VBN in_IN a_DT probabilistic_JJ framework_NN ._.
+However_RB ,_, since_IN the_DT problem_NN is_VBZ intractable_JJ ,_, heuristic_NN greedy_JJ hill-climbing_NN or_CC s_NN
+time_NN ∆_NN ,_, an_DT exponential_JJ andapower-law_NN model_NN ,_, each_DT withparameter_NN α_NN :_: P_NN -LRB-_-LRB- ∆_NN -RRB-_-RRB- ∝_CD e_SYM −_FW ∆_FW α_NN and_CC P_NN -LRB-_-LRB- ∆_NN -RRB-_-RRB- ∝_NN 1_CD ._.
+∆_FW α_FW Weconsiderboththepower-lawandexponentialwaitingtimemodelssincetheyhavebothbeenarguedforintheliterature_NN =_JJ -_: =[_NN 3,23,26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT end_NN ,_, our_PRP$ algorithm_NN does_VBZ not_RB depend_VB on_IN the_DT particular_JJ choice_NN of_IN the_DT waiting_VBG time_NN distribution_NN and_CC more_RBR complicated_JJ functions_NNS can_MD easily_RB be_VB chosen_VBN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Also_RB ,_, we_PRP interpret_VBP ∞_NN +_CC ∆_NN =_JJ ∞_CD ,_, i.e._FW ,_, if_IN tu_FW
+withhierarchical_JJ community_NN Figure_NNP 4_CD :_: Score_NN achieved_VBN by_IN NETINF_NN in_IN comparison_NN with_IN the_DT onlineupperboundfromTheorem4_NN ._.
+Inpractice_FW NETINFfinds_FW networks_NNS thatare_VBP at_IN 97_CD %_NN of_IN NP-hardtocomputeoptimal_NN ._.
+structure_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =--LRB-_NN -LRB-_-LRB- 0.962_CD ,_, 0.107_CD ;_: 0.107_CD ,_, 0.962_CD -RRB-_-RRB- -RRB-_-RRB- andacore-peripherynetwork_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- -LRB-_-LRB- -LRB-_-LRB- 0.962_CD ,_, 0.535_CD ;_: 0.535_CD ,_, 0.107_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Notice_NNP that_IN Forest_NNP Fire_NNP generates_VBZ a_DT scale_NN free_JJ network_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Wethensimulatecascadeson_NN G_NN ∗_FW usingthegenerativem_FW
+Fire_NN model_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- and_CC the_DT Kronecker_NNP Graphs_NNP model_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- to_TO generate_VB G_NNP ∗_NNP ._.
+For_IN Kronecker_NNP graphs_NNS ,_, we_PRP consider_VBP three_CD sets_NNS of_IN parameters_NNS that_WDT produce_VBP networks_NNS with_IN a_DT very_RB different_JJ structure_NN :_: a_DT random_JJ graph_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- Kronecker_NNP parameter_NN matrix_NN -LRB-_-LRB- 0.5_CD ,_, 0.5_CD ;_: 0.5_CD ,_, 0.5_CD -RRB-_-RRB- -RRB-_-RRB- ,_, a_DT network_NN withhierarchical_JJ community_NN Figure_NNP 4_CD :_: Score_NN achieved_VBN by_IN NETINF_NN in_IN comparison_NN with_IN the_DT onlineupperboundfromTheorem4_NN ._.
+Inpractice_FW NETINFfinds_FW
+hyperplane_NN in_IN case_NN of_IN SVMs_NNS -RRB-_-RRB- and_CC predicts_VBZ individually_RB the_DT most_RBS probable_JJ links_NNS ._.
+Network_NNP structure_NN learning_NN has_VBZ been_VBN considered_VBN for_IN estimating_VBG the_DT dependency_NN structure_NN of_IN probabilistic_JJ graphical_JJ models_NNS =_JJ -_: =[_NN 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: and_CC for_IN estimating_VBG epidemiological_JJ networks_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+In_IN both_DT cases_NNS ,_, the_DT problem_NN is_VBZ formulated_VBN in_IN a_DT probabilistic_JJ framework_NN ._.
+However_RB ,_, since_IN the_DT problem_NN is_VBZ intractable_JJ ,_, heuristic_NN greedy_JJ hill-climbing_NN or_CC s_NN
+hyperplane_NN in_IN case_NN of_IN SVMs_NNS -RRB-_-RRB- and_CC predicts_VBZ individually_RB the_DT most_RBS probable_JJ links_NNS ._.
+Network_NNP structure_NN learning_NN has_VBZ been_VBN considered_VBN for_IN estimating_VBG the_DT dependency_NN structure_NN of_IN probabilistic_JJ graphical_JJ models_NNS =_JJ -_: =[_NN 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: and_CC for_IN estimating_VBG epidemiological_JJ networks_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+In_IN both_DT cases_NNS ,_, the_DT problem_NN is_VBZ formulated_VBN in_IN a_DT probabilistic_JJ framework_NN ._.
+However_RB ,_, since_IN the_DT problem_NN is_VBZ intractable_JJ ,_, heuristic_NN greedy_JJ hill-climbing_NN or_CC s_NN
+ne_IN choosing_VBG a_DT more_JJR complextransmission_NN model_NN ._.
+5_CD ._.
+RELATED_NNS WORK_VBP There_EX are_VBP several_JJ lines_NNS of_IN work_NN we_PRP build_VBP upon_IN ._.
+Although_IN the_DT information_NN diffusion_NN in_IN on-line_JJ settings_NNS has_VBZ received_VBN considerable_JJ attention_NN =_JJ -_: =[_NN 2_CD ,_, 11_CD ,_, 16_CD ,_, 17_CD ,_, 23_CD ,_, 24_CD ,_, 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, only_RB a_DT few_JJ studies_NNS were_VBD able_JJ tostudy_NN the_DT actual_JJ shapes_NNS of_IN cascades_NNS -LRB-_-LRB- 23_CD ,_, 25_CD -RRB-_-RRB- ._.
+The_DT problem_NN of_IN inferringlinksofdiffusionwasfirststudiedbyAdarandAdamic_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, who_WP formulated_VBD it_PRP as_IN a_DT supervised_JJ classificati_NN
+ing_RB ,_, Social_NNP networks_NNS ._.
+1_CD ._.
+INTRODUCTION_NNP Cascading_NNP behavior_NN ,_, diffusion_NN and_CC spreading_NN of_IN ideas_NNS ,_, innovation_NN ,_, information_NN ,_, influence_NN ,_, viruses_NNS and_CC diseases_NNS are_VBP fundamental_JJ processes_NNS taking_VBG place_NN in_IN networks_NNS =_JJ -_: =[_NN 12_CD ,_, 28_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN order_NN to_TO study_VB network_NN diffusion_NN there_EX are_VBP two_CD fundamental_JJ challenges_NNS one_PRP has_VBZ to_TO address_VB ._.
+First_RB ,_, to_TO be_VB able_JJ to_TO track_VB cascading_VBG processes_NNS taking_VBG place_NN in_IN a_DT network_NN ,_, one_CD needs_VBZ to_TO identify_VB the_DT conta_NN
+ne_IN choosing_VBG a_DT more_JJR complextransmission_NN model_NN ._.
+5_CD ._.
+RELATED_NNS WORK_VBP There_EX are_VBP several_JJ lines_NNS of_IN work_NN we_PRP build_VBP upon_IN ._.
+Although_IN the_DT information_NN diffusion_NN in_IN on-line_JJ settings_NNS has_VBZ received_VBN considerable_JJ attention_NN =_JJ -_: =[_NN 2_CD ,_, 11_CD ,_, 16_CD ,_, 17_CD ,_, 23_CD ,_, 24_CD ,_, 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, only_RB a_DT few_JJ studies_NNS were_VBD able_JJ tostudy_NN the_DT actual_JJ shapes_NNS of_IN cascades_NNS -LRB-_-LRB- 23_CD ,_, 25_CD -RRB-_-RRB- ._.
+The_DT problem_NN of_IN inferringlinksofdiffusionwasfirststudiedbyAdarandAdamic_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, who_WP formulated_VBD it_PRP as_IN a_DT supervised_JJ classificati_NN
+tween_FW blog_FW posts_NNS to_TO trace_VB the_DT flow_NN of_IN information_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- ._.
+As_IN the_DT use_NN of_IN hyperlinks_NNS to_TO refer_VB to_TO the_DT source_NN of_IN information_NN is_VBZ relatively_RB rare_JJ -LRB-_-LRB- especially_RB in_IN mainstream_JJ media_NNS -RRB-_-RRB- ,_, we_PRP also_RB use_VBP the_DT MemeTracker_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: methodology_NN to_TO extract_VB more_JJR than_IN 343_CD million_CD short_JJ textual_JJ phrases_NNS -LRB-_-LRB- like_IN ,_, ``_`` Joe_NNP ,_, the_DT plumber_NN ''_'' or_CC ``_`` lipstick_NN on_IN a_DT pig_NN ''_'' -RRB-_-RRB- ._.
+Out_IN of_IN these_DT ,_, 8_CD million_CD distinct_JJ phrases_NNS appeared_VBD more_JJR than_IN 10_CD times_NNS ,_, with_IN the_DT cu_NN
+-LRB-_-LRB- c_LS -RRB-_-RRB- almost_RB recovered_VBD G_NN ∗_NN perfectlybymaking_VBG only_JJ twoerrors_NNS ._.
+Experimental_JJ setup_NN ._.
+We_PRP consider_VBP two_CD models_NNS of_IN directed_JJ realworld_NN networks_NNS ,_, namely_RB ,_, the_DT Forest_NNP Fire_NNP model_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- and_CC the_DT Kronecker_NNP Graphs_NNP model_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: to_TO generate_VB G_NNP ∗_NNP ._.
+For_IN Kronecker_NNP graphs_NNS ,_, we_PRP consider_VBP three_CD sets_NNS of_IN parameters_NNS that_WDT produce_VBP networks_NNS with_IN a_DT very_RB different_JJ structure_NN :_: a_DT random_JJ graph_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- -LRB-_-LRB- Kronecker_NN parameter_NN matrix_NN -LRB-_-LRB- 0.5_CD ,_, 0.5_CD ;_: 0.5_CD ,_, 0.5_CD -RRB-_-RRB-
+returns_NNS property_NN of_IN the_DT model_NN ,_, we_PRP prove_VBP that_IN NETINF_NN infersnear-optimalnetworks_NNS ._.
+Wealsospeed-up_JJ NETINFalgorithm_NN by_IN exploiting_VBG the_DT local_JJ structure_NN of_IN the_DT objective_JJ function_NN and_CC by_IN using_VBG lazyevaluations_NNS =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ results_NNS on_IN synthetic_JJ datasets_NNS show_VBP that_IN we_PRP can_MD reliably_RB infer_VB the_DT underlying_JJ propagation_NN and_CC influence_NN networks_NNS ,_, regardless_RB of_IN the_DT overall_JJ network_NN structure_NN ._.
+Validation_NN on_IN real_JJ and_CC synthetic_JJ dat_NN
+INF_NN in_IN comparison_NN with_IN the_DT onlineupperboundfromTheorem4_NN ._.
+Inpractice_FW NETINFfinds_FW networks_NNS thatare_VBP at_IN 97_CD %_NN of_IN NP-hardtocomputeoptimal_NN ._.
+structure_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- -LRB-_-LRB- -LRB-_-LRB- 0.962_CD ,_, 0.107_CD ;_: 0.107_CD ,_, 0.962_CD -RRB-_-RRB- -RRB-_-RRB- andacore-peripherynetwork_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- -LRB-_-LRB- 0.962_CD ,_, 0.535_CD ;_: 0.535_CD ,_, 0.107_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Notice_NNP that_IN Forest_NNP Fire_NNP generates_VBZ a_DT scale_NN free_JJ network_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Wethensimulatecascadeson_NNP G_NNP ∗_FW usingthegenerativemodeldefinedinSection2_FW .1_FW thatisparameterizedby_FW α_FW ,_, whichcontrols_NNS
+d_NN the_DT adoption_NN or_CC the_DT purchase_NN ._.
+Thesechallengesareespeciallypronouncedininformationdiffusion_NN on_IN the_DT Web_NN ,_, where_WRB there_EX have_VBP been_VBN relatively_RB few_JJ large_JJ scale_NN studiesofinformationpropagationinlargenetworks_NNS =_JJ -_: =[_NN 2,23,24,25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN order_NN to_TO study_VB paths_NNS of_IN diffusion_NN over_IN networks_NNS ,_, one_CD essentially_RB requirestohavecompleteinformationaboutwhoinfluenceswhom_NN ,_, as_IN a_DT single_JJ missing_VBG link_NN in_IN a_DT sequence_NN of_IN propagations_NNS can_MD lead_VB to_TO wrong_JJ
+d_NN the_DT adoption_NN or_CC the_DT purchase_NN ._.
+Thesechallengesareespeciallypronouncedininformationdiffusion_NN on_IN the_DT Web_NN ,_, where_WRB there_EX have_VBP been_VBN relatively_RB few_JJ large_JJ scale_NN studiesofinformationpropagationinlargenetworks_NNS =_JJ -_: =[_NN 2,23,24,25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN order_NN to_TO study_VB paths_NNS of_IN diffusion_NN over_IN networks_NNS ,_, one_CD essentially_RB requirestohavecompleteinformationaboutwhoinfluenceswhom_NN ,_, as_IN a_DT single_JJ missing_VBG link_NN in_IN a_DT sequence_NN of_IN propagations_NNS can_MD lead_VB to_TO wrong_JJ
+d_NN the_DT adoption_NN or_CC the_DT purchase_NN ._.
+Thesechallengesareespeciallypronouncedininformationdiffusion_NN on_IN the_DT Web_NN ,_, where_WRB there_EX have_VBP been_VBN relatively_RB few_JJ large_JJ scale_NN studiesofinformationpropagationinlargenetworks_NNS =_JJ -_: =[_NN 2,23,24,25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN order_NN to_TO study_VB paths_NNS of_IN diffusion_NN over_IN networks_NNS ,_, one_CD essentially_RB requirestohavecompleteinformationaboutwhoinfluenceswhom_NN ,_, as_IN a_DT single_JJ missing_VBG link_NN in_IN a_DT sequence_NN of_IN propagations_NNS can_MD lead_VB to_TO wrong_JJ
+time_NN ∆_NN ,_, an_DT exponential_JJ andapower-law_NN model_NN ,_, each_DT withparameter_NN α_NN :_: P_NN -LRB-_-LRB- ∆_NN -RRB-_-RRB- ∝_CD e_SYM −_FW ∆_FW α_NN and_CC P_NN -LRB-_-LRB- ∆_NN -RRB-_-RRB- ∝_NN 1_CD ._.
+∆_FW α_FW Weconsiderboththepower-lawandexponentialwaitingtimemodelssincetheyhavebothbeenarguedforintheliterature_NN =_JJ -_: =[_NN 3,23,26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT end_NN ,_, our_PRP$ algorithm_NN does_VBZ not_RB depend_VB on_IN the_DT particular_JJ choice_NN of_IN the_DT waiting_VBG time_NN distribution_NN and_CC more_RBR complicated_JJ functions_NNS can_MD easily_RB be_VB chosen_VBN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Also_RB ,_, we_PRP interpret_VBP ∞_NN +_CC ∆_NN =_JJ ∞_CD ,_, i.e._FW ,_, if_IN tu_FW
+tic_JJ ._.
+Considering_VBG the_DT hardness_NN of_IN the_DT problem_NN ,_, we_PRP might_MD expect_VB the_DT greedy_JJ algorithm_NN to_TO perform_VB arbitrarily_RB bad_JJ ._.
+However_RB ,_, we_PRP will_MD see_VB that_IN this_DT is_VBZ not_RB the_DT case_NN ._.
+A_DT fundamental_JJ result_NN of_IN Nemhauser_NNP et_FW al._FW =_SYM -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: proves_VBZ that_IN for_IN monotonic_JJ submodular_JJ functions_NNS ,_, the_DT set_VBN ˆ_NN G_NN returnedbythegreedyalgorithmobtainsatleastaconstantfraction_NN of_IN -LRB-_-LRB- 1_CD −_FW 1\/e_FW -RRB-_-RRB- ≈_CD 63_CD %_NN oftheoptimalvalueachievable_JJ using_VBG k_NN edges_NNS ._.
+Moreover_RB ,_, we_PRP can_MD acq_VB
+ing_RB ,_, Social_NNP networks_NNS ._.
+1_CD ._.
+INTRODUCTION_NNP Cascading_NNP behavior_NN ,_, diffusion_NN and_CC spreading_NN of_IN ideas_NNS ,_, innovation_NN ,_, information_NN ,_, influence_NN ,_, viruses_NNS and_CC diseases_NNS are_VBP fundamental_JJ processes_NNS taking_VBG place_NN in_IN networks_NNS =_JJ -_: =[_NN 12_CD ,_, 28_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN order_NN to_TO study_VB network_NN diffusion_NN there_EX are_VBP two_CD fundamental_JJ challenges_NNS one_PRP has_VBZ to_TO address_VB ._.
+First_RB ,_, to_TO be_VB able_JJ to_TO track_VB cascading_VBG processes_NNS taking_VBG place_NN in_IN a_DT network_NN ,_, one_CD needs_VBZ to_TO identify_VB the_DT conta_NN
+-RRB-_-RRB- is_VBZ NP-hard_JJ ,_, so_IN we_PRP can_MD not_RB expect_VB to_TO find_VB the_DT optimal_JJ solution_NN :_: THEOREM_NN 2_CD ._.
+The_DT diffusion_NN network_NN inference_NN problem_NN defined_VBN by_IN equation_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- is_VBZ NP-hard_JJ ._.
+PROOF_NN ._.
+By_IN reduction_NN from_IN the_DT MAX-k-COVER_NN problem_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN MAX-k-COVER_NN ,_, we_PRP are_VBP given_VBN a_DT finite_JJ set_NN W_NN ,_, |_NN W_NN |_NN =_JJ n_NN and_CC a_DT collection_NN of_IN subsets_NNS S1_NN ,_, ..._: ,_, Sm_FW ⊆_FW W_NN ._.
+The_DT function_NN FMC_NNP -LRB-_-LRB- A_NNP -RRB-_-RRB- =_JJ |_FW ∪_FW i_FW ∈_NN A_NN Si_NNP |_NNP counts_VBZ the_DT number_NN of_IN elements_NNS of_IN W_NN covered_VBN by_IN sets_NNS indexed_VBN by_IN
+7_CD %_NN of_IN NP-hard_NN to_TO compute_VB optimal_JJ ._.
+structure_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- -LRB-_-LRB- -LRB-_-LRB- 0.962_CD ,_, 0.107_CD ;_: 0.107_CD ,_, 0.962_CD -RRB-_-RRB- -RRB-_-RRB- and_CC a_DT core-periphery_JJ network_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- -LRB-_-LRB- -LRB-_-LRB- 0.962_CD ,_, 0.535_CD ;_: 0.535_CD ,_, 0.107_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Notice_NNP that_IN Forest_NNP Fire_NNP generates_VBZ a_DT scale_NN free_JJ network_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP then_RB simulate_VBP cascades_NNS on_IN G_NN ∗_NN using_VBG the_DT generative_JJ model_NN defined_VBN in_IN Section_NN 2.1_CD that_WDT is_VBZ parameterized_VBN by_IN α_NN ,_, which_WDT controls_VBZ how_WRB quickly_RB a_DT cascade_NN spreads_NNS ,_, and_CC β_NN ,_, that_WDT controls_VBZ how_WRB far_RB a_DT cascade_NN sp_NN
+Fire_NN model_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- and_CC the_DT Kronecker_NNP Graphs_NNP model_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- to_TO generate_VB G_NNP ∗_NNP ._.
+For_IN Kronecker_NNP graphs_NNS ,_, we_PRP consider_VBP three_CD sets_NNS of_IN parameters_NNS that_WDT produce_VBP networks_NNS with_IN a_DT very_RB different_JJ structure_NN :_: a_DT random_JJ graph_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- Kronecker_NNP parameter_NN matrix_NN -LRB-_-LRB- 0.5_CD ,_, 0.5_CD ;_: 0.5_CD ,_, 0.5_CD -RRB-_-RRB- -RRB-_-RRB- ,_, a_DT network_NN with_IN hierarchical_JJ community_NN Figure_NNP 4_CD :_: Score_NN achieved_VBN by_IN NETINF_NN in_IN comparison_NN with_IN the_DT online_NN upper_JJ bound_VBD from_IN Theorem_NNP 4_CD ._.
+In_IN practice_NN NETIN_NN
+AG_NNP ,_, the_DT maximization_NN can_MD be_VB done_VBN independently_RB for_IN each_DT node_NN without_IN creating_VBG any_DT cycles_NNS ._.
+This_DT proposition_NN is_VBZ a_DT special_JJ case_NN of_IN the_DT more_RBR general_JJ maximum_NN spanning_NN tree_NN -LRB-_-LRB- MST_NN -RRB-_-RRB- problem_NN in_IN directed_JJ graphs_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT important_JJ fact_NN now_RB is_VBZ that_IN we_PRP can_MD find_VB the_DT best_JJS propagation_NN tree_NN T_NN in_IN time_NN O_NN -LRB-_-LRB- |_CD G_NN |_NN -RRB-_-RRB- linear_NN in_IN the_DT number_NN of_IN edges_NNS by_IN simply_RB selecting_VBG an_DT incoming_JJ edge_NN of_IN highest_JJS weight_NN for_IN each_DT node_NN -LRB-_-LRB- Figure_NN 2_CD -LRB-_-LRB- c_NN -RRB-_-RRB- -RRB-_-RRB-
+ing_RB ,_, Social_NNP networks_NNS ._.
+1_CD ._.
+INTRODUCTION_NNP Cascading_NNP behavior_NN ,_, diffusion_NN and_CC spreading_NN of_IN ideas_NNS ,_, innovation_NN ,_, information_NN ,_, influence_NN ,_, viruses_NNS and_CC diseases_NNS are_VBP fundamental_JJ processes_NNS taking_VBG place_NN in_IN networks_NNS =_JJ -_: =[_NN 12_CD ,_, 28_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN order_NN to_TO study_VB network_NN diffusion_NN there_EX are_VBP two_CD fundamental_JJ challenges_NNS one_PRP has_VBZ to_TO address_VB ._.
+First_RB ,_, to_TO be_VB able_JJ to_TO track_VB cascading_VBG processes_NNS taking_VBG place_NN in_IN a_DT network_NN ,_, one_CD needs_VBZ to_TO identify_VB the_DT conta_NN
+tic_JJ ._.
+Considering_VBG the_DT hardness_NN of_IN the_DT problem_NN ,_, we_PRP might_MD expect_VB the_DT greedy_JJ algorithm_NN to_TO perform_VB arbitrarily_RB bad_JJ ._.
+However_RB ,_, we_PRP will_MD see_VB that_IN this_DT is_VBZ not_RB the_DT case_NN ._.
+A_DT fundamental_JJ result_NN of_IN Nemhauser_NNP et_FW al._FW =_SYM -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: proves_VBZ that_IN for_IN monotonic_JJ submodular_JJ functions_NNS ,_, the_DT set_VBN ˆ_NN G_NN returned_VBN by_IN the_DT greedy_JJ algorithm_NN obtains_VBZ at_IN least_JJS a_DT constant_JJ fraction_NN of_IN -LRB-_-LRB- 1_CD −_FW 1\/e_FW -RRB-_-RRB- ≈_CD 63_CD %_NN of_IN the_DT optimal_JJ value_NN achievable_JJ using_VBG k_NN edges_NNS ._.
+Moreo_NN
+erformed_VBN poorly_RB while_IN our_PRP$ method_NN -LRB-_-LRB- c_NN -RRB-_-RRB- almost_RB recovered_VBD G_NNP ∗_NNP perfectly_RB by_IN making_VBG only_RB two_CD errors_NNS ._.
+Experimental_JJ setup_NN ._.
+We_PRP consider_VBP two_CD models_NNS of_IN directed_JJ realworld_NN networks_NNS ,_, namely_RB ,_, the_DT Forest_NNP Fire_NNP model_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: and_CC the_DT Kronecker_NNP Graphs_NNP model_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- to_TO generate_VB G_NNP ∗_NNP ._.
+For_IN Kronecker_NNP graphs_NNS ,_, we_PRP consider_VBP three_CD sets_NNS of_IN parameters_NNS that_WDT produce_VBP networks_NNS with_IN a_DT very_RB different_JJ structure_NN :_: a_DT random_JJ graph_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- -LRB-_-LRB- Kronecker_NN p_NN
+d_NN cascade_NN can_MD be_VB created_VBN ._.
+Similarly_RB ,_, in_IN viral_JJ marketing_NN ,_, a_DT person_NN may_MD purchase_VB a_DT product_NN due_JJ to_TO the_DT influence_NN of_IN peers_NNS -LRB-_-LRB- i.e._FW ,_, network_NN effect_NN -RRB-_-RRB- or_CC for_IN some_DT other_JJ reason_NN -LRB-_-LRB- e.g._FW ,_, seing_VBG a_DT commercial_NN on_IN TV_NN -RRB-_-RRB- =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN order_NN to_TO account_VB for_IN such_JJ phenomena_NNS when_WRB a_DT cascade_NN ``_`` jumps_VBZ ''_'' across_IN the_DT network_NN ,_, we_PRP introduce_VBP an_DT additional_JJ node_NN m_NN that_WDT represents_VBZ an_DT external_JJ source_NN that_WDT can_MD infect_VB any_DT node_NN u._NN We_PRP connect_VBP the_DT exte_NN
+ch_NN nodes_NNS influence_VBP which_WDT other_JJ nodes_NNS ._.
+Last_JJ ,_, we_PRP will_MD define_VB P_NN -LRB-_-LRB- c_NN |_CD G_NN -RRB-_-RRB- ,_, which_WDT is_VBZ the_DT probability_NN that_IN cascade_NN c_NN occurs_VBZ in_IN a_DT network_NN G._NNP Cascade_NNP transmission_NN model_NN ._.
+We_PRP build_VBP on_IN the_DT independent_JJ cascade_NN model_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT posits_VBZ that_IN an_DT infected_JJ node_NN infects_VBZ each_DT of_IN its_PRP$ neighbors_NNS independently_RB with_IN some_DT chosen_JJ probability_NN ._.
+As_IN in_IN this_DT model_NN the_DT time_NN is_VBZ modeled_VBN only_RB implicitly_RB through_IN the_DT epochs_NNS of_IN the_DT propagation_NN
+and_CC a_DT power-law_NN model_NN ,_, each_DT with_IN parameter_NN α_NN :_: P_NN -LRB-_-LRB- ∆_NN -RRB-_-RRB- ∝_CD e_SYM −_FW ∆_FW α_NN and_CC P_NN -LRB-_-LRB- ∆_NN -RRB-_-RRB- ∝_NN 1_CD ._.
+∆_FW α_FW We_PRP consider_VBP both_CC the_DT power-law_NN and_CC exponential_JJ waiting_VBG time_NN models_NNS since_IN they_PRP have_VBP both_DT been_VBN argued_VBN for_IN in_IN the_DT literature_NN =_JJ -_: =[_NN 3_CD ,_, 23_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT end_NN ,_, our_PRP$ algorithm_NN does_VBZ not_RB depend_VB on_IN the_DT particular_JJ choice_NN of_IN the_DT waiting_VBG time_NN distribution_NN and_CC more_RBR complicated_JJ functions_NNS can_MD easily_RB be_VB chosen_VBN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Also_RB ,_, we_PRP interpret_VBP ∞_NN +_CC ∆_NN =_JJ ∞_CD ,_, i.e._FW ,_, if_IN tu_FW
+almost_RB recovered_VBD G_NNP ∗_NNP perfectly_RB by_IN making_VBG only_RB two_CD errors_NNS ._.
+Experimental_JJ setup_NN ._.
+We_PRP consider_VBP two_CD models_NNS of_IN directed_JJ realworld_NN networks_NNS ,_, namely_RB ,_, the_DT Forest_NNP Fire_NNP model_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- and_CC the_DT Kronecker_NNP Graphs_NNP model_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: to_TO generate_VB G_NNP ∗_NNP ._.
+For_IN Kronecker_NNP graphs_NNS ,_, we_PRP consider_VBP three_CD sets_NNS of_IN parameters_NNS that_WDT produce_VBP networks_NNS with_IN a_DT very_RB different_JJ structure_NN :_: a_DT random_JJ graph_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- -LRB-_-LRB- Kronecker_NN parameter_NN matrix_NN -LRB-_-LRB- 0.5_CD ,_, 0.5_CD ;_: 0.5_CD ,_, 0.5_CD -RRB-_-RRB-
+hyperplane_NN in_IN case_NN of_IN SVMs_NNS -RRB-_-RRB- and_CC predicts_VBZ individually_RB the_DT most_RBS probable_JJ links_NNS ._.
+Network_NNP structure_NN learning_NN has_VBZ been_VBN considered_VBN for_IN estimating_VBG the_DT dependency_NN structure_NN of_IN probabilistic_JJ graphical_JJ models_NNS =_JJ -_: =[_NN 9_CD ,_, 10_CD -RRB-_-RRB- -_: =_JJ -_: and_CC for_IN estimating_VBG epidemiological_JJ networks_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+In_IN both_DT cases_NNS ,_, the_DT problem_NN is_VBZ formulated_VBN in_IN a_DT probabilistic_JJ framework_NN ._.
+However_RB ,_, since_IN the_DT problem_NN is_VBZ intractable_JJ ,_, heuristic_NN greedy_JJ hill-climbing_NN or_CC s_NN
+or_CC the_DT purchase_NN ._.
+These_DT challenges_NNS are_VBP especially_RB pronounced_JJ in_IN information_NN diffusion_NN on_IN the_DT Web_NN ,_, where_WRB there_EX have_VBP been_VBN relatively_RB few_JJ large_JJ scale_NN studies_NNS of_IN information_NN propagation_NN in_IN large_JJ networks_NNS =_JJ -_: =[_NN 2_CD ,_, 23_CD ,_, 24_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN order_NN to_TO study_VB paths_NNS of_IN diffusion_NN over_IN networks_NNS ,_, one_CD essentially_RB requires_VBZ to_TO have_VB complete_JJ information_NN about_IN who_WP influences_VBZ whom_WP ,_, as_IN a_DT single_JJ missing_VBG link_NN in_IN a_DT sequence_NN of_IN propagations_NNS can_MD lead_VB t_NN
+onential_JJ in_IN the_DT size_NN of_IN G_NN but_CC perhaps_RB surprisingly_RB ,_, this_DT super-exponential_JJ sum_NN can_MD be_VB performed_VBN in_IN time_NN polynomial_JJ in_IN the_DT number_NN n_NN of_IN nodes_NNS in_IN the_DT graph_NN G_NN ,_, by_IN applying_VBG Kirchhoff_NNP 's_POS matrix_NN tree_NN theorem_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: :_: THEOREM_NN 1_CD -LRB-_-LRB- TUTTE_NN -LRB-_-LRB- 1948_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+If_IN we_PRP construct_VBP a_DT matrix_NN A_NN such_JJ that_WDT ai_VBP ,_, j_NN =_JJ P_NN wk_NN ,_, j_NN if_IN i_FW =_JJ j_NN and_CC ai_VB ,_, j_NN =_JJ −_FW wi_FW ,_, j_NN if_IN i_FW ̸_FW =_JJ j_NN and_CC if_IN Ak_NN ,_, m_NN is_VBZ the_DT matrix_NN created_VBN by_IN removing_VBG any_DT row_NN k_NN and_CC column_NN m_NN from_IN A_NN such_JJ that_IN
+s_NN property_NN of_IN the_DT model_NN ,_, we_PRP prove_VBP that_IN NETINF_NN infers_VBZ near-optimal_JJ networks_NNS ._.
+We_PRP also_RB speed-up_VBP NETINF_NN algorithm_NN by_IN exploiting_VBG the_DT local_JJ structure_NN of_IN the_DT objective_JJ function_NN and_CC by_IN using_VBG lazy_JJ evaluations_NNS =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ results_NNS on_IN synthetic_JJ datasets_NNS show_VBP that_IN we_PRP can_MD reliably_RB infer_VB the_DT underlying_JJ propagation_NN and_CC influence_NN networks_NNS ,_, regardless_RB of_IN the_DT overall_JJ network_NN structure_NN ._.
+Validation_NN on_IN real_JJ and_CC synthetic_JJ dat_NN
+ing_RB ,_, Social_NNP networks_NNS ._.
+1_CD ._.
+INTRODUCTION_NNP Cascading_NNP behavior_NN ,_, diffusion_NN and_CC spreading_NN of_IN ideas_NNS ,_, innovation_NN ,_, information_NN ,_, influence_NN ,_, viruses_NNS and_CC diseases_NNS are_VBP fundamental_JJ processes_NNS taking_VBG place_NN in_IN networks_NNS =_JJ -_: =[_NN 12_CD ,_, 28_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN order_NN to_TO study_VB network_NN diffusion_NN there_EX are_VBP two_CD fundamental_JJ challenges_NNS one_PRP has_VBZ to_TO address_VB ._.
+First_RB ,_, to_TO be_VB able_JJ to_TO track_VB cascading_VBG processes_NNS taking_VBG place_NN in_IN a_DT network_NN ,_, one_CD needs_VBZ to_TO identify_VB the_DT conta_NN
+y_VB the_DT most_RBS probable_JJ links_NNS ._.
+Network_NNP structure_NN learning_NN has_VBZ been_VBN considered_VBN for_IN estimating_VBG the_DT dependency_NN structure_NN of_IN probabilistic_JJ graphical_JJ models_NNS -LRB-_-LRB- 9_CD ,_, 10_CD -RRB-_-RRB- and_CC for_IN estimating_VBG epidemiological_JJ networks_NNS =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN both_DT cases_NNS ,_, the_DT problem_NN is_VBZ formulated_VBN in_IN a_DT probabilistic_JJ framework_NN ._.
+However_RB ,_, since_IN the_DT problem_NN is_VBZ intractable_JJ ,_, heuristic_NN greedy_JJ hill-climbing_NN or_CC stochastic_JJ search_NN that_WDT offer_VBP no_DT performance_NN guaran_NN
+or_CC the_DT purchase_NN ._.
+These_DT challenges_NNS are_VBP especially_RB pronounced_JJ in_IN information_NN diffusion_NN on_IN the_DT Web_NN ,_, where_WRB there_EX have_VBP been_VBN relatively_RB few_JJ large_JJ scale_NN studies_NNS of_IN information_NN propagation_NN in_IN large_JJ networks_NNS =_JJ -_: =[_NN 2_CD ,_, 23_CD ,_, 24_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN order_NN to_TO study_VB paths_NNS of_IN diffusion_NN over_IN networks_NNS ,_, one_CD essentially_RB requires_VBZ to_TO have_VB complete_JJ information_NN about_IN who_WP influences_VBZ whom_WP ,_, as_IN a_DT single_JJ missing_VBG link_NN in_IN a_DT sequence_NN of_IN propagations_NNS can_MD lead_VB t_NN
+or_CC the_DT purchase_NN ._.
+These_DT challenges_NNS are_VBP especially_RB pronounced_JJ in_IN information_NN diffusion_NN on_IN the_DT Web_NN ,_, where_WRB there_EX have_VBP been_VBN relatively_RB few_JJ large_JJ scale_NN studies_NNS of_IN information_NN propagation_NN in_IN large_JJ networks_NNS =_JJ -_: =[_NN 2_CD ,_, 23_CD ,_, 24_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN order_NN to_TO study_VB paths_NNS of_IN diffusion_NN over_IN networks_NNS ,_, one_CD essentially_RB requires_VBZ to_TO have_VB complete_JJ information_NN about_IN who_WP influences_VBZ whom_WP ,_, as_IN a_DT single_JJ missing_VBG link_NN in_IN a_DT sequence_NN of_IN propagations_NNS can_MD lead_VB t_NN
+e_LS choosing_VBG a_DT more_RBR complex_JJ transmission_NN model_NN ._.
+5_CD ._.
+RELATED_NNS WORK_VBP There_EX are_VBP several_JJ lines_NNS of_IN work_NN we_PRP build_VBP upon_IN ._.
+Although_IN the_DT information_NN diffusion_NN in_IN on-line_JJ settings_NNS has_VBZ received_VBN considerable_JJ attention_NN =_JJ -_: =[_NN 2_CD ,_, 11_CD ,_, 16_CD ,_, 17_CD ,_, 23_CD ,_, 24_CD ,_, 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, only_RB a_DT few_JJ studies_NNS were_VBD able_JJ to_TO study_VB the_DT actual_JJ shapes_NNS of_IN cascades_NNS -LRB-_-LRB- 23_CD ,_, 25_CD -RRB-_-RRB- ._.
+The_DT problem_NN of_IN inferring_VBG links_NNS of_IN diffusion_NN was_VBD first_RB studied_VBN by_IN Adar_NNP and_CC Adamic_NNP -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, who_WP formulated_VBD it_PRP as_IN a_DT supervised_VBN
+lyspecifieswhichnodesinfluence_NN whichothernodes_NNS ._.
+Last_JJ ,_, wewilldefine_JJ P_NN -LRB-_-LRB- c_NN |_CD G_NN -RRB-_-RRB- ,_, whichistheprobabilitythat_JJ cascade_NN c_NN occurs_VBZ inanetwork_NN G._NNP Cascade_NNP transmission_NN model_NN ._.
+We_PRP build_VBP on_IN the_DT independent_JJ cascade_NN model_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT posits_VBZ that_IN an_DT infected_JJ node_NN infects_VBZ each_DT of_IN its_PRP$ neighbors_NNS independently_RB with_IN some_DT chosen_JJ probability_NN ._.
+As_IN in_IN this_DT model_NN the_DT time_NN is_VBZ modeled_VBN only_RB implicitly_RB through_IN the_DT epochs_NNS ofthepropagationwe_NN
+with_IN the_DT online_NN upper_JJ bound_VBD from_IN Theorem_NNP 4_CD ._.
+In_IN practice_NN NETINF_NN finds_VBZ networks_NNS that_WDT are_VBP at_IN 97_CD %_NN of_IN NP-hard_NN to_TO compute_VB optimal_JJ ._.
+structure_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- -LRB-_-LRB- -LRB-_-LRB- 0.962_CD ,_, 0.107_CD ;_: 0.107_CD ,_, 0.962_CD -RRB-_-RRB- -RRB-_-RRB- and_CC a_DT core-periphery_JJ network_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- -LRB-_-LRB- 0.962_CD ,_, 0.535_CD ;_: 0.535_CD ,_, 0.107_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Notice_NNP that_IN Forest_NNP Fire_NNP generates_VBZ a_DT scale_NN free_JJ network_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+We_PRP then_RB simulate_VBP cascades_NNS on_IN G_NN ∗_NN using_VBG the_DT generative_JJ model_NN defined_VBN in_IN Section_NN 2.1_CD that_WDT is_VBZ parameterized_VBN by_IN
+tween_FW blog_FW posts_NNS to_TO trace_VB the_DT flow_NN of_IN information_NN -LRB-_-LRB- 23_CD -RRB-_-RRB- ._.
+As_IN the_DT use_NN of_IN hyperlinks_NNS to_TO refer_VB to_TO the_DT source_NN of_IN information_NN is_VBZ relatively_RB rare_JJ -LRB-_-LRB- especially_RB in_IN mainstream_JJ media_NNS -RRB-_-RRB- ,_, we_PRP also_RB use_VBP the_DT MemeTracker_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: methodology_NN to_TO extract_VB more_JJR than_IN 343_CD million_CD short_JJ textual_JJ phrases_NNS -LRB-_-LRB- like_IN ,_, ``_`` Joe_NNP ,_, the_DT plumber_NN ''_'' or_CC ``_`` lipstick_NN on_IN a_DT pig_NN ''_'' -RRB-_-RRB- ._.
+Out_IN of_IN these_DT ,_, 8_CD million_CD distinct_JJ phrases_NNS appeared_VBD more_JJR than_IN 10_CD times_NNS ,_, with_IN the_DT cu_NN
+hical_JJ community_NN Figure_NNP 4_CD :_: Score_NN achieved_VBN by_IN NETINF_NN in_IN comparison_NN with_IN the_DT online_NN upper_JJ bound_VBD from_IN Theorem_NNP 4_CD ._.
+In_IN practice_NN NETINF_NN finds_VBZ networks_NNS that_WDT are_VBP at_IN 97_CD %_NN of_IN NP-hard_NN to_TO compute_VB optimal_JJ ._.
+structure_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- -LRB-_-LRB- 0.962_CD ,_, 0.107_CD ;_: 0.107_CD ,_, 0.962_CD -RRB-_-RRB- -RRB-_-RRB- and_CC a_DT core-periphery_JJ network_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- -LRB-_-LRB- -LRB-_-LRB- 0.962_CD ,_, 0.535_CD ;_: 0.535_CD ,_, 0.107_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Notice_NNP that_IN Forest_NNP Fire_NNP generates_VBZ a_DT scale_NN free_JJ network_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+We_PRP then_RB simulate_VBP cascades_NNS on_IN G_NN ∗_NN using_VBG the_DT
+been_VBN argued_VBN for_IN in_IN the_DT literature_NN -LRB-_-LRB- 3_CD ,_, 23_CD ,_, 26_CD -RRB-_-RRB- ._.
+In_IN the_DT end_NN ,_, our_PRP$ algorithm_NN does_VBZ not_RB depend_VB on_IN the_DT particular_JJ choice_NN of_IN the_DT waiting_VBG time_NN distribution_NN and_CC more_RBR complicated_JJ functions_NNS can_MD easily_RB be_VB chosen_VBN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Also_RB ,_, we_PRP interpret_VBP ∞_NN +_CC ∆_NN =_JJ ∞_CD ,_, i.e._FW ,_, if_IN tu_NN =_JJ ∞_CD ,_, then_RB tv_NN =_JJ ∞_NN with_IN probability_NN 1_CD ._.
+Now_RB that_IN we_PRP specified_VBD the_DT probability_NN Pc_NN -LRB-_-LRB- u_NN ,_, v_LS -RRB-_-RRB- that_IN node_NN u_NN influences_VBZ node_NN v_LS ,_, we_PRP define_VBP the_DT probability_NN of_IN observing_VBG ca_MD
+and_CC a_DT power-law_NN model_NN ,_, each_DT with_IN parameter_NN α_NN :_: P_NN -LRB-_-LRB- ∆_NN -RRB-_-RRB- ∝_CD e_SYM −_FW ∆_FW α_NN and_CC P_NN -LRB-_-LRB- ∆_NN -RRB-_-RRB- ∝_NN 1_CD ._.
+∆_FW α_FW We_PRP consider_VBP both_CC the_DT power-law_NN and_CC exponential_JJ waiting_VBG time_NN models_NNS since_IN they_PRP have_VBP both_DT been_VBN argued_VBN for_IN in_IN the_DT literature_NN =_JJ -_: =[_NN 3_CD ,_, 23_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT end_NN ,_, our_PRP$ algorithm_NN does_VBZ not_RB depend_VB on_IN the_DT particular_JJ choice_NN of_IN the_DT waiting_VBG time_NN distribution_NN and_CC more_RBR complicated_JJ functions_NNS can_MD easily_RB be_VB chosen_VBN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Also_RB ,_, we_PRP interpret_VBP ∞_NN +_CC ∆_NN =_JJ ∞_CD ,_, i.e._FW ,_, if_IN tu_FW
+or_CC the_DT purchase_NN ._.
+These_DT challenges_NNS are_VBP especially_RB pronounced_JJ in_IN information_NN diffusion_NN on_IN the_DT Web_NN ,_, where_WRB there_EX have_VBP been_VBN relatively_RB few_JJ large_JJ scale_NN studies_NNS of_IN information_NN propagation_NN in_IN large_JJ networks_NNS =_JJ -_: =[_NN 2_CD ,_, 23_CD ,_, 24_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN order_NN to_TO study_VB paths_NNS of_IN diffusion_NN over_IN networks_NNS ,_, one_CD essentially_RB requires_VBZ to_TO have_VB complete_JJ information_NN about_IN who_WP influences_VBZ whom_WP ,_, as_IN a_DT single_JJ missing_VBG link_NN in_IN a_DT sequence_NN of_IN propagations_NNS can_MD lead_VB t_NN

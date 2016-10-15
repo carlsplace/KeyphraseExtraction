@@ -1,0 +1,100 @@
+User-centric_JJ Web_NN crawling_VBG
+Search_VB engines_NNS are_VBP the_DT primary_JJ gateways_NNS of_IN information_NN access_NN on_IN the_DT Web_NN today_NN ._.
+Behind_IN the_DT scenes_NNS ,_, search_NN engines_NNS crawl_VBP the_DT Web_NN to_TO populate_VB a_DT local_JJ indexed_VBN repository_NN of_IN Web_NN pages_NNS ,_, used_VBN to_TO answer_VB user_NN search_NN queries_NNS ._.
+In_IN an_DT aggregate_JJ sense_NN ,_, the_DT Web_NN is_VBZ very_RB dynamic_JJ ,_, causing_VBG any_DT repository_NN of_IN Web_NN pages_NNS to_TO become_VB out_IN of_IN date_NN over_IN time_NN ,_, which_WDT in_IN turn_NN causes_VBZ query_JJ answer_NN quality_NN to_TO degrade_VB ._.
+Given_VBN the_DT considerable_JJ size_NN ,_, dynamicity_NN ,_, and_CC degree_NN of_IN autonomy_NN of_IN the_DT Web_NN as_IN a_DT whole_NN ,_, it_PRP is_VBZ not_RB feasible_JJ for_IN a_DT search_NN engine_NN to_TO maintain_VB its_PRP$ repository_NN exactly_RB synchronized_VBN with_IN the_DT Web_NN ._.
+In_IN this_DT paper_NN we_PRP study_VBD how_WRB to_TO schedule_VB Web_NN pages_NNS for_IN selective_JJ -LRB-_-LRB- re_NN -RRB-_-RRB- downloading_VBG into_IN a_DT search_NN engine_NN repository_NN ._.
+The_DT scheduling_NN objective_NN is_VBZ to_TO maximize_VB the_DT quality_NN of_IN the_DT user_NN experience_NN for_IN those_DT who_WP query_VBP the_DT search_NN engine_NN ._.
+We_PRP begin_VBP with_IN a_DT quantitative_JJ characterization_NN of_IN the_DT way_NN in_IN which_WDT the_DT discrepancy_NN between_IN the_DT content_NN of_IN the_DT repository_NN and_CC the_DT current_JJ content_NN of_IN the_DT live_JJ Web_NN impacts_VBZ the_DT quality_NN of_IN the_DT user_NN experience_NN ._.
+This_DT characterization_NN leads_VBZ to_TO a_DT user-centric_JJ metric_NN of_IN the_DT quality_NN of_IN a_DT search_NN engine_NN 's_POS local_JJ repository_NN ._.
+We_PRP use_VBP this_DT metric_NN to_TO derive_VB a_DT policy_NN for_IN scheduling_NN Web_NN page_NN -LRB-_-LRB- re_NN -RRB-_-RRB- downloading_NN that_WDT is_VBZ driven_VBN by_IN search_NN engine_NN usage_NN and_CC free_JJ of_IN exterior_NN tuning_NN parameters_NNS ._.
+We_PRP then_RB focus_VB on_IN the_DT important_JJ subproblem_NN of_IN scheduling_NN refreshing_VBG of_IN Web_NN pages_NNS already_RB present_JJ in_IN the_DT repository_NN ,_, and_CC show_VB how_WRB to_TO compute_VB the_DT priorities_NNS efficiently_RB ._.
+We_PRP provide_VBP extensive_JJ empirical_JJ comparisons_NNS of_IN our_PRP$ user-centric_JJ method_NN against_IN prior_JJ Web_NN page_NN refresh_NN strategies_NNS ,_, using_VBG real_JJ Web_NN data_NNS ._.
+Our_PRP$ results_NNS demonstrate_VBP that_IN our_PRP$ method_NN requires_VBZ far_RB fewer_JJR resources_NNS to_TO maintain_VB same_JJ search_NN engine_NN quality_NN level_NN for_IN users_NNS ,_, leaving_VBG substantially_RB more_JJR resources_NNS available_JJ for_IN incorporating_VBG new_JJ Web_NN pages_NNS into_IN the_DT search_NN repository_NN ._.
+by_IN a_DT particular_JJ user_NN -RRB-_-RRB- ._.
+A_DT crawler_NN that_WDT understands_VBZ these_DT formats_NNS can_MD crawl_VB them_PRP more_RBR efficiently_RB and_CC effectively_RB than_IN a_DT general-purpose_JJ crawler_NN ._.
+There_EX has_VBZ been_VBN some_DT work_NN on_IN crawling_VBG discussion_NN forums_NNS =_JJ -_: =[_NN 119_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC little_JJ else_NN ._.
+Vertical_JJ crawling_NN is_VBZ not_RB the_DT same_JJ as_IN scoped_JJ crawling_NN -LRB-_-LRB- Section_NN 4.2_CD -RRB-_-RRB- :_: Scoped_VBN 237238_CD Future_JJ Directions_NNS crawling_VBG focuses_VBZ on_IN collecting_VBG semantically_RB coherent_JJ content_NN from_IN many_JJ sites_NNS ,_, wh_NN
+s_VBZ a_DT function_NN of_IN rank_NN ,_, so_IN that_IN V_NN -LRB-_-LRB- p_NN ,_, a_DT -RRB-_-RRB- =_JJ I_NN -LRB-_-LRB- R_NN -LRB-_-LRB- p_NN ,_, a_DT -RRB-_-RRB- -RRB-_-RRB- for_IN some_DT function_NN I_CD -LRB-_-LRB- r_NN -RRB-_-RRB- ._.
+We_PRP believe_VBP this_DT model_NN serves_VBZ as_IN a_DT reasonable_JJ first-order_JJ approximation_NN of_IN true_JJ user_NN behavior_NN -LRB-_-LRB- the_DT same_JJ model_NN was_VBD adopted_VBN in_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+The_DT function_NN I_CD -LRB-_-LRB- r_NN -RRB-_-RRB- can_MD be_VB estimated_VBN by_IN monitoring_VBG user_NN behavior_NN and_CC fitting_JJ a_DT curve_NN ._.
+For_IN example_NN ,_, AltaVista_NNP usage_NN logs_NNS analyzed_VBN in_IN -LRB-_-LRB- 11_CD ,_, 15_CD -RRB-_-RRB- reveal_VBP that_IN the_DT following_JJ relationship_NN holds_VBZ quite_RB closely_RB
+ed_VBN with_IN the_DT Web_NN ,_, then_RB the_DT search_NN engine_NN may_MD not_RB include_VB the_DT most_RBS useful_JJ pages_NNS for_IN a_DT query_NN at_IN the_DT top_NN of_IN the_DT result_NN list_NN ._.
+Since_IN users_NNS '_POS attention_NN is_VBZ strongly_RB biased_VBN toward_IN the_DT top_NN of_IN query_NN result_NN lists_VBZ =_JJ -_: =[_NN 13_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: and_CC they_PRP have_VBP limited_VBN time_NN to_TO inspect_VB results_NNS ,_, users_NNS are_VBP likely_JJ to_TO visit_VB Web_NN pages_NNS that_WDT are_VBP on_IN the_DT whole_NN less_RBR useful_JJ than_IN the_DT ones_NNS they_PRP would_MD visit_VB if_IN presented_VBN with_IN a_DT hypothetical_JJ result_NN list_NN genera_NN
+rm_NN scheduling_NN regime_NN ._.
+Barbosa_NNP et_FW al._FW -LRB-_-LRB- 15_CD -RRB-_-RRB- considered_VBN how_WRB to_TO use_VB content-based_JJ features_NNS of_IN a_DT single_JJ past_JJ sample_NN of_IN p_NN to_TO infer_VB something_NN about_IN its_PRP$ temporal_JJ behavior_NN ._.
+Cho_NNP and_CC Ntoulas_NNP -LRB-_-LRB- 44_CD -RRB-_-RRB- and_CC Tan_NNP et_FW al._FW =_SYM -_: =[_NN 113_CD -RRB-_-RRB- -_: =_SYM -_: focused_VBN on_IN how_WRB to_TO infer_VB the_DT behavior_NN of_IN p_NN from_IN the_DT behavior_NN of_IN related_JJ pages_NNS --_: pages_NNS on_IN the_DT same_JJ web_NN site_NN ,_, or_CC pages_NNS with_IN similar_JJ content_NN ,_, link_NN structure_NN ,_, or_CC other_JJ features_NNS ._.
+We_PRP now_RB turn_VBP to_TO scheduling_NN ._.
+nload_NN about_IN 10_CD million_CD pages_NNS per_IN day_NN using_VBG five_CD crawling_VBG machines_NNS ._.
+UbiCrawler_NNP has_VBZ been_VBN used_VBN for_IN studies_NNS of_IN properties_NNS of_IN the_DT African_JJ web_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- and_CC to_TO compile_VB several_JJ reference_NN collections_NNS of_IN web_NN pages_NNS =_JJ -_: =[_NN 118_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recently_RB ,_, Yan_NNP et_FW al._FW described_VBN IRLbot_NN -LRB-_-LRB- 84_CD -RRB-_-RRB- ,_, a_DT single-process_JJ web_NN crawler_NN that_WDT is_VBZ able_JJ to_TO scale_VB to_TO extremely_RB large_JJ web_NN collections_NNS without_IN performance_NN degradation_NN ._.
+IRLbot_NN features_VBZ a_DT ``_`` seen-URL_NN ''_'' data_NNS s_NN
+nication_NN with_IN other_JJ crawler_NN nodes_NNS can_MD be_VB reduced_VBN by_IN maintaining_VBG a_DT cache_NN of_IN popular_JJ URLs_NNS ,_, used_VBN to_TO avoid_VB repeat_NN forwardings_NNS -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+Finally_RB ,_, a_DT variant_NN of_IN distributed_VBN web_NN crawling_NN is_VBZ peer-to-peer_JJ crawling_NN =_JJ -_: =[_NN 10_CD ,_, 87_CD ,_, 100_CD ,_, 112_CD ,_, 121_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT spreads_VBZ crawling_VBG over_RP a_DT loosely_RB collaborating_VBG set_NN of_IN crawler_NN nodes_NNS ._.
+Peer-to-peer_JJ crawlers_NNS typically_RB employ_VBP some_DT form_NN of_IN distributed_VBN hash_NN table_NN scheme_NN to_TO assign_VB URLs_NNS to_TO crawler2_NN .3_NN Key_NN Design_NN P_NN
+sumption_NN that_IN the_DT repository_NN closely_RB mirrors_VBZ the_DT current_JJ Web_NN ._.
+However_RB ,_, it_PRP is_VBZ infeasible_JJ to_TO maintain_VB an_DT exact_JJ mirror_NN of_IN a_DT large_JJ portion_NN of_IN the_DT Web_NN due_JJ to_TO its_PRP$ considerable_JJ aggregate_NN size_NN and_CC dynamicity_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, combined_VBN with_IN the_DT autonomous_JJ nature_NN of_IN Web_NN servers_NNS ._.
+If_IN the_DT repository_NN is_VBZ not_RB closely_RB synchronized_VBN with_IN the_DT Web_NN ,_, then_RB the_DT search_NN engine_NN may_MD not_RB include_VB the_DT most_RBS useful_JJ pages_NNS for_IN a_DT query_NN at_IN the_DT top_NN of_IN
+ility_NN :_: A_DT plethora_NN of_IN heuristics_NNS are_VBP used_VBN to_TO estimate_VB the_DT usefulness_NN of_IN viewing_VBG a_DT Web_NN page_NN as_IN a_DT result_NN of_IN issuing_VBG a_DT particular_JJ query_NN ,_, including_VBG TF-IDF_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, anchortext_NN inclusion_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, and_CC link_NN analysis_NN =_JJ -_: =[_NN 14_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Clearly_RB ,_, use_NN of_IN scoring_VBG functions_NNS that_WDT are_VBP better_RBR at_IN estimating_VBG actual_JJ usefulness_NN leads_VBZ to_TO a_DT higher-quality_JJ user_NN experience_NN ,_, on_IN the_DT whole_NN ._.
+1_CD In_IN this_DT paper_NN we_PRP assume_VBP that_IN the_DT search_NN engine_NN does_VBZ not_RB s_NN
+is_VBZ considered_VBN stale_JJ if_IN it_PRP is_VBZ not_RB identical_JJ to_TO the_DT current_JJ Web_NN copy_NN ._.
+Since_IN Web_NN pages_NNS are_VBP often_RB updated_VBN in_IN fairly_RB minor_JJ ways_NNS -LRB-_-LRB- e.g._FW ,_, advertisements_NNS ,_, timestamps_NNS -RRB-_-RRB- we_PRP used_VBD the_DT standard_JJ method_NN of_IN shingling_NN =_JJ -_: =[_NN 5_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: as_IN a_DT heuristic_NN for_IN discriminating_VBG between_IN significant_JJ and_CC insignificant_JJ updates_NNS ._.
+A_DT page_NN is_VBZ considered_VBN stale_JJ if_IN the_DT fraction_NN of_IN shingles_NNS that_WDT differ_VBP between_IN the_DT repository_JJ copy_NN and_CC Web_NN copy_NN of_IN the_DT pag_NN
+inputs_NNS to_TO the_DT classifier_NN ._.
+Many_JJ such_JJ features_NNS have_VBP been_VBN proposed_VBN ,_, including_VBG hyperlink_NN features_NNS -LRB-_-LRB- 16_CD ,_, 17_CD ,_, 50_CD ,_, 116_CD -RRB-_-RRB- ,_, term_NN and_CC phrase_NN frequency_NN -LRB-_-LRB- 97_CD -RRB-_-RRB- ,_, DNS_NN lookup_NN statistics_NNS -LRB-_-LRB- 59_CD -RRB-_-RRB- ,_, and_CC HTML_NNP markup_NN structure_NN =_JJ -_: =[_NN 114_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Combined_NNP ,_, these_DT features_NNS tend_VBP to_TO be_VB quite_RB effective_JJ ,_, although_IN web_NN spam_NN detection_NN is_VBZ a228_NN Avoiding_VBG Problematic_JJ and_CC Undesirable_JJ Content_NN constant_JJ arms_NNS race_NN ,_, with_IN both_DT spammers_NNS and_CC search_NN engines_NNS evolv_VBP
+ines_NNS -RRB-_-RRB- ._.
+The_DT main_JJ challenge_NN is_VBZ to_TO identify_VB features_NNS that_WDT are_VBP predictive_JJ of_IN web_NN spam_NN and_CC can_MD thus_RB be_VB used_VBN as_IN inputs_NNS to_TO the_DT classifier_NN ._.
+Many_JJ such_JJ features_NNS have_VBP been_VBN proposed_VBN ,_, including_VBG hyperlink_NN features_NNS =_JJ -_: =[_NN 16_CD ,_, 17_CD ,_, 50_CD ,_, 116_CD -RRB-_-RRB- -_: =_JJ -_: ,_, term_NN and_CC phrase_NN frequency_NN -LRB-_-LRB- 97_CD -RRB-_-RRB- ,_, DNS_NN lookup_NN statistics_NNS -LRB-_-LRB- 59_CD -RRB-_-RRB- ,_, and_CC HTML_NNP markup_NN structure_NN -LRB-_-LRB- 114_CD -RRB-_-RRB- ._.
+Combined_NNP ,_, these_DT features_NNS tend_VBP to_TO be_VB quite_RB effective_JJ ,_, although_IN web_NN spam_NN detection_NN is_VBZ a228_NN Avoiding_VBG Proble_NNP
+nity_NN maintains_VBZ lists_NNS of_IN the_DT User-Agent_JJ fields_NNS and_CC IP_NNP addresses_NNS of_IN major_JJ crawlers_NNS -RRB-_-RRB- ._.
+One_CD way_NN for_IN search_NN engines_NNS to_TO detect_VB that_IN a_DT web_NN server_NN employs_VBZ cloaking_VBG is_VBZ by_IN supplying_VBG a_DT different_JJ User-Agent_JJ field_NN =_JJ -_: =[_NN 117_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Another_DT approach_NN is_VBZ to_TO probe_VB the_DT server_NN from_IN IP_NNP addresses_NNS not_RB known_VBN to_TO the_DT SEO_NN community_NN -LRB-_-LRB- for_IN example_NN by_IN enlisting_VBG the_DT search_NN engine_NN 's_POS user_NN base_NN -RRB-_-RRB- ._.
+A_DT variant_NN of_IN cloaking_NN is_VBZ called_VBN redirection_NN spam_NN ._.
+A_DT
+-LRB-_-LRB- d_LS -RRB-_-RRB- MDS_NN with_IN inlink_NN count_NN ._.
+All_DT graphs_NNS are_VBP on_IN a_DT log-log_JJ scale_NN ._.
+as_IN a_DT surrogate_NN for_IN PageRank_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- due_JJ to_TO lack_NN of_IN adequate_JJ data_NNS -LRB-_-LRB- it_PRP has_VBZ been_VBN suggested_VBN that_IN inlink_NN count_NN and_CC PageRank_NN yield_NN similar_JJ results_NNS =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+In_IN both_DT cases_NNS the_DT result_NN of_IN a_DT query_NN consists_VBZ of_IN a_DT list_NN of_IN all_DT pages_NNS that_WDT contain_VBP every_DT term_NN in_IN the_DT query_NN ,_, arranged_VBN in_IN descending_VBG order_NN of_IN score_NN ._.
+In_IN our_PRP$ user-centric_JJ page_NN refreshing_JJ scheme_NN ,_, each_DT pag_NN
+rassment-based_JJ crawling_NN and_CC our_PRP$ user-centric_JJ crawling_VBG paradigm_NN ._.
+We_PRP provide_VBP a_DT thorough_JJ empirical_JJ comparison_NN of_IN our_PRP$ page_NN refresh_NN scheme_NN with_IN those_DT of_IN -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 21_CD -RRB-_-RRB- in_IN Section_NN 6_CD ._.
+Work_NN on_IN focused_JJ crawling_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: concentrates_VBZ on_IN how_WRB to_TO obtain_VB an_DT initial_JJ crawl_NN of_IN the_DT portion_NN of_IN the_DT Web_NN likely_JJ to_TO be_VB of_IN interest_NN to_TO a_DT particular_JJ community_NN of_IN users_NNS ._.
+Our_PRP$ work_NN is_VBZ complementary_JJ ._.
+Our_PRP$ user-centric_JJ approach_NN to_TO increment_NN
+the_DT user_NN 's_POS perspective_NN :_: 1_CD ._.
+Scoring_NNP function_NN suitability_NN :_: A_DT plethora_NN of_IN heuristics_NNS are_VBP used_VBN to_TO estimate_VB the_DT usefulness_NN of_IN viewing_VBG a_DT Web_NN page_NN as_IN a_DT result_NN of_IN issuing_VBG a_DT particular_JJ query_NN ,_, including_VBG TF-IDF_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, anchortext_NN inclusion_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, and_CC link_NN analysis_NN -LRB-_-LRB- 14_CD ,_, 17_CD -RRB-_-RRB- ._.
+Clearly_RB ,_, use_NN of_IN scoring_VBG functions_NNS that_WDT are_VBP better_RBR at_IN estimating_VBG actual_JJ usefulness_NN leads_VBZ to_TO a_DT higher-quality_JJ user_NN experience_NN ,_, on_IN the_DT whole_NN ._.
+1_CD In_IN
+ed_VBN with_IN the_DT Web_NN ,_, then_RB the_DT search_NN engine_NN may_MD not_RB include_VB the_DT most_RBS useful_JJ pages_NNS for_IN a_DT query_NN at_IN the_DT top_NN of_IN the_DT result_NN list_NN ._.
+Since_IN users_NNS '_POS attention_NN is_VBZ strongly_RB biased_VBN toward_IN the_DT top_NN of_IN query_NN result_NN lists_VBZ =_JJ -_: =[_NN 13_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: and_CC they_PRP have_VBP limited_VBN time_NN to_TO inspect_VB results_NNS ,_, users_NNS are_VBP likely_JJ to_TO visit_VB Web_NN pages_NNS that_WDT are_VBP on_IN the_DT whole_NN less_RBR useful_JJ than_IN the_DT ones_NNS they_PRP would_MD visit_VB if_IN presented_VBN with_IN a_DT hypothetical_JJ result_NN list_NN genera_NN
+notion_NN of_IN repository_JJ quality_NN ._.
+-LRB-_-LRB- Section_NN 6_CD -RRB-_-RRB- 2_CD ._.
+RELATED_NNS WORK_VBP Web_NN crawling_NN is_VBZ a_DT well-studied_JJ research_NN problem_NN ._.
+The_DT subproblem_NN of_IN scheduling_NN page_NN refreshing_VBG under_IN resource_NN constraints_NNS has_VBZ been_VBN studied_VBN in_IN =_JJ -_: =[_NN 9_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, the_DT optimization_NN objective_NN is_VBZ to_TO maximize_VB the_DT average_JJ freshness_NN or_CC minimize_VB the_DT average_JJ age_NN of_IN pages_NNS in_IN the_DT repository_NN ,_, treating_VBG all_DT pages_NNS and_CC changes_NNS to_TO pages_NNS with_IN uniform_JJ importance_NN ._.
+Unlik_NNP
+schedule_NN page_NN downloading_VBG in_IN such_PDT a_DT way_NN as_IN to_TO maximize_VB repository_JJ quality_NN ._.
+Suppose_VB that_DT ,_, due_JJ to_TO resource_NN limitations_NNS ,_, it_PRP is_VBZ only_RB possible_JJ to_TO download_VB and_CC -LRB-_-LRB- re_NN -RRB-_-RRB- index_NN up_IN to_TO B_NN pages_NNS per_IN time_NN unit_NN ._.
+-LRB-_-LRB- As_IN in_IN =_JJ -_: =[_NN 12_CD ,_, 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP assume_VBP uniform_JJ resource_NN cost_NN across_IN all_DT pages_NNS ,_, since_IN the_DT fixed_JJ overhead_NN of_IN the_DT operations_NNS required_VBD typically_RB constitutes_VBZ the_DT dominant_JJ factor_NN ._. -RRB-_-RRB-
+With_IN user-centric_JJ crawling_NN ,_, page_NN downloading_NN is_VBZ sche_NN
+notion_NN of_IN repository_JJ quality_NN ._.
+-LRB-_-LRB- Section_NN 6_CD -RRB-_-RRB- 2_CD ._.
+RELATED_NNS WORK_VBP Web_NN crawling_NN is_VBZ a_DT well-studied_JJ research_NN problem_NN ._.
+The_DT subproblem_NN of_IN scheduling_NN page_NN refreshing_VBG under_IN resource_NN constraints_NNS has_VBZ been_VBN studied_VBN in_IN =_JJ -_: =[_NN 9_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, the_DT optimization_NN objective_NN is_VBZ to_TO maximize_VB the_DT average_JJ freshness_NN or_CC minimize_VB the_DT average_JJ age_NN of_IN pages_NNS in_IN the_DT repository_NN ,_, treating_VBG all_DT pages_NNS and_CC changes_NNS to_TO pages_NNS with_IN uniform_JJ importance_NN ._.
+Unlik_NNP
+Scoring_NNP function_NN suitability_NN :_: A_DT plethora_NN of_IN heuristics_NNS are_VBP used_VBN to_TO estimate_VB the_DT usefulness_NN of_IN viewing_VBG a_DT Web_NN page_NN as_IN a_DT result_NN of_IN issuing_VBG a_DT particular_JJ query_NN ,_, including_VBG TF-IDF_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, anchortext_NN inclusion_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC link_NN analysis_NN -LRB-_-LRB- 14_CD ,_, 17_CD -RRB-_-RRB- ._.
+Clearly_RB ,_, use_NN of_IN scoring_VBG functions_NNS that_WDT are_VBP better_RBR at_IN estimating_VBG actual_JJ usefulness_NN leads_VBZ to_TO a_DT higher-quality_JJ user_NN experience_NN ,_, on_IN the_DT whole_NN ._.
+1_CD In_IN this_DT paper_NN we_PRP assume_VBP that_IN
+ility_NN :_: A_DT plethora_NN of_IN heuristics_NNS are_VBP used_VBN to_TO estimate_VB the_DT usefulness_NN of_IN viewing_VBG a_DT Web_NN page_NN as_IN a_DT result_NN of_IN issuing_VBG a_DT particular_JJ query_NN ,_, including_VBG TF-IDF_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, anchortext_NN inclusion_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, and_CC link_NN analysis_NN =_JJ -_: =[_NN 14_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Clearly_RB ,_, use_NN of_IN scoring_VBG functions_NNS that_WDT are_VBP better_RBR at_IN estimating_VBG actual_JJ usefulness_NN leads_VBZ to_TO a_DT higher-quality_JJ user_NN experience_NN ,_, on_IN the_DT whole_NN ._.
+1_CD In_IN this_DT paper_NN we_PRP assume_VBP that_IN the_DT search_NN engine_NN does_VBZ not_RB s_NN
+is_VBZ considered_VBN stale_JJ if_IN it_PRP is_VBZ not_RB identical_JJ to_TO the_DT current_JJ Web_NN copy_NN ._.
+Since_IN Web_NN pages_NNS are_VBP often_RB updated_VBN in_IN fairly_RB minor_JJ ways_NNS -LRB-_-LRB- e.g._FW ,_, advertisements_NNS ,_, timestamps_NNS -RRB-_-RRB- we_PRP used_VBD the_DT standard_JJ method_NN of_IN shingling_NN =_JJ -_: =[_NN 5_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: as_IN a_DT heuristic_NN for_IN discriminating_VBG between_IN significant_JJ and_CC insignificant_JJ updates_NNS ._.
+A_DT page_NN is_VBZ considered_VBN stale_JJ if_IN the_DT fraction_NN of_IN shingles_NNS that_WDT differ_VBP between_IN the_DT repository_JJ copy_NN and_CC Web_NN copy_NN of_IN the_DT pag_NN
+inks_NNS outward_JJ from_IN an_DT initial_JJ seed_NN set_NN of_IN URLs_NNS ._.
+The_DT seed_NN set_NN may_MD be_VB selected_VBN algorithmically_RB ,_, or_CC by_IN hand_NN ,_, based_VBN on_IN criteria_NNS such_JJ as_IN importance_NN ,_, outdegree_NN ,_, or_CC other_JJ structural_JJ features_NNS of_IN the_DT web_NN graph_NN =_JJ -_: =[_NN 120_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT common_JJ ,_, simple_JJ approach_NN is_VBZ to_TO use_VB the_DT root_NN page_NN of_IN a_DT web_NN directory_NN site_NN such_JJ as_IN OpenDirectory_NNP ,_, which_WDT links_VBZ to_TO many_JJ important_JJ sites_NNS across_IN a_DT broad_JJ range_NN of_IN topics_NNS ._.
+After_IN the_DT seed_NN set_NN has_VBZ been_VBN visit_NN

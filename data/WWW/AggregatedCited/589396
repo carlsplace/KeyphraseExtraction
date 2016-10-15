@@ -1,0 +1,26 @@
+Compiling_VBG XSLT_NN 2.0_CD into_IN XQuery_NN 1.0_CD
+As_IN XQuery_NN is_VBZ gathering_VBG momentum_NN as_IN the_DT standard_JJ query_NN language_NN for_IN XML_NN ,_, there_EX is_VBZ a_DT growing_VBG interest_NN in_IN using_VBG it_PRP as_IN an_DT integral_JJ part_NN of_IN the_DT XML_NN application_NN development_NN infrastructure_NN ._.
+In_IN that_DT context_NN ,_, one_CD question_NN which_WDT is_VBZ often_RB raised_VBN is_VBZ how_WRB well_RB XQuery_NN interoperates_NNS with_IN other_JJ XML_NN languages_NNS ,_, and_CC notably_RB with_IN XSLT_NN ._.
+XQuery_NN 1.0_CD -LRB-_-LRB- 16_CD -RRB-_-RRB- and_CC XSLT_NN 2.0_CD -LRB-_-LRB- 7_CD -RRB-_-RRB- share_VBP a_DT lot_NN in_IN common_JJ :_: they_PRP share_VBP XPath_NN 2.0_CD as_IN a_DT common_JJ sub-language_NN and_CC have_VBP the_DT same_JJ expressiveness_NN ._.
+However_RB ,_, they_PRP are_VBP based_VBN on_IN fairly_RB different_JJ programming_NN paradigms_NNS ._.
+While_IN XSLT_NN has_VBZ adopted_VBN a_DT highly_RB declarative_JJ template_NN based_VBN approach_NN ,_, XQuery_NN relies_VBZ on_IN a_DT simpler_JJR ,_, and_CC more_RBR operational_JJ ,_, functional_JJ approach_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP present_VBP an_DT approach_NN to_TO compile_VB XSLT_NN 2.0_CD into_IN XQuery_NN 1.0_CD ,_, and_CC a_DT working_VBG implementation_NN of_IN that_DT approach_NN ._.
+The_DT compilation_NN rules_NNS explain_VBP how_WRB XSLT_NNP 's_POS template-based_JJ approach_NN can_MD be_VB implemented_VBN using_VBG the_DT functional_JJ approach_NN of_IN XQuery_NN and_CC underpins_VBZ the_DT tight_JJ connection_NN between_IN the_DT two_CD languages_NNS ._.
+The_DT resulting_VBG compiler_NN can_MD be_VB used_VBN to_TO migrate_VB a_DT XSLT_NN code_NN base_NN to_TO XQuery_NN ,_, or_CC to_TO enable_VB the_DT use_NN of_IN XQuery_NN runtimes_NNS -LRB-_-LRB- e.g._FW ,_, as_IN will_MD soon_RB be_VB provided_VBN by_IN most_JJS relational_JJ database_NN management_NN systems_NNS -RRB-_-RRB- for_IN XSLT_NN users_NNS ._.
+We_PRP also_RB identify_VBP a_DT number_NN of_IN areas_NNS where_WRB compatibility_NN between_IN the_DT two_CD languages_NNS could_MD be_VB improved_VBN ._.
+Finally_RB ,_, we_PRP show_VBP experiments_NNS on_IN actual_JJ XSLT_NN stylesheets_NNS ,_, demonstrating_VBG the_DT applicability_NN of_IN the_DT approach_NN in_IN practice_NN ._.
+ality_NN for_IN Functions_NNS While_IN section_NN 2_CD dealt_VBD with_IN RuleML_NN for_IN logic_NN programming_NN -LRB-_-LRB- LP_NN -RRB-_-RRB- on_IN the_DT Semantic_JJ Web_NN ,_, functional_JJ programming_NN -LRB-_-LRB- FP_NN -RRB-_-RRB- -LRB-_-LRB- BKPS03_NN -RRB-_-RRB- is_VBZ also_RB playing_VBG an_DT increasing_VBG Web_NN role_NN ,_, with_IN XSLT_NN and_CC XQuery_NN =_JJ -_: =_JJ -LRB-_-LRB- FRSV05_NN -RRB-_-RRB- -_: =_JJ -_: being_VBG prominent_JJ examples_NNS ._.
+We_PRP present_VBP here_RB the_DT design_NN of_IN Functional_JJ RuleML_NN ,_, developed_VBN via_IN orthogonal_JJ notions_NNS andsfreely_RB combinable_JJ with_IN the_DT previous_JJ Relational_JJ RuleML_NN ,_, including_VBG OO_NN RuleML_NN -LRB-_-LRB- Bol03_NN -RRB-_-RRB- ,_, dis_NN
+es_NNS ._.
+They_PRP share_VBP many_JJ common_JJ concepts_NNS ,_, such_JJ as_IN the_DT underlying_VBG data_NNS model_NN ._.
+They_PRP both_DT include_VBP the_DT whole_NN of_IN XPath_NN as_IN a_DT sublanguage_NN ,_, which_WDT supports_VBZ a_DT number_NN of_IN data_NNS types_NNS and_CC a_DT respectable_JJ function_NN library_NN =_JJ -_: =[_NN 5_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT processing_NN engine_NN in_IN XSLT_NNP automatically_RB goes_VBZ through_IN the_DT document_NN tree_NN and_CC applies_VBZ templates_NNS as_IN it_PRP encounters_VBZ nodes_NNS ._.
+XQuery_NN ,_, on_IN the_DT other_JJ hand_NN ,_, requires_VBZ the_DT programmer_NN to_TO direct_VB the_DT process_NN ._.
+XSL_NN
+to_TO its_PRP$ corresponding_JJ XQuery_NN expression_NN ._.
+The_DT challenging_JJ aspect_NN here_RB is_VBZ to_TO how_WRB to_TO translate_VB <apply-templates/>_NN instruction_NN ,_, which_WDT implicitly_RB demands_VBZ the_DT template_NN pattern_NN matching_NN ._.
+The_DT idea_NN proposed_VBN in_IN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ to_TO compile_VB XSLT_FW <applytemplates/>_FW instruction_NN into_IN a_DT combination_NN of_IN XQuery_NN 's_POS conditional_JJ expressions_NNS where_WRB the_DT expression_NN conditions_NNS literally_RB model_VBP the_DT template_NN pattern_NN matching_NN and_CC the_DT expressio_NN
+ack_NN ._.
+5_CD Representation_NN of_IN Core_NNP XQuery_NNP Operators_NNP There_EX are_VBP several_JJ variants_NNS of_IN core_NN subsets_NNS of_IN XQuery_NN ,_, including_VBG the_DT core_NN grammar_NN defined_VBN in_IN the_DT W3C_NN standard_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, the_DT LixQuery_NNP framework_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, and_CC others_NNS =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Since_IN the_DT XSLT_NN and_CC XQuery_NN are_VBP related_JJ languages_NNS and_CC the_DT translation_NN from_IN XSLT_NN to_TO XQuery_NN is_VBZ known_VBN -LRB-_-LRB- see_VB -LRB-_-LRB- 2_CD -RRB-_-RRB- -RRB-_-RRB- ,_, the_DT model_NN may_MD be_VB applied_VBN also_RB to_TO XSLT_NNP ._.
+Note_NN :_: Most_JJS XQuery_NN operators_NNS do_VBP not_RB change_VB the_DT assig_NN

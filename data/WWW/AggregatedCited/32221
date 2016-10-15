@@ -1,0 +1,312 @@
+Semantic_JJ search_NN
+Activities_NNS such_JJ as_IN Web_NN Services_NNPS and_CC the_DT Semantic_JJ Web_NN are_VBP working_VBG to_TO create_VB a_DT web_NN of_IN distributed_VBN machine_NN understandable_JJ data_NNS ._.
+In_IN this_DT paper_NN we_PRP present_VBP an_DT application_NN called_VBN `_`` Semantic_NNP Search_VB '_POS which_WDT is_VBZ built_VBN on_IN these_DT supporting_VBG technologies_NNS and_CC is_VBZ designed_VBN to_TO improve_VB traditional_JJ web_NN searching_VBG ._.
+We_PRP provide_VBP an_DT overview_NN of_IN TAP_NN ,_, the_DT application_NN framework_NN upon_IN which_WDT the_DT Semantic_NNP Search_VB is_VBZ built_VBN ._.
+We_PRP describe_VBP two_CD implemented_VBN Semantic_NNP Search_VB systems_NNS which_WDT ,_, based_VBN on_IN the_DT denotation_NN of_IN the_DT search_NN query_NN ,_, augment_VBP traditional_JJ search_NN results_NNS with_IN relevant_JJ data_NNS aggregated_VBN from_IN distributed_VBN sources_NNS ._.
+We_PRP also_RB discuss_VBP some_DT general_JJ issues_NNS related_VBN to_TO searching_VBG and_CC the_DT Semantic_JJ Web_NN and_CC outline_VB how_WRB an_DT understanding_NN of_IN the_DT semantics_NNS of_IN the_DT search_NN terms_NNS can_MD be_VB used_VBN to_TO provide_VB better_JJR results_NNS ._.
+ION_NN Precisely_RB identifying_VBG entities_NNS in_IN web_NN documents_NNS is_VBZ necessary_JJ for_IN various_JJ tasks_NNS such_JJ as_IN relation_NN extraction_NN -LRB-_-LRB- 11_CD ,_, 26_CD -RRB-_-RRB- ,_, social_JJ network_NN extraction_NN from_IN the_DT web_NN -LRB-_-LRB- 24_CD ,_, 25_CD -RRB-_-RRB- search_NN and_CC integration_NN of_IN data_NN =_JJ -_: =[_NN 2_CD ,_, 17_CD -RRB-_-RRB- -_: =_JJ -_: and_CC entity_NN disambiguation_NN -LRB-_-LRB- 22_CD ,_, 14_CD ,_, 7_CD ,_, 1_CD ,_, 27_CD -RRB-_-RRB- ._.
+Nevertheless_RB ,_, identification_NN of_IN entities_NNS on_IN the_DT web_NN is_VBZ difficult_JJ for_IN two_CD fundamental_JJ reasons_NNS :_: first_JJ ,_, different_JJ entities_NNS can_MD share_VB the_DT same_JJ name_NN -LRB-_-LRB- lexical_JJ
+ments_NNS ._.
+KIM_NNP is_VBZ one_CD of_IN the_DT most_RBS complete_JJ proposals_NNS for_IN building_VBG high-quality_JJ KBs_NNS ._.
+In_IN fact_NN ,_, KIM_NNP -LRB-_-LRB- 13_CD -RRB-_-RRB- -LRB-_-LRB- 16_CD -RRB-_-RRB- relies_VBZ on_IN a_DT keyword-based_JJ IR_NNP engine_NN for_IN this_DT purpose_NN such_JJ as_IN indexing_NN ,_, retrieval_NN and_CC ranking_NN ._.
+TAP_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: tries_VBZ to_TO address_VB the_DT two_CD main_JJ problems_NNS are_VBP i_LS -RRB-_-RRB- the_DT development_NN of_IN a_DT distributed_VBN query_NN infrastructure_NN for_IN ontology_NN data_NNS ,_, and_CC ii_LS -RRB-_-RRB- the_DT presentation_NN of_IN query_JJ execution_NN results_NNS ._.
+However_RB the_DT expressive_JJ powe_NN
+from_IN the_DT programs_NNS above_IN and_CC from_IN previous_JJ work_NN on_IN data_NNS provenance_NN from_IN the_DT database_NN community_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 2_CD -RRB-_-RRB- -RRB-_-RRB- and_CC more_RBR recently_RB from_IN work_NN integrating_VBG information_NN from_IN extractors_NNS such_JJ as_IN the_DT work_NN in_IN Tap_NN 8_CD =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: leading_VBG to_TO our_PRP$ enhanced_VBN knowledge_NN provenance_NN infrastructure_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- and_CC information_NN integrators_NNS -LRB-_-LRB- e.g._FW ,_, ISI_NNP 's_POS Prometheus_NNP mediator_NN 9_CD which_WDT uses_VBZ information_NN obtained_VBN from_IN Fetch_NNP 's_POS 10_CD wrappers_NNS in_IN appropriate_JJ
+by_IN ontologies_NNS are_VBP taken_VBN into_IN consideration_NN during_IN query_NN processing_NN -LRB-_-LRB- or_CC as_IN a_DT preprocessing_JJ phase_NN -RRB-_-RRB- ._.
+However_RB ,_, semantic_JJ search_NN systems_NNS generally_RB operate_VBP over_IN structured_JJ semantic_JJ data_NNS ,_, such_JJ as_IN RDF_NN or_CC OWL_NN =_JJ -_: =[_NN 7_CD ,_, 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, fact_NN triples_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, or_CC XML_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- with_IN explicit_JJ references_NNS to_TO the_DT ontology_NN concepts_NNS -RRB-_-RRB- ._.
+A_DT variant_NN of_IN the_DT semantic_JJ search_NN problem_NN is_VBZ to_TO support_VB searching_VBG over_IN the_DT semantics_NNS of_IN entities_NNS found_VBN in_IN text_NN docum_NN
+is_VBZ being_VBG indexed_VBN ._.
+They_PRP also_RB used_VBD a_DT probabilistic_JJ query_NN expansion_NN model_NN ,_, which_WDT similarly_RB to_TO our_PRP$ method_NN ,_, weighs_VBZ the_DT expanded_VBN query_NN terms_NNS based_VBN on_IN their_PRP$ similarity_NN to_TO the_DT original_JJ query_NN 's_POS concepts_NNS ._.
+TAP_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT semantic_JJ search_NN system_NN ,_, which_WDT tries_VBZ to_TO identify_VB the_DT concept_NN of_IN a_DT search_NN query_NN and_CC then_RB show_VBP relevant_JJ data_NNS pulled_VBN from_IN the_DT Semantic_JJ Web_NN to_TO the_DT user_NN ._.
+In_IN this_DT their_PRP$ scope_NN is_VBZ the_DT whole_NN of_IN the_DT web_NN an_DT
+ontent_NN can_MD then_RB not_RB only_RB be_VB understood_VBN by_IN humans_NNS but_CC also_RB by_IN machines_NNS ._.
+Therefore_RB more_JJR and_CC more_JJR tasks_NNS can_MD be_VB delegated_VBN to_TO software_NN agents_NNS ._.
+Research_NN for_IN example_NN in_IN the_DT fields_NNS like_IN semantic_JJ search_NN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =--RRB-_NN and_CC semantic_JJ recommendation_NN systems_NNS -LRB-_-LRB- e.g._FW -LRB-_-LRB- 22_CD -RRB-_-RRB- -RRB-_-RRB- is_VBZ well_RB underway_JJ ._.
+Further_JJ advantages_NNS of_IN semantically_RB enriched_JJ data_NNS ,_, such_JJ as_IN interoperability_NN and_CC transformability_NN ,_, allow_VBP for_IN better_JJR integration_NN of_IN dif_NN
+good_JJ example_NN of_IN how_WRB richer_JJR representations_NNS can_MD be_VB used_VBN to_TO provide_VB an_DT integrated_JJ view_NN on_IN data_NNS and_CC to_TO support_VB semantic-based_JJ methods_NNS on_IN top_NN of_IN this_DT integrated_VBN view_NN is_VBZ the_DT work_NN on_IN the_DT TAP_NN knowledge_NN base_NN =_JJ -_: =[_NN 7,8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+AsTAP_NN also_RB covers_VBZ the_DT domain_NN of_IN artists_NNS and_CC music_NN ,_, it_PRP could_MD be_VB used_VBN as_IN an_DT additional_JJ source_NN of_IN knowledge_NN in_IN the_DT MusiDB_NN system_NN ._.
+In_IN recent_JJ work_NN Middleton_NNP and_CC others_NNS also_RB show_VBP how_WRB categorizations_NNS of_IN da_NN
+loser_NN than_IN the_DT restaurant_NN shown_VBN after_IN the_DT first_JJ query_NN ._.
+5.2_CD Semantic-based_JJ tools_NNS Recently_RB ,_, there_EX has_VBZ been_VBN a_DT growing_VBG interest_NN towards_IN systems_NNS supporting_VBG semantics_NNS exploitation_NN ,_, in_IN different_JJ domains_NNS ._.
+In_IN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: an_DT application_NN is_VBZ presented_VBN ,_, improving_VBG traditional_JJ web_NN searching_VBG using_VBG semantic_JJ web_NN technologies_NNS :_: two_CD Semantic_NNP Search_VB applications_NNS are_VBP presented_VBN ,_, running_VBG on_IN an_DT application_NN framework_NN called_VBN TAP_NNP ,_, which_WDT
+-LRB-_-LRB- 6,12,17,20,25,26,28_CD -RRB-_-RRB- ;_: 2_CD ._.
+approaches_NNS for_IN naive_JJ users_NNS ,_, where_WRB no_DT familiarity_NN with_IN ad-hoc_JJ query_NN languages_NNS is_VBZ required_VBN ._.
+In_IN turn_NN ,_, these_DT approaches_NNS can_MD be_VB divided_VBN into_IN :_: --_: keyword-based_JJ approaches_NNS ,_, such_JJ as_IN =_JJ -_: =[_NN 2,4,14_CD ,_, 15,21,29,30,32,34_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB queries_NNS consist_VBP of_IN lists_NNS of_IN keywords_NNS ;_: --_: natural-language-based_JJ approaches_NNS ,_, such_JJ as_IN -LRB-_-LRB- 5,8,11,13,22,23_CD -RRB-_-RRB- ,_, where_WRB users_NNS can_MD express_VB queries_NNS by_IN means_NNS of_IN the_DT natural_JJ language_NN ._.
+In_IN the_DT following_NN ,_, we_PRP giv_VBP
+antics_NNS of_IN the_DT user_NN keywords_NNS ._.
+Thus_RB ,_, when_WRB users_NNS are_VBP not_RB looking_VBG for_IN information_NN very_RB popular_JJ on_IN the_DT Web_NN ,_, they_PRP usually_RB need_VBP to_TO browse_VB and_CC check_VB many_JJ hits_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Under_IN these_DT circumstances_NNS ,_, Semantic_NNP Search_VB =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: can_MD help_VB to_TO overcome_VB some_DT current_JJ problems_NNS of_IN the_DT searching_VBG process_NN and_CC provide_VB users_NNS with_IN more_JJR preciseresults_NNS ._.
+In_IN any_DT search_NN system_NN ,_, and_CC particularly_RB in_IN a_DT semantic_JJ search_NN engine_NN ,_, the_DT main_JJ steps_NNS per_IN
+defined_VBN by_IN KBs_NNS are_VBP taken_VBN into_IN consideration_NN during_IN query_NN processing_NN -LRB-_-LRB- or_CC as_IN a_DT preprocessing_JJ phase_NN -RRB-_-RRB- ._.
+However_RB ,_, semantic_JJ search_NN systems_NNS generally_RB operate_VBP over_IN structured_JJ semantic_JJ data_NNS ,_, such_JJ as_IN RDF_NN or_CC OWL_NN =_JJ -_: =[_NN 10_CD ,_, 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, fact_NN triples_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, or_CC XML_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- -LRB-_-LRB- with_IN explicit_JJ references_NNS to_TO the_DT ontology_NN concepts_NNS -RRB-_-RRB- ._.
+A_DT variant_NN of_IN the_DT semantic_JJ search_NN problem_NN is_VBZ to_TO support_VB searching_VBG over_IN the_DT semantics_NNS of_IN entities_NNS found_VBN in_IN text_NN docum_NN
+kws_NNS and_CC the_DT neighboring_JJ document_NN nodes_NNS that_WDT reference_VBP such_JJ nodes_NNS ._.
+Intuitively_RB ,_, we_PRP want_VBP to_TO pursue_VB both_CC the_DT ``_`` authorities_NNS ''_'' and_CC the_DT ``_`` hubs_NNS ''_'' -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, assisting_VBG both_CC navigational_JJ searches_NNS and_CC research_NN searches_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+QUERY_NN :_: getDocsByIndexOrContent_NN :_: PowerSet_NNP -LRB-_-LRB- STRINGS_NNS -RRB-_-RRB- PowerSet_NNP -LRB-_-LRB- DN_JJ -RRB-_-RRB- ABBREVIATION_NN FOR_IN :_: getDocsByIndexOrContent_NN -LRB-_-LRB- kws_NNS -RRB-_-RRB- =_JJ getDocsByKeywords_NNS -LRB-_-LRB- kws_NNS -RRB-_-RRB- ∨_FW ∨_FW getLinkingNodes_NN -LRB-_-LRB- kw_NN -RRB-_-RRB- kw_FW ∈_FW kws_FW where_WRB kws_FW ∈_FW PowerSet_NNP -LRB-_-LRB- STRINGS_NNS -RRB-_-RRB-
+queries_NNS and_CC semistructured_JJ queries_NNS however_RB ,_, have_VBP uncertain_JJ results_NNS and_CC are_VBP thus_RB much_RB more_RBR challenging_JJ to_TO evaluate_VB ._.
+A_DT number_NN of_IN end-to-end_JJ semantic_JJ search_NN systems_NNS have_VBP been_VBN developed_VBN up_RP to_TO date_NN ,_, e.g._FW =_JJ -_: =[_NN 6_CD ,_, 7_CD ,_, 10_CD ,_, 11_CD ,_, 12_CD ,_, 19_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Given_VBN that_IN semantic_JJ search_NN systems_NNS are_VBP a_DT subset_NN of_IN information_NN retrieval_NN systems_NNS it_PRP would_MD be_VB natural_JJ to_TO apply_VB existing_VBG IR_NNP benchmarks_NNS ._.
+This_DT is_VBZ the_DT choice_NN made_VBN by_IN Fernandez_NNP et_FW al._FW who_WP perform_VBP evaluati_NNS
+ic_RB Search_VB ,_, BM25F_NN 1_CD ._.
+INTRODUCTION_NN Keyword-based_JJ Semantic_JJ Web_NN search_NN engine_NN development_NN has_VBZ become_VBN a_DT major_JJ research_NN area_NN garnering_VBG much_JJ attention_NN in_IN the_DT Semantic_JJ Web_NN community_NN over_IN the_DT last_JJ seven_CD years_NNS =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Research_NN initiatives_NNS target_VBP not_RB only_RB simple_JJ semantic_JJ document_NN and_CC ontologies_NNS retrieval_NN -LRB-_-LRB- 12_CD ,_, 2_CD -RRB-_-RRB- but_CC explore_VBP the_DT development_NN of_IN gateways_NNS supporting_VBG the_DT implement_VB Semantic_JJ Web_NN applications_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Semanti_NNP
+et\/WWW_FW 10See_FW section_NN II_CD on_IN page_NN 1_CD still_RB depend_VB on_IN a_DT large_JJ amount_NN of_IN manual_JJ annotation_NN work_NN -LRB-_-LRB- sometimes_RB it_PRP is_VBZ simply_RB assumed_VBN that_IN the_DT WWW_NNP will_MD eventually_RB contain_VB appropriately_RB annotated_JJ ressources_NNS ,_, cf._VBP =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+This_DT indeed_RB is_VBZ one_CD well-known_JJ problem_NN of_IN knowledge_NN engineering_NN ,_, that_IN annotating_VBG text_NN basically_RB is_VBZ a_DT huge_JJ amount_NN of_IN work_NN with_IN no_DT apparent_JJ use_NN to_TO the_DT annotator_NN himself_PRP ._.
+Even_RB in_IN cases_NNS where_WRB people_NNS app_VBP
+rategies_NNS There_EX are_VBP many_JJ studies_NNS of_IN users_NNS '_POS information_NN needs_NNS ,_, their_PRP$ search_NN strategies_NNS and_CC behavior_NN -LRB-_-LRB- e.g._FW -LRB-_-LRB- 1_CD ,_, 11_CD -RRB-_-RRB- -RRB-_-RRB- resulting_VBG in_IN different_JJ classification_NN of_IN search_NN strategies_NNS ._.
+For_IN instance_NN ,_, Guha_NNP et_FW al._FW =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: distinguish_VB two_CD different_JJ kinds_NNS of_IN search_NN ,_, namely_RB ,_, navigational_JJ search_NN and_CC research_NN search_NN ._.
+Navigational_JJ search_NN is_VBZ defined_VBN as_IN the_DT one_CD where_WRB the_DT user_NN provides_VBZ a_DT phrase_NN or_CC keywords_NNS and_CC expects_VBZ to_TO find_VB
+Semantic_JJ Web_NN ,_, where_WRB the_DT content_NN resources_NNS are_VBP ontologically_RB indexed_VBN through_IN the_DT use_NN of_IN full_JJ text_NN analysis_NN and_CC domain_NN ontologies_NNS ._.
+It_PRP also_RB proposes_VBZ a_DT faceted_JJ search_NN method_NN on_IN top_NN of_IN this_DT index_NN ._.
+In_IN TAP_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT semantic_JJ search_NN system_NN is_VBZ presented_VBN for_IN Semantic_JJ Web_NN ,_, where_WRB the_DT traditional_JJ search_NN results_NNS are_VBP augmented_JJ with_IN further_JJ semantics_NNS ._.
+SCORE_NN -LRB-_-LRB- 39_CD -RRB-_-RRB- also_RB proposes_VBZ a_DT semantic_JJ search_NN engine_NN for_IN the_DT Web_NN conte_NN
+e_LS finding_NN or_CC simple_JJ fact_NN finding_NN ,_, but_CC are_VBP limited_JJ for_IN more_RBR complicated_JJ needs_NNS such_JJ as_IN learning_VBG and_CC investigating_VBG tasks_NNS -LRB-_-LRB- labeled_VBN as_IN exploratory_JJ search_NN tasks_NNS by_IN Marchionini_NNP -LRB-_-LRB- 2006_CD -RRB-_-RRB- -RRB-_-RRB- or_CC research_NN searches_NNS -LRB-_-LRB- =_JJ -_: =_JJ Guha_NNP et_FW al._FW 2003_CD -_: =--RRB-_NN ._.
+For_IN example_NN ,_, if_IN a_DT high_JJ school_NN student_NN is_VBZ learning_VBG about_IN the_DT concept_NN of_IN ``_`` acid_JJ rain_NN ''_'' and_CC is_VBZ asked_VBN to_TO write_VB an_DT informative_JJ and_CC comprehensive_JJ essay_NN on_IN the_DT topic_NN ,_, a_DT query_NN containing_VBG ``_`` acid_NN ''_'' and_CC ``_`` rain_NN ''_'' ma_FW
+to_TO improve_VB the_DT management_NN of_IN and_CC access_NN to_TO information_NN ._.
+The_DT approach_NN relies_VBZ on_IN ontologies_NNS modeling_NN objects_NNS of_IN the_DT world_NN through_IN the_DT actors_NNS and_CC the_DT entities_NNS that_IN the_DT documents_NNS constitute_VBP and_CC contain_VBP -LRB-_-LRB- =_JJ -_: =_JJ Guha_NNP et_FW al._FW ,_, 2003_CD -_: =--RRB-_NN ._.
+In_IN the_DT context_NN of_IN the_DT semantic_JJ web_NN ,_, concepts_NNS and_CC instances_NNS of_IN concepts_NNS are_VBP mainly_RB extracted_VBN from_IN granules_NNS but_CC not_RB weighted_JJ -LRB-_-LRB- Kiryakov_NNP et_FW al._FW ,_, 2004_CD -RRB-_-RRB- ._.
+It_PRP takes_VBZ advantage_NN of_IN the_DT formal_JJ representation_NN o_NN
+feature_NN to_TO either_CC automatically_RB -LRB-_-LRB- 142_CD -RRB-_-RRB- or_CC easily_RB -LRB-_-LRB- 82_CD -RRB-_-RRB- reformulate_VBP the_DT semantic_JJ -LRB-_-LRB- e.g._FW ,_, structured_JJ -RRB-_-RRB- query_NN and_CC send_VB it_PRP to_TO a_DT standard_JJ text-based_JJ search_NN engine_NN ._.
+2_CD ._.
+Semantic_JJ +_CC text_NN union_NN :_: Recently_RB ,_, TAP_NN Search_VBP =_JJ -_: =[_NN 74_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD the_DT inverse_NN ._.
+Instead_RB of_IN starting_VBG with_IN a_DT semantic_JJ query_NN ,_, TAP_NN accepts_VBZ standard_JJ textual_JJ queries_NNS from_IN the_DT user_NN and_CC attempts_NNS to_TO automatically_RB construct_VB a_DT reasonable_JJ semantic_JJ query_NN ._.
+The_DT search_NN res_VBZ
+iled_VBN ,_, the_DT engine_NN looks_VBZ for_IN invocation_NN rules_NNS involving_VBG public_JJ web_NN services_NNS ._.
+This_DT can_MD include_VB invoking_VBG public_JJ Semantic_JJ Web_NN search_NN engines_NNS -LRB-_-LRB- e.g._FW CORESE_FW -LRB-_-LRB- 3_CD -RRB-_-RRB- or_CC distributed_VBN search_NN architecture_NN such_JJ as_IN TAP_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =--RRB-_NN or_CC public_JJ matchmaking_NN services_NNS such_JJ as_IN the_DT one_CD in_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- --_: this_DT step_NN is_VBZ not_RB currently_RB implemented_VBN ._.
+If_IN everything_NN fails_VBZ ,_, the_DT query_NN is_VBZ considered_VBN to_TO have_VB failed_VBN ._.
+In_IN summary_NN ,_, the_DT body_NN of_IN each_DT rule_NN requ_NN
+gy_NN structure_NN and_CC ontology_NN technology_NN ._.
+Therefore_RB he_PRP selected_VBD ten_CD different_JJ approaches_NNS and_CC project_NN about_IN semantic_JJ document_NN retrieval_NN ,_, i.e._FW Simple_JJ HTML_NNP Ontology_NNP Extensions_NNPS -LRB-_-LRB- SHOE_NN -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, Inquirus2_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, TAP_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, etc._NN ._.
+He_PRP compared_VBD the_DT systems_NNS by_IN means_NNS of_IN the_DT classification_NN criteria_NNS and_CC discussed_VBN issues_NNS that_WDT are_VBP open_JJ to_TO further_JJ research_NN and_CC application_NN development_NN ._.
+According_VBG to_TO his_PRP$ research_NN ,_, our_PRP$ system_NN is_VBZ clas_NNS
+all_DT by_IN 20_CD %_NN in_IN a_DT relation-detection_JJ task_NN ._.
+1_CD Introduction_NN Precisely_RB identifying_VBG entities_NNS in_IN web_NN documents_NNS is_VBZ necessary_JJ for_IN various_JJ tasks_NNS such_JJ as_IN relation_NN extraction_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, search_NN and_CC integration_NN of_IN data_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: and_CC entity_NN disambiguation_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+Nevertheless_RB ,_, identification_NN of_IN entities_NNS on_IN the_DT web_NN is_VBZ difficult_JJ for_IN two_CD fundamental_JJ reasons_NNS :_: first_JJ ,_, different_JJ entities_NNS can_MD share_VB the_DT same_JJ name_NN -LRB-_-LRB- lexical_JJ ambiguity_NN -RRB-_-RRB- ;_: se_FW
+arch_NN work_NN on_IN and_CC related_JJ to_TO semantic_JJ search_NN are_VBP :_: Moldovan_JJ et_FW al._FW in_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- have_VBP discussed_VBN about_IN improving_VBG the_DT search_NN quality_NN of_IN traditional_JJ search_NN engines_NNS by_IN using_VBG WordNet_NNP ,_, and_CC later_JJ work_NN by_IN Guha_NNP et_FW al._FW =_SYM -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: mentioned_VBN how_WRB relationships_NNS of_IN objects_NNS on_IN the_DT web_NN documents_NNS can_MD be_VB established_VBN and_CC exploited_VBN for_IN semantic_JJ search_NN ._.
+More_RBR recently_RB ,_, researchers_NNS in_IN -LRB-_-LRB- 6_CD -_: 8_CD -RRB-_-RRB- have_VBP shown_VBN different_JJ approaches_NNS toward_IN semantic_JJ
+ds_JJ to_TO querying_VBG ,_, for_IN example_NN in_IN the_DT form_NN of_IN extensions_NNS to_TO conventional_JJ query_NN languages_NNS -LRB-_-LRB- 38_CD -RRB-_-RRB- ,_, visual_JJ tools_NNS for_IN exploratory_JJ search_NN -LRB-_-LRB- 4_CD ,_, 33_CD -RRB-_-RRB- ,_, an_DT extension_NN of_IN web_NN keyword_JJ search_NN to_TO include_VB -LRB-_-LRB- some_DT -RRB-_-RRB- structure_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC keyword_JJ search_NN over_IN structured_JJ data_NNS -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+With_IN the_DT arrival_NN of_IN these_DT techniques_NNS ,_, the_DT need_NN for_IN approximate_JJ querying_NN that_WDT does_VBZ not_RB apply_VB solely_RB to_TO individual_JJ terms_NNS or_CC phrases_NNS but_CC that_DT takes_VBZ the_DT data_NNS
+iption_NN of_IN how_WRB to_TO use_VB it_PRP ,_, a_DT situation_NN which_WDT would_MD realize_VB a_DT web_NN of_IN knowledge_NN and_CC not_RB only_RB a_DT web_NN of_IN information_NN ._.
+Given_VBN these_DT premises_NNS ,_, it_PRP is_VBZ possible_JJ to_TO go_VB one_CD step_NN forward_RB and_CC imagine_VB a_DT semantic_JJ search_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, namely_RB ,_, a_DT search_NN action_NN that_WDT is_VBZ informed_VBN by_IN this_DT meta_NN layer_NN above_IN the_DT web_NN and_CC that_IN points_NNS to_TO resources_NNS in_IN the_DT web_NN or_CC in_IN the_DT real_JJ world_NN ._.
+In_IN such_PDT a_DT scenario_NN ,_, it_PRP is_VBZ possible_JJ to_TO look_VB for_IN the_DT name_NN of_IN a_DT p_NN
+in_IN semantic_JJ web_NN portals_NNS to_TO provide_VB better_JJR performance_NN for_IN keyword_RB searching_VBG ._.
+In_IN particular_JJ ,_, the_DT semantic_JJ searching_VBG facility_NN developed_VBD in_IN our_PRP$ infrastructure_NN extends_VBZ current_JJ semantic_JJ search_NN technologies_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =-[_NN 8_CD -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- which_WDT are_VBP primarily_RB centered_VBN around_IN enabling_VBG search_NN for_IN semantic_JJ entities_NNS -RRB-_-RRB- by_IN augmenting_VBG the_DT search_NN mechanisms_NNS with_IN complex_JJ semantic_JJ relations_NNS of_IN data_NNS resources_NNS which_WDT have_VBP been_VBN made_VBN available_JJ
+e-based_JJ two-factor_JJ CAPTCHA_NN system_NN which_WDT is_VBZ built_VBN upon_IN the_DT idea_NN of_IN semantic_JJ relationship_NN between_IN images_NNS ._.
+The_DT use_NN of_IN semantic_JJ meaning_NN of_IN a_DT query_NN has_VBZ already_RB been_VBN applied_VBN in_IN other_JJ fields_NNS like_IN web_NN search_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP formulate_VBP definitions_NNS for_IN semantic_JJ similarity_NN of_IN images_NNS and_CC design_VB a_DT system_NN that_WDT uses_VBZ these_DT concepts_NNS to_TO develop_VB a_DT user-friendly_JJ and_CC robust_JJ CAPTCHA_NN system_NN ._.
+3.1_CD Intuitive_JJ Idea_NN All_DT image-based_JJ CAPTC_NN
+ery_VB Extension_NNP with_IN crALC_NN In_IN the_DT last_JJ decade_NN several_JJ proposals_NNS have_VBP been_VBN made_VBN for_IN semantic_JJ information_NN retrieval_NN ._.
+Boolean_NN and_CC vector_NN space_NN procedures_NNS ,_, for_IN example_NN ,_, have_VBP corresponding_JJ semantic_JJ versions_NNS =_JJ -_: =[_NN 26,20,19,8_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 27,2,9_CD -RRB-_-RRB- respectively_RB ._.
+We_PRP refer_VBP to_TO -LRB-_-LRB- 24_CD -RRB-_-RRB- for_IN a_DT more_RBR detailed_JJ review_NN ._.
+Query_JJ extension_NN -LRB-_-LRB- or_CC query_JJ suggestion_NN -RRB-_-RRB- is_VBZ a_DT strategy_NN often_RB used_VBN in_IN search_NN engines_NNS to_TO derive_VB queries_NNS that_WDT are_VBP able_JJ to_TO return_VB more_JJR
+iption_NN of_IN how_WRB to_TO use_VB it_PRP ,_, a_DT situation_NN which_WDT would_MD realize_VB a_DT web_NN of_IN knowledge_NN and_CC not_RB only_RB a_DT web_NN of_IN information_NN ._.
+Given_VBN these_DT premises_NNS ,_, it_PRP is_VBZ possible_JJ to_TO go_VB one_CD step_NN forward_RB and_CC imagine_VB a_DT semantic_JJ search_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, namely_RB ,_, a_DT search_NN action_NN that_WDT is_VBZ informed_VBN by_IN this_DT meta_NN layer_NN above_IN the_DT web_NN and_CC that_IN points_NNS to_TO resources_NNS in_IN the_DT web_NN or_CC in_IN the_DT real_JJ world_NN ._.
+In_IN such_PDT a_DT scenario_NN ,_, it_PRP is_VBZ possible_JJ to_TO look_VB for_IN the_DT name_NN of_IN a_DT p_NN
+the_DT corpus_NN are_VBP accessible_JJ through_IN defined_VBN interfaces_NNS through_IN which_WDT we_PRP can_MD get_VB RDF_NNP annotated_JJ metadata_NN ._.
+The_DT access_NN can_MD be_VB realized_VBN by_IN connecting_VBG the_DT sources_NNS using_VBG Edutella_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, TAP_NN semantic_JJ web_NN search_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC Lixto_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+The_DT difference_NN to_TO implementing_VBG closed_JJ corpus_NN functionality_NN is_VBZ that_IN we_PRP can_MD not_RB necessarily_RB assume_VB complete_JJ ,_, highly_RB detailed_JJ metadata_NN for_IN resources_NNS on_IN the_DT semantic_JJ web_NN ._.
+3_CD Metadata_NNP in_IN the_DT
+owsing_VBG Previous_JJ research_NN has_VBZ sought_VBN to_TO identify_VB and_CC classify_VB user_NN behaviors_NNS on_IN the_DT web_NN ,_, mainly_RB by_IN identifying_VBG specific_JJ modes_NNS of_IN searching_VBG or_CC browsing_VBG ._.
+At_IN the_DT most_RBS basic_JJ level_NN Guha_NNP ,_, McCool_NNP and_CC Miller_NNP =_SYM -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: distinguish_VBP between_IN navigational_JJ and_CC research_NN searches_NNS ._.
+In_IN a_DT navigational_JJ search_NN ``_`` the_DT user_NN is_VBZ using_VBG the_DT search_NN engine_NN as_IN a_DT navigation_NN tool_NN to_TO navigate_VB to_TO a_DT particular_JJ intended_JJ document_NN ''_'' ,_, whereas_IN a_DT re_NN
+emes_NNS for_IN reasoning_NN and_CC querying_VBG ._.
+Not_RB surprisingly_RB ,_, there_EX is_VBZ a_DT growing_VBG body_NN of_IN literature_NN in_IN the_DT last_JJ few_JJ years_NNS that_WDT studies_VBZ the_DT use_NN of_IN ontologies_NNS to_TO improve_VB the_DT effectiveness_NN of_IN information_NN retrieval_NN =_JJ -_: =[_NN 5,8,10,11_CD -RRB-_-RRB- -_: =_JJ -_: and_CC personalized_JJ search_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+In_IN this_DT paper_NN ,_, we_PRP present_VBP a_DT comprehensive_JJ personalized_JJ retrieval_NN framework_NN where_WRB the_DT advantages_NNS of_IN ontologies_NNS are_VBP exploited_VBN in_IN different_JJ parts_NNS of_IN the_DT retrieval_NN cycle_NN :_: que_VB
+ystem_NN for_IN the_DT Semantic_JJ Web_NN ._.
+It_PRP uses_VBZ IR_NNP engine_NN to_TO index_NN the_DT crawled_VBN semantic_JJ web_NN documents_NNS using_VBG either_CC n-gram_NN or_CC URIrefs_NN as_IN terms_NNS and_CC computes_VBZ a_DT ranked_VBN list_NN of_IN these_DT documents_NNS given_VBN the_DT search_NN terms_NNS ._.
+=_SYM -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: augments_VBZ keyword_JJ search_NN with_IN semantic_JJ information_NN collected_VBN from_IN different_JJ sources_NNS while_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- uses_VBZ keyword_JJ search_NN results_VBZ as_IN a_DT seed_NN to_TO do_VB spread_NN activation_NN on_IN semantic_JJ networks_NNS ._.
+These_DT work_NN takes_VBZ a_DT pur_NN
+wering_VBG on_IN the_DT Semantic_JJ Web_NN ._.
+Our_PRP$ model_NN can_MD be_VB seen_VBN as_IN one_CD that_WDT integrates_VBZ IR_NN and_CC formal_JJ query_NN and_CC reasoning_NN to_TO utilize_VB both_CC textual_JJ and_CC semantic_JJ information_NN ._.
+In_IN the_DT semantic_JJ search_NN and_CC retrieval_NN area_NN ,_, =_JJ -_: =[_NN 10_CD ,_, 21_CD ,_, 22_CD ,_, 18_CD ,_, 25_CD ,_, 1_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: used_VBN semantic_JJ information_NN to_TO improve_VB search_NN on_IN the_DT -LRB-_-LRB- Semantic_JJ -RRB-_-RRB- Web_NN ._.
+SHOE_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- collects_VBZ semantic_JJ annotations_NNS on_IN Web_NN pages_NNS and_CC stores_NNS them_PRP in_IN a_DT KB_NN ._.
+Users_NNS are_VBP provided_VBN with_IN a_DT GUI_NNP to_TO formulate_VB an_DT ontology_NN
+veral_JJ languages_NNS ._.
+A_DT more_RBR advanced_JJ notion_NN of_IN adjacency_NN ,_, like_IN the_DT k-neighborhood_NN of_IN a_DT node_NN ,_, is_VBZ necessary_JJ in_IN several_JJ contexts_NNS ._.
+The_DT need_NN of_IN 1-neighborhood_JJ retrieval_NN in_IN a_DT RDF_NN Graph_NN is_VBZ argued_VBN in_IN -LRB-_-LRB- Say04_NN -RRB-_-RRB- and_CC =_JJ -_: =_JJ -LRB-_-LRB- GMM03_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+2_CD ._.
+Paths_NNS and_CC Connectedness_NN ._.
+Arguments_NNS supporting_VBG the_DT necessity_NN of_IN paths_NNS are_VBP given_VBN in_IN -LRB-_-LRB- GLMB98_NN -RRB-_-RRB- ;_: also_RB in_IN the_DT context_NN of_IN analyzing_NN networks_NNS in_IN -LRB-_-LRB- HAMAS04_NN -RRB-_-RRB- ._.
+There_EX are_VBP several_JJ variations_NNS involved_VBN in_IN this_DT n_NN
+erences_NNS -LRB-_-LRB- level_NN of_IN detail_NN ,_, device_NN ,_, language_NN ,_, trust_NN policy_NN ,_, ..._: -RRB-_-RRB- ._.
+--_: Provide_VB semantic_JJ search_NN services_NNS for_IN the_DT customers_NNS based_VBN on_IN the_DT knowledge_NN included_VBN in_IN the_DT ontologies_NNS and_CC the_DT available_JJ market_NN dat_NN =_JJ -_: =_JJ a_DT -LRB-_-LRB- 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Following_VBG the_DT above_JJ architecture_NN ,_, a_DT portal_NN would_MD have_VB to_TO store_VB huge_JJ amounts_NNS of_IN collected_VBN RDF_NN data_NNS and_CC provide_VB easy_JJ access_NN to_TO this_DT data_NN for_IN his_PRP$ customers_NNS ._.
+An_DT overview_NN of_IN specialised_JJ databases_NNS and_CC que_NN
+y._FW s2_FW Using_VBG Semantic_JJ Metadata_FW in_FW Search_VB :_: A_DT Classification_NN 2.1_CD Using_VBG Metadata_NNP to_TO Enrich_NNP Search_VB Results_NNS One_CD of_IN the_DT most_RBS interesting_JJ semantic_JJ search_NN efforts_NNS is_VBZ probably_RB being_VBG performed_VBN in_IN the_DT TAP_NN project_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+TAP_NN builds_VBZ upon_IN the_DT TAPache_NN module_NN ,_, which_WDT provides_VBZ a_DT platform_NN for_IN publishing_VBG and_CC consuming_VBG data_NNS from_IN the_DT Semantic_JJ Web_NN ._.
+Its_PRP$ knowledge_NN base_NN is_VBZ updated_VBN with_IN the_DT aid_NN of_IN the_DT onTAP_NN system_NN ,_, which_WDT includes_VBZ
+to_TO find_VB some_DT related_JJ data_NNS to_TO this_DT singer_NN like_IN biography_NN ,_, posters_NNS ,_, albums_NNS and_CC so_RB on_RB ._.
+The_DT main_JJ distinguished_JJ behavior_NN of_IN this_DT engines_NNS is_VBZ using_VBG external_JJ metadata_FW i.e._FW CDNow_NNP ,_, Amazon_NNP ,_, IMDB_NNP as_IN mentioned_VBN in_IN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP usually_RB use_VBP an_DT ordinary_JJ search_NN engine_NN and_CC display_NN augmented_VBD information_NN near_IN the_DT original_JJ results_NNS ._.
+Well_RB known_VBN developed_JJ systems_NNS are_VBP W3C_NNP Semantic_NNP Search_VB -LRB-_-LRB- 16_CD -RRB-_-RRB- and_CC ABC_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+Semantic_NNP Association_NNP Disc_NNP
+e_LS name_NN of_IN the_DT sitemap_NN file_NN and_CC its_PRP$ relative_JJ location_NN a_DT web_NN standard_NN ._.
+The_DT Semantic_JJ Web_NN could_MD also_RB be_VB mined_VBN for_IN categorical_JJ information_NN ,_, in_IN a_DT manner_NN similar_JJ to_TO that_DT described_VBN in_IN Guha_NNP ,_, McCool_NNP and_CC Miller_NNP =_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT augments_VBZ web_NN search_NN results_VBZ with_IN information_NN extracted_VBN from_IN RDF_NNP stores_NNS ._.
+Semantic_JJ Web_NN standards_NNS such_JJ as_IN the_DT Simple_JJ Knowledge_NN Organisation_NNP System_NNP -LRB-_-LRB- SKOS_NNS -RRB-_-RRB- could_MD be_VB used_VBN to_TO share_VB and_CC distribute_VB cla_NN
+the_DT current_JJ Web_NN to_TO improve_VB the_DT accessibility_NN of_IN web_NN content_NN providing_VBG sophisticated_JJ and_CC powerful_JJ inferences_NNS to_TO sift_VB intelligently_RB through_IN this_DT large_JJ information_NN space_NN ._.
+In_IN particular_JJ ,_, Semantic_JJ Search_VB =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ emerging_VBG as_IN the_DT application_NN of_IN the_DT SW_NN is_VBZ designed_VBN to_TO improve_VB the_DT search_NN in_IN the_DT Web_NN ,_, since_IN it_PRP relies_VBZ on_IN an_DT explicit_JJ representation_NN of_IN semantics_NNS about_IN web_NN resources_NNS and_CC real_JJ world_NN objects_NNS ._.
+Neverthel_NNP
+lem_NN is_VBZ very_RB close_JJ to_TO the_DT proposals_NNS in_IN KIM_NNP -LRB-_-LRB- 9,12_CD -RRB-_-RRB- ._.
+While_IN KIM_NNP focuses_VBZ on_IN automatic_JJ population_NN and_CC annotation_NN of_IN documents_NNS ,_, our_PRP$ work_NN focuses_VBZ on_IN the_DT ranking_JJ algorithms_NNS for_IN semantic_JJ search_NN ._.
+Along_IN with_IN TAP_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, KIM_NNP is_VBZ one_CD of_IN the_DT most_RBS complete_JJ proposals_NNS reported_VBN to_TO date_NN ,_, to_TO our_PRP$ knowledge_NN ,_, for_IN building_VBG high-quality_JJ KBs_NNS ,_, and_CC automatically_RB annotating_VBG document_NN collections_NNS at_IN a_DT large_JJ scale_NN ._.
+Our_PRP$ work_NN complements_VBZ
+result_NN in_IN users_NNS not_RB finding_VBG the_DT sought_VBN information_NN ,_, even_RB when_WRB it_PRP exists_VBZ or_CC ,_, on_IN the_DT other_JJ extreme_NN ,_, cause_VB an_DT information_NN overload_NN due_JJ to_TO many_JJ documents_NNS offered_VBN as_IN the_DT response_NN ._.
+A_DT semantic_JJ search_NN engine_NN =_JJ -_: =[_NN 22_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ knowledge_NN of_IN the_DT domain_NN at_IN hand_NN ._.
+The_DT availability_NN of_IN a_DT domain_NN ontology_NN that_IN structures_NNS and_CC relates_VBZ the_DT information_NN according_VBG to_TO its_PRP$ meaning_NN allows_VBZ the_DT implementation_NN of_IN a_DT search_NN system_NN where_WRB user_NN
+deployment_NN of_IN Semantic_JJ Web_NN applications_NNS -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+In_IN particular_JJ ,_, we_PRP refer_VBP to_TO Semantic_JJ Web_NN applications_NNS that_WDT have_VBP been_VBN built_VBN to_TO solve_VB commercial_JJ world_NN problems_NNS -LRB-_-LRB- 26_CD ,_, 32_CD ,_, 33_CD -RRB-_-RRB- ._.
+These_DT include_VBP Semantic_NNP Search_VB =_JJ -_: =[_NN 16_CD ,_, 37_CD -RRB-_-RRB- -_: =_JJ -_: ,_, large_JJ scale_NN annotation_NN of_IN Web_NN pages_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, commercialized_VBN semantic_JJ annotation_NN technology_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- and_CC applications_NNS for_IN national_JJ security_NN -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+The_DT engineering_NN process_NN it_PRP takes_VBZ to_TO develop_VB such_JJ application_NN
+he_PRP user_NN 's_POS preferences_NNS -LRB-_-LRB- level_NN of_IN detail_NN ,_, device_NN ,_, language_NN ,_, ..._: -RRB-_-RRB- ._.
+--_: Provide_VB semantic_JJ search_NN services_NNS for_IN the_DT customers_NNS based_VBN on_IN the_DT knowledge_NN included_VBN in_IN the_DT ontologies_NNS and_CC the_DT available_JJ market_NN data_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO decide_VB about_IN the_DT trustworthiness_NN of_IN data_NNS found_VBN on_IN the_DT Semantic_JJ Web_NN the_DT portal_NN would_MD use_VB trader_NN independent_JJ trust_NN services_NNS ._.
+These_DT trust_NN services_NNS could_MD use_VB trust_NN mechanisms_NNS based_VBN on_IN information_NN sou_NN
+aurant_JJ less_RBR expensive_JJ or_CC closer_JJR than_IN the_DT restaurant_NN shown_VBN after_IN the_DT first_JJ query_NN ._.
+Recently_RB ,_, there_EX has_VBZ been_VBN a_DT growing_VBG interest_NN toward_IN systems_NNS supporting_VBG semantics_NNS exploitation_NN ,_, in_IN different_JJ domains_NNS ._.
+In_IN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: an_DT application_NN is_VBZ presented_VBN ,_, improving_VBG traditional_JJ web_NN searching_VBG using_VBG semantic_JJ web_NN technologies_NNS :_: two_CD Semantic_NNP Search_VB applications_NNS are_VBP presented_VBN ,_, running_VBG on_IN an_DT application_NN framework_NN called_VBN TAP_NNP ,_, which_WDT
+of_IN Technology_NNP Ilkovičova_NNP 3_CD ,_, 842_CD 16_CD Bratislava_NNP ,_, Slovakia_NNP bielik@fiit.stuba.sk_NNP Semantic_NNP web_NN technologies_NNS such_JJ as_IN ontologies_NNS and_CC semantic_JJ search_NN appear_VBP to_TO be_VB promising_JJ directions_NNS of_IN further_JJ research_NN ._.
+In_IN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: the_DT authors_NNS describe_VBP two_CD semantic_JJ search_NN systems_NNS and_CC outline_VB how_WRB the_DT semantics_NNS of_IN search_NN terms_NNS can_MD be_VB used_VBN for_IN improving_VBG search_NN results_NNS ._.
+Furthermore_RB ,_, in_IN -LRB-_-LRB- 3_LS -RRB-_-RRB- the_DT authors_NNS assume_VBP an_DT ontological_JJ represen_NN
+good_JJ example_NN of_IN how_WRB richer_JJR representations_NNS can_MD be_VB used_VBN to_TO provide_VB an_DT integrated_JJ view_NN on_IN data_NNS and_CC to_TO support_VB semantic-based_JJ methods_NNS on_IN top_NN of_IN this_DT integrated_VBN view_NN is_VBZ the_DT work_NN on_IN the_DT TAP_NN knowledge_NN base_NN =_JJ -_: =[_NN 7,8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN TAP_NN also_RB covers_VBZ the_DT domain_NN of_IN artists_NNS and_CC music_NN ,_, it_PRP could_MD be_VB used_VBN as_IN an_DT additional_JJ source_NN of_IN knowledge_NN in_IN the_DT MusiDB_NN system_NN ._.
+In_IN recent_JJ work_NN Middleton_NNP and_CC others_NNS also_RB show_VBP how_WRB categorizations_NNS of_IN d_NN
+oyed_VBN by_IN the_DT user_NN -LRB-_-LRB- i.e._FW ,_, the_DT Cognitive_NNP Space_NNP -RRB-_-RRB- and_CC the_DT model_NN defined_VBN by_IN the_DT information_NN provider_NN the_DT information_NN -LRB-_-LRB- i.e._FW ,_, the_DT Information_NNP Space_NNP -RRB-_-RRB- -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+Techniques_NNS of_IN semantic_JJ searching_VBG as_IN those_DT proposed_VBN in_IN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: can_MD be_VB useful_JJ to_TO improve_VB the_DT retrieval_NN mechanism_NN ._.
+However_RB ,_, in_IN order_NN to_TO increase_VB the_DT aforementioned_JJ overlapping_VBG ,_, every_DT search_NN activity_NN has_VBZ to_TO be_VB characterized_VBN by_IN a_DT highly_RB interactive_JJ process_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- :_: the_DT
+cribed_VBN in_IN a_DT machine_NN readable_JJ format_NN ,_, and_CC •_NN that_IN search_NN engines_NNS are_VBP able_JJ to_TO process_VB semantics_NNS ._.
+This_DT is_VBZ shown_VBN in_IN figure_NN 3.4_CD on_IN page_NN 28_CD ._.
+An_DT example_NN of_IN an_DT application_NN framework_NN for_IN semantic_JJ search_NN is_VBZ TAP_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT gives_VBZ an_DT impression_NN of_IN how_WRB a_DT semantic_JJ search_NN engine_NN works_VBZ ._.
+The_DT 3_CD steps_NNS that_IN a_DT semantic_JJ search_NN engine_NN has_VBZ to_TO perform_VB are_VBP -LRB-_-LRB- 1_LS -RRB-_-RRB- determining_NN which_WDT concept_NN is_VBZ meant_VBN with_IN the_DT search_NN query_NN terms_NNS ,_, -LRB-_-LRB- 2_CD -RRB-_-RRB-
+cribed_VBN in_IN a_DT machine_NN readable_JJ format_NN ,_, and_CC •_NN that_IN search_NN engines_NNS are_VBP able_JJ to_TO process_VB semantics_NNS ._.
+This_DT is_VBZ shown_VBN in_IN figure_NN 3.4_CD on_IN page_NN 28_CD ._.
+An_DT example_NN of_IN an_DT application_NN framework_NN for_IN semantic_JJ search_NN is_VBZ TAP_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT gives_VBZ an_DT impression_NN of_IN how_WRB a_DT semantic_JJ search_NN engine_NN works_VBZ ._.
+The_DT 3_CD steps_NNS that_IN a_DT semantic_JJ search_NN engine_NN has_VBZ to_TO perform_VB are_VBP -LRB-_-LRB- 1_LS -RRB-_-RRB- determining_NN which_WDT concept_NN is_VBZ meant_VBN with_IN the_DT search_NN query_NN terms_NNS ,_, -LRB-_-LRB- 2_CD -RRB-_-RRB-
+ms_RB ,_, domain_NN ontology_NN enables_VBZ software_NN agents_NNS to_TO perform_VB more_RBR sophisticated_JJ tasks_NNS automatically_RB ._.
+Specifically_RB ,_, many_JJ applications_NNS have_VBP been_VBN developed_VBN for_IN information_NN retrieval_NN ._.
+For_IN instance_NN ,_, Guha_NNP et_FW al._FW =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: used_VBN ontology_NN to_TO improve_VB traditional_JJ web_NN search_NN by_IN augmenting_VBG search_NN results_NNS with_IN related_JJ concepts_NNS in_IN the_DT ontology_NN ._.
+Although_IN there_EX have_VBP been_VBN many_JJ applications_NNS of_IN domain_NN ontology_NN ,_, relatively_RB few_JJ are_VBP c_SYM
+ted_VBN at_IN the_DT knowledge_NN base_NN level_NN or_CC at_IN the_DT assertion_NN level_NN ._.
+3_CD The_DT Stanford_NNP Knowledge_NNP Provenance_NNP Infrastructure_NNP The_NNP Stanford_NNP Knowledge_NNP Provenance_NNP Infrastructure_NNP -LRB-_-LRB- KPI_NNP -RRB-_-RRB- is_VBZ an_DT integration_NN approach_NN for_IN TAP_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: with_IN InferenceWeb_NNP 's_POS IWBase_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC Inference_NN Web_NN 's_POS portable_JJ proofs_NNS -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+TAP_NN is_VBZ a_DT tool_NN for_IN extracting_VBG information_NN and_CC building_NN knowledge_NN sources_NNS ._.
+It_PRP can_MD store_VB provenance_NN information_NN at_IN the_DT level_NN of_IN a_DT
+forts_NNS that_WDT try_VBP to_TO apply_VB semantic_JJ search_NN on_IN unstructured_JJ documents_NNS ._.
+In_IN the_DT Tap_NN project_NN 1_CD ,_, traditional_JJ search_NN results_NNS -LRB-_-LRB- HTML_NNP documents_NNS -RRB-_-RRB- are_VBP augmented_VBN with_IN relevant_JJ data_NNS pulled_VBD out_RP from_IN the_DT Semantic_JJ Web_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT technique_NN for_IN disambiguating_VBG queryterms_NNS ,_, similar_JJ to_TO the_DT one_NN that_IN we_PRP propose_VBP in_IN this_DT paper_NN ,_, is_VBZ used_VBN in_IN their_PRP$ approach_NN ._.
+A_DT lightweight_JJ query_NN language_NN needs_VBZ to_TO be_VB used_VBN to_TO place_VB queries_NNS ._.
+Moreover_RB ,_, pree_NN
+ption_NN Framework_NN -LRB-_-LRB- RDF_NN -RRB-_-RRB- -LRB-_-LRB- 74_CD -RRB-_-RRB- ,_, RDF_NN Schema_NN -LRB-_-LRB- 75_CD -RRB-_-RRB- ,_, DAML+OIL_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, or_CC the_DT Web_NN Ontology_NN Language_NN -LRB-_-LRB- OWL_NN -RRB-_-RRB- -LRB-_-LRB- 101_CD -RRB-_-RRB- ._.
+Some_DT recent_JJ projects_NNS are_VBP exploring_VBG the_DT use_NN of_IN these_DT richer_JJR ontologies_NNS for_IN improved_VBN search_NN results_NNS =_JJ -_: =[_NN 32_CD ,_, 112_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+User_NN profiles_NNS based_VBN on_IN these_DT richer_JJR ontologies_NNS may_MD not_RB be_VB far_RB away_RB ,_, however_RB there_RB remain_VBP serious_JJ roadblocks_NNS in_IN the_DT way_NN ,_, primarily_RB due_JJ to_TO scalability_NN issues_NNS in_IN creating_VBG large_JJ ,_, diverse_JJ ontologies_NNS and_CC
+there_RB ,_, creating_VBG patterns_NNS such_JJ as_IN the_DT one_NN visually_RB depicted_VBN in_IN Fig._NNP 1_CD ._.
+In_IN a_DT further_JJ effort_NN of_IN reducing_VBG the_DT complexity_NN of_IN query_NN formulation_NN ,_, the_DT approach_NN of_IN ``_`` Semantic_JJ Search_VB ''_'' interface_NN ,_, namely_RB GetData_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, expresses_VBZ the_DT need_NN of_IN a_DT much_RB lighter_JJR weight_NN interface_NN for_IN constructing_VBG complex_JJ queries_NNS ._.
+The_DT reason_NN is_VBZ that_IN the_DT current_JJ query_NN languages_NNS for_IN RDF_NNP ,_, DAML_NNP ,_, and_CC more_RBR generally_RB for_IN 3_CD Fig._NNP 1_CD ._.
+A_DT phase_NN of_IN GRDL_NN
+ons_NNS can_MD be_VB explored_VBN by_IN compiling_VBG semantic_JJ maps_NNS based_VBN on_IN similarity_NN measures_NNS different_JJ from_IN the_DT ones_NNS described_VBN here_RB ,_, e.g._FW ,_, semantic_JJ similarity_NN derived_VBN by_IN integrating_VBG alternative_JJ ontological_JJ techniques_NNS =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Another_DT possible_JJ application_NN of_IN semantic_JJ maps_NNS is_VBZ as_IN ``_`` topical_JJ signatures_NNS ._. ''_''
+Link_NN analysis_NN is_VBZ effective_JJ at_IN identifying_VBG communities_NNS of_IN related_JJ pages_NNS -LRB-_-LRB- 19_CD ,_, 26_CD ,_, 15_CD -RRB-_-RRB- ,_, but_CC labeling_VBG such_JJ communities_NNS automatic_JJ
+xt_IN search_NN and_CC metadata_NN search_NN ._.
+These_DT are_VBP further_RB augmented_VBN by_IN semantic_JJ search_NN ._.
+Semantic_JJ search_NN attempts_NNS to_TO augment_VB and_CC improve_VB traditional_JJ search_NN results_NNS using_VBG data_NNS from_IN the_DT Semantic_JJ Web_NN ._.
+Guha_NNP et_FW al._FW =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP presented_VBN extensive_JJ research_NN on_IN semantic_JJ search_NN along_IN with_IN sophisticated_JJ implementation_NN ._.
+We_PRP do_VBP not_RB intend_VB to_TO reproduce_VB or_CC extend_VB the_DT research_NN on_IN semantic_JJ search_NN ._.
+Rather_NNP OntoBlog_NNP just_RB provides_VBZ a_DT
+metadata_NN associated_VBN with_IN the_DT resources_NNS would_MD get_VB a_DT series_NN of_IN results_NNS from_IN different_JJ repositories_NNS ,_, linked_VBN by_IN some_DT ontological_JJ knowledge_NN ._.
+A_DT system_NN like_IN this_DT is_VBZ the_DT one_NN described_VBN by_IN Guha_NNP and_CC colleagues_NNS '_POS =_JJ -_: =[_NN 65_CD -RRB-_-RRB- -_: =_JJ -_: :_: building_NN on_IN the_DT important_JJ ``_`` distributed_VBN extensibility_NN ''_'' characteristic_NN of_IN the_DT SW_NN ,_, they_PRP propose_VBP an_DT improvement_NN to_TO the_DT traditional_JJ Information_NNP Retrieval_NNP -LRB-_-LRB- IR_NNP -RRB-_-RRB- technologies_NNS ,_, based_VBN almost_RB purely_RB on_IN the_DT occ_NN
+ssive_JJ ontologies_NNS ,_, because_IN this_DT requires_VBZ detailed_JJ knowledge_NN of_IN ontology_NN structure_NN ._.
+A_DT similar_JJ philosophy_NN was_VBD applied_VBN to_TO the_DT design_NN of_IN the_DT query_NN interface_NN used_VBN in_IN the_DT TAP_NN framework_NN for_IN semantic_JJ searches_NNS =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT query_NN interface_NN ,_, called_VBN GetData_NNP ,_, was_VBD created_VBN to_TO provide_VB a_DT lighter_JJR weight_NN interface_NN -LRB-_-LRB- in_IN contrast_NN to_TO very_RB expressive_JJ query_NN languages_NNS that_WDT require_VBP lots_NNS of_IN computational_JJ resources_NNS to_TO process_NN ,_, such_JJ
+ntity_NN or_CC delivery_NN time_NN ,_, in_IN order_NN to_TO refine_VB the_DT ranking_JJ function_NN ._.
+5_CD Related_JJ Work_NN Recently_RB ,_, there_EX has_VBZ been_VBN a_DT growing_VBG interest_NN towards_IN systems_NNS supporting_VBG semantics_NNS exploitation_NN ,_, in_IN different_JJ domains_NNS ._.
+In_IN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: an_DT application_NN is_VBZ presented_VBN ,_, improving_VBG traditional_JJ web_NN searching_VBG using_VBG semantic_JJ web_NN technologies_NNS :_: two_CD Semantic_NNP Search_VB applications_NNS are_VBP presented_VBN ,_, running_VBG on_IN an_DT application_NN framework_NN called_VBN TAP_NNP ,_, which_WDT
+ms_RB ,_, domain_NN ontology_NN enables_VBZ software_NN agents_NNS to_TO perform_VB more_RBR sophisticated_JJ tasks_NNS automatically_RB ._.
+Specifically_RB ,_, many_JJ applications_NNS have_VBP been_VBN developed_VBN for_IN information_NN retrieval_NN ._.
+For_IN instance_NN ,_, Guha_NNP et_FW al._FW =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: used_VBN ontology_NN to_TO improve_VB traditional_JJ web_NN search_NN by_IN augmenting_VBG search_NN results_NNS with_IN related_JJ concepts_NNS in_IN the_DT ontology_NN ._.
+Although_IN there_EX have_VBP been_VBN many_JJ applications_NNS of_IN domain_NN ontology_NN ,_, relatively_RB few_JJ are_VBP c_SYM
+alidation_NN for_IN these_DT solutions_NNS ._.
+In_IN this_DT paper_NN ,_, due_JJ to_TO space_NN constraints_NNS ,_, we_PRP only_RB describe_VBP in_IN brief_NN the_DT important_JJ ideas_NNS behind_IN TAP_NN -LRB-_-LRB- i.e._FW ,_, the_DT general_JJ architecture_NN -RRB-_-RRB- and_CC major_JJ components_NNS of_IN TAP_NN ._.
+-LRB-_-LRB- 17_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP more_RBR detailed_JJ descriptions_NNS of_IN these_DT ideas_NNS ._.
+We_PRP first_RB discuss_VBP the_DT issue_NN of_IN query_JJ interfaces_NNS to_TO the_DT Semantic_JJ Web_NN ._.
+We_PRP argue_VBP that_IN general_JJ purpose_NN query_NN languages_NNS such_JJ as_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC RQL_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- do_VBP not_RB provid_VB
+es_NNS for_IN examining_VBG that_IN data_NNS ,_, when_WRB they_PRP exist_VBP at_IN all_DT ,_, are_VBP usually_RB created_VBN from_IN centralized_JJ assemblies_NNS of_IN data_NNS and_CC services_NNS ._.
+For_IN example_NN ,_, with_IN a_DT semantic_JJ portal_NN -LRB-_-LRB- e.g._FW ,_, SEAL_NN -LRB-_-LRB- SMS_NN +_CC 01_CD -RRB-_-RRB- or_CC Semantic_JJ Search_VB =_JJ -_: =_JJ -LRB-_-LRB- GMM03_NN -RRB-_-RRB- -_: =_JJ -_: ,_, search_NN being_VBG a_DT kind_NN of_IN portal_NN -RRB-_-RRB- ,_, database_NN administrators_NNS aggregate_JJ semantically-classified_JJ information_NN together_RB on_IN a_DT centralized_JJ server_NN for_IN dissemination_NN to_TO Web_NN users_NNS ._.
+A_DT major_JJ motivation_NN for_IN adopting_VBG
+-_: based_VBN search_NN -LRB-_-LRB- 42_CD -RRB-_-RRB- ._.
+Most_JJS techniques_NNS rely_VBP on_IN some_DT form_NN of_IN preprocessing_NN or_CC indexing_NN of_IN documents_NNS that_WDT summarize_VBP ,_, extract_VBP or_CC glean_VBP semantics_NNS -LRB-_-LRB- 68_CD -RRB-_-RRB- -LRB-_-LRB- 84_CD -RRB-_-RRB- -LRB-_-LRB- 79_CD -RRB-_-RRB- ._.
+Guha_NNP explains_VBZ various_JJ forms_NNS of_IN semantic_JJ search_NN =_JJ -_: =[_NN 40_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT method_NN described_VBN in_IN this_DT thesis_NN fits_VBZ in_IN the_DT category_NN of_IN entity-based_JJ search_NN ._.
+A_DT key_JJ difference_NN with_IN many_JJ link-analysis_JJ algorithms_NNS is_VBZ that_IN my_PRP$ approach_NN does_VBZ not_RB require_VB that_IN the_DT documents_NNS be_VB interl_JJ
+of_IN Technology_NNP Ilkovičova_NNP 3_CD ,_, 842_CD 16_CD Bratislava_NNP ,_, Slovakia_NNP bielik@fiit.stuba.sk_NNP Semantic_NNP web_NN technologies_NNS such_JJ as_IN ontologies_NNS and_CC semantic_JJ search_NN appear_VBP to_TO be_VB promising_JJ directions_NNS of_IN further_JJ research_NN ._.
+In_IN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: the_DT authors_NNS describe_VBP two_CD semantic_JJ search_NN systems_NNS and_CC outline_VB how_WRB the_DT semantics_NNS of_IN search_NN terms_NNS can_MD be_VB used_VBN for_IN improving_VBG search_NN results_NNS ._.
+Furthermore_RB ,_, in_IN -LRB-_-LRB- 3_LS -RRB-_-RRB- the_DT authors_NNS assume_VBP an_DT ontological_JJ represen_NN
+ery_NN close_RB to_TO the_DT latest_JJS proposals_NNS in_IN KIM_NNP -LRB-_-LRB- 11,14_CD -RRB-_-RRB- ._.
+While_IN KIM_NNP focuses_VBZ on_IN automatic_JJ population_NN and_CC annotation_NN of_IN documents_NNS ,_, our_PRP$ work_NN focuses_VBZ on_IN the_DT ranking_JJ algorithms_NNS for_IN semantic_JJ search_NN ._.
+Along_IN with_IN TAP_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, KIM_NNP is_VBZ one_CD of_IN the_DT most_RBS complete_JJ proposals_NNS reported_VBN to_TO date_NN ,_, to_TO our_PRP$ knowledge_NN ,_, for_IN building_VBG high-quality_JJ KBs_NNS ,_, and_CC automatically_RB annotating_VBG document_NN collections_NNS at_IN a_DT large_JJ scale_NN ._.
+In_IN their_PRP$ latest_JJS accou_NN
+project_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 18_CD -RRB-_-RRB- has_VBZ over_IN the_DT last_JJ three_CD years_NNS attempted_VBN to_TO create_VB platforms_NNS for_IN publishing_NN to_TO and_CC consuming_VBG data_NNS from_IN the_DT Semantic_JJ Web_NN ._.
+Using_VBG this_DT platform_NN ,_, we_PRP have_VBP built_VBN a_DT number_NN of_IN applications_NNS =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: both_DT to_TO validate_VB our_PRP$ assumptions_NNS and_CC to_TO help_VB bootstrap_VB the_DT semantic_JJ web_NN ._.
+Building_NN anything_NN more_JJR than_IN the_DT simplest_JJS toy_NN applications_NNS requires_VBZ a_DT substantial_JJ amount_NN of_IN data_NNS ._.
+Unfortunately_RB ,_, the_DT semantic_JJ w_NN
+such_JJ as_IN Latent_JJ Semantic_JJ Indexing_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- has_VBZ explored_VBN the_DT use_NN of_IN semantics_NNS for_IN information_NN retrieval_NN ,_, their_PRP$ work_NN still_RB focus_VB on_IN generating_VBG the_DT semantic_JJ structures_NNS from_IN text_NN ._.
+Some_DT semantic_JJ search_NN methods_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- have_VBP been_VBN proposed_VBN to_TO improve_VB traditional_JJ C.-H_NN ._.
+Chi_NNP and_CC K.-Y_NNP ._.
+Lam_NN -LRB-_-LRB- Eds_NNS ._. -RRB-_-RRB-
+:_: AWCC_NN 2004_CD ,_, LNCS_NN 3309_CD ,_, pp_NN ._.
+410_CD --_: 415_CD ,_, 2004_CD ._.
+©_NNP Springer-Verlag_NNP Berlin_NNP Heidelberg_NNP 2004sTSS_NN :_: A_DT Hybrid_NN Web_NN Searches_NNS 411_CD search_NN
+mantic_JJ relationships_NNS of_IN namedentities_NNS to_TO improve_VB relevance_NN in_IN search_NN and_CC ranking_NN of_IN documents_NNS ?_.
+The_DT idea_NN of_IN utilizing_VBG semantics_NNS for_IN improving_VBG search_NN results_NNS is_VBZ typically_RB referred_VBN to_TO as_IN semantic_JJ search_NN =_JJ -_: =[_NN 15_CD ,_, 23_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT variety_NN of_IN aspects_NNS on_IN improving_VBG search_NN and_CC ranking_NN of_IN documents_NNS have_VBP been_VBN considered_VBN ,_, such_JJ as_IN conceptbased_JJ search_NN of_IN documents_NNS -LRB-_-LRB- 8_CD ,_, 13_CD -RRB-_-RRB- ._.
+Search_VB techniques_NNS typically_RB rely_VBP on_IN some_DT form_NN of_IN document_NN pr_NN
+various_JJ contexts_NNS ._.
+A_DT more_RBR advanced_JJ notion_NN of_IN adjacency_NN ,_, like_IN the_DT k-neighborhood_NN of_IN a_DT node_NN ,_, is_VBZ necessary_JJ in_IN several_JJ contexts_NNS ._.
+The_DT need_NN of_IN 1-neighborhood_JJ retrieval_NN in_IN an_DT RDF_NN Graph_NN is_VBZ argued_VBN in_IN -LRB-_-LRB- 73_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 74_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT RDF_NNP context_NN ,_, inference_NN of_IN new_JJ triples_NNS is_VBZ relevant_JJ in_IN Vertex_NNP and_CC Edge_NNP adjacency_NN queries_NNS ._.
+To_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, the_DT notion_NN of_IN neighborhood_NN as_IN primitive_JJ for_IN query_NN languages_NNS has_VBZ not_RB been_VBN
+rize_VB a_DT specific_JJ aspect_NN of_IN the_DT SW_NN object_NN ,_, e.g._FW ,_, about_IN the_DT contact_NN information_NN -LRB-_-LRB- FOAF_NN -RRB-_-RRB- or_CC about_IN the_DT project_NN information_NN -LRB-_-LRB- DOAP_NN -RRB-_-RRB- ._.
+Each_DT RDF_NNP statement_NN is_VBZ also_RB associated_VBN with_IN its_PRP$ source_NN ._.
+7_CD ._.
+RELATED_NNS WORK_VBP TAP_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ one_CD of_IN the_DT earliest_JJS keyword-based_JJ Semantic_JJ Web_NN search_NN systems_NNS ._.
+It_PRP maps_VBZ keywords_NNS to_TO the_DT labels_NNS of_IN SW_NN objects_NNS and_CC selects_VBZ a_DT SW_NN object_NN based_VBN on_IN the_DT popularity_NN ,_, user_NN profile_NN ,_, and_CC search_NN context_NN ._.
+TAP_VB e_SYM
+between_IN two_CD entities_NNS answers_NNS this_DT question_NN ._.
+We_PRP envision_VBP a_DT system_NN ,_, which_WDT supports_VBZ its_PRP$ users_NNS in_IN discovering_VBG ways_NNS in_IN which_WDT a_DT pair_NN of_IN entities_NNS are_VBP related_VBN ._.
+It_PRP is_VBZ very_RB likely_JJ that_IN semantic_JJ search_NN engines_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: of_IN the_DT future_NN will_MD need_VB to_TO support_VB such_PDT a_DT discovery_NN process_NN ._.
+Applications_NNS for_IN such_PDT a_DT search_NN paradigm_NN can_MD be_VB found_VBN in_IN areas_NNS such_JJ as_IN conflict_NN of_IN interest_NN detection_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC financial_JJ risk_NN analysis_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+in_IN semantic_JJ web_NN portals_NNS to_TO provide_VB better_JJR performance_NN for_IN keyword_RB searching_VBG ._.
+In_IN particular_JJ ,_, the_DT semantic_JJ searching_VBG facility_NN developed_VBD in_IN our_PRP$ infrastructure_NN extends_VBZ current_JJ semantic_JJ search_NN technologies_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =-[_NN 8_CD -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- which_WDT are_VBP primarily_RB centered_VBN around_IN enabling_VBG search_NN for_IN semantic_JJ entities_NNS -RRB-_-RRB- by_IN augmenting_VBG the_DT search_NN mechanisms_NNS with_IN complex_JJ semantic_JJ relations_NNS of_IN data_NNS resources_NNS which_WDT have_VBP been_VBN made_VBN available_JJ
+r_NN mostly_RB in_IN which_WDT properties_NNS of_IN the_DT ontology_NN are_VBP navigated_VBN and_CC which_WDT terms_NNS are_VBP picked_VBN ._.
+A_DT very_RB simple_JJ manner_NN of_IN augmenting_VBG traditional_JJ keyword_JJ search_NN results_NNS is_VBZ taken_VBN in_IN the_DT ``_`` Semantic_JJ Search_VB ''_'' interface_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: of_IN the_DT TAP_NN infrastructure_NN ._.
+Here_RB ,_, in_IN addition_NN to_TO a_DT traditional_JJ keyword_JJ search_NN targeted_VBN at_IN a_DT document_NN database_NN ,_, the_DT keywords_NNS are_VBP matched_VBN against_IN concept_NN labels_NNS in_IN an_DT RDF_NN repository_NN ._.
+Matching_VBG concepts_NNS a_DT
+00004-3_CD ,_, 00004_CD A_DT goal-oriented_JJ Web_NN browser_NN 3_CD s0035_NN p0300_NN Stanford_NNP TAP_NNP The_NNP Stanford_NNP TAP_NN knowledge_NN base_NN was_VBD created_VBN to_TO help_VB bootstrap_VB the_DT Semantic_JJ Web_NN -LRB-_-LRB- Guha_NNP &_CC McCool_NNP ,_, 2002_CD ;_: Guha_NNP &_CC McCool_NNP ,_, 2003a_CD ,_, 2003b_CD ;_: =_JJ -_: =_JJ Guha_NNP ,_, McCool_NNP ,_, &_CC Miller_NNP ,_, 2003_CD -_: =_JJ -_: ;_: McCool_NNP ,_, Guha_NNP ,_, &_CC Fikes_NNP ,_, 2003_CD -RRB-_-RRB- ._.
+Unlike_IN the_DT Open_NNP Mind_NNP knowledge_NN base_NN ,_, which_WDT was_VBD generated_VBN through_IN the_DT contributions_NNS of_IN knowledge_NN from_IN volunteers_NNS on_IN the_DT Web_NN ,_, TAP_NN was_VBD generated_VBN by_IN creating_VBG 207_CD HTML_NNP scrap_NN
+iled_VBN ,_, the_DT engine_NN looks_VBZ for_IN invocation_NN rules_NNS involving_VBG public_JJ web_NN services_NNS ._.
+This_DT can_MD include_VB invoking_VBG public_JJ Semantic_JJ Web_NN search_NN engines_NNS -LRB-_-LRB- e.g._FW CORESE_FW -LRB-_-LRB- 3_CD -RRB-_-RRB- or_CC distributed_VBN search_NN architecture_NN such_JJ as_IN TAP_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =--RRB-_NN or_CC public_JJ matchmaking_NN services_NNS such_JJ as_IN the_DT one_CD in_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- --_: this_DT step_NN is_VBZ not_RB currently_RB implemented_VBN ._.
+If_IN everything_NN fails_VBZ ,_, the_DT query_NN is_VBZ considered_VBN to_TO have_VB failed_VBN ._.
+In_IN summary_NN ,_, the_DT body_NN of_IN each_DT rule_NN requ_NN
+in_IN common_JJ that_IN users_NNS may_MD be_VB unaware_JJ of_IN -LRB-_-LRB- parts_NNS of_IN -RRB-_-RRB- the_DT ontology_NN and_CC that_IN query_NN language_NN enables_VBZ schema-free_JJ searches_NNS but_CC allows_VBZ improving_NN retrieval_NN when_WRB further_JJ knowledge_NN is_VBZ incorporated_VBN ._.
+Guha_NNP et_FW al._FW =_SYM -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: introduce_VB Semantic_NNP Search_VB as_IN the_DT idea_NN of_IN using_VBG information_NN from_IN the_DT Semantic_JJ Web_NN for_IN search_NN ._.
+Applications_NNS are_VBP presented_VBN that_WDT add_VBP to_TO classical_JJ search_NN results_NNS with_IN search_NN results_NNS from_IN RDF_NN knowledge_NN bas_NN
+domains_NNS ._.
+The_DT domain_NN restriction_NN may_MD be_VB identified_VBN by_IN the_DT use_NN of_IN just_RB one_CD specific_JJ domain_NN ontology_NN at_IN a_DT time_NN -LRB-_-LRB- 2,20,19,15_CD -RRB-_-RRB- ,_, the_DT use_NN of_IN a_DT set_NN of_IN a_DT priori_FW defined_VBN ontologies_NNS covering_VBG one_CD specific_JJ domain_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC the_DT use_NN of_IN one_CD large_JJ ontology_NN which_WDT covers_VBZ a_DT limited_JJ set_NN of_IN domains_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+As_IN a_DT result_NN ,_, these_DT approaches_NNS do_VBP not_RB scale_VB to_TO open_VB environments_NNS such_JJ as_IN the_DT Web_NN ,_, or_CC heterogeneous_JJ document_NN repositories_NNS ,_,
+is_VBZ may_MD result_VB in_IN users_NNS not_RB finding_VBG the_DT sought_VBN information_NN even_RB when_WRB it_PRP exists_VBZ ,_, or_CC on_IN the_DT other_JJ extreme_NN ,_, an_DT information_NN overload_NN due_JJ to_TO the_DT large_JJ number_NN of_IN documents_NNS returned_VBD ._.
+A_DT semantic_JJ search_NN engine_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ knowledge_NN of_IN the_DT domain_NN at_IN hand_NN ._.
+The_DT availability_NN of_IN a_DT domain_NN ontology_NN that_IN structures_NNS and_CC relates_VBZ the_DT information_NN according_VBG to_TO its_PRP$ meaning_NN allows_VBZ the_DT implementation_NN of_IN a_DT search_NN system_NN where_WRB user_NN
+−_NNP Semantic_NNP Retrieval_NNP Phase_NN :_: This_DT phase_NN is_VBZ similar_JJ to_TO that_DT developed_VBN by_IN the_DT model_NN presented_VBN in_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+But_CC there_EX are_VBP two_CD main_JJ novelties_NNS in_IN this_DT phase_NN ._.
+On_IN the_DT one_CD hand_NN the_DT use_NN of_IN semantic_JJ query_NN languages_NNS =_JJ -_: =[_NN 10_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: instead_RB of_IN Boolean_JJ ones_NNS ,_, due_JJ to_TO their_PRP$ capacity_NN for_IN comparing_VBG both_CC literal_JJ and_CC semantics_NNS structures_NNS ._.
+On_IN the_DT other_JJ hand_NN ,_, the_DT underlying_VBG semantic_JJ infrastructure_NN set_VBN by_IN web_NN ontologies_NNS that_WDT allows_VBZ ,_, for_IN ex_FW
+from_IN the_DT programs_NNS above_IN and_CC from_IN previous_JJ work_NN on_IN data_NNS provenance_NN from_IN the_DT database_NN community_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 5_CD -RRB-_-RRB- -RRB-_-RRB- and_CC more_RBR recently_RB from_IN work_NN integrating_VBG information_NN from_IN extractors_NNS such_JJ as_IN the_DT work_NN in_IN Tap_NN 8_CD =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: leading_VBG to_TO our_PRP$ enhanced_VBN knowledge_NN provenance_NN infrastructure_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- and_CC information_NN integrators_NNS -LRB-_-LRB- e.g._FW ,_, ISI_NNP 's_POS Prometheus_NNP mediator_NN 9_CD which_WDT uses_VBZ information_NN obtained_VBN from_IN Fetch_NNP 's_POS 10_CD wrappers_NNS in_IN appropriate_JJ
+ch_RB ,_, Semantic_JJ Web_NN ._.
+I._NNP INTRODUCTION_NNP The_DT development_NN of_IN Semantic_NNP Search_VB was_VBD intent_JJ on_IN solving_VBG the_DT existing_VBG problems_NNS of_IN traditional_JJ information_NN retrieval_NN by_IN using_VBG Semantic_JJ Web_NN technology_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Guha_NNP et_FW al._FW =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: assumed_VBD that_IN Semantic_NNP Search_VB is_VBZ a_DT Research_NNP Search_VB which_WDT discovers_VBZ objects_NNS related_VBN to_TO keywords_NNS rather_RB than_IN particular_JJ documents_NNS ._.
+In_IN general_JJ ,_, this_DT terminology_NN is_VBZ referred_VBN as_RB long_RB as_IN the_DT semantics_NNS invol_NN
+to_TO insufficient_JJ navigation_NN aids_NNS or_CC because_IN the_DT hyperspace_NN is_VBZ ``_`` too_RB large_JJ ''_'' ._.
+While_IN the_DT problems_NNS of_IN effective_JJ searching_VBG and_CC information_NN retrieval_NN in_IN these_DT spaces_NNS can_MD be_VB addressed_VBN by_IN semantic_JJ search_NN -LRB-_-LRB- see_VB =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- -RRB-_-RRB- this_DT requires_VBZ the_DT use_NN of_IN more_RBR complex_JJ queries_NNS than_IN full-text_JJ search_NN ._.
+As_IN a_DT result_NN ,_, new_JJ user-friendly_JJ ways_NNS of_IN query_NN construction_NN and_CC simple_NN yet_RB effective_JJ methods_NNS for_IN the_DT presentation_NN of_IN search_NN res_NNS
+lated_VBN to_TO the_DT keyword_NN ._.
+Thereby_RB ,_, the_DT search_NN performance_NN can_MD be_VB significantly_RB improved_VBN by_IN expanding_VBG the_DT query_NN with_IN instances_NNS and_CC relations_NNS ._.
+A_DT number_NN of_IN semantic_JJ search_NN tools_NNS have_VBP been_VBN recently_RB developed_VBN =_JJ -_: =[_NN 5_CD ,_, 4_CD ,_, 7_CD ,_, 2_CD ,_, 9_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ overview_NN of_IN the_DT state-of-art_JJ semantic_JJ search_NN tools_NNS reveals_VBZ that_IN while_IN these_DT tools_NNS do_VBP enhance_VB the_DT performance_NN of_IN traditional_JJ search_NN technologies_NNS ,_, they_PRP are_VBP however_RB not_RB suitable_JJ for_IN naive_JJ users_NNS ,_, i._NN

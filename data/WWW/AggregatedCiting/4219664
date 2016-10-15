@@ -1,0 +1,47 @@
+Protecting_VBG browser_NN state_NN from_IN web_NN privacy_NN attacks_NNS
+Through_IN a_DT variety_NN of_IN means_NNS ,_, including_VBG a_DT range_NN of_IN browser_NN cache_NN methods_NNS and_CC inspecting_VBG the_DT color_NN of_IN a_DT visited_VBN hyperlink_NN ,_, client-side_JJ browser_NN state_NN can_MD be_VB exploited_VBN to_TO track_VB users_NNS against_IN their_PRP$ wishes_NNS ._.
+This_DT tracking_NN is_VBZ possible_JJ because_IN persistent_JJ ,_, client-side_JJ browser_NN state_NN is_VBZ not_RB properly_RB partitioned_VBN on_IN per-site_JJ basis_NN in_IN current_JJ browsers_NNS ._.
+We_PRP address_VBP this_DT problem_NN by_IN refining_VBG the_DT general_JJ notion_NN of_IN a_DT ``_`` same-origin_JJ ''_'' policy_NN and_CC implementing_VBG two_CD browser_NN extensions_NNS that_WDT enforce_VBP this_DT policy_NN on_IN the_DT browser_NN cache_NN and_CC visited_VBN links_NNS ._.
+We_PRP also_RB analyze_VBP various_JJ degrees_NNS of_IN cooperation_NN between_IN sites_NNS to_TO track_NN users_NNS ,_, and_CC show_VBP that_IN even_RB if_IN long-term_JJ browser_NN state_NN is_VBZ properly_RB partitioned_VBN ,_, it_PRP is_VBZ still_RB possible_JJ for_IN sites_NNS to_TO use_VB modern_JJ web_NN features_NNS to_TO bounce_VB users_NNS between_IN sites_NNS and_CC invisibly_RB engage_VB in_IN cross-domain_JJ tracking_NN of_IN their_PRP$ visitors_NNS ._.
+Cooperative_NNP privacy_NN attacks_NNS are_VBP an_DT unavoidable_JJ consequence_NN of_IN all_DT persistent_JJ browser_NN state_NN that_WDT affects_VBZ the_DT behavior_NN of_IN the_DT browser_NN ,_, and_CC disabling_VBG or_CC frequently_RB expiring_VBG this_DT state_NN is_VBZ the_DT only_JJ way_NN to_TO achieve_VB true_JJ privacy_NN against_IN colluding_VBG parties_NNS ._.
+ookie_NN is_VBZ set_VBN and_CC when_WRB it_PRP is_VBZ read_VBN ._.
+However_RB ,_, as_IN we_PRP discuss_VBP in_IN Section_NN 5_CD ,_, this_DT setting_NN will_MD not_RB prevent_VB cooperative_JJ tracking_NN ._.
+3_LS ._.
+CACHE_NNP TRACKING_NNP About_IN 60_CD %_NN of_IN Web_NN accesses_NNS are_VBP requests_NNS for_IN cacheable_JJ files_NNS =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT files_NNS are_VBP stored_VBN on_IN the_DT client_NN browser_NN to_TO speed_VB up_RP further_JJ downloads_NNS ._.
+Because_IN sites_NNS can_MD embed_VB crossdomain_NN content_NN ,_, without_IN a_DT same-origin_JJ policy_NN to_TO restrict_VB the_DT caching_NN behavior_NN ,_, this_DT feature_NN p_NN
+cache_NN tracking_NN ._.
+3.1_CD Cache_NN timing_NN By_IN measuring_VBG the_DT time_NN it_PRP takes_VBZ to_TO load_VB cached_JJ files_NNS ,_, it_PRP is_VBZ possible_JJ to_TO determine_VB whether_IN an_DT image_NN or_CC page_NN from_IN a_DT noncooperative_JJ site_NN is_VBZ already_RB in_IN the_DT browser_NN 's_POS cache_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Using_VBG JavaScript_NNP or_CC Java_NNP ,_, a_DT site_NN could_MD load_VB a_DT set_NN of_IN control_NN files_NNS and_CC test_NN files_NNS ,_, measuring_VBG the_DT time_NN it_PRP takes_VBZ before_IN the_DT load_NN is_VBZ complete_JJ ._.
+If_IN the_DT control_NN files_NNS take_VBP significantly_RB longer_JJR to_TO finish_VB l_NN
+d_NN by_IN a_DT website_NN in_IN such_PDT a_DT way_NN that_IN the_DT user_NN has_VBZ not_RB had_VBN an_DT opportunity_NN to_TO inspect_VB the_DT URL_NN of_IN the_DT site_NN where_WRB the_DT browser_NN is_VBZ navigating_VBG ._.
+This_DT was_VBD the_DT approach_NN recommended_VBD in_IN the_DT original_JJ RFC_NNP for_IN cookies_NNS =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT instructed_VBD user_NN agents_NNS not_RB to_TO send_VB cookies_NNS when_WRB these_DT types_NNS of_IN cross-site_JJ ``_`` unverifiable_JJ transactions_NNS ''_'' occur_VB ._.
+Unfortunately_RB ,_, this_DT goal_NN is_VBZ no_RB longer_RB realistic_JJ on_IN the_DT modern_JJ web_NN due_JJ to_TO the_DT popula_NN
+re_IN 3_CD do_VBP not_RB require_VB JavaScript_NN at_IN all_DT ._.
+Jakobsson_NNP and_CC Stamm_NNP suggested_VBD a_DT different_JJ solution_NN to_TO non-cooperative_JJ web_NN privacy_NN attacks_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, using_VBG as_IN an_DT example_NN a_DT context-aware_JJ phishing_NN attack_NN demonstration_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP proposed_VBD changes_NNS to_TO web_NN servers_NNS to_TO protect_VB visitors_NNS of_IN that_DT site_NN ,_, whereas_IN we_PRP implemented_VBD client-side_JJ countermeasures_NNS that_WDT protect_VBP users_NNS at_IN all_DT sites_NNS ._.
+Client-side_JJ techniques_NNS place_VBP the_DT burden_NN of_IN
+avaScript_NN ,_, and_CC in_IN any_DT case_NN ,_, chameleon_NN pages_NNS such_JJ as_IN the_DT example_NN in_IN Figure_NNP 3_CD do_VBP not_RB require_VB JavaScript_NN at_IN all_DT ._.
+Jakobsson_NNP and_CC Stamm_NNP suggested_VBD a_DT different_JJ solution_NN to_TO non-cooperative_JJ web_NN privacy_NN attacks_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, using_VBG as_IN an_DT example_NN a_DT context-aware_JJ phishing_NN attack_NN demonstration_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+They_PRP proposed_VBD changes_NNS to_TO web_NN servers_NNS to_TO protect_VB visitors_NNS of_IN that_DT site_NN ,_, whereas_IN we_PRP implemented_VBD client-side_JJ countermeasures_NNS that_IN
+ious_JJ attackers_NNS is_VBZ critical_JJ for_IN privacy_NN and_CC security_NN ,_, yet_RB this_DT task_NN often_RB falls_VBZ by_IN the_DT wayside_NN in_IN the_DT push_NN for_IN functionality_NN ._.
+An_DT important_JJ browser_NN design_NN decision_NN dating_VBG back_RB to_TO Netscape_NNP Navigator_NNP 2.0_CD =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ the_DT ``_`` same-origin_JJ ''_'' principle_NN ,_, which_WDT prohibits_VBZ web_NN sites_NNS from_IN different_JJ domains_NNS from_IN interacting_VBG with_IN another_DT except_IN in_IN very_RB limited_JJ ways_NNS ._.
+This_DT principle_NN enables_VBZ cookies_NNS and_CC JavaScript_NNP from_IN sites_NNS of_IN
+a_DT third-party_JJ blocking_NN policy_NN ,_, a_DT more_RBR restrictive_JJ caching_NN policy_NN than_IN domain_NN tagging_NN is_VBZ necessary_JJ ._.
+Clover_NNP disclosed_VBD the_DT technique_NN for_IN reading_VBG the_DT user_NN 's_POS history_NN using_VBG visited_VBN link_NN differentiation_NN in_IN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN a_DT countermeasure_NN ,_, Clover_NNP proposed_VBD that_IN only_RB on-site_JJ links_NNS be_VB marked_VBN visited_VBN ._.
+Our_PRP$ choice_NN of_IN same-origin_JJ policy_NN provides_VBZ additional_JJ functionality_NN due_JJ to_TO our_PRP$ observation_NN that_IN both_CC the_DT referrer_NN and_CC t_NN
+are_VBP a_DT form_NN of_IN cooperation_NN ,_, these_DT checks_NNS are_VBP equivalent_JJ ._.
+Most_JJS modern_JJ browsers_NNS do_VBP not_RB enable_VB full_JJ third-party_JJ blocking_NN by_IN default_NN ,_, and_CC they_PRP provide_VBP Platform_NNP for_IN Privacy_NNP Preferences_NNPS -LRB-_-LRB- P3P_NN -RRB-_-RRB- functionality_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT allows_VBZ sites_NNS to_TO bypass_VB third-party_JJ restrictions_NNS in_IN exchange_NN for_IN promises_NNS not_RB to_TO misuse_NN the_DT visitor_NN 's_POS information_NN ._.
+Third-party_JJ blocking_NN policies_NNS have_VBP their_PRP$ place_NN ,_, but_CC they_PRP are_VBP greatly_RB surpassed_VBN i_FW
+s_NN ,_, Jakobsson_NNP and_CC Juels_NNP show_VBP how_WRB to_TO interactively_RB query_VB the_DT persistent_JJ browser_NN state_NN -LRB-_-LRB- including_VBG the_DT cache_NN and_CC history_NN -RRB-_-RRB- in_IN order_NN to_TO construct_VB secure_JJ ``_`` cookies_NNS ''_'' that_WDT are_VBP resistant_JJ to_TO noninteractive_JJ theft_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT replacement_NN cookies_NNS are_VBP compatible_JJ with_IN the_DT present_JJ work_NN and_CC can_MD be_VB shared_VBN among_IN cooperating_VBG sites_NNS as_IN described_VBN in_IN Section_NNP 5_CD ._.
+7_CD ._.
+CONCLUSION_NN The_DT complexity_NN of_IN the_DT modern_JJ browser_NN and_CC the_DT web_NN it_PRP
+ng_NN the_DT JavaScript_NNP click_VB -LRB-_-LRB- -RRB-_-RRB- method_NN on_IN a_DT hidden_JJ hyperlink_NN that_WDT targets_VBZ a_DT hidden_JJ iframe_NN ._.
+As_IN an_DT alternative_NN to_TO enforcing_VBG a_DT same-origin_JJ policy_NN on_IN visited_VBN links_NNS ,_, a_DT 2002_CD patch_NN for_IN the_DT Mozilla_NNP Firefox_NNP browser_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, was_VBD proposed_VBN to_TO prevent_VB JavaScript_NNP from_IN determining_VBG the_DT results_NNS of_IN the_DT :_: link_NN and_CC :_: visited_VBN pseudoclass_NN selectors_NNS and_CC to_TO prevent_VB browsers_NNS from_IN selectively_RB downloading_VBG images_NNS based_VBN on_IN these_DT selectors_NNS ._.
+degradation_NN of_IN browser_NN speed_NN due_JJ to_TO cache_NN partitioning_NN ._.
+4_LS ._.
+VISITED_FW LINK_FW TRACKING_NN Using_VBG different_JJ colors_NNS for_IN visited_VBN and_CC unvisited_JJ links_NNS is_VBZ a_DT popular_JJ feature_NN that_WDT can_MD be_VB found_VBN on_IN about_IN 74_CD %_NN of_IN websites_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT feature_NN can_MD make_VB the_DT navigation_NN easier_JJR ,_, especially_RB for_IN users_NNS who_WP are_VBP unfamiliar_JJ with_IN the_DT site_NN ._.
+However_RB ,_, because_IN this_DT feature_NN maintains_VBZ persistent_JJ client-side_JJ state_NN ,_, this_DT single_JJ bit_NN of_IN informati_NNS

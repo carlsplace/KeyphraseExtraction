@@ -1,0 +1,205 @@
+Indexing_NN multi-dimensional_JJ time-series_NNS with_IN support_NN for_IN multiple_JJ distance_NN measures_NNS
+Although_IN most_JJS time-series_NNS data_NNS mining_NN research_NN has_VBZ concentrated_VBN on_IN providing_VBG solutions_NNS for_IN a_DT single_JJ distance_NN function_NN ,_, in_IN this_DT work_NN we_PRP motivate_VBP the_DT need_NN for_IN a_DT single_JJ index_NN structure_NN that_WDT can_MD support_VB multiple_JJ distance_NN measures_NNS ._.
+Our_PRP$ specific_JJ area_NN of_IN interest_NN is_VBZ the_DT efficient_JJ retrieval_NN and_CC analysis_NN of_IN trajectory_JJ similarities_NNS ._.
+Trajectory_JJ datasets_NNS are_VBP very_RB common_JJ in_IN environmental_JJ applications_NNS ,_, mobility_NN experiments_NNS ,_, video_NN surveillance_NN and_CC are_VBP especially_RB important_JJ for_IN the_DT discovery_NN of_IN certain_JJ biological_JJ patterns_NNS ._.
+Our_PRP$ primary_JJ similarity_NN measure_NN is_VBZ based_VBN on_IN the_DT Longest_NNP Common_NNP Subsequence_NN -LRB-_-LRB- LCSS_NN -RRB-_-RRB- model_NN ,_, that_WDT offers_VBZ enhanced_VBN robustness_NN ,_, particularly_RB for_IN noisy_JJ data_NNS ,_, which_WDT are_VBP encountered_VBN very_RB often_RB in_IN real_JJ world_NN applications_NNS ._.
+However_RB ,_, our_PRP$ index_NN is_VBZ able_JJ to_TO accommodate_VB other_JJ distance_NN measures_NNS as_RB well_RB ,_, including_VBG the_DT ubiquitous_JJ Euclidean_JJ distance_NN ,_, and_CC the_DT increasingly_RB popular_JJ Dynamic_NNP Time_NNP Warping_NNP -LRB-_-LRB- DTW_NNP -RRB-_-RRB- ._.
+While_IN other_JJ researchers_NNS have_VBP advocated_VBN one_CD or_CC other_JJ of_IN these_DT similarity_NN measures_NNS ,_, a_DT major_JJ contribution_NN of_IN our_PRP$ work_NN is_VBZ the_DT ability_NN to_TO support_VB all_PDT these_DT measures_NNS without_IN the_DT need_NN to_TO restructure_VB the_DT index_NN ._.
+Our_PRP$ framework_NN guarantees_VBZ no_DT false_JJ dismissals_NNS and_CC can_MD also_RB be_VB tailored_VBN to_TO provide_VB much_RB faster_JJR response_NN time_NN at_IN the_DT expense_NN of_IN slightly_RB reduced_VBN precision\/recall_NN ._.
+The_DT experimental_JJ results_NNS demonstrate_VBP that_IN our_PRP$ index_NN can_MD help_VB speed-up_VB the_DT computation_NN of_IN expensive_JJ similarity_NN measures_NNS such_JJ as_IN the_DT LCSS_NN and_CC the_DT DTW_NNP ._.
+neighbor_NN queries_NNS can_MD be_VB executed_VBN efficiently_RB ,_, and_CC to_TO classify_VB new_JJ trajectories_NNS given_VBN a_DT set_NN of_IN examples_NNS ._.
+While_IN the_DT design_NN of_IN distance_NN functions_NNS between_IN trajectories_NNS has_VBZ been_VBN considered_VBN in_IN recent_JJ work_NN =_JJ -_: =[_NN 15_CD ,_, 14_CD ,_, 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, none_NN of_IN these_DT techniques_NNS consider_VBP similarity_NN measures_NNS that_WDT are_VBP rotation_NN invariant_JJ ._.
+In_IN many_JJ applications_NNS ,_, a_DT similarity_NN measure_NN that_WDT is_VBZ immune_JJ to_TO rotation_NN effects_NNS is_VBZ desirable_JJ ._.
+To_TO illustrate_VB this_DT ,_, con_NN
+and_CC effective_JJ distance_NN measures_NNS for_IN -LRB-_-LRB- dis_NN -_: -RRB-_-RRB- similarity_NN between_IN time_NN series_NN are_VBP proposed_VBN along_IN with_IN corresponding_VBG lower_JJR bounds_NNS ,_, such_JJ as_IN DTW_NN -LRB-_-LRB- dynamic_JJ time_NN warping_NN -RRB-_-RRB- -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, LCSS_NN -LRB-_-LRB- longest_JJS common_JJ subsequence_NN -RRB-_-RRB- =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_JJ -_: ,_, ERP_NN -LRB-_-LRB- edit_NN distance_NN with_IN real_JJ penalty_NN -RRB-_-RRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, EDR_NN -LRB-_-LRB- edit_NN distance_NN on_IN real_JJ sequence_NN -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC probabilistic_JJ measure_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+However_RB ,_, these_DT techniques_NNS are_VBP designed_VBN for_IN similarity_NN search_NN ._.
+For_IN anomaly_NN detectio_NN
+set_VBN t_NN -LRB-_-LRB- i.e._FW pi_NN =_JJ qi_NN +_CC t_NN ,_, ∀_FW i_FW ≤_FW l_NN -RRB-_-RRB- ._.
+Using_VBG L2_NN would_MD obviously_RB not_RB yield_VB any_DT similarity_NN between_IN P_NN and_CC Q._NNP The_NNP Dynamic_NNP Time_NNP Warping_NNP -LRB-_-LRB- DTW_NNP -RRB-_-RRB- -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, Longest_NNP Common_NNP Sub-Sequence_NN -LRB-_-LRB- LCSS_NN -RRB-_-RRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC the_DT Upper_NNP LCSS_NN method_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: allow_VB local_JJ stretching_VBG by_IN matching_VBG each_DT point_NN of_IN P_NN with_IN other_JJ points_NNS of_IN Q_NNP within_IN some_DT window_NN δ_NN -LRB-_-LRB- i.e._FW pi_NN is_VBZ matched_VBN with_IN qi_FW ±_FW δ_FW ,_, ∀_FW i_FW ≤_FW l_NN -RRB-_-RRB- ._.
+This_DT allows_VBZ us_PRP to_TO correlate_VB noisy_JJ failure_NN timeseries_NNS with_IN out-of_NN
+and_CC Samet_NNP 1995_CD -RRB-_-RRB- ,_, is_VBZ presented_VBN ._.
+This_DT search_NN algorithm_NN ensures_VBZ that_IN the_DT exact_JJ answer_NN will_MD be_VB always_RB retrieved_VBN ._.
+Similarly_RB ,_, an_DT upper_JJ bound_VBN value_NN has_VBZ been_VBN defined_VBN for_IN the_DT longest_JJS common_JJ subsequence_NN -LRB-_-LRB- LCS_NN -RRB-_-RRB- -LRB-_-LRB- =_JJ -_: =_JJ Vlachos_NNP et_FW al._FW 2003_CD -_: =-]_NN ,_, which_WDT may_MD be_VB used_VBN also_RB for_IN indexing_NN purposes_NNS ._.
+4.7.5_CD Similarity_NN Search_VB in_IN Protein_NN Databases_NNS ._.
+In_IN the_DT area_NN of_IN bioinformatics_NNS ,_, the_DT Smith-Waterman_NNP algorithm_NN for_IN local_JJ sequence_NN alignment_NN -LRB-_-LRB- SW_NN ,_, see_VB Section_NNP
+O_NN -LRB-_-LRB- M_NN 2_CD N_NN -RRB-_-RRB- ._.
+For_IN very_RB large_JJ N_NN ,_, -LRB-_-LRB- e.g._FW ,_, N_NN -RRB-_-RRB- 10_CD 7_CD -RRB-_-RRB- this_DT can_MD be_VB a_DT considerable_JJ burden_NN ._.
+To_TO solve_VB this_DT computational_JJ problem_NN ,_, several_JJ lower-bound_JJ algorithms_NNS have_VBP been_VBN proposed_VBN for_IN DTW_NN search_NN in_IN large_JJ databases_NNS =_JJ -_: =[_NN 7_CD ,_, 8_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT basic_JJ idea_NN behind_IN lower-bounded_JJ DTW_NN is_VBZ similar_JJ in_IN concept_NN to_TO the_DT use_NN of_IN the_DT future_JJ underestimate_NN incorporated_VBN into_IN A_DT ∗_JJ graph_NN search_NN ._.
+To_TO start_VB ,_, N_NN lower-bound_JJ DTW_NN estimates_NNS are_VBP quickly_RB computed_VBN be_VB
+i_LS be_VB the_DT first_JJ i_FW points_NNS of_IN P_NN ._.
+DTW_NN distance_NN between_IN P_NN and_CC Q_NNP can_MD be_VB defined_VBN as_IN follows_VBZ -LRB-_-LRB- 14_CD -RRB-_-RRB- :_: dDT_NN W_NN -LRB-_-LRB- P_NN ,_, Q_NNP -RRB-_-RRB- =_JJ ddtw_NN K_NN where_WRB K_NN is_VBZ the_DT length_NN of_IN warping_NN path_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- and_CC ddtw_NN is_VBZ defined_VBN recursively_RB as_IN follows_VBZ =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: :_: ddtw_NN -LRB-_-LRB- P_NN ,_, Q_NNP -RRB-_-RRB- =_JJ ‖_FW pn_FW −_FW qm_FW ‖_FW +_CC min_NN -LRB-_-LRB- ddtw_NN -LRB-_-LRB- Pn_NN −_NN 1_CD ,_, Qm_NN -RRB-_-RRB- ,_, ddtw_NN -LRB-_-LRB- Pn_NN ,_, Qm_FW −_FW 1_LS -RRB-_-RRB- ,_, ddtw_NN -LRB-_-LRB- Pn_NN −_NN 1_CD ,_, Qm_FW −_FW 1_LS -RRB-_-RRB- -RRB-_-RRB- Another_DT problem_NN in_IN fiber_NN clustering_NN is_VBZ choosing_VBG a_DT suitable_JJ clustering_NN algorithm_NN ._.
+There_EX are_VBP many_JJ clustering_NN algorithms_NNS s_NN
+upper_JJ and_CC lower_JJR bound_VBD to_TO identify_VB candidates_NNS that_WDT could_MD not_RB be_VB close_JJ to_TO the_DT existing_VBG set_NN ._.
+Park_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- defined_VBD the_DT sequence_NN using_VBG a_DT featurevector_NN which_WDT was_VBD indexed_VBN using_VBG an_DT R-tree_NN -LRB-_-LRB- or_CC variant_NN -RRB-_-RRB- ._.
+Vlachos_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Keogh_NNP -LRB-_-LRB- 3_CD -RRB-_-RRB- have_VBP used_VBN an_DT R-tree_NN -LRB-_-LRB- or_CC variant_NN -RRB-_-RRB- to_TO describe_VB a_DT sequence_NN and_CC then_RB used_VBD the_DT index_NN bounds_VBZ to_TO eliminate_VB candidate_NN sequences_NNS in_IN a_DT pre-pruning_JJ step_NN ._.
+Algorithm_NN 1_CD -_: Tree_NN Creation_NN Despite_IN the_DT refer_VBP
+proposes_VBZ a_DT generic_JJ method_NN built_VBN around_IN lower_JJR bounding_VBG to_TO guarantee_VB no_DT false_JJ dismissals_NNS ._.
+Indexing_NN methods_NNS for_IN DTW_NNP have_VBP been_VBN the_DT focus_NN of_IN several_JJ papers_NNS including_VBG -LRB-_-LRB- 7_CD ,_, 12_CD ,_, 17_CD ,_, 21_CD ,_, 22_CD -RRB-_-RRB- ._.
+Indexing_NN for_IN LCSS_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: and_CC EDR_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- has_VBZ also_RB been_VBN studied_VBN ._.
+In_IN this_DT paper_NN ,_, our_PRP$ focus_NN is_VBZ not_RB on_IN specific_JJ indexing_NN methods_NNS ,_, but_CC on_IN the_DT design_NN of_IN robust_JJ similarity_NN measures_NNS ,_, and_CC efficient_JJ evaluation_NN of_IN the_DT similarity_NN function_NN ._.
+s_NN with_IN N_NN entries_NNS ,_, DTW_NNP would_MD take_VB O_NN -LRB-_-LRB- M_NN 2_CD ·_NN N_NN -RRB-_-RRB- time_NN where_WRB N_NN could_MD be_VB very_RB large_JJ ._.
+To_TO address_VB this_DT problem_NN ,_, several_JJ lower-bound_JJ estimation_NN algorithms_NNS have_VBP been_VBN proposed_VBN for_IN DTW-KNN_NN search_NN in_IN large_JJ corpora_NN =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX are_VBP two_CD basic_JJ ideas_NNS behind_IN lowerbounded_JJ DTW-KNN_NN search_NN ._.
+First_RB ,_, a_DT lower-bound_JJ distance_NN that_WDT underestimates_VBZ the_DT actual_JJ DTW_NN distance_NN is_VBZ computed_VBN between_IN the_DT query_NN pattern_NN and_CC all_DT candidate_NN patter_NN
+processing_NN ,_, both_DT of_IN which_WDT lie_NN at_IN the_DT foundation_NN of_IN SmartTrace_NNP ._.
+Spatio-temporal_JJ queries_NNS have_VBP been_VBN an_DT intense_JJ area_NN of_IN research_NN over_IN the_DT years_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, with_IN the_DT development_NN of_IN efficient_JJ access_NN methods_NNS -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 26_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 36_CD -RRB-_-RRB- and_CC similarity_NN measures_NNS ,_, such_JJ as_IN Dynamic_NNP Time_NNP Warping_NNP -LRB-_-LRB- DTW_NNP -RRB-_-RRB- -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, the_DT Longest_NNP Common_NNP Subsequence_NN -LRB-_-LRB- LCSS_NN -RRB-_-RRB- -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, variants_NNS of_IN Lp-norms_NNS such_JJ as_IN Edit_NNP Distance_NNP with_IN Real_JJ Penalty_NN -LRB-_-LRB- ERP_NN -RRB-_-RRB- -LRB-_-LRB- 23_CD -RRB-_-RRB- and_CC Ed_NNP
+ly_RB perform_VB better_JJR than_IN mean_JJ value_NN Q-grams_NNS on_IN removing_VBG false_JJ candidates_NNS ._.
+5.4_CD Efficiency_NN of_IN Combined_JJ Methods_NNS We_PRP test_VBP the_DT combination_NN of_IN methods_NNS proposed_VBN in_IN Section_NN 4.4_CD on_IN NHL_NN data_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, a_DT mixed_JJ data_NN set_NN =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_JJ -_: and_CC a_DT randomwalk_NN trajectory_NN data_NN set_NN -LRB-_-LRB- 6_CD ,_, 19_CD -RRB-_-RRB- ._.
+The_DT NHL_NNP data_NN consists_VBZ of_IN 5000_CD two_CD dimensional_JJ trajectories_NNS of_IN National_JJ Hockey_NN League_NN players_NNS and_CC their_PRP$ trajectory_JJ lengths_NNS vary_VBP from_IN 30_CD to_TO 256_CD ._.
+The_DT mixed_JJ
+ueries_NNS ,_, using_VBG the_DT proposed_VBN bounds_NNS ._.
+3.1_CD ._.
+Sequence_NN segmentation_NN Our_PRP$ technique_NN is_VBZ based_VBN on_IN the_DT segmentation_NN of_IN each_DT sequence_NN into_IN an_DT Adaptive_JJ Piecewise_JJ Constant_JJ Approximation_NN -LRB-_-LRB- APCA_NN -RRB-_-RRB- -LRB-_-LRB- Keogh_NNP et_FW al._FW ,_, 2001_CD ;_: =_JJ -_: =_JJ Vlachos_NNP et_FW al._FW ,_, 2003_CD -_: =--RRB-_NN ._.
+APCA_NNP approximates_VBZ a_DT time_NN sequence_NN by_IN a_DT set_NN of_IN constant_JJ value_NN segments_NNS of_IN varying_VBG lengths_NNS such_JJ that_IN their_PRP$ individual_JJ reconstruction_NN errors_NNS are_VBP minimal_JJ ._.
+APCA_NNP is_VBZ a_DT better_JJR approximation_NN than_IN PAA_NNP ,_, since_IN
+once_RB again_RB discussed_VBN ,_, and_CC approximation_NN methods_NNS are_VBP proposed_VBN ._.
+There_EX are_VBP many_JJ studies_NNS done_VBN on_IN DTW_NNP ,_, LCSS_NNP and_CC other_JJ related_JJ methods_NNS ._.
+These_DT can_MD be_VB applied_VBN to_TO any_DT type_NN of_IN time-series_JJ data_NNS ._.
+Vlachos_NNP et_FW al._FW =_SYM -_: =[_NN 34_CD -RRB-_-RRB- -_: =_SYM -_: describes_VBZ how_WRB these_DT have_VBP been_VBN used_VBN for_IN matching_NN and_CC classification_NN in_IN numerous_JJ fields_NNS -LRB-_-LRB- in_IN video_NN ,_, handwriting_NN ,_, video_NN ,_, sign_NN language_NN ,_, etc._NN -RRB-_-RRB- ._.
+2.3_CD Detecting_VBG Visual_JJ Attention_NN There_EX is_VBZ a_DT lot_NN of_IN research_NN pe_NN
+ormed_VBN on_IN two_CD datasets_NNS :_: the_DT MNIST_NNP database_NN of_IN handwritten_JJ digits_NNS -LRB-_-LRB- LeCun_FW et_FW al._FW 1998_CD -RRB-_-RRB- ,_, with_IN shape_NN context_NN matching_NN -LRB-_-LRB- Belongie_NNP et_FW al._FW 2002_CD -RRB-_-RRB- as_IN the_DT underlying_JJ distance_NN measure_NN ,_, and_CC a_DT time-series_JJ database_NN -LRB-_-LRB- =_JJ -_: =_JJ Vlachos_NNP et_FW al._FW 2003_CD -_: =-]_CD with_IN constrained_VBN Dynamic_NNP Time_NNP Warping_NNP as_IN the_DT underlying_JJ distance_NN measure_NN ._.
+In_IN both_DT datasets_NNS ,_, query-sensitive_JJ embeddings_NNS yield_VBP superior_JJ performance_NN with_IN respect_NN to_TO the_DT original_JJ BoostMap_NNP method_NN ,_, FastMa_NN
+-RRB-_-RRB- ,_, and_CC Piecewise_JJ Constant_JJ Approximations_NNS -LRB-_-LRB- 36_CD ,_, 24_CD ,_, 23_CD ,_, 22_CD -RRB-_-RRB- have_VBP also_RB been_VBN proposed_VBN for_IN similarity_NN search_NN ._.
+Keogh_NNP has_VBZ pioneered_VBN many_JJ of_IN the_DT recent_JJ ideas_NNS in_IN the_DT indexing_NN of_IN dynamic_JJ time_NN warping_VBG databases_NNS =_JJ -_: =[_NN 21_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT performance_NN of_IN these_DT techniques_NNS varies_VBZ depending_VBG on_IN the_DT characteristics_NNS of_IN the_DT datasets_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+•_NNP Category_NNP 2_CD -LRB-_-LRB- ``_`` uncooperative_JJ ''_'' -RRB-_-RRB- :_: In_IN the_DT general_JJ case_NN ,_, such_JJ regularities_NNS are_VBP absent_JJ ._.
+However_RB ,_, sketch-b_NN
+ify_NN phonemes_NNS in_IN speech_NN ,_, detect_VB arrhythmias_NNS in_IN ECG_NN traces_NNS ,_, and_CC detect_VB mechanical_JJ failures_NNS in_IN a_DT motor_NN simulation_NN ._.
+Generating_NNP a_DT Gaussian_JJ mixture_NN model_NN requires_VBZ a_DT slow_JJ ,_, iterative_JJ process_NN ._.
+Vlachos_FW et_FW ._.
+al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: describe_VBP a_DT minimum_NN bounding_VBG rectangle_NN -LRB-_-LRB- MBR_NN -RRB-_-RRB- clustering_NN algorithm_NN that_WDT runs_VBZ in_IN O_NN -LRB-_-LRB- n_NN log_NN n_NN -RRB-_-RRB- time_NN that_WDT is_VBZ nearly_RB identical_JJ to_TO the_DT one_CD used_VBN in_IN our_PRP$ system_NN ._.
+A_DT sequence_NN of_IN n_NN points_NNS in_IN feature_NN space_NN is_VBZ first_RB
+r_NN distance_NN functions_NNS defined_VBN using_VBG Lp_NN norms_NNS ._.
+Various_JJ techniques_NNS appeared_VBD in_IN the_DT literature_NN for_IN robust_JJ evaluation_NN of_IN similarity_NN queries_NNS on_IN time-series_JJ databases_NNS when_WRB using_VBG nonmetric_JJ distance_NN functions_NNS =_JJ -_: =[_NN 14_CD ,_, 25_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT techniques_NNS use_VBP the_DT filter-and-refine_JJ approach_NN where_WRB an_DT approximation_NN of_IN the_DT original_JJ distance_NN that_WDT can_MD be_VB computed_VBN efficiently_RB is_VBZ utilized_VBN in_IN the_DT filtering_VBG step_NN ._.
+Query_FW speedup_FW is_VBZ achieved_VBN by_IN p_NN
+for_IN speeding_VBG up_RP similarity_NN queries_NNS under_IN the_DT specific_JJ distance_NN measures_NNS used_VBN in_IN those_DT domains_NNS ._.
+Various_JJ techniques_NNS have_VBP been_VBN proposed_VBN for_IN time_NN series_NN databases_NNS using_VBG non-metric_JJ distance_NN functions_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 44_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 45_CD -RRB-_-RRB- ._.
+These_DT techniques_NNS use_VBP the_DT filter-and-refine_JJ approach_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, and_CC use_VB efficient_JJ distance_NN approximations_NNS in_IN the_DT filter_NN step_NN ._.
+One_CD of_IN the_DT distance_NN measures_NNS tested_VBN in_IN the_DT experiments_NNS is_VBZ shape_NN context_NN m_NN
+series_NN under_IN DTW_NN -LRB-_-LRB- 14_CD ,_, 17_CD ,_, 30_CD ,_, 31_CD -RRB-_-RRB- ._.
+These_DT propose_VBP different_JJ lower_JJR bounding_VBG functions_NNS for_IN DTW_NNP ,_, and_CC Keogh_NNP -LRB-_-LRB- 14_CD -RRB-_-RRB- and_CC Zhu_NNP and_CC Shasha_NNP -LRB-_-LRB- 31_CD -RRB-_-RRB- also_RB study_VBD the_DT idea_NN of_IN time-series_JJ length_NN reduction_NN ._.
+Vlachos_NNP et_FW al._FW =_SYM -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: investigate_VB DTW_NN indexing_NN for_IN multidimensional_JJ time_NN series_NN ._.
+Their_PRP$ method_NN works_VBZ with_IN 2D_NN trajectories_NNS ,_, which_WDT are_VBP split_VBN in_IN Minimum_NNP Bounding_NNP Rectangles_NNPS and_CC stored_VBN in_IN an_DT R-tree_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+However_RB ,_, when_WRB the_DT dime_NN
+set_VBN t_NN -LRB-_-LRB- i.e._FW pi_NN =_JJ qi_NN +_CC t_NN ,_, ∀_FW i_FW ≤_FW l_NN -RRB-_-RRB- ._.
+Using_VBG L2_NN would_MD obviously_RB not_RB yield_VB any_DT similarity_NN between_IN P_NN and_CC Q._NNP The_NNP Dynamic_NNP Time_NNP Warping_NNP -LRB-_-LRB- DTW_NNP -RRB-_-RRB- -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, Longest_NNP Common_NNP Sub-Sequence_NN -LRB-_-LRB- LCSS_NN -RRB-_-RRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC the_DT Upper_NNP LCSS_NN method_NN =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, utilized_VBN in_IN our_PRP$ system_NN ,_, allow_VBP local_JJ stretching_VBG by_IN matching_VBG each_DT point_NN of_IN P_NN with_IN other_JJ points_NNS of_IN Q_NNP within_IN some_DT window_NN δ_NN -LRB-_-LRB- i.e._FW pi_NN is_VBZ matched_VBN with_IN qi_FW ±_FW δ_FW ,_, ∀_FW i_FW ≤_FW l_NN -RRB-_-RRB- ._.
+This_DT allows_VBZ us_PRP to_TO correlate_VB noisy_JJ failu_NN
+ned_VBN way_NN ,_, so_RB as_IN to_TO provide_VB certain_JJ quality_NN guarantees_NNS on_IN the_DT data-mining_JJ results_NNS -LRB-_-LRB- such_JJ as_IN absence_NN of_IN misclassification_NN -RRB-_-RRB- ._.
+Those_DT guarantees_NNS are_VBP typically_RB provided_VBN by_IN exploiting_VBG lower_JJR -LRB-_-LRB- 2_CD -RRB-_-RRB- or_CC upper_JJ bounds_NNS =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: on_IN the_DT distance_NN between_IN the_DT simplified_VBN representations_NNS ._.
+Orthonormal_JJ dimensionality_NN reductions_NNS techniques_NNS -LRB-_-LRB- such_JJ as_IN SVD_NN ,_, Fourier_NN or_CC wavelets_NNS -RRB-_-RRB- can_MD provide_VB such_JJ guarantees_NNS ._.
+Therefore_RB ,_, in_IN this_DT work_NN we_PRP pro_JJ
+DTW_NN -LRB-_-LRB- Q_NNP ,_, Head_NNP -LRB-_-LRB- T_NN -RRB-_-RRB- -RRB-_-RRB- #_# where_WRB D_NN -LRB-_-LRB- ·_NN ,_, ·_NN -RRB-_-RRB- is_VBZ the_DT distance_NN between_IN two_CD points_NNS of_IN the_DT sequence_NN ._.
+Typically_RB ,_, D_NN is_VBZ the_DT Euclidean_JJ distance_NN ._.
+The_DT warping_NN distance_NN can_MD be_VB computed_VBN using_VBG a_DT well_RB known_VBN dynamic_JJ programming_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN Fig._NNP 1_CD we_PRP can_MD see_VB the_DT flexibility_NN of_IN matching_NN that_WDT can_MD be_VB achieved_VBN between_IN trajectories_NNS when_WRB utilizing_VBG the_DT warping_NN distance_NN ._.
+On_IN the_DT left_JJ side_NN we_PRP demonstrate_VBP the_DT mapping_NN between_IN the_DT human_JJ and_CC the_DT
+s_NN of_IN the_DT other_JJ sequence_NN ._.
+For_IN comparison_NN ,_, the_DT result_NN of_IN the_DT proposed_VBN Optimal_JJ Subsequence_NN Bijection_NN -LRB-_-LRB- OSB_NN -RRB-_-RRB- is_VBZ shown_VBN in_IN Fig._FW 1a_FW ._.
+The_DT Longest_NNP Common_NNP Subsequence_NN -LRB-_-LRB- LCSS_NN -RRB-_-RRB- measure_NN has_VBZ been_VBN used_VBN in_IN time_NN series_NN =_JJ -_: =[_NN 5_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: to_TO deal_VB with_IN the_DT alignment_NN and_CC outlier_NN problems_NNS ._.
+Given_VBN a_DT query_NN and_CC a_DT target_NN series_NN ,_, LCSS_NNP determines_VBZ their_PRP$ longest_JJS common_JJ subsequence_NN ,_, i.e._FW ,_, LCSS_NN finds_VBZ subsequences_NNS of_IN the_DT query_NN and_CC target_NN that_IN best_JJS c_NN
+ours_PRP of_IN two_CD different_JJ but_CC very_RB similar_JJ corpora_FW callosa_FW ._.
+The_DT sequences_NNS representing_VBG complete_JJ contours_NNS are_VBP shown_VBN in_IN Fig._NNP 2_CD -LRB-_-LRB- a_DT -RRB-_-RRB- ._.
+The_DT Longest_NNP Common_NNP Subsequence_NN -LRB-_-LRB- LCSS_NN -RRB-_-RRB- measure_NN has_VBZ been_VBN used_VBN in_IN time_NN series_NN =_JJ -_: =[_NN 5,18_CD -RRB-_-RRB- -_: =_SYM -_: to_TO deal_VB with_IN the_DT alignment_NN and_CC outlier_NN problems_NNS ._.
+Given_VBN a_DT query_NN and_CC a_DT target_NN series_NN ,_, LCSS_NNP determines_VBZ their_PRP$ longest_JJS common_JJ subsequence_NN ,_, i.e._FW ,_, LCSS_NN finds_VBZ subsequences_NNS of_IN the_DT query_NN and_CC target_NN that_IN best_JJS c_NN
+roposes_VBZ a_DT generic_JJ method_NN built_VBN around_IN lower_JJR bounding_VBG to_TO guarantee_VB no_DT false_JJ dismissals_NNS ._.
+Indexing_NN methods_NNS for_IN DTW_NNP have_VBP been_VBN the_DT focus_NN of_IN several_JJ papers_NNS including_VBG -LRB-_-LRB- 13_CD ,_, 19_CD ,_, 27_CD ,_, 33_CD ,_, 34_CD -RRB-_-RRB- ._.
+Indexing_NN for_IN LCSS_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_JJ -_: and_CC EDR_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- has_VBZ also_RB been_VBN studied_VBN ._.
+In_IN this_DT paper_NN ,_, our_PRP$ focus_NN is_VBZ not_RB on_IN specific_JJ indexing_NN methods_NNS ,_, but_CC on_IN the_DT design_NN of_IN robust_JJ similarity_NN measures_NNS ,_, and_CC efficient_JJ evaluation_NN of_IN the_DT similarity_NN function_NN ._.
+e_LS desirable_JJ ._.
+The_DT non-Euclidean_JJ distance_NN measures_NNS such_JJ as_IN Dynamic_NNP Time_NNP Warping_NNP -LRB-_-LRB- DTW_NNP -RRB-_-RRB- and_CC Longest_NNP Common_NNP Subsequence_NNP -LRB-_-LRB- LCS_NNP -RRB-_-RRB- address_NN some_DT of_IN the_DT problems_NNS that_WDT are_VBP characteristic_JJ of_IN the_DT Euclidean_JJ distance_NN =_JJ -_: =[_NN 8_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT work_NN ,_, we_PRP propose_VBP an_DT efficient_JJ index_NN searching_VBG framework_NN for_IN subsequence_NN matching_NN using_VBG LCS_NN ._.
+We_PRP choose_VBP LCS_NNP because_IN it_PRP is_VBZ known_VBN to_TO be_VB more_RBR robust_JJ against_IN the_DT noise_NN in_IN the_DT data_NNS than_IN DTW_NN -LRB-_-LRB- 11,12_CD -RRB-_-RRB-
+ample_JJ ,_, is_VBZ to_TO emphasize_VB that_IN in_IN many_JJ cases_NNS multiple_JJ measures_NNS are_VBP necessary_JJ ,_, since_IN each_DT metric_NN can_MD harvest_VB a_DT different_JJ subset_NN of_IN answers_NNS ._.
+sEven_CD though_IN other_JJ multi-metric_JJ distances_NNS have_VBP been_VBN presented_VBN in_IN =_JJ -_: =[_NN 10_CD ,_, 6_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- but_CC for_IN different_JJ sets_NNS of_IN distance_NN functions_NNS -RRB-_-RRB- ,_, queries_NNS needed_VBN to_TO be_VB issued_VBN multiple_JJ times_NNS for_IN retrieving_VBG the_DT results_NNS of_IN the_DT different_JJ measures_NNS ._.
+Therefore_RB ,_, the_DT presented_VBN index_NN has_VBZ two_CD distinct_JJ advant_NN
+t_NN of_IN X_NN -LRB-_-LRB- with_IN value_NN 6_CD -RRB-_-RRB- should_MD only_RB correspond_VB to_TO the_DT fifth_JJ element_NN of_IN Y_NN -LRB-_-LRB- of_IN value_NN 3_CD -RRB-_-RRB- ,_, as_IN shown_VBN in_IN Fig._NNP 3_CD -LRB-_-LRB- b_NN -RRB-_-RRB- ._.
+Another_DT distance_NN measure_NN ,_, the_DT longest_JJS common_JJ subsequence_NN -LRB-_-LRB- LCSS_NN -RRB-_-RRB- ,_, has_VBZ been_VBN used_VBN in_IN sequences_NNS =_JJ -_: =[_NN 27,28_CD -RRB-_-RRB- -_: =_SYM -_: to_TO deal_VB with_IN the_DT alignment_NN and_CC outliers_NNS problems_NNS ._.
+Given_VBN a_DT query_NN and_CC a_DT target_NN Fig._NNP 3_CD ._.
+Time_NN series_NN alignment_NN with_IN -LRB-_-LRB- a_LS -RRB-_-RRB- DTW_NN and_CC -LRB-_-LRB- b_LS -RRB-_-RRB- MVM_NNP ._.
+Author_NN 's_POS personal_JJ copy_NN series_NN ,_, LCSS_NNP determines_VBZ their_PRP$ longest_JJS commo_NN
+he_PRP problem_NN where_WRB a_DT temporal_JJ predicate_NN is_VBZ specified_VBN by_IN the_DT query_NN -LRB-_-LRB- e.g._FW ,_, ``_`` this_DT morning_NN ''_'' -RRB-_-RRB- ._.
+The_DT general_JJ trajectory_NN join_VBP query_NN requires_VBZ expensive_JJ evaluation_NN algorithms_NNS more_RBR relevant_JJ to_TO mining_NN applications_NNS =_JJ -_: =[_NN 29_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+By_IN restricting_VBG similarity_NN evaluation_NN only_RB inside_IN a_DT user_NN specified_VBN time-interval_JJ ,_, we_PRP render_VBP the_DT problem_NN more_RBR amenable_JJ to_TO solutions_NNS that_WDT can_MD use_VB specialized_JJ index_NN structures_NNS for_IN evaluating_VBG the_DT joins_VBZ ._.
+l_NN representation_NN using_VBG dimension_NN reduction_NN methods_NNS ._.
+This_DT representation_NN can_MD be_VB expressed_VBN as_IN a_DT Fourier_NN transform_VB -LRB-_-LRB- 9_CD -RRB-_-RRB- ,_, wavelet_NN transform_VBP -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, average_JJ values_NNS in_IN adjacent_JJ windows_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, or_CC bounding_VBG boxes_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Then_RB a_DT distance_NN metric_NN is_VBZ defined_VBN over_IN this_DT approximation_NN ._.
+The_DT low-dimensional_JJ data_NN is_VBZ often_RB stored_VBN in_IN a_DT spatial_JJ data_NN structure_NN ,_, like_IN an_DT R-tree_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+This_DT low-dimensional_JJ expression_NN accelerates_VBZ proc_NN
+and_CC stored_VBD into_IN a_DT database_NN by_IN using_VBG an_DT R-tree_NN or_CC any_DT of_IN its_PRP$ variants_NNS ._.
+Dynamic_NNP time_NN warping_NN -LRB-_-LRB- DTW_NN -RRB-_-RRB- and_CC longest_JJS common_JJ subsequence_NN -LRB-_-LRB- LCSS_NN -RRB-_-RRB- were_VBD extended_VBN for_IN similarity_NN measures_NNS of_IN multi-attribute_JJ data_NNS in_IN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Before_IN the_DT exact_JJ LCSS_NN or_CC DTW_NN was_VBD performed_VBN ,_, sequences_NNS were_VBD segmented_JJ into_IN MBRs_NNS to_TO be_VB stored_VBN in_IN an_DT R-tree_NN ._.
+Based_VBN on_IN the_DT MBR_NNP intersections_NNS ,_, similarity_NN estimates_NNS were_VBD computed_VBN to_TO prune_VB irrelevant_JJ seque_NN
+g_NN up_RP our_PRP$ trajectories_NNS ,_, allowing_VBG us_PRP to_TO perform_VB various_JJ optimizations_NNS ._.
+There_EX has_VBZ been_VBN a_DT significant_JJ amount_NN of_IN research_NN on_IN defining_VBG similarity_NN measures_NNS for_IN detecting_VBG whether_IN two_CD trajectories_NNS are_VBP similar_JJ =_JJ -_: =[_NN 13,3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, this_DT research_NN has_VBZ not_RB focused_VBN on_IN mining_NN frequent_JJ trajectories_NNS ._.
+The_DT previous_JJ work_NN closest_JJS to_TO our_PRP$ approach_NN is_VBZ given_VBN in_IN the_DT innovative_JJ work_NN described_VBN in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- where_WRB the_DT authors_NNS match_VBP two_CD candida_NN
+ved_VBN but_CC the_DT transformation_NN noninvariant_JJ characteristics_NNS are_VBP removed_VBN ._.
+The_DT time_NN series_NN representations_NNS are_VBP usually_RB measured_VBN by_IN Euclidean_JJ distance_NN ,_, Dynamic_NNP time_NN warping_NN -LRB-_-LRB- 4,7_CD -RRB-_-RRB- ,_, Longest_NNP common_JJ subsequence_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+s1_NN .2_NN Motivation_NNP &_CC Paper_NNP Contributions_NNPS As_IN overviewed_VBN above_RB ,_, the_DT process_NN of_IN shape_NN extraction_NN -LRB-_-LRB- starting_VBG from_IN the_DT raster_NN image_NN and_CC producing_VBG a_DT vector_NN or_CC time_NN series_NN -RRB-_-RRB- is_VBZ very_RB complex_JJ task_NN ,_, where_WRB there_EX do_VBP
+d_NN but_CC the_DT transformation_NN non-invariant_JJ characteristics_NNS are_VBP removed_VBN ._.
+The_DT time_NN series_NN representations_NNS are_VBP usually_RB measured_VBN by_IN Euclidean_JJ distance_NN ,_, Dynamic_NNP time_NN warping_NN -LRB-_-LRB- 4_CD ,_, 7_CD -RRB-_-RRB- ,_, Longest_NNP common_JJ subsequence_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+sShape_NNP Extraction_NNP Framework_NNP for_IN Similarity_NNP Search_VB in_IN Image_NN Databases_NNS 91_CD 1.2_CD Motivation_NNP &_CC Paper_NNP Contributions_NNPS As_IN overviewed_VBN above_RB ,_, the_DT process_NN of_IN shape_NN extraction_NN -LRB-_-LRB- starting_VBG from_IN the_DT raster_NN image_NN and_CC p_NN
+ns_NNS are_VBP more_RBR complex_JJ ._.
+Moreover_RB ,_, they_PRP are_VBP different_JJ from_IN traditional_JJ similarity_NN queries_NNS for_IN time-series_JJ data_NNS ._.
+The_DT typical_JJ approach_NN for_IN identifying_VBG similar_JJ time_NN series_NN results_VBZ in_IN an_DT expensive_JJ evaluation_NN =_JJ -_: =[_NN 25_CD ,_, 26_CD -RRB-_-RRB- -_: =_JJ -_: and_CC continuous_JJ precomputation_NN of_IN the_DT query_NN result_NN ._.
+Trajectory_NNP joins_VBZ also_RB relate_VBP to_TO queries_NNS in_IN electronic_JJ ink_NN databases_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Ink_NN databases_NNS can_MD also_RB be_VB viewed_VBN as_IN spatiotemporal_JJ databases_NNS where_WRB the_DT user_NN
+encountered_VBN in_IN our_PRP$ experiments_NNS -LRB-_-LRB- 98_CD ,_, 451_CD for_IN DBLP_NN collection_NN -RRB-_-RRB- was_VBD far_RB beyond_IN the_DT number_NN of_IN dimensions_NNS that_WDT could_MD be_VB handled_VBN efficiently_RB by_IN methods_NNS developed_VBN to_TO index_NN multidimensional_JJ time_NN series_NN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 27_CD ,_, 26_CD ,_, 13_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Even_RB considering_VBG dimensionality_NN reduction_NN can_MD not_RB mitigate_VB the_DT problem_NN completely_RB ._.
+The_DT JohnsonLindenstrauss_NNP lemma_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- states_VBZ that_IN for_IN any_DT set_NN of_IN n_NN points_NNS ,_, there_EX is_VBZ a_DT mapping_NN from_IN d-dimensional_JJ spac_NN
+5.5_CD :_: Speedup_NN ratio_NN comparisons_NNS of_IN histograms_NNS on_IN three_CD data_NNS sets_VBZ 5.4.4_CD Efficiency_NN of_IN Combined_JJ Methods_NNS The_DT combination_NN of_IN methods_NNS proposed_VBN in_IN Section_NNP 5.3.4_CD are_VBP tested_VBN on_IN NHL_NN data_NNS -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, a_DT mixed_JJ data_NN set_NN =_JJ -_: =[_NN 107_CD -RRB-_-RRB- -_: =_JJ -_: and_CC a_DT randomwalk_NN trajectory_NN data_NN set_NN -LRB-_-LRB- 23_CD ,_, 52_CD -RRB-_-RRB- ._.
+The_DT NHL_NN data_NNS consists_VBZ ofsEdit_NNP Distance_NNP on_IN Real_NNP Sequences_NNS 135_CD -LRB-_-LRB- a_LS -RRB-_-RRB- NHL_NN data_NNS -LRB-_-LRB- b_NN -RRB-_-RRB- Mixed_JJ data_NNS -LRB-_-LRB- c_NN -RRB-_-RRB- Randomwalk_NN data_NNS Figure_NNP 5.6_CD :_: Speedup_JJ ratio_NN comparison_NN of_IN dif_NN
+1_LS -RRB-_-RRB- to_TO recognize_VB static_JJ signs_NNS for_IN a_DT 10-sign_JJ vocabulary_NN with_IN an_DT 84.66_CD %_NN accuracy_NN achieved_VBN ._.
+Dynamic_NNP Time_NNP Warping_NNP -LRB-_-LRB- DTW_NNP -RRB-_-RRB- and_CC Longest_NNP Common_NNP SubSequence_NN -LRB-_-LRB- LCSS_NN -RRB-_-RRB- distances_NNS are_VBP used_VBN for_IN similarity_NN measures_NNS in_IN -LRB-_-LRB- =_JJ -_: =_JJ Vlachos_NNP et_FW al._FW 2003_CD -_: =-]_CD ._.
+Both_CC DTW_NN and_CC LCSS_NN have_VBP a_DT computational_JJ complexity_NN of_IN O_NN -LRB-_-LRB- wd_NN -LRB-_-LRB- m_NN +_CC n_NN -RRB-_-RRB- -RRB-_-RRB- ,_, where_WRB w_NN is_VBZ the_DT size_NN of_IN a_DT matching_NN window_NN ,_, d_NN is_VBZ the_DT number_NN of_IN dimensions_NNS ,_, and_CC m_NN and_CC n_NN are_VBP the_DT lengths_NNS of_IN two_CD data_NNS sequences_NNS ._.
+If_IN m_NN a_DT
+our_PRP$ algorithm_NN ._.
+6_CD ._.
+RELATED_NNS WORK_VBP AND_NNP COMPARISON_NNP WITH_IN THIS_NNS WORK_VBP For_IN individual_JJ similarity_NN matching_NN ,_, Euclidean_JJ or_CC weighted_JJ Euclidean_JJ distance_NN ,_, dynamic_JJ time-warping_NN and_CC longest_JJS common_JJ subsequence_NN distance_NN =_JJ -_: =[_NN 5_CD ,_, 3_CD ,_, 13_CD ,_, 10_CD ,_, 2_CD ,_, 16_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN used_VBN ,_, and_CC much_JJ of_IN the_DT work_NN concentrates_VBZ on_IN reducing_VBG the_DT dimensionalities_NNS of_IN time_NN series_NN or_CC multi-attribute_JJ data_NNS for_IN indexing_NN purpose_NN ._.
+842_CD Variances_NNS of_IN Singular_JJ Vector_NNP Components_NNP 0.018_CD 0.016_CD
+roposes_VBZ a_DT generic_JJ method_NN built_VBN around_IN lower_JJR bounding_VBG to_TO guarantee_VB no_DT false_JJ dismissals_NNS ._.
+Indexing_NN methods_NNS for_IN DTW_NNP have_VBP been_VBN the_DT focus_NN of_IN several_JJ papers_NNS including_VBG -LRB-_-LRB- 33_CD ,_, 39_CD ,_, 69_CD ,_, 83_CD ,_, 86_CD -RRB-_-RRB- ._.
+Indexing_NN for_IN LCSS_NN =_JJ -_: =[_NN 77_CD -RRB-_-RRB- -_: =_JJ -_: and_CC EDR_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- has_VBZ also_RB been_VBN studied_VBN ._.
+In_IN this_DT chapter_NN ,_, our_PRP$ focus_NN is_VBZ not_RB on_IN specific_JJ indexing_NN methods_NNS ,_, but_CC on_IN the_DT design_NN of_IN robust_JJ similarity_NN measures_NNS ,_, and_CC efficient_JJ evaluation_NN of_IN the_DT similarity_NN functio_NN
+reflected_VBN both_CC in_IN index_NN structure_NN and_CC in_IN similarity_NN metrics_NNS ._.
+Most_RBS popular_JJ similarity_NN metrics_NNS include_VBP Minkowski_NNP distance_NN -LRB-_-LRB- 3_CD ,_, 15_CD -RRB-_-RRB- ,_, compression-based_JJ metrics_NNS -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, and_CC time-dimension_JJ deformation_NN metrics_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Often_RB ,_, a_DT technique_NN for_IN reduction_NN of_IN the_DT dimensionality_NN of_IN the_DT problem_NN is_VBZ employed_VBN ,_, such_JJ as_IN discrete_JJ Fourier_NN transform_VB -LRB-_-LRB- 1_CD ,_, 2_CD -RRB-_-RRB- ._.
+String_NNP indexes_NNS usually_RB support_VBP searching_VBG for_IN subsequences_NNS based_VBN on_IN ident_NN
+uclidean_JJ distance_NN for_IN these_DT transformed_VBN trajectories_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ._.
+A_DT technique_NN that_WDT develops_VBZ robust_JJ similarity_NN measures_NNS based_VBN on_IN the_DT longest_JJS common_JJ subsequences_NNS found_VBN in_IN a_DT pair_NN of_IN trajectories_NNS is_VBZ presented_VBN in_IN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN that_DT work_NN the_DT distance_NN between_IN two_CD trajectories_NNS is_VBZ based_VBN on_IN the_DT length_NN of_IN subsequences_NNS having_VBG the_DT most_JJS measurement_NN points_NNS approximately_RB common_JJ ._.
+Another_DT approach_NN to_TO the_DT measurement_NN of_IN trajectory_NN s_NN
+ify_NN phonemes_NNS in_IN speech_NN ,_, detect_VB arrhythmias_NNS in_IN ECG_NN traces_NNS ,_, and_CC detect_VB mechanical_JJ failures_NNS in_IN a_DT motor_NN simulation_NN ._.
+Generating_NNP a_DT Gaussian_JJ mixture_NN model_NN requires_VBZ a_DT slow_JJ ,_, iterative_JJ process_NN ._.
+Vlachos_FW et_FW ._.
+al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: describe_VBP a_DT minimum_NN bounding_VBG rectangle_NN -LRB-_-LRB- MBR_NN -RRB-_-RRB- clustering_NN algorithm_NN that_WDT runs_VBZ in_IN O_NN -LRB-_-LRB- n_NN log_NN n_NN -RRB-_-RRB- time_NN that_WDT is_VBZ nearly_RB identical_JJ to_TO the_DT one_CD used_VBN in_IN our_PRP$ system_NN ._.
+A_DT sequence_NN of_IN n_NN points_NNS in_IN feature_NN space_NN is_VBZ first_RB
+ify_NN phonemes_NNS in_IN speech_NN ,_, detect_VB arrhythmias_NNS in_IN ECG_NN traces_NNS ,_, and_CC detect_VB mechanical_JJ failures_NNS in_IN a_DT motor_NN simulation_NN ._.
+Generating_NNP a_DT Gaussian_JJ mixture_NN model_NN requires_VBZ a_DT slow_JJ ,_, iterative_JJ process_NN ._.
+Vlachos_FW et_FW ._.
+al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: describe_VBP a_DT minimum_NN bounding_VBG rectangle_NN -LRB-_-LRB- MBR_NN -RRB-_-RRB- clustering_NN algorithm_NN that_WDT runs_VBZ in_IN O_NN -LRB-_-LRB- n_NN log_NN n_NN -RRB-_-RRB- time_NN that_WDT is_VBZ nearly_RB identical_JJ to_TO the_DT one_CD used_VBN in_IN our_PRP$ system_NN ._.
+A_DT sequence_NN of_IN n_NN points_NNS in_IN feature_NN space_NN is_VBZ first_RB
+lem_NN of_IN local_JJ scaling_NN ,_, and_CC as_IN we_PRP demonstrated_VBD above_JJ ,_, uniform_JJ scaling_NN is_VBZ just_RB as_RB important_JJ in_IN the_DT motion_NN capture_NN editing_NN domain_NN ._.
+Similar_JJ observations_NNS hold_VBP for_IN the_DT Longest_NNP Common_NNP SubSequence_NNP measure_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT utility_NN of_IN uniform_JJ scaling_NN has_VBZ been_VBN noted_VBN before_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- -LRB-_-LRB- 2_CD -RRB-_-RRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+However_RB ,_, all_DT previous_JJ work_NN has_VBZ focused_VBN on_IN speeding_VBG up_RP similarity_NN search_NN ,_, when_WRB the_DT scaling_NN factor_NN is_VBZ known_VBN -LRB-_-LRB- 8_CD -RRB-_-RRB- -LRB-_-LRB- 17_CD -RRB-_-RRB- -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+The_DT feature_NN
+ormed_VBN on_IN two_CD datasets_NNS :_: the_DT MNIST_NNP database_NN of_IN handwritten_JJ digits_NNS -LRB-_-LRB- LeCun_FW et_FW al._FW 1998_CD -RRB-_-RRB- ,_, with_IN shape_NN context_NN matching_NN -LRB-_-LRB- Belongie_NNP et_FW al._FW 2002_CD -RRB-_-RRB- as_IN the_DT underlying_JJ distance_NN measure_NN ,_, and_CC a_DT time-series_JJ database_NN -LRB-_-LRB- =_JJ -_: =_JJ Vlachos_NNP et_FW al._FW 2003_CD -_: =-]_CD with_IN constrained_VBN Dynamic_NNP Time_NNP Warping_NNP as_IN the_DT underlying_JJ distance_NN measure_NN ._.
+In_IN both_DT datasets_NNS ,_, query-sensitive_JJ embeddings_NNS yield_VBP superior_JJ performance_NN with_IN respect_NN to_TO the_DT original_JJ BoostMap_NNP method_NN ,_, FastMa_NN
+edding_VBG method_NN ._.
+Experiments_NNS are_VBP performed_VBN on_IN two_CD datasets_NNS :_: the_DT MNIST_NNP database_NN of_IN handwritten_JJ digits_NNS -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, with_IN Shape_VBG Context_NNP Distance_NNP -LRB-_-LRB- 4_CD -RRB-_-RRB- as_IN the_DT underlying_JJ distance_NN measure_NN ,_, and_CC a_DT time-series_JJ database_NN =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: with_IN constrained_VBN Dynamic_NNP Time_NNP Warping_NNP as_IN the_DT underlying_JJ distance_NN measure_NN ._.
+In_IN both_DT datasets_NNS ,_, the_DT algorithm_NN described_VBN in_IN this_DT paper_NN yields_VBZ superior_JJ performance_NN with_IN respect_NN to_TO both_CC the_DT original_JJ BoostMa_NN
+ure_NN and_CC in_IN similarity_NN metrics_NNS ._.
+Popular_NNP similarity_NN metrics_NNS include_VBP Minkowski_NNP distance_NN -LRB-_-LRB- see_VB Keogh_NNP et_FW al._FW ,_, 2001_CD -RRB-_-RRB- ,_, compression-based_JJ metrics_NNS -LRB-_-LRB- see_VB Keogh_NNP et_FW al._FW ,_, 2004_CD -RRB-_-RRB- and_CC dynamic_JJ time_NN warping_NN metrics_NNS -LRB-_-LRB- see_VB =_JJ -_: =_JJ Vlachos_NNP et_FW al._FW ,_, 2003_CD -_: =--RRB-_NN -RRB-_-RRB- ._.
+Often_RB ,_, a_DT technique_NN for_IN reduction_NN of_IN the_DT dimensionality_NN of_IN the_DT problem_NN is_VBZ employed_VBN ,_, such_JJ as_IN discrete_JJ Fourier_NN transform_VBP see_VB Agrawal_NNP et_FW al._FW ,_, 1993_CD and_CC Faloutsos_NNP et_FW al._FW ,_, 1994_CD -RRB-_-RRB- ._.
+String_NNP indexes_NNS usually_RB s_VBZ
+en_IN used_VBN to_TO fully_RB manage_VB anomaly_RB detection_NN ._.
+Furthermore_RB ,_, various_JJ techniques_NNS to_TO describe_VB timeseries_NNS with_IN some_DT kind_NN of_IN parameters_NNS are_VBP available_JJ ._.
+E.g._VB a_DT technique_NN to_TO index_NN multivariate_JJ timeseries_NNS seems_VBZ =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: to_TO be_VB a_DT useful_JJ technique_NN to_TO represent_VB time_NN series_NN in_IN a_DT lower_JJR dimensional_JJ space_NN ,_, but_CC has_VBZ not_RB been_VBN further_RB evaluated_VBN in_IN this_DT project_NN due_JJ to_TO time_NN constrains_VBZ ._.
+Modified_VBN DARTS_NN algorithm_NN One_CD existing_VBG framew_NN
+ences_NNS ,_, and_CC 2_CD -RRB-_-RRB- ._.
+methods_NNS for_IN subsequence_NN matching_NN ,_, where_WRB the_DT best_JJS matches_NNS for_IN a_DT query_NN can_MD be_VB arbitrary_JJ subsequences_NNS of_IN database_NN sequences_NNS ._.
+Several_JJ well-known_JJ methods_NNS only_RB address_VBP full_JJ sequence_NN matching_NN =_JJ -_: =[_NN 13_CD ,_, 24_CD ,_, 26_CD ,_, 28_CD ,_, 32_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC can_MD not_RB be_VB used_VBN for_IN efficient_JJ retrieval_NN of_IN subsequences_NNS ._.
+In_IN -LRB-_-LRB- 20_CD -RRB-_-RRB- an_DT indexing_NN structure_NN is_VBZ proposed_VBN for_IN unconstrained_JJ DTWbased_JJ subsequence_NN matching_NN ,_, but_CC retrieval_NN complexity_NN is_VBZ still_RB linear_JJ to_TO the_DT

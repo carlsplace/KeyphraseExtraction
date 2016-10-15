@@ -1,0 +1,111 @@
+Searching_NN with_IN numbers_NNS
+A_DT large_JJ fraction_NN of_IN the_DT useful_JJ web_NN comprises_VBZ of_IN specification_NN documents_NNS that_WDT largely_RB consist_VBP of_IN hattribute_NN name_NN ,_, numeric_JJ valuei_NN pairs_NNS embedded_VBN in_IN text_NN ._.
+Examples_NNS include_VBP product_NN information_NN ,_, classified_JJ advertisements_NNS ,_, resumes_NNS ,_, etc._FW ._.
+The_DT approach_NN taken_VBN in_IN the_DT past_NN to_TO search_VB these_DT documents_NNS by_IN first_JJ establishing_VBG correspondences_NNS between_IN values_NNS and_CC their_PRP$ names_NNS has_VBZ achieved_VBN limited_JJ success_NN because_IN of_IN the_DT difficulty_NN of_IN extracting_VBG this_DT information_NN from_IN free_JJ text_NN ._.
+We_PRP propose_VBP a_DT new_JJ approach_NN that_WDT does_VBZ not_RB require_VB this_DT correspondence_NN to_TO be_VB accurately_RB established_VBN ._.
+Provided_VBN the_DT data_NN has_VBZ ``_`` low_JJ reflectivity_NN ''_'' ,_, we_PRP can_MD do_VB effective_JJ search_NN even_RB if_IN the_DT values_NNS in_IN the_DT data_NNS have_VBP not_RB been_VBN assigned_VBN attribute_NN names_NNS and_CC the_DT user_NN has_VBZ omitted_VBN attribute_NN names_NNS in_IN the_DT query_NN ._.
+We_PRP give_VBP algorithms_NNS and_CC indexing_NN structures_NNS for_IN implementing_VBG the_DT search_NN ._.
+We_PRP also_RB show_VBP how_WRB hints_NNS -LRB-_-LRB- i._NN e_SYM ,_, imprecise_JJ ,_, partial_JJ correspondences_NNS -RRB-_-RRB- from_IN automatic_JJ data_NNS extraction_NN techniques_NNS can_MD be_VB incorporated_VBN into_IN our_PRP$ approach_NN for_IN better_JJR accuracy_NN on_IN high_JJ reflectivity_NN datasets_NNS ._.
+Finally_RB ,_, we_PRP validate_VBP our_PRP$ approach_NN by_IN showing_VBG that_IN we_PRP get_VBP high_JJ precision_NN in_IN our_PRP$ answers_NNS on_IN real_JJ datasets_NNS from_IN a_DT variety_NN of_IN domains_NNS ._.
+lement_NN current_JJ search_NN technology_NN ._.
+One_CD can_MD envision_VB a_DT system_NN in_IN which_WDT the_DT ranked_VBN results_NNS produced_VBD using_VBG our_PRP$ techniques_NNS are_VBP combined_VBN with_IN the_DT results_NNS obtained_VBN using_VBG words_NNS and_CC links_NNS in_IN the_DT pages_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- -LRB-_-LRB- 3_LS -RRB-_-RRB- =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Techniques_NNS such_JJ as_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- can_MD be_VB used_VBN for_IN combining_VBG the_DT results_NNS ._.
+The_DT rest_NN of_IN the_DT paper_NN is_VBZ organized_VBN as_IN follows_VBZ ._.
+Section_NN 2_CD provides_VBZ the_DT data_NNS and_CC query_NN models_NNS ._.
+We_PRP discuss_VBP reflectivity_NN in_IN Section_NN 3_CD ._.
+ng_NN attribute_NN names_NNS in_IN a_DT query_NN is_VBZ difficult_JJ or_CC inconvenient_JJ ._.
+For_IN example_NN ,_, in_IN a_DT federated_JJ database_NN system_NN ,_, the_DT same_JJ attribute_NN might_MD be_VB called_VBN with_IN different_JJ names_NNS in_IN different_JJ constituent_JJ databases_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+The_DT techniques_NNS we_PRP propose_VBP complement_NN current_JJ search_NN technology_NN ._.
+One_CD can_MD envision_VB a_DT system_NN in_IN which_WDT the_DT ranked_VBN results_NNS produced_VBD using_VBG our_PRP$ techniques_NNS are_VBP combined_VBN with_IN the_DT results_NNS obtained_VBN using_VBG
+viding_VBG attribute_NN names_NNS in_IN a_DT query_NN is_VBZ difficult_JJ or_CC inconvenient_JJ ._.
+For_IN example_NN ,_, in_IN a_DT federated_JJ database_NN system_NN ,_, the_DT same_JJ attribute_NN might_MD be_VB called_VBN with_IN different_JJ names_NNS in_IN different_JJ constituent_JJ databases_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 16_CD -RRB-_-RRB- -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+The_DT techniques_NNS we_PRP propose_VBP complement_NN current_JJ search_NN technology_NN ._.
+One_CD can_MD envision_VB a_DT system_NN in_IN which_WDT the_DT ranked_VBN results_NNS produced_VBD using_VBG our_PRP$ techniques_NNS are_VBP combined_VBN with_IN the_DT results_NNS obtained_VBD u_NN
+ose_NN complement_NN current_JJ search_NN technology_NN ._.
+One_CD can_MD envision_VB a_DT system_NN in_IN which_WDT the_DT ranked_VBN results_NNS produced_VBD using_VBG our_PRP$ techniques_NNS are_VBP combined_VBN with_IN the_DT results_NNS obtained_VBN using_VBG words_NNS and_CC links_NNS in_IN the_DT pages_NNS =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 3_LS -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Techniques_NNS such_JJ as_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- can_MD be_VB used_VBN for_IN combining_VBG the_DT results_NNS ._.
+The_DT rest_NN of_IN the_DT paper_NN is_VBZ organized_VBN as_IN follows_VBZ ._.
+Section_NN 2_CD provides_VBZ the_DT data_NNS and_CC query_NN models_NNS ._.
+We_PRP discuss_VBP reflectivity_NN in_IN Se_NN
+retrieve_VB the_DT specification_NN documents_NNS has_VBZ been_VBN to_TO extract_VB the_DT attribute-value_JJ pairs_NNS contained_VBN in_IN a_DT document_NN and_CC store_VB them_PRP in_IN a_DT database_NN ._.
+Queries_NNS can_MD now_RB be_VB answered_VBN using_VBG nearest_JJS neighbor_NN techniques_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 15_CD -RRB-_-RRB- -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+There_EX has_VBZ been_VBN some_DT research_NN on_IN automating_VBG the_DT task_NN of_IN data_NN extraction_NN -LRB-_-LRB- see_VB surveys_NNS in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- -LRB-_-LRB- 19_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+However_RB ,_, the_DT automatic_JJ extraction_NN of_IN attribute-value_JJ pairs_NNS has_VBZ a_DT spotty_JJ record_NN of_IN success_NN ._.
+complement_NN current_JJ search_NN technology_NN ._.
+One_CD can_MD envision_VB a_DT system_NN in_IN which_WDT the_DT ranked_VBN results_NNS produced_VBD using_VBG our_PRP$ techniques_NNS are_VBP combined_VBN with_IN the_DT results_NNS obtained_VBN using_VBG words_NNS and_CC links_NNS in_IN the_DT pages_NNS -LRB-_-LRB- 2_LS -RRB-_-RRB- =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 9_CD -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Techniques_NNS such_JJ as_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- can_MD be_VB used_VBN for_IN combining_VBG the_DT results_NNS ._.
+The_DT rest_NN of_IN the_DT paper_NN is_VBZ organized_VBN as_IN follows_VBZ ._.
+Section_NN 2_CD provides_VBZ the_DT data_NNS and_CC query_NN models_NNS ._.
+We_PRP discuss_VBP reflectivity_NN in_IN Sectio_NNP
+tribute_NN names_NNS in_IN a_DT query_NN is_VBZ difficult_JJ or_CC inconvenient_JJ ._.
+For_IN example_NN ,_, in_IN a_DT federated_JJ database_NN system_NN ,_, the_DT same_JJ attribute_NN might_MD be_VB called_VBN with_IN different_JJ names_NNS in_IN different_JJ constituent_JJ databases_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- -LRB-_-LRB- 16_CD -RRB-_-RRB- =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT techniques_NNS we_PRP propose_VBP complement_NN current_JJ search_NN technology_NN ._.
+One_CD can_MD envision_VB a_DT system_NN in_IN which_WDT the_DT ranked_VBN results_NNS produced_VBD using_VBG our_PRP$ techniques_NNS are_VBP combined_VBN with_IN the_DT results_NNS obtained_VBN using_VBG words_NNS
+rieve_VB the_DT specification_NN documents_NNS has_VBZ been_VBN to_TO extract_VB the_DT attribute-value_JJ pairs_NNS contained_VBN in_IN a_DT document_NN and_CC store_VB them_PRP in_IN a_DT database_NN ._.
+Queries_NNS can_MD now_RB be_VB answered_VBN using_VBG nearest_JJS neighbor_NN techniques_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+There_EX has_VBZ been_VBN some_DT research_NN on_IN automating_VBG the_DT task_NN of_IN data_NN extraction_NN -LRB-_-LRB- see_VB surveys_NNS in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- -LRB-_-LRB- 19_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+However_RB ,_, the_DT automatic_JJ extraction_NN of_IN attribute-value_JJ pairs_NNS has_VBZ a_DT spotty_JJ record_NN of_IN success_NN ._.
+It_PRP i_LS
+the_DT graph_NN in_IN Figure_NNP 4_CD ._.
+Thus_RB ,_, 20_CD in_IN Q_NNP is_VBZ matched_VBN with_IN 25_CD in_IN D_NN and_CC 60_CD with_IN 75_CD for_IN a_DT total_JJ distance_NN score_NN of_IN 0.5_CD ._.
+We_PRP can_MD now_RB refer_VB to_TO the_DT rich_JJ weighted_JJ bipartite_JJ graph_NN matching_NN literature_NN -LRB-_-LRB- see_VB survey_NN in_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =--RRB-_NN to_TO find_VB the_DT best_JJS matching_NN between_IN the_DT numbers_NNS in_IN a_DT query_NN and_CC the_DT numbers_NNS in_IN a_DT document_NN ._.
+We_PRP also_RB obtain_VBP the_DT distance_NN score_NN at_IN the_DT same_JJ time_NN ,_, which_WDT is_VBZ used_VBN for_IN ranking_VBG the_DT documents_NNS ._.
+By_IN repeating_VBG this_DT
+retrieving_VBG the_DT top_JJ t_NN objects_NNS that_WDT have_VBP highest_JJS combined_VBN score_NN on_IN k_NN attributes_NNS ,_, introduced_VBN in_IN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+We_PRP first_RB describe_VBP the_DT score_NN aggregation_NN problem_NN and_CC the_DT threshold_NN algorithm_NN for_IN solving_VBG this_DT problem_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+Score_NN Aggregation_NN Problem_NNP Assume_VB that_IN each_DT object_NN in_IN a_DT database_NN has_VBZ k_NN scores_NNS ,_, one_CD for_IN each_DT of_IN k_NN attributes_NNS ._.
+For_IN each_DT attribute_NN ,_, there_EX is_VBZ a_DT sorted_VBN list_NN ,_, which_WDT lists_VBZ each_DT object_NN and_CC its_PRP$ scor_NN
+er_NN of_IN documents_NNS for_IN which_WDT we_PRP have_VBP to_TO compute_VB the_DT distance_NN ._.
+This_DT problem_NN turns_VBZ out_RP to_TO be_VB similar_JJ to_TO that_DT of_IN retrieving_VBG the_DT top_JJ t_NN objects_NNS that_WDT have_VBP highest_JJS combined_VBN score_NN on_IN k_NN attributes_NNS ,_, introduced_VBN in_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP first_RB describe_VBP the_DT score_NN aggregation_NN problem_NN and_CC the_DT threshold_NN algorithm_NN for_IN solving_VBG this_DT problem_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+Score_NN Aggregation_NN Problem_NNP Assume_VB that_IN each_DT object_NN in_IN a_DT database_NN has_VBZ k_NN scores_NNS ,_, one_CD
+eving_VBG the_DT top_JJ t_NN objects_NNS that_WDT have_VBP highest_JJS combined_VBN score_NN on_IN k_NN attributes_NNS ,_, introduced_VBN in_IN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+We_PRP first_RB describe_VBP the_DT score_NN aggregation_NN problem_NN and_CC the_DT threshold_NN algorithm_NN for_IN solving_VBG this_DT problem_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+Score_NN Aggregation_NN Problem_NNP Assume_VB that_IN each_DT object_NN in_IN a_DT database_NN has_VBZ k_NN scores_NNS ,_, one_CD for_IN each_DT of_IN k_NN attributes_NNS ._.
+For_IN each_DT attribute_NN ,_, there_EX is_VBZ a_DT sorted_VBN list_NN ,_, which_WDT lists_VBZ each_DT object_NN and_CC its_PRP$ score_NN for_IN
+nt_NN values_NNS for_IN an_DT attribute_NN ,_, i.e._FW ,_, if_IN Hi_NN =_JJ Hj_NN ,_, then_RB ni_IN =_JJ nj_NN ._.
+2The_JJ specific_JJ extraction_NN techniques_NNS used_VBN are_VBP not_RB of_IN concern_NN in_IN this_DT paper_NN ._.
+One_CD could_MD ,_, for_IN example_NN ,_, use_VBP a_DT regular_JJ expression_NN based_VBN extractor_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4sIf_IN the_DT document_NN does_VBZ not_RB have_VB hints_NNS associated_VBN with_IN numbers_NNS ,_, D_NN is_VBZ simply_RB a_DT multi-set_JJ :_: A_DT search_NN query_NN Q_NNP consists_VBZ of_IN D_NN =_JJ fni_FW j_FW ni_FW 2N_NN ;_: 1_CD i_LS mg_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- Q_NNP =_JJ fhqi_NNS ;_: Aiijqi_NNP 2N_NNP ;_: Ai_NNP A_NNP ;_: 1_CD i_FW kg_FW -LRB-_-LRB- 3_LS -RRB-_-RRB- Here_RB each_DT hnumber_NN
+k_NN closest_JJS targets_NNS ,_, since_IN the_DT other_JJ k_NN ,_, 1_CD source_NN vertices_NNS can_MD match_VB at_IN most_JJS k_NN ,_, 1_CD targets_NNS ._.
+13_CD 0.25_CD sThe_NN best_RB known_VBN algorithm_NN for_IN the_DT weighted_JJ bipartite_JJ matching_NN problem_NN is_VBZ due_JJ to_TO Feder_NN and_CC q_NN 2_CD Motwani_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC its_PRP$ time_NN complexity_NN is_VBZ O_NN -LRB-_-LRB- e_SYM -LRB-_-LRB- k_NN +_CC m_NN -RRB-_-RRB- log_NN -LRB-_-LRB- -LRB-_-LRB- k_NN +_CC m_NN -RRB-_-RRB- =_JJ e_LS -RRB-_-RRB- =_JJ log_NN -LRB-_-LRB- k_NN +_CC m_NN -RRB-_-RRB- -RRB-_-RRB- ,_, wheree_NN is_VBZ the_DT number_NN of_IN edges_NNS in_IN the_DT graph_NN ._.
+Since_IN e_LS =_JJ k_NN 2_CD ,_, the_DT complexity_NN is_VBZ O_NN -LRB-_-LRB- k_NN 2_CD m_NN -RRB-_-RRB- =_JJ k_NN -RRB-_-RRB- =_JJ log_NN -LRB-_-LRB- k_NN +_CC m_NN -RRB-_-RRB- -RRB-_-RRB- ._.
+4.2_CD Limiting_VBG the_DT Set_NN of_IN Docume_NN
+the_DT top_JJ t_NN objects_NNS that_WDT have_VBP highest_JJS combined_VBN score_NN on_IN k_NN attributes_NNS ,_, introduced_VBN in_IN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+We_PRP first_RB describe_VBP the_DT score_NN aggregation_NN problem_NN and_CC the_DT threshold_NN algorithm_NN for_IN solving_VBG this_DT problem_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- -LRB-_-LRB- 14_CD -RRB-_-RRB- =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Score_NN Aggregation_NN Problem_NNP Assume_VB that_IN each_DT object_NN in_IN a_DT database_NN has_VBZ k_NN scores_NNS ,_, one_CD for_IN each_DT of_IN k_NN attributes_NNS ._.
+For_IN each_DT attribute_NN ,_, there_EX is_VBZ a_DT sorted_VBN list_NN ,_, which_WDT lists_VBZ each_DT object_NN and_CC its_PRP$ score_NN for_IN that_DT
+ument_NN and_CC store_VB them_PRP in_IN a_DT database_NN ._.
+Queries_NNS can_MD now_RB be_VB answered_VBN using_VBG nearest_JJS neighbor_NN techniques_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- -LRB-_-LRB- 15_CD -RRB-_-RRB- -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+There_EX has_VBZ been_VBN some_DT research_NN on_IN automating_VBG the_DT task_NN of_IN data_NN extraction_NN -LRB-_-LRB- see_VB surveys_NNS in_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 19_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+However_RB ,_, the_DT automatic_JJ extraction_NN of_IN attribute-value_JJ pairs_NNS has_VBZ a_DT spotty_JJ record_NN of_IN success_NN ._.
+It_PRP is_VBZ a_DT hard_JJ problem_NN ,_, exacerbated_VBN by_IN the_DT fact_NN that_IN it_PRP is_VBZ often_RB difficult_JJ to_TO identify_VB attribute_NN names_NNS
+t_NN and_CC store_VB them_PRP in_IN a_DT database_NN ._.
+Queries_NNS can_MD now_RB be_VB answered_VBN using_VBG nearest_JJS neighbor_NN techniques_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- -LRB-_-LRB- 15_CD -RRB-_-RRB- -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+There_EX has_VBZ been_VBN some_DT research_NN on_IN automating_VBG the_DT task_NN of_IN data_NN extraction_NN -LRB-_-LRB- see_VB surveys_NNS in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, the_DT automatic_JJ extraction_NN of_IN attribute-value_JJ pairs_NNS has_VBZ a_DT spotty_JJ record_NN of_IN success_NN ._.
+It_PRP is_VBZ a_DT hard_JJ problem_NN ,_, exacerbated_VBN by_IN the_DT fact_NN that_IN it_PRP is_VBZ often_RB difficult_JJ to_TO identify_VB attribute_NN names_NNS and_CC e_SYM
+nt_NN current_JJ search_NN technology_NN ._.
+One_CD can_MD envision_VB a_DT system_NN in_IN which_WDT the_DT ranked_VBN results_NNS produced_VBD using_VBG our_PRP$ techniques_NNS are_VBP combined_VBN with_IN the_DT results_NNS obtained_VBN using_VBG words_NNS and_CC links_NNS in_IN the_DT pages_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Techniques_NNS such_JJ as_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- can_MD be_VB used_VBN for_IN combining_VBG the_DT results_NNS ._.
+The_DT rest_NN of_IN the_DT paper_NN is_VBZ organized_VBN as_IN follows_VBZ ._.
+Section_NN 2_CD provides_VBZ the_DT data_NNS and_CC query_NN models_NNS ._.
+We_PRP discuss_VBP reflectivity_NN in_IN Section_NN 3_CD ._.
+We_PRP p_NN
+re_IN included_VBN in_IN this_DT index_NN ._.
+Numbers_NNS are_VBP kept_VBN sorted_VBD so_RB that_IN it_PRP is_VBZ easy_JJ to_TO determine_VB the_DT nearest_JJS left_JJ neighbor_NN -LRB-_-LRB- smaller_JJR number_NN -RRB-_-RRB- and_CC nearest_IN right_JJ neighbor_NN -LRB-_-LRB- larger_JJR number_NN -RRB-_-RRB- of_IN a_DT number_NN ._.
+We_PRP can_MD use_VB B-tree_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: for_IN this_DT purpose_NN if_IN the_DT index_NN is_VBZ too_RB large_JJ to_TO fit_VB in_IN memory_NN ._.
+Here_RB is_VBZ the_DT algorithm_NN ,_, stated_VBN in_IN the_DT TA_NNP framework_NN ._.
+While_IN reading_VBG the_DT algorithm_NN ,_, keep_VB in_IN mind_NN that_IN a_DT document_NN with_IN a_DT lower_JJR distance_NN score_NN i_FW
+the_DT specification_NN documents_NNS has_VBZ been_VBN to_TO extract_VB the_DT attribute-value_JJ pairs_NNS contained_VBN in_IN a_DT document_NN and_CC store_VB them_PRP in_IN a_DT database_NN ._.
+Queries_NNS can_MD now_RB be_VB answered_VBN using_VBG nearest_JJS neighbor_NN techniques_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- -LRB-_-LRB- 15_CD -RRB-_-RRB- =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX has_VBZ been_VBN some_DT research_NN on_IN automating_VBG the_DT task_NN of_IN data_NN extraction_NN -LRB-_-LRB- see_VB surveys_NNS in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- -LRB-_-LRB- 19_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+However_RB ,_, the_DT automatic_JJ extraction_NN of_IN attribute-value_JJ pairs_NNS has_VBZ a_DT spotty_JJ record_NN of_IN success_NN ._.
+It_PRP is_VBZ a_DT h_NN
+ogy_NN ._.
+One_CD can_MD envision_VB a_DT system_NN in_IN which_WDT the_DT ranked_VBN results_NNS produced_VBD using_VBG our_PRP$ techniques_NNS are_VBP combined_VBN with_IN the_DT results_NNS obtained_VBN using_VBG words_NNS and_CC links_NNS in_IN the_DT pages_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- -LRB-_-LRB- 3_CD -RRB-_-RRB- -LRB-_-LRB- 9_CD -RRB-_-RRB- -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Techniques_NNS such_JJ as_IN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: can_MD be_VB used_VBN for_IN combining_VBG the_DT results_NNS ._.
+The_DT rest_NN of_IN the_DT paper_NN is_VBZ organized_VBN as_IN follows_VBZ ._.
+Section_NN 2_CD provides_VBZ the_DT data_NNS and_CC query_NN models_NNS ._.
+We_PRP discuss_VBP reflectivity_NN in_IN Section_NN 3_CD ._.
+We_PRP present_VBP algorithms_NNS for_IN fin_NN

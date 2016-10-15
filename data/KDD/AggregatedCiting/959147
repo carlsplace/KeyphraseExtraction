@@ -1,0 +1,160 @@
+Fast_JJ mining_NN of_IN high_JJ dimensional_JJ expressive_JJ contrast_NN patterns_NNS using_VBG zero-suppressed_JJ binary_JJ decision_NN diagrams_NNS
+Patterns_NN of_IN contrast_NN are_VBP a_DT very_RB important_JJ way_NN of_IN comparing_VBG multi-dimensional_JJ datasets_NNS ._.
+Such_JJ patterns_NNS are_VBP able_JJ to_TO capture_VB regions_NNS of_IN high_JJ difference_NN between_IN two_CD classes_NNS of_IN data_NNS ,_, and_CC are_VBP useful_JJ for_IN human_JJ experts_NNS and_CC the_DT construction_NN of_IN classifiers_NNS ._.
+However_RB ,_, mining_NN such_JJ patterns_NNS is_VBZ particularly_RB challenging_JJ when_WRB the_DT number_NN of_IN dimensions_NNS is_VBZ large_JJ ._.
+This_DT paper_NN describes_VBZ a_DT new_JJ technique_NN for_IN mining_NN several_JJ varieties_NNS of_IN contrast_NN pattern_NN ,_, based_VBN on_IN the_DT use_NN of_IN Zero-Suppressed_JJ Binary_JJ Decision_NN Diagrams_NNS -LRB-_-LRB- ZBDDs_NNS -RRB-_-RRB- ,_, a_DT powerful_JJ data_NN structure_NN for_IN manipulating_VBG sparse_JJ data_NNS ._.
+We_PRP study_VBD the_DT mining_NN of_IN both_CC simple_JJ contrast_NN patterns_NNS ,_, such_JJ as_IN emerging_VBG patterns_NNS ,_, and_CC more_JJR novel_NN and_CC complex_NN contrasts_VBZ ,_, which_WDT we_PRP call_VBP disjunctive_JJ emerging_VBG patterns_NNS ._.
+A_DT performance_NN study_NN demonstrates_VBZ our_PRP$ ZBDD_NN technique_NN is_VBZ highly_RB scalable_JJ ,_, substantially_RB improves_VBZ on_IN state_NN of_IN the_DT art_NN mining_NN for_IN emerging_VBG patterns_NNS and_CC can_MD be_VB effective_JJ for_IN discovering_VBG complex_NN contrasts_VBZ from_IN datasets_NNS with_IN thousands_NNS of_IN attributes_NNS ._.
+aph_VB based_VBN data_NNS structure_NN which_WDT allow_VBP efficient_JJ representation_NN and_CC manipulation_NN of_IN boolean_FW formulae_FW ,_, and_CC they_PRP have_VBP proved_VBN extremely_RB effective_JJ in_IN diverse_JJ fields_NNS of_IN computer_NN science_NN ,_, such_JJ as_IN SAT_NNP solvers_VBZ =_JJ -_: =[_NN 7_CD ,_, 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, VLSI_NN and_CC reliability_NN -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+ZBDDs_NNS are_VBP an_DT important_JJ variation_NN of_IN binary_JJ decision_NN diagrams_NNS and_CC are_VBP particularly_RB appropriate_JJ for_IN compactly_RB representing_VBG sparse_JJ data_NNS ._.
+Challenges_NNS :_: A_DT key_JJ focus_NN of_IN our_PRP$ study_NN
+liability_NN engineering_NN for_IN fault-tree_JJ analysis_NN -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+However_RB ,_, they_PRP have_VBP received_VBN very_RB little_JJ attention_NN in_IN data_NN mining_NN -LRB-_-LRB- to_TO be_VB discussed_VBN more_RBR in_IN Section_NNP 7_CD -RRB-_-RRB- ._.
+A_DT survey_NN on_IN ZBDD_NN applications_NNS can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+More_RBR formally_RB ,_, a_DT BDD_NNP is_VBZ a_DT canonical_JJ directed_JJ acyclic_JJ graph_NN consisting_VBG of_IN one_CD source_NN node_NN ,_, multiple_JJ internal_JJ nodes_NNS ,_, and_CC two_CD sink_NN nodes_NNS sink-0_NN and_CC sink-1_NN ._.
+Nodes_NNS in_IN a_DT BDD_NNP are_VBP labeled_VBN ,_, and_CC they_PRP are_VBP ord_VBN
+ors_NNS for_IN support_NN checking_NN and_CC by_IN pushing_VBG the_DT support_NN constraints_NNS inside_IN the_DT ZBDD_NN manipulation_NN routines_NNS ._.
+This_DT provides_VBZ an_DT interesting_JJ alternative_NN to_TO popular_JJ structures_NNS such_JJ as_IN the_DT frequent_JJ pattern_NN tree_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, whose_WP$ variants_NNS have_VBP previously_RB been_VBN proposed_VBN as_IN an_DT effective_JJ contrast_NN mining_NN method_NN -LRB-_-LRB- 3_CD ,_, 12_CD -RRB-_-RRB- ._.
+Furthermore_RB ,_, our_PRP$ approach_NN is_VBZ quite_RB general_JJ ,_, in_IN the_DT sense_NN that_IN it_PRP is_VBZ adaptable_JJ to_TO a_DT range_NN of_IN other_JJ mining_NN
+empty_JJ itemsets_NNS -LRB-_-LRB- -LCB-_-LRB- ∅_NN -RCB-_-RRB- -RRB-_-RRB- ._.
+Basic_JJ set_NN operations_NNS for_IN ZBDDs_NNS which_WDT will_MD be_VB used_VBN in_IN our_PRP$ algorithm_NN include_VBP set-union_NN -LRB-_-LRB- A_NN S_NN Z_NN B_NN -RRB-_-RRB- ,_, set-difference_NN -LRB-_-LRB- A_NN \_NN B_NN -RRB-_-RRB- ,_, and_CC set-intersection_NN -LRB-_-LRB- A_NN T_NN Z_NN B_NN -RRB-_-RRB- ._.
+They_PRP have_VBP been_VBN defined_VBN in_IN =_JJ -_: =[_NN 23_CD ,_, 26_CD -RRB-_-RRB- -_: =_JJ -_: and_CC are_VBP polynomial_JJ in_IN the_DT number_NN of_IN nodes_NNS in_IN the_DT ZBDD_NN ._.
+They_PRP are_VBP listed_VBN in_IN Table_NNP 2_CD ._.
+Example_NN 1_CD ._.
+The_DT possible_JJ ZBDD_NN encodings_NNS for_IN set_NN -LCB-_-LRB- -LCB-_-LRB- a_DT ,_, b_NN ,_, c_NN ,_, e_LS -RCB-_-RRB- ,_, -LCB-_-LRB- a_DT ,_, b_NN ,_, d_NN ,_, e_LS -RCB-_-RRB- ,_, -LCB-_-LRB- b_NN ,_, c_NN ,_, d_NN -RCB-_-RRB- -RCB-_-RRB- are_VBP shown_VBN in_IN Fig_NN .2_NN ._.
+Fig_NN .2_NN -LRB-_-LRB- a_DT -RRB-_-RRB-
+aph_VB based_VBN data_NNS structure_NN which_WDT allow_VBP efficient_JJ representation_NN and_CC manipulation_NN of_IN boolean_FW formulae_FW ,_, and_CC they_PRP have_VBP proved_VBN extremely_RB effective_JJ in_IN diverse_JJ fields_NNS of_IN computer_NN science_NN ,_, such_JJ as_IN SAT_NNP solvers_VBZ =_JJ -_: =[_NN 7_CD ,_, 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, VLSI_NN and_CC reliability_NN -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+ZBDDs_NNS are_VBP an_DT important_JJ variation_NN of_IN binary_JJ decision_NN diagrams_NNS and_CC are_VBP particularly_RB appropriate_JJ for_IN compactly_RB representing_VBG sparse_JJ data_NNS ._.
+Challenges_NNS :_: A_DT key_JJ focus_NN of_IN our_PRP$ study_NN
+s_NN or_CC to_TO redistribute_VB to_TO lists_NNS ,_, requires_VBZ prior_JJ specific_JJ permission_NN and\/or_CC a_DT fee_NN ._.
+KDD_NNP '_POS 06_CD ,_, August_NNP 20_CD --_: 23_CD ,_, 2006_CD ,_, Philadelphia_NNP ,_, Pennsylvania_NNP ,_, USA_NNP ._.
+Copyright_NN 2006_CD ACM_NNP 1-59593-339-5_CD \/_: 06\/0008_CD ..._: $_$ 5.00_CD ._.
+-LRB-_-LRB- ZBDDs_NNS -RRB-_-RRB- =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: as_IN the_DT core_NN data_NNS structure_NN ._.
+Binary_JJ decision_NN diagrams_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- are_VBP a_DT graph_NN based_VBN data_NNS structure_NN which_WDT allow_VBP efficient_JJ representation_NN and_CC manipulation_NN of_IN boolean_FW formulae_FW ,_, and_CC they_PRP have_VBP proved_VBN extremely_RB eff_NN
+nclude_NN -LCB-_-LRB- a_DT ,_, e_LS -RCB-_-RRB- ,_, -LCB-_-LRB- i_LS -RCB-_-RRB- ,_, -LCB-_-LRB- c_NN ,_, h_NN -RCB-_-RRB- ._.
+Emerging_VBG patterns_NNS have_VBP proved_VBN to_TO be_VB very_RB useful_JJ for_IN building_VBG accurate_JJ classifiers_NNS ,_, as_RB well_RB as_IN providing_VBG intuitive_JJ descriptions_NNS of_IN sharp_JJ differences_NNS between_IN classes_NNS of_IN data_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP have_VBP also_RB been_VBN used_VBN for_IN bioinformatics_NNS applications_NNS ,_, such_JJ as_IN understanding_NN leukemia_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Indeed_RB ,_, their_PRP$ popularity_NN is_VBZ evidenced_VBN by_IN the_DT fact_NN that_IN over_IN 50_CD papers_NNS have_VBP so_RB far_RB been_VBN published_VBN in_IN th_DT
+h_NN allow_VBP efficient_JJ representation_NN and_CC manipulation_NN of_IN boolean_FW formulae_FW ,_, and_CC they_PRP have_VBP proved_VBN extremely_RB effective_JJ in_IN diverse_JJ fields_NNS of_IN computer_NN science_NN ,_, such_JJ as_IN SAT_NNP solvers_VBZ -LRB-_-LRB- 7_CD ,_, 2_CD -RRB-_-RRB- ,_, VLSI_NN and_CC reliability_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+ZBDDs_NNS are_VBP an_DT important_JJ variation_NN of_IN binary_JJ decision_NN diagrams_NNS and_CC are_VBP particularly_RB appropriate_JJ for_IN compactly_RB representing_VBG sparse_JJ data_NNS ._.
+Challenges_NNS :_: A_DT key_JJ focus_NN of_IN our_PRP$ study_NN is_VBZ the_DT mining_NN of_IN contrasts_VBZ
+higher_JJR positions_NNS in_IN the_DT structure_NN ._.
+A_DT number_NN of_IN works_NNS have_VBP investigated_VBN various_JJ variable_JJ orderings_NNS ._.
+One_CD approach_NN is_VBZ based_VBN on_IN heuristics_NNS and_CC find_VB the_DT appropriate_JJ ordering_VBG before_IN the_DT BDD_NNP is_VBZ constructed_VBN =_JJ -_: =[_NN 13_CD ,_, 1_CD ,_, 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Another_DT approach_NN decides_VBZ an_DT ordering_VBG initially_RB ,_, and_CC allows_VBZ the_DT variables_NNS to_TO be_VB permuted_VBN during_IN the_DT construction_NN of_IN the_DT BDD_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+The_DT latter_JJ approach_NN is_VBZ usually_RB more_RBR effective_JJ than_IN the_DT former_JJ but_CC it_PRP
+to_TO the_DT disjunctive_JJ emerging_VBG patterns_NNS presented_VBN here_RB ,_, which_WDT are_VBP a_DT conjunction_NN of_IN disjunctions_NNS on_IN attribute_NN values_NNS ._.
+Several_JJ papers_NNS have_VBP examined_VBN the_DT computation_NN of_IN empty_JJ regions_NNS or_CC `_`` holes_NNS '_'' in_IN datasets_NN =_JJ -_: =[_NN 11_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT contiguous_JJ disjunctive_JJ emerging_VBG pattern_NN with_IN β_NN =_JJ 0_CD corresponds_VBZ to_TO a_DT hole_NN in_IN Dn_NNP ._.
+Recent_JJ work_NN have_VBP examined_VBN mining_NN of_IN closed_JJ patterns_NNS from_IN high_JJ dimensional_JJ datasets_NNS using_VBG row_NN ,_, instead_RB of_IN column_NN -LRB-_-LRB- ite_NN
+isjunctive_JJ emerging_VBG pattern_NN with_IN β_NN =_JJ 0_CD corresponds_VBZ to_TO a_DT hole_NN in_IN Dn_NNP ._.
+Recent_JJ work_NN have_VBP examined_VBN mining_NN of_IN closed_JJ patterns_NNS from_IN high_JJ dimensional_JJ datasets_NNS using_VBG row_NN ,_, instead_RB of_IN column_NN -LRB-_-LRB- item_NN -RRB-_-RRB- ,_, enumeration_NN =_JJ -_: =[_NN 28_CD ,_, 30_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT emphasis_NN on_IN closed_JJ patterns_NNS ,_, as_IN opposed_VBN to_TO minimal_JJ patterns_NNS means_VBZ this_DT is_VBZ not_RB directly_RB applicable_JJ for_IN finding_VBG minimal_JJ contrasts_VBZ ._.
+However_RB ,_, alternative_JJ variants_NNS of_IN emerging_VBG patterns_NNS based_VBN on_IN closu_NN
+to_TO the_DT disjunctive_JJ emerging_VBG patterns_NNS presented_VBN here_RB ,_, which_WDT are_VBP a_DT conjunction_NN of_IN disjunctions_NNS on_IN attribute_NN values_NNS ._.
+Several_JJ papers_NNS have_VBP examined_VBN the_DT computation_NN of_IN empty_JJ regions_NNS or_CC `_`` holes_NNS '_'' in_IN datasets_NN =_JJ -_: =[_NN 11_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT contiguous_JJ disjunctive_JJ emerging_VBG pattern_NN with_IN β_NN =_JJ 0_CD corresponds_VBZ to_TO a_DT hole_NN in_IN Dn_NNP ._.
+Recent_JJ work_NN have_VBP examined_VBN mining_NN of_IN closed_JJ patterns_NNS from_IN high_JJ dimensional_JJ datasets_NNS using_VBG row_NN ,_, instead_RB of_IN column_NN -LRB-_-LRB- ite_NN
+ersals_NNS are_VBP identified_VBN in_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Emerging_VBG patterns_NNS are_VBP closely_RB related_JJ to_TO association_NN rules_NNS with_IN large_JJ confidence_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- and_CC also_RB to_TO work_VB on_IN detecting_VBG group_NN differences_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+Quantitative_JJ association_NN rules_NNS =_JJ -_: =[_NN 36_CD -RRB-_-RRB- -_: =_JJ -_: aim_NN to_TO find_VB contiguous_JJ regions_NNS containing_VBG a_DT minimum_JJ number_NN of_IN points_NNS ._.
+Moreover_RB ,_, contiguous_JJ disjunctive_JJ emerging_VBG patterns_NNS are_VBP similar_JJ to_TO quantitative_JJ association_NN rules_NNS having_VBG high_JJ confidence_NN and_CC a_DT sin_NN
+isjunctive_JJ emerging_VBG pattern_NN with_IN β_NN =_JJ 0_CD corresponds_VBZ to_TO a_DT hole_NN in_IN Dn_NNP ._.
+Recent_JJ work_NN have_VBP examined_VBN mining_NN of_IN closed_JJ patterns_NNS from_IN high_JJ dimensional_JJ datasets_NNS using_VBG row_NN ,_, instead_RB of_IN column_NN -LRB-_-LRB- item_NN -RRB-_-RRB- ,_, enumeration_NN =_JJ -_: =[_NN 28_CD ,_, 30_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT emphasis_NN on_IN closed_JJ patterns_NNS ,_, as_IN opposed_VBN to_TO minimal_JJ patterns_NNS means_VBZ this_DT is_VBZ not_RB directly_RB applicable_JJ for_IN finding_VBG minimal_JJ contrasts_VBZ ._.
+However_RB ,_, alternative_JJ variants_NNS of_IN emerging_VBG patterns_NNS based_VBN on_IN closu_NN
+points_NNS ._.
+Moreover_RB ,_, contiguous_JJ disjunctive_JJ emerging_VBG patterns_NNS are_VBP similar_JJ to_TO quantitative_JJ association_NN rules_NNS having_VBG high_JJ confidence_NN and_CC a_DT single_JJ item_NN consequent_JJ ._.
+Another_DT related_JJ notion_NN is_VBZ version_NN spaces_NNS =_JJ -_: =[_NN 27_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT correspond_VBP to_TO emerging_VBG patterns_NNS with_IN constraints_NNS α_NN =_JJ 1_CD and_CC β_NN =_JJ 0_CD ._.
+A_DT disjunctive_JJ version_NN space_NN -LRB-_-LRB- 33_CD -RRB-_-RRB- is_VBZ a_DT disjunction_NN of_IN version_NN spaces_NNS ,_, as_IN opposed_VBN to_TO the_DT disjunctive_JJ emerging_VBG patterns_NNS presented_VBN
+on_IN routines_NNS ._.
+This_DT provides_VBZ an_DT interesting_JJ alternative_NN to_TO popular_JJ structures_NNS such_JJ as_IN the_DT frequent_JJ pattern_NN tree_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, whose_WP$ variants_NNS have_VBP previously_RB been_VBN proposed_VBN as_IN an_DT effective_JJ contrast_NN mining_NN method_NN =_JJ -_: =[_NN 3_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Furthermore_RB ,_, our_PRP$ approach_NN is_VBZ quite_RB general_JJ ,_, in_IN the_DT sense_NN that_IN it_PRP is_VBZ adaptable_JJ to_TO a_DT range_NN of_IN other_JJ mining_NN objectives_NNS ._.
+•_RB We_PRP present_VBP an_DT algorithm_NN that_WDT uses_VBZ ZBDDs_NNS to_TO mine_VB a_DT wellknown_JJ ,_, simple_JJ type_NN of_IN con_NN
+higher_JJR positions_NNS in_IN the_DT structure_NN ._.
+A_DT number_NN of_IN works_NNS have_VBP investigated_VBN various_JJ variable_JJ orderings_NNS ._.
+One_CD approach_NN is_VBZ based_VBN on_IN heuristics_NNS and_CC find_VB the_DT appropriate_JJ ordering_VBG before_IN the_DT BDD_NNP is_VBZ constructed_VBN =_JJ -_: =[_NN 13_CD ,_, 1_CD ,_, 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Another_DT approach_NN decides_VBZ an_DT ordering_VBG initially_RB ,_, and_CC allows_VBZ the_DT variables_NNS to_TO be_VB permuted_VBN during_IN the_DT construction_NN of_IN the_DT BDD_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+The_DT latter_JJ approach_NN is_VBZ usually_RB more_RBR effective_JJ than_IN the_DT former_JJ but_CC it_PRP
+isjunctive_JJ emerging_VBG pattern_NN with_IN β_NN =_JJ 0_CD corresponds_VBZ to_TO a_DT hole_NN in_IN Dn_NNP ._.
+Recent_JJ work_NN have_VBP examined_VBN mining_NN of_IN closed_JJ patterns_NNS from_IN high_JJ dimensional_JJ datasets_NNS using_VBG row_NN ,_, instead_RB of_IN column_NN -LRB-_-LRB- item_NN -RRB-_-RRB- ,_, enumeration_NN =_JJ -_: =[_NN 28_CD ,_, 30_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT emphasis_NN on_IN closed_JJ patterns_NNS ,_, as_IN opposed_VBN to_TO minimal_JJ patterns_NNS means_VBZ this_DT is_VBZ not_RB directly_RB applicable_JJ for_IN finding_VBG minimal_JJ contrasts_VBZ ._.
+However_RB ,_, alternative_JJ variants_NNS of_IN emerging_VBG patterns_NNS based_VBN on_IN closu_NN
+provably_RB efficient_JJ counterpart_NN operations_NNS exist_VBP for_IN fp-trees_NNS ._.
+7_CD ._.
+RELATED_NNS WORK_VBP We_PRP have_VBP already_RB referred_VBN to_TO the_DT general_JJ work_NN in_IN the_DT area_NN of_IN ZBDD_NNP in_IN Section_NNP 3.1_CD ._.
+However_RB ,_, we_PRP are_VBP only_RB aware_JJ of_IN one_CD paper_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: where_WRB ZBDD_NN is_VBZ used_VBN for_IN pattern_NN mining_NN ._.
+They_PRP propose_VBP a_DT method_NN for_IN finding_VBG frequent_JJ patterns_NNS ._.
+Their_PRP$ approach_NN is_VBZ different_JJ from_IN ours_PRP in_IN the_DT sense_NN that_IN they_PRP explicitly_RB store_VBP the_DT support_NN information_NN by_IN co_NN
+hing_NN characteristics_NNS and_CC contrasts_VBZ between_IN classes_NNS of_IN data_NNS is_VBZ an_DT important_JJ objective_NN in_IN data_NN mining_NN ._.
+Such_JJ patterns_NNS are_VBP very_RB useful_JJ for_IN human_JJ experts_NNS and_CC can_MD also_RB be_VB used_VBN to_TO build_VB powerful_JJ classifiers_NNS =_JJ -_: =[_NN 18_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT new_JJ technique_NN for_IN mining_NN contrast_NN patterns_NNS in_IN high_JJ dimensional_JJ space_NN ._.
+It_PRP is_VBZ able_JJ to_TO mine_VB both_DT simple_NN contrasts_VBZ ,_, such_JJ as_IN emerging_VBG patterns_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC also_RB more_RBR complex_JJ types_NNS
+mission_NN and\/or_CC a_DT fee_NN ._.
+KDD_NNP '_POS 06_CD ,_, August_NNP 20_CD --_: 23_CD ,_, 2006_CD ,_, Philadelphia_NNP ,_, Pennsylvania_NNP ,_, USA_NNP ._.
+Copyright_NN 2006_CD ACM_NNP 1-59593-339-5_CD \/_: 06\/0008_CD ..._: $_$ 5.00_CD ._.
+-LRB-_-LRB- ZBDDs_NNS -RRB-_-RRB- -LRB-_-LRB- 23_CD -RRB-_-RRB- as_IN the_DT core_NN data_NNS structure_NN ._.
+Binary_JJ decision_NN diagrams_VBZ =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: are_VBP a_DT graph_NN based_VBN data_NNS structure_NN which_WDT allow_VBP efficient_JJ representation_NN and_CC manipulation_NN of_IN boolean_FW formulae_FW ,_, and_CC they_PRP have_VBP proved_VBN extremely_RB effective_JJ in_IN diverse_JJ fields_NNS of_IN computer_NN science_NN ,_, such_JJ as_IN SAT_NNP
+rging_NN patterns_NNS and_CC hypergraph_NN transversals_NNS are_VBP identified_VBN in_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Emerging_VBG patterns_NNS are_VBP closely_RB related_JJ to_TO association_NN rules_NNS with_IN large_JJ confidence_NN -LRB-_-LRB- 37_CD -RRB-_-RRB- and_CC also_RB to_TO work_VB on_IN detecting_VBG group_NN differences_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Quantitative_JJ association_NN rules_NNS -LRB-_-LRB- 36_CD -RRB-_-RRB- aim_NN to_TO find_VB contiguous_JJ regions_NNS containing_VBG a_DT minimum_JJ number_NN of_IN points_NNS ._.
+Moreover_RB ,_, contiguous_JJ disjunctive_JJ emerging_VBG patterns_NNS are_VBP similar_JJ to_TO quantitative_JJ association_NN r_NN
+and_CC find_VB the_DT appropriate_JJ ordering_VBG before_IN the_DT BDD_NNP is_VBZ constructed_VBN -LRB-_-LRB- 13_CD ,_, 1_CD ,_, 32_CD -RRB-_-RRB- ._.
+Another_DT approach_NN decides_VBZ an_DT ordering_VBG initially_RB ,_, and_CC allows_VBZ the_DT variables_NNS to_TO be_VB permuted_VBN during_IN the_DT construction_NN of_IN the_DT BDD_NN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT latter_JJ approach_NN is_VBZ usually_RB more_RBR effective_JJ than_IN the_DT former_JJ but_CC it_PRP may_MD be_VB longer_JJR to_TO compute_VB ._.
+In_IN this_DT paper_NN ,_, we_PRP employ_VBP heuristics_NNS which_WDT are_VBP based_VBN on_IN the_DT frequency_NN of_IN the_DT variables_NNS in_IN the_DT input_NN data_NNS
+hing_NN characteristics_NNS and_CC contrasts_VBZ between_IN classes_NNS of_IN data_NNS is_VBZ an_DT important_JJ objective_NN in_IN data_NN mining_NN ._.
+Such_JJ patterns_NNS are_VBP very_RB useful_JJ for_IN human_JJ experts_NNS and_CC can_MD also_RB be_VB used_VBN to_TO build_VB powerful_JJ classifiers_NNS =_JJ -_: =[_NN 18_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT new_JJ technique_NN for_IN mining_NN contrast_NN patterns_NNS in_IN high_JJ dimensional_JJ space_NN ._.
+It_PRP is_VBZ able_JJ to_TO mine_VB both_DT simple_NN contrasts_VBZ ,_, such_JJ as_IN emerging_VBG patterns_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC also_RB more_RBR complex_JJ types_NNS
+as_IN understanding_VBG leukemia_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Indeed_RB ,_, their_PRP$ popularity_NN is_VBZ evidenced_VBN by_IN the_DT fact_NN that_IN over_IN 50_CD papers_NNS have_VBP so_RB far_RB been_VBN published_VBN in_IN the_DT area_NN ._.
+Techniques_NNS for_IN finding_VBG emerging_VBG patterns_NNS can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 9_CD ,_, 12_CD ,_, 4_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+3_LS ._.
+MINING_NNP EMERGING_NNP PATTERNS_NNP USING_NNP ZERO-SUPPRESSED_NNP BDDS_NNP In_IN this_DT section_NN ,_, we_PRP will_MD describe_VB our_PRP$ approach_NN for_IN mining_NN emerging_VBG patterns_NNS using_VBG Zero-suppressed_JJ Binary_JJ Decision_NN Diagrams_NNS -LRB-_-LRB- ZBDDs_NNS -RRB-_-RRB- ._.
+Firstly_RB ,_, we_PRP
+we_PRP assess_VBP the_DT performance_NN of_IN our_PRP$ techniques_NNS for_IN mining_NN emerging_VBG patterns_NNS and_CC disjunctive_JJ emerging_VBG patterns_NNS ._.
+Our_PRP$ algorithms_NNS were_VBD implemented_VBN in_IN C_NN +_CC +_CC using_VBG the_DT ZBDD_NN library_NN functions_NNS in_IN the_DT CUDD_NNP package_NN =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_JJ -_: and_CC EXTRA_JJ library_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+All_DT experiments_NNS were_VBD conducted_VBN on_IN a_DT IBM_NNP eServer_FW pSeries_FW 650_CD -LRB-_-LRB- eight_CD POWER4_NN +_CC 1.45_CD GHz_NNP CPU_NNP ,_, 16_CD GB_NNP RAM_NNP -RRB-_-RRB- running_VBG AIX_NNP 5L_NN 5.2_CD with_IN a_DT cpu-time_JJ limit_NN 100,000_CD seconds_NNS ._.
+The_DT ordering_VBG used_VBN
+higher_JJR positions_NNS in_IN the_DT structure_NN ._.
+A_DT number_NN of_IN works_NNS have_VBP investigated_VBN various_JJ variable_JJ orderings_NNS ._.
+One_CD approach_NN is_VBZ based_VBN on_IN heuristics_NNS and_CC find_VB the_DT appropriate_JJ ordering_VBG before_IN the_DT BDD_NNP is_VBZ constructed_VBN =_JJ -_: =[_NN 13_CD ,_, 1_CD ,_, 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Another_DT approach_NN decides_VBZ an_DT ordering_VBG initially_RB ,_, and_CC allows_VBZ the_DT variables_NNS to_TO be_VB permuted_VBN during_IN the_DT construction_NN of_IN the_DT BDD_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+The_DT latter_JJ approach_NN is_VBZ usually_RB more_RBR effective_JJ than_IN the_DT former_JJ but_CC it_PRP
+points_NNS ._.
+Moreover_RB ,_, contiguous_JJ disjunctive_JJ emerging_VBG patterns_NNS are_VBP similar_JJ to_TO quantitative_JJ association_NN rules_NNS having_VBG high_JJ confidence_NN and_CC a_DT single_JJ item_NN consequent_JJ ._.
+Another_DT related_JJ notion_NN is_VBZ version_NN spaces_NNS =_JJ -_: =[_NN 27_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT correspond_VBP to_TO emerging_VBG patterns_NNS with_IN constraints_NNS α_NN =_JJ 1_CD and_CC β_NN =_JJ 0_CD ._.
+A_DT disjunctive_JJ version_NN space_NN -LRB-_-LRB- 33_CD -RRB-_-RRB- is_VBZ a_DT disjunction_NN of_IN version_NN spaces_NNS ,_, as_IN opposed_VBN to_TO the_DT disjunctive_JJ emerging_VBG patterns_NNS presented_VBN
+EPs_NNS ,_, and_CC maximal_JJ contig_NN ._.
+disj_NN ._.
+EPs_NNS using_VBG ZBDD_NN w.r.t_NN minimum_JJ support_NN in_IN Dp_NN ,_, lung_NN cancer_NN dataset_NN -LRB-_-LRB- 230_CD items_NNS ;_: β_NN =_JJ 0_CD -RRB-_-RRB- sdicting_VBG the_DT likelihood_NN of_IN diseases_NNS such_JJ as_IN leukemia_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- using_VBG gene_NN expression_NN data_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT recent_JJ method_NN for_IN mining_NN emerging_VBG patterns_NNS with_IN zero_CD support_NN in_IN the_DT negative_JJ dataset_NN appears_VBZ in_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, based_VBN on_IN modifications_NNS to_TO fp-tree_JJ -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+Fp-trees_NNS have_VBP also_RB been_VBN used_VBN as_IN the_DT basis_NN for_IN mining_NN c_NN
+ld_IN powerful_JJ classifiers_NNS -LRB-_-LRB- 18_CD ,_, 20_CD -RRB-_-RRB- ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT new_JJ technique_NN for_IN mining_NN contrast_NN patterns_NNS in_IN high_JJ dimensional_JJ space_NN ._.
+It_PRP is_VBZ able_JJ to_TO mine_VB both_DT simple_NN contrasts_VBZ ,_, such_JJ as_IN emerging_VBG patterns_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: and_CC also_RB more_RBR complex_JJ types_NNS of_IN contrasts_VBZ ,_, whose_WP$ descriptions_NNS allow_VBP disjunction_NN ,_, as_RB well_RB as_IN conjunction_NN ._.
+A_DT novel_JJ feature_NN of_IN our_PRP$ contrast_NN mining_NN technique_NN is_VBZ that_IN it_PRP is_VBZ based_VBN on_IN the_DT use_NN of_IN Zero-Suppres_NNS
+ng_NN high_JJ confidence_NN and_CC a_DT single_JJ item_NN consequent_JJ ._.
+Another_DT related_JJ notion_NN is_VBZ version_NN spaces_NNS -LRB-_-LRB- 27_CD ,_, 15_CD -RRB-_-RRB- ,_, which_WDT correspond_VBP to_TO emerging_VBG patterns_NNS with_IN constraints_NNS α_NN =_JJ 1_CD and_CC β_NN =_JJ 0_CD ._.
+A_DT disjunctive_JJ version_NN space_NN =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT disjunction_NN of_IN version_NN spaces_NNS ,_, as_IN opposed_VBN to_TO the_DT disjunctive_JJ emerging_VBG patterns_NNS presented_VBN here_RB ,_, which_WDT are_VBP a_DT conjunction_NN of_IN disjunctions_NNS on_IN attribute_NN values_NNS ._.
+Several_JJ papers_NNS have_VBP examined_VBN the_DT compu_NN
+imensional_JJ data_NNS ,_, such_JJ as_IN gene_NN expression_NN datasets_NNS ,_, where_WRB the_DT number_NN of_IN dimensions_NNS can_MD be_VB in_IN the_DT thousands_NNS and_CC the_DT search_NN space_NN is_VBZ huge_JJ ._.
+Previous_JJ techniques_NNS for_IN mining_NN contrasts_VBZ in_IN such_JJ datasets_NNS ,_, e.g._FW =_JJ -_: =[_NN 12_CD ,_, 9_CD ,_, 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, have_VBP been_VBN unable_JJ to_TO handle_VB more_JJR than_IN about_IN 60_CD dimensions_NNS ._.
+Another_DT challenge_NN arises_VBZ when_WRB contrast_NN patterns_NNS are_VBP allowed_VBN to_TO be_VB expressed_VBN using_VBG disjunction_NN ,_, as_RB well_RB as_IN conjunction_NN ._.
+This_DT means_VBZ the_DT patter_NN
+negative_JJ dataset_NN appears_VBZ in_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, based_VBN on_IN modifications_NNS to_TO fp-tree_JJ -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+Fp-trees_NNS have_VBP also_RB been_VBN used_VBN as_IN the_DT basis_NN for_IN mining_NN contrasts_VBZ given_VBN other_JJ types_NNS of_IN constraints_NNS ,_, such_JJ as_IN risk_NN and_CC odds_NNS ratio_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Connections_NNP between_IN the_DT computation_NN of_IN certain_JJ kinds_NNS of_IN emerging_VBG patterns_NNS and_CC hypergraph_NN transversals_NNS are_VBP identified_VBN in_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Emerging_VBG patterns_NNS are_VBP closely_RB related_JJ to_TO association_NN rules_NNS with_IN large_JJ con_NN
+minimal_JJ patterns_NNS means_VBZ this_DT is_VBZ not_RB directly_RB applicable_JJ for_IN finding_VBG minimal_JJ contrasts_VBZ ._.
+However_RB ,_, alternative_JJ variants_NNS of_IN emerging_VBG patterns_NNS based_VBN on_IN closure_NN properties_NNS can_MD certainly_RB be_VB defined_VBN ,_, e.g._FW see_VBP =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN contrast_NN to_TO the_DT row_NN enumeration_NN work_NN ,_, our_PRP$ paper_NN seeks_VBZ to_TO investigate_VB the_DT limits_NNS of_IN column-wise_JJ mining_NN and_CC indeed_RB our_PRP$ results_NNS showed_VBD that_IN column-wise_JJ mining_NN of_IN contrasts_VBZ in_IN high_JJ dimensional_JJ datase_NN
+tions_NNS between_IN the_DT computation_NN of_IN certain_JJ kinds_NNS of_IN emerging_VBG patterns_NNS and_CC hypergraph_NN transversals_NNS are_VBP identified_VBN in_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Emerging_VBG patterns_NNS are_VBP closely_RB related_JJ to_TO association_NN rules_NNS with_IN large_JJ confidence_NN =_JJ -_: =[_NN 37_CD -RRB-_-RRB- -_: =_JJ -_: and_CC also_RB to_TO work_VB on_IN detecting_VBG group_NN differences_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+Quantitative_JJ association_NN rules_NNS -LRB-_-LRB- 36_CD -RRB-_-RRB- aim_NN to_TO find_VB contiguous_JJ regions_NNS containing_VBG a_DT minimum_JJ number_NN of_IN points_NNS ._.
+Moreover_RB ,_, contiguous_JJ disjunctive_JJ emergin_NN
+ps_NNS for_IN counting_VBG support_NN ,_, instead_RB of_IN storing_VBG support_NN information_NN inside_IN the_DT ZBDD_NNP ._.
+Emerging_VBG patterns_NNS were_VBD introduced_VBN in_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, and_CC have_VBP been_VBN successfully_RB used_VBN for_IN constructing_VBG highly_RB accurate_JJ classifiers_NNS =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN particular_JJ ,_, work_NN in_IN -LRB-_-LRB- 10_CD -RRB-_-RRB- have_VBP proposed_VBN a_DT strong_JJ EP-based_JJ classifier_NN using_VBG an_DT α_NN support_NN constraint_NN and_CC a_DT minimum_JJ growth_NN rate_NN constraint_NN ._.
+Moreover_RB ,_, emerging_VBG patterns_NNS have_VBP also_RB been_VBN used_VBN for_IN preMin_NN

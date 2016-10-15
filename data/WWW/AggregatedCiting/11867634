@@ -1,0 +1,109 @@
+Inverted_JJ index_NN compression_NN via_IN online_NN document_NN routing_VBG
+Modern_NNP search_NN engines_NNS are_VBP expected_VBN to_TO make_VB documents_NNS searchable_JJ shortly_RB after_IN they_PRP appear_VBP on_IN the_DT ever_RB changing_VBG Web_NN ._.
+To_TO satisfy_VB this_DT requirement_NN ,_, the_DT Web_NN is_VBZ frequently_RB crawled_VBN ._.
+Due_JJ to_TO the_DT sheer_JJ size_NN of_IN their_PRP$ indexes_NNS ,_, search_NN engines_NNS distribute_VBP the_DT crawled_VBN documents_NNS among_IN thousands_NNS of_IN servers_NNS in_IN a_DT scheme_NN called_VBN local_JJ index-partitioning_JJ ,_, such_JJ that_IN each_DT server_NN indexes_NNS only_RB several_JJ million_CD pages_NNS ._.
+To_TO ensure_VB documents_NNS from_IN the_DT same_JJ host_NN -LRB-_-LRB- e.g._FW ,_, www.nytimes.com_NN -RRB-_-RRB- are_VBP distributed_VBN uniformly_RB over_IN the_DT servers_NNS ,_, for_IN load_NN balancing_NN purposes_NNS ,_, random_JJ routing_VBG of_IN documents_NNS to_TO servers_NNS is_VBZ common_JJ ._.
+To_TO expedite_VB the_DT time_NN documents_NNS become_VBP searchable_JJ after_IN being_VBG crawled_VBN ,_, documents_NNS may_MD be_VB simply_RB appended_VBN to_TO the_DT existing_VBG index_NN partitions_NNS ._.
+However_RB ,_, indexing_NN by_IN merely_RB appending_VBG documents_NNS ,_, results_VBZ in_IN larger_JJR index_NN sizes_NNS since_IN document_NN reordering_NN for_IN index_NN compactness_NN is_VBZ no_DT longer_RBR performed_VBN ._.
+This_DT ,_, in_IN turn_NN ,_, degrades_VBZ search_NN query_NN processing_NN performance_NN which_WDT depends_VBZ heavily_RB on_IN index_NN sizes_NNS ._.
+A_DT possible_JJ way_NN to_TO balance_VB quick_JJ document_NN indexing_NN with_IN efficient_JJ query_NN processing_NN ,_, is_VBZ to_TO deploy_VB online_NN document_NN routing_VBG strategies_NNS that_WDT are_VBP designed_VBN to_TO reduce_VB index_NN sizes_NNS ._.
+This_DT work_NN considers_VBZ the_DT effects_NNS of_IN several_JJ online_JJ document_NN routing_VBG strategies_NNS on_IN the_DT aggregated_JJ partitioned_VBN index_NN size_NN ._.
+We_PRP show_VBP that_IN there_EX exists_VBZ a_DT tradeoff_NN between_IN the_DT compression_NN of_IN a_DT partitioned_VBN index_NN and_CC the_DT distribution_NN of_IN documents_NNS from_IN the_DT same_JJ host_NN across_IN the_DT index_NN partitions_NNS -LRB-_-LRB- i.e._FW ,_, host_NN distribution_NN -RRB-_-RRB- ._.
+We_PRP suggest_VBP and_CC evaluate_VBP several_JJ online_NN routing_VBG strategies_NNS with_IN regard_NN to_TO their_PRP$ compression_NN ,_, host_NN distribution_NN ,_, and_CC complexity_NN ._.
+In_IN particular_JJ ,_, we_PRP present_VBP a_DT term_NN based_VBN routing_VBG algorithm_NN which_WDT is_VBZ shown_VBN analytically_RB to_TO provide_VB better_JJR compression_NN results_NNS than_IN the_DT industry_NN standard_JJ random_JJ routing_VBG scheme_NN ._.
+In_IN addition_NN ,_, our_PRP$ algorithm_NN demonstrates_VBZ comparable_JJ compression_NN performance_NN and_CC host_NN distribution_NN while_IN having_VBG much_RB better_RB running_VBG time_NN complexity_NN than_IN other_JJ document_NN routing_VBG heuristics_NNS ._.
+Our_PRP$ findings_NNS are_VBP validated_VBN by_IN experimental_JJ evaluation_NN performed_VBN on_IN a_DT large_JJ benchmark_JJ collection_NN of_IN Web_NN pages_NNS ._.
+reviewing_VBG the_DT latter_JJ ._.
+dGap_NN encoding_NN techniques_NNS aim_VBP to_TO compress_VB a_DT sequence_NN of_IN integers_NNS ._.
+The_DT literature_NN contains_VBZ schemes_NNS that_WDT encode_VBP each_DT gap_NN individually_RB ,_, e.g._NNP Gamma_NNP ,_, Delta_NNP ,_, Golomb-Rice_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- and_CC Zeta_NNP =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: encodings_NNS ,_, as_RB well_RB as_IN schemes_NNS that_WDT encode_VBP certain_JJ blocks_NNS of_IN gaps_NNS ,_, e.g._FW PForDelta_FW -LRB-_-LRB- 22_CD ,_, 13_CD -RRB-_-RRB- and_CC Simple9_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Additionally_RB ,_, the_DT Interpolative_JJ Encoding_NN scheme_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- is_VBZ applied_VBN directly_RB on_IN the_DT docIds_FW rathe_FW
+weight_NN path_NN connecting_VBG all_PDT the_DT nodes_NNS ,_, assigning_VBG docIds_NNS accordingly_RB ._.
+This_DT is_VBZ equivalent_JJ to_TO the_DT NP-Hard_JJ traveling_VBG salesman_NN problem_NN -LRB-_-LRB- TSP_NN -RRB-_-RRB- ._.
+Several_JJ TSP_NN approximations_NNS were_VBD applied_VBN for_IN docId_NN assignment_NN in_IN =_JJ -_: =[_NN 16_CD ,_, 7_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, a_DT simple_JJ greedy_JJ nearest_IN neighbors_NNS -LRB-_-LRB- GNN_NN -RRB-_-RRB- approach_NN is_VBZ used_VBN to_TO add_VB one_CD edge_NN at_IN a_DT time_NN ._.
+To_TO reduce_VB the_DT computational_JJ load_NN ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- uses_VBZ singular_JJ value_NN decomposition_NN -LRB-_-LRB- SVD_NN -RRB-_-RRB- to_TO reduce_VB the_DT dimensionalit_NN
+Those_DT are_VBP simply_RB P+OH_NN and_CC N_NN ,_, respectively_RB ._.
+P_NN N_NN 3.2_CD Host-Distribution_NN Measure_NN We_PRP evaluate_VBP the_DT distribution_NN of_IN pages_NNS belonging_VBG to_TO Nh_NN hosts_NNS across_IN m_NN partitions_NNS using_VBG the_DT Chi_NNP squared_VBD -LRB-_-LRB- χ_NN 2_CD -RRB-_-RRB- distribution_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Let_NNP Nh_NNP ,_, i_FW denote_FW the_DT number_NN of_IN documents_NNS from_IN host_NN h_NN on_IN partition_NN i_FW ,_, and_CC denote_VB by_IN Ni_NN the_DT total_JJ number_NN of_IN documents_NNS on_IN partition_NN i._NN Also_RB ,_, let_VB ph_NN denote_VB the_DT proportion_NN of_IN the_DT documents_NNS belonging_VBG to_TO ho_VB
+allocates_VBZ documents_NNS to_TO nodes_NNS in_IN a_DT random_JJ fashion_NN by_IN hashing_VBG the_DT documents_NNS '_POS URLs_NNS to_TO yield_VB a_DT node_NN identifier_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Various_JJ other_JJ distribution_NN policies_NNS such_JJ as_IN round-robin_NN distribution_NN are_VBP also_RB possible_JJ =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+2.2_CD Inverted_NNP Index_NNP Compression_NNP Herewefocusonasingle_NNP nodeofalocal_JJ index-partitioning_JJ architecture_NN ._.
+We_PRP consider_VBP a_DT simplified_VBN model_NN of_IN an_DT inverted_JJ index_NN in_IN which_WDT the_DT postings_NNS list_NN of_IN term_NN t_NN holds_VBZ the_DT l_NN
+ing_VBG fewer_JJR bits_NNS per_IN posting_VBG ._.
+For_IN m_NN =_JJ 1000_CD ,_, Load_NN Balancing_NN beats_VBZ out_RP the_DT constrained_VBN 7_CD We_PRP note_VBP that_IN since_IN it_PRP was_VBD crawled_VBN almost_RB to_TO exhaustion_NN ,_, ._.
+gov2_NN is_VBZ very_RB ``_`` dense_JJ ''_'' and_CC includes_VBZ almost_RB all_DT relevant_JJ pages_NNS =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+versions_NNS of_IN the_DT Greedy_JJ and_CC Term-based_JJ routingschemes_NNS ,_, but_CC still_RB loses_VBZ to_TO the_DT unconstrained_JJ versions_NNS ._.
+The_DT Term-based_JJ algorithm_NN whose_WP$ curve_NN is_VBZ plotted_VBN in_IN Figure_NNP 1_CD is_VBZ based_VBN on_IN the_DT association_NN of_IN about_IN
+ompression_NN of_IN an_DT partitioned_VBN index_NN and_CC host_NN distribution_NN across_IN the_DT partitions_NNS ._.
+•_FW In_FW particular_JJ ,_, we_PRP present_VBP a_DT term-based_JJ routing_VBG algorithm_NN ._.
+Adhering_VBG to_TO a_DT simple_JJ document_NN generating_NN model_NN presented_VBN in_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP show_VBP analytically_RB that_IN the_DT algorithm_NN provides_VBZ better_JJR compression_NN results_NNS than_IN the_DT industry_NN standard_JJ random_JJ routing_VBG scheme_NN ._.
+In_IN addition_NN ,_, ouralgorithmdemonstratescomparable_JJ compression_NN performance_NN
+or_CC clustered_VBN term_NN occurrences_NNS ._.
+In_IN general_JJ ,_, the_DT docId_NN assignment_NN problem_NN seeks_VBZ a_DT permutation_NN of_IN the_DT the_DT documents_NNS that_WDT minimizes_VBZ the_DT invertedindex_NN size_NN underaspecific_JJ dGap_NN encoding_VBG scheme_NN ._.
+As_IN shown_VBN in_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, this_DT problem_NN is_VBZ NP-hard_JJ and_CC various_JJ heuristics_NNS are_VBP used_VBN to_TO provide_VB approximations_NNS ._.
+The_DT size_NN of_IN an_DT inverted-index_NN is_VBZ a_DT function_NN of_IN the_DT dGaps_NN ._.
+All_DT effective_JJ dGap_NN encoding_VBG techniques_NNS represent_VBP smaller_JJR
+s._VB The_DT literature_NN contains_VBZ schemes_NNS that_WDT encode_VBP each_DT gap_NN individually_RB ,_, e.g._NNP Gamma_NNP ,_, Delta_NNP ,_, Golomb-Rice_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- and_CC Zeta_NNP -LRB-_-LRB- 9_CD -RRB-_-RRB- encodings_NNS ,_, as_RB well_RB as_IN schemes_NNS that_WDT encode_VBP certain_JJ blocks_NNS of_IN gaps_NNS ,_, e.g._FW PForDelta_NN =_JJ -_: =[_NN 22_CD ,_, 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Simple9_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Additionally_RB ,_, the_DT Interpolative_JJ Encoding_NN scheme_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- is_VBZ applied_VBN directly_RB on_IN the_DT docIds_NN rather_RB than_IN their_PRP$ dGaps_NN ,_, and_CC works_VBZ well_RB for_IN clustered_VBN term_NN occurrences_NNS ._.
+In_IN general_JJ ,_, the_DT docId_NN a_DT
+algorithm_NN 's_POS objective_NN is_VBZ to_TO balance_VB the_DT cumulative_JJ cost_NN of_IN jobs_NNS assigned_VBN to_TO each_DT machine_NN ._.
+We_PRP may_MD think_VB of_IN a_DT job_NN j_NN as_IN a_DT vector_NN rj_NN =_JJ -LRB-_-LRB- rj_IN ,1_NNP ,_, rj_NNP ,2_NNP ,_, ..._: ,_, rj_NN ,_, m_NN -RRB-_-RRB- ,_, where_WRB rj_NN ,_, i_FW is_VBZ the_DT cost_NN of_IN job_NN j_NN on_IN machine_NN i_FW =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT major_JJ difference_NN between_IN the_DT document_NN routing_VBG problem_NN and_CC either_CC MTS_NN or_CC Load_NN Balancing_NN stems_VBZ from_IN the_DT fact_NN thatthecostassociated_VBD withappendingdocumentdtoindex_NN partition_NN j_NN dependson_NN thesequenceof_NN
+in_IN Section_NNP 7_CD ._.
+2_CD ._.
+RELATED_NNS WORK_VBP 2.1_CD Index_NNP Partitioning_NN The_DT sheer_JJ size_NN of_IN the_DT Web_NN ,_, the_DT enormous_JJ number_NN of_IN search_NN queries_NNS ,_, and_CC the_DT required_JJ low_JJ latency_NN ,_, enforce_VBP a_DT distributed_VBN inverted_JJ index_NN architecture_NN =_JJ -_: =[_NN 2_CD ,_, 4_CD ,_, 5_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO support_VB these_DT requirements_NNS ,_, both_CC distribution_NN and_CC replication_NN principles_NNS are_VBP applied_VBN ._.
+Replication_NN -LRB-_-LRB- also_RB known_VBN as_IN mirroring_NN -RRB-_-RRB- means_VBZ makingenoughidenticalcopies_FW ofthesystemsothattherequired_FW query_FW lo_FW
+art_NN by_IN briefly_NN reviewing_VBG the_DT latter_JJ ._.
+dGap_NN encoding_NN techniques_NNS aim_VBP to_TO compress_VB a_DT sequence_NN of_IN integers_NNS ._.
+The_DT literature_NN contains_VBZ schemes_NNS that_WDT encode_VBP each_DT gap_NN individually_RB ,_, e.g._NNP Gamma_NNP ,_, Delta_NNP ,_, Golomb-Rice_NNP =_SYM -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Zeta_NNP -LRB-_-LRB- 9_CD -RRB-_-RRB- encodings_NNS ,_, as_RB well_RB as_IN schemes_NNS that_WDT encode_VBP certain_JJ blocks_NNS of_IN gaps_NNS ,_, e.g._FW PForDelta_FW -LRB-_-LRB- 22_CD ,_, 13_CD -RRB-_-RRB- and_CC Simple9_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Additionally_RB ,_, the_DT Interpolative_JJ Encoding_NN scheme_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- is_VBZ applied_VBN directly_RB on_IN the_DT
+combines_VBZ k-scan_NN clustering_NN and_CC TSP_NN for_IN intra-cluster_JJ docId_NN assignment_NN is_VBZ proposed_VBN by_IN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+A_DT different_JJ approach_NN ,_, which_WDT is_VBZ both_DT highly_RB scalable_JJ and_CC highly_RB effective_JJ ,_, was_VBD proposed_VBN for_IN Web_NN collections_NNS in_IN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP assigns_VBZ docIds_NNS according_VBG to_TO the_DT lexicographically_RB sorted_VBN order_NN of_IN the_DT documents_NNS '_POS URLs_NNS ,_, utilizing_VBG the_DT fact_NN that_IN URL_NN similarity_NN is_VBZ a_DT strong_JJ indicator_NN of_IN document_NN similarity_NN ._.
+The_DT scheme_NN was_VBD found_VBN to_TO
+a_DT given_VBN distribution_NN ._.
+2.3_CD Online_NN Problems_NNS Online_NNP algorithms_NNS propose_VBP solutions_NNS to_TO problems_NNS where_WRB the_DT input_NN is_VBZ not_RB known_VBN in_IN advance_NN and_CC must_MD be_VB processed_VBN as_IN it_PRP arrives_VBZ in_IN a_DT sequential_JJ ``_`` online_JJ ''_'' fashion_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+At_IN first_JJ glance_NN ,_, the_DT document_NN routing_VBG problem_NN tackled_VBN in_IN this_DT paper_NN resembles_VBZ two_CD classical_JJ online_NN problems_NNS -_: the_DT Metrical_NNP Task_NNP System_NNP -LRB-_-LRB- MTS_NNP -RRB-_-RRB- and_CC the_DT Load_NN Balancing_NNP -LRB-_-LRB- a.k.a._NNP Job_NNP Scheduling_NNP -RRB-_-RRB- problems_NNS ._.
+effect_NN on_IN query_NN processing_NN throughput_NN ._.
+In_IN addition_NN to_TO the_DT direct_JJ reduction_NN in_IN memory_NN and_CC disk_NN space_NN ,_, more_RBR compact_JJ indexes_NNS lead_VBP to_TO savings_NNS in_IN data_NN transfers_NNS and_CC increase_VB the_DT hit_NN rate_NN of_IN memory_NN caches_NNS =_JJ -_: =[_NN 22_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Therefore_RB ,_, a_DT large_JJ body_NN of_IN work_NN has_VBZ focused_VBN on_IN index_NN compaction_NN and_CC compression_NN methods_NNS ._.
+The_DT structure_NN described_VBN above_IN leaves_NNS two_CD main_JJ degrees_NNS of_IN freedom_NN for_IN compression_NN optimization_NN ._.
+The_DT first_JJ is_VBZ t_NN
+from_IN all_DT servers_NNS are_VBP merged_VBN to_TO produce_VB the_DT final_JJ results_NNS ,_, which_WDT are_VBP returned_VBN to_TO the_DT user_NN ._.
+The_DT main_JJ data_NNS structure_NN used_VBN by_IN search_NN engines_NNS to_TO efficiently_RB map_VB queries_NNS to_TO Web_NN pages_NNS is_VBZ the_DT inverted_JJ index_NN =_JJ -_: =[_NN 2_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT inverted_JJ index_NN contains_VBZ a_DT postings_NNS list_NN for_IN each_DT unique_JJ term_NN appearing_VBG in_IN the_DT corpus_NN ._.
+The_DT postings_NNS list_NN of_IN a_DT term_NN consists_VBZ of_IN the_DT list_NN of_IN document_NN identifiers_NNS 1_CD -LRB-_-LRB- docIds_NN -RRB-_-RRB- containing_VBG it_PRP ,_, which_WDT are_VBP
+tains_NNS schemes_NNS that_WDT encode_VBP each_DT gap_NN individually_RB ,_, e.g._NNP Gamma_NNP ,_, Delta_NNP ,_, Golomb-Rice_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- and_CC Zeta_NNP -LRB-_-LRB- 9_CD -RRB-_-RRB- encodings_NNS ,_, as_RB well_RB as_IN schemes_NNS that_WDT encode_VBP certain_JJ blocks_NNS of_IN gaps_NNS ,_, e.g._FW PForDelta_FW -LRB-_-LRB- 22_CD ,_, 13_CD -RRB-_-RRB- and_CC Simple9_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Additionally_RB ,_, the_DT Interpolative_JJ Encoding_NN scheme_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- is_VBZ applied_VBN directly_RB on_IN the_DT docIds_NN rather_RB than_IN their_PRP$ dGaps_NN ,_, and_CC works_VBZ well_RB for_IN clustered_VBN term_NN occurrences_NNS ._.
+In_IN general_JJ ,_, the_DT docId_NN assignment_NN proble_NN
+ing_NN ._.
+In_IN yet_RB another_DT line_NN of_IN work_NN ,_, the_DT nodes_NNS of_IN G_NN are_VBP clustered_VBN according_VBG to_TO their_PRP$ similarity_NN and_CC close_JJ docIds_NNS are_VBP assigned_VBN to_TO the_DT nodes_NNS -LRB-_-LRB- documents_NNS -RRB-_-RRB- within_IN each_DT cluster_NN ._.
+A_DT top-down_JJ approach_NN is_VBZ used_VBN in_IN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB the_DT whole_JJ collection_NN is_VBZ recursively_RB split_VBN into_IN sub-collections_NNS ,_, inserting_VBG ``_`` similar_JJ ''_'' nodes_NNS into_IN the_DT same_JJ sub-collections_NNS ._.
+Then_RB ,_, the_DT sub-collections_NNS are_VBP merged_VBN into_IN an_DT ordered_VBN group_NN of_IN nodes_NNS ._.
+A_DT bo_NN
+Gamma_NNP ,_, Delta_NNP ,_, Golomb-Rice_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- and_CC Zeta_NNP -LRB-_-LRB- 9_CD -RRB-_-RRB- encodings_NNS ,_, as_RB well_RB as_IN schemes_NNS that_WDT encode_VBP certain_JJ blocks_NNS of_IN gaps_NNS ,_, e.g._FW PForDelta_FW -LRB-_-LRB- 22_CD ,_, 13_CD -RRB-_-RRB- and_CC Simple9_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Additionally_RB ,_, the_DT Interpolative_JJ Encoding_NN scheme_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ applied_VBN directly_RB on_IN the_DT docIds_NN rather_RB than_IN their_PRP$ dGaps_NN ,_, and_CC works_VBZ well_RB for_IN clustered_VBN term_NN occurrences_NNS ._.
+In_IN general_JJ ,_, the_DT docId_NN assignment_NN problem_NN seeks_VBZ a_DT permutation_NN of_IN the_DT the_DT documents_NNS that_WDT minimi_VBP
+ms._NNP Technically_NNP ,_, most_JJS works_NNS define_VBP a_DT graph_NN G_NN =_JJ -LRB-_-LRB- D_NN ,_, E_NN -RRB-_-RRB- ,_, where_WRB D_NN is_VBZ the_DT set_NN of_IN documents_NNS ,_, and_CC E_NN is_VBZ a_DT set_NN of_IN edges_NNS representing_VBG the_DT similarity_NN between_IN two_CD documents_NNS di_FW ,_, dj_IN ∈_NNP D._NNP One_CD line_NN of_IN work_NN started_VBN by_IN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: traverses_VBZ the_DT graph_NN G_NN to_TO findthe_VB maximal_JJ weight_NN path_NN connecting_VBG all_PDT the_DT nodes_NNS ,_, assigning_VBG docIds_NNS accordingly_RB ._.
+This_DT is_VBZ equivalent_JJ to_TO the_DT NP-Hard_JJ traveling_VBG salesman_NN problem_NN -LRB-_-LRB- TSP_NN -RRB-_-RRB- ._.
+Several_JJ TSP_NN approxima_NN
+it_PRP into_IN sub-collections_NNS ,_, inserting_VBG ``_`` similar_JJ ''_'' nodes_NNS into_IN the_DT same_JJ sub-collections_NNS ._.
+Then_RB ,_, the_DT sub-collections_NNS are_VBP merged_VBN into_IN an_DT ordered_VBN group_NN of_IN nodes_NNS ._.
+A_DT bottom-up_JJ approach_NN called_VBN k-scan_NN was_VBD proposed_VBN in_IN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT hybrid_NN method_NN which_WDT combines_VBZ k-scan_NN clustering_NN and_CC TSP_NN for_IN intra-cluster_JJ docId_NN assignment_NN is_VBZ proposed_VBN by_IN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+A_DT different_JJ approach_NN ,_, which_WDT is_VBZ both_DT highly_RB scalable_JJ and_CC highly_RB effective_JJ ,_, was_VBD proposed_VBN
+from_IN all_DT servers_NNS are_VBP merged_VBN to_TO produce_VB the_DT final_JJ results_NNS ,_, which_WDT are_VBP returned_VBN to_TO the_DT user_NN ._.
+The_DT main_JJ data_NNS structure_NN used_VBN by_IN search_NN engines_NNS to_TO efficiently_RB map_VB queries_NNS to_TO Web_NN pages_NNS is_VBZ the_DT inverted_JJ index_NN =_JJ -_: =[_NN 2_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT inverted_JJ index_NN contains_VBZ a_DT postings_NNS list_NN for_IN each_DT unique_JJ term_NN appearing_VBG in_IN the_DT corpus_NN ._.
+The_DT postings_NNS list_NN of_IN a_DT term_NN consists_VBZ of_IN the_DT list_NN of_IN document_NN identifiers_NNS 1_CD -LRB-_-LRB- docIds_NN -RRB-_-RRB- containing_VBG it_PRP ,_, which_WDT are_VBP
+in_IN Section_NNP 7_CD ._.
+2_CD ._.
+RELATED_NNS WORK_VBP 2.1_CD Index_NNP Partitioning_NN The_DT sheer_JJ size_NN of_IN the_DT Web_NN ,_, the_DT enormous_JJ number_NN of_IN search_NN queries_NNS ,_, and_CC the_DT required_JJ low_JJ latency_NN ,_, enforce_VBP a_DT distributed_VBN inverted_JJ index_NN architecture_NN =_JJ -_: =[_NN 2_CD ,_, 4_CD ,_, 5_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO support_VB these_DT requirements_NNS ,_, both_CC distribution_NN and_CC replication_NN principles_NNS are_VBP applied_VBN ._.
+Replication_NN -LRB-_-LRB- also_RB known_VBN as_IN mirroring_NN -RRB-_-RRB- means_VBZ makingenoughidenticalcopies_FW ofthesystemsothattherequired_FW query_FW lo_FW
+effect_NN on_IN query_NN processing_NN throughput_NN ._.
+In_IN addition_NN to_TO the_DT direct_JJ reduction_NN in_IN memory_NN and_CC disk_NN space_NN ,_, more_RBR compact_JJ indexes_NNS lead_VBP to_TO savings_NNS in_IN data_NN transfers_NNS and_CC increase_VB the_DT hit_NN rate_NN of_IN memory_NN caches_NNS =_JJ -_: =[_NN 22_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Therefore_RB ,_, a_DT large_JJ body_NN of_IN work_NN has_VBZ focused_VBN on_IN index_NN compaction_NN and_CC compression_NN methods_NNS ._.
+The_DT structure_NN described_VBN above_IN leaves_NNS two_CD main_JJ degrees_NNS of_IN freedom_NN for_IN compression_NN optimization_NN ._.
+The_DT first_JJ is_VBZ t_NN

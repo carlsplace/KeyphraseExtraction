@@ -1,0 +1,92 @@
+Netprobe_NNP :_: a_DT fast_JJ and_CC scalable_JJ system_NN for_IN fraud_NN detection_NN in_IN online_JJ auction_NN networks_NNS
+Given_VBN a_DT large_JJ online_JJ network_NN of_IN online_JJ auction_NN users_NNS and_CC their_PRP$ histories_NNS of_IN transactions_NNS ,_, how_WRB can_MD we_PRP spot_VB anomalies_NNS and_CC auction_NN fraud_NN ?_.
+This_DT paper_NN describes_VBZ the_DT design_NN and_CC implementation_NN of_IN NetProbe_NNP ,_, a_DT system_NN that_IN we_PRP propose_VBP for_IN solving_VBG this_DT problem_NN ._.
+NetProbe_NN models_NNS auction_NN users_NNS and_CC transactions_NNS as_IN a_DT Markov_NNP Random_NNP Field_NNP tuned_VBD to_TO detect_VB the_DT suspicious_JJ patterns_NNS that_IN fraudsters_NNS create_VBP ,_, and_CC employs_VBZ a_DT Belief_NN Propagation_NN mechanism_NN to_TO detect_VB likely_JJ fraudsters_NNS ._.
+Our_PRP$ experiments_NNS show_VBP that_IN NetProbe_NN is_VBZ both_CC efficient_JJ and_CC effective_JJ for_IN fraud_NN detection_NN ._.
+We_PRP report_VBP experiments_NNS on_IN synthetic_JJ graphs_NNS with_IN as_RB many_JJ as_IN 7,000_CD nodes_NNS and_CC 30,000_CD edges_NNS ,_, where_WRB NetProbe_NNP was_VBD able_JJ to_TO spot_VB fraudulent_JJ nodes_NNS with_IN over_IN 90_CD %_NN precision_NN and_CC recall_NN ,_, within_IN a_DT matter_NN of_IN seconds_NNS ._.
+We_PRP also_RB report_VBP experiments_NNS on_IN a_DT real_JJ dataset_NN crawled_VBD from_IN eBay_NNP ,_, with_IN nearly_RB 700,000_CD transactions_NNS between_IN more_JJR than_IN 66,000_CD users_NNS ,_, where_WRB NetProbe_NNP was_VBD highly_RB effective_JJ at_IN unearthing_VBG hidden_JJ networks_NNS of_IN fraudsters_NNS ,_, within_IN a_DT realistic_JJ response_NN time_NN of_IN about_IN 6_CD minutes_NNS ._.
+For_IN scenarios_NNS where_WRB the_DT underlying_VBG data_NNS is_VBZ dynamic_JJ in_IN nature_NN ,_, we_PRP propose_VBP IncrementalNetProbe_NNP ,_, which_WDT is_VBZ an_DT approximate_JJ ,_, but_CC fast_RB ,_, variant_NN of_IN NetProbe_NNP ._.
+Our_PRP$ experiments_NNS prove_VBP that_IN Incremental_NNP NetProbe_NNP executes_VBZ nearly_RB doubly_RB fast_JJ as_IN compared_VBN to_TO NetProbe_NNP ,_, while_IN retaining_VBG over_IN 99_CD %_NN of_IN its_PRP$ accuracy_NN ._.
+nd_NN to_TO show_VB faithful_JJ representations_NNS of_IN users_NNS '_POS reputation_NN ._.
+Despite_IN their_PRP$ limitations_NNS ,_, reputation_NN systems_NNS have_VBP had_VBN a_DT significant_JJ effect_NN on_IN how_WRB people_NNS buy_VB and_CC sell_VB ._.
+Melnik_NNP et_FW al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC Resnick_NNP et_FW al._FW =_SYM -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: conducted_VBN empirical_JJ studies_NNS which_WDT showed_VBD that_IN selling_VBG prices_NNS of_IN goods_NNS are_VBP positively_RB affected_VBN by_IN the_DT seller_NN 's_POS reputation_NN ,_, implying_VBG people_NNS feel_VBP more_RBR confident_JJ to_TO buy_VB from_IN trustworthy_JJ sources_NNS ._.
+In_IN summa_NN
+e_LS Web_NN graph_NN topology_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, Internet_NN topology_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, and_CC fast_JJ algorithms_NNS to_TO search_VB and_CC mine_VB for_IN specific_JJ ,_, or_CC frequent_JJ graph_NN patterns_NNS -LRB-_-LRB- e.g._FW ,_, gSpan_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, the_DT GraphMiner_NN system_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- and_CC related_JJ algorithms_NNS =_JJ -_: =[_NN 16_CD ,_, 23_CD ,_, 25_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+None_NN of_IN these_DT techniques_NNS focuses_VBZ on_IN a_DT systematic_JJ way_NN to_TO do_VB large-scale_JJ ,_, online_JJ auction_NN fraud_NN detection_NN ,_, which_WDT is_VBZ the_DT focus_NN of_IN our_PRP$ work_NN ._.
+3_LS ._.
+NetProbe_NNP :_: PROPOSED_VBN ALGORITHMS_NNS In_IN this_DT section_NN ,_, we_PRP present_VBP
+e_LS Web_NN graph_NN topology_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, Internet_NN topology_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, and_CC fast_JJ algorithms_NNS to_TO search_VB and_CC mine_VB for_IN specific_JJ ,_, or_CC frequent_JJ graph_NN patterns_NNS -LRB-_-LRB- e.g._FW ,_, gSpan_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, the_DT GraphMiner_NN system_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- and_CC related_JJ algorithms_NNS =_JJ -_: =[_NN 16_CD ,_, 23_CD ,_, 25_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+None_NN of_IN these_DT techniques_NNS focuses_VBZ on_IN a_DT systematic_JJ way_NN to_TO do_VB large-scale_JJ ,_, online_JJ auction_NN fraud_NN detection_NN ,_, which_WDT is_VBZ the_DT focus_NN of_IN our_PRP$ work_NN ._.
+3_LS ._.
+NetProbe_NNP :_: PROPOSED_VBN ALGORITHMS_NNS In_IN this_DT section_NN ,_, we_PRP present_VBP
+tation_NN techniques_NNS ._.
+Trust_NNP and_CC Authority_NNP Propagation_NN ._.
+Authority_NNP propagation_NN ,_, an_DT area_NN closely_RB related_JJ to_TO fraud_NN detection_NN ,_, has_VBZ been_VBN studied_VBN extensively_RB in_IN the_DT context_NN of_IN Web_NN search_NN ._.
+PageRank_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC HITS_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: treat_VB a_DT Web_NN page_NN as_IN ``_`` important_JJ ''_'' if_IN other_JJ ``_`` important_JJ ''_'' pages_NNS point_VBP to_TO it_PRP ._.
+In_IN effect_NN ,_, they_PRP propagate_VBP the_DT importance_NN of_IN pages_NNS over_IN hyperlinks_NNS connecting_VBG them_PRP ._.
+Trust_NNP propagation_NN was_VBD used_VBN by_IN TrustRank_NN -LRB-_-LRB- 9_CD -RRB-_-RRB-
+bases_NNS ._.
+None_NN of_IN these_DT techniques_NNS however_RB ,_, explicitly_RB focuses_VBZ on_IN fraud_NN detection_NN ._.
+Graph_NNP Mining_NNP :_: Remotely_RB related_JJ is_VBZ the_DT work_NN on_IN graph_NN mining_NN ,_, with_IN -LRB-_-LRB- fascinating_JJ -RRB-_-RRB- discoveries_NNS about_IN the_DT Web_NN graph_NN topology_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Internet_NN topology_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, and_CC fast_JJ algorithms_NNS to_TO search_VB and_CC mine_VB for_IN specific_JJ ,_, or_CC frequent_JJ graph_NN patterns_NNS -LRB-_-LRB- e.g._FW ,_, gSpan_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, the_DT GraphMiner_NN system_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- and_CC related_JJ algorithms_NNS -LRB-_-LRB- 16_CD ,_, 23_CD ,_, 25_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+None_NN of_IN th_DT
+hniques_NNS however_RB ,_, explicitly_RB focuses_VBZ on_IN fraud_NN detection_NN ._.
+Graph_NNP Mining_NNP :_: Remotely_RB related_JJ is_VBZ the_DT work_NN on_IN graph_NN mining_NN ,_, with_IN -LRB-_-LRB- fascinating_JJ -RRB-_-RRB- discoveries_NNS about_IN the_DT Web_NN graph_NN topology_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, Internet_NN topology_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC fast_JJ algorithms_NNS to_TO search_VB and_CC mine_VB for_IN specific_JJ ,_, or_CC frequent_JJ graph_NN patterns_NNS -LRB-_-LRB- e.g._FW ,_, gSpan_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, the_DT GraphMiner_NN system_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- and_CC related_JJ algorithms_NNS -LRB-_-LRB- 16_CD ,_, 23_CD ,_, 25_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+None_NN of_IN these_DT techniques_NNS focuses_VBZ o_NN
+tion_NN Fraud_NNP and_CC Reputation_NNP Systems_NNPS ._.
+Reputation_NN systems_NNS are_VBP used_VBN extensively_RB by_IN auction_NN sites_NNS to_TO prevent_VB fraud_NN ._.
+But_CC they_PRP are_VBP usually_RB very_RB simple_JJ and_CC can_MD be_VB easily_RB foiled_JJ ._.
+In_IN an_DT overview_NN ,_, Resnick_NNP et_FW al._FW =_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: summarized_VBN that_IN modern_JJ reputation_NN systems_NNS face_VBP many_JJ challenges_NNS which_WDT include_VBP the_DT difficulty_NN to_TO elicit_VB honest_JJ feedback_NN and_CC to_TO show_VB faithful_JJ representations_NNS of_IN users_NNS '_POS reputation_NN ._.
+Despite_IN their_PRP$ limitati_NNS
+distinguish_VB between_IN ``_`` good_JJ ''_'' and_CC ``_`` bad_JJ ''_'' sites_NNS -LRB-_-LRB- e._NN g_NN ,_, phishers_NNS ,_, sites_NNS with_IN adult_JJ conWWW_NN 2007_CD \/_: Track_NNP :_: Data_NNP Mining_NNP Session_NN :_: Mining_NNP in_IN Social_NNP Networks_NNP tent_NN ,_, etc_NN -RRB-_-RRB- ._.
+Also_RB related_JJ is_VBZ the_DT work_NN by_IN Neville_NNP et_FW al._FW =_SYM -_: =[_NN 14_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT aggregates_NNS features_NNS across_IN nodes_NNS in_IN a_DT graph_NN for_IN classification_NN of_IN movie_NN and_CC stock_NN databases_NNS ._.
+None_NN of_IN these_DT techniques_NNS however_RB ,_, explicitly_RB focuses_VBZ on_IN fraud_NN detection_NN ._.
+Graph_NNP Mining_NNP :_: Remotely_RB rel_NN
+on_IN graph_NN mining_NN ,_, with_IN -LRB-_-LRB- fascinating_JJ -RRB-_-RRB- discoveries_NNS about_IN the_DT Web_NN graph_NN topology_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, Internet_NN topology_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, and_CC fast_JJ algorithms_NNS to_TO search_VB and_CC mine_VB for_IN specific_JJ ,_, or_CC frequent_JJ graph_NN patterns_NNS -LRB-_-LRB- e.g._FW ,_, gSpan_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT GraphMiner_NN system_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- and_CC related_JJ algorithms_NNS -LRB-_-LRB- 16_CD ,_, 23_CD ,_, 25_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+None_NN of_IN these_DT techniques_NNS focuses_VBZ on_IN a_DT systematic_JJ way_NN to_TO do_VB large-scale_JJ ,_, online_JJ auction_NN fraud_NN detection_NN ,_, which_WDT is_VBZ the_DT focus_NN of_IN our_PRP$ wor_NN
+-LRB-_-LRB- 11_CD -RRB-_-RRB- treat_VB a_DT Web_NN page_NN as_IN ``_`` important_JJ ''_'' if_IN other_JJ ``_`` important_JJ ''_'' pages_NNS point_VBP to_TO it_PRP ._.
+In_IN effect_NN ,_, they_PRP propagate_VBP the_DT importance_NN of_IN pages_NNS over_IN hyperlinks_NNS connecting_VBG them_PRP ._.
+Trust_NNP propagation_NN was_VBD used_VBN by_IN TrustRank_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: to_TO detect_VB Web_NN spam_NN ._.
+Here_RB ,_, the_DT goal_NN was_VBD to_TO distinguish_VB between_IN ``_`` good_JJ ''_'' and_CC ``_`` bad_JJ ''_'' sites_NNS -LRB-_-LRB- e._NN g_NN ,_, phishers_NNS ,_, sites_NNS with_IN adult_JJ conWWW_NN 2007_CD \/_: Track_NNP :_: Data_NNP Mining_NNP Session_NN :_: Mining_NNP in_IN Social_NNP Networks_NNP tent_NN ,_, etc_NN -RRB-_-RRB- ._.
+worthy_JJ sources_NNS ._.
+In_IN summary_NN ,_, reputation_NN systems_NNS might_MD not_RB be_VB an_DT effective_JJ mechanism_NN to_TO prevent_VB fraud_NN because_IN fraudsters_NNS can_MD easily_RB trick_VB these_DT systems_NNS to_TO manipulating_VBG their_PRP$ own_JJ reputation_NN ._.
+Chua_NNP et_FW al._FW =_SYM -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP categorized_VBN auction_NN fraud_NN into_IN different_JJ types_NNS ,_, but_CC they_PRP did_VBD not_RB formulate_VB methods_NNS to_TO combat_VB them_PRP ._.
+They_PRP suggest_VBP that_IN an_DT effective_JJ approach_NN to_TO fight_VB auction_NN fraud_NN is_VBZ to_TO allow_VB law_NN enforcement_NN and_CC
+correct_JJ only_RB for_IN a_DT restricted_JJ class_NN of_IN MRFs_NNS ,_, has_VBZ been_VBN shown_VBN to_TO perform_VB extremely_RB well_RB for_IN 2_CD The_DT general_JJ MRF_NN model_NN is_VBZ much_RB more_RBR expressive_JJ than_IN discussed_VBN here_RB ._.
+For_IN a_DT more_RBR comprehensive_JJ discussion_NN ,_, see_VBP =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+203_CD Symbol_NNP Definition_NNP S_NNP set_NN of_IN possible_JJ states_NNS bi_NN -LRB-_-LRB- σ_NN -RRB-_-RRB- belief_NN of_IN node_NN i_FW in_FW state_NN σ_NN ψ_NN -LRB-_-LRB- i_FW ,_, j_NN -RRB-_-RRB- -LRB-_-LRB- i_LS ,_, j_NN -RRB-_-RRB- th_DT entry_NN of_IN the_DT Propagation_NN Matrix_NNP message_NN sent_VBN by_IN node_NN i_FW to_TO node_NN j_NN mij_NN Table_NNP 1_CD :_: Symbols_NNS and_CC definitio_NN
+terns_NNS of_IN interaction_NN employed_VBN by_IN fraudsters_NNS while_IN dealing_VBG with_IN other_JJ auction_NN users_NNS ._.
+To_TO this_DT end_NN ,_, we_PRP suggested_VBD a_DT fraud_NN detection_NN algorithm_NN by_IN identifying_VBG suspicious_JJ networks_NNS amongst_IN auction_NN site_NN users_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, the_DT experiments_NNS were_VBD reported_VBN over_IN a_DT tiny_JJ dataset_NN ,_, while_IN here_RB we_PRP report_VBP an_DT in-depth_JJ evaluation_NN over_IN large_JJ synthetic_JJ and_CC real_JJ datasets_NNS ,_, along_IN with_IN fast_JJ ,_, incremental_JJ computation_NN techniques_NNS ._.
+T_NN
+ent_NN and_CC auction_NN sites_NNS to_TO join_VB forces_NNS ,_, which_WDT unfortunately_RB can_MD be_VB costly_JJ from_IN both_CC monetary_JJ and_CC managerial_JJ perspectives_NNS ._.
+In_IN our_PRP$ previous_JJ work_NN ,_, we_PRP explored_VBD a_DT classification-based_JJ fraud_NN detection_NN scheme_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP extracted_VBD features_NNS from_IN auction_NN data_NNS to_TO capture_VB fluctuations_NNS in_IN sellers_NNS '_POS behaviors_NNS -LRB-_-LRB- e.g._FW ,_, selling_VBG numerous_JJ expensive_JJ items_NNS after_IN selling_VBG very_RB few_JJ cheap_JJ items_NNS -RRB-_-RRB- ._.
+This_DT method_NN ,_, though_IN promising_JJ ,_, warr_NN
+ast_RB ,_, attempts_NNS have_VBP been_VBN made_VBN to_TO help_VB people_NNS identify_VB potential_JJ fraudsters_NNS ._.
+How202_NN ever_RB ,_, most_JJS of_IN them_PRP are_VBP ``_`` common_JJ sense_NN ''_'' approaches_NNS ,_, recommended_VBN by_IN a_DT variety_NN of_IN authorities_NNS such_JJ as_IN newspapers_NNS articles_NNS =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, law_NN enforcement_NN agencies_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, or_CC even_RB from_IN auction_NN sites_NNS themselves_PRP -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+These_DT approaches_NNS usually_RB suggest_VBP that_IN people_NNS be_VB cautious_JJ at_IN their_PRP$ end_NN and_CC perform_VB background_NN checks_NNS of_IN sellers_NNS that_IN they_PRP wish_VBP
+h_NN millions_NNS of_IN dollars_NNS every_DT day_NN using_VBG these_DT virtual_JJ marketplaces_NNS ._.
+EBay_NN 1_CD ,_, the_DT world_NN 's_POS largest_JJS auction_NN site_NN ,_, reported_VBD a_DT third_JJ quarter_NN revenue_NN of_IN $_$ 1,449_CD billion_CD ,_, with_IN over_IN 212_CD million_CD registered_VBN users_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT figures_NNS represent_VBP a_DT 31_CD %_NN growth_NN in_IN revenue_NN and_CC 26_CD %_NN growth_NN in_IN the_DT number_NN of_IN registered_JJ users_NNS over_IN the_DT previous_JJ year_NN ._.
+Unfortunately_RB ,_, rapid_JJ commercial_JJ success_NN has_VBZ made_VBN auction_NN sites_NNS a_DT lucrative_JJ me_PRP
+nating_VBG -RRB-_-RRB- discoveries_NNS about_IN the_DT Web_NN graph_NN topology_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, Internet_NN topology_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, and_CC fast_JJ algorithms_NNS to_TO search_VB and_CC mine_VB for_IN specific_JJ ,_, or_CC frequent_JJ graph_NN patterns_NNS -LRB-_-LRB- e.g._FW ,_, gSpan_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, the_DT GraphMiner_NN system_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: and_CC related_JJ algorithms_NNS -LRB-_-LRB- 16_CD ,_, 23_CD ,_, 25_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+None_NN of_IN these_DT techniques_NNS focuses_VBZ on_IN a_DT systematic_JJ way_NN to_TO do_VB large-scale_JJ ,_, online_JJ auction_NN fraud_NN detection_NN ,_, which_WDT is_VBZ the_DT focus_NN of_IN our_PRP$ work_NN ._.
+3_LS ._.
+NetProbe_NNP :_: PROPOSED_NNP ALG_NNP
+e_LS Web_NN graph_NN topology_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, Internet_NN topology_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, and_CC fast_JJ algorithms_NNS to_TO search_VB and_CC mine_VB for_IN specific_JJ ,_, or_CC frequent_JJ graph_NN patterns_NNS -LRB-_-LRB- e.g._FW ,_, gSpan_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, the_DT GraphMiner_NN system_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- and_CC related_JJ algorithms_NNS =_JJ -_: =[_NN 16_CD ,_, 23_CD ,_, 25_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+None_NN of_IN these_DT techniques_NNS focuses_VBZ on_IN a_DT systematic_JJ way_NN to_TO do_VB large-scale_JJ ,_, online_JJ auction_NN fraud_NN detection_NN ,_, which_WDT is_VBZ the_DT focus_NN of_IN our_PRP$ work_NN ._.
+3_LS ._.
+NetProbe_NNP :_: PROPOSED_VBN ALGORITHMS_NNS In_IN this_DT section_NN ,_, we_PRP present_VBP
+emental_JJ computation_NN techniques_NNS ._.
+Trust_NNP and_CC Authority_NNP Propagation_NN ._.
+Authority_NNP propagation_NN ,_, an_DT area_NN closely_RB related_JJ to_TO fraud_NN detection_NN ,_, has_VBZ been_VBN studied_VBN extensively_RB in_IN the_DT context_NN of_IN Web_NN search_NN ._.
+PageRank_NN =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: and_CC HITS_NNS -LRB-_-LRB- 11_CD -RRB-_-RRB- treat_VB a_DT Web_NN page_NN as_IN ``_`` important_JJ ''_'' if_IN other_JJ ``_`` important_JJ ''_'' pages_NNS point_VBP to_TO it_PRP ._.
+In_IN effect_NN ,_, they_PRP propagate_VBP the_DT importance_NN of_IN pages_NNS over_IN hyperlinks_NNS connecting_VBG them_PRP ._.
+Trust_NNP propagation_NN was_VBD used_VBN by_IN
+distinguish_VB between_IN ``_`` good_JJ ''_'' and_CC ``_`` bad_JJ ''_'' sites_NNS -LRB-_-LRB- e._NN g_NN ,_, phishers_NNS ,_, sites_NNS with_IN adult_JJ conWWW_NN 2007_CD \/_: Track_NNP :_: Data_NNP Mining_NNP Session_NN :_: Mining_NNP in_IN Social_NNP Networks_NNP tent_NN ,_, etc_NN -RRB-_-RRB- ._.
+Also_RB related_JJ is_VBZ the_DT work_NN by_IN Neville_NNP et_FW al._FW =_SYM -_: =[_NN 14_CD ,_, 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT aggregates_NNS features_NNS across_IN nodes_NNS in_IN a_DT graph_NN for_IN classification_NN of_IN movie_NN and_CC stock_NN databases_NNS ._.
+None_NN of_IN these_DT techniques_NNS however_RB ,_, explicitly_RB focuses_VBZ on_IN fraud_NN detection_NN ._.
+Graph_NNP Mining_NNP :_: Remotely_RB rel_NN
+elicit_VB honest_JJ feedback_NN and_CC to_TO show_VB faithful_JJ representations_NNS of_IN users_NNS '_POS reputation_NN ._.
+Despite_IN their_PRP$ limitations_NNS ,_, reputation_NN systems_NNS have_VBP had_VBN a_DT significant_JJ effect_NN on_IN how_WRB people_NNS buy_VB and_CC sell_VB ._.
+Melnik_NNP et_FW al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Resnick_NNP et_FW al._FW -LRB-_-LRB- 18_CD -RRB-_-RRB- conducted_VBD empirical_JJ studies_NNS which_WDT showed_VBD that_IN selling_VBG prices_NNS of_IN goods_NNS are_VBP positively_RB affected_VBN by_IN the_DT seller_NN 's_POS reputation_NN ,_, implying_VBG people_NNS feel_VBP more_RBR confident_JJ to_TO buy_VB from_IN trust_NN

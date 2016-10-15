@@ -1,0 +1,136 @@
+A_DT generalized_JJ Co-HITS_NN algorithm_NN and_CC its_PRP$ application_NN to_TO bipartite_JJ graphs_NNS
+Recently_RB many_JJ data_NNS types_NNS arising_VBG from_IN data_NNS mining_NN and_CC Web_NN search_NN applications_NNS can_MD be_VB modeled_VBN as_IN bipartite_JJ graphs_NNS ._.
+Examples_NNS include_VBP queries_NNS and_CC URLs_NNS in_IN query_NN logs_NNS ,_, and_CC authors_NNS and_CC papers_NNS in_IN scientific_JJ literature_NN ._.
+However_RB ,_, one_CD of_IN the_DT issues_NNS is_VBZ that_IN previous_JJ algorithms_NNS only_RB consider_VBP the_DT content_NN and_CC link_NN information_NN from_IN one_CD side_NN of_IN the_DT bipartite_JJ graph_NN ._.
+There_EX is_VBZ a_DT lack_NN of_IN constraints_NNS to_TO make_VB sure_JJ the_DT final_JJ relevance_NN of_IN the_DT score_NN propagation_NN on_IN the_DT graph_NN ,_, as_IN there_EX are_VBP many_JJ noisy_JJ edges_NNS within_IN the_DT bipartite_JJ graph_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT novel_JJ and_CC general_JJ Co-HITS_NN algorithm_NN to_TO incorporate_VB the_DT bipartite_JJ graph_NN with_IN the_DT content_NN information_NN from_IN both_DT sides_NNS as_RB well_RB as_IN the_DT constraints_NNS of_IN relevance_NN ._.
+Moreover_RB ,_, we_PRP investigate_VBP the_DT algorithm_NN based_VBN on_IN two_CD frameworks_NNS ,_, including_VBG the_DT iterative_JJ and_CC the_DT regularization_NN frameworks_NNS ,_, and_CC illustrate_VBP the_DT generalized_JJ Co-HITS_NN algorithm_NN from_IN different_JJ views_NNS ._.
+For_IN the_DT iterative_JJ framework_NN ,_, it_PRP contains_VBZ HITS_NN and_CC personalized_VBD PageRank_NNP as_IN special_JJ cases_NNS ._.
+In_IN the_DT regularization_NN framework_NN ,_, we_PRP successfully_RB build_VBP a_DT connection_NN with_IN HITS_NN ,_, and_CC develop_VB a_DT new_JJ cost_NN function_NN to_TO consider_VB the_DT direct_JJ relationship_NN between_IN two_CD entity_NN sets_NNS ,_, which_WDT leads_VBZ to_TO a_DT significant_JJ improvement_NN over_IN the_DT baseline_NN method_NN ._.
+To_TO illustrate_VB our_PRP$ methodology_NN ,_, we_PRP apply_VBP the_DT Co-HITS_NN algorithm_NN ,_, with_IN many_JJ different_JJ settings_NNS ,_, to_TO the_DT application_NN of_IN query_NN suggestion_NN by_IN mining_VBG the_DT AOL_NNP query_NN log_NN data_NNS ._.
+Experimental_JJ results_NNS demonstrate_VBP that_IN CoRegu-0_NN .5_CD -LRB-_-LRB- i.e._FW ,_, a_DT model_NN of_IN the_DT regularization_NN framework_NN -RRB-_-RRB- achieves_VBZ the_DT best_JJS performance_NN with_IN consistent_JJ and_CC promising_JJ improvements_NNS ._.
+._.
+-LRB-_-LRB- 7_CD -RRB-_-RRB- propose_VBP a_DT method_NN to_TO learn_VB a_DT latent_JJ space_NN graph_NN from_IN multiple_JJ relationships_NNS between_IN objects_NNS ,_, and_CC then_RB regularize_VB the_DT smoothness_NN of_IN ranking_JJ scores_NNS over_IN the_DT latent_JJ graph_NN ._.
+More_RBR recently_RB ,_, Qin_NNP et_FW al._FW =_SYM -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: use_VB relational_JJ objects_NNS to_TO enhance_VB learning_NN to_TO rank_VB with_IN parameterized_JJ regularization_NN models_NNS ._.
+But_CC those_DT three_CD methods_NNS only_RB consider_VBP the_DT regularization_NN from_IN one_CD side_NN of_IN the_DT bipartite_JJ graph_NN or_CC within_IN a_DT
+W_NN =_JJ β_FW ·_FW W_NN vu_NN -LRB-_-LRB- -RRB-_-RRB- X_NN F_NN =_JJ Y_NN β_NN =_JJ -LRB-_-LRB- 1_CD −_NN λr_NN -RRB-_-RRB- \/_: λr_NN ,_, −_FW fj_FW 2_CD √_NN +_CC µ_FW djj_FW ∥_FW β_FW ·_NN W_NN uv_NN W_NN vv_NN -RRB-_-RRB- m_NN +_CC n_NN ∑_FW i_FW =_JJ 1_CD ∥_FW ∥_FW ∥_NN 0_CD fi_FW −_FW f_FW ∥_FW i_FW 2_CD -LRB-_-LRB- 12_CD -RRB-_-RRB- where_WRB X_NN and_CC Y_NN are_VBP the_DT score_NN vectors_NNS for_IN U_NN and_CC V_NN respectively_RB ._.
+Differentiating_VBG Eq_NN ._.
+-LRB-_-LRB- 12_CD -RRB-_-RRB- =_JJ -_: =[_NN 30_CD ,_, 32_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP have_VBP dR_FW ∣_FW dF_NN F_NN =_JJ F_NN ∗_NN =_JJ F_NN ∗_FW −_FW SF_NN ∗_NN +_CC µ_NN -LRB-_-LRB- F_NN ∗_FW −_FW F_NN 0_CD -RRB-_-RRB- =_JJ 0_CD ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- where_WRB S_NN =_JJ D_NN −_NN 1_CD 2_CD WD_FW −_FW 1_CD 2_CD ,_, then_RB Eq_NN ._.
+-LRB-_-LRB- 13_CD -RRB-_-RRB- can_MD be_VB transformed_VBN into_IN F_NN ∗_FW −_FW 1_CD 1_CD +_CC µ_NN SF_NN ∗_FW −_FW µ_NN 1_CD +_CC µ_NN F_NN 0_CD =_JJ 0_CD ._.
+-LRB-_-LRB- 14_CD -RRB-_-RRB- After_IN simplifying_VBG ,_, a_DT closed_VBN
+ries_NNS and_CC URLs_NNS ._.
+For_IN each_DT edge_NN -LRB-_-LRB- qi_NN ,_, dj_NN -RRB-_-RRB- ∈_NN E_NN we_PRP associate_VBP a_DT numeric_JJ weight_NN cij_NN ,_, known_VBN as_IN the_DT click_VBP frequency_NN ,_, that_WDT measures_VBZ the_DT number_NN of_IN times_NNS the_DT URL_NN dj_NN was_VBD clicked_VBN when_WRB shown_VBN in_IN response_NN to_TO the_DT query_NN =_JJ -_: =[_NN 5_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: from_IN the_DT query_JJ qi_NN to_TO the_DT URL_NN dj_NN is_VBZ defined_VBN by_IN normalizing_VBG the_DT click_VBP frequency_NN from_IN the_DT query_FW qi_FW as_IN w_NN uv_NN cij_NN ij_NN =_JJ ∑_FW j_FW ∈_FW V_NN c_NN ,_, while_IN the_DT transition_NN ij_NN probability_NN w_NN vu_NN ji_NN from_IN the_DT URL_NN dj_NN to_TO the_DT query_NN qi_IN
+vement_NN over_IN the_DT baseline_NN method_NN ._.
+To_TO illustrate_VB our_PRP$ methodology_NN ,_, we_PRP apply_VBP the_DT generalized_JJ Co-HITS_NN algorithm_NN with_IN different_JJ settings_NNS to_TO the_DT query_NN suggestion_NN task_NN using_VBG the_DT real-world_JJ AOL_NNP query_NN log_NN data_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Experimental_JJ results_NNS show_VBP that_IN the_DT CoRegu0_NN .5_CD -LRB-_-LRB- i.e._FW ,_, a_DT model_NN of_IN the_DT regularization_NN framework_NN -RRB-_-RRB- achieves_VBZ the_DT best_JJS performance_NN ,_, and_CC its_PRP$ improvements_NNS are_VBP consistent_JJ and_CC promising_JJ ._.
+In_IN a_DT nutshell_NN ,_, our_PRP$ majo_NN
+re_VB each_DT node_NN is_VBZ connected_VBN to_TO its_PRP$ k_NN nearest_IN neighbors_NNS under_IN the_DT transition_NN probability_NN measure_NN and_CC the_DT edges_NNS can_MD be_VB weighed_VBN by_IN the_DT transition_NN matrices_NNS ._.
+It_PRP has_VBZ been_VBN shown_VBN to_TO be_VB effective_JJ when_WRB k_NN =_JJ 10_CD in_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Then_RB ,_, the_DT matrix_NN ˆW_NN is_VBZ constructed_VBN with_IN maximum_NN 50,000_CD -LRB-_-LRB- 5_CD ,_, 000_CD ×_CD 10_CD -RRB-_-RRB- entries_NNS ._.
+After_IN normalization_NN ,_, we_PRP can_MD obtain_VB the_DT matrix_NN ˆ_FW S._FW Fortunately_RB ,_, the_DT matrix_NN is_VBZ usually_RB very_RB sparse_JJ ,_, and_CC the_DT complexity_NN ti_IN
+k_NN on_IN the_DT bipartite_JJ graph_NN ,_, which_WDT demonstrates_VBZ certain_JJ advantages_NNS comparing_VBG with_IN the_DT traditional_JJ approaches_NNS based_VBN on_IN the_DT content_NN information_NN ._.
+Many_JJ link_NN analysis_NN methods_NNS have_VBP been_VBN proposed_VBN ,_, such_JJ as_IN HITS_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: and_CC PageRank_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, to_TO capture_VB some_DT semantic_JJ relations_NNS within_IN the_DT bipartite_JJ graph_NN ._.
+The_DT problem_NN we_PRP address_VBP is_VBZ how_WRB to_TO utilize_VB and_CC leverage_NN both_CC the_DT graph_NN and_CC content_NN information_NN ,_, so_RB as_IN to_TO improve_VB the_DT pre_JJ
+that_IN it_PRP is_VBZ very_RB essential_JJ and_CC promising_JJ to_TO consider_VB the_DT double-sided_JJ regularization_NN framework_NN for_IN the_DT bipartite_JJ graph_NN ._.
+6_CD ._.
+RELATED_NNS WORK_VBP The_DT work_NN is_VBZ related_JJ to_TO the_DT category_NN of_IN link_NN analysis_NN methods_NNS ._.
+In_IN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT authors_NNS have_VBP tried_VBN to_TO model_VB a_DT unified_JJ framework_NN for_IN link_NN analysis_NN ,_, which_WDT includes_VBZ the_DT two_CD popular_JJ ranking_JJ algorithms_NNS HITS_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC PageRank_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+Several_JJ normalized_VBD ranking_JJ algorithms_NNS are_VBP studied_VBN
+W_NN =_JJ β_FW ·_FW W_NN vu_NN -LRB-_-LRB- -RRB-_-RRB- X_NN F_NN =_JJ Y_NN β_NN =_JJ -LRB-_-LRB- 1_CD −_NN λr_NN -RRB-_-RRB- \/_: λr_NN ,_, −_FW fj_FW 2_CD √_NN +_CC µ_FW djj_FW ∥_FW β_FW ·_NN W_NN uv_NN W_NN vv_NN -RRB-_-RRB- m_NN +_CC n_NN ∑_FW i_FW =_JJ 1_CD ∥_FW ∥_FW ∥_NN 0_CD fi_FW −_FW f_FW ∥_FW i_FW 2_CD -LRB-_-LRB- 12_CD -RRB-_-RRB- where_WRB X_NN and_CC Y_NN are_VBP the_DT score_NN vectors_NNS for_IN U_NN and_CC V_NN respectively_RB ._.
+Differentiating_VBG Eq_NN ._.
+-LRB-_-LRB- 12_CD -RRB-_-RRB- =_JJ -_: =[_NN 30_CD ,_, 32_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP have_VBP dR_FW ∣_FW dF_NN F_NN =_JJ F_NN ∗_NN =_JJ F_NN ∗_FW −_FW SF_NN ∗_NN +_CC µ_NN -LRB-_-LRB- F_NN ∗_FW −_FW F_NN 0_CD -RRB-_-RRB- =_JJ 0_CD ,_, -LRB-_-LRB- 13_CD -RRB-_-RRB- where_WRB S_NN =_JJ D_NN −_NN 1_CD 2_CD WD_FW −_FW 1_CD 2_CD ,_, then_RB Eq_NN ._.
+-LRB-_-LRB- 13_CD -RRB-_-RRB- can_MD be_VB transformed_VBN into_IN F_NN ∗_FW −_FW 1_CD 1_CD +_CC µ_NN SF_NN ∗_FW −_FW µ_NN 1_CD +_CC µ_NN F_NN 0_CD =_JJ 0_CD ._.
+-LRB-_-LRB- 14_CD -RRB-_-RRB- After_IN simplifying_VBG ,_, a_DT closed_VBN
+ntent_JJ information_NN ._.
+For_IN a_DT given_VBN query_NN q_NN ,_, the_DT relevance_NN scores_NNS of_IN the_DT entities_NNS can_MD be_VB calculated_VBN using_VBG a_DT text_NN relevance_NN function_NN f_SYM ,_, such_JJ as_IN the_DT vector_NN space_NN model_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- and_CC the_DT statistical_JJ language_NN model_NN =_JJ -_: =[_NN 23_CD ,_, 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT initial_JJ relevance_NN scores_NNS x_NN 0_CD i_LS and_CC y_NN 0_CD j_NN are_VBP respectively_RB defined_VBN by_IN x_NN 0_CD i_LS =_JJ f_FW -LRB-_-LRB- q_NN ,_, ui_NN -RRB-_-RRB- ,_, and_CC y_NN 0_CD j_NN =_JJ f_FW -LRB-_-LRB- q_NN ,_, vj_NN -RRB-_-RRB- for_IN ui_NN and_CC vj_NN ._.
+3_LS ._.
+GENERALIZED_VBN CO-HITS_JJ ALGORITHM_NN Given_IN a_DT query_FW q_FW and_CC the_DT above_JJ informat_NN
+ntent_JJ information_NN ._.
+For_IN a_DT given_VBN query_NN q_NN ,_, the_DT relevance_NN scores_NNS of_IN the_DT entities_NNS can_MD be_VB calculated_VBN using_VBG a_DT text_NN relevance_NN function_NN f_SYM ,_, such_JJ as_IN the_DT vector_NN space_NN model_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- and_CC the_DT statistical_JJ language_NN model_NN =_JJ -_: =[_NN 23_CD ,_, 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT initial_JJ relevance_NN scores_NNS x_NN 0_CD i_LS and_CC y_NN 0_CD j_NN are_VBP respectively_RB defined_VBN by_IN x_NN 0_CD i_LS =_JJ f_FW -LRB-_-LRB- q_NN ,_, ui_NN -RRB-_-RRB- ,_, and_CC y_NN 0_CD j_NN =_JJ f_FW -LRB-_-LRB- q_NN ,_, vj_NN -RRB-_-RRB- for_IN ui_NN and_CC vj_NN ._.
+3_LS ._.
+GENERALIZED_VBN CO-HITS_JJ ALGORITHM_NN Given_IN a_DT query_FW q_FW and_CC the_DT above_JJ informat_NN
+ion_NN can_MD be_VB reduced_VBN to_TO be_VB linear_JJ with_IN the_DT number_NN of_IN nonzero_JJ matrix_NN elements_NNS ._.
+4.2_CD Statistical_JJ Language_NN Model_NNP Using_VBG language_NN models_NNS for_IN information_NN retrieval_NN has_VBZ been_VBN studied_VBN extensively_RB in_IN recent_JJ years_NNS =_JJ -_: =[_NN 23_CD ,_, 27_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO determine_VB the_DT probability_NN of_IN a_DT query_NN given_VBN a_DT document_NN ,_, we_PRP infer_VBP a_DT document_NN model_NN θd_NN for_IN each_DT document_NN in_IN a_DT collection_NN ._.
+With_IN query_FW q_FW as_IN input_NN ,_, retrieved_VBN documents_NNS are_VBP ranked_VBN based_VBN on_IN the_DT probabili_NN
+ext_NN search_NN and_CC authority_NN ranking_NN ._.
+In_IN addition_NN ,_, PopRank_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- is_VBZ developed_VBN to_TO extend_VB PageRank_NNP models_NNS to_TO integrate_VB heterogenous_JJ relationships_NNS between_IN objects_NNS ._.
+Another_DT approach_NN suggested_VBN by_IN Minkov_NNP et_FW al._FW =_SYM -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ been_VBN used_VBN to_TO improve_VB an_DT initial_JJ ranking_NN on_IN graph_NN walks_VBZ in_IN entity-relation_JJ networks_NNS ._.
+However_RB ,_, those_DT methods_NNS does_VBZ not_RB make_VB full_JJ use_NN of_IN the_DT content_NN and_CC graph_NN information_NN as_IN they_PRP treat_VBP the_DT content_NN an_DT
+s_NNS proposed_VBN to_TO refine_VB the_DT initial_JJ ranking_NN scores_NNS ._.
+Kurland_NNP and_CC Lee_NNP performed_VBD re-ranking_NN based_VBN on_IN centrality_NN within_IN graphs_NNS ,_, through_IN PageRank-inspired_JJ algorithm_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC HITS-style_JJ cluster-based_JJ approach_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Zhang_NNP et_FW al._FW -LRB-_-LRB- 29_CD -RRB-_-RRB- proposed_VBD a_DT similar_JJ method_NN to_TO improve_VB Web_NN search_NN results_NNS based_VBN on_IN a_DT linear_JJ combination_NN of_IN results_NNS from_IN text_NN search_NN and_CC authority_NN ranking_NN ._.
+In_IN addition_NN ,_, PopRank_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- is_VBZ developed_VBN to_TO e_SYM
+anking_NN scores_NNS using_VBG the_DT language_NN model_NN ,_, extract_VBP the_DT compact_JJ bipartite_JJ subgraph_NN ,_, and_CC perform_VB the_DT Co-HITS_NN algorithm_NN ._.
+To_TO implement_VB the_DT Co-HITS_NN algorithm_NN ,_, we_PRP employ_VBP a_DT sparse_JJ matrix_NN package_NN ,_, i.e._FW ,_, CSparse_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, to_TO solve_VB the_DT sparse_JJ matrix_NN inversion_NN efficiently_RB ._.
+To_TO deploy_VB the_DT efficient_JJ implementations_NNS of_IN our_PRP$ scheme_NN ,_, all_DT of_IN the_DT other_JJ algorithms_NNS used_VBN in_IN the_DT study_NN are_VBP programmed_VBN in_IN the_DT C_NN #_# language_NN ._.
+We_PRP have_VBP impl_VBN
+from_IN search_NN engines_NNS is_VBZ in_IN the_DT form_NN of_IN a_DT query-URL_JJ bipartite_JJ graph_NN -LRB-_-LRB- i.e._FW ,_, click_VB graph_NN -RRB-_-RRB- -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+Based_VBN on_IN the_DT click_VBP graph_NN ,_, many_JJ research_NN efforts_NNS in_IN query_NN log_NN analysis_NN have_VBP been_VBN devoted_VBN to_TO query_VB clustering_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, query_NN suggestion_NN -LRB-_-LRB- 11_CD ,_, 16_CD -RRB-_-RRB- and_CC query_NN classification_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Craswell_NNP and_CC Szummer_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- used_VBN click_VBP graph_NN random_JJ walks_VBZ for_IN relevance_NN rank_NN in_IN image_NN search_NN ._.
+Li_NNP et_FW al._FW -LRB-_-LRB- 15_CD -RRB-_-RRB- presented_VBD the_DT use_NN of_IN clickgraphs_FW i_FW
+the_DT same_JJ information_NN :_: UserID_NN ,_, Query_NNP ,_, Time_NNP ,_, Rank_NNP and_CC ClickURL_NNP ._.
+This_DT dataset_NN is_VBZ the_DT raw_JJ data_NNS recorded_VBN by_IN the_DT search_NN engine_NN ,_, and_CC contains_VBZ a_DT lot_NN of_IN noises_NNS ._.
+Hence_RB ,_, we_PRP conduct_VBP a_DT similar_JJ method_NN employed_VBN in_IN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: to_TO clean_VB the_DT raw_JJ data_NNS ._.
+We_PRP clean_VBP the_DT data_NNS by_IN removing_VBG the_DT queries_NNS that_WDT appear_VBP less_JJR than_IN 2_CD times_NNS ,_, and_CC by_IN combining_VBG the_DT near-duplicated_JJ queries_NNS which_WDT have_VBP the_DT same_JJ terms_NNS without_IN the_DT stopwords_NNS and_CC punctu_NNS
+er-based_JJ approach_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+Zhang_NNP et_FW al._FW -LRB-_-LRB- 29_CD -RRB-_-RRB- proposed_VBD a_DT similar_JJ method_NN to_TO improve_VB Web_NN search_NN results_NNS based_VBN on_IN a_DT linear_JJ combination_NN of_IN results_NNS from_IN text_NN search_NN and_CC authority_NN ranking_NN ._.
+In_IN addition_NN ,_, PopRank_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ developed_VBN to_TO extend_VB PageRank_NNP models_NNS to_TO integrate_VB heterogenous_JJ relationships_NNS between_IN objects_NNS ._.
+Another_DT approach_NN suggested_VBN by_IN Minkov_NNP et_FW al._FW -LRB-_-LRB- 18_CD -RRB-_-RRB- has_VBZ been_VBN used_VBN to_TO improve_VB an_DT initial_JJ ranking_NN on_IN graph_NN w_NN
+is_VBZ difficult_JJ to_TO evaluate_VB the_DT quality_NN of_IN query_FW similarity\/relevance_FW rankings_NNS due_JJ to_TO the_DT scarcity_NN of_IN data_NNS that_WDT can_MD be_VB examined_VBN publicly_RB ._.
+For_IN an_DT automatic_JJ evaluation_NN ,_, we_PRP utilize_VBP the_DT same_JJ method_NN used_VBN in_IN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: to_TO evaluate_VB the_DT similarity_NN of_IN retrieved_VBN queries_NNS ,_, but_CC engage_VBP the_DT Google_NNP Directory_NNP 2_CD instead_RB of_IN the_DT Open_NNP Directory_NNP Project_NNP 3_CD ._.
+When_WRB a_DT user_NN types_NNS a_DT query_NN in_IN Google_NNP Directory_NNP ,_, besides_IN site_NN matches_NNS ,_, we_PRP ca_MD
+s_NN in_IN the_DT form_NN of_IN a_DT query-URL_JJ bipartite_JJ graph_NN -LRB-_-LRB- i.e._FW ,_, click_VB graph_NN -RRB-_-RRB- -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+Based_VBN on_IN the_DT click_VBP graph_NN ,_, many_JJ research_NN efforts_NNS in_IN query_NN log_NN analysis_NN have_VBP been_VBN devoted_VBN to_TO query_VB clustering_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, query_NN suggestion_NN =_JJ -_: =[_NN 11_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: and_CC query_NN classification_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Craswell_NNP and_CC Szummer_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- used_VBN click_VBP graph_NN random_JJ walks_VBZ for_IN relevance_NN rank_NN in_IN image_NN search_NN ._.
+Li_NNP et_FW al._FW -LRB-_-LRB- 15_CD -RRB-_-RRB- presented_VBD the_DT use_NN of_IN clickgraphs_NNS in_IN improving_VBG query_NN intent_NN cl_NN
+of_IN the_DT content_NN and_CC graph_NN information_NN as_IN they_PRP treat_VBP the_DT content_NN and_CC graph_NN information_NN individually_RB ._.
+The_DT regularization_NN framework_NN we_PRP proposed_VBD is_VBZ closely_RB related_JJ to_TO graph-based_JJ semi-supervised_JJ learning_NN =_JJ -_: =[_NN 32_CD ,_, 30_CD ,_, 25_CD ,_, 31_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT usually_RB assume_VBP label_NN smoothness_NN over_IN the_DT graph_NN ._.
+Mei_FW et_FW al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- extend_VBP the_DT graph_NN harmonic_JJ function_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- to_TO multiple_JJ classes_NNS ._.
+However_RB ,_, our_PRP$ work_NN is_VBZ different_JJ from_IN theirs_PRP ,_, as_IN their_PRP$ tasks_NNS are_VBP main_JJ
+ng_NN -RRB-_-RRB- ,_, while_IN we_PRP focus_VBP on_IN query-dependent_JJ ranking_NN problems_NNS ._.
+With_IN the_DT advance_NN of_IN machine_NN learning_NN ,_, graph-based_JJ models_NNS have_VBP been_VBN widely_RB and_CC successively_RB used_VBN in_IN information_NN retrieval_NN and_CC data_NN mining_NN ._.
+Diaz_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: use_NN score_NN regularization_NN to_TO adjust_VB adhoc_JJ retrieval_NN scores_NNS from_IN an_DT initial_JJ retrieval_NN ._.
+Deng_NNP et_FW al._FW -LRB-_-LRB- 7_CD -RRB-_-RRB- propose_VBP a_DT method_NN to_TO learn_VB a_DT latent_JJ space_NN graph_NN from_IN multiple_JJ relationships_NNS between_IN objects_NNS ,_, and_CC th_DT
+ure_NN 5_CD :_: Comparison_NN of_IN six_CD models_NNS ._.
+a_DT graph_NN was_VBD proposed_VBN to_TO refine_VB the_DT initial_JJ ranking_NN scores_NNS ._.
+Kurland_NNP and_CC Lee_NNP performed_VBD re-ranking_NN based_VBN on_IN centrality_NN within_IN graphs_NNS ,_, through_IN PageRank-inspired_JJ algorithm_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: and_CC HITS-style_JJ cluster-based_JJ approach_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+Zhang_NNP et_FW al._FW -LRB-_-LRB- 29_CD -RRB-_-RRB- proposed_VBD a_DT similar_JJ method_NN to_TO improve_VB Web_NN search_NN results_NNS based_VBN on_IN a_DT linear_JJ combination_NN of_IN results_NNS from_IN text_NN search_NN and_CC authority_NN ranking_NN ._.
+e_LS the_DT initial_JJ ranking_NN scores_NNS ._.
+Kurland_NNP and_CC Lee_NNP performed_VBD re-ranking_NN based_VBN on_IN centrality_NN within_IN graphs_NNS ,_, through_IN PageRank-inspired_JJ algorithm_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- and_CC HITS-style_JJ cluster-based_JJ approach_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+Zhang_NNP et_FW al._FW =_SYM -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT similar_JJ method_NN to_TO improve_VB Web_NN search_NN results_NNS based_VBN on_IN a_DT linear_JJ combination_NN of_IN results_NNS from_IN text_NN search_NN and_CC authority_NN ranking_NN ._.
+In_IN addition_NN ,_, PopRank_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- is_VBZ developed_VBN to_TO extend_VB PageRank_NN mode_NN
+ample_JJ ,_, although_IN there_EX is_VBZ no_DT direct_JJ edges_NNS between_IN two_CD queries_NNS ,_, the_DT edges_NNS of_IN the_DT bipartite_JJ graph_NN between_IN queries_NNS and_CC URLs_NNS may_MD lead_VB to_TO hidden_JJ edges_NNS within_IN the_DT query_NN set_VBN as_IN shown_VBN in_IN Fig._NNP 1_CD ._.
+Previous_JJ work_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: shows_VBZ that_IN there_EX is_VBZ a_DT natural_JJ random_JJ walk_NN on_IN the_DT bipartite_JJ graph_NN ,_, which_WDT demonstrates_VBZ certain_JJ advantages_NNS comparing_VBG with_IN the_DT traditional_JJ approaches_NNS based_VBN on_IN the_DT content_NN information_NN ._.
+Many_JJ link_NN analysis_NN
+tion_NN is_VBZ to_TO find_VB semantically_RB similar_JJ queries_NNS for_IN the_DT given_VBN query_FW q._FW Traditionally_RB ,_, we_PRP can_MD identify_VB initial_JJ similar_JJ queries_NNS based_VBN on_IN the_DT content_NN information_NN ,_, then_RB utilize_VB HITS_NN or_CC personalized_JJ PageRank_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: for_IN further_JJ mutual_JJ reinforcement_NN on_IN the_DT bipartite_JJ graph_NN ._.
+However_RB ,_, one_CD of_IN the_DT issues_NNS is_VBZ that_IN there_EX is_VBZ a_DT lack_NN of_IN constraints_NNS to_TO make_VB sure_JJ the_DT final_JJ relevance_NN of_IN the_DT score_NN propagation_NN on_IN the_DT graph_NN ,_, as_IN t_NN
+of_IN the_DT content_NN and_CC graph_NN information_NN as_IN they_PRP treat_VBP the_DT content_NN and_CC graph_NN information_NN individually_RB ._.
+The_DT regularization_NN framework_NN we_PRP proposed_VBD is_VBZ closely_RB related_JJ to_TO graph-based_JJ semi-supervised_JJ learning_NN =_JJ -_: =[_NN 32_CD ,_, 30_CD ,_, 25_CD ,_, 31_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT usually_RB assume_VBP label_NN smoothness_NN over_IN the_DT graph_NN ._.
+Mei_FW et_FW al._FW -LRB-_-LRB- 17_CD -RRB-_-RRB- extend_VBP the_DT graph_NN harmonic_JJ function_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- to_TO multiple_JJ classes_NNS ._.
+However_RB ,_, our_PRP$ work_NN is_VBZ different_JJ from_IN theirs_PRP ,_, as_IN their_PRP$ tasks_NNS are_VBP main_JJ
+on_IN individually_RB ._.
+The_DT regularization_NN framework_NN we_PRP proposed_VBD is_VBZ closely_RB related_JJ to_TO graph-based_JJ semi-supervised_JJ learning_NN -LRB-_-LRB- 32_CD ,_, 30_CD ,_, 25_CD ,_, 31_CD -RRB-_-RRB- ,_, which_WDT usually_RB assume_VBP label_NN smoothness_NN over_IN the_DT graph_NN ._.
+Mei_FW et_FW al._FW =_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: extend_VB the_DT graph_NN harmonic_JJ function_NN -LRB-_-LRB- 32_CD -RRB-_-RRB- to_TO multiple_JJ classes_NNS ._.
+However_RB ,_, our_PRP$ work_NN is_VBZ different_JJ from_IN theirs_PRP ,_, as_IN their_PRP$ tasks_NNS are_VBP mainly_RB used_VBN in_IN query-independent_JJ settings_NNS -LRB-_-LRB- i.e._FW ,_, semi-supervised_JJ classifica_NN
+graph_NN ,_, which_WDT demonstrates_VBZ certain_JJ advantages_NNS comparing_VBG with_IN the_DT traditional_JJ approaches_NNS based_VBN on_IN the_DT content_NN information_NN ._.
+Many_JJ link_NN analysis_NN methods_NNS have_VBP been_VBN proposed_VBN ,_, such_JJ as_IN HITS_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- and_CC PageRank_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, to_TO capture_VB some_DT semantic_JJ relations_NNS within_IN the_DT bipartite_JJ graph_NN ._.
+The_DT problem_NN we_PRP address_VBP is_VBZ how_WRB to_TO utilize_VB and_CC leverage_NN both_CC the_DT graph_NN and_CC content_NN information_NN ,_, so_RB as_IN to_TO improve_VB the_DT precision_NN of_IN retriev_NN
+epresented_VBN as_IN a_DT term_NN vector_NN with_IN its_PRP$ content_NN information_NN ._.
+For_IN a_DT given_VBN query_NN q_NN ,_, the_DT relevance_NN scores_NNS of_IN the_DT entities_NNS can_MD be_VB calculated_VBN using_VBG a_DT text_NN relevance_NN function_NN f_SYM ,_, such_JJ as_IN the_DT vector_NN space_NN model_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: and_CC the_DT statistical_JJ language_NN model_NN -LRB-_-LRB- 23_CD ,_, 27_CD -RRB-_-RRB- ._.
+The_DT initial_JJ relevance_NN scores_NNS x_NN 0_CD i_LS and_CC y_NN 0_CD j_NN are_VBP respectively_RB defined_VBN by_IN x_NN 0_CD i_LS =_JJ f_FW -LRB-_-LRB- q_NN ,_, ui_NN -RRB-_-RRB- ,_, and_CC y_NN 0_CD j_NN =_JJ f_FW -LRB-_-LRB- q_NN ,_, vj_NN -RRB-_-RRB- for_IN ui_NN and_CC vj_NN ._.
+3_LS ._.
+GENERALIZED_NNP CO-HITS_NNP ALGO_NNP
+s_NN in_IN the_DT form_NN of_IN a_DT query-URL_JJ bipartite_JJ graph_NN -LRB-_-LRB- i.e._FW ,_, click_VB graph_NN -RRB-_-RRB- -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+Based_VBN on_IN the_DT click_VBP graph_NN ,_, many_JJ research_NN efforts_NNS in_IN query_NN log_NN analysis_NN have_VBP been_VBN devoted_VBN to_TO query_VB clustering_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, query_NN suggestion_NN =_JJ -_: =[_NN 11_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: and_CC query_NN classification_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Craswell_NNP and_CC Szummer_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- used_VBN click_VBP graph_NN random_JJ walks_VBZ for_IN relevance_NN rank_NN in_IN image_NN search_NN ._.
+Li_NNP et_FW al._FW -LRB-_-LRB- 15_CD -RRB-_-RRB- presented_VBD the_DT use_NN of_IN clickgraphs_NNS in_IN improving_VBG query_NN intent_NN cl_NN
+ent_JJ model_NN with_IN the_DT expanded_VBN queries_NNS ._.
+For_IN each_DT URL_NN ,_, although_IN its_PRP$ exact_JJ content_NN information_NN is_VBZ not_RB included_VBN in_IN the_DT query_NN log_NN ,_, it_PRP can_MD be_VB represented_VBN as_IN a_DT document_NN by_IN the_DT aggregation_NN of_IN connected_JJ queries_NNS =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+t_NN ∈_FW q_FW Algorithm_NN 1_CD Generalized_NNP Co-HITS_NNP Algorithm_NNP Input_NNP :_: Given_VBN a_DT query_FW q_FW and_CC the_DT bipartite_JJ graph_NN Perform_NNP :_: 1_CD ._.
+Calculate_VB the_DT initial_JJ ranking_NN scores_NNS based_VBN on_IN the_DT statistical_JJ language_NN model_NN and_CC extract_VB the_DT
+n_NN query_NN ,_, it_PRP would_MD be_VB more_RBR efficient_JJ to_TO apply_VB our_PRP$ algorithm_NN only_RB to_TO a_DT relatively_RB compact_JJ query-URL_NN bipartite_JJ graph_NN that_WDT covers_VBZ the_DT relevant_JJ queries_NNS and_CC related_JJ URLs_NNS ._.
+We_PRP utilize_VBP the_DT same_JJ method_NN used_VBN in_IN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: for_IN building_VBG a_DT compact_JJ query-URL_NN bipartite_JJ graph_NN and_CC iteratively_RB expanding_VBG it_PRP in_IN the_DT following_NN ,_, 1_CD ._.
+Initialize_VB a_DT query_JJ set_NN Û_NN =_JJ UL_NN -LRB-_-LRB- seed_NN query_NN set_NN -RRB-_-RRB- ,_, and_CC initialize_VB a_DT URL_NN set_VBN ˆ_CD V_NN =_JJ VL_NN -LRB-_-LRB- seed_NN URL_NN set_NN -RRB-_-RRB- ;_: 2_CD ._.

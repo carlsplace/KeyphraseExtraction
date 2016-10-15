@@ -1,0 +1,62 @@
+Global_JJ distance-based_JJ segmentation_NN of_IN trajectories_NNS
+This_DT work_NN introduces_VBZ distance-based_JJ criteria_NNS for_IN segmentation_NN of_IN object_NN trajectories_NNS ._.
+Segmentation_NN leads_VBZ to_TO simplification_NN of_IN the_DT original_JJ objects_NNS into_IN smaller_JJR ,_, less_RBR complex_JJ primitives_NNS that_WDT are_VBP better_RB suited_VBN for_IN storage_NN and_CC retrieval_NN purposes_NNS ._.
+Previous_JJ work_NN on_IN trajectory_JJ segmentation_NN attacked_VBD the_DT problem_NN locally_RB ,_, segmenting_VBG separately_RB each_DT trajectory_NN of_IN the_DT database_NN ._.
+Therefore_RB ,_, they_PRP did_VBD not_RB directly_RB optimize_VB the_DT inter-object_JJ separability_NN ,_, which_WDT is_VBZ necessary_JJ for_IN mining_NN operations_NNS such_JJ as_IN searching_VBG ,_, clustering_NN ,_, and_CC classification_NN on_IN large_JJ databases_NNS ._.
+In_IN this_DT paper_NN we_PRP analyze_VBP the_DT trajectory_JJ segmentation_NN problem_NN from_IN a_DT global_JJ perspective_NN ,_, utilizing_VBG data_NNS aware_JJ distance-based_JJ optimization_NN techniques_NNS ,_, which_WDT optimize_VBP pairwise_JJ distance_NN estimates_NNS hence_RB leading_VBG to_TO more_RBR efficient_JJ object_NN pruning_NN ._.
+We_PRP first_RB derive_VBP exact_JJ solutions_NNS of_IN the_DT distance-based_JJ formulation_NN ._.
+Due_JJ to_TO the_DT intractable_JJ complexity_NN of_IN the_DT exact_JJ solution_NN ,_, we_PRP present_VBP anapproximate_JJ ,_, greedy_JJ solution_NN that_WDT exploits_VBZ forward_RB searching_VBG of_IN locally_RB optimal_JJ solutions_NNS ._.
+Since_IN the_DT greedy_JJ solution_NN also_RB imposes_VBZ a_DT prohibitive_JJ computational_JJ cost_NN ,_, we_PRP also_RB put_VBD forward_RB more_RBR light_JJ weight_NN variance-based_JJ segmentation_NN techniques_NNS ,_, which_WDT intelligently_RB ``_`` relax_VB ''_'' the_DT pairwise_JJ distance_NN only_RB in_IN the_DT areas_NNS that_WDT affect_VBP the_DT least_JJS the_DT mining_NN operation_NN ._.
+,_, typically_RB for_IN speeding_VBG up_RP operations_NNS such_JJ as_IN collision_NN detection_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+Previous_JJ approaches_NNS that_IN approximate_JJ trajectories_NNS with_IN MBRs_NNS ,_, manipulate_VBP each_DT trajectory_NN separately_RB from_IN the_DT remaining_VBG sequences_NNS =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, with_IN the_DT objective_NN of_IN minimizing_VBG the_DT overlap_VBP between_IN MRBs_NNS through_IN volume_NN minimization_NN ._.
+However_RB ,_, most_JJS mining_NN operations_NNS are_VBP based_VBN on_IN distance_NN ._.
+Consider_VB ,_, for_IN example_NN ,_, the_DT problem_NN of_IN clustering_NN or_CC outl_NN
+ed_VBN in_IN a_DT variety_NN of_IN applications_NNS ,_, ranging_VBG from_IN signature_NN compression_NN of_IN handwritten_JJ image_NN data_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, to_TO storage_NN of_IN motion_NN capture_NN data_NNS -LRB-_-LRB- 4_CD ,_, 11_CD -RRB-_-RRB- and_CC even_RB for_IN online_JJ anomaly_NN detection_NN in_IN time-series_JJ data_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT notions_NNS and_CC techniques_NNS presented_VBN in_IN this_DT paper_NN are_VBP generic_JJ enough_RB ,_, and_CC can_MD be_VB adapted_VBN into_IN other_JJ approximating_VBG functions_NNS -LRB-_-LRB- such_JJ as_IN piecewise_NN linear_JJ or_CC polynomial_JJ functions_NNS -RRB-_-RRB- with_IN minimal_JJ or_CC no_DT cha_NN
+ntially_RB relaxes_VBZ the_DT distance_NN in_IN the_DT already_RB dense_JJ areas_NNS -LRB-_-LRB- small_JJ variance_NN -RRB-_-RRB- ,_, and_CC hence_RB in_IN practice_NN it_PRP does_VBZ not_RB penalize_VB the_DT search_NN performance_NN ,_, which_WDT is_VBZ primarily_RB impacted_VBN by_IN the_DT areas_NNS of_IN large_JJ variance_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Additionally_RB ,_, we_PRP can_MD observe_VB that_IN the_DT preprocessing_VBG time_NN required_VBN for_IN segmenting_VBG the_DT trajectories_NNS is_VBZ kept_VBN in_IN very_RB realistic_JJ levels_NNS ._.
+The_DT MBR_NNP generation_NN time_NN is_VBZ shown_VBN in_IN Figure_NNP 12_CD as_IN a_DT function_NN of_IN the_DT
+ned_VBN way_NN ,_, so_RB as_IN to_TO provide_VB certain_JJ quality_NN guarantees_NNS on_IN the_DT data-mining_JJ results_NNS -LRB-_-LRB- such_JJ as_IN absence_NN of_IN misclassification_NN -RRB-_-RRB- ._.
+Those_DT guarantees_NNS are_VBP typically_RB provided_VBN by_IN exploiting_VBG lower_JJR -LRB-_-LRB- 2_CD -RRB-_-RRB- or_CC upper_JJ bounds_NNS =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: on_IN the_DT distance_NN between_IN the_DT simplified_VBN representations_NNS ._.
+Orthonormal_JJ dimensionality_NN reductions_NNS techniques_NNS -LRB-_-LRB- such_JJ as_IN SVD_NN ,_, Fourier_NN or_CC wavelets_NNS -RRB-_-RRB- can_MD provide_VB such_JJ guarantees_NNS ._.
+Therefore_RB ,_, in_IN this_DT work_NN we_PRP pro_JJ
+simplification_NN ._.
+For_IN example_NN ,_, CAD\/CAM_NN systems_NNS -LRB-_-LRB- e.g._FW ,_, design_NN of_IN an_DT airplane_NN at_IN Boeing_NNP -RRB-_-RRB- need_VBP to_TO facilitate_VB the_DT manipulation_NN and_CC visualization_NN of_IN hundreds_NNS of_IN thousands_NNS of_IN concurrently_RB visible_JJ components_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Effective_JJ visualization_NN of_IN complex_JJ scenes_NNS can_MD therefore_RB be_VB achieved_VBN only_RB through_IN adaptive_JJ object_NN simplification_NN ,_, allowing_VBG for_IN faster_JJR rendering_NN on_IN screen_NN ._.
+Later_RB on_IN ,_, we_PRP will_MD depict_VB how_WRB the_DT complex_JJ DNA_NN
+ees_NNS -RRB-_-RRB- ._.
+Additionally_RB ,_, such_PDT a_DT representation_NN has_VBZ been_VBN successfully_RB used_VBN in_IN a_DT variety_NN of_IN applications_NNS ,_, ranging_VBG from_IN signature_NN compression_NN of_IN handwritten_JJ image_NN data_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, to_TO storage_NN of_IN motion_NN capture_NN data_NN =_JJ -_: =[_NN 4_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: and_CC even_RB for_IN online_JJ anomaly_NN detection_NN in_IN time-series_JJ data_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+The_DT notions_NNS and_CC techniques_NNS presented_VBN in_IN this_DT paper_NN are_VBP generic_JJ enough_RB ,_, and_CC can_MD be_VB adapted_VBN into_IN other_JJ approximating_VBG functions_NNS -LRB-_-LRB- such_JJ as_IN pi_NN
+ction_NN ,_, thus_RB enabling_VBG the_DT fast_JJ and_CC efficient_JJ support_NN of_IN applications_NNS such_JJ as_IN matching_NN of_IN trajectory_NN patterns_NNS ,_, prediction_NN of_IN future_JJ congested_JJ areas_NNS ,_, and_CC so_RB on_RB ._.
+2_CD ._.
+In_IN video_NN tracking_NN ,_, motion_NN segmentation_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT common_JJ procedure_NN ,_, allowing_VBG the_DT effective_JJ modeling_NN ,_, characterization_NN and_CC annotation_NN of_IN an_DT object_NN 's_POS movement_NN ._.
+3_LS ._.
+Sensor_NN network_NN devices_NNS have_VBP gained_VBN momentum_NN lately_RB because_IN of_IN their_PRP$ minuscule_JJ size_NN
+ch_NN as_IN DNA_NN strings_NNS ._.
+2_CD ._.
+RELATED_NNS WORK_VBP Previous_JJ work_NN on_IN trajectory_JJ segmentation_NN looked_VBD at_IN the_DT problem_NN mainly_RB from_IN a_DT database_NN organization_NN perspective_NN and_CC not_RB from_IN a_DT data-mining_JJ point_NN of_IN view_NN ._.
+For_IN example_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: examines_VBZ cost_NN models_NNS for_IN evaluating_VBG splitting_NN strategies_NNS ,_, so_RB as_IN to_TO answer_VB effectively_RB range_NN queries_NNS -LRB-_-LRB- i.e._FW ,_, ``_`` which_WDT trajectories_NNS pass_VBP within_IN area_NN X_NN between_IN times_NNS t1_NN and_CC t2_NN ''_'' -RRB-_-RRB- ._.
+However_RB ,_, in_IN this_DT work_NN we_PRP a_DT
+whereas_IN the_DT whale\/hippo_NN group_NN parted_VBD from_IN the_DT elephants_NNS about_IN 105_CD million_CD years_NNS ago_RB ._.
+The_DT group_NN that_WDT includes_VBZ hippo_NN and_CC whales\/dolphins_NNS ,_, but_CC excludes_VBZ all_DT other_JJ mammals_NNS above_IN is_VBZ called_VBN Cetartiodactyla_NNP =_SYM -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN this_DT figure_NN serves_VBZ merely_RB as_IN a_DT demonstration_NN of_IN the_DT effectiveness_NN of_IN our_PRP$ MBR_NNP approach_NN to_TO capture_VB structure_NN in_IN trajectories_NNS ,_, we_PRP feel_VBP that_IN such_PDT a_DT representational_JJ transformation_NN ,_, combined_VBN with_IN o_NN
+Finally_RB ,_, in_IN video_JJ games_NNS the_DT approximation_NN of_IN complex_JJ objects_NNS and_CC their_PRP$ motion_NN trajectories_NNS into_IN simplified_VBN rectangles_NNS is_VBZ not_RB uncommon_JJ ,_, typically_RB for_IN speeding_VBG up_RP operations_NNS such_JJ as_IN collision_NN detection_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Previous_JJ approaches_NNS that_IN approximate_JJ trajectories_NNS with_IN MBRs_NNS ,_, manipulate_VBP each_DT trajectory_NN separately_RB from_IN the_DT remaining_VBG sequences_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, with_IN the_DT objective_NN of_IN minimizing_VBG the_DT overlap_VBP between_IN MRBs_NNS through_IN
+we_PRP utilize_VBP a_DT large_JJ dataset_NN pool_NN ,_, since_IN the_DT performance_NN of_IN each_DT technique_NN is_VBZ highly_RB dependent_JJ on_IN the_DT data_NNS characteristics_NNS ._.
+We_PRP use_VBP a_DT number_NN of_IN real_JJ datasets_NNS from_IN the_DT UCR_NNP time-series_NNS data_NNS mining_NN archive_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT span_VBP a_DT wide_JJ variety_NN of_IN areas_NNS ,_, such_JJ as_IN computer_NN networks_NNS ,_, medicine_NN ,_, environmental_JJ measurements_NNS ,_, and_CC more_JJR ._.
+Each_DT dataset_NN consists_VBZ of_IN 50_CD sequences_NNS with_IN length_NN of_IN 512_CD points_NNS ._.
+We_PRP note_VBP that_IN the_DT datas_NNS
+formed_VBN in_IN a_DT disciplined_JJ way_NN ,_, so_RB as_IN to_TO provide_VB certain_JJ quality_NN guarantees_NNS on_IN the_DT data-mining_JJ results_NNS -LRB-_-LRB- such_JJ as_IN absence_NN of_IN misclassification_NN -RRB-_-RRB- ._.
+Those_DT guarantees_NNS are_VBP typically_RB provided_VBN by_IN exploiting_VBG lower_JJR =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: or_CC upper_JJ bounds_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- on_IN the_DT distance_NN between_IN the_DT simplified_VBN representations_NNS ._.
+Orthonormal_JJ dimensionality_NN reductions_NNS techniques_NNS -LRB-_-LRB- such_JJ as_IN SVD_NN ,_, Fourier_NN or_CC wavelets_NNS -RRB-_-RRB- can_MD provide_VB such_JJ guarantees_NNS ._.
+Therefore_RB
+ees_NNS -RRB-_-RRB- ._.
+Additionally_RB ,_, such_PDT a_DT representation_NN has_VBZ been_VBN successfully_RB used_VBN in_IN a_DT variety_NN of_IN applications_NNS ,_, ranging_VBG from_IN signature_NN compression_NN of_IN handwritten_JJ image_NN data_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, to_TO storage_NN of_IN motion_NN capture_NN data_NN =_JJ -_: =[_NN 4_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: and_CC even_RB for_IN online_JJ anomaly_NN detection_NN in_IN time-series_JJ data_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+The_DT notions_NNS and_CC techniques_NNS presented_VBN in_IN this_DT paper_NN are_VBP generic_JJ enough_RB ,_, and_CC can_MD be_VB adapted_VBN into_IN other_JJ approximating_VBG functions_NNS -LRB-_-LRB- such_JJ as_IN pi_NN
+e_LS similar_JJ behavior_NN to_TO the_DT original_JJ data_NNS for_IN clustering\/classification_NN operations_NNS ,_, since_IN relative_JJ relative_JJ object_NN spacing_NN will_MD be_VB affected_VBN the_DT least_JJS -LRB-_-LRB- similar_JJ objectives_NNS are_VBP achieved_VBN by_IN data_NNS embeddings_NNS =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+The_DT results_NNS for_IN the_DT relative_JJ distances_NNS are_VBP reported_VBN at_IN the_DT bottom_NN of_IN Figure_NNP 10_CD and_CC in_IN this_DT experiment_NN numbers_NNS approaching_VBG zero_NN are_VBP closer_JJR to_TO the_DT optimal_JJ ._.
+One_CD can_MD observe_VB that_IN the_DT variance_NN based_JJ alg_NN
+er_JJR classes_NNS of_IN datasets_NNS ._.
+Additionally_RB it_PRP would_MD be_VB interesting_JJ to_TO examine_VB under_IN what_WP circumstances_NNS local_JJ techniques_NNS can_MD be_VB a_DT viable_JJ alternative_NN to_TO global_JJ ones_NNS -LRB-_-LRB- see_VB for_IN example_NN comparison_NN of_IN APCA_NN vs_CC SVD_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+As_IN concluding_VBG remarks_NNS ,_, with_IN this_DT empirical_JJ evaluation_NN we_PRP have_VBP highlighted_VBN a_DT lightweight_JJ version_NN of_IN global_JJ distancebased_JJ segmentation_NN ,_, which_WDT comes_VBZ in_IN the_DT form_NN of_IN the_DT variancebased_JJ segmentation_NN ._.
+This_DT

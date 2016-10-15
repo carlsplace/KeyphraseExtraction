@@ -1,0 +1,118 @@
+Mining_NN top-n_NN local_JJ outliers_NNS in_IN large_JJ databases_NNS
+Outlier_NN detection_NN is_VBZ an_DT important_JJ task_NN in_IN data_NN mining_NN with_IN numerous_JJ applications_NNS ,_, including_VBG credit_NN card_NN fraud_NN detection_NN ,_, video_NN surveillance_NN ,_, etc._NN ._.
+A_DT recent_JJ work_NN on_IN outlier_NN detection_NN has_VBZ introduced_VBN a_DT novel_JJ notion_NN of_IN local_JJ outlier_NN in_IN which_WDT the_DT degree_NN to_TO which_WDT an_DT object_NN is_VBZ outlying_JJ is_VBZ dependent_JJ on_IN the_DT density_NN of_IN its_PRP$ local_JJ neighborhood_NN ,_, and_CC each_DT object_NN can_MD be_VB assigned_VBN a_DT Local_NNP Outlier_NNP Factor_NN -LRB-_-LRB- LOF_NN -RRB-_-RRB- which_WDT represents_VBZ the_DT likelihood_NN of_IN that_DT object_NN being_VBG an_DT outlier_NN ._.
+Although_IN the_DT concept_NN of_IN local_JJ outliers_NNS is_VBZ a_DT useful_JJ one_CD ,_, the_DT computation_NN of_IN LOF_NN values_NNS for_IN every_DT data_NN objects_NNS requires_VBZ a_DT large_JJ number_NN of_IN &_CC kgr_NN ;_: -_: nearest_IN neighbors_NNS searches_NNS and_CC can_MD be_VB computationally_RB expensive_JJ ._.
+Since_IN most_JJS objects_NNS are_VBP usually_RB not_RB outliers_NNS ,_, it_PRP is_VBZ useful_JJ to_TO provide_VB users_NNS with_IN the_DT option_NN of_IN finding_VBG only_JJ n_NN most_RBS outstanding_JJ local_JJ outliers_NNS ,_, i.e._FW ,_, the_DT top-n_NN data_NN objects_NNS which_WDT are_VBP most_RBS likely_JJ to_TO be_VB local_JJ outliers_NNS according_VBG to_TO their_PRP$ LOFs_NNS ._.
+However_RB ,_, if_IN the_DT pruning_NN is_VBZ not_RB done_VBN carefully_RB ,_, finding_VBG top-n_NN outliers_NNS could_MD result_VB in_IN the_DT same_JJ amount_NN of_IN computation_NN as_IN finding_VBG LOF_NN for_IN all_DT objects_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT novel_JJ method_NN to_TO efficiently_RB find_VB the_DT top-n_JJ local_JJ outliers_NNS in_IN large_JJ databases_NNS ._.
+The_DT concept_NN of_IN ``_`` micro-cluster_NN ''_'' is_VBZ introduced_VBN to_TO compress_VB the_DT data_NNS ._.
+An_DT efficient_JJ micro-cluster-based_JJ local_JJ outlier_NN mining_NN algorithm_NN is_VBZ designed_VBN based_VBN on_IN this_DT concept_NN ._.
+As_IN our_PRP$ algorithm_NN can_MD be_VB adversely_RB affected_VBN by_IN the_DT overlapping_VBG in_IN the_DT micro-clusters_NNS ,_, we_PRP proposed_VBD a_DT meaningful_JJ cut-plane_JJ solution_NN for_IN overlapping_VBG data_NNS ._.
+The_DT formal_JJ analysis_NN and_CC experiments_NNS show_VBP that_IN this_DT method_NN can_MD achieve_VB good_JJ performance_NN in_IN finding_VBG the_DT most_RBS outstanding_JJ local_JJ outliers_NNS ._.
+ta_RB keep_VB changing_VBG ._.
+Breunig_NNP et_FW al._FW -LRB-_-LRB- 4_CD -RRB-_-RRB- propose_VBP the_DT concept_NN of_IN ``_`` local_JJ outliers_NNS ''_'' ,_, according_VBG to_TO which_WDT an_DT object_NN is_VBZ an_DT outlier_NN if_IN it_PRP is_VBZ significantly_RB different_JJ from_IN its_PRP$ spatially_RB nearby_JJ objects_NNS ._.
+Jin_NNP et_FW al._FW =_SYM -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP efficient_JJ pruning_NN strategies_NNS to_TO find_VB ``_`` top-k_JJ local_JJ outliers_NNS ''_'' quickly_RB ._.
+Different_NNP from_IN ``_`` local_JJ outliers_NNS ''_'' ,_, the_DT anomalies_NNS we_PRP monitor_VBP are_VBP those_DT trajectory_JJ subsequences_NNS significantly_RB different_JJ from_IN t_NN
+sure_JJ -LRB-_-LRB- SLOM_NN -RRB-_-RRB- -LRB-_-LRB- 28_CD -RRB-_-RRB- ._.
+Using_VBG the_DT concept_NN of_IN micro-clusters_NNS to_TO efficiently_RB mine_VB the_DT top-n_NN density-based_JJ local_JJ outliers_NNS in_IN large_JJ databases_NNS -LRB-_-LRB- i.e._FW ,_, those_DT n_NN objects_NNS having_VBG the_DT highest_JJS LOF_NN value_NN -RRB-_-RRB- is_VBZ proposed_VBN in_IN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT similar_JJ algorithm_NN is_VBZ presented_VBN in_IN -LRB-_-LRB- 15_CD -RRB-_-RRB- for_IN an_DT extension_NN of_IN the_DT LOF_NN model_NN using_VBG also_RB the_DT reverse_NN nearest_IN neighbors_NNS additionally_RB to_TO the_DT nearest_JJS neighbors_NNS and_CC considering_VBG a_DT symmetric_JJ relationship_NN bet_NN
+calibration_NN accuracy_NN improves_VBZ with_IN the_DT aid_NN of_IN some_DT labeled_JJ examples_NNS ._.
+1_CD Introduction_NN Outlier_NN detection_NN has_VBZ been_VBN extensively_RB studied_VBN for_IN many_JJ years_NNS ,_, resulting_VBG in_IN the_DT development_NN of_IN numerous_JJ algorithms_NNS =_JJ -_: =[_NN 7_CD ,_, 3_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT algorithms_NNS often_RB produce_VBP a_DT numeric-valued_JJ output_NN score_NN to_TO represent_VB the_DT degree_NN to_TO which_WDT a_DT given_VBN observation_NN is_VBZ unusual_JJ ._.
+In_IN this_DT paper_NN ,_, we_PRP argue_VBP that_IN it_PRP is_VBZ insufficient_JJ to_TO obtain_VB only_RB the_DT magni_NNS
+lustering_VBG model_NN with_IN many_JJ clusters_NNS -RRB-_-RRB- ,_, while_IN it_PRP may_MD lie_VB far_RB from_IN a_DT simple_JJ model_NN -LRB-_-LRB- e.g._FW ,_, a_DT single_JJ hyper-ellipsoid_JJ cluster_NN model_NN -RRB-_-RRB- ._.
+This_DT leads_VBZ to_TO the_DT concept_NN of_IN local_JJ outliers_NNS in_IN the_DT data_NNS mining_NN literature_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT parametric_JJ approach_NN is_VBZ designed_VBN for_IN datasets_NNS with_IN a_DT dominating_VBG relatively_RB dense_JJ convex_NN bulk_NN of_IN data_NNS ._.
+The_DT empirical_JJ comparisons_NNS we_PRP present_VBP here_RB show_VBP that_IN RNNs_NNS perform_VBP adequately_RB in_IN many_JJ different_JJ
+the_DT existence_NN of_IN statistical_JJ assumptions_NNS about_IN the_DT underlying_VBG data_NNS distribution_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+The_DT latter_JJ category_NN usually_RB makes_VBZ the_DT call_NN by_IN resorting_VBG to_TO distance_NN computation_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- or_CC density_NN estimation_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Besides_IN ,_, projection-based_JJ methods_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- have_VBP been_VBN introduced_VBN for_IN high-dimensional_JJ data_NNS ._.
+Moreover_RB ,_, clustering_NN algorithms_NNS may_MD output_NN outlier_NN labels_NNS as_IN a_DT by-product_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 30_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Compared_VBN to_TO outlier_VB det_NN
+ory_NN is_VBZ the_DT existence_NN of_IN statistical_JJ assumptions_NNS about_IN the_DT underlying_VBG data_NNS distribution_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+The_DT latter_JJ category_NN usually_RB makes_VBZ the_DT call_NN by_IN resorting_VBG to_TO distance_NN computation_NN -LRB-_-LRB- 63_CD -RRB-_-RRB- or_CC density_NN estimation_NN =_JJ -_: =[_NN 19_CD ,_, 58_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Besides_IN ,_, projection-based_JJ methods_NNS -LRB-_-LRB- 2_CD -RRB-_-RRB- have_VBP been_VBN introduced_VBN for_IN high-dimensional_JJ data_NNS ._.
+Moreover_RB ,_, clustering_NN algorithms_NNS may_MD output_NN outlier_NN labels_NNS as_IN a_DT by-product_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 26_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Compared_VBN to_TO outlier_RB dete_VB
+the_DT existence_NN of_IN statistical_JJ assumptions_NNS about_IN the_DT underlying_VBG data_NNS distribution_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+The_DT latter_JJ category_NN usually_RB makes_VBZ the_DT call_NN by_IN resorting_VBG to_TO distance_NN computation_NN -LRB-_-LRB- 26_CD -RRB-_-RRB- or_CC density_NN estimation_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Besides_IN ,_, projection-based_JJ methods_NNS -LRB-_-LRB- 29_CD -RRB-_-RRB- have_VBP been_VBN introduced_VBN for_IN high-dimensional_JJ data_NNS ._.
+Moreover_RB ,_, clustering_NN algorithms_NNS may_MD output_NN outlier_NN labels_NNS as_IN a_DT by-product_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 30_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Compared_VBN to_TO outlier_VB det_NN
+t_NN measure_NN of_IN local_JJ outliers_NNS based_VBN on_IN a_DT symmetric_JJ neighborhood_NN relationship_NN which_WDT takes_VBZ both_CC the_DT NNs_NNS and_CC reverse_JJ NNs_NNS into_IN consideration_NN ,_, and_CC proposes_VBZ several_JJ mining_NN algorithms_NNS to_TO detect_VB top-n_NN outliers_NNS =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: efficiently_RB ._.
+More_RBR recently_RB ,_, Wong_NNP et_FW al._FW -LRB-_-LRB- 45_CD -RRB-_-RRB- introduce_VBP the_DT concept_NN of_IN bichromatic_JJ MNN_NN that_WDT considers_VBZ two_CD datasets_NNS and_CC employ_VB it_PRP to_TO deal_VB with_IN the_DT spatial_JJ matching_NN problem_NN ._.
+Gao_NNP et_FW al._FW -LRB-_-LRB- 14_CD -RRB-_-RRB- explore_VB the_DT
+d_NN o_NN and_CC the_DT density_NN around_IN its_PRP$ kNNs_NNS ,_, i.e._FW ,_, the_DT more_RBR distinctly_RB is_VBZ o_NN considered_VBN an_DT outlier_NN ._.
+Several_JJ extensions_NNS of_IN the_DT basic_JJ LOF_NN model_NN and_CC algorithms_NNS for_IN efficient_JJ -LRB-_-LRB- topn_JJ -RRB-_-RRB- computation_NN have_VBP been_VBN proposed_VBN =_JJ -_: =[_NN 22_CD ,_, 23_CD ,_, 49_CD ,_, 50_CD -RRB-_-RRB- -_: =_SYM -_: that_IN basically_RB use_VBP different_JJ notions_NNS of_IN neighborhoods_NNS ._.
+The_DT Local_NNP Outlier_NNP Integral_NNP -LRB-_-LRB- LOCI_NNP -RRB-_-RRB- bases_NNS on_IN the_DT concept_NN of_IN a_DT multi-granularity_JJ deviation_NN factor_NN and_CC ε-neighborhoods_NNS instead_RB of_IN kNNs_NNS -LRB-_-LRB- 39_CD -RRB-_-RRB- ._.
+The_DT res_NNS
+rithm_NN we_PRP present_VBP here_RB and_CC will_MD apply_VB to_TO our_PRP$ CB-SVM_NN in_IN Section_NN 4_CD was_VBD originally_RB exploited_VBN by_IN T._NNP Zhang_NNP et_FW al._FW at_IN 1996_CD -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, which_WDT is_VBZ named_VBN BIRCH_NNP ._.
+The_DT concept_NN of_IN a_DT ``_`` micro-cluster_NN ''_'' is_VBZ similar_JJ to_TO those_DT in_IN =_JJ -_: =[_NN 25_CD ,_, 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT denotes_VBZ a_DT statistically_RB summarized_VBN representation_NN of_IN a_DT group_NN of_IN data_NNS which_WDT are_VBP so_RB close_JJ together_RB that_IN they_PRP are_VBP likely_JJ to_TO belong_VB to_TO the_DT same_JJ cluster_NN ._.
+Our_PRP$ hierarchical_JJ micro-clustering_JJ algorithm_NN
+either_CC sampling_NN plus_CC a_DT classification_NN of_IN objects_NNS to_TO the_DT closest_JJS sample_NN point_NN ,_, or_CC some_DT other_JJ technique_NN such_JJ as_IN BIRCH_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+The_DT data_NNS summarizations_NNS are_VBP sometimes_RB also_RB called_VBN ``_`` micro-clusters_NNS ''_'' -LRB-_-LRB- e.g._FW in_IN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+2_LS -RRB-_-RRB- Apply_RB -LRB-_-LRB- an_DT adapted_VBN version_NN of_IN -RRB-_-RRB- the_DT clustering_NN algorithm_NN to_TO the_DT data_NNS summaries_NNS only_RB ._.
+3_LS -RRB-_-RRB- Extrapolate_NNP from_IN the_DT clustering_NN result_NN for_IN the_DT data_NNS summaries_NNS a_DT clustering_NN result_NN for_IN the_DT whole_JJ data_NN set_NN ._.
+Di_NNP
+efficiently_RB if_IN OPTICS_NN is_VBZ used_VBN to_TO analyze_VB the_DT clustering_NN structure_NN ._.
+A_DT top-n_NN based_VBN local_JJ outliers_NNS mining_NN algorithm_NN which_WDT uses_VBZ the_DT distance_NN bound_VBD of_IN a_DT micro-cluster_NN to_TO estimate_NN density_NN was_VBD presented_VBN in_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+3_CD Preliminaries_NNPS Before_IN we_PRP introduce_VBP mining_NN algorithms_NNS for_IN the_DT spatial_JJ network_NN outliers_NNS ._.
+Let_VB us_PRP revisit_VB related_JJ concepts_NNS and_CC notions_NNS of_IN spatial_JJ networks_NNS and_CC outliers_NNS ,_, interesting_JJ readers_NNS can_MD see_VB the_DT
+ution_NN significantly_RB different_JJ from_IN their_PRP$ neighborhood_NN ._.
+The_DT estimation_NN of_IN density_NN distribution_NN at_IN the_DT location_NN of_IN an_DT object_NN has_VBZ so_RB far_RB been_VBN based_VBN on_IN the_DT density_NN distribution_NN of_IN its_PRP$ k-nearest_NN neighbors_NNS =_JJ -_: =[_NN 2_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, when_WRB outliers_NNS are_VBP in_IN the_DT location_NN where_WRB the_DT density_NN distributions_NNS in_IN the_DT neighborhood_NN are_VBP significantly_RB different_JJ ,_, for_IN example_NN ,_, in_IN the_DT case_NN of_IN objects_NNS from_IN a_DT sparse_JJ cluster_NN close_RB to_TO a_DT dense_JJ
+ors_NNS of_IN a_DT point_NN ._.
+The_DT identified_VBN outliers_NNS are_VBP more_RBR meaningful_JJ since_IN the_DT information_NN of_IN the_DT degree_NN of_IN being_VBG an_DT outlier_NN has_VBZ been_VBN integrated_VBN into_IN the_DT analysis_NN process_NN ._.
+Some_DT local_JJ outlier_NN detection_NN methods_NNS =_JJ -_: =[_NN 3_CD ,_, 7_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: generalize_VB the_DT above_JJ concepts_NNS further_RBR ._.
+For_IN example_NN ,_, the_DT wellknown_JJ local_JJ outlier_NN factor_NN -LRB-_-LRB- LOF_NN -RRB-_-RRB- introduced_VBN in_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- measures_VBZ the_DT degree_NN of_IN being_VBG an_DT outlier_NN by_IN taking_VBG into_IN consideration_NN the_DT data_NNS point_NN 's_POS re_NN
+d_NN as_IN outliers_NNS ._.
+The_DT LOF_NN does_VBZ not_RB suffer_VB from_IN the_DT problem_NN above_IN ._.
+However_RB ,_, the_DT computation_NN of_IN LOF_NN values_NNS requires_VBZ a_DT large_JJ number_NN of_IN k-nearest_NN neighbor_NN queries_NNS ,_, and_CC thus_RB ,_, can_MD be_VB computationally_RB expensive_JJ =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN mentioned_VBN in_IN Section_NNP I_NNP ,_, Knorr_NNP et_FW al._FW -LRB-_-LRB- 5_CD -RRB-_-RRB- have_VBP applied_VBN the_DT distance-based_JJ algorithm_NN to_TO detecting_VBG trajectory_JJ outliers_NNS ._.
+Here_RB ,_, the_DT distance_NN is_VBZ defined_VBN between_IN two_CD whole_JJ trajectories_NNS using_VBG their_PRP$ summa_NN
+ns_NNS of_IN the_DT dataset_NN ._.
+These_DT can_MD be_VB basically_RB categorized_VBN into_IN distance-based_JJ schemes_NNS -LRB-_-LRB- 2_CD ,_, 5_CD ,_, 23_CD ,_, 24_CD ,_, 28_CD -RRB-_-RRB- andsCapabilities_NNS of_IN outlier_NN detection_NN schemes_NNS ,_, framework_NN and_CC methodologies_NNS 3_CD density-based_JJ schemes_NNS =_JJ -_: =[_NN 8_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+1_CD Distance-based_JJ schemes_NNS are_VBP originated_VBN from_IN the_DT proposal_NN in_IN -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, called_VBN DB_NN -LRB-_-LRB- n_NN ,_, v_LS -RRB-_-RRB- -_: outliers_NNS ,_, where_WRB n_NN and_CC v_LS are_VBP parameters_NNS ._.
+Let_NNP D_NNP be_VB the_DT dataset_NN ._.
+For_IN any_DT p_NN ∈_NN D_NN and_CC any_DT positive_JJ value_NN v_LS ,_, defineNv_NN -LRB-_-LRB- p_NN -RRB-_-RRB- =_JJ
+distance_NN measures_NNS and_CC are_VBP capable_JJ of_IN handling_VBG large_JJ databases_NNS -LRB-_-LRB- Knorr_NNP and_CC Ng_NNP ,_, 1997_CD ,_, 1s1998_NN ,_, Fawcett_NNP and_CC Provost_NNP ,_, 1997_CD ,_, Williams_NNP and_CC Huang_NNP ,1997_NNP ,_, DuMouchel_NNP and_CC Schonlau_NNP ,_, 1998_CD ,_, Knorr_NNP et_FW al._FW ,_, 2000_CD ,_, 2001_CD ,_, =_JJ -_: =_JJ Jin_NNP et_FW al._FW ,_, 2001_CD -_: =_JJ -_: ,_, Breunig_NNP et_FW al._FW ,_, 2000_CD ,_, Williams_NNP et_FW al._FW ,_, 2002_CD ,_, Hawkins_NNP et_FW al._FW ,_, 2002_CD ,_, Bay_NNP and_CC Schwabacher_NNP ,_, 2003_CD -RRB-_-RRB- ._.
+Another_DT class_NN of_IN outlier_NN detection_NN methods_NNS is_VBZ founded_VBN on_IN clustering_NN techniques_NNS ,_, where_WRB a_DT cluster_NN of_IN smal_NN
+It_PRP is_VBZ worth_JJ pointing_VBG out_RP that_IN outlier_JJR detection_NN problems_NNS come_VBP in_IN several_JJ different_JJ flavors_NNS within_IN different_JJ applicative_JJ settings_NNS ,_, mainly_RB investigated_VBN in_IN the_DT area_NN of_IN Knowledge_NNP Discovery_NNP in_IN Databases_NNS =_JJ -_: =[_NN 41_CD ,_, 45_CD ,_, 10_CD ,_, 8_CD ,_, 46_CD ,_, 1_CD ,_, 14_CD ,_, 27_CD ,_, 30_CD ,_, 31_CD ,_, 40_CD ,_, 6_CD ,_, 7_CD ,_, 21_CD ,_, 9_CD -RRB-_-RRB- -_: =_JJ -_: and_CC ,_, recently_RB ,_, it_PRP has_VBZ also_RB emerged_VBN as_IN a_DT relevant_JJ knowledge_NN representation_NN and_CC reasoning_NN problem_NN ,_, in_IN the_DT context_NN of_IN default_NN logic_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- --_: we_PRP refer_VBP the_DT reader_NN to_TO Section_NN 7_CD for_IN a_DT thorough_JJ analysis_NN of_IN rela_NN
+is_VBZ called_VBN Local_NNP Outlier_NNP Factor_NN LOF_NN and_CC is_VBZ assigned_VBN to_TO each_DT object_NN ._.
+The_DT computation_NN of_IN LOFs_NNS ,_, however_RB ,_, is_VBZ expensive_JJ and_CC it_PRP must_MD be_VB done_VBN for_IN each_DT object_NN ._.
+To_TO reduce_VB the_DT computational_JJ load_NN ,_, Jin_NNP et_FW al._FW in_IN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT new_JJ method_NN to_TO determine_VB only_RB the_DT top-n_JJ local_JJ outliers_NNS that_WDT avoids_VBZ the_DT computation_NN of_IN LOFs_NNS for_IN most_JJS objects_NNS if_IN n_NN ≪_NN N_NN ,_, where_WRB N_NN is_VBZ the_DT data_NN set_NN size_NN ._.
+Distance-based_JJ outlier_NN detection_NN has_VBZ been_VBN
+hood_NN ._.
+Outliers_NNS are_VBP objects_NNS that_WDT tend_VBP to_TO have_VB high_JJ LOF_NN values_NNS ._.
+The_DT LOF_NN algorithm_NN is_VBZ able_JJ to_TO detect_VB all_DT forms_NNS of_IN outliers_NNS including_VBG those_DT that_WDT could_MD not_RB be_VB detected_VBN by_IN the_DT distance-based_JJ algorithms_NNS ._.
+In_IN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT micro-clusterbased_JJ algorithm_NN for_IN finding_VBG top-n_JJ local_JJ outliers_NNS is_VBZ proposed_VBN ._.
+The_DT pruning_NN of_IN the_DT clusters_NNS based_VBN on_IN the_DT computed_JJ bounds_NNS reduces_VBZ the_DT number_NN of_IN LOF_NN value_NN computations_NNS but_CC it_PRP still_RB relies_VBZ
+ept_NN of_IN ``_`` local_JJ outliers_NNS ''_'' ,_, according_VBG to_TO which_WDT an_DT object_NN is_VBZ an_DT outlier_NN if_IN it_PRP demonstrates_VBZ behavior_NN significantly_RB different_JJ from_IN the_DT behavior_NN of_IN its_PRP$ nearby_JJ objects_NNS ._.
+This_DT concept_NN is_VBZ extended_VBN by_IN Jin_NN et_FW al._FW =_SYM -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: to_TO ``_`` top-k_VB local_JJ outliers_NNS ''_'' ._.
+Aggarwal_NNP and_CC Yu_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- analyze_VB Euclidean_JJ outliers_NNS in_IN high-dimensional_JJ space_NN ,_, whereas_IN Lazarevic_NNP and_CC Kumar_NNP -LRB-_-LRB- 11_CD -RRB-_-RRB- approach_NN this_DT issue_NN with_IN a_DT technique_NN called_VBN ``_`` feature_NN bagging_NN ''_'' ._.
+Fi_NN
+nsional_JJ index_NN structures_NNS such_JJ as_IN R-tree_NN and_CC X-tree_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- are_VBP employed_VBN ._.
+A_DT top-n_NN based_VBN local_JJ outliers_NNS mining_NN algorithm_NN which_WDT uses_VBZ distance_NN bound_VBN of_IN micro-cluster_NN to_TO estimate_VB the_DT density_NN ,_, was_VBD presented_VBN in_IN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Lazarevic_NNP and_CC Kumar_NNP -LRB-_-LRB- 18_CD -RRB-_-RRB- proposed_VBD a_DT local_JJ outlier_NN detection_NN algorithm_NN with_IN a_DT technique_NN called_VBN ``_`` feature_NN bagging_NN ''_'' ._.
+Some_DT clustering_NN algorithms_NNS like_IN DBSCAN_NNP -LRB-_-LRB- 9_CD -RRB-_-RRB- consider_VBP identifying_VBG outliers_NNS ,_, but_CC only_RB to_TO
+s_NN on_IN the_DT local_JJ density_NN of_IN its_PRP$ neighborhood_NN ._.
+The_DT neighborhood_NN is_VBZ defined_VBN by_IN the_DT distance_NN to_TO the_DT MinPts-th_NNP nearest_JJS neighbor_NN ._.
+In_IN typical_JJ use_NN ,_, objects_NNS with_IN a_DT high_JJ LOF_NN are_VBP flagged_VBN as_IN outliers_NNS ._.
+Jin_NNP ,_, et_FW al._FW =_SYM -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: AusCERT2007_NNP R&D_NNP Stream_NNP 33sproposed_VBD an_DT algorithm_NN to_TO efficiently_RB discover_VB top-n_NN outliers_NNS using_VBG clusters_NNS ,_, for_IN a_DT particular_JJ value_NN of_IN MinPts_NNP ._.
+LOF_NN does_VBZ not_RB suffer_VB from_IN the_DT local_JJ density_NN problem_NN ._.
+However_RB ,_, s_NN
+ures_VBZ in_IN mechanical_JJ structures_NNS ._.
+Over_IN the_DT years_NNS ,_, many_JJ innovative_JJ anomaly_JJ detection_NN algorithms_NNS have_VBP been_VBN developed_VBN ,_, including_VBG statistical-based_JJ ,_, depth-based_JJ ,_, distance-based_JJ ,_, and_CC density-based_JJ algorithms_NNS =_JJ -_: =[_NN 6_CD ,_, 2_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN these_DT algorithms_NNS prove_VBP to_TO be_VB effective_JJ in_IN detecting_VBG outliers_NNS in_IN many_JJ datasets_NNS ,_, they_PRP may_MD not_RB be_VB able_JJ to_TO detect_VB some_DT outliers_NNS that_WDT are_VBP difficult_JJ to_TO identify_VB ._.
+Let_NNP 's_POS examine_VB some_DT scenarios_NNS where_WRB o_NN
+tegorized_VBN into_IN distance-based_JJ schemes_NNS -LRB-_-LRB- Bay_NNP and_CC Schwabacher_NNP 2003_CD ,_, Knorr_NNP and_CC Ng_NNP 1998_CD ,_, Knorr_NNP and_CC Ng_NNP 1999_CD ,_, Ramaswamy_NNP et_FW al_FW 2000_CD ,_, Angiulli_NNP and_CC Pizzuti_NNP 2002_CD -RRB-_-RRB- and_CC density-based_JJ schemes_NNS -LRB-_-LRB- Breuning_NNP et_FW al_FW 2000_CD ,_, =_JJ -_: =_JJ Jin_NNP et_NNP al_NNP 2001_CD -_: =--RRB-_NN 1_CD ._.
+Distancebased_JJ schemes_NNS are_VBP originated_VBN from_IN the_DT proposal_NN in_IN -LRB-_-LRB- Knorr_NNP and_CC Ng_NNP 1998_CD -RRB-_-RRB- ,_, called_VBD 1_CD These_DT schemes_NNS can_MD be_VB generally_RB viewed_VBN as_IN unsupervised_JJ learning_NN ._.
+There_EX are_VBP also_RB much_JJ worksCapabilities_NN of_IN O_NN
+thods_NNS ,_, so_IN that_IN they_PRP are_VBP only_JJ by-products_NNS which_WDT are_VBP not_RB cared_VBN about_IN ._.
+In_IN recent_JJ years_NNS ,_, outliers_NNS themselves_PRP draw_VBP much_JJ attention_NN ,_, and_CC outlier_NN detection_NN is_VBZ studied_VBN intensively_RB by_IN the_DT data_NNS mining_NN community_NN =_JJ -_: =[_NN 18_CD ,_, 19_CD ,_, 8_CD ,_, 23_CD ,_, 9_CD ,_, 16_CD ,_, 26_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Distance-based_JJ outlier_NN detection_NN is_VBZ to_TO find_VB data_NNS that_WDT are_VBP sparse_JJ within_IN the_DT hyper-sphere_JJ having_VBG given_VBN radius_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Researchers_NNP also_RB developed_VBD efficient_JJ algorithms_NNS for_IN mining_NN distance-based_JJ outliers_NNS ,_,
+ures_VBZ in_IN mechanical_JJ structures_NNS ._.
+Over_IN the_DT years_NNS ,_, many_JJ innovative_JJ anomaly_JJ detection_NN algorithms_NNS have_VBP been_VBN developed_VBN ,_, including_VBG statistical-based_JJ ,_, depth-based_JJ ,_, distance-based_JJ ,_, and_CC density-based_JJ algorithms_NNS =_JJ -_: =[_NN 6_CD ,_, 2_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN these_DT algorithms_NNS prove_VBP to_TO be_VB effective_JJ in_IN detecting_VBG outliers_NNS in_IN many_JJ datasets_NNS ,_, they_PRP may_MD not_RB be_VB able_JJ to_TO detect_VB some_DT outliers_NNS that_WDT are_VBP difficult_JJ to_TO identify_VB ._.
+Let_NNP 's_POS examine_VB some_DT scenarios_NNS where_WRB o_NN

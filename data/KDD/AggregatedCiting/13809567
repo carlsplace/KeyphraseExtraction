@@ -1,0 +1,149 @@
+An_DT integrated_VBN machine_NN learning_VBG approach_NN to_TO stroke_NN prediction_NN
+Stroke_NN is_VBZ the_DT third_JJ leading_JJ cause_NN of_IN death_NN and_CC the_DT principal_JJ cause_NN of_IN serious_JJ long-term_JJ disability_NN in_IN the_DT United_NNP States_NNPS ._.
+Accurate_JJ prediction_NN of_IN stroke_NN is_VBZ highly_RB valuable_JJ for_IN early_JJ intervention_NN and_CC treatment_NN ._.
+In_IN this_DT study_NN ,_, we_PRP compare_VBP the_DT Cox_NNP proportional_JJ hazards_NNS model_NN with_IN a_DT machine_NN learning_NN approach_NN for_IN stroke_NN prediction_NN on_IN the_DT Cardiovascular_NNP Health_NNP Study_NNP -LRB-_-LRB- CHS_NNP -RRB-_-RRB- dataset_NN ._.
+Specifically_RB ,_, we_PRP consider_VBP the_DT common_JJ problems_NNS of_IN data_NNS imputation_NN ,_, feature_NN selection_NN ,_, and_CC prediction_NN in_IN medical_JJ datasets_NNS ._.
+We_PRP propose_VBP a_DT novel_JJ automatic_JJ feature_NN selection_NN algorithm_NN that_WDT selects_VBZ robust_JJ features_NNS based_VBN on_IN our_PRP$ proposed_VBN heuristic_NN :_: conservative_JJ mean_NN ._.
+Combined_VBN with_IN Support_NN Vector_NNP Machines_NNP -LRB-_-LRB- SVMs_NNS -RRB-_-RRB- ,_, our_PRP$ proposed_VBN feature_NN selection_NN algorithm_NN achieves_VBZ a_DT greater_JJR area_NN under_IN the_DT ROC_NN curve_NN -LRB-_-LRB- AUC_NN -RRB-_-RRB- as_IN compared_VBN to_TO the_DT Cox_NN proportional_JJ hazards_NNS model_NN and_CC L1_NN regularized_VBD Cox_NN feature_NN selection_NN algorithm_NN ._.
+Furthermore_RB ,_, we_PRP present_VBP a_DT margin-based_JJ censored_VBN regression_NN algorithm_NN that_WDT combines_VBZ the_DT concept_NN of_IN margin-based_JJ classifiers_NNS with_IN censored_VBN regression_NN to_TO achieve_VB a_DT better_JJR concordance_NN index_NN than_IN the_DT Cox_NNP model_NN ._.
+Overall_RB ,_, our_PRP$ approach_NN outperforms_VBZ the_DT current_JJ state-of-the-art_JJ in_IN both_DT metrics_NNS of_IN AUC_NN and_CC concordance_NN index_NN ._.
+In_IN addition_NN ,_, our_PRP$ work_NN has_VBZ also_RB identified_VBN potential_JJ risk_NN factors_NNS that_WDT have_VBP not_RB been_VBN discovered_VBN by_IN traditional_JJ approaches_NNS ._.
+Our_PRP$ method_NN can_MD be_VB applied_VBN to_TO clinical_JJ prediction_NN of_IN other_JJ diseases_NNS ,_, where_WRB missing_VBG data_NNS are_VBP common_JJ and_CC risk_NN factors_NNS are_VBP not_RB well_RB understood_VBN ._.
+e_LS each_DT missing_VBG value_NN with_IN the_DT mean_NN of_IN the_DT feature_NN 's_POS observed_VBN values_NNS •_FW Column_FW median_NN :_: replace_VB each_DT missing_VBG value_NN with_IN the_DT median_NN of_IN the_DT feature_NN 's_POS observed_VBN values_NNS •_CD Imputation_NN through_IN linear_JJ regression_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: •_CD Regularized_JJ Expectation_NN Maximization_NN -LRB-_-LRB- EM_NN -RRB-_-RRB- -LRB-_-LRB- 31_CD -RRB-_-RRB- As_IN a_DT post-processing_JJ step_NN to_TO impute_VB discrete-valued_JJ features_NNS ,_, we_PRP rounded_VBD the_DT imputed_JJ values_NNS to_TO the_DT nearest_JJS discrete_JJ value_NN ._.
+The_DT imputation_NN algorithms_VBZ w_NN
+egularized_VBN logistic_JJ regression_NN The_DT L1_NN regularized_VBD logistic_JJ regression_NN -LRB-_-LRB- L1LR_NN -RRB-_-RRB- was_VBD used_VBN for_IN feature_NN selection_NN ,_, followed_VBN by_IN SVM_NN for_IN prediction_NN ._.
+The_DT implementation_NN of_IN L1LR_NN was_VBD done_VBN using_VBG the_DT SLEP_NN package_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT optimal_JJ regularization_NN parameter_NN λ_FW ∗_FW was_VBD assigned_VBN to_TO be_VB the_DT value_NN that_WDT maximized_VBD the_DT area_NN under_IN the_DT ROC_NNP curve_NN for_IN 10-fold_JJ cross-validation_NN ._.
+The_DT value_NN of_IN λ_FW ∗_FW was_VBD then_RB used_VBN to_TO run_VB L1LR_NN on_IN the_DT enti_NN
+DC_NN ,_, USA_NNP ._.
+Copyright_NN 2010_CD ACM_NNP 978-1-4503-0055-1_CD \/_: 10\/07_CD ..._: $_$ 10.00_CD ._.
+1_CD ._.
+INTRODUCTION_NNP Stroke_NNP is_VBZ the_DT third_JJ leading_JJ cause_NN of_IN death_NN and_CC the_DT principal_JJ cause_NN of_IN serious_JJ long-term_JJ disability_NN in_IN the_DT United_NNP States_NNPS =_SYM -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Stroke_NN risk_NN prediction_NN can_MD contribute_VB significantly_RB to_TO its_PRP$ prevention_NN and_CC early_JJ treatment_NN ._.
+Numerous_JJ medical_JJ studies_NNS and_CC data_NNS analyses_NNS have_VBP been_VBN conducted_VBN to_TO identify_VB effective_JJ predictors_NNS of_IN stroke_NN ._.
+mpute_JJ discrete-valued_JJ features_NNS ,_, we_PRP rounded_VBD the_DT imputed_JJ values_NNS to_TO the_DT nearest_JJS discrete_JJ value_NN ._.
+The_DT imputation_NN algorithms_NNS were_VBD evaluated_VBN using_VBG the_DT following_JJ metrics_NNS :_: 1_CD ._.
+Imputation_NN accuracy_NN -LRB-_-LRB- adopted_VBN from_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =--RRB-_NN :_: -LRB-_-LRB- a_LS -RRB-_-RRB- Root-Mean-Square_JJ Deviation_NN -LRB-_-LRB- RMSD_NN -RRB-_-RRB- -LRB-_-LRB- b_NN -RRB-_-RRB- Mean_NN Absolute_JJ Deviation_NN -LRB-_-LRB- MAD_NN -RRB-_-RRB- -LRB-_-LRB- c_NN -RRB-_-RRB- Bias_NNP -LRB-_-LRB- mean_VB of_IN imputed_JJ values_NNS -_: mean_NN of_IN groundtruth_JJ data_NNS -RRB-_-RRB- 2_CD ._.
+Overall_JJ stroke_NN prediction_NN performance_NN -LRB-_-LRB- measured_VBN by_IN the_DT area_NN u_NN
+tes_NNS to_TO optimize_VB the_DT value_NN of_IN the_DT threshold_NN ,_, t._NN CM_NN -LRB-_-LRB- T_NN ,_, K_NN -RRB-_-RRB- refers_VBZ to_TO the_DT ConservativeMean_NN -LRB-_-LRB- D_NN ,_, K_NN -RRB-_-RRB- function_NN defined_VBN in_IN Algorithm_NN 1_CD ._.
+3.3.2_NN L1_NN regularized_VBD logistic_JJ regression_NN regularized_VBD logistic_JJ regression_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT popular_JJ algoL1_NN rithm_NN for_IN feature_NN selection_NN ._.
+L1_NN regularization_NN has_VBZ the_DT beneficial_JJ effect_NN of_IN regularizing_VBG model_NN coefficients_NNS -LRB-_-LRB- as_IN in_IN L2_NN regularization_NN -RRB-_-RRB- ,_, but_CC yields_NNS sparse_VBP models_NNS that_WDT are_VBP more_JJR easil_NN
+ion_NN can_MD contribute_VB significantly_RB to_TO its_PRP$ prevention_NN and_CC early_JJ treatment_NN ._.
+Numerous_JJ medical_JJ studies_NNS and_CC data_NNS analyses_NNS have_VBP been_VBN conducted_VBN to_TO identify_VB effective_JJ predictors_NNS of_IN stroke_NN ._.
+The_DT Framingham_NNP Study_NNP =_SYM -_: =[_NN 6_CD ,_, 34_CD -RRB-_-RRB- -_: =_SYM -_: reported_VBD a_DT list_NN of_IN stroke_NN risk_NN factors_NNS including_VBG age_NN ,_, systolic_JJ blood_NN pressure_NN ,_, the_DT use_NN of_IN anti-hypertensive_JJ therapy_NN ,_, diabetes_NN mellitus_NN ,_, cigarette_NN smoking_NN ,_, prior_JJ cardiovascular_JJ disease_NN ,_, atrial_JJ fibrill_NN
+goL1_NN rithm_NN for_IN feature_NN selection_NN ._.
+L1_NN regularization_NN has_VBZ the_DT beneficial_JJ effect_NN of_IN regularizing_VBG model_NN coefficients_NNS -LRB-_-LRB- as_IN in_IN L2_NN regularization_NN -RRB-_-RRB- ,_, but_CC yields_NNS sparse_VBP models_NNS that_WDT are_VBP more_RBR easily_RB interpretable_JJ =_JJ -_: =[_NN 27_CD ,_, 32_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT model_NN has_VBZ a_DT regularization_NN parameter_NN that_WDT controls_VBZ the_DT ``_`` sparseness_NN ''_'' of_IN the_DT weights_NNS ._.
+Consequently_RB ,_, the_DT features_NNS with_IN nonzero_JJ weights_NNS are_VBP selected_VBN for_IN prediction_NN ._.
+3.3.3_CD Conservative_JJ mean_NN feature_NN
+ley_FW et_FW al._FW 's_POS -LRB-_-LRB- 24_CD -RRB-_-RRB- 5-year_JJ stroke_NN prediction_NN model_NN adopted_VBD the_DT Cox_NNP proportional_JJ hazards_NNS model_NN ,_, one_CD of_IN the_DT most_RBS commonly_RB used_VBN statistical_JJ methods_NNS in_IN medical_JJ research_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+It_PRP has_VBZ been_VBN extensively_RB studied_VBN =_JJ -_: =[_NN 1_CD ,_, 3_CD -RRB-_-RRB- -_: =_JJ -_: and_CC applied_VBN to_TO the_DT prediction_NN of_IN various_JJ diseases_NNS including_VBG stroke_NN -LRB-_-LRB- 16_CD ,_, 24_CD ,_, 21_CD -RRB-_-RRB- ._.
+However_RB ,_, the_DT performance_NN of_IN the_DT original_JJ Cox_NN model_NN depends_VBZ heavily_RB on_IN the_DT quality_NN of_IN the_DT pre-selected_JJ features_NNS ._.
+To_TO add_VB
+d_NN -LRB-_-LRB- ii_LS -RRB-_-RRB- discover_VB new_JJ risk_NN factors_NNS ._.
+Lumley_NNP et_FW al._FW 's_POS -LRB-_-LRB- 24_CD -RRB-_-RRB- 5-year_JJ stroke_NN prediction_NN model_NN adopted_VBD the_DT Cox_NNP proportional_JJ hazards_NNS model_NN ,_, one_CD of_IN the_DT most_RBS commonly_RB used_VBN statistical_JJ methods_NNS in_IN medical_JJ research_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP has_VBZ been_VBN extensively_RB studied_VBN -LRB-_-LRB- 1_CD ,_, 3_CD -RRB-_-RRB- and_CC applied_VBN to_TO the_DT prediction_NN of_IN various_JJ diseases_NNS including_VBG stroke_NN -LRB-_-LRB- 16_CD ,_, 24_CD ,_, 21_CD -RRB-_-RRB- ._.
+However_RB ,_, the_DT performance_NN of_IN the_DT original_JJ Cox_NN model_NN depends_VBZ heavily_RB on_IN the_DT qual_JJ
+ibutes_NNS is_VBZ highly_RB relevant_JJ to_TO stroke_NN prediction_NN ._.
+The_DT traditional_JJ approach_NN to_TO stroke_NN prediction_NN has_VBZ been_VBN to_TO use_VB manually_RB selected_VBN features_NNS based_VBN on_IN risk_NN factors_NNS analyzed_VBN by_IN medical_JJ and_CC clinical_JJ studies_NNS =_JJ -_: =[_NN 4_CD ,_, 24_CD ,_, 33_CD ,_, 36_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Instead_RB of_IN manually_RB selecting_VBG features_NNS ,_, we_PRP evaluate_VBP three_CD machine_NN learning-based_JJ algorithms_NNS for_IN selecting_VBG features_NNS automatically_RB :_: forward_JJ feature_NN selection_NN ,_, L1_NN regularized_VBD logistic_JJ regression_NN ,_, and_CC ``_``
+nal_JJ hazards_NNS model_NN ,_, one_CD of_IN the_DT most_RBS commonly_RB used_VBN statistical_JJ methods_NNS in_IN medical_JJ research_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+It_PRP has_VBZ been_VBN extensively_RB studied_VBN -LRB-_-LRB- 1_CD ,_, 3_CD -RRB-_-RRB- and_CC applied_VBN to_TO the_DT prediction_NN of_IN various_JJ diseases_NNS including_VBG stroke_NN =_JJ -_: =[_NN 16_CD ,_, 24_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, the_DT performance_NN of_IN the_DT original_JJ Cox_NN model_NN depends_VBZ heavily_RB on_IN the_DT quality_NN of_IN the_DT pre-selected_JJ features_NNS ._.
+To_TO address_VB this_DT problem_NN ,_, several_JJ approaches_NNS have_VBP been_VBN proposed_VBN recently_RB -LRB-_-LRB- 9_CD ,_, 28_CD -RRB-_-RRB- ._.
+Thus_RB
+nal_JJ hazards_NNS model_NN ,_, one_CD of_IN the_DT most_RBS commonly_RB used_VBN statistical_JJ methods_NNS in_IN medical_JJ research_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+It_PRP has_VBZ been_VBN extensively_RB studied_VBN -LRB-_-LRB- 1_CD ,_, 3_CD -RRB-_-RRB- and_CC applied_VBN to_TO the_DT prediction_NN of_IN various_JJ diseases_NNS including_VBG stroke_NN =_JJ -_: =[_NN 16_CD ,_, 24_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, the_DT performance_NN of_IN the_DT original_JJ Cox_NN model_NN depends_VBZ heavily_RB on_IN the_DT quality_NN of_IN the_DT pre-selected_JJ features_NNS ._.
+To_TO address_VB this_DT problem_NN ,_, several_JJ approaches_NNS have_VBP been_VBN proposed_VBN recently_RB -LRB-_-LRB- 9_CD ,_, 28_CD -RRB-_-RRB- ._.
+Thus_RB
+betes_NNS mellitus_NN ,_, cigarette_NN smoking_NN ,_, prior_JJ cardiovascular_JJ disease_NN ,_, atrial_JJ fibrillation_NN ,_, and_CC left_VBD ventricular_JJ hypertrophy_NN by_IN electrocardiogram_NN ._.
+Furthermore_RB ,_, in_IN the_DT past_JJ decade_NN ,_, a_DT number_NN of_IN other_JJ studies_NNS =_JJ -_: =[_NN 25_CD ,_, 23_CD ,_, 24_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP led_VBN to_TO the_DT discovery_NN of_IN more_JJR risk_NN factors_NNS such_JJ as_IN creatinine_NN level_NN ,_, time_NN to_TO walk_VB 15_CD feet_NNS ,_, and_CC others_NNS ._.
+Most_RBS previous_JJ prediction_NN models_NNS have_VBP adopted_VBN features_NNS -LRB-_-LRB- risk_NN factors_NNS -RRB-_-RRB- that_WDT are_VBP verified_VBN by_IN cl_NN
+betes_NNS mellitus_NN ,_, cigarette_NN smoking_NN ,_, prior_JJ cardiovascular_JJ disease_NN ,_, atrial_JJ fibrillation_NN ,_, and_CC left_VBD ventricular_JJ hypertrophy_NN by_IN electrocardiogram_NN ._.
+Furthermore_RB ,_, in_IN the_DT past_JJ decade_NN ,_, a_DT number_NN of_IN other_JJ studies_NNS =_JJ -_: =[_NN 25_CD ,_, 23_CD ,_, 24_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP led_VBN to_TO the_DT discovery_NN of_IN more_JJR risk_NN factors_NNS such_JJ as_IN creatinine_NN level_NN ,_, time_NN to_TO walk_VB 15_CD feet_NNS ,_, and_CC others_NNS ._.
+Most_RBS previous_JJ prediction_NN models_NNS have_VBP adopted_VBN features_NNS -LRB-_-LRB- risk_NN factors_NNS -RRB-_-RRB- that_WDT are_VBP verified_VBN by_IN cl_NN
+betes_NNS mellitus_NN ,_, cigarette_NN smoking_NN ,_, prior_JJ cardiovascular_JJ disease_NN ,_, atrial_JJ fibrillation_NN ,_, and_CC left_VBD ventricular_JJ hypertrophy_NN by_IN electrocardiogram_NN ._.
+Furthermore_RB ,_, in_IN the_DT past_JJ decade_NN ,_, a_DT number_NN of_IN other_JJ studies_NNS =_JJ -_: =[_NN 25_CD ,_, 23_CD ,_, 24_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP led_VBN to_TO the_DT discovery_NN of_IN more_JJR risk_NN factors_NNS such_JJ as_IN creatinine_NN level_NN ,_, time_NN to_TO walk_VB 15_CD feet_NNS ,_, and_CC others_NNS ._.
+Most_RBS previous_JJ prediction_NN models_NNS have_VBP adopted_VBN features_NNS -LRB-_-LRB- risk_NN factors_NNS -RRB-_-RRB- that_WDT are_VBP verified_VBN by_IN cl_NN
+ibutes_NNS is_VBZ highly_RB relevant_JJ to_TO stroke_NN prediction_NN ._.
+The_DT traditional_JJ approach_NN to_TO stroke_NN prediction_NN has_VBZ been_VBN to_TO use_VB manually_RB selected_VBN features_NNS based_VBN on_IN risk_NN factors_NNS analyzed_VBN by_IN medical_JJ and_CC clinical_JJ studies_NNS =_JJ -_: =[_NN 4_CD ,_, 24_CD ,_, 33_CD ,_, 36_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Instead_RB of_IN manually_RB selecting_VBG features_NNS ,_, we_PRP evaluate_VBP three_CD machine_NN learning-based_JJ algorithms_NNS for_IN selecting_VBG features_NNS automatically_RB :_: forward_JJ feature_NN selection_NN ,_, L1_NN regularized_VBD logistic_JJ regression_NN ,_, and_CC ``_``
+ibutes_NNS is_VBZ highly_RB relevant_JJ to_TO stroke_NN prediction_NN ._.
+The_DT traditional_JJ approach_NN to_TO stroke_NN prediction_NN has_VBZ been_VBN to_TO use_VB manually_RB selected_VBN features_NNS based_VBN on_IN risk_NN factors_NNS analyzed_VBN by_IN medical_JJ and_CC clinical_JJ studies_NNS =_JJ -_: =[_NN 4_CD ,_, 24_CD ,_, 33_CD ,_, 36_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Instead_RB of_IN manually_RB selecting_VBG features_NNS ,_, we_PRP evaluate_VBP three_CD machine_NN learning-based_JJ algorithms_NNS for_IN selecting_VBG features_NNS automatically_RB :_: forward_JJ feature_NN selection_NN ,_, L1_NN regularized_VBD logistic_JJ regression_NN ,_, and_CC ``_``
+aseline_NN hazard_NN function_NN is_VBZ treated_VBN non-parametrically_RB ._.
+Thus_RB ,_, we_PRP can_MD see_VB that_IN the_DT parameters_NNS have_VBP a_DT multiplicative_JJ effect_NN on_IN the_DT hazard_NN value_NN which_WDT makes_VBZ it_PRP different_JJ from_IN the_DT linear_JJ regression_NN models_NNS =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT Cox_NNP model_NN is_VBZ part_NN of_IN the_DT Generalized_NNP Linear_NNP Model_NNP -LRB-_-LRB- GLM_NNP -RRB-_-RRB- family_NN ._.
+Another_DT member_NN of_IN this_DT family_NN is_VBZ the_DT logistic_JJ regression_NN model_NN ,_, where_WRB the_DT output_NN takes_VBZ the_DT following_JJ form_NN :_: h_NN -LRB-_-LRB- x_NN -RRB-_-RRB- =_JJ -LRB-_-LRB- 1_CD +_CC exp_NN -LRB-_-LRB- −_FW β_FW T_NN x_NN -RRB-_-RRB-
+AD_NN -RRB-_-RRB- -LRB-_-LRB- c_NN -RRB-_-RRB- Bias_NNP -LRB-_-LRB- mean_VB of_IN imputed_JJ values_NNS -_: mean_NN of_IN groundtruth_JJ data_NNS -RRB-_-RRB- 2_CD ._.
+Overall_JJ stroke_NN prediction_NN performance_NN -LRB-_-LRB- measured_VBN by_IN the_DT area_NN under_IN the_DT ROC_NN curve_NN -RRB-_-RRB- ._.
+3.3_CD Feature_NN Selection_NN Selecting_VBG relevant_JJ features_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ crucial_JJ for_IN building_VBG an_DT accurate_JJ model_NN of_IN clinical_JJ data_NNS ._.
+For_IN example_NN ,_, the_DT CHS_NNP dataset_NN has_VBZ a_DT large_JJ number_NN of_IN attributes_NNS ,_, ranging_VBG from_IN demographic_JJ information_NN and_CC clinical_JJ history_NN to_TO biomedical_JJ and_CC
+SVM_NN ._.
+Furthermore_RB ,_, SVM_NN solvers_NNS can_MD be_VB used_VBN to_TO optimize_VB the_DT area_NN under_IN the_DT ROC_NNP curve_NN directly_RB ,_, so_IN they_PRP are_VBP well_RB suited_VBN for_IN the_DT task_NN of_IN stroke_NN prediction_NN ._.
+We_PRP used_VBD linear_JJ SVMs_NNS implemented_VBN using_VBG SVM-perf_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: in_IN this_DT study_NN ._.
+3.4.2_CD Margin-based_JJ Censored_JJ Regression_NN Since_IN the_DT SVM_NN is_VBZ in_IN principle_NN developed_VBN for_IN classification_NN ,_, we_PRP use_VBP it_PRP to_TO predict_VB whether_IN or_CC not_RB a_DT stroke_NN would_MD occur_VB within_IN a_DT given_VBN time_NN frame_NN wh_NN
+factors_NNS -RRB-_-RRB- that_WDT are_VBP verified_VBN by_IN clinical_JJ trials_NNS or_CC selected_VBN manually_RB by_IN medical_JJ experts_NNS ._.
+For_IN example_NN ,_, Lumley_NNP et_FW al._FW -LRB-_-LRB- 24_CD -RRB-_-RRB- built_VBD a_DT 5-year_JJ stroke_NN prediction_NN model_NN based_VBN on_IN the_DT Cardiovascular_NNP Health_NNP Study_NNP =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: dataset_NN using_VBG a_DT set_NN of_IN 16_CD manually_RB selected_VBN features_NNS -LRB-_-LRB- given_VBN in_IN -LRB-_-LRB- 25_CD -RRB-_-RRB- -RRB-_-RRB- from_IN a_DT total_NN of_IN roughly_RB one_CD thousand_CD features_NNS ._.
+With_IN a_DT large_JJ number_NN of_IN features_NNS in_IN current_JJ medical_JJ datasets_NNS ,_, it_PRP is_VBZ a_DT cumbersome_JJ tas_NN
+to_TO measure_VB how_WRB accurately_RB the_DT predictions_NNS reflect_VBP relative_JJ risk_NN of_IN stroke_NN of_IN two_CD randomly_RB selected_VBN individuals_NNS ._.
+A_DT commonly_RB used_VBN metric_JJ in_IN survival_NN models_NNS for_IN this_DT evaluation_NN is_VBZ the_DT concordance_NN index_NN =_JJ -_: =[_NN 15_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT concordance_NN index_NN is_VBZ a_DT generalization_NN of_IN the_DT concept_NN of_IN AUC_NN designed_VBN to_TO handle_VB -LRB-_-LRB- i_LS -RRB-_-RRB- continuous_JJ values_NNS for_IN prediction_NN and_CC -LRB-_-LRB- ii_LS -RRB-_-RRB- censored_VBN data_NNS ._.
+Similar_JJ to_TO the_DT AUC_NN ,_, it_PRP takes_VBZ values_NNS from_IN 0.5_CD -LRB-_-LRB- complete_JJ
+mall_NN in_IN number_NN -RRB-_-RRB- as_IN it_PRP considers_VBZ both_CC sensitivity_NN and_CC specificity_NN ,_, providing_VBG a_DT balanced_JJ measure_NN for_IN classifier_NN performance_NN ._.
+Specifically_RB ,_, the_DT AUC_NN -LRB-_-LRB- associated_VBN with_IN the_DT function_NN f_LS -RRB-_-RRB- is_VBZ defined_VBN as_IN follows_VBZ =_JJ -_: =[_NN 5_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: :_: AUC_NN =_JJ 1_CD |_FW Mp_FW |_FW ·_FW |_FW Mn_NN |_NN X_NN X_NN i_FW ∈_FW Mp_FW j_FW ∈_FW Mn_NN 1_CD f_LS -LRB-_-LRB- x_NN -LRB-_-LRB- i_LS -RRB-_-RRB- -RRB-_-RRB- -RRB-_-RRB- f_LS -LRB-_-LRB- x_NN -LRB-_-LRB- j_NN -RRB-_-RRB- -RRB-_-RRB- ,_, -LRB-_-LRB- 4_CD -RRB-_-RRB- where_WRB 1_CD -LRB-_-LRB- ·_NN -RRB-_-RRB- is_VBZ an_DT indicator_NN function_NN ._.
+The_DT AUC_NN is_VBZ used_VBN to_TO evaluate_VB the_DT performance_NN of_IN the_DT binary_JJ stroke_NN classification_NN task_NN ._.
+Essentially_RB ,_,
+ion_NN can_MD contribute_VB significantly_RB to_TO its_PRP$ prevention_NN and_CC early_JJ treatment_NN ._.
+Numerous_JJ medical_JJ studies_NNS and_CC data_NNS analyses_NNS have_VBP been_VBN conducted_VBN to_TO identify_VB effective_JJ predictors_NNS of_IN stroke_NN ._.
+The_DT Framingham_NNP Study_NNP =_SYM -_: =[_NN 6_CD ,_, 34_CD -RRB-_-RRB- -_: =_SYM -_: reported_VBD a_DT list_NN of_IN stroke_NN risk_NN factors_NNS including_VBG age_NN ,_, systolic_JJ blood_NN pressure_NN ,_, the_DT use_NN of_IN anti-hypertensive_JJ therapy_NN ,_, diabetes_NN mellitus_NN ,_, cigarette_NN smoking_NN ,_, prior_JJ cardiovascular_JJ disease_NN ,_, atrial_JJ fibrill_NN
+i_LS ,_, where_WRB C_NN and_CC γ_NN are_VBP the_DT hyperparameters_NNS for_IN the_DT misclassification_NN loss_NN penalty_NN and_CC for_IN regularization_NN respectively_RB ,_, and_CC φ_NN :_: R_NNP →_NNP R_NNP is_VBZ the_DT regression_NN loss_NN penalty_NN ,_, which_WDT we_PRP fixed_VBD as_IN the_DT Huber_NNP function_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: 8_CD in_IN our_PRP$ study_NN ._.
+To_TO solve_VB problem_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, we_PRP used_VBD CVX_NNP ,_, a_DT package_NN for_IN specifying_VBG and_CC solving_VBG convex_NN programs_NNS -LRB-_-LRB- 11_CD ,_, 10_CD -RRB-_-RRB- ._.
+Note_VB that_IN we_PRP can_MD easily_RB apply_VB the_DT kernel_NN trick_NN to_TO this_DT model_NN ,_, as_IN in_IN SVM_NNP ._.
+Furthermore_RB
+e_LS -LRB-_-LRB- 16_CD ,_, 24_CD ,_, 21_CD -RRB-_-RRB- ._.
+However_RB ,_, the_DT performance_NN of_IN the_DT original_JJ Cox_NN model_NN depends_VBZ heavily_RB on_IN the_DT quality_NN of_IN the_DT pre-selected_JJ features_NNS ._.
+To_TO address_VB this_DT problem_NN ,_, several_JJ approaches_NNS have_VBP been_VBN proposed_VBN recently_RB =_JJ -_: =[_NN 9_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Thus_RB far_RB ,_, there_EX have_VBP been_VBN very_RB few_JJ studies_NNS on_IN comparing_VBG the_DT Cox_NN regression_NN with_IN machine_NN learning_NN methods_NNS in_IN making_VBG predictions_NNS on_IN censored_VBN data_NNS ._.
+Kattan_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- compared_VBN Cox_NN proportional_JJ hazards_NNS regress_VBP
+'s_VBZ observed_VBN values_NNS •_FW Column_FW median_NN :_: replace_VB each_DT missing_VBG value_NN with_IN the_DT median_NN of_IN the_DT feature_NN 's_POS observed_VBN values_NNS •_NNP Imputation_NNP through_IN linear_JJ regression_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- •_CD Regularized_VBN Expectation_NN Maximization_NN -LRB-_-LRB- EM_NN -RRB-_-RRB- =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: As_IN a_DT post-processing_JJ step_NN to_TO impute_VB discrete-valued_JJ features_NNS ,_, we_PRP rounded_VBD the_DT imputed_JJ values_NNS to_TO the_DT nearest_JJS discrete_JJ value_NN ._.
+The_DT imputation_NN algorithms_NNS were_VBD evaluated_VBN using_VBG the_DT following_JJ metrics_NNS :_: 1_CD ._.
+Imp_NN
+mall_NN in_IN number_NN -RRB-_-RRB- as_IN it_PRP considers_VBZ both_CC sensitivity_NN and_CC specificity_NN ,_, providing_VBG a_DT balanced_JJ measure_NN for_IN classifier_NN performance_NN ._.
+Specifically_RB ,_, the_DT AUC_NN -LRB-_-LRB- associated_VBN with_IN the_DT function_NN f_LS -RRB-_-RRB- is_VBZ defined_VBN as_IN follows_VBZ =_JJ -_: =[_NN 5_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: :_: AUC_NN =_JJ 1_CD |_FW Mp_FW |_FW ·_FW |_FW Mn_NN |_NN X_NN X_NN i_FW ∈_FW Mp_FW j_FW ∈_FW Mn_NN 1_CD f_LS -LRB-_-LRB- x_NN -LRB-_-LRB- i_LS -RRB-_-RRB- -RRB-_-RRB- -RRB-_-RRB- f_LS -LRB-_-LRB- x_NN -LRB-_-LRB- j_NN -RRB-_-RRB- -RRB-_-RRB- ,_, -LRB-_-LRB- 4_CD -RRB-_-RRB- where_WRB 1_CD -LRB-_-LRB- ·_NN -RRB-_-RRB- is_VBZ an_DT indicator_NN function_NN ._.
+The_DT AUC_NN is_VBZ used_VBN to_TO evaluate_VB the_DT performance_NN of_IN the_DT binary_JJ stroke_NN classification_NN task_NN ._.
+Essentially_RB ,_,
+approaches_NNS have_VBP been_VBN proposed_VBN recently_RB -LRB-_-LRB- 9_CD ,_, 28_CD -RRB-_-RRB- ._.
+Thus_RB far_RB ,_, there_EX have_VBP been_VBN very_RB few_JJ studies_NNS on_IN comparing_VBG the_DT Cox_NN regression_NN with_IN machine_NN learning_NN methods_NNS in_IN making_VBG predictions_NNS on_IN censored_VBN data_NNS ._.
+Kattan_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: compared_VBN Cox_NNP proportional_JJ hazards_NNS regression_NN with_IN several_JJ machine_NN learning_NN methods_NNS -LRB-_-LRB- neural_JJ networks_NNS and_CC tree-based_JJ methods_NNS -RRB-_-RRB- based_VBN on_IN three_CD urological_JJ datasets_NNS ._.
+However_RB ,_, Kattan_NNP 's_POS study_NN focused_VBD on_IN data_NNS
+to_TO measure_VB how_WRB accurately_RB the_DT predictions_NNS reflect_VBP relative_JJ risk_NN of_IN stroke_NN of_IN two_CD randomly_RB selected_VBN individuals_NNS ._.
+A_DT commonly_RB used_VBN metric_JJ in_IN survival_NN models_NNS for_IN this_DT evaluation_NN is_VBZ the_DT concordance_NN index_NN =_JJ -_: =[_NN 15_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT concordance_NN index_NN is_VBZ a_DT generalization_NN of_IN the_DT concept_NN of_IN AUC_NN designed_VBN to_TO handle_VB -LRB-_-LRB- i_LS -RRB-_-RRB- continuous_JJ values_NNS for_IN prediction_NN and_CC -LRB-_-LRB- ii_LS -RRB-_-RRB- censored_VBN data_NNS ._.
+Similar_JJ to_TO the_DT AUC_NN ,_, it_PRP takes_VBZ values_NNS from_IN 0.5_CD -LRB-_-LRB- complete_JJ
+goL1_NN rithm_NN for_IN feature_NN selection_NN ._.
+L1_NN regularization_NN has_VBZ the_DT beneficial_JJ effect_NN of_IN regularizing_VBG model_NN coefficients_NNS -LRB-_-LRB- as_IN in_IN L2_NN regularization_NN -RRB-_-RRB- ,_, but_CC yields_NNS sparse_VBP models_NNS that_WDT are_VBP more_RBR easily_RB interpretable_JJ =_JJ -_: =[_NN 27_CD ,_, 32_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT model_NN has_VBZ a_DT regularization_NN parameter_NN that_WDT controls_VBZ the_DT ``_`` sparseness_NN ''_'' of_IN the_DT weights_NNS ._.
+Consequently_RB ,_, the_DT features_NNS with_IN nonzero_JJ weights_NNS are_VBP selected_VBN for_IN prediction_NN ._.
+3.3.3_CD Conservative_JJ mean_NN feature_NN
+r_NN selecting_NN features_VBZ automatically_RB :_: forward_JJ feature_NN selection_NN ,_, L1_NN regularized_VBD logistic_JJ regression_NN ,_, and_CC ``_`` conservative_JJ mean_NN ''_'' feature_NN selection_NN ._.
+3.3.1_FW Forward_FW feature_NN selection_NN Forward_RB feature_VBP selection_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: greedily_RB adds_VBZ one_CD feature_NN at_IN a_DT time_NN ._.
+The_DT best_JJS subset_NN of_IN features_NNS was_VBD selected_VBN based_VBN on_IN cross-validation_NN ._.
+Note_VB that_IN adding_VBG more_JJR features_NNS does_VBZ not_RB necessarily_RB improve_VB the_DT test_NN performance_NN since_IN overfit_NN
+ively_RB ,_, and_CC φ_NN :_: R_NNP →_NNP R_NNP is_VBZ the_DT regression_NN loss_NN penalty_NN ,_, which_WDT we_PRP fixed_VBD as_IN the_DT Huber_NNP function_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- 8_CD in_IN our_PRP$ study_NN ._.
+To_TO solve_VB problem_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, we_PRP used_VBD CVX_NNP ,_, a_DT package_NN for_IN specifying_VBG and_CC solving_VBG convex_NN programs_NNS =_JJ -_: =[_NN 11_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Note_VB that_IN we_PRP can_MD easily_RB apply_VB the_DT kernel_NN trick_NN to_TO this_DT model_NN ,_, as_IN in_IN SVM_NNP ._.
+Furthermore_RB ,_, the_DT objective_JJ function_NN can_MD be_VB modified_VBN to_TO optimize_VB the_DT AUC_NN directly_RB in_IN the_DT same_JJ way_NN as_IN SVM-perf_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+4_LS ._.
+EXPERIM_NN
+e_LS -LRB-_-LRB- 16_CD ,_, 24_CD ,_, 21_CD -RRB-_-RRB- ._.
+However_RB ,_, the_DT performance_NN of_IN the_DT original_JJ Cox_NN model_NN depends_VBZ heavily_RB on_IN the_DT quality_NN of_IN the_DT pre-selected_JJ features_NNS ._.
+To_TO address_VB this_DT problem_NN ,_, several_JJ approaches_NNS have_VBP been_VBN proposed_VBN recently_RB =_JJ -_: =[_NN 9_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Thus_RB far_RB ,_, there_EX have_VBP been_VBN very_RB few_JJ studies_NNS on_IN comparing_VBG the_DT Cox_NN regression_NN with_IN machine_NN learning_NN methods_NNS in_IN making_VBG predictions_NNS on_IN censored_VBN data_NNS ._.
+Kattan_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- compared_VBN Cox_NN proportional_JJ hazards_NNS regress_VBP
+goL1_NN rithm_NN for_IN feature_NN selection_NN ._.
+L1_NN regularization_NN has_VBZ the_DT beneficial_JJ effect_NN of_IN regularizing_VBG model_NN coefficients_NNS -LRB-_-LRB- as_IN in_IN L2_NN regularization_NN -RRB-_-RRB- ,_, but_CC yields_NNS sparse_VBP models_NNS that_WDT are_VBP more_RBR easily_RB interpretable_JJ =_JJ -_: =[_NN 27_CD ,_, 32_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT model_NN has_VBZ a_DT regularization_NN parameter_NN that_WDT controls_VBZ the_DT ``_`` sparseness_NN ''_'' of_IN the_DT weights_NNS ._.
+Consequently_RB ,_, the_DT features_NNS with_IN nonzero_JJ weights_NNS are_VBP selected_VBN for_IN prediction_NN ._.
+3.3.3_CD Conservative_JJ mean_NN feature_NN

@@ -1,0 +1,78 @@
+Improving_NN pseudo-relevance_NN feedback_NN in_IN web_NN information_NN retrieval_NN using_VBG web_NN page_NN segmentation_NN
+In_IN contrast_NN to_TO traditional_JJ document_NN retrieval_NN ,_, a_DT web_NN page_NN as_IN a_DT whole_NN is_VBZ not_RB a_DT good_JJ information_NN unit_NN to_TO search_VB because_IN it_PRP often_RB contains_VBZ multiple_JJ topics_NNS and_CC a_DT lot_NN of_IN irrelevant_JJ information_NN from_IN navigation_NN ,_, decoration_NN ,_, and_CC interaction_NN part_NN of_IN the_DT page_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT VIsion-based_JJ Page_NNP Segmentation_NN -LRB-_-LRB- VIPS_NN -RRB-_-RRB- algorithm_NN to_TO detect_VB the_DT semantic_JJ content_NN structure_NN in_IN a_DT web_NN page_NN ._.
+Compared_VBN with_IN simple_JJ DOM_NNP based_VBN segmentation_NN method_NN ,_, our_PRP$ page_NN segmentation_NN scheme_NN utilizes_VBZ useful_JJ visual_JJ cues_NNS to_TO obtain_VB a_DT better_JJR partition_NN of_IN a_DT page_NN at_IN the_DT semantic_JJ level_NN ._.
+By_IN using_VBG our_PRP$ VIPS_NNP algorithm_NN to_TO assist_VB the_DT selection_NN of_IN query_JJ expansion_NN terms_NNS in_IN pseudo-relevance_JJ feedback_NN in_IN web_NN information_NN retrieval_NN ,_, we_PRP achieve_VBP 27_CD %_NN performance_NN improvement_NN on_IN Web_NN Track_NNP dataset_NN ._.
+val_NN has_VBZ been_VBN the_DT most_RBS challenging_JJ problem_NN for_IN a_DT search_NN engine_NN ._.
+Pseudo-relevance_JJ feedback_NN ,_, also_RB known_VBN as_IN local_JJ feedback_NN or_CC blind_JJ feedback_NN ,_, is_VBZ a_DT technique_NN commonly_RB used_VBN to_TO improve_VB retrieval_NN performance_NN =_JJ -_: =[_NN 3_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Its_PRP$ basic_JJ idea_NN is_VBZ to_TO extract_VB expansion_NN terms_NNS from_IN the_DT top-ranked_JJ documents_NNS to_TO formulate_VB a_DT new_JJ query_NN for_IN a_DT second_JJ round_NN retrieval_NN ._.
+Through_IN a_DT query_NN expansion_NN ,_, some_DT relevant_JJ documents_NNS missed_VBN in_IN the_DT ini_NN
+page_NN ._.
+But_CC tags_NNS such_JJ as_IN TABLE_NN and_CC P_NN are_VBP used_VBN not_RB only_RB for_IN content_NN organization_NN ,_, but_CC also_RB for_IN layout_NN presentation_NN ._.
+In_IN many_JJ cases_NNS ,_, DOM_NNP tends_VBZ to_TO reveal_VB presentation_NN structure_NN other_JJ than_IN content_JJ structure_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC is_VBZ often_RB not_RB accurate_JJ enough_RB to_TO discriminate_VB different_JJ semantic_JJ blocks_NNS in_IN a_DT web_NN page_NN ._.
+To_TO segment_NN a_DT web_NN page_NN into_IN semantically_RB related_JJ units_NNS ,_, the_DT visual_JJ presentation_NN of_IN the_DT page_NN contains_VBZ a_DT lot_NN of_IN
+H6_NN -LRB-_-LRB- for_IN heading_VBG -RRB-_-RRB- ,_, etc._NN ._.
+To_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, few_JJ works_NNS are_VBP done_VBN on_IN applying_VBG DOM-based_JJ page_NN segmentation_NN methods_NNS to_TO improve_VB web_NN information_NN retrieval_NN ._.
+Some_DT preliminary_JJ studies_NNS are_VBP performed_VBN in_IN =_JJ -_: =[_NN 9_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: but_CC the_DT results_NNS are_VBP not_RB encouraging_JJ ._.
+DOM_NN in_IN general_JJ provides_VBZ a_DT useful_JJ structure_NN for_IN a_DT web_NN page_NN ._.
+But_CC tags_NNS such_JJ as_IN TABLE_NN and_CC P_NN are_VBP used_VBN not_RB only_RB for_IN content_NN organization_NN ,_, but_CC also_RB for_IN layout_NN presentati_NNS
+nt_NN Object_NNP Model_NNP ,_, see_VB http:\/\/www.w3.org\/DOM\/_NN -RRB-_-RRB- ._.
+DOM-based_JJ segmentation_NN approaches_NNS are_VBP widely_RB used_VBN these_DT years_NNS for_IN record_NN boundary_NN discovery_NN -LRB-_-LRB- 4_CD ,_, 11_CD -RRB-_-RRB- ,_, topic_NN distillation_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC adaptive_JJ content_NN delivery_NN =_JJ -_: =[_NN 5_CD ,_, 8_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Useful_JJ tags_NNS that_WDT maysrepresent_VBP a_DT block_NN in_IN a_DT page_NN include_VBP P_NN -LRB-_-LRB- for_IN paragraph_NN -RRB-_-RRB- ,_, TABLE_NN -LRB-_-LRB- for_IN table_NN -RRB-_-RRB- ,_, UL_NN -LRB-_-LRB- for_IN list_NN -RRB-_-RRB- ,_, H1_NN ~_NN H6_NN -LRB-_-LRB- for_IN heading_VBG -RRB-_-RRB- ,_, etc._NN ._.
+To_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, few_JJ works_NNS are_VBP done_VBN on_IN applying_VBG D_NN
+nt_NN Object_NNP Model_NNP ,_, see_VB http:\/\/www.w3.org\/DOM\/_NN -RRB-_-RRB- ._.
+DOM-based_JJ segmentation_NN approaches_NNS are_VBP widely_RB used_VBN these_DT years_NNS for_IN record_NN boundary_NN discovery_NN -LRB-_-LRB- 4_CD ,_, 11_CD -RRB-_-RRB- ,_, topic_NN distillation_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC adaptive_JJ content_NN delivery_NN =_JJ -_: =[_NN 5_CD ,_, 8_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Useful_JJ tags_NNS that_WDT maysrepresent_VBP a_DT block_NN in_IN a_DT page_NN include_VBP P_NN -LRB-_-LRB- for_IN paragraph_NN -RRB-_-RRB- ,_, TABLE_NN -LRB-_-LRB- for_IN table_NN -RRB-_-RRB- ,_, UL_NN -LRB-_-LRB- for_IN list_NN -RRB-_-RRB- ,_, H1_NN ~_NN H6_NN -LRB-_-LRB- for_IN heading_VBG -RRB-_-RRB- ,_, etc._NN ._.
+To_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, few_JJ works_NNS are_VBP done_VBN on_IN applying_VBG D_NN
+nt_NN Object_NNP Model_NNP ,_, see_VB http:\/\/www.w3.org\/DOM\/_NN -RRB-_-RRB- ._.
+DOM-based_JJ segmentation_NN approaches_NNS are_VBP widely_RB used_VBN these_DT years_NNS for_IN record_NN boundary_NN discovery_NN -LRB-_-LRB- 4_CD ,_, 11_CD -RRB-_-RRB- ,_, topic_NN distillation_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC adaptive_JJ content_NN delivery_NN =_JJ -_: =[_NN 5_CD ,_, 8_CD ,_, 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Useful_JJ tags_NNS that_WDT maysrepresent_VBP a_DT block_NN in_IN a_DT page_NN include_VBP P_NN -LRB-_-LRB- for_IN paragraph_NN -RRB-_-RRB- ,_, TABLE_NN -LRB-_-LRB- for_IN table_NN -RRB-_-RRB- ,_, UL_NN -LRB-_-LRB- for_IN list_NN -RRB-_-RRB- ,_, H1_NN ~_NN H6_NN -LRB-_-LRB- for_IN heading_VBG -RRB-_-RRB- ,_, etc._NN ._.
+To_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, few_JJ works_NNS are_VBP done_VBN on_IN applying_VBG D_NN
+H6_NN -LRB-_-LRB- for_IN heading_VBG -RRB-_-RRB- ,_, etc._NN ._.
+To_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, few_JJ works_NNS are_VBP done_VBN on_IN applying_VBG DOM-based_JJ page_NN segmentation_NN methods_NNS to_TO improve_VB web_NN information_NN retrieval_NN ._.
+Some_DT preliminary_JJ studies_NNS are_VBP performed_VBN in_IN =_JJ -_: =[_NN 9_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: but_CC the_DT results_NNS are_VBP not_RB encouraging_JJ ._.
+DOM_NN in_IN general_JJ provides_VBZ a_DT useful_JJ structure_NN for_IN a_DT web_NN page_NN ._.
+But_CC tags_NNS such_JJ as_IN TABLE_NN and_CC P_NN are_VBP used_VBN not_RB only_RB for_IN content_NN organization_NN ,_, but_CC also_RB for_IN layout_NN presentati_NNS
+of_IN a_DT HTML_NNP page_NN can_MD be_VB represented_VBN as_IN a_DT tag_NN tree_NN by_IN DOM_NNP -LRB-_-LRB- Document_NNP Object_NNP Model_NNP ,_, see_VB http:\/\/www.w3.org\/DOM\/_NN -RRB-_-RRB- ._.
+DOM-based_JJ segmentation_NN approaches_NNS are_VBP widely_RB used_VBN these_DT years_NNS for_IN record_NN boundary_NN discovery_NN =_JJ -_: =[_NN 4_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, topic_NN distillation_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC adaptive_JJ content_NN delivery_NN -LRB-_-LRB- 5_CD ,_, 8_CD ,_, 13_CD -RRB-_-RRB- ._.
+Useful_JJ tags_NNS that_WDT maysrepresent_VBP a_DT block_NN in_IN a_DT page_NN include_VBP P_NN -LRB-_-LRB- for_IN paragraph_NN -RRB-_-RRB- ,_, TABLE_NN -LRB-_-LRB- for_IN table_NN -RRB-_-RRB- ,_, UL_NN -LRB-_-LRB- for_IN list_NN -RRB-_-RRB- ,_, H1_NN ~_NN H6_NN -LRB-_-LRB- for_IN heading_VBG -RRB-_-RRB- ,_, et_FW
+document_NN approach_NN -LRB-_-LRB- denoted_VBN as_IN FULLDOC_NN -RRB-_-RRB- :_: The_DT traditional_JJ pseudo-relevance_JJ feedback_NN based_VBN on_IN the_DT whole_JJ web_NN page_NN is_VBZ implemented_VBN for_IN a_DT comparison_NN purpose_NN ._.
+4.1_CD Test_NNP Data_NNP and_CC Configuration_NNP We_PRP choose_VBP Okapi_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: as_IN the_DT retrieval_NN system_NN and_CC WT10g_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- in_IN TREC-9_NN and_CC TREC_NN 2001_CD Web_NN Tracks_VBZ as_IN the_DT data_NN set_NN ._.
+WT10g_NN contains_VBZ 1.69_CD million_CD pages_NNS and_CC amounts_NNS to_TO about_IN 10G_NN ._.
+We_PRP use_VBP the_DT 50_CD queries_NNS from_IN TREC_NN 2001_CD Web_NN Track_NNP as_IN
+date_NN segment_NN set_NN is_VBZ made_VBN up_RP of_IN these_DT resulting_VBG segments_NNS ._.
+Step_NN 3_CD :_: Segment_NN Selection_NN This_DT step_NN aims_VBZ to_TO choose_VB most_RBS relevant_JJ segments_NNS from_IN the_DT candidate_NN segment_NN set_NN ._.
+Some_DT ranking_JJ methods_NNS -LRB-_-LRB- such_JJ as_IN BM2500_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =--RRB-_NN are_VBP used_VBN to_TO sort_VB the_DT candidate_NN segments_NNS and_CC the_DT top_JJ -LRB-_-LRB- e.g._FW 20_CD -RRB-_-RRB- segments_NNS are_VBP selected_VBN for_IN expansion_NN term_NN selection_NN in_IN the_DT next_JJ step_NN ._.
+Step_NN 4_CD :_: Expansion_NN Term_NN Selection_NN We_PRP use_VBP an_DT approach_NN similar_JJ to_TO the_DT
+val_NN has_VBZ been_VBN the_DT most_RBS challenging_JJ problem_NN for_IN a_DT search_NN engine_NN ._.
+Pseudo-relevance_JJ feedback_NN ,_, also_RB known_VBN as_IN local_JJ feedback_NN or_CC blind_JJ feedback_NN ,_, is_VBZ a_DT technique_NN commonly_RB used_VBN to_TO improve_VB retrieval_NN performance_NN =_JJ -_: =[_NN 3_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Its_PRP$ basic_JJ idea_NN is_VBZ to_TO extract_VB expansion_NN terms_NNS from_IN the_DT top-ranked_JJ documents_NNS to_TO formulate_VB a_DT new_JJ query_NN for_IN a_DT second_JJ round_NN retrieval_NN ._.
+Through_IN a_DT query_NN expansion_NN ,_, some_DT relevant_JJ documents_NNS missed_VBN in_IN the_DT ini_NN
+680-3\/03_CD \/_: 0005_CD ._.
+1_CD Peking_NNP University_NNP Beijing_NNP ,_, China_NNP ysp@is.pku.edu.cn_NN 2_CD Tsinghua_NNP University_NNP Beijing_NNP ,_, China_NNP caideng00@mails.tsinghua.edu.cn_NN information_NN source_NN and_CC contains_VBZ a_DT lot_NN of_IN low-quality_JJ documents_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, such_PDT a_DT naive_JJ pseudo-relevance_NN feedback_NN is_VBZ not_RB capable_JJ of_IN producing_VBG a_DT satisfactory_JJ result_NN ._.
+There_EX are_VBP many_JJ reasons_NNS why_WRB simple_JJ pseudo-relevance_JJ feedback_NN does_VBZ not_RB work_VB ._.
+First_RB ,_, web_NN pages_NNS usually_RB do_VBP not_RB c_NN
+ented_VBN as_IN a_DT tag_NN tree_NN by_IN DOM_NNP -LRB-_-LRB- Document_NNP Object_NNP Model_NNP ,_, see_VB http:\/\/www.w3.org\/DOM\/_NN -RRB-_-RRB- ._.
+DOM-based_JJ segmentation_NN approaches_NNS are_VBP widely_RB used_VBN these_DT years_NNS for_IN record_NN boundary_NN discovery_NN -LRB-_-LRB- 4_CD ,_, 11_CD -RRB-_-RRB- ,_, topic_NN distillation_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: and_CC adaptive_JJ content_NN delivery_NN -LRB-_-LRB- 5_CD ,_, 8_CD ,_, 13_CD -RRB-_-RRB- ._.
+Useful_JJ tags_NNS that_WDT maysrepresent_VBP a_DT block_NN in_IN a_DT page_NN include_VBP P_NN -LRB-_-LRB- for_IN paragraph_NN -RRB-_-RRB- ,_, TABLE_NN -LRB-_-LRB- for_IN table_NN -RRB-_-RRB- ,_, UL_NN -LRB-_-LRB- for_IN list_NN -RRB-_-RRB- ,_, H1_NN ~_NN H6_NN -LRB-_-LRB- for_IN heading_VBG -RRB-_-RRB- ,_, etc._NN ._.
+To_TO the_DT best_JJS of_IN our_PRP$ kn_NN
+esponds_NNS to_TO a_DT more_RBR complicated_JJ content_NN structure_NN ,_, in_IN VIPS_NNP ,_, it_PRP is_VBZ sometimes_RB easier_JJR to_TO partition_NN these_DT pages_NNS ,_, since_IN more_RBR visual_JJ cues_NNS can_MD be_VB detected_VBN and_CC utilized_VBN ._.
+An_DT example_NN of_IN complex_JJ pages_NNS is_VBZ shown_VBN in_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: ,_, in_IN which_WDT a_DT formal_JJ definition_NN of_IN the_DT vision-based_JJ content_NN structure_NN is_VBZ presented_VBN and_CC a_DT more_RBR detailed_JJ description_NN of_IN the_DT segmentation_NN algorithm_NN is_VBZ illustrated_JJ ._.
+Furthermore_RB ,_, those_DT badly_RB presented_VBN web_NN p_NN
+uch_NN as_IN word_NN or_CC a_DT sequence_NN of_IN words_NNS ._.
+In_IN our_PRP$ experiments_NNS ,_, we_PRP set_VBD k1_NN =_JJ 1.2_CD ,_, k3_NN =_JJ 1000_CD ,_, b_NN =_JJ 0.75_CD ,_, and_CC avdl_NN =_JJ 61200_CD ._.
+In_IN our_PRP$ experiments_NNS ,_, we_PRP do_VBP not_RB use_VB any_DT stemming_VBG method_NN ._.
+A_DT word_NN list_NN containing_VBG 222_CD words_NNS =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ used_VBN to_TO filter_NN out_RP stop_NN words_NNS ._.
+We_PRP only_RB use_VBP single_JJ word_NN and_CC do_VBP not_RB consider_VB phrase_NN information_NN ._.
+4.2_CD Experimental_JJ Results_NNS To_TO show_VB the_DT effect_NN of_IN segment_NN selection_NN ,_, we_PRP alter_VBP the_DT number_NN of_IN segments_NNS fro_NN
+:_: The_DT traditional_JJ pseudo-relevance_JJ feedback_NN based_VBN on_IN the_DT whole_JJ web_NN page_NN is_VBZ implemented_VBN for_IN a_DT comparison_NN purpose_NN ._.
+4.1_CD Test_NNP Data_NNP and_CC Configuration_NNP We_PRP choose_VBP Okapi_NNP -LRB-_-LRB- 15_CD -RRB-_-RRB- as_IN the_DT retrieval_NN system_NN and_CC WT10g_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: in_IN TREC-9_NN and_CC TREC_NN 2001_CD Web_NN Tracks_VBZ as_IN the_DT data_NN set_NN ._.
+WT10g_NN contains_VBZ 1.69_CD million_CD pages_NNS and_CC amounts_NNS to_TO about_IN 10G_NN ._.
+We_PRP use_VBP the_DT 50_CD queries_NNS from_IN TREC_NN 2001_CD Web_NN Track_NNP as_IN the_DT query_JJ set_NN and_CC only_RB the_DT TOPIC_NN fiel_NN
+of_IN a_DT HTML_NNP page_NN can_MD be_VB represented_VBN as_IN a_DT tag_NN tree_NN by_IN DOM_NNP -LRB-_-LRB- Document_NNP Object_NNP Model_NNP ,_, see_VB http:\/\/www.w3.org\/DOM\/_NN -RRB-_-RRB- ._.
+DOM-based_JJ segmentation_NN approaches_NNS are_VBP widely_RB used_VBN these_DT years_NNS for_IN record_NN boundary_NN discovery_NN =_JJ -_: =[_NN 4_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, topic_NN distillation_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC adaptive_JJ content_NN delivery_NN -LRB-_-LRB- 5_CD ,_, 8_CD ,_, 13_CD -RRB-_-RRB- ._.
+Useful_JJ tags_NNS that_WDT maysrepresent_VBP a_DT block_NN in_IN a_DT page_NN include_VBP P_NN -LRB-_-LRB- for_IN paragraph_NN -RRB-_-RRB- ,_, TABLE_NN -LRB-_-LRB- for_IN table_NN -RRB-_-RRB- ,_, UL_NN -LRB-_-LRB- for_IN list_NN -RRB-_-RRB- ,_, H1_NN ~_NN H6_NN -LRB-_-LRB- for_IN heading_VBG -RRB-_-RRB- ,_, et_FW
+is_VBZ usually_RB grouped_VBN together_RB and_CC the_DT entire_JJ page_NN is_VBZ divided_VBN into_IN regions_NNS for_IN different_JJ contents_NNS using_VBG explicit_JJ or_CC implicit_JJ visual_JJ separators_NNS such_JJ as_IN lines_NNS ,_, blank_JJ areas_NNS ,_, images_NNS ,_, font_JJ sizes_NNS ,_, colors_NNS ,_, etc_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ goal_NN is_VBZ to_TO derive_VB this_DT content_NN structure_NN from_IN the_DT visual_JJ presentation_NN of_IN a_DT web_NN page_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP VIPS_NNS -LRB-_-LRB- VIsion-based_JJ Page_NNP Segmentation_NN -RRB-_-RRB- algorithm_NN to_TO segment_NN a_DT web_NN page_NN ._.
+The_DT algorith_NN

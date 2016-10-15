@@ -1,0 +1,185 @@
+Object-level_JJ ranking_NN :_: bringing_VBG order_NN to_TO Web_NN objects_NNS
+In_IN contrast_NN with_IN the_DT current_JJ Web_NN search_NN methods_NNS that_WDT essentially_RB do_VBP document-level_JJ ranking_NN and_CC retrieval_NN ,_, we_PRP are_VBP exploring_VBG a_DT new_JJ paradigm_NN to_TO enable_VB Web_NN search_NN at_IN the_DT object_NN level_NN ._.
+We_PRP collect_VBP Web_NN information_NN for_IN objects_NNS relevant_JJ for_IN a_DT specific_JJ application_NN domain_NN and_CC rank_VB these_DT objects_NNS in_IN terms_NNS of_IN their_PRP$ relevance_NN and_CC popularity_NN to_TO answer_VB user_NN queries_NNS ._.
+Traditional_JJ PageRank_NN model_NN is_VBZ no_RB longer_RB valid_JJ for_IN object_NN popularity_NN calculation_NN because_IN of_IN the_DT existence_NN of_IN heterogeneous_JJ relationships_NNS between_IN objects_NNS ._.
+This_DT paper_NN introduces_VBZ PopRank_NNP ,_, a_DT domain-independent_JJ object-level_JJ link_NN analysis_NN model_NN to_TO rank_VB the_DT objects_NNS within_IN a_DT specific_JJ domain_NN ._.
+Specifically_RB we_PRP assign_VBP a_DT popularity_NN propagation_NN factor_NN to_TO each_DT type_NN of_IN object_NN relationship_NN ,_, study_NN how_WRB different_JJ popularity_NN propagation_NN factors_NNS for_IN these_DT heterogeneous_JJ relationships_NNS could_MD affect_VB the_DT popularity_NN ranking_NN ,_, and_CC propose_VBP efficient_JJ approaches_NNS to_TO automatically_RB decide_VB these_DT factors_NNS ._.
+Our_PRP$ experiments_NNS are_VBP done_VBN using_VBG 1_CD million_CD CS_NN papers_NNS ,_, and_CC the_DT experimental_JJ results_NNS show_VBP that_IN PopRank_NNP can_MD achieve_VB significantly_RB better_JJR ranking_NN results_VBZ than_IN naively_RB applying_VBG PageRank_NNP on_IN the_DT object_NN graph_NN ._.
+sed_VBN on_IN the_DT author_NN ranking_NN ._.
+Nie_NN et_FW al._FW also_RB consider_VBP articles_NNS as_IN Web_NN objects_NNS and_CC collect_VB Web_NN information_NN for_IN object_NN ,_, then_RB rank_VB Web_NN objects_NNS in_IN terms_NNS of_IN their_PRP$ popularity_NN and_CC relevance_NN to_TO the_DT user_NN query_NN ._.
+=_SYM -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT problem_NN with_IN all_DT of_IN the_DT above_JJ approaches_NNS is_VBZ that_IN they_PRP rank_VBP articles_NNS based_VBN on_IN the_DT prior_JJ popularity_NN or_CC prestige_NN ,_, so_IN that_IN recent_JJ articles_NNS will_MD always_RB obtain_VB lower_JJR scores_NNS ._.
+Walker_NNP et_FW al_FW -LRB-_-LRB- 27_CD -RRB-_-RRB- introduced_VBN
+ranking_NN of_IN entities_NNS ._.
+This_DT would_MD be_VB analogous_JJ to_TO a_DT ``_`` GROUP_NNP BY_NNP ''_'' statement_NN in_IN relational_JJ query_NN processing_NN ,_, in_IN this_DT case_NN grouping_VBG by_IN entity_NN ._.
+Various_JJ works_NNS have_VBP looked_VBN at_IN entity_NN specific_JJ ranking_NN techniques_NNS =_JJ -_: =[_NN 4_CD ,_, 8_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+While_IN ranking_NN is_VBZ not_RB the_DT focus_NN of_IN this_DT paper_NN ,_, it_PRP is_VBZ a_DT necessary_JJ component_NN to_TO a_DT deployable_JJ system_NN ._.
+We_PRP take_VBP the_DT simple_JJ approach_NN of_IN ranking_VBG the_DT resulting_VBG document_NN set_VBN as_IN a_DT whole_NN ,_, ranking_NN based_VBN on_IN the_DT t_NN
+able_JJ for_IN a_DT task_NN of_IN interest_NN ._.
+Previously_RB ,_, researchers_NNS have_VBP suggested_VBN improving_VBG graph_NN walk_NN based_JJ similarity_NN in_IN relational_JJ graphs_NNS by_IN learning_VBG edge_NN weights_NNS parameters_NNS in_IN the_DT graph_NN -LRB-_-LRB- Diligenti_NNP et_FW al._FW 2005_CD ;_: =_JJ -_: =_JJ Nie_NN et_FW al._FW 2005_CD -_: =_JJ -_: ;_: Agarwal_NNP et_FW al._FW 2006_CD -RRB-_-RRB- ._.
+The_DT assumption_NN underlying_VBG this_DT approach_NN is_VBZ that_IN for_IN a_DT particular_JJ task_NN ,_, some_DT relation_NN types_NNS should_MD be_VB favored_VBN by_IN the_DT graph_NN walk_NN over_IN others_NNS ._.
+We_PRP adapt_VBP an_DT error_NN backpropagation_NN gr_NN
+lk_NN on_IN graphs_NNS as_IN proximity_NN measures_NNS ,_, notably_RB the_DT PageRank_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- and_CC the_DT Personalized_VBN PageRank_NN algorithm_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+There_EX have_VBP been_VBN much_RB follow_VB up_RP work_NN in_IN supervised_JJ learning_NN of_IN random_JJ walk_NN models_NNS ._.
+Nie_NN et_FW al._FW =_SYM -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: use_VB simulated_JJ annealing_NN to_TO perform_VB local_JJ search_NN over_IN each_DT edge_NN type_NN ,_, which_WDT is_VBZ only_RB applicable_JJ when_WRB the_DT number_NN of_IN parameters_NNS is_VBZ very_RB small_JJ ._.
+Diligenti_NNP et_FW al._FW -LRB-_-LRB- 10_CD -RRB-_-RRB- optimize_VBP relation_NN weights_NNS using_VBG back-p_NN
+kind_NN of_IN citation_NN works_VBZ ,_, there_EX still_RB remain_VBP some_DT limitations_NNS ._.
+For_IN example_NN ,_, the_DT current_JJ ci-tation_NN network_NN analysis_NN seldom_RB goes_VBZ beyond_IN that_DT of_IN the_DT citation_NN relationship_NN among_IN authors_NNS or_CC papers_NNS ._.
+PopRank_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: integrates_VBZ conferences_NNS and_CC journals_NNS ,_, yet_RB there_EX are_VBP still_RB some_DT other_JJ useful_JJ and_CC easily_RB available_JJ information_NN in_IN the_DT scientific_JJ literature_NN ,_, such_JJ as_IN authors_NNS '_POS affiliations_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT no_DT
+r_NN combination_NN of_IN results_NNS from_IN text_NN search_NN and_CC authority_NN ranking_NN ._.
+However_RB ,_, the_DT linear_JJ combination_NN does_VBZ not_RB make_VB full_JJ use_NN of_IN the_DT information_NN as_IN it_PRP treats_VBZ each_DT of_IN them_PRP individually_RB ._.
+In_IN addition_NN ,_, PopRank_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ developed_VBN to_TO extend_VB PageRank_NNP models_NNS to_TO integrate_VB heterogenous_JJ relationships_NNS between_IN objects_NNS ._.
+Another_DT approach_NN suggested_VBN by_IN Minkov_NNP et_FW al._FW -LRB-_-LRB- 23_CD -RRB-_-RRB- has_VBZ been_VBN used_VBN to_TO improve_VB an_DT initial_JJ ranking_NN on_IN graph_NN w_NN
+e_LS links_NNS of_IN different_JJ types_NNS can_MD have_VB various_JJ impact_NN on_IN the_DT ranking_JJ computation_NN ._.
+Recent_JJ works_NNS -LRB-_-LRB- 8_CD ,_, 9_CD -RRB-_-RRB- have_VBP extended_VBN PageRank_NNP to_TO consider_VB different_JJ types_NNS of_IN relations_NNS between_IN entities_NNS or_CC objects_NNS ._.
+PopRank_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT domain_NN independent_JJ object-level_JJ link_NN analysis_NN ,_, proposes_VBZ a_DT machine_NN learning_VBG approach_NN to_TO automatically_RB assigns_VBZ a_DT ``_`` popularity_NN propagation_NN factor_NN ''_'' to_TO each_DT type_NN of_IN relations_NNS ._.
+ObjectRank_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- goes_VBZ furth_NN
+application_NN ._.
+In_IN the_DT literature_NN of_IN ACI_NN study_NN ,_, Google_NNP recently_RB introduced_VBD The_DT Google_NNP Scholar_NNP 3_CD that_WDT incorporates_VBZ ACI_NNP to_TO index_NN over_IN 560_CD million_CD documents_NNS and_CC citation_NN records4_NN ._.
+Microsoft_NNP 's_POS Libra_NNP system_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: contains_VBZ one_CD million_CD papers_NNS ,_, 650,000_CD authors_NNS and_CC over_IN 2,000_CD publication_NN venues_NNS ._.
+Collectively_RB ,_, their_PRP$ dataset_NN contains_VBZ 7_CD million_CD links_NNS representing_VBG cited-by_JJ ,_, authored-by_JJ and_CC published-by_JJ relationships_NNS ._.
+instance_NN DBLP_NN 1_CD ,_, CiteSeer_NN 2_CD ,_, Google_NNP Scholar_NNP 3_CD ,_, Libra_NNP 4_CD ,_, and_CC Dblife_NNP 5_CD ._.
+However_RB ,_, most_JJS of_IN these_DT systems_NNS are_VBP simply_RB modeling_NN documents_NNS based_VBN on_IN unigram_JJ language_NN model_NN -LRB-_-LRB- Zhai_NNP and_CC Lafferty_NNP 2001_CD -RRB-_-RRB- ._.
+Libra_NN -LRB-_-LRB- =_JJ -_: =_JJ Nie_NN et_FW al._FW 2005_CD -_: =--RRB-_NN considers_VBZ papers_NNS ,_, authors_NNS ,_, and_CC conferences_NNS as_IN different_JJ objects_NNS and_CC utilizes_VBZ a_DT PopRank_NN -LRB-_-LRB- by_IN extending_VBG PageRank_NNP ,_, Page_NNP et_FW al._FW 1999_CD -RRB-_-RRB- to_TO rank_VB the_DT different_JJ objects_NNS ._.
+However_RB ,_, its_PRP$ search_NN model_NN is_VBZ still_RB bas_NN
+te_IN results_NNS since_IN links_NNS of_IN different_JJ types_NNS can_MD have_VB various_JJ impact_NN on_IN the_DT ranking_JJ computation_NN ._.
+In_IN -LRB-_-LRB- 5_CD ,_, 6_CD -RRB-_-RRB- ,_, the_DT authors_NNS extend_VBP PageRank_NNP to_TO consider_VB different_JJ types_NNS of_IN relations_NNS between_IN entities_NNS ._.
+PopRank_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, an_DT object-level_JJ link_NN analysis_NN ,_, proposes_VBZ a_DT machine_NN learning_VBG approach_NN to_TO assign_VB a_DT ``_`` popularity_NN propagation_NN factor_NN ''_'' to_TO each_DT type_NN of_IN relation_NN ._.
+ObjectRank_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- applies_VBZ authority-based_JJ ranking_NN to_TO keyword_FW se_FW
+meter_NN
+ow_NN to_TO assign_VB such_JJ weights_NNS ,_, even_RB if_IN this_DT could_MD be_VB a_DT really_RB challenging_JJ problem_NN -LRB-_-LRB- especially_RB when_WRB the_DT graph_NN is_VBZ really_RB huge_JJ and_CC has_VBZ several_JJ different_JJ types_NNS of_IN links_NNS -RRB-_-RRB- ._.
+On_IN this_DT aspect_NN the_DT algorithm_NN PopRank_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: tries_VBZ to_TO deal_VB with_IN this_DT problem_NN ,_, even_RB if_IN it_PRP has_VBZ not_RB been_VBN proposed_VBN specifically_RB for_IN RDF_NNP datasets_NNS ,_, but_CC for_IN generic_JJ Web_NN objects_NNS connected_VBN through_IN links_NNS ._.
+PopRank_NNP extends_VBZ the_DT PageRank_NNP algorithm_NN ,_, the_DT idea_NN
+e_LS cast_VBD the_DT problem_NN of_IN entity_NN ranking_NN as_IN a_DT supervised_JJ machine_NN learning_NN problem_NN with_IN the_DT goal_NN of_IN predicting_VBG the_DT relevance_NN of_IN the_DT related_JJ entity_NN to_TO the_DT query_JJ entity_NN ._.
+While_IN the_DT previous_JJ work_NN in_IN this_DT area_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: focuses_VBZ on_IN optimizing_VBG the_DT Click_NN Through_IN Rate_NN -LRB-_-LRB- CTR_NN -RRB-_-RRB- of_IN the_DT related_JJ entities_NNS alone_RB ,_, we_PRP present_VBP an_DT approach_NN to_TO jointly_RB learn_VB the_DT relevance_NN among_IN the_DT entities_NNS using_VBG both_CC the_DT user_NN click_VB data_NNS and_CC the_DT edito_NN
+Graph_NN modeling_NN and_CC random_JJ walks_VBZ have_VBP been_VBN applied_VBN with_IN success_NN to_TO many_JJ different_JJ domains_NNS of_IN NLP_NNP ,_, such_JJ as_IN keyword_NN and_CC sentence_NN extraction_NN -LRB-_-LRB- Mihalcea_NNP and_CC Tarau_NNP ,_, 2004_CD -RRB-_-RRB- ,_, computer-science_JJ articles_NNS ranking_JJ -LRB-_-LRB- =_JJ -_: =_JJ Nie_NN et_FW al._FW ,_, 2005_CD -_: =--RRB-_NN ,_, web_NN pages_NNS ranking_NN -LRB-_-LRB- Haveliwala_NN ,_, 2002_CD ;_: Page_NNP et_FW al._FW ,_, 1999_CD ;_: Richardson_NNP and_CC Domingos_NNP ,_, 2002_CD -RRB-_-RRB- ,_, WordNet-based_JJ word_NN sense_NN disambiguation_NN -LRB-_-LRB- Agirre_NNP and_CC Soroa_NNP ,_, 2009_CD -RRB-_-RRB- and_CC lexical_JJ semantic_JJ relatedness_NN -LRB-_-LRB- Hughes_NNP and_CC
+er-based_JJ approach_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+Zhang_NNP et_FW al._FW -LRB-_-LRB- 29_CD -RRB-_-RRB- proposed_VBD a_DT similar_JJ method_NN to_TO improve_VB Web_NN search_NN results_NNS based_VBN on_IN a_DT linear_JJ combination_NN of_IN results_NNS from_IN text_NN search_NN and_CC authority_NN ranking_NN ._.
+In_IN addition_NN ,_, PopRank_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ developed_VBN to_TO extend_VB PageRank_NNP models_NNS to_TO integrate_VB heterogenous_JJ relationships_NNS between_IN objects_NNS ._.
+Another_DT approach_NN suggested_VBN by_IN Minkov_NNP et_FW al._FW -LRB-_-LRB- 18_CD -RRB-_-RRB- has_VBZ been_VBN used_VBN to_TO improve_VB an_DT initial_JJ ranking_NN on_IN graph_NN w_NN
+ompute_VB the_DT ranking_JJ score_NN of_IN each_DT object_NN ,_, using_VBG different_JJ propagation_NN methods_NNS corresponding_VBG to_TO different_JJ ranking_JJ rules_NNS ._.
+These_DT methods_NNS mainly_RB work_VBP on_IN homogeneous_JJ information_NN networks_NNS ._.
+Recently_RB ,_, PopRank_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: was_VBD proposed_VBN to_TO rank_VB the_DT popularity_NN of_IN heterogeneous_JJ web_NN objects_NNS via_IN knowledge_NN propagation_NN throughout_IN the_DT heterogeneous_JJ network_NN of_IN web_NN objects_NNS ._.
+This_DT approach_NN considers_VBZ that_IN different_JJ types_NNS of_IN links_NNS i_FW
+address_VB the_DT important_JJ issue_NN of_IN dealing_VBG with_IN the_DT heterogeneous_JJ relationships_NNS among_IN the_DT actors_NNS ,_, such_JJ as_IN citations_NNS or_CC collaborations_NNS ._.
+Recent_JJ work_NN addresses_VBZ networks_NNS with_IN edges_NNS of_IN multiple_JJ semantic_JJ types_NNS =_JJ -_: =[_NN 54_CD -RRB-_-RRB- -_: =_JJ -.84_CD Recently_RB ,_, learning-based_JJ methods_NNS have_VBP been_VBN proposed_VBN for_IN the_DT construction_NN of_IN networks_NNS -LRB-_-LRB- 1_CD ,_, 71_CD -RRB-_-RRB- ._.
+The_DT learning-based_JJ framework_NN models_NNS the_DT network_NN flow_NN in_IN the_DT network_NN as_IN a_DT Markov_NNP transition_NN matrix_NN and_CC
+=_JJ 1_LS -RRB-_-RRB- =_JJ 1_CD ._.
+As_IN TrustRank_NNP is_VBZ a_DT modified_VBN PageRank_NN by_IN starting_VBG the_DT iterative_JJ process_NN from_IN a_DT reliable_JJ seed_NN set_NN ,_, it_PRP can_MD also_RB be_VB covered_VBN by_IN the_DT framework_NN ._.
+Similarly_RB ,_, other_JJ PageRank-alike_JJ approaches_NNS such_JJ as_IN -LRB-_-LRB- =_JJ -_: =_JJ Nie_NN et_FW al._FW 2005_CD -_: =_JJ -_: ;_: Poblete_NNP et_FW al._FW 2008_CD -RRB-_-RRB- can_MD also_RB be_VB regarded_VBN as_IN special_JJ cases_NNS of_IN the_DT framework_NN ._.
+4.2_CD BrowseRank_NNP In_NNP BrowseRank_NNP ,_, the_DT random_JJ walk_NN is_VBZ defined_VBN on_IN the_DT user_NN browsing_VBG graph_NN ,_, and_CC a_DT ContinuousTime_NNP Markov_NNP Process_VB
+nt_NN computation_NN for_IN a_DT user-specific_JJ or_CC query-specific_JJ weight_NN assignment_NN vector_NN -LRB-_-LRB- WAV_NN -RRB-_-RRB- ._.
+While_IN we_PRP use_VBP ObjectRank_NNP as_IN an_DT exemplar_NN ,_, our_PRP$ approach_NN is_VBZ applicable_JJ to_TO other_JJ authority_NN flow_NN ranking_NN techniques_NNS like_IN =_JJ -_: =[_NN 11_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Figure_NN 1_CD -LRB-_-LRB- 6_CD -RRB-_-RRB- shows_VBZ the_DT authority_NN transfer_NN schema_NN graph_NN for_IN DBLP_NNP ,_, a_DT bibliographic_JJ database_NN for_IN computer_NN science_NN publications_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+There_EX are_VBP 8_CD edge_NN types_NNS and_CC each_DT edge_NN type_NN is_VBZ associated_VBN with_IN a_DT numer_NN
+solution_NN is_VBZ most_RBS often_RB manually_RB assigning_VBG weights_NNS to_TO different_JJ relations_NNS ,_, but_CC this_DT approach_NN is_VBZ only_RB applicable_JJ in_IN a_DT restricted_JJ domain_NN such_JJ as_IN experiments_NNS over_IN paper-author-conference_NN collections_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+-LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 9_CD -RRB-_-RRB- try_VBP to_TO learn_VB popularity_NN propagations_NNS as_IN different_JJ weights_NNS for_IN edges_NNS representing_VBG different_JJ relations_NNS ._.
+The_DT contribution_NN of_IN this_DT paper_NN is_VBZ determining_VBG to_TO what_WDT extent_NN the_DT PageRank_NN algorithm_NN
+iple_NN objectives_NNS ,_, for_IN example_NN examining_VBG relationships_NNS among_IN papers_NNS ,_, authors_NNS ,_, and_CC institutions_NNS ._.
+In_IN this_DT work_NN ,_, relationships_NNS have_VBP been_VBN computed_VBN globally_RB ,_, based_VBN on_IN one_CD or_CC more_JJR sets_NNS of_IN similarity_NN measures_NNS =_JJ -_: =[_NN 28_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Related_JJ work_NN also_RB includes_VBZ research_NN on_IN citation_NN analysis_NN ,_, including_VBG Garfield_NNP 's_POS early_JJ work_NN on_IN the_DT impact_NN factor_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, and_CC later_JJ refinements_NNS by_IN Pinski_NNP and_CC Narin_NNP -LRB-_-LRB- 22_CD -RRB-_-RRB- ._.
+Vassilvitskii_NNP and_CC Brill_NNP have_VBP recen_VBN
+Essentially_RB ,_, building_VBG vertical_JJ search_NN engines_NNS includes_VBZ data_NNS crawling_VBG ,_, information_NN extraction_NN ,_, object_NN identification_NN and_CC integration_NN ,_, and_CC object-level_JJ Web_NN information_NN retrieval_NN -LRB-_-LRB- or_CC Web_NN object_NN ranking_NN -RRB-_-RRB- =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Ranking_NN is_VBZ one_CD of_IN the_DT most_RBS important_JJ factors_NNS ,_, as_IN it_PRP deals_VBZ with_IN the_DT core_NN problem_NN of_IN how_WRB to_TO combine_VB and_CC rank_VB objects_NNS coming_VBG from_IN multiple_JJ communities_NNS ._.
+Moreover_RB ,_, the_DT user_NN interface_NN design_NN is_VBZ also_RB an_DT im_NN
+it_PRP can_MD leverage_NN domain-specific_JJ knowledge_NN and_CC is_VBZ more_RBR effective_JJ in_IN connecting_VBG users_NNS with_IN the_DT information_NN they_PRP want_VBP ._.
+There_EX are_VBP many_JJ vertical_JJ search_NN engines_NNS ,_, including_VBG some_DT for_IN paper_NN search_NN -LRB-_-LRB- e.g._FW Libra_FW =_SYM -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Citeseer_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC Google_NNP Scholar_NNP -LRB-_-LRB- 4_CD -RRB-_-RRB- -RRB-_-RRB- ,_, product_NN search_NN -LRB-_-LRB- e.g._FW Froogle_FW -LRB-_-LRB- 5_CD -RRB-_-RRB- -RRB-_-RRB- ,_, movie_NN search_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, image_NN search_NN -LRB-_-LRB- 1_CD ,_, 8_CD -RRB-_-RRB- ,_, video_NN search_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, local_JJ search_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, as_RB well_RB as_IN news_NN search_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+We_PRP believe_VBP the_DT vertica_NN
+o_NN improve_VB its_PRP$ responsiveness_NN to_TO queries_NNS ._.
+There_EX is_VBZ also_RB no_DT reason_NN why_WRB TOPHITS_NNS need_VBP be_VB restricted_JJ to_TO anchor_NN text_NN ._.
+More_RBR complex_JJ structure_NN information_NN could_MD be_VB incorporated_VBN ,_, especially_RB semantic_JJ structure_NN =_JJ -_: =[_NN 2_CD ,_, 42_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT third_JJ dimension_NN can_MD be_VB used_VBN alternatively_RB to_TO capture_VB other_JJ types_NNS information_NN such_JJ as_IN the_DT type_NN of_IN connection_NN ,_, which_WDT might_MD be_VB available_JJ in_IN a_DT semantic_JJ web_NN setting_NN ._.
+Furthermore_RB ,_, we_PRP are_VBP not_RB limited_VBN t_NN
+d_NN as_IN in_FW Pagerank_FW -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, with_IN two_CD modifications_NNS :_: •_CD The_DT surfer_NN does_VBZ not_RB follow_VB edges_NNS out_IN of_IN a_DT node_NN uniformly_RB at_IN random_JJ ._.
+Edges_NNS have_VBP associated_VBN types_NNS ;_: types_NNS are_VBP associated_VBN with_IN different_JJ walk_NN probabilities_NNS =_JJ -_: =[_NN 3_CD ,_, 17_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: This_DT is_VBZ critical_JJ for_IN accuracy_NN in_IN ER_NN graphs_NNS :_: the_DT strengths_NNS of_IN all_DT relations_NNS should_MD not_RB be_VB the_DT same_JJ ,_, and_CC a_DT balance_NN must_MD be_VB struck_VBN between_IN query-specific_JJ and_CC global_JJ node_NN prestige_NN ._.
+•_NN When_WRB the_DT surfer_NN jump_NN
+ch_NN are_VBP used_VBN to_TO bias_NN the_DT walks_VBZ or_CC activation_NN propagation_NN ._.
+In_IN Section_NN 2_CD we_PRP will_MD review_VB a_DT number_NN of_IN efforts_NNS to_TO learn_VB some_DT of_IN the_DT parameters_NNS of_IN the_DT Markov_NNP walk_NN system_NN ,_, most_RBS typically_RB via_IN heuristic_NN search_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, quadratic_JJ programs_NNS -LRB-_-LRB- 20_CD -RRB-_-RRB- or_CC local_JJ hill-climbing_NN -LRB-_-LRB- 7_CD ,_, 9_CD -RRB-_-RRB- ._.
+To_TO our_PRP$ knowledge_NN ,_, no_DT single_JJ existing_VBG approach_NN covers_VBZ the_DT scenario_NN we_PRP address_VBP in_IN Section_NN 3_CD :_: User_NN preference_NN is_VBZ provided_VBN as_IN ≺_NN -LRB-_-LRB- not_RB as_IN absolute_JJ sc_NN
+es_NNS ._.
+PageRank_NN -LRB-_-LRB- 6_CD ,_, 18_CD -RRB-_-RRB- and_CC HITS_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- are_VBP the_DT two_CD earliest_JJS link_NN analysis_NN algorithms_NNS ._.
+They_PRP only_RB consider_VBP a_DT single_JJ type_NN of_IN relationship_NN -LRB-_-LRB- i.e._FW ,_, hyper-links_NNS -RRB-_-RRB- among_IN homogeneous_JJ Web_NN pages_NNS ._.
+Recent_JJ work_NN such_JJ as_IN =_JJ -_: =[_NN 26_CD ,_, 17_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: extends_VBZ PageRank_NNP or_CC HITS_NNP to_TO consider_VB the_DT interactions_NNS among_IN heterogeneous_JJ entities_NNS ._.
+All_DT these_DT algorithms_NNS focus_VBP on_IN improving_VBG the_DT estimation_NN of_IN entities_NNS '_POS static_JJ ranking_NN ,_, which_WDT is_VBZ query_NN independent_JJ ._.
+In_IN
+-RRB-_-RRB- for_IN recent_JJ ,_, powerful_JJ models_NNS -RRB-_-RRB- ,_, but_CC do_VBP not_RB consider_VB uncertainty_NN and_CC treat_NN ranking_NN as_IN a_DT second-class_JJ citizen_NN ._.
+Deep-Web_JJ search_NN ,_, vertical_JJ search_NN and_CC entity_NN search_NN on_IN the_DT Web_NN ,_, and_CC semantic_JJ desktop_NN search_NN =_JJ -_: =[_NN 12_CD ,_, 13_CD ,_, 14_CD ,_, 15_CD ,_, 22_CD ,_, 25_CD ,_, 44_CD ,_, 43_CD ,_, 42_CD -RRB-_-RRB- -_: =_SYM -_: enhance_VBP keywordbased_VBN querying_VBG by_IN typed_VBN attributes_NNS ,_, but_CC none_NN of_IN these_DT approaches_NNS is_VBZ sufficiently_RB complete_JJ for_IN effectively_RB searching_VBG a_DT richly_RB structured_JJ knowledge_NN base_NN ._.
+Finally_RB ,_, there_EX is_VBZ prior_JJ work_NN on_IN
+ank_NN system_NN which_WDT applies_VBZ authority-based_JJ ranking_NN to_TO keyword_VB search_NN in_IN databases_NNS modeled_VBN as_IN labeled_JJ graphs_NNS where_WRB the_DT co-occurence_NN of_IN keywords_NNS in_IN a_DT tuple_NN corresponds_VBZ to_TO an_DT edge_NN in_IN the_DT graph_NN ._.
+Nie_NN et_FW al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP PopRank_NNP in_IN which_WDT objects_NNS relevant_JJ to_TO a_DT specific_JJ application_NN domain_NN are_VBP ranked_VBN in_IN terms_NNS of_IN their_PRP$ relevancy_NN and_CC popularity_NN to_TO answer_VB user_NN queries_NNS using_VBG the_DT web_NN information_NN about_IN these_DT objects_NNS ._.
+ses_NNS ,_, are_VBP of_IN particular_JJ importance_NN for_IN Web_NN object_NN extraction_NN ._.
+2_CD Problem_NNP Formulation_NNP The_DT Web_NN object_NN extraction_NN problem_NN is_VBZ motivated_VBN by_IN Libra_NNP ,_, a_DT scientific_JJ literature_NN search_NN engine_NN that_IN we_PRP are_VBP developing_VBG =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+2.1_CD Object_NNP Blocks_NNPS and_CC Elements_NNS Web_NN Objects_NNPS &_CC Attributes_NNPS :_: We_PRP define_VBP the_DT concept_NN of_IN Web_NN Objects_NNS as_IN the_DT principle_NN data_NNS units_NNS about_IN which_WDT Web_NN information_NN is_VBZ to_TO be_VB collected_VBN ,_, indexed_VBN and_CC ranked_VBN ._.
+Web_NN obje_NN
+papers_NNS can_MD cite_VB unpublished_JJ work_NN that_WDT is_VBZ published_VBN later_RB ._.
+In_IN that_DT case_NN these_DT papers_NNS can_MD be_VB treated_VBN as_IN multiple_JJ versions_NNS ._. -RRB-_-RRB-
+Thus_RB ,_, the_DT interpretation_NN of_IN the_DT naive_JJ PageRank_NNP algorithm_NN would_MD be_VB problematic_JJ =_JJ -_: =[_NN 13_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP introduce_VBP a_DT popularity_NN factor_NN weighted_JJ ranking_NN algorithm_NN based_VBN on_IN PageRank_NNP with_IN significantly_RB improved_VBN performance_NN for_IN ranking_JJ academic_JJ papers_NNS ._.
+Our_PRP$ contributions_NNS are_VBP as_IN follows_VBZ :_: s2_NNP Yang_NNP Sun_NNP and_CC C._NNP
+for_IN research_NN paper_NN objects_NNS as_IN an_DT example_NN to_TO illustrate_VB how_WRB to_TO apply_VB our_PRP$ proposed_VBN approach_NN to_TO a_DT specific_JJ domain_NN ._.
+We_PRP did_VBD some_DT experiments_NNS based_VBN on_IN our_PRP$ paper_NN search_NN system_NN called_VBN Libra_NNP -LRB-_-LRB- please_VB refer_VBP to_TO =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: for_IN a_DT description_NN of_IN the_DT system_NN -RRB-_-RRB- and_CC evaluated_VBD the_DT performance_NN by_IN using_VBG queries_NNS selected_VBN from_IN its_PRP$ query_NN log_NN ._.
+Experimental_JJ results_NNS show_VBP that_IN lots_NNS of_IN useful_JJ anchor_NN text_NN information_NN can_MD be_VB successfully_RB
+consider_VB the_DT problem_NN of_IN learning_VBG how_WRB to_TO better_JJR rank_NN graph_NN nodes_NNS ._.
+Previous_JJ researchers_NNS have_VBP described_VBN schemes_NNS for_IN adjusting_VBG the_DT parameters_NNS θ_NN using_VBG gradient_NN descentlike_JJ methods_NNS -LRB-_-LRB- Diligenti_NNP et_FW al._FW ,_, 2005_CD ;_: =_JJ -_: =_JJ Nie_NN et_FW al._FW ,_, 2005_CD -_: =--RRB-_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP suggest_VBP an_DT alternative_JJ approach_NN of_IN learning_VBG to_TO re-order_VB an_DT initial_JJ ranking_NN ._.
+This_DT reranking_NN approach_NN has_VBZ been_VBN used_VBN in_IN the_DT past_NN for_IN metasearch_NN -LRB-_-LRB- Cohen_NNP et_FW al._FW ,_, 1999_CD -RRB-_-RRB- and_CC also_RB several_JJ
+For_IN link-based_JJ metrics_NNS like_IN ObjectRank_NNP -LRB-_-LRB- 3_LS -RRB-_-RRB- this_DT yields_VBZ poor_JJ results_NNS as_IN shown_VBN in_IN Section_NN 6_CD ._.
+Hence_RB ,_, we_PRP need_VBP link-based_JJ -LRB-_-LRB- structure-based_JJ -RRB-_-RRB- relevance_NN feedback_NN methods_NNS as_IN described_VBN in_IN Section_NNP 5_CD ._.
+Nie_NN et_FW al._FW =_SYM -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Agarwal_NNP et_FW al._FW -LRB-_-LRB- 1_LS -RRB-_-RRB- present_JJ queryindependent_JJ techniques_NNS to_TO assign_VB popularity_NN propagation_NN factor_NN values_NNS -LRB-_-LRB- similar_JJ to_TO the_DT authority_NN flow_NN rates_NNS of_IN ObjectRank_NNP -RRB-_-RRB- to_TO Web_NN objects_NNS ,_, given_VBN an_DT optimal_JJ object_NN r_NN
+alk_NN preferentially_RB moves_VBZ to_TO nodes_NNS -LRB-_-LRB- Web_NN pages_NNS -RRB-_-RRB- on_IN a_DT specified_VBN topic_NN ._.
+In_IN personalized_JJ Pagerank_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- the_DT random_JJ walk_NN preferentially_RB moves_VBZ to_TO pages_NNS visited_VBN by_IN the_DT user_NN in_IN the_DT past_NN ._.
+Only_RB very_RB few_JJ projects_NNS =_JJ -_: =[_NN 8_CD ,_, 24_CD ,_, 10_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: attempt_NN to_TO learn_VB the_DT parameters_NNS of_IN the_DT random_JJ walk_NN ._.
+1.1_CD Our_PRP$ contributions_NNS Our_PRP$ primary_JJ contribution_NN is_VBZ to_TO bring_VB together_RB the_DT power_NN of_IN Markovian_JJ walk-based_JJ scoring_VBG functions_NNS and_CC the_DT flexibility_NN of_IN impr_NN
+high_JJ ranking_NN ._.
+Ontology_NN concepts_NNS and_CC relations_NNS have_VBP been_VBN used_VBN for_IN finding_VBG research_NN papers_NNS by_IN extending\/incorporating_JJ link_NN analysis_NN techniques_NNS to_TO determine_VB popular_JJ entities_NNS within_IN a_DT populated_JJ ontology_NN =_JJ -_: =[_NN 74_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Their_PRP$ approach_NN also_RB uses_VBZ relationships_NNS to_TO determine_VB important_JJ entities_NNS ._.
+For_IN example_NN ,_, the_DT authors_NNS of_IN publications_NNS highly_RB cited_VBN are_VBP more_RBR important_JJ than_IN other_JJ authors_NNS ._.
+They_PRP show_VBP that_IN the_DT approach_NN works_VBZ
+online_JJ Web_NN databases_NNS ._.
+There_EX is_VBZ a_DT great_JJ opportunity_NN for_IN us_PRP to_TO extract_VB and_CC integrate_VB all_PDT the_DT related_JJ Web_NN information_NN about_IN the_DT same_JJ object_NN together_RB as_IN an_DT information_NN unit_NN ,_, which_WDT is_VBZ called_VBN a_DT Web_NN object_NN -LRB-_-LRB- =_JJ -_: =_JJ Nie_NN et_FW al._FW ,_, 2005_CD -_: =--RRB-_NN ._.
+Typical_JJ Web_NN objects_NNS are_VBP products_NNS ,_, people_NNS ,_, papers_NNS ,_, organizations_NNS ,_, etc._FW ._.
+Commonly_RB ,_, objects_NNS of_IN the_DT same_JJ type_NN obey_VBP the_DT same_JJ structure_NN or_CC schema_NN ._.
+We_PRP can_MD imagine_VB that_IN once_RB these_DT objects_NNS are_VBP extracted_VBN and_CC
+It_PRP is_VBZ thus_RB important_JJ to_TO consider_VB the_DT problem_NN of_IN learning_VBG how_WRB to_TO better_JJR rank_NN graph_NN nodes_NNS ._.
+Previous_JJ researchers_NNS have_VBP described_VBN schemes_NNS for_IN adjusting_VBG the_DT parameters_NNS θ_NN using_VBG gradient_NN descent-like_JJ methods_NNS =_JJ -_: =[_NN 12_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP suggest_VBP an_DT alternative_JJ approach_NN of_IN learning_VBG to_TO re-order_VB an_DT initial_JJ ranking_NN ._.
+This_DT reranking_NN approach_NN has_VBZ been_VBN used_VBN in_IN the_DT past_NN for_IN meta-search_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- and_CC also_RB several_JJ natural-language_NN
+of_IN the_DT graph_NN ,_, and_CC entity-relationship_NN graphs_NNS that_WDT capture_VBP ,_, for_IN example_NN ,_, bibliographic_JJ data_NNS such_JJ as_IN DBLP_NNP or_CC Citeseer_NNP ._.
+Such_JJ settings_NNS have_VBP led_VBN to_TO new_JJ forms_NNS of_IN ObjectRank_NNP ,_, PopRank_NNP ,_, or_CC EntityRank_NNP measures_VBZ =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 9_CD ,_, 11_CD ,_, 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+ObjectRank_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- resembles_VBZ our_PRP$ approach_NN because_IN it_PRP is_VBZ also_RB inspired_VBN by_IN HITS_NN ,_, but_CC it_PRP does_VBZ not_RB address_VB Web_NN data_NNS at_IN all_DT ._.
+EntityRank_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- addresses_VBZ the_DT ranking_NN of_IN entities_NNS extracted_VBN from_IN Web_NN pages_NNS ,_, but_CC it_PRP
+dge_NN at_IN the_DT instance_NN or_CC object_NN level_NN has_VBZ been_VBN investigated_VBN by_IN both_CC database_NN and_CC Semantic_JJ Web_NN researchers_NNS ,_, including_VBG ranking_JJ elements_NNS in_IN XML_NN documents_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- ;_: ranking_JJ objects_NNS in_IN databases_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- or_CC the_DT Web_NN =_JJ -_: =[_NN 19_CD ,_, 11_CD -RRB-_-RRB- -_: =_JJ -_: ;_: and_CC ranking_JJ relevant_JJ class-instances_NNS in_IN domain_NN specific_JJ RDF_NN database_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+--_: Ranking_NN knowledge_NN at_IN a_DT sub-graph_JJ level_NN has_VBZ been_VBN studied_VBN using_VBG ontology-based_JJ content_NN analysis_NN -LRB-_-LRB- 5_CD ,_, 21_CD ,_, 6_CD -RRB-_-RRB- in_IN the_DT context_NN o_NN
+e_LS give_VB different_JJ weights_NNS to_TO individual_JJ fields_NNS for_IN correctly_RB extracted_VBN records_NNS and_CC give_VB the_DT same_JJ weight_NN to_TO all_PDT the_DT fields_NNS for_IN the_DT incorrectly_RB extracted_VBN records_NNS ._.
+4_LS ._.
+A_DT Case_NNP Study_NNP Below_NNP we_PRP will_MD use_VB Libra_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =-[_NN 17_CD -RRB-_-RRB- ,_, an_DT academic_JJ search_NN engine_NN we_PRP have_VBP built_VBN to_TO motivate_VB the_DT Web_NN object_NN retrieval_NN problem_NN ._.
+As_IN shown_VBN in_IN Figure_NNP 3_CD ,_, we_PRP extract_VBP information_NN from_IN different_JJ Web_NN databases_NNS and_CC pages_NNS to_TO build_VB structured_JJ data_NNS
+of_IN each_DT λXY_NN ._.
+Previously_RB ,_, the_DT values_NNS are_VBP often_RB assigned_VBN by_IN manual_NN or_CC empirically_RB ,_, e.g._FW ,_, -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+Several_JJ approaches_NNS have_VBP been_VBN proposed_VBN for_IN learning_VBG the_DT parameters_NNS automatically_RB ,_, e.g._FW ,_, a_DT list-wise_JJ method_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT pair-wise_JJ learning_NN algorithm_NN ._.
+3.1.2_NN ._.
+A_DT pair-wise_JJ learning_NN algorithm_NN for_IN parameters_NNS learning_VBG ._.
+The_DT heterogeneous_JJ graph_NN may_MD have_VB many_JJ parameters_NNS λXY_NN ._.
+We_PRP can_MD see_VB from_IN Fig._NNP 2_CD ,_,
+lly_RB ,_, these_DT two_CD issues_NNS are_VBP often_RB intertwined_VBN ._.
+Existing_VBG work_NN has_VBZ tried_VBN to_TO address_VB different_JJ aspects_NNS of_IN these_DT issues_NNS ._.
+To_TO rank_VB different_JJ objects_NNS ,_, random_JJ walk_NN over_IN heterogeneous_JJ networks_NNS has_VBZ been_VBN proposed_VBN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =-[_NN 15_CD -RRB-_-RRB- ._.
+However_RB ,_, these_DT methods_NNS do_VBP not_RB consider_VB sub-topics_NNS of_IN documents_NNS ._.
+In_IN the_DT meantime_NN ,_, several_JJ work_NN utilizes_VBZ the_DT topic_NN model_NN to_TO improve_VB the_DT retrieval_NN accuracy_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+However_RB ,_, this_DT is_VBZ an_DT open_JJ issue_NN o_NN
+More_RBR recently_RB ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- studied_VBN how_WRB such_JJ combination_NN of_IN clustering_NN and_CC ranking_NN can_MD be_VB simultaneously_RB computed_VBN for_IN efficiency_NN ._.
+This_DT paper_NN focuses_VBZ on_IN query_JJ result_NN clustering_NN for_IN objectlevel_NN search_NN engines_NNS =_JJ -_: =[_NN 16_CD ,_, 15_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: that_IN automatically_RB extract_VB and_CC integrate_VB the_DT information_NN on_IN Web_NN objects_NNS ._.
+In_IN particular_JJ ,_, we_PRP focus_VBP on_IN organizing_VBG the_DT query_NN results_VBZ for_IN Microsoft_NNP Live_NNP Product_NNP Search_VB 1_CD extracting_VBG product_NN information_NN fro_NN
+rinsic_JJ meaning_NN of_IN our_PRP$ ranking_JJ methods_NNS ._.
+However_RB ,_, both_DT PageRank_NNP and_CC HITS_NNP are_VBP designed_VBN on_IN the_DT network_NN of_IN web_NN pages_NNS ,_, which_WDT is_VBZ a_DT directed_JJ homogeneous_JJ network_NN ,_, and_CC the_DT weight_NN of_IN the_DT edge_NN is_VBZ binary_JJ ._.
+PopRank_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: aims_NNS at_IN ranking_JJ popularity_NN of_IN web_NN objects_NNS ._.
+They_PRP have_VBP considered_VBN the_DT role_NN difference_NN of_IN different_JJ web_NN pages_NNS ,_, and_CC thus_RB turn_VB web_NN pages_NNS into_IN a_DT heterogeneous_JJ network_NN ._.
+They_PRP trained_VBD the_DT propagation_NN factor_NN b_NN
+of_IN objects_NNS as_IN indexed_VBN ,_, and_CC can_MD be_VB normalized_VBN when_WRB necessary_JJ ._.
+Generally_RB ,_, authority_NN score_NN of_IN one_CD type_NN of_IN objects_NNS could_MD be_VB a_DT combination_NN of_IN scores_NNS from_IN different_JJ types_NNS of_IN objects_NNS ,_, e.g._FW ,_, that_WDT proposed_VBD in_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP turns_VBZ out_RP that_IN the_DT iteration_NN method_NN of_IN calculating_VBG ranking_JJ distribution_NN is_VBZ the_DT power_NN method_NN to_TO calculate_VB the_DT primary_JJ eigenvector_NN of_IN a_DT square_JJ matrix_NN denoting_VBG the_DT strength_NN between_IN pairs_NNS of_IN objects_NNS
+or_CC example_NN examining_VBG relationships_NNS among_IN papers_NNS ,_, authors_NNS ,_, and_CC institutions_NNS ._.
+In_IN this_DT work_NN ,_, relationships_NNS have_VBP been_VBN computed_VBN globally_RB ,_, based_VBN on_IN one_CD or_CC more_JJR sets_NNS of_IN similarity_NN measures_NNS -LRB-_-LRB- Xi_NN et_FW al._FW ,_, 2004_CD ,_, =_JJ -_: =_JJ Nie_NN et_FW al._FW ,_, 2005_CD -_: =-]_CD ._.
+Related_JJ work_NN also_RB includes_VBZ research_NN on_IN citation_NN analysis_NN ,_, including_VBG Garfield_NNP 's_POS early_JJ work_NN on_IN the_DT impact_NN factor_NN -LRB-_-LRB- Garfield_NNP ,_, 1972_CD -RRB-_-RRB- ,_, and_CC later_JJ refinements_NNS by_IN Pinski_NNP and_CC Narin_NNP -LRB-_-LRB- Pinski_NNP and_CC Narin_NNP ,_, 1976_CD -RRB-_-RRB- ._.

@@ -1,0 +1,85 @@
+A_DT mixture_NN model_NN for_IN contextual_JJ text_NN mining_NN
+Contextual_JJ text_NN mining_NN is_VBZ concerned_VBN with_IN extracting_VBG topical_JJ themes_NNS from_IN a_DT text_NN collection_NN with_IN context_NN information_NN -LRB-_-LRB- e.g._FW ,_, time_NN and_CC location_NN -RRB-_-RRB- and_CC comparing\/analyzing_VBG the_DT variations_NNS of_IN themes_NNS over_IN different_JJ contexts_NNS ._.
+Since_IN the_DT topics_NNS covered_VBN in_IN a_DT document_NN are_VBP usually_RB related_JJ to_TO the_DT context_NN of_IN the_DT document_NN ,_, analyzing_VBG topical_JJ themes_NNS within_IN context_NN can_MD potentially_RB reveal_VB many_JJ interesting_JJ theme_NN patterns_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP generalize_VBP some_DT of_IN these_DT models_NNS proposed_VBN in_IN the_DT previous_JJ work_NN and_CC we_PRP propose_VBP a_DT new_JJ general_JJ probabilistic_JJ model_NN for_IN contextual_JJ text_NN mining_NN that_WDT can_MD cover_VB several_JJ existing_VBG models_NNS as_IN special_JJ cases_NNS ._.
+Specifically_RB ,_, we_PRP extend_VBP the_DT probabilistic_JJ latent_JJ semantic_JJ analysis_NN -LRB-_-LRB- PLSA_NN -RRB-_-RRB- model_NN by_IN introducing_VBG context_NN variables_NNS to_TO model_VB the_DT context_NN of_IN a_DT document_NN ._.
+The_DT proposed_VBN mixture_NN model_NN ,_, called_VBN contextual_JJ probabilistic_JJ latent_JJ semantic_JJ analysis_NN -LRB-_-LRB- CPLSA_NN -RRB-_-RRB- model_NN ,_, can_MD be_VB applied_VBN to_TO many_JJ interesting_JJ mining_NN tasks_NNS ,_, such_JJ as_IN temporal_JJ text_NN mining_NN ,_, spatiotemporal_JJ text_NN mining_NN ,_, author-topic_JJ analysis_NN ,_, and_CC cross-collection_NN comparative_JJ analysis_NN ._.
+Empirical_JJ experiments_NNS show_VBP that_IN the_DT proposed_VBN mixture_NN model_NN can_MD discover_VB themes_NNS and_CC their_PRP$ contextual_JJ variations_NNS effectively_RB ._.
+xt_IN documents_NNS have_VBP been_VBN considered_VBN in_IN some_DT recent_JJ work_NN on_IN temporal_JJ text_NN mining_NN -LRB-_-LRB- 9_CD ,_, 16_CD ,_, 14_CD ,_, 4_CD -RRB-_-RRB- ._.
+Also_RB ,_, author-topic_JJ analysis_NN is_VBZ studied_VBN in_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, and_CC crosscollection_NN comparative_JJ text_NN mining_NN is_VBZ studied_VBN in_IN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+All_DT these_DT studies_NNS consider_VBP some_DT kinds_NNS of_IN context_NN information_NN ,_, i.e._FW ,_, time_NN ,_, authorship_NN ,_, and_CC subcollection_NN ._.
+Time_NN ,_, authorship_NN ,_, and_CC subcollection_NN are_VBP by_IN no_DT means_VBZ the_DT only_JJ possible_JJ context_NN information_NN of_IN
+nt_NN studies_NNS in_IN this_DT direction_NN ._.
+For_IN example_NN ,_, the_DT time_NN stamps_NNS of_IN text_NN documents_NNS have_VBP been_VBN considered_VBN in_IN some_DT recent_JJ work_NN on_IN temporal_JJ text_NN mining_NN -LRB-_-LRB- 9_CD ,_, 16_CD ,_, 14_CD ,_, 4_CD -RRB-_-RRB- ._.
+Also_RB ,_, author-topic_JJ analysis_NN is_VBZ studied_VBN in_IN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC crosscollection_NN comparative_JJ text_NN mining_NN is_VBZ studied_VBN in_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+All_DT these_DT studies_NNS consider_VBP some_DT kinds_NNS of_IN context_NN information_NN ,_, i.e._FW ,_, time_NN ,_, authorship_NN ,_, and_CC subcollection_NN ._.
+Time_NN ,_, authorship_NN ,_, and_CC subcoll_NN
+comparing_VBG the_DT content_NN variations_NNS over_IN different_JJ views_NNS -LRB-_-LRB- authors_NNS -RRB-_-RRB- -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+3_LS ._.
+A_DT CONTEXTUAL_NNP MIXTURE_NNP MODEL_NNP In_IN this_DT section_NN ,_, we_PRP propose_VBP an_DT extension_NN of_IN the_DT Probabilistic_JJ Latent_JJ Semantic_JJ Analysis_NN -LRB-_-LRB- PLSA_NN -RRB-_-RRB- model_NN =_JJ -_: =[_NN 7_CD ,_, 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, called_VBN Contextual_NNP Probabilistic_NNP Latent_JJ Semantic_JJ Analysis_NN -LRB-_-LRB- CPLSA_NN -RRB-_-RRB- model_NN ,_, for_IN contextual_JJ text_NN mining_NN ._.
+Our_PRP$ main_JJ idea_NN is_VBZ to_TO allow_VB a_DT document_NN to_TO be_VB generated_VBN using_VBG multiple_JJ views_NNS and_CC multiple_JJ coverages_NNS ._.
+covered_VBN in_IN such_JJ data_NNS ._.
+Indeed_RB ,_, there_EX have_VBP been_VBN several_JJ recent_JJ studies_NNS in_IN this_DT direction_NN ._.
+For_IN example_NN ,_, the_DT time_NN stamps_NNS of_IN text_NN documents_NNS have_VBP been_VBN considered_VBN in_IN some_DT recent_JJ work_NN on_IN temporal_JJ text_NN mining_NN =_JJ -_: =[_NN 9_CD ,_, 16_CD ,_, 14_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Also_RB ,_, author-topic_JJ analysis_NN is_VBZ studied_VBN in_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, and_CC crosscollection_NN comparative_JJ text_NN mining_NN is_VBZ studied_VBN in_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+All_DT these_DT studies_NNS consider_VBP some_DT kinds_NNS of_IN context_NN information_NN ,_, i.e._FW ,_, time_NN ,_, authorship_NN ,_,
+covered_VBN in_IN such_JJ data_NNS ._.
+Indeed_RB ,_, there_EX have_VBP been_VBN several_JJ recent_JJ studies_NNS in_IN this_DT direction_NN ._.
+For_IN example_NN ,_, the_DT time_NN stamps_NNS of_IN text_NN documents_NNS have_VBP been_VBN considered_VBN in_IN some_DT recent_JJ work_NN on_IN temporal_JJ text_NN mining_NN =_JJ -_: =[_NN 9_CD ,_, 16_CD ,_, 14_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Also_RB ,_, author-topic_JJ analysis_NN is_VBZ studied_VBN in_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, and_CC crosscollection_NN comparative_JJ text_NN mining_NN is_VBZ studied_VBN in_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+All_DT these_DT studies_NNS consider_VBP some_DT kinds_NNS of_IN context_NN information_NN ,_, i.e._FW ,_, time_NN ,_, authorship_NN ,_,
+ds_JJ of_IN context_NN ._.
+Temporal_JJ context_NN is_VBZ also_RB addressed_VBN in_IN Kleinberg_NNP 's_POS work_NN on_IN discovering_VBG bursty_JJ and_CC hierarchical_JJ structures_NNS in_IN streams_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC some_DT work_NN on_IN topic\/event\/trend_NN detection_NN and_CC tracking_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 1_CD ,_, 3_CD ,_, 12_CD ,_, 10_CD ,_, 15_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, most_JJS of_IN this_DT work_NN assumes_VBZ one_CD document_NN only_RB belongs_VBZ to_TO one_CD topic_NN and_CC can_MD not_RB be_VB easily_RB generalized_VBN to_TO analyze_VB other_JJ contexts_NNS ._.
+6_CD ._.
+CONCLUSIONS_NNS In_IN this_DT paper_NN ,_, we_PRP present_VBP a_DT study_NN of_IN the_DT general_NN
+ds_JJ of_IN context_NN ._.
+Temporal_JJ context_NN is_VBZ also_RB addressed_VBN in_IN Kleinberg_NNP 's_POS work_NN on_IN discovering_VBG bursty_JJ and_CC hierarchical_JJ structures_NNS in_IN streams_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC some_DT work_NN on_IN topic\/event\/trend_NN detection_NN and_CC tracking_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 1_CD ,_, 3_CD ,_, 12_CD ,_, 10_CD ,_, 15_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, most_JJS of_IN this_DT work_NN assumes_VBZ one_CD document_NN only_RB belongs_VBZ to_TO one_CD topic_NN and_CC can_MD not_RB be_VB easily_RB generalized_VBN to_TO analyze_VB other_JJ contexts_NNS ._.
+6_CD ._.
+CONCLUSIONS_NNS In_IN this_DT paper_NN ,_, we_PRP present_VBP a_DT study_NN of_IN the_DT general_NN
+distributions_NNS to_TO use_VB would_MD depend_VB on_IN the_DT context_NN of_IN the_DT document_NN to_TO be_VB generated_VBN ._.
+The_DT mixture_NN model_NN can_MD be_VB fit_VBN to_TO a_DT contextualized_VBN collection_NN D_NN using_VBG a_DT maximum_NN likelihood_NN estimator_NN ._.
+The_DT EM_NNP algorithm_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: can_MD be_VB used_VBN in_IN a_DT straightforward_JJ way_NN to_TO estimate_VB the_DT parameters_NNS ;_: the_DT updating_VBG formulas_NNS are_VBP as_IN follows_VBZ :_: p_NN -LRB-_-LRB- zw_NN ,_, i_FW ,_, j_NN ,_, l_NN =_JJ 1_CD -RRB-_-RRB- =_JJ p_NN -LRB-_-LRB- t_NN -RRB-_-RRB- -LRB-_-LRB- vi_LS |_NN D_NN ,_, C_NN -RRB-_-RRB- p_NN -LRB-_-LRB- t_NN -RRB-_-RRB- -LRB-_-LRB- κj_FW |_FW D_NN ,_, C_NN -RRB-_-RRB- p_NN -LRB-_-LRB- t_NN -RRB-_-RRB- -LRB-_-LRB- l_NN |_FW κj_FW -RRB-_-RRB- p_NN -LRB-_-LRB- t_NN -RRB-_-RRB- -LRB-_-LRB- w_FW |_FW θil_NN -RRB-_-RRB- n_NN i_FW ′_FW =_JJ 1_CD p_NN -LRB-_-LRB- t_NN -RRB-_-RRB- -LRB-_-LRB- vi_LS ′_FW |_FW D_NN
+ds_JJ of_IN context_NN ._.
+Temporal_JJ context_NN is_VBZ also_RB addressed_VBN in_IN Kleinberg_NNP 's_POS work_NN on_IN discovering_VBG bursty_JJ and_CC hierarchical_JJ structures_NNS in_IN streams_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC some_DT work_NN on_IN topic\/event\/trend_NN detection_NN and_CC tracking_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 1_CD ,_, 3_CD ,_, 12_CD ,_, 10_CD ,_, 15_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, most_JJS of_IN this_DT work_NN assumes_VBZ one_CD document_NN only_RB belongs_VBZ to_TO one_CD topic_NN and_CC can_MD not_RB be_VB easily_RB generalized_VBN to_TO analyze_VB other_JJ contexts_NNS ._.
+6_CD ._.
+CONCLUSIONS_NNS In_IN this_DT paper_NN ,_, we_PRP present_VBP a_DT study_NN of_IN the_DT general_NN
+covered_VBN in_IN such_JJ data_NNS ._.
+Indeed_RB ,_, there_EX have_VBP been_VBN several_JJ recent_JJ studies_NNS in_IN this_DT direction_NN ._.
+For_IN example_NN ,_, the_DT time_NN stamps_NNS of_IN text_NN documents_NNS have_VBP been_VBN considered_VBN in_IN some_DT recent_JJ work_NN on_IN temporal_JJ text_NN mining_NN =_JJ -_: =[_NN 9_CD ,_, 16_CD ,_, 14_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Also_RB ,_, author-topic_JJ analysis_NN is_VBZ studied_VBN in_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, and_CC crosscollection_NN comparative_JJ text_NN mining_NN is_VBZ studied_VBN in_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+All_DT these_DT studies_NNS consider_VBP some_DT kinds_NNS of_IN context_NN information_NN ,_, i.e._FW ,_, time_NN ,_, authorship_NN ,_,
+ds_JJ of_IN context_NN ._.
+Temporal_JJ context_NN is_VBZ also_RB addressed_VBN in_IN Kleinberg_NNP 's_POS work_NN on_IN discovering_VBG bursty_JJ and_CC hierarchical_JJ structures_NNS in_IN streams_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC some_DT work_NN on_IN topic\/event\/trend_NN detection_NN and_CC tracking_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 1_CD ,_, 3_CD ,_, 12_CD ,_, 10_CD ,_, 15_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, most_JJS of_IN this_DT work_NN assumes_VBZ one_CD document_NN only_RB belongs_VBZ to_TO one_CD topic_NN and_CC can_MD not_RB be_VB easily_RB generalized_VBN to_TO analyze_VB other_JJ contexts_NNS ._.
+6_CD ._.
+CONCLUSIONS_NNS In_IN this_DT paper_NN ,_, we_PRP present_VBP a_DT study_NN of_IN the_DT general_NN
+ds_JJ of_IN context_NN ._.
+Temporal_JJ context_NN is_VBZ also_RB addressed_VBN in_IN Kleinberg_NNP 's_POS work_NN on_IN discovering_VBG bursty_JJ and_CC hierarchical_JJ structures_NNS in_IN streams_NNS -LRB-_-LRB- 9_CD -RRB-_-RRB- and_CC some_DT work_NN on_IN topic\/event\/trend_NN detection_NN and_CC tracking_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 1_CD ,_, 3_CD ,_, 12_CD ,_, 10_CD ,_, 15_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+However_RB ,_, most_JJS of_IN this_DT work_NN assumes_VBZ one_CD document_NN only_RB belongs_VBZ to_TO one_CD topic_NN and_CC can_MD not_RB be_VB easily_RB generalized_VBN to_TO analyze_VB other_JJ contexts_NNS ._.
+6_CD ._.
+CONCLUSIONS_NNS In_IN this_DT paper_NN ,_, we_PRP present_VBP a_DT study_NN of_IN the_DT general_NN
+covered_VBN in_IN such_JJ data_NNS ._.
+Indeed_RB ,_, there_EX have_VBP been_VBN several_JJ recent_JJ studies_NNS in_IN this_DT direction_NN ._.
+For_IN example_NN ,_, the_DT time_NN stamps_NNS of_IN text_NN documents_NNS have_VBP been_VBN considered_VBN in_IN some_DT recent_JJ work_NN on_IN temporal_JJ text_NN mining_NN =_JJ -_: =[_NN 9_CD ,_, 16_CD ,_, 14_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Also_RB ,_, author-topic_JJ analysis_NN is_VBZ studied_VBN in_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, and_CC crosscollection_NN comparative_JJ text_NN mining_NN is_VBZ studied_VBN in_IN -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+All_DT these_DT studies_NNS consider_VBP some_DT kinds_NNS of_IN context_NN information_NN ,_, i.e._FW ,_, time_NN ,_, authorship_NN ,_,
+ed_FW in_FW -LRB-_-LRB- 18_CD -RRB-_-RRB- ._.
+Author-topic_JJ analysis_NN is_VBZ proposed_VBN in_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Li_NNP et_FW al._FW proposed_VBD a_DT probabilistic_JJ model_NN to_TO detect_VB retrospective_JJ news_NN events_NNS by_IN explaining_VBG the_DT generation_NN of_IN ``_`` four_CD Ws_NN 1_CD ''_'' from_IN each_DT news_NN article_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ work_NN is_VBZ a_DT generalization_NN of_IN these_DT studies_NNS of_IN specific_JJ context_NN and_CC provides_VBZ a_DT general_JJ probabilistic_JJ model_NN which_WDT can_MD be_VB applied_VBN to_TO all_DT kinds_NNS of_IN context_NN ._.
+Temporal_JJ context_NN is_VBZ also_RB addressed_VBN in_IN Klein_NNP
+r_NN still_RB have_VBP many_JJ free_JJ parameters_NNS to_TO estimate_VB ._.
+One_CD possibility_NN is_VBZ to_TO add_VB some_DT parametric_JJ constraint_NN such_JJ as_IN assuming_VBG all_DT coverage_NN distributions_NNS are_VBP from_IN the_DT same_JJ Dirichlet_NNP distribution_NN as_IN done_VBN in_IN LDA_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT would_MD clearly_RB reduce_VB the_DT number_NN of_IN free_JJ parameters_NNS ;_: indeed_RB ,_, we_PRP can_MD easily_RB generalize_VB our_PRP$ model_NN in_IN the_DT same_JJ way_NN as_IN LDA_NN generalizes_VBZ PLSA_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+However_RB ,_, one_CD concern_NN with_IN such_JJ a_DT strategy_NN is_VBZ that_IN th_DT
+comparing_VBG the_DT content_NN variations_NNS over_IN different_JJ views_NNS -LRB-_-LRB- authors_NNS -RRB-_-RRB- -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+3_LS ._.
+A_DT CONTEXTUAL_NNP MIXTURE_NNP MODEL_NNP In_IN this_DT section_NN ,_, we_PRP propose_VBP an_DT extension_NN of_IN the_DT Probabilistic_JJ Latent_JJ Semantic_JJ Analysis_NN -LRB-_-LRB- PLSA_NN -RRB-_-RRB- model_NN =_JJ -_: =[_NN 7_CD ,_, 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, called_VBN Contextual_NNP Probabilistic_NNP Latent_JJ Semantic_JJ Analysis_NN -LRB-_-LRB- CPLSA_NN -RRB-_-RRB- model_NN ,_, for_IN contextual_JJ text_NN mining_NN ._.
+Our_PRP$ main_JJ idea_NN is_VBZ to_TO allow_VB a_DT document_NN to_TO be_VB generated_VBN using_VBG multiple_JJ views_NNS and_CC multiple_JJ coverages_NNS ._.
+icane_NN affected_VBD areas_NNS ._.
+Figure_NN 2_CD well_RB demonstrates_VBZ the_DT evolution_NN of_IN theme-location_JJ coverage_NN over_IN different_JJ time_NN periods_NNS ._.
+A_DT detailed_JJ description_NN of_IN theme_NN variation_NN over_IN time_NN and_CC location_NN can_MD be_VB found_VBN in_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT next_JJ task_NN is_VBZ similar_JJ to_TO the_DT experiment_NN in_IN Section_NN 4.1_CD ,_, which_WDT is_VBZ to_TO compare_VB the_DT views_NNS of_IN themes_NNS across_IN contexts_NNS ._.
+Specifically_RB ,_, we_PRP partition_NN the_DT states_NNS into_IN four_CD groups_NNS :_: Affected_NNP States_NNP ;_: Periphera_NNP

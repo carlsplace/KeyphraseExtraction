@@ -1,0 +1,136 @@
+Semi-supervised_JJ learning_NN with_IN data_NNS calibration_NN for_IN long-term_JJ time_NN series_NN forecasting_NN
+Many_JJ time_NN series_NN prediction_NN methods_NNS have_VBP focused_VBN on_IN single_JJ step_NN or_CC short_JJ term_NN prediction_NN problems_NNS due_JJ to_TO the_DT inherent_JJ difficulty_NN in_IN controlling_VBG the_DT propagation_NN of_IN errors_NNS from_IN one_CD prediction_NN step_NN to_TO the_DT next_JJ step_NN ._.
+Yet_RB ,_, there_EX is_VBZ a_DT broad_JJ range_NN of_IN applications_NNS such_JJ as_IN climate_NN impact_NN assessments_NNS and_CC urban_JJ growth_NN planning_NN that_WDT require_VBP long_JJ term_NN forecasting_NN capabilities_NNS for_IN strategic_JJ decision_NN making_NN ._.
+Training_VBG an_DT accurate_JJ model_NN that_WDT produces_VBZ reliable_JJ long_JJ term_NN predictions_NNS would_MD require_VB an_DT extensive_JJ amount_NN of_IN historical_JJ data_NNS ,_, which_WDT are_VBP either_CC unavailable_JJ or_CC expensive_JJ to_TO acquire_VB ._.
+For_IN some_DT of_IN these_DT domains_NNS ,_, there_EX are_VBP alternative_JJ ways_NNS to_TO generate_VB potential_JJ scenarios_NNS for_IN the_DT future_NN using_VBG computer-driven_JJ simulation_NN models_NNS ,_, such_JJ as_IN global_JJ climate_NN and_CC traffic_NN demand_NN models_NNS ._.
+However_RB ,_, the_DT data_NNS generated_VBN by_IN these_DT models_NNS are_VBP currently_RB utilized_VBN in_IN a_DT supervised_JJ learning_NN setting_NN ,_, where_WRB a_DT predictive_JJ model_NN trained_VBN on_IN past_JJ observations_NNS is_VBZ used_VBN to_TO estimate_VB the_DT future_JJ values_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP present_VBP a_DT semi-supervised_JJ learning_NN framework_NN for_IN long-term_JJ time_NN series_NN forecasting_NN based_VBN on_IN Hidden_NNP Markov_NNP Model_NNP Regression_NN ._.
+A_DT covariance_NN alignment_NN method_NN is_VBZ also_RB developed_VBN to_TO deal_VB with_IN the_DT issue_NN of_IN inconsistencies_NNS between_IN historical_JJ and_CC model_JJ simulation_NN data_NNS ._.
+We_PRP evaluated_VBD our_PRP$ approach_NN on_IN data_NNS sets_NNS from_IN a_DT variety_NN of_IN domains_NNS ,_, including_VBG climate_NN modeling_NN ._.
+Our_PRP$ experimental_JJ results_NNS demonstrate_VBP the_DT efficacy_NN of_IN the_DT approach_NN compared_VBN to_TO other_JJ supervised_JJ learning_NN methods_NNS for_IN long-term_JJ time_NN series_NN forecasting_NN ._.
+ose_NN in_IN the_DT training_NN data_NNS ._.
+Previous_JJ work_NN on_IN semi-supervised_JJ classification_NN have_VBP shown_VBN that_IN combining_VBG labeled_JJ and_CC unlabeled_JJ data_NNS with_IN different_JJ distributions_NNS may_MD degrade_VB the_DT performance_NN of_IN a_DT classifier_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP encountered_VBD a_DT similar_JJ problem_NN when_WRB applying_VBG the_DT semi-supervised_JJ HMMR_NN method_NN to_TO climate_NN data_NNS ._.
+To_TO address_VB this_DT problem_NN ,_, we_PRP developed_VBD an_DT approach_NN that_WDT will_MD transform_VB the_DT data_NNS set_VBN in_IN a_DT way_NN that_IN align_NN
+g_NN different_JJ distributions_NNS of_IN labeled_JJ and_CC unlabeled_JJ data_NNS on_IN semi-supervised_JJ learning_NN ._.
+Recently_RB ,_, there_EX have_VBP been_VBN growing_VBG interests_NNS on_IN applying_VBG semi-supervised_JJ learning_NN to_TO regression_NN problems_NNS -LRB-_-LRB- 30_CD -RRB-_-RRB- -LRB-_-LRB- 6_CD -RRB-_-RRB- -LRB-_-LRB- 11_CD -RRB-_-RRB- =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Some_DT of_IN these_DT approaches_NNS are_VBP direct_JJ extensions_NNS from_IN their_PRP$ semi-supervised_JJ classification_NN counterparts_NNS ._.
+For_IN example_NN ,_, transductive_JJ support_NN vector_NN regression_NN is_VBZ proposed_VBN in_IN -LRB-_-LRB- 11_CD -RRB-_-RRB- as_IN an_DT extension_NN to_TO tran_VB
+the_DT result_NN shown_VBN in_IN Figure_NNP 4_CD is_VBZ based_VBN on_IN calibration_NN technique_NN 2_CD ._.
+including_VBG those_DT based_VBN on_IN generative_JJ models_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, transductive_JJ SVM_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, co-training_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, self-training_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- and_CC graphbased_JJ methods_NNS -LRB-_-LRB- 3_LS -RRB-_-RRB- =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Some_DT studies_NNS concluded_VBD that_IN significant_JJ improvements_NNS in_IN classification_NN performance_NN can_MD be_VB achieved_VBN when_WRB unlabeled_JJ examples_NNS are_VBP used_VBN ,_, while_IN others_NNS have_VBP indicated_VBN otherwise_RB -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+Blum_NNP and_CC M_NN
+to_TO supervised_JJ classification_NN problems_NNS ,_, 2_CD Note_NN that_IN the_DT result_NN shown_VBN in_IN Figure_NNP 4_CD is_VBZ based_VBN on_IN calibration_NN technique_NN 2_CD ._.
+including_VBG those_DT based_VBN on_IN generative_JJ models_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, transductive_JJ SVM_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, co-training_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, self-training_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- and_CC graphbased_JJ methods_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+Some_DT studies_NNS concluded_VBD that_IN significant_JJ improvements_NNS in_IN classification_NN performance_NN can_MD be_VB achieved_VBN when_WRB unlabeled_JJ examples_NNS are_VBP used_VBN ,_, while_IN others_NNS h_NN
+q1_NNP q2_NNP q3_NNP qL-2_NNP qL-1_NNP qL_NNP Figure_NNP 1_CD :_: Hidden_NNP Markov_NNP Regression_NN Model_NNP There_EX are_VBP many_JJ multivariate_JJ time_NN series_NN prediction_NN techniques_NNS available_JJ ,_, including_VBG least_JJS square_JJ regression_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, recurrent_JJ neural_JJ networks_NNS =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Hidden_NNP Markov_NNP Model_NNP Regression_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, and_CC support_NN vector_NN regression_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+These_DT techniques_NNS are_VBP currently_RB employed_VBN in_IN a_DT supervised_JJ learning_NN setting_NN ,_, and_CC thus_RB ,_, may_MD not_RB fully_RB utilize_VB the_DT value_NN of_IN the_DT un_NN
+ng_NN unlabeled_JJ data_NNS to_TO supervised_JJ classification_NN problems_NNS ,_, 2_CD Note_NN that_IN the_DT result_NN shown_VBN in_IN Figure_NNP 4_CD is_VBZ based_VBN on_IN calibration_NN technique_NN 2_CD ._.
+including_VBG those_DT based_VBN on_IN generative_JJ models_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, transductive_JJ SVM_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, co-training_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, self-training_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- and_CC graphbased_JJ methods_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+Some_DT studies_NNS concluded_VBD that_IN significant_JJ improvements_NNS in_IN classification_NN performance_NN can_MD be_VB achieved_VBN when_WRB unlabeled_JJ examples_NNS are_VBP use_VB
+problem_NN by_IN assigning_VBG weights_NNS to_TO instances_NNS of_IN the_DT future_JJ data_NNS based_VBN on_IN the_DT consistency_NN between_IN their_PRP$ global_JJ and_CC local_JJ predictions_NNS ._.
+This_DT approach_NN also_RB helps_VBZ to_TO ensure_VB smoothness_NN of_IN the_DT target_NN function_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP demonstrated_VBD the_DT efficacy_NN of_IN our_PRP$ approach_NN using_VBG data_NNS sets_NNS from_IN a_DT variety_NN of_IN applications_NNS domains_NNS ._.
+One_CD issue_NN that_WDT requires_VBZ particular_JJ consideration_NN when_WRB applying_VBG the_DT semi-supervised_JJ HMMR_NN to_TO climat_VB
+00_CD 101_CD Leaf_NNP 442_CD 151_CD Cl2full_NN 4310_CD 166_CD parameter_NN µ_NN ._.
+To_TO determine_VB the_DT number_NN of_IN nearest_JJS neighbors_NNS ,_, we_PRP perform_VBP 10-fold_JJ cross_NN validation_NN on_IN the_DT training_NN data_NNS using_VBG the_DT k_NN nearest_JJS neighbor_NN regression_NN method_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+There_EX are_VBP various_JJ methods_NNS available_JJ to_TO determine_VB the_DT number_NN of_IN hidden_JJ states_NNS N._NNP These_DT methods_NNS can_MD be_VB divided_VBN into_IN two_CD classes_NNS --_: modified_JJ cross-validation_NN and_CC penalized_VBN likelihood_NN methods_NNS -LRB-_-LRB- such_JJ as_IN AIC_NNP ,_,
+ification_NN problems_NNS ,_, 2_CD Note_NN that_IN the_DT result_NN shown_VBN in_IN Figure_NNP 4_CD is_VBZ based_VBN on_IN calibration_NN technique_NN 2_CD ._.
+including_VBG those_DT based_VBN on_IN generative_JJ models_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, transductive_JJ SVM_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, co-training_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, self-training_NN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_JJ -_: and_CC graphbased_JJ methods_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+Some_DT studies_NNS concluded_VBD that_IN significant_JJ improvements_NNS in_IN classification_NN performance_NN can_MD be_VB achieved_VBN when_WRB unlabeled_JJ examples_NNS are_VBP used_VBN ,_, while_IN others_NNS have_VBP indicated_VBN otherw_NN
+n_NN Markov_NNP Regression_NN Model_NNP There_EX are_VBP many_JJ multivariate_JJ time_NN series_NN prediction_NN techniques_NNS available_JJ ,_, including_VBG least_JJS square_JJ regression_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, recurrent_JJ neural_JJ networks_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, Hidden_NNP Markov_NNP Model_NNP Regression_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC support_NN vector_NN regression_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+These_DT techniques_NNS are_VBP currently_RB employed_VBN in_IN a_DT supervised_JJ learning_NN setting_NN ,_, and_CC thus_RB ,_, may_MD not_RB fully_RB utilize_VB the_DT value_NN of_IN the_DT unlabeled_JJ data_NNS ._.
+This_DT work_NN presents_VBZ a_DT se_FW
+aphbased_JJ methods_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+Some_DT studies_NNS concluded_VBD that_IN significant_JJ improvements_NNS in_IN classification_NN performance_NN can_MD be_VB achieved_VBN when_WRB unlabeled_JJ examples_NNS are_VBP used_VBN ,_, while_IN others_NNS have_VBP indicated_VBN otherwise_RB -LRB-_-LRB- 4_LS -RRB-_-RRB- =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =-[_NN 12_CD -RRB-_-RRB- -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+Blum_NNP and_CC Mitchell_NNP -LRB-_-LRB- 4_CD -RRB-_-RRB- and_CC Cozman_NNP et_FW al._FW -LRB-_-LRB- 10_CD -RRB-_-RRB- suggested_VBD that_IN unlabeled_JJ data_NNS can_MD help_VB to_TO reduce_VB variance_NN of_IN the_DT estimator_NN as_RB long_RB as_IN the_DT modeling_NN assumptions_NNS match_VBP the_DT ground_NN truth_NN data_NNS ._.
+Other_JJ
+lying_VBG data_NNS ._.
+Second_RB ,_, the_DT labeled_JJ and_CC unlabeled_JJ data_NNS must_MD be_VB generated_VBN from_IN the_DT same_JJ distribution_NN ._.
+Otherwise_RB ,_, incorporating_VBG unlabeled_JJ data_NNS may_MD actually_RB degrade_VB the_DT performance_NN of_IN a_DT predictive_JJ model_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4_LS ._.
+METHODOLOGY_NN This_DT section_NN describes_VBZ our_PRP$ proposed_VBN semi-supervised_JJ learning_NN algorithm_NN for_IN HMMR_NN and_CC a_DT data_NN calibration_NN approach_NN to_TO deal_VB with_IN inconsistencies_NNS between_IN the_DT distributions_NNS of_IN labeled_JJ and_CC u_NN
+e_LS effect_NN of_IN incorporating_VBG unlabeled_JJ data_NNS to_TO supervised_JJ classification_NN problems_NNS ,_, 2_CD Note_NN that_IN the_DT result_NN shown_VBN in_IN Figure_NNP 4_CD is_VBZ based_VBN on_IN calibration_NN technique_NN 2_CD ._.
+including_VBG those_DT based_VBN on_IN generative_JJ models_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, transductive_JJ SVM_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, co-training_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, self-training_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- and_CC graphbased_JJ methods_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- -LRB-_-LRB- 32_CD -RRB-_-RRB- ._.
+Some_DT studies_NNS concluded_VBD that_IN significant_JJ improvements_NNS in_IN classification_NN performance_NN can_MD be_VB achieved_VBN when_WRB unl_NN
+evada_NN ,_, USA_NNP ._.
+Copyright_NN 2008_CD ACM_NNP 978-1-60558-193-4_CD \/_: 08\/08_CD ..._: $_$ 5.00_CD ._.
+1_CD ._.
+INTRODUCTION_NNP Time_NNP series_NN prediction_NN has_VBZ long_RB been_VBN an_DT active_JJ area_NN of_IN research_NN with_IN applications_NNS in_IN finance_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, weather_NN forecasting_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =-[_NN 8_CD -RRB-_-RRB- ,_, network_NN monitoring_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, transportation_NN planning_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, etc._NN ._.
+Many_JJ of_IN these_DT applications_NNS require_VBP long-term_JJ time_NN series_NN forecasting_NN capabilities_NNS for_IN strategic_JJ decision_NN making_NN ._.
+For_IN example_NN ,_, scient_NN
+CM_NN 978-1-60558-193-4_CD \/_: 08\/08_CD ..._: $_$ 5.00_CD ._.
+1_CD ._.
+INTRODUCTION_NNP Time_NNP series_NN prediction_NN has_VBZ long_RB been_VBN an_DT active_JJ area_NN of_IN research_NN with_IN applications_NNS in_IN finance_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, weather_NN forecasting_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, network_NN monitoring_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, transportation_NN planning_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, etc._NN ._.
+Many_JJ of_IN these_DT applications_NNS require_VBP long-term_JJ time_NN series_NN forecasting_NN capabilities_NNS for_IN strategic_JJ decision_NN making_NN ._.
+For_IN example_NN ,_, scientists_NNS are_VBP interested_JJ in_IN proj_NN
+time_NN series_NN forecasting_NN ._.
+The_DT framework_NN is_VBZ implemented_VBN using_VBG Hidden_NNP Markov_NNP Model_NNP Regression_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, a_DT stochastic_JJ model_NN that_WDT has_VBZ been_VBN successfully_RB applied_VBN to_TO various_JJ domains_NNS ,_, including_VBG speech_NN recognition_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: and_CC climate_NN modeling_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+2.2_CD Hidden_NNP Markov_NNP Model_NNP Regression_NN -LRB-_-LRB- HMMR_NN -RRB-_-RRB- In_IN Hidden_NNP Markov_NNP Model_NNP Regression_NN ,_, a_DT time_NN series_NN is_VBZ assumed_VBN to_TO be_VB generated_VBN by_IN a_DT doubly_RB stochastic_JJ process_NN ,_, where_WRB the_DT response_NN vari_NN
+model_NN uses_VBZ predicted_VBN values_NNS from_IN the_DT past_NN to_TO infer_VB future_JJ values_NNS ,_, this_DT approach_NN may_MD lead_VB to_TO an_DT error_NN accumulation_NN problem_NN ,_, which_WDT is_VBZ the_DT propagation_NN of_IN errors_NNS from_IN one_CD prediction_NN step_NN to_TO the_DT next_JJ step_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Long-term_JJ forecasting_NN also_RB requires_VBZ an_DT extensive_JJ amount_NN of_IN historical_JJ data_NNS in_IN order_NN to_TO train_VB a_DT reliable_JJ model_NN ._.
+Instead_RB of_IN predicting_VBG the_DT future_JJ values_NNS of_IN a_DT time_NN series_NN based_VBN on_IN its_PRP$ historical_JJ values_NNS
+U_NN and_CC 1.0_CD GB_NN RAM_NNP ._.
+5.1_CD Experimental_JJ Setup_NNP Table_NNP 5.1_CD summarizes_VBZ characteristics_NNS of_IN the_DT time_NN series_NN used_VBN in_IN our_PRP$ experiments_NNS ._.
+The_DT time_NN series_NN are_VBP obtained_VBN from_IN the_DT UC_NN Riverside_NNP time_NN series_NN data_NNS repository_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP divide_VBP each_DT time_NN series_NN into_IN 10_CD disjoint_NN segments_NNS ._.
+To_TO simulate_VB this_DT as_IN a_DT long-term_JJ forecasting_NN problem_NN ,_, for_IN the_DT k-th_NN run_NN ,_, we_PRP use_VBP segment_NN k_NN as_IN training_NN data_NNS and_CC segments_NNS k_NN +_CC 1_CD to_TO k_NN +_CC 5_CD as_IN test_NN dat_NN
+of_IN using_VBG different_JJ distributions_NNS of_IN labeled_JJ and_CC unlabeled_JJ data_NNS on_IN semi-supervised_JJ learning_NN ._.
+Recently_RB ,_, there_EX have_VBP been_VBN growing_VBG interests_NNS on_IN applying_VBG semi-supervised_JJ learning_NN to_TO regression_NN problems_NNS -LRB-_-LRB- 30_CD -RRB-_-RRB- =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =-[_NN 11_CD -RRB-_-RRB- -LRB-_-LRB- 33_CD -RRB-_-RRB- ._.
+Some_DT of_IN these_DT approaches_NNS are_VBP direct_JJ extensions_NNS from_IN their_PRP$ semi-supervised_JJ classification_NN counterparts_NNS ._.
+For_IN example_NN ,_, transductive_JJ support_NN vector_NN regression_NN is_VBZ proposed_VBN in_IN -LRB-_-LRB- 11_CD -RRB-_-RRB- as_IN an_DT extension_NN
+tion_NN -RRB-_-RRB- circulation_NN patterns_NNS of_IN the_DT observed_VBN climate_NN system_NN ,_, they_PRP may_MD not_RB accurately_RB model_VB the_DT response_NN variable_NN at_IN the_DT local_JJ or_CC regional_JJ scales_NNS -LRB-_-LRB- ≈_FW 1-50_FW km_FW -RRB-_-RRB- needed_VBN for_IN climate_NN impact_NN assessment_NN studies_NNS =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN a_DT result_NN ,_, the_DT coarse-scale_JJ GCM_NN outputs_NNS need_VBP to_TO be_VB mapped_VBN into_IN finer_NN scale_NN predictions_NNS ,_, a_DT process_NN that_WDT is_VBZ known_VBN as_IN ``_`` downscaling_NN ''_'' in_IN the_DT Earth_NNP Science_NNP literature_NN ._.
+Regression_NN is_VBZ a_DT popular_JJ technique_NN
+using_VBG different_JJ distributions_NNS of_IN labeled_JJ and_CC unlabeled_JJ data_NNS on_IN semi-supervised_JJ learning_NN ._.
+Recently_RB ,_, there_EX have_VBP been_VBN growing_VBG interests_NNS on_IN applying_VBG semi-supervised_JJ learning_NN to_TO regression_NN problems_NNS -LRB-_-LRB- 30_CD -RRB-_-RRB- -LRB-_-LRB- 6_CD -RRB-_-RRB- =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =-[_NN 33_CD -RRB-_-RRB- ._.
+Some_DT of_IN these_DT approaches_NNS are_VBP direct_JJ extensions_NNS from_IN their_PRP$ semi-supervised_JJ classification_NN counterparts_NNS ._.
+For_IN example_NN ,_, transductive_JJ support_NN vector_NN regression_NN is_VBZ proposed_VBN in_IN -LRB-_-LRB- 11_CD -RRB-_-RRB- as_IN an_DT extension_NN to_TO
+cts_NNS of_IN using_VBG different_JJ distributions_NNS of_IN labeled_JJ and_CC unlabeled_JJ data_NNS on_IN semi-supervised_JJ learning_NN ._.
+Recently_RB ,_, there_EX have_VBP been_VBN growing_VBG interests_NNS on_IN applying_VBG semi-supervised_JJ learning_NN to_TO regression_NN problems_NNS =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =-[_NN 6_CD -RRB-_-RRB- -LRB-_-LRB- 11_CD -RRB-_-RRB- -LRB-_-LRB- 33_CD -RRB-_-RRB- ._.
+Some_DT of_IN these_DT approaches_NNS are_VBP direct_JJ extensions_NNS from_IN their_PRP$ semi-supervised_JJ classification_NN counterparts_NNS ._.
+For_IN example_NN ,_, transductive_JJ support_NN vector_NN regression_NN is_VBZ proposed_VBN in_IN -LRB-_-LRB- 11_CD -RRB-_-RRB- as_IN an_DT extens_NNS
+ze_IN a_DT label_NN propagation_NN process_NN to_TO ensure_VB that_IN the_DT smoothness_NN assumption_NN holds_VBZ for_IN both_CC labeled_JJ and_CC unlabeled_JJ data_NNS ._.
+An_DT extension_NN of_IN the_DT algorithm_NN to_TO regression_NN problems_NNS were_VBD proposed_VBN by_IN Wang_NNP et_FW al._FW in_IN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Zhu_NNP and_CC Goldberg_NNP -LRB-_-LRB- 33_CD -RRB-_-RRB- developed_VBD a_DT semi-supervised_JJ regression_NN method_NN that_WDT incorporates_VBZ additional_JJ domain_NN knowledge_NN to_TO improve_VB model_NN performance_NN ._.
+Since_IN all_DT of_IN the_DT previous_JJ approaches_NNS ignore_VBP the_DT tempor_NN
+many_JJ multivariate_JJ time_NN series_NN prediction_NN techniques_NNS available_JJ ,_, including_VBG least_JJS square_JJ regression_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, recurrent_JJ neural_JJ networks_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, Hidden_NNP Markov_NNP Model_NNP Regression_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, and_CC support_NN vector_NN regression_NN =_JJ -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+These_DT techniques_NNS are_VBP currently_RB employed_VBN in_IN a_DT supervised_JJ learning_NN setting_NN ,_, and_CC thus_RB ,_, may_MD not_RB fully_RB utilize_VB the_DT value_NN of_IN the_DT unlabeled_JJ data_NNS ._.
+This_DT work_NN presents_VBZ a_DT semi-supervised_JJ learning_NN framework_NN tha_NN
+24_CD --_: 27_CD ,_, 2008_CD ,_, Las_NNP Vegas_NNP ,_, Nevada_NNP ,_, USA_NNP ._.
+Copyright_NN 2008_CD ACM_NNP 978-1-60558-193-4_CD \/_: 08\/08_CD ..._: $_$ 5.00_CD ._.
+1_CD ._.
+INTRODUCTION_NNP Time_NNP series_NN prediction_NN has_VBZ long_RB been_VBN an_DT active_JJ area_NN of_IN research_NN with_IN applications_NNS in_IN finance_NN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_JJ -_: ,_, weather_NN forecasting_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, network_NN monitoring_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, transportation_NN planning_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, etc._NN ._.
+Many_JJ of_IN these_DT applications_NNS require_VBP long-term_JJ time_NN series_NN forecasting_NN capabilities_NNS for_IN strategic_JJ decision_NN m_NN
+hat_NN the_DT result_NN shown_VBN in_IN Figure_NNP 4_CD is_VBZ based_VBN on_IN calibration_NN technique_NN 2_CD ._.
+including_VBG those_DT based_VBN on_IN generative_JJ models_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, transductive_JJ SVM_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, co-training_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, self-training_NN -LRB-_-LRB- 31_CD -RRB-_-RRB- and_CC graphbased_JJ methods_NNS =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =-[_NN 32_CD -RRB-_-RRB- ._.
+Some_DT studies_NNS concluded_VBD that_IN significant_JJ improvements_NNS in_IN classification_NN performance_NN can_MD be_VB achieved_VBN when_WRB unlabeled_JJ examples_NNS are_VBP used_VBN ,_, while_IN others_NNS have_VBP indicated_VBN otherwise_RB -LRB-_-LRB- 4_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+Blum_NNP a_DT
+ibration_NN is_VBZ useful_JJ when_WRB the_DT historical_JJ and_CC future_JJ observations_NNS come_VBP from_IN different_JJ sources_NNS ._.
+For_IN this_DT experiment_NN ,_, we_PRP downloaded_VBD climate_NN data_NNS from_IN the_DT Canadian_JJ Climate_NN Change_NNP Scenarios_NNS Network_NNP web_NN site_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT data_NN consists_VBZ of_IN daily_JJ observations_NNS for_IN 26_CD climate_NN predictor_NN variables_NNS including_VBG sea-level_JJ pressure_NN ,_, wind_NN direction_NN ,_, vorticity_NN ,_, humidity_NN ,_, etc._NN ._.
+The_DT response_NN variable_NN corresponds_VBZ to_TO the_DT observed_VBN m_NN
+t_NN -LRB-_-LRB- 2πσ_NN 2_CD qt_NN -RRB-_-RRB- −_NN 1_CD ''_'' 2_CD exp_FW −_FW -LRB-_-LRB- yt_FW −_FW cqtx_FW T_NN t_NN -RRB-_-RRB- 2_CD 2σ2_NN --_: qt_FW „_FW -LCB-_-LRB- πi_FW -RCB-_-RRB- N_NN i_LS =_JJ 1_CD ,_, -LCB-_-LRB- aij_NN -RCB-_-RRB- N_NN i_FW ,_, j_NN =_JJ 1_CD ,_, -LCB-_-LRB- σi_NN -RCB-_-RRB- N_NN i_LS =_JJ 1_CD ,_, -LCB-_-LRB- ci_FW -RCB-_-RRB- N_NN i_LS =_JJ 1_CD are_VBP estimated_VBN by_IN maximizing_VBG the_DT above_JJ likelihood_NN function_NN using_VBG the_DT Baum-Welch_JJ -LRB-_-LRB- BW_NN -RRB-_-RRB- algorithm_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT model_NN parameters_NNS can_MD be_VB estimated_VBN iteratively_RB using_VBG the_DT following_JJ quantities_NNS ,_, which_WDT are_VBP known_VBN as_IN the_DT forward_JJ -LRB-_-LRB- α_NN -RRB-_-RRB- and_CC back_RB ``_`` y_SYM 5_CD 4_CD 3_CD y_NN 5_CD 4_CD 3_CD a_DT 10_CD c_NN 10_CD b_NN b_NN 8_CD 7_CD 9_CD 6_CD 1_CD 2_CD 8_CD 7_CD 9_CD 6_CD 13_CD 1_CD 12_CD 11_CD 2_CD 13_CD 12_CD 11_CD
+ided_VBD into_IN two_CD classes_NNS --_: modified_JJ cross-validation_NN and_CC penalized_VBN likelihood_NN methods_NNS -LRB-_-LRB- such_JJ as_IN AIC_NNP ,_, BIC_NNP ,_, and_CC ICL_NN -RRB-_-RRB- ._.
+In_IN this_DT work_NN ,_, we_PRP employ_VBP the_DT modified_VBN 10-fold_JJ cross_NN validation_NN with_IN missing_VBG value_NN approach_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: to_TO select_VB the_DT best_JJS N._NNP For_IN each_DT fold_NN ,_, we_PRP randomly_RB select_JJ one-tenth_NN of_IN the_DT observations_NNS to_TO be_VB removed_VBN from_IN the_DT training_NN data_NNS ._.
+The_DT likelihood_NN function_NN will_MD be_VB estimated_VBN from_IN the_DT remaining_VBG nine-tenth_JJ of_IN
+a_DT ,_, USA_NNP ._.
+Copyright_NN 2008_CD ACM_NNP 978-1-60558-193-4_CD \/_: 08\/08_CD ..._: $_$ 5.00_CD ._.
+1_CD ._.
+INTRODUCTION_NNP Time_NNP series_NN prediction_NN has_VBZ long_RB been_VBN an_DT active_JJ area_NN of_IN research_NN with_IN applications_NNS in_IN finance_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, weather_NN forecasting_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: ,_, network_NN monitoring_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, transportation_NN planning_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- -LRB-_-LRB- 23_CD -RRB-_-RRB- ,_, etc._NN ._.
+Many_JJ of_IN these_DT applications_NNS require_VBP long-term_JJ time_NN series_NN forecasting_NN capabilities_NNS for_IN strategic_JJ decision_NN making_NN ._.
+For_IN example_NN ,_, scientist_NN
+._.
+$_$ 5.00_CD ._.
+1_CD ._.
+INTRODUCTION_NNP Time_NNP series_NN prediction_NN has_VBZ long_RB been_VBN an_DT active_JJ area_NN of_IN research_NN with_IN applications_NNS in_IN finance_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, weather_NN forecasting_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, network_NN monitoring_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, transportation_NN planning_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =-[_NN 23_CD -RRB-_-RRB- ,_, etc._NN ._.
+Many_JJ of_IN these_DT applications_NNS require_VBP long-term_JJ time_NN series_NN forecasting_NN capabilities_NNS for_IN strategic_JJ decision_NN making_NN ._.
+For_IN example_NN ,_, scientists_NNS are_VBP interested_JJ in_IN projecting_VBG the_DT future_JJ climate_NN to_TO a_DT
+1_CD fq2_NN fq3_NN fqL-2_NN fqL-1_NN fqL_NN ..._: q1_NNP q2_NNP q3_NNP qL-2_NNP qL-1_NNP qL_NNP Figure_NNP 1_CD :_: Hidden_NNP Markov_NNP Regression_NN Model_NNP There_EX are_VBP many_JJ multivariate_JJ time_NN series_NN prediction_NN techniques_NNS available_JJ ,_, including_VBG least_JJS square_JJ regression_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: ,_, recurrent_JJ neural_JJ networks_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, Hidden_NNP Markov_NNP Model_NNP Regression_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, and_CC support_NN vector_NN regression_NN -LRB-_-LRB- 24_CD -RRB-_-RRB- ._.
+These_DT techniques_NNS are_VBP currently_RB employed_VBN in_IN a_DT supervised_JJ learning_NN setting_NN ,_, and_CC thus_RB ,_, may_MD not_RB fu_VB
+00_CD ._.
+1_CD ._.
+INTRODUCTION_NNP Time_NNP series_NN prediction_NN has_VBZ long_RB been_VBN an_DT active_JJ area_NN of_IN research_NN with_IN applications_NNS in_IN finance_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, weather_NN forecasting_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, network_NN monitoring_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, transportation_NN planning_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, etc._NN ._.
+Many_JJ of_IN these_DT applications_NNS require_VBP long-term_JJ time_NN series_NN forecasting_NN capabilities_NNS for_IN strategic_JJ decision_NN making_NN ._.
+For_IN example_NN ,_, scientists_NNS are_VBP interested_JJ in_IN projecting_VBG the_DT future_JJ climate_NN to_TO asses_NNS

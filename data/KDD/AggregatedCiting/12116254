@@ -1,0 +1,122 @@
+Query_NNP chains_NNS :_: learning_VBG to_TO rank_VB from_IN implicit_JJ feedback_NN
+This_DT paper_NN presents_VBZ a_DT novel_JJ approach_NN for_IN using_VBG clickthrough_JJ data_NNS to_TO learn_VB ranked_VBN retrieval_NN functions_NNS for_IN web_NN search_NN results_NNS ._.
+We_PRP observe_VBP that_IN users_NNS searching_VBG the_DT web_NN often_RB perform_VBP a_DT sequence_NN ,_, or_CC chain_NN ,_, of_IN queries_NNS with_IN a_DT similar_JJ information_NN need_NN ._.
+Using_VBG query_NN chains_NNS ,_, we_PRP generate_VBP new_JJ types_NNS of_IN preference_NN judgments_NNS from_IN search_NN engine_NN logs_NNS ,_, thus_RB taking_VBG advantage_NN of_IN user_NN intelligence_NN in_IN reformulating_VBG queries_NNS ._.
+To_TO validate_VB our_PRP$ method_NN we_PRP perform_VBP a_DT controlled_JJ user_NN study_NN comparing_VBG generated_VBN preference_NN judgments_NNS to_TO explicit_JJ relevance_NN judgments_NNS ._.
+We_PRP also_RB implemented_VBD a_DT real-world_JJ search_NN engine_NN to_TO test_VB our_PRP$ approach_NN ,_, using_VBG a_DT modified_VBN ranking_NN SVM_NN to_TO learn_VB an_DT improved_VBN ranking_NN function_NN from_IN preference_NN data_NNS ._.
+Our_PRP$ results_NNS demonstrate_VBP significant_JJ improvements_NNS in_IN the_DT ranking_NN given_VBN by_IN the_DT search_NN engine_NN ._.
+The_DT learned_VBN rankings_NNS outperform_VBP both_CC a_DT static_JJ ranking_NN function_NN ,_, as_RB well_RB as_IN one_CD trained_VBN without_IN considering_VBG query_NN chains_NNS ._.
+port_NN a_DT reordering_NN ._.
+7.4_CD Evaluation_NN Methodology_NN In_IN order_NN to_TO evaluate_VB our_PRP$ results_NNS ,_, we_PRP need_VBP an_DT unbiased_JJ method_NN for_IN comparing_VBG two_CD ranked_VBD retrieval_NN functions_NNS ._.
+For_IN this_DT purpose_NN we_PRP use_VBP the_DT method_NN detailed_VBN in_IN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT method_NN was_VBD shown_VBN to_TO give_VB an_DT accurate_JJ assessment_NN of_IN retrieval_NN quality_NN under_IN reasonable_JJ assumptions_NNS ._.
+Given_VBN two_CD ranking_JJ functions_NNS ,_, we_PRP present_VBP users_NNS with_IN a_DT combination_NN of_IN the_DT results_NNS from_IN both_DT ._.
+We_PRP
+ction_NN is_VBZ limited_VBN to_TO a_DT combination_NN of_IN rankings_NNS given_VBN by_IN a_DT fixed_JJ set_NN of_IN manually_RB constructed_VBN ``_`` experts_NNS ''_'' ._.
+This_DT approach_NN of_IN learning_VBG a_DT combination_NN of_IN functions_NNS is_VBZ also_RB used_VBN by_IN most_JJS other_JJ work_NN in_IN this_DT area_NN =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 4_CD ,_, 15_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Joachims_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- refined_VBD the_DT interpretation_NN of_IN clickthrough_JJ log_NN data_NNS as_IN relative_JJ feedback_NN ._.
+He_PRP suggests_VBZ that_IN given_VBN a_DT ranking_NN and_CC a_DT clicked-on_JJ document_NN d_NN ,_, any_DT document_NN ranked_VBD above_IN d_NN but_CC not_RB clicked_VBN on_IN i_FW
+llected_VBN in_IN two_CD ways_NNS ._.
+One_CD approach_NN relies_VBZ on_IN actively_RB soliciting_VBG training_NN data_NNS by_IN recording_VBG user_NN queries_NNS and_CC then_RB asking_VBG users_NNS to_TO explicitly_RB provide_VB relevance_NN judgments_NNS on_IN retrieved_VBN documents_NNS -LRB-_-LRB- such_JJ as_IN =_JJ -_: =[_NN 7_CD ,_, 13_CD ,_, 22_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Few_JJ users_NNS are_VBP willing_JJ to_TO do_VB this_DT ,_, making_VBG significant_JJ amounts_NNS of_IN such_JJ data_NNS difficult_JJ to_TO obtain_VB ._.
+An_DT alternative_JJ approach_NN is_VBZ to_TO extract_VB implicit_JJ relevance_NN feedback_NN from_IN search_NN engine_NN log_NN files_NNS -LRB-_-LRB- such_PDT a_DT
+on_IN are_VBP relevant_JJ to_TO the_DT query_NN and_CC append_VB the_DT query_NN to_TO these_DT documents_NNS ._.
+However_RB ,_, implicit_JJ clickthrough_JJ data_NNS has_VBZ been_VBN shown_VBN to_TO be_VB biased_VBN as_IN it_PRP is_VBZ relative_JJ to_TO the_DT retrieval_NN function_NN quality_NN and_CC ordering_VBG =_JJ -_: =[_NN 15_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT makes_VBZ its_PRP$ interpretation_NN as_IN absolute_JJ feedback_NN of_IN questionable_JJ accuracy_NN ._.
+Cohen_NNP et_FW al._FW -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC Freund_NNP et_FW al._FW -LRB-_-LRB- 9_CD -RRB-_-RRB- propose_VBP using_VBG log_NN data_NNS to_TO generate_VB relative_JJ preference_NN feedback_NN ._.
+Both_DT approaches_NNS c_NN
+al-world_JJ setting_NN ._.
+This_DT makes_VBZ typical_JJ labeled_JJ data_NNS sets_VBZ small_JJ and_CC difficult_JJ to_TO work_VB with_IN ._.
+A_DT number_NN of_IN researchers_NNS have_VBP collected_VBN absolute_JJ relevance_NN judgments_NNS implicitly_RB from_IN clickthrough_JJ logs_NNS ,_, such_JJ as_IN =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 19_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP postulate_VBP that_IN documents_NNS clicked_VBD on_RP in_IN search_NN results_NNS are_VBP highly_RB likely_JJ to_TO be_VB relevant_JJ ._.
+For_IN example_NN ,_, Kemp_NNP et_FW al._FW -LRB-_-LRB- 19_CD -RRB-_-RRB- present_VBP a_DT learning_NN search_NN engine_NN using_VBG document_NN transformation_NN ._.
+They_PRP assume_VBP
+this_DT section_NN we_PRP explore_VBP this_DT question_NN ._.
+An_DT eye_NN tracking_NN study_NN was_VBD performed_VBN to_TO observe_VB how_WRB users_NNS formulate_VBP queries_NNS ,_, assess_VBP the_DT results_NNS returned_VBN by_IN the_DT search_NN engine_NN and_CC select_VB the_DT links_NNS they_PRP click_VBP on_IN =_JJ -_: =[_NN 11_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Thirty_CD six_CD undergraduate_JJ student_NN volunteers_NNS were_VBD instructed_VBN to_TO search_VB for_IN the_DT answers_NNS to_TO five_CD navigational_JJ and_CC five_CD informational_JJ queries_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+The_DT former_JJ involved_VBN finding_VBG a_DT specific_JJ web_NN page_NN while_IN t_NN
+le_FW ,_, we_PRP observed_VBD that_IN users_NNS searching_VBG for_IN the_DT ``_`` Lexis_NNP Nexis_NNP ''_'' repository_NN often_RB first_RB search_VB for_IN ``_`` Lexis_NNP Nexus_NNP ''_'' by_IN mistake_NN ._.
+As_IN users_NNS search_NN ,_, it_PRP is_VBZ well_RB documented_VBN that_IN they_PRP often_RB reformulate_VBP their_PRP$ queries_NNS =_JJ -_: =[_NN 3_CD ,_, 8_CD ,_, 18_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Previous_JJ work_NN has_VBZ attempted_VBN to_TO predict_VB query_NN reformulations_NNS ,_, but_CC to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN these_DT reformulations_NNS have_VBP never_RB been_VBN used_VBN to_TO learn_VB better_JJR retrieval_NN functions_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP refer_VBP t_NN
+ction_NN is_VBZ limited_VBN to_TO a_DT combination_NN of_IN rankings_NNS given_VBN by_IN a_DT fixed_JJ set_NN of_IN manually_RB constructed_VBN ``_`` experts_NNS ''_'' ._.
+This_DT approach_NN of_IN learning_VBG a_DT combination_NN of_IN functions_NNS is_VBZ also_RB used_VBN by_IN most_JJS other_JJ work_NN in_IN this_DT area_NN =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 4_CD ,_, 15_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Joachims_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- refined_VBD the_DT interpretation_NN of_IN clickthrough_JJ log_NN data_NNS as_IN relative_JJ feedback_NN ._.
+He_PRP suggests_VBZ that_IN given_VBN a_DT ranking_NN and_CC a_DT clicked-on_JJ document_NN d_NN ,_, any_DT document_NN ranked_VBD above_IN d_NN but_CC not_RB clicked_VBN on_IN i_FW
+preferences_NNS PNC_NNP ._.
+After_IN adding_VBG the_DT hard_JJ constraints_NNS as_IN described_VBN above_IN ,_, we_PRP trained_VBD a_DT ranking_JJ SVM_NN for_IN each_DT of_IN the_DT two_CD sets_NNS of_IN preferences_NNS with_IN a_DT linear_JJ kernel_NN and_CC a_DT default_NN value_NN of_IN C_NN using_VBG SV_NN M_NN light_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP set_VBD wmin_NN =_JJ 1_CD ._.
+Using_VBG the_DT preferences_NNS PQC_NN we_PRP learned_VBD a_DT retrieval_NN function_NN relQC_NN and_CC using_VBG the_DT preferences_NNS PNC_NNP we_PRP learned_VBD relNC_NN ._.
+The_DT former_JJ model_NN has_VBZ 41,354_CD support_NN vectors_NNS ,_, while_IN the_DT latter_JJ has_VBZ 18_CD ,_,
+le_FW ,_, we_PRP observed_VBD that_IN users_NNS searching_VBG for_IN the_DT ``_`` Lexis_NNP Nexis_NNP ''_'' repository_NN often_RB first_RB search_VB for_IN ``_`` Lexis_NNP Nexus_NNP ''_'' by_IN mistake_NN ._.
+As_IN users_NNS search_NN ,_, it_PRP is_VBZ well_RB documented_VBN that_IN they_PRP often_RB reformulate_VBP their_PRP$ queries_NNS =_JJ -_: =[_NN 3_CD ,_, 8_CD ,_, 18_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Previous_JJ work_NN has_VBZ attempted_VBN to_TO predict_VB query_NN reformulations_NNS ,_, but_CC to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN these_DT reformulations_NNS have_VBP never_RB been_VBN used_VBN to_TO learn_VB better_JJR retrieval_NN functions_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP refer_VBP t_NN
+diately_RB below_IN the_DT one_CD clicked_VBN on_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+We_PRP conclude_VBP that_IN users_NNS typically_RB look_VBP at_IN most_JJS of_IN the_DT results_NNS from_IN the_DT first_JJ to_TO the_DT one_NN below_IN the_DT last_JJ one_CD clicked_VBD on_RP ._.
+Previous_JJ work_NN studying_VBG web_NN search_NN behavior_NN =_JJ -_: =[_NN 20_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: observed_VBN that_IN users_NNS rarely_RB run_VBP only_RB a_DT single_JJ query_NN and_CC immediately_RB find_VB suitable_JJ results_NNS ._.
+Rather_RB ,_, they_PRP tend_VBP to_TO perform_VB a_DT sequence_NN of_IN queries_NNS for_IN any_DT given_VBN question_NN ._.
+Such_JJ query_NN chains_NNS are_VBP also_RB observe_VBP
+llected_VBN in_IN two_CD ways_NNS ._.
+One_CD approach_NN relies_VBZ on_IN actively_RB soliciting_VBG training_NN data_NNS by_IN recording_VBG user_NN queries_NNS and_CC then_RB asking_VBG users_NNS to_TO explicitly_RB provide_VB relevance_NN judgments_NNS on_IN retrieved_VBN documents_NNS -LRB-_-LRB- such_JJ as_IN =_JJ -_: =[_NN 7_CD ,_, 13_CD ,_, 22_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Few_JJ users_NNS are_VBP willing_JJ to_TO do_VB this_DT ,_, making_VBG significant_JJ amounts_NNS of_IN such_JJ data_NNS difficult_JJ to_TO obtain_VB ._.
+An_DT alternative_JJ approach_NN is_VBZ to_TO extract_VB implicit_JJ relevance_NN feedback_NN from_IN search_NN engine_NN log_NN files_NNS -LRB-_-LRB- such_PDT a_DT
+udy_NN ._.
+The_DT mean_NN query_NN chain_NN length_NN was_VBD 2.2_CD queries_NNS ,_, although_IN the_DT particular_JJ questions_NNS asked_VBD and_CC the_DT laboratory_NN environment_NN would_MD be_VB expected_VBN to_TO have_VB an_DT influence_NN on_IN this_DT value_NN ._.
+A_DT number_NN of_IN papers_NNS -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 3_CD ,_, 10_CD ,_, 18_CD -RRB-_-RRB- -_: =--RRB-_NN successfully_RB learn_VBP to_TO predict_VB query_NN reformulations_NNS ._.
+Their_PRP$ success_NN on_IN this_DT task_NN suggests_VBZ that_IN the_DT problem_NN of_IN detecting_VBG query_NN chains_NNS ,_, which_WDT we_PRP will_MD have_VB to_TO address_NN ,_, is_VBZ feasible_JJ ._.
+4_LS ._.
+FROM_NNS LOG_VBP FILES_NNS TO_TO F_NN
+his_PRP$ paper_NN is_VBZ that_IN we_PRP learn_VBP a_DT more_RBR general_JJ ranking_NN function_NN than_IN previous_JJ work_NN by_IN associating_VBG query_NN words_NNS with_IN specific_JJ documents_NNS ._.
+This_DT approach_NN has_VBZ been_VBN used_VBN previously_RB to_TO learn_VB to_TO generate_VB abstracts_NNS =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC in_IN document_NN transformation_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, but_CC not_RB to_TO learn_VB ranking_JJ functions_NNS ._.
+Prior_JJ approaches_NNS can_MD not_RB learn_VB to_TO associate_VB ``_`` new_JJ ''_'' documents_NNS with_IN a_DT given_VBN query_NN because_IN they_PRP combine_VBP or_CC re-order_JJ results_NNS obtain_VBP
+to_TO be_VB biased_VBN as_IN it_PRP is_VBZ relative_JJ to_TO the_DT retrieval_NN function_NN quality_NN and_CC ordering_VBG -LRB-_-LRB- 15_CD ,_, 17_CD -RRB-_-RRB- ._.
+This_DT makes_VBZ its_PRP$ interpretation_NN as_IN absolute_JJ feedback_NN of_IN questionable_JJ accuracy_NN ._.
+Cohen_NNP et_FW al._FW -LRB-_-LRB- 6_CD -RRB-_-RRB- and_CC Freund_NNP et_FW al._FW =_SYM -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: propose_VBP using_VBG log_NN data_NNS to_TO generate_VB relative_JJ preference_NN feedback_NN ._.
+Both_DT approaches_NNS consider_VBP learning_VBG a_DT ranking_JJ function_NN from_IN these_DT preference_NN judgments_NNS ,_, along_IN similar_JJ lines_NNS as_IN this_DT work_NN ._.
+However_RB ,_, in_FW co_FW
+w_NN users_NNS are_VBP willing_JJ to_TO do_VB this_DT ,_, making_VBG significant_JJ amounts_NNS of_IN such_JJ data_NNS difficult_JJ to_TO obtain_VB ._.
+An_DT alternative_JJ approach_NN is_VBZ to_TO extract_VB implicit_JJ relevance_NN feedback_NN from_IN search_NN engine_NN log_NN files_NNS -LRB-_-LRB- such_JJ as_IN in_IN =_JJ -_: =[_NN 6_CD ,_, 15_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+This_DT allows_VBZ virtually_RB unlimited_JJ data_NNS to_TO be_VB collected_VBN at_IN very_RB low_JJ cost_NN ,_, although_IN interpretation_NN is_VBZ more_JJR complex_NN ._.
+Irrespective_JJ of_IN the_DT approach_NN ,_, to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN all_DT previous_JJ research_NN in_IN l_NN
+w_NN users_NNS are_VBP willing_JJ to_TO do_VB this_DT ,_, making_VBG significant_JJ amounts_NNS of_IN such_JJ data_NNS difficult_JJ to_TO obtain_VB ._.
+An_DT alternative_JJ approach_NN is_VBZ to_TO extract_VB implicit_JJ relevance_NN feedback_NN from_IN search_NN engine_NN log_NN files_NNS -LRB-_-LRB- such_JJ as_IN in_IN =_JJ -_: =[_NN 6_CD ,_, 15_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+This_DT allows_VBZ virtually_RB unlimited_JJ data_NNS to_TO be_VB collected_VBN at_IN very_RB low_JJ cost_NN ,_, although_IN interpretation_NN is_VBZ more_JJR complex_NN ._.
+Irrespective_JJ of_IN the_DT approach_NN ,_, to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN all_DT previous_JJ research_NN in_IN l_NN
+this_DT section_NN we_PRP explore_VBP this_DT question_NN ._.
+An_DT eye_NN tracking_NN study_NN was_VBD performed_VBN to_TO observe_VB how_WRB users_NNS formulate_VBP queries_NNS ,_, assess_VBP the_DT results_NNS returned_VBN by_IN the_DT search_NN engine_NN and_CC select_VB the_DT links_NNS they_PRP click_VBP on_IN =_JJ -_: =[_NN 11_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Thirty_CD six_CD undergraduate_JJ student_NN volunteers_NNS were_VBD instructed_VBN to_TO search_VB for_IN the_DT answers_NNS to_TO five_CD navigational_JJ and_CC five_CD informational_JJ queries_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+The_DT former_JJ involved_VBN finding_VBG a_DT specific_JJ web_NN page_NN while_IN t_NN
+al-world_JJ setting_NN ._.
+This_DT makes_VBZ typical_JJ labeled_JJ data_NNS sets_VBZ small_JJ and_CC difficult_JJ to_TO work_VB with_IN ._.
+A_DT number_NN of_IN researchers_NNS have_VBP collected_VBN absolute_JJ relevance_NN judgments_NNS implicitly_RB from_IN clickthrough_JJ logs_NNS ,_, such_JJ as_IN =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 19_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP postulate_VBP that_IN documents_NNS clicked_VBD on_RP in_IN search_NN results_NNS are_VBP highly_RB likely_JJ to_TO be_VB relevant_JJ ._.
+For_IN example_NN ,_, Kemp_NNP et_FW al._FW -LRB-_-LRB- 19_CD -RRB-_-RRB- present_VBP a_DT learning_NN search_NN engine_NN using_VBG document_NN transformation_NN ._.
+They_PRP assume_VBP
+llected_VBN in_IN two_CD ways_NNS ._.
+One_CD approach_NN relies_VBZ on_IN actively_RB soliciting_VBG training_NN data_NNS by_IN recording_VBG user_NN queries_NNS and_CC then_RB asking_VBG users_NNS to_TO explicitly_RB provide_VB relevance_NN judgments_NNS on_IN retrieved_VBN documents_NNS -LRB-_-LRB- such_JJ as_IN =_JJ -_: =[_NN 7_CD ,_, 13_CD ,_, 22_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Few_JJ users_NNS are_VBP willing_JJ to_TO do_VB this_DT ,_, making_VBG significant_JJ amounts_NNS of_IN such_JJ data_NNS difficult_JJ to_TO obtain_VB ._.
+An_DT alternative_JJ approach_NN is_VBZ to_TO extract_VB implicit_JJ relevance_NN feedback_NN from_IN search_NN engine_NN log_NN files_NNS -LRB-_-LRB- such_PDT a_DT
+le_FW ,_, we_PRP observed_VBD that_IN users_NNS searching_VBG for_IN the_DT ``_`` Lexis_NNP Nexis_NNP ''_'' repository_NN often_RB first_RB search_VB for_IN ``_`` Lexis_NNP Nexus_NNP ''_'' by_IN mistake_NN ._.
+As_IN users_NNS search_NN ,_, it_PRP is_VBZ well_RB documented_VBN that_IN they_PRP often_RB reformulate_VBP their_PRP$ queries_NNS =_JJ -_: =[_NN 3_CD ,_, 8_CD ,_, 18_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Previous_JJ work_NN has_VBZ attempted_VBN to_TO predict_VB query_NN reformulations_NNS ,_, but_CC to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN these_DT reformulations_NNS have_VBP never_RB been_VBN used_VBN to_TO learn_VB better_JJR retrieval_NN functions_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP refer_VBP t_NN
+le_FW ,_, we_PRP observed_VBD that_IN users_NNS searching_VBG for_IN the_DT ``_`` Lexis_NNP Nexis_NNP ''_'' repository_NN often_RB first_RB search_VB for_IN ``_`` Lexis_NNP Nexus_NNP ''_'' by_IN mistake_NN ._.
+As_IN users_NNS search_NN ,_, it_PRP is_VBZ well_RB documented_VBN that_IN they_PRP often_RB reformulate_VBP their_PRP$ queries_NNS =_JJ -_: =[_NN 3_CD ,_, 8_CD ,_, 18_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Previous_JJ work_NN has_VBZ attempted_VBN to_TO predict_VB query_NN reformulations_NNS ,_, but_CC to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN these_DT reformulations_NNS have_VBP never_RB been_VBN used_VBN to_TO learn_VB better_JJR retrieval_NN functions_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP refer_VBP t_NN
+ction_NN is_VBZ limited_VBN to_TO a_DT combination_NN of_IN rankings_NNS given_VBN by_IN a_DT fixed_JJ set_NN of_IN manually_RB constructed_VBN ``_`` experts_NNS ''_'' ._.
+This_DT approach_NN of_IN learning_VBG a_DT combination_NN of_IN functions_NNS is_VBZ also_RB used_VBN by_IN most_JJS other_JJ work_NN in_IN this_DT area_NN =_JJ -_: =[_NN 1_CD ,_, 2_CD ,_, 4_CD ,_, 15_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Joachims_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- refined_VBD the_DT interpretation_NN of_IN clickthrough_JJ log_NN data_NNS as_IN relative_JJ feedback_NN ._.
+He_PRP suggests_VBZ that_IN given_VBN a_DT ranking_NN and_CC a_DT clicked-on_JJ document_NN d_NN ,_, any_DT document_NN ranked_VBD above_IN d_NN but_CC not_RB clicked_VBN on_IN i_FW
+al-world_JJ setting_NN ._.
+This_DT makes_VBZ typical_JJ labeled_JJ data_NNS sets_VBZ small_JJ and_CC difficult_JJ to_TO work_VB with_IN ._.
+A_DT number_NN of_IN researchers_NNS have_VBP collected_VBN absolute_JJ relevance_NN judgments_NNS implicitly_RB from_IN clickthrough_JJ logs_NNS ,_, such_JJ as_IN =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 19_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+They_PRP postulate_VBP that_IN documents_NNS clicked_VBD on_RP in_IN search_NN results_NNS are_VBP highly_RB likely_JJ to_TO be_VB relevant_JJ ._.
+For_IN example_NN ,_, Kemp_NNP et_FW al._FW -LRB-_-LRB- 19_CD -RRB-_-RRB- present_VBP a_DT learning_NN search_NN engine_NN using_VBG document_NN transformation_NN ._.
+They_PRP assume_VBP
+he_PRP search_NN engine_NN and_CC select_VB the_DT links_NNS they_PRP click_VBP on_IN -LRB-_-LRB- 11_CD ,_, 12_CD -RRB-_-RRB- ._.
+Thirty_CD six_CD undergraduate_JJ student_NN volunteers_NNS were_VBD instructed_VBN to_TO search_VB for_IN the_DT answers_NNS to_TO five_CD navigational_JJ and_CC five_CD informational_JJ queries_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT former_JJ involved_VBN finding_VBG a_DT specific_JJ web_NN page_NN while_IN the_DT latter_JJ involved_VBN finding_VBG some_DT specific_JJ information_NN ._.
+The_DT subjects_NNS were_VBD asked_VBN to_TO start_VB from_IN the_DT Google_NNP search_NN page_NN and_CC find_VB the_DT answers_NNS ._.
+There_EX

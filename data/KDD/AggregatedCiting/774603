@@ -1,0 +1,84 @@
+Discovering_VBG significant_JJ OPSM_NNP subspace_NN clusters_NNS in_IN massive_JJ gene_NN expression_NN data_NNS
+Order-preserving_JJ submatrixes_NNS -LRB-_-LRB- OPSMs_NNS -RRB-_-RRB- have_VBP been_VBN accepted_VBN as_IN a_DT biologically_RB meaningful_JJ subspace_NN cluster_NN model_NN ,_, capturing_VBG the_DT general_JJ tendency_NN of_IN gene_NN expressions_NNS across_IN a_DT subset_NN of_IN conditions_NNS ._.
+In_IN an_DT OPSM_NNP ,_, the_DT expression_NN levels_NNS of_IN all_DT genes_NNS induce_VBP the_DT same_JJ linear_NN ordering_VBG of_IN the_DT conditions_NNS ._.
+OPSM_NN mining_NN is_VBZ reducible_JJ to_TO a_DT special_JJ case_NN of_IN the_DT sequential_JJ pattern_NN mining_NN problem_NN ,_, in_IN which_WDT a_DT pattern_NN and_CC its_PRP$ supporting_VBG sequences_NNS uniquely_RB specify_VBP an_DT OPSM_NNP cluster_NN ._.
+Those_DT small_JJ twig_NN clusters_NNS ,_, specified_VBN by_IN long_JJ patterns_NNS with_IN naturally_RB low_JJ support_NN ,_, incur_VBP explosive_JJ computational_JJ costs_NNS and_CC would_MD be_VB completely_RB pruned_VBN off_RP by_IN most_JJS existing_VBG methods_NNS for_IN massive_JJ datasets_NNS containing_VBG thousands_NNS of_IN conditions_NNS and_CC hundreds_NNS of_IN thousands_NNS of_IN genes_NNS ,_, which_WDT are_VBP common_JJ in_IN today_NN 's_POS gene_NN expression_NN analysis_NN ._.
+However_RB ,_, it_PRP is_VBZ in_IN particular_JJ interest_NN of_IN biologists_NNS to_TO reveal_VB such_JJ small_JJ groups_NNS of_IN genes_NNS that_WDT are_VBP tightly_RB coregulated_VBN under_IN many_JJ conditions_NNS ,_, and_CC some_DT pathways_NNS or_CC processes_NNS might_MD require_VB only_RB two_CD genes_NNS to_TO act_VB in_IN concert_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP introduce_VBP the_DT KiWi_NN mining_NN framework_NN for_IN massive_JJ datasets_NNS ,_, that_WDT exploits_VBZ two_CD parameters_NNS k_NN and_CC w_NN to_TO provide_VB a_DT biased_VBN testing_NN on_IN a_DT bounded_JJ number_NN of_IN candidates_NNS ,_, substantially_RB reducing_VBG the_DT search_NN space_NN and_CC problem_NN scale_NN ,_, targeting_VBG on_IN highly_RB promising_JJ seeds_NNS that_WDT lead_VBP to_TO significant_JJ clusters_NNS and_CC twig_NN clusters_NNS ._.
+Extensive_JJ biological_JJ and_CC computational_JJ evaluations_NNS on_IN real_JJ datasets_NNS demonstrate_VBP that_IN KiWi_NN can_MD effectively_RB mine_VB biologically_RB meaningful_JJ OPSM_NNP subspace_NN clusters_NNS with_IN good_JJ efficiency_NN and_CC scalability_NN ._.
+ing_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- discovers_VBZ local_JJ coherence_NN of_IN genes_NNS and_CC conditions_NNS in_IN a_DT submatrix_NN of_IN a_DT DNA_NN array_NN ._.
+In_IN the_DT biological_JJ sense_NN ,_, genes_NNS in_IN such_JJ clusters_NNS have_VBP the_DT same_JJ amount_NN of_IN response_NN to_TO the_DT conditions_NNS ._.
+δ-pCluster_NN =_SYM -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: models_NNS clusters_NNS that_WDT exhibit_VBP shifting_VBG or_CC scaling_VBG patterns_NNS ._.
+Scaling_VBG pattern_NN can_MD be_VB transformed_VBN into_IN shifting_VBG pattern_NN by_IN applying_VBG a_DT logarithmic_JJ function_NN on_IN the_DT raw_JJ data_NNS ._.
+Under_IN shifting_VBG pattern_NN ,_, the_DT exp_NN
+and_CC high_JJ dimensional_JJ nature_NN of_IN the_DT transformed_VBN sequence_NN database_NN renders_VBZ min_NN sup-based_JJ methods_NNS infeasible_JJ for_IN massive_JJ datasets_NNS with_IN low_JJ threshold_NN settings_NNS ._.
+2.2_CD Related_NNP Work_NNP Subspace_NNP clustering_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =--RRB-_NN aims_VBZ at_IN discovering_VBG clusters_NNS embedded_VBN in_IN subspaces_NNS ._.
+Measuring_VBG similarity_NN by_IN pattern_NN rather_RB than_IN distance_NN ,_, pattern-based_JJ subspace_NN clustering_NN has_VBZ proved_VBN to_TO be_VB particularly_RB meaningful_JJ in_IN the_DT applicatio_NN
+r_NN the_DT same_JJ reason_NN to_TO obtain_VB most_RBS significant_JJ subspace_NN clusters_NNS from_IN massive_JJ datasets_NNS ._.
+Sequential_JJ pattern_NN mining_NN was_VBD introduced_VBN in_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Existing_VBG methods_NNS are_VBP essentially_RB either_CC breath-first_RB such_JJ as_IN GSP_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: or_CC depth-first_NN such_JJ as_IN PrefixSpan_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+PrefixSpan_NNP is_VBZ known_VBN as_IN one_CD of_IN the_DT most_RBS efficient_JJ algorithms_NNS so_RB far_RB ._.
+3_LS ._.
+THE_DT KiWi_FW MINING_FW FRAMEWORK_NN With_IN the_DT objective_NN to_TO discover_VB significant_JJ OPSM_NNP subspace_NN clust_NN
+ogical_JJ expectation_NN for_IN coregulated_JJ genes_NNS ._.
+Methods_NNS ._.
+The_DT first_JJ method_NN uses_VBZ the_DT Gene_NN Ontology_NN -LRB-_-LRB- GO_NN -RRB-_-RRB- ,_, a_DT set_NN of_IN structured_JJ ,_, controlled_JJ vocabularies_NNS to_TO identify_VB functional_JJ associations_NNS between_IN gene_NN products_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Current_NNP GO_NNP annotation_NN and_CC external_JJ reference_NN files_NNS were_VBD downloaded_VBN from_IN the_DT Gene_NNP Ontology_NNP Annotation_NNP resource_NN at_IN EBI_NN -LRB-_-LRB- www.ebi.ac.uk\/GOA_NN -RRB-_-RRB- ._.
+Using_VBG these_DT files_NNS ,_, and_CC the_DT Ensembl_FW Perl_FW API_NN -LRB-_-LRB- www.ensembl.org_NN
+ression_NN Omnibus_NN -LRB-_-LRB- GEO_NN -RRB-_-RRB- currently_RB records_NNS over_IN 70,000_CD conditions_NNS for_IN over_IN 100_CD different_JJ organisms_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- and_CC the_DT Stanford_NNP Microarray_NNP Database_NNP -LRB-_-LRB- SMD_NNP -RRB-_-RRB- contains_VBZ over_IN 10,000_CD spublic_JJ experiments_NNS for_IN 21_CD organisms_NNS =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+With_IN expression_NN datasets_NNS of_IN potentially_RB tens_NNS or_CC hundreds_NNS of_IN thousands_NNS of_IN both_DT rows_NNS and_CC columns_NNS ,_, there_EX is_VBZ a_DT need_NN for_IN algorithms_NNS that_WDT can_MD handle_VB not_RB only_RB ``_`` large_JJ datasets_NNS ''_'' but_CC ``_`` massive_JJ datasets_NNS ''_'' ._.
+Prote_NNP
+xpression_NN datasets_NNS have_VBP been_VBN growing_VBG at_IN an_DT ever-increasing_JJ rate_NN ._.
+To_TO give_VB just_RB two_CD examples_NNS ,_, the_DT Gene_NNP Expression_NN Omnibus_NN -LRB-_-LRB- GEO_NN -RRB-_-RRB- currently_RB records_NNS over_IN 70,000_CD conditions_NNS for_IN over_IN 100_CD different_JJ organisms_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: and_CC the_DT Stanford_NNP Microarray_NNP Database_NNP -LRB-_-LRB- SMD_NNP -RRB-_-RRB- contains_VBZ over_IN 10,000_CD spublic_JJ experiments_NNS for_IN 21_CD organisms_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+With_IN expression_NN datasets_NNS of_IN potentially_RB tens_NNS or_CC hundreds_NNS of_IN thousands_NNS of_IN both_DT rows_NNS and_CC column_NN
+,_, containing_VBG the_DT longest_JJS terminals_NNS of_IN the_DT search_NN tree_NN -LRB-_-LRB- space_NN -RRB-_-RRB- ._.
+Note_VB that_IN the_DT search_NN space_NN for_IN pattern_NN mining_NN can_MD generally_RB be_VB organized_VBN in_IN a_DT tree_NN structure_NN ,_, e.g._FW ,_, Rymon_NNP 's_POS generic_JJ set_NN enumeration_NN tree_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: for_IN frequents_VBZ #_# rows_NNS λ_NN 2_CD Pareto_NNP front_NN feasible_JJ region_NN significant_JJ region_NN twig_NN region_NN #_# columns_NNS Pareto_NNP front_NN :_: the_DT monotonically_RB descending_VBG line_NN containing_VBG all_DT non-dominated_JJ solutions_NNS ._.
+feasible_JJ region_NN :_:
+a_DT hard-coded_JJ statistical_JJ measure_NN ._.
+Scalability_NN issues_NNS are_VBP not_RB considered_VBN ._.
+The_DT proposed_VBN algorithm_NN requires_VBZ excessive_JJ computational_JJ resources_NNS if_IN applied_VBN to_TO large_JJ gene_NN expression_NN matrixes_NNS ._.
+OP-clustering_NN =_SYM -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: generalizes_VBZ the_DT OPSM_NNP model_NN by_IN grouping_VBG attributes_NNS into_IN equivalent_JJ classes_NNS ._.
+Their_PRP$ proposed_VBN method_NN ,_, OPC-tree_NN ,_, performs_VBZ exhaustive_JJ enumeration_NN as_IN in_IN conventional_JJ sequential_JJ pattern_NN mining_NN ,_, and_CC fails_VBZ for_IN
+massive_JJ gene_NN expression_NN data_NNS ,_, with_IN a_DT focus_NN on_IN twig_NN clusters_NNS with_IN size_NN as_RB small_JJ as_IN 2_CD ._.
+2.1_CD Relationship_NN to_TO Sequential_NNP Pattern_NNP Mining_NNP Conventional_JJ sequential_JJ pattern_NN mining_NN was_VBD motivated_VBN and_CC introduced_VBN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: in_IN the_DT context_NN of_IN transaction_NN databases_NNS ,_, where_WRB a_DT sequence_NN is_VBZ an_DT ordered_VBN list_NN of_IN itemsets_NNS ._.
+A_DT common_JJ subsequence_NN with_IN support_NN beyond_IN the_DT minimum_JJ support_NN threshold_NN ,_, min_NN sup_NN ,_, is_VBZ called_VBN a_DT sequential_JJ patte_NN
+he_PRP purpose_NN of_IN explanation_NN ._.
+The_DT dashed_VBN curve_NN is_VBZ a_DT more_RBR realistic_JJ illustration_NN of_IN the_DT shape_NN of_IN the_DT Pareto_NNP front_NN ,_, showing_VBG more_RBR clearly_RB how_WRB severe_JJ the_DT pruning_NN damage_NN can_MD be_VB ._.
+In_IN our_PRP$ experiment_NN ,_, PrefixSpan_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, one_CD of_IN the_DT fastest_JJS sequential_JJ mining_NN algorithms_NNS ,_, did_VBD not_RB return_VB after_IN 48_CD hours_NNS on_IN real_JJ dataset_NN human-SMDcDNA_NN -LRB-_-LRB- 12671_CD genes_NNS and_CC 2852_CD conditions_NNS -RRB-_-RRB- -LRB-_-LRB- 15_CD -RRB-_-RRB- for_IN min_NN sup_NN =_JJ 2535_CD ._.
+It_PRP returned_VBD after_IN 36_CD hours_NNS on_IN
+lute_NN expression_NN levels_NNS ._.
+For_IN example_NN ,_, a_DT transcription_NN factor_NN may_MD be_VB able_JJ to_TO perform_VB its_PRP$ function_NN at_IN a_DT very_RB different_JJ concentration_NN from_IN its_PRP$ target_NN genes_NNS ._.
+Recently_RB ,_, order-preserving_JJ submatrixes_NNS -LRB-_-LRB- OPSMs_NNS -RRB-_-RRB- =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN introduced_VBN and_CC accepted_VBN as_IN a_DT biologically_RB meaningful_JJ patternbased_JJ subspace_NN cluster_NN model_NN ._.
+An_DT OPSM_NNP ,_, essentially_RB a_DT subspace_NN cluster_NN ,_, is_VBZ a_DT subset_NN of_IN rows_NNS and_CC columns_NNS in_IN a_DT data_NN matrix_NN where_WRB all_DT
+for_IN multiple_JJ testing_NN by_IN false_JJ discovery_NN rate_NN detection_NN -LRB-_-LRB- 100_CD permutations_NNS -RRB-_-RRB- ._.
+The_DT second_JJ method_NN uses_VBZ the_DT oPOSSUM_NN tool_NN to_TO identify_VB statistically_RB over-represented_JJ transcription_NN factor_NN binding_NN sites_NNS -LRB-_-LRB- TFBS_NN -RRB-_-RRB- =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT oPOSSUM_NNP API_NNP was_VBD downloaded_VBN and_CC installed_VBN -LRB-_-LRB- www.cisreg.ca\/cgi-bin\/oPOSSUM\/opossum_NN -RRB-_-RRB- ._.
+Each_DT cluster_NN of_IN genes_NNS was_VBD submitted_VBN to_TO the_DT software_NN and_CC statistically_RB overrepresented_VBN TFBSs_NNS were_VBD defined_VBN using_VBG t_NN
+g_NN -RRB-_-RRB- the_DT gene_NN identifiers_NNS in_IN the_DT cluster_NN data_NNS were_VBD mapped_VBN to_TO protein_NN identifiers_NNS compatible_JJ with_IN GO_NN ._.
+Each_DT cluster_NN of_IN protein_NN IDs_NNS was_VBD then_RB submitted_VBN to_TO the_DT High-Throughput_NNP GoMiner_NNP command-line_JJ interface_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Statistically_RB over-represented_JJ GO_NN terms_NNS were_VBD defined_VBN using_VBG a_DT Fisher_NNP 's_POS exact_JJ test_NN and_CC corrected_VBN for_IN multiple_JJ testing_NN by_IN false_JJ discovery_NN rate_NN detection_NN -LRB-_-LRB- 100_CD permutations_NNS -RRB-_-RRB- ._.
+The_DT second_JJ method_NN uses_VBZ the_DT o_NN
+eed_NN for_IN algorithms_NNS that_WDT can_MD handle_VB not_RB only_RB ``_`` large_JJ datasets_NNS ''_'' but_CC ``_`` massive_JJ datasets_NNS ''_'' ._.
+Protein-protein_JJ interactions_NNS ,_, biological_JJ pathway_NN membership_NN and_CC coregulation_NN demonstrate_VBP ``_`` power_NN law_NN ''_'' relationships_NNS =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+That_DT is_VBZ to_TO say_VB ,_, we_PRP tend_VBP to_TO observe_VB a_DT small_JJ number_NN of_IN very_RB large_JJ gene_NN groups_NNS and_CC a_DT large_JJ number_NN of_IN very_RB small_JJ groups_NNS ._.
+For_IN gene_NN coregulation_NN ,_, the_DT smaller_JJR groups_NNS ,_, roughly_RB under_IN 50_CD genes_NNS ,_, are_VBP of_IN particu_NN
+D_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Affymetrix_NNP probes_NNS ,_, cDNA_NN clones_NNS and_CC SAGE_NN tags_NNS were_VBD normalized_VBN and_CC mapped_VBN to_TO gene\/protein_NN identifiers_NNS as_IN previously_RB reported_VBN -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+For_IN comparison_NN with_IN existing_VBG algorithms_NNS ,_, two_CD small_JJ datasets_NNS ,_, SU_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, a_DT smaller_JJR dataset_NN of_IN Affymatrix_NN -LRB-_-LRB- HG-U95A_NN -RRB-_-RRB- experiments_NNS ,_, and_CC breast_NN cancer_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, were_VBD also_RB used_VBN ._.
+Table_NNP 1_CD lists_VBZ the_DT sizes_NNS of_IN these_DT datasets_NNS ._.
+The_DT experiments_NNS were_VBD run_VBN on_IN a_DT 2.8_CD GHz\/2GB_NN Windows_NNP machine_NN ._.
+4_LS ._.
+5_CD -RRB-_-RRB- ,_, SAGE_NN libraries_NNS also_RB from_IN GEO_NN -LRB-_-LRB- GPL4_NN -RRB-_-RRB- ,_, and_CC cDNA_NN experiments_NNS from_IN SMD_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Affymetrix_NNP probes_NNS ,_, cDNA_NN clones_NNS and_CC SAGE_NN tags_NNS were_VBD normalized_VBN and_CC mapped_VBN to_TO gene\/protein_NN identifiers_NNS as_IN previously_RB reported_VBN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN comparison_NN with_IN existing_VBG algorithms_NNS ,_, two_CD small_JJ datasets_NNS ,_, SU_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, a_DT smaller_JJR dataset_NN of_IN Affymatrix_NN -LRB-_-LRB- HG-U95A_NN -RRB-_-RRB- experiments_NNS ,_, and_CC breast_NN cancer_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, were_VBD also_RB used_VBN ._.
+Table_NNP 1_CD lists_VBZ the_DT sizes_NNS of_IN these_DT
+to_TO gene\/protein_NN identifiers_NNS as_IN previously_RB reported_VBN -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+For_IN comparison_NN with_IN existing_VBG algorithms_NNS ,_, two_CD small_JJ datasets_NNS ,_, SU_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, a_DT smaller_JJR dataset_NN of_IN Affymatrix_NN -LRB-_-LRB- HG-U95A_NN -RRB-_-RRB- experiments_NNS ,_, and_CC breast_NN cancer_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, were_VBD also_RB used_VBN ._.
+Table_NNP 1_CD lists_VBZ the_DT sizes_NNS of_IN these_DT datasets_NNS ._.
+The_DT experiments_NNS were_VBD run_VBN on_IN a_DT 2.8_CD GHz\/2GB_NN Windows_NNP machine_NN ._.
+4.1_CD Biological_JJ Evaluation_NN Biologically_RB meaningful_JJ groups_NNS of_IN coregulated_JJ genes_NNS sho_VBP
+ubspaces_NNS ._.
+Measuring_VBG similarity_NN by_IN pattern_NN rather_RB than_IN distance_NN ,_, pattern-based_JJ subspace_NN clustering_NN has_VBZ proved_VBN to_TO be_VB particularly_RB meaningful_JJ in_IN the_DT application_NN of_IN gene_NN expression_NN analysis_NN ._.
+Biclustering_VBG =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: discovers_VBZ local_JJ coherence_NN of_IN genes_NNS and_CC conditions_NNS in_IN a_DT submatrix_NN of_IN a_DT DNA_NN array_NN ._.
+In_IN the_DT biological_JJ sense_NN ,_, genes_NNS in_IN such_JJ clusters_NNS have_VBP the_DT same_JJ amount_NN of_IN response_NN to_TO the_DT conditions_NNS ._.
+δ-pCluster_NN -LRB-_-LRB- 18_CD -RRB-_-RRB- mo_NN

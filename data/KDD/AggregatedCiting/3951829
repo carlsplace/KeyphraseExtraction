@@ -1,0 +1,150 @@
+Fast_JJ window_NN correlations_NNS over_IN uncooperative_JJ time_NN series_NN
+Data_NNS arriving_VBG in_IN time_NN order_NN -LRB-_-LRB- a_DT data_NN stream_NN -RRB-_-RRB- arises_VBZ in_IN fields_NNS including_VBG physics_NNS ,_, finance_NN ,_, medicine_NN ,_, and_CC music_NN ,_, to_TO name_VB a_DT few_JJ ._.
+Often_RB the_DT data_NN comes_VBZ from_IN sensors_NNS -LRB-_-LRB- in_IN physics_NN and_CC medicine_NN for_IN example_NN -RRB-_-RRB- whose_WP$ data_NNS rates_NNS continue_VBP to_TO improve_VB dramatically_RB as_IN sensor_NN technology_NN improves_VBZ ._.
+Further_RB ,_, the_DT number_NN of_IN sensors_NNS is_VBZ increasing_VBG ,_, so_RB correlating_VBG data_NNS between_IN sensors_NNS becomes_VBZ ever_RB more_RBR critical_JJ in_IN order_NN to_TO distill_VB knowlege_NN from_IN the_DT data_NNS ._.
+In_IN many_JJ applications_NNS such_JJ as_IN finance_NN ,_, recent_JJ correlations_NNS are_VBP of_IN far_RB more_JJR interest_NN than_IN long-term_JJ correlation_NN ,_, so_IN correlation_NN over_IN sliding_VBG windows_NNS -LRB-_-LRB- windowed_JJ correlation_NN -RRB-_-RRB- is_VBZ the_DT desired_VBN operation_NN ._.
+Fast_JJ response_NN is_VBZ desirable_JJ in_IN many_JJ applications_NNS -LRB-_-LRB- e.g._FW ,_, to_TO aim_VB a_DT telescope_NN at_IN an_DT activity_NN of_IN interest_NN or_CC to_TO perform_VB a_DT stock_NN trade_NN -RRB-_-RRB- ._.
+These_DT three_CD factors_NNS --_: data_NNS size_NN ,_, windowed_JJ correlation_NN ,_, and_CC fast_JJ response_NN --_: motivate_VBP this_DT work_NN ._.
+Previous_JJ work_NN -LRB-_-LRB- 10_CD ,_, 14_CD -RRB-_-RRB- showed_VBD how_WRB to_TO compute_VB Pearson_NNP correlation_NN using_VBG Fast_JJ Fourier_NN Transforms_VBZ and_CC Wavelet_NNP transforms_VBZ ,_, but_CC such_JJ techniques_NNS do_VBP n't_RB work_VB for_IN time_NN series_NN in_IN which_WDT the_DT energy_NN is_VBZ spread_VBN over_IN many_JJ frequency_NN components_NNS ,_, thus_RB resembling_VBG white_JJ noise_NN ._.
+For_IN such_JJ ``_`` uncooperative_JJ ''_'' time_NN series_NN ,_, this_DT paper_NN shows_VBZ how_WRB to_TO combine_VB several_JJ simple_JJ techniques_NNS --_: sketches_NNS -LRB-_-LRB- random_JJ projections_NNS -RRB-_-RRB- ,_, convolution_NN ,_, structured_JJ random_JJ vectors_NNS ,_, grid_NN structures_NNS ,_, and_CC combinatorial_JJ design_NN --_: to_TO achieve_VB high_JJ performance_NN windowed_VBD Pearson_NNP correlation_NN over_IN a_DT variety_NN of_IN data_NNS sets_NNS ._.
+s_NN data_NNS was_VBD originally_RB proposed_VBN by_IN Agrawal_NNP et_FW al._FW -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+This_DT technique_NN has_VBZ been_VBN improved_VBN and_CC generalized_VBN by_IN -LRB-_-LRB- 35_CD ,_, 30_CD ,_, 29_CD -RRB-_-RRB- ._.
+Wavelet_NNP Transforms_VBZ -LRB-_-LRB- DWT_NN -RRB-_-RRB- -LRB-_-LRB- 28_CD ,_, 15_CD ,_, 27_CD ,_, 26_CD -RRB-_-RRB- ,_, Singular_JJ Value_NNP Decompositions_NNP -LRB-_-LRB- SVD_NNP -RRB-_-RRB- =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC Piecewise_JJ Constant_JJ Approximations_NNS -LRB-_-LRB- 36_CD ,_, 24_CD ,_, 23_CD ,_, 22_CD -RRB-_-RRB- have_VBP also_RB been_VBN proposed_VBN for_IN similarity_NN search_NN ._.
+Keogh_NNP has_VBZ pioneered_VBN many_JJ of_IN the_DT recent_JJ ideas_NNS in_IN the_DT indexing_NN of_IN dynamic_JJ time_NN warping_NN databases_NNS -LRB-_-LRB-
+forms_NNS ._.
+Using_VBG Fourier_NN Transforms_VBZ to_TO compress_VB time_NN series_NN data_NNS was_VBD originally_RB proposed_VBN by_IN Agrawal_NNP et_FW al._FW -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+This_DT technique_NN has_VBZ been_VBN improved_VBN and_CC generalized_VBN by_IN -LRB-_-LRB- 35_CD ,_, 30_CD ,_, 29_CD -RRB-_-RRB- ._.
+Wavelet_NNP Transforms_VBZ -LRB-_-LRB- DWT_NN -RRB-_-RRB- =_JJ -_: =[_NN 28_CD ,_, 15_CD ,_, 27_CD ,_, 26_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Singular_JJ Value_NN Decompositions_NNS -LRB-_-LRB- SVD_NN -RRB-_-RRB- -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, and_CC Piecewise_JJ Constant_JJ Approximations_NNS -LRB-_-LRB- 36_CD ,_, 24_CD ,_, 23_CD ,_, 22_CD -RRB-_-RRB- have_VBP also_RB been_VBN proposed_VBN for_IN similarity_NN search_NN ._.
+Keogh_NNP has_VBZ pioneered_VBN many_JJ of_IN the_DT recent_JJ ideas_NNS in_IN the_DT in_IN
+e_LS series_NN :_: the_DT discovery_NN of_IN time_NN series_NN windows_NNS having_VBG high_JJ Pearson_NNP correlations_NNS ._.
+We_PRP call_VBP this_DT problem_NN windowed_VBD correlation_NN ._.
+In_IN contrast_NN to_TO the_DT considerable_JJ recent_JJ body_NN of_IN work_NN on_IN massive_JJ data_NNS streams_NNS =_JJ -_: =[_NN 31_CD ,_, 32_CD ,_, 33_CD -RRB-_-RRB- -_: =_SYM -_: where_WRB the_DT assumption_NN is_VBZ that_IN data_NNS can_MD be_VB read_VBN once_RB and_CC is_VBZ not_RB stored_VBN ,_, we_PRP assume_VBP an_DT initial_JJ filtering_VBG step_NN must_MD be_VB completed_VBN in_IN one_CD pass_NN ,_, but_CC a_DT second_JJ pass_NN may_MD search_VB for_IN data_NNS in_IN a_DT well-organized_JJ and_CC
+al._FW -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+This_DT technique_NN has_VBZ been_VBN improved_VBN and_CC generalized_VBN by_IN -LRB-_-LRB- 35_CD ,_, 30_CD ,_, 29_CD -RRB-_-RRB- ._.
+Wavelet_NNP Transforms_VBZ -LRB-_-LRB- DWT_NN -RRB-_-RRB- -LRB-_-LRB- 28_CD ,_, 15_CD ,_, 27_CD ,_, 26_CD -RRB-_-RRB- ,_, Singular_JJ Value_NN Decompositions_NNS -LRB-_-LRB- SVD_NN -RRB-_-RRB- -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, and_CC Piecewise_JJ Constant_JJ Approximations_NNS =_JJ -_: =[_NN 36_CD ,_, 24_CD ,_, 23_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP also_RB been_VBN proposed_VBN for_IN similarity_NN search_NN ._.
+Keogh_NNP has_VBZ pioneered_VBN many_JJ of_IN the_DT recent_JJ ideas_NNS in_IN the_DT indexing_NN of_IN dynamic_JJ time_NN warping_NN databases_NNS -LRB-_-LRB- 21_CD ,_, 20_CD -RRB-_-RRB- ._.
+The_DT performance_NN of_IN these_DT techniques_NNS varies_VBZ depe_NN
+forms_NNS ._.
+Using_VBG Fourier_NN Transforms_VBZ to_TO compress_VB time_NN series_NN data_NNS was_VBD originally_RB proposed_VBN by_IN Agrawal_NNP et_FW al._FW -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+This_DT technique_NN has_VBZ been_VBN improved_VBN and_CC generalized_VBN by_IN -LRB-_-LRB- 35_CD ,_, 30_CD ,_, 29_CD -RRB-_-RRB- ._.
+Wavelet_NNP Transforms_VBZ -LRB-_-LRB- DWT_NN -RRB-_-RRB- =_JJ -_: =[_NN 28_CD ,_, 15_CD ,_, 27_CD ,_, 26_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Singular_JJ Value_NN Decompositions_NNS -LRB-_-LRB- SVD_NN -RRB-_-RRB- -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, and_CC Piecewise_JJ Constant_JJ Approximations_NNS -LRB-_-LRB- 36_CD ,_, 24_CD ,_, 23_CD ,_, 22_CD -RRB-_-RRB- have_VBP also_RB been_VBN proposed_VBN for_IN similarity_NN search_NN ._.
+Keogh_NNP has_VBZ pioneered_VBN many_JJ of_IN the_DT recent_JJ ideas_NNS in_IN the_DT in_IN
+rrelations_NNS over_IN windows_NNS of_IN arbitrary_JJ size_NN -LRB-_-LRB- chosen_VBN up_RP front_NN -RRB-_-RRB- with_IN high_JJ accuracy_NN ._.
+5.1_CD The_DT Sketch_NNP Approach_NNP The_DT sketch_NN approach_NN ,_, as_IN developed_VBN by_IN Kushilevitz_NNP et_FW al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, Indyk_NNP et_FW al._FW -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, and_CC Achlioptas_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_JJ -_: ,_, provides_VBZ a_DT very_RB nice_JJ guarantee_NN :_: with_IN high_JJ probability_NN a_DT random_JJ mapping_NN taking_VBG points_NNS in_IN R_NN m_NN to_TO points_NNS in_IN -LRB-_-LRB- R_NN d_NN -RRB-_-RRB- 2b_FW +1_FW -LRB-_-LRB- the_DT -LRB-_-LRB- 2b_JJ +1_NN -RRB-_-RRB- -_: fold_JJ cross-product_NN of_IN R_NN d_NN with_IN itself_PRP -RRB-_-RRB- approximately_RB preserves_VBZ distan_NN
+s_NN onto_IN the_DT random_JJ vectors_NNS -RRB-_-RRB- ._.
+Then_RB the_DT guarantees_NNS given_VBN by_IN the_DT JohnsonLindenstrauss_NNP lemma_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- hold_NN ._.
+In_IN time_NN series_NN data_NNS mining_NN ,_, sketch-based_JJ approaches_NNS have_VBP been_VBN used_VBN to_TO identify_VB representative_JJ trends_NNS =_JJ -_: =[_NN 18_CD ,_, 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, maintain_VB histograms_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, and_CC to_TO compute_VB approximate_JJ wavelet_NN coefficients_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, for_IN example_NN ._.
+4_LS ._.
+CONTRIBUTIONS_NNS OF_IN THIS_NNP PAPER_NNP Previous_JJ work_NN -LRB-_-LRB- 14_CD ,_, 10_CD -RRB-_-RRB- showed_VBD how_WRB to_TO solve_VB the_DT windowed_JJ correlation_NN proble_NN
+st_IN Fourier_NN Transforms_VBZ and_CC Wavelet_NNP Transforms_NNPS ._.
+Using_VBG Fourier_NN Transforms_VBZ to_TO compress_VB time_NN series_NN data_NNS was_VBD originally_RB proposed_VBN by_IN Agrawal_NNP et_FW al._FW -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+This_DT technique_NN has_VBZ been_VBN improved_VBN and_CC generalized_VBN by_IN =_JJ -_: =[_NN 35_CD ,_, 30_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Wavelet_NNP Transforms_VBZ -LRB-_-LRB- DWT_NN -RRB-_-RRB- -LRB-_-LRB- 28_CD ,_, 15_CD ,_, 27_CD ,_, 26_CD -RRB-_-RRB- ,_, Singular_JJ Value_NN Decompositions_NNS -LRB-_-LRB- SVD_NN -RRB-_-RRB- -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, and_CC Piecewise_JJ Constant_JJ Approximations_NNS -LRB-_-LRB- 36_CD ,_, 24_CD ,_, 23_CD ,_, 22_CD -RRB-_-RRB- have_VBP also_RB been_VBN proposed_VBN for_IN similarity_NN search_NN ._.
+Keogh_NNP has_VBZ p_NN
+-RRB-_-RRB- ,_, and_CC Piecewise_JJ Constant_JJ Approximations_NNS -LRB-_-LRB- 36_CD ,_, 24_CD ,_, 23_CD ,_, 22_CD -RRB-_-RRB- have_VBP also_RB been_VBN proposed_VBN for_IN similarity_NN search_NN ._.
+Keogh_NNP has_VBZ pioneered_VBN many_JJ of_IN the_DT recent_JJ ideas_NNS in_IN the_DT indexing_NN of_IN dynamic_JJ time_NN warping_VBG databases_NNS =_JJ -_: =[_NN 21_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT performance_NN of_IN these_DT techniques_NNS varies_VBZ depending_VBG on_IN the_DT characteristics_NNS of_IN the_DT datasets_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+•_NNP Category_NNP 2_CD -LRB-_-LRB- ``_`` uncooperative_JJ ''_'' -RRB-_-RRB- :_: In_IN the_DT general_JJ case_NN ,_, such_JJ regularities_NNS are_VBP absent_JJ ._.
+However_RB ,_, sketch-b_NN
+en_IN the_DT guarantees_NNS given_VBN by_IN the_DT JohnsonLindenstrauss_NNP lemma_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- hold_NN ._.
+In_IN time_NN series_NN data_NNS mining_NN ,_, sketch-based_JJ approaches_NNS have_VBP been_VBN used_VBN to_TO identify_VB representative_JJ trends_NNS -LRB-_-LRB- 18_CD ,_, 17_CD -RRB-_-RRB- ,_, maintain_VBP histograms_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC to_TO compute_VB approximate_JJ wavelet_NN coefficients_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, for_IN example_NN ._.
+4_LS ._.
+CONTRIBUTIONS_NNS OF_IN THIS_NNP PAPER_NNP Previous_JJ work_NN -LRB-_-LRB- 14_CD ,_, 10_CD -RRB-_-RRB- showed_VBD how_WRB to_TO solve_VB the_DT windowed_JJ correlation_NN problem_NN in_IN the_DT cooperative_JJ setti_NNS
+sure_RB of_IN correlation_NN is_VBZ Pearson_NNP correlation_NN which_WDT is_VBZ closely_RB related_JJ to_TO Euclidean_JJ distance_NN over_IN a_DT normalized_VBN vector_NN space_NN ._.
+Other_JJ co-trending_JJ measures_NNS have_VBP of_IN course_NN been_VBN invented_VBN such_JJ as_IN cointegration_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, mutual_JJ information_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, and_CC matching_JJ pursuit_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Preliminary_JJ indications_NNS are_VBP that_IN techniques_NNS similar_JJ to_TO the_DT ones_NNS we_PRP have_VBP studied_VBN may_MD be_VB used_VBN for_IN those_DT problems_NNS ._.
+The_DT long-term_JJ goal_NN is_VBZ to_TO find_VB fast_RB a_DT
+st_IN Fourier_NN Transforms_VBZ and_CC Wavelet_NNP Transforms_NNPS ._.
+Using_VBG Fourier_NN Transforms_VBZ to_TO compress_VB time_NN series_NN data_NNS was_VBD originally_RB proposed_VBN by_IN Agrawal_NNP et_FW al._FW -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+This_DT technique_NN has_VBZ been_VBN improved_VBN and_CC generalized_VBN by_IN =_JJ -_: =[_NN 35_CD ,_, 30_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Wavelet_NNP Transforms_VBZ -LRB-_-LRB- DWT_NN -RRB-_-RRB- -LRB-_-LRB- 28_CD ,_, 15_CD ,_, 27_CD ,_, 26_CD -RRB-_-RRB- ,_, Singular_JJ Value_NN Decompositions_NNS -LRB-_-LRB- SVD_NN -RRB-_-RRB- -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, and_CC Piecewise_JJ Constant_JJ Approximations_NNS -LRB-_-LRB- 36_CD ,_, 24_CD ,_, 23_CD ,_, 22_CD -RRB-_-RRB- have_VBP also_RB been_VBN proposed_VBN for_IN similarity_NN search_NN ._.
+Keogh_NNP has_VBZ p_NN
+s_NN onto_IN the_DT random_JJ vectors_NNS -RRB-_-RRB- ._.
+Then_RB the_DT guarantees_NNS given_VBN by_IN the_DT JohnsonLindenstrauss_NNP lemma_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- hold_NN ._.
+In_IN time_NN series_NN data_NNS mining_NN ,_, sketch-based_JJ approaches_NNS have_VBP been_VBN used_VBN to_TO identify_VB representative_JJ trends_NNS =_JJ -_: =[_NN 18_CD ,_, 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, maintain_VB histograms_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, and_CC to_TO compute_VB approximate_JJ wavelet_NN coefficients_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, for_IN example_NN ._.
+4_LS ._.
+CONTRIBUTIONS_NNS OF_IN THIS_NNP PAPER_NNP Previous_JJ work_NN -LRB-_-LRB- 14_CD ,_, 10_CD -RRB-_-RRB- showed_VBD how_WRB to_TO solve_VB the_DT windowed_JJ correlation_NN proble_NN
+s_NN closely_RB related_JJ to_TO Euclidean_JJ distance_NN over_IN a_DT normalized_VBN vector_NN space_NN ._.
+Other_JJ co-trending_JJ measures_NNS have_VBP of_IN course_NN been_VBN invented_VBN such_JJ as_IN cointegration_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, mutual_JJ information_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, and_CC matching_JJ pursuit_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Preliminary_JJ indications_NNS are_VBP that_IN techniques_NNS similar_JJ to_TO the_DT ones_NNS we_PRP have_VBP studied_VBN may_MD be_VB used_VBN for_IN those_DT problems_NNS ._.
+The_DT long-term_JJ goal_NN is_VBZ to_TO find_VB fast_JJ algorithms_NNS for_IN data-rich_JJ co-trending_JJ problems_NNS ._.
+The_DT
+e_LS series_NN :_: the_DT discovery_NN of_IN time_NN series_NN windows_NNS having_VBG high_JJ Pearson_NNP correlations_NNS ._.
+We_PRP call_VBP this_DT problem_NN windowed_VBD correlation_NN ._.
+In_IN contrast_NN to_TO the_DT considerable_JJ recent_JJ body_NN of_IN work_NN on_IN massive_JJ data_NNS streams_NNS =_JJ -_: =[_NN 31_CD ,_, 32_CD ,_, 33_CD -RRB-_-RRB- -_: =_SYM -_: where_WRB the_DT assumption_NN is_VBZ that_IN data_NNS can_MD be_VB read_VBN once_RB and_CC is_VBZ not_RB stored_VBN ,_, we_PRP assume_VBP an_DT initial_JJ filtering_VBG step_NN must_MD be_VB completed_VBN in_IN one_CD pass_NN ,_, but_CC a_DT second_JJ pass_NN may_MD search_VB for_IN data_NNS in_IN a_DT well-organized_JJ and_CC
+ta_NN over_IN the_DT first_JJ month_NN ._.
+Will_MD those_DT settings_NNS still_RB work_VBP well_RB for_IN a_DT later_JJ month_NN ?_.
+Without_IN further_JJ assumptions_NNS we_PRP can_MD not_RB answer_VB this_DT ,_, but_CC we_PRP can_MD estimate_VB out-of-sample_JJ variability_NN by_IN using_VBG bootstrapping_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT goal_NN of_IN bootstrapping_NN is_VBZ to_TO test_VB the_DT robustness_NN of_IN a_DT conclusion_NN on_IN a_DT sample_NN data_NN set_VBN by_IN creating_VBG new_JJ samples_NNS from_IN the_DT initial_JJ sample_NN with_IN replacement_NN ._.
+In_IN our_PRP$ case_NN ,_, the_DT conclusion_NN to_TO test_NN is_VBZ whet_VB
+cations_NNS -LRB-_-LRB- e.g._FW ,_, to_TO aim_VB a_DT telescope_NN at_IN an_DT activity_NN of_IN interest_NN or_CC to_TO perform_VB a_DT stock_NN trade_NN -RRB-_-RRB- ._.
+These_DT three_CD factors_NNS --_: data_NNS size_NN ,_, windowed_JJ correlation_NN ,_, and_CC fast_JJ response_NN --_: motivate_VBP this_DT work_NN ._.
+Previous_JJ work_NN =_JJ -_: =[_NN 10_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: showed_VBD how_WRB to_TO compute_VB Pearson_NNP correlation_NN using_VBG Fast_JJ Fourier_NN Transforms_VBZ and_CC Wavelet_NNP transforms_VBZ ,_, but_CC such_JJ techniques_NNS do_VBP n't_RB work_VB for_IN time_NN series_NN in_IN which_WDT the_DT energy_NN is_VBZ spread_VBN over_IN many_JJ frequency_NN compon_NN
+Stock_NN n_NN Basic_JJ window_NN Time_NN axis_NN Sliding_VBG window_NN ..._: ..._: Time_NNP Point_NNP Figure_NNP 1_CD :_: Sliding_VBG windows_NNS and_CC basic_JJ windows_NNS ._.
+dimensionality_NN ''_'' by_IN using_VBG groups_NNS of_IN sketches_NNS and_CC combining_VBG the_DT results_NNS as_IN in_IN the_DT scheme_NN due_JJ to_TO =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+3_LS ._.
+There_EX are_VBP four_CD parameters_NNS to_TO be_VB set_VBN -LRB-_-LRB- two_CD of_IN which_WDT we_PRP introduce_VBP later_RB -RRB-_-RRB- ._.
+Optimizing_VBG these_DT parameters_NNS to_TO achieve_VB good_JJ recall_NN and_CC precision_NN requires_VBZ a_DT search_NN through_IN a_DT large_JJ parameter_NN space_NN ._.
+For_IN this_DT
+of_IN information_NN using_VBG data_NN reduction_NN techniques_NNS such_JJ as_IN Fast_JJ Fourier_NN Transforms_VBZ and_CC Wavelet_NNP Transforms_NNPS ._.
+Using_VBG Fourier_NN Transforms_VBZ to_TO compress_VB time_NN series_NN data_NNS was_VBD originally_RB proposed_VBN by_IN Agrawal_NNP et_FW al._FW =_SYM -_: =[_NN 34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT technique_NN has_VBZ been_VBN improved_VBN and_CC generalized_VBN by_IN -LRB-_-LRB- 35_CD ,_, 30_CD ,_, 29_CD -RRB-_-RRB- ._.
+Wavelet_NNP Transforms_VBZ -LRB-_-LRB- DWT_NN -RRB-_-RRB- -LRB-_-LRB- 28_CD ,_, 15_CD ,_, 27_CD ,_, 26_CD -RRB-_-RRB- ,_, Singular_JJ Value_NN Decompositions_NNS -LRB-_-LRB- SVD_NN -RRB-_-RRB- -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, and_CC Piecewise_JJ Constant_JJ Approximations_NNS -LRB-_-LRB- 36_CD ,_, 24_CD ,_,
+forms_NNS ._.
+Using_VBG Fourier_NN Transforms_VBZ to_TO compress_VB time_NN series_NN data_NNS was_VBD originally_RB proposed_VBN by_IN Agrawal_NNP et_FW al._FW -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+This_DT technique_NN has_VBZ been_VBN improved_VBN and_CC generalized_VBN by_IN -LRB-_-LRB- 35_CD ,_, 30_CD ,_, 29_CD -RRB-_-RRB- ._.
+Wavelet_NNP Transforms_VBZ -LRB-_-LRB- DWT_NN -RRB-_-RRB- =_JJ -_: =[_NN 28_CD ,_, 15_CD ,_, 27_CD ,_, 26_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Singular_JJ Value_NN Decompositions_NNS -LRB-_-LRB- SVD_NN -RRB-_-RRB- -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, and_CC Piecewise_JJ Constant_JJ Approximations_NNS -LRB-_-LRB- 36_CD ,_, 24_CD ,_, 23_CD ,_, 22_CD -RRB-_-RRB- have_VBP also_RB been_VBN proposed_VBN for_IN similarity_NN search_NN ._.
+Keogh_NNP has_VBZ pioneered_VBN many_JJ of_IN the_DT recent_JJ ideas_NNS in_IN the_DT in_IN
+al._FW -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+This_DT technique_NN has_VBZ been_VBN improved_VBN and_CC generalized_VBN by_IN -LRB-_-LRB- 35_CD ,_, 30_CD ,_, 29_CD -RRB-_-RRB- ._.
+Wavelet_NNP Transforms_VBZ -LRB-_-LRB- DWT_NN -RRB-_-RRB- -LRB-_-LRB- 28_CD ,_, 15_CD ,_, 27_CD ,_, 26_CD -RRB-_-RRB- ,_, Singular_JJ Value_NN Decompositions_NNS -LRB-_-LRB- SVD_NN -RRB-_-RRB- -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, and_CC Piecewise_JJ Constant_JJ Approximations_NNS =_JJ -_: =[_NN 36_CD ,_, 24_CD ,_, 23_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP also_RB been_VBN proposed_VBN for_IN similarity_NN search_NN ._.
+Keogh_NNP has_VBZ pioneered_VBN many_JJ of_IN the_DT recent_JJ ideas_NNS in_IN the_DT indexing_NN of_IN dynamic_JJ time_NN warping_NN databases_NNS -LRB-_-LRB- 21_CD ,_, 20_CD -RRB-_-RRB- ._.
+The_DT performance_NN of_IN these_DT techniques_NNS varies_VBZ depe_NN
+e_LS of_IN these_DT techniques_NNS varies_VBZ depending_VBG on_IN the_DT characteristics_NNS of_IN the_DT datasets_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+•_NNP Category_NNP 2_CD -LRB-_-LRB- ``_`` uncooperative_JJ ''_'' -RRB-_-RRB- :_: In_IN the_DT general_JJ case_NN ,_, such_JJ regularities_NNS are_VBP absent_JJ ._.
+However_RB ,_, sketch-based_JJ approaches_NNS =_JJ -_: =[_NN 11_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: can_MD still_RB give_VB a_DT substantial_JJ data_NN reduction_NN ._.
+These_DT are_VBP based_VBN on_IN the_DT idea_NN of_IN taking_VBG the_DT inner_JJ product_NN of_IN each_DT time_NN series_NN window_NN ,_, considered_VBN as_IN a_DT vector_NN ,_, with_IN a_DT set_NN of_IN random_JJ vectors_NNS -LRB-_-LRB- or_CC equivalently_RB ,_,
+cations_NNS -LRB-_-LRB- e.g._FW ,_, to_TO aim_VB a_DT telescope_NN at_IN an_DT activity_NN of_IN interest_NN or_CC to_TO perform_VB a_DT stock_NN trade_NN -RRB-_-RRB- ._.
+These_DT three_CD factors_NNS --_: data_NNS size_NN ,_, windowed_JJ correlation_NN ,_, and_CC fast_JJ response_NN --_: motivate_VBP this_DT work_NN ._.
+Previous_JJ work_NN =_JJ -_: =[_NN 10_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: showed_VBD how_WRB to_TO compute_VB Pearson_NNP correlation_NN using_VBG Fast_JJ Fourier_NN Transforms_VBZ and_CC Wavelet_NNP transforms_VBZ ,_, but_CC such_JJ techniques_NNS do_VBP n't_RB work_VB for_IN time_NN series_NN in_IN which_WDT the_DT energy_NN is_VBZ spread_VBN over_IN many_JJ frequency_NN compon_NN
+pproach_NN ._.
+Using_VBG combinatorial_JJ design_NN gave_VBD the_DT same_JJ recall_NN as_IN exhaustive_JJ search_NN and_CC a_DT precision_NN at_IN least_JJS 86_CD %_NN as_RB good_JJ as_IN exhaustive_JJ search_NN across_IN the_DT variety_NN of_IN data_NNS sets_NNS from_IN the_DT UC_NN Riverside_NNP collection_NN =_JJ -_: =[_NN 4_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+5.5_CD Bootstrapping_NN To_TO Determine_VB Parameter_NNP Robustness_NNP Optimizing_NNP parameter_NN settings_NNS for_IN one_CD data_NN sample_NN may_MD not_RB yield_VB good_JJ parameter_NN settings_NNS for_IN others_NNS ._.
+For_IN example_NN ,_, suppose_VBP that_IN we_PRP find_VBP the_DT optimal_JJ
+forms_NNS ._.
+Using_VBG Fourier_NN Transforms_VBZ to_TO compress_VB time_NN series_NN data_NNS was_VBD originally_RB proposed_VBN by_IN Agrawal_NNP et_FW al._FW -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+This_DT technique_NN has_VBZ been_VBN improved_VBN and_CC generalized_VBN by_IN -LRB-_-LRB- 35_CD ,_, 30_CD ,_, 29_CD -RRB-_-RRB- ._.
+Wavelet_NNP Transforms_VBZ -LRB-_-LRB- DWT_NN -RRB-_-RRB- =_JJ -_: =[_NN 28_CD ,_, 15_CD ,_, 27_CD ,_, 26_CD -RRB-_-RRB- -_: =_JJ -_: ,_, Singular_JJ Value_NN Decompositions_NNS -LRB-_-LRB- SVD_NN -RRB-_-RRB- -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, and_CC Piecewise_JJ Constant_JJ Approximations_NNS -LRB-_-LRB- 36_CD ,_, 24_CD ,_, 23_CD ,_, 22_CD -RRB-_-RRB- have_VBP also_RB been_VBN proposed_VBN for_IN similarity_NN search_NN ._.
+Keogh_NNP has_VBZ pioneered_VBN many_JJ of_IN the_DT recent_JJ ideas_NNS in_IN the_DT in_IN
+uld_NN like_IN to_TO avoid_VB testing_VBG all_DT possible_JJ settings_NNS -LRB-_-LRB- 2,080_CD in_IN this_DT example_NN -RRB-_-RRB- ._.
+Instead_RB ,_, we_PRP use_VBP combinatorial_JJ design_NN ._.
+Combinatorial_JJ design_NN is_VBZ effectively_RB a_DT disciplined_JJ sampling_NN approach_NN with_IN some_DT guarantees_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT key_JJ idea_NN of_IN n-factor_NN terchangeably_RB because_IN one_PRP can_MD be_VB computed_VBN from_IN the_DT other_JJ once_IN the_DT data_NN is_VBZ normalized_VBN ._.
+Specifically_RB ,_, Pearson_NNP correlation_NN is_VBZ related_JJ to_TO Euclidean_JJ distance_NN as_IN follows_VBZ :_: D_NN 2_CD -LRB-_-LRB- ˆx_NN ,_,
+al._FW -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+This_DT technique_NN has_VBZ been_VBN improved_VBN and_CC generalized_VBN by_IN -LRB-_-LRB- 35_CD ,_, 30_CD ,_, 29_CD -RRB-_-RRB- ._.
+Wavelet_NNP Transforms_VBZ -LRB-_-LRB- DWT_NN -RRB-_-RRB- -LRB-_-LRB- 28_CD ,_, 15_CD ,_, 27_CD ,_, 26_CD -RRB-_-RRB- ,_, Singular_JJ Value_NN Decompositions_NNS -LRB-_-LRB- SVD_NN -RRB-_-RRB- -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, and_CC Piecewise_JJ Constant_JJ Approximations_NNS =_JJ -_: =[_NN 36_CD ,_, 24_CD ,_, 23_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP also_RB been_VBN proposed_VBN for_IN similarity_NN search_NN ._.
+Keogh_NNP has_VBZ pioneered_VBN many_JJ of_IN the_DT recent_JJ ideas_NNS in_IN the_DT indexing_NN of_IN dynamic_JJ time_NN warping_NN databases_NNS -LRB-_-LRB- 21_CD ,_, 20_CD -RRB-_-RRB- ._.
+The_DT performance_NN of_IN these_DT techniques_NNS varies_VBZ depe_NN
+st_IN Fourier_NN Transforms_VBZ and_CC Wavelet_NNP Transforms_NNPS ._.
+Using_VBG Fourier_NN Transforms_VBZ to_TO compress_VB time_NN series_NN data_NNS was_VBD originally_RB proposed_VBN by_IN Agrawal_NNP et_FW al._FW -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+This_DT technique_NN has_VBZ been_VBN improved_VBN and_CC generalized_VBN by_IN =_JJ -_: =[_NN 35_CD ,_, 30_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Wavelet_NNP Transforms_VBZ -LRB-_-LRB- DWT_NN -RRB-_-RRB- -LRB-_-LRB- 28_CD ,_, 15_CD ,_, 27_CD ,_, 26_CD -RRB-_-RRB- ,_, Singular_JJ Value_NN Decompositions_NNS -LRB-_-LRB- SVD_NN -RRB-_-RRB- -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, and_CC Piecewise_JJ Constant_JJ Approximations_NNS -LRB-_-LRB- 36_CD ,_, 24_CD ,_, 23_CD ,_, 22_CD -RRB-_-RRB- have_VBP also_RB been_VBN proposed_VBN for_IN similarity_NN search_NN ._.
+Keogh_NNP has_VBZ p_NN
+earson_NN correlation_NN which_WDT is_VBZ closely_RB related_JJ to_TO Euclidean_JJ distance_NN over_IN a_DT normalized_VBN vector_NN space_NN ._.
+Other_JJ co-trending_JJ measures_NNS have_VBP of_IN course_NN been_VBN invented_VBN such_JJ as_IN cointegration_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, mutual_JJ information_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC matching_JJ pursuit_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Preliminary_JJ indications_NNS are_VBP that_IN techniques_NNS similar_JJ to_TO the_DT ones_NNS we_PRP have_VBP studied_VBN may_MD be_VB used_VBN for_IN those_DT problems_NNS ._.
+The_DT long-term_JJ goal_NN is_VBZ to_TO find_VB fast_JJ algorithms_NNS for_IN data-rich_JJ
+-RRB-_-RRB- ,_, and_CC Piecewise_JJ Constant_JJ Approximations_NNS -LRB-_-LRB- 36_CD ,_, 24_CD ,_, 23_CD ,_, 22_CD -RRB-_-RRB- have_VBP also_RB been_VBN proposed_VBN for_IN similarity_NN search_NN ._.
+Keogh_NNP has_VBZ pioneered_VBN many_JJ of_IN the_DT recent_JJ ideas_NNS in_IN the_DT indexing_NN of_IN dynamic_JJ time_NN warping_VBG databases_NNS =_JJ -_: =[_NN 21_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT performance_NN of_IN these_DT techniques_NNS varies_VBZ depending_VBG on_IN the_DT characteristics_NNS of_IN the_DT datasets_NNS -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+•_NNP Category_NNP 2_CD -LRB-_-LRB- ``_`` uncooperative_JJ ''_'' -RRB-_-RRB- :_: In_IN the_DT general_JJ case_NN ,_, such_JJ regularities_NNS are_VBP absent_JJ ._.
+However_RB ,_, sketch-b_NN
+al._FW -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+This_DT technique_NN has_VBZ been_VBN improved_VBN and_CC generalized_VBN by_IN -LRB-_-LRB- 35_CD ,_, 30_CD ,_, 29_CD -RRB-_-RRB- ._.
+Wavelet_NNP Transforms_VBZ -LRB-_-LRB- DWT_NN -RRB-_-RRB- -LRB-_-LRB- 28_CD ,_, 15_CD ,_, 27_CD ,_, 26_CD -RRB-_-RRB- ,_, Singular_JJ Value_NN Decompositions_NNS -LRB-_-LRB- SVD_NN -RRB-_-RRB- -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, and_CC Piecewise_JJ Constant_JJ Approximations_NNS =_JJ -_: =[_NN 36_CD ,_, 24_CD ,_, 23_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP also_RB been_VBN proposed_VBN for_IN similarity_NN search_NN ._.
+Keogh_NNP has_VBZ pioneered_VBN many_JJ of_IN the_DT recent_JJ ideas_NNS in_IN the_DT indexing_NN of_IN dynamic_JJ time_NN warping_NN databases_NNS -LRB-_-LRB- 21_CD ,_, 20_CD -RRB-_-RRB- ._.
+The_DT performance_NN of_IN these_DT techniques_NNS varies_VBZ depe_NN
+f_LS random_JJ vectors_NNS -LRB-_-LRB- or_CC equivalently_RB ,_, this_DT can_MD be_VB regarded_VBN as_IN a_DT collection_NN of_IN projections_NNS of_IN the_DT time_NN series_NN windows_NNS onto_IN the_DT random_JJ vectors_NNS -RRB-_-RRB- ._.
+Then_RB the_DT guarantees_NNS given_VBN by_IN the_DT JohnsonLindenstrauss_NNP lemma_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_JJ -_: hold_NN ._.
+In_IN time_NN series_NN data_NNS mining_NN ,_, sketch-based_JJ approaches_NNS have_VBP been_VBN used_VBN to_TO identify_VB representative_JJ trends_NNS -LRB-_-LRB- 18_CD ,_, 17_CD -RRB-_-RRB- ,_, maintain_VBP histograms_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, and_CC to_TO compute_VB approximate_JJ wavelet_NN coefficients_NNS -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, fo_NN

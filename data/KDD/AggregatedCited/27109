@@ -1,0 +1,526 @@
+Co-clustering_JJ documents_NNS and_CC words_NNS using_VBG bipartite_JJ spectral_JJ graph_NN partitioning_VBG
+Both_CC document_NN clustering_NN and_CC word_NN clustering_NN are_VBP well_RB studied_VBN problems_NNS ._.
+Most_JJS existing_VBG algorithms_NNS cluster_VBP documents_NNS and_CC words_NNS separately_RB but_CC not_RB simultaneously_RB ._.
+In_IN this_DT paper_NN we_PRP present_VBP the_DT novel_JJ idea_NN of_IN modeling_NN the_DT document_NN collection_NN as_IN a_DT bipartite_JJ graph_NN between_IN documents_NNS and_CC words_NNS ,_, using_VBG which_WDT the_DT simultaneous_JJ clustering_NN problem_NN can_MD be_VB posed_VBN as_IN a_DT bipartite_JJ graph_NN partitioning_VBG problem_NN ._.
+To_TO solve_VB the_DT partitioning_VBG problem_NN ,_, we_PRP use_VBP a_DT new_JJ spectral_JJ co-clustering_JJ algorithm_NN that_WDT uses_VBZ the_DT second_JJ left_NN and_CC right_JJ singular_JJ vectors_NNS of_IN an_DT appropriately_RB scaled_VBN word-document_JJ matrix_NN to_TO yield_VB good_JJ bipartitionings_NNS ._.
+The_DT spectral_JJ algorithm_NN enjoys_VBZ some_DT optimality_NN properties_NNS ;_: it_PRP can_MD be_VB shown_VBN that_IN the_DT singular_JJ vectors_NNS solve_VBP a_DT real_JJ relaxation_NN to_TO the_DT NP-complete_JJ graph_NN bipartitioning_VBG problem_NN ._.
+We_PRP present_VBP experimental_JJ results_NNS to_TO verify_VB that_IN the_DT resulting_VBG co-clustering_NN algorithm_NN works_VBZ well_RB in_IN practice_NN ._.
+each_DT of_IN which_WDT contains_VBZ a_DT set_NN of_IN resources_NNS together_RB with_IN a_DT set_NN of_IN tags_NNS ._.
+Co-clustering_NN is_VBZ proposed_VBN as_IN a_DT more_RBR suitable_JJ approach_NN ,_, which_WDT has_VBZ been_VBN used_VBN in_IN grouping_VBG together_RB elements_NNS from_IN different_JJ datasets_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+In_IN our_PRP$ case_NN ,_, coclustering_NN will_MD be_VB used_VBN to_TO relate_VB tags_NNS and_CC social_JJ data_NNS sources_NNS ._.
+The_DT proposed_VBN method_NN has_VBZ a_DT number_NN of_IN potential_JJ applications_NNS ._.
+Two_CD are_VBP quoted_VBN indicatively_RB :_: •_FW Ontology_FW enrichment_FW usi_FW
+ferent_JJ types_NNS of_IN data_NNS simultaneously_RB by_IN making_VBG use_NN of_IN the_DT dual_JJ relationship_NN information_NN such_JJ as_IN the_DT word-document_JJ matrix_NN ._.
+For_IN instance_NN ,_, bipartite_JJ spectral_JJ graph_NN partitioning_VBG approaches_NNS are_VBP proposed_VBN in_IN =_JJ -_: =[_NN 8_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: to_TO co-cluster_JJ words_NNS and_CC documents_NNS ._.
+Cho_NNP et_NNP al_NNP -LRB-_-LRB- 5_CD -RRB-_-RRB- proposed_VBN algorithms_NNS to_TO cocluster_VB the_DT experimental_JJ conditions_NNS and_CC genes_NNS of_IN microarray_NN data_NNS by_IN minimizing_VBG the_DT sum-squared_JJ residue_NN ._.
+Long_NNP et_FW al._FW -LRB-_-LRB- 20_CD -RRB-_-RRB- prop_VBP
+4_CD ,_, 28_CD ,_, 32_CD -RRB-_-RRB- ._.
+Dhillon_NNP expressed_VBD the_DT co-clustering_JJ problem_NN in_IN the_DT framework_NN of_IN spectral_JJ clustering_NN by_IN considering_VBG bipartite_JJ graph_NN structures_NNS where_WRB edge_NN strengths_NNS are_VBP computed_VBN from_IN co-occurrence_JJ matrices_NNS =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+More_RBR recently_RB ,_, this_DT has_VBZ been_VBN extended_VBN from_IN bipartite_JJ graphs_NNS to_TO multipartite_JJ graphs_NNS in_IN order_NN to_TO include_VB additional_JJ modalities_NNS and_CC has_VBZ been_VBN applied_VBN to_TO image_NN and_CC text_NN data_NNS -LRB-_-LRB- 13_CD ,_, 25_CD -RRB-_-RRB- ._.
+Alternatively_RB ,_, one_CD
+problem_NN by_IN employing_VBG a_DT singular_JJ value_NN decomposition_NN -LRB-_-LRB- SVD_NN -RRB-_-RRB- based_JJ initialization_NN approach_NN ._.
+The_DT basic_JJ idea_NN is_VBZ to_TO first_RB apply_VB the_DT rank-k_NN singular_JJ value_NN decomposition_NN -LRB-_-LRB- SVD_NN -RRB-_-RRB- on_IN A_NN for_IN spectral_JJ co-clustering_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP then_RB project_VBP the_DT rows_NNS onto_IN the_DT resulting_VBG k-dimensional_JJ subspace_NN spanned_VBN by_IN the_DT top_JJ k_NN -LRB-_-LRB- rows_NNS or_CC columns_NNS -RRB-_-RRB- principal_JJ components_NNS ,_, and_CC perform_VB k-mean_NN clustering_NN to_TO obtain_VB an_DT initial_JJ clustering_NN of_IN insid_NN
+are_VBP presented_VBN :_: -LRB-_-LRB- i_LS -RRB-_-RRB- the_DT k-means_NN algorithm_NN ,_, which_WDT looks_VBZ for_IN the_DT appropriate_JJ k_NN centers_NNS -LRB-_-LRB- i.e._FW ,_, news_NN documents_NNS -RRB-_-RRB- to_TO group_NN data_NNS according_VBG to_TO a_DT predetermined_JJ k_NN number_NN of_IN clusters_NNS ,_, -LRB-_-LRB- ii_LS -RRB-_-RRB- the_DT Spherical_JJ k-means_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT models_NNS a_DT document_NN collection_NN as_IN a_DT bipartite_JJ graph_NN that_WDT is_VBZ used_VBN by_IN a_DT spectral_JJ algorithm_NN for_IN clustering_NN documents_NNS and_CC words_NNS simultaneously_RB ,_, -LRB-_-LRB- iii_LS -RRB-_-RRB- the_DT Gaussian_NNP Mixture_NNP Model_NNP -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, which_WDT establish_VBP
+clustering_NN that_WDT arises_VBZ from_IN multiple_JJ clustering_NN results_NNS ._.
+We_PRP reduce_VBP the_DT problem_NN of_IN defining_VBG a_DT consensus_NN function_NN to_TO a_DT graph_NN partitioning_VBG problem_NN ._.
+This_DT approach_NN has_VBZ shown_VBN good_JJ results_NNS in_IN the_DT literature_NN =_JJ -_: =[_NN 4_CD ,_, 15_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Moreover_RB ,_, the_DT weighted_JJ clusters_NNS computed_VBN by_IN the_DT LAC_NN algorithm_NN offer_VBP a_DT natural_JJ way_NN to_TO define_VB a_DT similarity_NN measure_NN to_TO be_VB integrated_VBN in_IN the_DT weights_NNS associated_VBN to_TO the_DT edges_NNS of_IN a_DT graph_NN ._.
+The_DT overall_JJ clust_NN
+ata_NN based_VBN on_IN high-dimensional_JJ linear_JJ geometries_NNS is_VBZ described_VBN in_IN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+SVD_NNP based_VBN methods_NNS has_VBZ also_RB been_VBN used_VBN in_IN order_NN to_TO obtain_VB biclusters_NNS in_IN gene_NN expression_NN data_NNS and_CC also_RB in_IN many_JJ potential_JJ applications_NNS =_JJ -_: =[_NN 5_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Applying_VBG SVD_NN directly_RB on_IN the_DT data_NNS may_MD obtain_VB biclusters_NNS ,_, but_CC obtaining_VBG efficient_JJ biclusters_NNS on_IN data_NNS is_VBZ still_RB a_DT challenging_JJ problem_NN ._.
+Hence_RB in_IN this_DT paper_NN we_PRP propose_VBP modular_JJ SVD_NNP based_VBN method_NN for_IN biclus_NN
+s_VBZ the_DT number_NN of_IN desired_VBN clusters_NNS ._. -RRB-_-RRB-
+Because_IN of_IN its_PRP$ effectiveness_NN in_IN finding_VBG clusters_NNS ,_, spectral_JJ clustering_NN has_VBZ been_VBN widely_RB used_VBN in_IN several_JJ areas_NNS such_JJ as_IN information_NN retrieval_NN and_CC computer_NN vision_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 49_CD -RRB-_-RRB- -LRB-_-LRB- 35_CD -RRB-_-RRB- -LRB-_-LRB- 50_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Unfortunately_RB ,_, when_WRB the_DT number_NN of_IN data_NNS instances_NNS -LRB-_-LRB- denoted_VBN as_IN n_NN -RRB-_-RRB- is_VBZ large_JJ ,_, spectral_JJ clustering_NN can_MD encounter_VB a_DT quadratic_JJ resource_NN bottleneck_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- -LRB-_-LRB- 25_CD -RRB-_-RRB- in_IN computing_VBG pairwise_JJ similarity_NN
+kint_NN from_IN the_DT singular_JJ values_NNS ._.
+The_DT relation_NN was_VBD originally_RB developed_VBN for_IN array_NN signal_NN processing_NN using_VBG minimum_NN description_NN length_NN principle_NN ._.
+Using_VBG a_DT spherical_JJ K-means_NN method_NN for_IN clustering_NN documents_NNS -LRB-_-LRB- =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =--RRB-_NN leads_VBZ to_TO the_DT concept_NN vectors_NNS -LRB-_-LRB- centroids_NNS of_IN each_DT clusters_NNS -RRB-_-RRB- ,_, which_WDT are_VBP compared_VBN to_TO LSI_NNP vectors_NNS ._.
+The_DT subspace_NN spanned_VBN by_IN the_DT concept_NN vectors_NNS are_VBP close_JJ to_TO the_DT LSI_NNP subspace_NN ._.
+This_DT method_NN is_VBZ further_JJ develo_NN
+a_DT 6.4_CD %_NN gain_NN for_IN precision_NN at_IN 5_CD -LRB-_-LRB- P@5_NN -RRB-_-RRB- ,_, and_CC a_DT 4.8_CD %_NN gain_NN for_IN precision_NN at_IN 10_CD -LRB-_-LRB- P@10_NN -RRB-_-RRB- based_VBN on_IN the_DT standard_JJ test_NN set_NN of_IN TREC_NN 8_CD ._.
+For_IN other_JJ work_NN on_IN graph-based_JJ information_NN retrieval_NN ,_, readers_NNS are_VBP directed_VBN to_TO =_JJ -_: =[_NN 10,11,12,13,14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Our_PRP$ research_NN differs_VBZ from_IN prior_JJ work_NN in_IN that_DT our_PRP$ query-independent_JJ document_NN score_NN is_VBZ not_RB graph-based_JJ ._.
+Instead_RB ,_, we_PRP assume_VBP that_IN documents_NNS with_IN a_DT narrow_JJ focus_NN are_VBP more_RBR important_JJ than_IN documents_NNS with_IN a_DT b_NN
+process_NN of_IN document_NN classification_NN ,_, the_DT final_JJ classification_NN performance_NN could_MD be_VB greatly_RB improved_VBN ._.
+Based_VBN on_IN the_DT above_JJ considerations_NNS ,_, some_DT researchers_NNS have_VBP proposed_VBN the_DT idea_NN of_IN ``_`` co-clustering_NN ''_'' -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT aims_VBZ at_IN clustering_VBG the_DT interrelated_JJ data_NN points_NNS from_IN different_JJ domains_NNS simultaneously_RB ._.
+Taking_VBG the_DT Spectral_JJ Bipartite_JJ Graph_NN Partitioning_NN -LRB-_-LRB- SBGP_NN -RRB-_-RRB- method_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- as_IN an_DT example_NN ,_, SGBP_NN first_JJ model_NN the_DT da_NN
+led_VBD two-way_JJ clustering_NN -LRB-_-LRB- CTWC_NN -RRB-_-RRB- -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, iterative_JJ signature_NN clustering_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, statistical_JJ algorithmic_JJ method_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, fully_RB automatic_JJ cross-associations_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, METIS_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, GRACLUS_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, and_CC spectral_JJ co-clustering_NN =_JJ -_: =[_NN 8_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN proposed_VBN for_IN gene_NN expression_NN data_NN analysis_NN -LRB-_-LRB- 6_CD ,_, 18_CD ,_, 16_CD -RRB-_-RRB- and_CC text_NN mining_NN ._.
+In_IN this_DT work_NN ,_, we_PRP focus_VBP on_IN spectral_JJ co-clustering_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Spectral_JJ co-clustering_NN techniques_NNS show_VBP that_IN simple_JJ linear_JJ algeb_NN
+r_NN how_WRB the_DT data_NN is_VBZ generated_VBN ._.
+Outliers_NNS may_MD also_RB affect_VB the_DT results_NNS of_IN SVD_NNP ,_, for_IN which_WDT a_DT number_NN of_IN robust_JJ SVD\/PCA_NN methods_NNS have_VBP been_VBN developed_VBN -LRB-_-LRB- see_VB ,_, e.g._FW ,_, -LRB-_-LRB- 4_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+Spectral_JJ co-clustering_NN of_IN bipartite_JJ graphs_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: essentially_RB applies_VBZ SVD_NNP to_TO bipartite_JJ graphs_NNS ._.
+Another_DT approach_NN for_IN co-clustering_NN employs_VBZ non-matrix_JJ factorization_NN techniques_NNS -LRB-_-LRB- see_VB ,_, e.g._FW ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- --_: -LRB-_-LRB- 8_CD -RRB-_-RRB- -RRB-_-RRB- to_TO decompose_VB and_CC cluster_VB co-occurrence_NN data_NNS matrices_NNS ._.
+._.
+Recently_RB ,_, there_EX has_VBZ been_VBN much_JJ interest_NN in_IN using_VBG coclustering_VBG techniques_NNS in_IN the_DT data_NNS clustering_NN community_NN -LRB-_-LRB- 4_CD ,_, 6_CD -RRB-_-RRB- ._.
+Two_CD major_JJ approaches_NNS employing_VBG this_DT idea_NN are_VBP using_VBG spectral_JJ graph_NN based_VBN partitioning_VBG =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: and_CC information_NN theoretic_JJ techniques_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+The_DT spectral_JJ graph_NN formulation_NN imposes_VBZ a_DT one-to-one_JJ association_NN discovery_NN between_IN row_NN and_CC column_NN clusters_NNS ,_, which_WDT is_VBZ too_RB restrictive_JJ ._.
+On_IN the_DT other_JJ hand_NN ,_, infor_NN
+jects_NNS and_CC features_NNS ._.
+This_DT task_NN ,_, often_RB referred_VBN to_TO as_IN coclustering_NN ,_, has_VBZ been_VBN formulated_VBN as_IN the_DT problem_NN of_IN partitioning_VBG a_DT bipartite_JJ graph_NN ,_, where_WRB the_DT two_CD types_NNS of_IN nodes_NNS correspond_VBP to_TO objects_NNS and_CC features_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, to_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, this_DT work_NN has_VBZ been_VBN limited_VBN to_TO static_JJ applications_NNS ,_, where_WRB temporal_JJ information_NN is_VBZ unavailable_JJ or_CC has_VBZ been_VBN disregarded_VBN ._.
+A_DT popular_JJ recent_JJ approach_NN to_TO the_DT problem_NN
+re_VB in_IN the_DT Hamming_NNP space_NN ._.
+We_PRP propose_VBP a_DT novel_JJ algorithm_NN Laplacian_NNP Co-Hashing_NNP -LRB-_-LRB- LCH_NNP -RRB-_-RRB- which_WDT directly_RB optimises_VBZ the_DT Hamming_NNP distance_NN ._.
+Let_NNP 's_POS consider_VB the_DT document_NN collection_NN as_IN an_DT undirected_JJ bipartite_JJ graph_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: :_: the_DT first_JJ m_NN vertices_NNS represent_VBP the_DT terms_NNS while_IN the_DT remaining_VBG n_NN vertices_NNS represent_VBP the_DT documents_NNS ;_: an_DT edge_NN -LRB-_-LRB- i_FW ,_, j_NN -RRB-_-RRB- existsiftermi_NN occurs_VBZ in_IN document_NN j_NN and_CC it_PRP is_VBZ weighted_VBN by_IN Xij_NN ;_: there_EX are_VBP no_DT edges_NNS betwe_VBP
+ng_NN Figure_NNP 1_CD :_: A_DT bipartite_JJ graph_NN example_NN of_IN domain-specific_JJ and_CC domain-independent_JJ features_NNS based_VBN on_IN Table_NNP 4_CD ._.
+ory_NN has_VBZ been_VBN widely_RB applied_VBN in_IN many_JJ problems_NNS ,_, e.g._FW ,_, dimensionality_NN reduction_NN and_CC clustering_NN =_JJ -_: =[_NN 27_CD ,_, 3_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN our_PRP$ case_NN ,_, we_PRP assume_VBP -LRB-_-LRB- 1_LS -RRB-_-RRB- if_IN two_CD domain-specific_JJ features_NNS are_VBP connected_VBN to_TO many_JJ common_JJ domain-independent_JJ features_NNS ,_, then_RB they_PRP tend_VBP to_TO be_VB very_RB related_JJ and_CC will_MD be_VB aligned_VBN to_TO a_DT same_JJ cluster_NN with_IN high_JJ
+algorithm_NN for_IN simultaneously_RB clustering_VBG several_JJ variables_NNS ._.
+Simultaneous_JJ clustering_NN is_VBZ mostly_RB known_VBN for_IN the_DT case_NN of_IN two_CD variables_NNS ,_, where_WRB it_PRP is_VBZ called_VBN two-way_JJ clustering_NN ,_, co-clustering_NN or_CC biclustering_NN =_JJ -_: =[_NN 63_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT advantage_NN of_IN simultaneous_JJ clustering_NN is_VBZ that_IN the_DT clustering_NN of_IN the_DT one_CD variable_NN informs_VBZ about_IN the_DT clustering_NN of_IN the_DT other_JJ ._.
+Simultaneous_JJ clustering_NN therefore_RB shows_VBZ the_DT local_JJ structure_NN of_IN the_DT data_NNS
+cture_NN of_IN the_DT document_NN space_NN but_CC facilitates_VBZ the_DT use_NN of_IN traditional_JJ clustering_NN algorithms_NNS ._.
+Several_JJ methods_NNS for_IN low-dimensional_JJ document_NN projections_NNS have_VBP been_VBN proposed_VBN -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, such_JJ as_IN spectral_JJ clustering_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, clustering_NN using_VBG the_DT Latent_JJ Semantic_NNP Index_NNP -LRB-_-LRB- LSI_NNP -RRB-_-RRB- -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, clustering_NN using_VBG the_DT Locality_NN Preserving_VBG Indexing_NN -LRB-_-LRB- LPI_NN -RRB-_-RRB- -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, and_CC clustering_NN based_VBN on_IN nonnegative_JJ matrix_NN factorization_NN -LRB-_-LRB- 21_CD -RRB-_-RRB- ._.
+Those_DT methods_NNS
+ent_NN -LRB-_-LRB- e.g._FW ,_, the_DT entries_NNS of_IN membership_NN vector_NN are_VBP either_CC 0_CD or_CC 1_CD -RRB-_-RRB- is_VBZ NP-hard_JJ ,_, spectral_JJ clustering_NN relaxes_VBZ the_DT constraint_NN to_TO allow_VB the_DT membership_NN vector_NN to_TO be_VB continuous_JJ ._.
+The_DT initial_JJ work_NN of_IN coclustering_NN =_JJ -_: =[_NN 40_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 17_CD -RRB-_-RRB- tries_VBZ to_TO address_VB the_DT problem_NN of_IN clustering_VBG both_DT words_NNS and_CC documents_NNS simultaneously_RB by_IN taking_VBG advantage_NN of_IN the_DT structure_NN of_IN a_DT bipartite_JJ ._.
+Gao_NNP et_FW al._FW -LRB-_-LRB- 41_CD -RRB-_-RRB- extend_VBP the_DT problem_NN to_TO a_DT star-typed_JJ
+ity_NN ,_, growing_VBG attention_NN is_VBZ being_VBG paid_VBN to_TO graphs_NNS as_IN a_DT new_JJ data_NN structure_NN ._.
+Recent_JJ studies_NNS include_VBP :_: an_DT extension_NN of_IN the_DT a-priori_NN algorithm_NN to_TO graphs_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, clustering_NN graph_NN vertices_NNS based_VBN on_IN graph_NN spectra_NNS =_JJ -_: =[_NN 5_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC anomaly_RB detection_NN from_IN a_DT graph_NN set_NN based_VBN on_IN the_DT maximum_NN description_NN length_NN principle_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+Reference_NNP -LRB-_-LRB- 22_CD -RRB-_-RRB- extensively_RB reviews_VBZ the_DT state_NN of_IN the_DT art_NN of_IN graphbased_JJ data_NNS mining_NN ._.
+Most_JJS of_IN those_DT works_NNS
+problem_NN due_JJ to_TO recently_RB emerging_VBG applications_NNS ._.
+Different_JJ variants_NNS of_IN co-clustering_JJ problems_NNS have_VBP been_VBN posed_VBN in_IN fields_NNS such_JJ as_IN biological_JJ data_NN analysis_NN -LRB-_-LRB- 2_CD ,_, 3_CD ,_, 4_CD -RRB-_-RRB- ,_, data_NNS mining_NN and_CC information_NN retrieval_NN =_JJ -_: =[_NN 5_CD ,_, 6_CD ,_, 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, studies_NNS of_IN social_JJ networks_NNS ,_, and_CC computational_JJ cognitive_JJ science_NN -LRB-_-LRB- 8_CD ,_, 9_CD -RRB-_-RRB- ._.
+These_DT algorithms_NNS aim_VBP to_TO discover_VB distinct_JJ types_NNS of_IN row_NN and_CC column_NN indices_NNS based_VBN on_IN their_PRP$ interaction_NN via_IN the_DT data_NNS points_NNS ._.
+It_PRP h_NN
+in_IN T._NNP To_TO achieve_VB this_DT goal_NN ,_, we_PRP performed_VBD co-clustering_JJ analysis_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- on_IN T._NNP Co-clustering_JJ analysis_NN has_VBZ been_VBN used_VBN to_TO find_VB clusters_NNS in_IN various_JJ tabulated_JJ data_NNS such_JJ as_IN the_DT co-occurrence_NN of_IN documents\/words_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, or_CC the_DT expression_NN of_IN genes_NNS under_IN various_JJ conditions_NNS -LRB-_-LRB- 17_CD ,_, 5_CD ,_, 27_CD -RRB-_-RRB- ,_, by_IN simultaneously_RB grouping_VBG rows_NNS and_CC columns_NNS of_IN the_DT association_NN table_NN ._.
+However_RB ,_, it_PRP has_VBZ rarely_RB been_VBN applied_VBN to_TO interpret_VB associations_NNS b_NN
+Co-clustering_NN -LRB-_-LRB- also_RB referred_VBN to_TO as_IN ``_`` bi-clustering_JJ ''_'' -RRB-_-RRB- is_VBZ a_DT two-way_JJ simultaneous_JJ clustering_NN algorithm_NN ,_, which_WDT has_VBZ already_RB been_VBN employed_VBN in_IN research_NN fields_NNS like_IN bioinformatics_NNS -LRB-_-LRB- 16_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 17_CD -RRB-_-RRB- and_CC text_NN analysis_NN =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_SYM -_: --_: -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, mostly_RB acting_VBG as_IN a_DT tool_NN for_IN generating_VBG co-occurrence_NN statistics_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP show_VBP that_IN co-clustering_NN can_MD also_RB provide_VB a_DT framework_NN to_TO formulate_VB the_DT local_JJ feature_NN grouping_VBG relations_NNS ,_, and_CC ca_MD
+graph_NN whose_WP$ adjacency_NN matrix_NN encodes_VBZ measures_NNS of_IN similarity_NN between_IN data_NNS points_NNS ._.
+Spectral_JJ clustering_NN can_MD be_VB applied_VBN to_TO a_DT document_NN similarity_NN graph_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- or_CC to_TO a_DT bipartite_JJ graph_NN of_IN terms_NNS and_CC documents_NNS =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT advantage_NN of_IN spectral_JJ clustering_NN compared_VBN to_TO other_JJ algorithms_NNS is_VBZ that_IN the_DT solution_NN is_VBZ deterministic_JJ ,_, and_CC it_PRP corresponds_VBZ to_TO the_DT global_JJ minimum_NN of_IN the_DT clustering_NN criterion_NN function_NN ._.
+On_IN the_DT other_JJ h_NN
+atrices_NNS of_IN the_DT data_NNS matrix_NN that_WDT optimize_VBP a_DT desired_VBN objective_NN function_NN ._.
+Sometimes_RB these_DT names_NNS refer_VBP to_TO different_JJ variants_NNS of_IN the_DT biclustering_NN problem_NN :_: for_IN example_NN ,_, the_DT term_NN ``_`` co-clustering_NN ''_'' was_VBD used_VBN in_IN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: to_TO describe_VB the_DT problem_NN of_IN finding_VBG biclusters_NNS that_WDT form_VBP a_DT checkerboard_NN pattern_NN in_IN the_DT data_NNS matrix_NN ._.
+Applications_NNS of_IN biclustering_NN include_VBP :_: finding_VBG groups_NNS of_IN genes_NNS that_WDT display_VBP similar_JJ expression_NN patter_NN
+es_NNS have_VBP been_VBN previously_RB employed_VBN to_TO produce_VB clusterings_NNS -LRB-_-LRB- 36_CD -RRB-_-RRB- ._.
+There_EX has_VBZ been_VBN increasing_VBG use_NN of_IN techniques_NNS based_VBN on_IN graphs_NNS induced_VBN by_IN implicit_JJ relationships_NNS between_IN documents_NNS or_CC other_JJ linguistic_JJ items_NNS =_JJ -_: =[_NN 9_CD ,_, 3_CD ,_, 12_CD ,_, 4_CD ,_, 24_CD ,_, 28_CD ,_, 38_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT work_NN in_IN the_DT domain_NN of_IN text_NN summarization_NN -LRB-_-LRB- 4_CD ,_, 24_CD -RRB-_-RRB- most_JJS resembles_VBZ ours_PRP ,_, in_IN that_IN it_PRP also_RB computes_VBZ centrality_NN on_IN graphs_NNS -LRB-_-LRB- although_IN the_DT nodes_NNS correspond_VBP to_TO sentences_NNS or_CC terms_NNS instead_RB of_IN documents_NNS -RRB-_-RRB- ._.
+Pe_NN
+entially_RB useful_JJ in_IN community_NN detection_NN algorithms_NNS ._.
+However_RB ,_, it_PRP is_VBZ not_RB always_RB clear_JJ how_WRB to_TO integrate_VB these_DT into_IN an_DT unsupervised_JJ learning_NN method_NN ._.
+A_DT closely_RB related_JJ clustering_NN technique_NN is_VBZ co-clustering_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Co-clustering_NN works_VBZ by_IN mapping_VBG an_DT m_NN ×_CD n_NN term_NN document_NN matrix_NN ,_, A_NN into_IN a_DT bipartite_JJ graph_NN ._.
+The_DT adjacency_NN matrix_NN of_IN the_DT bipartite_JJ graph_NN is_VBZ represented_VBN as_IN -LRB-_-LRB- 0_CD C_NN M_NN =_JJ CT_NN -RRB-_-RRB- 0_CD where_WRB Cij_NN =_JJ 1_CD if_IN the_DT word_NN j_NN occ_NN
+ough_JJ interestingness_NN measures_NNS and_CC the_DT inter-dataset_JJ similarity_NN is_VBZ included_VBN through_IN correspondences_NNS in_IN sets_NNS of_IN representatives_NNS ._.
+Co-clustering_NN has_VBZ been_VBN successfully_RB used_VBN for_IN applications_NNS in_IN text_NN mining_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, market-basket_JJ data_NNS analysis_NN ,_, and_CC bioinformatics_NNS -LRB-_-LRB- 5_CD -RRB-_-RRB- ._.
+In_IN general_JJ ,_, the_DT co-clustering_NN clusters_NNS two_CD datasets_NNS with_IN different_JJ schemas_NNS by_IN rearranging_VBG the_DT datasets_NNS ._.
+In_IN brief_NN ,_, datasets_NNS are_VBP represented_VBN as_IN a_DT m_NN
+tial_JJ directions_NNS towards_IN multivariate_JJ clustering_NN started_VBN with_IN the_DT simultaneous_JJ clustering_NN of_IN both_DT rows_NNS and_CC columns_NNS of_IN contingency_NN tables_NNS ,_, also_RB known_VBN as_IN coclustering_NN ,_, biclustering_NN ,_, or_CC block_NN clustering_NN ._.
+=_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT spectral_JJ graph_NN bipartitioning_VBG algorithm_NN that_IN clusters_NNS documents_NNS based_VBN on_IN words_NNS ,_, and_CC words_NNS based_VBN on_IN documents_NNS by_IN finding_VBG the_DT normalized_VBN cut_NN of_IN the_DT bipartite_JJ graph_NN ._.
+The_DT same_JJ problem_NN has_VBZ been_VBN
+the_DT Data_NNP Graph_NNP Summarization_NNP -LRB-_-LRB- or_CC clustering_NN -RRB-_-RRB- of_IN graph-structured_JJ data_NNS has_VBZ been_VBN extensively_RB studied_VBN in_IN the_DT literature_NN -LRB-_-LRB- 15_CD ,_, 10_CD -RRB-_-RRB- ._.
+Graph_NN summarization_NN algorithms_NNS can_MD be_VB classified_VBN into_IN two_CD :_: some_DT -LRB-_-LRB- such_JJ as_IN =_JJ -_: =[_NN 9_CD ,_, 8_CD -RRB-_-RRB- -_: =--RRB-_NN partition_NN the_DT graph_NN by_IN finding_VBG strongly_RB linked_VBN components_NNS and_CC grouping_VBG these_DT nodes_NNS into_IN super-nodes_NNS ._.
+Others_NNS ,_, such_JJ as_IN -LRB-_-LRB- 4_CD ,_, 12_CD -RRB-_-RRB- ,_, find_VB and_CC cluster_VB nodes_NNS that_WDT are_VBP similar_JJ to_TO each_DT other_JJ in_IN terms_NNS of_IN their_PRP$
+ly_RB ,_, biclustering_NN -LRB-_-LRB- also_RB known_VBN as_IN co-clustering_NN ,_, two-sided_JJ clustering_NN ,_, two-way_JJ clustering_NN -RRB-_-RRB- has_VBZ been_VBN exploited_VBN by_IN many_JJ researchers_NNS in_IN diverse_JJ scientific_JJ fields_NNS ,_, towards_IN the_DT discovery_NN of_IN useful_JJ knowledge_NN =_JJ -_: =[_NN 2,4,5,14,19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One_CD of_IN these_DT fields_NNS is_VBZ bioinformatics_NNS ,_, and_CC more_RBR specifically_RB ,_, microarray_NN data_NN analysis_NN ._.
+The_DT results_NNS of_IN each_DT microarray_NN experiment_NN are_VBP represented_VBN as_IN a_DT data_NN matrix_NN ,_, with_IN different_JJ samples_NNS as_IN rows_NNS and_CC
+xpression_NN analysis_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+Bipartite_JJ Spectral_JJ partitioning_NN is_VBZ a_DT powerful_JJ technique_NN to_TO achieve_VB biclustering_NN ._.
+Normalized_VBN cut_NN is_VBZ the_DT most_RBS popular_JJ objective_NN function_NN for_IN spectral_JJ partitioning_NN problem_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT absence_NN of_IN a_DT polynomial_JJ time_NN exact_JJ solution_NN for_IN this_DT problem_NN ,_, emphasis_NN is_VBZ on_IN finding_VBG efficient_JJ heuristics_NNS ._.
+A_DT popular_JJ implementation_NN -LRB-_-LRB- 12_CD -RRB-_-RRB- requires_VBZ computation_NN of_IN the_DT Fiedler_NNP vector_NN for_IN Laplaci_NNP
+nown_RB as_RB co-clustering_JJ ,_, two-sided_JJ clustering_NN ,_, two-way_JJ clustering_NN -RRB-_-RRB- has_VBZ been_VBN exploited_VBN by_IN many_JJ researchers_NNS in_IN diverse_JJ scientific_JJ fields_NNS ,_, towards_IN the_DT discovery_NN of_IN useful_JJ knowledge_NN -LRB-_-LRB- Cheng_NNP and_CC Church_NNP 2000_CD ;_: =_JJ -_: =_JJ Dhillon_NNP 2001_CD -_: =_JJ -_: ;_: Dhillon_NNP and_CC Mallela_NNP 2003_CD ;_: Long_NNP et_FW al._FW 2005_CD ;_: Murali_NNP and_CC Kasif_NNP 2003_CD -RRB-_-RRB- ._.
+One_CD of_IN these_DT fields_NNS is_VBZ bioinformatics_NNS ,_, and_CC more_RBR specifically_RB ,_, microarray_NN data_NN analysis_NN ._.
+The_DT results_NNS of_IN each_DT microarray_NN experiment_NN
+n_NN in_IN data_NN mining_NN context_NN ._.
+The_DT earliest_JJS co-clustering_NN formulation_NN called_VBN Direct_NNP clustering_NN has_VBZ been_VBN introduced_VBN by_IN Hartigan_NNP -LRB-_-LRB- 30_CD -RRB-_-RRB- ,_, who_WP proposes_VBZ a_DT greedy_JJ algorithm_NN for_IN hierarchical_JJ co-clustering_NN ._.
+Dhillon_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: developed_VBD a_DT spectral_JJ co-clustering_JJ algorithm_NN on_IN worddocument_NN data_NNS ,_, the_DT largest_JJS several_JJ left_JJ and_CC right_JJ singular_JJ vectors_NNS of_IN the_DT normalized_VBN word-document_NN matrix_NN are_VBP computed_VBN and_CC then_RB a_DT final_JJ clustering_NN
+y_NN scores_NNS for_IN every_DT pair_NN of_IN data_NNS instances_NNS 111of_VBP every_DT modality_NN must_MD be_VB calculated_VBN -RRB-_-RRB- ,_, which_WDT are_VBP computationally_RB infeasible_JJ in_IN many_JJ other_JJ multi-modal_JJ applications_NNS ._.
+Bipartite_JJ spectral_JJ graph_NN partitioning_VBG =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ useful_JJ for_IN co-clustering_VBG two_CD modalities_NNS such_JJ as_IN documents_NNS and_CC words_NNS ._.
+Gao_NNP et_FW al._FW -LRB-_-LRB- 47_CD -RRB-_-RRB- extend_VBP this_DT method_NN to_TO handle_VB one_CD more_JJR modality_NN ._.
+In_IN their_PRP$ tripartite_JJ graph_NN model_NN ,_, nodes_NNS are_VBP arranged_VBN in_IN three_CD la_DT
+first_RB on_IN homogeneous_JJ networks_NNS ,_, such_JJ as_IN spectral_JJ clustering_NN methods_NNS -LRB-_-LRB- 16_CD ,_, 22_CD ,_, 23_CD -RRB-_-RRB- ,_, modularity-based_JJ methods_NNS -LRB-_-LRB- 13_CD ,_, 12_CD -RRB-_-RRB- ,_, and_CC probabilistic_JJ modelbased_JJ methods_NNS -LRB-_-LRB- 17_CD ,_, 8_CD ,_, 7_CD ,_, 1_CD -RRB-_-RRB- ,_, and_CC later_RB to_TO bipartite_JJ networks_NNS =_JJ -_: =[_NN 26_CD ,_, 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC recently_RB on_IN heterogeneous_JJ networks_NNS -LRB-_-LRB- 18_CD ,_, 19_CD -RRB-_-RRB- ._.
+In_IN this_DT paper_NN ,_, we_PRP will_MD consider_VB the_DT heterogeneous_JJ networks_NNS with_IN star_NN network_NN schema_NN as_IN in_IN -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, which_WDT is_VBZ a_DT very_RB popular_JJ case_NN in_IN real_JJ world_NN ._.
+However_RB ,_,
+h_NN representation_NN -LRB-_-LRB- circles_NNS are_VBP nodes_NNS and_CC squares_NNS denote_VBP hyperedges_NNS -RRB-_-RRB- ._.
+to_TO be_VB NP-complete_JJ -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, and_CC consequently_RB many_JJ heuristics_NNS have_VBP been_VBN proposed_VBN ._.
+Spectral_JJ partitioning_VBG methods_NNS and_CC their_PRP$ variants_NNS -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 20_CD ,_, 21_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN used_VBN to_TO partition_NN a_DT wide_JJ variety_NN of_IN graphs_NNS and_CC specialized_JJ strategies_NNS exist_VBP in_IN order_NN to_TO induce_VB the_DT particular_JJ properties_NNS -LRB-_-LRB- e.g._FW ,_, producing_VBG balanced_JJ partitions_NNS -RRB-_-RRB- ._.
+The_DT Kernighan-Lin\/Fiduccia-Ma_NN
+ture_NN ,_, new_JJ approaches_NNS to_TO clustering_NN are_VBP emerging_VBG -LRB-_-LRB- 5_CD ,_, 16_CD ,_, 20_CD ,_, 27_CD ,_, 10_CD -RRB-_-RRB- ._.
+In_IN this_DT article_NN we_PRP are_VBP concerned_VBN with_IN the_DT clustering_NN of_IN rows_NNS x_CC ∈_NN X_NN and_CC columns_NNS y_FW ∈_FW Y_NN of_IN a_DT rectangular_JJ matrix_NN with_IN non-negative_JJ entries_NNS =_JJ -_: =[_NN 32_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT context_NN of_IN a_DT two_CD dimensional_JJ OLAP_NN cube_NN ,_, such_PDT a_DT matrix_NN represents_VBZ the_DT simplest_JJS relationship_NN between_IN two_CD nominal_JJ categorical_JJ variables_NNS ,_, in_IN which_WDT one_CD variable_NN -LRB-_-LRB- dimension_NN -RRB-_-RRB- is_VBZ the_DT row_NN and_CC the_DT othe_NN
+an_DT to_TO consider_VB other_JJ ways_NNS to_TO initialize_VB the_DT matrix-space_JJ model_NN ._.
+One_CD interesting_JJ direction_NN to_TO explore_VB might_MD be_VB to_TO use_VB non-negative_JJ matrix_NN factorization_NN -LRB-_-LRB- Lee_NNP and_CC Seung_NNP ,_, 2001_CD -RRB-_-RRB- ,_, co-clustering_JJ techniques_NNS -LRB-_-LRB- =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =--RRB-_CD to_TO better_RB initialize_VB words_NNS that_WDT share_VBP similar_JJ contexts_NNS ._.
+The_DT other_JJ possible_JJ direction_NN is_VBZ to_TO use_VB existing_VBG sentiment_NN lexicons_NNS and_CC employing_VBG a_DT ``_`` curriculum_NN learning_NN ''_'' strategy_NN -LRB-_-LRB- Bengio_NNP et_FW al._FW ,_, 2009_CD ;_: Kumar_NNP
+ng_NN Figure_NNP 1_CD :_: A_DT bipartite_JJ graph_NN example_NN of_IN domain-specific_JJ and_CC domain-independent_JJ features_NNS based_VBN on_IN Table_NNP 4_CD ._.
+ory_NN has_VBZ been_VBN widely_RB applied_VBN in_IN many_JJ problems_NNS ,_, e.g._FW ,_, dimensionality_NN reduction_NN and_CC clustering_NN =_JJ -_: =[_NN 27_CD ,_, 3_CD ,_, 14_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN our_PRP$ case_NN ,_, we_PRP assume_VBP -LRB-_-LRB- 1_LS -RRB-_-RRB- if_IN two_CD domain-specific_JJ features_NNS are_VBP connected_VBN to_TO many_JJ common_JJ domain-independent_JJ features_NNS ,_, then_RB they_PRP tend_VBP to_TO be_VB very_RB related_JJ and_CC will_MD be_VB aligned_VBN to_TO a_DT same_JJ cluster_NN with_IN high_JJ
+ficiently_RB ._.
+Co-clustering_JJ algorithms_NNS are_VBP designed_VBN to_TO cluster_VB different_JJ types_NNS of_IN data_NNS simultaneously_RB by_IN making_VBG use_NN of_IN the_DT dual_JJ relationship_NN information_NN such_JJ as_IN mood_NN --_: artist_NN matrix_NN ._.
+For_IN instance_NN ,_, Dhillon_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Zha_NNP et_NNP al_NNP -LRB-_-LRB- 8_CD -RRB-_-RRB- proposed_VBD bipartite_JJ spectral_JJ graph_NN partitioning_VBG approaches_NNS to_TO co-cluster_JJ words_NNS and_CC documents_NNS ,_, Cho_NNP ._.
+et_FW al_FW -LRB-_-LRB- 4_CD -RRB-_-RRB- proposed_VBN to_TO co-cluster_VB the_DT experimental_JJ conditions_NNS and_CC genes_NNS for_IN microarr_NN
+of_IN a_DT model_NN could_MD be_VB learned_VBN iteratively_RB -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+Instead_RB of_IN clustering_NN documents_NNS ,_, co-clustering_NN which_WDT is_VBZ related_JJ to_TO spectral_JJ clustering_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- attempts_NNS to_TO clustering_VBG the_DT documents_NNS and_CC words_NNS simultaneously_RB =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+E._NNP Non-negative_JJ Matrix_NNP Factorization_NNP Non-negative_JJ Matrix_NNP Factorization_NN -LRB-_-LRB- NMF_NN -RRB-_-RRB- is_VBZ a_DT technique_NN for_IN co-clustering_VBG the_DT rows_NNS and_CC columns_NNS of_IN a_DT matrix_NN ._.
+It_PRP has_VBZ been_VBN applied_VBN in_IN document_NN clustering_NN tasks_NNS ._.
+The_DT
+of_IN graph_NN theory_NN ._.
+In_IN terms_NNS of_IN the_DT graph_NN bisection_NN the_DT second_JJ eigenvector_NN is_VBZ most_RBS important_JJ -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, allowing_VBG for_IN creation_NN of_IN normalized_VBN cut_NN -LRB-_-LRB- partition_NN of_IN the_DT vertices_NNS of_IN a_DT graph_NN into_IN two_CD disjoint_NN subsets_NNS -RRB-_-RRB- =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Thus_RB selecting_VBG the_DT second_JJ principal_JJ component_NN is_VBZ a_DT good_JJ start_NN to_TO construct_VB hierarchical_JJ partitioning_NN ._.
+The_DT typical_JJ approaches_NNS to_TO spectral_JJ clustering_NN employs_VBZ second_JJ -LRB-_-LRB- biggest_JJS -RRB-_-RRB- component_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- -LRB-_-LRB- that_IN mini_NNS
+upervision_NN ._.
+Hierarchical_JJ clustering_NN algorithms_NNS organize_VBP input_NN data_NNS either_CC bottom-up_JJ -LRB-_-LRB- agglomerative_JJ -RRB-_-RRB- or_CC top-down_JJ -LRB-_-LRB- divisive_JJ -RRB-_-RRB- -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+Co-clustering_NN refers_VBZ to_TO clustering_NN of_IN more_JJR than_IN one_CD data_NN type_NN ._.
+Dhillon_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: proposes_VBZ bipartite_JJ spectral_JJ graph_NN partitioning_VBG approaches_NNS to_TO co-cluster_JJ words_NNS and_CC documents_NNS ._.
+Long_NNP et_FW al._FW -LRB-_-LRB- 15_CD -RRB-_-RRB- proposed_VBD a_DT general_JJ principled_JJ model_NN ,_, called_VBN Relation_NNP Summary_NNP Network_NNP ,_, for_IN co-cluster_NN hete_NN
+of_IN M_NN rows_NNS in_IN N_NN columns_NNS ,_, a_DT co-clustering_JJ algorithm_NN generates_VBZ co-clusters_NNS i.e._FW a_DT subset_NN of_IN rows_NNS which_WDT exhibit_VBP similar_JJ behavior_NN across_IN a_DT subset_NN of_IN columns_NNS ,_, or_CC vice-versa_NN ._.
+A_DT pioneer_NN work_NN is_VBZ described_VBN in_IN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB a_DT collection_NN of_IN text_NN data_NNS is_VBZ modelled_VBN as_IN a_DT bipartite_JJ graph_NN between_IN documents_NNS and_CC words_NNS ,_, thus_RB reducing_VBG the_DT clustering_NN problem_NN to_TO a_DT graph_NN partitioning_VBG problem_NN ._.
+A_DT similar_JJ approach_NN applied_VBN to_TO mult_VB
+projection_NN technique_NN of_IN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+The_DT authors_NNS of_IN -LRB-_-LRB- 19_CD -RRB-_-RRB- present_VBP a_DT greedy_JJ method_NN for_IN selecting_VBG the_DT best_JJS rows\/columns_NNS to_TO use_VB for_IN the_DT approximation_NN ._.
+A_DT related_JJ work_NN in_IN the_DT area_NN of_IN document_NN analysis_NN is_VBZ that_DT of_IN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_JJ -_: ,_, wherein_WRB only_RB the_DT off-diagonal_JJ blocks_NNS of_IN the_DT affinity_NN matrix_NN are_VBP known_VBN ,_, i.e._FW only_RB bipartite_JJ weights_NNS are_VBP available_JJ ._.
+The_DT author_NN then_RB applies_VBZ the_DT Normalized_NNP Cut_NNP method_NN ,_, which_WDT reduces_VBZ to_TO a_DT simple_JJ SVD_NN on_IN
+ce_NN essentially_RB determines_VBZ the_DT large_JJ eigenvalues_NNS ,_, and_CC the_DT eigenvectors_NNS that_WDT result_VBP are_VBP of_IN little_JJ value_NN ._.
+Use_NN of_IN the_DT normalized_VBN Laplacian_NNP has_VBZ been_VBN promoted_VBN by_IN several_JJ practitioners_NNS of_IN spectral_JJ analysis_NN ,_, =_JJ -_: =[_NN 13_CD ,_, 12_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT works_NNS of_IN -LRB-_-LRB- 13_CD ,_, 12_CD -RRB-_-RRB- examine_VBP the_DT performance_NN of_IN the_DT normalized_VBN Laplacian_NN in_IN spectral_JJ algorithms_NNS for_IN multi-partition_NN ._.
+In_IN these_DT ,_, as_IN in_IN other_JJ work_NN examining_VBG the_DT performance_NN of_IN spectral_JJ heuristics_NNS ,_, the_DT
+been_VBN argued_VBN that_IN it_PRP outperforms_VBZ many_JJ other_JJ methods_NNS -LRB-_-LRB- 21_CD ,_, 29_CD -RRB-_-RRB- ._.
+The_DT class_NN of_IN algorithms_NNS known_VBN as_IN spectral_JJ methods_NNS seem_VBP to_TO be_VB applicable_JJ in_IN a_DT variety_NN of_IN clustering_NN contexts_NNS ._.
+This_DT has_VBZ been_VBN investigated_VBN in_IN =_JJ -_: =[_NN 7_CD ,_, 35_CD ,_, 27_CD ,_, 22_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Roughly_RB speaking_VBG ,_, a_DT spectral_JJ algorithm_NN uses_VBZ the_DT eigenvalues_NNS and_CC eigenvectors_NNS of_IN the_DT similarity_NN matrix_NN tosnd_VBD a_DT clustering_NN ._.
+Our_PRP$ principal_JJ motivation_NN is_VBZ the_DT spectral_JJ algorithm_NN analyzed_VBN in_IN -LRB-_-LRB- 20_CD -RRB-_-RRB- ._.
+There_RB ,_,
+cut_VBN -LRB-_-LRB- Ding_NNP et_FW al._FW ,_, 2001_CD -RRB-_-RRB- ,_, have_VBP been_VBN proposed_VBN ._.
+Spectral_JJ graph_NN partitioning_NN has_VBZ also_RB been_VBN applied_VBN to_TO a_DT special_JJ case_NN of_IN multi-type_JJ relational_JJ data_NNS ,_, bi-type_JJ relational_JJ data_NNS such_JJ as_IN the_DT word-document_JJ data_NNS -LRB-_-LRB- =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =_JJ -_: ;_: H._NNP Zha_NNP &_CC H._NNP Simon_NNP ,_, 2001_CD -RRB-_-RRB- ._.
+These_DT algorithms_NNS formulate_VBP the_DT data_NNS matrix_NN as_IN a_DT bipartite_JJ graph_NN and_CC seek_VB to_TO find_VB the_DT optimal_JJ normalized_VBN cut_NN for_IN the_DT graph_NN ._.
+Due_JJ to_TO the_DT nature_NN of_IN a_DT bipartite_JJ graph_NN ,_, these_DT algor_NN
+or_CC images_NNS ._.
+This_DT information_NN can_MD be_VB very_RB important_JJ in_IN query_NN and_CC indexing_NN in_IN the_DT domain_NN of_IN search_NN engines_NNS ._.
+Several_JJ authors_NNS used_VBD data_NNS matrices_NNS where_WRB the_DT rows_NNS represented_VBD words_NNS and_CC the_DT columns_NNS documents_NNS =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 15_CD -RRB-_-RRB- ._.
+In_IN the_DT simpler_JJR problem_NN formulations_NNS ,_, the_DT values_NNS aij_RB show_VBP whether_IN word_NN i_FW is_VBZ present_JJ in_IN document_NN j_NN -LRB-_-LRB- binary_JJ values_NNS -RRB-_-RRB- ._.
+In_IN more_RBR complex_JJ data_NNS ,_, a_DT nonzero_JJ element_NN aij_NN indicates_VBZ the_DT presence_NN of_IN wor_NN
+theme_NN -LRB-_-LRB- which_WDT is_VBZ a_DT consequence_NN of_IN EXTENDER_NN 's_POS attempt_NN to_TO preserve_VB global_JJ coherence_NN -RRB-_-RRB- ,_, terms_NNS may_MD be_VB as_RB informative_JJ as_IN documents_NNS for_IN identifying_VBG topics_NNS within_IN the_DT collection_NN ._.
+With_IN a_DT few_JJ exceptions_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =--RRB-_NN most_RBS existing_JJ clustering_NN algorithms_NNS apply_VBP single-purpose_JJ clustering_NN --_: they_PRP cluster_VBP documents_NNS and_CC terms_NNS separately_RB ._.
+EXTENDER_NN applies_VBZ a_DT medoid-based_JJ co-clustering_NN algorithm_NN ,_, to_TO cluster_VB documents_NNS and_CC ter_NN
+._. ._.
+$_$ 5.00_CD ._.
+Jiong_NNP Yang_NNP Department_NNP of_IN Computer_NNP Science_NNP ,_, University_NNP of_IN Illinois_NNP Urbana-Champaign_NNP ,_, IL_NN 61801_CD ,_, USA_NN jioyang@cs.uiuc.edu_NN clusters_NNS centering_VBG in_IN subspaces_NNS ._.
+The_DT information-theoretic_JJ co-clustering_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: approach_NN simultaneously_RB clusters_NNS the_DT rows_NNS and_CC columns_NNS to_TO maximize_VB their_PRP$ mutual_JJ information_NN ._.
+A_DT common_JJ feature_NN of_IN partitionbased_JJ algorithm_NN is_VBZ that_IN one_CD object_NN can_MD appear_VB in_IN one_CD and_CC only_RB one_CD cluster_NN ._.
+The_DT
+al_FW graph_NN partitioning_VBG approaches_NNS :_: There_EX are_VBP other_JJ ways_NNS to_TO partition_NN these_DT graphs_NNS ,_, e.g._FW normalized_VBD cut_VBN using_VBG the_DT Fiedler_NNP vector_NN -LRB-_-LRB- eigenvector_NN corresponding_VBG to_TO the_DT second_JJ smallest_JJS generalized_JJ eigenvalue_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+BAM_NNP uses_VBZ the_DT top_JJ left_NN and_CC right_JJ singular_JJ vectors_NNS ._.
+Norm-cut_JJ looks_NNS at_IN both_CC interand_JJ intra-partition_JJ properties_NNS while_IN our_PRP$ algorithm_NN is_VBZ thought_VBN to_TO target_VB the_DT tightness_NN of_IN the_DT partition_NN in_IN question_NN ._.
+sIncr_NN
+eduction_NN attempt_NN to_TO find_VB the_DT subspace_NN where_WRB clusters_NNS are_VBP most_RBS wellseparated_JJ or_CC well_RB defined_VBN in_IN some_DT way_NN ._.
+This_DT is_VBZ different_JJ from_IN co-clustering_NN -LRB-_-LRB- simultaneously_RB clustering_VBG the_DT features_NNS and_CC data_NNS points_NNS -RRB-_-RRB- -LRB-_-LRB- =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =_JJ -_: ;_: Zha_NNP et_FW al._FW ,_, 2001_CD ;_: Banerjee_NNP et_FW al._FW ,_, 2004_CD -RRB-_-RRB- and_CC biclustering_NN -LRB-_-LRB- Cheng_NNP &_CC Church_NNP ,_, 2000_CD -RRB-_-RRB- -LRB-_-LRB- which_WDT essentially_RB find_VBP blocks_NNS in_IN a_DT rectangle_NN data_NN matrix_NN -RRB-_-RRB- ._.
+If_IN we_PRP restrict_VBP the_DT subspace_NN to_TO be_VB linear_JJ combinations_NNS of_IN
+and_CC pointed_VBD out_RP that_IN the_DT multinomial_JJ PCA_NN model_NN -LRB-_-LRB- or_CC discrete_JJ PCA_NN -RRB-_-RRB- takes_VBZ clustering_NN and_CC projection_NN as_IN two_CD extreme_JJ cases_NNS ._.
+Another_DT closely_RB related_JJ work_NN is_VBZ the_DT so-called_JJ two-sided_JJ clustering_NN ,_, like_IN -LRB-_-LRB- 8_CD -RRB-_-RRB- and_CC =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT aims_VBZ to_TO clustering_NN words_NNS and_CC documents_NNS simultaneously_RB ._.
+In_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- it_PRP is_VBZ implicitly_RB assumed_VBN a_DT one-to-one_JJ correspondence_NN between_IN the_DT two_CD sides_NNS of_IN clusters_NNS ._.
+-LRB-_-LRB- 8_CD -RRB-_-RRB- is_VBZ a_DT probabilistic_JJ model_NN for_IN discrete_JJ
+st_IN cases_NNS ,_, we_PRP set_VBD k_NN =_JJ ℓ_NN ._.
+This_DT form_NN gives_VBZ a_DT good_JJ framework_NN for_IN simultaneously_RB clustering_VBG the_DT rows_NNS and_CC columns_NNS of_IN X._NNP Simultaneously_RB rows_NNS and_CC columns_NNS clustering_NN using_VBG Laplacian_JJ matrix_NN has_VBZ been_VBN studied_VBN in_IN =_JJ -_: =[_NN 7_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+NMF_NN is_VBZ one_CD type_NN of_IN matrix_NN factorizations_NNS ._.
+There_EX are_VBP other_JJ types_NNS of_IN factorizations_NNS -LRB-_-LRB- 6_CD ,_, 17_CD ,_, 33_CD ,_, 24_CD ,_, 23_CD ,_, 21_CD -RRB-_-RRB- ._.
+Others_NNS include_VBP Latent_JJ Semantic_JJ Indexing_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, scaled_VBN PCA_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, generalized_JJ SVD_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, etc._NN ._.
+He_PRP
+l._RB ,_, 2000_CD -RRB-_-RRB- ,_, mixturesof_NN multinomials_NNS -LRB-_-LRB- Vaithyanathan_NNP &_CC Dom_NNP ,_, 2000_CD ;_: Meila_NNP &_CC Heckerman_NNP ,_, 2001_CD -RRB-_-RRB- ,_, multi-level_JJ graph_NN partitioning_VBG -LRB-_-LRB- Karypis_NNP ,_, 2002_CD -RRB-_-RRB- ,_, and_CC co-clustering_NN using_VBG bipartite_JJ spectral_JJ graph_NN partitioning_NN -LRB-_-LRB- =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =--RRB-_NN ._.
+Most_JJS clustering_NN methods_NNS proposed_VBN for_IN data_NN mining_NN -LRB-_-LRB- Berkhin_NNP ,_, 2002_CD -RRB-_-RRB- can_MD be_VB divided_VBN into_IN two_CD categories_NNS :_: discriminative_JJ -LRB-_-LRB- or_CC similarity-based_JJ -RRB-_-RRB- approaches_NNS -LRB-_-LRB- Indyk_NNP ,_, 1999_CD ;_: Scholkopf_NNP &_CC Smola_NNP ,_, 2001_CD ;_: Vapnik_NNP ,_, 1_CD
+parameters_NNS are_VBP omitted_VBN here_RB ._.
+Totally_RB syn4_NN has_VBZ 5000_CD nodes_NNS and_CC about_IN 2.1_CD million_CD edges_NNS ._.
+The_DT graphs_NNS based_VBN on_IN the_DT text_NN data_NNS have_VBP been_VBN widely_RB used_VBN to_TO test_VB graph_NN partitioning_VBG algorithms_NNS -LRB-_-LRB- Ding_NNP et_FW al._FW ,_, 2001_CD ;_: =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =_JJ -_: ;_: Zha_NNP et_FW al._FW ,_, 2001_CD -RRB-_-RRB- ._.
+Note_VB that_IN there_EX also_RB exist_VBP feature-based_JJ algorithms_NNS to_TO directly_RB cluster_VB documents_NNS based_VBN on_IN word_NN features_NNS ._.
+However_RB ,_, in_IN this_DT study_NN our_PRP$ focus_NN is_VBZ clustering_NN based_VBN on_IN relations_NNS instead_RB
+nown_JJ genetic_JJ pathways_NNS ._.
+Biclustering_NNP is_VBZ indeed_RB ,_, not_RB a_DT new_JJ problem_NN ._.
+In_IN fact_NN ,_, it_PRP is_VBZ also_RB known_VBN under_IN several_JJ other_JJ names_NNS ,_, namely_RB ``_`` co-clustering_NN ''_'' ,_, ``_`` two-way_JJ clustering_NN ''_'' and_CC ``_`` direct_JJ clustering_NN ''_'' -LRB-_-LRB- see_VB ,_, e.g._FW ,_, =_JJ -_: =[_NN 6,10,11_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Because_IN of_IN this_DT and_CC the_DT wide_JJ range_NN of_IN application_NN of_IN this_DT problem_NN ,_, the_DT theoretical_JJ and_CC practical_JJ results_NNS are_VBP spread_VBN across_IN different_JJ communities_NNS in_IN Computer_NNP Science_NNP such_JJ as_IN computational_JJ biology_NN ,_, m_NN
+n_NN data_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Spectral_JJ methods_NNS have_VBP been_VBN applied_VBN in_IN clustering_NN of_IN artificial_JJ data_NNS -LRB-_-LRB- 60,63_CD -RRB-_-RRB- ,_, in_IN image_NN segmentation_NN -LRB-_-LRB- 56,72,75_CD -RRB-_-RRB- ,_, in_IN bioinformatics_NNS -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, and_CC in_IN co-clustering_JJ problems_NNS of_IN words_NNS and_CC documents_NNS =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: and_CC genes_NNS and_CC conditions_NNS -LRB-_-LRB- 42_CD -RRB-_-RRB- ._.
+A_DT semi-supervised_JJ spectral_JJ approach_NN to_TO bioinformatics_NNS and_CC handwritten_JJ character_NN recognition_NN 1_CD These_DT data_NNS sets_NNS can_MD be_VB found_VBN at_IN :_: ftp_NN :_: \/_: \/_: ftp.ics.uci.edu\/pub\/machine-learnin_NN
+ve_IN `_`` 0_CD bB_NN bBT_NN 0_CD '_'' `_`` u_FW v_LS '_POS =_JJ i_FW `_`` u_FW v_LS '_'' ;_: -LRB-_-LRB- 26_CD -RRB-_-RRB- where_WRB bB_NN =_JJ D_NN \_FW Gamma_FW 1_CD =_JJ 2r_NN BD_NNP \_NNP Gamma_NNP 1_CD =_JJ 2c_NN :_: -LRB-_-LRB- 27_CD -RRB-_-RRB- The_DT solutions_NNS to_TO Eq_NN ._.
+-LRB-_-LRB- 26_CD -RRB-_-RRB- are_VBP SVD_NN of_IN bB_NN -LRB-_-LRB- that_IN SVD_NNP is_VBZ the_DT solution_NN to_TO Eq_FW .24_FW for_IN bipartite_JJ graph_NN is_VBZ noted_VBN earlier_RBR =_JJ -_: =[_NN 22_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._. -RRB-_-RRB-
+We_PRP emphasize_VBP that_IN Eq_NN ._.
+-LRB-_-LRB- 26_CD -RRB-_-RRB- is_VBZ identical_JJ Eq_NN ._.
+-LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, with_IN the_DT correspondence_NN relationship_NN B_NN -RRB-_-RRB- bB_NN ;_: `_`` f_LS g_NN '_'' -RRB-_-RRB- `_`` u_FW v_LS '_'' :_: -LRB-_-LRB- 28_CD -RRB-_-RRB- -LRB-_-LRB- see_VB also_RB the_DT similarity_NN between_IN Eq_NN ._.
+-LRB-_-LRB- 23_CD -RRB-_-RRB- and_CC Eq_NN ._.
+-LRB-_-LRB- 7_CD -RRB-_-RRB- ._. -RRB-_-RRB-
+Therefore_RB ,_, the_DT net_JJ effect_NN
+tting_NN procedure_NN to_TO identify_VB hierarchical_JJ row_NN and_CC column_NN clusters_NNS in_IN matrices_NNS of_IN small_JJ size_NN ._.
+Co-clustering_NN has_VBZ also_RB been_VBN called_VBN biclustering_VBG and_CC block_VB clustering_NN in_IN -LRB-_-LRB- 2_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 17_CD -RRB-_-RRB- respectively_RB ._.
+Recently_RB =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: used_VBD a_DT graph_NN formulation_NN and_CC a_DT spectral_JJ heuristic_NN that_WDT uses_VBZ eigenvectors_NNS to_TO co-cluster_JJ documents_NNS and_CC words_NNS ;_: however_RB ,_, a_DT restriction_NN in_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- was_VBD that_IN each_DT word_NN cluster_NN was_VBD associated_VBN with_IN a_DT document_NN clu_NN
+ory_NN scenes_NNS can_MD be_VB taken_VBN as_IN documents_NNS ,_, and_CC key_JJ audio_JJ effects_NNS are_VBP keywords_NNS ._.
+One_CD solution_NN proposed_VBD recently_RB to_TO solve_VB the_DT duality_NN between_IN the_DT document_NN and_CC keyword_JJ clustering_NN is_VBZ the_DT coclustering_VBG algorithm_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =-[_NN 4_CD -RRB-_-RRB- ,_, which_WDT clusters_NNS the_DT document_NN and_CC keyword_NN simultaneously_RB ._.
+Two_CD co-clustering_JJ approaches_NNS have_VBP 0-7803-8874-7_CD \/_: 05_CD \/_: $_$ 20.00_CD ©_CD 2005_CD IEEE_NN II_CD -_: 1073_CD ICASSP_NNP 2005_CD ➡_CD s_NN ➡_NN been_VBN proposed_VBN in_IN literatures_NNS ._.
+One_CD is_VBZ based_VBN o_NN
+d._VB The_DT idea_NN of_IN action_NN is_VBZ very_RB similar_JJ to_TO our_PRP$ incremental_JJ co-clustering_JJ algorithms_NNS -LRB-_-LRB- see_VB Section_NNP 4.2_CD -RRB-_-RRB- ._.
+Kluger_NNP et_FW al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- apply_VB a_DT spectral_JJ co-clustering_JJ algorithm_NN similar_JJ to_TO the_DT one_NN proposed_VBN by_IN Dhillon_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: on_IN gene_NN expression_NN data_NNS to_TO produce_VB ``_`` checkerboard_JJ ''_'' structure_NN ._.
+The_DT largest_JJS several_JJ left_JJ and_CC right_JJ singular_JJ vectors_NNS of_IN the_DT normalized_VBN gene_NN expression_NN matrix_NN are_VBP computed_VBN and_CC then_RB a_DT final_JJ clustering_NN step_NN
+clustering_NN that_WDT arises_VBZ from_IN multiple_JJ clustering_NN results_NNS ._.
+We_PRP reduce_VBP the_DT problem_NN of_IN defining_VBG a_DT consensus_NN function_NN to_TO a_DT graph_NN partitioning_VBG problem_NN ._.
+This_DT approach_NN has_VBZ shown_VBN good_JJ results_NNS in_IN the_DT literature_NN =_JJ -_: =[_NN 4_CD ,_, 15_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Moreover_RB ,_, the_DT weighted_JJ clusters_NNS computed_VBN by_IN the_DT LAC_NN algorithm_NN offer_VBP a_DT natural_JJ way_NN to_TO define_VB a_DT similarity_NN measure_NN to_TO be_VB integrated_VBN in_IN the_DT weights_NNS associated_VBN to_TO the_DT edges_NNS of_IN a_DT graph_NN ._.
+The_DT overall_JJ clust_NN
+ions_NNS among_IN subsets_NNS of_IN attributes_NNS with_IN subsets_NNS of_IN transactions_NNS in_IN a_DT transaction_NN database_NN ._.
+It_PRP has_VBZ an_DT extensive_JJ set_NN of_IN applications_NNS ranging_VBG from_IN Gene_NN co-regulation_NN analysis_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, documentkeyword_NN clustering_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: and_CC collaborative_JJ filtering_VBG for_IN online_JJ recommendation_NN systems_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP optimal_JJ biclustering_NN problem_NN as_IN maximal_JJ crossing_VBG number_NN reduction_NN in_IN a_DT weighted_JJ bipartite_JJ graph_NN ._.
+Based_VBN on_IN
+in_IN Section_NNP 4.2_CD ._.
+The_DT matrix_NN of_IN means_NN M_NN reflects_VBZ the_DT probabilities_NNS with_IN which_WDT documents_NNS cite_VBP each_DT other_JJ dependent_JJ on_IN whether_IN they_PRP are_VBP in_IN the_DT same_JJ cluster_NN or_CC not_RB ._.
+Co-Clustering_VBG The_DT co-clustering_JJ model_NN -LRB-_-LRB- =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =--RRB-_NN ,_, originally_RB proposed_VBN for_IN text_NN ,_, simultanously_RB clusters_NNS the_DT rows_NNS and_CC the_DT columns_NNS of_IN a_DT term\/document_NN matrix_NN ._.
+This_DT leads_VBZ to_TO a_DT bipartite_JJ graph_NN model_NN with_IN terms_NNS and_CC documents_NNS being_VBG two_CD sets_NNS of_IN vertices_NNS ._.
+A_DT
+teristics_NNS of_IN homogeneity_NN ._. ''_'' ._.
+Although_IN biclustering_NN has_VBZ been_VBN primarily_RB used_VBN in_IN biological_JJ data_NN analysis_NN -LRB-_-LRB- 9,16,5,4,24,18,26_CD -RRB-_-RRB- ,_, its_PRP$ use_NN in_IN other_JJ domains_NNS such_JJ as_IN the_DT word-document_JJ clustering_NN in_IN text_NN mining_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: and_CC for_IN collaborative_JJ filtering_VBG in_IN online_JJ recommendation_NN systems_NNS -LRB-_-LRB- 30,8_CD -RRB-_-RRB- has_VBZ also_RB gained_VBN momentum_NN ._.
+Spectral_JJ Partitioning_NN is_VBZ a_DT popular_JJ technique_NN for_IN clustering_VBG high_JJ dimensional_JJ data_NNS in_IN different_JJ domain_NN
+In_IN our_PRP$ study_NN we_PRP will_MD focus_VB on_IN a_DT particular_JJ edge-cut_JJ based_VBN criterion_NN function_NN called_VBD the_DT normalized_VBN cut_NN ,_, which_WDT was_VBD recently_RB used_VBN in_IN the_DT 7scontext_NN of_IN this_DT bipartite_JJ graph_NN model_NN for_IN document_NN clustering_NN =_JJ -_: =[_NN 46_CD ,_, 9_CD -RRB-_-RRB- ._.
+The_DT -_: =_JJ -_: normalized_VBD cut_NN criterion_NN function_NN is_VBZ defined_VBN as_IN k_NN cut_NN -LRB-_-LRB- Vr_NN ,_, V_NN −_NN Vr_NN -RRB-_-RRB- minimize_VBP 2_CD =_JJ ,_, -LRB-_-LRB- 17_CD -RRB-_-RRB- W_NN -LRB-_-LRB- Vr_NN -RRB-_-RRB- r_NN =_JJ 1_CD where_WRB Vr_NN is_VBZ the_DT set_NN of_IN vertices_NNS assigned_VBN to_TO the_DT rth_NN cluster_NN ,_, and_CC W_NN -LRB-_-LRB- Vr_NN -RRB-_-RRB- is_VBZ the_DT sum_NN of_IN the_DT weigh_VBP
+etry_NN principle_NN :_: Predicates_NNS should_MD group_VB by_IN the_DT runs_NNS that_IN they_PRP predict_VBP ;_: runs_NNS should_MD group_VB by_IN the_DT predicates_NNS that_WDT predict_VBP them_PRP ._.
+We_PRP approach_VBP the_DT problem_NN from_IN the_DT perspective_NN of_IN bi-clustering_NN -LRB-_-LRB- see_VB ,_, e.g._FW ,_, =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =_JJ -_: ;_: Hartigan_NNP ,_, 1972_CD -RRB-_-RRB- ._.
+But_CC generic_JJ biclustering_NN algorithms_NNS do_VBP not_RB directly_RB address_VB the_DT idiosyncrasies_NNS of_IN the_DT predicate-run_JJ relationship_NN ;_: the_DT standard_JJ distance_NN metrics_NNS and_CC information-theoretic_JJ objectives_NNS
+e_LS co-occurrence_JJ statistics_NNS of_IN terms_NNS appearing_VBG in_IN documents_NNS by_IN representing_VBG document-term_JJ relations_NNS via_IN a_DT bipartite_JJ graph_NN ._.
+Many_JJ algorithms_NNS have_VBP been_VBN developed_VBN for_IN clustering_NN in_IN bipartite_JJ graphs_NNS ,_, i.e._FW ,_, =_JJ -_: =[_NN 9,2,8,4,3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT underlying_VBG intuition_NN behind_IN these_DT approaches_NNS is_VBZ that_IN the_DT similarities_NNS among_IN one_CD type_NN of_IN object_NN can_MD be_VB used_VBN by_IN the_DT other_JJ type_NN of_IN object_NN for_IN clustering_NN ._.
+One_CD obvious_JJ limitation_NN of_IN existing_VBG co-clust_NN
+letters_NNS after_IN ._.
+Therefore_RB we_PRP also_RB store_VBP the_DT following_JJ subsets_NNS :_: ∀_CD v_LS ,_, w_FW ∈_FW -LRB-_-LRB- 0_CD ,_, n_NN -RRB-_-RRB- :_: -LRB-_-LRB- xi_FW −_FW v_LS ,_, ..._: ,_, xi_FW ,_, ..._: ,_, xi_NN +_CC w_NN -RRB-_-RRB- ._.
+There_EX are_VBP several_JJ options_NNS to_TO calculate_VB the_DT operation_NN 's_POS cost_NN ._.
+This_DT cost_NN must_MD lie_VB within_IN =_JJ -_: =[_NN 0_CD ,_, 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC be_VB inversely_RB proportionate_JJ to_TO the_DT confidence_NN ._.
+One_CD way_NN to_TO estimate_VB this_DT confidence_NN is_VBZ by_IN the_DT formula_NN conf_NN -LRB-_-LRB- OC_NN -RRB-_-RRB- =_JJ |_CD OC_NNP |_NNP |_NNP C_NNP |_NNP ,_, |_NNP Oc_NNP |_NN =_JJ being_VBG the_DT number_NN of_IN times_NNS the_DT operation_NN ,_, together_RB with_IN context_NN C_NN
+ctually_RB tries_VBZ to_TO transform_VB the_DT matrix_NN A_NN into_IN a_DT block-diagonal_JJ matrix_NN ,_, as_IN shown_VBN in_IN Fig._NNP 2_CD ._.
+This_DT clustering_NN method_NN is_VBZ called_VBN co-clustering_NN which_WDT is_VBZ derived_VBN from_IN the_DT problem_NN of_IN bipartite_JJ graph_NN partition_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN completeness_NN ,_, we_PRP also_RB include_VBP the_DT algorithm_NN -LRB-_-LRB- also_RB with_IN our_PRP$ small_JJ modifications_NNS -RRB-_-RRB- in_IN this_DT paper_NN ,_, shown_VBN in_IN Fig._NNP 3_CD ._.
+Co-clustering_JJ algorithm_NN simultaneously_RB groups_NNS the_DT documents_NNS and_CC words_NNS into_IN cluster_NN
+m_NN discrete_JJ values_NNS to_TO continuous_JJ values_NNS ,_, it_PRP can_MD be_VB proved_VBN that_IN the_DT solution_NN for_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- is_VBZ the_DT eigenvector_NN corresponding_VBG to_TO the_DT second_JJ smallest_JJS eigenvalue_NN 2_CD of_IN the_DT following_JJ generalized_JJ eigenvalue_NN problem_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =-[_NN 16_CD -RRB-_-RRB- -LRB-_-LRB- 27_CD -RRB-_-RRB- :_: η_NN Lq_NN =_JJ λDq_NN ._.
+-LRB-_-LRB- 5_CD -RRB-_-RRB- Then_RB we_PRP can_MD obtain_VB the_DT desired_VBN image_NN clusters_NNS by_IN running_VBG some_DT routine_JJ clustering_NN algorithms_NNS such_JJ as_IN k-means_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- on_IN this_DT eigenvector_FW q_FW -LRB-_-LRB- called_VBN the_DT Fiedler_NNP vector_NN -RRB-_-RRB- ._.
+However_RB ,_,
+partitioning_VBG -LRB-_-LRB- Karypis_NNP ,_, 2002_CD -RRB-_-RRB- ,_, mixture_NN of_IN vMFs_NNS -LRB-_-LRB- Banerjee_NNP et_FW al._FW ,_, 2003_CD -RRB-_-RRB- ,_, information_NN bottleneck_NN -LRB-_-LRB- IB_NN -RRB-_-RRB- clustering_NN -LRB-_-LRB- Slonim_NNP and_CC Tishby_NNP ,_, 2000_CD -RRB-_-RRB- ,_, and_CC co-clustering_NN using_VBG bipartite_JJ spectral_JJ graph_NN partitioning_NN -LRB-_-LRB- =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =--RRB-_NN ._.
+This_DT richness_NN of_IN approaches_NNS prompts_VBZ a_DT need_NN for_IN detailed_JJ comparative_JJ studies_NNS to_TO establish_VB the_DT relative_JJ strengths_NNS or_CC weaknesses_NNS of_IN these_DT methods_NNS ._.
+Among_IN this_DT large_JJ diversity_NN of_IN approaches_NNS ,_, probabilist_NN
+uster_NN ._.
+Let_VB T_NN and_CC C_NN denote_VBP the_DT random_JJ variables_NNS corresponding_VBG to_TO the_DT true_JJ class_NN and_CC the_DT cluster_NN label_NN ,_, respectively_RB ._.
+The_DT two_CD entropy-based_JJ measures_NNS are_VBP defined_VBN as_IN H_NN -LRB-_-LRB- T_NN -RRB-_-RRB- +_CC H_NN -LRB-_-LRB- C_NN -RRB-_-RRB- −_NN H_NN -LRB-_-LRB- T_NN ,_, C_NN -RRB-_-RRB- NMI_NN =_JJ H_NN -LRB-_-LRB- T_NN -RRB-_-RRB- H_NN -LRB-_-LRB- C_NN -RRB-_-RRB- =_JJ -_: =-LRB-_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: CE_NN =_JJ H_NN -LRB-_-LRB- T_NN |_NN C_NN -RRB-_-RRB- =_JJ H_NN -LRB-_-LRB- T_NN ,_, C_NN -RRB-_-RRB- −_NN H_NN -LRB-_-LRB- C_NN -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- where_WRB H_NN -LRB-_-LRB- X_NN -RRB-_-RRB- denotes_VBZ the_DT entropy_NN of_IN X_NN and_CC log2_NN is_VBZ used_VBN here_RB in_IN computing_NN entropy_NN ._.
+NMI_NNP measures_VBZ the_DT shared_JJ information_NN between_IN T_NN and_CC C_NN and_CC it_PRP reaches_VBZ the_DT maximal_JJ value_NN of_IN
+Features_NNS can_MD also_RB be_VB clustered_VBN together_RB with_IN the_DT objects_NNS ._.
+As_IN mentioned_VBN in_IN -LRB-_-LRB- 201_CD -RRB-_-RRB- ,_, this_DT idea_NN has_VBZ been_VBN known_VBN under_IN different_JJ names_NNS in_IN the_DT literature_NN ,_, including_VBG ``_`` bi-clustering_JJ ''_'' -LRB-_-LRB- 41_CD ,_, 150_CD -RRB-_-RRB- ,_, ``_`` co-clustering_NN ''_'' =_SYM -_: =[_NN 63_CD ,_, 61_CD -RRB-_-RRB- -_: =_JJ -_: ,_, ``_`` double-clustering_JJ ''_'' -LRB-_-LRB- 73_CD -RRB-_-RRB- ,_, ``_`` coupled_JJ clustering_NN ''_'' -LRB-_-LRB- 95_CD -RRB-_-RRB- ,_, and_CC ``_`` simultaneous_JJ clustering_NN ''_'' -LRB-_-LRB- 208_CD -RRB-_-RRB- ._.
+A_DT bipartite_JJ graph_NN can_MD be_VB used_VBN to_TO represent_VB the_DT relationship_NN between_IN objects_NNS and_CC features_NNS ,_, and_CC the_DT partitioni_NNS
+a_DT latent_JJ class_NN model_NN ._.
+A_DT two-sided_JJ clustering_NN model_NN is_VBZ proposed_VBN for_IN collaborative_JJ filtering_VBG by_IN Hofmann_NNP and_CC Puzicha_NNP -LRB-_-LRB- 1999_CD -RRB-_-RRB- ._.
+Spectral_JJ graph_NN partitioning_NN has_VBZ also_RB been_VBN applied_VBN to_TO bi-type_JJ relational_JJ data_NNS -LRB-_-LRB- =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =_JJ -_: ;_: H._NNP Zha_NNP &_CC H._NNP Simon_NNP ,_, 2001_CD -RRB-_-RRB- ._.
+These_DT algorithms_NNS formulate_VBP the_DT data_NNS matrix_NN as_IN a_DT bipartite_JJ graph_NN and_CC seek_VB to_TO find_VB the_DT optimal_JJ normalized_VBN cut_NN for_IN the_DT graph_NN ._.
+Due_JJ to_TO the_DT nature_NN of_IN a_DT bipartite_JJ graph_NN ,_, these_DT algor_NN
+g_NN words_NNS from_IN the_DT corpus_NN treating_VBG these_DT words_NNS as_IN features_NNS and_CC to_TO represent_VB each_DT document_NN insCHAPTER_NN 8_CD ._.
+CONCLUSIONS_NNS 162_CD the_DT corpus_NN as_IN a_DT vector_NN of_IN certain_JJ weighted_JJ word_NN frequencies_NNS in_IN this_DT feature_NN space_NN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Thus_RB ,_, the_DT entire_JJ document_NN collection_NN may_MD be_VB treated_VBN as_IN a_DT word-by-document_JJ matrix_NN ,_, in_IN which_WDT rows_NNS corresponds_VBZ to_TO words_NNS and_CC columns_NNS to_TO documents_NNS ._.
+A_DT subset_NN of_IN the_DT MEDLINE_NN repository_NN 1_CD can_MD be_VB used_VBN to_TO bui_VB
+vel_NN approaches_NNS -LRB-_-LRB- 5_CD ,_, 15_CD ,_, 19_CD -RRB-_-RRB- ,_, have_VBP been_VBN proposed_VBN ._.
+However_RB ,_, the_DT research_NN on_IN mining_NN cluster_NN structures_NNS from_IN k-partite_NN graphs_NNS of_IN heterogeneous_JJ types_NNS of_IN nodes_NNS is_VBZ limited_JJ ._.
+Several_JJ noticeable_JJ efforts_NNS include_VBP =_JJ -_: =[_NN 8_CD ,_, 18_CD -RRB-_-RRB- -_: =_JJ -_: and_CC -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+-LRB-_-LRB- 8_CD ,_, 18_CD -RRB-_-RRB- extends_VBZ the_DT spectral_JJ partitioning_NN based_VBN on_IN normalized_VBN cut_NN to_TO a_DT bi-partite_JJ graph_NN ._.
+After_IN the_DT deduction_NN ,_, spectral_JJ partitioning_NN on_IN the_DT bi-partite_JJ graph_NN is_VBZ converted_VBN to_TO a_DT singular_JJ value_NN
+compress_VBP the_DT feature_NN space_NN much_RB more_RBR aggressively_RB while_IN still_RB maintaining_VBG state_NN of_IN the_DT art_NN classification_NN accuracy_NN ._.
+In_IN the_DT context_NN of_IN document_NN clustering_NN ,_, unsupervised_JJ feature_NN clustering_NN algorithms_NNS -LRB-_-LRB- =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =_JJ -_: ;_: Dhillon_NNP et_FW al._FW ,_, 2002_CD ;_: Dhillon_NNP et_FW al._FW ,_, 2003_CD ;_: El-Yaniv_NNP and_CC Souroujon_NNP ,_, 2001_CD ;_: Slonim_NNP and_CC Tishby_NNP ,_, 2000_CD -RRB-_-RRB- perform_VBP word_NN clustering_NN by_IN the_DT use_NN of_IN word-document_FW co-occurrence_FW matrix_NN ,_, which_WDT can_MD improve_VB the_DT per_IN
+clustering_NN that_WDT arises_VBZ from_IN multiple_JJ clustering_NN results_NNS ._.
+We_PRP reduce_VBP the_DT problem_NN of_IN defining_VBG a_DT consensus_NN function_NN to_TO a_DT graph_NN partitioning_VBG problem_NN ._.
+This_DT approach_NN has_VBZ shown_VBN good_JJ results_NNS in_IN the_DT literature_NN =_JJ -_: =[_NN 4_CD ,_, 15_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Moreover_RB ,_, the_DT weighted_JJ clusters_NNS computed_VBN by_IN the_DT LAC_NN algorithm_NN offer_VBP a_DT natural_JJ way_NN to_TO define_VB a_DT similarity_NN measure_NN to_TO be_VB integrated_VBN in_IN the_DT weights_NNS associated_VBN to_TO the_DT edges_NNS of_IN a_DT graph_NN ._.
+The_DT overall_JJ clust_NN
+titioning_VBG techniques_NNS for_IN two_CD reasons_NNS ._.
+First_RB ,_, graph_NN partitioning_NN is_VBZ a_DT well_RB studied_VBN area_NN and_CC algorithms_NNS such_JJ as_IN spectral_JJ clustering_NN have_VBP been_VBN successful_JJ in_IN a_DT variety_NN of_IN applications_NNS -LRB-_-LRB- Shi_NNP &_CC Malik_NNP ,_, 2000_CD ;_: =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =--RRB-_NN ._.
+Second_JJ ,_, cluster_NN ensembles_NNS provide_VBP a_DT natural_JJ way_NN to_TO define_VB similarity_NN measures_NNS for_IN computing_VBG the_DT weight_NN of_IN the_DT edges_NNS in_IN a_DT graph_NN ,_, which_WDT is_VBZ an_DT important_JJ and_CC sometimes_RB hard_JJ to_TO satisfy_VB prerequisite_NN for_IN
+cite_VB this_DT article_NN in_IN press_NN as_IN :_: Niu_NNP ,_, Z._NNP -_: Y._NNP et_FW al._FW ,_, Using_VBG cluster_NN validation_NN criterion_NN to_TO identify_VB optimal_JJ ..._: ,_, Information_NNP Processing_NNP and_CC Management_NNP -LRB-_-LRB- 2006_CD -RRB-_-RRB- ,_, doi_FW :10.1016_CD \/_: j._FW ipm_FW .2006.07.022_CD salgorithms_NNS -LRB-_-LRB- =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =_JJ -_: ;_: Ding_NNP ,_, He_PRP ,_, Zha_NNP ,_, Gu_NNP ,_, &_CC Simon_NNP ,_, 2001_CD ;_: Li_NNP ,_, Ma_NNP ,_, &_CC Ogihara_NNP ,_, 2004_CD ;_: Zha_NNP ,_, He_PRP ,_, Ding_NNP ,_, Gu_NNP ,_, &_CC Simon_NNP ,_, 2001_CD -RRB-_-RRB- ,_, and_CC matrix_NN factorization_NN algorithms_NNS -LRB-_-LRB- Xu_NNP ,_, Liu_NNP ,_, &_CC Gong_NNP ,_, 2003_CD ;_: Xu_NNP &_CC Gong_NNP ,_, 2004_CD -RRB-_-RRB- ,_, etc._NN ._.
+One_CD common_JJ characteri_NNS
+cluster_NN will_MD contain_VB highly_RB related_JJ documents_NNS ._.
+The_DT most_RBS important_JJ graph_NN based_VBN algorithms_NNS are_VBP Chameleon_NN -LRB-_-LRB- KHK99_NN -RRB-_-RRB- ,_, Association_NNP Rule_NNP Hypergraph_NNP Partitioning_NN -LRB-_-LRB- ARHP_NN -RRB-_-RRB- -LRB-_-LRB- BG_NN +99_CD -RRB-_-RRB- and_CC the_DT one_NN proposed_VBN by_IN Dhillon_NN =_JJ -_: =_JJ -LRB-_-LRB- D01_NN -RRB-_-RRB- -_: =_SYM -_: ._.
+13sNeural_NNP Network_NNP based_VBD Clustering_NNP ._.
+The_DT Kohonen_NNP 's_POS Self-Organizing_NNP feature_NN Maps_NNS -LRB-_-LRB- SOM_NN -RRB-_-RRB- -LRB-_-LRB- K95_NN -RRB-_-RRB- is_VBZ a_DT widely_RB used_VBN unsupervised_JJ neural_JJ network_NN model_NN ._.
+It_PRP consists_VBZ of_IN two_CD layers_NNS :_: the_DT input_NN layer_NN with_IN n_NN input_NN
+ustering_VBG methods_NNS ,_, where_WRB the_DT affinity_NN scores_NNS for_IN every_DT pair_NN of_IN images_NNS and_CC every_DT modality_NN must_MD be_VB calculated_VBN ,_, resulting_VBG in_IN an_DT unrealistically_RB heavy_JJ representation_NN ._.
+Bipartite_JJ spectral_JJ graph_NN partitioning_VBG =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ useful_JJ for_IN coclustering_VBG two_CD modalities_NNS such_JJ as_IN documents_NNS and_CC words_NNS ._.
+Gao_NNP et_FW al._FW -LRB-_-LRB- 11_CD -RRB-_-RRB- extend_VBP this_DT method_NN to_TO handle_VB one_CD more_JJR modality_NN ._.
+In_IN their_PRP$ tripartite_JJ graph_NN model_NN ,_, nodes_NNS are_VBP arranged_VBN in_IN three_CD lay_VBD
+problem_NN of_IN summarizing_VBG preferences_NNS of_IN all_DT users_NNS via_IN clustering_NN ,_, and_CC -LRB-_-LRB- 2_LS -RRB-_-RRB- the_DT problem_NN of_IN finding_VBG an_DT optimal_JJ navigational_JJ tree_NN for_IN a_DT query_NN ._.
+The_DT clustering_NN problem_NN :_: A_DT co-clustering_JJ method_NN was_VBD proposed_VBN in_IN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: to_TO cluster_VB documents_NNS and_CC keywords_NNS ._.
+We_PRP could_MD apply_VB this_DT method_NN to_TO co-cluster_NN data_NNS and_CC queries_NNS in_IN the_DT query_JJ history_NN ._.
+However_RB ,_, each_DT query_NN is_VBZ assigned_VBN to_TO just_RB one_CD cluster_NN ._.
+In_IN our_PRP$ settings_NNS ,_, the_DT same_JJ query_NN
+A_DT the_DT Laplacian_NN of_IN the_DT graph_NN with_IN adjacency_NN matrix_NN A_NN and_CC diagonal_JJ degree_NN matrix_NN B_NN ,_, B_NN ii_LS =_JJ #_# j_NN A_NN ij_NN ._.
+We_PRP require_VBP that_IN the_DT graph_NN is_VBZ undirected_JJ ,_, so_IN that_DT L_NN is_VBZ symmetric_JJ positive_JJ semi-definite_NN ._.
+Following_VBG -LRB-_-LRB- =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =--RRB-_NN and_CC ignoring_VBG the_DT constraints_NNS ,_, the_DT unsupervised_JJ ratiocut_NN optimization_NN problem_NN can_MD equivalently_RB be_VB written_VBN as_IN min_NN #z_FW #z_FW T_NN L_NN #z_FW #z_FW T_NN #z_NN with_IN z_SYM i_FW #_# -LCB-_-LRB- #_# +_CC ,_, #_# -_: -RCB-_-RRB- -LRB-_-LRB- 14_CD -RRB-_-RRB- where_WRB #_# +_CC =_JJ #_# |_CD -LCB-_-LRB- i_LS :_: z_SYM is_VBZ |_CD -LCB-_-LRB- i_LS :_: z_SYM i_LS -RRB-_-RRB- 0_CD -RCB-_-RRB- |_CD and_CC #_#
+techniques_NNS based_VBN on_IN graphs_NNS induced_VBN by_IN implicit_JJ relationships_NNS between_IN documents_NNS or_CC other_JJ linguistic_JJ items_NNS -LRB-_-LRB- Salton_NNP and_CC Buckley_NNP ,_, 1988_CD ;_: Hatzivassiloglou_NNP and_CC McKeown_NNP ,_, 1997_CD ;_: Dani̷lowicz_NNP and_CC Baliński_NNP ,_, 2000_CD ;_: =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =_JJ -_: ;_: Lafferty_NNP and_CC Zhai_NNP ,_, 2001_CD ;_: Joachims_NNP ,_, 2003_CD ;_: Erkan_NNP and_CC Radev_NNP ,_, 2004_CD ;_: Mihalcea_NNP and_CC Tarau_NNP ,_, 2004_CD ;_: Pang_NNP and_CC Lee_NNP ,_, 2004_CD ;_: Toutanova_NNP et_FW al._FW ,_, 2004_CD ;_: Barzilay_NNP and_CC Lapata_NNP ,_, 2005_CD ;_: Collins-Thompson_NNP and_CC Callan_NNP ,_, 2005_CD ;_: Ot_NN
+placian_NN -LRB-_-LRB- 72_CD -RRB-_-RRB- and_CC brought_VBD renewed_VBN interest_NN in_IN the_DT topic_NN ._.
+This_DT has_VBZ been_VBN extended_VBN to_TO bipartite_JJ graphs_NNS for_IN simultaneous_JJ 14sclustering_NN of_IN rows_NNS and_CC columns_NNS of_IN contingency_NN table_NN such_JJ as_IN word-document_JJ matrix_NN =_JJ -_: =[_NN 87_CD ,_, 359_CD ,_, 360_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Many_JJ new_JJ properties_NNS have_VBP been_VBN recently_RB proved_VBN ,_, such_JJ as_IN random_JJ walks_VBZ -LRB-_-LRB- 232_CD -RRB-_-RRB- ,_, self-aggregation_NN -LRB-_-LRB- 89_CD ,_, 90_CD ,_, 91_CD ,_, 92_CD ,_, 93_CD -RRB-_-RRB- ,_, semidefinite_JJ relaxation_NN -LRB-_-LRB- 338_CD -RRB-_-RRB- ,_, and_CC bipartite_JJ graph_NN perturbation_NN -LRB-_-LRB- 90_CD -RRB-_-RRB- ._.
+Standard_JJ spect_NN
+ues_NNS ,_, while_IN from_IN a_DT data_NN mining_NN perspective_NN it_PRP is_VBZ the_DT definition_NN of_IN clusters_NNS ._.
+Thus_RB the_DT problem_NN of_IN finding_VBG submarkets_NNS can_MD be_VB approached_VBN through_IN clustering_NN or_CC graph_NN partitioning_NN of_IN a_DT bipartite_JJ graph_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+In_IN this_DT study_NN we_PRP use_VBP Overture_NNP 's_POS US_NNP ``_`` advertiser-keyword_JJ ''_'' dataset_NN with_IN over_IN 145,000_CD advertisers_NNS ,_, 127,000_CD bidded_JJ keywords_NNS and_CC more_JJR than_IN 3.1_CD million_CD bids_NNS and_CC its_PRP$ small_JJ densely_RB connected_JJ subset_NN of_IN
+ype_NN of_IN objects_NNS sometimes_RB can_MD only_RB be_VB defined_VBN by_IN the_DT other_JJ type_NN of_IN objects_NNS ._.
+To_TO tackle_VB this_DT problem_NN ,_, many_JJ researchers_NNS started_VBD to_TO study_VB the_DT coclustering_NN of_IN two_CD types_NNS of_IN heterogeneous_JJ data_NNS ._.
+Dhillon_NNP et_FW al_FW =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: and_CC Zha_NNP et_NNP al_NNP -LRB-_-LRB- 26_CD -RRB-_-RRB- extended_VBD the_DT traditional_JJ spectral_JJ clustering_NN algorithms_NNS and_CC proposed_VBD the_DT bipartite_JJ spectral_JJ graph_NN partitioning_VBG algorithm_NN to_TO co-cluster_NN documents_NNS and_CC terms_NNS simultaneously_RB ._.
+Similar_JJ t_NN
+raph_NN partitioning_NN has_VBZ many_JJ well-established_JJ theoretical_JJ results_NNS ,_, which_WDT makes_VBZ the_DT approach_NN very_RB attractive_JJ ._.
+Recent_JJ literature_NN includes_VBZ in_IN the_DT areas_NNS of_IN image_NN segmentation_NN -LRB-_-LRB- 2_CD ,_, 3_CD -RRB-_-RRB- and_CC document_NN clustering_NN =_JJ -_: =[_NN 4_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Although_IN graph_NN partition_NN problem_NN is_VBZ NPcomplete_NN ,_, which_WDT will_MD make_VB it_PRP computationally_RB unattractive_JJ ,_, recent_JJ results_NNS have_VBP shown_VBN that_IN graph_NN partition_NN can_MD be_VB efficiently_RB computed_VBN by_IN using_VBG spectral_JJ algorith_NN
+ar_NN to_TO ours_PRP by_IN virtue_NN of_IN leveraging_VBG the_DT mutual_JJ reinforcement_NN of_IN entities_NNS of_IN different_JJ types_NNS ,_, or_CC using_VBG bipartite_JJ graphs_NNS of_IN such_JJ entities_NNS for_IN clustering_NN -LRB-_-LRB- rather_RB than_IN using_VBG clusters_NNS -RRB-_-RRB- ,_, are_VBP abundant_JJ -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 15_CD ,_, 8_CD ,_, 2_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, we_PRP focus_VBP here_RB on_IN exploiting_VBG mutual_JJ reinforcement_NN in_IN ad_FW hoc_FW retrieval_NN ._.
+Random_NNP walks_VBZ -LRB-_-LRB- with_IN early_RB stopping_VBG -RRB-_-RRB- over_IN bipartite_JJ graphs_NNS of_IN terms_NNS and_CC documents_NNS were_VBD used_VBN for_IN query_NN expansion_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, but_CC in_IN cont_NN
+essed_VBN :_: Shu_NNP Wang_NNP ,_, e-mail_JJ :_: swang5@ece.utexas.edu_NN objects_NNS and_CC the_DT columns_NNS correspond_VBP to_TO their_PRP$ features\/attributes_NNS ._.
+Biclustering_VBG clusters_NNS both_CC rows_NNS and_CC columns_NNS simultaneously_RB -LRB-_-LRB- Madeira_NNP and_CC Oliveira_NNP ,_, 2000_CD ;_: =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =_JJ -_: ,_, Barkow_NNP et_NNP ._.
+al._FW ,_, 2006_CD -RRB-_-RRB- ._.
+In_IN biclustering_NN ,_, each_DT object_NN in_IN a_DT cluster_NN is_VBZ selected_VBN only_RB using_VBG a_DT subset_NN of_IN features_NNS and_CC each_DT feature_NN in_IN a_DT cluster_NN is_VBZ selected_VBN only_RB using_VBG a_DT subset_NN of_IN objects_NNS ._.
+In_IN this_DT way_NN ,_, it_PRP
+es_NNS have_VBP been_VBN previously_RB employed_VBN to_TO produce_VB clusterings_NNS -LRB-_-LRB- 36_CD -RRB-_-RRB- ._.
+There_EX has_VBZ been_VBN increasing_VBG use_NN of_IN techniques_NNS based_VBN on_IN graphs_NNS induced_VBN by_IN implicit_JJ relationships_NNS between_IN documents_NNS or_CC other_JJ linguistic_JJ items_NNS =_JJ -_: =[_NN 9_CD ,_, 3_CD ,_, 12_CD ,_, 4_CD ,_, 24_CD ,_, 28_CD ,_, 38_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT work_NN in_IN the_DT domain_NN of_IN text_NN summarization_NN -LRB-_-LRB- 4_CD ,_, 24_CD -RRB-_-RRB- most_JJS resembles_VBZ ours_PRP ,_, in_IN that_IN it_PRP also_RB computes_VBZ centrality_NN on_IN graphs_NNS -LRB-_-LRB- although_IN the_DT nodes_NNS correspond_VBP to_TO sentences_NNS or_CC terms_NNS instead_RB of_IN documents_NNS -RRB-_-RRB- ._.
+Pe_NN
+s_NN of_IN functional_JJ information_NN ._.
+Efficient_JJ algebraic_JJ approaches_NNS based_VBN on_IN spectral_JJ graph_NN theory_NN have_VBP been_VBN proposed_VBN to_TO co-cluster_VB the_DT two_CD dimensional_JJ geneexpression_NN -LRB-_-LRB- Ernst_NNP et_FW al._FW ,_, 2002_CD -RRB-_-RRB- ,_, and_CC word-document_NN -LRB-_-LRB- =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =--RRB-_NN datasets_NNS ;_: dense_JJ blocks_NNS in_IN the_DT permuted_JJ matrix_NN represent_VBP co-clusters_NNS ._.
+The_DT main_JJ limitation_NN with_IN this_DT approach_NN is_VBZ that_IN the_DT co-clusters_NNS are_VBP non-overlapping_JJ and_CC it_PRP is_VBZ difficult_JJ to_TO assess_VB their_PRP$ significan_NN
+ces_NNS ,_, specifically_RB to_TO the_DT Yeast_NN Saccharomyces_FW Cerevisiae_FW cell_NN cycle_NN expression_NN data_NNS with_IN 2,884_CD genes_NNS and_CC 17_CD conditions_NNS and_CC the_DT human_JJ B-cells_NNS expression_NN data_NNS with_IN 4,026_CD genes_NNS and_CC 96_CD conditions_NNS ._.
+Dhillon_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: used_VBN biclustering_VBG to_TO perform_VB simultaneous_JJ clustering_NN of_IN documents_NNS and_CC words_NNS by_IN considering_VBG a_DT word-bydocument_JJ matrix_NN with_IN the_DT rows_NNS corresponding_VBG to_TO words_NNS ,_, the_DT columns_NNS to_TO documents_NNS ,_, and_CC a_DT non-zero_JJ elem_NN
+ysis_NN here_RB is_VBZ quite_RB general_JJ and_CC applies_VBZ to_TO any_DT bi-partite_JJ graph_NN with_IN weighted_JJ edges_NNS ;_: in_IN particular_JJ ,_, very_RB similar_JJ problems_NNS arise_VBP in_IN related_JJ areas_NNS of_IN bioinformatics_NNS and_CC in_IN other_JJ data_NNS mining_NN applications_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 8_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 12_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+3_CD Optimization_NN Viewpoint_NN Let_NNP pi_NNP 2_CD -LCB-_-LRB- -_: 12_CD ,_, 12_CD -RCB-_-RRB- be_VB an_DT indicator_NN vector_NN component_NN that_WDT determines_VBZ whether_IN gene_NN i_FW is_VBZ placed_VBN in_IN group_NN A_NNP or_CC B._NNP Similarly_RB ,_, let_VB qj_NN 2_CD -LCB-_-LRB- -_: 12_CD ,_, 12_CD -RCB-_-RRB- be_VB an_DT indi_NN
+st_IN cases_NNS ,_, we_PRP set_VBD k_NN =_JJ ℓ_NN ._.
+This_DT form_NN gives_VBZ a_DT good_JJ framework_NN for_IN simultaneously_RB clustering_VBG the_DT rows_NNS and_CC columns_NNS of_IN X._NNP Simultaneously_RB rows_NNS and_CC columns_NNS clustering_NN using_VBG Laplacian_JJ matrix_NN has_VBZ been_VBN studied_VBN in_IN =_JJ -_: =[_NN 7_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+NMF_NN is_VBZ one_CD type_NN of_IN matrix_NN factorizations_NNS ._.
+There_EX are_VBP other_JJ types_NNS of_IN factorizations_NNS -LRB-_-LRB- 6_CD ,_, 17_CD ,_, 33_CD ,_, 24_CD ,_, 23_CD ,_, 21_CD -RRB-_-RRB- ._.
+Others_NNS include_VBP Latent_JJ Semantic_JJ Indexing_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, scaled_VBN PCA_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, generalized_JJ SVD_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, etc._NN ._.
+He_PRP
+data_NNS is_VBZ usually_RB modeled_VBN as_IN matrices_NNS such_JJ that_IN techniques_NNS proposed_VBN for_IN one_CD dyadic_JJ dataset_NN will_MD appeal_VB to_TO other_JJ forms_NNS of_IN dyadic_JJ data_NNS ._.
+For_IN instance_NN ,_, Latent_JJ Semantic_JJ Indexing_NN -LRB-_-LRB- LSI_NNP -RRB-_-RRB- -LRB-_-LRB- 15_CD -RRB-_-RRB- and_CC co-clustering_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT are_VBP originally_RB proposed_VBN for_IN -LRB-_-LRB- term_NN ,_, document_NN -RRB-_-RRB- dyadic_JJ data_NNS have_VBP found_VBN their_PRP$ ways_NNS into_IN bioinformatics_NNS -LRB-_-LRB- 20_CD ,_, 18_CD -RRB-_-RRB- ._.
+Matrix_NNP factorization_NN is_VBZ a_DT commonly_RB used_VBN approach_NN to_TO understanding_VBG the_DT latent_JJ structur_NN
+th_DT points_NNS and_CC their_PRP$ attributes_NNS by_IN way_NN of_IN utilizing_VBG the_DT canonical_JJ duality_NN contained_VBN in_IN the_DT point-by-attribute_JJ data_NNS representation_NN is_VBZ similar_JJ to_TO the_DT optimization_NN procedure_NN in_IN co-clustering_NN mentioned_VBN in_IN =_JJ -_: =[_NN 60_CD ,_, 61_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT procedure_NN is_VBZ also_RB applied_VBN to_TO the_DT problem_NN of_IN clustering_NN gene_NN expression_NN data_NNS -LRB-_-LRB- 62_CD -RRB-_-RRB- ._.
+In_IN experiments_NNS ,_, Li_NNP compared_VBD ASI_NNP with_IN the_DT traditional_JJ K-means_NNS algorithm_NN and_CC the_DT algorithms_NNS provided_VBN in_IN the_DT CLUTO_NN
+athology_NN stems_VBZ from_IN the_DT basic_JJ objective_NN :_: the_DT minimum_NN of_IN the_DT sum_NN of_IN cut-through_JJ edge_NN weights_NNS depends_VBZ directly_RB on_IN the_DT sizes_NNS of_IN the_DT cut_NN sets_NNS ;_: normalizing_VBG for_IN the_DT cut_NN size_NN leads_VBZ to_TO ratiocut_JJ optimization_NN -LRB-_-LRB- =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =--RRB-_NN constrained_VBN by_IN the_DT known_JJ labels_NNS -LRB-_-LRB- Joachims_NNP ,_, 2003_CD -RRB-_-RRB- ._.
+The_DT mincut_JJ partition_NN corresponds_VBZ to_TO the_DT most_RBS probable_JJ joint_JJ labeling_NN of_IN the_DT graph_NN -LRB-_-LRB- taking_VBG an_DT MRF_NN perspective_NN -RRB-_-RRB- ,_, whereas_IN as_IN discussed_VBN earlier_RBR we_PRP often_RB
+until_IN k_NN clusters_NNS are_VBP found_VBN ._.
+POCA_NN is_VBZ more_RBR close_JJ to_TO agglomerative_JJ although_IN it_PRP does_VBZ not_RB have_VB predefined_VBN cluster_NN numbers_NNS ._.
+Many_JJ data_NNS type_NN arising_VBG from_IN cluster_NN applications_NNS can_MD be_VB modeled_VBN as_IN bipartite_JJ graph_NN =_JJ -_: =[_NN 8_CD ,_, 18_CD ,_, 16_CD -RRB-_-RRB- -_: =_JJ -_: examples_NNS include_VBP users_NNS and_CC ranked_VBD items_NNS in_IN collaborative_JJ recommendation_NN systems_NNS -LRB-_-LRB- 3_CD ,_, 4_CD -RRB-_-RRB- ,_, gene_NN and_CC patient_NN in_IN clustering_NN of_IN microarray_NN -LRB-_-LRB- 22_CD ,_, 26_CD ,_, 15_CD ,_, 23_CD ,_, 25_CD -RRB-_-RRB- ._.
+Bipartite_JJ clusters_NNS treat_VBP two_CD types_NNS of_IN objects_NNS
+e_LS hierarchy_NN ._.
+The_DT popular_JJ classes_NNS of_IN document_NN clustering_NN algorithms_NNS are_VBP k-means_NN and_CC its_PRP$ variants_NNS ,_, hierarchical_JJ agglomerative_JJ clustering_NN -LRB-_-LRB- HAC_NN -RRB-_-RRB- methods_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- ,_, and_CC more_RBR recently_RB ,_, graph_NN partitioning_VBG methods_NNS =_JJ -_: =[_NN 2_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+For_IN k-means_NNS ,_, the_DT best_JJS performing_VBG similarity_NN measure_NN between_IN documents_NNS is_VBZ the_DT cosine_NN measure_NN between_IN two_CD document_NN vectors_NNS -LRB-_-LRB- 4_CD ,_, 5_CD -RRB-_-RRB- ._.
+HAC_NN algorithms_NNS start_VBP with_IN singleton_NN documents_NNS as_IN clusters_NNS ,_, and_CC iterat_NN
+matrix_NN in_IN which_WDT nearby_JJ rows_NNS and_CC columns_NNS should_MD exhibit_VB similar_JJ behavior_NN ._.
+In_IN sections_NNS 2_CD and_CC 5_CD we_PRP illustrate_VBP these_DT uses_NNS of_IN the_DT singular_JJ vectors_NNS ._.
+The_DT idea_NN of_IN using_VBG the_DT SVD_NN for_IN bi-clustering_NN appears_VBZ in_IN =_JJ -_: =[_NN 3_CD ,_, 9_CD -RRB-_-RRB- -_: =_JJ -_: and_CC has_VBZ close_JJ connections_NNS with_IN Principal_NN Component_NNP Analysis_NNP -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+Dhillon_NNP 's_POS derivation_NN in_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- is_VBZ similar_JJ to_TO ours_PRP in_IN the_DT sense_NN that_IN it_PRP is_VBZ based_VBN in_IN relaxation_NN ,_, but_CC ,_, as_IN it_PRP is_VBZ designed_VBN for_IN document\/word_NN
+g_NN and_CC gene_NN expression_NN data_NN analysis_NN applications_NNS ._.
+The_DT information_NN bottleneck_NN as_IN a_DT general_JJ principle_NN ,_, has_VBZ been_VBN extended_VBN by_IN Friedman_NNP et_FW al._FW -LRB-_-LRB- 2001_CD -RRB-_-RRB- to_TO address_VB interesting_JJ bi-clustering_JJ or_CC co-clustering_JJ -LRB-_-LRB- =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =_JJ -_: ;_: Dhillon_NNP et_FW al._FW ,_, 2003_CD -RRB-_-RRB- and_CC multi-clustering_JJ problems_NNS ._.
+How_WRB the_DT model-based_JJ DA_NN clustering_NN can_MD be_VB adapted_VBN -LRB-_-LRB- or_CC combined_VBN with_IN IB_NN principle_NN -RRB-_-RRB- for_IN these_DT problems_NNS seems_VBZ to_TO be_VB another_DT promising_JJ future_JJ directio_NN
+a_DT set_NN of_IN relatively_RB balanced_JJ clusters_NNS ._.
+Frequency_NN sensitive_JJ competitive_JJ learning_NN -LRB-_-LRB- 1_CD ,_, 11_CD -RRB-_-RRB- penalizes_VBZ the_DT distance_NN to_TO large_JJ clusters_NNS thus_RB eliminates_VBZ empty_JJ clusters_NNS ._.
+Spectral_JJ graph_NN partitioning_VBG algorithms_NNS =_JJ -_: =[_NN 9_CD ,_, 17_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: use_VB a_DT modified_VBN minimum_NN cut_NN objective_NN that_WDT favors_VBZ balanced_JJ partitioning_NN since_IN exact_JJ minimum_JJ cut_NN solution_NN often_RB leads_VBZ to_TO completely_RB useless_JJ results_NNS -LRB-_-LRB- e.g._FW ,_, one_CD point_NN in_IN one_CD cluster_NN andsall_NN other_JJ points_NNS
+compress_VBP the_DT feature_NN space_NN much_RB more_RBR aggressively_RB while_IN still_RB maintaining_VBG state_NN of_IN the_DT art_NN classification_NN accuracy_NN ._.
+In_IN the_DT context_NN of_IN document_NN clustering_NN ,_, unsupervised_JJ feature_NN clustering_NN algorithms_NNS -LRB-_-LRB- =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =_JJ -_: ;_: Dhillon_NNP et_FW al._FW ,_, 2002_CD ;_: Dhillon_NNP et_FW al._FW ,_, 2003_CD ;_: El-Yaniv_NNP and_CC Souroujon_NNP ,_, 2001_CD ;_: Slonim_NNP and_CC Tishby_NNP ,_, 2000_CD -RRB-_-RRB- perform_VBP word_NN clustering_NN by_IN the_DT use_NN of_IN word-document_FW co-occurrence_FW matrix_NN ,_, which_WDT can_MD improve_VB the_DT per_IN
+ses_NNS from_IN a_DT collection_NN of_IN documents_NNS ,_, a_DT common_JJ approach_NN is_VBZ to_TO represent_VB the_DT collection_NN as_IN a_DT graph_NN in_IN which_WDT each_DT node_NN denotes_VBZ a_DT document_NN and_CC each_DT edge_NN weight_NN denotes_VBZ the_DT similarity_NN between_IN two_CD documents_NNS =_JJ -_: =[_NN 10_CD ,_, 35_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Usually_RB the_DT similarities_NNS are_VBP calculated_VBN based_VBN on_IN the_DT term-frequency_NN vectors_NNS of_IN documents_NNS ._.
+However_RB ,_, there_EX may_MD exist_VB documents_NNS which_WDT share_VBP no_RB or_CC very_RB few_JJ words_NNS with_IN each_DT other_JJ but_CC still_RB belong_VBP to_TO the_DT
+matrix_NN in_IN which_WDT nearby_JJ rows_NNS and_CC columns_NNS should_MD exhibit_VB similar_JJ behavior_NN ._.
+In_IN sections_NNS 2_CD and_CC 5_CD we_PRP illustrate_VBP these_DT uses_NNS of_IN the_DT singular_JJ vectors_NNS ._.
+The_DT idea_NN of_IN using_VBG the_DT SVD_NN for_IN bi-clustering_NN appears_VBZ in_IN =_JJ -_: =[_NN 3_CD ,_, 9_CD -RRB-_-RRB- -_: =_JJ -_: and_CC has_VBZ close_JJ connections_NNS with_IN Principal_NN Component_NNP Analysis_NNP -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+Dhillon_NNP 's_POS derivation_NN in_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- is_VBZ similar_JJ to_TO ours_PRP in_IN the_DT sense_NN that_IN it_PRP is_VBZ based_VBN in_IN relaxation_NN ,_, but_CC ,_, as_IN it_PRP is_VBZ designed_VBN for_IN document\/word_NN
+asure_NN -LRB-_-LRB- corollary_NN 2_CD -RRB-_-RRB- ._.
+In_IN section_NN 4_CD we_PRP turn_VBP to_TO spectral_JJ algorithms_NNS for_IN clustering_NN ._.
+These_DT algorithms_NNS are_VBP popular_JJ in_IN part_NN because_IN of_IN their_PRP$ speed_NN -LRB-_-LRB- see_VB section_NN 5_CD -RRB-_-RRB- and_CC applicability_NN in_IN a_DT variety_NN of_IN contexts_NNS =_JJ -_: =[_NN 1_CD ,_, 7_CD ,_, 16_CD ,_, 20_CD ,_, 21_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, while_IN performing_VBG quite_RB well_RB in_IN practice_NN ,_, they_PRP had_VBD hitherto_RB eluded_VBN a_DT rigorous_JJ worst-case_JJ analysis_NN ._.
+This_DT could_MD be_VB attributed_VBN to_TO the_DT fact_NN that_IN existing_VBG measures_NNS of_IN quality_NN have_VBP serious_JJ drawbac_NN
+ned_VBD the_DT similarity_NN of_IN documents_NNS by_IN the_DT similarity_NN of_IN their_PRP$ term_NN representations_NNS -LRB-_-LRB- i.e._FW ,_, the_DT cosine_NN distance_NN between_IN two_CD TF-IDF_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- vectors_NNS -RRB-_-RRB- until_IN the_DT concept_NN of_IN document-term_JJ coclustering_NN was_VBD proposed_VBN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 25_CD -RRB-_-RRB- ._.
+In_IN the_DT philosophy_NN of_IN coclustering_NN ,_, the_DT similarity_NN between_IN documents_NNS is_VBZ defined_VBN by_IN their_PRP$ term_NN representations_NNS while_IN the_DT similarity_NN between_IN terms_NNS is_VBZ defined_VBN by_IN their_PRP$ occurrences_NNS in_IN document_NN
+athology_NN stems_VBZ from_IN the_DT basic_JJ objective_NN :_: the_DT minimum_NN of_IN the_DT sum_NN of_IN cut-through_JJ edge_NN weights_NNS depends_VBZ directly_RB on_IN the_DT sizes_NNS of_IN the_DT cut_NN sets_NNS ;_: normalizing_VBG for_IN the_DT cut_NN size_NN leads_VBZ to_TO ratiocut_JJ optimization_NN -LRB-_-LRB- =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =--RRB-_NN constrained_VBN by_IN the_DT known_JJ labels_NNS -LRB-_-LRB- Joachims_NNP ,_, 2003_CD -RRB-_-RRB- ._.
+The_DT mincut_JJ partition_NN corresponds_VBZ to_TO the_DT most_RBS probable_JJ joint_JJ labeling_NN of_IN the_DT graph_NN -LRB-_-LRB- taking_VBG an_DT MRF_NN perspective_NN -RRB-_-RRB- ,_, whereas_IN as_IN discussed_VBN earlier_RBR we_PRP often_RB
+t_NN eigenvalue_NN =_JJ 0_CD ,_, associated_VBN eigenvector_NN e_SYM =_JJ T_NN 1_CD 1_CD ·_FW ·_FW ·_NN 1_CD assume_VBP connected_JJ graph_NN -LRB-_-LRB- any_DT pair_NN of_IN vertices_NNS is_VBZ connected_VBN by_IN a_DT path_NN along_IN non-zero_JJ weighted_JJ edges_NNS -RRB-_-RRB- =_JJ ⇒_NN all_DT other_JJ eigenvalues_NNS are_VBP positive_JJ =_JJ -_: =[_NN 3_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: eigenvalues_NNS are_VBP ordered_VBN ,_, and_CC 0_CD is_VBZ assumed_VBN unique_JJ 0_CD =_JJ λ1_NN -LRB-_-LRB- λ2_FW ≤_FW λ3_FW ≤_FW ·_FW ·_FW ·_FW ≤_FW λn_FW eigenvalues_NNS have_VBP corresponding_JJ ,_, mutually_RB orthogonal_JJ eigenvectors_NNS v1_NN ,_, v2_NN ,_, ..._: ,_, vn_NN with_IN v1_NN =_JJ e_SYM \/_: √_CD n_NN --_: p._NN 8sOn_NN the_DT Normal_JJ
+._.
+Let_VB T_NN and_CC C_NN denote_VBP the_DT random_JJ variables_NNS corresponding_VBG to_TO the_DT true_JJ class_NN and_CC the_DT cluster_NN label_NN ,_, respectively_RB ._.
+The_DT two_CD entropy-based_JJ measures_NNS are_VBP defined_VBN as_IN NMI_NN =_JJ H_NN -LRB-_-LRB- T_NN -RRB-_-RRB- +_CC H_NN -LRB-_-LRB- C_NN -RRB-_-RRB- −_NN H_NN -LRB-_-LRB- T_NN ,_, C_NN -RRB-_-RRB- H_NN -LRB-_-LRB- T_NN -RRB-_-RRB- H_NN -LRB-_-LRB- C_NN -RRB-_-RRB- ,_, =_JJ -_: =-LRB-_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: CE_NN =_JJ H_NN -LRB-_-LRB- T_NN |_NN C_NN -RRB-_-RRB- =_JJ H_NN -LRB-_-LRB- T_NN ,_, C_NN -RRB-_-RRB- −_NN H_NN -LRB-_-LRB- C_NN -RRB-_-RRB- -LRB-_-LRB- 4_CD -RRB-_-RRB- where_WRB H_NN -LRB-_-LRB- X_NN -RRB-_-RRB- denotes_VBZ the_DT entropy_NN of_IN X_NN and_CC log_NN 2_CD is_VBZ used_VBN here_RB in_IN computing_NN entropy_NN ._.
+NMI_NNP measures_VBZ the_DT shared_JJ information_NN between_IN T_NN and_CC C_NN and_CC it_PRP reaches_VBZ the_DT maximal_JJ value_NN
+hted_JJ graph_NN between_IN the_DT genes_NNS ._.
+So_RB we_PRP use_VBP a_DT graph_NN partitioning_VBG software_NN to_TO partition_NN this_DT graph_NN into_IN clusters_NNS ._.
+We_PRP can_MD also_RB construct_VB a_DT word_NN by_IN document_NN bi-partite_JJ graph_NN from_IN A_NNP and_CC run_VB the_DT Co-clustering_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: algorithm_NN on_IN it_PRP ._.
+1sAfter_NN obtaining_VBG a_DT clustering_NN of_IN the_DT data_NNS the_DT problem_NN of_IN validating_VBG the_DT clusters_NNS remains_VBZ ._.
+We_PRP use_VBP the_DT control_NN words_NNS from_IN the_DT file_NN yeast_NN gene_NN names_NNS to_TO validate_VB the_DT clusters_NNS ._.
+Essential_JJ
+ent_NN and_CC word_NN clustering_NN can_MD be_VB modeled_VBN with_IN a_DT bipartite_JJ ,_, where_WRB documents_NNS and_CC words_NNS are_VBP modeled_VBN as_IN vertices_NNS on_IN two_CD sides_NNS respectively_RB ,_, and_CC only_RB edges_VBZ linking_VBG different_JJ kinds_NNS of_IN vertices_NNS are_VBP considered_VBN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Finding_VBG an_DT optimal_JJ partitioning_NN in_IN such_JJ a_DT bipartite_JJ gives_VBZ a_DT co-clustering_NN of_IN documents_NNS and_CC words_NNS ._.
+It_PRP is_VBZ expected_VBN that_IN top_JJ documents_NNS and_CC words_NNS in_IN the_DT same_JJ cluster_NN can_MD represent_VB its_PRP$ topic_NN ,_, where_WRB top_JJ v_LS
+partitioning_VBG -LRB-_-LRB- Karypis_NNP ,_, 2002_CD -RRB-_-RRB- ,_, mixture_NN of_IN vMFs_NNS -LRB-_-LRB- Banerjee_NNP et_FW al._FW ,_, 2003_CD -RRB-_-RRB- ,_, information_NN bottleneck_NN -LRB-_-LRB- IB_NN -RRB-_-RRB- clustering_NN -LRB-_-LRB- Slonim_NNP and_CC Tishby_NNP ,_, 2000_CD -RRB-_-RRB- and_CC co-clustering_NN using_VBG bipartite_JJ spectral_JJ graph_NN partitioning_NN -LRB-_-LRB- =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =--RRB-_NN ._.
+This_DT richness_NN of_IN approaches_NNS prompts_VBZ a_DT need_NN for_IN detailed_JJ comparative_JJ studies_NNS to_TO establish_VB the_DT relative_JJ strengths_NNS or_CC weaknesses_NNS of_IN these_DT methods_NNS ._.
+Most_JJS clustering_NN methods_NNS proposed_VBN for_IN data_NN mining_NN -LRB-_-LRB- Ber_NN
+parameters_NNS to_TO tune_VB ._.
+The_DT other_JJ technique_NN that_WDT is_VBZ closely_RB related_JJ to_TO this_DT paper_NN is_VBZ the_DT co-clustering_JJ approaches_NNS ,_, which_WDT solves_VBZ the_DT problem_NN of_IN simultaneously_RB clustering_VBG rows_NNS and_CC columns_NNS of_IN a_DT data_NN matrix_NN ._.
+=_SYM -_: =[_NN 5_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: individually_RB developed_VBD a_DT co-clustering_JJ approach_NN by_IN using_VBG the_DT bipartite_JJ graph_NN formulation_NN and_CC spectral_JJ methods_NNS ,_, but_CC that_DT demanded_VBD that_IN each_DT row_NN cluster_NN was_VBD associated_VBN with_IN a_DT column_NN cluster_NN ._.
+Recently_RB ,_,
+``_`` improved_VBN ''_'' final_JJ clustering_NN ._.
+In_IN our_PRP$ ensemble_NN techniques_NNS we_PRP reduce_VBP the_DT problem_NN of_IN defining_VBG a_DT consensus_NN function_NN to_TO a_DT graph_NN partitioning_VBG problem_NN ._.
+This_DT approach_NN has_VBZ shown_VBN good_JJ results_NNS in_IN the_DT literature_NN =_JJ -_: =[_NN 5_CD ,_, 22_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT next_JJ sections_NNS ,_, we_PRP introduce_VBP our_PRP$ two_CD consensus_NN functions_NNS for_IN categorical_JJ features_NNS using_VBG the_DT clustering_NN results_NNS produced_VBN by_IN COOLCAT_NN ._.
+4.1_CD Motivation_NN To_TO enhance_VB the_DT accuracy_NN of_IN the_DT clustering_NN giv_NN
+gular_JJ vectors_NNS of_IN a_DT 3_CD From_IN http:\/\/mathworld.wolfram.com\/BipartiteGraph.html_NN suitably_RB normalized_VBD user-movie_JJ matrix_NN gives_VBZ an_DT optimal_JJ solution_NN to_TO the_DT real_JJ relaxation_NN of_IN this_DT discrete_JJ optimization_NN problem_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+More_RBR recently_RB ,_, a_DT bipartite_JJ isoperimetric_JJ graph_NN partitioning_VBG approach_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- is_VBZ also_RB proposed_VBN to_TO solve_VB this_DT NP-complete_JJ graph_NN partition_NN problem_NN ._.
+Due_JJ to_TO the_DT sparsity_NN of_IN ratings_NNS in_IN the_DT data_NNS set_NN ,_, it_PRP is_VBZ ne_NN
+and_CC framework_NN -LRB-_-LRB- shown_VBN in_IN Figure_NNP 2_CD -RRB-_-RRB- ,_, which_WDT facilitates_VBZ the_DT automatic_JJ generation_NN of_IN a_DT documentary_NN ._.
+5_CD 2_CD 3sCOCLUSTERING_NN OF_IN NEWS_NNP STORIES_NNP Two-way_JJ clustering_NN ,_, namely_RB coclustering_VBG ,_, was_VBD originally_RB proposed_VBN in_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: to_TO exploit_VB the_DT duality_NN of_IN documents_NNS and_CC words_NNS ._.
+Recently_RB ,_, this_DT technique_NN is_VBZ employed_VBN in_IN -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 8_CD -RRB-_-RRB- for_IN shotbased_JJ topic_NN labeling_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC cross-source_JJ story_NN clustering_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+While_IN both_DT -LRB-_-LRB- 3_CD -RRB-_-RRB- and_CC -LRB-_-LRB- 8_CD -RRB-_-RRB- consi_NN
+long_RB the_DT second_JJ dimension_NN ._.
+Such_JJ a_DT duality_NN between_IN document_NN and_CC word_NN clustering_NN can_MD be_VB naturally_RB formulated_VBN in_IN a_DT bipartite_JJ graph_NN ,_, with_IN documents_NNS and_CC words_NNS modeled_VBN as_IN vertices_NNS on_IN two_CD sides_NNS respectively_RB =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Finding_VBG an_DT ∗_NNP DongGuan_NNP University_NNP of_IN Technology_NNP ,_, tmhu05@gmail.com_NNP †_NNP Rutgers_NNP University_NNP ,_, hxiong@andromeda.rutgers.edu_NNP ‡_NNP South_NNP Texas_NNP College_NNP ,_, sysung@southtexascollege.edu_NNP optimal_JJ partitioning_NN in_IN such_JJ a_DT
+nts_NNS ,_, the_DT closer_JJR they_PRP are_VBP ._.
+This_DT type_NN of_IN clustering_NN can_MD be_VB useful_JJ in_IN building_VBG statistical_JJ thesaurus_NN and_CC query_NN reformulation_NN ._.
+The_DT problem_NN of_IN simultaneously_RB clustering_VBG words_NNS and_CC documents_NNS is_VBZ discussed_VBN in_IN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT primary_JJ assumption_NN in_IN -LRB-_-LRB- 26_CD -RRB-_-RRB- is_VBZ that_IN word_NN clustering_NN has_VBZ influence_NN on_IN document_NN clustering_NN ,_, and_CC so_RB does_VBZ document_NN clustering_NN on_IN word_NN clustering_NN ._.
+A_DT given_VBN word_NN wi_NN belongs_VBZ to_TO the_DT word_NN cluster_NN Wm_NN if_IN its_PRP$
+apan_NN ,_, US_NNP -RCB-_-RRB- -LRB-_-LRB- M_NN =_JJ 3_CD -RRB-_-RRB- ._.
+The_DT corresponding_JJ graph_NN G_NN is_VBZ shown_VBN in_IN Figure_NNP 11_CD ._.
+We_PRP fix_VBP the_DT number_NN of_IN topics_NNS K_NN that_IN we_PRP want_VBP to_TO discover_VB from_IN the_DT bipartite_JJ graph_NN G_NN and_CC apply_VB the_DT spectral_JJ graph_NN partitioning_VBG technique_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: to_TO partition_NN G_NN into_IN K_NN subgraphs_NNS ._.
+The_DT spectral_JJ technique_NN partitions_NNS the_DT graph_NN such_JJ that_IN each_DT subgraph_NN has_VBZ greater_JJR internal_JJ association_NN that_IN external_JJ association_NN ._.
+Each_DT subgraph_NN is_VBZ considered_VBN to_TO be_VB a_DT to_TO
+computationally_RB inefficient_JJ ,_, requiring_VBG a_DT complexity_NN of_IN O_NN -LRB-_-LRB- N_NN 2_CD -RRB-_-RRB- ._.
+Despite_IN this_DT disadvantage_NN ,_, discriminative_JJ methods_NNS such_JJ as_IN graph_NN partitioning_NN and_CC spectral_JJ clustering_NN algorithms_NNS -LRB-_-LRB- Karypis_NNP et_FW al._FW ,_, 1999_CD ;_: =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =_JJ -_: ;_: Meila_NNP and_CC Shi_NNP ,_, 2001_CD ;_: Ng_NN et_FW al._FW ,_, 2002_CD ;_: Strehl_NNP and_CC Ghosh_NNP ,_, 2002_CD -RRB-_-RRB- have_VBP gained_VBN recent_JJ popularity_NN due_JJ to_TO their_PRP$ ability_NN to_TO produce_VB desirable_JJ clustering_NN results_NNS ._.
+For_IN model-based_JJ clustering_NN approaches_NNS ,_, the_DT m_NN
+idea_NN of_IN action_NN is_VBZ very_RB similar_JJ to_TO our_PRP$ incremental_JJ LS_NN strategy_NN in_IN coclustering_NN -LRB-_-LRB- see_VB Section_NNP 3_CD -RRB-_-RRB- ._.
+Kluger_NNP et_FW al._FW -LRB-_-LRB- 28_CD -RRB-_-RRB- apply_VB a_DT spectral_JJ coclustering_NN algorithm_NN ,_, motivated_VBN by_IN Dhillon_NNP 's_POS bipartite_JJ formulation_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_JJ -_: ,_, on_IN gene_NN expression_NN data_NNS to_TO produce_VB a_DT ``_`` checkerboard_NN ''_'' structure_NN ._.
+The_DT largest_JJS several_JJ left_JJ and_CC right_JJ singular_JJ vectors_NNS of_IN the_DT normalized_VBN gene_NN expression_NN matrix_NN are_VBP computed_VBN and_CC then_RB a_DT final_JJ clustering_NN s_NN
+suggests_VBZ that_IN it_PRP is_VBZ better_JJR to_TO employ_VB a_DT learning_NN based_JJ approach_NN ._.
+6_CD Related_NNP Work_NNP Most_NNP existing_VBG work_NN on_IN using_VBG relation_NN information_NN in_IN learning_NN is_VBZ for_IN classification_NN -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 19_CD ,_, 1_CD -RRB-_-RRB- -RRB-_-RRB- and_CC clustering_NN -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 4_CD ,_, 15_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+To_TO the_DT best_JJS of_IN our_PRP$ knowledge_NN ,_, there_EX was_VBD not_RB much_JJ work_NN on_IN using_VBG relation_NN for_IN ranking_NN ,_, except_IN Relational_JJ Ranking_NN SVM_NN -LRB-_-LRB- RRSVM_NN -RRB-_-RRB- proposed_VBN in_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, which_WDT is_VBZ based_VBN on_IN a_DT similar_JJ motivation_NN as_IN our_PRP$ work_NN ._.
+Ther_NN
+by_IN only_RB using_VBG relation_NN information_NN -LRB-_-LRB- 38_CD ,_, 37_CD -RRB-_-RRB- ,_, while_IN the_DT others_NNS try_VBP to_TO use_VB both_CC content_NN and_CC relation_NN information_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+Cluster_NN on_IN graph_NN data_NNS is_VBZ another_DT example_NN of_IN using_VBG relation_NN information_NN in_IN learning_NN =_JJ -_: =[_NN 9_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Some_DT existing_VBG methods_NNS make_VBP use_NN of_IN similarity_NN relation_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ,_, while_IN the_DT others_NNS make_VBP use_NN of_IN co-occurrence_NN relation_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+The_DT major_JJ difference_NN between_IN our_PRP$ work_NN and_CC these_DT work_NN is_VBZ that_IN ours_PRP is_VBZ based_VBN on_IN sup_NN
+ging_NN ,_, but_CC averaging_NN gave_VBD better_JJR results_NNS ._.
+Spectral_JJ Co-clustering_NN A_DT different_JJ approach_NN to_TO averaging_VBG the_DT preferences_NNS of_IN other_JJ users_NNS together_RB is_VBZ clustering_NN ._.
+We_PRP use_VBP the_DT spectral_JJ co-clustering_JJ approach_NN of_IN -LRB-_-LRB- =_JJ -_: =_JJ Dhillon_NNP ,_, 2001_CD -_: =--RRB-_NN ,_, which_WDT simultaneously_RB embeds_VBZ users_NNS and_CC items_NNS onto_IN a_DT low-dimensional_JJ space_NN ._.
+Applying_VBG the_DT idea_NN to_TO our_PRP$ current_JJ task_NN ,_, we_PRP derive_VBP the_DT first_JJ s_NN left_NN and_CC right_JJ singular_JJ vectors_NNS of_IN G_NN and_CC embed_VBD both_DT users_NNS and_CC
+also_RB been_VBN used_VBN to_TO cluster_VB documents_NNS based_VBN on_IN their_PRP$ citation_NN structure_NN ._.
+Citation_NNP -LRB-_-LRB- and_CC co-citation_NN -RRB-_-RRB- analysis_NN is_VBZ quite_RB old_JJ -LRB-_-LRB- 23_CD -RRB-_-RRB- ._.
+More_RBR recent_JJ research_NN uses_VBZ newer_JJR clustering_NN algorithms_NNS ,_, including_VBG spectral_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, information_NN theoretic_JJ -LRB-_-LRB- 3_CD -RRB-_-RRB- or_CC Bayesian_JJ models_NNS ._.
+Latent_JJ Dirichlet_NNP Allocation_NNP -LRB-_-LRB- LDA_NNP -RRB-_-RRB- is_VBZ also_RB increasingly_RB used_VBN to_TO cluster_VB documents_NNS ,_, including_VBG their_PRP$ evolution_NN over_IN time_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Other_JJ papers_NNS deal_VBP with_IN the_DT si_NN
+also_RB been_VBN used_VBN to_TO cluster_VB documents_NNS based_VBN on_IN their_PRP$ citation_NN structure_NN ._.
+Citation_NNP -LRB-_-LRB- and_CC co-citation_NN -RRB-_-RRB- analysis_NN is_VBZ quite_RB old_JJ -LRB-_-LRB- 23_CD -RRB-_-RRB- ._.
+More_RBR recent_JJ research_NN uses_VBZ newer_JJR clustering_NN algorithms_NNS ,_, including_VBG spectral_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, information_NN theoretic_JJ -LRB-_-LRB- 3_CD -RRB-_-RRB- or_CC Bayesian_JJ models_NNS ._.
+Latent_JJ Dirichlet_NNP Allocation_NNP -LRB-_-LRB- LDA_NNP -RRB-_-RRB- is_VBZ also_RB increasingly_RB used_VBN to_TO cluster_VB documents_NNS ,_, including_VBG their_PRP$ evolution_NN over_IN time_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ._.
+Other_JJ papers_NNS deal_VBP with_IN the_DT si_NN
+easure_VB how_WRB characteristic_JJ a_DT given_VBN sound_NN correspondence_NN is_VBZ for_IN a_DT given_VBN site_NN ._.
+To_TO study_VB varietal_JJ relatedness_NN and_CC its_PRP$ linguistic_JJ basis_NN in_IN parallel_NN ,_, we_PRP apply_VBP bipartite_JJ spectral_JJ graph_NN partitioning_NN ._.
+Dhillon_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_JJ -_: was_VBD the_DT first_JJ to_TO use_VB spectral_JJ graph_NN partitioning_VBG on_IN a_DT bipartite_JJ graph_NN of_IN documents_NNS and_CC words_NNS ,_, effectively_RB clustering_VBG groups_NNS of_IN documents_NNS and_CC words_NNS simultaneously_RB ._.
+Consequently_RB ,_, every_DT document_NN cluster_NN
+d._VB The_DT idea_NN of_IN action_NN is_VBZ very_RB similar_JJ to_TO our_PRP$ incremental_JJ co-clustering_JJ algorithms_NNS -LRB-_-LRB- see_VB Section_NNP 4.2_CD -RRB-_-RRB- ._.
+Kluger_NNP et_FW al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- apply_VB a_DT spectral_JJ co-clustering_JJ algorithm_NN similar_JJ to_TO the_DT one_NN proposed_VBN by_IN Dhillon_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: on_IN gene_NN expression_NN data_NNS to_TO produce_VB ``_`` checkerboard_JJ ''_'' structure_NN ._.
+The_DT largest_JJS several_JJ left_JJ and_CC right_JJ singular_JJ vectors_NNS of_IN the_DT normalized_VBN gene_NN expression_NN matrix_NN are_VBP computed_VBN and_CC then_RB a_DT final_JJ clustering_NN step_NN
+some_DT early_JJ work_NN on_IN co-clustering_NN ,_, such_JJ as_IN -LRB-_-LRB- 11_CD -RRB-_-RRB- which_WDT was_VBD limited_VBN to_TO problems_NNS of_IN small_JJ sizes_NNS and_CC used_VBD a_DT local_JJ greedy_JJ splitting_NN procedure_NN to_TO identify_VB hierarchical_JJ row_NN and_CC column_NN clusters_NNS ._.
+More_RBR recently_RB =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: used_VBD a_DT bipartite_JJ graph_NN formulation_NN and_CC a_DT spectral_JJ heuristic_NN that_WDT uses_VBZ eigenvectors_NNS to_TO co-cluster_JJ documents_NNS and_CC words_NNS ;_: however_RB ,_, a_DT restriction_NN in_IN -LRB-_-LRB- 4_CD -RRB-_-RRB- was_VBD that_IN each_DT word_NN 4_CD cluster_NN was_VBD associated_VBN with_IN a_DT
+at_IN the_DT low-rank_JJ matrix_NN representation_NN remains_VBZ accurate_JJ while_IN F_NN gives_VBZ row_NN clusters_NNS and_CC G_NN gives_VBZ column_NN clusters_NNS ._.
+This_DT form_NN gives_VBZ a_DT good_JJ framework_NN for_IN simultaneously_RB clustering_VBG the_DT rows_NNS and_CC columns_NNS of_IN X_NN =_JJ -_: =[_NN 6_CD ,_, 18_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+An_DT important_JJ special_JJ case_NN is_VBZ that_IN the_DT input_NN X_NN contains_VBZ a_DT matrix_NN of_IN pairwise_JJ similarities_NNS :_: X_NN =_JJ X_NN T_NN =_JJ W_NN ._.
+In_IN this_DT case_NN ,_, F_NN =_JJ G_NN =_JJ H_NN ,_, S_NN =_JJ I._NNP This_NNP reduces_VBZ to_TO the_DT SNMF_NN :_: min_NN H_NN ≥_NN 0_CD ‖_NN X_NN −_NN HHT_NN ‖_NN 2_CD ,_, s.t._NN H_NN T_NN H_NN =_JJ
+rtant_JJ and_CC 22necessary_JJ to_TO develop_VB and_CC apply_VB generic_JJ and_CC domain-specific_JJ quality_NN measures_NNS in_IN cluster_NN evaluation_NN ._.
+There_EX are_VBP also_RB some_DT works_NNS on_IN using_VBG bipartite_JJ graph_NN theory_NN to_TO cluster_VB transactional_JJ data_NN =_JJ -_: =[_NN 1_CD ,_, 25_CD ,_, 13_CD ,_, 33_CD ,_, 12_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Clustering_NN algorithms_NNS based_VBN on_IN partitioning_VBG bipartite_JJ graph_NN usually_RB generate_VBP co-clustering_NN results_NNS ,_, where_WRB columns_NNS and_CC rows_NNS of_IN the_DT dataset_NN are_VBP partitioned_VBN at_IN the_DT same_JJ time_NN ._.
+If_IN they_PRP are_VBP applied_VBN to_TO tra_VB
+uster_NN assumptions_NNS while_IN incorporating_VBG semi-supervision_NN along_IN both_DT dimensions_NNS ._.
+We_PRP begin_VBP by_IN introducing_VBG a_DT bipartite_JJ graph_NN representation_NN of_IN the_DT data_NNS ,_, previously_RB utilized_VBN in_IN the_DT context_NN of_IN co-clustering_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP then_RB formulate_VBP joint_JJ sentiment_NN classification_NN of_IN documents_NNS and_CC words_NNS in_IN terms_NNS of_IN transductive_JJ prediction_NN on_IN this_DT graph_NN whose_WP$ nodes_NNS are_VBP viewed_VBN to_TO be_VB partially_RB labeled_VBN ._.
+However_RB ,_, since_IN this_DT approach_NN
+tial_JJ directions_NNS towards_IN multivariate_JJ clustering_NN started_VBN with_IN the_DT simultaneous_JJ clustering_NN of_IN both_DT rows_NNS and_CC columns_NNS of_IN contingency_NN tables_NNS ,_, also_RB known_VBN as_IN coclustering_NN ,_, biclustering_NN ,_, or_CC block_NN clustering_NN ._.
+=_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: proposed_VBD a_DT spectral_JJ graph_NN bipartitioning_VBG algorithm_NN that_IN clusters_NNS documents_NNS based_VBN on_IN words_NNS ,_, and_CC words_NNS based_VBN on_IN documents_NNS by_IN finding_VBG the_DT normalized_VBN cut_NN of_IN the_DT bipartite_JJ graph_NN ._.
+The_DT same_JJ problem_NN has_VBZ been_VBN

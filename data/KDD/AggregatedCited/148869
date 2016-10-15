@@ -1,0 +1,161 @@
+DualMiner_NNP :_: a_DT dual-pruning_JJ algorithm_NN for_IN itemsets_NNS with_IN constraints_NNS
+Constraint-based_JJ mining_NN of_IN itemsets_NNS for_IN questions_NNS such_JJ as_IN ``_`` find_VB all_DT frequent_JJ itemsets_NNS where_WRB the_DT total_JJ price_NN is_VBZ at_IN least_JJS $_$ 50_CD ''_'' has_VBZ received_VBN much_JJ attention_NN recently_RB ._.
+Two_CD classes_NNS of_IN constraints_NNS ,_, monotone_NN and_CC antimonotone_NN ,_, have_VBP been_VBN identified_VBN as_RB very_RB useful_JJ ._.
+There_EX are_VBP algorithms_NNS that_WDT efficiently_RB take_VBP advantage_NN of_IN either_DT one_CD of_IN these_DT two_CD classes_NNS ,_, but_CC no_DT previous_JJ algorithms_NNS can_MD efficiently_RB handle_VB both_DT types_NNS of_IN constraints_NNS simultaneously_RB ._.
+In_IN this_DT paper_NN ,_, we_PRP present_VBP the_DT first_JJ algorithm_NN -LRB-_-LRB- called_VBN DualMiner_NNP -RRB-_-RRB- that_WDT uses_VBZ both_DT monotone_NN and_CC antimonotone_NN constraints_NNS to_TO prune_VB its_PRP$ search_NN space_NN ._.
+We_PRP complement_VBP a_DT theoretical_JJ analysis_NN and_CC proof_NN of_IN correctness_NN of_IN DualMiner_NNP with_IN an_DT experimental_JJ study_NN that_WDT shows_VBZ the_DT efficacy_NN of_IN DualMiner_NNP compared_VBN to_TO previous_JJ work_NN ._.
+acted_VBD from_IN the_DT original_JJ datasets_NNS ._.
+Our_PRP$ work_NN is_VBZ also_RB related_VBN with_IN constraint_NN frequent_JJ itemset_NN mining_NN ,_, which_WDT can_MD guide_VB users_NNS to_TO discover_VB useful_JJ information_NN and_CC speedup_NN mining_NN process_NN on_IN a_DT single_JJ dataset_NN =_JJ -_: =[_NN 4_CD ,_, 20_CD ,_, 23_CD ,_, 24_CD ,_, 28_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT queries_NNS across_IN multiple_JJ datasets_NNS is_VBZ complementary_JJ to_TO such_JJ constraint_NN mining_NN ,_, since_IN they_PRP can_MD also_RB help_VB users_NNS to_TO discover_VB and_CC focus_VB the_DT potentially_RB useful_JJ patterns_NNS ._.
+We_PRP also_RB note_VBP that_IN a_DT number_NN of_IN r_NN
+On_IN the_DT contrary_JJ ,_, Music-dfs_JJ is_VBZ based_VBN on_IN a_DT depth_NN first_JJ search_NN strategy_NN ._.
+The_DT key_JJ idea_NN is_VBZ to_TO use_VB a_DT new_JJ closure_NN operator_NN enabling_VBG an_DT efficient_JJ interval_JJ pruning_NN for_IN various_JJ constraints_NNS -LRB-_-LRB- see_VB Section_NNP 3_CD -RRB-_-RRB- ._.
+In_IN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, the_DT authors_NNS also_RB benefit_VBP from_IN intervals_NNS to_TO prune_VB the_DT search_NN space_NN ,_, but_CC their_PRP$ approach_NN is_VBZ restricted_JJ to_TO the_DT conjunction_NN of_IN one_CD monotone_NN constraint_NN and_CC one_CD anti-monotone_JJ constraint_NN ._.
+The_DT output_NN of_IN Musi_NN
+TRODUCTION_NN For_IN quite_RB some_DT time_NN ,_, the_DT data_NNS mining_NN community_NN has_VBZ been_VBN interested_JJ in_IN constraint-based_JJ mining_NN ,_, that_DT is_VBZ ,_, the_DT use_NN of_IN constraints_NNS to_TO specify_VB the_DT desired_VBN properties_NNS of_IN the_DT patterns_NNS to_TO be_VB mined_VBN =_JJ -_: =[_NN 1_CD ,_, 4_CD ,_, 5_CD ,_, 6_CD ,_, 8_CD ,_, 11_CD ,_, 12_CD ,_, 15_CD ,_, 16_CD ,_, 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT task_NN of_IN the_DT data_NNS mining_NN system_NN is_VBZ then_RB to_TO generate_VB all_DT patterns_NNS satisfying_VBG the_DT constraints_NNS ._.
+A_DT wide_JJ variety_NN of_IN constraints_NNS for_IN local_JJ pattern_NN mining_NN exist_VBP and_CC have_VBP been_VBN implemented_VBN in_IN an_DT even_RB wide_JJ
+nt_NN itemsets_NNS ._.
+Note_VB that_IN the_DT data_NNS mining_NN process_NN may_MD produce_VB thousands_NNS of_IN rules_NNS ,_, many_JJ of_IN which_WDT are_VBP uninteresting_JJ to_TO users_NNS ._.
+Hence_RB ,_, several_JJ applications_NNS have_VBP called_VBN for_IN the_DT use_NN of_IN constrained_VBN rule_NN mining_NN =_JJ -_: =[_NN 4_CD ,_, 12_CD ,_, 13_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Specifically_RB ,_, in_IN constraint-based_JJ mining_NN ,_, which_WDT is_VBZ performed_VBN under_IN the_DT guidance_NN of_IN various_JJ of_IN constraints_NNS provided_VBN by_IN the_DT user_NN ._.
+The_DT constraints_NNS addressed_VBN in_IN the_DT prior_JJ works_NNS include_VBP the_DT following_NN :_: -LRB-_-LRB- 1_CD
+e_LS recherche_NN qui_VBD a_DT été_FW très_FW étudié_FW ces_FW dernières_FW années_NNS -LRB-_-LRB- Srikant_NNP et_FW al._FW ,_, 1997_CD ;_: Ng_NN et_FW al._FW ,_, 1998_CD ;_: Garofalakis_NNP et_FW al._FW ,_, 1999_CD ;_: Boulicaut_NNP &_CC Jeudy_NNP ,_, 2000_CD ;_: Pei_NNP &_CC Han_NNP ,_, 2000_CD ;_: Zaki_NNP ,_, 2000_CD ;_: Boulicaut_NNP &_CC Jeudy_NNP ,_, 2001_CD ;_: =_JJ -_: =_JJ Bucila_FW et_FW al._FW ,_, 2003_CD -_: =_JJ -_: ;_: Albert-Lorincz_NNP &_CC Boulicaut_NNP ,_, 2003_CD ;_: Bonchi_NNP et_FW al._FW ,_, 2003_CD ;_: Bonchi_NNP &_CC Lucchese_NNP ,_, 2004_CD -RRB-_-RRB- ..._: De_NNP nombreux_FW algorithmes_FW ont_FW été_FW proposés_FW et_FW tentent_FW d’utiliser_FW efficacement_FW les_FW contraintes_NNS pour_VBP diminuer_FW les_FW temps_NNS
+traint-based_JJ pattern_NN mining_NN is_VBZ a_DT topic_NN that_WDT has_VBZ been_VBN studied_VBN extensively_RB ._.
+Popular_NNP examples_NNS are_VBP frequent_JJ and_CC closed_JJ itemset_NN mining_NN -LRB-_-LRB- 1,16,11,9,7,15_CD -RRB-_-RRB- ,_, but_CC also_RB more_RBR general_JJ constraints_NNS have_VBP been_VBN studied_VBN =_JJ -_: =[_NN 10,6,4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Patterns_NN can_MD be_VB used_VBN directly_RB ,_, or_CC may_MD serve_VB as_IN an_DT intermediate_JJ step_NN when_WRB building_VBG classifiers_NNS or_CC compressing_VBG data_NNS ,_, in_IN which_WDT case_NN additional_JJ constraints_NNS can_MD be_VB imposed_VBN ._.
+Themainfocusofmoststudiesonpat_NN
+,_, T_NN -RRB-_-RRB- and_CC -LRB-_-LRB- I_NNP ′_NNP ,_, T_NN ′_NN -RRB-_-RRB- satisfying_VBG the_DT coverage_NN and_CC support_NN constraints_NNS ,_, I_PRP ′_FW ⊆_FW I_PRP ⇒_FW |_FW T_NN ′_FW |_FW ≥_FW |_FW T_NN |_FW ≥_FW θ_FW ._.
+Other_JJ examples_NNS of_IN anti-monotonic_JJ constraints_NNS are_VBP maximum_JJ itemset_JJ size_NN and_CC maximum_NN total_JJ itemset_NN cost_NN -LRB-_-LRB- =_JJ -_: =_JJ Bucila_FW et_FW al._FW 2003_CD -_: =_JJ -_: ;_: Bonchi_NNP and_CC Lucchese_NNP 2007_CD -RRB-_-RRB- ._.
+Assume_VB that_IN every_DT itemhas_NN a_DT cost_NN ci_NN -LRB-_-LRB- for_IN a_DT size_NN constraint_NN ,_, ci_NN =_JJ 1_CD -RRB-_-RRB- ._.
+Then_RB a_DT maximum_NN cost_NN constraint_NN with_IN c_NN -LRB-_-LRB- I_NN -RRB-_-RRB- =_JJ ∑_FW i_FW ∈_FW I_PRP ci_VBP ,_, is_VBZ satisfied_VBN if_IN c_NN -LRB-_-LRB- I_NN -RRB-_-RRB- ≤_FW γ_FW ._.
+-LRB-_-LRB- 3_LS -RRB-_-RRB- Given_VBN that_IN I_PRP ′_FW ⊆_FW I_PRP
+reduction_NN with_IN those_DT algorithms_NNS and_CC to_TO measure_VB the_DT improve_VB in_IN efficiency_NN ._.
+Among_IN constrained_VBN frequent_JJ pattern_NN mining_NN algorithms_NNS ,_, we_PRP would_MD like_VB to_TO mention_VB FIC_NN M_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- and_CC the_DT recently_RB proposed_VBN DualMiner_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+6_CD Conclusions_NNS and_CC Future_JJ Work_NN In_IN this_DT paper_NN we_PRP have_VBP introduced_VBN ExAnte_NNP ,_, a_DT pre-processing_JJ data_NN reduction_NN algorithm_NN which_WDT reduces_VBZ dramatically_RB the_DT search_NN space_NN the_DT input_NN dataset_NN ,_, and_CC hence_RB the_DT executio_NN
+ng_NN algorithm_NN that_IN e_SYM #ectively_RB exploits_VBZ monotone_NN constraints_NNS ._.
+1_CD Introduction_NN The_DT problem_NN of_IN how_WRB to_TO push_VB di_FW #erent_FW types_NNS of_IN constraints_NNS into_IN the_DT frequent_JJ itemsets_NNS computation_NN has_VBZ been_VBN extensively_RB studied_VBN =_JJ -_: =[_NN 5_CD ,_, 6_CD ,_, 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, while_IN pushing_VBG anti-monotone_JJ constraints_NNS deep_JJ into_IN the_DT mining_NN algorithm_NN is_VBZ easy_JJ and_CC e_SYM #ective_JJ ,_, the_DT case_NN is_VBZ di_FW #erent_FW for_IN monotone_NN constraints_NNS ._.
+Indeed_RB ,_, anti-monotone_JJ constraints_NNS can_MD be_VB used_VBN to_TO
+reduction_NN with_IN those_DT algorithms_NNS and_CC to_TO measure_VB the_DT improve_VB in_IN efficiency_NN ._.
+Among_IN constrained_VBN frequent_JJ pattern_NN mining_NN algorithms_NNS ,_, we_PRP would_MD like_VB to_TO mention_VB FIC_NN M_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- and_CC the_DT recently_RB proposed_VBN DualMiner_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+6_CD Conclusions_NNS and_CC Future_JJ Work_NN In_IN this_DT paper_NN we_PRP have_VBP introduced_VBN ExAnte_NNP ,_, a_DT pre-processing_JJ data_NN reduction_NN algorithm_NN which_WDT reduces_VBZ dramatically_RB the_DT search_NN space_NN the_DT input_NN dataset_NN ,_, and_CC hence_RB the_DT executio_NN
+y_NN variables_NNS ,_, which_WDT is_VBZ also_RB called_VBN the_DT φ_NN correlation_NN coefficient_NN ._.
+Note_VB that_IN the_DT all-strong-pairs_JJ correlation_NN query_NN problem_NN is_VBZ different_JJ from_IN the_DT standard_JJ association-rule_JJ mining_NN problem_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: ,_, -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 19_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 21_CD -RRB-_-RRB- ,_, -LRB-_-LRB- 26_CD -RRB-_-RRB- ._.
+Given_VBN a_DT set_NN of_IN transactions_NNS ,_, the_DT objective_NN of_IN association_NN rule_NN mining_NN is_VBZ to_TO extract_VB all_DT subsets_NNS of_IN items_NNS that_WDT satisfy_VBP a_DT minimum_JJ support_NN threshold_NN ._.
+Suppo_NNP
+s_NN particularly_RB useful_JJ for_IN identifying_VBG association_NN -LRB-_-LRB- correlation_NN -RRB-_-RRB- patterns_NNS in_IN the_DT data_NNS ._.
+Mining_NN association_NN rules_NNS -LRB-_-LRB- 1_LS -RRB-_-RRB- is_VBZ an_DT often_RB encountered_VBN problem_NN in_IN many_JJ data-mining_JJ tasks_NNS ._.
+There_EX are_VBP many_JJ algorithms_NNS =_JJ -_: =[_NN 2_CD ,_, 3_CD ,_, 4_CD ,_, 9_CD -RRB-_-RRB- -_: =_SYM -_: that_WDT exploit_VBP different_JJ constraints_NNS for_IN efficient_JJ mining_NN of_IN association_NN rules_NNS ._.
+Two_CD measures_NNS are_VBP often_RB considered_VBN when_WRB judging_VBG the_DT significance_NN of_IN an_DT association_NN rule_NN :_: its_PRP$ support_NN and_CC its_PRP$ confidence_NN ._.
+O_NN
+have_VB to_TO be_VB done_VBN jointly_RB -LRB-_-LRB- pushing_VBG the_DT constraint_NN -RRB-_-RRB- in_IN order_NN to_TO avoid_VB combinatorial_JJ explosion_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+Mining_NN under_IN complex_JJ constraint_NN has_VBZ become_VBN today_NN a_DT hot_JJ topic_NN and_CC the_DT subject_NN of_IN numerous_JJ works_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 14_CD ,_, 7_CD ,_, 16_CD ,_, 20_CD ,_, 10_CD ,_, 8_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+Moreover_RB ,_, new_JJ domains_NNS are_VBP interested_JJ in_IN our_PRP$ applications_NNS ,_, and_CC data_NNS schemes_NNS vary_VBP consequently_RB ._.
+In_IN genome_NN biology_NN ,_, biological_JJ experiments_NNS are_VBP very_RB expensive_JJ and_CC time_NN consuming_NN ._.
+Therefore_RB ,_, only_RB a_DT smal_NN
+he_PRP frequent_JJ itemset_NN computation_NN is_VBZ geared_VBN on_IN Cfreq_NNP ,_, which_WDT is_VBZ antimonotone_JJ ,_, CM_NN constraints_NNS have_VBP been_VBN considered_VBN more_RBR hard_JJ to_TO be_VB pushed_VBN in_IN the_DT computation_NN and_CC less_RBR effective_JJ in_IN pruning_NN the_DT search_NN space_NN =_JJ -_: =[_NN 2_CD ,_, 8_CD ,_, 7_CD ,_, 12_CD -RRB-_-RRB- -_: =_JJ -_: :_: while_IN anti-monotone_JJ constraints_NNS can_MD be_VB used_VBN to_TO effectively_RB prune_VB the_DT search_NN space_NN to_TO a_DT small_JJ downward_JJ closed_JJ collection_NN ,_, the_DT upward_RB closed_VBN collection_NN of_IN the_DT search_NN space_NN satisfying_VBG the_DT monotone_NN cons_NNS
+e_LS and_CC anti-monotone_JJ -LRB-_-LRB- 12_CD -RRB-_-RRB- ._.
+These_DT constraints_NNS are_VBP expressed_VBN using_VBG aggregations_NNS on_IN descriptors_NNS of_IN items_NNS such_JJ as_IN price_NN ,_, weight_NN ,_, height_NN etc._NN of_IN an_DT item_NN in_IN a_DT transaction_NN ._.
+Yet_RB again_RB different_JJ claims_NNS are_VBP made_VBN =_JJ -_: =[_NN 13_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: but_CC a_DT rigorous_JJ comparison_NN between_IN constraint-based_JJ itemset_NN mining_NN algorithms_NNS has_VBZ never_RB been_VBN reported_VBN ._.
+We_PRP propose_VBP a_DT framework_NN and_CC a_DT performance_NN testbed_VBN to_TO compare_VB any_DT frequent_JJ pattern_NN mining_NN algorithm_NN
+g_NN versus_CC post-processing_JJ constraints_NNS on_IN the_DT number_NN of_IN evaluations_NNS of_IN P_NN -LRB-_-LRB- -RRB-_-RRB- and_CC Q_NNP -LRB-_-LRB- -RRB-_-RRB- ._.
+Due_JJ to_TO the_DT lack_NN of_IN space_NN we_PRP could_MD not_RB depicts_VBZ all_PDT our_PRP$ results_NNS in_IN this_DT work_NN ._.
+We_PRP compared_VBD our_PRP$ algorithm_NN with_IN Dualminer_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT is_VBZ the_DT only_RB known_JJ algorithm_NN to_TO effectively_RB mine_VB both_DT types_NNS of_IN constraints_NNS at_IN the_DT same_JJ time_NN ._.
+Based_VBN on_IN its_PRP$ authors_NNS '_POS recommendations_NNS ,_, we_PRP built_VBD the_DT Dualminer_NNP framework_NN on_IN top_NN of_IN the_DT MAFIA_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- imple_NN
+sive_JJ amount_NN of_IN time_NN ._.
+Unfortunately_RB ,_, the_DT original_JJ authors_NNS of_IN Dualminer_NNP did_VBD not_RB show_VB any_DT single_JJ experiment_NN to_TO depict_VB the_DT execution_NN time_NN of_IN their_PRP$ algorithm_NN but_CC only_RB the_DT reduction_NN in_IN predicate_NN executions_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+What_WP distinguishes_VBZ our_PRP$ approach_NN from_IN the_DT aforementioned_JJ algorithms_NNS is_VBZ the_DT strategy_NN for_IN traversing_VBG the_DT lattice_NN of_IN candidate_NN patterns_NNS ._.
+Candidate_NN checking_NN is_VBZ significantly_RB reduced_VBN by_IN using_VBG pattern_NN inte_NN
+ng_NN algorithms_NNS leverage_NN -LRB-_-LRB- or_CC push_NN -RRB-_-RRB- one_CD of_IN these_DT types_NNS during_IN mining_NN and_CC postpone_VB the_DT other_JJ to_TO a_DT post-processing_JJ phase_NN ._.
+New_JJ algorithms_NNS such_JJ as_IN Dualminer_NNP apply_VBP both_DT types_NNS of_IN constraints_NNS at_IN the_DT same_JJ time_NN ._.
+=_SYM -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP considers_VBZ these_DT two_CD types_NNS of_IN constraints_NNS in_IN a_DT double_JJ process_NN ,_, one_CD mirroring_NN the_DT other_JJ for_IN each_DT type_NN of_IN constraint_NN ,_, hence_RB its_PRP$ name_NN ._.
+However_RB ,_, monotone_NN and_CC anti-monotone_JJ constraints_NNS do_VBP not_RB necessari_VB
+n_NN mine_NN itemsets_NNS using_VBG these_DT two_CD constraint_NN categories_NNS in_IN a_DT sequential_JJ fashion_NN -LRB-_-LRB- e.g._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+DualMiner_NNP was_VBD the_DT first_JJ algorithm_NN able_JJ to_TO interleave_VB both_DT classes_NNS of_IN constraint_NN simultaneously_RB during_IN mining_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Nevertheless_RB ,_, the_DT task_NN of_IN finding_VBG itemsets_NNS that_WDT satisfy_VBP both_DT classes_NNS of_IN constraint_NN is_VBZ still_RB time_NN consuming_NN ._.
+High_JJ performance_NN computation_NN offers_VBZ a_DT potential_JJ solution_NN to_TO this_DT problem_NN ,_, provided_VBN that_IN an_DT
+d_NN -LRB-_-LRB- in_IN rather_RB small_JJ data_NNS sets_NNS -RRB-_-RRB- by_IN using_VBG the_DT correct_JJ and_CC complete_JJ algorithm_NN DR-Miner_NN described_VBN in_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+It_PRP is_VBZ a_DT generic_JJ algorithm_NN for_IN bi-set_JJ constraint-based_JJ mining_NN which_WDT is_VBZ an_DT adaptation_NN of_IN Dual-Miner_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP is_VBZ based_VBN on_IN an_DT enumeration_NN strategy_NN of_IN bi-sets_NNS which_WDT enables_VBZ efficient_JJ anti-monotonic_JJ or_CC monotonic_JJ pruning_NN -LRB-_-LRB- Sub-constraint_NN 3.1_CD in_IN conjunction_NN with_IN other_JJ user-defined_JJ constraints_NNS which_WDT have_VBP monoto_VBN
+ording_VBG to_TO the_DT specialization_NN -LRB-_-LRB- e.g._FW ,_, q3_NN and_CC q4_NN -RRB-_-RRB- ._.
+There_EX are_VBP specific_JJ algorithms_NNS devoted_VBN to_TO mine_VB a_DT combination_NN of_IN one_CD monotone_NN constraint_NN and_CC one_CD anti-monotone_JJ constraint_NN according_VBG to_TO the_DT specialization_NN =_JJ -_: =[_NN 3_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+More_RBR generally_RB ,_, other_JJ particular_JJ constraints_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- or_CC classes_NNS of_IN constraints_NNS -LRB-_-LRB- 10_CD ,_, 11_CD ,_, 12_CD -RRB-_-RRB- ,_, use_VBP an_DT additional_JJ monotone_NN constraint_NN in_IN order_NN to_TO focus_VB on_IN interesting_JJ patterns_NNS and_CC to_TO improve_VB the_DT mining_NN ._.
+Th_NN
+h_NN space_NN satisfying_VBG the_DT CM_NN constraints_NNS can_MD not_RB be_VB exploited_VBN at_IN the_DT same_JJ time_NN ._.
+This_DT tradeoff_NN holding_VBG on_IN the_DT search_NN space_NN of_IN the_DT computational_JJ problem_NN FThD_NN -LRB-_-LRB- C_NN freq_NN -LRB-_-LRB- D_NN ,_, σ_NN -RRB-_-RRB- ∧_CD CM_NN -RRB-_-RRB- has_VBZ been_VBN extensively_RB studied_VBN =_JJ -_: =[_NN 18_CD ,_, 9_CD ,_, 4_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC all_PDT these_DT studies_NNS have_VBP failed_VBN to_TO find_VB the_DT real_JJ synergy_NN of_IN these_DT two_CD opposite_JJ types_NNS of_IN constraints_NNS ,_, until_IN the_DT recent_JJ proposal_NN of_IN ExAnte_NNP -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+In_IN that_DT work_NN it_PRP has_VBZ been_VBN shown_VBN that_IN a_DT real_JJ synergy_NN of_IN
+proposed_VBN to_TO model_VB the_DT mining_NN process_NN -LRB-_-LRB- 7_CD ,_, 14_CD ,_, 22_CD -RRB-_-RRB- ._.
+The_DT subfield_NN of_IN constraint_NN association_NN mining_NN allows_VBZ mining_NN of_IN interesting_JJ association_NN rules_NNS by_IN taking_VBG of_IN a_DT variety_NN of_IN constraint_NN conditions_NNS as_IN input_NN =_JJ -_: =[_NN 6_CD ,_, 24_CD ,_, 28_CD ,_, 32_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT above_JJ research_NN projects_NNS ,_, the_DT focus_NN has_VBZ typically_RB been_VBN on_IN mining_VBG a_DT single_JJ dataset_NN ._.
+However_RB ,_, in_IN many_JJ situations_NNS ,_, such_JJ as_IN in_IN a_DT data_NN warehouse_NN ,_, the_DT user_NN usually_RB has_VBZ a_DT view_NN of_IN multiple_JJ datasets_NNS co_VBP
+t_NN mining_NN is_VBZ the_DT process_NN of_IN identifying_VBG groupings_NNS of_IN co-appearing_JJ objects_NNS in_IN a_DT dataset_NN ,_, whose_WP$ frequencies_NNS exceed_VBP a_DT user-specified_JJ threshold_NN ._.
+The_DT appeal_NN of_IN constrained_VBN frequent-set_JJ mining_NN is_VBZ well_RB known_VBN =_JJ -_: =[_NN 23_CD ,_, 8_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One_CD key_NN problem_NN that_WDT has_VBZ not_RB been_VBN addressed_VBN in_IN previous_JJ work_NN is_VBZ how_WRB to_TO support_VB users_NNS in_IN choosing_VBG and_CC changing_VBG constraint_NN thresholds_NNS and_CC parameters_NNS ._.
+This_DT unsolved_JJ problem_NN makes_VBZ dynamic_JJ constrained_VBN fr_NN
+proaches_NNS have_VBP been_VBN conducted_VBN in_IN order_NN to_TO guarantee_VB the_DT quality_NN of_IN discovered_VBN knowledge_NN :_: the_DT concept_NN of_IN closed_JJ patterns_NNS -LRB-_-LRB- 14_CD -RRB-_-RRB- -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, non-redundant_JJ rules_NNS -LRB-_-LRB- 17_CD -RRB-_-RRB- -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, and_CC constraint-based_JJ association_NN rules_NNS =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: -LRB-_-LRB- 4_LS -RRB-_-RRB- -LRB-_-LRB- 5_CD -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- -LRB-_-LRB- 12_CD -RRB-_-RRB- -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+These_DT approaches_NNS have_VBP significant_JJ performance_NN for_IN decreasing_VBG the_DT number_NN of_IN association_NN rules_NNS for_IN transaction_NN databases_NNS ._.
+However_RB ,_, they_PRP are_VBP not_RB very_RB efficient_JJ for_IN representation_NN
+6_CD -RRB-_-RRB- ._.
+Monotone_NN and_CC anti-monotone_JJ constraints_NNS need_VBP a_DT trade-off_NN to_TO reconcile_VB the_DT effectiveness_NN in_IN the_DT pruning_NN ._.
+Bucila_NNP proposed_VBD the_DT DualMiner_NNP algorithms_NNS to_TO prune_VB search_NN space_NN with_IN both_DT constraints_NNS in_IN 2002_CD =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Moreover_RB ,_, Wang_NNP et_FW al._FW proposed_VBD a_DT Divide-and-Approximate_JJ algorithm_NN in_IN 2005_CD which_WDT divides_VBZ the_DT search_NN space_NN and_CC approximates_VBZ the_DT given_VBN constraints_NNS with_IN each_DT of_IN both_DT constraints_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+Anti-monotone_JJ const_NN
+ce_NN ._.
+In_IN the_DT description_NN of_IN the_DT Max-Miner_NNP algorithm_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, I_PRP referred_VBD to_TO such_PDT a_DT structure_NN as_IN an_DT itemset_NN ``_`` group_NN ''_'' ,_, though_IN a_DT more_RBR mathematically_RB precise_JJ term_NN is_VBZ perhaps_RB a_DT ``_`` subalgebra_NN ''_'' of_IN the_DT itemset_NN lattice_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT concept_NN has_VBZ its_PRP$ roots_NNS in_IN algorithms_NNS for_IN circuit_NN optimization_NN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, though_IN Webb_NNP -LRB-_-LRB- 24_CD -RRB-_-RRB- was_VBD first_JJ to_TO formalize_VB the_DT concept_NN within_IN a_DT generic_JJ search_NN framework_NN ,_, and_CC also_RB exploit_VBP it_PRP in_IN rule_NN mining_NN task_NN
+r_NN -LRB-_-LRB- 4_CD -RRB-_-RRB- ,_, Han_NNP et_FW al._FW 's_POS FP-growth_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- ,_, De_NNP Raedt_NNP and_CC Kramer_NNP 's_POS levelwise-method_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ,_, Burdick_NNP et_FW al._FW 's_POS MAFIA_NN -LRB-_-LRB- 6_CD -RRB-_-RRB- ,_, Agarwal_NNP et_FW al._FW 's_POS Tree-Projection_JJ algorithm_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- and_CC most_RBS recently_RB Bucila_NNP et_FW al._FW 's_POS DualMiner_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: and_CC De_NNP Raedt_NNP et_FW al._FW 's_POS Version_NNP Space_NNP Tree_NNP algorithm_NN -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+It_PRP should_MD be_VB noted_VBN that_IN the_DT above_RB mentioned_VBN systems_NNS are_VBP of_IN different_JJ scalability_NN :_: some_DT of_IN them_PRP can_MD only_RB handle_VB monotone_NN or_CC anti-monotone_JJ queri_NNS
+xercise_NN in_IN isolation_NN ,_, some_DT others_NNS explored_VBD how_WRB data_NNS mining_NN can_MD best_RB interact_VB with_IN -LRB-_-LRB- i_LS -RRB-_-RRB- the_DT database_NN management_NN system_NN -LRB-_-LRB- 27_CD ,_, 28_CD -RRB-_-RRB- or_CC -LRB-_-LRB- ii_LS -RRB-_-RRB- the_DT human_JJ user_NN ._.
+Examples_NNS of_IN the_DT latter_JJ include_VBP constrained_VBN mining_NN =_JJ -_: =[_NN 5_CD ,_, 7_CD ,_, 12_CD ,_, 18_CD ,_, 20_CD ,_, 22_CD ,_, 25_CD -RRB-_-RRB- -_: =_JJ -_: and_CC interactive_JJ and_CC online_JJ mining_NN -LRB-_-LRB- 10_CD ,_, 15_CD ,_, 18_CD -RRB-_-RRB- ._.
+-LRB-_-LRB- b_LS -RRB-_-RRB- Performance_NNP :_: The_DT central_JJ question_NN considered_VBN is_VBZ how_WRB to_TO compute_VB the_DT association_NN rules_NNS or_CC frequent_JJ patterns_NNS as_RB efficiently_RB as_IN possible_JJ ._.
+Studies_NNS in_IN th_DT
+mpares_VBZ our_PRP$ work_NN with_IN related_JJ research_NN efforts_NNS ._.
+A_DT number_NN of_IN constraint_NN frequent_JJ itemset_NN mining_NN algorithms_NNS have_VBP been_VBN developed_VBN ,_, with_IN the_DT goal_NN of_IN using_VBG additional_JJ conditions_NNS and_CC pruning_NN the_DT search_NN space_NN =_JJ -_: =[_NN 8_CD ,_, 16_CD ,_, 19_CD ,_, 21_CD ,_, 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+More_RBR recently_RB ,_, Yan_NNP et_NNP ._.
+al_FW have_VBP studied_VBN the_DT use_NN of_IN connectivity_NN constraints_NNS to_TO mine_VB frequent_JJ graphs_NNS -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+However_RB ,_, these_DT algorithms_NNS can_MD not_RB efficiently_RB answer_VB our_PRP$ target_NN class_NN of_IN queries_NNS ,_, since_IN the_DT co_NN
+,_, agrawal_JJ ¡_FW @cse_FW ._.
+ohio-state_JJ ._.
+edu_NN 1_CD cess_NN -LRB-_-LRB- 7_CD ,_, 13_CD ,_, 20_CD -RRB-_-RRB- ._.
+The_DT subfield_NN of_IN constraint_NN association_NN mining_NN allows_VBZ mining_NN of_IN interesting_JJ association_NN rules_NNS by_IN taking_VBG of_IN a_DT variety_NN of_IN constraint_NN conditions_NNS as_IN input_NN =_JJ -_: =[_NN 6_CD ,_, 22_CD ,_, 27_CD ,_, 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT above_JJ research_NN projects_NNS ,_, the_DT focus_NN has_VBZ typically_RB been_VBN on_IN mining_VBG a_DT single_JJ dataset_NN ._.
+However_RB ,_, in_IN many_JJ situations_NNS ,_, such_JJ as_IN in_IN a_DT data_NN warehouse_NN ,_, the_DT user_NN usually_RB has_VBZ a_DT view_NN of_IN multiple_JJ datasets_NNS co_VBP
+set_VBN mining_NN is_VBZ a_DT process_NN of_IN identifying_VBG in_IN a_DT dataset_JJ groupings_NNS of_IN co-appearing_JJ objects_NNS ,_, whose_WP$ frequencies_NNS exceed_VBP a_DT user_NN specified_JJ threshold_NN ._.
+The_DT appeal_NN of_IN constrained_VBN frequent_JJ set_NN mining_NN is_VBZ well_RB known_VBN =_JJ -_: =[_NN 23_CD ,_, 8_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One_CD key_NN problem_NN that_WDT has_VBZ not_RB been_VBN addressed_VBN in_IN previous_JJ work_NN is_VBZ how_WRB to_TO support_VB users_NNS in_IN choosing_VBG and_CC changing_VBG constraint_NN thresholds_NNS and_CC parameters_NNS ._.
+This_DT unsolved_JJ problem_NN makes_VBZ dynamic_JJ constrained_VBN fr_NN
+educe_VB the_DT number_NN of_IN potentially_RB uninteresting_JJ patterns_NNS by_IN incorporating_VBG various_JJ anti-monotone_NN ,_, monotone_NN ,_, or_CC convertible_JJ constraints_NNS within_IN the_DT constant-support-based_JJ frequent_JJ pattern_NN mining_NN framework_NN =_JJ -_: =[_NN 3_CD ,_, 6_CD ,_, 7_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT limitation_NN of_IN this_DT approache_NN is_VBZ that_IN it_PRP uses_VBZ a_DT constant_JJ support_NN value_NN ,_, irrespective_RB of_IN the_DT length_NN of_IN the_DT discovered_VBN patterns_NNS ._.
+In_IN general_JJ ,_, patterns_NNS that_WDT contain_VBP only_RB a_DT few_JJ items_NNS will_MD tend_VB to_TO be_VB int_NN
+educe_VB the_DT number_NN of_IN potentially_RB uninteresting_JJ itemsets_NNS by_IN incorporating_VBG various_JJ anti-monotone_NN ,_, monotone_NN ,_, or_CC convertible_JJ constraints_NNS within_IN the_DT constant-support-based_JJ frequent_JJ pattern_NN mining_NN framework_NN =_JJ -_: =[_NN 10_CD ,_, 17_CD ,_, 21_CD ,_, 22_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT limitation_NN of_IN the_DT above_JJ approaches_NNS is_VBZ that_IN they_PRP use_VBP a_DT constant_JJ support_NN value_NN ,_, irrespective_RB of_IN the_DT length_NN of_IN the_DT discovered_VBN patterns_NNS ._.
+In_IN general_JJ ,_, patterns_NNS that_WDT contain_VBP only_RB a_DT few_JJ items_NNS will_MD tend_VB to_TO
+acted_VBD from_IN the_DT original_JJ datasets_NNS ._.
+Our_PRP$ work_NN is_VBZ also_RB related_VBN with_IN constraint_NN frequent_JJ itemset_NN mining_NN ,_, which_WDT can_MD guide_VB users_NNS to_TO discover_VB useful_JJ information_NN and_CC speedup_NN mining_NN process_NN on_IN a_DT single_JJ dataset_NN =_JJ -_: =[_NN 6_CD ,_, 20_CD ,_, 23_CD ,_, 24_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT queries_NNS across_IN multiple_JJ datasets_NNS is_VBZ complementary_JJ to_TO such_JJ constraint_NN mining_NN ,_, since_IN they_PRP can_MD also_RB help_VB users_NNS to_TO discover_VB and_CC focus_VB the_DT potentially_RB useful_JJ patterns_NNS ._.
+We_PRP also_RB note_VBP that_IN a_DT number_NN of_IN r_NN
+ushing_JJ methods_NNS ._.
+Constrained_VBN pattern_NN mining_NN for_IN graphs_NNS has_VBZ been_VBN looked_VBN into_IN by_IN Wang_NNP et_FW al._FW ,_, -LRB-_-LRB- 29_CD -RRB-_-RRB- ,_, although_IN only_JJ constraints_NNS with_IN monotonicity\/antimonotonicity\/succinctness_NN are_VBP discussed_VBN ._.
+Bucila_FW et_FW al._FW =_SYM -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: introduced_VBD a_DT DualMiner_NNP framework_NN that_WDT simultaneously_RB takes_VBZ advantage_NN of_IN both_CC monotonicity_NN and_CC antimonotonicity_NN to_TO increase_VB mining_NN efficiency_NN ._.
+The_DT general_JJ framework_NN of_IN these_DT mining_NN methods_NNS is_VBZ to_TO push_VB
+one_CD bi-set_FW i.e._FW ,_, -LRB-_-LRB- ⊥_NNP G_NNP ,_, ⊥_NNP M_NNP -RRB-_-RRB- =-LRB-_FW ⊤_FW G_NN ,_, ⊤_CD M_NN -RRB-_-RRB- ._.
+DR-bi-sets_NNS are_VBP these_DT maximal_JJ bi-sets_NNS ._.
+To_TO extract_VB only_RB maximal_JJ dense_JJ and_CC relevant_JJ ones_NNS ,_, we_PRP have_VBP adapted_VBN the_DT Dual-Miner_NNP strategy_NN for_IN pushing_VBG maximality_NN constraints_NNS =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+DR-Miner_JJ correctness_NN :_: Every_DT bi-set_NN -LRB-_-LRB- X_NN ,_, Y_NN -RRB-_-RRB- belonging_VBG to_TO leaf_NN L_NN satisfies_VBZ Cd_FW ∧_FW Cr_NN according_VBG to_TO Pruneam_NNP and_CC PruneCr_NNP ._.
+Cd_FW DR-Miner_FW completeness_NN :_: Let_VB T1_NN =-LRB-_NN -LRB-_-LRB- ⊥_NN 1_CD G_NN ,_, ⊥_NN 1M_NN -RRB-_-RRB- ,_, -LRB-_-LRB- ⊤_NNP 1G_NNP ,_, ⊤_NNP 1G_NNP -RRB-_-RRB- -RRB-_-RRB- and_CC T2_NN =-LRB-_NN -LRB-_-LRB- ⊥_NN 2_CD G_NN ,_, ⊥_NN 2M_NN -RRB-_-RRB-
+educe_VB the_DT number_NN of_IN potentially_RB uninteresting_JJ itemsets_NNS by_IN incorporating_VBG various_JJ anti-monotone_NN ,_, monotone_NN ,_, or_CC convertible_JJ constraints_NNS within_IN the_DT constant-support-based_JJ frequent_JJ pattern_NN mining_NN framework_NN =_JJ -_: =[_NN 10_CD ,_, 17_CD ,_, 21_CD ,_, 22_CD ,_, 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+A_DT limitation_NN of_IN the_DT above_JJ approaches_NNS is_VBZ that_IN they_PRP use_VBP a_DT constant_JJ support_NN value_NN ,_, irrespective_RB of_IN the_DT length_NN of_IN the_DT discovered_VBN patterns_NNS ._.
+In_IN general_JJ ,_, patterns_NNS that_WDT contain_VBP only_RB a_DT few_JJ items_NNS will_MD tend_VB to_TO
+constraints_NNS :_: anti-monotone_JJ ,_, monotone_NN ,_, succinctness_NN ,_, convertible_JJ and_CC inconvertible_JJ ._.
+Most_RBS previous_JJ constraint-based_JJ association_NN rules_NNS focused_VBD on_IN the_DT single_JJ dimension_NN -LRB-_-LRB- Ng_NN et_FW al._FW ,_, 1998_CD ;_: Pei_NNP et_FW al._FW ,_, 2001_CD ;_: =_JJ -_: =_JJ Bucila_FW et_FW al._FW ,_, 2002_CD -_: =_JJ -_: ;_: Leung_NNP et_FW al._FW ,_, 2002_CD ;_: Webb_NNP and_CC Zhang_NNP ,_, 2004_CD -RRB-_-RRB- ._.
+Currently_RB pruning_NN redundancy_NN rules_NNS are_VBP based_VBN on_IN some_DT very_RB strong_JJ assumptions_NNS -LRB-_-LRB- Zaki_NNP ,_, 2004_CD ;_: Xu_NNP and_CC Li_NNP ,_, 2005_CD ,_, 2007_CD -RRB-_-RRB- ,_, for_IN example_NN ,_, the_DT rules_NNS considered_VBN must_MD ha_VB
+l_NN algorithm_NN optimized_VBN for_IN our_PRP$ needs_NNS ._.
+Notice_NNP that_IN we_PRP are_VBP not_RB interested_JJ in_IN all_DT frequent_JJ itemsets_NNS ,_, but_CC only_RB in_IN those_DT ones_NNS whose_WP$ size_NN is_VBZ ψ_NN or_CC more_JJR ._.
+This_DT problem_NN has_VBZ been_VBN deeply_RB studied_VBN in_IN the_DT literature_NN =_JJ -_: =[_NN 8_CD ,_, 7_CD -RRB-_-RRB- -_: =_JJ -_: and_CC a_DT large_JJ variety_NN of_IN optimizations_NNS have_VBP been_VBN developed_VBN in_IN this_DT context_NN ._.
+Here_RB we_PRP adopt_VBP the_DT ExAMiner_NN implementation_NN -LRB-_-LRB- 7_CD -RRB-_-RRB- ._.
+The_DT idea_NN is_VBZ that_IN a_DT transaction_NN whose_WP$ size_NN is_VBZ -LRB-_-LRB- ψcan_NN be_VB discarded_VBN since_IN none_NN of_IN
+rune_VB the_DT search-space_NN ._.
+To_TO exploit_VB a_DT piecewise_NN -LRB-_-LRB- anti_JJ -RRB-_-RRB- monotonic_JJ constraint_NN ,_, the_DT n-set_NN search-space_NN must_MD be_VB explicitly_RB computed_VBN and_CC stored_VBN for_IN each_DT generated_VBN candidate_NN in_IN the_DT enumeration_NN tree_NN as_IN done_VBN in_IN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Processing_NN a_DT piecewise_NN -LRB-_-LRB- anti_JJ -RRB-_-RRB- -_: monotonic_JJ constraint_NN consists_VBZ in_IN rewriting_VBG it_PRP so_IN that_IN ,_, if_IN the_DT new_JJ form_NN is_VBZ satisfied_JJ ,_, some_DT candidate_NN -LRB-_-LRB- s_NNS -RRB-_-RRB- deriving_VBG from_IN the_DT current_JJ one_CD -LRB-_-LRB- i.e._FW ,_, leaves_NNS of_IN the_DT enumeration_NN tr_NN

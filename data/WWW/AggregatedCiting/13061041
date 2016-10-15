@@ -1,0 +1,148 @@
+Parallel_JJ boosted_VBN regression_NN trees_NNS for_IN web_NN search_NN ranking_NN
+Gradient_NNP Boosted_NNP Regression_NN Trees_NNP -LRB-_-LRB- GBRT_NNP -RRB-_-RRB- are_VBP the_DT current_JJ state-of-the-art_JJ learning_NN paradigm_NN for_IN machine_NN learned_VBD web-search_JJ ranking_NN -_: a_DT domain_NN notorious_JJ for_IN very_RB large_JJ data_NNS sets_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT novel_JJ method_NN for_IN parallelizing_VBG the_DT training_NN of_IN GBRT_NN ._.
+Our_PRP$ technique_NN parallelizes_VBZ the_DT construction_NN of_IN the_DT individual_JJ regression_NN trees_NNS and_CC operates_VBZ using_VBG the_DT master-worker_JJ paradigm_NN as_IN follows_VBZ ._.
+The_DT data_NNS are_VBP partitioned_VBN among_IN the_DT workers_NNS ._.
+At_IN each_DT iteration_NN ,_, the_DT worker_NN summarizes_VBZ its_PRP$ data-partition_NN using_VBG histograms_NNS ._.
+The_DT master_NN processor_NN uses_VBZ these_DT to_TO build_VB one_CD layer_NN of_IN a_DT regression_NN tree_NN ,_, and_CC then_RB sends_VBZ this_DT layer_NN to_TO the_DT workers_NNS ,_, allowing_VBG the_DT workers_NNS to_TO build_VB histograms_NNS for_IN the_DT next_JJ layer_NN ._.
+Our_PRP$ algorithm_NN carefully_RB orchestrates_VBZ overlap_VB between_IN communication_NN and_CC computation_NN to_TO achieve_VB good_JJ performance_NN ._.
+Since_IN this_DT approach_NN is_VBZ based_VBN on_IN data_NNS partitioning_VBG ,_, and_CC requires_VBZ a_DT small_JJ amount_NN of_IN communication_NN ,_, it_PRP generalizes_VBZ to_TO distributed_VBN and_CC shared_VBN memory_NN machines_NNS ,_, as_RB well_RB as_IN clouds_NNS ._.
+We_PRP present_VBP experimental_JJ results_NNS on_IN both_DT shared_VBN memory_NN machines_NNS and_CC clusters_NNS for_IN two_CD large_JJ scale_NN web_NN search_NN ranking_NN data_NNS sets_NNS ._.
+We_PRP demonstrate_VBP that_IN the_DT loss_NN in_IN accuracy_NN induced_VBD due_JJ to_TO the_DT histogram_NN approximation_NN in_IN the_DT regression_NN tree_NN creation_NN can_MD be_VB compensated_VBN for_IN through_IN slightly_RB deeper_JJR trees_NNS ._.
+As_IN a_DT result_NN ,_, we_PRP see_VBP no_DT significant_JJ loss_NN in_IN accuracy_NN on_IN the_DT Yahoo_NNP data_NN sets_NNS and_CC a_DT very_RB small_JJ reduction_NN in_IN accuracy_NN for_IN the_DT Microsoft_NNP LETOR_NNP data_NNS ._.
+In_IN addition_NN ,_, on_IN shared_VBN memory_NN machines_NNS ,_, we_PRP obtain_VBP almost_RB perfect_JJ linear_JJ speed-up_NN with_IN up_IN to_TO about_IN 48_CD cores_NNS on_IN the_DT large_JJ data_NN sets_NNS ._.
+On_IN distributed_VBN memory_NN machines_NNS ,_, we_PRP get_VBP a_DT speedup_NN of_IN 25_CD with_IN 32_CD processors_NNS ._.
+Due_JJ to_TO data_NNS partitioning_VBG our_PRP$ approach_NN can_MD scale_VB to_TO even_VB larger_JJR data_NNS sets_NNS ,_, on_IN which_WDT one_PRP can_MD reasonably_RB expect_VB even_RB higher_JJR speedups_NNS ._.
+ore_NN cores_NNS ._.
+falls_VBZ into_IN the_DT second_JJ approach_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, data-parallelism_NN ,_, where_WRB the_DT training_NN data_NNS are_VBP divided_VBN among_IN the_DT different_JJ workers_NNS ._.
+The_DT data_NNS can_MD be_VB partitioned_VBN by_IN features_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, by_IN samples_NNS -LRB-_-LRB- 25_CD -RRB-_-RRB- or_CC both_CC =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Dividing_VBG by_IN feature_NN requires_VBZ the_DT workers_NNS to_TO coordinate_VB which_WDT input_NN falls_VBZ into_IN which_WDT tree-node_NN ,_, as_IN the_DT individual_JJ workers_NNS do_VBP not_RB have_VB enough_JJ information_NN to_TO compute_VB it_PRP locally_RB ._.
+This_DT requires_VBZ O_NN -LRB-_-LRB- n_NN -RRB-_-RRB- comm_NN
+ition_NN -LRB-_-LRB- 2010_CD -RRB-_-RRB- ._.
+In_IN particular_JJ ,_, on_IN Set_NN 1_CD -LRB-_-LRB- the_DT larger_JJR data_NNS set_VBN -RRB-_-RRB- ,_, our_PRP$ parallel_JJ algorithm_NN ,_, within_IN a_DT matter_NN of_IN hours_NNS ,_, achieves_VBZ Expected_NNP Reciprocal_NNP Rank_NNP results_NNS that_WDT are_VBP within_IN 1.4_CD %_NN of_IN the_DT best_JJS known_JJ results_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+On_IN the_DT Microsoft_NNP LETOR_NNP data_NNS set_NN ,_, we_PRP see_VBP a_DT small_JJ decrease_NN in_IN accuracy_NN ,_, but_CC the_DT speedups_NNS are_VBP even_RB more_RBR impressive_JJ ._.
+To_TO our_PRP$ knowledge_NN ,_, we_PRP are_VBP the_DT first_JJ paper_NN to_TO explicitly_RB parallelize_VB CART_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- tree_NN cons_NNS
+er_NN of_IN their_PRP$ predicted_VBN relevance_NN -LCB-_-LRB- h_NN -LRB-_-LRB- xj_NN -RRB-_-RRB- -RCB-_-RRB- m_NN j_NN =_JJ 1_CD ._.
+The_DT quality_NN of_IN a_DT particular_JJ predictor_NN h_NN -LRB-_-LRB- ·_NN -RRB-_-RRB- is_VBZ measured_VBN by_IN specialized_JJ ranking_JJ metrics_NNS ._.
+The_DT most_RBS commonly_RB used_VBN metrics_NNS are_VBP Expected_VBN Reciprocal_JJ Rank_NNP -LRB-_-LRB- ERR_NNP -RRB-_-RRB- =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT is_VBZ meant_VBN to_TO mimic_VB user_NN behavior_NN ,_, and_CC Normalized_VBN Discounted_JJ Cumulative_JJ Gain_NN -LRB-_-LRB- NDCG_NN -RRB-_-RRB- -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, which_WDT emphasizes_VBZ leading_JJ results_NNS -LRB-_-LRB- NDCG_NN -RRB-_-RRB- ._.
+However_RB ,_, these_DT metrics_NNS can_MD be_VB non-convex_JJ ,_, non-differentiable_JJ or_CC
+a_DT set_NN size_NN and_CC is_VBZ almost_RB perfectly_RB linear_JJ for_IN Yahoo_NNP Set_NNP 1_CD and_CC the_DT Microsoft_NNP LETOR_NNP data_NNS set_NN ._.
+The_DT latter_JJ set_NN could_MD potentially_RB obtain_VB even_RB higher_JJR speedup_NN with_IN more_JJR cores_NNS ._.
+falls_VBZ into_IN the_DT second_JJ approach_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: ,_, data-parallelism_NN ,_, where_WRB the_DT training_NN data_NNS are_VBP divided_VBN among_IN the_DT different_JJ workers_NNS ._.
+The_DT data_NNS can_MD be_VB partitioned_VBN by_IN features_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, by_IN samples_NNS -LRB-_-LRB- 25_CD -RRB-_-RRB- or_CC both_DT -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+Dividing_VBG by_IN feature_NN requires_VBZ the_DT worker_NN
+malized_VBN Discounted_JJ Cumulative_JJ Gain_NN -LRB-_-LRB- NDCG_NN -RRB-_-RRB- -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, which_WDT emphasizes_VBZ leading_JJ results_NNS -LRB-_-LRB- NDCG_NN -RRB-_-RRB- ._.
+However_RB ,_, these_DT metrics_NNS can_MD be_VB non-convex_JJ ,_, non-differentiable_JJ or_CC even_RB non-continuous_JJ ._.
+Although_IN some_DT recent_JJ work_NN =_JJ -_: =[_NN 33_CD ,_, 28_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ focused_VBN on_IN optimizing_VBG these_DT ranking_JJ metrics_NNS directly_RB ,_, the_DT more_RBR common_JJ approach_NN is_VBZ to_TO optimize_VB a_DT well-behaved_JJ surrogate_NN cost_NN function_NN C_NN -LRB-_-LRB- h_NN -RRB-_-RRB- instead_RB ,_, assuming_VBG that_IN this_DT cost_NN function_NN mimics_VBZ the_DT beha_NN
+n_NN results_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+On_IN the_DT Microsoft_NNP LETOR_NNP data_NNS set_NN ,_, we_PRP see_VBP a_DT small_JJ decrease_NN in_IN accuracy_NN ,_, but_CC the_DT speedups_NNS are_VBP even_RB more_RBR impressive_JJ ._.
+To_TO our_PRP$ knowledge_NN ,_, we_PRP are_VBP the_DT first_JJ paper_NN to_TO explicitly_RB parallelize_VB CART_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: tree_NN construction_NN for_IN the_DT purpose_NN of_IN gradient_NN boosting_VBG ._.
+In_IN addition_NN ,_, most_RBS previous_JJ work_NN on_IN tree_NN parallelization_NN ,_, which_WDT parallelizes_VBZ tree_NN construction_NN by_IN features_NNS or_CC by_IN sub-trees_NNS -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, shows_VBZ speedup_NN o_NN
+ensional_JJ feature_NN vector_NN and_CC its_PRP$ label_NN indicates_VBZ the_DT document_NN 's_POS degree_NN of_IN relevance_NN to_TO the_DT query_NN ._.
+In_IN recent_JJ years_NNS ,_, fueled_VBN by_IN the_DT publication_NN of_IN real-world_JJ data_NNS sets_NNS from_IN large_JJ corporate_JJ search_NN engines_NNS =_JJ -_: =[_NN 21_CD ,_, 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, machine_NN learned_VBD web_NN search_NN ranking_NN has_VBZ become_VBN one_CD of_IN the_DT great_JJ success_NN stories_NNS of_IN machine_NN learning_NN ._.
+Researchers_NNS around_IN the_DT world_NN have_VBP explored_VBN many_JJ different_JJ learning_NN paradigms_NNS for_IN web-search_JJ rankin_NN
+slowdown_NN rather_RB than_IN speedup_NN ._.
+Second_JJ ,_, small_JJ trees_NNS are_VBP unlikely_JJ to_TO get_VB much_JJ speedup_NN ,_, since_IN they_PRP can_MD not_RB utilize_VB all_PDT the_DT available_JJ workers_NNS ._.
+Our_PRP$ algorithm_NN 6_CD Exact_JJ implementations_NNS with_IN clever_JJ bookkeeping_NN =_JJ -_: =[_NN 15_CD -RRB-_-RRB- -_: =_SYM -_: may_MD be_VB faster_JJR --_: however_RB ,_, to_TO our_PRP$ knowledge_NN ,_, no_DT large-scale_JJ implementations_NNS are_VBP openly_RB available_JJ ._.
+We_PRP expect_VBP ,_, nonetheless_RB ,_, that_IN our_PRP$ algorithm_NN can_MD be_VB optimized_VBN to_TO perform_VB ,_, on_IN a_DT single_JJ CPU_NNP ,_, comparably_RB or_CC
+machine_NN learning_NN ._.
+Researchers_NNS around_IN the_DT world_NN have_VBP explored_VBN many_JJ different_JJ learning_NN paradigms_NNS for_IN web-search_JJ ranking_NN data_NNS ,_, including_VBG neural_JJ networks_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, support_NN vector_NN machines_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, random_JJ forests_NNS =_JJ -_: =[_NN 4_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: and_CC gradient_NN boosted_VBD regression_NN trees_NNS -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+Among_IN these_DT various_JJ approaches_NNS ,_, gradient_NN boosted_VBD regression_NN trees_NNS -LRB-_-LRB- GBRT_NN -RRB-_-RRB- arguably_RB define_VBP the_DT current_JJ state-of-theart_NN :_: In_IN the_DT Yahoo_NNP Labs_NNPS Learning_NNP to_TO Rank_NNP Ch_NNP
+daBoost_NN ,_, which_WDT can_MD be_VB performed_VBN in_IN parallel_NN ,_, but_CC inherits_VBZ AdaBoost_NNP 's_POS sensitivity_NN to_TO noise_NN ._.
+Finally_RB ,_, multiple_JJ approaches_NNS have_VBP applied_VBN bagging_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- to_TO web-search_JJ ranking_NN ._.
+Recent_JJ work_NN by_IN Pavlov_NNP and_CC Brunk_NNP =_SYM -_: =[_NN 24_CD -RRB-_-RRB- -_: =_SYM -_: uses_VBZ bagged_VBN boosted_VBD regression_NN trees_NNS ._.
+Bagging_NNP is_VBZ inherently_RB parallel_JJ but_CC requires_VBZ additional_JJ computation_NN time_NN as_IN it_PRP is_VBZ averaged_VBN over_IN many_JJ independent_JJ runs_NNS -LRB-_-LRB- Pavlov_NNP and_CC Brunk_NNP used_VBD a_DT total_NN of_IN M_NN =_JJ 300,00_CD
+kes_VBZ a_DT larger_JJR fraction_NN of_IN the_DT overall_JJ running_NN time_NN ._.
+Most_JJS of_IN the_DT previous_JJ work_NN on_IN parallelizing_VBG boosting_VBG focuses_VBZ on_IN parallel_JJ construction_NN of_IN the_DT weak_JJ learners_NNS -LRB-_-LRB- 23_CD -RRB-_-RRB- or_CC on_IN the_DT original_JJ AdaBoost_NNP algorithm_NN =_JJ -_: =[_NN 19_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: instead_RB of_IN gradient_NN boosting_VBG ._.
+MultiBoost_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- combines_NNS wagging_VBG with_IN AdaBoost_NNP ,_, which_WDT can_MD be_VB performed_VBN in_IN parallel_NN ,_, but_CC inherits_VBZ AdaBoost_NNP 's_POS sensitivity_NN to_TO noise_NN ._.
+Finally_RB ,_, multiple_JJ approaches_NNS have_VBP appli_VBN
+machine_NN learning_NN ._.
+Researchers_NNS around_IN the_DT world_NN have_VBP explored_VBN many_JJ different_JJ learning_NN paradigms_NNS for_IN web-search_JJ ranking_NN data_NNS ,_, including_VBG neural_JJ networks_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, support_NN vector_NN machines_NNS -LRB-_-LRB- 18_CD -RRB-_-RRB- ,_, random_JJ forests_NNS =_JJ -_: =[_NN 4_CD ,_, 22_CD -RRB-_-RRB- -_: =_JJ -_: and_CC gradient_NN boosted_VBD regression_NN trees_NNS -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+Among_IN these_DT various_JJ approaches_NNS ,_, gradient_NN boosted_VBD regression_NN trees_NNS -LRB-_-LRB- GBRT_NN -RRB-_-RRB- arguably_RB define_VBP the_DT current_JJ state-of-theart_NN :_: In_IN the_DT Yahoo_NNP Labs_NNPS Learning_NNP to_TO Rank_NNP Ch_NNP
+Most_JJS of_IN the_DT previous_JJ work_NN on_IN parallelizing_VBG boosting_VBG focuses_VBZ on_IN parallel_JJ construction_NN of_IN the_DT weak_JJ learners_NNS -LRB-_-LRB- 23_CD -RRB-_-RRB- or_CC on_IN the_DT original_JJ AdaBoost_NNP algorithm_NN -LRB-_-LRB- 19_CD ,_, 29_CD -RRB-_-RRB- instead_RB of_IN gradient_NN boosting_VBG ._.
+MultiBoost_NN =_JJ -_: =[_NN 30_CD -RRB-_-RRB- -_: =_JJ -_: combines_NNS wagging_VBG with_IN AdaBoost_NNP ,_, which_WDT can_MD be_VB performed_VBN in_IN parallel_NN ,_, but_CC inherits_VBZ AdaBoost_NNP 's_POS sensitivity_NN to_TO noise_NN ._.
+Finally_RB ,_, multiple_JJ approaches_NNS have_VBP applied_VBN bagging_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- to_TO web-search_JJ ranking_NN ._.
+Recent_JJ w_NN
+parallelize_JJ CART_NN -LRB-_-LRB- 5_CD -RRB-_-RRB- tree_NN construction_NN for_IN the_DT purpose_NN of_IN gradient_NN boosting_VBG ._.
+In_IN addition_NN ,_, most_RBS previous_JJ work_NN on_IN tree_NN parallelization_NN ,_, which_WDT parallelizes_VBZ tree_NN construction_NN by_IN features_NNS or_CC by_IN sub-trees_NNS =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, shows_VBZ speedup_NN of_IN about_IN 4_CD or_CC 8_CD ._.
+In_IN contrast_NN ,_, our_PRP$ approach_NN provides_VBZ speed-up_NN on_IN limited_JJ depth_NN trees_NNS of_IN up_IN to_TO 42_CD on_IN shared_JJ memory_NN machines_NNS and_CC up_IN to_TO 25_CD on_IN distributed_VBN memory_NN machines_NNS ._.
+Moreover_RB ,_, our_PRP$ app_NN
+ction_NN C_NN -LRB-_-LRB- h_NN -RRB-_-RRB- instead_RB ,_, assuming_VBG that_IN this_DT cost_NN function_NN mimics_VBZ the_DT behavior_NN of_IN these_DT other_JJ metrics_NNS ._.
+In_IN general_JJ ,_, the_DT cost_NN functions_NNS C_NN can_MD be_VB put_VBN into_IN three_CD categories_NNS of_IN ranking_NN :_: pointwise_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, pairwise_JJ =_JJ -_: =[_NN 16_CD ,_, 34_CD -RRB-_-RRB- -_: =_JJ -_: and_CC listwise_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+In_IN pointwise_NN settings_NNS the_DT regressor_NN attempts_VBZ to_TO approximate_JJ the_DT label_NN yi_NN of_IN a_DT document_NN xi_IN directly_RB ,_, i.e._FW h_NN -LRB-_-LRB- xi_NN -RRB-_-RRB- ≈_FW yi_FW ._.
+A_DT typical_JJ loss_NN function_NN is_VBZ the_DT squared-loss_JJ C_NN -LRB-_-LRB- h_NN -RRB-_-RRB- =_JJ nX_NN -LRB-_-LRB- h_NN -LRB-_-LRB- xi_NN -RRB-_-RRB- −_FW y_FW
+rogate_NN cost_NN function_NN C_NN -LRB-_-LRB- h_NN -RRB-_-RRB- instead_RB ,_, assuming_VBG that_IN this_DT cost_NN function_NN mimics_VBZ the_DT behavior_NN of_IN these_DT other_JJ metrics_NNS ._.
+In_IN general_JJ ,_, the_DT cost_NN functions_NNS C_NN can_MD be_VB put_VBN into_IN three_CD categories_NNS of_IN ranking_NN :_: pointwise_NN =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, pairwise_JJ -LRB-_-LRB- 16_CD ,_, 34_CD -RRB-_-RRB- and_CC listwise_NN -LRB-_-LRB- 8_CD -RRB-_-RRB- ._.
+In_IN pointwise_NN settings_NNS the_DT regressor_NN attempts_VBZ to_TO approximate_JJ the_DT label_NN yi_NN of_IN a_DT document_NN xi_IN directly_RB ,_, i.e._FW h_NN -LRB-_-LRB- xi_NN -RRB-_-RRB- ≈_FW yi_FW ._.
+A_DT typical_JJ loss_NN function_NN is_VBZ the_DT squared-loss_JJ C_NN
+the_DT increasing_VBG amount_NN of_IN available_JJ data_NNS and_CC the_DT ubiquity_NN of_IN multicores_NNS and_CC clouds_NNS ,_, there_EX is_VBZ increasing_VBG interest_NN in_IN parallelizing_VBG machine_NN learning_NN algorithms_NNS ._.
+Most_RBS prior_JJ work_NN on_IN parallelizing_VBG boosting_VBG =_JJ -_: =[_NN 19_CD ,_, 32_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ agnostic_JJ to_TO the_DT choice_NN of_IN the_DT weak_JJ learner_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP take_VBP the_DT opposite_JJ approach_NN and_CC parallelize_VB the_DT construction_NN of_IN individual_JJ weak_JJ learners_NNS ,_, i.e._FW the_DT depth-limited_JJ regression_NN trees_NNS ._.
+Our_PRP$
+peedup_NN with_IN more_JJR cores_NNS ._.
+falls_VBZ into_IN the_DT second_JJ approach_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, data-parallelism_NN ,_, where_WRB the_DT training_NN data_NNS are_VBP divided_VBN among_IN the_DT different_JJ workers_NNS ._.
+The_DT data_NNS can_MD be_VB partitioned_VBN by_IN features_NNS -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, by_IN samples_NNS =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_JJ -_: or_CC both_DT -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+Dividing_VBG by_IN feature_NN requires_VBZ the_DT workers_NNS to_TO coordinate_VB which_WDT input_NN falls_VBZ into_IN which_WDT tree-node_NN ,_, as_IN the_DT individual_JJ workers_NNS do_VBP not_RB have_VB enough_JJ information_NN to_TO compute_VB it_PRP locally_RB ._.
+This_DT requi_NN
+malized_VBN Discounted_JJ Cumulative_JJ Gain_NN -LRB-_-LRB- NDCG_NN -RRB-_-RRB- -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, which_WDT emphasizes_VBZ leading_JJ results_NNS -LRB-_-LRB- NDCG_NN -RRB-_-RRB- ._.
+However_RB ,_, these_DT metrics_NNS can_MD be_VB non-convex_JJ ,_, non-differentiable_JJ or_CC even_RB non-continuous_JJ ._.
+Although_IN some_DT recent_JJ work_NN =_JJ -_: =[_NN 33_CD ,_, 28_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ focused_VBN on_IN optimizing_VBG these_DT ranking_JJ metrics_NNS directly_RB ,_, the_DT more_RBR common_JJ approach_NN is_VBZ to_TO optimize_VB a_DT well-behaved_JJ surrogate_NN cost_NN function_NN C_NN -LRB-_-LRB- h_NN -RRB-_-RRB- instead_RB ,_, assuming_VBG that_IN this_DT cost_NN function_NN mimics_VBZ the_DT beha_NN
+the_DT increasing_VBG amount_NN of_IN available_JJ data_NNS and_CC the_DT ubiquity_NN of_IN multicores_NNS and_CC clouds_NNS ,_, there_EX is_VBZ increasing_VBG interest_NN in_IN parallelizing_VBG machine_NN learning_NN algorithms_NNS ._.
+Most_RBS prior_JJ work_NN on_IN parallelizing_VBG boosting_VBG =_JJ -_: =[_NN 19_CD ,_, 32_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ agnostic_JJ to_TO the_DT choice_NN of_IN the_DT weak_JJ learner_NN ._.
+In_IN this_DT paper_NN ,_, we_PRP take_VBP the_DT opposite_JJ approach_NN and_CC parallelize_VB the_DT construction_NN of_IN individual_JJ weak_JJ learners_NNS ,_, i.e._FW the_DT depth-limited_JJ regression_NN trees_NNS ._.
+Our_PRP$
+gradient_NN boosting_VBG ._.
+MultiBoost_NN -LRB-_-LRB- 30_CD -RRB-_-RRB- combines_NNS wagging_VBG with_IN AdaBoost_NNP ,_, which_WDT can_MD be_VB performed_VBN in_IN parallel_NN ,_, but_CC inherits_VBZ AdaBoost_NNP 's_POS sensitivity_NN to_TO noise_NN ._.
+Finally_RB ,_, multiple_JJ approaches_NNS have_VBP applied_VBN bagging_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: to_TO web-search_JJ ranking_NN ._.
+Recent_JJ work_NN by_IN Pavlov_NNP and_CC Brunk_NNP -LRB-_-LRB- 24_CD -RRB-_-RRB- uses_VBZ bagged_VBN boosted_VBD regression_NN trees_NNS ._.
+Bagging_NNP is_VBZ inherently_RB parallel_JJ but_CC requires_VBZ additional_JJ computation_NN time_NN as_IN it_PRP is_VBZ averaged_VBN over_IN many_JJ i_FW
+z._VB They_PRP each_DT have_VBP 24GB_NN of_IN RAM_NNP ._.
+For_IN our_PRP$ experiments_NNS ,_, we_PRP used_VBD 6_CD of_IN these_DT nodes_NNS -LRB-_-LRB- with_IN a_DT total_NN of_IN 48_CD cores_NNS -RRB-_-RRB- ._.
+On_IN both_DT machines_NNS ,_, we_PRP tested_VBD the_DT same_JJ implementation_NN of_IN the_DT algorithm_NN ,_, which_WDT was_VBD built_VBN with_IN MPI_NN =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP will_MD make_VB the_DT code_NN available_JJ 2_CD under_IN an_DT open_JJ source_NN license_NN ._.
+We_PRP compare_VBP against_IN the_DT exact_JJ GBRT_NN implementation_NN 3_CD described_VBN in_IN -LRB-_-LRB- 22_CD -RRB-_-RRB- ,_, which_WDT to_TO our_PRP$ knowledge_NN is_VBZ currently_RB the_DT only_JJ largescale_NN open-sou_NN
+easured_VBN by_IN specialized_JJ ranking_JJ metrics_NNS ._.
+The_DT most_RBS commonly_RB used_VBN metrics_NNS are_VBP Expected_VBN Reciprocal_JJ Rank_NNP -LRB-_-LRB- ERR_NNP -RRB-_-RRB- -LRB-_-LRB- 10_CD -RRB-_-RRB- ,_, which_WDT is_VBZ meant_VBN to_TO mimic_VB user_NN behavior_NN ,_, and_CC Normalized_VBN Discounted_JJ Cumulative_JJ Gain_NN -LRB-_-LRB- NDCG_NN -RRB-_-RRB- =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT emphasizes_VBZ leading_JJ results_NNS -LRB-_-LRB- NDCG_NN -RRB-_-RRB- ._.
+However_RB ,_, these_DT metrics_NNS can_MD be_VB non-convex_JJ ,_, non-differentiable_JJ or_CC even_RB non-continuous_JJ ._.
+Although_IN some_DT recent_JJ work_NN -LRB-_-LRB- 33_CD ,_, 28_CD ,_, 11_CD -RRB-_-RRB- has_VBZ focused_VBN on_IN optimizing_VBG these_DT r_NN
+t_NN success_NN stories_NNS of_IN machine_NN learning_NN ._.
+Researchers_NNS around_IN the_DT world_NN have_VBP explored_VBN many_JJ different_JJ learning_NN paradigms_NNS for_IN web-search_JJ ranking_NN data_NNS ,_, including_VBG neural_JJ networks_NNS -LRB-_-LRB- 7_CD -RRB-_-RRB- ,_, support_NN vector_NN machines_NNS =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: ,_, random_JJ forests_NNS -LRB-_-LRB- 4_CD ,_, 22_CD -RRB-_-RRB- and_CC gradient_NN boosted_VBD regression_NN trees_NNS -LRB-_-LRB- 34_CD -RRB-_-RRB- ._.
+Among_IN these_DT various_JJ approaches_NNS ,_, gradient_NN boosted_VBD regression_NN trees_NNS -LRB-_-LRB- GBRT_NN -RRB-_-RRB- arguably_RB define_VBP the_DT current_JJ state-of-theart_NN :_: In_IN the_DT Yahoo_NNP
+malized_VBN Discounted_JJ Cumulative_JJ Gain_NN -LRB-_-LRB- NDCG_NN -RRB-_-RRB- -LRB-_-LRB- 17_CD -RRB-_-RRB- ,_, which_WDT emphasizes_VBZ leading_JJ results_NNS -LRB-_-LRB- NDCG_NN -RRB-_-RRB- ._.
+However_RB ,_, these_DT metrics_NNS can_MD be_VB non-convex_JJ ,_, non-differentiable_JJ or_CC even_RB non-continuous_JJ ._.
+Although_IN some_DT recent_JJ work_NN =_JJ -_: =[_NN 33_CD ,_, 28_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: has_VBZ focused_VBN on_IN optimizing_VBG these_DT ranking_JJ metrics_NNS directly_RB ,_, the_DT more_RBR common_JJ approach_NN is_VBZ to_TO optimize_VB a_DT well-behaved_JJ surrogate_NN cost_NN function_NN C_NN -LRB-_-LRB- h_NN -RRB-_-RRB- instead_RB ,_, assuming_VBG that_IN this_DT cost_NN function_NN mimics_VBZ the_DT beha_NN
+ain_VB even_RB higher_JJR speedup_NN with_IN more_JJR cores_NNS ._.
+falls_VBZ into_IN the_DT second_JJ approach_NN -LRB-_-LRB- 1_CD -RRB-_-RRB- ,_, data-parallelism_NN ,_, where_WRB the_DT training_NN data_NNS are_VBP divided_VBN among_IN the_DT different_JJ workers_NNS ._.
+The_DT data_NNS can_MD be_VB partitioned_VBN by_IN features_NNS =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_JJ -_: ,_, by_IN samples_NNS -LRB-_-LRB- 25_CD -RRB-_-RRB- or_CC both_DT -LRB-_-LRB- 31_CD -RRB-_-RRB- ._.
+Dividing_VBG by_IN feature_NN requires_VBZ the_DT workers_NNS to_TO coordinate_VB which_WDT input_NN falls_VBZ into_IN which_WDT tree-node_NN ,_, as_IN the_DT individual_JJ workers_NNS do_VBP not_RB have_VB enough_JJ information_NN to_TO compute_VB it_PRP lo_FW
+suming_VBG that_IN this_DT cost_NN function_NN mimics_VBZ the_DT behavior_NN of_IN these_DT other_JJ metrics_NNS ._.
+In_IN general_JJ ,_, the_DT cost_NN functions_NNS C_NN can_MD be_VB put_VBN into_IN three_CD categories_NNS of_IN ranking_NN :_: pointwise_NN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, pairwise_JJ -LRB-_-LRB- 16_CD ,_, 34_CD -RRB-_-RRB- and_CC listwise_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN pointwise_NN settings_NNS the_DT regressor_NN attempts_VBZ to_TO approximate_JJ the_DT label_NN yi_NN of_IN a_DT document_NN xi_IN directly_RB ,_, i.e._FW h_NN -LRB-_-LRB- xi_NN -RRB-_-RRB- ≈_FW yi_FW ._.
+A_DT typical_JJ loss_NN function_NN is_VBZ the_DT squared-loss_JJ C_NN -LRB-_-LRB- h_NN -RRB-_-RRB- =_JJ nX_NN -LRB-_-LRB- h_NN -LRB-_-LRB- xi_NN -RRB-_-RRB- −_FW yi_FW -RRB-_-RRB- 2_CD ._.
+-LRB-_-LRB- 1_LS -RRB-_-RRB- i_LS =_JJ 1_CD Th_NN
+ensional_JJ feature_NN vector_NN and_CC its_PRP$ label_NN indicates_VBZ the_DT document_NN 's_POS degree_NN of_IN relevance_NN to_TO the_DT query_NN ._.
+In_IN recent_JJ years_NNS ,_, fueled_VBN by_IN the_DT publication_NN of_IN real-world_JJ data_NNS sets_NNS from_IN large_JJ corporate_JJ search_NN engines_NNS =_JJ -_: =[_NN 21_CD ,_, 9_CD -RRB-_-RRB- -_: =_JJ -_: ,_, machine_NN learned_VBD web_NN search_NN ranking_NN has_VBZ become_VBN one_CD of_IN the_DT great_JJ success_NN stories_NNS of_IN machine_NN learning_NN ._.
+Researchers_NNS around_IN the_DT world_NN have_VBP explored_VBN many_JJ different_JJ learning_NN paradigms_NNS for_IN web-search_JJ rankin_NN
+is_VBZ the_DT ranking_JJ function_NN ,_, which_WDT orders_VBZ the_DT retrieved_VBN documents_NNS according_VBG to_TO decreasing_VBG relevance_NN to_TO the_DT query_NN ._.
+Recently_RB ,_, web_NN search_NN ranking_NN has_VBZ been_VBN recognized_VBN as_IN a_DT supervised_JJ machine_NN learning_NN problem_NN =_JJ -_: =[_NN 7_CD ,_, 34_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB each_DT query-document_JJ pair_NN is_VBZ represented_VBN by_IN a_DT high-dimensional_JJ feature_NN vector_NN and_CC its_PRP$ label_NN indicates_VBZ the_DT document_NN 's_POS degree_NN of_IN relevance_NN to_TO the_DT query_NN ._.
+In_IN recent_JJ years_NNS ,_, fueled_VBN by_IN the_DT publication_NN
+ch_NN as_IN bagging_NN ._.
+Parallel_JJ decision_NN tree_NN algorithms_NNS have_VBP been_VBN studied_VBN for_IN many_JJ years_NNS ,_, and_CC can_MD be_VB grouped_VBN into_IN two_CD main_JJ categories_NNS :_: task-parallelism_NN and_CC data-parallelism_NN ._.
+Algorithms_NNS in_IN the_DT first_JJ category_NN =_JJ -_: =[_NN 12_CD ,_, 27_CD -RRB-_-RRB- -_: =_SYM -_: divide_VB the_DT tree_NN into_IN sub-trees_NNS ,_, which_WDT are_VBP constructed_VBN on_IN different_JJ workers_NNS ,_, e.g._FW after_IN the_DT first_JJ node_NN is_VBZ split_VBN ,_, the_DT two_CD remaining_JJ sub-trees_NNS are_VBP constructed_VBN on_IN separate_JJ workers_NNS ._.
+There_EX are_VBP two_CD downside_NN
+is_VBZ the_DT ranking_JJ function_NN ,_, which_WDT orders_VBZ the_DT retrieved_VBN documents_NNS according_VBG to_TO decreasing_VBG relevance_NN to_TO the_DT query_NN ._.
+Recently_RB ,_, web_NN search_NN ranking_NN has_VBZ been_VBN recognized_VBN as_IN a_DT supervised_JJ machine_NN learning_NN problem_NN =_JJ -_: =[_NN 7_CD ,_, 34_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB each_DT query-document_JJ pair_NN is_VBZ represented_VBN by_IN a_DT high-dimensional_JJ feature_NN vector_NN and_CC its_PRP$ label_NN indicates_VBZ the_DT document_NN 's_POS degree_NN of_IN relevance_NN to_TO the_DT query_NN ._.
+In_IN recent_JJ years_NNS ,_, fueled_VBN by_IN the_DT publication_NN
+stwise_JJ approaches_NNS -LRB-_-LRB- 8_CD -RRB-_-RRB- are_VBP similar_JJ to_TO the_DT pairwise_JJ approach_NN ,_, but_CC focus_VB on_IN all_PDT the_DT documents_NNS that_WDT belong_VBP to_TO a_DT particular_JJ query_NN and_CC tend_VB to_TO have_VB slightly_RB more_RBR complicated_JJ cost_NN functions_NNS ._.
+Recent_JJ research_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_SYM -_: also_RB focused_VBN on_IN breaking_VBG the_DT ranking_JJ problem_NN into_IN multiple_JJ binary_JJ classification_NN tasks_NNS ._.
+In_IN this_DT paper_NN ,_, we_PRP do_VBP not_RB restrict_VB ourselves_PRP to_TO any_DT particular_JJ cost_NN function_NN ._.
+Instead_RB we_PRP assume_VBP that_IN we_PRP are_VBP prov_NN
+les_FW and_CC deliberately_RB only_RB approximates_VBZ the_DT exact_JJ split_NN ,_, making_VBG the_DT communication_NN requirement_NN independent_JJ of_IN the_DT data_NNS set_VBP size_NN ._.
+Two_CD sample-partitioning_JJ approaches_NNS bear_VBP similarities_NNS to_TO our_PRP$ work_NN ._.
+PLANET_NN =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: selects_VBZ splits_VBZ using_VBG exact_JJ ,_, static_JJ histograms_NNS constructed_VBN in_IN a_DT two_CD stage_NN process_NN ._.
+Implemented_VBN in_IN the_DT MapReduce_NNP framework_NN ,_, PLANET_NN samples_NNS histogram_NN bin_NN boundaries_NNS to_TO achieve_VB approximately_RB uniform-dept_JJ
+nstruction_NN of_IN individual_JJ weak_JJ learners_NNS ,_, i.e._FW the_DT depth-limited_JJ regression_NN trees_NNS ._.
+Our_PRP$ algorithm_NN is_VBZ inspired_VBN by_IN Ben-Haim_NNP and_CC Yom-Tov_NNP 's_POS work_NN on_IN parallel_JJ construction_NN of_IN decision_NN trees_NNS for_IN classification_NN =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN our_PRP$ approach_NN ,_, the_DT algorithm_NN works_VBZ step_NN by_IN step_NN constructing_VBG one_CD layer_NN of_IN the_DT regression_NN tree_NN at_IN a_DT time_NN ._.
+One_CD processor_NN is_VBZ designated_VBN the_DT master_NN processor_NN and_CC the_DT others_NNS are_VBP the_DT workers_NNS ._.
+The_DT data_NNS a_DT

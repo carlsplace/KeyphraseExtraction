@@ -1,0 +1,62 @@
+Improving_NN Web_NN search_NN efficiency_NN via_IN a_DT locality_NN based_VBN static_JJ pruning_NN method_NN
+The_DT unarguably_RB fast_JJ ,_, and_CC continuous_JJ ,_, growth_NN of_IN the_DT volume_NN of_IN indexed_VBN -LRB-_-LRB- and_CC indexable_JJ -RRB-_-RRB- documents_NNS on_IN the_DT Web_NN poses_VBZ a_DT great_JJ challenge_NN for_IN search_NN engines_NNS ._.
+This_DT is_VBZ true_JJ regarding_VBG not_RB only_RB search_VB effectiveness_NN but_CC also_RB time_NN and_CC space_NN efficiency_NN ._.
+In_IN this_DT paper_NN we_PRP present_VBP an_DT index_NN pruning_NN technique_NN targeted_VBN for_IN search_NN engines_NNS that_WDT addresses_VBZ the_DT latter_JJ issue_NN without_IN disconsidering_VBG the_DT former_JJ ._.
+To_TO this_DT effect_NN ,_, we_PRP adopt_VBP a_DT new_JJ pruning_NN strategy_NN capable_JJ of_IN greatly_RB reducing_VBG the_DT size_NN of_IN search_NN engine_NN indices_NNS ._.
+Experiments_NNS using_VBG a_DT real_JJ search_NN engine_NN show_VBP that_IN our_PRP$ technique_NN can_MD reduce_VB the_DT indices_NNS '_POS storage_NN costs_NNS by_IN up_IN to_TO 60_CD %_NN over_IN traditional_JJ lossless_JJ compression_NN methods_NNS ,_, while_IN keeping_VBG the_DT loss_NN in_IN retrieval_NN precision_NN to_TO a_DT minimum_NN ._.
+When_WRB compared_VBN to_TO the_DT indices_NNS size_VBP with_IN no_DT compression_NN at_IN all_DT ,_, the_DT compression_NN rate_NN is_VBZ higher_JJR than_IN 88_CD %_NN ,_, i.e._FW ,_, less_JJR than_IN one_CD eighth_NN of_IN the_DT original_JJ size_NN ._.
+More_RBR importantly_RB ,_, our_PRP$ results_NNS indicate_VBP that_IN ,_, due_JJ to_TO the_DT reduction_NN in_IN storage_NN overhead_NN ,_, query_NN processing_NN time_NN can_MD be_VB reduced_VBN to_TO nearly_RB 65_CD %_NN of_IN the_DT original_JJ time_NN ,_, with_IN no_DT loss_NN in_IN average_JJ precision_NN ._.
+The_DT new_JJ method_NN yields_VBZ significative_JJ improvements_NNS when_WRB compared_VBN against_IN the_DT best_JJS known_VBN static_JJ pruning_NN method_NN for_IN search_NN engine_NN indices_NNS ._.
+In_IN addition_NN ,_, since_IN our_PRP$ technique_NN is_VBZ orthogonal_JJ to_TO the_DT underlying_VBG search_NN algorithms_NNS ,_, it_PRP can_MD be_VB adopted_VBN by_IN virtually_RB any_DT search_NN engine_NN ._.
+ent_NN of_IN past_JJ queries_NNS ,_, which_WDT is_VBZ our_PRP$ aim_NN in_IN this_DT work_NN ._.
+Several_JJ authors_NNS have_VBP utilized_VBN document_NN compaction_NN or_CC pruning_NN schemes_NNS for_IN information_NN retrieval_NN tasks_NNS other_JJ than_IN snippet_JJ generation_NN ._.
+De_NNP Moura_NNP et_FW al._FW =_SYM -_: =[_NN 5_CD -RRB-_-RRB- -_: =_JJ -_: use_NN document_NN pruning_NN to_TO retain_VB only_RB the_DT ``_`` novel_JJ ''_'' sentences_NNS in_IN a_DT document_NN ,_, with_IN the_DT pruned_VBN documents_NNS then_RB used_VBD to_TO construct_VB a_DT smaller_JJR -LRB-_-LRB- pruned_VBN -RRB-_-RRB- inverted_JJ index_NN which_WDT supports_VBZ phrase_NN queries_NNS ._.
+Lu_NN and_CC Calla_NN
+ave_JJ 10GB_NN of_IN disk_NN storage_NN available_JJ for_IN this_DT service_NN ._.
+However_RB ,_, lossless_JJ compression_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- can_MD reduce_VB the_DT size_NN of_IN the_DT index_NN by_IN utilizing_VBG efficient_JJ data_NNS structures_NNS ,_, and_CC lossy_JJ index_NN compression_NN techniques_NNS =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: have_VBP been_VBN shown_VBN to_TO reduce_VB the_DT size_NN of_IN the_DT index_NN by_IN 50_CD to_TO 70_CD %_NN with_IN minimal_JJ loss_NN in_IN precision_NN ._.
+Using_VBG efficient_JJ Trie_NN structures_NNS ,_, only_RB small_JJ percentages_NNS of_IN the_DT index_NN need_VBP to_TO be_VB read_VBN and_CC loaded_VBN into_IN memor_NN
+%_NN or_CC use_NN less_JJR than_IN half_NN of_IN the_DT words_NNS while_IN maintaining_VBG accuracy_NN ._.
+Our_PRP$ key_JJ idea_NN is_VBZ to_TO take_VB sentences_NNS as_IN the_DT context_NN of_IN words_NNS to_TO find_VB occurrences_NNS in_IN unusual_JJ context_NN ;_: we_PRP use_VBP the_DT ``_`` locality_NN ''_'' of_IN words_NNS as_IN in_IN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP find_VBP relevant_JJ terms_NNS by_IN an_DT optimal_JJ trade-off_NN between_IN semantic_JJ coherence_NN and_CC content_NN coverage_NN ._.
+While_IN several_JJ authors_NNS argue_VBP for_IN considering_VBG phrases_NNS -LRB-_-LRB- 8_CD ,_, 27_CD ,_, 23_CD -RRB-_-RRB- due_JJ to_TO their_PRP$ superior_JJ semantic_JJ qualiti_NNS
+ic_JJ ._.
+Recent_JJ works_NNS demonstrated_VBD that_IN static_JJ pruning_NN can_MD produce_VB very_RB compact_JJ indices_NNS whilst_IN not_RB suffering_VBG from_IN an_DT unacceptable_JJ precision_NN loss_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+Also_RB ,_, this_DT technique_NN has_VBZ been_VBN applied_VBN in_IN web_NN retrieval_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT paper_NN presents_VBZ several_JJ techniques_NNS for_IN reducing_VBG the_DT size_NN of_IN the_DT inverted_JJ file_NN by_IN identifying_VBG a_DT stop-words_JJ set_NN dependent_JJ on_IN the_DT collection_NN ._.
+The_DT main_JJ difference_NN between_IN this_DT method_NN and_CC the_DT one_CD des_FW
+n_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- reports_VBZ the_DT importance_NN of_IN text_NN passages_NNS ,_, considered_VBN as_IN more_RBR relevant_JJ to_TO user_NN queries_NNS than_IN the_DT full_JJ documents_NNS ._.
+A_DT similar_JJ reasoning_NN is_VBZ used_VBN in_IN a_DT recently_RB proposed_VBN method_NN for_IN static_JJ index_NN pruning_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT indexes_NNS `_`` significant_JJ sentences_NNS '_POS ,_, i.e._FW phrases_NNS appearing_VBG in_IN similar_JJ contexts_NNS ._.
+In_IN our_PRP$ indexing_NN model_NN ,_, we_PRP use_VBP the_DT simplest_JJS textual_JJ context_NN ,_, a_DT fixed-size_JJ window_NN ,_, and_CC consider_VB as_IN keys_NNS only_RB term_VBP sets_NNS
+-LRB-_-LRB- 12_CD -RRB-_-RRB- reports_VBZ the_DT importance_NN of_IN text_NN passages_NNS that_WDT are_VBP more_RBR responsive_JJ to_TO particular_JJ user_NN needs_NNS than_IN the_DT full_JJ document_NN ._.
+Similar_JJ reasoning_NN is_VBZ used_VBN in_IN a_DT recently_RB proposed_VBN method_NN for_IN static_JJ index_NN pruning_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT indexes_NNS `_`` significant_JJ sentences_NNS '_POS ,_, i.e._FW phrases_NNS appearing_VBG in_IN similar_JJ contexts_NNS ._.
+Therefore_RB HDKs_NNS are_VBP keys_NNS composed_VBN of_IN terms_NNS appearing_VBG within_IN a_DT document_NN window_NN of_IN size_NN w._NN Definition_NN 4_CD ._.
+Krw_NNP is_VBZ a_DT set_VBN o_NN
+-LRB-_-LRB- 16_CD -RRB-_-RRB- reports_VBZ the_DT importance_NN of_IN text_NN passages_NNS that_WDT are_VBP more_RBR responsive_JJ to_TO particular_JJ user_NN needs_NNS than_IN full_JJ documents_NNS ._.
+A_DT similar_JJ reasoning_NN is_VBZ used_VBN in_IN a_DT recently_RB proposed_VBN method_NN for_IN static_JJ index_NN pruning_NN =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT indexes_NNS `_`` significant_JJ sentences_NNS '_POS ,_, i.e._FW phrases_NNS appearing_VBG in_IN similar_JJ contexts_NNS ._.
+Redundancy_NN ._.
+A_DT key_JJ k_NN is_VBZ semantically_RB adequate_JJ for_IN a_DT document_NN d_NN if_IN there_EX is_VBZ a_DT high_JJ probability_NN that_IN a_DT user_NN produces_VBZ k_NN
+n_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- reports_VBZ the_DT importance_NN of_IN text_NN passages_NNS ,_, considered_VBN as_IN more_RBR relevant_JJ to_TO user_NN queries_NNS than_IN the_DT full_JJ documents_NNS ._.
+A_DT similar_JJ reasoning_NN is_VBZ used_VBN in_IN a_DT recently_RB proposed_VBN method_NN for_IN static_JJ index_NN pruning_NN =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: which_WDT indexes_NNS `_`` significant_JJ sentences_NNS '_POS ,_, i.e._FW phrases_NNS appearing_VBG in_IN similar_JJ contexts_NNS ._.
+In_IN our_PRP$ indexing_NN model_NN ,_, we_PRP use_VBP the_DT simplest_JJS textual_JJ context_NN ,_, a_DT fixed-size_JJ window_NN ,_, and_CC consider_VB as_IN keys_NNS only_RB term_VBP sets_NNS
+have_VBP not_RB been_VBN reported_VBN before_IN and_CC that_IN ,_, we_PRP understand_VBP ,_, are_VBP of_IN interest_NN to_TO the_DT research_NN community_NN ._.
+Another_DT research_NN direction_NN in_IN this_DT topic_NN is_VBZ the_DT development_NN of_IN new_JJ pruning_NN methods_NNS for_IN search_NN engines_NNS =_JJ -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One_CD way_NN to_TO address_VB query_NN processing_NN efficiency_NN without_IN losing_VBG effectiveness_NN is_VBZ to_TO reduce_VB the_DT amount_NN of_IN data_NNS to_TO be_VB processed_VBN at_IN query_NN time_NN ._.
+We_PRP adopt_VBP a_DT new_JJ pruning_NN strategy_NN capable_JJ of_IN greatly_RB reducing_VBG
+wed_VBN as_IN a_DT special_JJ type_NN of_IN an_DT index_NN compression_NN that_WDT relies_VBZ on_IN explicit_JJ knowledge_NN of_IN the_DT data_NNS ._.
+Different_JJ compression_NN methods_NNS as_RB well_RB as_IN the_DT trade_NN offs_NNS involved_VBN in_IN using_VBG them_PRP ,_, have_VBP been_VBN widely_RB published_VBN =_JJ -_: =[_NN 7_CD ,_, 9_CD ,_, 17_CD ,_, 18_CD ,_, 23_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, we_PRP regard_VBP our_PRP$ scheme_NN as_IN independent_JJ of_IN those_DT methods_NNS ,_, and_CC indeed_RB it_PRP can_MD be_VB used_VBN in_IN combination_NN with_IN them_PRP ._.
+This_DT paper_NN focused_VBD on_IN the_DT problem_NN of_IN efficiently_RB building_VBG and_CC querying_VBG an_DT inverted_JJ
+irst_NN exploited_VBN by_IN Carmel_NNP et_FW al._FW -LRB-_-LRB- 10_CD -RRB-_-RRB- ._.
+They_PRP introduced_VBD static_JJ document_NN pruning_NN that_WDT is_VBZ able_JJ to_TO reduce_VB the_DT size_NN of_IN the_DT index_NN by_IN up_RB to_TO 50-70_CD %_NN but_CC at_IN the_DT price_NN of_IN a_DT certain_JJ precision_NN loss_NN ._.
+The_DT authors_NNS of_IN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: extend_VB Carmel_NNP 's_POS lossy_JJ pruning_NN by_IN taking_VBG into_IN account_NN co-occurrences_NNS of_IN words_NNS that_WDT appear_VBP close_JJ to_TO each_DT other_JJ in_IN documents_NNS ._.
+Long_NNP and_CC Suel_NNP also_RB employ_VBP a_DT similar_JJ pruning_NN technique_NN -LRB-_-LRB- 16_CD -RRB-_-RRB- ._.
+Anh_NN and_CC Moffat_NN p_NN
+ont_NN of_IN the_DT list_NN ,_, and_CC only_RB the_DT initial_JJ parts_NNS of_IN the_DT inverted_JJ lists_NNS are_VBP processed_VBN -LRB-_-LRB- 14_CD -RRB-_-RRB- ._.
+In_IN static_JJ pruning_NN schemes_NNS ,_, the_DT number_NN of_IN postings_NNS processed_VBN is_VBZ decided_VBN independently_RB of_IN the_DT query_NN being_VBG evaluated_VBN =_JJ -_: =[_NN 3_CD ,_, 5_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN dynamic_JJ pruning_NN ,_, the_DT number_NN of_IN postings_NNS processed_VBN is_VBZ dependent_JJ on_IN the_DT query_NN -LRB-_-LRB- 7_CD ,_, 14_CD -RRB-_-RRB- ._.
+Anh_NNP and_CC Moffat_NNP propose_VBP impact-ordered_JJ inverted_JJ lists_NNS ,_, and_CC a_DT dynamic_JJ pruning_NN scheme_NN -LRB-_-LRB- 2_CD -RRB-_-RRB- ._.
+In_IN this_DT paper_NN we_PRP exten_VBP
+ity_NN search_NN :_: find_VB the_DT structures_NNS that_WDT contain_VBP a_DT substructure_NN that_WDT is_VBZ similar_JJ to_TO the_DT query_NN graph_NN -LRB-_-LRB- 27_CD -RRB-_-RRB- ._.
+Previous_JJ works_NNS on_IN index_NN pruning_NN for_IN IR_NN usually_RB prune_VBP postings_NNS of_IN irrelevant_JJ terms_NNS in_IN each_DT document_NN =_JJ -_: =[_NN 4_CD ,_, 3_CD ,_, 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Criteria_NNS in_IN information_NN theory_NN are_VBP applied_VBN to_TO measure_VB the_DT information_NN of_IN each_DT term_NN in_IN each_DT document_NN ._.
+However_RB ,_, most_RBS previous_JJ works_NNS focus_VBP on_IN selecting_VBG informative_JJ terms_NNS without_IN considering_VBG redundancy_NN

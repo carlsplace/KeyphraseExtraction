@@ -1,0 +1,153 @@
+Using_VBG graph-based_JJ metrics_NNS with_IN empirical_JJ risk_NN minimization_NN to_TO speed_VB up_RP active_JJ learning_NN on_IN networked_JJ data_NNS
+Active_JJ and_CC semi-supervised_JJ learning_NN are_VBP important_JJ techniques_NNS when_WRB labeled_VBN data_NNS are_VBP scarce_JJ ._.
+Recently_RB a_DT method_NN was_VBD suggested_VBN for_IN combining_VBG active_JJ learning_NN with_IN a_DT semi-supervised_JJ learning_NN algorithm_NN that_WDT uses_VBZ Gaussian_JJ fields_NNS and_CC harmonic_JJ functions_NNS ._.
+This_DT classifier_NN is_VBZ relational_JJ in_IN nature_NN :_: it_PRP relies_VBZ on_IN having_VBG the_DT data_NNS presented_VBN as_IN a_DT partially_RB labeled_VBN graph_NN -LRB-_-LRB- also_RB known_VBN as_IN a_DT within-network_JJ learning_NN problem_NN -RRB-_-RRB- ._.
+This_DT work_NN showed_VBD yet_RB again_RB that_IN empirical_JJ risk_NN minimization_NN -LRB-_-LRB- ERM_NN -RRB-_-RRB- was_VBD the_DT best_JJS method_NN to_TO find_VB the_DT next_JJ instance_NN to_TO label_NN and_CC provided_VBD an_DT efficient_JJ way_NN to_TO compute_VB ERM_NNP with_IN the_DT semi-supervised_JJ classifier_NN ._.
+The_DT computational_JJ problem_NN with_IN ERM_NN is_VBZ that_IN it_PRP relies_VBZ on_IN computing_VBG the_DT risk_NN for_IN all_DT possible_JJ instances_NNS ._.
+If_IN we_PRP could_MD limit_VB the_DT candidates_NNS that_WDT should_MD be_VB investigated_VBN ,_, then_RB we_PRP can_MD speed_VB up_RP active_JJ learning_NN considerably_RB ._.
+In_IN the_DT case_NN where_WRB the_DT data_NN is_VBZ graphical_JJ in_IN nature_NN ,_, we_PRP can_MD leverage_NN the_DT graph_NN structure_NN to_TO rapidly_RB identify_VB instances_NNS that_WDT are_VBP likely_JJ to_TO be_VB good_JJ candidates_NNS for_IN labeling_NN ._.
+This_DT paper_NN describes_VBZ a_DT novel_JJ hybrid_NN approach_NN of_IN using_VBG of_IN community_NN finding_NN and_CC social_JJ network_NN analytic_JJ centrality_NN measures_NNS to_TO identify_VB good_JJ candidates_NNS for_IN labeling_NN and_CC then_RB using_VBG ERM_NNP to_TO find_VB the_DT best_JJS instance_NN in_IN this_DT candidate_NN set_NN ._.
+We_PRP show_VBP on_IN real-world_JJ data_NNS that_IN we_PRP can_MD limit_VB the_DT ERM_NNP computations_NNS to_TO a_DT fraction_NN of_IN instances_NNS with_IN comparable_JJ performance_NN ._.
+in_IN a_DT partially_RB labeled_VBN graph_NN would_MD be_VB the_DT best_JJS to_TO label_VB next_JJ as_IN part_NN of_IN an_DT active_JJ learning_NN strategy_NN ._.
+Specifically_RB ,_, we_PRP explore_VBP the_DT use_NN of_IN various_JJ social_JJ network_NN analysis_NN centrality_NN metrics_NNS -LRB-_-LRB- see_VB ,_, e.g._FW ,_, =_JJ -_: =[_NN 35_CD -RRB-_-RRB- -_: =--RRB-_NN and_CC community-finding_JJ algorithms_NNS -LRB-_-LRB- see_VB ,_, e.g._FW ,_, -LRB-_-LRB- 11_CD -RRB-_-RRB- -RRB-_-RRB- to_TO find_VB central_JJ nodes_NNS in_IN the_DT graph_NN and_CC in_IN the_DT communities_NNS -LRB-_-LRB- or_CC clusters_NNS -RRB-_-RRB- in_IN the_DT graph_NN ._.
+As_IN is_VBZ implied_VBN by_IN this_DT approach_NN ,_, we_PRP limit_VBP the_DT range_NN of_IN query_NN s_NN
+e_LS a_DT new_JJ classifier_NN for_IN each_DT unlabeled_JJ instance_NN in_IN order_NN to_TO estimate_VB its_PRP$ risk_NN ._.
+One_CD recently_RB advocated_VBN method_NN for_IN semi-supervised_JJ learning_NN on_IN relational_JJ data_NNS uses_VBZ Gaussian_JJ fields_NNS and_CC harmonic_JJ functions_NNS =_JJ -_: =[_NN 37_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT particular_JJ method_NN ,_, and_CC graph-based_JJ methods_NNS like_IN it_PRP -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 5_CD ,_, 18_CD ,_, 37_CD ,_, 34_CD -RRB-_-RRB- -RRB-_-RRB- ,_, assume_VBP that_IN data_NNS is_VBZ presented_VBN in_IN the_DT form_NN of_IN a_DT partially_RB labeled_VBN graph_NN ,_, where_WRB all_PDT the_DT data_NNS is_VBZ interconnected_VBN ._.
+This_DT se_FW
+there_EX is_VBZ a_DT good_JJ regularly-updated_JJ survey_NN available_JJ on_IN semi-supervised_JJ learning_NN -LRB-_-LRB- 36_CD -RRB-_-RRB- ._.
+Combining_VBG these_DT two_CD learning_NN frameworks_NNS seems_VBZ intuitively_RB to_TO make_VB sense_NN ,_, yet_CC we_PRP are_VBP aware_JJ of_IN only_RB one_CD such_JJ pairing_NN =_JJ -_: =[_NN 38_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recent_JJ work_NN in_IN the_DT active_JJ learning_NN field_NN suggests_VBZ an_DT optimal_JJ way_NN to_TO identify_VB which_WDT instances_NNS to_TO label_VB next_JJ by_IN minimizing_VBG expected_VBN classification_NN error_NN -LRB-_-LRB- 29_CD -RRB-_-RRB- ._.
+This_DT approach_NN is_VBZ also_RB known_VBN as_IN empirical_JJ
+o_NN a_DT student\/not-student_JJ binary_JJ classification_NN task_NN ._.
+Following_VBG prior_JJ work_NN on_IN web-page_JJ classification_NN ,_, we_PRP link_VBP two_CD pages_NNS by_IN co-citations_NNS -LRB-_-LRB- if_IN x_NN links_NNS to_TO z_SYM and_CC y_NN links_NNS to_TO z_SYM ,_, then_RB x_NN and_CC y_NN are_VBP co-citing_VBG z_SYM -RRB-_-RRB- =_JJ -_: =[_NN 9_CD ,_, 19_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+To_TO weight_VB the_DT link_NN between_IN x_NN and_CC y_NN ,_, we_PRP sum_VBP the_DT number_NN of_IN hyperlinks_NNS from_IN x_NN to_TO z_SYM and_CC separately_RB the_DT number_NN from_IN y_NN to_TO z_SYM ,_, and_CC multiply_VB these_DT two_CD quantities_NNS ._.
+This_DT weight_NN represents_VBZ the_DT number_NN of_IN 2_CD We_PRP us_PRP
+search_NN in_IN active_JJ learning_NN ._.
+For_IN example_NN ,_, -LRB-_-LRB- 32_CD -RRB-_-RRB- select_JJ queries_NNS to_TO minimize_VB the_DT version_NN space_NN size_NN for_IN support_NN vector_NN machines_NNS ;_: -LRB-_-LRB- 12_CD -RRB-_-RRB- minimize_VBP the_DT variance_NN component_NN of_IN the_DT estimated_VBN generalization_NN error_NN ;_: =_SYM -_: =[_NN 16_CD -RRB-_-RRB- -_: =_SYM -_: employ_VB a_DT committee_NN of_IN classifiers_NNS ,_, and_CC query_VB a_DT point_NN whenever_WRB the_DT committee_NN members_NNS disagree_VBP ._.
+Most_JJS of_IN the_DT active_JJ learning_NN methods_NNS do_VBP not_RB take_VB further_JJ advantage_NN of_IN the_DT large_JJ amount_NN of_IN unlabeled_JJ data_NNS o_NN
+rality_NN metrics_NNS within_IN each_DT cluster_NN to_TO find_VB central_JJ nodes_NNS in_IN the_DT cluster_NN to_TO label_NN ._.
+4.3.1_FW Betweenness_FW Centrality_NN Graph_NN betweenness_NN centrality_NN is_VBZ perhaps_RB one_CD of_IN the_DT most_RBS prominent_JJ measures_NNS of_IN centrality_NN =_JJ -_: =[_NN 1_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP measures_VBZ the_DT degree_NN to_TO which_WDT a_DT node_NN in_IN the_DT network_NN is_VBZ in_IN a_DT position_NN of_IN brokerage_NN by_IN summing_VBG up_RP the_DT fractions_NNS of_IN shortest_JJS paths_NNS between_IN other_JJ pairs_NNS of_IN vertices_NNS that_WDT pass_VBP through_IN it_PRP ._.
+This_DT is_VBZ theref_NN
+it_PRP means_VBZ that_IN it_PRP is_VBZ robust_JJ to_TO the_DT initial_JJ labeled_JJ state_NN as_IN it_PRP ignores_VBZ any_DT initially_RB known_VBN labels_NNS ._.
+4.3.2_CD Closeness_NN Centrality_NN Graph_NN closeness_NN centrality_NN is_VBZ one_CD other_JJ very_RB popular_JJ measure_NN of_IN centrality_NN =_JJ -_: =[_NN 2_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP measures_VBZ how_WRB close_JJ a_DT node_NN is_VBZ to_TO all_DT other_JJ nodes_NNS in_IN the_DT network_NN as_IN defined_VBN by_IN the_DT shortest_JJS path_NN from_IN the_DT source_NN node_NN to_TO the_DT destination_NN node_NN ._.
+As_IN with_IN betweenness_NN ,_, this_DT metric_NN inherently_RB handles_VBZ we_PRP
+it_PRP means_VBZ that_IN it_PRP is_VBZ robust_JJ to_TO the_DT initial_JJ labeled_JJ state_NN as_IN it_PRP ignores_VBZ any_DT initially_RB known_VBN labels_NNS ._.
+4.3.2_CD Closeness_NN Centrality_NN Graph_NN closeness_NN centrality_NN is_VBZ one_CD other_JJ very_RB popular_JJ measure_NN of_IN centrality_NN =_JJ -_: =[_NN 2_CD ,_, 30_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP measures_VBZ how_WRB close_JJ a_DT node_NN is_VBZ to_TO all_DT other_JJ nodes_NNS in_IN the_DT network_NN as_IN defined_VBN by_IN the_DT shortest_JJS path_NN from_IN the_DT source_NN node_NN to_TO the_DT destination_NN node_NN ._.
+As_IN with_IN betweenness_NN ,_, this_DT metric_NN inherently_RB handles_VBZ we_PRP
+his_PRP$ suggests_VBZ that_IN clustering_VBG the_DT graph_NN and_CC then_RB finding_VBG central_JJ nodes_NNS in_IN the_DT clusters_NNS may_MD be_VB a_DT good_JJ alternative_JJ way_NN of_IN finding_VBG candidate_NN nodes_NNS ._.
+We_PRP explore_VBP the_DT use_NN of_IN community_NN finding_NN algorithms_NNS -LRB-_-LRB- cf._VBP =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =--RRB-_NN to_TO cluster_VB the_DT graph_NN and_CC then_RB the_DT use_NN of_IN centrality_NN metrics_NNS within_IN each_DT cluster_NN to_TO find_VB central_JJ nodes_NNS in_IN the_DT cluster_NN to_TO label_NN ._.
+4.3.1_FW Betweenness_FW Centrality_NN Graph_NN betweenness_NN centrality_NN is_VBZ perhaps_RB on_IN
+our_PRP$ findings_NNS in_IN Section_NN 6_CD ._.
+2_CD ._.
+RELATED_NNS WORK_VBP There_EX has_VBZ been_VBN a_DT great_JJ deal_NN of_IN research_NN in_IN active_JJ learning_NN ._.
+For_IN example_NN ,_, -LRB-_-LRB- 32_CD -RRB-_-RRB- select_JJ queries_NNS to_TO minimize_VB the_DT version_NN space_NN size_NN for_IN support_NN vector_NN machines_NNS ;_: =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: minimize_VB the_DT variance_NN component_NN of_IN the_DT estimated_VBN generalization_NN error_NN ;_: -LRB-_-LRB- 16_CD -RRB-_-RRB- employ_VBP a_DT committee_NN of_IN classifiers_NNS ,_, and_CC query_VB a_DT point_NN whenever_WRB the_DT committee_NN members_NNS disagree_VBP ._.
+Most_JJS of_IN the_DT active_JJ learning_NN m_NN
+yet_RB we_PRP are_VBP aware_JJ of_IN only_RB one_CD such_JJ pairing_NN -LRB-_-LRB- 38_CD -RRB-_-RRB- ._.
+Recent_JJ work_NN in_IN the_DT active_JJ learning_NN field_NN suggests_VBZ an_DT optimal_JJ way_NN to_TO identify_VB which_WDT instances_NNS to_TO label_VB next_JJ by_IN minimizing_VBG expected_VBN classification_NN error_NN =_JJ -_: =[_NN 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT approach_NN is_VBZ also_RB known_VBN as_IN empirical_JJ risk_NN minimization_NN -LRB-_-LRB- ERM_NN -RRB-_-RRB- ._.
+The_DT approach_NN ,_, while_IN having_VBG very_RB good_JJ performance_NN ,_, is_VBZ also_RB computationally_RB expensive_JJ as_IN one_CD need_NN to_TO consider_VB ,_, for_IN each_DT instance_NN ,_, what_WP
+,_, 37_CD ,_, 6_CD ,_, 34_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+In_IN these_DT published_VBN works_NNS ,_, the_DT setting_NN is_VBZ not_RB initially_RB one_CD of_IN network_NN classification_NN ._.
+Rather_RB ,_, these_DT techniques_NNS are_VBP designed_VBN to_TO address_VB semisupervised_JJ learning_NN in_IN a_DT transductive_JJ setting_NN =_JJ -_: =[_NN 33_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC their_PRP$ methods_NNS have_VBP direct_JJ application_NN to_TO certain_JJ instances_NNS of_IN the_DT univariate_JJ network-classification_NN ._.
+All_PDT the_DT above-mentioned_JJ references_NNS induce_VBP graphs_NNS over_IN initially_RB non-graph_JJ data_NNS by_IN connecting_VBG
+omain_NN we_PRP draw_VBP from_IN is_VBZ based_VBN on_IN the_DT WebKB_NNP Project_NNP -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+4_CD It_PRP consists_VBZ of_IN sets_NNS of_IN web_NN pages_NNS from_IN four_CD computer_NN science_NN departments_NNS ,_, with_IN each_DT page_NN manually_RB labeled_VBN into_IN 7_CD categories_NNS ._.
+As_IN with_IN other_JJ work_NN =_JJ -_: =[_NN 26_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP ignore_VBP pages_NNS in_IN the_DT ``_`` other_JJ ''_'' category_NN except_IN as_IN described_VBN below_IN ._.
+From_IN the_DT WebKB_NN data_NNS we_PRP produce_VBP eight_CD networked_JJ data_NNS sets_NNS ,_, two_CD for_IN each_DT of_IN the_DT four_CD universities_NNS ,_, ranging_VBG in_IN size_NN from_IN 338_CD to_TO 434_CD ._.
+F_NN
+this_DT study_NN 11_CD data_NN sets_NNS from_IN three_CD domains_NNS :_: computer_NN science_NN department_NN websites_NNS -LRB-_-LRB- WebKB_NN -RRB-_-RRB- ,_, industry_NN news_NN ,_, and_CC academic_JJ papers_NNS ._.
+3_CD 5.1.1_CD WebKB_NN The_DT first_JJ domain_NN we_PRP draw_VBP from_IN is_VBZ based_VBN on_IN the_DT WebKB_NN Project_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4_CD It_PRP consists_VBZ of_IN sets_NNS of_IN web_NN pages_NNS from_IN four_CD computer_NN science_NN departments_NNS ,_, with_IN each_DT page_NN manually_RB labeled_VBN into_IN 7_CD categories_NNS ._.
+As_IN with_IN other_JJ work_NN -LRB-_-LRB- 26_CD ,_, 19_CD -RRB-_-RRB- ,_, we_PRP ignore_VBP pages_NNS in_IN the_DT ``_`` other_JJ ''_'' category_NN exc_NN
+abel_RB next_JJ as_IN part_NN of_IN an_DT active_JJ learning_NN strategy_NN ._.
+Specifically_RB ,_, we_PRP explore_VBP the_DT use_NN of_IN various_JJ social_JJ network_NN analysis_NN centrality_NN metrics_NNS -LRB-_-LRB- see_VB ,_, e.g._FW ,_, -LRB-_-LRB- 35_CD -RRB-_-RRB- -RRB-_-RRB- and_CC community-finding_JJ algorithms_NNS -LRB-_-LRB- see_VB ,_, e.g._FW ,_, =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =--RRB-_NN to_TO find_VB central_JJ nodes_NNS in_IN the_DT graph_NN and_CC in_IN the_DT communities_NNS -LRB-_-LRB- or_CC clusters_NNS -RRB-_-RRB- in_IN the_DT graph_NN ._.
+As_IN is_VBZ implied_VBN by_IN this_DT approach_NN ,_, we_PRP limit_VBP the_DT range_NN of_IN query_JJ selection_NN to_TO the_DT unlabeled_JJ data_NN set_NN ,_, a_DT practice_NN know_VB
+itoring_NN ,_, -LRB-_-LRB- 14_CD -RRB-_-RRB- collected_VBD 22_CD ,_, 170_CD business_NN news_NN stories_NNS from_IN the_DT web_NN between_IN 4\/1\/1999_CD and_CC 8\/4\/1999_CD ._.
+Following_VBG a_DT prior_JJ study_NN ,_, we_PRP placed_VBD an_DT edge_NN between_IN two_CD companies_NNS if_IN they_PRP appeared_VBD together_RB in_IN a_DT story_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT weight_NN of_IN an_DT edge_NN is_VBZ the_DT number_NN of_IN such_JJ cooccurrences_NNS found_VBN in_IN the_DT complete_JJ corpus_NN ._.
+The_DT resulting_VBG network_NN comprises_VBZ 1798_CD companies_NNS that_WDT cooccurred_VBD with_IN at_IN least_JJS one_CD other_JJ company_NN ._.
+To_TO classify_VB a_DT
+fort_NN ._.
+Various_JJ semisupervised_JJ learning_NN methods_NNS have_VBP been_VBN proposed_VBN and_CC show_VBP promising_JJ results_NNS ._.
+For_IN an_DT overview_NN of_IN methods_NNS ,_, there_EX is_VBZ a_DT good_JJ regularly-updated_JJ survey_NN available_JJ on_IN semi-supervised_JJ learning_NN =_JJ -_: =[_NN 36_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Combining_VBG these_DT two_CD learning_NN frameworks_NNS seems_VBZ intuitively_RB to_TO make_VB sense_NN ,_, yet_CC we_PRP are_VBP aware_JJ of_IN only_RB one_CD such_JJ pairing_NN -LRB-_-LRB- 38_CD -RRB-_-RRB- ._.
+Recent_JJ work_NN in_IN the_DT active_JJ learning_NN field_NN suggests_VBZ an_DT optimal_JJ way_NN to_TO identify_VB
+n_NN labels_NNS according_VBG to_TO f._VB We_PRP would_MD like_VB unlabeled_JJ points_NNS that_WDT are_VBP near_IN each_DT other_JJ to_TO have_VB the_DT same_JJ label_NN ._.
+Implicit_NN in_IN this_DT is_VBZ that_IN we_PRP are_VBP assuming_VBG that_IN the_DT simple-yet-ubiquitous_JJ principle_NN of_IN homophily_NN =_JJ -_: =[_NN 4_CD ,_, 24_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ true_JJ -LRB-_-LRB- cf._VBP assortativity_NN ,_, -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, and_CC relational_JJ autocorrelation_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+This_DT assumption_NN motivates_VBZ the_DT use_NN of_IN the_DT following_JJ quadratic_JJ energy_NN function_NN on_IN f_FW :_: E_NN -LRB-_-LRB- f_LS -RRB-_-RRB- =_JJ 1_CD 2_CD X_NN wij_NN -LRB-_-LRB- f_FW -LRB-_-LRB- i_LS -RRB-_-RRB- −_FW f_FW -LRB-_-LRB- j_NN -RRB-_-RRB- -RRB-_-RRB- 2_CD i_LS ,_, j_NNP The_NNP mini_NNS
+assume_VB that_IN data_NNS is_VBZ presented_VBN in_IN the_DT form_NN of_IN a_DT partially_RB labeled_VBN graph_NN ,_, where_WRB all_PDT the_DT data_NNS is_VBZ interconnected_VBN ._.
+This_DT setting_NN is_VBZ also_RB known_VBN as_IN within-network_JJ learning_NN in_IN statistical_JJ relational_JJ learning_NN =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_JJ -_: ,_, although_IN the_DT graph-based_JJ methods_NNS consider_VBP only_RB the_DT univariate_JJ case_NN -LRB-_-LRB- i.e._FW ,_, the_DT graph_NN consists_VBZ only_RB of_IN one_CD type_NN of_IN node_NN and_CC edge_NN and_CC the_DT only_JJ variable_NN is_VBZ the_DT class_NN label_NN ,_, whose_WP$ value_NN is_VBZ known_VBN for_IN a_DT su_NN
+eights_NNS for_IN the_DT edges_NNS that_WDT connect_VBP two_CD nodes_NNS ._.
+We_PRP need_VBP to_TO compute_VB all-pairs_JJ shortest-paths_NNS to_TO get_VB the_DT centrality_NN measure_NN for_IN all_DT nodes_NNS ._.
+However_RB ,_, we_PRP note_VBP that_IN there_EX are_VBP efficient_JJ ways_NNS for_IN computing_VBG this_DT =_JJ -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN fact_NN ,_, the_DT all-pairs_JJ shortest-path_JJ computation_NN can_MD be_VB done_VBN in_IN O_NN -LRB-_-LRB- nE_NN -RRB-_-RRB- time_NN ,_, where_WRB E_NN is_VBZ the_DT number_NN of_IN edges_NNS and_CC n_NN is_VBZ the_DT number_NN of_IN nodes_NNS in_IN the_DT graph_NN ._.
+We_PRP will_MD not_RB include_VB the_DT algorithm_NN here_RB ,_, but_CC refe_NN
+omain_NN we_PRP draw_VBP from_IN is_VBZ based_VBN on_IN the_DT WebKB_NNP Project_NNP -LRB-_-LRB- 13_CD -RRB-_-RRB- ._.
+4_CD It_PRP consists_VBZ of_IN sets_NNS of_IN web_NN pages_NNS from_IN four_CD computer_NN science_NN departments_NNS ,_, with_IN each_DT page_NN manually_RB labeled_VBN into_IN 7_CD categories_NNS ._.
+As_IN with_IN other_JJ work_NN =_JJ -_: =[_NN 26_CD ,_, 19_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP ignore_VBP pages_NNS in_IN the_DT ``_`` other_JJ ''_'' category_NN except_IN as_IN described_VBN below_IN ._.
+From_IN the_DT WebKB_NN data_NNS we_PRP produce_VBP eight_CD networked_JJ data_NNS sets_NNS ,_, two_CD for_IN each_DT of_IN the_DT four_CD universities_NNS ,_, ranging_VBG in_IN size_NN from_IN 338_CD to_TO 434_CD ._.
+F_NN
+3_LS -RRB-_-RRB- comprises_VBZ 4240_CD computer_NN science_NN research_NN papers_NNS ._.
+It_PRP includes_VBZ the_DT full_JJ citation_NN graph_NN as_RB well_RB as_IN labels_NNS for_IN the_DT topic_NN of_IN each_DT paper_NN -LRB-_-LRB- and_CC potentially_RB sub_JJ -_: and_CC sub-subtopics_NNS -RRB-_-RRB- ._.
+Following_VBG a_DT prior_JJ study_NN =_JJ -_: =[_NN 31_CD -RRB-_-RRB- -_: =_JJ -_: ,_, we_PRP focused_VBD on_IN papers_NNS within_IN the_DT machine_NN learning_NN topic_NN with_IN the_DT classification_NN task_NN of_IN predicting_VBG a_DT paper_NN 's_POS sub-topic_JJ -LRB-_-LRB- of_IN which_WDT there_EX are_VBP seven_CD -RRB-_-RRB- ._.
+Papers_NNP can_MD be_VB linked_VBN if_IN they_PRP share_VBP a_DT common_JJ author_NN ,_,
+._.
+Section_NN 5_CD describes_VBZ our_PRP$ experimental_JJ study_NN and_CC results_NNS ._.
+We_PRP conclude_VBP by_IN discussing_VBG our_PRP$ findings_NNS in_IN Section_NN 6_CD ._.
+2_CD ._.
+RELATED_NNS WORK_VBP There_EX has_VBZ been_VBN a_DT great_JJ deal_NN of_IN research_NN in_IN active_JJ learning_NN ._.
+For_IN example_NN ,_, =_JJ -_: =[_NN 32_CD -RRB-_-RRB- -_: =_JJ -_: select_JJ queries_NNS to_TO minimize_VB the_DT version_NN space_NN size_NN for_IN support_NN vector_NN machines_NNS ;_: -LRB-_-LRB- 12_CD -RRB-_-RRB- minimize_VBP the_DT variance_NN component_NN of_IN the_DT estimated_VBN generalization_NN error_NN ;_: -LRB-_-LRB- 16_CD -RRB-_-RRB- employ_VBP a_DT committee_NN of_IN classifiers_NNS ,_, and_CC
+n_NN labels_NNS according_VBG to_TO f._VB We_PRP would_MD like_VB unlabeled_JJ points_NNS that_WDT are_VBP near_IN each_DT other_JJ to_TO have_VB the_DT same_JJ label_NN ._.
+Implicit_NN in_IN this_DT is_VBZ that_IN we_PRP are_VBP assuming_VBG that_IN the_DT simple-yet-ubiquitous_JJ principle_NN of_IN homophily_NN =_JJ -_: =[_NN 4_CD ,_, 24_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ true_JJ -LRB-_-LRB- cf._VBP assortativity_NN ,_, -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, and_CC relational_JJ autocorrelation_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+This_DT assumption_NN motivates_VBZ the_DT use_NN of_IN the_DT following_JJ quadratic_JJ energy_NN function_NN on_IN f_FW :_: E_NN -LRB-_-LRB- f_LS -RRB-_-RRB- =_JJ 1_CD 2_CD X_NN wij_NN -LRB-_-LRB- f_FW -LRB-_-LRB- i_LS -RRB-_-RRB- −_FW f_FW -LRB-_-LRB- j_NN -RRB-_-RRB- -RRB-_-RRB- 2_CD i_LS ,_, j_NNP The_NNP mini_NNS
+ts_IN risk_NN ._.
+One_CD recently_RB advocated_VBN method_NN for_IN semi-supervised_JJ learning_NN on_IN relational_JJ data_NNS uses_VBZ Gaussian_JJ fields_NNS and_CC harmonic_JJ functions_NNS -LRB-_-LRB- 37_CD -RRB-_-RRB- ._.
+This_DT particular_JJ method_NN ,_, and_CC graph-based_JJ methods_NNS like_IN it_PRP -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 5_CD ,_, 18_CD ,_, 37_CD ,_, 34_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, assume_VBP that_IN data_NNS is_VBZ presented_VBN in_IN the_DT form_NN of_IN a_DT partially_RB labeled_VBN graph_NN ,_, where_WRB all_PDT the_DT data_NNS is_VBZ interconnected_VBN ._.
+This_DT setting_NN is_VBZ also_RB known_VBN as_IN within-network_JJ learning_NN in_IN statistical_JJ relational_JJ learnin_NN
+f_LS the_DT function_NN 's_POS value_NN at_IN the_DT neighboring_JJ points_NNS ._.
+The_DT result_NN is_VBZ a_DT principled_JJ ,_, independent_JJ development_NN of_IN the_DT weighted-voting_JJ relational_JJ neighbor_NN classifier_NN -LRB-_-LRB- wvRN_NN -RRB-_-RRB- from_IN statistical_JJ relational_JJ learning_NN =_JJ -_: =[_NN 21_CD ,_, 20_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Experimental_JJ results_NNS show_VBP these_DT two_CD procedures_NNS to_TO yield_VB almost_RB identical_JJ generalization_NN performance_NN ,_, albeit_IN the_DT matrix-based_JJ procedure_NN is_VBZ much_RB slower_JJR than_IN the_DT iterative_JJ wvRN_NN ._.
+This_DT suggests_VBZ that_IN wvRN_NN
+h_NN other_JJ to_TO have_VB the_DT same_JJ label_NN ._.
+Implicit_NN in_IN this_DT is_VBZ that_IN we_PRP are_VBP assuming_VBG that_IN the_DT simple-yet-ubiquitous_JJ principle_NN of_IN homophily_NN -LRB-_-LRB- 4_CD ,_, 24_CD -RRB-_-RRB- is_VBZ true_JJ -LRB-_-LRB- cf._VBP assortativity_NN ,_, -LRB-_-LRB- 27_CD -RRB-_-RRB- ,_, and_CC relational_JJ autocorrelation_NN =_JJ -_: =[_NN 17_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+This_DT assumption_NN motivates_VBZ the_DT use_NN of_IN the_DT following_JJ quadratic_JJ energy_NN function_NN on_IN f_FW :_: E_NN -LRB-_-LRB- f_LS -RRB-_-RRB- =_JJ 1_CD 2_CD X_NN wij_NN -LRB-_-LRB- f_FW -LRB-_-LRB- i_LS -RRB-_-RRB- −_FW f_FW -LRB-_-LRB- j_NN -RRB-_-RRB- -RRB-_-RRB- 2_CD i_LS ,_, j_NN The_DT minimum_JJ energy_NN function_NN f_SYM =_JJ argminf_FW ‖_FW L_NN =_JJ flE_NN -LRB-_-LRB- f_LS -RRB-_-RRB- is_VBZ harmonic_JJ ,_, meaning_VBG that_IN it_PRP
+ke_IN unlabeled_JJ points_NNS that_WDT are_VBP near_IN each_DT other_JJ to_TO have_VB the_DT same_JJ label_NN ._.
+Implicit_NN in_IN this_DT is_VBZ that_IN we_PRP are_VBP assuming_VBG that_IN the_DT simple-yet-ubiquitous_JJ principle_NN of_IN homophily_NN -LRB-_-LRB- 4_CD ,_, 24_CD -RRB-_-RRB- is_VBZ true_JJ -LRB-_-LRB- cf._VBP assortativity_JJ ,_, =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_JJ -_: ,_, and_CC relational_JJ autocorrelation_NN -LRB-_-LRB- 17_CD -RRB-_-RRB- -RRB-_-RRB- ._.
+This_DT assumption_NN motivates_VBZ the_DT use_NN of_IN the_DT following_JJ quadratic_JJ energy_NN function_NN on_IN f_FW :_: E_NN -LRB-_-LRB- f_LS -RRB-_-RRB- =_JJ 1_CD 2_CD X_NN wij_NN -LRB-_-LRB- f_FW -LRB-_-LRB- i_LS -RRB-_-RRB- −_FW f_FW -LRB-_-LRB- j_NN -RRB-_-RRB- -RRB-_-RRB- 2_CD i_LS ,_, j_NN The_DT minimum_JJ energy_NN function_NN f_SYM =_JJ argminf_FW ‖_FW L_NN
+ts_IN risk_NN ._.
+One_CD recently_RB advocated_VBN method_NN for_IN semi-supervised_JJ learning_NN on_IN relational_JJ data_NNS uses_VBZ Gaussian_JJ fields_NNS and_CC harmonic_JJ functions_NNS -LRB-_-LRB- 37_CD -RRB-_-RRB- ._.
+This_DT particular_JJ method_NN ,_, and_CC graph-based_JJ methods_NNS like_IN it_PRP -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 5_CD ,_, 18_CD ,_, 37_CD ,_, 34_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, assume_VBP that_IN data_NNS is_VBZ presented_VBN in_IN the_DT form_NN of_IN a_DT partially_RB labeled_VBN graph_NN ,_, where_WRB all_PDT the_DT data_NNS is_VBZ interconnected_VBN ._.
+This_DT setting_NN is_VBZ also_RB known_VBN as_IN within-network_JJ learning_NN in_IN statistical_JJ relational_JJ learnin_NN
+ery_VB a_DT point_NN whenever_WRB the_DT committee_NN members_NNS disagree_VBP ._.
+Most_JJS of_IN the_DT active_JJ learning_NN methods_NNS do_VBP not_RB take_VB further_JJ advantage_NN of_IN the_DT large_JJ amount_NN of_IN unlabeled_JJ data_NNS once_IN the_DT queries_NNS are_VBP selected_VBN ._.
+The_DT work_NN by_IN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ an_DT exception_NN ,_, where_WRB EM_NN with_IN unlabeled_JJ data_NNS is_VBZ integrated_VBN into_IN active_JJ learning_NN ._.
+Another_DT exception_NN is_VBZ -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, which_WDT uses_VBZ a_DT semi-supervised_JJ learning_NN method_NN during_IN training_NN ._.
+In_IN addition_NN to_TO this_DT body_NN of_IN
+d_NN learning_NN method_NN during_IN training_NN ._.
+In_IN addition_NN to_TO this_DT body_NN of_IN work_NN from_IN the_DT machine_NN learning_NN community_NN ,_, there_EX is_VBZ a_DT large_JJ literature_NN on_IN the_DT closely_RB related_JJ topic_NN of_IN experimental_JJ design_NN in_IN statistics_NNS ;_: =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_JJ -_: give_VB a_DT survey_NN of_IN experimental_JJ design_NN from_IN a_DT Bayesian_JJ perspective_NN ._.
+Semi-supervised_JJ learning_NN is_VBZ similarly_RB an_DT active_JJ research_NN area_NN ._.
+We_PRP here_RB briefly_RB consider_VB methods_NNS that_WDT are_VBP directly_RB relevant_JJ to_TO the_DT gra_NN
+advantage_NN of_IN the_DT large_JJ amount_NN of_IN unlabeled_JJ data_NNS once_IN the_DT queries_NNS are_VBP selected_VBN ._.
+The_DT work_NN by_IN -LRB-_-LRB- 22_CD -RRB-_-RRB- is_VBZ an_DT exception_NN ,_, where_WRB EM_NN with_IN unlabeled_JJ data_NNS is_VBZ integrated_VBN into_IN active_JJ learning_NN ._.
+Another_DT exception_NN is_VBZ =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, which_WDT uses_VBZ a_DT semi-supervised_JJ learning_NN method_NN during_IN training_NN ._.
+In_IN addition_NN to_TO this_DT body_NN of_IN work_NN from_IN the_DT machine_NN learning_NN community_NN ,_, there_EX is_VBZ a_DT large_JJ literature_NN on_IN the_DT closely_RB related_JJ topic_NN of_IN experi_NNS
+at_IN a_DT network_NN need_NN to_TO be_VB undirected_JJ and\/or_CC unweighted_JJ ._.
+This_DT has_VBZ not_RB been_VBN imposed_VBN on_IN the_DT definition_NN and_CC computation_NN of_IN betweenness_NN centrality_NN ._.
+Betweenness_NN measures_VBZ the_DT degree_NN of_IN brokerage_NN -LRB-_-LRB- or_CC mediation_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =--RRB-_NN for_IN each_DT node_NN in_IN the_DT graph_NN ,_, meaning_VBG that_IN it_PRP measures_VBZ how_WRB much_JJ information_NN is_VBZ propagated_VBN through_IN each_DT node_NN ._.
+In_IN graph-based_JJ semi-supervised_JJ learning_NN ,_, we_PRP often_RB propagate_VBP label_NN information_NN through_IN the_DT n_NN
+ifferent_JJ sources_NNS and_CC distributions_NNS of_IN documents_NNS and_CC different_JJ time_NN periods_NNS -LRB-_-LRB- which_WDT correspond_VBP to_TO different_JJ topic_NN distributions_NNS -RRB-_-RRB- ._.
+Industry_NN Classification_NN -LRB-_-LRB- YH_NN -RRB-_-RRB- As_IN part_NN of_IN a_DT study_NN of_IN activity_NN monitoring_NN ,_, =_JJ -_: =[_NN 14_CD -RRB-_-RRB- -_: =_SYM -_: collected_VBN 22_CD ,_, 170_CD business_NN news_NN stories_NNS from_IN the_DT web_NN between_IN 4\/1\/1999_CD and_CC 8\/4\/1999_CD ._.
+Following_VBG a_DT prior_JJ study_NN ,_, we_PRP placed_VBD an_DT edge_NN between_IN two_CD companies_NNS if_IN they_PRP appeared_VBD together_RB in_IN a_DT story_NN -LRB-_-LRB- 3_CD -RRB-_-RRB- ._.
+The_DT weig_NN
+rality_NN metrics_NNS within_IN each_DT cluster_NN to_TO find_VB central_JJ nodes_NNS in_IN the_DT cluster_NN to_TO label_NN ._.
+4.3.1_FW Betweenness_FW Centrality_NN Graph_NN betweenness_NN centrality_NN is_VBZ perhaps_RB one_CD of_IN the_DT most_RBS prominent_JJ measures_NNS of_IN centrality_NN =_JJ -_: =[_NN 1_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+It_PRP measures_VBZ the_DT degree_NN to_TO which_WDT a_DT node_NN in_IN the_DT network_NN is_VBZ in_IN a_DT position_NN of_IN brokerage_NN by_IN summing_VBG up_RP the_DT fractions_NNS of_IN shortest_JJS paths_NNS between_IN other_JJ pairs_NNS of_IN vertices_NNS that_WDT pass_VBP through_IN it_PRP ._.
+This_DT is_VBZ theref_NN
+ts_IN risk_NN ._.
+One_CD recently_RB advocated_VBN method_NN for_IN semi-supervised_JJ learning_NN on_IN relational_JJ data_NNS uses_VBZ Gaussian_JJ fields_NNS and_CC harmonic_JJ functions_NNS -LRB-_-LRB- 37_CD -RRB-_-RRB- ._.
+This_DT particular_JJ method_NN ,_, and_CC graph-based_JJ methods_NNS like_IN it_PRP -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 5_CD ,_, 18_CD ,_, 37_CD ,_, 34_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, assume_VBP that_IN data_NNS is_VBZ presented_VBN in_IN the_DT form_NN of_IN a_DT partially_RB labeled_VBN graph_NN ,_, where_WRB all_PDT the_DT data_NNS is_VBZ interconnected_VBN ._.
+This_DT setting_NN is_VBZ also_RB known_VBN as_IN within-network_JJ learning_NN in_IN statistical_JJ relational_JJ learnin_NN

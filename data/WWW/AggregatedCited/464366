@@ -1,0 +1,118 @@
+GlobeDB_NN :_: autonomic_JJ data_NNS replication_NN for_IN web_NN applications_NNS
+We_PRP present_VBP GlobeDB_NN ,_, a_DT system_NN for_IN hosting_VBG Web_NN applications_NNS that_WDT performs_VBZ autonomic_JJ replication_NN of_IN application_NN data_NNS ._.
+GlobeDB_NN offers_VBZ data-intensive_JJ Web_NN applications_NNS the_DT benefits_NNS of_IN low_JJ access_NN latencies_NNS and_CC reduced_VBN update_VBP traffic_NN ._.
+The_DT major_JJ distinction_NN in_IN our_PRP$ system_NN compared_VBN to_TO existing_VBG edge_NN computing_NN infrastructures_NNS is_VBZ that_IN the_DT process_NN of_IN distribution_NN and_CC replication_NN of_IN application_NN data_NNS is_VBZ handled_VBN by_IN the_DT system_NN automatically_RB with_IN very_RB little_JJ manual_JJ administration_NN ._.
+We_PRP show_VBP that_IN significant_JJ performance_NN gains_NNS can_MD be_VB obtained_VBN this_DT way_NN ._.
+Performance_NNP evaluations_NNS with_IN the_DT TPC-W_NN benchmark_NN over_IN an_DT emulated_VBN wide-area_NN network_NN show_VBP that_IN GlobeDB_NN reduces_VBZ latencies_NNS by_IN a_DT factor_NN of_IN 4_CD compared_VBN to_TO non-replicated_JJ systems_NNS and_CC reduces_VBZ update_VB traffic_NN by_IN a_DT factor_NN of_IN 6_CD compared_VBN to_TO fully_RB replicated_VBN systems_NNS ._.
+n_NN Quiver_NNP for_IN managing_VBG migration_NN and_CC object_NN reads_VBZ ,_, as_RB well_RB as_IN for_IN recovering_VBG from_IN disconnections_NNS ,_, are_VBP novel_JJ ._.
+The_DT only_JJ work_NN -LRB-_-LRB- of_IN which_WDT we_PRP are_VBP aware_JJ -RRB-_-RRB- that_WDT applies_VBZ object_NN migration_NN to_TO dynamic_JJ Web_NN services_NNS =_JJ -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: does_VBZ not_RB handle_VB failure_NN of_IN proxies_NNS ,_, supports_VBZ only_RB single-object_JJ operations_NNS ,_, and_CC provides_VBZ weak_JJ consistency_NN semantics_NNS ._.
+Quiver_NNP improves_VBZ on_IN all_DT of_IN these_DT aspects_NNS ._.
+Our_PRP$ approach_NN to_TO migration_NN was_VBD most_RBS direct_JJ
+However_RB ,_, our_PRP$ approach_NN is_VBZ fully_RB applicable_JJ to_TO the_DT full_JJ three-tier_JJ arrangements_NNS as_RB well_RB ._.
+Different_JJ applications_NNS exhibit_VBP performance_NN bottlenecks_NNS at_IN different_JJ tiers_NNS ._.
+We_PRP focus_VBP on_IN the_DT application_NN tier_NN ;_: see_VB =_JJ -_: =[_NN 22_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: for_IN examples_NNS of_IN the_DT work_NN addressing_VBG the_DT important_JJ issue_NN of_IN the_DT back-end_JJ tier_NN performance_NN ._.
+The_DT components_NNS in_IN our_PRP$ hosting_VBG architecture_NN essential_JJ for_IN the_DT discussion_NN in_IN this_DT paper_NN are_VBP shown_VBN in_IN Figure_NNP 1_CD ._.
+ssues_NNS and_CC the_DT automatization_NN of_IN recovery_NN from_IN failures_NNS ._.
+Exploiting_VBG the_DT Grid_NNP resources_NNS to_TO increase_VB multi-tier_JJ application_NN performance_NN and_CC fault-tolerance_NN become_VBP recently_RB the_DT aim_NN of_IN many_JJ research_NN teams_NNS =_JJ -_: =[_NN 2_CD ,_, 1_CD ,_, 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, focus_NN is_VBZ more_RBR on_IN defining_VBG the_DT best_JJS configuration_NN and_CC models_NNS to_TO increase_VB performance_NN rather_RB than_IN on_IN the_DT management_NN aspects_NNS ._.
+Many_JJ works_NNS deal_VBP with_IN resource_NN allocation_NN in_IN distributed_VBN systems_NNS -LRB-_-LRB- 1_CD
+will_MD limit_VB the_DT scope_NN of_IN our_PRP$ analysis_NN to_TO the_DT replication_NN of_IN data_NNS in_IN the_DT back-end_JJ layer_NN of_IN a_DT Web_NN system_NN ._.
+In_IN this_DT scenario_NN ,_, Content_NN Delivery_NN and_CC Management_NNP 13_CD the_DT available_JJ approaches_NNS are_VBP summarized_VBN in_IN =_JJ -_: =[_NN 44_CD -RRB-_-RRB- -_: =_JJ -_: :_: the_DT replication_NN of_IN the_DT data_NNS stored_VBN in_IN the_DT back-end_JJ layer_NN may_MD be_VB complete_JJ or_CC partial_JJ ,_, as_IN illustrated_VBN in_IN Fig._NNP 6_CD ._.
+The_DT partial_JJ replication_NN of_IN data_NNS can_MD be_VB obtained_VBN by_IN exploiting_VBG a_DT caching_NN mechanism_NN of_IN th_DT
+Database_NN Server_NN Front-end_NN Web_NN and_CC Application_NN Servers_NNP Figure_NNP 4.1_CD :_: Multi-Tier_NNP Architecture_NNP database_NN content_NN have_VBP generally_RB weakened_VBN transactional_JJ semantics_NNS -LRB-_-LRB- 6_CD ,_, 9_CD -RRB-_-RRB- or_CC required_VBN application_NN modifications_NNS =_JJ -_: =[_NN 59_CD ,_, 133_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+As_IN a_DT result_NN ,_, databases_NNS tend_VBP to_TO be_VB centralized_VBN to_TO meet_VB the_DT strong_JJ consistency_NN requirements_NNS of_IN many_JJ eBusiness_NN applications_NNS such_JJ as_IN banking_NN ,_, finance_NN ,_, and_CC online_NN retailing_NN -LRB-_-LRB- 165_CD -RRB-_-RRB- ._.
+In_IN the_DT absence_NN of_IN both_DT
+nal_JJ large_JJ database_NN according_VBG to_TO a_DT representative_JJ workload_NN using_VBG a_DT single_JJ node_NN ._.
+Ganymed_JJ -LRB-_-LRB- 18_CD -RRB-_-RRB- uses_VBZ a_DT novel_JJ scheduling_NN algorithm_NN that_WDT separates_VBZ update_VB and_CC read-only_JJ queries_NNS using_VBG multiple_JJ nodes_NNS ._.
+GlobeDB_NN =_SYM -_: =[_NN 23_CD -RRB-_-RRB- -_: =_SYM -_: offers_VBZ a_DT different_JJ approach_NN for_IN edge_NN servers_NNS to_TO handle_VB data_NNS distribution_NN ._.
+Their_PRP$ system_NN automatically_RB partitions_VBZ and_CC replicates_VBZ the_DT database_NN through_IN a_DT wide_JJ area_NN network_NN using_VBG multiple_JJ nodes_NNS ._.
+3_CD Propose_NN
+lication_NN programmers_NNS can_MD choose_VB the_DT data_NNS replication_NN and_CC distribution_NN strategies_NNS ,_, but_CC choosing_VBG such_JJ strategies_NNS efficiently_RB is_VBZ not_RB easy_JJ for_IN an_DT application_NN programmer_NN ._.
+Partial_JJ replication_NN is_VBZ studied_VBN in_IN =_JJ -_: =[_NN 14,5_CD -RRB-_-RRB- -_: =_JJ -_: ;_: in_IN -LRB-_-LRB- 14_CD -RRB-_-RRB- ,_, the_DT replication_NN is_VBZ at_IN a_DT recordlevel_NN granularity_NN requiring_VBG a_DT node_NN to_TO hold_VB the_DT entire_JJ database_NN and_CC thus_RB being_VBG the_DT bottleneck_NN ;_: in_IN -LRB-_-LRB- 5_CD -RRB-_-RRB- ,_, the_DT replication_NN is_VBZ at_IN a_DT table-level_JJ granularity_NN ,_, and_CC no_DT n_NN
+o-many_NN and_CC many-to-one_NN updates_NNS to_TO propagate_VB changes_NNS to_TO multiple_JJ servers_NNS for_IN keeping_VBG the_DT consistency_NN ._.
+They_PRP consider_VBP solving_VBG the_DT update_VBP propagation_NN problem_NN across_IN edge_NN servers_NNS as_IN a_DT future_JJ work_NN ._.
+GlobeDB_NN =_SYM -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: offers_VBZ a_DT different_JJ approach_NN for_IN edge_NN servers_NNS to_TO handle_VB data_NNS distribution_NN ._.
+They_PRP replicate_VBP the_DT data_NNS along_IN with_IN its_PRP$ access_NN code_NN across_IN machines_NNS only_RB if_IN the_DT update_VBP rate_NN is_VBZ high_JJ enough_RB at_IN the_DT specific_JJ loc_NN
+Web_NN applications_NNS whose_WP$ query_NN workload_NN exhibits_VBZ high_JJ temporal_JJ locality_NN and_CC contain_VBP a_DT small_JJ number_NN of_IN updates_NNS ._.
+If_IN the_DT workload_NN exhibits_VBZ poor_JJ temporal_JJ locality_NN ,_, data_NNS replication_NN often_RB proves_VBZ beneficial_JJ =_JJ -_: =[_NN 5_CD ,_, 11_CD ,_, 17_CD ,_, 25_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN ,_, we_PRP target_VBP the_DT first_JJ kind_NN of_IN Web_NN applications_NNS and_CC explore_VB the_DT potential_JJ performance_NN of_IN a_DT caching_NN technique_NN -LRB-_-LRB- that_IN we_PRP call_VBP content-blind_JJ query_NN caching_NN -RRB-_-RRB- for_IN hosting_VBG such_JJ Web_NN applications_NNS ._.
+ubstantial_JJ developer_NN resources_NNS and_CC detailed_JJ understanding_NN of_IN the_DT application_NN being_VBG modified_VBN ._.
+While_IN systems_NNS that_WDT attempt_VBP to_TO automate_VB the_DT partitioning_NN and_CC replication_NN of_IN an_DT application_NN 's_POS database_NN exist_VBP =_JJ -_: =[_NN 53_CD -RRB-_-RRB- -_: =_JJ -_: ,_, they_PRP do_VBP not_RB provide_VB full_JJ transaction_NN semantics_NNS ._.
+An_DT obvious_JJ disadvantage_NN of_IN these_DT systems_NNS is_VBZ that_IN they_PRP provide_VBP a_DT different_JJ consistency_NN or_CC transactional_JJ model_NN than_IN what_WP developers_NNS and_CC users_NNS have_VBP grown_VBN
+no_DT caching_NN to_TO insulate_VB the_DT client_NN from_IN bursty_JJ loads_NNS ._.
+Previous_JJ attempts_NNS in_IN caching_VBG dynamic_JJ database_NN content_NN have_VBP generally_RB weakened_VBN transactional_JJ semantics_NNS -LRB-_-LRB- 3_CD ,_, 5_CD -RRB-_-RRB- or_CC required_VBN application_NN modifications_NNS =_JJ -_: =[_NN 20_CD ,_, 44_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP report_VBP on_IN a_DT new_JJ solution_NN that_WDT takes_VBZ the_DT form_NN of_IN a_DT database-agnostic_JJ middleware_NN layer_NN called_VBN Ganesh_NNP ._.
+Ganesh_NNP makes_VBZ no_DT effort_NN to_TO semantically_RB interpret_VB the_DT contents_NNS of_IN queries_NNS or_CC their_PRP$ results_NNS ._.
+Inst_NNP
+satya}@cs.cmu.edu_NN late_RB the_DT client_NN from_IN bursty_JJ loads_NNS ._.
+Previous_JJ attempts_NNS in_IN caching_VBG dynamic_JJ database_NN content_NN have_VBP generally_RB weakened_VBN transactional_JJ semantics_NNS -LRB-_-LRB- 3_CD ,_, 4_CD -RRB-_-RRB- or_CC required_VBN application_NN modifications_NNS =_JJ -_: =[_NN 15_CD ,_, 34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP report_VBP on_IN a_DT new_JJ solution_NN that_WDT takes_VBZ the_DT form_NN of_IN a_DT databaseagnostic_JJ middleware_NN layer_NN called_VBN Ganesh_NNP ._.
+Ganesh_NNP makes_VBZ no_DT effort_NN to_TO semantically_RB interpret_VB the_DT contents_NNS of_IN queries_NNS or_CC their_PRP$ results_NNS ._.
+Inste_NN
+a_DT bottleneck_NN at_IN some_DT pointif_NN the_DT load_NN continues_VBZ to_TO increase_VB ._.
+There_EX has_VBZ been_VBN a_DT large_JJ body_NN of_IN research_NN work_NN on_IN database_NN replication_NN ,_, partition_NN ,_, caching_NN ,_, and_CC clustering_NN for_IN improving_VBG database_NN scalability_NN =_JJ -_: =[_NN 16_CD ,_, 19_CD ,_, 3_CD ,_, 6_CD ,_, 10_CD ,_, 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, existing_VBG systemsoften_NNS involve_VBP manual_JJ configurations_NNS ,_, making_VBG them_PRP difficult_JJ to_TO be_VB deployed_VBN dynamically_RB to_TO new_JJ servers_NNS ._.
+Toprovide_NN dynamic_NN scalability_NN ,_, we_PRP need_VBP to_TO reduce_VB administrative_JJ interve_NN
+a}@cs.cmu.edu_NN 311_CD late_RB the_DT client_NN from_IN bursty_JJ loads_NNS ._.
+Previous_JJ attempts_NNS in_IN caching_VBG dynamic_JJ database_NN content_NN have_VBP generally_RB weakened_VBN transactional_JJ semantics_NNS -LRB-_-LRB- 3_CD ,_, 4_CD -RRB-_-RRB- or_CC required_VBN application_NN modifications_NNS =_JJ -_: =[_NN 15_CD ,_, 34_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP report_VBP on_IN a_DT new_JJ solution_NN that_WDT takes_VBZ the_DT form_NN of_IN a_DT databaseagnostic_JJ middleware_NN layer_NN called_VBN Ganesh_NNP ._.
+Ganesh_NNP makes_VBZ no_DT effort_NN to_TO semantically_RB interpret_VB the_DT contents_NNS of_IN queries_NNS or_CC their_PRP$ results_NNS ._.
+Inste_NN
+ly_RB on_IN either_CC active_JJ participation_NN of_IN the_DT application_NN programmer_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- or_CC on_IN one_CD special_JJ server_NN holding_VBG the_DT full_JJ database_NN to_TO execute_VB complex_JJ queries_NNS -LRB-_-LRB- and_CC thereby_RB becoming_VBG the_DT new_JJ throughput_NN bottleneck_NN -RRB-_-RRB- =_JJ -_: =[_NN 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT paper_NN presents_VBZ GlobeTP_NN ,_, a_DT database_NN replication_NN system_NN that_WDT exploits_VBZ the_DT fact_NN that_IN the_DT database_NN queries_NNS issued_VBN by_IN typical_JJ Web_NN applications_NNS belong_VBP to_TO a_DT relatively_RB small_JJ number_NN of_IN query_JJ templates_NNS
+sm_NN for_IN database_NN scalability_NN ._.
+Ganymed_JJ -LRB-_-LRB- 27_CD -RRB-_-RRB- separates_VBZ update_VB transactions_NNS from_IN readonly_JJ transactions_NNS ,_, and_CC routes_VBZ updates_NNS to_TO a_DT main_JJ database_NN server_NN and_CC read_VB queries_NNS to_TO read-only_JJ database_NN copies_NNS ._.
+GlobeDB_NN =_SYM -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: uses_VBZ partially_RB replicated_VBN databases_NNS based_VBN on_IN data_NNS partition_NN to_TO reduce_VB update_VB traffic_NN ._.
+Our_PRP$ current_JJ prototype_NN uses_VBZ a_DT single_JJ backend_JJ database_NN server_NN ,_, which_WDT can_MD be_VB extended_VBN to_TO support_VB distributed_VBN databas_NNS
+e_LS ,_, different_JJ caching_NN layers_NNS such_JJ as_IN for_IN service_NN response_NN caching_NN and_CC database_NN caching_NN can_MD be_VB deployed_VBN to_TO improve_VB performance_NN ._.
+Various_JJ research_NN efforts_NNS have_VBP been_VBN carried_VBN out_RP on_IN each_DT of_IN these_DT solutions_NNS =_JJ -_: =[_NN 14_CD ,_, 15_CD ,_, 4_CD ,_, 10_CD ,_, 5_CD ,_, 11_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, all_PDT these_DT works_NNS aim_VBP to_TO alleviate_VB bottlenecks_NNS only_RB in_IN one_CD tier_NN of_IN a_DT given_VBN service_NN ._.
+For_IN a_DT given_VBN service_NN ,_, it_PRP is_VBZ not_RB trivial_JJ for_IN an_DT administrator_NN to_TO determine_VB the_DT best_JJS set_NN of_IN techniques_NNS and_CC the_DT
+ems_NN is_VBZ active_JJ in_IN all_DT cases_NNS ,_, our_PRP$ query_JJ result_NN caching_NN is_VBZ activated_VBN only_RB under_IN heavy_JJ load_NN ,_, which_WDT minimizes_VBZ the_DT effect_NN of_IN caching_NN on_IN consistency_NN while_IN improving_VBG the_DT system_NN scalability_NN ._.
+Replication_NN -LRB-_-LRB- 15_CD -RRB-_-RRB- ,_, =_JJ -_: =[_NN 18_CD -RRB-_-RRB- -_: =_JJ -_: is_VBZ a_DT widely_RB used_VBN mechanism_NN for_IN database_NN scalability_NN ._.
+Our_PRP$ current_JJ prototype_NN uses_VBZ a_DT single_JJ backend_JJ database_NN server_NN ,_, which_WDT can_MD be_VB extended_VBN to_TO support_VB distributed_VBN database_NN servers_NNS by_IN incorporating_VBG databa_NN
+sm_NN for_IN database_NN scalability_NN ._.
+Ganymed_JJ -LRB-_-LRB- 27_CD -RRB-_-RRB- separates_VBZ update_VB transactions_NNS from_IN readonly_JJ transactions_NNS ,_, and_CC routes_VBZ updates_NNS to_TO a_DT main_JJ database_NN server_NN and_CC read_VB queries_NNS to_TO read-only_JJ database_NN copies_NNS ._.
+GlobeDB_NN =_SYM -_: =[_NN 32_CD -RRB-_-RRB- -_: =_SYM -_: uses_VBZ partially_RB replicated_VBN databases_NNS based_VBN on_IN data_NNS partition_NN to_TO reduce_VB update_VB traffic_NN ._.
+Our_PRP$ current_JJ prototype_NN uses_VBZ a_DT single_JJ backend_JJ database_NN server_NN ,_, which_WDT can_MD be_VB extended_VBN to_TO support_VB distributed_VBN databas_NNS
+that_IN each_DT update_VBP to_TO the_DT data_NNS may_MD lead_VB to_TO excessive_JJ communication_NN to_TO keep_VB replicas_NNS consistent_JJ ._.
+This_DT issue_NN can_MD be_VB addressed_VBN by_IN replicating_VBG each_DT element_NN of_IN the_DT database_NN to_TO only_RB a_DT fraction_NN of_IN all_DT servers_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+This_DT allows_VBZ significantly_RB reducing_VBG the_DT amount_NN of_IN communication_NN required_VBN to_TO maintain_VB consistency_NN between_IN the_DT databases_NNS ,_, while_IN maintaining_VBG high_JJ performance_NN for_IN generating_VBG documents_NNS ._.
+Related_JJ work_NN Colla_NN
+of_IN dynamic_JJ resource_NN sharing_NN ._.
+However_RB ,_, this_DT sharing_NN is_VBZ done_VBN using_VBG different_JJ mechanisms_NNS and_CC is_VBZ outside_IN the_DT scope_NN of_IN this_DT paper_NN ._.
+An_DT approach_NN to_TO improve_VB scalability_NN of_IN back-end_JJ databases_NNS is_VBZ described_VBN in_IN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4_LS ._.
+Architectural_NNP Alternatives_NNP for_IN Utility_NNP Computing_NNP Client_NNP Web\/App_NNP Servers_NNP Node_NNP Client_NNP Auth_NNP ._.
+DNS_NNP Central_NNP Coordinator_NNP Backend_NNP Servers_NNP Web\/App_NNP Servers_NNP Node_NNP Client_NNP Web\/App_NNP Servers_NNP Node_NNP Control_NNP Communic_NNP
+e_LS authors_NNS of_IN -LRB-_-LRB- 12_CD -RRB-_-RRB- provide_VBP edge_NN server_NN primary-copy_JJ replication_NN of_IN J2EE_NN objects_NNS -LRB-_-LRB- beans_NNS -RRB-_-RRB- with_IN transactional_JJ properties_NNS ._.
+However_RB ,_, the_DT solution_NN is_VBZ specific_JJ for_IN application_NN servers_NNS based_VBN on_IN J2EE_NN ._.
+Finally_RB ,_, =_JJ -_: =[_NN 21_CD -RRB-_-RRB- -_: =_SYM -_: proposes_VBZ a_DT lazy_JJ primary-copy_JJ DB_NN approach_NN where_WRB different_JJ edge_NN servers_NNS might_MD have_VB different_JJ partitions_NNS of_IN the_DT database_NN ._.
+For_IN each_DT partition_NN ,_, a_DT different_JJ edge_NN server_NN might_MD be_VB primary_JJ ._.
+Our_PRP$ approach_NN diffe_NN
+Reading_VBG and_CC Writing_VBG Objects_NNS Before_IN we_PRP tackle_VBP the_DT various_JJ possible_JJ replication_NN schemes_NNS ,_, it_PRP is_VBZ necessary_JJ to_TO take_VB a_DT look_NN at_IN the_DT actual_JJ process_NN of_IN reading_VBG and_CC writing_VBG data_NNS ._.
+Both_DT Coral_NNP -LRB-_-LRB- 39_CD ;_: 4_CD -RRB-_-RRB- and_CC GlobeDB_NN =_JJ -_: =[_NN 52_CD -RRB-_-RRB- -_: =_SYM -_: use_VB a_DT concept_NN where_WRB every_DT document_NN has_VBZ an_DT authoritative_JJ owner_NN that_WDT can_MD either_RB solve_VB disputes_NNS about_IN content_NN or_CC handle_VB replication_NN ._.
+This_DT introduces_VBZ a_DT single_JJ point_NN of_IN failure_NN that_IN we_PRP would_MD like_VB to_TO avoid_VB
+ported_VBN by_IN different_JJ GVFS_NN sessions_NNS ;_: in_IN -LRB-_-LRB- b_NN -RRB-_-RRB- ,_, the_DT executions_NNS use_VBP the_DT same_JJ dataset_NN and_CC share_VBP the_DT same_JJ session_NN ._.
+9storage_NN allocation_NN -LRB-_-LRB- 9_CD -RRB-_-RRB- ._.
+Automatic_NNP replica_NN generation_NN and_CC distribution_NN are_VBP developed_VBN in_IN CDN_NN =_JJ -_: =[_NN 22_CD -RRB-_-RRB- -_: =_JJ -_: and_CC peerto-peer_JJ storage_NN system_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- ._.
+Compared_VBN to_TO these_DT systems_NNS ,_, this_DT paper_NN considers_VBZ autonomic_JJ storage_NN and_CC replica_NN management_NN in_IN the_DT context_NN of_IN supporting_VBG dynamic_JJ Grid-wide_JJ file_NN systems_NNS which_WDT provide_VBP
+ase_NN ._.
+Depending_VBG on_IN the_DT nature_NN of_IN an_DT application_NN and_CC its_PRP$ client_NN access_NN pattern_NN ,_, different_JJ techniques_NNS such_JJ as_IN fragment_NN caching_NN -LRB-_-LRB- 13_CD -RRB-_-RRB- ,_, database_NN query_NN result_NN caching_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- and_CC -LRB-_-LRB- partial_JJ -RRB-_-RRB- database_NN replication_NN =_JJ -_: =[_NN 34_CD -RRB-_-RRB- -_: =_SYM -_: may_MD be_VB best_RB employed_VBN ._.
+Performance_NNP Evaluation_NN Metrics_NNS Evaluating_VBG the_DT performance_NN of_IN a_DT content_JJ delivery_NN network_NN is_VBZ no_DT easy_JJ task_NN ._.
+In_IN particular_JJ ,_, there_EX is_VBZ no_DT one_CD metric_NN that_WDT can_MD capture_VB the_DT complexity_NN of_IN
+L_NN query_NN whose_WP$ parameter_NN values_NNS are_VBP passed_VBN to_TO the_DT system_NN at_IN runtime_NN ._.
+Partial_JJ replication_NN techniques_NNS use_VBP similar_JJ information_NN to_TO reduce_VB the_DT data_NNS replication_NN degree_NN and_CC limit_VB the_DT cost_NN of_IN database_NN updates_NNS =_JJ -_: =[_NN 14_CD ,_, 29_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+However_RB ,_, we_PRP observe_VBP that_IN these_DT techniques_NNS work_VBP best_RB under_IN very_RB simple_JJ workloads_NNS composed_VBN only_RB of_IN a_DT few_JJ different_JJ query_NN templates_NNS ._.
+When_WRB the_DT number_NN of_IN templates_NNS grows_VBZ ,_, an_DT increasing_VBG number_NN of_IN constrai_NNS
+However_RB ,_, our_PRP$ approach_NN is_VBZ fully_RB applicable_JJ to_TO the_DT full_JJ three-tier_JJ arrangements_NNS as_RB well_RB ._.
+Different_JJ applications_NNS exhibit_VBP performance_NN bottlenecks_NNS at_IN different_JJ tiers_NNS ._.
+We_PRP focus_VBP on_IN the_DT application_NN tier_NN ;_: see_VB =_JJ -_: =[_NN 22_CD ,_, 15_CD -RRB-_-RRB- -_: =_SYM -_: for_IN examples_NNS of_IN the_DT work_NN addressing_VBG the_DT important_JJ issue_NN of_IN the_DT back-end_JJ tier_NN performance_NN ._.
+The_DT components_NNS in_IN our_PRP$ hosting_VBG architecture_NN essential_JJ for_IN the_DT discussion_NN in_IN this_DT paper_NN are_VBP shown_VBN in_IN Figure_NNP 1_CD ._.
+to_TO the_DT edge_NN servers_NNS that_WDT access_VBP them_PRP often_RB ._.
+GlobeDB_NN provides_VBZ Web-based_JJ data-intensive_JJ applications_NNS the_DT same_JJ advantages_NNS that_IN CDNs_NNS offer_VBP to_TO traditional_JJ Web_NN sites_NNS :_: low_JJ latency_NN and_CC reduced_VBN network_NN usage_NN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT data_NNS placement_NN heuristics_NNS developed_VBN in_IN this_DT previous_JJ work_NN assumed_VBD that_IN the_DT number_NN of_IN data_NNS update_VBP requests_NNS is_VBZ relatively_RB low_JJ compared_VBN to_TO that_DT of_IN the_DT read_NN requests_NNS ._.
+While_IN this_DT assumption_NN is_VBZ often_RB
+x._FW GlobeDB_FW is_VBZ an_DT autonomic_JJ data_NN replicating_VBG middleware_NN that_WDT employs_VBZ partial_JJ replication_NN to_TO provide_VB Web-based_JJ applications_NNS the_DT advantages_NNS of_IN low_JJ network_NN latency_NN and_CC low_JJ update_VBP traffic_NN at_IN the_DT same_JJ time_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+One_CD distinct_JJ feature_NN of_IN GlobeDB_NN is_VBZ that_IN it_PRP automatically_RB splits_VBZ the_DT data_NNS into_IN individual_JJ ``_`` data_NNS units_NNS ,_, ''_'' which_WDT usually_RB are_VBP records_NNS of_IN a_DT database_NN ._.
+It_PRP distributes_VBZ each_DT data_NNS unit_NN only_RB to_TO a_DT fraction_NN all_DT o_NN

@@ -1,0 +1,59 @@
+Large-scale_JJ behavioral_JJ targeting_NN
+Behavioral_JJ targeting_NN -LRB-_-LRB- BT_NNP -RRB-_-RRB- leverages_VBZ historical_JJ user_NN behavior_NN to_TO select_VB the_DT ads_NNS most_RBS relevant_JJ to_TO users_NNS to_TO display_VB ._.
+The_DT state-of-the-art_JJ of_IN BT_NNP derives_VBZ a_DT linear_JJ Poisson_NNP regression_NN model_NN from_IN fine-grained_JJ user_NN behavioral_JJ data_NNS and_CC predicts_VBZ click-through_JJ rate_NN -LRB-_-LRB- CTR_NN -RRB-_-RRB- from_IN user_NN history_NN ._.
+We_PRP designed_VBD and_CC implemented_VBD a_DT highly_RB scalable_JJ and_CC efficient_JJ solution_NN to_TO BT_NNP using_VBG Hadoop_NNP MapReduce_NNP framework_NN ._.
+With_IN our_PRP$ parallel_JJ algorithm_NN and_CC the_DT resulting_VBG system_NN ,_, we_PRP can_MD build_VB above_IN 450_CD BT-category_JJ models_NNS from_IN the_DT entire_JJ Yahoo_NNP 's_POS user_NN base_NN within_IN one_CD day_NN ,_, the_DT scale_NN that_IN one_PRP can_MD not_RB even_RB imagine_VB with_IN prior_JJ systems_NNS ._.
+Moreover_RB ,_, our_PRP$ approach_NN has_VBZ yielded_VBN 20_CD %_NN CTR_NN lift_NN over_IN the_DT existing_VBG production_NN system_NN by_IN leveraging_VBG the_DT well-grounded_JJ probabilistic_JJ model_NN fitted_VBN from_IN a_DT much_RB larger_JJR training_NN dataset_NN ._.
+Specifically_RB ,_, our_PRP$ major_JJ contributions_NNS include_VBP :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- A_DT MapReduce_NN statistical_JJ learning_NN algorithm_NN and_CC implementation_NN that_WDT achieve_VBP optimal_JJ data_NNS parallelism_NN ,_, task_NN parallelism_NN ,_, and_CC load_NN balance_NN in_IN spite_NN of_IN the_DT typically_RB skewed_JJ distribution_NN of_IN domain_NN data_NNS ._.
+-LRB-_-LRB- 2_LS -RRB-_-RRB- An_DT in-place_JJ feature_NN vector_NN generation_NN algorithm_NN with_IN linear_JJ time_NN complexity_NN O_NN -LRB-_-LRB- n_NN -RRB-_-RRB- regardless_RB of_IN the_DT granularity_NN of_IN sliding_VBG target_NN window_NN ._.
+-LRB-_-LRB- 3_LS -RRB-_-RRB- An_DT in-memory_JJ caching_NN scheme_NN that_WDT significantly_RB reduces_VBZ the_DT number_NN of_IN disk_NN IOs_NNS to_TO make_VB large-scale_JJ learning_NN practical_JJ ._.
+-LRB-_-LRB- 4_LS -RRB-_-RRB- Highly_RB efficient_JJ data_NN structures_NNS and_CC sparse_JJ representations_NNS of_IN models_NNS and_CC data_NNS to_TO enable_VB fast_JJ model_NN updates_NNS ._.
+We_PRP believe_VBP that_IN our_PRP$ work_NN makes_VBZ significant_JJ contributions_NNS to_TO solving_VBG large-scale_JJ machine_NN learning_NN problems_NNS of_IN industrial_JJ relevance_NN in_IN general_JJ ._.
+Finally_RB ,_, we_PRP report_VBP comprehensive_JJ experimental_JJ results_NNS ,_, using_VBG industrial_JJ proprietary_JJ codebase_NN and_CC datasets_NNS ._.
+ggered_VBN and_CC before_IN the_DT production_NN scoring_VBG system_NN saw_VBD that_DT event_NN ._.
+However_RB ,_, user_NN activities_NNS within_IN the_DT session_NN where_WRB an_DT ad_NN is_VBZ served_VBN ,_, especially_RB some_DT task-based_JJ information_NN ,_, areconsidered_VBD very_RB relevant_JJ =_JJ -_: =[_NN 2_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT objective_NN of_IN this_DT experiment_NN is_VBZ to_TO validate_VB the_DT potential_NN of_IN latency_NN removal_NN ._.
+The_DT models_NNS were_VBD trained_VBN in_IN the_DT same_JJ way_NN as_IN described_VBN in_IN Section_NNP 5.1_CD ,_, but_CC evaluated_VBD with_IN no_DT gap_NN and_CC a_DT one-minute_NN slid_VBD
+ltiplicative_JJ factor_NN -RRB-_-RRB- are_VBP pre-computed_JJ in_IN feature_NN vector_NN generation_NN ._.
+Iterative_JJ learning_NN algorithms_NNS typically_RB encounter_VBP parallelization_NN bottleneck_NN in_IN synchronizing_VBG model_NN parameters_NNS after_IN each_DT iteration_NN =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN solving_VBG Poisson_NNP MLE_NNP in_IN our_PRP$ case_NN ,_, for_IN each_DT iteration_NN the_DT final_JJ multiplicative_JJ update_VB of_IN the_DT weight_NN vector_NN wk_NN of_IN a_DT target_NN variable_JJ k_NN has_VBZ to_TO be_VB carried_VBN out_RP in_IN a_DT single_JJ node_NN to_TO output_NN this_DT weight_NN vec_NN
+O_NN -LRB-_-LRB- tn_NN -RRB-_-RRB- ._.
+When_WRB t_NN increases_VBZ ,_, O_NN -LRB-_-LRB- tn_NN -RRB-_-RRB- becomes_VBZ unacceptable_JJ ._.
+For_IN example_NN ,_, per-minute_JJ sliding_VBG over_IN one_CD week_NN for_IN short-term_JJ modeling_NN gives_VBZ 10_CD ,_, 080_CD windows_NNS ._.
+We_PRP develop_VBP an_DT algorithm_NN of_IN O_NN -LRB-_-LRB- 1n_NN -RRB-_-RRB- smoothed_VBD complexity_NN =_JJ -_: =[_NN 12_CD -RRB-_-RRB- -_: =_SYM -_: for_IN generating_VBG examples_NNS ,_, regardless_RB of_IN the_DT number_NN of_IN sliding_VBG windows_NNS t._VBP The_DT essence_NN of_IN the_DT algorithm_NN is_VBZ the_DT following_NN :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- cache_NN in_IN memory_NN all_DT inputs_NNS of_IN a_DT cookie_NN ;_: -LRB-_-LRB- 2_LS -RRB-_-RRB- sort_NN events_NNS by_IN time_NN and_CC hence_RB fo_FW
+training_NN ,_, given_VBN the_DT dynamic_JJ nature_NN of_IN user_NN behavior_NN and_CC the_DT volatility_NN of_IN ads_NNS and_CC pages_NNS ._.
+In_IN this_DT paper_NN we_PRP present_VBP a_DT scalable_JJ and_CC efficient_JJ solution_NN to_TO behavioral_JJ targeting_NN using_VBG Hadoop_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- MapReduce_NN =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_JJ -_: framework_NN ._.
+First_RB ,_, we_PRP introduce_VBP the_DT background_NN of_IN BT_NNP for_IN online_JJ display_NN advertising_NN ._.
+Second_RB ,_, we_PRP describe_VBP linear_JJ Poisson_NNP regression_NN ,_, a_DT probabilistic_JJ model_NN for_IN count_NN data_NNS such_JJ as_IN online_JJ user_NN behavioral_JJ
+and_CC a_DT n_NN ×_CD m_NN feature_NN counts_VBZ matrix_NN X_NN ,_, i.e._FW ,_, D_NN =_JJ -LRB-_-LRB- Y_NN X_NN -RRB-_-RRB- ._.
+The_DT MLE_NN of_IN W_NN can_MD be_VB regarded_VBN as_IN the_DT solution_NN to_TO an_DT NMF_NN problem_NN Y_NN ⊤_FW ≈_FW W_NN X_NN ⊤_NN where_WRB the_DT quality_NN of_IN factorization_NN is_VBZ measured_VBN by_IN data_NN log_NN likelihood_NN =_JJ -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Since_IN both_CC Y_NN and_CC X_NN are_VBP given_VBN ,_, we_PRP directly_RB apply_VBP the_DT multiplicative_JJ algorithm_NN in_IN -LRB-_-LRB- 11_CD -RRB-_-RRB- to_TO compute_VB W_NN thus_RB yielding_VBG our_PRP$ recurrence_NN in_IN Eq_NN ._.
+-LRB-_-LRB- 4_CD -RRB-_-RRB- ._.
+The_DT computational_JJ performance_NN of_IN the_DT multiplicative_JJ update_VBP
+ype_NN for_IN values_NNS -LRB-_-LRB- float_NN for_IN possible_JJ decaying_JJ -RRB-_-RRB- ,_, with_IN a_DT same_JJ array_NN index_NN coupling_NN an_DT -LRB-_-LRB- index_NN ,_, value_NN -RRB-_-RRB- pair_NN ._.
+This_DT data_NNS structure_NN can_MD be_VB viewed_VBN as_IN a_DT flattened_VBN adaptation_NN of_IN Yale_NNP sparse_JJ matrix_NN representation_NN =_JJ -_: =[_NN 10_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+We_PRP further_RB split_VBD the_DT representations_NNS of_IN features_NNS and_CC targets_NNS for_IN fast_JJ access_NN of_IN both_DT ,_, particularly_RB the_DT tensor_NN product_NN yi_FW ⊗_FW xi_FW ,_, the_DT major_JJ computational_JJ cost_NN for_IN model_NN updates_NNS ._.
+5_CD One_CD example_NN may_MD conta_VB
+session_NN lasts_VBZ less_JJR than_IN one_CD hour_NN ._.
+Theoretically_RB ,_, for_IN a_DT large_JJ window_NN and_CC hence_RB large_JJ target_NN event_NN counts_NNS ,_, the_DT assumed_JJ Poisson_NNP approaches_VBZ a_DT Gaussian_NNP with_IN a_DT same_JJ mean_NN and_CC may_MD suffer_VB from_IN overdispersion_NN =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN online_JJ prediction_NN on_IN the_DT other_JJ hand_NN ,_, one_CD typically_RB estimates_VBZ target_NN counts_NNS in_IN a_DT window_NN of_IN several_JJ minutes_NNS -LRB-_-LRB- time_NN interval_NN between_IN successive_JJ ad_NN servings_NNS -RRB-_-RRB- ._.
+Suppose_VB that_IN the_DT number_NN of_IN sliding_VBG window_NN
+ethod_NN ._.
+Better_NNP yet_RB ,_, we_PRP adapt_VBP a_DT multiplicative_JJ recurrence_NN proposed_VBN 2_CD Depending_VBG on_IN the_DT approach_NN to_TO generating_VBG training_NN examples_NNS -LRB-_-LRB- xi_FW ,_, yi_FW -RRB-_-RRB- ,_, one_CD user_NN could_MD contribute_VB to_TO multiple_JJ examples_NNS ._.
+by_IN Lee_NNP and_CC Seung_NNP =_SYM -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: to_TO our_PRP$ optimization_NN problem_NN by_IN constraining_VBG w_NN ≥_NN 0_CD ._.
+The_DT multiplicative_JJ update_VBP rule_NN is_VBZ :_: P_NN w_FW ′_FW j_FW ←_FW wj_FW yi_FW i_FW xij_FW λi_FW P_NN i_FW xij_FW ,_, where_WRB λi_NN =_JJ w_FW ⊤_FW xi_FW ._.
+-LRB-_-LRB- 4_LS -RRB-_-RRB- The_DT assumption_NN of_IN non-negative_JJ weights_NNS is_VBZ intuitive_JJ in_IN
+ns_NNS -LRB-_-LRB- also_RB called_VBN reach_NN -RRB-_-RRB- can_MD be_VB achieved_VBN ._.
+It_PRP is_VBZ obvious_JJ that_IN revenue_NN is_VBZ a_DT function_NN of_IN CTR_NN and_CC reach_NN ._.
+3_LS ._.
+LINEAR_FW POISSON_FW REGRESSION_NN We_PRP describe_VBP a_DT linear_JJ Poisson_NNP regression_NN model_NN for_IN behavioral_JJ count_NN data_NN =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT natural_JJ statistical_JJ model_NN of_IN count_NN data_NNS is_VBZ the_DT Poisson_NNP distribution_NN ,_, and_CC we_PRP adopt_VBP the_DT linear_JJ mean_NN parameterization_NN ._.
+Specifically_RB ,_, let_VB y_NN be_VB the_DT observed_VBN count_NN of_IN a_DT target_NN event_NN -LRB-_-LRB- i.e._FW ,_, ad_NN click_VBP or_CC
+orithms_NNS of_IN fitting_NN the_DT Poisson_NNP regression_NN model_NN using_VBG Hadoop_NNP MapReduce_NNP framework_NN ._.
+Our_PRP$ focus_NN ,_, however_RB ,_, is_VBZ to_TO elaborate_VB on_IN various_JJ innovations_NNS in_IN addressing_VBG practical_JJ challenges_NNS in_IN large-scale_JJ learning_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+4.1_CD Data_NNP Reduction_NNP and_CC Information_NNP Loss_NN Most_RBS practical_JJ learning_NN algorithms_NNS with_IN web-scale_JJ data_NNS are_VBP IO-bound_JJ and_CC particularly_RB scan-bound_JJ ._.
+In_IN the_DT context_NN of_IN BT_NNP ,_, one_CD needs_VBZ to_TO preprocess_VB 20-30_CD terabytes_NNS
+Hadoop_JJ cluster_NN of_IN commodity_NN machines_NNS -LRB-_-LRB- 2_CD ×_FW Quad_FW Core_NN 2GHz_NN CPU_NNP and_CC 8GB_NNP RAM_NNP -RRB-_-RRB- ._.
+5.2_CD The_DT Baseline_NNP Model_NNP We_PRP compared_VBD our_PRP$ results_NNS with_IN a_DT baseline_NN model_NN using_VBG linear_JJ regression_NN ,_, which_WDT is_VBZ a_DT prior_JJ solution_NN to_TO BT_NNP =_SYM -_: =[_NN 8_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+The_DT linear_JJ regression_NN model_NN has_VBZ two_CD groups_NNS of_IN covariates_NNS :_: intensity_NN and_CC recency_NN ._.
+Intensity_NN is_VBZ an_DT aggregated_JJ event_NN count_NN ,_, possibly_RB with_IN decay_NN ;_: while_IN recency_NN is_VBZ the_DT time_NN elapsed_VBD since_IN a_DT user_NN had_VBD a_DT eve_NN

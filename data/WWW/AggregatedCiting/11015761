@@ -1,0 +1,91 @@
+Detecting_VBG the_DT origin_NN of_IN text_NN segments_NNS efficiently_RB
+In_IN the_DT origin_NN detection_NN problem_NN an_DT algorithm_NN is_VBZ given_VBN a_DT set_VBN S_NN of_IN documents_NNS ,_, ordered_VBN by_IN creation_NN time_NN ,_, and_CC a_DT query_NN document_NN D._NNP It_PRP needs_VBZ to_TO output_NN for_IN every_DT consecutive_JJ sequence_NN of_IN k_NN alphanumeric_JJ terms_NNS in_IN D_NN the_DT earliest_JJS document_NN in_IN $_$ S$_$ in_IN which_WDT the_DT sequence_NN appeared_VBD -LRB-_-LRB- if_IN such_PDT a_DT document_NN exists_VBZ -RRB-_-RRB- ._.
+Algorithms_NNS for_IN the_DT origin_NN detection_NN problem_NN can_MD ,_, for_IN example_NN ,_, be_VB used_VBN to_TO detect_VB the_DT ``_`` origin_NN ''_'' of_IN text_NN segments_NNS in_IN D_NN and_CC thus_RB to_TO detect_VB novel_JJ content_NN in_IN D._NNP They_PRP can_MD also_RB find_VB the_DT document_NN from_IN which_WDT the_DT author_NN of_IN D_NN has_VBZ copied_VBN the_DT most_JJS -LRB-_-LRB- or_CC show_VBP that_IN D_NN is_VBZ mostly_RB original_JJ ._. -RRB-_-RRB-
+We_PRP concentrate_VBP on_IN solutions_NNS that_WDT use_VBP only_RB a_DT fixed_JJ amount_NN of_IN memory_NN ._.
+We_PRP propose_VBP novel_JJ algorithms_NNS for_IN this_DT problem_NN and_CC evaluate_VB them_PRP together_RB with_IN a_DT large_JJ number_NN of_IN previously_RB published_VBN algorithms_NNS ._.
+Our_PRP$ results_NNS show_VBP that_IN -LRB-_-LRB- 1_LS -RRB-_-RRB- detecting_VBG the_DT origin_NN of_IN text_NN segments_NNS efficiently_RB can_MD be_VB done_VBN with_IN very_RB high_JJ accuracy_NN even_RB when_WRB the_DT space_NN used_VBN is_VBZ less_JJR than_IN 1_CD %_NN of_IN the_DT size_NN of_IN the_DT documents_NNS in_IN $_$ S$_$ ,_, -LRB-_-LRB- 2_LS -RRB-_-RRB- the_DT precision_NN degrades_VBZ smoothly_RB with_IN the_DT amount_NN of_IN available_JJ space_NN ,_, -LRB-_-LRB- 3_LS -RRB-_-RRB- various_JJ estimation_NN techniques_NNS can_MD be_VB used_VBN to_TO increase_VB the_DT performance_NN of_IN the_DT algorithms_NNS ._.
+gines_VBZ the_DT web_NN consists_VBZ by_IN now_RB of_IN tens_NNS of_IN billions_NNS of_IN pages_NNS ._.
+Not_RB surprisingly_RB most_JJS of_IN these_DT pages_NNS do_VBP not_RB contain_VB novel_JJ information_NN but_CC replicate_VBP in_IN some_DT way_NN the_DT content_NN of_IN other_JJ pages_NNS ._.
+It_PRP is_VBZ estimated_VBN =_JJ -_: =[_NN 8_CD ,_, 16_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: that_IN roughly_RB 20-40_CD %_NN of_IN the_DT pages_NNS are_VBP exact_JJ duplicates_NNS ._.
+The_DT remaining_VBG pages_NNS with_IN replication_NN can_MD be_VB roughly_RB categorized_VBN into_IN three_CD types_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- Near-duplicate_JJ pages_NNS ,_, i.e._FW ,_, pages_NNS that_WDT are_VBP almost_RB iden_JJ
+ear-duplicate_JJ for_IN none_NN of_IN them_PRP ._.
+-LRB-_-LRB- 3_LS -RRB-_-RRB- Semantic_JJ duplication_NN ,_, where_WRB pages_NNS contain_VBP -LRB-_-LRB- almost_RB -RRB-_-RRB- the_DT same_JJ content_NN ,_, but_CC different_JJ words_NNS ._.
+Most_JJS attention_NN in_IN the_DT past_NN has_VBZ been_VBN given_VBN to_TO finding_VBG near-duplicate_JJ pages_NNS =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 10_CD ,_, 11_CD ,_, 12_CD ,_, 16_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recently_RB ,_, attention_NN has_VBZ shifted_VBN towards_IN detecting_VBG partial_JJ replication_NN -LRB-_-LRB- 7_CD ,_, 15_CD ,_, 14_CD -RRB-_-RRB- ,_, but_CC none_NN of_IN the_DT prior_JJ work_NN focuses_VBZ on_IN the_DT origin_NN detection_NN problem_NN ._.
+There_EX are_VBP various_JJ reasons_NNS for_IN this_DT shift_NN ._.
+-LRB-_-LRB- a_LS -RRB-_-RRB- P_NN
+cument_NN D_NN originated_VBD ._.
+If_IN D_NN =_JJ D_NN ′_NN ,_, then_RB more_JJR content_NN is_VBZ unique_JJ to_TO D_NN than_IN copied_VBN from_IN any_DT single_JJ other_JJ source_NN ._.
+Our_PRP$ system_NN uses_VBZ the_DT following_JJ architecture_NN :_: Every_DT shingle_NN in_IN the_DT document_NN is_VBZ fingerprinted_VBN =_JJ -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Then_RB a_DT selection_NN algorithm_NN determines_VBZ which_WDT shingles_VBZ to_TO store_VB in_IN a_DT hash_JJ table_NN ._.
+The_DT hash_JJ table_NN stores_NNS for_IN each_DT shingle_NN some_DT additional_JJ information_NN ._.
+For_IN selected_VBN shingles_NNS for_IN which_WDT there_EX is_VBZ a_DT hit_NN in_IN t_NN
+ntent_JJ ,_, but_CC different_JJ words_NNS ._.
+Most_JJS attention_NN in_IN the_DT past_NN has_VBZ been_VBN given_VBN to_TO finding_VBG near-duplicate_JJ pages_NNS -LRB-_-LRB- 4_CD ,_, 6_CD ,_, 10_CD ,_, 11_CD ,_, 12_CD ,_, 16_CD ,_, 17_CD -RRB-_-RRB- ._.
+Recently_RB ,_, attention_NN has_VBZ shifted_VBN towards_IN detecting_VBG partial_JJ replication_NN =_JJ -_: =[_NN 7_CD ,_, 15_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC none_NN of_IN the_DT prior_JJ work_NN focuses_VBZ on_IN the_DT origin_NN detection_NN problem_NN ._.
+There_EX are_VBP various_JJ reasons_NNS for_IN this_DT shift_NN ._.
+-LRB-_-LRB- a_LS -RRB-_-RRB- Paragraph_NN replication_NN is_VBZ very_RB common_JJ in_IN blogs_NNS ._.
+With_IN the_DT increasing_VBG popularity_NN of_IN blo_NN
+some_DT way_NN the_DT content_NN of_IN other_JJ pages_NNS ._.
+It_PRP is_VBZ estimated_VBN -LRB-_-LRB- 8_CD ,_, 16_CD ,_, 1_LS -RRB-_-RRB- that_WDT roughly_RB 20-40_CD %_NN of_IN the_DT pages_NNS are_VBP exact_JJ duplicates_NNS ._.
+The_DT remaining_VBG pages_NNS with_IN replication_NN can_MD be_VB roughly_RB categorized_VBN into_IN three_CD types_NNS =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =_JJ -_: :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- Near-duplicate_JJ pages_NNS ,_, i.e._FW ,_, pages_NNS that_WDT are_VBP almost_RB identical_JJ to_TO the_DT original_JJ page_NN ,_, except_IN for_IN minor_JJ changes_NNS ,_, like_IN the_DT insertion_NN or_CC replacement_NN of_IN a_DT few_JJ words_NNS ._.
+-LRB-_-LRB- 2_LS -RRB-_-RRB- ∗_NN Work_NN done_VBN while_IN visiting_VBG Googl_NNP
+ntent_JJ ,_, but_CC different_JJ words_NNS ._.
+Most_JJS attention_NN in_IN the_DT past_NN has_VBZ been_VBN given_VBN to_TO finding_VBG near-duplicate_JJ pages_NNS -LRB-_-LRB- 4_CD ,_, 6_CD ,_, 10_CD ,_, 11_CD ,_, 12_CD ,_, 16_CD ,_, 17_CD -RRB-_-RRB- ._.
+Recently_RB ,_, attention_NN has_VBZ shifted_VBN towards_IN detecting_VBG partial_JJ replication_NN =_JJ -_: =[_NN 7_CD ,_, 15_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC none_NN of_IN the_DT prior_JJ work_NN focuses_VBZ on_IN the_DT origin_NN detection_NN problem_NN ._.
+There_EX are_VBP various_JJ reasons_NNS for_IN this_DT shift_NN ._.
+-LRB-_-LRB- a_LS -RRB-_-RRB- Paragraph_NN replication_NN is_VBZ very_RB common_JJ in_IN blogs_NNS ._.
+With_IN the_DT increasing_VBG popularity_NN of_IN blo_NN
+ntent_JJ ,_, but_CC different_JJ words_NNS ._.
+Most_JJS attention_NN in_IN the_DT past_NN has_VBZ been_VBN given_VBN to_TO finding_VBG near-duplicate_JJ pages_NNS -LRB-_-LRB- 4_CD ,_, 6_CD ,_, 10_CD ,_, 11_CD ,_, 12_CD ,_, 16_CD ,_, 17_CD -RRB-_-RRB- ._.
+Recently_RB ,_, attention_NN has_VBZ shifted_VBN towards_IN detecting_VBG partial_JJ replication_NN =_JJ -_: =[_NN 7_CD ,_, 15_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, but_CC none_NN of_IN the_DT prior_JJ work_NN focuses_VBZ on_IN the_DT origin_NN detection_NN problem_NN ._.
+There_EX are_VBP various_JJ reasons_NNS for_IN this_DT shift_NN ._.
+-LRB-_-LRB- a_LS -RRB-_-RRB- Paragraph_NN replication_NN is_VBZ very_RB common_JJ in_IN blogs_NNS ._.
+With_IN the_DT increasing_VBG popularity_NN of_IN blo_NN
+ear-duplicate_JJ for_IN none_NN of_IN them_PRP ._.
+-LRB-_-LRB- 3_LS -RRB-_-RRB- Semantic_JJ duplication_NN ,_, where_WRB pages_NNS contain_VBP -LRB-_-LRB- almost_RB -RRB-_-RRB- the_DT same_JJ content_NN ,_, but_CC different_JJ words_NNS ._.
+Most_JJS attention_NN in_IN the_DT past_NN has_VBZ been_VBN given_VBN to_TO finding_VBG near-duplicate_JJ pages_NNS =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 10_CD ,_, 11_CD ,_, 12_CD ,_, 16_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recently_RB ,_, attention_NN has_VBZ shifted_VBN towards_IN detecting_VBG partial_JJ replication_NN -LRB-_-LRB- 7_CD ,_, 15_CD ,_, 14_CD -RRB-_-RRB- ,_, but_CC none_NN of_IN the_DT prior_JJ work_NN focuses_VBZ on_IN the_DT origin_NN detection_NN problem_NN ._.
+There_EX are_VBP various_JJ reasons_NNS for_IN this_DT shift_NN ._.
+-LRB-_-LRB- a_LS -RRB-_-RRB- P_NN
+ear-duplicate_JJ for_IN none_NN of_IN them_PRP ._.
+-LRB-_-LRB- 3_LS -RRB-_-RRB- Semantic_JJ duplication_NN ,_, where_WRB pages_NNS contain_VBP -LRB-_-LRB- almost_RB -RRB-_-RRB- the_DT same_JJ content_NN ,_, but_CC different_JJ words_NNS ._.
+Most_JJS attention_NN in_IN the_DT past_NN has_VBZ been_VBN given_VBN to_TO finding_VBG near-duplicate_JJ pages_NNS =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 10_CD ,_, 11_CD ,_, 12_CD ,_, 16_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recently_RB ,_, attention_NN has_VBZ shifted_VBN towards_IN detecting_VBG partial_JJ replication_NN -LRB-_-LRB- 7_CD ,_, 15_CD ,_, 14_CD -RRB-_-RRB- ,_, but_CC none_NN of_IN the_DT prior_JJ work_NN focuses_VBZ on_IN the_DT origin_NN detection_NN problem_NN ._.
+There_EX are_VBP various_JJ reasons_NNS for_IN this_DT shift_NN ._.
+-LRB-_-LRB- a_LS -RRB-_-RRB- P_NN
+ear-duplicate_JJ for_IN none_NN of_IN them_PRP ._.
+-LRB-_-LRB- 3_LS -RRB-_-RRB- Semantic_JJ duplication_NN ,_, where_WRB pages_NNS contain_VBP -LRB-_-LRB- almost_RB -RRB-_-RRB- the_DT same_JJ content_NN ,_, but_CC different_JJ words_NNS ._.
+Most_JJS attention_NN in_IN the_DT past_NN has_VBZ been_VBN given_VBN to_TO finding_VBG near-duplicate_JJ pages_NNS =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 10_CD ,_, 11_CD ,_, 12_CD ,_, 16_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recently_RB ,_, attention_NN has_VBZ shifted_VBN towards_IN detecting_VBG partial_JJ replication_NN -LRB-_-LRB- 7_CD ,_, 15_CD ,_, 14_CD -RRB-_-RRB- ,_, but_CC none_NN of_IN the_DT prior_JJ work_NN focuses_VBZ on_IN the_DT origin_NN detection_NN problem_NN ._.
+There_EX are_VBP various_JJ reasons_NNS for_IN this_DT shift_NN ._.
+-LRB-_-LRB- a_LS -RRB-_-RRB- P_NN
+gines_VBZ the_DT web_NN consists_VBZ by_IN now_RB of_IN tens_NNS of_IN billions_NNS of_IN pages_NNS ._.
+Not_RB surprisingly_RB most_JJS of_IN these_DT pages_NNS do_VBP not_RB contain_VB novel_JJ information_NN but_CC replicate_VBP in_IN some_DT way_NN the_DT content_NN of_IN other_JJ pages_NNS ._.
+It_PRP is_VBZ estimated_VBN =_JJ -_: =[_NN 8_CD ,_, 16_CD ,_, 1_CD -RRB-_-RRB- -_: =_SYM -_: that_IN roughly_RB 20-40_CD %_NN of_IN the_DT pages_NNS are_VBP exact_JJ duplicates_NNS ._.
+The_DT remaining_VBG pages_NNS with_IN replication_NN can_MD be_VB roughly_RB categorized_VBN into_IN three_CD types_NNS -LRB-_-LRB- 3_CD -RRB-_-RRB- :_: -LRB-_-LRB- 1_LS -RRB-_-RRB- Near-duplicate_JJ pages_NNS ,_, i.e._FW ,_, pages_NNS that_WDT are_VBP almost_RB iden_JJ
+the_DT search_NN engine_NN visits_VBZ a_DT URL_NN soon_RB after_IN its_PRP$ content_NN has_VBZ changed_VBN ._.
+Thus_RB it_PRP is_VBZ possible_JJ that_IN the_DT content_NN has_VBZ been_VBN partially_RB replicated_VBN and_CC that_IN the_DT search_NN engine_NN crawls_VBZ 1_CD A_NN study_NN by_IN Beaza-Yates_NNP et_FW al._FW =_SYM -_: =[_NN 1_CD ,_, 2_CD -RRB-_-RRB- -_: =_SYM -_: shows_VBZ that_IN authors_NNS of_IN web_NN pages_NNS use_VBP search_NN engines_NNS to_TO find_VB content_NN that_IN they_PRP then_RB copy_VBP and_CC paste_VBP into_IN their_PRP$ pages_NNS ._.
+61WWW_CD 2009_CD MADRID_NNP !_.
+Track_NNP :_: Data_NNP Mining_NNP \/_: Session_NN :_: Text_NNP Mining_NNP the_DT page_NN that_WDT contains_VBZ
+he_PRP most_RBS relevant_JJ paragraphs_NNS -LRB-_-LRB- in_IN combination_NN with_IN other_JJ spamming_VBG techniques_NNS -RRB-_-RRB- to_TO attract_VB search_NN engine_NN clicks_VBZ ._.
+1_CD Detecting_VBG partial_JJ replication_NN is_VBZ thus_RB useful_JJ for_IN generating_VBG a_DT list_NN of_IN potential_JJ spammers_NNS =_JJ -_: =[_NN 9_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+-LRB-_-LRB- c_NN -RRB-_-RRB- As_IN search_NN engines_NNS become_VBP more_RBR sophisticated_JJ they_PRP try_VBP to_TO return_VB better_JJR search_NN snippets_NNS to_TO the_DT users_NNS ._.
+One_CD improvement_NN for_IN snippets_NNS can_MD be_VB to_TO extract_VB the_DT snippets_NNS from_IN the_DT part_NN of_IN the_DT web_NN page_NN that_IN
+ear-duplicate_JJ for_IN none_NN of_IN them_PRP ._.
+-LRB-_-LRB- 3_LS -RRB-_-RRB- Semantic_JJ duplication_NN ,_, where_WRB pages_NNS contain_VBP -LRB-_-LRB- almost_RB -RRB-_-RRB- the_DT same_JJ content_NN ,_, but_CC different_JJ words_NNS ._.
+Most_JJS attention_NN in_IN the_DT past_NN has_VBZ been_VBN given_VBN to_TO finding_VBG near-duplicate_JJ pages_NNS =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 10_CD ,_, 11_CD ,_, 12_CD ,_, 16_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recently_RB ,_, attention_NN has_VBZ shifted_VBN towards_IN detecting_VBG partial_JJ replication_NN -LRB-_-LRB- 7_CD ,_, 15_CD ,_, 14_CD -RRB-_-RRB- ,_, but_CC none_NN of_IN the_DT prior_JJ work_NN focuses_VBZ on_IN the_DT origin_NN detection_NN problem_NN ._.
+There_EX are_VBP various_JJ reasons_NNS for_IN this_DT shift_NN ._.
+-LRB-_-LRB- a_LS -RRB-_-RRB- P_NN
+is_VBZ indeed_RB possible_JJ to_TO significantly_RB decrease_VB the_DT amount_NN of_IN space_NN needed_VBN while_IN still_RB generating_VBG high-quality_JJ results_NNS ._.
+As_IN in_IN prior_JJ art_NN we_PRP call_VBP a_DT sequence_NN of_IN k_NN consecutive_JJ terms_NNS in_IN a_DT document_NN a_DT shingle_NN =_JJ -_: =[_NN 5_CD ,_, 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT paper_NN we_PRP focus_VBP on_IN the_DT following_JJ two_CD problems_NNS ._.
+-LRB-_-LRB- 1_LS -RRB-_-RRB- Determine_VB all_DT terms_NNS in_IN the_DT document_NN that_WDT do_VBP not_RB belong_VB to_TO a_DT copied_VBN shingle_NN ._.
+Any_DT maximal_JJ sequence_NN of_IN such_JJ novel_JJ terms_NNS is_VBZ considered_VBN to_TO be_VB a_DT n_NN
+ear-duplicate_JJ for_IN none_NN of_IN them_PRP ._.
+-LRB-_-LRB- 3_LS -RRB-_-RRB- Semantic_JJ duplication_NN ,_, where_WRB pages_NNS contain_VBP -LRB-_-LRB- almost_RB -RRB-_-RRB- the_DT same_JJ content_NN ,_, but_CC different_JJ words_NNS ._.
+Most_JJS attention_NN in_IN the_DT past_NN has_VBZ been_VBN given_VBN to_TO finding_VBG near-duplicate_JJ pages_NNS =_JJ -_: =[_NN 4_CD ,_, 6_CD ,_, 10_CD ,_, 11_CD ,_, 12_CD ,_, 16_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Recently_RB ,_, attention_NN has_VBZ shifted_VBN towards_IN detecting_VBG partial_JJ replication_NN -LRB-_-LRB- 7_CD ,_, 15_CD ,_, 14_CD -RRB-_-RRB- ,_, but_CC none_NN of_IN the_DT prior_JJ work_NN focuses_VBZ on_IN the_DT origin_NN detection_NN problem_NN ._.
+There_EX are_VBP various_JJ reasons_NNS for_IN this_DT shift_NN ._.
+-LRB-_-LRB- a_LS -RRB-_-RRB- P_NN

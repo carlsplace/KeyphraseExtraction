@@ -1,0 +1,116 @@
+Smart_NNP Miner_NNP :_: a_DT new_JJ framework_NN for_IN mining_NN large_JJ scale_NN web_NN usage_NN data_NNS
+In_IN this_DT paper_NN ,_, we_PRP propose_VBP a_DT novel_JJ framework_NN called_VBN Smart-Miner_NNP for_IN web_NN usage_NN mining_NN problem_NN which_WDT uses_VBZ link_NN information_NN for_IN producing_VBG accurate_JJ user_NN sessions_NNS and_CC frequent_JJ navigation_NN patterns_NNS ._.
+Unlike_IN the_DT simple_JJ session_NN concepts_NNS in_IN the_DT time_NN and_CC navigation_NN based_JJ approaches_NNS ,_, where_WRB sessions_NNS are_VBP sequences_NNS of_IN web_NN pages_NNS requested_VBN from_IN the_DT server_NN or_CC viewed_VBN in_IN the_DT browser_NN ,_, Smart_NNP Miner_NNP sessions_NNS are_VBP set_VBN of_IN paths_NNS traversed_VBN in_IN the_DT web_NN graph_NN that_WDT corresponds_VBZ to_TO users_NNS '_POS navigations_NNS among_IN web_NN pages_NNS ._.
+We_PRP have_VBP modeled_VBN session_NN construction_NN as_IN a_DT new_JJ graph_NN problem_NN and_CC utilized_VBD a_DT new_JJ algorithm_NN ,_, Smart-SRA_NN ,_, to_TO solve_VB this_DT problem_NN efficiently_RB ._.
+For_IN the_DT pattern_NN discovery_NN phase_NN ,_, we_PRP have_VBP developed_VBN an_DT efficient_JJ version_NN of_IN the_DT Apriori-All_NNP technique_NN which_WDT uses_VBZ the_DT structure_NN of_IN web_NN graph_NN to_TO increase_VB the_DT performance_NN ._.
+From_IN the_DT experiments_NNS that_IN we_PRP have_VBP performed_VBN on_IN both_CC real_JJ and_CC simulated_JJ data_NNS ,_, we_PRP have_VBP observed_VBN that_IN Smart-Miner_NNP produces_VBZ at_IN least_JJS 30_CD %_NN more_RBR accurate_JJ web_NN usage_NN patterns_NNS than_IN other_JJ approaches_NNS including_VBG previous_JJ session_NN construction_NN methods_NNS ._.
+We_PRP have_VBP also_RB studied_VBN the_DT effect_NN of_IN having_VBG the_DT referrer_NN information_NN in_IN the_DT web_NN server_NN logs_NNS to_TO show_VB that_IN different_JJ versions_NNS of_IN Smart-SRA_NN produce_VBP similar_JJ results_NNS ._.
+Our_PRP$ another_DT contribution_NN is_VBZ that_IN we_PRP have_VBP implemented_VBN distributed_VBN version_NN of_IN the_DT Smart_NNP Miner_NNP framework_NN by_IN employing_VBG Map\/Reduce_NNP Paradigm_NNP ._.
+We_PRP conclude_VBP that_IN we_PRP can_MD efficiently_RB process_VB terabytes_NNS of_IN web_NN server_NN logs_NNS belonging_VBG to_TO multiple_JJ web_NN sites_NNS by_IN our_PRP$ scalable_JJ framework_NN ._.
+CTION_NN 2.1_CD Previous_JJ Heuristics_NNS and_CC Related_JJ Work_NN Before_IN going_VBG into_IN details_NNS of_IN the_DT previous_JJ work_NN ,_, it_PRP is_VBZ better_JJR to_TO inform_VB the_DT reader_NN with_IN the_DT more_RBR general_JJ definition_NN of_IN web_NN user_NN session_NN in_IN the_DT literature_NN =_JJ -_: =[_NN 8_CD ,_, 9_CD ,_, 12_CD ,_, 21_CD ,_, 23_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Definition_NN -LRB-_-LRB- Session_NN -RRB-_-RRB- :_: Session_NN is_VBZ a_DT sequence_NN of_IN requests_NNS made_VBN by_IN a_DT single_JJ user_NN with_IN a_DT unique_JJ IP_NNP address_NN on_IN a_DT Web_NN 162WWW_NN 2009_CD MADRID_NNP !_.
+site_NN during_IN a_DT specified_JJ period_NN of_IN time_NN ._.
+Each_DT request_NN item_NN in_IN the_DT
+ssed_JJ pages_NNS is_VBZ greater_JJR than_IN the_DT threshold_NN ,_, the_DT current_JJ session_NN is_VBZ terminated_VBN after_IN the_DT former_JJ page_NN and_CC a_DT new_JJ session_NN starts_VBZ with_IN the_DT latter_JJ page_NN ._.
+Navigation-Oriented_JJ approach_NN -LRB-_-LRB- 8_CD ,_, 9_CD -RRB-_-RRB- uses_VBZ the_DT web_NN graph_NN =_JJ -_: =[_NN 11_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: constructed_VBN by_IN using_VBG hyperlinks_NNS among_IN web_NN pages_NNS ._.
+In_IN this_DT approach_NN ,_, it_PRP is_VBZ not_RB necessary_JJ to_TO have_VB a_DT hyperlink_NN between_IN every_DT two_CD consecutive_JJ web_NN page_NN requests_NNS ._.
+Let_VB P_NN =_JJ -LRB-_-LRB- P1_NN ,_, P2_NN ,_, ..._: ,_, Pk_NN ,_, Pk_NN +1_NN ,_, ..._: ,_, P_NN
+rties_NNS above_IN ,_, then_RB Pn_FW +1_FW becomes_VBZ the_DT first_JJ page_NN of_IN a_DT new_JJ session_NN ._.
+Track_NNP :_: Data_NNP Mining_NNP \/_: Session_NN :_: Web_NN Mining_NN Although_IN the_DT session_NN construction_NN mentioned_VBN above_IN are_VBP not_RB new_JJ ,_, most_JJS of_IN the_DT recent_JJ applications_NNS =_JJ -_: =[_NN 3_CD ,_, 13_CD ,_, 14_CD ,_, 15_CD ,_, 16_CD ,_, 18_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: use_VB them_PRP during_IN session_NN generation_NN ._.
+The_DT problem_NN with_IN these_DT three_CD methods_NNS is_VBZ that_IN the_DT application_NN side_NN suffer_VBP from_IN low_JJ performance_NN due_JJ to_TO the_DT incorrect_JJ set_NN of_IN user_NN sessions_NNS generated_VBN ._.
+It_PRP is_VBZ very_RB impor_JJ
+rties_NNS above_IN ,_, then_RB Pn_FW +1_FW becomes_VBZ the_DT first_JJ page_NN of_IN a_DT new_JJ session_NN ._.
+Track_NNP :_: Data_NNP Mining_NNP \/_: Session_NN :_: Web_NN Mining_NN Although_IN the_DT session_NN construction_NN mentioned_VBN above_IN are_VBP not_RB new_JJ ,_, most_JJS of_IN the_DT recent_JJ applications_NNS =_JJ -_: =[_NN 3_CD ,_, 13_CD ,_, 14_CD ,_, 15_CD ,_, 16_CD ,_, 18_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: use_VB them_PRP during_IN session_NN generation_NN ._.
+The_DT problem_NN with_IN these_DT three_CD methods_NNS is_VBZ that_IN the_DT application_NN side_NN suffer_VBP from_IN low_JJ performance_NN due_JJ to_TO the_DT incorrect_JJ set_NN of_IN user_NN sessions_NNS generated_VBN ._.
+It_PRP is_VBZ very_RB impor_JJ
+rties_NNS above_IN ,_, then_RB Pn_FW +1_FW becomes_VBZ the_DT first_JJ page_NN of_IN a_DT new_JJ session_NN ._.
+Track_NNP :_: Data_NNP Mining_NNP \/_: Session_NN :_: Web_NN Mining_NN Although_IN the_DT session_NN construction_NN mentioned_VBN above_IN are_VBP not_RB new_JJ ,_, most_JJS of_IN the_DT recent_JJ applications_NNS =_JJ -_: =[_NN 3_CD ,_, 13_CD ,_, 14_CD ,_, 15_CD ,_, 16_CD ,_, 18_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: use_VB them_PRP during_IN session_NN generation_NN ._.
+The_DT problem_NN with_IN these_DT three_CD methods_NNS is_VBZ that_IN the_DT application_NN side_NN suffer_VBP from_IN low_JJ performance_NN due_JJ to_TO the_DT incorrect_JJ set_NN of_IN user_NN sessions_NNS generated_VBN ._.
+It_PRP is_VBZ very_RB impor_JJ
+p\/Reduce_NN ,_, Parallel_JJ Data_NNP Mining_NNP ,_, Web_NN User_NN Modeling_NN 1_CD ._.
+INTRODUCTION_NN As_IN in_IN classical_JJ data_NNS mining_NN ,_, the_DT aim_NN of_IN web_NN mining_NN is_VBZ to_TO discover_VB and_CC retrieve_VB useful_JJ and_CC interesting_JJ patterns_NNS from_IN large_JJ web_NN dataset_NN =_JJ -_: =[_NN 7_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN the_DT last_JJ fifteen_CD years_NNS ,_, the_DT WWW_NNP become_VB the_DT largest_JJS information_NN sources_NNS with_IN its_PRP$ amazing_JJ growing_VBG rate_NN ._.
+All_DT of_IN this_DT huge_JJ data_NNS available_JJ in_IN the_DT World_NNP Wide_NN Web_NN can_MD be_VB mined_VBN mainly_RB in_IN three_CD different_JJ
+tion_NN pattern_NN discovery_NN phases_NNS ._.
+Producing_NNP accurate_JJ user_NN sessions_NNS and_CC navigation_NN patterns_NNS is_VBZ not_RB an_DT easy_JJ task_NN since_IN http_NN protocol_NN is_VBZ stateless_JJ and_CC connectionless_JJ ._.
+Also_RB ,_, in_IN reactive_JJ session_NN construction_NN =_JJ -_: =[_NN 8_CD ,_, 9_CD ,_, 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB it_PRP is_VBZ not_RB possible_JJ to_TO generate_VB web_NN log_NN information_NN to_TO identify_VB individual_JJ users_NNS -LRB-_-LRB- like_IN cookies_NNS -RRB-_-RRB- ,_, all_DT users_NNS behind_IN a_DT proxy_NN server_NN will_MD have_VB the_DT same_JJ IP_NNP number_NN and_CC therefore_RB ,_, these_DT users_NNS will_MD be_VB
+CTION_NN 2.1_CD Previous_JJ Heuristics_NNS and_CC Related_JJ Work_NN Before_IN going_VBG into_IN details_NNS of_IN the_DT previous_JJ work_NN ,_, it_PRP is_VBZ better_JJR to_TO inform_VB the_DT reader_NN with_IN the_DT more_RBR general_JJ definition_NN of_IN web_NN user_NN session_NN in_IN the_DT literature_NN =_JJ -_: =[_NN 8_CD ,_, 9_CD ,_, 12_CD ,_, 21_CD ,_, 23_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Definition_NN -LRB-_-LRB- Session_NN -RRB-_-RRB- :_: Session_NN is_VBZ a_DT sequence_NN of_IN requests_NNS made_VBN by_IN a_DT single_JJ user_NN with_IN a_DT unique_JJ IP_NNP address_NN on_IN a_DT Web_NN 162WWW_NN 2009_CD MADRID_NNP !_.
+site_NN during_IN a_DT specified_JJ period_NN of_IN time_NN ._.
+Each_DT request_NN item_NN in_IN the_DT
+mining_NN and_CC web_NN usage_NN mining_NN ._.
+This_DT paper_NN is_VBZ related_JJ to_TO the_DT web_NN usage_NN mining_NN which_WDT can_MD be_VB defined_VBN as_IN the_DT application_NN of_IN data_NN mining_NN techniques_NNS to_TO web_NN log_NN data_NNS in_IN order_NN to_TO discover_VB user_NN access_NN patterns_NNS =_JJ -_: =[_NN 9_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Web_NN usage_NN mining_NN has_VBZ various_JJ applications_NNS such_JJ as_IN link_NN prediction_NN ,_, site_NN reorganization_NN and_CC web_NN personalization_NN ._.
+The_DT success_NN of_IN all_DT of_IN these_DT applications_NNS is_VBZ significantly_RB related_JJ to_TO the_DT outcomes_NNS of_IN w_NN
+to_TO two_CD categories_NNS with_IN respect_NN to_TO the_DT thresholds_NNS they_PRP use_VBP :_: •_NN In_IN the_DT first_JJ one_CD ,_, the_DT duration_NN of_IN a_DT session_NN is_VBZ limited_VBN with_IN a_DT predefined_JJ upper_JJ bound_VBD ,_, which_WDT is_VBZ usually_RB accepted_VBN as_IN 30_CD minutes_NNS according_VBG to_TO =_JJ -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+In_IN this_DT type_NN ,_, a_DT new_JJ page_NN can_MD be_VB appended_VBN to_TO the_DT current_JJ session_NN if_IN the_DT time_NN difference_NN with_IN the_DT first_JJ page_NN does_VBZ n't_RB violate_VB total_JJ session_NN duration_NN time_NN ._.
+Otherwise_RB ,_, a_DT new_JJ session_NN is_VBZ assumed_VBN to_TO start_VB w_NN
+the_DT Web_NN Usage_NNP Mining_NNP ._.
+In_IN this_DT phase_NN ,_, frequent_JJ access_NN patterns_NNS are_VBP determined_VBN from_IN reconstructed_JJ sessions_NNS ._.
+There_EX are_VBP several_JJ algorithms_NNS in_IN the_DT literature_NN for_IN the_DT sequential_JJ pattern_NN mining_NN ,_, such_JJ as_IN GSP_NN =_JJ -_: =[_NN 25_CD -RRB-_-RRB- -_: =_JJ -_: ,_, SPADE_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- and_CC PrefixSpan_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- etc._NN ._.
+Although_IN it_PRP is_VBZ not_RB the_DT most_RBS recent_JJ or_CC the_DT most_RBS efficient_JJ one_CD ,_, we_PRP have_VBP used_VBN a_DT modified_VBN version_NN of_IN the_DT AprioriAll_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- technique_NN ._.
+AprioriAll_NNP is_VBZ very_RB suitable_JJ for_IN our_PRP$
+age_NN is_VBZ determined_VBN as_IN 7.2_CD in_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Therefore_RB ,_, we_PRP decided_VBD to_TO choose_VB the_DT ranges_NNS of_IN parameters_NNS as_IN in_IN Table_NNP 3_CD ._.
+Table_NNP 3_CD :_: Web_NN Site_NN and_CC User_NN Parameters_NNS Parameter_NN Range_NNP Number_NNP of_IN web_NN pages_NNS -LRB-_-LRB- nodes_NNS -RRB-_-RRB- in_IN topology_NN =_JJ -_: =[_NN 10_CD ,_, 1000_CD -RRB-_-RRB- -_: =_JJ -_: Number_NN of_IN Users_NNS -LRB-_-LRB- 1000_CD ,_, 10000_CD -RRB-_-RRB- After_IN the_DT initializing_VBG steps_NNS of_IN simulation_NN mentioned_VBN above_IN ,_, we_PRP have_VBP studied_VBN the_DT accuracy_NN of_IN alternative_JJ web_NN usage_NN mining_NN processes_NNS -LRB-_-LRB- which_WDT contains_VBZ the_DT session_NN constructi_NNS
+tion_NN pattern_NN discovery_NN phases_NNS ._.
+Producing_NNP accurate_JJ user_NN sessions_NNS and_CC navigation_NN patterns_NNS is_VBZ not_RB an_DT easy_JJ task_NN since_IN http_NN protocol_NN is_VBZ stateless_JJ and_CC connectionless_JJ ._.
+Also_RB ,_, in_IN reactive_JJ session_NN construction_NN =_JJ -_: =[_NN 8_CD ,_, 9_CD ,_, 23_CD -RRB-_-RRB- -_: =_JJ -_: ,_, where_WRB it_PRP is_VBZ not_RB possible_JJ to_TO generate_VB web_NN log_NN information_NN to_TO identify_VB individual_JJ users_NNS -LRB-_-LRB- like_IN cookies_NNS -RRB-_-RRB- ,_, all_DT users_NNS behind_IN a_DT proxy_NN server_NN will_MD have_VB the_DT same_JJ IP_NNP number_NN and_CC therefore_RB ,_, these_DT users_NNS will_MD be_VB
+eates_VBZ a_DT random_JJ web_NN topology_NN with_IN the_DT parameters_NNS given_VBN in_IN Table_NNP 3_CD ._.
+There_EX are_VBP works_NNS in_IN the_DT literature_NN related_VBN with_IN these_DT parameters_NNS ,_, and_CC the_DT average_JJ number_NN of_IN web_NN pages_NNS in_IN a_DT web_NN site_NN is_VBZ reported_VBN as_IN 441_CD =_JJ -_: =[_NN 27_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Also_RB ,_, the_DT average_JJ number_NN of_IN out_JJ degrees_NNS of_IN any_DT web_NN page_NN is_VBZ determined_VBN as_IN 7.2_CD in_IN -LRB-_-LRB- 17_CD -RRB-_-RRB- ._.
+Therefore_RB ,_, we_PRP decided_VBD to_TO choose_VB the_DT ranges_NNS of_IN parameters_NNS as_IN in_IN Table_NNP 3_CD ._.
+Table_NNP 3_CD :_: Web_NN Site_NN and_CC User_NN Parameters_NNP Pa_NNP
+or_CC the_DT sequential_JJ pattern_NN mining_NN ,_, such_JJ as_IN GSP_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, SPADE_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- and_CC PrefixSpan_NN -LRB-_-LRB- 20_CD -RRB-_-RRB- etc._NN ._.
+Although_IN it_PRP is_VBZ not_RB the_DT most_RBS recent_JJ or_CC the_DT most_RBS efficient_JJ one_CD ,_, we_PRP have_VBP used_VBN a_DT modified_VBN version_NN of_IN the_DT AprioriAll_NN =_JJ -_: =[_NN 1_CD -RRB-_-RRB- -_: =_JJ -_: technique_NN ._.
+AprioriAll_NNP is_VBZ very_RB suitable_JJ for_IN our_PRP$ problem_NN since_IN we_PRP can_MD make_VB it_PRP very_RB efficient_JJ by_IN pruning_NN most_JJS of_IN the_DT candidate_NN sequences_NNS generated_VBN at_IN each_DT iteration_NN step_NN of_IN the_DT algorithm_NN ._.
+This_DT pruning_NN c_NN
+ssed_JJ pages_NNS is_VBZ greater_JJR than_IN the_DT threshold_NN ,_, the_DT current_JJ session_NN is_VBZ terminated_VBN after_IN the_DT former_JJ page_NN and_CC a_DT new_JJ session_NN starts_VBZ with_IN the_DT latter_JJ page_NN ._.
+Navigation-Oriented_JJ approach_NN -LRB-_-LRB- 8_CD ,_, 9_CD -RRB-_-RRB- uses_VBZ the_DT web_NN graph_NN =_JJ -_: =[_NN 11_CD ,_, 17_CD -RRB-_-RRB- -_: =_SYM -_: constructed_VBN by_IN using_VBG hyperlinks_NNS among_IN web_NN pages_NNS ._.
+In_IN this_DT approach_NN ,_, it_PRP is_VBZ not_RB necessary_JJ to_TO have_VB a_DT hyperlink_NN between_IN every_DT two_CD consecutive_JJ web_NN page_NN requests_NNS ._.
+Let_VB P_NN =_JJ -LRB-_-LRB- P1_NN ,_, P2_NN ,_, ..._: ,_, Pk_NN ,_, Pk_NN +1_NN ,_, ..._: ,_, P_NN
+e_LS Mining_NNP ._.
+In_IN this_DT phase_NN ,_, frequent_JJ access_NN patterns_NNS are_VBP determined_VBN from_IN reconstructed_JJ sessions_NNS ._.
+There_EX are_VBP several_JJ algorithms_NNS in_IN the_DT literature_NN for_IN the_DT sequential_JJ pattern_NN mining_NN ,_, such_JJ as_IN GSP_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, SPADE_NN =_JJ -_: =[_NN 28_CD -RRB-_-RRB- -_: =_JJ -_: and_CC PrefixSpan_NNP -LRB-_-LRB- 20_CD -RRB-_-RRB- etc._NN ._.
+Although_IN it_PRP is_VBZ not_RB the_DT most_RBS recent_JJ or_CC the_DT most_RBS efficient_JJ one_CD ,_, we_PRP have_VBP used_VBN a_DT modified_VBN version_NN of_IN the_DT AprioriAll_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- technique_NN ._.
+AprioriAll_NNP is_VBZ very_RB suitable_JJ for_IN our_PRP$ problem_NN sin_NN
+CTION_NN 2.1_CD Previous_JJ Heuristics_NNS and_CC Related_JJ Work_NN Before_IN going_VBG into_IN details_NNS of_IN the_DT previous_JJ work_NN ,_, it_PRP is_VBZ better_JJR to_TO inform_VB the_DT reader_NN with_IN the_DT more_RBR general_JJ definition_NN of_IN web_NN user_NN session_NN in_IN the_DT literature_NN =_JJ -_: =[_NN 8_CD ,_, 9_CD ,_, 12_CD ,_, 21_CD ,_, 23_CD ,_, 24_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Definition_NN -LRB-_-LRB- Session_NN -RRB-_-RRB- :_: Session_NN is_VBZ a_DT sequence_NN of_IN requests_NNS made_VBN by_IN a_DT single_JJ user_NN with_IN a_DT unique_JJ IP_NNP address_NN on_IN a_DT Web_NN 162WWW_NN 2009_CD MADRID_NNP !_.
+site_NN during_IN a_DT specified_JJ period_NN of_IN time_NN ._.
+Each_DT request_NN item_NN in_IN the_DT
+sessions_NNS in_IN hashmap_NN ._.
+4_LS ._.
+AGENT_NNP SIMULATOR_NNP Our_NNP agent_NN simulator_NN first_RB randomly_RB generates_VBZ a_DT typical_JJ web_NN page_NN topology_NN which_WDT preserves_VBZ power_NN law_NN property_NN of_IN web_NN graphs_NNS as_IN it_PRP is_VBZ stated_VBN for_IN graph_NN generators_NNS =_JJ -_: =[_NN 6_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+After_IN that_DT ,_, it_PRP simulates_VBZ a_DT user_NN agent_NN that_WDT accesses_VBZ this_DT domain_NN from_IN its_PRP$ client_NN site_NN and_CC navigates_VBZ -LRB-_-LRB- randomly_RB -RRB-_-RRB- in_IN this_DT domain_NN like_IN a_DT random_JJ surfer_NN in_IN pagerank_NN -LRB-_-LRB- 19_CD -RRB-_-RRB- by_IN using_VBG the_DT parameters_NNS described_VBD b_NN
+other_JJ one_CD is_VBZ very_RB small_JJ ._.
+In_IN general_JJ ,_, due_JJ to_TO the_DT problems_NNS mentioned_VBN in_IN arithmetic_NN mean_NN ,_, any_DT weighted_JJ linear_NN functions_NNS using_VBG d_FW ∗_FW PREH_NN +_CC -LRB-_-LRB- 1_CD −_NN d_NN -RRB-_-RRB- ∗_CD RECH_NN -LRB-_-LRB- d_FW ∈_FW -LRB-_-LRB- 0_CD ,_, 1_CD -RRB-_-RRB- -RRB-_-RRB- also_RB fail_VBP ._.
+The_DT geometric_JJ mean_NN function_NN =_JJ -_: =[_NN 2_CD ,_, 4_CD -RRB-_-RRB- -_: =_SYM -_: solves_VBZ all_DT problems_NNS mentioned_VBN above_IN ._.
+For_IN obtaining_VBG high_JJ accuracy_NN both_CC precision_NN and_CC recall_NN must_MD be_VB high_JJ ._.
+Therefore_RB ,_, we_PRP decided_VBD to_TO use_VB geometric_JJ mean_NN as_IN our_PRP$ accuracy_NN metric_NN thought_VBD the_DT rest_NN of_IN this_DT pa_NN
+ase_RB ,_, frequent_JJ access_NN patterns_NNS are_VBP determined_VBN from_IN reconstructed_JJ sessions_NNS ._.
+There_EX are_VBP several_JJ algorithms_NNS in_IN the_DT literature_NN for_IN the_DT sequential_JJ pattern_NN mining_NN ,_, such_JJ as_IN GSP_NN -LRB-_-LRB- 25_CD -RRB-_-RRB- ,_, SPADE_NN -LRB-_-LRB- 28_CD -RRB-_-RRB- and_CC PrefixSpan_NN =_JJ -_: =[_NN 20_CD -RRB-_-RRB- -_: =_JJ -_: etc._NN ._.
+Although_IN it_PRP is_VBZ not_RB the_DT most_RBS recent_JJ or_CC the_DT most_RBS efficient_JJ one_CD ,_, we_PRP have_VBP used_VBN a_DT modified_VBN version_NN of_IN the_DT AprioriAll_NNP -LRB-_-LRB- 1_LS -RRB-_-RRB- technique_NN ._.
+AprioriAll_NNP is_VBZ very_RB suitable_JJ for_IN our_PRP$ problem_NN since_IN we_PRP can_MD make_VB it_PRP ve_FW
+rties_NNS above_IN ,_, then_RB Pn_FW +1_FW becomes_VBZ the_DT first_JJ page_NN of_IN a_DT new_JJ session_NN ._.
+Track_NNP :_: Data_NNP Mining_NNP \/_: Session_NN :_: Web_NN Mining_NN Although_IN the_DT session_NN construction_NN mentioned_VBN above_IN are_VBP not_RB new_JJ ,_, most_JJS of_IN the_DT recent_JJ applications_NNS =_JJ -_: =[_NN 3_CD ,_, 13_CD ,_, 14_CD ,_, 15_CD ,_, 16_CD ,_, 18_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: use_VB them_PRP during_IN session_NN generation_NN ._.
+The_DT problem_NN with_IN these_DT three_CD methods_NNS is_VBZ that_IN the_DT application_NN side_NN suffer_VBP from_IN low_JJ performance_NN due_JJ to_TO the_DT incorrect_JJ set_NN of_IN user_NN sessions_NNS generated_VBN ._.
+It_PRP is_VBZ very_RB impor_JJ
+as_IN it_PRP is_VBZ stated_VBN for_IN graph_NN generators_NNS -LRB-_-LRB- 6_CD -RRB-_-RRB- ._.
+After_IN that_DT ,_, it_PRP simulates_VBZ a_DT user_NN agent_NN that_WDT accesses_VBZ this_DT domain_NN from_IN its_PRP$ client_NN site_NN and_CC navigates_VBZ -LRB-_-LRB- randomly_RB -RRB-_-RRB- in_IN this_DT domain_NN like_IN a_DT random_JJ surfer_NN in_IN pagerank_NN =_JJ -_: =[_NN 19_CD -RRB-_-RRB- -_: =_SYM -_: by_IN using_VBG the_DT parameters_NNS described_VBN below_IN ._.
+In_IN this_DT way_NN ,_, we_PRP will_MD have_VB full_JJ knowledge_NN about_IN the_DT sessions_NNS beforehand_RB ,_, and_CC later_RB we_PRP can_MD use_VB any_DT heuristic_NN to_TO process_NN user_NN access_NN log_NN data_NNS to_TO discover_VB the_DT ses_NNS
+mining_NN and_CC web_NN usage_NN mining_NN ._.
+This_DT paper_NN is_VBZ related_JJ to_TO the_DT web_NN usage_NN mining_NN which_WDT can_MD be_VB defined_VBN as_IN the_DT application_NN of_IN data_NN mining_NN techniques_NNS to_TO web_NN log_NN data_NNS in_IN order_NN to_TO discover_VB user_NN access_NN patterns_NNS =_JJ -_: =[_NN 9_CD ,_, 26_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Web_NN usage_NN mining_NN has_VBZ various_JJ applications_NNS such_JJ as_IN link_NN prediction_NN ,_, site_NN reorganization_NN and_CC web_NN personalization_NN ._.
+The_DT success_NN of_IN all_DT of_IN these_DT applications_NNS is_VBZ significantly_RB related_JJ to_TO the_DT outcomes_NNS of_IN w_NN
+rties_NNS above_IN ,_, then_RB Pn_FW +1_FW becomes_VBZ the_DT first_JJ page_NN of_IN a_DT new_JJ session_NN ._.
+Track_NNP :_: Data_NNP Mining_NNP \/_: Session_NN :_: Web_NN Mining_NN Although_IN the_DT session_NN construction_NN mentioned_VBN above_IN are_VBP not_RB new_JJ ,_, most_JJS of_IN the_DT recent_JJ applications_NNS =_JJ -_: =[_NN 3_CD ,_, 13_CD ,_, 14_CD ,_, 15_CD ,_, 16_CD ,_, 18_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: use_VB them_PRP during_IN session_NN generation_NN ._.
+The_DT problem_NN with_IN these_DT three_CD methods_NNS is_VBZ that_IN the_DT application_NN side_NN suffer_VBP from_IN low_JJ performance_NN due_JJ to_TO the_DT incorrect_JJ set_NN of_IN user_NN sessions_NNS generated_VBN ._.
+It_PRP is_VBZ very_RB impor_JJ
+rties_NNS above_IN ,_, then_RB Pn_FW +1_FW becomes_VBZ the_DT first_JJ page_NN of_IN a_DT new_JJ session_NN ._.
+Track_NNP :_: Data_NNP Mining_NNP \/_: Session_NN :_: Web_NN Mining_NN Although_IN the_DT session_NN construction_NN mentioned_VBN above_IN are_VBP not_RB new_JJ ,_, most_JJS of_IN the_DT recent_JJ applications_NNS =_JJ -_: =[_NN 3_CD ,_, 13_CD ,_, 14_CD ,_, 15_CD ,_, 16_CD ,_, 18_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: use_VB them_PRP during_IN session_NN generation_NN ._.
+The_DT problem_NN with_IN these_DT three_CD methods_NNS is_VBZ that_IN the_DT application_NN side_NN suffer_VBP from_IN low_JJ performance_NN due_JJ to_TO the_DT incorrect_JJ set_NN of_IN user_NN sessions_NNS generated_VBN ._.
+It_PRP is_VBZ very_RB impor_JJ
+rties_NNS above_IN ,_, then_RB Pn_FW +1_FW becomes_VBZ the_DT first_JJ page_NN of_IN a_DT new_JJ session_NN ._.
+Track_NNP :_: Data_NNP Mining_NNP \/_: Session_NN :_: Web_NN Mining_NN Although_IN the_DT session_NN construction_NN mentioned_VBN above_IN are_VBP not_RB new_JJ ,_, most_JJS of_IN the_DT recent_JJ applications_NNS =_JJ -_: =[_NN 3_CD ,_, 13_CD ,_, 14_CD ,_, 15_CD ,_, 16_CD ,_, 18_CD ,_, 22_CD -RRB-_-RRB- -_: =_SYM -_: use_VB them_PRP during_IN session_NN generation_NN ._.
+The_DT problem_NN with_IN these_DT three_CD methods_NNS is_VBZ that_IN the_DT application_NN side_NN suffer_VBP from_IN low_JJ performance_NN due_JJ to_TO the_DT incorrect_JJ set_NN of_IN user_NN sessions_NNS generated_VBN ._.
+It_PRP is_VBZ very_RB impor_JJ

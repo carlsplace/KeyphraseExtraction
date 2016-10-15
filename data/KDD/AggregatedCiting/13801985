@@ -1,0 +1,77 @@
+Compression_NN of_IN weighted_JJ graphs_NNS
+We_PRP propose_VBP to_TO compress_VB weighted_JJ graphs_NNS -LRB-_-LRB- networks_NNS -RRB-_-RRB- ,_, motivated_VBN by_IN the_DT observation_NN that_IN large_JJ networks_NNS of_IN social_JJ ,_, biological_JJ ,_, or_CC other_JJ relations_NNS can_MD be_VB complex_JJ to_TO handle_VB and_CC visualize_VB ._.
+In_IN the_DT process_NN also_RB known_VBN as_IN graph_NN simplification_NN ,_, nodes_NNS and_CC -LRB-_-LRB- unweighted_JJ -RRB-_-RRB- edges_NNS are_VBP grouped_VBN to_TO supernodes_NNS and_CC superedges_NNS ,_, respectively_RB ,_, to_TO obtain_VB a_DT smaller_JJR graph_NN ._.
+We_PRP propose_VBP models_NNS and_CC algorithms_NNS for_IN weighted_JJ graphs_NNS ._.
+The_DT interpretation_NN -LRB-_-LRB- i.e._FW decompression_NN -RRB-_-RRB- of_IN a_DT compressed_VBN ,_, weighted_JJ graph_NN is_VBZ that_IN a_DT pair_NN of_IN original_JJ nodes_NNS is_VBZ connected_VBN by_IN an_DT edge_NN if_IN their_PRP$ supernodes_NNS are_VBP connected_VBN by_IN one_CD ,_, and_CC that_IN the_DT weight_NN of_IN an_DT edge_NN is_VBZ approximated_VBN to_TO be_VB the_DT weight_NN of_IN the_DT superedge_NN ._.
+The_DT compression_NN problem_NN now_RB consists_VBZ of_IN choosing_NN supernodes_NNS ,_, superedges_NNS ,_, and_CC superedge_NN weights_NNS so_IN that_IN the_DT approximation_NN error_NN is_VBZ minimized_VBN while_IN the_DT amount_NN of_IN compression_NN is_VBZ maximized_VBN ._.
+In_IN this_DT paper_NN ,_, we_PRP formulate_VBP this_DT task_NN as_IN the_DT `_`` simple_JJ weighted_JJ graph_NN compression_NN problem_NN '_'' ._.
+We_PRP then_RB propose_VBP a_DT much_RB wider_JJR class_NN of_IN tasks_NNS under_IN the_DT name_NN of_IN `_`` generalized_JJ weighted_JJ graph_NN compression_NN problem_NN '_'' ._.
+The_DT generalized_JJ task_NN extends_VBZ the_DT optimization_NN to_TO preserve_VB longer-range_JJ connectivities_NNS between_IN nodes_NNS ,_, not_RB just_RB individual_JJ edge_NN weights_NNS ._.
+We_PRP study_VBD the_DT properties_NNS of_IN these_DT problems_NNS and_CC propose_VBP a_DT range_NN of_IN algorithms_NNS to_TO solve_VB them_PRP ,_, with_IN different_JJ balances_NNS between_IN complexity_NN and_CC quality_NN of_IN the_DT result_NN ._.
+We_PRP evaluate_VBP the_DT problems_NNS and_CC algorithms_NNS experimentally_RB on_IN real_JJ networks_NNS ._.
+The_DT results_NNS indicate_VBP that_IN weighted_JJ graphs_NNS can_MD be_VB compressed_VBN efficiently_RB with_IN relatively_RB little_JJ compression_NN error_NN ._.
+titioning_VBG methods_NNS -LRB-_-LRB- e.g._FW -LRB-_-LRB- 8_CD ,_, 6_CD -RRB-_-RRB- -RRB-_-RRB- aim_NN to_TO find_VB groups_NNS of_IN nodes_NNS that_WDT are_VBP more_RBR strongly_RB connected_VBN to_TO each_DT other_JJ than_IN to_TO nodes_NNS in_IN other_JJ groups_NNS ._.
+Extraction_NN of_IN a_DT subgraph_NN ,_, whether_IN based_VBN on_IN a_DT user_NN query_NN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 7_CD ,_, 10_CD -RRB-_-RRB- -_: =--RRB-_NN or_CC not_RB -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 16_CD ,_, 9_CD ,_, 15_CD -RRB-_-RRB- -RRB-_-RRB- produces_VBZ a_DT smaller_JJR graph_NN by_IN just_RB throwing_VBG out_RP edges_NNS and_CC nodes_NNS ._.
+Web_NN graph_NN compression_NN algorithms_NNS aim_VBP to_TO produce_VB as_IN compact_NN a_DT representation_NN of_IN a_DT graph_NN as_IN possible_JJ ,_, in_IN diffe_NN
+-LRB-_-LRB- 8_CD ,_, 6_CD -RRB-_-RRB- -RRB-_-RRB- aim_NN to_TO find_VB groups_NNS of_IN nodes_NNS that_WDT are_VBP more_RBR strongly_RB connected_VBN to_TO each_DT other_JJ than_IN to_TO nodes_NNS in_IN other_JJ groups_NNS ._.
+Extraction_NN of_IN a_DT subgraph_NN ,_, whether_IN based_VBN on_IN a_DT user_NN query_NN -LRB-_-LRB- e.g._FW -LRB-_-LRB- 7_CD ,_, 10_CD -RRB-_-RRB- -RRB-_-RRB- or_CC not_RB -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 16_CD ,_, 9_CD ,_, 15_CD -RRB-_-RRB- -_: =--RRB-_NN produces_VBZ a_DT smaller_JJR graph_NN by_IN just_RB throwing_VBG out_RP edges_NNS and_CC nodes_NNS ._.
+Web_NN graph_NN compression_NN algorithms_NNS aim_VBP to_TO produce_VB as_IN compact_NN a_DT representation_NN of_IN a_DT graph_NN as_IN possible_JJ ,_, in_IN different_JJ formats_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 1_CD ,_, 2_CD -RRB-_-RRB- -RRB-_-RRB-
+l._NN -LRB-_-LRB- 14_CD -RRB-_-RRB- consider_VBP labeled_JJ graphs_NNS with_IN categorical_JJ node_NN and_CC edge_NN attributes_NNS ,_, and_CC the_DT goal_NN is_VBZ to_TO find_VB relatively_RB homogeneous_JJ supernodes_NNS and_CC superedges_NNS ._.
+This_DT approach_NN has_VBZ been_VBN generalized_VBN by_IN Zhang_NNP et_FW al._FW =_SYM -_: =[_NN 17_CD -RRB-_-RRB- -_: =_SYM -_: to_TO numerical_JJ node_NN attributes_NNS which_WDT are_VBP then_RB automatically_RB categorized_VBN ._.
+They_PRP also_RB addressed_VBD interactive_JJ drill-down_NN and_CC roll-up_NN operations_NNS on_IN graphs_NNS ._.
+Tian_NNP et_FW al._FW used_VBD both_DT top-down_JJ -LRB-_-LRB- divisive_JJ -RRB-_-RRB- and_CC botto_NN
+o_NN categorical_JJ attributes_NNS to_TO guide_VB a_DT divisive_JJ approach_NN like_IN Tian_NNP et_FW al._FW had_VBD ._.
+Unweighted_JJ graph_NN compression_NN techniques_NNS have_VBP been_VBN used_VBN to_TO simplify_VB graph_NN storage_NN and_CC manipulation_NN ._.
+For_IN example_NN ,_, Chen_NNP et_FW al._FW =_SYM -_: =[_NN 4_CD -RRB-_-RRB- -_: =_SYM -_: successfully_RB applied_VBD a_DT graph_NN compression_NN method_NN to_TO reduce_VB the_DT number_NN of_IN embeddings_NNS when_WRB searching_VBG frequent_JJ subgraphs_NNS in_IN a_DT large_JJ graph_NN ._.
+Navlakha_FW et_FW al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- revealed_VBD biological_JJ modules_NNS with_IN the_DT help_NN o_NN
+od_NN to_TO reduce_VB the_DT number_NN of_IN embeddings_NNS when_WRB searching_VBG frequent_JJ subgraphs_NNS in_IN a_DT large_JJ graph_NN ._.
+Navlakha_FW et_FW al._FW -LRB-_-LRB- 13_CD -RRB-_-RRB- revealed_VBD biological_JJ modules_NNS with_IN the_DT help_NN of_IN compressed_VBN graphs_NNS ._.
+Furthermore_RB ,_, Chen_NNP et_FW al._FW =_SYM -_: =[_NN 5_CD -RRB-_-RRB- -_: =_SYM -_: incorporated_VBD the_DT compressed_VBN graph_NN notion_NN with_IN a_DT generic_JJ topological_JJ OLAP_NN framework_NN to_TO realize_VB online_NN graph_NN analysis_NN ._.
+There_EX are_VBP many_JJ related_JJ but_CC subtly_RB different_JJ problems_NNS ._.
+Graph_NN partitioning_NN methods_NNS -LRB-_-LRB-
+rporated_VBD the_DT compressed_VBN graph_NN notion_NN with_IN a_DT generic_JJ topological_JJ OLAP_NN framework_NN to_TO realize_VB online_NN graph_NN analysis_NN ._.
+There_EX are_VBP many_JJ related_JJ but_CC subtly_RB different_JJ problems_NNS ._.
+Graph_NN partitioning_NN methods_NNS -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 8_CD ,_, 6_CD -RRB-_-RRB- -_: =--RRB-_NN aim_NN to_TO find_VB groups_NNS of_IN nodes_NNS that_WDT are_VBP more_RBR strongly_RB connected_VBN to_TO each_DT other_JJ than_IN to_TO nodes_NNS in_IN other_JJ groups_NNS ._.
+Extraction_NN of_IN a_DT subgraph_NN ,_, whether_IN based_VBN on_IN a_DT user_NN query_NN -LRB-_-LRB- e.g._FW -LRB-_-LRB- 7_CD ,_, 10_CD -RRB-_-RRB- -RRB-_-RRB- or_CC not_RB -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 16_CD ,_, 9_CD ,_,
+-LRB-_-LRB- 8_CD ,_, 6_CD -RRB-_-RRB- -RRB-_-RRB- aim_NN to_TO find_VB groups_NNS of_IN nodes_NNS that_WDT are_VBP more_RBR strongly_RB connected_VBN to_TO each_DT other_JJ than_IN to_TO nodes_NNS in_IN other_JJ groups_NNS ._.
+Extraction_NN of_IN a_DT subgraph_NN ,_, whether_IN based_VBN on_IN a_DT user_NN query_NN -LRB-_-LRB- e.g._FW -LRB-_-LRB- 7_CD ,_, 10_CD -RRB-_-RRB- -RRB-_-RRB- or_CC not_RB -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 16_CD ,_, 9_CD ,_, 15_CD -RRB-_-RRB- -_: =--RRB-_NN produces_VBZ a_DT smaller_JJR graph_NN by_IN just_RB throwing_VBG out_RP edges_NNS and_CC nodes_NNS ._.
+Web_NN graph_NN compression_NN algorithms_NNS aim_VBP to_TO produce_VB as_IN compact_NN a_DT representation_NN of_IN a_DT graph_NN as_IN possible_JJ ,_, in_IN different_JJ formats_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 1_CD ,_, 2_CD -RRB-_-RRB- -RRB-_-RRB-
+-LRB-_-LRB- 8_CD ,_, 6_CD -RRB-_-RRB- -RRB-_-RRB- aim_NN to_TO find_VB groups_NNS of_IN nodes_NNS that_WDT are_VBP more_RBR strongly_RB connected_VBN to_TO each_DT other_JJ than_IN to_TO nodes_NNS in_IN other_JJ groups_NNS ._.
+Extraction_NN of_IN a_DT subgraph_NN ,_, whether_IN based_VBN on_IN a_DT user_NN query_NN -LRB-_-LRB- e.g._FW -LRB-_-LRB- 7_CD ,_, 10_CD -RRB-_-RRB- -RRB-_-RRB- or_CC not_RB -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 16_CD ,_, 9_CD ,_, 15_CD -RRB-_-RRB- -_: =--RRB-_NN produces_VBZ a_DT smaller_JJR graph_NN by_IN just_RB throwing_VBG out_RP edges_NNS and_CC nodes_NNS ._.
+Web_NN graph_NN compression_NN algorithms_NNS aim_VBP to_TO produce_VB as_IN compact_NN a_DT representation_NN of_IN a_DT graph_NN as_IN possible_JJ ,_, in_IN different_JJ formats_NNS -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 1_CD ,_, 2_CD -RRB-_-RRB- -RRB-_-RRB-
+ssion_NN as_IN presented_VBN in_IN this_DT paper_NN is_VBZ based_VBN on_IN merging_JJ nodes_NNS that_WDT have_VBP similar_JJ relationships_NNS to_TO other_JJ entities_NNS i.e._FW ,_, that_WDT are_VBP structurally_RB most_RBS equivalent_JJ --_: a_DT classic_JJ concept_NN in_IN social_JJ network_NN analysis_NN =_JJ -_: =[_NN 11_CD -RRB-_-RRB- -_: =_SYM -_: ._.
+Structural_JJ equivalence_JJ and_CC many_JJ other_JJ types_NNS of_IN relations_NNS between_IN -LRB-_-LRB- super_JJ -RRB-_-RRB- nodes_NNS have_VBP been_VBN considered_VBN in_IN social_JJ networks_NNS under_IN block_NN modeling_NN -LRB-_-LRB- see_VB ,_, e.g._FW ,_, -LRB-_-LRB- 3_CD -RRB-_-RRB- -RRB-_-RRB- ,_, where_WRB the_DT goal_NN is_VBZ both_DT to_TO identify_VB supern_NN
+titioning_VBG methods_NNS -LRB-_-LRB- e.g._FW -LRB-_-LRB- 8_CD ,_, 6_CD -RRB-_-RRB- -RRB-_-RRB- aim_NN to_TO find_VB groups_NNS of_IN nodes_NNS that_WDT are_VBP more_RBR strongly_RB connected_VBN to_TO each_DT other_JJ than_IN to_TO nodes_NNS in_IN other_JJ groups_NNS ._.
+Extraction_NN of_IN a_DT subgraph_NN ,_, whether_IN based_VBN on_IN a_DT user_NN query_NN -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 7_CD ,_, 10_CD -RRB-_-RRB- -_: =--RRB-_NN or_CC not_RB -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 16_CD ,_, 9_CD ,_, 15_CD -RRB-_-RRB- -RRB-_-RRB- produces_VBZ a_DT smaller_JJR graph_NN by_IN just_RB throwing_VBG out_RP edges_NNS and_CC nodes_NNS ._.
+Web_NN graph_NN compression_NN algorithms_NNS aim_VBP to_TO produce_VB as_IN compact_NN a_DT representation_NN of_IN a_DT graph_NN as_IN possible_JJ ,_, in_IN diffe_NN
+9_CD ,_, 15_CD -RRB-_-RRB- -RRB-_-RRB- produces_VBZ a_DT smaller_JJR graph_NN by_IN just_RB throwing_VBG out_RP edges_NNS and_CC nodes_NNS ._.
+Web_NN graph_NN compression_NN algorithms_NNS aim_VBP to_TO produce_VB as_IN compact_NN a_DT representation_NN of_IN a_DT graph_NN as_IN possible_JJ ,_, in_IN different_JJ formats_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 1_CD ,_, 2_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+For_IN more_RBR related_JJ work_NN ,_, we_PRP refer_VBP to_TO the_DT good_JJ overviews_NNS given_VBN in_IN references_NNS -LRB-_-LRB- 12_CD ,_, 14_CD -RRB-_-RRB- ._.
+4_LS ._.
+ALGORITHMS_NNS We_PRP next_RB propose_VBP a_DT series_NN of_IN algorithms_NNS for_IN the_DT weighted_JJ graph_NN compression_NN problem_NN ._.
+All_DT of_IN the_DT propo_NN
+classic_JJ concept_NN in_IN social_JJ network_NN analysis_NN -LRB-_-LRB- 11_CD -RRB-_-RRB- ._.
+Structural_JJ equivalence_JJ and_CC many_JJ other_JJ types_NNS of_IN relations_NNS between_IN -LRB-_-LRB- super_JJ -RRB-_-RRB- nodes_NNS have_VBP been_VBN considered_VBN in_IN social_JJ networks_NNS under_IN block_NN modeling_NN -LRB-_-LRB- see_VB ,_, e.g._FW ,_, =_JJ -_: =[_NN 3_CD -RRB-_-RRB- -_: =--RRB-_NN ,_, where_WRB the_DT goal_NN is_VBZ both_DT to_TO identify_VB supernodes_NNS and_CC to_TO choose_VB among_IN the_DT different_JJ possible_JJ types_NNS of_IN connections_NNS between_IN them_PRP ._.
+Our_PRP$ approach_NN -LRB-_-LRB- as_RB well_RB as_IN that_DT of_IN references_NNS -LRB-_-LRB- 12_CD ,_, 14_CD -RRB-_-RRB- ,_, see_VBP below_IN -RRB-_-RRB- uses_VBZ onl_NN
+rporated_VBD the_DT compressed_VBN graph_NN notion_NN with_IN a_DT generic_JJ topological_JJ OLAP_NN framework_NN to_TO realize_VB online_NN graph_NN analysis_NN ._.
+There_EX are_VBP many_JJ related_JJ but_CC subtly_RB different_JJ problems_NNS ._.
+Graph_NN partitioning_NN methods_NNS -LRB-_-LRB- e.g._FW =_JJ -_: =[_NN 8_CD ,_, 6_CD -RRB-_-RRB- -_: =--RRB-_NN aim_NN to_TO find_VB groups_NNS of_IN nodes_NNS that_WDT are_VBP more_RBR strongly_RB connected_VBN to_TO each_DT other_JJ than_IN to_TO nodes_NNS in_IN other_JJ groups_NNS ._.
+Extraction_NN of_IN a_DT subgraph_NN ,_, whether_IN based_VBN on_IN a_DT user_NN query_NN -LRB-_-LRB- e.g._FW -LRB-_-LRB- 7_CD ,_, 10_CD -RRB-_-RRB- -RRB-_-RRB- or_CC not_RB -LRB-_-LRB- e.g._FW ,_, -LRB-_-LRB- 16_CD ,_, 9_CD ,_,
+9_CD ,_, 15_CD -RRB-_-RRB- -RRB-_-RRB- produces_VBZ a_DT smaller_JJR graph_NN by_IN just_RB throwing_VBG out_RP edges_NNS and_CC nodes_NNS ._.
+Web_NN graph_NN compression_NN algorithms_NNS aim_VBP to_TO produce_VB as_IN compact_NN a_DT representation_NN of_IN a_DT graph_NN as_IN possible_JJ ,_, in_IN different_JJ formats_NNS -LRB-_-LRB- e.g._FW ,_, =_JJ -_: =[_NN 1_CD ,_, 2_CD -RRB-_-RRB- -_: =--RRB-_NN ._.
+For_IN more_RBR related_JJ work_NN ,_, we_PRP refer_VBP to_TO the_DT good_JJ overviews_NNS given_VBN in_IN references_NNS -LRB-_-LRB- 12_CD ,_, 14_CD -RRB-_-RRB- ._.
+4_LS ._.
+ALGORITHMS_NNS We_PRP next_RB propose_VBP a_DT series_NN of_IN algorithms_NNS for_IN the_DT weighted_JJ graph_NN compression_NN problem_NN ._.
+All_DT of_IN the_DT propo_NN
+ods_NNS for_IN the_DT compression_NN of_IN weighted_JJ graphs_NNS into_IN smaller_JJR graphs_NNS that_WDT contain_VBP approximately_RB the_DT same_JJ information_NN ._.
+In_IN this_DT process_NN ,_, also_RB known_VBN as_IN graph_NN simplification_NN in_IN the_DT context_NN of_IN unweighted_JJ graphs_NNS =_JJ -_: =[_NN 12_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, nodes_NNS are_VBP grouped_VBN to_TO supernodes_NNS ,_, and_CC edges_NNS are_VBP grouped_VBN to_TO superedges_NNS between_IN supernodes_NNS ._.
+A_DT superedge_NN then_RB represents_VBZ all_DT possible_JJ edges_NNS between_IN the_DT pairs_NNS of_IN nodes_NNS in_IN the_DT adjacent_JJ supernodes_NNS ._.
+This_DT pr_NN
+e_LS and_CC manipulation_NN ._.
+For_IN example_NN ,_, Chen_NNP et_FW al._FW -LRB-_-LRB- 4_LS -RRB-_-RRB- successfully_RB applied_VBD a_DT graph_NN compression_NN method_NN to_TO reduce_VB the_DT number_NN of_IN embeddings_NNS when_WRB searching_VBG frequent_JJ subgraphs_NNS in_IN a_DT large_JJ graph_NN ._.
+Navlakha_FW et_FW al._FW =_SYM -_: =[_NN 13_CD -RRB-_-RRB- -_: =_SYM -_: revealed_VBD biological_JJ modules_NNS with_IN the_DT help_NN of_IN compressed_VBN graphs_NNS ._.
+Furthermore_RB ,_, Chen_NNP et_FW al._FW -LRB-_-LRB- 5_CD -RRB-_-RRB- incorporated_VBD the_DT compressed_VBN graph_NN notion_NN with_IN a_DT generic_JJ topological_JJ OLAP_NN framework_NN to_TO realize_VB online_NN graph_NN
+ods_NNS for_IN the_DT compression_NN of_IN weighted_JJ graphs_NNS into_IN smaller_JJR graphs_NNS that_WDT contain_VBP approximately_RB the_DT same_JJ information_NN ._.
+In_IN this_DT process_NN ,_, also_RB known_VBN as_IN graph_NN simplification_NN in_IN the_DT context_NN of_IN unweighted_JJ graphs_NNS =_JJ -_: =[_NN 12_CD ,_, 14_CD -RRB-_-RRB- -_: =_JJ -_: ,_, nodes_NNS are_VBP grouped_VBN to_TO supernodes_NNS ,_, and_CC edges_NNS are_VBP grouped_VBN to_TO superedges_NNS between_IN supernodes_NNS ._.
+A_DT superedge_NN then_RB represents_VBZ all_DT possible_JJ edges_NNS between_IN the_DT pairs_NNS of_IN nodes_NNS in_IN the_DT adjacent_JJ supernodes_NNS ._.
+This_DT pr_NN
