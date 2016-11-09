@@ -532,10 +532,10 @@ def get_word_prob(file_name, file_names, node_list, ldamodel, corpus):
         word_prob[word] = np.dot(d_t_prob, w_t_prob)/math.sqrt(np.dot(d_t_prob, d_t_prob) * np.dot(w_t_prob, w_t_prob))
     return word_prob
 
-def dataset_train(dataset, alpha_=0.5, topics=20, nfselect='f027'):
+def dataset_train(dataset, alpha_=0.5, topics=5, nfselect='f027'):
     if dataset == 'kdd':
         file_path = './data/KDD/abstracts'
-        out_path = './data/KDD/omega_phi/alpha'+str(alpha_)+'topics'+str(topics)
+        out_path = './result/train/KDD/alpha'+str(alpha_)+'topics'+str(topics)
         gold_path = './data/KDD/gold'
         if not os.path.exists(out_path):
             os.mkdir(out_path)
@@ -544,7 +544,7 @@ def dataset_train(dataset, alpha_=0.5, topics=20, nfselect='f027'):
         print('kdd start')
     elif dataset == 'www':
         file_path = './data/WWW/abstracts'
-        out_path = './data/WWW/omega_phi/alpha'+str(alpha_)+'topics'+str(topics)
+        out_path = './result/train/WWW/alpha'+str(alpha_)+'topics'+str(topics)
         gold_path = './data/WWW/gold'
         if not os.path.exists(out_path):
             os.mkdir(out_path)
@@ -605,9 +605,6 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=20, nfselect='f027', ngrams
         print('wrong dataset name')
     file_names_lda = [f for f in os.listdir(file_path) if isfile(join(file_path, f))]
     ldamodel, corpus = lda_train(file_path, file_names_lda, l_num_topics=topics, l_passes=1)
-    precision_recall = ''
-    sum_prcs = 0
-    sum_recall = 0
     count = 0
     gold_count = 0
     extract_count = 0
@@ -675,16 +672,16 @@ if __name__=='__main__':
     print('Parent process %s.' % os.getpid())
     p = []
 
-    # p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5, 10, 'f079')))
-    # p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5, 10, 'f027')))
+    p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5, 10, 'f079')))
+    p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5, 10, 'f027')))
 
     # p.append(multiprocessing.Process(target=enum_phi, args=('www', 22, 30, 3, 'f027')))
     # p.append(multiprocessing.Process(target=enum_phi, args=('www', 30, 40, 3, 'f027')))
 
-    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 30, 2, 'f079', 4, 5)))
-    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 30, 35, 2, 'f079', 4, 5)))
-    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 35, 40, 2, 'f079', 4, 5)))
-    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 40, 45, 2, 'f079', 4, 5)))
+    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 30, 2, 'f079', 4, 5)))
+    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 30, 35, 2, 'f079', 4, 5)))
+    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 35, 40, 2, 'f079', 4, 5)))
+    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 40, 45, 2, 'f079', 4, 5)))
 
     for precess in p:
         precess.start()
