@@ -22,19 +22,22 @@ import gensim
 
 ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
 
-def read_file(file_path, file_name):
+def read_file(file_path, file_name, title=False):
     """file_path: ./data file_name"""
     with open(file_path+'/'+file_name, 'r', encoding='utf8') as f:
-        file_text = f.read()
+        if title:
+            file_text = f.readline()
+        else:
+            file_text = f.read()
     return file_text
 
-def write_file(text, file_path, file_name):
-    """file_path：./path"""
-    if not os.path.exists(file_path) : 
-        os.mkdir(file_path)
-    with open(file_path+'/'+file_name, 'w', encoding='utf8') as f:
-        f.write(text)
-    return 0
+# def write_file(text, file_path, file_name):
+#     """file_path：./path"""
+#     if not os.path.exists(file_path) : 
+#         os.mkdir(file_path)
+#     with open(file_path+'/'+file_name, 'w', encoding='utf8') as f:
+#         f.write(text)
+#     return 0
 
 def rm_tags(file_text):
     """处理输入文本，将已经标注好的POS tagomega去掉，以便使用nltk包处理。"""
@@ -86,7 +89,7 @@ def get_filtered_text(tagged_tokens):
             filtered_text = filtered_text + ' '+ normalized_token(tagged_token[0])
     return filtered_text
 
-def read_node_features(node_list, raw_node_features, file_name, nfselect='f027'):
+def read_node_features(node_list, raw_node_features, file_name, nfselect='027'):
     # 0@attribute tfidf numeric √
     # 1@attribute tfidfOver {0, 1}
     # 2@attribute relativePosition numeric √
@@ -116,37 +119,28 @@ def read_node_features(node_list, raw_node_features, file_name, nfselect='f027')
     # for i in range(feature_num):
     #     zero_feature.append(0)
     node_features = {}
-    if nfselect == 'f027':
-        for node in node_list:
-            f = tmp2.get(node, zero_feature)
-            node_features[node] = [f[0], f[2], f[7]]
-    elif nfselect == 'f279':
-        for node in node_list:
-            f = tmp2.get(node, zero_feature)
-            node_features[node] = [f[2], f[7], f[9]]
-    elif nfselect == 'f029':
-        for node in node_list:
-            f = tmp2.get(node, zero_feature)
-            node_features[node] = [f[0], f[2], f[9]]
-    elif nfselect == 'f079':
-        for node in node_list:
-            f = tmp2.get(node, zero_feature)
-            node_features[node] = [f[0], f[7], f[9]]
-    else:
-        print('wrong feature selection')
-
-    # for node in node_list:
-    #     f = tmp2.get(node, zero_feature)
-    #     if nfselect == 'f027':
+    for node in node_list:
+        f = tmp2.get(node, zero_feature)
+        node_features[node] = [f[int(num)] for num in nfselect]
+    # if nfselect == 'f027':
+    #     for node in node_list:
+    #         f = tmp2.get(node, zero_feature)
     #         node_features[node] = [f[0], f[2], f[7]]
-    #     elif nfselect == 'f279':
+    # elif nfselect == 'f279':
+    #     for node in node_list:
+    #         f = tmp2.get(node, zero_feature)
     #         node_features[node] = [f[2], f[7], f[9]]
-    #     elif nfselect == 'f029':
+    # elif nfselect == 'f029':
+    #     for node in node_list:
+    #         f = tmp2.get(node, zero_feature)
     #         node_features[node] = [f[0], f[2], f[9]]
-    #     elif nfselect == 'f079':
+    # elif nfselect == 'f079':
+    #     for node in node_list:
+    #         f = tmp2.get(node, zero_feature)
     #         node_features[node] = [f[0], f[7], f[9]]
-    #     else:
-    #         print('wrong feature selection')
+    # else:
+    #     print('wrong feature selection')
+
     return node_features
 
 # 软件复杂度控制，complexity control，选取特征的改变=需求变更，怎样设计接口。
@@ -352,7 +346,7 @@ def create_B(node_list, gold):
         B = [0] * n
     return np.matrix(B)
 
-def train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.001, max_iter=1000, nfselect='f027'):
+def train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=0.5, d=0.85, step_size=0.1, epsilon=0.001, max_iter=1000, nfselect='027'):
     file_text = read_file(file_path, file_name)
     tagged_tokens = get_tagged_tokens(file_text)
     filtered_text = get_filtered_text(tagged_tokens)
@@ -379,7 +373,9 @@ def train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=0.5, d=0
     node_weight = calc_node_weight(node_features, phi)
 
     gold = read_file(file_path+'/../gold', file_name)
-    B = create_B(node_list, gold)
+    title = read_file(file_path, file_name, title=True)
+    # B = create_B(node_list, gold)
+    B = create_B(node_list, title)
     mu = init_value(len(B))
 
     pi = init_value(len(node_list))
@@ -422,7 +418,7 @@ def train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=0.5, d=0
     omega = updateVar(omega, g_omega, -step_size)
     phi = updateVar(phi, g_phi, -step_size)
     print(iteration)
-    return pi.T.tolist()[0], omega.T.tolist()[0], phi.T.tolist()[0], node_list, iteration#, graph, filtered_text, P0, P
+    return pi.T.tolist()[0], omega.T.tolist()[0], phi.T.tolist()[0], node_list, iteration, graph#, filtered_text, P0, P
 
 def top_n_words(pi, node_list, n=15):
     if n > len(node_list):
@@ -433,7 +429,7 @@ def top_n_words(pi, node_list, n=15):
         top_n.append(node_list[pi.index(rank)])
     return top_n
 
-def pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus, d=0.85, nfselect='f027'):
+def pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus, d=0.85, nfselect='027'):
     file_text = read_file(file_path, file_name)
     tagged_tokens = get_tagged_tokens(file_text)
     filtered_text = get_filtered_text(tagged_tokens)
@@ -532,77 +528,123 @@ def get_word_prob(file_name, file_names, node_list, ldamodel, corpus):
         word_prob[word] = np.dot(d_t_prob, w_t_prob)/math.sqrt(np.dot(d_t_prob, d_t_prob) * np.dot(w_t_prob, w_t_prob))
     return word_prob
 
-def dataset_train(dataset, alpha_=0.5, topics=5, nfselect='f027'):
+def dataset_train(dataset, alpha_=0.5, topics=5, nfselect='027', ngrams=2):
     if dataset == 'kdd':
         file_path = './data/KDD/abstracts'
-        out_path = './result/train/KDD/alpha'+str(alpha_)+'topics'+str(topics)
+        out_path = './result/train/KDD/'
         gold_path = './data/KDD/gold'
-        if not os.path.exists(out_path):
-            os.mkdir(out_path)
         raw_node_f = read_file('./data', 'KDD_node_features')
         file_names = read_file('./data', 'KDD_filelist').split(',')
         print('kdd start')
     elif dataset == 'www':
         file_path = './data/WWW/abstracts'
-        out_path = './result/train/WWW/alpha'+str(alpha_)+'topics'+str(topics)
+        out_path = './result/train/WWW/'
         gold_path = './data/WWW/gold'
-        if not os.path.exists(out_path):
-            os.mkdir(out_path)
         raw_node_f = read_file('./data', 'WWW_node_features')
         file_names = read_file('./data', 'WWW_filelist').split(',')
         print('www start')
     else:
         print('wrong dataset name')
+    if not os.path.exists(out_path):
+        os.makedirs(out_path)
     file_names_lda = [f for f in os.listdir(file_path) if isfile(join(file_path, f))]
     ldamodel, corpus = lda_train(file_path, file_names_lda, l_num_topics=topics, l_passes=1)
-
+    #重复代码。。。先跑起来吧
+    count = 0
+    gold_count = 0
+    extract_count = 0
+    mrr = 0
+    prcs_micro = 0
+    recall_micro = 0
     for file_name in file_names:
         print(file_name, '......begin......\n')
-        pi, omega, phi, node_list, iteration = train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=alpha_, nfselect=nfselect)
+        pi, omega, phi, node_list, iteration, graph = train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=alpha_, nfselect=nfselect)
+        word_score = {node_list[i]:pi[i] for i in len(pi)}
         top_n = top_n_words(pi, node_list, n=10)
         gold = read_file(gold_path, file_name)
-        count = 0
-        for word in top_n:
-            if word in gold:
+        keyphrases = get_phrases(word_score, graph, file_path, file_name, ng=ngrams)
+        top_phrases = []
+        for phrase in keyphrases:
+            if phrase[0] not in str(top_phrases):
+                top_phrases.append(phrase[0])
+            if len(top_phrases) == topn:
+                break
+        golds = gold.split('\n')
+        if golds[-1] == '':
+            golds = golds[:-1]
+        golds = list(' '.join(list(normalized_token(w) for w in g.split())) for g in golds)
+        count_micro = 0
+        position = []
+        for phrase in top_phrases:
+            if phrase in golds:
                 count += 1
-        recall = count/len(gold.split())
-        precision = count/len(top_n)
-        if recall == 0 or precision == 0:
+                count_micro += 1
+                position.append(top_phrases.index(phrase))
+        if position != []:
+            mrr += 1/(position[0]+1)
+        gold_count += len(golds)
+        extract_count += len(top_phrases)
+        prcs_micro += count_micro / len(top_phrases)
+        recall_micro += count_micro / len(golds)
+        if recall_micro == 0 or prcs_micro == 0:
             f1 = 0
         else:
-            f1 = 2 * precision * recall / (precision + recall)
-        to_file = file_name + ',omega,' + str(omega)[1:-1] + ',phi,' + str(phi)[1:-1] + ',precision recall f1 iter,' + str(precision) + ',' + str(recall) + ',' + str(f1) + ',' + str(iteration) + '\n'
-        write_file(to_file, out_path, file_name)
+            f1 = 2 * prcs_micro * recall_micro / (prcs_micro + recall_micro)
+        to_file = file_name + ',omega,' + str(omega)[1:-1] + ',phi,' + str(phi)[1:-1] + ',count precision recall f1 iter,' + str(count_micro) +',' + str(prcs_micro) + ',' + str(recall_micro) + ',' + str(f1) + ',' + str(iteration) + ',' + str(datetime.datetime.now()) + '\n'
+        with open(out_path+'train.csv', 'a', encoding='utf8') as f:
+            f.write(to_file)
+        # write_file(to_file, out_path, file_name)
         print(file_name, '......end......\n')
+    # prcs = count / extract_count
+    # recall = count / gold_count
+    # f1 = 2 * prcs * recall / (prcs + recall)
+    # mrr /= len(file_names)
+    # prcs_micro /= len(file_names)
+    # recall_micro /= len(file_names)
+    # f1_micro = 2 * prcs_micro * recall_micro / (prcs_micro + recall_micro)
+
+        # count = 0
+        # for word in top_n:
+        #     if word in gold:
+        #         count += 1
+        # recall = count/len(gold.split())
+        # precision = count/len(top_n)
+        # if recall == 0 or precision == 0:
+        #     f1 = 0
+        # else:
+        #     f1 = 2 * precision * recall / (precision + recall)
+
     return 0
 
-def dataset_rank(dataset, omega, phi, topn=5, topics=20, nfselect='f027', ngrams=2):
+def dataset_rank(dataset, omega, phi, topn=5, topics=20, nfselect='027', ngrams=2):
     if dataset == 'kdd':
         file_path = './data/KDD/abstracts'
-        out_path = './data/KDD'
+        out_path = './result/rank/KDD'
         gold_path = './data/KDD/gold'
         file_names = read_file('./data', 'KDD_filelist').split(',')
         print('kdd start')
     elif dataset == 'kdd2':
         file_path = './data/KDD/abstracts'
-        out_path = './data/KDD'
+        out_path = './result/rank/KDD2'
         gold_path = './data/KDD/gold2'
         file_names = read_file('./data/KDD', 'newOverlappingFiles').split()
         print('kdd start')
     elif dataset == 'www':
         file_path = './data/WWW/abstracts'
-        out_path = './data/WWW'
+        out_path = './result/rank/WWW'
         gold_path = './data/WWW/gold'
         file_names = read_file('./data', 'WWW_filelist').split(',')
         print('www start')
     elif dataset == 'www2':
         file_path = './data/WWW/abstracts'
-        out_path = './data/WWW'
+        out_path = './result/rank/WWW2'
         gold_path = './data/WWW/gold2'
         file_names = read_file('./data/WWW', 'newOverlappingFiles').split()
         print('www start')
     else:
         print('wrong dataset name')
+    if not os.path.exists(out_path):
+        os.makedirs(out_path)
     file_names_lda = [f for f in os.listdir(file_path) if isfile(join(file_path, f))]
     ldamodel, corpus = lda_train(file_path, file_names_lda, l_num_topics=topics, l_passes=1)
     count = 0
@@ -672,8 +714,8 @@ if __name__=='__main__':
     print('Parent process %s.' % os.getpid())
     p = []
 
-    p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5, 10, 'f079')))
-    p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5, 10, 'f027')))
+    p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5, 10, '079')))
+    p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5, 10, '027')))
 
     # p.append(multiprocessing.Process(target=enum_phi, args=('www', 22, 30, 3, 'f027')))
     # p.append(multiprocessing.Process(target=enum_phi, args=('www', 30, 40, 3, 'f027')))
@@ -694,14 +736,14 @@ if __name__=='__main__':
 
 # omega_kdd = np.asmatrix([0.5, 0.5]).T
 # phi_kdd = np.asmatrix([0.36, 0.28, 0.36]).T
-# dataset_rank('kdd', omega_kdd, phi_kdd, topn=4, topics=10, ngrams=2, nfselect='f079')
+# dataset_rank('kdd', omega_kdd, phi_kdd, topn=4, topics=10, ngrams=2, nfselect='079')
 # enum_phi('kdd', 20, 40, 3, 'f079', topn=4)
 
 # omega_www = np.asmatrix([0.5, 0.5]).T
 # phi_www = np.asmatrix([0.24, 0.38, 0.38]).T
-# # dataset_rank('www', omega_www, phi_www, topics=5, ngrams=3, nfselect='f027')
+# # dataset_rank('www', omega_www, phi_www, topics=5, ngrams=3, nfselect='027')
 # for t in [5, 10, 15, 20]:
-#     dataset_rank('www', omega_www, phi_www, topics=t, ngrams=3, nfselect='f027')
+#     dataset_rank('www', omega_www, phi_www, topics=t, ngrams=3, nfselect='027')
 
 # tokens = nltk.word_tokenize(text)
 # tagged_tokens = nltk.pos_tag(tokens)
