@@ -616,7 +616,7 @@ def dataset_train(dataset, alpha_=0.5, topics=5, nfselect='027', ngrams=2):
 
     return 0
 
-def dataset_rank(dataset, omega, phi, topn=5, topics=20, nfselect='027', ngrams=2):
+def dataset_rank(dataset, omega, phi, topn=5, topics=5, nfselect='027', ngrams=2):
     if dataset == 'kdd':
         file_path = './data/KDD/abstracts'
         out_path = './result/rank/KDD'
@@ -714,8 +714,8 @@ if __name__=='__main__':
     print('Parent process %s.' % os.getpid())
     p = []
 
-    p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5, 10, '079')))
-    p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5, 10, '027')))
+    p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5, 5, '079')))
+    p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5, 5, '027')))
 
     # p.append(multiprocessing.Process(target=enum_phi, args=('www', 22, 30, 3, 'f027')))
     # p.append(multiprocessing.Process(target=enum_phi, args=('www', 30, 40, 3, 'f027')))
