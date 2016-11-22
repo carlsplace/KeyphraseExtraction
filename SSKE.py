@@ -373,9 +373,9 @@ def train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=0.5, d=0
     node_weight = calc_node_weight(node_features, phi)
 
     gold = read_file(file_path+'/../gold', file_name)
-    title = read_file(file_path, file_name, title=True)
-    # B = create_B(node_list, gold)
-    B = create_B(node_list, title)
+    B = create_B(node_list, gold)
+    # title = read_file(file_path, file_name, title=True)
+    # B = create_B(node_list, title)
     mu = init_value(len(B))
 
     pi = init_value(len(node_list))
@@ -528,7 +528,7 @@ def get_word_prob(file_name, file_names, node_list, ldamodel, corpus):
         word_prob[word] = np.dot(d_t_prob, w_t_prob)/math.sqrt(np.dot(d_t_prob, d_t_prob) * np.dot(w_t_prob, w_t_prob))
     return word_prob
 
-def dataset_train(dataset, alpha_=0.5, topics=5, nfselect='027', ngrams=2):
+def dataset_train(dataset, alpha_=0.5, topn=5, topics=5, nfselect='027', ngrams=2):
     if dataset == 'kdd':
         file_path = './data/KDD/abstracts'
         out_path = './result/train/KDD/'
@@ -559,7 +559,7 @@ def dataset_train(dataset, alpha_=0.5, topics=5, nfselect='027', ngrams=2):
     for file_name in file_names:
         print(file_name, '......begin......\n')
         pi, omega, phi, node_list, iteration, graph = train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=alpha_, nfselect=nfselect)
-        word_score = {node_list[i]:pi[i] for i in len(pi)}
+        word_score = {node_list[i]:pi[i] for i in range(len(pi))}
         top_n = top_n_words(pi, node_list, n=10)
         gold = read_file(gold_path, file_name)
         keyphrases = get_phrases(word_score, graph, file_path, file_name, ng=ngrams)
@@ -584,14 +584,14 @@ def dataset_train(dataset, alpha_=0.5, topics=5, nfselect='027', ngrams=2):
             mrr += 1/(position[0]+1)
         gold_count += len(golds)
         extract_count += len(top_phrases)
-        prcs_micro += count_micro / len(top_phrases)
-        recall_micro += count_micro / len(golds)
+        prcs_micro = count_micro / len(top_phrases)
+        recall_micro = count_micro / len(golds)
         if recall_micro == 0 or prcs_micro == 0:
             f1 = 0
         else:
             f1 = 2 * prcs_micro * recall_micro / (prcs_micro + recall_micro)
         to_file = file_name + ',omega,' + str(omega)[1:-1] + ',phi,' + str(phi)[1:-1] + ',count precision recall f1 iter,' + str(count_micro) +',' + str(prcs_micro) + ',' + str(recall_micro) + ',' + str(f1) + ',' + str(iteration) + ',' + str(datetime.datetime.now()) + '\n'
-        with open(out_path+'train.csv', 'a', encoding='utf8') as f:
+        with open(out_path+str(alpha_)+'train.csv', 'a', encoding='utf8') as f:
             f.write(to_file)
         # write_file(to_file, out_path, file_name)
         print(file_name, '......end......\n')
@@ -714,8 +714,14 @@ if __name__=='__main__':
     print('Parent process %s.' % os.getpid())
     p = []
 
-    p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5, 5, '079')))
-    p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5, 5, '027')))
+    p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.4, 5, 5, '079', 2)))
+    p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.4, 5, 5, '027', 2)))
+
+    p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.6, 5, 5, '079', 2)))
+    p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.6, 5, 5, '027', 2)))
+
+    p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.3, 5, 5, '079', 2)))
+    p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.3, 5, 5, '027', 2)))
 
     # p.append(multiprocessing.Process(target=enum_phi, args=('www', 22, 30, 3, 'f027')))
     # p.append(multiprocessing.Process(target=enum_phi, args=('www', 30, 40, 3, 'f027')))
