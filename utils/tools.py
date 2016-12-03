@@ -1,0 +1,73 @@
+def count_edge(context, window=2, is_tagged=1):
+
+    def is_word(token):
+        """
+        A token is a "word" if it begins with a letter.
+        
+        This is for filtering out punctuations and numbers.
+        """
+        from re import match
+        return match(r'^[A-Za-z].+', token)
+    def is_good_token(tagged_token):
+        """
+        A tagged token is good if it starts with a letter and the POS tag is
+        one of ACCEPTED_TAGS.
+        """
+        ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
+        return is_word(tagged_token[0]) and tagged_token[1] in ACCEPTED_TAGS
+    def normalized_token(token):
+        """
+        Use stemmer to normalize the token.
+        建图时调用该函数，而不是在file_text改变词形的存储
+        """
+        from nltk.stem import SnowballStemmer
+        stemmer = SnowballStemmer("english") 
+        return stemmer.stem(token.lower())
+    def get_tagged_tokens(context, is_tagged=is_tagged):
+        """输入文本有POS标签"""
+        if is_tagged:
+            context_splited = context.split()
+            tagged_tokens = []
+            for token in context_splited:
+                tagged_tokens.append(tuple(token.split('_')))
+        else:
+            from nltk import word_tokenize, pos_tag
+            tokens = word_tokenize(context)
+            tagged_tokens = pos_tag(tokens)
+        return tagged_tokens
+
+    def get_filtered_text(tagged_tokens):
+        """过滤掉无用词汇，留下候选关键词，选择保留名词和形容词，并且恢复词形stem
+        使用filtered_text的时候要注意：filtered_text是一串文本，其中的单词是可能会重复出现的。
+        """
+        filtered_text = ''
+        for tagged_token in tagged_tokens:
+            if is_good_token(tagged_token):
+                filtered_text = filtered_text + ' '+ normalized_token(tagged_token[0])
+        return filtered_text
+
+    def get_edge_freq(filtered_text, window=window):
+        """
+        输出边
+        顺便统计边的共现次数
+        输出格式：{('a', 'b'):[2], ('b', 'c'):[3]}
+        """
+        from itertools import combinations
+        edges = []
+        edge_and_freq = {}
+        tokens = filtered_text.split()
+        for i in range(0, len(tokens) - window + 1):
+            edges += list(combinations(tokens[i:i+window],2))
+        for i in range(len(edges)):
+            for edge in edges:
+                if edges[i][0] == edge[1] and edges[i][1] == edge[0]:
+                    edges[i] = edge
+                    # 此处处理之后，在继续输入其他特征时，需要先判断下边的表示顺序是否一致
+        for edge in edges:
+            edge_and_freq[edge] = [2 * edges.count(edge) / (tokens.count(edge[0]) + tokens.count(edge[1]))]
+        return edge_and_freq
+   
+    tagged_tokens = get_tagged_tokens(context)
+    filtered_text = get_filtered_text(tagged_tokens)
+    edge_count = get_edge_freq(filtered_text)
+    return edge_count

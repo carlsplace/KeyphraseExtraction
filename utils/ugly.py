@@ -46,6 +46,7 @@ def rm_tags(file_text):
     return text_notag
 
 def get_tagged_tokens(file_text):
+    """输入文本有POS标签"""
     file_splited = file_text.split()
     tagged_tokens = []
     for token in file_splited:
