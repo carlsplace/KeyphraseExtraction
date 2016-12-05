@@ -1,4 +1,4 @@
-def count_edge(context, window=2, is_tagged=1):
+def filter_text(context, is_tagged=True):
 
     def is_word(token):
         """
@@ -23,7 +23,7 @@ def count_edge(context, window=2, is_tagged=1):
         from nltk.stem import SnowballStemmer
         stemmer = SnowballStemmer("english") 
         return stemmer.stem(token.lower())
-    def get_tagged_tokens(context, is_tagged=is_tagged):
+    def get_tagged_tokens(context, is_tagged):
         """输入文本有POS标签"""
         if is_tagged:
             context_splited = context.split()
@@ -35,7 +35,6 @@ def count_edge(context, window=2, is_tagged=1):
             tokens = word_tokenize(context)
             tagged_tokens = pos_tag(tokens)
         return tagged_tokens
-
     def get_filtered_text(tagged_tokens):
         """过滤掉无用词汇，留下候选关键词，选择保留名词和形容词，并且恢复词形stem
         使用filtered_text的时候要注意：filtered_text是一串文本，其中的单词是可能会重复出现的。
@@ -46,7 +45,13 @@ def count_edge(context, window=2, is_tagged=1):
                 filtered_text = filtered_text + ' '+ normalized_token(tagged_token[0])
         return filtered_text
 
-    def get_edge_freq(filtered_text, window=window):
+    tagged_tokens = get_tagged_tokens(context, is_tagged)
+    filtered_text = get_filtered_text(tagged_tokens)
+    return filtered_text
+
+def count_edge(context, window=2, is_tagged=True):
+
+    def get_edge_freq(filtered_text, window):
         """
         输出边
         顺便统计边的共现次数
@@ -67,7 +72,9 @@ def count_edge(context, window=2, is_tagged=1):
             edge_and_freq[edge] = [2 * edges.count(edge) / (tokens.count(edge[0]) + tokens.count(edge[1]))]
         return edge_and_freq
    
-    tagged_tokens = get_tagged_tokens(context)
-    filtered_text = get_filtered_text(tagged_tokens)
-    edge_count = get_edge_freq(filtered_text)
+    filtered_text = filter_text(context, is_tagged)
+    edge_count = get_edge_freq(filtered_text, window)
     return edge_count
+
+def cossim(target, contexts):
+    pass
