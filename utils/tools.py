@@ -76,5 +76,11 @@ def count_edge(context, window=2, is_tagged=True):
     edge_count = get_edge_freq(filtered_text, window)
     return edge_count
 
-def cossim(target, contexts):
-    pass
+def docsim(target, context):
+    from gensim import corpora, models, similarities
+
+    documents = [context, target]
+    texts = [document.lower().split() for document in documents]
+    dictionary = corpora.Dictionary(texts)
+    corpus = [dictionary.doc2bow(text) for text in texts]
+    
