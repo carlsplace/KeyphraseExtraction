@@ -1,4 +1,4 @@
-def filter_text(context, is_tagged=True):
+def filter_text(context, with_tag=True):
 
     def is_word(token):
         """
@@ -23,9 +23,9 @@ def filter_text(context, is_tagged=True):
         from nltk.stem import SnowballStemmer
         stemmer = SnowballStemmer("english") 
         return stemmer.stem(token.lower())
-    def get_tagged_tokens(context, is_tagged):
+    def get_tagged_tokens(context, with_tag):
         """输入文本有POS标签"""
-        if is_tagged:
+        if with_tag:
             context_splited = context.split()
             tagged_tokens = []
             for token in context_splited:
@@ -45,17 +45,17 @@ def filter_text(context, is_tagged=True):
                 filtered_text = filtered_text + ' '+ normalized_token(tagged_token[0])
         return filtered_text
 
-    tagged_tokens = get_tagged_tokens(context, is_tagged)
+    tagged_tokens = get_tagged_tokens(context, with_tag)
     filtered_text = get_filtered_text(tagged_tokens)
     return filtered_text
 
-def count_edge(context, window=2, is_tagged=True):
+def count_edge(context, window=2, with_tag=False, is_filtered=True):
 
     def get_edge_freq(filtered_text, window):
         """
         输出边
         顺便统计边的共现次数
-        输出格式：{('a', 'b'):[2], ('b', 'c'):[3]}
+        输出格式：{('a', 'b'):2, ('b', 'c'):3}
         """
         from itertools import combinations
         edges = []
@@ -69,11 +69,13 @@ def count_edge(context, window=2, is_tagged=True):
                     edges[i] = edge
                     # 此处处理之后，在继续输入其他特征时，需要先判断下边的表示顺序是否一致
         for edge in edges:
-            edge_and_freq[edge] = [2 * edges.count(edge) / (tokens.count(edge[0]) + tokens.count(edge[1]))]
+            edge_and_freq[edge] = 2 * edges.count(edge)
         return edge_and_freq
-   
-    filtered_text = filter_text(context, is_tagged)
-    edge_count = get_edge_freq(filtered_text, window)
+    if not is_filtered:
+        filtered_text = filter_text(context, with_tag)
+        edge_count = get_edge_freq(filtered_text, window)
+    else:
+        edge_count = get_edge_freq(context, window)
     return edge_count
 
 def docsim(target, context):
@@ -83,4 +85,10 @@ def docsim(target, context):
     texts = [document.lower().split() for document in documents]
     dictionary = corpora.Dictionary(texts)
     corpus = [dictionary.doc2bow(text) for text in texts]
+    lsi = models.LsiModel(corpus, id2word=dictionary, num_topics=2)
+    vec_bow = dictionary.doc2bow(target.lower().split())
+    vec_lsi = lsi[vec_bow]
+    index = similarities.MatrixSimilarity(lsi[corpus])
+    sims = index[vec_lsi]
     
+    return sims[0]

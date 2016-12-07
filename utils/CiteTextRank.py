@@ -1,13 +1,14 @@
+# coding:utf-8
+from utils import tools
 
-def query_edge_count(edge, edge_count):
-    """edge:需要"""
+def single_weight(target, context, lmdt):
+    """edge_sweight:{('a','b'):0.54, }"""
+    target = tools.filter_text(target)
+    context = tools.filter_text(context, with_tag=False)
+    sim = tools.docsim(target, context)
+    edge_count = tools.count_edge(context)
+    edge_sweight = {}
+    for edge in edge_count:
+        edge_sweight[edge] = lmdt * sim * edge_count[edge]
     
-
-def read_sim(context, doc):
-    pass
-
-def calc_sim(context, target):
-    pass
-
-# def get_sweight(halflife, sim, count):
-#     return halflife * sim * count
+    return edge_sweight

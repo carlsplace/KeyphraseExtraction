@@ -203,7 +203,6 @@ def add_word_distance(parameter_list):
 def calc_edge_weight(edge_features, omega):
     """
     注意edge_features的格式，字典，如'a'到'b'的一条边，特征为[1,2,3]，{('a','b'):[1,2,3], ('a','c'):[2,3,4]}
-    ('analysi', 'lsa'): [0.2857142857142857, 5], ('languag', 'such'): [0.16666666666666666, 6]
     返回[['a','b',weight], ['a','c',weight]]
     """
     edge_weight = []
