@@ -639,7 +639,7 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=5, nfselect='027', ngrams=2
         out_path = './result/rank/KDD2'
         gold_path = './data/KDD/gold2'
         file_names = read_file('./data/KDD', 'newOverlappingFiles').split()
-        print('kdd start')
+        print('kdd2 start')
     elif dataset == 'www':
         file_path = './data/WWW/abstracts'
         out_path = './result/rank/WWW'
@@ -651,7 +651,7 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=5, nfselect='027', ngrams=2
         out_path = './result/rank/WWW2'
         gold_path = './data/WWW/gold2'
         file_names = read_file('./data/WWW', 'newOverlappingFiles').split()
-        print('www start')
+        print('www2 start')
     else:
         print('wrong dataset name')
     if not os.path.exists(out_path):
@@ -708,10 +708,10 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=5, nfselect='027', ngrams=2
     print(prcs, recall, f1, mrr)
 
     tofile_result = str(phi.T) + ',features-ngrams-topics,' + str(nfselect) + ',' + str(ngrams) + ',' + str(topics) + ',' + str(prcs) + ',' + str(recall) + ',' + str(f1) + ',' + str(mrr) + ',top' + str(topn) + ',' + str(prcs_micro) + ',' + str(recall_micro) + ',' + str(f1_micro) + '\n'
-    with open(out_path + '/' + nfselect + 'ngrams' + str(ngrams) + '.csv','a', encoding='utf8') as f:
+    with open(out_path + '/' + nfselect + 'ngrams' + str(ngrams) + '.csv', mode='a', encoding='utf8') as f:
         f.write(tofile_result)
 
-def enum_phi(dataset, start, end, ngrams, nfselect, topn=5, topics=10):
+def enum_phi(dataset, start, end, nfselect, ngrams=2, topn=4, topics=5):
     omega = np.asmatrix([0.5, 0.5]).T
     for i in range(start, end):
         for j in range(20, 40):
@@ -730,22 +730,15 @@ if __name__=='__main__':
     print('Parent process %s.' % os.getpid())
     p = []
 
-    # p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.4, 5, 5, '079', 2)))
-    # p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.4, 5, 5, '027', 2)))
+    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 30, '079', 2, 4, 5)))
+    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 30, 35, '079', 2, 4, 5)))
+    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 35, 40, '079', 2, 4, 5)))
+    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 40, 45, '079', 2, 4, 5)))
 
-    # p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.6, 5, 5, '079', 2)))
-    # p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.6, 5, 5, '027', 2)))
-
-    # p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.3, 5, 5, '079', 2)))
-    # p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.3, 5, 5, '027', 2)))
-
-    # p.append(multiprocessing.Process(target=enum_phi, args=('www', 22, 30, 3, 'f027')))
-    # p.append(multiprocessing.Process(target=enum_phi, args=('www', 30, 40, 3, 'f027')))
-
-    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 30, 2, 'f079', 4, 5)))
-    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 30, 35, 2, 'f079', 4, 5)))
-    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 35, 40, 2, 'f079', 4, 5)))
-    p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 40, 45, 2, 'f079', 4, 5)))
+    p.append(multiprocessing.Process(target=enum_phi, args=('www', 25, 30, '027', 2, 5, 5)))
+    p.append(multiprocessing.Process(target=enum_phi, args=('www', 30, 35, '027', 2, 5, 5)))
+    p.append(multiprocessing.Process(target=enum_phi, args=('www', 35, 40, '027', 2, 5, 5)))
+    p.append(multiprocessing.Process(target=enum_phi, args=('www', 40, 45, '027', 2, 5, 5)))
 
     for precess in p:
         precess.start()
@@ -756,9 +749,9 @@ if __name__=='__main__':
     print('TIME USED: ', (endtime - starttime))
 
 # omega_kdd = np.asmatrix([0.5, 0.5]).T
-# phi_kdd = np.asmatrix([0.36, 0.28, 0.36]).T
+# phi_kdd = np.asmatrix([0.4, 0.2, 0.4]).T
 # dataset_rank('kdd', omega_kdd, phi_kdd, topn=4, topics=5, ngrams=2, nfselect='079')
-# enum_phi('kdd', 20, 40, 3, 'f079', topn=4)
+# enum_phi('kdd', 39, 40, 'f079', topn=4, topics=5, ngrams=2)
 
 # omega_www = np.asmatrix([0.5, 0.5]).T
 # phi_www = np.asmatrix([0.24, 0.38, 0.38]).T
