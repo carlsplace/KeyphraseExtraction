@@ -413,7 +413,7 @@ def train_doc(file_path, file_name, file_names, ldamodel, corpus,
         omega = updateVar(omega, g_omega, step_size)
         phi = updateVar(phi, g_phi, step_size)
     if iteration > max_iter:
-        print("Over Max Iteration, iteration =", iteration)
+        print("Over Max Iteration, iteration =cited_lmdt", iteration)
     pi = updateVar(pi, g_pi, -step_size)
     omega = updateVar(omega, g_omega, -step_size)
     phi = updateVar(phi, g_phi, -step_size)
@@ -724,33 +724,50 @@ def enum_phi(dataset, start, end, nfselect, ngrams=2, topn=4, topics=5):
                 except:
                     continue
 
-import multiprocessing
-if __name__=='__main__':
-    starttime = datetime.datetime.now()
-    print('Parent process %s.' % os.getpid())
-    p = []
+def enum_phi2(dataset, start, end, nfselect, ngrams=2, topn=4, topics=5):
+    omega = np.asmatrix([0.5, 0.5]).T
+    for i in range(start, end):
+        j = 100 - i
+        phi = np.asmatrix([i/100, j/100]).T
+        try:
+            dataset_rank(dataset, omega, phi, topn=topn, topics=topics, nfselect=nfselect, ngrams=ngrams)
+        except:
+            continue
 
-    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 25, 30, '079', 2, 4, 5)))
-    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 30, 35, '079', 2, 4, 5)))
-    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 35, 40, '079', 2, 4, 5)))
-    # p.append(multiprocessing.Process(target=enum_phi, args=('kdd', 40, 45, '079', 2, 4, 5)))
+# import multiprocessing
+# if __name__=='__main__':
+#     starttime = datetime.datetime.now()
+#     print('Parent process %s.' % os.getpid())
+#     p = []
 
-    p.append(multiprocessing.Process(target=enum_phi, args=('www', 25, 30, '027', 2, 5, 5)))
-    p.append(multiprocessing.Process(target=enum_phi, args=('www', 30, 35, '027', 2, 5, 5)))
-    p.append(multiprocessing.Process(target=enum_phi, args=('www', 35, 40, '027', 2, 5, 5)))
-    p.append(multiprocessing.Process(target=enum_phi, args=('www', 40, 45, '027', 2, 5, 5)))
+#     p.append(multiprocessing.Process(target=enum_phi2, args=('kdd', 0, 30, '07', 2, 4, 5)))
+#     p.append(multiprocessing.Process(target=enum_phi2, args=('kdd', 30, 50, '07', 2, 4, 5)))
+#     p.append(multiprocessing.Process(target=enum_phi2, args=('kdd', 50, 70, '07', 2, 4, 5)))
+#     p.append(multiprocessing.Process(target=enum_phi2, args=('kdd', 70, 100, '07', 2, 4, 5)))
 
-    for precess in p:
-        precess.start()
-    for precess in p:
-        precess.join()
-    print('All subprocesses done.')
-    endtime = datetime.datetime.now()
-    print('TIME USED: ', (endtime - starttime))
+#     # p.append(multiprocessing.Process(target=enum_phi, args=('www', 25, 30, '027', 2, 5, 5)))
+#     # p.append(multiprocessing.Process(target=enum_phi, args=('www', 30, 35, '027', 2, 5, 5)))
+#     # p.append(multiprocessing.Process(target=enum_phi, args=('www', 35, 40, '027', 2, 5, 5)))
+#     # p.append(multiprocessing.Process(target=enum_phi, args=('www', 40, 45, '027', 2, 5, 5)))
 
-# omega_kdd = np.asmatrix([0.5, 0.5]).T
-# phi_kdd = np.asmatrix([0.4, 0.2, 0.4]).T
-# dataset_rank('kdd', omega_kdd, phi_kdd, topn=4, topics=5, ngrams=2, nfselect='079')
+#     for precess in p:
+#         precess.start()
+#     for precess in p:
+#         precess.join()
+#     print('All subprocesses done.')
+#     endtime = datetime.datetime.now()
+#     print('TIME USED: ', (endtime - starttime))
+
+omega_kdd = np.asmatrix([0.5, 0.5]).T
+phi_kdd = np.asmatrix([0.88, 0.12]).T
+# dataset_rank('kdd', omega_kdd, phi_kdd, topn=4, topics=5, ngrams=2, nfselect='07')
+
+topic_nums = [5, 10, 15, 20, 30, 40, 60, 80, 100]
+for topic_num in topic_nums:
+    try:
+        dataset_rank('kdd', omega_kdd, phi_kdd, topn=4, topics=topic_num, ngrams=2, nfselect='07')
+    except:
+        continue
 # enum_phi('kdd', 39, 40, 'f079', topn=4, topics=5, ngrams=2)
 
 # omega_www = np.asmatrix([0.5, 0.5]).T
