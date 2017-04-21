@@ -18,7 +18,6 @@ from nltk.stem import SnowballStemmer
 import datetime
 import codecs
 from gensim import corpora, models
-import gensim
 
 ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
 
@@ -249,7 +248,7 @@ def calcGradientPi(pi3, P, B, mu, alpha, d):
 def get_xijk(i, j, k, edge_features, node_list):
     x = edge_features.get((node_list[i], node_list[j]), 0)
     if x == 0:
-        return 0.01
+        return 1e-8
     else:
         return x[k]
     # return edge_features[(node_list[i], node_list[j])][k]
@@ -522,7 +521,7 @@ def lda_train(file_path, file_names, l_num_topics=20, l_passes=20):
         texts.append(filtered_text.split())
     dictionary = corpora.Dictionary(texts)
     corpus = [dictionary.doc2bow(text) for text in texts]
-    ldamodel = gensim.models.ldamodel.LdaModel(corpus, num_topics=l_num_topics, id2word = dictionary, passes=l_passes)
+    ldamodel = models.ldamodel.LdaModel(corpus, num_topics=l_num_topics, id2word = dictionary, passes=l_passes)
     return ldamodel, corpus
 
 def get_word_prob(file_name, file_names, node_list, ldamodel, corpus):
@@ -570,6 +569,7 @@ def dataset_train(dataset, alpha_=0.5, topn=5, topics=5, nfselect='027', ngrams=
     for file_name in file_names:
         print(file_name, '......begin......\n')
         pi, omega, phi, node_list, iteration, graph = train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=alpha_, nfselect=nfselect)
+        print(pi)
         word_score = {node_list[i]:pi[i] for i in range(len(pi))}
         top_n = top_n_words(pi, node_list, n=10)
         gold = read_file(gold_path, file_name)
@@ -740,15 +740,13 @@ def enum_phi2(dataset, start, end, nfselect, ngrams=2, topn=4, topics=5):
 #     print('Parent process %s.' % os.getpid())
 #     p = []
 
-#     p.append(multiprocessing.Process(target=enum_phi2, args=('kdd', 0, 30, '07', 2, 4, 5)))
-#     p.append(multiprocessing.Process(target=enum_phi2, args=('kdd', 30, 50, '07', 2, 4, 5)))
-#     p.append(multiprocessing.Process(target=enum_phi2, args=('kdd', 50, 70, '07', 2, 4, 5)))
-#     p.append(multiprocessing.Process(target=enum_phi2, args=('kdd', 70, 100, '07', 2, 4, 5)))
+#     p.append(multiprocessing.Process(target=enum_phi2, args=('kdd', 0, 30, '09', 2, 4, 5)))
+#     p.append(multiprocessing.Process(target=enum_phi2, args=('kdd', 30, 60, '09', 2, 4, 5)))
+#     p.append(multiprocessing.Process(target=enum_phi2, args=('kdd', 60, 100, '09', 2, 4, 5)))
 
-#     # p.append(multiprocessing.Process(target=enum_phi, args=('www', 25, 30, '027', 2, 5, 5)))
-#     # p.append(multiprocessing.Process(target=enum_phi, args=('www', 30, 35, '027', 2, 5, 5)))
-#     # p.append(multiprocessing.Process(target=enum_phi, args=('www', 35, 40, '027', 2, 5, 5)))
-#     # p.append(multiprocessing.Process(target=enum_phi, args=('www', 40, 45, '027', 2, 5, 5)))
+#     p.append(multiprocessing.Process(target=enum_phi2, args=('www', 0, 30, '07', 2, 5, 5)))
+#     p.append(multiprocessing.Process(target=enum_phi2, args=('www', 30, 60, '07', 2, 5, 5)))
+#     p.append(multiprocessing.Process(target=enum_phi2, args=('www', 60, 100, '07', 2, 5, 5)))
 
 #     for precess in p:
 #         precess.start()
@@ -758,26 +756,15 @@ def enum_phi2(dataset, start, end, nfselect, ngrams=2, topn=4, topics=5):
 #     endtime = datetime.datetime.now()
 #     print('TIME USED: ', (endtime - starttime))
 
-omega_kdd = np.asmatrix([0.5, 0.5]).T
-phi_kdd = np.asmatrix([0.88, 0.12]).T
-# dataset_rank('kdd', omega_kdd, phi_kdd, topn=4, topics=5, ngrams=2, nfselect='07')
+# omega_kw = np.asmatrix([0.5, 0.5]).T
+# phi_kdd = np.asmatrix([0.88, 0.12]).T
+# phi_www = np.asmatrix([0.95, 0.05]).T
 
-topic_nums = [5, 10, 15, 20, 30, 40, 60, 80, 100]
-for topic_num in topic_nums:
-    try:
-        dataset_rank('kdd', omega_kdd, phi_kdd, topn=4, topics=topic_num, ngrams=2, nfselect='07')
-    except:
-        continue
-# enum_phi('kdd', 39, 40, 'f079', topn=4, topics=5, ngrams=2)
 
-# omega_www = np.asmatrix([0.5, 0.5]).T
-# phi_www = np.asmatrix([0.24, 0.38, 0.38]).T
-# dataset_rank('www', omega_www, phi_www, topics=5, ngrams=3, nfselect='027')
-# for t in [5, 10, 15, 20]:
-#     dataset_rank('www', omega_www, phi_www, topics=t, ngrams=3, nfselect='027')
+# topic_nums = [3, 5, 7, 10, 15, 20, 30, 40, 60, 80, 100]
+# for topic_num in topic_nums:
+#     dataset_rank('www', omega_kw, phi_www, topn=5, topics=topic_num, ngrams=2, nfselect='07')
+#     dataset_rank('kdd', omega_kw, phi_kdd, topn=4, topics=topic_num, ngrams=2, nfselect='07')
+#     print(topic_num, 'done')
 
-# tokens = nltk.word_tokenize(text)
-# tagged_tokens = nltk.pos_tag(tokens)
-# tagged_tokens = get_tagged_tokens(file_text)
-# edge_features这个量最重要, 向量存储成列matrix
-
+dataset_train('kdd', alpha_=0, topics=3)
