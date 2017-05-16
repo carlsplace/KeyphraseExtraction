@@ -98,4 +98,3 @@ def dict2list(dict):
         tmp.append(dict[key])
         output.append(tmp)
     return output
-    

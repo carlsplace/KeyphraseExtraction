@@ -5,104 +5,33 @@ from os.path import isfile, join
 import sys
 import string
 import itertools
-import nltk
 import re
 import networkx as nx
 import numpy as np
 import math
-# import matplotlib.pyplot as plt
-from nltk.stem import SnowballStemmer
-# from sklearn import feature_extraction
-# from sklearn.feature_extraction.text import TfidfTransformer
-# from sklearn.feature_extraction.text import CountVectorizer
+import nltk
+
 import datetime
 import codecs
-from gensim import corpora, models
 
-ACCEPTED_TAGS = {'NN', 'NNS', 'NNP', 'NNPS', 'JJ'}
-
-def read_file(file_path, file_name, title=False):
-    """file_path: ./data file_name"""
-    with open(file_path+'/'+file_name, 'r', encoding='utf8') as f:
-        if title:
-            file_text = f.readline()
-        else:
-            file_text = f.read()
-    return file_text
-
-# def write_file(text, file_path, file_name):
-#     """file_path：./path"""
-#     if not os.path.exists(file_path) : 
-#         os.mkdir(file_path)
-#     with open(file_path+'/'+file_name, 'w', encoding='utf8') as f:
-#         f.write(text)
-#     return 0
-
-def rm_tags(file_text):
-    """处理输入文本，将已经标注好的POS tagomega去掉，以便使用nltk包处理。"""
-    file_splited = file_text.split()
-    text_notag = ''
-    for t in file_splited:
-        text_notag = text_notag + ' ' + t[:t.find('_')]
-    return text_notag
-
-def get_tagged_tokens(file_text):
-    file_splited = file_text.split()
-    tagged_tokens = []
-    for token in file_splited:
-        tagged_tokens.append(tuple(token.split('_')))
-    return tagged_tokens
-
-###################################################################
-def is_word(token):
-    """
-    A token is a "word" if it begins with a letter.
-    
-    This is for filtering out punctuations and numbers.
-    """
-    return re.match(r'^[A-Za-z].+', token)
-
-def is_good_token(tagged_token):
-    """
-    A tagged token is good if it starts with a letter and the POS tag is
-    one of ACCEPTED_TAGS.
-    """
-    return is_word(tagged_token[0]) and tagged_token[1] in ACCEPTED_TAGS
-    
-def normalized_token(token):
-    """
-    Use stemmer to normalize the token.
-    建图时调用该函数，而不是在file_text改变词形的存储
-    """
-    stemmer = SnowballStemmer("english") 
-    return stemmer.stem(token.lower())
-###################################################################
-    
-def get_filtered_text(tagged_tokens):
-    """过滤掉无用词汇，留下候选关键词，选择保留名词和形容词，并且恢复词形stem
-       使用filtered_text的时候要注意：filtered_text是一串文本，其中的单词是可能会重复出现的。
-    """
-    filtered_text = ''
-    for tagged_token in tagged_tokens:
-        if is_good_token(tagged_token):
-            filtered_text = filtered_text + ' '+ normalized_token(tagged_token[0])
-    return filtered_text
+from utils.lda import lda_train, get_word_prob
+from utils.preprocess import *
 
 def read_node_features(node_list, raw_node_features, file_name, nfselect='027'):
     # 0@attribute tfidf numeric √
     # 1@attribute tfidfOver {0, 1}
     # 2@attribute relativePosition numeric √
-    # 3@attribute firstPosition numeric 
+    # 3@attribute firstPosition numeric
     # 4@attribute firstPositionUnder {0, 1}
     # 5@attribute inCited {0, 1}
     # 6@attribute inCiting {0, 1}
     # 7@attribute citationTFIDF numeric √
-    # 8@attribute keyphraseness numeric 
-    # 9@attribute conclusionTF numeric 
+    # 8@attribute keyphraseness numeric
+    # 9@attribute conclusionTF numeric
     # @attribute isKeyword {-1, 1}
 
     """node_features:{node1:[1,2,3], node2:[2,3,4]}"""
-    file = re.findall(file_name+'\s-.*', raw_node_features)
+    file = re.findall(file_name+r'\s-.*', raw_node_features)
     tmp1 = []
     for t in file:
         tmp1.append(t.split(':'))
@@ -112,8 +41,8 @@ def read_node_features(node_list, raw_node_features, file_name, nfselect='027'):
         features_t = re.search(r'\d.*', t[1]).group().split(',')
         # print(features_t)
         features_t = list(float(ft) for ft in features_t)
-        if re.search('[a-zA-Z].*' ,t[0]):
-            tmp2[re.search('[a-zA-Z].*' ,t[0]).group()] = features_t
+        if re.search('[a-zA-Z].*', t[0]):
+            tmp2[re.search('[a-zA-Z].*', t[0]).group()] = features_t
     zero_feature = [0] * len(features_t)
     # for i in range(feature_num):
     #     zero_feature.append(0)
@@ -121,24 +50,6 @@ def read_node_features(node_list, raw_node_features, file_name, nfselect='027'):
     for node in node_list:
         f = tmp2.get(node, zero_feature)
         node_features[node] = [f[int(num)] for num in nfselect]
-    # if nfselect == 'f027':
-    #     for node in node_list:
-    #         f = tmp2.get(node, zero_feature)
-    #         node_features[node] = [f[0], f[2], f[7]]
-    # elif nfselect == 'f279':
-    #     for node in node_list:
-    #         f = tmp2.get(node, zero_feature)
-    #         node_features[node] = [f[2], f[7], f[9]]
-    # elif nfselect == 'f029':
-    #     for node in node_list:
-    #         f = tmp2.get(node, zero_feature)
-    #         node_features[node] = [f[0], f[2], f[9]]
-    # elif nfselect == 'f079':
-    #     for node in node_list:
-    #         f = tmp2.get(node, zero_feature)
-    #         node_features[node] = [f[0], f[7], f[9]]
-    # else:
-    #     print('wrong feature selection')
 
     return node_features
 
@@ -150,7 +61,7 @@ def calc_node_weight(node_features, phi):
     for node in node_features:
         node_weight[node] = float(node_features[node] * phi)
     return node_weight
-    
+
 def get_edge_freq(filtered_text, window=2):
     """
     输出边
@@ -172,7 +83,8 @@ def get_edge_freq(filtered_text, window=2):
     return edge_and_freq
 
 def lDistance(firstString, secondString):
-    "Function to find the Levenshtein distance between two words/sentences - gotten from http://rosettacode.org/wiki/Levenshtein_distance#Python"
+    """Function to find the Levenshtein distance between two words/sentences
+     - gotten from http://rosettacode.org/wiki/Levenshtein_distance#Python"""
     if len(firstString) > len(secondString):
         firstString, secondString = secondString, firstString
     distances = range(len(firstString) + 1)
@@ -195,7 +107,7 @@ def add_lev_distance(edge_and_freq):
 
 def add_word_distance(parameter_list):
     """
-    候选关键词之间词的个数，待思量，
+    候选关键词之间词的个数
     """
     pass
 
@@ -210,7 +122,7 @@ def calc_edge_weight(edge_features, omega):
         edge_weight_tmp.append(float(edge_features[edge] * omega))
         edge_weight.append(tuple(edge_weight_tmp))
     return edge_weight
-    
+
 def build_graph(edge_weight):
     """
     建图，无向
@@ -344,9 +256,9 @@ def create_B(node_list, gold):
         B = [0] * n
     return np.matrix(B)
 
-def train_doc(file_path, file_name, file_names, ldamodel, corpus,
-              alpha=0.5, d=0.85, step_size=0.1, epsilon=0.001, max_iter=1000, nfselect='027'):
-    file_text = read_file(file_path, file_name)
+def train_doc(abstr_path, file_name, file_names, ldamodel, corpus, alpha=0.5,
+              d=0.85, step_size=0.1, epsilon=0.001, max_iter=1000, nfselect='027', num_topics=20):
+    file_text = read_file(abstr_path, file_name)
     tagged_tokens = get_tagged_tokens(file_text)
     filtered_text = get_filtered_text(tagged_tokens)
     edge_and_freq = get_edge_freq(filtered_text)
@@ -358,11 +270,11 @@ def train_doc(file_path, file_name, file_names, ldamodel, corpus,
     graph = build_graph(edge_weight)
 
     node_list = list(graph.node)
-    word_prob = get_word_prob(file_name, file_names, node_list, ldamodel, corpus)
+    word_prob = get_word_prob(file_name, file_names, node_list, ldamodel, corpus, num_topics=num_topics)
     wp = list(word_prob[word] for word in node_list)
     word_prob_m = np.diag(wp)
 
-    if 'KDD' in file_path:
+    if 'KDD' in abstr_path:
         raw_node_features = read_file('./data', 'KDD_node_features')
     else:
         raw_node_features = read_file('./data', 'WWW_node_features')
@@ -371,10 +283,12 @@ def train_doc(file_path, file_name, file_names, ldamodel, corpus,
     phi = init_value(len_phi)
     node_weight = calc_node_weight(node_features, phi)
 
-    gold = read_file(file_path+'/../gold', file_name)
-    B = create_B(node_list, gold)
-    # title = read_file(file_path, file_name, title=True)
-    # B = create_B(node_list, title)
+    # gold = read_file(abstr_path+'/../gold', file_name)
+    # B = create_B(node_list, abstr_path)
+    title = read_file(abstr_path, file_name, title=True)
+    title = ' '.join([word.split('_')[0] for word in title.split()])
+    B = create_B(node_list, title)
+
     mu = init_value(len(B))
 
     pi = init_value(len(node_list))
@@ -428,34 +342,34 @@ def top_n_words(pi, node_list, n=15):
         top_n.append(node_list[pi.index(rank)])
     return top_n
 
-def pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel,
-                 corpus, d=0.85, nfselect='027'):
+def pagerank_doc(abstr_path, file_name, file_names, omega, phi, ldamodel,
+                 corpus, d=0.85, nfselect='027', num_topics=20):
     from utils import CiteTextRank
     from utils.tools import dict2list
-    file_text = read_file(file_path, file_name)
+    file_text = read_file(abstr_path, file_name)
     tagged_tokens = get_tagged_tokens(file_text)
     filtered_text = get_filtered_text(tagged_tokens)
     # edge_and_freq = get_edge_freq(filtered_text)
     # edge_features = add_lev_distance(edge_and_freq)#edge_freq_lev
     # edge_weight = calc_edge_weight(edge_features, omega)
-    if 'KDD' in file_path:
+    if 'KDD' in abstr_path:
         dataset = 'kdd'
     else:
         dataset = 'www'
-    cite_edge_weight = CiteTextRank.sum_weight(file_name, citing_lmdt=10, cited_lmdt=10, dataset=dataset)
+    cite_edge_weight = CiteTextRank.sum_weight(file_name, doc_lmdt=10, citing_lmdt=10, cited_lmdt=10, dataset=dataset)
     # print(cite_edge_weight)
     edge_weight = dict2list(cite_edge_weight)
     # print(edge_weight)
     graph = build_graph(edge_weight)
     node_list = list(graph.node)
 
-    if 'KDD' in file_path:
+    if 'KDD' in abstr_path:
         raw_node_features = read_file('./data', 'KDD_node_features')
     else:
         raw_node_features = read_file('./data', 'WWW_node_features')
     node_features = read_node_features(node_list, raw_node_features, file_name, nfselect=nfselect)
     node_weight = calc_node_weight(node_features, phi)
-    word_prob = get_word_prob(file_name, file_names, node_list, ldamodel, corpus)
+    word_prob = get_word_prob(file_name, file_names, node_list, ldamodel, corpus, num_topics=num_topics)
     node_weight_topic = {}
     for node in node_list:
         node_weight_topic[node] = node_weight[node] * word_prob[node]
@@ -463,9 +377,9 @@ def pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel,
 
     return pr, graph
 
-def get_phrases(pr, graph, file_path, file_name, ng=2):
+def get_phrases(pr, graph, abstr_path, file_name, ng=2):
     """返回一个list：[('large numbers', 0.04422558661923612), ('Internet criminal', 0.04402960178014231)]"""
-    text = rm_tags(read_file(file_path, file_name))
+    text = rm_tags(read_file(abstr_path, file_name))
     tokens = nltk.word_tokenize(text.lower())
     edges = graph.edge
     phrases = set()
@@ -512,43 +426,17 @@ def get_phrases(pr, graph, file_path, file_name, ng=2):
     out_sorted = sorted(sorted_phrases+sorted_word, key=lambda d:d[1], reverse=True)
     return out_sorted
 
-def lda_train(file_path, file_names, l_num_topics=20, l_passes=20):
-    texts = []
-    for file_name in file_names:
-        file_text = read_file(file_path, file_name)
-        tagged_tokens = get_tagged_tokens(file_text)
-        filtered_text = get_filtered_text(tagged_tokens)
-        texts.append(filtered_text.split())
-    dictionary = corpora.Dictionary(texts)
-    corpus = [dictionary.doc2bow(text) for text in texts]
-    ldamodel = models.ldamodel.LdaModel(corpus, num_topics=l_num_topics, id2word = dictionary, passes=l_passes)
-    return ldamodel, corpus
-
-def get_word_prob(file_name, file_names, node_list, ldamodel, corpus):
-    """word: 即node，已normalized
-    return一个dict:{word:prob, w2:p2}"""
-    word_prob = {}
-    for word in node_list:
-        doc_num = file_names.index(file_name)
-        d_t_prob = np.array(list(p for (t, p) in ldamodel.get_document_topics(corpus[doc_num], minimum_probability=0)))
-        #此处修改了ldamodel.get_document_topics和get_term_topics的源代码，去掉了条件判断，不忽略过小的主题概率
-        # print(d_t_prob)
-        w_t_prob = np.array(list(p for (t, p) in ldamodel.get_term_topics(word, minimum_probability=0)))
-        # print(w_t_prob)
-        word_prob[word] = np.dot(d_t_prob, w_t_prob)/math.sqrt(np.dot(d_t_prob, d_t_prob) * np.dot(w_t_prob, w_t_prob))
-    return word_prob
-
-def dataset_train(dataset, alpha_=0.5, topn=5, topics=5, nfselect='027', ngrams=2):
+def dataset_train(dataset, alpha_=0.5, topn=5, topics=5, nfselect='079', ngrams=2):
     if dataset == 'kdd':
-        file_path = './data/KDD/abstracts'
-        out_path = './result/train/KDD/'
+        abstr_path = './data/KDD/abstracts'
+        out_path = './result/'
         gold_path = './data/KDD/gold'
         raw_node_f = read_file('./data', 'KDD_node_features')
         file_names = read_file('./data', 'KDD_filelist').split(',')
         print('kdd start')
     elif dataset == 'www':
-        file_path = './data/WWW/abstracts'
-        out_path = './result/train/WWW/'
+        abstr_path = './data/WWW/abstracts'
+        out_path = './result/'
         gold_path = './data/WWW/gold'
         raw_node_f = read_file('./data', 'WWW_node_features')
         file_names = read_file('./data', 'WWW_filelist').split(',')
@@ -557,8 +445,8 @@ def dataset_train(dataset, alpha_=0.5, topn=5, topics=5, nfselect='027', ngrams=
         print('wrong dataset name')
     if not os.path.exists(out_path):
         os.makedirs(out_path)
-    file_names_lda = [f for f in os.listdir(file_path) if isfile(join(file_path, f))]
-    ldamodel, corpus = lda_train(file_path, file_names_lda, l_num_topics=topics, l_passes=1)
+    file_names_lda = [f for f in os.listdir(abstr_path) if isfile(join(abstr_path, f))]
+    ldamodel, corpus = lda_train(abstr_path, file_names_lda, num_topics=topics)
     #重复代码。。。先跑起来吧
     count = 0
     gold_count = 0
@@ -568,12 +456,12 @@ def dataset_train(dataset, alpha_=0.5, topn=5, topics=5, nfselect='027', ngrams=
     recall_micro = 0
     for file_name in file_names:
         print(file_name, '......begin......\n')
-        pi, omega, phi, node_list, iteration, graph = train_doc(file_path, file_name, file_names, ldamodel, corpus, alpha=alpha_, nfselect=nfselect)
+        pi, omega, phi, node_list, iteration, graph = train_doc(abstr_path, file_name, file_names, ldamodel, corpus, alpha=alpha_, nfselect=nfselect)
         print(pi)
         word_score = {node_list[i]:pi[i] for i in range(len(pi))}
         top_n = top_n_words(pi, node_list, n=10)
         gold = read_file(gold_path, file_name)
-        keyphrases = get_phrases(word_score, graph, file_path, file_name, ng=ngrams)
+        keyphrases = get_phrases(word_score, graph, abstr_path, file_name, ng=ngrams)
         top_phrases = []
         for phrase in keyphrases:
             if phrase[0] not in str(top_phrases):
@@ -602,7 +490,7 @@ def dataset_train(dataset, alpha_=0.5, topn=5, topics=5, nfselect='027', ngrams=
         else:
             f1 = 2 * prcs_micro * recall_micro / (prcs_micro + recall_micro)
         to_file = file_name + ',omega,' + str(omega)[1:-1] + ',phi,' + str(phi)[1:-1] + ',count precision recall f1 iter,' + str(count_micro) +',' + str(prcs_micro) + ',' + str(recall_micro) + ',' + str(f1) + ',' + str(iteration) + ',' + str(datetime.datetime.now()) + '\n'
-        with open(out_path+str(alpha_)+'train.csv', 'a', encoding='utf8') as f:
+        with open(out_path + 'train-' + dataset + str(alpha_) + str(nfselect) +'.csv', 'a', encoding='utf8') as f:
             f.write(to_file)
         # write_file(to_file, out_path, file_name)
         print(file_name, '......end......\n')
@@ -629,25 +517,25 @@ def dataset_train(dataset, alpha_=0.5, topn=5, topics=5, nfselect='027', ngrams=
 
 def dataset_rank(dataset, omega, phi, topn=5, topics=5, nfselect='027', ngrams=2):
     if dataset == 'kdd':
-        file_path = './data/KDD/abstracts'
-        out_path = './result/rank/KDD'
+        abstr_path = './data/KDD/abstracts'
+        out_path = './result'
         gold_path = './data/KDD/gold'
         file_names = read_file('./data', 'KDD_filelist').split(',')
         print('kdd start')
     elif dataset == 'kdd2':
-        file_path = './data/KDD/abstracts'
+        abstr_path = './data/KDD/abstracts'
         out_path = './result/rank/KDD2'
         gold_path = './data/KDD/gold2'
         file_names = read_file('./data/KDD', 'newOverlappingFiles').split()
         print('kdd2 start')
     elif dataset == 'www':
-        file_path = './data/WWW/abstracts'
-        out_path = './result/rank/WWW'
+        abstr_path = './data/WWW/abstracts'
+        out_path = './result'
         gold_path = './data/WWW/gold'
         file_names = read_file('./data', 'WWW_filelist').split(',')
         print('www start')
     elif dataset == 'www2':
-        file_path = './data/WWW/abstracts'
+        abstr_path = './data/WWW/abstracts'
         out_path = './result/rank/WWW2'
         gold_path = './data/WWW/gold2'
         file_names = read_file('./data/WWW', 'newOverlappingFiles').split()
@@ -656,8 +544,8 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=5, nfselect='027', ngrams=2
         print('wrong dataset name')
     if not os.path.exists(out_path):
         os.makedirs(out_path)
-    file_names_lda = [f for f in os.listdir(file_path) if isfile(join(file_path, f))]
-    ldamodel, corpus = lda_train(file_path, file_names_lda, l_num_topics=topics, l_passes=1)
+    file_names_lda = [f for f in os.listdir(abstr_path) if isfile(join(abstr_path, f))]
+    ldamodel, corpus = lda_train(abstr_path, file_names_lda, num_topics=topics)
     count = 0
     gold_count = 0
     extract_count = 0
@@ -666,10 +554,10 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=5, nfselect='027', ngrams=2
     recall_micro = 0
     for file_name in file_names:
         # print(file_name, 'begin......')
-        pr, graph = pagerank_doc(file_path, file_name, file_names, omega, phi, ldamodel, corpus, d=0.85, nfselect=nfselect)
+        pr, graph = pagerank_doc(abstr_path, file_name, file_names, omega, phi, ldamodel, corpus, d=0.85, nfselect=nfselect, num_topics=topics)
         # top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
         gold = read_file(gold_path, file_name)
-        keyphrases = get_phrases(pr, graph, file_path, file_name, ng=ngrams)
+        keyphrases = get_phrases(pr, graph, abstr_path, file_name, ng=ngrams)
         top_phrases = []
         for phrase in keyphrases:
             if phrase[0] not in str(top_phrases):
@@ -708,7 +596,7 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=5, nfselect='027', ngrams=2
     print(prcs, recall, f1, mrr)
 
     tofile_result = str(phi.T) + ',features-ngrams-topics,' + str(nfselect) + ',' + str(ngrams) + ',' + str(topics) + ',' + str(prcs) + ',' + str(recall) + ',' + str(f1) + ',' + str(mrr) + ',top' + str(topn) + ',' + str(prcs_micro) + ',' + str(recall_micro) + ',' + str(f1_micro) + '\n'
-    with open(out_path + '/' + nfselect + 'ngrams' + str(ngrams) + '.csv', mode='a', encoding='utf8') as f:
+    with open(out_path + '/' + 'rank-' + dataset + '.csv', mode='a', encoding='utf8') as f:
         f.write(tofile_result)
 
 def enum_phi(dataset, start, end, nfselect, ngrams=2, topn=4, topics=5):
@@ -740,13 +628,18 @@ def enum_phi2(dataset, start, end, nfselect, ngrams=2, topn=4, topics=5):
 #     print('Parent process %s.' % os.getpid())
 #     p = []
 
-#     p.append(multiprocessing.Process(target=enum_phi2, args=('kdd', 0, 30, '09', 2, 4, 5)))
-#     p.append(multiprocessing.Process(target=enum_phi2, args=('kdd', 30, 60, '09', 2, 4, 5)))
-#     p.append(multiprocessing.Process(target=enum_phi2, args=('kdd', 60, 100, '09', 2, 4, 5)))
+#     # p.append(multiprocessing.Process(target=enum_phi2, args=('kdd', 0, 30, '09', 2, 4, 5)))
+#     # p.append(multiprocessing.Process(target=enum_phi2, args=('kdd', 30, 60, '09', 2, 4, 5)))
+#     # p.append(multiprocessing.Process(target=enum_phi2, args=('kdd', 60, 100, '09', 2, 4, 5)))
 
-#     p.append(multiprocessing.Process(target=enum_phi2, args=('www', 0, 30, '07', 2, 5, 5)))
-#     p.append(multiprocessing.Process(target=enum_phi2, args=('www', 30, 60, '07', 2, 5, 5)))
-#     p.append(multiprocessing.Process(target=enum_phi2, args=('www', 60, 100, '07', 2, 5, 5)))
+#     # p.append(multiprocessing.Process(target=enum_phi2, args=('www', 0, 30, '07', 2, 5, 5)))
+#     # p.append(multiprocessing.Process(target=enum_phi2, args=('www', 30, 60, '07', 2, 5, 5)))
+#     # p.append(multiprocessing.Process(target=enum_phi2, args=('www', 60, 100, '07', 2, 5, 5)))
+
+#     p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5, 4, 5, '079', 2)))
+#     p.append(multiprocessing.Process(target=dataset_train, args=('kdd', 0.5, 4, 5, '079', 3)))
+#     p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5, 5, 5, '079', 2)))
+#     p.append(multiprocessing.Process(target=dataset_train, args=('www', 0.5, 5, 5, '079', 3)))
 
 #     for precess in p:
 #         precess.start()
@@ -756,15 +649,29 @@ def enum_phi2(dataset, start, end, nfselect, ngrams=2, topn=4, topics=5):
 #     endtime = datetime.datetime.now()
 #     print('TIME USED: ', (endtime - starttime))
 
-# omega_kw = np.asmatrix([0.5, 0.5]).T
-# phi_kdd = np.asmatrix([0.88, 0.12]).T
-# phi_www = np.asmatrix([0.95, 0.05]).T
+omega_kw = np.asmatrix([0.5, 0.5]).T
+# phi_kdd = np.asmatrix([1]).T
+# phi_www = np.asmatrix([1]).T
 
+# for f in '9':
+#     dataset_rank('www', omega_kw, phi_www, topn=5, topics=5, ngrams=2, nfselect=f)
+#     dataset_rank('kdd', omega_kw, phi_kdd, topn=4, topics=5, ngrams=2, nfselect=f)
 
+phi_kdd2 = np.asmatrix([0.88, 0.12]).T
+phi_www2 = np.asmatrix([0.95, 0.05]).T
+
+for f2 in ['02','07','09']:
+    dataset_rank('www', omega_kw, phi_www2, topn=5, topics=5, ngrams=2, nfselect=f2)
+    dataset_rank('kdd', omega_kw, phi_kdd2, topn=4, topics=5, ngrams=2, nfselect=f2)
+
+# phi_kdd3 = np.asmatrix([0.6, 0.2, 0.2]).T
+# phi_www3 = np.asmatrix([0.6, 0.2, 0.2]).T
+
+# for f3 in ['027','079','279']:
+#     dataset_rank('www', omega_kw, phi_www3, topn=5, topics=5, ngrams=2, nfselect=f3)
+#     dataset_rank('kdd', omega_kw, phi_kdd3, topn=4, topics=5, ngrams=2, nfselect=f3)
 # topic_nums = [3, 5, 7, 10, 15, 20, 30, 40, 60, 80, 100]
 # for topic_num in topic_nums:
 #     dataset_rank('www', omega_kw, phi_www, topn=5, topics=topic_num, ngrams=2, nfselect='07')
 #     dataset_rank('kdd', omega_kw, phi_kdd, topn=4, topics=topic_num, ngrams=2, nfselect='07')
 #     print(topic_num, 'done')
-
-dataset_train('kdd', alpha_=0, topics=3)
