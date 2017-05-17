@@ -4,33 +4,13 @@ from utils.preprocess import *
 from utils.lda import *
 import networkx as nx
 
-def get_edge_freq(filtered_text, window=2):
-    """
-    输出边
-    顺便统计边的共现次数
-    输出格式：{('a', 'b'):[2], ('b', 'c'):[3]}
-    """
-    from itertools import combinations
+from utils.graph_tools import get_edge_freq
 
-    edges = []
-    edge_freq = {}
-    tokens = filtered_text.split()
-    for i in range(0, len(tokens) - window + 1):
-        edges += list(combinations(tokens[i:i+window],2))
-    for i in range(len(edges)):
-        for edge in edges:
-            if edges[i][0] == edge[1] and edges[i][1] == edge[0]:
-                edges[i] = edge
-                # 此处处理之后，在继续输入其他特征时，需要先判断下边的表示顺序是否一致
-    for edge in edges:
-        edge_freq[edge] = edges.count(edge)# * 2 / (tokens.count(edge[0]) + tokens.count(edge[1]))
-    return edge_freq
-
-def pagerank_doc(abstr_path, file_name, file_names, ldamodel, corpus, d=0.85, num_topics=20):
+def pagerank_doc(abstr_path, file_name, file_names, ldamodel, corpus, d=0.85, num_topics=20, window=2):
     file_text = read_file(abstr_path, file_name)
     tagged_tokens = get_tagged_tokens(file_text)
     filtered_text = get_filtered_text(tagged_tokens)
-    edge_freq = get_edge_freq(filtered_text)
+    edge_freq = get_edge_freq(filtered_text, window=window)
 
     from utils.tools import dict2list
     edge_weight = dict2list(edge_freq)
@@ -54,11 +34,10 @@ def pagerank_doc(abstr_path, file_name, file_names, ldamodel, corpus, d=0.85, nu
 
     return pr, graph
 
-def dataset_rank(dataset, topn=5, topics=5, ngrams=2):
+def dataset_rank(dataset, topn=5, topics=5, ngrams=2, window=2, damping=0.85):
 
     from os.path import isfile, join
     import os
-    from SSKE import get_phrases
 
     if dataset == 'kdd':
         abstr_path = './data/KDD/abstracts'
@@ -98,7 +77,8 @@ def dataset_rank(dataset, topn=5, topics=5, ngrams=2):
     recall_micro = 0
     for file_name in file_names:
         # print(file_name, 'begin......')
-        pr, graph = pagerank_doc(abstr_path, file_name, file_names, ldamodel, corpus, d=0.85, num_topics=topics)
+        pr, graph = pagerank_doc(abstr_path, file_name, file_names, ldamodel, corpus,
+                                 d=damping, num_topics=topics, window=window)
         # top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
         gold = read_file(gold_path, file_name)
         keyphrases = get_phrases(pr, graph, abstr_path, file_name, ng=ngrams)
@@ -143,5 +123,5 @@ def dataset_rank(dataset, topn=5, topics=5, ngrams=2):
     with open(out_path + '/' + 'sTPR-' + dataset + '.csv', mode='a', encoding='utf8') as f:
         f.write(tofile_result)
 
-dataset_rank('kdd', topn=4, topics=5, ngrams=2)
-dataset_rank('www', topn=5, topics=5, ngrams=2)
+dataset_rank('kdd', topn=4, topics=500, ngrams=2, window=2)
+dataset_rank('www', topn=5, topics=500, ngrams=2, window=2)

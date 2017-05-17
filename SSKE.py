@@ -343,7 +343,7 @@ def top_n_words(pi, node_list, n=15):
     return top_n
 
 def pagerank_doc(abstr_path, file_name, file_names, omega, phi, ldamodel,
-                 corpus, d=0.85, nfselect='027', num_topics=20):
+                 corpus, d=0.85, nfselect='027', num_topics=20, window=2):
     from utils import CiteTextRank
     from utils.tools import dict2list
     file_text = read_file(abstr_path, file_name)
@@ -356,7 +356,7 @@ def pagerank_doc(abstr_path, file_name, file_names, omega, phi, ldamodel,
         dataset = 'kdd'
     else:
         dataset = 'www'
-    cite_edge_weight = CiteTextRank.sum_weight(file_name, doc_lmdt=10, citing_lmdt=10, cited_lmdt=10, dataset=dataset)
+    cite_edge_weight = CiteTextRank.sum_weight(file_name, doc_lmdt=omega[0], citing_lmdt=omega[1], cited_lmdt=omega[2], dataset=dataset, window=window)
     # print(cite_edge_weight)
     edge_weight = dict2list(cite_edge_weight)
     # print(edge_weight)
@@ -376,55 +376,6 @@ def pagerank_doc(abstr_path, file_name, file_names, omega, phi, ldamodel,
     pr = nx.pagerank(graph, alpha=d, personalization=node_weight_topic)
 
     return pr, graph
-
-def get_phrases(pr, graph, abstr_path, file_name, ng=2):
-    """返回一个list：[('large numbers', 0.04422558661923612), ('Internet criminal', 0.04402960178014231)]"""
-    text = rm_tags(read_file(abstr_path, file_name))
-    tokens = nltk.word_tokenize(text.lower())
-    edges = graph.edge
-    phrases = set()
-
-    for n in range(2, ng+1):
-        for ngram in nltk.ngrams(tokens, n):
-
-            # For each n-gram, if all tokens are words, and if the normalized
-            # head and tail are found in the graph -- i.e. if both are nodes
-            # connected by an edge -- this n-gram is a key phrase.
-            if all(is_word(token) for token in ngram):
-                head, tail = normalized_token(ngram[0]), normalized_token(ngram[-1])
-                
-                if head in edges and tail in edges[head] and nltk.pos_tag([ngram[-1]])[0][1] != 'JJ':
-                    phrase = ' '.join(list(normalized_token(word) for word in ngram))
-                    phrases.add(phrase)
-
-    if ng == 2:
-        phrase2to3 = set()
-        for p1 in phrases:
-            for p2 in phrases:
-                if p1.split()[-1] == p2.split()[0] and p1 != p2:
-                    phrase = ' '.join([p1.split()[0]] + p2.split())
-                    phrase2to3.add(phrase)
-        phrases |= phrase2to3
-        
-    phrase_score = {}
-    for phrase in phrases:
-        score = 0
-        for word in phrase.split():
-            score += pr.get(word, 0)
-        plenth = len(phrase.split())
-        if plenth == 1:
-            phrase_score[phrase] = score
-        elif plenth == 2:
-            phrase_score[phrase] = score * 0.6
-        else:
-            phrase_score[phrase] = score / 3
-        # phrase_score[phrase] = score/len(phrase.split())
-    sorted_phrases = sorted(phrase_score.items(), key=lambda d:d[1], reverse=True)
-    # print(sorted_phrases)
-    sorted_word = sorted(pr.items(), key=lambda d:d[1], reverse=True)
-    # print(sorted_word)
-    out_sorted = sorted(sorted_phrases+sorted_word, key=lambda d:d[1], reverse=True)
-    return out_sorted
 
 def dataset_train(dataset, alpha_=0.5, topn=5, topics=5, nfselect='079', ngrams=2):
     if dataset == 'kdd':
@@ -515,7 +466,7 @@ def dataset_train(dataset, alpha_=0.5, topn=5, topics=5, nfselect='079', ngrams=
 
     return 0
 
-def dataset_rank(dataset, omega, phi, topn=5, topics=5, nfselect='027', ngrams=2):
+def dataset_rank(dataset, omega, phi, topn=5, topics=5, nfselect='027', ngrams=2, window=2, damping=0.85):
     if dataset == 'kdd':
         abstr_path = './data/KDD/abstracts'
         out_path = './result'
@@ -554,7 +505,8 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=5, nfselect='027', ngrams=2
     recall_micro = 0
     for file_name in file_names:
         # print(file_name, 'begin......')
-        pr, graph = pagerank_doc(abstr_path, file_name, file_names, omega, phi, ldamodel, corpus, d=0.85, nfselect=nfselect, num_topics=topics)
+        pr, graph = pagerank_doc(abstr_path, file_name, file_names, omega, phi, ldamodel, corpus,
+                                 d=damping, nfselect=nfselect, num_topics=topics, window=window)
         # top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
         gold = read_file(gold_path, file_name)
         keyphrases = get_phrases(pr, graph, abstr_path, file_name, ng=ngrams)
@@ -649,7 +601,7 @@ def enum_phi2(dataset, start, end, nfselect, ngrams=2, topn=4, topics=5):
 #     endtime = datetime.datetime.now()
 #     print('TIME USED: ', (endtime - starttime))
 
-omega_kw = np.asmatrix([0.5, 0.5]).T
+omega_kw = np.asmatrix([3, 3, 3]).T
 # phi_kdd = np.asmatrix([1]).T
 # phi_www = np.asmatrix([1]).T
 
@@ -660,9 +612,8 @@ omega_kw = np.asmatrix([0.5, 0.5]).T
 phi_kdd2 = np.asmatrix([0.88, 0.12]).T
 phi_www2 = np.asmatrix([0.95, 0.05]).T
 
-for f2 in ['02','07','09']:
-    dataset_rank('www', omega_kw, phi_www2, topn=5, topics=5, ngrams=2, nfselect=f2)
-    dataset_rank('kdd', omega_kw, phi_kdd2, topn=4, topics=5, ngrams=2, nfselect=f2)
+dataset_rank('www', omega_kw, phi_www2, topn=5, topics=5, ngrams=2, nfselect='07', window=2, damping=0.85)
+dataset_rank('kdd', omega_kw, phi_kdd2, topn=4, topics=5, ngrams=2, nfselect='07', window=2, damping=0.85)
 
 # phi_kdd3 = np.asmatrix([0.6, 0.2, 0.2]).T
 # phi_www3 = np.asmatrix([0.6, 0.2, 0.2]).T

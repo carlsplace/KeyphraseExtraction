@@ -1,28 +1,35 @@
-#coding:utf8
+# -*- coding: utf-8 -*-
 
-from utils.CiteTextRank import *
-from utils.preprocess import *
 import networkx as nx
+from utils.preprocess import *
+from utils.graph_tools import get_edge_freq
 
-def pagerank_doc(dataset, abstr_path, file_name, d=0.85, lmd=[2,3,3], window=2):
-    from utils import CiteTextRank
+def pagerank_doc(abstr_path, file_name, d=0.85, window=2):
+    file_text = read_file(abstr_path, file_name)
+    tagged_tokens = get_tagged_tokens(file_text)
+    filtered_text = get_filtered_text(tagged_tokens)
+    edge_freq = get_edge_freq(filtered_text, window=window)
+
     from utils.tools import dict2list
-    from SSKE import build_graph
+    edge_weight = dict2list(edge_freq)
 
-    cite_edge_weight = CiteTextRank.sum_weight(file_name, dataset=dataset, doc_lmdt=lmd[0],
-                                               citing_lmdt=lmd[1], cited_lmdt=lmd[2], window=window)
-    edge_weight = dict2list(cite_edge_weight)
+    if 'KDD' in abstr_path:
+        dataset = 'kdd'
+    else:
+        dataset = 'www'
+
+    # 标记，以后可能需要调整代码结构
+    from SSKE import build_graph
     graph = build_graph(edge_weight)
+    node_list = list(graph.node)
 
     pr = nx.pagerank(graph, alpha=d)
 
     return pr, graph
 
-def dataset_rank(dataset, topn=5, ngrams=2, window=2, lmd=[2,3,3]):
+def dataset_rank(dataset, topn=5, ngrams=2, window=2, damping=0.85):
 
-    from os.path import isfile, join
     import os
-    from SSKE import get_phrases
 
     if dataset == 'kdd':
         abstr_path = './data/KDD/abstracts'
@@ -61,7 +68,7 @@ def dataset_rank(dataset, topn=5, ngrams=2, window=2, lmd=[2,3,3]):
     recall_micro = 0
     for file_name in file_names:
         # print(file_name, 'begin......')
-        pr, graph = pagerank_doc(dataset, abstr_path, file_name, d=0.85, lmd=lmd, window=window)
+        pr, graph = pagerank_doc(abstr_path, file_name, d=damping, window=window)
         # top_n = top_n_words(list(pr.values()), list(pr.keys()), n=10)
         gold = read_file(gold_path, file_name)
         keyphrases = get_phrases(pr, graph, abstr_path, file_name, ng=ngrams)
@@ -103,9 +110,8 @@ def dataset_rank(dataset, topn=5, ngrams=2, window=2, lmd=[2,3,3]):
     print(prcs, recall, f1, mrr)
 
     tofile_result = 'ngrams,' + str(ngrams) + ',' + str(prcs) + ',' + str(recall) + ',' + str(f1) + ',' + str(mrr) + ',top' + str(topn) + ',' + str(prcs_micro) + ',' + str(recall_micro) + ',' + str(f1_micro) + '\n'
-    with open(out_path + '/' + 'CTR-' + dataset + '.csv', mode='a', encoding='utf8') as f:
+    with open(out_path + '/' + 'TextRank-' + dataset + '.csv', mode='a', encoding='utf8') as f:
         f.write(tofile_result)
 
-# lmd[global, citing, cited]
-dataset_rank('kdd', topn=4, ngrams=2, window=2, lmd=[2, 3, 3])
-dataset_rank('www', topn=5, ngrams=2, window=2, lmd=[2, 3, 3])
+dataset_rank('kdd', topn=4, ngrams=2)
+dataset_rank('www', topn=5, ngrams=2)

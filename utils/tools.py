@@ -49,26 +49,8 @@ def filter_text(context, with_tag=False):
     return filtered_text
 
 def count_edge(context, window=2, with_tag=False, is_filtered=True):
-    def get_edge_freq(filtered_text, window):
-        """
-        输出边
-        顺便统计边的共现次数
-        输出格式：{('a', 'b'):2, ('b', 'c'):3}
-        """
-        from itertools import combinations
-        edges = []
-        edge_and_freq = {}
-        tokens = filtered_text.split()
-        for i in range(0, len(tokens) - window + 1):
-            edges += list(combinations(tokens[i:i+window],2))
-        for i in range(len(edges)):
-            for edge in edges:
-                if edges[i][0] == edge[1] and edges[i][1] == edge[0]:
-                    edges[i] = edge
-                    # 此处处理之后，在继续输入其他特征时，需要先判断下边的表示顺序是否一致
-        for edge in edges:
-            edge_and_freq[tuple(sorted(edge))] = edges.count(edge)
-        return edge_and_freq
+
+    from utils.graph_tools import get_edge_freq
 
     if not is_filtered:
         filtered_text = filter_text(context, with_tag)

@@ -1,8 +1,12 @@
-# coding:utf-8
 
-import numpy as np
+from utils.preprocess import *
 
-a = [1,2]
-b = [1,2]
+with open('./data/KDD/gold/813130') as f:
+    gold = f.read()
 
-print(np.dot(a,b))
+golds = gold.split('\n')
+if golds[-1] == '':
+    golds = golds[:-1]
+golds = list(' '.join(list(normalized_token(w) for w in g.split())) for g in golds)
+
+print(golds)

@@ -14,7 +14,7 @@ def lda_train(abstr_path, file_names, num_topics=20):
         texts.append(filtered_text.split())
     dictionary = corpora.Dictionary(texts)
     corpus = [dictionary.doc2bow(text) for text in texts]
-    ldamodel = models.ldamodel.LdaModel(corpus, num_topics=num_topics, id2word = dictionary)
+    ldamodel = models.ldamodel.LdaModel(corpus=corpus, num_topics=num_topics, id2word = dictionary, passes=20)
     return ldamodel, corpus
 
 def get_word_prob(file_name, file_names, node_list, ldamodel, corpus, num_topics=20):

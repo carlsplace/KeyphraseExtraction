@@ -2,7 +2,7 @@
 
 from utils import tools
 
-def single_weight(target, context, lmdt, target_tag=True, context_tag=False):
+def single_weight(target, context, lmdt, target_tag=True, context_tag=False, window=2):
     """edge_sweight:{('a','b'):0.54, ('a','c'):0.22}"""
     target = tools.filter_text(target, with_tag=target_tag)
     if context_tag:
@@ -10,13 +10,13 @@ def single_weight(target, context, lmdt, target_tag=True, context_tag=False):
     else:
         context = tools.filter_text(context, with_tag=context_tag)
     sim = tools.docsim(target, context)
-    edge_count = tools.count_edge(context)
+    edge_count = tools.count_edge(context, window=window)
     edge_sweight = {}
     for edge in edge_count:
         edge_sweight[tuple(sorted(edge))] = lmdt * sim * edge_count[edge]
     return edge_sweight
 
-def sum_weight(target_name, doc_lmdt=10, citing_lmdt=10, cited_lmdt=10, dataset='kdd'):
+def sum_weight(target_name, dataset='kdd', doc_lmdt=10, citing_lmdt=10, cited_lmdt=10, window=2):
     """CTR总权重"""
     # import re
     def merge_dict(target_edge_weight, context_edge_weight):
@@ -53,16 +53,17 @@ def sum_weight(target_name, doc_lmdt=10, citing_lmdt=10, cited_lmdt=10, dataset=
         raise Exception('wrong dataset name')
     with open(target_path+target_name, encoding='utf8') as f:
         target = f.read()
-    target_edge_weight = single_weight(target, target, doc_lmdt, context_tag=True) #有待商榷，weight的计算细节，target doc怎么算
+    target_edge_weight = single_weight(target, target, doc_lmdt, context_tag=True, window=window)
+    #有待商榷，weight的计算细节，target doc怎么算
     cited_list = get_cite_list(target_name, cited_name_list)
     citing_list = get_cite_list(target_name, citing_name_list)
     for cited in cited_list:
         with open(cited_path+cited, encoding='utf8') as f:
             cited_context = f.read()
-        target_edge_weight = merge_dict(target_edge_weight, single_weight(target, cited_context, cited_lmdt))
+        target_edge_weight = merge_dict(target_edge_weight, single_weight(target, cited_context, cited_lmdt, window=window))
     for citing in citing_list:
         with open(citing_path+citing, encoding='utf8') as f:
             citing_context = f.read()
-        target_edge_weight = merge_dict(target_edge_weight, single_weight(target, citing_context, citing_lmdt))
+        target_edge_weight = merge_dict(target_edge_weight, single_weight(target, citing_context, citing_lmdt, window=window))
     return target_edge_weight
     
