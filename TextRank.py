@@ -19,7 +19,7 @@ def pagerank_doc(abstr_path, file_name, d=0.85, window=2):
         dataset = 'www'
 
     # 标记，以后可能需要调整代码结构
-    from SSKE import build_graph
+    from utils.graph_tools import build_graph
     graph = build_graph(edge_weight)
     node_list = list(graph.node)
 
@@ -32,28 +32,28 @@ def dataset_rank(dataset, topn=5, ngrams=2, window=2, damping=0.85):
     import os
 
     if dataset == 'kdd':
-        abstr_path = './data/KDD/abstracts'
-        out_path = './result'
-        gold_path = './data/KDD/gold'
-        file_names = read_file('./data', 'KDD_filelist').split(',')
+        abstr_path = './data/KDD/abstracts/'
+        out_path = './result/'
+        gold_path = './data/KDD/gold/'
+        file_names = read_file('./data/', 'KDD_filelist').split(',')
         print('kdd start')
     elif dataset == 'kdd2':
-        abstr_path = './data/KDD/abstracts'
-        out_path = './result/rank/KDD2'
-        gold_path = './data/KDD/gold2'
-        file_names = read_file('./data/KDD', 'newOverlappingFiles').split()
+        abstr_path = './data/KDD/abstracts/'
+        out_path = './result/rank/KDD2/'
+        gold_path = './data/KDD/gold2/'
+        file_names = read_file('./data/KDD/', 'newOverlappingFiles').split()
         print('kdd2 start')
     elif dataset == 'www':
-        abstr_path = './data/WWW/abstracts'
-        out_path = './result'
-        gold_path = './data/WWW/gold'
-        file_names = read_file('./data', 'WWW_filelist').split(',')
+        abstr_path = './data/WWW/abstracts/'
+        out_path = './result/'
+        gold_path = './data/WWW/gold/'
+        file_names = read_file('./data/', 'WWW_filelist').split(',')
         print('www start')
     elif dataset == 'www2':
-        abstr_path = './data/WWW/abstracts'
-        out_path = './result/rank/WWW2'
-        gold_path = './data/WWW/gold2'
-        file_names = read_file('./data/WWW', 'newOverlappingFiles').split()
+        abstr_path = './data/WWW/abstracts/'
+        out_path = './result/rank/WWW2/'
+        gold_path = './data/WWW/gold2/'
+        file_names = read_file('./data/WWW/', 'newOverlappingFiles').split()
         print('www2 start')
     else:
         print('wrong dataset name')
@@ -95,10 +95,12 @@ def dataset_rank(dataset, topn=5, ngrams=2, window=2, damping=0.85):
         extract_count += len(top_phrases)
         prcs_micro += count_micro / len(top_phrases)
         recall_micro += count_micro / len(golds)
+        # 记录每个文档关键词提取的详细结果
         # prcs_single = count_micro / len(top_phrases)
         # recall_single = count_micro / len(golds)
-        # output_single = str(file_name) + ',' + str(prcs_single) + ',' + str(recall_single) + ',' + ','.join(phrase for phrase in top_phrases) + '\n'
-        # with open('./result/kdd.csv', mode='a', encoding='utf8') as f:
+        # output_single = str(file_name) + ',' + str(prcs_single) + ',' + str(recall_single) + ','\
+        #               + ','.join(phrase for phrase in top_phrases) + '\n'
+        # with open('./result/TextRank-' + dataset + '.csv', mode='a', encoding='utf8') as f:
         #     f.write(output_single)
     prcs = count / extract_count
     recall = count / gold_count
@@ -109,9 +111,15 @@ def dataset_rank(dataset, topn=5, ngrams=2, window=2, damping=0.85):
     f1_micro = 2 * prcs_micro * recall_micro / (prcs_micro + recall_micro)
     print(prcs, recall, f1, mrr)
 
-    tofile_result = 'ngrams,' + str(ngrams) + ',' + str(prcs) + ',' + str(recall) + ',' + str(f1) + ',' + str(mrr) + ',top' + str(topn) + ',' + str(prcs_micro) + ',' + str(recall_micro) + ',' + str(f1_micro) + '\n'
-    with open(out_path + '/' + 'TextRank-' + dataset + '.csv', mode='a', encoding='utf8') as f:
+    tofile_result = 'TextRank,,' + str(window) + ',' + str(ngrams) + ',' + str(prcs) \
+                    + ',' + str(recall) + ',' + str(f1) + ',' + str(mrr) + ',' + str(prcs_micro) \
+                    + ',' + str(recall_micro) + ',' + str(f1_micro) + ',,,' + str(topn) + ',\n'
+    with open(out_path + dataset + 'RESULTS.csv', mode='a', encoding='utf8') as f:
         f.write(tofile_result)
 
-dataset_rank('kdd', topn=4, ngrams=2)
-dataset_rank('www', topn=5, ngrams=2)
+# for topn in [5, 10, 15]:
+#     dataset_rank('kdd', topn=topn, ngrams=2)
+#     dataset_rank('www', topn=topn, ngrams=2)
+
+dataset_rank('kdd', topn=4, ngrams=2, window=2)
+dataset_rank('www', topn=5, ngrams=2, window=2)

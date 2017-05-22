@@ -1,8 +1,8 @@
 # coding:utf-8
 
 def read_file(abstr_path, file_name, title=False):
-    """abstr_path: ./data file_name"""
-    with open(abstr_path+'/'+file_name, 'r', encoding='utf8') as f:
+    """abstr_path: ./data/ file_name"""
+    with open(abstr_path + file_name, 'r', encoding='utf8') as f:
         if title:
             file_text = f.readline()
         else:
@@ -55,7 +55,7 @@ def normalized_token(token):
 ###################################################################
     
 def get_filtered_text(tagged_tokens):
-    """过滤掉无用词汇，留下候选关键词，选择保留名词和形容词，并且恢复词形stem
+    """过滤掉无用词汇，留下候选关键词，选择保留名词和形容词，并且取词干stem
        使用filtered_text的时候要注意：filtered_text是一串文本，其中的单词是可能会重复出现的。
     """
     filtered_text = ''

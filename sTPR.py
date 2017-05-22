@@ -21,16 +21,19 @@ def pagerank_doc(abstr_path, file_name, file_names, ldamodel, corpus, d=0.85, nu
         dataset = 'www'
 
     # 标记，以后可能需要调整代码结构
-    from SSKE import build_graph
+    from utils.graph_tools import build_graph
     graph = build_graph(edge_weight)
     node_list = list(graph.node)
 
     if 'KDD' in abstr_path:
-        raw_node_features = read_file('./data', 'KDD_node_features')
+        raw_node_features = read_file('./data/', 'KDD_node_features')
     else:
-        raw_node_features = read_file('./data', 'WWW_node_features')
+        raw_node_features = read_file('./data/', 'WWW_node_features')
     word_prob = get_word_prob(file_name, file_names, node_list, ldamodel, corpus, num_topics=num_topics)
-    pr = nx.pagerank(graph, alpha=d, personalization=word_prob)
+    # print(word_prob)
+    # with open('./result/word_prob', mode='a', encoding='utf8') as f:
+    #     f.write(str(word_prob) + '\n')
+    pr = nx.pagerank(graph, alpha=d, personalization=word_prob, max_iter=100)
 
     return pr, graph
 
@@ -40,35 +43,35 @@ def dataset_rank(dataset, topn=5, topics=5, ngrams=2, window=2, damping=0.85):
     import os
 
     if dataset == 'kdd':
-        abstr_path = './data/KDD/abstracts'
-        out_path = './result'
-        gold_path = './data/KDD/gold'
-        file_names = read_file('./data', 'KDD_filelist').split(',')
+        abstr_path = './data/KDD/abstracts/'
+        out_path = './result/'
+        gold_path = './data/KDD/gold/'
+        file_names = read_file('./data/', 'KDD_filelist').split(',')
         print('kdd start')
     elif dataset == 'kdd2':
-        abstr_path = './data/KDD/abstracts'
-        out_path = './result/rank/KDD2'
-        gold_path = './data/KDD/gold2'
-        file_names = read_file('./data/KDD', 'newOverlappingFiles').split()
+        abstr_path = './data/KDD/abstracts/'
+        out_path = './result/rank/KDD2/'
+        gold_path = './data/KDD/gold2/'
+        file_names = read_file('./data/KDD/', 'newOverlappingFiles').split()
         print('kdd2 start')
     elif dataset == 'www':
-        abstr_path = './data/WWW/abstracts'
-        out_path = './result'
-        gold_path = './data/WWW/gold'
-        file_names = read_file('./data', 'WWW_filelist').split(',')
+        abstr_path = './data/WWW/abstracts/'
+        out_path = './result/'
+        gold_path = './data/WWW/gold/'
+        file_names = read_file('./data/', 'WWW_filelist').split(',')
         print('www start')
     elif dataset == 'www2':
-        abstr_path = './data/WWW/abstracts'
-        out_path = './result/rank/WWW2'
-        gold_path = './data/WWW/gold2'
-        file_names = read_file('./data/WWW', 'newOverlappingFiles').split()
+        abstr_path = './data/WWW/abstracts/'
+        out_path = './result/rank/WWW2/'
+        gold_path = './data/WWW/gold2/'
+        file_names = read_file('./data/WWW/', 'newOverlappingFiles').split()
         print('www2 start')
     else:
         print('wrong dataset name')
     if not os.path.exists(out_path):
         os.makedirs(out_path)
-    file_names_lda = [f for f in os.listdir(abstr_path) if isfile(join(abstr_path, f))]
-    ldamodel, corpus = lda_train(abstr_path, file_names_lda, num_topics=topics)
+    # file_names_lda = [f for f in os.listdir(abstr_path) if isfile(join(abstr_path, f))]
+    ldamodel, corpus = lda_train(abstr_path, file_names, num_topics=topics)
     count = 0
     gold_count = 0
     extract_count = 0
@@ -119,9 +122,11 @@ def dataset_rank(dataset, topn=5, topics=5, ngrams=2, window=2, damping=0.85):
     f1_micro = 2 * prcs_micro * recall_micro / (prcs_micro + recall_micro)
     print(prcs, recall, f1, mrr)
 
-    tofile_result = 'ngrams-topics,' + str(ngrams) + ',' + str(topics) + ',' + str(prcs) + ',' + str(recall) + ',' + str(f1) + ',' + str(mrr) + ',top' + str(topn) + ',' + str(prcs_micro) + ',' + str(recall_micro) + ',' + str(f1_micro) + '\n'
-    with open(out_path + '/' + 'sTPR-' + dataset + '.csv', mode='a', encoding='utf8') as f:
+    tofile_result = 'sTPR,' + str(topics) + ',' + str(window) + ',' + str(ngrams) + ',' + str(prcs)\
+                  + ',' + str(recall) + ',' + str(f1) + ',' + str(mrr) + ',' + str(prcs_micro) \
+                  + ',' + str(recall_micro) + ',' + str(f1_micro) + ',,,' + str(topn) + ',\n'
+    with open(out_path + dataset + 'RESULTS.csv', mode='a', encoding='utf8') as f:
         f.write(tofile_result)
 
-dataset_rank('kdd', topn=4, topics=500, ngrams=2, window=2)
-dataset_rank('www', topn=5, topics=500, ngrams=2, window=2)
+dataset_rank('kdd', topn=4, topics=10, ngrams=2, window=2)
+dataset_rank('www', topn=5, topics=10, ngrams=2, window=2)

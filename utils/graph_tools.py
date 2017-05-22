@@ -2,7 +2,7 @@ def get_edge_freq(filtered_text, window=2):
     """
     输出边
     顺便统计边的共现次数
-    输出格式：{('a', 'b'):[2], ('b', 'c'):[3]}
+    输出格式：{('a', 'b'):2, ('b', 'c'):3}
     """
     from itertools import combinations
 
@@ -19,3 +19,13 @@ def get_edge_freq(filtered_text, window=2):
     for edge in edges:
         edge_freq[edge] = edges.count(edge)# * 2 / (tokens.count(edge[0]) + tokens.count(edge[1]))
     return edge_freq
+
+def build_graph(edge_weight):
+    """
+    建图，无向
+    返回一个list，list中每个元素为一个图
+    """
+    from networkx import Graph
+    graph = Graph()
+    graph.add_weighted_edges_from(edge_weight)
+    return graph
