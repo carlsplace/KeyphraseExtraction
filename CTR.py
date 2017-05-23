@@ -58,7 +58,7 @@ def dataset_rank(dataset, topn=5, ngrams=2, window=2, lmd=[2,3,3]):
     mrr = 0
     prcs_micro = 0
     recall_micro = 0
-    file_names = file_names[:300]
+    # file_names = file_names[:300]
     for file_name in file_names:
         # print(file_name, 'begin......')
         pr, graph = pagerank_doc(dataset, abstr_path, file_name, d=0.85, lmd=lmd, window=window)
@@ -113,5 +113,5 @@ def dataset_rank(dataset, topn=5, ngrams=2, window=2, lmd=[2,3,3]):
         f.write(tofile_result)
 
 # lmd[global, citing, cited]
-dataset_rank('kdd', topn=4, ngrams=2, window=10, lmd=[2, 3, 3])
-dataset_rank('www', topn=5, ngrams=2, window=10, lmd=[1, 3, 1])
+dataset_rank('kdd', topn=4, ngrams=2, window=2, lmd=[2, 3, 3])
+dataset_rank('www', topn=5, ngrams=2, window=2, lmd=[1, 3, 1])

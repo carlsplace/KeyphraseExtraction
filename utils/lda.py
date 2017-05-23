@@ -37,7 +37,7 @@ def get_word_prob(file_name, file_names, node_list, ldamodel, corpus, num_topics
         d_t_prob[t] = p
     print(d_t_prob)
     for word in node_list:
-        w_t_prob = [0.001] * num_topics
+        w_t_prob = [0.0001] * num_topics
         for (t, p) in ldamodel.get_term_topics(word):
             w_t_prob[t] = p
         # print(w_t_prob)

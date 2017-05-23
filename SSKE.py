@@ -491,8 +491,7 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=5, nfselect='027', ngrams=2
         print('wrong dataset name')
     if not os.path.exists(out_path):
         os.makedirs(out_path)
-    # file_names_lda = [f for f in os.listdir(abstr_path) if isfile(join(abstr_path, f))]
-    file_names = file_names[:300]
+    # file_names = file_names[:300]
     # ldamodel = corpus = None
     ldamodel, corpus = lda_train(abstr_path, file_names, num_topics=topics)
     count = 0
