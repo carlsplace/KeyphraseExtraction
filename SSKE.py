@@ -209,7 +209,7 @@ def calcG(pi, pi3, B, mu, alpha, d):
     one = np.matrix(np.ones(B.shape[0])).T
     # print('pi3.T', pi3.T.shape, 'mu.T', mu.T.shape, 'one', one.shape, 'B', B.shape, 'pi', pi.shape)
     # print(B)
-    G = alpha * pi3.T * pi3 + (1 - alpha) * mu.T * (one - B * pi)
+    G = (1- alpha) * pi3.T * pi3 + alpha * mu.T * (one - B * pi)
     return G
 
 def updateVar(var, g_var, step_size):
@@ -639,4 +639,4 @@ def enum_phi2(dataset, start, end, nfselect, ngrams=2, topn=4, topics=5):
 #     dataset_rank('kdd', omega_kw, phi_kdd, topn=4, topics=topic_num, ngrams=2, nfselect='07')
 #     print(topic_num, 'done')
 
-dataset_train('kdd', alpha_=1, topn=4, nfselect='02379') #023789
+dataset_train('kdd', alpha_=0, topn=4, nfselect='07') #023789
