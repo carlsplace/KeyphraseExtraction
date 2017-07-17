@@ -131,7 +131,7 @@ def getTransMatrix(graph):
     P = P.T
     return P
 
-def calcPi3(node_weight, node_list, pi, P, d, word_prob_m):
+def calcPi3(node_weight, node_list, pi, P, d, word_prob_m=1):
     """
     r is the reset probability vector, pi3 is an important vertor for later use
     node_list = list(graph.node)
@@ -198,7 +198,7 @@ def calcGradientOmega(edge_features, node_list, omega, pi3, pi, alpha, d):
     # g_omega算出来是行向量？
     return g_omega.T
 
-def calcGradientPhi(pi3, node_features, node_list, alpha, d, word_prob_m):
+def calcGradientPhi(pi3, node_features, node_list, alpha, d, word_prob_m=1):
     #此处R有疑问, g_phi值有问题
     R = np.matrix(list(node_features[key] for key in node_list))
     # print(word_prob_m.shape, pi3.T.shape, R.shape)
@@ -249,7 +249,7 @@ def create_B(node_list, gold):
         B = [0] * n
     return np.matrix(B)
 
-def train_doc(abstr_path, file_name, file_names, ldamodel, corpus, alpha=0.5,
+def train_doc(abstr_path, file_name, file_names, ldamodel=None, corpus=None, alpha=0.5,
               d=0.85, step_size=0.1, epsilon=0.001, max_iter=1000, nfselect='027', num_topics=20):
     file_text = read_file(abstr_path, file_name)
     tagged_tokens = get_tagged_tokens(file_text)
@@ -263,9 +263,11 @@ def train_doc(abstr_path, file_name, file_names, ldamodel, corpus, alpha=0.5,
     graph = build_graph(edge_weight)
 
     node_list = list(graph.node)
-    word_prob = get_word_prob(file_name, file_names, node_list, ldamodel, corpus, num_topics=num_topics)
-    wp = list(word_prob[word] for word in node_list)
-    word_prob_m = np.diag(wp)
+
+    # 计算主题概率矩阵
+    # word_prob = get_word_prob(file_name, file_names, node_list, ldamodel, corpus, num_topics=num_topics)
+    # wp = list(word_prob[word] for word in node_list)
+    # word_prob_m = np.diag(wp)
 
     if 'KDD' in abstr_path:
         raw_node_features = read_file('./data/', 'KDD_node_features')
@@ -287,12 +289,12 @@ def train_doc(abstr_path, file_name, file_names, ldamodel, corpus, alpha=0.5,
     pi = init_value(len(node_list))
     P = getTransMatrix(graph)
     P0 = P
-    pi3 = calcPi3(node_weight, node_list, pi, P, d, word_prob_m)
+    pi3 = calcPi3(node_weight, node_list, pi, P, d) # 去掉了主题模型word_prob_m
     G0 = calcG(pi, pi3, B, mu, alpha, d)
     # print(pi3)
     g_pi = calcGradientPi(pi3, P, B, mu, alpha, d)
     g_omega = calcGradientOmega(edge_features, node_list, omega, pi3, pi, alpha, d)
-    g_phi = calcGradientPhi(pi3, node_features, node_list, alpha, d, word_prob_m)
+    g_phi = calcGradientPhi(pi3, node_features, node_list, alpha, d) # 去掉了主题模型word_prob_m
 
     pi = updateVar(pi, g_pi, step_size)
     omega = updateVar(omega, g_omega, step_size)
@@ -303,12 +305,12 @@ def train_doc(abstr_path, file_name, file_names, ldamodel, corpus, alpha=0.5,
     while  e > epsilon and iteration < max_iter and all(a >= 0 for a in phi) and all(b >= 0 for b in omega) and all(c >= 0 for c in pi):
         g_pi = calcGradientPi(pi3, P, B, mu, alpha, d)
         g_omega = calcGradientOmega(edge_features, node_list, omega, pi3, pi, alpha, d)
-        g_phi = calcGradientPhi(pi3, node_features, node_list, alpha, d, word_prob_m)
+        g_phi = calcGradientPhi(pi3, node_features, node_list, alpha, d) # 去掉了主题模型word_prob_m
 
         edge_weight = calc_edge_weight(edge_features, omega)
         graph = build_graph(edge_weight)
         P = getTransMatrix(graph)
-        pi3 = calcPi3(node_weight, node_list, pi, P, d, word_prob_m)
+        pi3 = calcPi3(node_weight, node_list, pi, P, d) # 去掉了主题模型word_prob_m
         G1 = calcG(pi, pi3, B, mu, alpha, d)
         e = abs(G1 - G0)
         # print(e)
@@ -339,25 +341,25 @@ def top_n_words(pi, node_list, n=15):
 
 def dataset_train(dataset, alpha_=0.5, topn=5, topics=5, nfselect='079', ngrams=2):
     if dataset == 'kdd':
-        abstr_path = './data/KDD/abstracts'
+        abstr_path = './data/KDD/abstracts/'
         out_path = './result/'
-        gold_path = './data/KDD/gold'
-        raw_node_f = read_file('./data', 'KDD_node_features')
-        file_names = read_file('./data', 'KDD_filelist').split(',')
+        gold_path = './data/KDD/gold/'
+        raw_node_f = read_file('./data/', 'KDD_node_features')
+        file_names = read_file('./data/', 'KDD_filelist').split(',')
         print('kdd start')
     elif dataset == 'www':
-        abstr_path = './data/WWW/abstracts'
+        abstr_path = './data/WWW/abstracts/'
         out_path = './result/'
-        gold_path = './data/WWW/gold'
-        raw_node_f = read_file('./data', 'WWW_node_features')
-        file_names = read_file('./data', 'WWW_filelist').split(',')
+        gold_path = './data/WWW/gold/'
+        raw_node_f = read_file('./data/', 'WWW_node_features')
+        file_names = read_file('./data/', 'WWW_filelist').split(',')
         print('www start')
     else:
         print('wrong dataset name')
     if not os.path.exists(out_path):
         os.makedirs(out_path)
-    file_names_lda = [f for f in os.listdir(abstr_path) if isfile(join(abstr_path, f))]
-    ldamodel, corpus = lda_train(abstr_path, file_names_lda, num_topics=topics)
+    # file_names_lda = [f for f in os.listdir(abstr_path) if isfile(join(abstr_path, f))]
+    # ldamodel, corpus = lda_train(abstr_path, file_names_lda, num_topics=topics)
     #重复代码。。。先跑起来吧
     count = 0
     gold_count = 0
@@ -365,9 +367,10 @@ def dataset_train(dataset, alpha_=0.5, topn=5, topics=5, nfselect='079', ngrams=
     mrr = 0
     prcs_micro = 0
     recall_micro = 0
+    file_names = file_names[:300]
     for file_name in file_names:
         print(file_name, '......begin......\n')
-        pi, omega, phi, node_list, iteration, graph = train_doc(abstr_path, file_name, file_names, ldamodel, corpus, alpha=alpha_, nfselect=nfselect)
+        pi, omega, phi, node_list, iteration, graph = train_doc(abstr_path, file_name, file_names, alpha=alpha_, nfselect=nfselect)
         print(pi)
         word_score = {node_list[i]:pi[i] for i in range(len(pi))}
         # top_n = top_n_words(pi, node_list, n=10)
@@ -400,7 +403,9 @@ def dataset_train(dataset, alpha_=0.5, topn=5, topics=5, nfselect='079', ngrams=
             f1 = 0
         else:
             f1 = 2 * prcs_micro * recall_micro / (prcs_micro + recall_micro)
-        to_file = file_name + ',omega,' + str(omega)[1:-1] + ',phi,' + str(phi)[1:-1] + ',count precision recall f1 iter,' + str(count_micro) +',' + str(prcs_micro) + ',' + str(recall_micro) + ',' + str(f1) + ',' + str(iteration) + ',' + str(datetime.datetime.now()) + '\n'
+        to_file = file_name + ',omega,' + str(omega)[1:-1] + ',phi,' + str(phi)[1:-1] + \
+                  ',count precision recall f1 iter,' + str(count_micro) +',' + str(prcs_micro) + \
+                  ',' + str(recall_micro) + ',' + str(f1) + ',' + str(iteration) + ',' + str(top_phrases) + '\n'
         with open(out_path + 'train-' + dataset + str(alpha_) + str(nfselect) +'.csv', 'a', encoding='utf8') as f:
             f.write(to_file)
         # write_file(to_file, out_path, file_name)
@@ -491,7 +496,10 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=5, nfselect='027', ngrams=2
         print('wrong dataset name')
     if not os.path.exists(out_path):
         os.makedirs(out_path)
+
+    # 控制使用语料库大小
     # file_names = file_names[:300]
+
     # ldamodel = corpus = None
     ldamodel, corpus = lda_train(abstr_path, file_names, num_topics=topics)
     count = 0
@@ -607,14 +615,18 @@ def enum_phi2(dataset, start, end, nfselect, ngrams=2, topn=4, topics=5):
 
 # omega_kdd = np.asmatrix([2, 3, 3]).T
 # omega_www = np.asmatrix([1, 3, 1]).T
-omega_kdd = [2, 3, 3]
-omega_www = [1, 3, 1]
 
-phi_www2 = np.asmatrix([0.95, 0.05]).T
-phi_kdd2 = np.asmatrix([0.88, 0.12]).T
-for topics in range(10, 101, 10):
-    dataset_rank('www', omega_www, phi_www2, topn=5, topics=topics, ngrams=2, nfselect='07', window=2, damping=0.85)
-    dataset_rank('kdd', omega_kdd, phi_kdd2, topn=4, topics=topics, ngrams=2, nfselect='07', window=2, damping=0.85)
+
+# 评分提取过程
+# omega_kdd = [2, 3, 3]
+# omega_www = [1, 3, 1]
+
+# phi_www2 = np.asmatrix([0.95, 0.05]).T
+# phi_kdd2 = np.asmatrix([0.88, 0.12]).T
+# for topics in range(10, 101, 10):
+#     dataset_rank('www', omega_www, phi_www2, topn=5, topics=topics, ngrams=2, nfselect='07', window=2, damping=0.85)
+#     dataset_rank('kdd', omega_kdd, phi_kdd2, topn=4, topics=topics, ngrams=2, nfselect='07', window=2, damping=0.85)
+
 
 # phi_kdd3 = np.asmatrix([0.34, 0.33, 0.33]).T
 # phi_www3 = np.asmatrix([0.34, 0.33, 0.33]).T
@@ -626,3 +638,5 @@ for topics in range(10, 101, 10):
 #     dataset_rank('www', omega_kw, phi_www, topn=5, topics=topic_num, ngrams=2, nfselect='07')
 #     dataset_rank('kdd', omega_kw, phi_kdd, topn=4, topics=topic_num, ngrams=2, nfselect='07')
 #     print(topic_num, 'done')
+
+dataset_train('kdd', alpha_=1, topn=4, nfselect='02379') #023789
