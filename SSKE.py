@@ -10,13 +10,31 @@ import networkx as nx
 import numpy as np
 import math
 import nltk
-
-import datetime
 import codecs
 
 from utils.lda import lda_train, get_word_prob
 from utils.preprocess import *
 from utils.graph_tools import build_graph
+from time import time
+
+import logging
+import logging.handlers
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+rh=logging.handlers.TimedRotatingFileHandler('SSKE.log','D')
+fm=logging.Formatter("%(asctime)s  %(levelname)s - %(message)s","%Y-%m-%d %H:%M:%S")
+rh.setFormatter(fm)
+logger.addHandler(rh)
+
+debug=logger.debug
+info=logger.info
+warn=logger.warn
+error=logger.error
+critical=logger.critical
+
+time_stamp = time()
 
 def read_node_features(node_list, raw_node_features, file_name, nfselect='027'):
     # 0@attribute tfidf numeric √
@@ -304,8 +322,11 @@ def train_doc(abstr_path, file_name, file_names, ldamodel=None, corpus=None, alp
     iteration = 0
     while  e > epsilon and iteration < max_iter and all(a >= 0 for a in phi) and all(b >= 0 for b in omega) and all(c >= 0 for c in pi):
         g_pi = calcGradientPi(pi3, P, B, mu, alpha, d)
+        debug('g_pi: ' + str(g_pi))
         g_omega = calcGradientOmega(edge_features, node_list, omega, pi3, pi, alpha, d)
+        debug('g_omega: ' + str(g_omega))
         g_phi = calcGradientPhi(pi3, node_features, node_list, alpha, d) # 去掉了主题模型word_prob_m
+        debug('g_phi: ' + str(g_phi))
 
         edge_weight = calc_edge_weight(edge_features, omega)
         graph = build_graph(edge_weight)
@@ -318,14 +339,17 @@ def train_doc(abstr_path, file_name, file_names, ldamodel=None, corpus=None, alp
         iteration += 1
         # print(iteration)
         pi = updateVar(pi, g_pi, step_size)
+        debug('pi: ' + str(pi.T))
         omega = updateVar(omega, g_omega, step_size)
+        debug('omega: ' + str(omega.T))
         phi = updateVar(phi, g_phi, step_size)
+        debug('phi: ' + str(phi.T))
     if iteration > max_iter:
-        print("Over Max Iteration, iteration =cited_lmdt", iteration)
+        warn("Over Max Iteration, iteration =cited_lmdt" + str(iteration))
     pi = updateVar(pi, g_pi, -step_size)
     omega = updateVar(omega, g_omega, -step_size)
     phi = updateVar(phi, g_phi, -step_size)
-    print(iteration)
+    info('iteration: ' + str(iteration))
     return pi.T.tolist()[0], omega.T.tolist()[0], phi.T.tolist()[0], node_list, iteration, graph#, filtered_text, P0, P
 
 def top_n_words(pi, node_list, n=15):
@@ -339,23 +363,23 @@ def top_n_words(pi, node_list, n=15):
 
 
 
-def dataset_train(dataset, alpha_=0.5, topn=5, topics=5, nfselect='079', ngrams=2):
+def dataset_train(dataset, alpha=0.5, topn=5, topics=5, nfselect='079', ngrams=2):
     if dataset == 'kdd':
         abstr_path = './data/KDD/abstracts/'
         out_path = './result/'
         gold_path = './data/KDD/gold/'
         raw_node_f = read_file('./data/', 'KDD_node_features')
         file_names = read_file('./data/', 'KDD_filelist').split(',')
-        print('kdd start')
+        info('kdd start')
     elif dataset == 'www':
         abstr_path = './data/WWW/abstracts/'
         out_path = './result/'
         gold_path = './data/WWW/gold/'
         raw_node_f = read_file('./data/', 'WWW_node_features')
         file_names = read_file('./data/', 'WWW_filelist').split(',')
-        print('www start')
+        info('www start')
     else:
-        print('wrong dataset name')
+        warn('wrong dataset name')
     if not os.path.exists(out_path):
         os.makedirs(out_path)
     # file_names_lda = [f for f in os.listdir(abstr_path) if isfile(join(abstr_path, f))]
@@ -369,9 +393,9 @@ def dataset_train(dataset, alpha_=0.5, topn=5, topics=5, nfselect='079', ngrams=
     recall_micro = 0
     file_names = file_names[:300]
     for file_name in file_names:
-        print(file_name, '......begin......\n')
-        pi, omega, phi, node_list, iteration, graph = train_doc(abstr_path, file_name, file_names, alpha=alpha_, nfselect=nfselect)
-        print(pi)
+        info(file_name + '......begin......')
+        pi, omega, phi, node_list, iteration, graph = train_doc(abstr_path, file_name, file_names, alpha=alpha, nfselect=nfselect)
+        info(pi)
         word_score = {node_list[i]:pi[i] for i in range(len(pi))}
         # top_n = top_n_words(pi, node_list, n=10)
         gold = read_file(gold_path, file_name)
@@ -406,10 +430,9 @@ def dataset_train(dataset, alpha_=0.5, topn=5, topics=5, nfselect='079', ngrams=
         to_file = file_name + ',omega,' + str(omega)[1:-1] + ',phi,' + str(phi)[1:-1] + \
                   ',count precision recall f1 iter,' + str(count_micro) +',' + str(prcs_micro) + \
                   ',' + str(recall_micro) + ',' + str(f1) + ',' + str(iteration) + ',' + str(top_phrases) + '\n'
-        with open(out_path + 'train-' + dataset + str(alpha_) + str(nfselect) +'.csv', 'a', encoding='utf8') as f:
+        with open(out_path + 'train-' + dataset + str(alpha) + str(nfselect) +str(time_stamp) + '.csv', 'a', encoding='utf8') as f:
             f.write(to_file)
-        # write_file(to_file, out_path, file_name)
-        print(file_name, '......end......\n')
+        info(file_name + '......end......')
     # prcs = count / extract_count
     # recall = count / gold_count
     # f1 = 2 * prcs * recall / (prcs + recall)
@@ -639,4 +662,4 @@ def enum_phi2(dataset, start, end, nfselect, ngrams=2, topn=4, topics=5):
 #     dataset_rank('kdd', omega_kw, phi_kdd, topn=4, topics=topic_num, ngrams=2, nfselect='07')
 #     print(topic_num, 'done')
 
-dataset_train('kdd', alpha_=0, topn=4, nfselect='07') #023789
+dataset_train('kdd', alpha=0, topn=4, nfselect='027') #023789
