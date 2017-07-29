@@ -482,10 +482,10 @@ def pagerank_doc(abstr_path, file_name, file_names, omega, phi, ldamodel,
         raw_node_features = read_file('./data/', 'WWW_node_features')
     node_features = read_node_features(node_list, raw_node_features, file_name, nfselect=nfselect)
     node_weight = calc_node_weight(node_features, phi)
-    word_prob = get_word_prob(file_name, file_names, node_list, ldamodel, corpus, num_topics=num_topics)
+    # word_prob = get_word_prob(file_name, file_names, node_list, ldamodel, corpus, num_topics=num_topics)
     node_weight_topic = {}
     for node in node_list:
-        node_weight_topic[node] = node_weight[node] * word_prob[node]
+        node_weight_topic[node] = node_weight[node]# * word_prob[node]
     pr = nx.pagerank(graph, alpha=d, personalization=node_weight_topic)
 
     return pr, graph
@@ -523,8 +523,8 @@ def dataset_rank(dataset, omega, phi, topn=5, topics=5, nfselect='027', ngrams=2
     # 控制使用语料库大小
     # file_names = file_names[:300]
 
-    # ldamodel = corpus = None
-    ldamodel, corpus = lda_train(abstr_path, file_names, num_topics=topics)
+    ldamodel = corpus = None
+    # ldamodel, corpus = lda_train(abstr_path, file_names, num_topics=topics)
     count = 0
     gold_count = 0
     extract_count = 0
@@ -641,15 +641,16 @@ def enum_phi2(dataset, start, end, nfselect, ngrams=2, topn=4, topics=5):
 
 
 # 评分提取过程
-# omega_kdd = [2, 3, 3]
+omega_kdd = [2, 3, 3]
 # omega_www = [1, 3, 1]
 
 # phi_www2 = np.asmatrix([0.95, 0.05]).T
-# phi_kdd2 = np.asmatrix([0.88, 0.12]).T
+phi_kdd2 = np.asmatrix([0.88, 0.12]).T
 # for topics in range(10, 101, 10):
 #     dataset_rank('www', omega_www, phi_www2, topn=5, topics=topics, ngrams=2, nfselect='07', window=2, damping=0.85)
 #     dataset_rank('kdd', omega_kdd, phi_kdd2, topn=4, topics=topics, ngrams=2, nfselect='07', window=2, damping=0.85)
 
+dataset_rank('kdd', omega_kdd, phi_kdd2, topn=4, topics=10, ngrams=2, nfselect='07', window=2, damping=0.85)
 
 # phi_kdd3 = np.asmatrix([0.34, 0.33, 0.33]).T
 # phi_www3 = np.asmatrix([0.34, 0.33, 0.33]).T
@@ -662,4 +663,4 @@ def enum_phi2(dataset, start, end, nfselect, ngrams=2, topn=4, topics=5):
 #     dataset_rank('kdd', omega_kw, phi_kdd, topn=4, topics=topic_num, ngrams=2, nfselect='07')
 #     print(topic_num, 'done')
 
-dataset_train('kdd', alpha=0, topn=4, nfselect='027') #023789
+# dataset_train('kdd', alpha=0, topn=4, nfselect='027') #023789
